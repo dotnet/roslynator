@@ -4,7 +4,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -12,10 +11,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class DeclareUsingDirectiveOnTopLevelRefactoring
     {
-        private static SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
-
         public static void Analyze(SyntaxNodeAnalysisContext context, NamespaceDeclarationSyntax declaration)
         {
             SyntaxList<UsingDirectiveSyntax> usings = declaration.Usings;
@@ -63,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxList<UsingDirectiveSyntax> usings = namespaceDeclaration.Usings;
 
             UsingDirectiveSyntax[] newUsings = usings
-                .Select(f => EnsureFullyQualifiedName(f, semanticModel, cancellationToken).WithFormatterAnnotation())
+                .Select(f => EnsureFullyQualifiedName(f, semanticModel, cancellationToken))
                 .ToArray();
 
             newUsings[0] = newUsings[0].WithoutLeadingTrivia();
@@ -78,39 +73,15 @@ namespace Roslynator.CSharp.Refactorings
             return document.WithSyntaxRoot(newCompilationUnit);
         }
 
-        private static UsingDirectiveSyntax EnsureFullyQualifiedName(
-            UsingDirectiveSyntax usingDirective,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static UsingDirectiveSyntax EnsureFullyQualifiedName(UsingDirectiveSyntax usingDirective, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             NameSyntax name = usingDirective.Name;
 
-            if (name != null)
-            {
-                ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+            NameSyntax newName = CSharpUtility.EnsureFullyQualifiedName(name, semanticModel, cancellationToken);
 
-                if (symbol != null)
-                {
-                    if (semanticModel.GetAliasInfo(name, cancellationToken) != null
-                        || !symbol.ContainingNamespace.IsGlobalNamespace)
-                    {
-                        if (symbol.IsNamespace())
-                        {
-                            NameSyntax newName = SyntaxFactory.ParseName(symbol.ToString());
+            newName = newName.WithTriviaFrom(name);
 
-                            return usingDirective.WithName(newName.WithTriviaFrom(name));
-                        }
-                        else if (symbol.IsNamedType())
-                        {
-                            var newName = (NameSyntax)((INamedTypeSymbol)symbol).ToTypeSyntax(_symbolDisplayFormat);
-
-                            return usingDirective.WithName(newName.WithTriviaFrom(name));
-                        }
-                    }
-                }
-            }
-
-            return usingDirective;
+            return usingDirective.WithName(newName).WithFormatterAnnotation();
         }
     }
 }

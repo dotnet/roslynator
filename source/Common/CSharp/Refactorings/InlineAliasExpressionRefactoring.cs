@@ -33,7 +33,23 @@ namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 
             NameSyntax name = usingDirective.Name;
 
-            SyntaxNode newNode = parent.ReplaceNodes(names, (f, g) => name.WithTriviaFrom(f));
+            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+
+            SyntaxNode newNode = parent.ReplaceNodes(names, (f, g) =>
+            {
+                if (symbol != null
+                    && semanticModel
+                        .GetSpeculativeSymbolInfo(f.SpanStart, name, SpeculativeBindingOption.BindAsTypeOrNamespace)
+                        .Symbol?
+                        .Equals(symbol) == true)
+                {
+                    return name.WithTriviaFrom(f);
+                }
+                else
+                {
+                    return CSharpUtility.EnsureFullyQualifiedName(name, semanticModel, cancellationToken).WithTriviaFrom(f);
+                }
+            });
 
             newNode = RemoveUsingDirective(newNode, index);
 

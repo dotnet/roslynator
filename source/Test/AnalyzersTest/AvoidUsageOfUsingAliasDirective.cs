@@ -10,15 +10,13 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         public void MethodName()
         {
-            xxx ss = null;
+            xxx s1 = xxx.Empty;
+            xxx s2 = xxx.Empty;
 
-            string s = xxx.Empty;
-            string s2 = xxx.Empty;
-
-            xx.List<string> t = new xx.List<string>();
+            xx.List<string> t1 = new xx.List<string>();
             xx.List<string> t2 = new xx.List<string>();
 
-            string u = x.String.Empty;
+            string u1 = x.String.Empty;
             string u2 = x.String.Empty;
         }
     }
