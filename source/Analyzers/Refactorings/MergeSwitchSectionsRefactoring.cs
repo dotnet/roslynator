@@ -20,33 +20,36 @@ namespace Roslynator.CSharp.Refactorings
         {
             var switchStatement = (SwitchStatementSyntax)context.Node;
 
-            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
-            if (sections.Count > 1)
+            if (!switchStatement.ContainsDiagnostics)
             {
-                SyntaxList<StatementSyntax> statements = GetStatements(sections[0]);
+                SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-                for (int i = 1; i < sections.Count; i++)
+                if (sections.Count > 1)
                 {
-                    SyntaxList<StatementSyntax> statements2 = GetStatements(sections[i]);
+                    SyntaxList<StatementSyntax> statements = GetStatements(sections[0]);
 
-                    if (AreEquivalent(statements, statements2))
+                    for (int i = 1; i < sections.Count; i++)
                     {
-                        int firstIndex = i - 1;
+                        SyntaxList<StatementSyntax> statements2 = GetStatements(sections[i]);
 
-                        i++;
-
-                        while (i < sections.Count
-                            && AreEquivalent(statements, GetStatements(sections[i])))
+                        if (AreEquivalent(statements, statements2))
                         {
+                            int firstIndex = i - 1;
+
                             i++;
+
+                            while (i < sections.Count
+                                && AreEquivalent(statements, GetStatements(sections[i])))
+                            {
+                                i++;
+                            }
+
+                            Analyze(context, switchStatement, sections, firstIndex, i - 1);
+                            return;
                         }
 
-                        Analyze(context, switchStatement, sections, firstIndex, i - 1);
-                        return;
+                        statements = statements2;
                     }
-
-                    statements = statements2;
                 }
             }
         }
@@ -63,26 +66,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!switchStatement.ContainsDirectives(TextSpan.FromBounds(firstSection.SpanStart, lastSection.Span.End)))
             {
-                int count = lastIndex - firstIndex;
-
-                if (count == 1)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.MergeSwitchSectionsWithEquivalentContent,
-                        Location.Create(switchStatement.SyntaxTree, firstSection.Statements.Span));
-                }
-                else
-                {
-                    IEnumerable<Location> additionalLocations = sections
-                        .Skip(firstIndex + 1)
-                        .Take(count - 1)
-                        .Select(f => Location.Create(f.SyntaxTree, f.Statements.Span));
-
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.MergeSwitchSectionsWithEquivalentContent,
-                        Location.Create(switchStatement.SyntaxTree, firstSection.Statements.Span),
-                        additionalLocations);
-                }
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.MergeSwitchSectionsWithEquivalentContent,
+                    Location.Create(switchStatement.SyntaxTree, firstSection.Statements.Span));
             }
         }
 
@@ -106,32 +92,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool AreEquivalent(StatementSyntax statement, StatementSyntax statement2)
         {
-            SyntaxKind kind = statement.Kind();
-            SyntaxKind kind2 = statement2.Kind();
-
-            if (kind == kind2)
-            {
-                if (kind == SyntaxKind.ReturnStatement)
-                {
-                    ExpressionSyntax expression = ((ReturnStatementSyntax)statement).Expression;
-                    ExpressionSyntax expression2 = ((ReturnStatementSyntax)statement2).Expression;
-
-                    if (expression == null)
-                    {
-                        return expression2 == null;
-                    }
-                    else
-                    {
-                        return expression.IsEquivalentTo(expression2, topLevel: false);
-                    }
-                }
-                else
-                {
-                    return statement.IsEquivalentTo(statement2, topLevel: false);
-                }
-            }
-
-            return false;
+            return statement.Kind() == statement2.Kind()
+                && statement.IsEquivalentTo(statement2, topLevel: false)
+                && statement.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && statement2.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
         }
 
         private static SyntaxList<StatementSyntax> GetStatements(SwitchSectionSyntax section)
@@ -164,7 +128,7 @@ namespace Roslynator.CSharp.Refactorings
             IEnumerable<SwitchSectionSyntax> sectionsWithoutStatements = sections
                 .Skip(index)
                 .Take(numberOfAdditionalSectionsToMerge + 1)
-                .Select(f => f.WithStatements(List<StatementSyntax>()));
+                .Select(section => CreateSectionWithoutStatements(section));
 
             SyntaxList<SwitchSectionSyntax> newSections = sections.Take(index)
                 .Concat(sectionsWithoutStatements)
@@ -174,6 +138,29 @@ namespace Roslynator.CSharp.Refactorings
             SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);
 
             return document.ReplaceNodeAsync(switchStatement, newSwitchStatement, cancellationToken);
+        }
+
+        private static SwitchSectionSyntax CreateSectionWithoutStatements(SwitchSectionSyntax section)
+        {
+            SwitchSectionSyntax newSection = section.WithStatements(List<StatementSyntax>());
+
+            SyntaxTriviaList x = newSection.GetTrailingTrivia();
+
+            if (newSection
+                .GetTrailingTrivia()
+                .All(f => f.IsWhitespaceTrivia()))
+            {
+                newSection = newSection.WithoutTrailingTrivia();
+            }
+
+            if (section
+                .SyntaxTree
+                .IsSingleLineSpan(TextSpan.FromBounds(section.Labels.Last().SpanStart, section.Span.End)))
+            {
+                newSection = newSection.AppendToTrailingTrivia(section.GetTrailingTrivia());
+            }
+
+            return newSection;
         }
     }
 }

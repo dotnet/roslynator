@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+#pragma warning disable RCS1028, RCS1070
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     public static class MergeSwitchSectionsWithEquivalentContent
@@ -86,6 +88,25 @@ namespace Roslynator.CSharp.Analyzers.Test
                         Foo();
                         break;
                     }
+            }
+
+            switch (options)
+            {
+                case RegexOptions.ECMAScript: break;
+                case RegexOptions.ExplicitCapture: break;
+                case RegexOptions.IgnoreCase:
+                    {
+                        Foo();
+                        break;
+                    }
+            }
+
+            switch (options)
+            {
+                case RegexOptions.ECMAScript:
+                    break; // xxx
+                case RegexOptions.ExplicitCapture:
+                    break;
             }
         }
     }
