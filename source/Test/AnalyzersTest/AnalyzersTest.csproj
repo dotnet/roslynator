@@ -81,6 +81,8 @@
     <Compile Include="ParameterNameDiffersFromBase.cs" />
     <Compile Include="OverridingMethodCannotChangeAccessModifiers.cs" />
     <Compile Include="InlineLazyInitialization.cs" />
+    <Compile Include="UseAutoProperty.cs" />
+    <Compile Include="UseAutoProperty3.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfConditionalExpression.cs" />
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
@@ -159,7 +161,7 @@
     <Compile Include="SimplifyConditionalExpression.cs" />
     <Compile Include="SimplifyNullableOfT.cs" />
     <Compile Include="ThrowingOfNewNotImplementedException.cs" />
-    <Compile Include="UseAutoProperty.cs" />
+    <Compile Include="UseAutoProperty2.cs" />
     <Compile Include="UseElementAccessInsteadOfFirst.cs" />
     <Compile Include="UseExplicitTypeInsteadOfVar.cs" />
     <Compile Include="UseExpressionBodiedMember.cs" />

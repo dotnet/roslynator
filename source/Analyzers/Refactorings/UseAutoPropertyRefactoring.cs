@@ -21,27 +21,21 @@ namespace Roslynator.CSharp.Refactorings
         {
             var property = (PropertyDeclarationSyntax)context.Node;
 
-            IFieldSymbol fieldSymbol = GetBackingFieldSymbol(context, property);
-
-            if (fieldSymbol != null)
+            if (!property.ContainsDiagnostics)
             {
-                var declarator = (VariableDeclaratorSyntax)fieldSymbol.DeclaringSyntaxReferences[0].GetSyntax(context.CancellationToken);
+                IFieldSymbol fieldSymbol = GetBackingFieldSymbol(context, property);
 
-                if (declarator.SyntaxTree.Equals(property.SyntaxTree))
+                if (fieldSymbol != null)
                 {
-                    IPropertySymbol propertySymbol = context
-                        .SemanticModel
-                        .GetDeclaredSymbol(property, context.CancellationToken);
+                    IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(property, context.CancellationToken);
 
                     if (propertySymbol != null
                         && propertySymbol.IsStatic == fieldSymbol.IsStatic
-                        && propertySymbol.Type == fieldSymbol.Type
+                        && propertySymbol.Type.Equals(fieldSymbol.Type)
                         && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
-                        && CheckPreprocessorDirectives(property, declarator))
+                        && CheckPreprocessorDirectives(property, (VariableDeclaratorSyntax)fieldSymbol.GetSyntax(context.CancellationToken)))
                     {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.UseAutoProperty,
-                            property);
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
 
                         FadeOut(context, property);
                     }
@@ -260,68 +254,104 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static async Task<Solution> RefactorAsync(
             Document document,
-            PropertyDeclarationSyntax property,
+            PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken)
         {
-            var parentMember = (MemberDeclarationSyntax)property.Parent;
+            Solution solution = document.Solution();
+
+            IdentifierNameSyntax newIdentifier = IdentifierName(propertyDeclaration.Identifier);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ISymbol fieldSymbol = GetFieldSymbol(property, semanticModel, cancellationToken);
+            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-            var declarator = (VariableDeclaratorSyntax)await fieldSymbol.DeclaringSyntaxReferences[0].GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
+            ISymbol fieldSymbol = GetFieldSymbol(propertyDeclaration, semanticModel, cancellationToken);
 
-            var variableDeclaration = (VariableDeclarationSyntax)declarator.Parent;
+            var variableDeclarator = (VariableDeclaratorSyntax)await fieldSymbol.DeclaringSyntaxReferences[0].GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxList<MemberDeclarationSyntax> members = parentMember.GetMembers();
+            var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
 
-            int propertyIndex = members.IndexOf(property);
+            var fieldDeclaration = (FieldDeclarationSyntax)variableDeclaration.Parent;
 
-            int fieldIndex = members.IndexOf((FieldDeclarationSyntax)variableDeclaration.Parent);
+            var newDocuments = new List<Document>();
 
-            ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(fieldSymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
-
-            IdentifierNameSyntax newNode = IdentifierName(property.Identifier);
-
-            MemberDeclarationSyntax newParentMember = parentMember.ReplaceNodes(oldNodes, (f, g) => newNode.WithTriviaFrom(f));
-
-            members = newParentMember.GetMembers();
-
-            if (variableDeclaration.Variables.Count == 1)
+            foreach (SyntaxReference syntaxReference in propertySymbol.ContainingType.DeclaringSyntaxReferences)
             {
-                newParentMember = newParentMember.RemoveNode(
-                    newParentMember.GetMemberAt(fieldIndex),
-                    SyntaxRemoveOptions.KeepUnbalancedDirectives);
+                var containingMember = (MemberDeclarationSyntax)await syntaxReference.GetSyntaxAsync(cancellationToken).ConfigureAwait(false);
 
-                if (propertyIndex > fieldIndex)
-                    propertyIndex--;
+                SyntaxList<MemberDeclarationSyntax> members = containingMember.GetMembers();
+
+                SyntaxTree syntaxTree = containingMember.SyntaxTree;
+
+                document = solution.GetDocument(syntaxTree);
+                semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                int fieldIndex = -1;
+
+                if (variableDeclarator.SyntaxTree == syntaxTree)
+                    fieldIndex = members.IndexOf(fieldDeclaration);
+
+                int propertyIndex = -1;
+
+                if (propertyDeclaration.SyntaxTree == syntaxTree)
+                    propertyIndex = members.IndexOf(propertyDeclaration);
+
+                ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(fieldSymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
+
+                MemberDeclarationSyntax newContainingMember = containingMember.ReplaceNodes(oldNodes, (f, g) => newIdentifier.WithTriviaFrom(f));
+
+                members = newContainingMember.GetMembers();
+
+                if (fieldIndex != -1)
+                {
+                    if (variableDeclaration.Variables.Count == 1)
+                    {
+                        newContainingMember = newContainingMember.RemoveNode(
+                            newContainingMember.GetMemberAt(fieldIndex),
+                            SyntaxRemoveOptions.KeepUnbalancedDirectives);
+
+                        if (propertyIndex != -1
+                            && propertyIndex > fieldIndex)
+                        {
+                            propertyIndex--;
+                        }
+                    }
+                    else
+                    {
+                        var field = (FieldDeclarationSyntax)members[fieldIndex];
+
+                        FieldDeclarationSyntax newField = field.RemoveNode(
+                            field.Declaration.Variables[variableDeclaration.Variables.IndexOf(variableDeclarator)],
+                            SyntaxRemoveOptions.KeepUnbalancedDirectives);
+
+                        members = members.Replace(field, newField.WithFormatterAnnotation());
+
+                        newContainingMember = newContainingMember.WithMembers(members);
+                    }
+                }
+
+                members = newContainingMember.GetMembers();
+
+                if (propertyIndex != -1)
+                {
+                    var property = (PropertyDeclarationSyntax)members[propertyIndex];
+
+                    PropertyDeclarationSyntax newProperty = CreateAutoProperty(property, variableDeclarator.Initializer);
+
+                    members = members.Replace(property, newProperty);
+
+                    newContainingMember = newContainingMember.WithMembers(members);
+                }
+
+                newDocuments.Add(await document.ReplaceNodeAsync(containingMember, newContainingMember).ConfigureAwait(false));
             }
-            else
-            {
-                var field = (FieldDeclarationSyntax)members[fieldIndex];
 
-                FieldDeclarationSyntax newField = field.RemoveNode(
-                    field.Declaration.Variables[variableDeclaration.Variables.IndexOf(declarator)],
-                    SyntaxRemoveOptions.KeepUnbalancedDirectives);
+            foreach (Document newDocument in newDocuments)
+                solution = solution.WithDocumentSyntaxRoot(newDocument.Id, await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false));
 
-                members = members.Replace(field, newField.WithFormatterAnnotation());
-
-                newParentMember = newParentMember.WithMembers(members);
-            }
-
-            members = newParentMember.GetMembers();
-
-            property = (PropertyDeclarationSyntax)members[propertyIndex];
-
-            PropertyDeclarationSyntax newProperty = CreateAutoProperty(property, declarator.Initializer);
-
-            members = members.Replace(property, newProperty);
-
-            newParentMember = newParentMember.WithMembers(members);
-
-            return await document.ReplaceNodeAsync(parentMember, newParentMember, cancellationToken).ConfigureAwait(false);
+            return solution;
         }
 
         private static ISymbol GetFieldSymbol(PropertyDeclarationSyntax property, SemanticModel semanticModel, CancellationToken cancellationToken)
