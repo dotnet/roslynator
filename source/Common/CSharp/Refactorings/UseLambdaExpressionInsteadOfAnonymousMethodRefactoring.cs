@@ -31,17 +31,19 @@ namespace Roslynator.CSharp.Refactorings
             if (anonymousMethod == null)
                 throw new ArgumentNullException(nameof(anonymousMethod));
 
-            LambdaExpressionSyntax lambda = ParenthesizedLambdaExpression(
+            ExpressionSyntax newNode = ParenthesizedLambdaExpression(
                 anonymousMethod.AsyncKeyword,
                 anonymousMethod.ParameterList,
                 EqualsGreaterThanToken(),
                 anonymousMethod.Block);
 
-            lambda = lambda
+            newNode = newNode
+                .Parenthesize()
                 .WithTriviaFrom(anonymousMethod)
+                .WithSimplifierAnnotation()
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(anonymousMethod, lambda, cancellationToken);
+            return document.ReplaceNodeAsync(anonymousMethod, newNode, cancellationToken);
         }
     }
 }
