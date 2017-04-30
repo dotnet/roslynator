@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(property, context.CancellationToken);
 
-                    if (propertySymbol != null
+                    if (propertySymbol?.ExplicitInterfaceImplementations.IsDefaultOrEmpty == true
                         && propertySymbol.IsStatic == fieldSymbol.IsStatic
                         && propertySymbol.Type.Equals(fieldSymbol.Type)
                         && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
