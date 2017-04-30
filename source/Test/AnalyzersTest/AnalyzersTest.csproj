@@ -86,6 +86,7 @@
     <Compile Include="UseCoalesceExpressionInsteadOfConditionalExpression.cs" />
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
+    <Compile Include="UseLambdaExpressionInsteadOfAnonymousMethod.cs" />
     <Compile Include="UseReadOnlyAutoProperty.cs" />
     <Compile Include="UseReturnInsteadOfAssignment.cs" />
     <Compile Include="ValueTypeCheckedForNull.cs" />
