@@ -43,21 +43,27 @@ namespace Roslynator.CSharp.Refactorings
         {
             var logicalAndExpression = (BinaryExpressionSyntax)context.Node;
 
-            ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAndExpression);
-
-            if (expression != null)
+            if (!logicalAndExpression.ContainsDiagnostics)
             {
-                ExpressionSyntax right = logicalAndExpression.Right;
+                ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAndExpression);
 
-                if (right != null
-                    && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken)
-                    && !ContainsOutArgumentWithLocal(right, context.SemanticModel, context.CancellationToken))
+                if (expression != null
+                    && context.SemanticModel
+                        .GetTypeSymbol(expression, context.CancellationToken)?
+                        .IsConstructedFrom(SpecialType.System_Nullable_T) == false)
                 {
-                    SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(expression, right);
+                    ExpressionSyntax right = logicalAndExpression.Right;
 
-                    if (node?.SpanContainsDirectives() == false)
+                    if (right != null
+                        && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken)
+                        && !ContainsOutArgumentWithLocal(right, context.SemanticModel, context.CancellationToken))
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
+                        SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(expression, right);
+
+                        if (node?.SpanContainsDirectives() == false)
+                        {
+                            context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
+                        }
                     }
                 }
             }
