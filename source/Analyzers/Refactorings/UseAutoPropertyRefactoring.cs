@@ -88,8 +88,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var fieldSymbol = (IFieldSymbol)symbol;
 
-                if (fieldSymbol.IsReadOnly)
+                if (fieldSymbol.IsReadOnly
+                    && !fieldSymbol.IsVolatile)
+                {
                     return fieldSymbol;
+                }
             }
 
             return null;
@@ -110,13 +113,18 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ISymbol symbol = context.SemanticModel.GetSymbol(getterIdentifier, context.CancellationToken);
 
-                    if (symbol?.IsField() == true
-                        && symbol.IsPrivate())
+                    if (symbol?.IsPrivate() == true
+                        && symbol.IsField())
                     {
-                        ISymbol symbol2 = context.SemanticModel.GetSymbol(setterIdentifier, context.CancellationToken);
+                        var fieldSymbol = (IFieldSymbol)symbol;
 
-                        if (symbol.Equals(symbol2))
-                            return (IFieldSymbol)symbol;
+                        if (!fieldSymbol.IsVolatile)
+                        {
+                            ISymbol symbol2 = context.SemanticModel.GetSymbol(setterIdentifier, context.CancellationToken);
+
+                            if (fieldSymbol.Equals(symbol2))
+                                return fieldSymbol;
+                        }
                     }
                 }
             }
