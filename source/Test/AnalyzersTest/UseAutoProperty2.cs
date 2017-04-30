@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             _readOnlyProperty2 = null;
         }
 
-        public void Foo2()
+        public void Method2()
         {
             _property = null;
             _property2 = null;

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             _readOnlyProperty2 = null;
         }
 
-        public void Foo()
+        public void Method()
         {
             _property = null;
             _property2 = null;
@@ -36,5 +36,23 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         private readonly string _readOnlyProperty = "", _value;
         private readonly string _readOnlyProperty2;
+
+        //n
+
+        private class Foo : IFoo
+        {
+            private string _property;
+
+            string IFoo.Property
+            {
+                get { return _property; }
+                set { _property = value; }
+            }
+        }
+
+        private interface IFoo
+        {
+            string Property { get; set; }
+        }
     }
 }
