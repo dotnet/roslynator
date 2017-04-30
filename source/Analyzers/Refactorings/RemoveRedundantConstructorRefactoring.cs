@@ -14,7 +14,8 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ConstructorDeclarationSyntax constructor)
         {
-            if (constructor.ParameterList?.Parameters.Any() == false
+            if (!constructor.ContainsDiagnostics
+                && constructor.ParameterList?.Parameters.Any() == false
                 && constructor.Body?.Statements.Any() == false)
             {
                 SyntaxTokenList modifiers = constructor.Modifiers;
@@ -28,9 +29,8 @@ namespace Roslynator.CSharp.Refactorings
                         || initializer.ArgumentList?.Arguments.Any() == false)
                     {
                         if (IsSingleInstanceConstructor(constructor)
-                            && constructor
-                                .DescendantTrivia(constructor.Span)
-                                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                            && !constructor.HasDocumentationComment()
+                            && constructor.DescendantTrivia(constructor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
                             context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantConstructor, constructor);
                         }
