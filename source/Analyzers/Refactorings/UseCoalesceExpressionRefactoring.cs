@@ -38,8 +38,6 @@ namespace Roslynator.CSharp.Refactorings
                             && assignment.Right.IsSingleLine()
                             && !ifStatement.SpanContainsDirectives())
                         {
-                            StatementSyntax fixableStatement = ifStatement;
-
                             int index = statements.IndexOf(ifStatement);
 
                             if (index > 0)
@@ -49,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                                 if (!previousStatement.ContainsDiagnostics
                                     && CanRefactor(previousStatement, ifStatement, equalsToNull.Left, ifStatement.Parent))
                                 {
-                                    fixableStatement = previousStatement;
+                                    context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, previousStatement);
                                 }
                             }
 
@@ -68,8 +66,6 @@ namespace Roslynator.CSharp.Refactorings
                                     }
                                 }
                             }
-
-                            context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, fixableStatement);
                         }
                     }
                 }
