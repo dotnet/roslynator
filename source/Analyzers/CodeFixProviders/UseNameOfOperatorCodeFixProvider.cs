@@ -31,12 +31,14 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (node == null)
                 return;
 
+            string identifier = context.Diagnostics[0].Properties["Identifier"];
+
             CodeAction codeAction = CodeAction.Create(
                 "Use nameof operator",
-                cancellationToken => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, node, cancellationToken),
+                cancellationToken => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, node, identifier, cancellationToken),
                 DiagnosticIdentifiers.UseNameOfOperator + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+            context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
         }
     }
 }

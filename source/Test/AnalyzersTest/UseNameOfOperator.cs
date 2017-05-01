@@ -6,9 +6,10 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 
+#pragma warning disable CS0168, RCS1016, RCS1048, RCS1163, RCS1176
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1016, RCS1048
     internal static class UseNameOfOperator
     {
         private class Foo
@@ -48,7 +49,7 @@ namespace Roslynator.CSharp.Analyzers.Test
                     return item;
                 });
 
-                IEnumerable<string> q3 = items.Select(delegate(string item)
+                IEnumerable<string> q3 = items.Select(delegate (string item)
                 {
                     if (item == null)
                         throw new ArgumentNullException("item", "message");
@@ -72,7 +73,13 @@ namespace Roslynator.CSharp.Analyzers.Test
             private object this[int index]
             {
                 get { return Items[index]; }
-                set { Items[index] = value; }
+                set
+                {
+                    if (index < 0)
+                        throw new ArgumentOutOfRangeException("index");
+
+                    Items[index] = value;
+                }
             }
 
             private Collection<object> Items { get; } = new Collection<object>();
@@ -96,6 +103,97 @@ namespace Roslynator.CSharp.Analyzers.Test
                 }
             }
         }
+
+        private class Foo2
+        {
+            public Foo2(object @namespace)
+            {
+                if (@namespace == null)
+                {
+                    throw new ArgumentNullException(
+                       "namespace",
+                       "message");
+                }
+            }
+
+            private static void FooMethod(object @namespace)
+            {
+                if (@namespace == null)
+                    throw new ArgumentNullException("namespace", "message");
+
+                CheckParam("namespace");
+
+                var items = new List<string>();
+
+                IEnumerable<string> q = items.Select(@class =>
+                {
+                    if (@class == null)
+                        throw new ArgumentNullException("class", "message");
+
+                    return @class;
+                });
+
+                IEnumerable<string> q2 = items.Select((@class) =>
+                {
+                    if (@class == null)
+                        throw new ArgumentNullException("class", "message");
+
+                    return @class;
+                });
+
+                IEnumerable<string> q3 = items.Select(delegate (string @class)
+                {
+                    if (@class == null)
+                        throw new ArgumentNullException("class", "message");
+
+                    return @class;
+                });
+
+                IEnumerable<string> LocalFunction(object @class)
+                {
+                    if (@class == null)
+                        throw new ArgumentNullException("class", "message");
+
+                    yield break;
+                }
+            }
+
+            private static void CheckParam(string parameterName)
+            {
+            }
+
+            private object this[int @class]
+            {
+                get { return Items[@class]; }
+                set
+                {
+                    if (@class < 0)
+                        throw new ArgumentOutOfRangeException("class");
+
+                    Items[@class] = value;
+                }
+            }
+
+            private Collection<object> Items { get; } = new Collection<object>();
+
+            private class Bar : INotifyPropertyChanged
+            {
+                private string _value;
+
+                public event PropertyChangedEventHandler PropertyChanged;
+
+                public string @namespace
+                {
+                    get { return _value; }
+                    set
+                    {
+                        if (_value != value)
+                            PropertyChanged(this, new PropertyChangedEventArgs("namespace"));
+
+                        _value = value;
+                    }
+                }
+            }
+        }
     }
-#pragma warning restore RCS1016, RCS1048
 }
