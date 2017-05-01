@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.Refactorings
             ArgumentListSyntax argumentList = invocation.ArgumentList;
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-            return Refactoring.ChangeInvokedMethodName(invocation, "Fail")
+            return RefactoringHelper.ChangeInvokedMethodName(invocation, "Fail")
                 .WithArgumentList(argumentList.WithArguments(arguments.RemoveAt(0)));
         }
     }

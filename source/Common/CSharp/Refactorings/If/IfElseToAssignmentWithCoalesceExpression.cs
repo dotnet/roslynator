@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings.If
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            BinaryExpressionSyntax coalesceExpression = Refactoring.CreateCoalesceExpression(
+            BinaryExpressionSyntax coalesceExpression = RefactoringHelper.CreateCoalesceExpression(
                 semanticModel.GetTypeSymbol(Left, cancellationToken),
                 Right1.WithoutTrivia(),
                 Right2.WithoutTrivia(),
