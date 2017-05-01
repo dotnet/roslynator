@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -29,9 +30,9 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var literalExpression = (LiteralExpressionSyntax)expression;
 
-                        string text = literalExpression.Token.ValueText;
+                        ParameterSyntax parameter = FindMatchingParameter(en, literalExpression.Token.ValueText);
 
-                        if (ExistsParameterWithName(en, text))
+                        if (parameter != null)
                         {
                             IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
 
@@ -39,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                                 && (NameEquals(parameterSymbol.Name, "paramName")
                                     || NameEquals(parameterSymbol.Name, "parameterName")))
                             {
-                                ReportDiagnostic(context, literalExpression, text);
+                                ReportDiagnostic(context, literalExpression, parameter.Identifier.Text);
                             }
                         }
                     }
@@ -64,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
                                     if (parameterSymbol != null
                                         && NameEquals(parameterSymbol.Name, "propertyName"))
                                     {
-                                        ReportDiagnostic(context, literalExpression, text);
+                                        ReportDiagnostic(context, literalExpression, property.Identifier.Text);
                                     }
                                 }
                             }
@@ -114,26 +115,32 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool ExistsParameterWithName(IEnumerator<ParameterSyntax> enumerator, string name)
+        private static ParameterSyntax FindMatchingParameter(IEnumerator<ParameterSyntax> enumerator, string name)
         {
             do
             {
                 if (NameEquals(enumerator.Current.Identifier.ValueText, name))
-                    return true;
+                    return enumerator.Current;
 
             } while (enumerator.MoveNext());
 
-            return false;
+            return null;
         }
 
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, LiteralExpressionSyntax literalExpression, string text)
+        private static void ReportDiagnostic(
+            SyntaxNodeAnalysisContext context,
+            LiteralExpressionSyntax literalExpression,
+            string identifier)
         {
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.UseNameOfOperator,
-                literalExpression,
-                text);
+            var property = new KeyValuePair<string, string>("Identifier", identifier);
 
-            text = literalExpression.Token.Text;
+            ImmutableDictionary<string, string> properties = ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { property });
+
+            Diagnostic diagnostic = Diagnostic.Create(DiagnosticDescriptors.UseNameOfOperator, literalExpression.GetLocation(), properties);
+
+            context.ReportDiagnostic(diagnostic);
+
+            string text = literalExpression.Token.Text;
 
             if (text.Length >= 2)
             {
@@ -158,9 +165,10 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
+            string identifier,
             CancellationToken cancellationToken)
         {
-            InvocationExpressionSyntax newNode = CSharpFactory.NameOfExpression(literalExpression.Token.ValueText)
+            InvocationExpressionSyntax newNode = CSharpFactory.NameOfExpression(identifier)
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 
