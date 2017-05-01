@@ -77,7 +77,6 @@
     <Compile Include="CSharp\Comparers\MemberDeclarationSortMode.cs" />
     <Compile Include="CSharp\Helpers\RemoveModifierHelper.cs" />
     <Compile Include="CSharp\Negator.cs" />
-    <Compile Include="CSharp\Refactoring.cs" />
     <Compile Include="CSharp\Syntax\MemberInvocationStatement.cs" />
     <Compile Include="CSharp\Syntax\SimpleAssignmentExpression.cs" />
     <Compile Include="CSharp\Syntax\MemberInvocationExpressionWithSingleParameter.cs" />

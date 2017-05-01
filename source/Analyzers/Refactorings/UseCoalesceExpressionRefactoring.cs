@@ -208,7 +208,7 @@ namespace Roslynator.CSharp.Refactorings
                         ExpressionSyntax left = assignment.Left;
                         ExpressionSyntax right = assignment.Right;
 
-                        BinaryExpressionSyntax coalesceExpression = Refactoring.CreateCoalesceExpression(
+                        BinaryExpressionSyntax coalesceExpression = RefactoringHelper.CreateCoalesceExpression(
                             semanticModel.GetTypeSymbol(left, cancellationToken),
                             left.WithoutLeadingTrivia().WithTrailingTrivia(Space),
                             right.WithLeadingTrivia(Space),
@@ -278,7 +278,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
-            BinaryExpressionSyntax newNode = Refactoring.CreateCoalesceExpression(
+            BinaryExpressionSyntax newNode = RefactoringHelper.CreateCoalesceExpression(
                 semanticModel.GetTypeSymbol(assignment.Left, cancellationToken),
                 expression.WithoutTrailingTrivia(),
                 assignment.Right.WithTrailingTrivia(expression.GetTrailingTrivia()),

@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings.If
         {
             int position = IfStatement.SpanStart;
 
-            return Refactoring.CreateCoalesceExpression(
+            return RefactoringHelper.CreateCoalesceExpression(
                 GetTargetType(position, semanticModel, cancellationToken),
                 Left.WithoutTrivia(),
                 Right.WithoutTrivia(),
