@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -18,15 +19,16 @@ namespace Roslynator.CSharp.Refactorings
         {
             var baseList = (BaseListSyntax)context.Node;
 
-            SyntaxNode parent = baseList.Parent;
-
-            if (parent?.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration) == true
+            if (baseList.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration)
+                && !baseList.ContainsDiagnostics
                 && !baseList.SpanContainsDirectives())
             {
                 SeparatedSyntaxList<BaseTypeSyntax> baseTypes = baseList.Types;
 
                 if (baseTypes.Count > 1)
                 {
+                    bool isFirst = true;
+                    INamedTypeSymbol typeSymbol = null;
                     var baseClassInfo = default(SymbolInterfaceInfo);
                     List<SymbolInterfaceInfo> baseInterfaceInfos = null;
 
@@ -46,16 +48,11 @@ namespace Roslynator.CSharp.Refactorings
 
                                 if (typeKind == TypeKind.Class)
                                 {
-                                    if (allInterfaces.Any())
-                                    {
-                                        baseClassInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
+                                    if (!isFirst)
+                                        break;
 
-                                        if (baseInterfaceInfos != null)
-                                        {
-                                            foreach (SymbolInterfaceInfo baseInterfaceInfo in baseInterfaceInfos)
-                                                Analyze(context, baseInterfaceInfo, baseClassInfo);
-                                        }
-                                    }
+                                    if (allInterfaces.Any())
+                                        baseClassInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
                                 }
                                 else if (typeKind == TypeKind.Interface)
                                 {
@@ -69,14 +66,25 @@ namespace Roslynator.CSharp.Refactorings
                                     else
                                     {
                                         foreach (SymbolInterfaceInfo baseInterfaceInfo2 in baseInterfaceInfos)
-                                            Analyze(context, baseInterfaceInfo, baseInterfaceInfo2, checkMutually: true);
+                                        {
+                                            Analyze(context, baseInterfaceInfo, baseInterfaceInfo2);
+                                            Analyze(context, baseInterfaceInfo2, baseInterfaceInfo);
+                                        }
                                     }
 
                                     if (baseClassInfo.IsValid)
-                                        Analyze(context, baseInterfaceInfo, baseClassInfo);
+                                    {
+                                        if (typeSymbol == null)
+                                            typeSymbol = context.SemanticModel.GetDeclaredSymbol((TypeDeclarationSyntax)baseList.Parent, context.CancellationToken);
+
+                                        Analyze(context, baseInterfaceInfo, baseClassInfo, typeSymbol);
+                                    }
                                 }
                             }
                         }
+
+                        if (isFirst)
+                            isFirst = false;
                     }
                 }
             }
@@ -86,26 +94,27 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNodeAnalysisContext context,
             SymbolInterfaceInfo interfaceInfo,
             SymbolInterfaceInfo interfaceInfo2,
-            bool checkMutually = false)
+            INamedTypeSymbol typeSymbol = null)
         {
             foreach (INamedTypeSymbol interfaceSymbol in interfaceInfo2.Interfaces)
             {
                 if (interfaceInfo.Symbol.Equals(interfaceSymbol))
                 {
-                    BaseTypeSyntax baseType = interfaceInfo.BaseType;
+                    if (typeSymbol == null
+                        || !typeSymbol.IsAnyInterfaceMemberExplicitlyImplemented(interfaceInfo.Symbol))
+                    {
+                        BaseTypeSyntax baseType = interfaceInfo.BaseType;
 
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveRedundantBaseInterface,
-                        baseType,
-                        SymbolDisplay.GetMinimalString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart),
-                        SymbolDisplay.GetMinimalString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart));
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.RemoveRedundantBaseInterface,
+                            baseType,
+                            SymbolDisplay.GetMinimalString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart),
+                            SymbolDisplay.GetMinimalString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart));
 
-                    return;
+                        return;
+                    }
                 }
             }
-
-            if (checkMutually)
-                Analyze(context, interfaceInfo2, interfaceInfo);
         }
 
         public static Task<Document> RefactorAsync(

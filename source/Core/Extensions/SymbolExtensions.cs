@@ -82,6 +82,48 @@ namespace Roslynator
                 default(TSymbol));
         }
 
+        internal static bool IsAnyInterfaceMemberExplicitlyImplemented(this INamedTypeSymbol symbol, ISymbol interfaceSymbol)
+        {
+            foreach (ISymbol member in symbol.GetMembers())
+            {
+                switch (member.Kind)
+                {
+                    case SymbolKind.Event:
+                        {
+                            foreach (IEventSymbol eventSymbol in ((IEventSymbol)member).ExplicitInterfaceImplementations)
+                            {
+                                if (eventSymbol.ContainingType?.Equals(interfaceSymbol) == true)
+                                    return true;
+                            }
+
+                            break;
+                        }
+                    case SymbolKind.Method:
+                        {
+                            foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)member).ExplicitInterfaceImplementations)
+                            {
+                                if (methodSymbol.ContainingType?.Equals(interfaceSymbol) == true)
+                                    return true;
+                            }
+
+                            break;
+                        }
+                    case SymbolKind.Property:
+                        {
+                            foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)member).ExplicitInterfaceImplementations)
+                            {
+                                if (propertySymbol.ContainingType?.Equals(interfaceSymbol) == true)
+                                    return true;
+                            }
+
+                            break;
+                        }
+                }
+            }
+
+            return false;
+        }
+
         public static bool IsKind(this ISymbol symbol, SymbolKind kind)
         {
             return symbol?.Kind == kind;
