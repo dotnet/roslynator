@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,117 +21,66 @@ namespace Roslynator.CSharp.Refactorings
             var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
             bool containsInheritDoc = false;
-            bool containsInclude = false;
+            bool containsIncludeOrExclude = false;
             bool containsSummaryElement = false;
-
             bool isFirst = true;
 
             foreach (XmlNodeSyntax node in documentationComment.Content)
             {
-                SyntaxKind kind = node.Kind();
-
-                if (kind == SyntaxKind.XmlElement)
+                XmlElementInfo info;
+                if (XmlElementInfo.TryCreate(node, out info))
                 {
-                    var element = (XmlElementSyntax)node;
-
-                    string name = element.StartTag?.Name?.LocalName.ValueText;
-
-                    if (name != null)
+                    switch (info.ElementKind)
                     {
-                        if (isFirst)
-                        {
-                            if (IsInclude(name))
-                                containsInclude = true;
-
-                            isFirst = false;
-                        }
-                        else
-                        {
-                            containsInclude = false;
-                        }
-
-                        if (IsInheritDoc(name))
-                        {
-                            containsInheritDoc = true;
-                        }
-                        else if (IsSummary(name))
-                        {
-                            if (IsSummaryMissing(element))
+                        case XmlElementKind.Include:
+                        case XmlElementKind.Exclude:
                             {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.AddSummaryToDocumentationComment,
-                                    element);
+                                if (isFirst)
+                                    containsIncludeOrExclude = true;
+
+                                break;
                             }
+                        case XmlElementKind.InheritDoc:
+                            {
+                                containsInheritDoc = true;
+                                break;
+                            }
+                        case XmlElementKind.Summary:
+                            {
+                                if (info.IsXmlEmptyElement || IsSummaryMissing((XmlElementSyntax)info.Element))
+                                {
+                                    context.ReportDiagnostic(
+                                        DiagnosticDescriptors.AddSummaryToDocumentationComment,
+                                        info.Element);
+                                }
 
-                            containsSummaryElement = true;
-                        }
-
-                        if (containsInheritDoc && containsSummaryElement)
-                            break;
+                                containsSummaryElement = true;
+                                break;
+                            }
                     }
-                }
-                else if (kind == SyntaxKind.XmlEmptyElement)
-                {
-                    var element = (XmlEmptyElementSyntax)node;
 
-                    string name = element.Name?.LocalName.ValueText;
-
-                    if (name != null)
+                    if (isFirst)
                     {
-                        if (isFirst)
-                        {
-                            if (IsInclude(name))
-                                containsInclude = true;
-
-                            isFirst = false;
-                        }
-                        else
-                        {
-                            containsInclude = false;
-                        }
-
-                        if (IsInheritDoc(name))
-                        {
-                            containsInheritDoc = true;
-                        }
-                        else if (IsSummary(name))
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.AddSummaryToDocumentationComment,
-                                element);
-
-                            containsSummaryElement = true;
-                        }
-
-                        if (containsInheritDoc && containsSummaryElement)
-                            break;
+                        isFirst = false;
                     }
+                    else
+                    {
+                        containsIncludeOrExclude = false;
+                    }
+
+                    if (containsInheritDoc && containsSummaryElement)
+                        break;
                 }
             }
 
             if (!containsSummaryElement
                 && !containsInheritDoc
-                && !containsInclude)
+                && !containsIncludeOrExclude)
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
                     documentationComment);
             }
-        }
-
-        private static bool IsSummary(string name)
-        {
-            return string.Equals(name, "summary", StringComparison.Ordinal);
-        }
-
-        private static bool IsInheritDoc(string name)
-        {
-            return string.Equals(name, "inheritdoc", StringComparison.Ordinal);
-        }
-
-        private static bool IsInclude(string name)
-        {
-            return string.Equals(name, "include", StringComparison.Ordinal);
         }
 
         private static bool IsSummaryMissing(XmlElementSyntax summaryElement)

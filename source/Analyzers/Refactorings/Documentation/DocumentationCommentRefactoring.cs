@@ -12,78 +12,58 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
     internal static class DocumentationCommentRefactoring
     {
-        public static ImmutableArray<string> GetAttributeValues(DocumentationCommentTriviaSyntax comment, string elementName, string attributeName)
+        public static ImmutableArray<string> GetAttributeValues(DocumentationCommentTriviaSyntax comment, string elementName1, string elementName2, string attributeName)
         {
             HashSet<string> values = null;
-
-            bool containsInclude = false;
+            bool containsIncludeOrExclude = false;
             bool isFirst = true;
 
             foreach (XmlNodeSyntax node in comment.Content)
             {
-                SyntaxKind kind = node.Kind();
-
-                if (kind == SyntaxKind.XmlElement)
+                XmlElementInfo info;
+                if (XmlElementInfo.TryCreate(node, out info))
                 {
-                    var element = (XmlElementSyntax)node;
-
-                    string name = element.StartTag?.Name?.LocalName.ValueText;
-
-                    if (name != null)
+                    switch (info.ElementKind)
                     {
-                        if (isFirst)
-                        {
-                            if (NameEquals(name, "include"))
-                                containsInclude = true;
+                        case XmlElementKind.Include:
+                        case XmlElementKind.Exclude:
+                            {
+                                if (isFirst)
+                                    containsIncludeOrExclude = true;
 
-                            isFirst = false;
-                        }
-                        else
-                        {
-                            containsInclude = false;
-                        }
+                                break;
+                            }
+                        case XmlElementKind.InheritDoc:
+                            {
+                                return default(ImmutableArray<string>);
+                            }
+                        default:
+                            {
+                                if (info.IsXmlElement
+                                    && info.IsLocalName(elementName1, elementName2))
+                                {
+                                    string value = GetAttributeValue((XmlElementSyntax)info.Element, attributeName);
 
-                        if (NameEquals(name, "inheritdoc"))
-                        {
-                            return default(ImmutableArray<string>);
-                        }
-                        else if (NameEquals(name, elementName))
-                        {
-                            string value = GetAttributeValue(element, attributeName);
+                                    if (value != null)
+                                        (values ?? (values = new HashSet<string>())).Add(value);
+                                }
 
-                            if (value != null)
-                                (values ?? (values = new HashSet<string>())).Add(value);
-                        }
+                                break;
+                            }
                     }
-                }
 
-                if (kind == SyntaxKind.XmlEmptyElement)
-                {
-                    var element = (XmlEmptyElementSyntax)node;
-
-                    string name = element?.Name?.LocalName.ValueText;
-
-                    if (name != null)
+                    if (isFirst)
                     {
-                        if (isFirst)
-                        {
-                            if (NameEquals(name, "include"))
-                                containsInclude = true;
-
-                            isFirst = false;
-                        }
-                        else
-                        {
-                            containsInclude = false;
-                        }
-
-                        if (NameEquals(name, "inheritdoc"))
-                            return default(ImmutableArray<string>);
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        containsIncludeOrExclude = false;
                     }
                 }
             }
 
-            if (!containsInclude)
+            if (!containsIncludeOrExclude)
                 return values?.ToImmutableArray() ?? ImmutableArray<string>.Empty;
 
             return default(ImmutableArray<string>);
@@ -113,11 +93,6 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             }
 
             return null;
-        }
-
-        private static bool NameEquals(string name1, string name2)
-        {
-            return string.Equals(name1, name2, StringComparison.Ordinal);
         }
     }
 }

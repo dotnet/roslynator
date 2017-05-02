@@ -42,6 +42,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
+    <Compile Include="CSharp\XmlElementInfo.cs" />
+    <Compile Include="CSharp\XmlElementKind.cs" />
     <Compile Include="CSharp\Helpers\InsertModifierHelper.cs" />
     <Compile Include="CSharp\IMemberDeclarationComparer.cs" />
     <Compile Include="CSharp\IModifierComparer.cs" />

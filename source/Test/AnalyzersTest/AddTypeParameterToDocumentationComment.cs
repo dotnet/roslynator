@@ -109,5 +109,31 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
             }
         }
+
+        private class Exclude
+        {
+            /// <exclude />
+            private class FooClass<T1, T2>
+            {
+            }
+
+            /// <exclude />
+            private interface FooInterface<T1, T2, T3>
+            {
+            }
+
+            /// <exclude />
+            private struct FooStruct<T1, T2>
+            {
+            }
+
+            /// <exclude />
+            private delegate void FooDelegate<T1, T2>(object parameter);
+
+            /// <exclude />
+            public void Foo<T>(object parameter)
+            {
+            }
+        }
     }
 }

@@ -598,9 +598,7 @@ namespace Roslynator.CSharp.Documentation
                 {
                     var xmlElement = (XmlElementSyntax)xmlNode;
 
-                    string name = xmlElement.StartTag?.Name?.LocalName.ValueText;
-
-                    if (string.Equals(name, "filterpriority", StringComparison.OrdinalIgnoreCase))
+                    if (xmlElement.IsLocalName("filterpriority", "FILTERPRIORITY"))
                         content = content.RemoveAt(i);
                 }
             }
@@ -681,9 +679,7 @@ namespace Roslynator.CSharp.Documentation
 
             public override SyntaxNode VisitXmlTextAttribute(XmlTextAttributeSyntax node)
             {
-                XmlNameSyntax name = node.Name;
-
-                if (name?.LocalName.ValueText == "cref")
+                if (node.Name?.IsLocalName("cref", "CREF") == true)
                 {
                     SyntaxTokenList tokens = node.TextTokens;
 

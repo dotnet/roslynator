@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                         DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
 
                         if (comment != null
-                            && !ContainsException(comment, exceptionSymbol, semanticModel, cancellationToken))
+                            && CanAddExceptionToComment(comment, exceptionSymbol, semanticModel, cancellationToken))
                         {
                             ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
 
@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                     DocumentationCommentTriviaSyntax comment = declaration.GetSingleLineDocumentationComment();
 
                     if (comment != null
-                        && !ContainsException(comment, typeSymbol, semanticModel, cancellationToken))
+                        && CanAddExceptionToComment(comment, typeSymbol, semanticModel, cancellationToken))
                     {
                         return ThrowInfo.Create(node, typeSymbol, declarationSymbol);
                     }
@@ -155,30 +155,101 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             return null;
         }
 
-        private static bool ContainsException(DocumentationCommentTriviaSyntax comment, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool CanAddExceptionToComment(
+            DocumentationCommentTriviaSyntax comment,
+            ITypeSymbol exceptionSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            foreach (XmlElementSyntax xmlElement in comment.Elements("exception"))
+            bool containsException = false;
+            bool containsIncludeOrExclude = false;
+            bool isFirst = true;
+
+            foreach (XmlNodeSyntax node in comment.Content)
             {
-                XmlElementStartTagSyntax startTag = xmlElement.StartTag;
-
-                if (startTag != null)
+                XmlElementInfo info;
+                if (XmlElementInfo.TryCreate(node, out info))
                 {
-                    foreach (XmlAttributeSyntax xmlAttribute in startTag.Attributes)
+                    switch (info.ElementKind)
                     {
-                        if (xmlAttribute.IsKind(SyntaxKind.XmlCrefAttribute))
-                        {
-                            var xmlCrefAttribute = (XmlCrefAttributeSyntax)xmlAttribute;
-
-                            CrefSyntax cref = xmlCrefAttribute.Cref;
-
-                            if (cref != null)
+                        case XmlElementKind.Include:
+                        case XmlElementKind.Exclude:
                             {
-                                ISymbol symbol = semanticModel.GetSymbol(cref, cancellationToken);
+                                if (isFirst)
+                                    containsIncludeOrExclude = true;
 
-                                if (exceptionSymbol.Equals(symbol))
-                                    return true;
+                                break;
                             }
-                        }
+                        case XmlElementKind.InheritDoc:
+                            {
+                                return false;
+                            }
+                        case XmlElementKind.Exception:
+                            {
+                                if (!containsException)
+                                {
+                                    if (info.IsXmlElement)
+                                    {
+                                        containsException = ContainsException((XmlElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
+                                    }
+                                    else
+                                    {
+                                        containsException = ContainsException((XmlEmptyElementSyntax)info.Element, exceptionSymbol, semanticModel, cancellationToken);
+                                    }
+                                }
+
+                                break;
+                            }
+                    }
+
+                    if (isFirst)
+                    {
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        containsIncludeOrExclude = false;
+                    }
+                }
+            }
+
+            return !containsIncludeOrExclude
+                && !containsException;
+        }
+
+        private static bool ContainsException(XmlElementSyntax xmlElement, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            XmlElementStartTagSyntax startTag = xmlElement.StartTag;
+
+            if (startTag != null)
+            {
+                return ContainsException(startTag.Attributes, exceptionSymbol, semanticModel, cancellationToken);
+            }
+
+            return false;
+        }
+
+        private static bool ContainsException(XmlEmptyElementSyntax xmlEmptyElement, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            return ContainsException(xmlEmptyElement.Attributes, exceptionSymbol, semanticModel, cancellationToken);
+        }
+
+        private static bool ContainsException(SyntaxList<XmlAttributeSyntax> attributes, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            foreach (XmlAttributeSyntax xmlAttribute in attributes)
+            {
+                if (xmlAttribute.IsKind(SyntaxKind.XmlCrefAttribute))
+                {
+                    var xmlCrefAttribute = (XmlCrefAttributeSyntax)xmlAttribute;
+
+                    CrefSyntax cref = xmlCrefAttribute.Cref;
+
+                    if (cref != null)
+                    {
+                        ISymbol symbol = semanticModel.GetSymbol(cref, cancellationToken);
+
+                        if (exceptionSymbol.Equals(symbol))
+                            return true;
                     }
                 }
             }

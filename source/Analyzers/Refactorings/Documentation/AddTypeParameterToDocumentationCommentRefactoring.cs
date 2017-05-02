@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using System.Collections.Immutable;
 
 namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
@@ -11,8 +11,15 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
     {
         public override string ElementName
         {
-            get { return "typeparam"; }
+            get { return "typeparam"; } //TODO: ok 
         }
+
+        public override string ElementNameUppercase
+        {
+            get { return "TYPEPARAM"; } //TODO: ok
+        }
+
+        public override ImmutableArray<string> ElementNames { get; } = ImmutableArray.Create("typeparam", "TYPEPARAM", "summary", "SUMMARY");
 
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
@@ -25,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                 if (comment != null)
                 {
-                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "typeparam", "name");
+                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "typeparam", "TYPEPARAM", "name"); //TODO: ok
 
                     if (!values.IsDefault)
                     {
@@ -54,11 +61,6 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
         public override string GetName(TypeParameterSyntax node)
         {
             return node.Identifier.ValueText;
-        }
-
-        public override string[] GetElementNames()
-        {
-            return new string[] { "typeparam", "summary" };
         }
 
         public override ElementInfo<TypeParameterSyntax> CreateInfo(TypeParameterSyntax node, int insertIndex, NewLinePosition newLinePosition)

@@ -12,8 +12,15 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
     {
         public override string ElementName
         {
-            get { return "param"; }
+            get { return "param"; } //TODO: ok
         }
+
+        public override string ElementNameUppercase
+        {
+            get { return "PARAM"; }
+        }
+
+        public override ImmutableArray<string> ElementNames { get; } = ImmutableArray.Create("param", "PARAM", "typeparam", "TYPEPARAM", "summary", "SUMMARY");
 
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
@@ -26,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                 if (comment != null)
                 {
-                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "param", "name");
+                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "param", "PARAM", "name"); //TODO: ok
 
                     if (!values.IsDefault)
                     {
@@ -43,11 +50,6 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                     }
                 }
             }
-        }
-
-        public override string[] GetElementNames()
-        {
-            return new string[] { "param", "typeparam", "summary" };
         }
 
         public override SeparatedSyntaxList<ParameterSyntax> GetContainingList(ParameterSyntax node)

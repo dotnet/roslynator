@@ -3,9 +3,10 @@
 using System;
 using System.Collections.Generic;
 
+#pragma warning disable RCS1100, RCS1101, RCS1163
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1100, RCS1101, RCS1163
     public static class AddSummaryElementToDocumentationComment
     {
         /// <summary>
@@ -36,6 +37,14 @@ namespace Roslynator.CSharp.Analyzers.Test
         private static class Include
         {
             /// <include file='' path='[@name=""]' />
+            private static void Foo()
+            {
+            }
+        }
+
+        private static class Exclude
+        {
+            /// <exclude />
             private static void Foo(object parameter, object parameter2)
             {
             }

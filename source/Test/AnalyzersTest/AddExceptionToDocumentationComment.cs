@@ -2,9 +2,10 @@
 
 using System;
 
+#pragma warning disable RCS1100, RCS1141, RCS1163, RCS1176
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1100
     internal class AddExceptionToDocumentationComment
     {
         /// <summary>
@@ -47,9 +48,42 @@ namespace Roslynator.CSharp.Analyzers.Test
             }
         }
 
+        private class InheritDoc
+        {
+            /// <inheritdoc />
+            /// <summary>
+            /// x
+            /// </summary>
+            /// <param name="parameter"></param>
+            public void Foo(object parameter, object parameter2, object parameter3)
+            {
+                if (parameter == null)
+                    throw new ArgumentNullException(nameof(parameter));
+            }
+        }
+
+        private class Include
+        {
+            /// <include file='' path='[@name=""]' />
+            public void Foo(object parameter, object parameter2, object parameter3)
+            {
+                if (parameter == null)
+                    throw new ArgumentNullException(nameof(parameter));
+            }
+        }
+
+        private class Exclude
+        {
+            /// <exclude />
+            public void Foo(object parameter, object parameter2, object parameter3)
+            {
+                if (parameter == null)
+                    throw new ArgumentNullException(nameof(parameter));
+            }
+        }
+
         public class Exception<T> : Exception
         {
         }
     }
-#pragma warning restore RCS1100
 }

@@ -464,9 +464,7 @@ namespace Roslynator.CSharp
                 {
                     var element = (XmlElementSyntax)node;
 
-                    string name = element.StartTag?.Name?.LocalName.ValueText;
-
-                    if (string.Equals(name, "summary", StringComparison.Ordinal))
+                    if (element.IsLocalName("summary", "SUMMARY"))
                         return element;
                 }
             }
@@ -485,13 +483,22 @@ namespace Roslynator.CSharp
                 {
                     var xmlElement = (XmlElementSyntax)node;
 
-                    XmlNameSyntax xmlName = xmlElement.StartTag?.Name;
-
-                    if (xmlName != null
-                        && string.Equals(xmlName.LocalName.ValueText, localName, StringComparison.Ordinal))
-                    {
+                    if (xmlElement.IsLocalName(localName))
                         yield return xmlElement;
-                    }
+                }
+            }
+        }
+
+        internal static IEnumerable<XmlElementSyntax> Elements(this DocumentationCommentTriviaSyntax documentationComment, string localName1, string localName2)
+        {
+            foreach (XmlNodeSyntax node in documentationComment.Content)
+            {
+                if (node.IsKind(SyntaxKind.XmlElement))
+                {
+                    var xmlElement = (XmlElementSyntax)node;
+
+                    if (xmlElement.IsLocalName(localName1, localName2))
+                        yield return xmlElement;
                 }
             }
         }
@@ -3258,6 +3265,35 @@ namespace Roslynator.CSharp
                 : null;
         }
         #endregion VariableDeclarationSyntax
+
+        #region XmlElementSyntax
+        internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName)
+        {
+            return xmlElement.StartTag?.Name?.IsLocalName(localName) == true;
+        }
+
+        internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName1, string localName2)
+        {
+            return xmlElement.StartTag?.Name?.IsLocalName(localName1, localName2) == true;
+        }
+        #endregion
+
+        #region XmlNameSyntax
+        internal static bool IsLocalName(this XmlNameSyntax xmlName, string localName)
+        {
+            string name = xmlName.LocalName.ValueText;
+
+            return string.Equals(name, localName, StringComparison.Ordinal);
+        }
+
+        internal static bool IsLocalName(this XmlNameSyntax xmlName, string localName1, string localName2)
+        {
+            string name = xmlName.LocalName.ValueText;
+
+            return string.Equals(name, localName1, StringComparison.Ordinal)
+                || string.Equals(name, localName2, StringComparison.Ordinal);
+        }
+        #endregion XmlNameSyntax
 
         #region YieldStatementSyntax
         public static bool IsYieldReturn(this YieldStatementSyntax yieldStatement)
