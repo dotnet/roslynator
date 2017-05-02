@@ -95,9 +95,11 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static ConditionalAccessExpressionSyntax CreateConditionalAccess(ExpressionSyntax right)
+        private static ConditionalAccessExpressionSyntax CreateConditionalAccess(ExpressionSyntax expression)
         {
-            return ConditionalAccessExpression(right, MemberBindingExpression(IdentifierName("Length")));
+            return ConditionalAccessExpression(
+                expression.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
+                MemberBindingExpression(IdentifierName("Length")));
         }
     }
 }
