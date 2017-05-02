@@ -94,6 +94,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (asyncKeyword.IsKind(SyntaxKind.AsyncKeyword)
                         && !ContainsAwaitExpression(awaitExpression)
+                        && ReturnTypeAndAwaitTypeEquals(lambda, awaitExpression, context.SemanticModel, context.CancellationToken)
                         && !lambda.SpanContainsDirectives())
                     {
                         ReportDiagnostic(context, asyncKeyword, awaitExpression);
@@ -137,7 +138,8 @@ namespace Roslynator.CSharp.Refactorings
 
                                 if (awaitExpressions == null)
                                 {
-                                    ReportDiagnostic(context, asyncKeyword, awaitExpression);
+                                    if (ReturnTypeAndAwaitTypeEquals(node, awaitExpression, context.SemanticModel, context.CancellationToken))
+                                        ReportDiagnostic(context, asyncKeyword, awaitExpression);
                                 }
                                 else
                                 {
@@ -151,11 +153,11 @@ namespace Roslynator.CSharp.Refactorings
 
                                         if (previousStatementKind == SyntaxKind.IfStatement)
                                         {
-                                            Analyze(context, asyncKeyword, awaitExpression, awaitExpressions, GetAwaitExpressionsFromIfStatement((IfStatementSyntax)previousStatement, endsWithElse: false));
+                                            Analyze(context, node, asyncKeyword, awaitExpression, awaitExpressions, GetAwaitExpressionsFromIfStatement((IfStatementSyntax)previousStatement, endsWithElse: false));
                                         }
                                         else if (previousStatementKind == SyntaxKind.SwitchStatement)
                                         {
-                                            Analyze(context, asyncKeyword, awaitExpression, awaitExpressions, GetAwaitExpressionsFromSwitchStatement((SwitchStatementSyntax)previousStatement, containsDefaultSection: false));
+                                            Analyze(context, node, asyncKeyword, awaitExpression, awaitExpressions, GetAwaitExpressionsFromSwitchStatement((SwitchStatementSyntax)previousStatement, containsDefaultSection: false));
                                         }
                                     }
                                 }
@@ -163,11 +165,11 @@ namespace Roslynator.CSharp.Refactorings
                         }
                         else if (kind == SyntaxKind.IfStatement)
                         {
-                            Analyze(context, body, asyncKeyword, GetAwaitExpressionsFromIfStatement((IfStatementSyntax)statement, endsWithElse: true));
+                            Analyze(context, node, body, asyncKeyword, GetAwaitExpressionsFromIfStatement((IfStatementSyntax)statement, endsWithElse: true));
                         }
                         else if (kind == SyntaxKind.SwitchStatement)
                         {
-                            Analyze(context, body, asyncKeyword, GetAwaitExpressionsFromSwitchStatement((SwitchStatementSyntax)statement, containsDefaultSection: true));
+                            Analyze(context, node, body, asyncKeyword, GetAwaitExpressionsFromSwitchStatement((SwitchStatementSyntax)statement, containsDefaultSection: true));
                         }
                     }
                 }
@@ -176,6 +178,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
+            SyntaxNode node,
             SyntaxToken asyncKeyword,
             AwaitExpressionSyntax awaitExpression,
             HashSet<AwaitExpressionSyntax> awaitExpressions,
@@ -189,13 +192,15 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     awaitExpressions2.Add(awaitExpression);
 
-                    ReportDiagnostic(context, asyncKeyword, awaitExpressions2);
+                    if (ReturnTypeAndAwaitTypeEquals(node, awaitExpressions2, context.SemanticModel, context.CancellationToken))
+                        ReportDiagnostic(context, asyncKeyword, awaitExpressions2);
                 }
             }
         }
 
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
+            SyntaxNode node,
             BlockSyntax body,
             SyntaxToken asyncKeyword,
             HashSet<AwaitExpressionSyntax> awaitExpressions)
@@ -203,7 +208,8 @@ namespace Roslynator.CSharp.Refactorings
             if (awaitExpressions != null
                 && !body
                     .DescendantNodes(body.Span, f => !f.IsNestedMethod())
-                    .Any(f => f.IsKind(SyntaxKind.AwaitExpression) && !awaitExpressions.Contains((AwaitExpressionSyntax)f)))
+                    .Any(f => f.IsKind(SyntaxKind.AwaitExpression) && !awaitExpressions.Contains((AwaitExpressionSyntax)f))
+                && ReturnTypeAndAwaitTypeEquals(node, awaitExpressions, context.SemanticModel, context.CancellationToken))
             {
                 ReportDiagnostic(context, asyncKeyword, awaitExpressions);
             }
@@ -343,12 +349,77 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var awaitExpression = (AwaitExpressionSyntax)expression;
 
-                    if (!ContainsAwaitExpression(awaitExpression)
+                    if (ReturnTypeAndAwaitTypeEquals(node, awaitExpression, context.SemanticModel, context.CancellationToken)
+                        && !ContainsAwaitExpression(awaitExpression)
                         && !node.SpanContainsDirectives())
                     {
                         ReportDiagnostic(context, asyncKeyword, awaitExpression);
                     }
                 }
+            }
+        }
+
+        private static bool ReturnTypeAndAwaitTypeEquals(
+            SyntaxNode node,
+            HashSet<AwaitExpressionSyntax> awaitExpressions,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            ITypeSymbol typeSymbol = GetTypeArgumentOfTask(node, semanticModel, cancellationToken);
+
+            if (typeSymbol == null)
+                return false;
+
+            foreach (AwaitExpressionSyntax awaitExpression in awaitExpressions)
+            {
+                if (!typeSymbol.Equals(semanticModel.GetTypeSymbol(awaitExpression, cancellationToken)))
+                    return false;
+            }
+
+            return true;
+        }
+
+        private static bool ReturnTypeAndAwaitTypeEquals(
+            SyntaxNode node,
+            AwaitExpressionSyntax awaitExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            return GetTypeArgumentOfTask(node, semanticModel, cancellationToken)?
+                .Equals(semanticModel.GetTypeSymbol(awaitExpression, cancellationToken)) == true;
+        }
+
+        private static ITypeSymbol GetTypeArgumentOfTask(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            IMethodSymbol methodSymbol = GetMethodSymbol(node, semanticModel, cancellationToken);
+
+            if (methodSymbol != null)
+            {
+                var returnType = methodSymbol.ReturnType as INamedTypeSymbol;
+
+                if (returnType?.IsConstructedFromTaskOfT(semanticModel) == true)
+                    return returnType.TypeArguments.Single();
+            }
+
+            return null;
+        }
+
+        private static IMethodSymbol GetMethodSymbol(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
+                    return (IMethodSymbol)semanticModel.GetDeclaredSymbol(node, cancellationToken);
+                case SyntaxKind.SimpleLambdaExpression:
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                case SyntaxKind.AnonymousMethodExpression:
+                    return (IMethodSymbol)semanticModel.GetSymbol(node, cancellationToken);
+                default:
+                    {
+                        Debug.Fail(node.Kind().ToString());
+                        return null;
+                    }
             }
         }
 
