@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -21,14 +22,16 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
         public abstract ElementInfo<TNode> CreateInfo(TNode node, int insertIndex, NewLinePosition newLinePosition);
 
-        public abstract string[] GetElementNames();
-
         public virtual MemberDeclarationSyntax GetMemberDeclaration(TNode node)
         {
             return node.FirstAncestor<MemberDeclarationSyntax>();
         }
 
+        public abstract ImmutableArray<string> ElementNames { get; }
+
         public abstract string ElementName { get; }
+
+        public abstract string ElementNameUppercase { get; }
 
         public async Task<Document> RefactorAsync(
             Document document,
@@ -190,9 +193,9 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
         {
             var dic = new Dictionary<string, XmlElementSyntax>();
 
-            foreach (XmlElementSyntax element in comment.Elements(ElementName))
+            foreach (XmlElementSyntax element in comment.Elements(ElementName, ElementNameUppercase))
             {
-                string name = DocumentationCommentRefactoring.GetAttributeValue(element, "name");
+                string name = DocumentationCommentRefactoring.GetAttributeValue(element, "name"); //TODO: ok
 
                 if (!dic.ContainsKey(name))
                     dic.Add(name, element);
@@ -205,7 +208,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
         {
             SyntaxList<XmlNodeSyntax> content = comment.Content;
 
-            foreach (string elementName in GetElementNames())
+            foreach (string elementName in ElementNames)
             {
                 int spanStart = FindLastElement(content, elementName);
 

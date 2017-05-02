@@ -9,13 +9,13 @@ namespace Roslynator.CSharp.Analyzers.Test
     public static class AddSummaryToDocumentationComment
     {
         /// <summary>
-        /// Bla
+        /// x
         /// </summary>
         private static void Foo()
         {
         }
 
-        /// <summary>Bla</summary>
+        /// <summary>x</summary>
         private static void Foo2()
         {
         }
@@ -49,6 +49,119 @@ namespace Roslynator.CSharp.Analyzers.Test
         private static void Foo7()
         {
         }
+
+        private static class InheritDoc
+        {
+            /// <inheritdoc />
+            /// <summary>
+            /// 
+            /// </summary>
+            private static void Foo3()
+            {
+            }
+
+            /// <inheritdoc />
+            /// <summary>
+            ///     
+            /// </summary>
+            private static void Foo4()
+            {
+            }
+
+            /// <inheritdoc />
+            /// <summary>
+            /// </summary>
+            private static void Foo5()
+            {
+            }
+
+            /// <inheritdoc />
+            /// <summary></summary>
+            private static void Foo6()
+            {
+            }
+
+            /// <inheritdoc />
+            /// <summary> </summary>
+            private static void Foo7()
+            {
+            }
+        }
+
+        private static class Include
+        {
+            /// <include file='' path='[@name=""]' />
+            /// <summary>
+            /// 
+            /// </summary>
+            private static void Foo3()
+            {
+            }
+
+            /// <include file='' path='[@name=""]' />
+            /// <summary>
+            ///     
+            /// </summary>
+            private static void Foo4()
+            {
+            }
+
+            /// <include file='' path='[@name=""]' />
+            /// <summary>
+            /// </summary>
+            private static void Foo5()
+            {
+            }
+
+            /// <include file='' path='[@name=""]' />
+            /// <summary></summary>
+            private static void Foo6()
+            {
+            }
+
+            /// <include file='' path='[@name=""]' />
+            /// <summary> </summary>
+            private static void Foo7()
+            {
+            }
+        }
+
+        private static class Exclude
+        {
+            /// <exclude />
+            /// <summary>
+            /// 
+            /// </summary>
+            private static void Foo3()
+            {
+            }
+
+            /// <exclude />
+            /// <summary>
+            ///     
+            /// </summary>
+            private static void Foo4()
+            {
+            }
+
+            /// <exclude />
+            /// <summary>
+            /// </summary>
+            private static void Foo5()
+            {
+            }
+
+            /// <exclude />
+            /// <summary></summary>
+            private static void Foo6()
+            {
+            }
+
+            /// <exclude />
+            /// <summary> </summary>
+            private static void Foo7()
+            {
+            }
+        }
     }
-#pragma warning restore RCS1100, RCS1101
 }

@@ -87,5 +87,18 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
             }
         }
+
+        private class Exclude
+        {
+            /// <exclude />
+            public void Foo(object parameter)
+            {
+            }
+
+            /// <exclude />
+            public void Foo(object parameter, object parameter2)
+            {
+            }
+        }
     }
 }
