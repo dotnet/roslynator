@@ -857,6 +857,8 @@ namespace Roslynator.CSharp
              isEnabledByDefault: true
         );
 
+        public static readonly DiagnosticDescriptor RemoveEmptyRegionFadeOut = RemoveEmptyRegion.CreateFadeOut();
+
         public static readonly DiagnosticDescriptor AddEmptyLineAfterLastStatementInDoStatement = new DiagnosticDescriptor(
              id: DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
              title: "Add empty line after last statement in do statement.",

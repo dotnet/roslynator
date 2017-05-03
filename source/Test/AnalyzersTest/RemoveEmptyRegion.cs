@@ -4,15 +4,15 @@ namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class RemoveEmptyRegion
     {
-        #region
+        #region Methods
         public static void Foo()
         #endregion
         {
-            #region
+            #region Empty
             
             #endregion
         }
-        #region
+        #region Empty
 
 
         #endregion
