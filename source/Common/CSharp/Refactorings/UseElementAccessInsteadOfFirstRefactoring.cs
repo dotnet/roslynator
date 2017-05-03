@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class UseElementAccessInsteadOfFirstRefactoring
+    internal static class UseElementAccessInsteadOfFirstRefactoring
     {
         public static bool CanRefactor(MemberInvocationExpression memberInvocation, SemanticModel semanticModel, CancellationToken cancellationToken)
         {

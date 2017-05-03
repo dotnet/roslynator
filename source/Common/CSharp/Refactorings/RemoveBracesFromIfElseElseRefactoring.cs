@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class RemoveBracesFromIfElseElseRefactoring
+    internal static class RemoveBracesFromIfElseElseRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

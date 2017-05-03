@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class UseExpressionBodiedMemberRefactoring
+    internal static class UseExpressionBodiedMemberRefactoring
     {
         public static bool CanRefactor(MethodDeclarationSyntax declaration)
         {

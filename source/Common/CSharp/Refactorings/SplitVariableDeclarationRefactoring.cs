@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class SplitVariableDeclarationRefactoring
+    internal static class SplitVariableDeclarationRefactoring
     {
         public static bool CanRefactor(VariableDeclarationSyntax variableDeclaration)
         {

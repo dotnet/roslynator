@@ -11,7 +11,7 @@ using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class MarkMemberAsStaticRefactoring
+    internal static class MarkMemberAsStaticRefactoring
     {
         public static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration)
         {

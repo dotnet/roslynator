@@ -12,7 +12,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class InsertModifierRefactoring
+    internal static class InsertModifierRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

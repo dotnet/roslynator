@@ -9,7 +9,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class ChangeTypeRefactoring
+    internal static class ChangeTypeRefactoring
     {
         public static Task<Document> ChangeTypeAsync(
            Document document,

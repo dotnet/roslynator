@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class ExpandAssignmentExpressionRefactoring
+    internal static class ExpandAssignmentExpressionRefactoring
     {
         public static bool CanRefactor(AssignmentExpressionSyntax assignmentExpression)
         {

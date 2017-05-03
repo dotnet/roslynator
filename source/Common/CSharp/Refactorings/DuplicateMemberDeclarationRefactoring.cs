@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class DuplicateMemberDeclarationRefactoring
+    internal static class DuplicateMemberDeclarationRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,
