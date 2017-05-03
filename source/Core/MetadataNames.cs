@@ -38,6 +38,8 @@ namespace Roslynator
         public const string System_NotSupportedException = "System.NotSupportedException";
         public const string System_Runtime_CompilerServices_ConfiguredTaskAwaitable = "System.Runtime.CompilerServices.ConfiguredTaskAwaitable";
         public const string System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = "System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1";
+        public const string System_Runtime_InteropServices_LayoutKind = "System.Runtime.InteropServices.LayoutKind";
+        public const string System_Runtime_InteropServices_StructLayoutAttribute = "System.Runtime.InteropServices.StructLayoutAttribute";
         public const string System_Runtime_Serialization_DataMemberAttribute = "System.Runtime.Serialization.DataMemberAttribute";
         public const string System_String = "System.String";
         public const string System_StringComparison = "System.StringComparison";

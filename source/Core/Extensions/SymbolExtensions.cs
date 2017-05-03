@@ -384,6 +384,27 @@ namespace Roslynator
             return false;
         }
 
+        internal static AttributeData GetAttributeByMetadataName(this INamedTypeSymbol typeSymbol, string fullyQualifiedMetadataName, Compilation compilation)
+        {
+            ImmutableArray<AttributeData> attributes = typeSymbol.GetAttributes();
+
+            if (attributes.Any())
+            {
+                INamedTypeSymbol attributeType = compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
+
+                if (attributeType != null)
+                {
+                    foreach (AttributeData attributeData in attributes)
+                    {
+                        if (attributeData.AttributeClass.Equals(attributeType))
+                            return attributeData;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         public static bool IsDeclaredAccessibility(this ISymbol symbol, Accessibility accessibility)
         {
             return symbol?.DeclaredAccessibility == accessibility;
