@@ -44,6 +44,20 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             Assigned = null;
         }
+
+        private class BaseClassName
+        {
+        }
+
+        private class ClassName<T> : BaseClassName
+        {
+            public BaseClassName Property { get; private set; }
+
+            public ClassName<TResult> MethodName<TResult>()
+            {
+                return new ClassName<TResult>() { Property = this };
+            }
+        }
     }
 
     public partial class Foo

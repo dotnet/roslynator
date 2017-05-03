@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 
-#pragma warning disable RCS1016, RCS1048, RCS1081, RCS1163
+#pragma warning disable RCS1016, RCS1048, RCS1081, RCS1163, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -14,6 +14,9 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             private static string _sf;
             private int _f;
+
+            //n
+
             private string _f2, _f3;
             private static string _staticAssignedInInstanceConstructor;
             private SpinLock _spinLock;
@@ -40,6 +43,20 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
                 _assigned = null;
                 _f3 = null;
+            }
+        }
+
+        private class BaseClassName
+        {
+        }
+
+        private class ClassName<T> : BaseClassName
+        {
+            private BaseClassName _f;
+
+            public ClassName<TResult> MethodName<TResult>()
+            {
+                return new ClassName<TResult>() { _f = this };
             }
         }
 
