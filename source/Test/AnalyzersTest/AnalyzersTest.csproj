@@ -45,6 +45,7 @@
     <Compile Include="AddBraces.cs" />
     <Compile Include="AddBracesToSwitchSectionWithMultipleStatements.cs" />
     <Compile Include="MarkClassAsStatic2.cs" />
+    <Compile Include="RemoveEmptyInitializer.cs" />
     <Compile Include="RemoveRedundantDefaultSwitchSection.cs" />
     <Compile Include="ReplaceCommentWithDocumentationComment.cs" />
     <Compile Include="AddDocumentationComment.cs" />

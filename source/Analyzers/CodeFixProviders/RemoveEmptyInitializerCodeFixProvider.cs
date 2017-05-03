@@ -24,16 +24,16 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            InitializerExpressionSyntax initializer = root
+            ObjectCreationExpressionSyntax objectCreationExpression = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<InitializerExpressionSyntax>();
+                .FirstAncestorOrSelf<ObjectCreationExpressionSyntax>();
 
-            if (initializer == null)
+            if (objectCreationExpression == null)
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty initializer",
-                cancellationToken => RemoveEmptyInitializerRefactoring.RefactorAsync(context.Document, initializer, cancellationToken),
+                cancellationToken => RemoveEmptyInitializerRefactoring.RefactorAsync(context.Document, objectCreationExpression, cancellationToken),
                 DiagnosticIdentifiers.RemoveEmptyInitializer + EquivalenceKeySuffix);
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
