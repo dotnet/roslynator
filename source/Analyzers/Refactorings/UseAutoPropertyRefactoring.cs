@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -43,6 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                             && propertySymbol.IsStatic == fieldSymbol.IsStatic
                             && propertySymbol.Type.Equals(fieldSymbol.Type)
                             && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
+                            && !HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType, context.Compilation)
                             && !IsBackingFieldUsedInRefOrOutArgument(context, fieldSymbol, property)
                             && CheckPreprocessorDirectives(property, variableDeclarator))
                         {
@@ -82,6 +84,26 @@ namespace Roslynator.CSharp.Refactorings
 
                 return false;
             }
+        }
+
+        private static bool HasStructLayoutAttributeWithExplicitKind(INamedTypeSymbol typeSymbol, Compilation compilation)
+        {
+            AttributeData attribute = typeSymbol.GetAttributeByMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute, compilation);
+
+            if (attribute != null)
+            {
+                ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
+
+                if (constructorArguments.Length == 1)
+                {
+                    TypedConstant typedConstant = constructorArguments[0];
+
+                    return typedConstant.Type?.Equals(compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_InteropServices_LayoutKind)) == true
+                        && (((LayoutKind)typedConstant.Value) == LayoutKind.Explicit);
+                }
+            }
+
+            return false;
         }
 
         private static bool IsBackingFieldUsedInRefOrOutArgument(

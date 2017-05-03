@@ -2,6 +2,8 @@
 
 #pragma warning disable RCS1016, RCS1036, RCS1060, RCS1081, RCS1118
 
+using System.Runtime.InteropServices;
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal partial class UseAutoProperty
@@ -162,6 +164,32 @@ namespace Roslynator.CSharp.Analyzers.Test
         private interface IFoo
         {
             string Property { get; set; }
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        private class FooClass
+        {
+            [FieldOffset(0)]
+            private string _property;
+
+            public string Property
+            {
+                get { return _property; }
+                set { _property = value; }
+            }
+        }
+
+        [StructLayout(LayoutKind.Explicit)]
+        private struct FooStruct
+        {
+            [FieldOffset(0)]
+            private string _property;
+
+            public string Property
+            {
+                get { return _property; }
+                set { _property = value; }
+            }
         }
     }
 }
