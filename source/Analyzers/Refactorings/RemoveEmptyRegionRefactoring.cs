@@ -42,6 +42,10 @@ namespace Roslynator.CSharp.Refactorings
                                     DiagnosticDescriptors.RemoveEmptyRegion,
                                     region.GetLocation(),
                                     additionalLocations: ImmutableArray.Create(endRegion.GetLocation()));
+
+                                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyRegionFadeOut, region.GetLocation());
+                                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyRegionFadeOut, endRegion.GetLocation());
+
                             }
                         }
                     }
