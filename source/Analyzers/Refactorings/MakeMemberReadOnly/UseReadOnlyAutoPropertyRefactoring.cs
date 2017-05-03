@@ -39,7 +39,8 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                     {
                         IMethodSymbol setMethod = propertySymbol.SetMethod;
 
-                        if (setMethod?.IsPrivate() == true)
+                        if (setMethod?.IsPrivate() == true
+                            && setMethod.GetAttributes().IsDefaultOrEmpty)
                         {
                             var accessor = setMethod.GetSyntaxOrDefault(context.CancellationToken) as AccessorDeclarationSyntax;
 
