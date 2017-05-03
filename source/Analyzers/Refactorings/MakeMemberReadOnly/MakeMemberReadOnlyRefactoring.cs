@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
-using System.Collections.Immutable;
 
 namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 {
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                         ISymbol symbol = semanticModel.GetSymbol(identifierName, cancellationToken);
 
                         if (ValidateSymbol(symbol)
-                            && symbols.Contains(symbol))
+                            && symbols.Contains(symbol.OriginalDefinition))
                         {
                             ExpressionSyntax assignedExpression = GetAssignedExpression(descendant);
 
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                                 && semanticModel.GetSymbol(assignedExpression, cancellationToken)?.Equals(symbol) == true
                                 && !IsAssignmentThasIsAllowedForReadOnlyMember(assignedExpression, containingType, symbol.IsStatic, semanticModel, cancellationToken))
                             {
-                                symbols.Remove(symbol);
+                                symbols.Remove(symbol.OriginalDefinition);
                             }
                         }
                     }
