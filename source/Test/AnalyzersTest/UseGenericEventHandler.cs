@@ -2,6 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+
+#pragma warning disable RCS1079
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -16,8 +19,6 @@ namespace Roslynator.CSharp.Analyzers.Test
                 add { }
                 remove { }
             }
-
-            public event EventHandler EventName3;
         }
 
         public interface FooInterface
@@ -25,9 +26,25 @@ namespace Roslynator.CSharp.Analyzers.Test
             event FooEventHandler Changed;
         }
 
+        //n
+
+        public class Foo2
+        {
+            public event EventHandler EventName;
+        }
+
         public class FooImplementation : FooInterface
         {
             public event FooEventHandler Changed;
+        }
+
+        public class FooImplementation2 : FooInterface
+        {
+            event FooEventHandler FooInterface.Changed
+            {
+                add { throw new NotImplementedException(); }
+                remove { throw new NotImplementedException(); }
+            }
         }
 
         public class FooEventArgs : EventArgs
@@ -35,5 +52,23 @@ namespace Roslynator.CSharp.Analyzers.Test
         }
 
         public delegate void FooEventHandler(object sender, FooEventArgs args);
+
+        public interface INotifyPropertyChangedEx : INotifyPropertyChanged
+        {
+        }
+
+        public class BaseClass : INotifyPropertyChangedEx
+        {
+            public event PropertyChangedEventHandler PropertyChanged;
+        }
+
+        public class BaseClass2 : INotifyPropertyChangedEx
+        {
+            event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+            {
+                add { throw new NotImplementedException(); }
+                remove { throw new NotImplementedException(); }
+            }
+        }
     }
 }

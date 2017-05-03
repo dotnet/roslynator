@@ -13,7 +13,7 @@ namespace Roslynator
     public static class SymbolExtensions
     {
         #region ISymbol
-        public static ISymbol FindImplementedInterfaceMember(this ISymbol symbol)
+        public static ISymbol FindImplementedInterfaceMember(this ISymbol symbol, bool allInterfaces = false)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
@@ -22,7 +22,9 @@ namespace Roslynator
 
             if (containingType != null)
             {
-                ImmutableArray<INamedTypeSymbol> interfaces = containingType.Interfaces;
+                ImmutableArray<INamedTypeSymbol> interfaces = (allInterfaces)
+                    ? containingType.AllInterfaces
+                    : containingType.Interfaces;
 
                 for (int i = 0; i < interfaces.Length; i++)
                 {
@@ -39,12 +41,12 @@ namespace Roslynator
             return default(ISymbol);
         }
 
-        internal static bool ImplementsInterfaceMember(this ISymbol symbol)
+        internal static bool ImplementsInterfaceMember(this ISymbol symbol, bool allInterfaces = false)
         {
-            return FindImplementedInterfaceMember(symbol) != null;
+            return FindImplementedInterfaceMember(symbol, allInterfaces) != null;
         }
 
-        public static TSymbol FindImplementedInterfaceMember<TSymbol>(this ISymbol symbol) where TSymbol : ISymbol
+        public static TSymbol FindImplementedInterfaceMember<TSymbol>(this ISymbol symbol, bool allInterfaces = false) where TSymbol : ISymbol
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
@@ -53,7 +55,9 @@ namespace Roslynator
 
             if (containingType != null)
             {
-                ImmutableArray<INamedTypeSymbol> interfaces = containingType.Interfaces;
+                ImmutableArray<INamedTypeSymbol> interfaces = (allInterfaces)
+                    ? containingType.AllInterfaces
+                    : containingType.Interfaces;
 
                 for (int i = 0; i < interfaces.Length; i++)
                 {
@@ -75,10 +79,10 @@ namespace Roslynator
             return default(TSymbol);
         }
 
-        internal static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol) where TSymbol : ISymbol
+        internal static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol, bool allInterfaces = false) where TSymbol : ISymbol
         {
             return !EqualityComparer<TSymbol>.Default.Equals(
-                FindImplementedInterfaceMember<TSymbol>(symbol),
+                FindImplementedInterfaceMember<TSymbol>(symbol, allInterfaces),
                 default(TSymbol));
         }
 
