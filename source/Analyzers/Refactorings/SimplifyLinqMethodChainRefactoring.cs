@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -67,10 +69,21 @@ namespace Roslynator.CSharp.Refactorings
 
             var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
 
-            InvocationExpressionSyntax newInvocation = invocation2.WithExpression(
+            InvocationExpressionSyntax newNode = invocation2.WithExpression(
                 memberAccess2.WithName(memberAccess.Name.WithTriviaFrom(memberAccess2.Name)));
 
-            return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
+            IEnumerable<SyntaxTrivia> trivia = invocation.DescendantTrivia(TextSpan.FromBounds(invocation2.Span.End, invocation.Span.End));
+
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+            {
+                newNode = newNode.WithTrailingTrivia(trivia.Concat(invocation.GetTrailingTrivia()));
+            }
+            else
+            {
+                newNode = newNode.WithTrailingTrivia(invocation.GetTrailingTrivia());
+            }
+
+            return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
         }
     }
 }

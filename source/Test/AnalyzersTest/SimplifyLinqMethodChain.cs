@@ -27,7 +27,8 @@ namespace Roslynator.CSharp.Analyzers.Test
             s = items.Where(f => true).LastOrDefault();
             l = items.Where(f => true).LongCount();
             s = items.Where(f => true).Single();
-            s = items.Where(f => true).SingleOrDefault();
+            s = items.Where(f => true)
+                .SingleOrDefault();
         }
 
         private static void Foo2()
@@ -47,7 +48,8 @@ namespace Roslynator.CSharp.Analyzers.Test
             s = items.Where(f => true).LastOrDefault();
             l = items.Where(f => true).LongCount();
             s = items.Where(f => true).Single();
-            s = items.Where(f => true).SingleOrDefault();
+            s = items.Where(f => true)
+                .SingleOrDefault();
         }
 
         private static void UseOfTypeInsteadOfWhereAndCast()
