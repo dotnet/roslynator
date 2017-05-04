@@ -58,6 +58,7 @@
     <Compile Include="AvoidEmbeddedStatement.cs" />
     <Compile Include="FormatConditionalExpressionOperatorsOnNextLine.cs" />
     <Compile Include="AvoidSingleLineBlock.cs" />
+    <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="StaticMemberInGenericClassShouldUseTypeParameter.cs" />
     <Compile Include="AvoidMultilineExpressionBodyRefactoring.cs" />
     <Compile Include="AvoidChainOfAssignments.cs" />
