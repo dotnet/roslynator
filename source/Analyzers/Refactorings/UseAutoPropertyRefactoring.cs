@@ -338,7 +338,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             Solution solution = document.Solution();
 
-            IdentifierNameSyntax newIdentifier = IdentifierName(propertyDeclaration.Identifier);
+            SyntaxToken identifier = propertyDeclaration.Identifier.WithoutTrivia();
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
@@ -377,7 +377,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(fieldSymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-                MemberDeclarationSyntax newContainingMember = containingMember.ReplaceNodes(oldNodes, (f, g) => newIdentifier.WithTriviaFrom(f));
+                MemberDeclarationSyntax newContainingMember = containingMember.ReplaceNodes(oldNodes, (f, g) => CreateNewExpression(f, identifier).WithTriviaFrom(f));
 
                 members = newContainingMember.GetMembers();
 
@@ -429,6 +429,19 @@ namespace Roslynator.CSharp.Refactorings
                 solution = solution.WithDocumentSyntaxRoot(newDocument.Id, await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false));
 
             return solution;
+        }
+
+        private static SyntaxNode CreateNewExpression(SyntaxNode node, SyntaxToken identifier)
+        {
+            if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
+            {
+                return IdentifierName(identifier);
+            }
+            else
+            {
+                return SimpleMemberAccessExpression(ThisExpression(), IdentifierName(identifier)).WithSimplifierAnnotation();
+            }
         }
 
         private static ISymbol GetFieldSymbol(PropertyDeclarationSyntax property, SemanticModel semanticModel, CancellationToken cancellationToken)
