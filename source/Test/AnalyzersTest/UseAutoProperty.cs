@@ -10,9 +10,15 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         public UseAutoProperty()
         {
+            string Property = null;
+
             _property = null;
+            this._property2 = null;
             _readOnlyProperty = null;
             _readOnlyProperty2 = null;
+
+            var x = new UseAutoProperty();
+            x._property = null;
         }
 
         public void Method()
