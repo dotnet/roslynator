@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
-            if (!methodDeclaration.HasSingleLineDocumentationComment())
+            if (!methodDeclaration.HasDocumentationComment())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (!propertyDeclaration.HasSingleLineDocumentationComment())
+            if (!propertyDeclaration.HasDocumentationComment())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (!indexerDeclaration.HasSingleLineDocumentationComment())
+            if (!indexerDeclaration.HasDocumentationComment())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, EventDeclarationSyntax eventDeclaration)
         {
-            if (!eventDeclaration.HasSingleLineDocumentationComment())
+            if (!eventDeclaration.HasDocumentationComment())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, EventFieldDeclarationSyntax eventFieldDeclaration)
         {
-            if (!eventFieldDeclaration.HasSingleLineDocumentationComment())
+            if (!eventFieldDeclaration.HasDocumentationComment())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
         {
-            if (!constructorDeclaration.HasSingleLineDocumentationComment())
+            if (!constructorDeclaration.HasDocumentationComment())
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
