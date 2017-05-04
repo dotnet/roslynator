@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                             {
                                 context.ReportDiagnostic(
                                     DiagnosticDescriptors.AddParameterToDocumentationComment,
-                                    parameter);
+                                    parameter.Identifier);
                             }
                         }
                     }
