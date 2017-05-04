@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Documentation
             node = (NamespaceDeclarationSyntax)base.VisitNamespaceDeclaration(node);
 
             if (!SkipNamespaceDeclaration
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Documentation
             node = (ClassDeclarationSyntax)base.VisitClassDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Documentation
             node = (StructDeclarationSyntax)base.VisitStructDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Documentation
             node = (InterfaceDeclarationSyntax)base.VisitInterfaceDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Documentation
             node = (EnumDeclarationSyntax)base.VisitEnumDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Documentation
             node = (DelegateDeclarationSyntax)base.VisitDelegateDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Documentation
             node = (EnumMemberDeclarationSyntax)base.VisitEnumMemberDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Documentation
             node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -163,7 +163,7 @@ namespace Roslynator.CSharp.Documentation
             node = (EventFieldDeclarationSyntax)base.VisitEventFieldDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -180,7 +180,7 @@ namespace Roslynator.CSharp.Documentation
             node = (MethodDeclarationSyntax)base.VisitMethodDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -197,7 +197,7 @@ namespace Roslynator.CSharp.Documentation
             node = (OperatorDeclarationSyntax)base.VisitOperatorDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -214,7 +214,7 @@ namespace Roslynator.CSharp.Documentation
             node = (ConversionOperatorDeclarationSyntax)base.VisitConversionOperatorDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -231,7 +231,7 @@ namespace Roslynator.CSharp.Documentation
             node = (ConstructorDeclarationSyntax)base.VisitConstructorDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -248,7 +248,7 @@ namespace Roslynator.CSharp.Documentation
             node = (DestructorDeclarationSyntax)base.VisitDestructorDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -265,7 +265,7 @@ namespace Roslynator.CSharp.Documentation
             node = (PropertyDeclarationSyntax)base.VisitPropertyDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -282,7 +282,7 @@ namespace Roslynator.CSharp.Documentation
             node = (EventDeclarationSyntax)base.VisitEventDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
@@ -299,7 +299,7 @@ namespace Roslynator.CSharp.Documentation
             node = (IndexerDeclarationSyntax)base.VisitIndexerDeclaration(node);
 
             if (isPubliclyVisible
-                && !node.HasSingleLineDocumentationComment())
+                && !node.HasDocumentationComment())
             {
                 return AddDocumentationComment(node);
             }
