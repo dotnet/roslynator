@@ -26,24 +26,19 @@ namespace Roslynator.CSharp.Refactorings
 
                 StatementSyntax statement = block.SingleStatementOrDefault();
 
-                if (statement?.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement) == true)
+                if (statement != null)
                 {
                     ExpressionSyntax expression = GetExpression(statement);
 
-                    if (expression?.IsSingleLine() == true)
-                    {
-                        TextSpan span = TextSpan.FromBounds(lambda.ArrowToken.Span.End, expression.Span.Start);
-
-                        if (lambda
-                            .DescendantTrivia(span)
+                    if (expression?.IsSingleLine() == true
+                        && lambda
+                            .DescendantTrivia(TextSpan.FromBounds(lambda.ArrowToken.Span.End, expression.Span.Start))
+                            .All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                        && lambda
+                            .DescendantTrivia(TextSpan.FromBounds(expression.Span.End, block.Span.End))
                             .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                        {
-                            span = TextSpan.FromBounds(expression.Span.End, block.Span.End);
-
-                            return lambda
-                                .DescendantTrivia(span)
-                                .All(f => f.IsWhitespaceOrEndOfLineTrivia());
-                        }
+                    {
+                        return true;
                     }
                 }
             }
@@ -73,10 +68,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             var block = (BlockSyntax)lambda.Body;
             StatementSyntax statement = block.Statements[0];
-            ExpressionSyntax expression = GetExpression(statement);
+            ExpressionSyntax expression = GetNewExpression(statement);
 
-            expression = expression
-                .WithoutTrivia();
+            expression = expression.WithoutTrivia();
 
             switch (lambda.Kind())
             {
@@ -105,6 +99,23 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ReturnStatementSyntax)statement).Expression;
                 case SyntaxKind.ExpressionStatement:
                     return ((ExpressionStatementSyntax)statement).Expression;
+                case SyntaxKind.ThrowStatement:
+                    return ((ThrowStatementSyntax)statement).Expression;
+            }
+
+            return null;
+        }
+
+        private static ExpressionSyntax GetNewExpression(StatementSyntax statement)
+        {
+            switch (statement.Kind())
+            {
+                case SyntaxKind.ReturnStatement:
+                    return ((ReturnStatementSyntax)statement).Expression;
+                case SyntaxKind.ExpressionStatement:
+                    return ((ExpressionStatementSyntax)statement).Expression;
+                case SyntaxKind.ThrowStatement:
+                    return SyntaxFactory.ThrowExpression(((ThrowStatementSyntax)statement).Expression);
             }
 
             return null;

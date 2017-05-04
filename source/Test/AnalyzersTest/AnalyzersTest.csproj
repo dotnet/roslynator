@@ -56,6 +56,7 @@
     <Compile Include="AddMissingSemicolon.cs" />
     <Compile Include="FormatConditionalExpressionOperatorsOnNextLine.cs" />
     <Compile Include="AvoidSingleLineBlock.cs" />
+    <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="StaticMemberInGenericClassShouldUseTypeParameter.cs" />
     <Compile Include="AvoidChainOfAssignments.cs" />
     <Compile Include="BitwiseOperationOnEnumWithoutFlagsAttribute.cs" />
