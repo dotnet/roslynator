@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using System.Collections.Immutable;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -186,16 +186,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             var parenthesizedExpression = (ParenthesizedExpressionSyntax)castExpression.Parent;
 
-            TypeSyntax type = castExpression.Type;
-            ExpressionSyntax expression = castExpression.Expression;
-
-            ExpressionSyntax newExpression = expression.WithLeadingTrivia(type.GetLeadingTrivia());
-
-            ParenthesizedExpressionSyntax newNode = parenthesizedExpression.WithExpression(newExpression)
+            ParenthesizedExpressionSyntax newNode = parenthesizedExpression
+                .WithExpression(castExpression.Expression.WithTriviaFrom(castExpression))
                 .WithFormatterAnnotation()
                 .WithSimplifierAnnotation();
 
-            return document.ReplaceNodeAsync(parenthesizedExpression, expression, cancellationToken);
+            return document.ReplaceNodeAsync(parenthesizedExpression, newNode, cancellationToken);
         }
 
         public static Task<Document> RefactorAsync(

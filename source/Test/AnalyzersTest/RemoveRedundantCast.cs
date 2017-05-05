@@ -14,15 +14,11 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         public static class Foo
         {
-            public static void Bar()
+            public static void Bar(SyntaxNode node, Dictionary<int, string> dic)
             {
-                SyntaxNode node = null;
-
                 SyntaxNode parent = ((BlockSyntax)node).Parent;
 
                 parent = ((BlockSyntax)node)?.Parent;
-
-                var dic = new Dictionary<int, string>();
 
                 string x = ((IDictionary<int, string>)dic)[0];
 
@@ -32,6 +28,10 @@ namespace Roslynator.CSharp.Analyzers.Test
                     .AsEnumerable()
                     .Cast<string>();
 
+                ((IDisposable)default(FooDisposable)).Dispose();
+
+                //n
+
                 SyntaxToken openBrace = ((BlockSyntax)node).OpenBraceToken;
                 Location location = ((BlockSyntax)node).GetLocation();
 
@@ -40,6 +40,8 @@ namespace Roslynator.CSharp.Analyzers.Test
 
                 IEnumerableOfString i = null;
                 var q4 = ((IEnumerable<string>)i).GetEnumerator();
+
+                ((IDisposable)default(FooExplicitDisposable)).Dispose();
             }
         }
 
@@ -62,6 +64,22 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         private class EnumerableOfString2 : EnumerableOfString
         {
+        }
+
+        private class FooDisposable : IDisposable
+        {
+            public void Dispose()
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        private class FooExplicitDisposable : IDisposable
+        {
+            void IDisposable.Dispose()
+            {
+                throw new NotImplementedException();
+            }
         }
     }
 }
