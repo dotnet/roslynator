@@ -64,26 +64,34 @@ namespace Roslynator.CSharp.Refactorings
                                     {
                                         case TypeKind.Unknown:
                                         case TypeKind.Error:
-                                            return false;
-#if DEBUG
+                                            {
+                                                return false;
+                                            }
                                         case TypeKind.Class:
                                         case TypeKind.Delegate:
                                         case TypeKind.Enum:
                                         case TypeKind.Interface:
                                         case TypeKind.Struct:
-                                            break;
+                                            {
+                                                if (memberSymbol.IsDeclaredAccessibility(Accessibility.Protected, Accessibility.ProtectedOrInternal))
+                                                    return false;
+
+                                                break;
+                                            }
                                         default:
                                             {
                                                 Debug.Fail(namedTypeSymbol.TypeKind.ToString());
                                                 break;
                                             }
-#endif
                                     }
 
                                     break;
                                 }
                             default:
                                 {
+                                    if (memberSymbol.IsDeclaredAccessibility(Accessibility.Protected, Accessibility.ProtectedOrInternal))
+                                        return false;
+
                                     if (!memberSymbol.IsImplicitlyDeclared
                                         && !memberSymbol.IsStatic)
                                     {
