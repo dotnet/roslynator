@@ -63,5 +63,87 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
             }
         }
+
+        //n
+
+        public class Foo5
+        {
+            protected static void FooMethod()
+            {
+            }
+        }
+
+        public class Foo6
+        {
+            protected class FooClass
+            {
+            }
+        }
+
+        public class Foo7
+        {
+            protected struct FooStruct
+            {
+            }
+        }
+
+        public class Foo8
+        {
+            protected interface FooInterface
+            {
+            }
+        }
+
+        public class Foo9
+        {
+            protected delegate void FooDelegate();
+        }
+
+        public class Foo10
+        {
+            protected enum FooEnum
+            {
+            }
+        }
+
+        public class Foo11
+        {
+            protected internal static void FooMethod()
+            {
+            }
+        }
+
+        public class Foo12
+        {
+            protected internal class FooClass
+            {
+            }
+        }
+
+        public class Foo13
+        {
+            protected internal struct FooStruct
+            {
+            }
+        }
+
+        public class Foo14
+        {
+            protected internal interface FooInterface
+            {
+            }
+        }
+
+        public class Foo15
+        {
+            protected internal delegate void FooDelegate();
+        }
+
+        public class Foo16
+        {
+            protected internal enum FooEnum
+            {
+            }
+        }
     }
 }
