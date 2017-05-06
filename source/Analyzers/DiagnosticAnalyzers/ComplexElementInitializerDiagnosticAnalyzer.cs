@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => UseCSharp6DictionaryInitializerRefactoring.AnalyzeComplexElementInitializerExpression(f),
-                SyntaxKind.ComplexElementInitializerExpression);
+                f => UseCSharp6DictionaryInitializerRefactoring.AnalyzeInitializerExpression(f),
+                SyntaxKind.CollectionInitializerExpression);
         }
     }
 }

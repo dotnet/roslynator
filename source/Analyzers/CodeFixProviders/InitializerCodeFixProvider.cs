@@ -22,7 +22,6 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.RemoveRedundantCommaInInitializer,
-                    DiagnosticIdentifiers.UseCSharp6DictionaryInitializer,
                     DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine);
             }
         }
@@ -49,16 +48,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove redundant comma",
                                 cancellationToken => RemoveRedundantCommaInInitializerRefactoring.RefactorAsync(context.Document, initializer, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.UseCSharp6DictionaryInitializer:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Use C# 6.0 dictionary initializer",
-                                cancellationToken => UseCSharp6DictionaryInitializerRefactoring.RefactorAsync(context.Document, initializer, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

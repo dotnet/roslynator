@@ -50,6 +50,7 @@
     <Compile Include="CodeFixProviders\AddParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\CompositeEnumValueContainsUndefinedFlagCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EnumMemberDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ObjectCreationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveInapplicableModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantAsyncAwaitCodeFixProvider.cs" />
