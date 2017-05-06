@@ -17,6 +17,9 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseAutoPropertyRefactoring
     {
+        private static SymbolDisplayFormat _symbolDisplayFormat { get; } = new SymbolDisplayFormat(
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+
         public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             var property = (PropertyDeclarationSyntax)context.Node;
@@ -308,7 +311,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(fieldSymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-                MemberDeclarationSyntax newContainingMember = containingMember.ReplaceNodes(oldNodes, (f, g) => CreateNewExpression(f, identifier).WithTriviaFrom(f));
+                MemberDeclarationSyntax newContainingMember = containingMember.ReplaceNodes(oldNodes, (f, g) => CreateNewExpression(f, identifier, propertySymbol).WithTriviaFrom(f));
 
                 members = newContainingMember.GetMembers();
 
@@ -362,12 +365,16 @@ namespace Roslynator.CSharp.Refactorings
             return solution;
         }
 
-        private static SyntaxNode CreateNewExpression(SyntaxNode node, SyntaxToken identifier)
+        private static SyntaxNode CreateNewExpression(SyntaxNode node, SyntaxToken identifier, IPropertySymbol propertySymbol)
         {
             if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
                 && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
             {
                 return IdentifierName(identifier);
+            }
+            else if (propertySymbol.IsStatic)
+            {
+                return ParseName($"{propertySymbol.ContainingType.ToTypeSyntax()}.{propertySymbol.ToDisplayString(_symbolDisplayFormat)}").WithSimplifierAnnotation();
             }
             else
             {
