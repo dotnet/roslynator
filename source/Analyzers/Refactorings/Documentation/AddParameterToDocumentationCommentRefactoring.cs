@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
     {
         public override string ElementName
         {
-            get { return "param"; } //TODO: ok
+            get { return "param"; }
         }
 
         public override string ElementNameUppercase
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                 if (comment != null)
                 {
-                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "param", "PARAM", "name"); //TODO: ok
+                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "param", "PARAM", "name");
 
                     if (!values.IsDefault)
                     {
