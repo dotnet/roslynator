@@ -11,10 +11,83 @@ namespace Roslynator.CSharp
 {
     public static class SymbolExtensions
     {
-        private static SymbolDisplayFormat DefaultSymbolDisplayFormat { get; } = new SymbolDisplayFormat(
+        private static SymbolDisplayFormat TypeSymbolDisplayFormat { get; } = new SymbolDisplayFormat(
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes);
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
+                | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+
+        private static SymbolDisplayFormat NamespaceSymbolDisplayFormat { get; } = new SymbolDisplayFormat(
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+
+        #region INamespaceOrTypeSymbol
+        internal static TypeSyntax ToTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SymbolDisplayFormat format = null)
+        {
+            if (namespaceOrTypeSymbol == null)
+                throw new ArgumentNullException(nameof(namespaceOrTypeSymbol));
+
+            if (namespaceOrTypeSymbol.IsType)
+            {
+                return ToTypeSyntax((ITypeSymbol)namespaceOrTypeSymbol, format);
+            }
+            else
+            {
+                return ToTypeSyntax((INamespaceSymbol)namespaceOrTypeSymbol, format);
+            }
+        }
+
+        internal static TypeSyntax ToMinimalTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        {
+            if (namespaceOrTypeSymbol == null)
+                throw new ArgumentNullException(nameof(namespaceOrTypeSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            if (namespaceOrTypeSymbol.IsType)
+            {
+                return ToMinimalTypeSyntax((ITypeSymbol)namespaceOrTypeSymbol, semanticModel, position, format);
+            }
+            else
+            {
+                return ToMinimalTypeSyntax((INamespaceSymbol)namespaceOrTypeSymbol, semanticModel, position, format);
+            }
+        }
+        #endregion INamespaceOrTypeSymbol
+
+        #region INamespaceSymbol
+        public static TypeSyntax ToTypeSyntax(this INamespaceSymbol namespaceSymbol, SymbolDisplayFormat format = null)
+        {
+            if (namespaceSymbol == null)
+                throw new ArgumentNullException(nameof(namespaceSymbol));
+
+            ThrowIfExplicitDeclarationIsNotSupported(namespaceSymbol);
+
+            return ParseTypeName(namespaceSymbol.ToDisplayString(format ?? NamespaceSymbolDisplayFormat));
+        }
+
+        public static TypeSyntax ToMinimalTypeSyntax(this INamespaceSymbol namespaceSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
+        {
+            if (namespaceSymbol == null)
+                throw new ArgumentNullException(nameof(namespaceSymbol));
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            ThrowIfExplicitDeclarationIsNotSupported(namespaceSymbol);
+
+            return ParseTypeName(namespaceSymbol.ToMinimalDisplayString(semanticModel, position, format ?? NamespaceSymbolDisplayFormat));
+        }
+
+        private static void ThrowIfExplicitDeclarationIsNotSupported(INamespaceSymbol namespaceSymbol)
+        {
+            if (namespaceSymbol.NamespaceKind != NamespaceKind.Module)
+                throw new ArgumentException($"Namespace '{namespaceSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(namespaceSymbol));
+        }
+        #endregion INamespaceSymbol
 
         #region IParameterSymbol
         internal static ExpressionSyntax GetDefaultValueSyntax(this IParameterSymbol parameterSymbol)
@@ -60,9 +133,9 @@ namespace Roslynator.CSharp
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            format = format ?? DefaultSymbolDisplayFormat;
+            format = format ?? TypeSymbolDisplayFormat;
 
-            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, format);
+            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol);
 
             return ParseTypeName(typeSymbol.ToDisplayString(format));
         }
@@ -75,17 +148,17 @@ namespace Roslynator.CSharp
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            format = format ?? DefaultSymbolDisplayFormat;
+            format = format ?? TypeSymbolDisplayFormat;
 
-            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol, format);
+            ThrowIfExplicitDeclarationIsNotSupported(typeSymbol);
 
             return ParseTypeName(typeSymbol.ToMinimalDisplayString(semanticModel, position, format));
         }
 
-        private static void ThrowIfExplicitDeclarationIsNotSupported(ITypeSymbol typeSymbol, SymbolDisplayFormat format)
+        private static void ThrowIfExplicitDeclarationIsNotSupported(ITypeSymbol typeSymbol)
         {
             if (!typeSymbol.SupportsExplicitDeclaration())
-                throw new ArgumentException($"Type '{typeSymbol.ToDisplayString(format)}' does not support explicit declaration.", nameof(typeSymbol));
+                throw new ArgumentException($"Type '{typeSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(typeSymbol));
         }
 
         public static ExpressionSyntax ToDefaultValueSyntax(this ITypeSymbol typeSymbol, TypeSyntax type = null)
