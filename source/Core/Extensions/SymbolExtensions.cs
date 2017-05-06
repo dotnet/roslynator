@@ -1199,6 +1199,7 @@ namespace Roslynator
                 switch (typeSymbol.Kind)
                 {
                     case SymbolKind.TypeParameter:
+                    case SymbolKind.DynamicType:
                         return true;
                     case SymbolKind.ArrayType:
                         return SupportsExplicitDeclaration(((IArrayTypeSymbol)typeSymbol).ElementType);
