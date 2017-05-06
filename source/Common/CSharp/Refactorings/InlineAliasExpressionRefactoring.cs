@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
                 }
                 else
                 {
-                    return CSharpUtility.EnsureFullyQualifiedName(name, semanticModel, cancellationToken).WithTriviaFrom(f);
+                    return aliasSymbol.Target.ToMinimalTypeSyntax(semanticModel, f.SpanStart).WithTriviaFrom(f);
                 }
             });
 
