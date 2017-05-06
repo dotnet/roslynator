@@ -12,6 +12,7 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             _property = null;
             _property2 = null;
+            _staticProperty = null;
             _readOnlyProperty = null;
             _readOnlyProperty2 = null;
         }
