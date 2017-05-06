@@ -11,12 +11,12 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
     {
         public override string ElementName
         {
-            get { return "typeparam"; } //TODO: ok 
+            get { return "typeparam"; }
         }
 
         public override string ElementNameUppercase
         {
-            get { return "TYPEPARAM"; } //TODO: ok
+            get { return "TYPEPARAM"; }
         }
 
         public override ImmutableArray<string> ElementNames { get; } = ImmutableArray.Create("typeparam", "TYPEPARAM", "summary", "SUMMARY");
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                 if (comment != null)
                 {
-                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "typeparam", "TYPEPARAM", "name"); //TODO: ok
+                    ImmutableArray<string> values = DocumentationCommentRefactoring.GetAttributeValues(comment, "typeparam", "TYPEPARAM", "name");
 
                     if (!values.IsDefault)
                     {
