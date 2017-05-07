@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.MarkClassAsStatic:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Mark class as static",
+                                $"Mark '{classDeclaration.Identifier.ValueText}' as static",
                                 cancellationToken =>
                                 {
                                     return MarkClassAsStaticRefactoring.RefactorAsync(
