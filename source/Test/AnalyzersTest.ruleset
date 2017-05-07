@@ -288,7 +288,7 @@
     <Rule Id="RCS1012" Action="Hidden" />
     <Rule Id="RCS1013" Action="Warning" />
     <Rule Id="RCS1014" Action="Warning" />
-    <Rule Id="RCS1016" Action="Warning" />
+    <Rule Id="RCS1016" Action="Info" />
     <Rule Id="RCS1016FadeOut" Action="Hidden" />
     <Rule Id="RCS1017" Action="Warning" />
     <Rule Id="RCS1018" Action="Warning" />
@@ -354,6 +354,8 @@
     <Rule Id="RCS1112" Action="Warning" />
     <Rule Id="RCS1124" Action="Info" />
     <Rule Id="RCS1126" Action="Warning" />
+    <Rule Id="RCS1136" Action="Info" />
+    <Rule Id="RCS1140" Action="Info" />
     <Rule Id="RCS1141" Action="Warning" />
     <Rule Id="RCS1142" Action="Warning" />
     <Rule Id="RCS1153" Action="Warning" />
