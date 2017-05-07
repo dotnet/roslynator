@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Remove modifier '{token}'",
+                $"Remove {token} modifier",
                 cancellationToken => RefactorAsync(context.Document, token, cancellationToken),
                 DiagnosticIdentifiers.RemoveInapplicableModifier + EquivalenceKeySuffix);
 
