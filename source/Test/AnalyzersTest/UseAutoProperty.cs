@@ -1,12 +1,24 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable RCS1016, RCS1081, RCS1118
+#pragma warning disable RCS1016, RCS1036, RCS1060, RCS1081, RCS1118
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal partial class UseAutoProperty
     {
+        private string _property3 = "";
+
+        public string Property3
+        {
+            get { return _property3; }
+            set { _property3 = value; }
+        }
+    }
+
+    internal partial class UseAutoProperty
+    {
         private string _property = "";
+        private string _property2 = null;
         private static string _staticProperty = "";
 
         static UseAutoProperty()
@@ -27,6 +39,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             //this.Property
             _property = null;
             this._property2 = null;
+            _property3 = null;
             _staticProperty = null;
             _readOnlyProperty = null;
             _readOnlyProperty2 = null;

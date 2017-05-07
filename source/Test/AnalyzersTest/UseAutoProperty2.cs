@@ -6,8 +6,6 @@ namespace Roslynator.CSharp.Analyzers.Test
 {
     internal partial class UseAutoProperty
     {
-        private string _property2 = null;
-
         public UseAutoProperty(object parameter)
         {
             _property = null;
