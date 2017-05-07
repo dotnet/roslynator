@@ -855,21 +855,21 @@
     </Syntaxes>
     <Scope>do keyword</Scope>
   </Refactoring>
-  <Refactoring Id="RR0124" Identifier="ReplaceEqualsExpressionWithStringEquals" Title="Replace equals expression with String.Equals">
+  <Refactoring Id="RR0124" Identifier="ReplaceEqualsExpressionWithStringEquals" Title="Replace equals expression with string.Equals">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Scope>operator</Scope>
   </Refactoring>
-  <Refactoring Id="RR0125" Identifier="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with String.IsNullOrEmpty">
+  <Refactoring Id="RR0125" Identifier="ReplaceEqualsExpressionWithStringIsNullOrEmpty" Title="Replace equals expression with string.IsNullOrEmpty">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
     </Syntaxes>
     <Scope>operator</Scope>
   </Refactoring>
-  <Refactoring Id="RR0126" Identifier="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with String.IsNullOrWhiteSpace">
+  <Refactoring Id="RR0126" Identifier="ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace" Title="Replace equals expression with string.IsNullOrWhiteSpace">
     <Syntaxes>
       <Syntax>equals expression</Syntax>
       <Syntax>not equals expression</Syntax>
@@ -970,15 +970,15 @@
       <Image>ReplaceReturnStatementWithIfStatement</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="RR0144" Identifier="ReplaceStringContainsWithStringIndexOf" Title="Replace String.Contains with String.IndexOf">
+  <Refactoring Id="RR0144" Identifier="ReplaceStringContainsWithStringIndexOf" Title="Replace string.Contains with string.IndexOf">
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="RR0145" Identifier="ReplaceStringFormatWithInterpolatedString" Title="Replace String.Format with interpolated string">
+  <Refactoring Id="RR0145" Identifier="ReplaceStringFormatWithInterpolatedString" Title="Replace string.Format with interpolated string">
     <Syntaxes>
-      <Syntax>String.Format method</Syntax>
+      <Syntax>string.Format method</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0146" Identifier="ReplaceStringLiteralWithCharacterLiteral" Title="Replace string literal with character literal">
@@ -1114,9 +1114,9 @@
     </Syntaxes>
     <Scope>method name</Scope>
   </Refactoring>
-  <Refactoring Id="RR0168" Identifier="UseEmptyStringLiteralInsteadOfStringEmpty" Title="Use &quot;&quot; instead of String.Empty">
+  <Refactoring Id="RR0168" Identifier="UseEmptyStringLiteralInsteadOfStringEmpty" Title="Use &quot;&quot; instead of string.Empty">
     <Syntaxes>
-      <Syntax>String.Empty field</Syntax>
+      <Syntax>string.Empty field</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0169" Identifier="UseExpressionBodiedMember" Title="Use expression-bodied member">
@@ -1134,7 +1134,7 @@
     </Syntaxes>
     <Scope>delegate keyword</Scope>
   </Refactoring>
-  <Refactoring Id="RR0171" Identifier="UseStringEmptyInsteadOfEmptyStringLiteral" Title="Use String.Empty instead of &quot;&quot;" IsEnabledByDefault="false">
+  <Refactoring Id="RR0171" Identifier="UseStringEmptyInsteadOfEmptyStringLiteral" Title="Use string.Empty instead of &quot;&quot;" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
