@@ -315,7 +315,6 @@
     <Rule Id="RCS1145" Action="Info" />
     <Rule Id="RCS1153" Action="Info" />
     <Rule Id="RCS1162" Action="Info" />
-    <Rule Id="RCS1183" Action="Info" />
     <Rule Id="RCS1184" Action="Info" />
     <Rule Id="RCS1185" Action="Info" />
   </Rules>
