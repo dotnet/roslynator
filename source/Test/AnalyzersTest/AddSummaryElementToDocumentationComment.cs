@@ -9,19 +9,31 @@ namespace Roslynator.CSharp.Analyzers.Test
 {
     public static class AddSummaryElementToDocumentationComment
     {
-        /// <summary>
-        /// Bla
-        /// </summary>
         /// <param name="parameter"></param>
+        /// <param name="parameter2"></param>
+        /// <include />
         private static void Foo(object parameter)
         {
         }
 
-        /// <param name="parameter"></param>
-        /// <param name="parameter2"></param>
-        /// <include />
-        private static void Foo2(object parameter, object parameter2)
+        /// x
+        private static void Foo2(object parameter)
         {
+        }
+
+        //n
+
+        /// <summary>
+        /// x
+        /// </summary>
+        /// <param name="parameter"></param>
+        private static void Foo3(object parameter)
+        {
+            /// x
+            if (parameter == null)
+            {
+
+            }
         }
 
         private static class InheritDoc

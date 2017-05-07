@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Diagnostics;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -19,6 +18,9 @@ namespace Roslynator.CSharp.Refactorings
         public static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
         {
             var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
+
+            if (!IsPartOfMemberDeclaration(documentationComment))
+                return;
 
             bool containsInheritDoc = false;
             bool containsIncludeOrExclude = false;
@@ -83,6 +85,11 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
+        private static bool IsPartOfMemberDeclaration(DocumentationCommentTriviaSyntax documentationComment)
+        {
+            return (documentationComment as IStructuredTriviaSyntax)?.ParentTrivia.Token.Parent is MemberDeclarationSyntax;
+        }
+
         private static bool IsSummaryMissing(XmlElementSyntax summaryElement)
         {
             SyntaxList<XmlNodeSyntax> content = summaryElement.Content;
@@ -124,40 +131,48 @@ namespace Roslynator.CSharp.Refactorings
             DocumentationCommentTriviaSyntax documentationComment,
             CancellationToken cancellationToken)
         {
-            XmlElementSyntax summaryElement = documentationComment.SummaryElement();
+            SyntaxList<XmlNodeSyntax> content = documentationComment.Content;
 
-            if (summaryElement == null)
+            SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+
+            TextLine line = sourceText.Lines[documentationComment.GetFullSpanStartLine(cancellationToken)];
+
+            string indent = StringUtility.GetIndent(line.ToString());
+
+            TextChange textChange;
+
+            if (content.Count == 1
+                && content[0].IsKind(SyntaxKind.XmlText))
             {
-                SyntaxList<XmlNodeSyntax> content = documentationComment.Content;
+                string text = content[0].ToString().Trim();
 
-                SourceText text = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
+                string newText = CreateSummaryElement(indent, text);
 
-                TextLine line = text.Lines[documentationComment.GetFullSpanStartLine(cancellationToken)];
-
-                string indent = StringUtility.GetIndent(line.ToString());
-
+                textChange = new TextChange(documentationComment.FullSpan, newText);
+            }
+            else
+            {
                 string newText = CreateSummaryElement(indent);
 
-                var textChange = new TextChange(new TextSpan(documentationComment.FullSpan.Start, 0), newText);
-
-                return await document.WithTextChangeAsync(textChange).ConfigureAwait(false);
+                textChange = new TextChange(new TextSpan(documentationComment.FullSpan.Start, 0), newText);
             }
 
-            Debug.Fail("");
-
-            return document;
+            return await document.WithTextChangeAsync(textChange).ConfigureAwait(false);
         }
 
-        private static string CreateSummaryElement(string indent)
+        private static string CreateSummaryElement(string indent, string text = null)
         {
             var sb = new StringBuilder();
 
             sb.AppendLine("/// <summary>");
             sb.Append(indent);
-            sb.AppendLine("/// ");
+            sb.Append("/// ");
+            sb.AppendLine(text);
             sb.Append(indent);
             sb.AppendLine("/// </summary>");
-            sb.Append(indent);
+
+            if (text == null)
+                sb.Append(indent);
 
             return sb.ToString();
         }
