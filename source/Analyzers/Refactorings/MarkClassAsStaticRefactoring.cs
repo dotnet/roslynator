@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
@@ -115,11 +116,44 @@ namespace Roslynator.CSharp.Refactorings
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken)
         {
-            ClassDeclarationSyntax newNode = classDeclaration
-                .InsertModifier(SyntaxKind.StaticKeyword, ModifierComparer.Instance)
-                .RemoveModifier(SyntaxKind.SealedKeyword);
+            ClassDeclarationSyntax newNode = UpdateModifiers(classDeclaration);
 
             return document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
+        }
+
+        public static async Task<Solution> RefactorAsync(
+            Solution solution,
+            ImmutableArray<ClassDeclarationSyntax> classDeclarations,
+            CancellationToken cancellationToken)
+        {
+            var newDocuments = new Dictionary<DocumentId, SyntaxNode>();
+
+            foreach (SyntaxTree syntaxTree in classDeclarations.Select(f => f.SyntaxTree).Distinct())
+            {
+                Document document = solution.GetDocument(syntaxTree);
+
+                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+                SyntaxNode newRoot = root.ReplaceNodes(
+                    classDeclarations.Where(f => f.SyntaxTree == syntaxTree),
+                    (node, rewrittenNode) => UpdateModifiers(node));
+
+                newDocuments.Add(document.Id, newRoot);
+            }
+
+            Solution newSolution = solution;
+
+            foreach (KeyValuePair<DocumentId, SyntaxNode> kvp in newDocuments)
+                newSolution = newSolution.WithDocumentSyntaxRoot(kvp.Key, kvp.Value);
+
+            return newSolution;
+        }
+
+        private static ClassDeclarationSyntax UpdateModifiers(ClassDeclarationSyntax classDeclaration)
+        {
+            return classDeclaration
+                .InsertModifier(SyntaxKind.StaticKeyword, ModifierComparer.Instance)
+                .RemoveModifier(SyntaxKind.SealedKeyword);
         }
     }
 }

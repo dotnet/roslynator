@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -45,16 +46,44 @@ namespace Roslynator.CSharp.CodeFixProviders
                 {
                     case DiagnosticIdentifiers.MarkClassAsStatic:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Mark '{classDeclaration.Identifier.ValueText}' as static",
-                                cancellationToken =>
-                                {
-                                    return MarkClassAsStaticRefactoring.RefactorAsync(
-                                        context.Document,
-                                        classDeclaration,
-                                        cancellationToken);
-                                },
-                                diagnostic.Id + EquivalenceKeySuffix);
+                            CodeAction codeAction = null;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            ISymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
+
+                            ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
+
+                            if (syntaxReferences.Length == 1)
+                            {
+                                codeAction = CodeAction.Create(
+                                    $"Mark '{classDeclaration.Identifier.ValueText}' as static",
+                                    cancellationToken =>
+                                    {
+                                        return MarkClassAsStaticRefactoring.RefactorAsync(
+                                            context.Document,
+                                            classDeclaration,
+                                            cancellationToken);
+                                    },
+                                    diagnostic.Id + EquivalenceKeySuffix);
+                            }
+                            else
+                            {
+                                ImmutableArray<ClassDeclarationSyntax> classDeclarations = syntaxReferences
+                                    .Select(f => (ClassDeclarationSyntax)f.GetSyntax(context.CancellationToken))
+                                    .ToImmutableArray();
+
+                                codeAction = CodeAction.Create(
+                                    $"Mark '{classDeclaration.Identifier.ValueText}' as static",
+                                    cancellationToken =>
+                                    {
+                                        return MarkClassAsStaticRefactoring.RefactorAsync(
+                                            context.Solution(),
+                                            classDeclarations,
+                                            cancellationToken);
+                                    },
+                                    diagnostic.Id + EquivalenceKeySuffix);
+                            }
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
