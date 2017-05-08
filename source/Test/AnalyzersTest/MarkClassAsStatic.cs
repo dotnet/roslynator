@@ -2,9 +2,11 @@
 
 using System;
 
+#pragma warning disable RCS1018
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-    internal class MarkClassAsStatic
+    internal partial class MarkClassAsStatic
     {
         public class Foo
         {
@@ -46,18 +48,18 @@ namespace Roslynator.CSharp.Analyzers.Test
             }
         }
 
-        public partial class Foo3
+        public partial class FooPartial
         {
             public static void Foo()
             {
             }
         }
 
-        public partial class Foo3
+        public sealed partial class FooPartial
         {
         }
 
-        public sealed class Foo4
+        public sealed class FooSealed
         {
             public static void Foo()
             {
