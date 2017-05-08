@@ -146,6 +146,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 IfToReturnWithBooleanExpression ifToReturnWithBooleanExpression = null;
 
                 if (options.UseBooleanExpression
+                    && (expression1.IsBooleanLiteralExpression() || expression2.IsBooleanLiteralExpression())
                     && semanticModel.GetTypeSymbol(expression1, cancellationToken)?.IsBoolean() == true
                     && semanticModel.GetTypeSymbol(expression2, cancellationToken)?.IsBoolean() == true)
                 {

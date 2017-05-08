@@ -1,10 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings.If
                             case SyntaxKind.FalseLiteralExpression:
                                 return expression2;
                             default:
-                                return LogicalOrExpression(Negator.LogicallyNegate(condition), expression2);
+                                return LogicalAndExpression(Negator.LogicallyNegate(condition), expression2);
                         }
                     }
                 default:
@@ -73,12 +73,26 @@ namespace Roslynator.CSharp.Refactorings.If
                             case SyntaxKind.TrueLiteralExpression:
                                 return LogicalOrExpression(Negator.LogicallyNegate(condition), expression1);
                             case SyntaxKind.FalseLiteralExpression:
-                                return LogicalAndExpression(condition.Parenthesize().WithSimplifierAnnotation(), expression1.Parenthesize().WithSimplifierAnnotation());
+                                return LogicalAndExpression(condition, expression1);
                             default:
-                                return LogicalOrExpression(ParenthesizedExpression(LogicalAndExpression(condition, expression1)), expression2);
+                                throw new InvalidOperationException();
                         }
                     }
             }
+        }
+
+        private static ExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return CSharpFactory.LogicalAndExpression(
+                left.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
+                right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
+        }
+
+        private static ExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        {
+            return CSharpFactory.LogicalOrExpression(
+                left.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
+                right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
         }
     }
 }
