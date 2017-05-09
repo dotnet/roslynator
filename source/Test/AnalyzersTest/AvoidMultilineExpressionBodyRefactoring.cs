@@ -2,9 +2,10 @@
 
 using System;
 
+#pragma warning disable RCS1078, RCS1085, RCS1163
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1085 
     internal static class AvoidMultilineExpressionBodyRefactoring
     {
         private class Entity
@@ -55,13 +56,18 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             public event EventHandler Event
             {
-                add => _event 
+                add => _event
                     += value;
 
-                remove => _event 
+                remove => _event
                     -= value;
+            }
+
+            private void FooMethodWithLocalFunction()
+            {
+                void LocalFunction() => LocalFunction
+                    ();
             }
         }
     }
-#pragma warning restore RCS1085
 }

@@ -19,9 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             if (arrowExpressionClause == null)
                 throw new ArgumentNullException(nameof(arrowExpressionClause));
 
-            var parent = arrowExpressionClause.Parent as MemberDeclarationSyntax;
-
-            return parent?.SupportsExpressionBody() == true;
+            return arrowExpressionClause.Parent?.SupportsExpressionBody() == true;
         }
 
         public static Task<Document> RefactorAsync(
@@ -35,95 +33,117 @@ namespace Roslynator.CSharp.Refactorings
             if (arrowExpressionClause == null)
                 throw new ArgumentNullException(nameof(arrowExpressionClause));
 
-            SyntaxNode member = arrowExpressionClause.Parent;
+            SyntaxNode parent = arrowExpressionClause.Parent;
 
-            SyntaxNode newMember = Refactor(member, arrowExpressionClause.Expression).WithFormatterAnnotation();
+            SyntaxNode newNode = Refactor(parent, arrowExpressionClause.Expression).WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(member, newMember, cancellationToken);
+            return document.ReplaceNodeAsync(parent, newNode, cancellationToken);
         }
 
-        private static SyntaxNode Refactor(SyntaxNode member, ExpressionSyntax expression)
+        private static SyntaxNode Refactor(SyntaxNode node, ExpressionSyntax expression)
         {
-            switch (member.Kind())
+            switch (node.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
                     {
-                        var method = (MethodDeclarationSyntax)member;
+                        var method = (MethodDeclarationSyntax)node;
 
                         return method
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression, method));
+                            .WithBody(CreateBlock(method.ReturnType, expression, method.SemicolonToken));
                     }
                 case SyntaxKind.OperatorDeclaration:
                     {
-                        return ((OperatorDeclarationSyntax)member)
+                        var operatorDeclaration = (OperatorDeclarationSyntax)node;
+
+                        return operatorDeclaration
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression));
+                            .WithBody(CreateBlock(expression, operatorDeclaration.SemicolonToken));
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
-                        return ((ConversionOperatorDeclarationSyntax)member)
+                        var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
+
+                        return conversionOperatorDeclaration
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression));
+                            .WithBody(CreateBlock(expression, conversionOperatorDeclaration.SemicolonToken));
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        return ((PropertyDeclarationSyntax)member)
-                            .WithAccessorList(CreateAccessorList(expression))
+                        var propertyDeclaration = (PropertyDeclarationSyntax)node;
+
+                        return propertyDeclaration
+                            .WithAccessorList(CreateAccessorList(expression, propertyDeclaration.SemicolonToken))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
-                        return ((IndexerDeclarationSyntax)member)
-                            .WithAccessorList(CreateAccessorList(expression))
+                        var indexerDeclaration = (IndexerDeclarationSyntax)node;
+
+                        return indexerDeclaration
+                            .WithAccessorList(CreateAccessorList(expression, indexerDeclaration.SemicolonToken))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
                 default:
                     {
-                        Debug.Assert(false, member.Kind().ToString());
-                        return member;
+                        Debug.Assert(false, node.Kind().ToString());
+                        return node;
                     }
             }
         }
 
-        private static BlockSyntax CreateBlock(ExpressionSyntax expression)
+        private static BlockSyntax CreateBlock(ExpressionSyntax expression, SyntaxToken semicolon)
         {
-            return Block(ReturnStatement(expression));
+            return CreateBlockWithReturnStatement(expression, semicolon);
         }
 
-        private static BlockSyntax CreateBlock(ExpressionSyntax expression, MethodDeclarationSyntax methodDeclaration)
+        private static BlockSyntax CreateBlock(TypeSyntax returnType, ExpressionSyntax expression, SyntaxToken semicolon)
         {
-            TypeSyntax returnType = methodDeclaration.ReturnType;
-
-            if (returnType == null || returnType.IsVoid())
+            if (returnType == null
+                || returnType.IsVoid())
             {
-                return Block(ExpressionStatement(expression));
+                return CreateBlockWithExpressionStatement(expression, semicolon);
             }
             else
             {
-                return CreateBlock(expression);
+                return CreateBlockWithReturnStatement(expression, semicolon);
             }
         }
 
-        private static AccessorListSyntax CreateAccessorList(ExpressionSyntax expression)
+        private static AccessorListSyntax CreateAccessorList(ExpressionSyntax expression, SyntaxToken semicolon)
         {
-            BlockSyntax block = CreateBlock(expression);
+            BlockSyntax block = CreateBlockWithReturnStatement(expression, semicolon);
 
             AccessorListSyntax accessorList = AccessorList(GetAccessorDeclaration(block));
 
             if (expression.IsSingleLine())
             {
-                return accessorList
+                accessorList = accessorList
                     .RemoveWhitespaceOrEndOfLineTrivia()
                     .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
             }
 
             return accessorList;
+        }
+
+        private static BlockSyntax CreateBlockWithExpressionStatement(ExpressionSyntax expression, SyntaxToken semicolon)
+        {
+            return Block(ExpressionStatement(expression, semicolon));
+        }
+
+        private static BlockSyntax CreateBlockWithReturnStatement(ExpressionSyntax expression, SyntaxToken semicolon)
+        {
+            ReturnStatementSyntax returnStatement = ReturnStatement(
+                ReturnKeyword().WithLeadingTrivia(expression.GetLeadingTrivia()),
+                expression.WithoutLeadingTrivia(),
+                semicolon);
+
+            return Block(returnStatement);
         }
     }
 }
