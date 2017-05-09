@@ -3,7 +3,7 @@
 using System;
 using System.Threading.Tasks;
 
-#pragma warning disable CS0168, CS0219, RCS1004, RCS1016, RCS1021, RCS1048, RCS1054, RCS1090, RCS1118, RCS1124, RCS1136, RCS1163, RCS1176
+#pragma warning disable CS0162, CS0168, CS0219, RCS1002, RCS1004, RCS1016, RCS1021, RCS1048, RCS1054, RCS1061, RCS1090, RCS1118, RCS1124, RCS1136, RCS1163, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -130,6 +130,136 @@ namespace Roslynator.CSharp.Analyzers.Test
             }
 
             //n
+
+            public static async Task<object> IfElse2Async()
+            {
+                bool f = false;
+                if (f)
+                {
+                    return default(object);
+                    return await GetAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    return await GetAsync().ConfigureAwait(false);
+                }
+            }
+
+            public static async Task<object> IfElse3Async()
+            {
+                bool f = false;
+                if (f)
+                {
+                    await GetAsync().ConfigureAwait(false);
+                    return await GetAsync().ConfigureAwait(false);
+                }
+                else
+                {
+                    return await GetAsync().ConfigureAwait(false);
+                }
+            }
+
+            public static async Task<object> SwitchAndReturn2Async()
+            {
+                bool f = false;
+                switch (f)
+                {
+                    case true:
+                        {
+                            return default(object);
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                    case false:
+                        {
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                }
+
+                return await GetAsync().ConfigureAwait(false);
+            }
+
+            public static async Task<object> SwitchAndReturn3Async()
+            {
+                bool f = false;
+                switch (f)
+                {
+                    case true:
+                        {
+                            await GetAsync().ConfigureAwait(false);
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                    case false:
+                        {
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                }
+
+                return await GetAsync().ConfigureAwait(false);
+            }
+
+            public static async Task<object> SwitchWithDefault2Async()
+            {
+                bool f = false;
+                switch (f)
+                {
+                    case true:
+                        {
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                    default:
+                        {
+                            return default(object);
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                }
+            }
+
+            public static async Task<object> SwitchWithDefault3Async()
+            {
+                bool f = false;
+                switch (f)
+                {
+                    case true:
+                        {
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                    default:
+                        {
+                            await GetAsync().ConfigureAwait(false);
+                            return await GetAsync().ConfigureAwait(false);
+                        }
+                }
+            }
+
+            public static async Task<object> MethodWitBody2Async()
+            {
+                bool f = false;
+
+                if (f)
+                {
+                    if (f)
+                    {
+                        return default(object);
+                    }
+                }
+
+                return await GetAsync().ConfigureAwait(false);
+            }
+
+            public static async Task<object> MethodWitBody3Async()
+            {
+                bool f = false;
+
+                if (f)
+                {
+                    if (f)
+                    {
+                        await GetAsync().ConfigureAwait(false);
+                    }
+                }
+
+                return await GetAsync().ConfigureAwait(false);
+            }
 
             public static async Task DoAsync()
             {
