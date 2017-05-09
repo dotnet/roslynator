@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
                         return method
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression, method));
+                            .WithBody(CreateBlock(method.ReturnType, expression, method.SemicolonToken));
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                         return constructor
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(ExpressionStatement(expression)));
+                            .WithBody(Block(ExpressionStatement(expression, constructor.SemicolonToken)));
                     }
                 case SyntaxKind.DestructorDeclaration:
                     {
@@ -69,33 +69,41 @@ namespace Roslynator.CSharp.Refactorings
                         return destructor
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(ExpressionStatement(expression)));
+                            .WithBody(Block(ExpressionStatement(expression, destructor.SemicolonToken)));
                     }
                 case SyntaxKind.OperatorDeclaration:
                     {
-                        return ((OperatorDeclarationSyntax)node)
+                        var operatorDeclaration = (OperatorDeclarationSyntax)node;
+
+                        return operatorDeclaration
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression));
+                            .WithBody(CreateBlock(expression, operatorDeclaration.SemicolonToken));
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
-                        return ((ConversionOperatorDeclarationSyntax)node)
+                        var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
+
+                        return conversionOperatorDeclaration
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression));
+                            .WithBody(CreateBlock(expression, conversionOperatorDeclaration.SemicolonToken));
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        return ((PropertyDeclarationSyntax)node)
-                            .WithAccessorList(CreateAccessorList(expression))
+                        var propertyDeclaration = (PropertyDeclarationSyntax)node;
+
+                        return propertyDeclaration
+                            .WithAccessorList(CreateAccessorList(expression, propertyDeclaration.SemicolonToken))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
-                        return ((IndexerDeclarationSyntax)node)
-                            .WithAccessorList(CreateAccessorList(expression))
+                        var indexerDeclaration = (IndexerDeclarationSyntax)node;
+
+                        return indexerDeclaration
+                            .WithAccessorList(CreateAccessorList(expression, indexerDeclaration.SemicolonToken))
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken));
                     }
@@ -106,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                         return accessor
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(expression));
+                            .WithBody(CreateBlock(expression, accessor.SemicolonToken));
                     }
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
@@ -117,7 +125,16 @@ namespace Roslynator.CSharp.Refactorings
                         return accessor
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(Block(ExpressionStatement(expression)));
+                            .WithBody(Block(ExpressionStatement(expression, accessor.SemicolonToken)));
+                    }
+                case SyntaxKind.LocalFunctionStatement:
+                    {
+                        var localFunction = (LocalFunctionStatementSyntax)node;
+
+                        return localFunction
+                            .WithExpressionBody(null)
+                            .WithSemicolonToken(default(SyntaxToken))
+                            .WithBody(CreateBlock(localFunction.ReturnType, expression, localFunction.SemicolonToken));
                     }
                 default:
                     {
@@ -127,50 +144,61 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static BlockSyntax CreateBlock(ExpressionSyntax expression)
+        private static BlockSyntax CreateBlock(ExpressionSyntax expression, SyntaxToken semicolon)
         {
             if (expression.IsKind(SyntaxKind.ThrowExpression))
             {
-                return Block(ExpressionStatement(expression));
+                return CreateBlockWithExpressionStatement(expression, semicolon);
             }
             else
             {
-                return Block(ReturnStatement(expression));
+                return CreateBlockWithReturnStatement(expression, semicolon);
             }
         }
 
-        private static BlockSyntax CreateBlock(ExpressionSyntax expression, MethodDeclarationSyntax methodDeclaration)
+        private static BlockSyntax CreateBlock(TypeSyntax returnType, ExpressionSyntax expression, SyntaxToken semicolon)
         {
-            TypeSyntax returnType = methodDeclaration.ReturnType;
-
             if (returnType == null
                 || returnType.IsVoid()
                 || expression.IsKind(SyntaxKind.ThrowExpression))
             {
-                return Block(ExpressionStatement(expression));
+                return CreateBlockWithExpressionStatement(expression, semicolon);
             }
             else
             {
-                return Block(ReturnStatement(expression));
+                return CreateBlockWithReturnStatement(expression, semicolon);
             }
         }
 
-        private static AccessorListSyntax CreateAccessorList(ExpressionSyntax expression)
+        private static AccessorListSyntax CreateAccessorList(ExpressionSyntax expression, SyntaxToken semicolon)
         {
-            BlockSyntax block = Block(ReturnStatement(expression));
+            BlockSyntax block = CreateBlockWithReturnStatement(expression, semicolon);
 
             AccessorListSyntax accessorList = AccessorList(GetAccessorDeclaration(block));
 
             if (expression.IsSingleLine())
             {
-                return accessorList
+                accessorList = accessorList
                     .RemoveWhitespaceOrEndOfLineTrivia()
                     .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
             }
-            else
-            {
-                return accessorList;
-            }
+
+            return accessorList;
+        }
+
+        private static BlockSyntax CreateBlockWithExpressionStatement(ExpressionSyntax expression, SyntaxToken semicolon)
+        {
+            return Block(ExpressionStatement(expression, semicolon));
+        }
+
+        private static BlockSyntax CreateBlockWithReturnStatement(ExpressionSyntax expression, SyntaxToken semicolon)
+        {
+            ReturnStatementSyntax returnStatement = ReturnStatement(
+                ReturnKeyword().WithLeadingTrivia(expression.GetLeadingTrivia()),
+                expression.WithoutLeadingTrivia(),
+                semicolon);
+
+            return Block(returnStatement);
         }
     }
 }
