@@ -25,8 +25,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeLogicalAndExpression(f), SyntaxKind.LogicalAndExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f), SyntaxKind.IfStatement);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                INamedTypeSymbol expressionType = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Expressions_Expression_1);
+
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeLogicalAndExpression(nodeContext, expressionType), SyntaxKind.LogicalAndExpression);
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeIfStatement(nodeContext, expressionType), SyntaxKind.IfStatement);
+            });
         }
     }
 }

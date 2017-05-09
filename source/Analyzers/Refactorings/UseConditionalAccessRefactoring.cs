@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseConditionalAccessRefactoring
     {
-        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol expressionType)
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
@@ -31,6 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                     MemberInvocationStatement memberInvocation;
                     if (MemberInvocationStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out memberInvocation)
                         && notEqualsToNull.Left.IsEquivalentTo(memberInvocation.Expression, topLevel: false)
+                        && !ifStatement.IsInExpressionTree(expressionType, context.SemanticModel, context.CancellationToken)
                         && !ifStatement.SpanContainsDirectives())
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, ifStatement);
@@ -39,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void AnalyzeLogicalAndExpression(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeLogicalAndExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol expressionType)
         {
             var logicalAndExpression = (BinaryExpressionSyntax)context.Node;
 
@@ -60,7 +61,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(expression, right);
 
-                        if (node?.SpanContainsDirectives() == false)
+                        if (node?.SpanContainsDirectives() == false
+                            && !logicalAndExpression.IsInExpressionTree(expressionType, context.SemanticModel, context.CancellationToken))
                         {
                             context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
                         }
