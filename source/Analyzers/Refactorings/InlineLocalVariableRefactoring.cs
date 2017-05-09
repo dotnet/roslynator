@@ -96,7 +96,8 @@ namespace Roslynator.CSharp.Refactorings
                                             }
                                         case SyntaxKind.ForEachStatement:
                                             {
-                                                if (value.IsSingleLine())
+                                                if (value.IsSingleLine()
+                                                    && !value.IsKind(SyntaxKind.ArrayInitializerExpression))
                                                 {
                                                     var forEachStatement = (ForEachStatementSyntax)nextStatement;
                                                     Analyze(context, statements, localDeclaration, forEachStatement.Expression);
