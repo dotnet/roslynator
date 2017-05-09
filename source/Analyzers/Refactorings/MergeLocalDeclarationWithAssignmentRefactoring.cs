@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
 
-                    if (variables.Any())
+                    if (variables.Count == 1)
                     {
                         StatementSyntax nextStatement = localDeclaration.NextStatement();
 
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                                 SemanticModel semanticModel = context.SemanticModel;
                                 CancellationToken cancellationToken = context.CancellationToken;
 
-                                LocalInfo localInfo = FindInitializedVariable((IdentifierNameSyntax)assignment.Left, variables, semanticModel, cancellationToken);
+                                LocalInfo localInfo = FindInitializedVariable((IdentifierNameSyntax)assignment.Left, variables[0], semanticModel, cancellationToken);
 
                                 if (localInfo.IsValid)
                                 {
@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static LocalInfo FindInitializedVariable(
             IdentifierNameSyntax identifierName,
-            SeparatedSyntaxList<VariableDeclaratorSyntax> declarators,
+            VariableDeclaratorSyntax variableDeclarator,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -104,21 +104,18 @@ namespace Roslynator.CSharp.Refactorings
 
             ILocalSymbol localSymbol = null;
 
-            foreach (VariableDeclaratorSyntax declarator in declarators)
+            if (string.Equals(variableDeclarator.Identifier.ValueText, name, StringComparison.Ordinal))
             {
-                if (string.Equals(declarator.Identifier.ValueText, name, StringComparison.Ordinal))
+                if (localSymbol == null)
                 {
+                    localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
+
                     if (localSymbol == null)
-                    {
-                        localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
-
-                        if (localSymbol == null)
-                            return default(LocalInfo);
-                    }
-
-                    if (localSymbol.Equals(semanticModel.GetDeclaredSymbol(declarator, cancellationToken)))
-                        return new LocalInfo(declarator, localSymbol);
+                        return default(LocalInfo);
                 }
+
+                if (localSymbol.Equals(semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken)))
+                    return new LocalInfo(variableDeclarator, localSymbol);
             }
 
             return default(LocalInfo);
