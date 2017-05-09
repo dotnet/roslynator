@@ -11,29 +11,49 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         public static void Foo()
         {
-            string s = "";
+            string x = "";
 
-            string x = (s == null) ? "" : s;
+            string x1 = (x == null) ? "" : x;
 
-            string x2 = (s != null) ? s : "";
+            string x2 = (x != null) ? x : "";
         }
 
         public static void Foo2()
         {
-            string s = "";
+            string x = "";
 
-            string x = s == null ? "" : s;
+            string x1 = x == null ? "" : x;
 
-            string x2 = s != null ? s : "";
+            string x2 = x != null ? x : "";
         }
+
+        public static void NullableType()
+        {
+            int? x = null;
+
+            int? x1 = (x == null) ? default(int?) : x;
+
+            int? x2 = (x != null) ? x : default(int?);
+        }
+
+        //n
 
         public static void Foo3()
         {
-            string s = "";
+            string x = "";
 
-            string x = (s != null) ? "" : s;
+            string x1 = (x != null) ? "" : x;
 
-            string x2 = (s == null) ? s : "";
+            string x2 = (x == null) ? x : "";
+        }
+
+        public static unsafe void PointerType()
+        {
+            int* x = null;
+
+            int* x1 = (x == null) ? default(int*) : x;
+
+            int* x2 = (x != null) ? x : default(int*);
         }
     }
 }
