@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void Analyze(SyntaxNodeAnalysisContext context, ConditionalExpressionSyntax conditionalExpression)
         {
             if (!conditionalExpression.ContainsDiagnostics
-                && IsFixable(conditionalExpression)
+                && IsFixable(conditionalExpression, context.SemanticModel, context.CancellationToken)
                 && conditionalExpression
                     .DescendantTrivia(conditionalExpression.Span)
                     .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
@@ -27,36 +27,35 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool IsFixable(ConditionalExpressionSyntax conditionalExpression)
+        private static bool IsFixable(ConditionalExpressionSyntax conditionalExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             ExpressionSyntax condition = conditionalExpression.Condition.WalkDownParentheses();
 
-            SyntaxKind kind = condition.Kind();
-
-            if (kind == SyntaxKind.EqualsExpression)
+            switch (condition.Kind())
             {
-                var binaryExpression = (BinaryExpressionSyntax)condition;
-                ExpressionSyntax left = binaryExpression.Left;
-
-                if (left?.IsMissing == false
-                    && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
-                {
-                    return left.IsEquivalentTo(
-                        conditionalExpression.WhenFalse.WalkDownParentheses(),
-                        topLevel: false);
-                }
+                case SyntaxKind.EqualsExpression:
+                    return IsFixable((BinaryExpressionSyntax)condition, conditionalExpression.WhenFalse, semanticModel, cancellationToken);
+                case SyntaxKind.NotEqualsExpression:
+                    return IsFixable((BinaryExpressionSyntax)condition, conditionalExpression.WhenTrue, semanticModel, cancellationToken);
+                default:
+                    return false;
             }
-            else if (kind == SyntaxKind.NotEqualsExpression)
-            {
-                var binaryExpression = (BinaryExpressionSyntax)condition;
-                ExpressionSyntax left = binaryExpression.Left;
+        }
 
-                if (left?.IsMissing == false
-                    && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
+        private static bool IsFixable(BinaryExpressionSyntax binaryExpression, ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            ExpressionSyntax left = binaryExpression.Left;
+
+            if (left?.IsMissing == false
+                && binaryExpression.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true
+                && left.IsEquivalentTo(expression.WalkDownParentheses(), topLevel: false))
+            {
+                ITypeSymbol symbol = semanticModel.GetTypeSymbol(left, cancellationToken);
+
+                if (symbol?.IsErrorType() == false)
                 {
-                    return left.IsEquivalentTo(
-                        conditionalExpression.WhenTrue.WalkDownParentheses(),
-                        topLevel: false);
+                    return symbol.IsReferenceType
+                        || symbol.IsConstructedFrom(SpecialType.System_Nullable_T);
                 }
             }
 
