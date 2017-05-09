@@ -3,9 +3,12 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp;
 
 namespace Roslynator
 {
@@ -168,6 +171,30 @@ namespace Roslynator
             ReportToken(context, descriptor, argumentList.OpenParenToken);
             ReportToken(context, descriptor, argumentList.CloseParenToken);
         }
+
+        internal static bool IsInExpressionTree(
+            this SyntaxNode node,
+            INamedTypeSymbol expressionType,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (expressionType != null)
+            {
+                for (SyntaxNode current = node; current != null; current = current.Parent)
+                {
+                    if (current.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression))
+                    {
+                        TypeInfo typeInfo = semanticModel.GetTypeInfo(current, cancellationToken);
+
+                        if (expressionType.Equals(typeInfo.ConvertedType?.OriginalDefinition))
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
         #endregion SyntaxNodeAnalysisContextExtensions
 
         #region SyntaxTreeAnalysisContextExtensions

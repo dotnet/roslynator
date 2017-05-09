@@ -2,8 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
-#pragma warning disable RCS1002, RCS1023, RCS1029, RCS1118, RCS1176
+#pragma warning disable RCS1002, RCS1016, RCS1023, RCS1029, RCS1118, RCS1163, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -21,6 +22,36 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             public void Method()
             {
+                string s = null;
+
+                if (s != null &&
+                    s.StartsWith("a")) { }
+
+                if (s != null
+                    && s.StartsWith("a") //
+                    && s.StartsWith("a")) { }
+
+                if (s != null &&
+                    s.Length > 1) { }
+
+                if (s != null &&
+                    !s.StartsWith("a")) { }
+
+                if (s != null
+                    && !s.StartsWith("a") //
+                    && !s.StartsWith("a")) { }
+
+                if (s != null &&
+                    (!s.StartsWith("a"))) { }
+
+                Dictionary<int, string> dic = null;
+
+                if (dic != null && dic[0].StartsWith("a")) { }
+
+                if (dic != null && dic[0].Length > 1) { }
+
+                if (dic != null && !dic[0].StartsWith("a")) { }
+
                 Foo x = null;
 
                 if (x != null)
@@ -65,45 +96,19 @@ namespace Roslynator.CSharp.Analyzers.Test
                 int? x2 = null;
 
                 if (x2 != null && x2.HasValue) { }
+
+                string value;
+                string result = (dic != null && dic.TryGetValue(0, out value)) ? value : null;
             }
-        }
 
-        private static void Method()
-        {
-            string s = null;
+            private static void A(object obj)
+            {
+                B(() => obj != null && obj.GetHashCode() == 0);
+            }
 
-            if (s != null &&
-                s.StartsWith("a")) { }
-
-            if (s != null
-                && s.StartsWith("a") //
-                && s.StartsWith("a")) { }
-
-            if (s != null &&
-                s.Length > 1) { }
-
-            if (s != null &&
-                !s.StartsWith("a")) { }
-
-            if (s != null
-                && !s.StartsWith("a") //
-                && !s.StartsWith("a")) { }
-
-            if (s != null &&
-                (!s.StartsWith("a"))) { }
-
-            Dictionary<int, string> dic = null;
-
-            if (dic != null && dic[0].StartsWith("a")) { }
-
-            if (dic != null && dic[0].Length > 1) { }
-
-            if (dic != null && !dic[0].StartsWith("a")) { }
-
-            // n
-
-            string value;
-            string result = (dic != null && dic.TryGetValue(0, out value)) ? value : null;
+            private static void B<T>(Expression<Func<T>> expression)
+            {
+            }
         }
     }
 }
