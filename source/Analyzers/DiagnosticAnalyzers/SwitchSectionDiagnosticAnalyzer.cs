@@ -20,7 +20,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.FormatSwitchSectionStatementOnSeparateLine,
                     DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
-                    DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
                     DiagnosticDescriptors.RemoveUnnecessaryCaseLabel,
                     DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection,
                     DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements,
@@ -50,8 +49,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.AddBreakStatementToSwitchSection,
                     switchSection);
             }
-
-            RemoveRedundantDefaultSwitchSectionRefactoring.Analyze(context, switchSection);
 
             RemoveUnnecessaryCaseLabelRefactoring.Analyze(context, switchSection);
 

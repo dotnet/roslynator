@@ -13,19 +13,37 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantDefaultSwitchSectionRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, SwitchSectionSyntax switchSection)
+        internal static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
-            if (switchSection.IsParentKind(SyntaxKind.SwitchStatement)
-                && switchSection.Labels.Any(SyntaxKind.DefaultSwitchLabel)
-                && ContainsOnlyBreakStatement(switchSection)
-                && switchSection
-                    .DescendantTrivia(switchSection.Span)
-                    .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            var switchStatement = (SwitchStatementSyntax)context.Node;
+
+            if (!switchStatement.ContainsDiagnostics)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection,
-                    switchSection);
+                SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+
+                SwitchSectionSyntax defaultSection = FindDefaultSection(sections);
+
+                if (defaultSection != null
+                    && ContainsOnlyBreakStatement(defaultSection)
+                    && !switchStatement.DescendantNodes(sections.Span).Any(f => f.IsKind(SyntaxKind.GotoDefaultStatement))
+                    && defaultSection
+                        .DescendantTrivia(defaultSection.Span)
+                        .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection, defaultSection);
+                }
             }
+        }
+
+        private static SwitchSectionSyntax FindDefaultSection(SyntaxList<SwitchSectionSyntax> sections)
+        {
+            foreach (SwitchSectionSyntax section in sections)
+            {
+                if (section.Labels.Any(SyntaxKind.DefaultSwitchLabel))
+                    return section;
+            }
+
+            return null;
         }
 
         private static bool ContainsOnlyBreakStatement(SwitchSectionSyntax switchSection)
