@@ -20,38 +20,41 @@ namespace Roslynator.CSharp.Refactorings
         {
             var initializer = (InitializerExpressionSyntax)context.Node;
 
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-
-            if (expressions.Any()
-                && expressions.All(f => f.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                && initializer.IsParentKind(SyntaxKind.ObjectCreationExpression)))
+            if (!initializer.ContainsDiagnostics)
             {
-                var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
+                SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-                var complexElementInitializer = (InitializerExpressionSyntax)expressions.First();
-
-                SeparatedSyntaxList<ExpressionSyntax> expressions2 = complexElementInitializer.Expressions;
-
-                if (expressions2.Count == 2)
+                if (expressions.Any()
+                    && expressions.All(f => f.IsKind(SyntaxKind.ComplexElementInitializerExpression)
+                    && initializer.IsParentKind(SyntaxKind.ObjectCreationExpression)))
                 {
-                    IPropertySymbol propertySymbol = FindIndexerSymbol(
-                        objectCreationExpression,
-                        expressions2,
-                        context.SemanticModel,
-                        context.CancellationToken);
+                    var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
 
-                    if (propertySymbol != null)
+                    var complexElementInitializer = (InitializerExpressionSyntax)expressions.First();
+
+                    SeparatedSyntaxList<ExpressionSyntax> expressions2 = complexElementInitializer.Expressions;
+
+                    if (expressions2.Count == 2)
                     {
-                        ITypeSymbol keyType = propertySymbol.Parameters[0].Type;
-                        ITypeSymbol valueType = propertySymbol.Type;
+                        IPropertySymbol propertySymbol = FindIndexerSymbol(
+                            objectCreationExpression,
+                            expressions2,
+                            context.SemanticModel,
+                            context.CancellationToken);
 
-                        if (expressions
-                            .Skip(1)
-                            .All(f => CanRefactor(((InitializerExpressionSyntax)f).Expressions, keyType, valueType, context.SemanticModel)))
+                        if (propertySymbol != null)
                         {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.UseCSharp6DictionaryInitializer,
-                                Location.Create(initializer.SyntaxTree, expressions.Span));
+                            ITypeSymbol keyType = propertySymbol.Parameters[0].Type;
+                            ITypeSymbol valueType = propertySymbol.Type;
+
+                            if (expressions
+                                .Skip(1)
+                                .All(f => CanRefactor(((InitializerExpressionSyntax)f).Expressions, keyType, valueType, context.SemanticModel)))
+                            {
+                                context.ReportDiagnostic(
+                                    DiagnosticDescriptors.UseCSharp6DictionaryInitializer,
+                                    Location.Create(initializer.SyntaxTree, expressions.Span));
+                            }
                         }
                     }
                 }
@@ -116,13 +119,13 @@ namespace Roslynator.CSharp.Refactorings
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken)
         {
-            SeparatedSyntaxList<ExpressionSyntax> newExpressions = initializer
-                .Expressions
-                .Select(f => CreateNewExpression((InitializerExpressionSyntax)f))
-                .ToSeparatedSyntaxList();
+            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+
+            for (int i = 0; i < expressions.Count; i++)
+                expressions = expressions.ReplaceAt(i, CreateNewExpression((InitializerExpressionSyntax)expressions[i]));
 
             InitializerExpressionSyntax newInitializer = initializer
-                .WithExpressions(newExpressions)
+                .WithExpressions(expressions)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);

@@ -11,9 +11,9 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         private static readonly Dictionary<string, string> _dic = new Dictionary<string, string>()
         {
-            { "A", "A" },
-            { "B", "B" },
-            { "C", "C" },
+            { "A", "A" }, //a
+            { "B", "B" }, //b
+            { "C", "C" }, //c
         };
 
         public static void GetValue()
