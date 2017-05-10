@@ -26,6 +26,8 @@ namespace Roslynator.CSharp.Analyzers.Test
                 { 0, "1" }
             };
 
+            var dic2 = new DerivedDictionary<string, string>() { { "a", "b" } };
+
             //n
 
             dic = new Dictionary<int, string>() { [0] = null };
@@ -53,6 +55,10 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             public IEnumerator<int> GetEnumerator() => null;
             IEnumerator IEnumerable.GetEnumerator() => null;
+        }
+
+        public class DerivedDictionary<TKey, TValue> : Dictionary<TKey, TValue>
+        {
         }
     }
 }
