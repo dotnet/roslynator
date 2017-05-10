@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeSymbol?.IsErrorType() == false)
             {
-                foreach (ISymbol member in typeSymbol.GetMembers("this[]"))
+                foreach (ISymbol member in semanticModel.LookupSymbols(objectCreationExpression.SpanStart, typeSymbol, "this[]"))
                 {
                     var propertySymbol = (IPropertySymbol)member;
 
