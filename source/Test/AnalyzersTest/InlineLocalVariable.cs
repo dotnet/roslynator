@@ -7,7 +7,7 @@ using System.Linq.Expressions;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1118, RCS1176, RCS1177, RCS1185
+#pragma warning disable RCS1054, RCS1118, RCS1176, RCS1177, RCS1185
     public static class InlineLocalVariable
     {
         private static void FooLocalDeclaration()
@@ -91,6 +91,14 @@ namespace Roslynator.CSharp.Analyzers.Test
         }
 
         // n
+
+        private static void FooExpressionStatement3()
+        {
+            string s = null;
+
+            string i = "i";
+            i = i;
+        }
 
         private static void Foo()
         {
