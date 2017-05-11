@@ -123,7 +123,7 @@ namespace Roslynator
             if (trivia == null)
                 throw new ArgumentNullException(nameof(trivia));
 
-            return node.WithLeadingTrivia(trivia.Concat(node.GetLeadingTrivia()));
+            return node.WithLeadingTrivia(node.GetLeadingTrivia().InsertRange(0, trivia));
         }
 
         public static TNode PrependToLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
@@ -132,6 +132,44 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(node));
 
             return node.WithLeadingTrivia(node.GetLeadingTrivia().Insert(0, trivia));
+        }
+
+        public static TNode PrependToTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (trivia == null)
+                throw new ArgumentNullException(nameof(trivia));
+
+            return node.WithTrailingTrivia(node.GetTrailingTrivia().InsertRange(0, trivia));
+        }
+
+        public static TNode PrependToTrailingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.WithTrailingTrivia(node.GetTrailingTrivia().Insert(0, trivia));
+        }
+
+        public static TNode AppendToLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (trivia == null)
+                throw new ArgumentNullException(nameof(trivia));
+
+            return node.WithLeadingTrivia(node.GetLeadingTrivia().AddRange(trivia));
+        }
+
+        public static TNode AppendToLeadingTrivia<TNode>(this TNode node, SyntaxTrivia trivia) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.WithLeadingTrivia(node.GetLeadingTrivia().Add(trivia));
         }
 
         public static TNode AppendToTrailingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
@@ -355,12 +393,25 @@ namespace Roslynator
             if (trivia == null)
                 throw new ArgumentNullException(nameof(trivia));
 
-            return token.WithLeadingTrivia(trivia.Concat(token.LeadingTrivia));
+            return token.WithLeadingTrivia(token.LeadingTrivia.InsertRange(0, trivia));
         }
 
         public static SyntaxToken PrependToLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
         {
             return token.WithLeadingTrivia(token.LeadingTrivia.Insert(0, trivia));
+        }
+
+        public static SyntaxToken PrependToTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
+        {
+            if (trivia == null)
+                throw new ArgumentNullException(nameof(trivia));
+
+            return token.WithTrailingTrivia(token.TrailingTrivia.InsertRange(0, trivia));
+        }
+
+        public static SyntaxToken PrependToTrailingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
+        {
+            return token.WithTrailingTrivia(token.TrailingTrivia.Insert(0, trivia));
         }
 
         public static SyntaxToken AppendToTrailingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
@@ -374,6 +425,19 @@ namespace Roslynator
         public static SyntaxToken AppendToTrailingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
         {
             return token.WithTrailingTrivia(token.TrailingTrivia.Add(trivia));
+        }
+
+        public static SyntaxToken AppendToLeadingTrivia(this SyntaxToken token, IEnumerable<SyntaxTrivia> trivia)
+        {
+            if (trivia == null)
+                throw new ArgumentNullException(nameof(trivia));
+
+            return token.WithLeadingTrivia(token.LeadingTrivia.AddRange(trivia));
+        }
+
+        public static SyntaxToken AppendToLeadingTrivia(this SyntaxToken token, SyntaxTrivia trivia)
+        {
+            return token.WithLeadingTrivia(token.LeadingTrivia.Add(trivia));
         }
 
         public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxToken token)
