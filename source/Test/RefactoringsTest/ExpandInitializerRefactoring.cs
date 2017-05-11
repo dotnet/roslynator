@@ -12,17 +12,25 @@ namespace Roslynator.CSharp.Refactorings.Test
 
             entity = new Entity() { Name = "Name", Value = 0 };
 
+            entity = new Entity { Name = "Name", Value = 0 };
+
             var items = new List<string>() { "a", "b", "c" };
 
             items = new List<string>() { "a", "b", "c" };
+
+            items = new List<string> { "a", "b", "c" };
 
             var dic = new Dictionary<string, int>() { ["key1"] = 1, ["key2"] = 2 };
 
             dic = new Dictionary<string, int>() { ["key1"] = 1, ["key2"] = 2 };
 
+            dic = new Dictionary<string, int> { ["key1"] = 1, ["key2"] = 2 };
+
             var dic2 = new Dictionary<string, int>() { { "key1", 1 }, { "key2", 2 } };
 
             dic2 = new Dictionary<string, int>() { { "key1", 1 }, { "key2", 2 } };
+
+            dic2 = new Dictionary<string, int> { { "key1", 1 }, { "key2", 2 } };
 
             var arr = new string[] { "a", "b", "c" };
         }

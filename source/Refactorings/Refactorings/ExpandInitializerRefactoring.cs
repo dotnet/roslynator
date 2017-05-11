@@ -236,19 +236,32 @@ namespace Roslynator.CSharp.Refactorings
             StatementContainer statementContainer,
             StatementSyntax statement,
             InitializerExpressionSyntax initializer,
-            ExpressionSyntax expression,
+            ExpressionSyntax initializedExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionStatementSyntax[] expressions = Refactor(initializer, expression).ToArray();
+            ExpressionStatementSyntax[] expressions = CreateExpressionStatements(initializer, initializedExpression).ToArray();
 
             expressions[expressions.Length - 1] = expressions[expressions.Length - 1]
                 .WithTrailingTrivia(statement.GetTrailingTrivia());
+
+            var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
+
+            ObjectCreationExpressionSyntax newObjectCreationExpression = objectCreationExpression.WithInitializer(null);
+
+            if (newObjectCreationExpression.ArgumentList == null)
+            {
+                TypeSyntax type = newObjectCreationExpression.Type;
+
+                newObjectCreationExpression = newObjectCreationExpression
+                    .WithArgumentList(ArgumentList().WithTrailingTrivia(type.GetTrailingTrivia()))
+                    .WithType(type.WithoutTrailingTrivia());
+            }
 
             SyntaxList<StatementSyntax> statements = statementContainer.Statements;
 
             int index = statements.IndexOf(statement);
 
-            StatementSyntax newStatement = statement.RemoveNode(initializer, SyntaxRemoveOptions.KeepNoTrivia);
+            StatementSyntax newStatement = statement.ReplaceNode(objectCreationExpression, newObjectCreationExpression);
 
             SyntaxKind statementKind = statement.Kind();
 
@@ -276,7 +289,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(statementContainer.Node, newNode, cancellationToken);
         }
 
-        private static IEnumerable<ExpressionStatementSyntax> Refactor(
+        private static IEnumerable<ExpressionStatementSyntax> CreateExpressionStatements(
             InitializerExpressionSyntax initializer,
             ExpressionSyntax initializedExpression)
         {
