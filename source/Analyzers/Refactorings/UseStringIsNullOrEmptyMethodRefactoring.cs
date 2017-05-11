@@ -20,8 +20,8 @@ namespace Roslynator.CSharp.Refactorings
             if (!binaryExpression.ContainsDiagnostics
                 && !binaryExpression.SpanContainsDirectives())
             {
-                ExpressionSyntax left = binaryExpression.Left;
-                ExpressionSyntax right = binaryExpression.Right;
+                ExpressionSyntax left = binaryExpression.Left.WalkDownParentheses();
+                ExpressionSyntax right = binaryExpression.Right.WalkDownParentheses();
 
                 switch (binaryExpression.Kind())
                 {
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax left = binaryExpression.Left;
+            ExpressionSyntax left = binaryExpression.Left.WalkDownParentheses();
             ExpressionSyntax expression = ((BinaryExpressionSyntax)left).Left;
 
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
