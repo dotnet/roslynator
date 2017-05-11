@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (argumentList?.Arguments.Any() == true)
                         {
-                            return HasPublicWritableIndexer(
+                            return HasAccessibleIndexer(
                                 argumentList.Arguments[0].Expression,
                                 objectCreationExpression,
                                 semanticModel,
@@ -152,18 +152,18 @@ namespace Roslynator.CSharp.Refactorings
                     SeparatedSyntaxList<ExpressionSyntax> expressions = initializerExpression.Expressions;
 
                     if (expressions.Any())
-                        return HasPublicWritableIndexer(expressions[0], objectCreationExpression, semanticModel, cancellationToken);
+                        return HasAccessibleIndexer(expressions[0], objectCreationExpression, semanticModel, cancellationToken);
                 }
                 else
                 {
-                    return HasPublicAddMethod(expression, objectCreationExpression, semanticModel, cancellationToken);
+                    return HasAccessibleAddMethod(expression, objectCreationExpression, semanticModel, cancellationToken);
                 }
             }
 
             return false;
         }
 
-        private static bool HasPublicAddMethod(
+        private static bool HasAccessibleAddMethod(
             ExpressionSyntax expression,
             ObjectCreationExpressionSyntax objectCreationExpression,
             SemanticModel semanticModel,
@@ -173,20 +173,21 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeSymbol != null)
             {
-                foreach (ISymbol symbol in typeSymbol.GetMembers("Add"))
+                foreach (ISymbol symbol in semanticModel.LookupSymbols(objectCreationExpression.SpanStart, typeSymbol, "Add"))
                 {
-                    if (symbol.IsMethod())
+                    if (!symbol.IsStatic
+                        && symbol.IsMethod())
                     {
                         var methodSymbol = (IMethodSymbol)symbol;
 
-                        if (methodSymbol.IsPublic()
-                            && !methodSymbol.IsStatic
-                            && methodSymbol
-                                .SingleParameterOrDefault()?
-                                .Type
-                                .Equals(semanticModel.GetTypeInfo(expression, cancellationToken)) == true)
+                        IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
+
+                        if (parameter != null)
                         {
-                            return true;
+                            TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
+
+                            if (parameter.Type.Equals(typeInfo.ConvertedType))
+                                return true;
                         }
                     }
                 }
@@ -195,7 +196,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool HasPublicWritableIndexer(
+        private static bool HasAccessibleIndexer(
             ExpressionSyntax expression,
             ObjectCreationExpressionSyntax objectCreationExpression,
             SemanticModel semanticModel,
@@ -205,24 +206,23 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeSymbol != null)
             {
-                foreach (ISymbol member in typeSymbol.GetMembers("this[]"))
+                int position = objectCreationExpression.SpanStart;
+
+                foreach (ISymbol member in semanticModel.LookupSymbols(position, typeSymbol, "this[]"))
                 {
-                    if (member.IsPublic()
-                        && !member.IsStatic
-                        && member.IsProperty())
+                    var propertySymbol = (IPropertySymbol)member;
+
+                    if (!propertySymbol.IsReadOnly
+                        && semanticModel.IsAccessible(position, propertySymbol.SetMethod))
                     {
-                        var propertySymbol = (IPropertySymbol)member;
+                        IParameterSymbol parameter = propertySymbol.SingleParameterOrDefault();
 
-                        if (!propertySymbol.IsReadOnly)
+                        if (parameter != null)
                         {
-                            ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
+                            TypeInfo typeInfo = semanticModel.GetTypeInfo(expression, cancellationToken);
 
-                            if (parameters.Length == 1)
-                            {
-                                ITypeSymbol expressionSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
-
-                                return expressionSymbol?.Equals(propertySymbol.Parameters[0].Type) == true;
-                            }
+                            if (parameter.Type.Equals(typeInfo.ConvertedType))
+                                return true;
                         }
                     }
                 }
