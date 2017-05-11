@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
+#pragma warning disable RCS1176
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class CombineEnumerableWhereMethodChain
@@ -18,6 +20,20 @@ namespace Roslynator.CSharp.Analyzers.Test
             q = items.Where((f, index) => true).Where((f, index) => false);
 
             q = ia.Where((f, index) => true).Where((f, index) => false);
+
+            q = ia.Where((f, index) => true).Where((f, index) => false);
+
+            q = items
+                .Where((f, index) => true)
+                .Where((f, index) => false);
+
+            q = items
+                //a
+                .Where(f => true) //b
+                                  //c
+                .Where(f => false); //d
+
+            //n
 
             q = items.Where((f, index) => true).Where(f => false);
 

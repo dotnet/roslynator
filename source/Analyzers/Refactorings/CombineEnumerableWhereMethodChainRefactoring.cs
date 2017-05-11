@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,6 +12,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.Utilities;
 using static Roslynator.CSharp.CSharpFactory;
+using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -182,6 +184,8 @@ namespace Roslynator.CSharp.Refactorings
 
             var invocation2 = (InvocationExpressionSyntax)memberAccess.Expression;
 
+            var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
+
             ExpressionSyntax expression1 = GetCondition(invocation);
             ExpressionSyntax expression2 = GetCondition(invocation2);
 
@@ -191,7 +195,19 @@ namespace Roslynator.CSharp.Refactorings
                     expression2.Parenthesize().WithSimplifierAnnotation(),
                     expression1.Parenthesize().WithSimplifierAnnotation()));
 
-            newInvocation = newInvocation.WithFormatterAnnotation();
+            var newMemberAccess = (MemberAccessExpressionSyntax)newInvocation.Expression;
+
+            SyntaxTriviaList trailingTrivia = invocation.GetTrailingTrivia();
+
+            IEnumerable<SyntaxTrivia> trivia = invocation.DescendantTrivia(TextSpan.FromBounds(invocation2.Span.End, memberAccess.Name.SpanStart));
+
+            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                trailingTrivia = trailingTrivia.InsertRange(0, trivia);
+
+            newInvocation = newInvocation
+                .WithExpression(newMemberAccess)
+                .WithTrailingTrivia(trailingTrivia)
+                .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
         }
