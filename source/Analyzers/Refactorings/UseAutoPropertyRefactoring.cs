@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -10,7 +11,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -43,6 +43,7 @@ namespace Roslynator.CSharp.Refactorings
                             && propertySymbol.IsStatic == fieldSymbol.IsStatic
                             && propertySymbol.Type.Equals(fieldSymbol.Type)
                             && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
+                            && !IsBackingFieldUsedInRefOrOutArgument(context, fieldSymbol, property)
                             && CheckPreprocessorDirectives(property, variableDeclarator))
                         {
                             context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
@@ -52,6 +53,65 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static bool IsBackingFieldUsedInRefOrOutArgument(
+            SyntaxNodeAnalysisContext context,
+            IFieldSymbol fieldSymbol,
+            PropertyDeclarationSyntax propertyDeclaration)
+        {
+            ImmutableArray<SyntaxReference> syntaxReferences = fieldSymbol.ContainingType.DeclaringSyntaxReferences;
+
+            if (syntaxReferences.Length == 1)
+            {
+                return IsBackingFieldUsedInRefOrOutArgument(fieldSymbol, propertyDeclaration.Parent, context.SemanticModel, context.CancellationToken);
+            }
+            else
+            {
+                foreach (SyntaxReference syntaxReference in syntaxReferences)
+                {
+                    SyntaxNode declaration = syntaxReference.GetSyntax(context.CancellationToken);
+
+                    SemanticModel semanticModel = (declaration.SyntaxTree == context.SemanticModel.SyntaxTree)
+                        ? context.SemanticModel
+                        : context.Compilation.GetSemanticModel(declaration.SyntaxTree);
+
+                    if (IsBackingFieldUsedInRefOrOutArgument(fieldSymbol, declaration, semanticModel, context.CancellationToken))
+                        return true;
+                }
+
+                return false;
+            }
+        }
+
+        private static bool IsBackingFieldUsedInRefOrOutArgument(
+            IFieldSymbol fieldSymbol,
+            SyntaxNode declaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            foreach (SyntaxNode node in declaration.DescendantNodes())
+            {
+                if (node.IsKind(SyntaxKind.IdentifierName))
+                {
+                    var identifierName = (IdentifierNameSyntax)node;
+
+                    if (string.Equals(identifierName.Identifier.ValueText, fieldSymbol.Name, StringComparison.Ordinal)
+                        && fieldSymbol.Equals(semanticModel.GetSymbol(identifierName, cancellationToken)))
+                    {
+                        for (SyntaxNode current = node.Parent; current != null; current = current.Parent)
+                        {
+                            if (current.IsKind(SyntaxKind.Argument)
+                                && ((ArgumentSyntax)current).RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword, SyntaxKind.OutKeyword))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static IFieldSymbol GetBackingFieldSymbol(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
