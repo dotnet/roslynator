@@ -93,6 +93,69 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         //n
 
+        private string _propertyRef = "";
+        private string _propertyOut = "";
+
+        public string PropertyRef
+        {
+            get { return _propertyRef; }
+            set { _propertyRef = value; }
+        }
+
+        public string PropertyOut
+        {
+            get { return _propertyOut; }
+            set { _propertyOut = value; }
+        }
+
+        private string RefMethod(ref string p1)
+        {
+            RefMethod(ref _propertyRef);
+
+            return p1;
+        }
+
+        private bool OutMethod(out string p1)
+        {
+            p1 = null;
+            return false;
+        }
+
+        private class UseAutoPropertyRefOut
+        {
+            private string _propertyRef = "";
+            private string _propertyOut = "";
+
+            public string PropertyRef
+            {
+                get { return _propertyRef; }
+                set { _propertyRef = value; }
+            }
+
+            public string PropertyOut
+            {
+                get { return _propertyOut; }
+                set { _propertyOut = value; }
+            }
+
+            private void VoidMethod()
+            {
+                RefMethod(ref _propertyRef);
+                OutMethod(out _propertyOut);
+            }
+
+            private string RefMethod(ref string p1)
+            {
+                return p1;
+            }
+
+            private bool OutMethod(out string p1)
+            {
+                p1 = null;
+                return false;
+            }
+        }
+
         private class Foo : IFoo
         {
             private string _property;
