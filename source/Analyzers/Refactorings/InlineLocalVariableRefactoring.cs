@@ -319,25 +319,36 @@ namespace Roslynator.CSharp.Refactorings
         {
             VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
 
-            ExpressionSyntax value = variableDeclaration
+            ExpressionSyntax expression = variableDeclaration
                 .Variables
                 .First()
                 .Initializer
-                .Value
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation();
+                .Value;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, cancellationToken);
-
-            if (typeSymbol.SupportsExplicitDeclaration())
+            if (expression.IsKind(SyntaxKind.ArrayInitializerExpression))
             {
-                TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, localDeclaration.SpanStart);
+                expression = SyntaxFactory.ArrayCreationExpression(
+                    (ArrayTypeSyntax)variableDeclaration.Type.WithoutTrivia(),
+                    (InitializerExpressionSyntax)expression);
 
-                return SyntaxFactory.CastExpression(type, value).WithSimplifierAnnotation();
+                return expression.WithFormatterAnnotation();
             }
             else
             {
-                return value;
+                expression = expression
+                    .Parenthesize(moveTrivia: true)
+                    .WithSimplifierAnnotation();
+
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, cancellationToken);
+
+                if (typeSymbol.SupportsExplicitDeclaration())
+                {
+                    TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, localDeclaration.SpanStart);
+
+                    expression = SyntaxFactory.CastExpression(type, expression).WithSimplifierAnnotation();
+                }
+
+                return expression;
             }
         }
 

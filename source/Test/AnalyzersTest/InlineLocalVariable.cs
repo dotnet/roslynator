@@ -19,6 +19,9 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             Expression<Func<object, bool>> e = f => false;
             LambdaExpression l = e;
+
+            string[] arr1 = { "" };
+            string[] arr2 = arr1;
         }
 
         private static void LocalDeclaration2()
@@ -31,6 +34,7 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             string s = "";
             LambdaExpression l = null;
+            string[] arr2 = null;
 
             // ...
             const string i = "i";
@@ -39,6 +43,9 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             Expression<Func<object, bool>> e = f => false;
             l = e;
+
+            string[] arr1 = { "" };
+            arr2 = arr1;
 
             string s2 = "";
 #if DEBUG
@@ -88,6 +95,12 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             Expression<Func<object, bool>> e = f => false;
             return e;
+        }
+
+        public static string[] FooReturn3()
+        {
+            string[] arr1 = { "" };
+            return arr1;
         }
 
         // n
