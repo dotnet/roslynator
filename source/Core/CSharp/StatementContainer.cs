@@ -9,7 +9,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp
 {
-    public struct StatementContainer
+    public struct StatementContainer : IEquatable<StatementContainer>
     {
         internal StatementContainer(BlockSyntax block)
             : this()
@@ -144,6 +144,38 @@ namespace Roslynator.CSharp
                 return new StatementContainer(SwitchSection.WithStatements(statements));
 
             return default(StatementContainer);
+        }
+
+        public bool Equals(StatementContainer other)
+        {
+            return Node == other.Node;
+        }
+
+        public override bool Equals(object obj)
+        {
+            return obj is StatementContainer
+                && Equals((StatementContainer)obj);
+        }
+
+        public override int GetHashCode()
+        {
+            if (IsBlock)
+                return Block.GetHashCode();
+
+            if (IsSwitchSection)
+                return SwitchSection.GetHashCode();
+
+            return 0;
+        }
+
+        public static bool operator ==(StatementContainer left, StatementContainer right)
+        {
+            return left.Equals(right);
+        }
+
+        public static bool operator !=(StatementContainer left, StatementContainer right)
+        {
+            return !left.Equals(right);
         }
     }
 }
