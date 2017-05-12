@@ -6,7 +6,7 @@ using System.Collections.ObjectModel;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1016, RCS1085
+#pragma warning disable RCS1016, RCS1085, RCS1100
     public static class RemoveRedundantOverridingMember
     {
         public class Base
@@ -60,11 +60,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             public override string MethodWithParams2(int[] values) => base.MethodWithParams2(values);
 
-            public string MethodWithParams2_() => MethodWithParams2(1, 2, 3);
-
             public override string MethodWithArray(params int[] values) => base.MethodWithArray(values);
-
-            public string MethodWithArray_() => MethodWithArray(1, 2, 3);
 
             public override void VoidMethod() => base.VoidMethod();
 
@@ -78,6 +74,10 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
                 get { return base.ReadOnlyProperty; }
             }
+
+            public string MethodWithArray_() => MethodWithArray(1, 2, 3);
+
+            public string MethodWithParams2_() => MethodWithParams2(1, 2, 3);
 
             public override string this[int index]
             {
@@ -130,6 +130,58 @@ namespace Roslynator.CSharp.Analyzers.Test
                 set { base[index] = value; }
             }
         }
+
+        public class Derived4 : Base
+        {
+            /// <summary>
+            /// x
+            /// </summary>
+            public override string Method()
+            {
+                return base.Method();
+            }
+
+            /// <summary>
+            /// x
+            /// </summary>
+            public override string Property
+            {
+                get { return base.Property; }
+                set { base.Property = value; }
+            }
+
+            /// <summary>
+            /// x
+            /// </summary>
+            /// <param name="index"></param>
+            public override string this[int index]
+            {
+                get { return base[index]; }
+                set { base[index] = value; }
+            }
+        }
+
+        public class Derived5 : Base
+        {
+            /** <summary>x</summary> */
+            public override string Method()
+            {
+                return base.Method();
+            }
+
+            /** <summary>x</summary> */
+            public override string Property
+            {
+                get { return base.Property; }
+                set { base.Property = value; }
+            }
+
+            /** <summary>x</summary> */
+            public override string this[int index]
+            {
+                get { return base[index]; }
+                set { base[index] = value; }
+            }
+        }
     }
-#pragma warning restore RCS1016, RCS1085
 }
