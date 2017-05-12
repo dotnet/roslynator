@@ -2838,6 +2838,29 @@ namespace Roslynator.CSharp
 
             return false;
         }
+
+        internal static bool IsInExpressionTree(
+            this SyntaxNode node,
+            INamedTypeSymbol expressionType,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (expressionType != null)
+            {
+                for (SyntaxNode current = node; current != null; current = current.Parent)
+                {
+                    if (current.IsKind(SyntaxKind.SimpleLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression))
+                    {
+                        TypeInfo typeInfo = semanticModel.GetTypeInfo(current, cancellationToken);
+
+                        if (expressionType.Equals(typeInfo.ConvertedType?.OriginalDefinition))
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
         #endregion SyntaxNode
 
         #region SyntaxToken
