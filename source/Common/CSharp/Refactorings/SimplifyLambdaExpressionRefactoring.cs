@@ -99,8 +99,6 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ReturnStatementSyntax)statement).Expression;
                 case SyntaxKind.ExpressionStatement:
                     return ((ExpressionStatementSyntax)statement).Expression;
-                case SyntaxKind.ThrowStatement:
-                    return ((ThrowStatementSyntax)statement).Expression;
             }
 
             return null;
@@ -114,8 +112,6 @@ namespace Roslynator.CSharp.Refactorings
                     return ((ReturnStatementSyntax)statement).Expression;
                 case SyntaxKind.ExpressionStatement:
                     return ((ExpressionStatementSyntax)statement).Expression;
-                case SyntaxKind.ThrowStatement:
-                    return SyntaxFactory.ThrowExpression(((ThrowStatementSyntax)statement).Expression);
             }
 
             return null;
