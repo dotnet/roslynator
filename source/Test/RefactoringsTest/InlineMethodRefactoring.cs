@@ -23,6 +23,8 @@ namespace Roslynator.CSharp.Refactorings.Test
 
             x = Entity.Method(x, y);
 
+            x = Entity.GenericMethod(x, y);
+
             x = Entity.MethodWithExpressionBody(x, y);
 
             Entity.VoidMethod2(x, y);
@@ -74,6 +76,12 @@ namespace Roslynator.CSharp.Refactorings.Test
                 return p1 + p2 + p2;
             }
 #endif
+
+            public static Entity GenericMethod<TEntity>(TEntity p1, TEntity p2) where TEntity : Entity
+            {
+                return p1 + p2 + p2;
+            }
+
             /// <summary>
             /// 
             /// </summary>
