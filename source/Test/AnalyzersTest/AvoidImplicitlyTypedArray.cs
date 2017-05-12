@@ -9,5 +9,10 @@ namespace Roslynator.CSharp.Analyzers.Test
             var items = new[] { "" };
             var items2 = new[] { abcde };
         }
+
+        private static readonly string[][] _values = new[]
+        {
+            /**/new[] { "" },
+        };
     }
 }
