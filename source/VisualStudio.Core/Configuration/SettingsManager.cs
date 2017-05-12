@@ -17,7 +17,7 @@ namespace Roslynator.Configuration
 
         public Settings VisualStudioSettings { get; } = new Settings();
 
-        public ConfigFileSettings ConfigFileSettings { get; } = new ConfigFileSettings();
+        public ConfigFileSettings ConfigFileSettings { get; set; }
 
         public void UpdateVisualStudioSettings(GeneralOptionsPage generalOptionsPage)
         {
@@ -41,7 +41,7 @@ namespace Roslynator.Configuration
             VisualStudioSettings.ApplyTo(settings);
 
             if (UseConfigFile)
-                ConfigFileSettings.ApplyTo(settings);
+                ConfigFileSettings?.ApplyTo(settings);
         }
     }
 }
