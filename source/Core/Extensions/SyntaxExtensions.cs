@@ -487,6 +487,34 @@ namespace Roslynator
         {
             return tokenList.Replace(tokenList[index], newToken);
         }
+
+        public static bool Any(this SyntaxTokenList list, Func<SyntaxToken, bool> predicate)
+        {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            foreach (SyntaxToken token in list)
+            {
+                if (predicate(token))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool All(this SyntaxTokenList list, Func<SyntaxToken, bool> predicate)
+        {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            foreach (SyntaxToken token in list)
+            {
+                if (!predicate(token))
+                    return false;
+            }
+
+            return true;
+        }
         #endregion SyntaxTokenList
 
         #region SyntaxTrivia
@@ -571,6 +599,34 @@ namespace Roslynator
         public static SyntaxTriviaList ReplaceAt(this SyntaxTriviaList triviaList, int index, SyntaxTrivia newTrivia)
         {
             return triviaList.Replace(triviaList[index], newTrivia);
+        }
+
+        public static bool Any(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
+        {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            foreach (SyntaxTrivia trivia in list)
+            {
+                if (predicate(trivia))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool All(this SyntaxTriviaList list, Func<SyntaxTrivia, bool> predicate)
+        {
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
+            foreach (SyntaxTrivia trivia in list)
+            {
+                if (!predicate(trivia))
+                    return false;
+            }
+
+            return true;
         }
         #endregion SyntaxTriviaList
     }
