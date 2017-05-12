@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -22,22 +23,53 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (syntaxReferences.Length == 1)
                 {
-                    var declaration = syntaxReferences[0].GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
+                    var memberDeclaration = syntaxReferences[0].GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
 
-                    if (declaration != null)
+                    if (memberDeclaration != null)
                     {
-                        SyntaxToken partialToken = declaration.GetModifiers()
+                        SyntaxToken partialKeyword = memberDeclaration.GetModifiers()
                             .FirstOrDefault(f => f.IsKind(SyntaxKind.PartialKeyword));
 
-                        if (partialToken.IsKind(SyntaxKind.PartialKeyword))
+                        if (partialKeyword.IsKind(SyntaxKind.PartialKeyword)
+                            && !ContainsPartialMethod(memberDeclaration))
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
-                                partialToken);
+                                partialKeyword);
                         }
                     }
                 }
             }
+        }
+
+        private static bool ContainsPartialMethod(MemberDeclarationSyntax member)
+        {
+            switch (member.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ContainsPartialMethod(((ClassDeclarationSyntax)member).Members);
+                case SyntaxKind.StructDeclaration:
+                    return ContainsPartialMethod(((StructDeclarationSyntax)member).Members);
+                case SyntaxKind.InterfaceDeclaration:
+                    return ContainsPartialMethod(((InterfaceDeclarationSyntax)member).Members);
+            }
+
+            Debug.Assert(false, member.Kind().ToString());
+            return false;
+        }
+
+        private static bool ContainsPartialMethod(SyntaxList<MemberDeclarationSyntax> members)
+        {
+            foreach (MemberDeclarationSyntax member in members)
+            {
+                if (member.IsKind(SyntaxKind.MethodDeclaration)
+                    && ((MethodDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static Task<Document> RefactorAsync(
