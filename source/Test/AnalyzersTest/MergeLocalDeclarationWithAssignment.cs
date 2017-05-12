@@ -19,13 +19,19 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         private static void Foo()
         {
+            //a
             bool f;
+
+            //b
             f = true;
 
+            //ab
             bool f2 = false;
             f2 = true;
 
             bool f3 = BoolConst;
+
+            //ab
             f3 = true;
 
             char ch;

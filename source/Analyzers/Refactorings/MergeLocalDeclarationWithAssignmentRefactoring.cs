@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -9,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -173,19 +171,22 @@ namespace Roslynator.CSharp.Refactorings
 
             LocalDeclarationStatementSyntax newLocalDeclaration = localDeclaration.ReplaceNode(declarator, newDeclarator);
 
-            SyntaxTriviaList trailingTrivia = nextStatement.GetTrailingTrivia();
+            SyntaxTriviaList trailingTrivia = localDeclaration.GetTrailingTrivia();
 
-            IEnumerable<SyntaxTrivia> trivia = container
-                .Node
-                .DescendantTrivia(TextSpan.FromBounds(localDeclaration.Span.End, right.SpanStart));
-
-            if (!trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (trailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
             {
-                newLocalDeclaration = newLocalDeclaration.WithTrailingTrivia(trivia.Concat(trailingTrivia));
+                newLocalDeclaration = newLocalDeclaration.WithTrailingTrivia(trailingTrivia.Concat(nextStatement.GetTrailingTrivia()));
             }
             else
             {
-                newLocalDeclaration = newLocalDeclaration.WithTrailingTrivia(trailingTrivia);
+                newLocalDeclaration = newLocalDeclaration.WithTrailingTrivia(nextStatement.GetTrailingTrivia());
+            }
+
+            SyntaxTriviaList leadingTrivia = nextStatement.GetLeadingTrivia();
+
+            if (leadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+            {
+                newLocalDeclaration = newLocalDeclaration.WithLeadingTrivia(newLocalDeclaration.GetLeadingTrivia().Concat(leadingTrivia));
             }
 
             SyntaxList<StatementSyntax> newStatements = statements
