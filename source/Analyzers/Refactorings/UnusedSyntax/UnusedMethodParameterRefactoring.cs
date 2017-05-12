@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
-    internal class UnusedMethodParameterRefactoring : UnusedSyntaxRefactoring<MethodDeclarationSyntax, ParameterListSyntax, ParameterSyntax, IParameterSymbol>
+    internal class UnusedMethodParameterRefactoring : UnusedMethodSyntaxRefactoring<ParameterListSyntax, ParameterSyntax, IParameterSymbol>
     {
         private UnusedMethodParameterRefactoring()
         {
@@ -26,24 +26,25 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             CancellationToken cancellationToken)
         {
             if (!node.IsParentKind(SyntaxKind.InterfaceDeclaration)
-                && GetBody(node) != null
                 && !GetModifiers(node).ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
             {
-                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
+                CSharpSyntaxNode bodyOrExpressionBody = GetBody(node);
 
-                if (methodSymbol?.IsEventHandler(semanticModel) == false
-                    && !methodSymbol.ImplementsInterfaceMember())
+                if (bodyOrExpressionBody != null
+                    && !UnusedSyntaxHelper.ContainsOnlyThrowNewException(bodyOrExpressionBody, semanticModel, cancellationToken))
                 {
-                    return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+                    IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
+
+                    if (methodSymbol?.IsEventHandler(semanticModel) == false
+                        && methodSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
+                        && !methodSymbol.ImplementsInterfaceMember())
+                    {
+                        return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
+                    }
                 }
             }
 
             return ImmutableArray<ParameterSyntax>.Empty;
-        }
-
-        protected override CSharpSyntaxNode GetBody(MethodDeclarationSyntax node)
-        {
-            return node.BodyOrExpressionBody();
         }
 
         protected override string GetIdentifier(ParameterSyntax syntax)
@@ -54,11 +55,6 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         protected override ParameterListSyntax GetList(MethodDeclarationSyntax node)
         {
             return node.ParameterList;
-        }
-
-        protected override SyntaxTokenList GetModifiers(MethodDeclarationSyntax node)
-        {
-            return node.Modifiers;
         }
 
         protected override SeparatedSyntaxList<ParameterSyntax> GetSeparatedList(ParameterListSyntax list)

@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (GetBody(node) != null)
+            if (GetBody(node) != null
+                && !UnusedSyntaxHelper.ContainsOnlyThrowNewException(node.Body, semanticModel, cancellationToken))
             {
                 return base.FindUnusedSyntax(node, list, separatedList, semanticModel, cancellationToken);
             }

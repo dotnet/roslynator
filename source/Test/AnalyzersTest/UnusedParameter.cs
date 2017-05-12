@@ -3,15 +3,12 @@
 using System;
 using System.ComponentModel;
 
+#pragma warning disable RCS1100, RCS1016, RCS1023, RCS1079, RCS1185, CS0168
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1100, RCS1016, RCS1023, CS0168
     public static class UnusedParameter
     {
-        private static void ExtensionMethod(this Foo foo, object parameter)
-        {
-        }
-
         private interface IFoo
         {
             void Bar(object parameter);
@@ -55,9 +52,53 @@ namespace Roslynator.CSharp.Analyzers.Test
             public void Bar8(object parameter1, object parameter2) { Bar7(parameter1: null, parameter2: null); }
         }
 
-        private partial class Foo2 : Foo
+        private static void ExtensionMethod(this Foo foo, object parameter)
         {
-            public Foo2(object parameter) : base(parameter) { }
+        }
+
+        private static void ExtensionMethod2(this Foo foo, object parameter)
+        {
+            throw new NotImplementedException();
+        }
+
+        private abstract class Foo2
+        {
+            protected Foo2(object parameter)
+            {
+                throw new NotImplementedException();
+            }
+
+            protected Foo2(object parameter, object parameter2) => throw new NotImplementedException();
+
+            public string this[int index] => throw new NotImplementedException();
+
+            public string this[string index]
+            {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
+
+            public string this[string index, string index2]
+            {
+                get => throw new NotImplementedException();
+                set => throw new NotImplementedException();
+            }
+
+            public void Bar(object parameter) { throw new NotImplementedException(); }
+
+            public object Bar(object parameter1, object parameter2) => throw new NotImplementedException();
+
+            /// <summary>
+            /// ...
+            /// </summary>
+            /// <param name="parameter1"></param>
+            /// <param name="parameter2"></param>
+            public void Bar2(object parameter1, object parameter2) { throw new NotImplementedException(); }
+        }
+
+        private partial class Foo3 : Foo
+        {
+            public Foo3(object parameter) : base(parameter) { }
 
             public override void Bar2(object parameter) { }
 
@@ -69,10 +110,6 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
                 Action<object> action = MethodGroup;
             }
-        }
-
-        private partial class Foo2 : Foo
-        {
         }
     }
 }
