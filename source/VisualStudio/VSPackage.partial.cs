@@ -52,10 +52,9 @@ namespace Roslynator.VisualStudio
 
             InitializeSettings();
 
-            IVsSolution solution = GetService(typeof(SVsSolution)) as IVsSolution;
+            var solution = GetService(typeof(SVsSolution)) as IVsSolution;
 
-            if (solution != null)
-                solution.AdviseSolutionEvents(this, out _cookie);
+            solution?.AdviseSolutionEvents(this, out _cookie);
         }
 
         private void InitializeSettings()
@@ -88,7 +87,7 @@ namespace Roslynator.VisualStudio
 
         private void UpdateSettingsAfterConfigFileChanged()
         {
-            SettingsManager.Instance.ConfigFileSettings.Update(LoadConfigFileSettings() ?? new ConfigFileSettings());
+            SettingsManager.Instance.ConfigFileSettings = LoadConfigFileSettings();
             SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
         }
 
