@@ -1,10 +1,15 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
+using System;
+
+#pragma warning disable CS0168, RCS1079, RCS1085, RCS1163
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class UseExpressionBodiedMember
     {
-        private class Entity
+        private class Foo
         {
             public string FooMethod()
             {
@@ -18,7 +23,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             public string FooProperty
             {
-                get { return string.Empty; }
+                get { return ""; }
             }
 
             public string this[int index]
@@ -26,18 +31,93 @@ namespace Roslynator.CSharp.Analyzers.Test
                 get { return null; }
             }
 
-            public static explicit operator Entity(string value)
+            public static explicit operator Foo(string value)
             {
-                return new Entity();
+                return new Foo();
             }
 
-            public static explicit operator string(Entity value)
+            public static explicit operator string(Foo value)
             {
-                return string.Empty;
+                return "";
             }
         }
 
-        private class Entity2
+        private class FooThrow
+        {
+            public FooThrow()
+            {
+                throw new NotImplementedException();
+            }
+
+            ~FooThrow()
+            {
+                throw new NotImplementedException();
+            }
+
+            public string FooMethod()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void FooVoidMethod()
+            {
+                throw new NotImplementedException();
+            }
+
+            public void MethodWithLocalFunction()
+            {
+                object LocalFunction()
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public void MethodWithVoidLocalFunction()
+            {
+                void LocalFunction()
+                {
+                    throw new NotImplementedException();
+                }
+            }
+
+            public string FooProperty
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            private readonly string _fooProperty2;
+
+            public string FooProperty2
+            {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
+
+            public string this[int index]
+            {
+                get { throw new NotImplementedException(); }
+            }
+
+            public string this[string index]
+            {
+                get { throw new NotImplementedException(); }
+                set { throw new NotImplementedException(); }
+            }
+
+            public static explicit operator FooThrow(string value)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static explicit operator string(FooThrow value)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        //n
+
+        private class Foo2
         {
             public string FooMethod()
             {
@@ -62,17 +142,14 @@ namespace Roslynator.CSharp.Analyzers.Test
                 get
                 {
                     Foo();
-                    return string.Empty;
+                    return "";
                 }
             }
 
             public string FooProperty2
             {
-                [System.Obsolete]
-                get
-                {
-                    return string.Empty;
-                }
+                [DebuggerStepThrough]
+                get { return ""; }
             }
 
             public string this[int index]
@@ -84,16 +161,16 @@ namespace Roslynator.CSharp.Analyzers.Test
                 }
             }
 
-            public static explicit operator Entity2(string value)
+            public static explicit operator Foo2(string value)
             {
                 Foo();
-                return new Entity2();
+                return new Foo2();
             }
 
-            public static explicit operator string(Entity2 value)
+            public static explicit operator string(Foo2 value)
             {
                 Foo();
-                return string.Empty;
+                return "";
             }
 
             private static void Foo()

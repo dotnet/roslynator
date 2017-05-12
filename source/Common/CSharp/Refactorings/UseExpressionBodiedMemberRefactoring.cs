@@ -118,6 +118,24 @@ namespace Roslynator.CSharp.Refactorings
             return default(ExpressionSyntax);
         }
 
+        public static ExpressionSyntax GetExpression(BlockSyntax block)
+        {
+            if (block != null)
+            {
+                StatementSyntax statement = block.SingleStatementOrDefault();
+
+                switch (statement?.Kind())
+                {
+                    case SyntaxKind.ReturnStatement:
+                        return ((ReturnStatementSyntax)statement).Expression;
+                    case SyntaxKind.ExpressionStatement:
+                        return ((ExpressionStatementSyntax)statement).Expression;
+                }
+            }
+
+            return default(ExpressionSyntax);
+        }
+
         public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax member,
@@ -143,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.MethodDeclaration:
                     {
                         var methodDeclaration = (MethodDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetMethodExpression(methodDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(methodDeclaration.Body);
 
                         return methodDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -153,7 +171,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.OperatorDeclaration:
                     {
                         var operatorDeclaration = (OperatorDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetReturnExpression(operatorDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(operatorDeclaration.Body);
 
                         return operatorDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -163,7 +181,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
                         var operatorDeclaration = (ConversionOperatorDeclarationSyntax)declaration;
-                        ExpressionSyntax expression = GetReturnExpression(operatorDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(operatorDeclaration.Body);
 
                         return operatorDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
