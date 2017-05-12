@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -25,7 +26,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (modifiers.Contains(SyntaxKind.OverrideKeyword)
                     && !modifiers.ContainsAny(SyntaxKind.SealedKeyword, SyntaxKind.PartialKeyword)
-                    && !methodDeclaration.HasDocumentationComment())
+                    && !methodDeclaration.HasDocumentationComment()
+                    && methodDeclaration.DescendantTrivia(methodDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     ExpressionSyntax expression = GetMethodExpression(methodDeclaration);
 
@@ -186,6 +188,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (modifiers.Contains(SyntaxKind.OverrideKeyword)
                     && !modifiers.Contains(SyntaxKind.SealedKeyword)
                     && !propertyDeclaration.HasDocumentationComment()
+                    && propertyDeclaration.DescendantTrivia(propertyDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
                     && propertyDeclaration
                         .AccessorList?
                         .Accessors
@@ -313,6 +316,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (modifiers.Contains(SyntaxKind.OverrideKeyword)
                     && !modifiers.Contains(SyntaxKind.SealedKeyword)
                     && !indexerDeclaration.HasDocumentationComment()
+                    && indexerDeclaration.DescendantTrivia(indexerDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
                     && indexerDeclaration
                         .AccessorList?
                         .Accessors
