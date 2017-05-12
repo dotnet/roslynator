@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 {
-    public static class InlineAliasExpressionRefactoring
+    internal static class InlineAliasExpressionRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

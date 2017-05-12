@@ -14,7 +14,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class UseElementAccessInsteadOfElementAtRefactoring
+    internal static class UseElementAccessInsteadOfElementAtRefactoring
     {
         public static bool CanRefactor(
             MemberInvocationExpression memberInvocation,

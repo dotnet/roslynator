@@ -14,7 +14,7 @@ using static Roslynator.CSharp.Refactorings.If.IfRefactoringHelper;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
-    public abstract class IfRefactoring
+    internal abstract class IfRefactoring
     {
         public static IfAnalysisOptions DefaultOptions { get; } = new IfAnalysisOptions();
 

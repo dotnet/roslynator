@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public class AnalysisOptions
+    internal class AnalysisOptions
     {
         public virtual bool CanContainDirectives
         {

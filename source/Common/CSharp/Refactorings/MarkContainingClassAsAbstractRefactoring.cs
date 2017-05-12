@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class MarkContainingClassAsAbstractRefactoring
+    internal static class MarkContainingClassAsAbstractRefactoring
     {
         public static bool CanRefactor(MethodDeclarationSyntax methodDeclaration)
         {

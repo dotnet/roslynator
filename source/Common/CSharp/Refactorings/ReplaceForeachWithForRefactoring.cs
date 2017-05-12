@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class ReplaceForEachWithForRefactoring
+    internal static class ReplaceForEachWithForRefactoring
     {
         public static bool CanRefactor(
             ForEachStatementSyntax forEachStatement,

@@ -12,7 +12,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class UseCompoundAssignmentRefactoring
+    internal static class UseCompoundAssignmentRefactoring
     {
         public static bool CanRefactor(AssignmentExpressionSyntax assignment)
         {

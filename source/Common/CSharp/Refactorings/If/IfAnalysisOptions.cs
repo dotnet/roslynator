@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings.If
 {
-    public class IfAnalysisOptions : AnalysisOptions
+    internal class IfAnalysisOptions : AnalysisOptions
     {
         public IfAnalysisOptions()
             : this(true, true, true)

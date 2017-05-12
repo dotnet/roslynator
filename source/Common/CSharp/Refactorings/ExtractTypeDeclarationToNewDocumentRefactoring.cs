@@ -13,7 +13,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class ExtractTypeDeclarationToNewDocumentRefactoring
+    internal static class ExtractTypeDeclarationToNewDocumentRefactoring
     {
         public static async Task<Solution> RefactorAsync(
             Document document,

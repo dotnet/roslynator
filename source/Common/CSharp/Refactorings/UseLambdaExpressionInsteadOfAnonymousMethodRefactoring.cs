@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public static class UseLambdaExpressionInsteadOfAnonymousMethodRefactoring
+    internal static class UseLambdaExpressionInsteadOfAnonymousMethodRefactoring
     {
         public static bool CanRefactor(AnonymousMethodExpressionSyntax anonymousMethod)
         {

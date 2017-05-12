@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public enum RefactoringKind
+    internal enum RefactoringKind
     {
         IfElseToAssignmentWithCoalesceExpression,
         IfElseToAssignmentWithConditionalExpression,
