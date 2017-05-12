@@ -2,20 +2,20 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.Serialization;
 
-#pragma warning disable RCS1016, RCS1048, RCS1060, RCS1081, RCS1163
+#pragma warning disable RCS1016, RCS1048, RCS1060, RCS1081, RCS1163, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
     public partial class Foo
     {
-        [DataMember]
-        public string PropertyWithDataMemberAttribute { get; private set; }
-
         public static string StaticProperty { get; private set; }
         public string Property { get; private set; }
+
+        //n
 
         public static string StaticAssignedInInstanceConstructor { get; private set; }
         public string Assigned { get; private set; }
@@ -23,6 +23,11 @@ namespace Roslynator.CSharp.Analyzers.Test
         public string InParenthesizedLambda { get; private set; }
         public string InAnonymousMethod { get; private set; }
         public string InLocalFunction { get; private set; }
+
+        [DataMember]
+        public string PropertyWithDataMemberAttribute { get; private set; }
+
+        public string PrivateSetHasAttribute { get; [DebuggerStepThrough]private set; }
 
         static Foo()
         {
