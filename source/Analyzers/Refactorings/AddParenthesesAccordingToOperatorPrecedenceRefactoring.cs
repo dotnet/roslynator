@@ -13,24 +13,64 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
         {
+            if (context.Node.ContainsDiagnostics)
+                return;
+
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
             SyntaxKind kind = binaryExpression.Kind();
 
-            Analyze(context, kind, binaryExpression.Left);
-            Analyze(context, kind, binaryExpression.Right);
+            Analyze(context, binaryExpression.Left, kind);
+            Analyze(context, binaryExpression.Right, kind);
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxKind kind, ExpressionSyntax expression)
+        private static void Analyze(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, SyntaxKind parentKind)
         {
-            if (expression != null
-                && GetGroupNumber(kind) == GetGroupNumber(expression.Kind())
-                && CSharpUtility.GetOperatorPrecedence(expression) < CSharpUtility.GetOperatorPrecedence(kind))
+            if (IsFixable(expression, parentKind)
+                && !IsNestedDiagnostic(expression))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence,
                     expression);
             }
+        }
+
+        private static bool IsNestedDiagnostic(SyntaxNode node)
+        {
+            for (SyntaxNode current = node.Parent; current != null; current = current.Parent)
+            {
+                if (IsFixable(current))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private static bool IsFixable(SyntaxNode node)
+        {
+            SyntaxNode parent = node.Parent;
+
+            return parent != null
+                && IsFixable(node, parent.Kind());
+        }
+
+        private static bool IsFixable(SyntaxNode node, SyntaxKind parentKind)
+        {
+            if (node != null)
+            {
+                int groupNumber = GetGroupNumber(parentKind);
+
+                return groupNumber != 0
+                    && groupNumber == GetGroupNumber(node)
+                    && CSharpUtility.GetOperatorPrecedence(node) < CSharpUtility.GetOperatorPrecedence(parentKind);
+            }
+
+            return false;
+        }
+
+        private static int GetGroupNumber(SyntaxNode node)
+        {
+            return GetGroupNumber(node.Kind());
         }
 
         private static int GetGroupNumber(SyntaxKind kind)
@@ -70,9 +110,40 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ParenthesizedExpressionSyntax newNode = expression.Parenthesize(moveTrivia: true);
+            var newNode = (ExpressionSyntax)AddParenthesesSyntaxRewriter.Instance.Visit(expression);
+
+            newNode = newNode.Parenthesize(moveTrivia: true);
 
             return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
+        }
+
+        private class AddParenthesesSyntaxRewriter : CSharpSyntaxRewriter
+        {
+            private AddParenthesesSyntaxRewriter()
+            {
+            }
+
+            public static AddParenthesesSyntaxRewriter Instance { get; } = new AddParenthesesSyntaxRewriter();
+
+            public override SyntaxNode VisitBinaryExpression(BinaryExpressionSyntax node)
+            {
+                ExpressionSyntax left = VisitExpression(node.Left);
+                ExpressionSyntax right = VisitExpression(node.Right);
+
+                return node.Update(left, node.OperatorToken, right);
+            }
+
+            private ExpressionSyntax VisitExpression(ExpressionSyntax expression)
+            {
+                bool isFixable = IsFixable(expression);
+
+                expression = (ExpressionSyntax)base.Visit(expression);
+
+                if (isFixable)
+                    expression = expression.Parenthesize(moveTrivia: true);
+
+                return expression;
+            }
         }
     }
 }

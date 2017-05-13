@@ -64,7 +64,7 @@
     <Compile Include="AvoidChainOfAssignments.cs" />
     <Compile Include="BitwiseOperationOnEnumWithoutFlagsAttribute.cs" />
     <Compile Include="AddParameterToDocumentationComment.cs" />
-    <Compile Include="AddParentheses.cs" />
+    <Compile Include="AddParenthesesAccordingToOperatorPrecedence.cs" />
     <Compile Include="AddSummaryElementToDocumentationComment.cs" />
     <Compile Include="AddSummaryToDocumentationComment.cs" />
     <Compile Include="AddTypeParameterToDocumentationComment.cs" />
