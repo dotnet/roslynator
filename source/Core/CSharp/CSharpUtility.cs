@@ -159,12 +159,12 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static int GetOperatorPrecedence(ExpressionSyntax expression)
+        public static int GetOperatorPrecedence(SyntaxNode node)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
 
-            return GetOperatorPrecedence(expression.Kind());
+            return GetOperatorPrecedence(node.Kind());
         }
 
         public static int GetOperatorPrecedence(SyntaxKind kind)
