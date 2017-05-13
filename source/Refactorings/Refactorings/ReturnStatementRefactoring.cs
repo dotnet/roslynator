@@ -24,16 +24,11 @@ namespace Roslynator.CSharp.Refactorings
                     await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
                 }
 
-                if (context.Span.IsBetweenSpans(returnStatement))
+                if (context.Span.IsBetweenSpans(returnStatement)
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement))
                 {
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement))
-                    {
-                        var refactoring = new ReplaceReturnStatementWithIfStatementRefactoring();
-                        await refactoring.ComputeRefactoringAsync(context, returnStatement).ConfigureAwait(false);
-                    }
-
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInElseClause))
-                        WrapInElseClauseRefactoring.ComputeRefactoring(context, returnStatement);
+                    var refactoring = new ReplaceReturnStatementWithIfStatementRefactoring();
+                    await refactoring.ComputeRefactoringAsync(context, returnStatement).ConfigureAwait(false);
                 }
             }
             else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
