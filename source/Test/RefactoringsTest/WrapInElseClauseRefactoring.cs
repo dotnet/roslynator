@@ -4,10 +4,8 @@ namespace Roslynator.CSharp.Refactorings.Test
 {
     internal static class WrapInElseClauseRefactoring
     {
-        public static string Foo()
+        public static string Foo(bool f)
         {
-            bool f = false;
-
             if (f)
             {
                 return "Y";
@@ -16,20 +14,16 @@ namespace Roslynator.CSharp.Refactorings.Test
             return "N";
         }
 
-        public static string Foo2()
+        public static string Foo2(bool f)
         {
-            bool f = false;
-
             if (f)
                 return "Y";
 
             return "N";
         }
 
-        public static string Foo3()
+        public static string Foo3(bool f)
         {
-            bool f = false;
-
             if (f)
             {
                 return "Y";
@@ -42,13 +36,48 @@ namespace Roslynator.CSharp.Refactorings.Test
             return "N";
         }
 
-        public static string Foo4()
+        public static string Foo4(bool f)
         {
-            bool f = false;
-
             if (f)
             {
-                Foo4();
+                return "Y";
+            }
+
+            Foo(f);
+            return "N";
+        }
+
+        public static string Foo5(bool f)
+        {
+            if (f)
+                return "Y";
+
+            Foo(f);
+            return "N";
+        }
+
+        public static string Foo6(bool f)
+        {
+            if (f)
+            {
+                return "Y";
+            }
+            else if (f)
+            {
+                return "YY";
+            }
+
+            Foo(f);
+            return "N";
+        }
+
+        //n
+
+        public static string Foo7(bool f)
+        {
+            if (f)
+            {
+                Foo(f);
             }
 
             return "N";

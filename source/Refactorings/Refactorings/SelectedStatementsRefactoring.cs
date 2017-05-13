@@ -21,7 +21,8 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor);
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInElseClause);
         }
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
@@ -71,6 +72,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor))
                     await ReplaceWhileWithForRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInElseClause))
+                    WrapInElseClauseRefactoring.ComputeRefactoring(context, selectedStatements);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
                 {
