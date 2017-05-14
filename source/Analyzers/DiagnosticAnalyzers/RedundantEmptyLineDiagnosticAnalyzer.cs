@@ -43,6 +43,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(f => AnalyzeFixedStatement(f), SyntaxKind.FixedStatement);
 
             context.RegisterSyntaxNodeAction(f => AnalyzeAccessorList(f), SyntaxKind.AccessorList);
+
+            context.RegisterSyntaxNodeAction(f => AnalyzeBlock(f), SyntaxKind.Block);
         }
     }
 }

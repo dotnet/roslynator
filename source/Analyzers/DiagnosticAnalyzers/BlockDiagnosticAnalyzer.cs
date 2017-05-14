@@ -19,8 +19,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.FormatEmptyBlock,
-                    DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
-                    DiagnosticDescriptors.RemoveRedundantEmptyLine);
+                    DiagnosticDescriptors.FormatEachStatementOnSeparateLine);
             }
         }
 
@@ -37,8 +36,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         private void AnalyzeBlock(SyntaxNodeAnalysisContext context)
         {
             var block = (BlockSyntax)context.Node;
-
-            RemoveRedundantEmptyLineRefactoring.Analyze(context, block);
 
             FormatEachStatementOnSeparateLineRefactoring.Analyze(context, block);
 
