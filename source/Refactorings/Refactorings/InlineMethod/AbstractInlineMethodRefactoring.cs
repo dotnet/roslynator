@@ -93,16 +93,28 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                         }
                     }
                 }
-                else if (symbolMap != null
-                    && kind == SyntaxKind.VariableDeclarator)
+                else if (symbolMap != null)
                 {
-                    var variableDeclarator = (VariableDeclaratorSyntax)descendant;
+                    if (kind == SyntaxKind.VariableDeclarator)
+                    {
+                        var variableDeclarator = (VariableDeclaratorSyntax)descendant;
 
-                    ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(variableDeclarator, CancellationToken);
+                        ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(variableDeclarator, CancellationToken);
 
-                    string name;
-                    if (symbolMap.TryGetValue(symbol, out name))
-                        replacementMap.Add(variableDeclarator, name);
+                        string name;
+                        if (symbolMap.TryGetValue(symbol, out name))
+                            replacementMap.Add(variableDeclarator, name);
+                    }
+                    else if (kind == SyntaxKind.Parameter)
+                    {
+                        var parameter = (ParameterSyntax)descendant;
+
+                        IParameterSymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(parameter, CancellationToken);
+
+                        string name;
+                        if (symbolMap.TryGetValue(symbol, out name))
+                            replacementMap.Add(parameter, name);
+                    }
                 }
             }
 
@@ -113,47 +125,46 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
         private Dictionary<ISymbol, string> GetSymbolsToRename()
         {
-            ImmutableArray<ISymbol> invocationSymbols = InvocationSemanticModel.GetSymbolsDeclaredInEnclosingSymbol(
-                InvocationExpression.SpanStart,
+            ImmutableArray<ISymbol> declarationSymbols = DeclarationSemanticModel.GetDeclaredSymbols(
+                MethodDeclaration.BodyOrExpressionBody(),
                 excludeAnonymousTypeProperty: true,
                 cancellationToken: CancellationToken);
 
-            if (invocationSymbols.Any())
+            if (declarationSymbols.Any())
             {
-                ImmutableArray<ISymbol> declarationSymbols = DeclarationSemanticModel.GetDeclaredSymbols(
-                    MethodDeclaration.BodyOrExpressionBody(),
+                ImmutableArray<ISymbol> invocationSymbols = InvocationSemanticModel.GetSymbolsDeclaredInEnclosingSymbol(
+                    InvocationExpression.SpanStart,
                     excludeAnonymousTypeProperty: true,
                     cancellationToken: CancellationToken);
 
-                if (declarationSymbols.Any())
+                invocationSymbols = invocationSymbols.AddRange(InvocationSemanticModel.LookupSymbols(InvocationExpression.SpanStart));
+
+                var reservedNames = new HashSet<string>(invocationSymbols.Select(f => f.Name));
+
+                List<ISymbol> symbols = null;
+
+                foreach (ISymbol symbol in declarationSymbols)
                 {
-                    var reservedNames = new HashSet<string>(invocationSymbols.Select(f => f.Name));
+                    if (reservedNames.Contains(symbol.Name))
+                        (symbols ?? (symbols = new List<ISymbol>())).Add(symbol);
+                }
 
-                    List<ISymbol> symbols = null;
+                if (symbols != null)
+                {
+                    reservedNames.UnionWith(declarationSymbols.Select(f => f.Name));
 
-                    foreach (ISymbol symbol in declarationSymbols)
+                    var symbolMap = new Dictionary<ISymbol, string>();
+
+                    foreach (ISymbol symbol in symbols)
                     {
-                        if (reservedNames.Contains(symbol.Name))
-                            (symbols ?? (symbols = new List<ISymbol>())).Add(symbol);
+                        string newName = NameGenerator.Default.EnsureUniqueName(symbol.Name, reservedNames);
+
+                        symbolMap.Add(symbol, newName);
+
+                        reservedNames.Add(newName);
                     }
 
-                    if (symbols != null)
-                    {
-                        reservedNames.UnionWith(declarationSymbols.Select(f => f.Name));
-
-                        var symbolMap = new Dictionary<ISymbol, string>();
-
-                        foreach (ISymbol symbol in symbols)
-                        {
-                            string newName = NameGenerator.Default.EnsureUniqueName(symbol.Name, reservedNames);
-
-                            symbolMap.Add(symbol, newName);
-
-                            reservedNames.Add(newName);
-                        }
-
-                        return symbolMap;
-                    }
+                    return symbolMap;
                 }
             }
 
