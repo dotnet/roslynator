@@ -29,6 +29,21 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             }
         }
 
+        public override SyntaxNode VisitParameter(ParameterSyntax node)
+        {
+            var newNode = (ParameterSyntax)base.VisitParameter(node);
+
+            object newValue;
+            if (_replacementMap.TryGetValue(node, out newValue))
+            {
+                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
+            }
+            else
+            {
+                return newNode;
+            }
+        }
+
         public override SyntaxNode VisitVariableDeclarator(VariableDeclaratorSyntax node)
         {
             var newNode = (VariableDeclaratorSyntax)base.VisitVariableDeclarator(node);
