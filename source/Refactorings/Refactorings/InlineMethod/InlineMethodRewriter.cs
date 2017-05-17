@@ -21,7 +21,12 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             object newValue;
             if (_replacementMap.TryGetValue(node, out newValue))
             {
-                return ((ExpressionSyntax)newValue).Parenthesize(moveTrivia: true).WithSimplifierAnnotation();
+                var newNode = (ExpressionSyntax)newValue;
+
+                if (!newNode.IsKind(SyntaxKind.IdentifierName))
+                    newNode = newNode.Parenthesize(moveTrivia: true).WithSimplifierAnnotation();
+
+                return newNode;
             }
             else
             {
@@ -32,6 +37,21 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         public override SyntaxNode VisitParameter(ParameterSyntax node)
         {
             var newNode = (ParameterSyntax)base.VisitParameter(node);
+
+            object newValue;
+            if (_replacementMap.TryGetValue(node, out newValue))
+            {
+                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
+            }
+            else
+            {
+                return newNode;
+            }
+        }
+
+        public override SyntaxNode VisitTypeParameter(TypeParameterSyntax node)
+        {
+            var newNode = (TypeParameterSyntax)base.VisitTypeParameter(node);
 
             object newValue;
             if (_replacementMap.TryGetValue(node, out newValue))
