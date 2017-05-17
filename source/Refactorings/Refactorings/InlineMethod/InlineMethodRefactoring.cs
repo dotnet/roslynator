@@ -266,7 +266,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            var list = new List<ParameterInfo>();
+            List<ParameterInfo> list = null;
 
             foreach (ArgumentSyntax argument in argumentList.Arguments)
             {
@@ -274,7 +274,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                 if (parameterSymbol != null)
                 {
-                    list.Add(new ParameterInfo(parameterSymbol, argument.Expression));
+                    (list ?? (list = new List<ParameterInfo>())).Add(new ParameterInfo(parameterSymbol, argument.Expression));
                 }
                 else
                 {

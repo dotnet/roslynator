@@ -73,6 +73,15 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                                 }
                             }
                         }
+                        else if (symbol.IsTypeParameter())
+                        {
+                            var typeParameter = (ITypeParameterSymbol)symbol;
+
+                            ImmutableArray<ITypeSymbol> typeArguments = MethodSymbol.TypeArguments;
+
+                            if (typeArguments.Length > typeParameter.Ordinal)
+                                replacementMap.Add(identifierName, typeArguments[typeParameter.Ordinal].ToMinimalTypeSyntax(DeclarationSemanticModel, identifierName.SpanStart));
+                        }
                         else if (symbol.IsStatic
                             && !identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                         {
@@ -114,6 +123,16 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                         string name;
                         if (symbolMap.TryGetValue(symbol, out name))
                             replacementMap.Add(parameter, name);
+                    }
+                    else if (kind == SyntaxKind.TypeParameter)
+                    {
+                        var typeParameter = (TypeParameterSyntax)descendant;
+
+                        ITypeParameterSymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(typeParameter, CancellationToken);
+
+                        string name;
+                        if (symbolMap.TryGetValue(symbol, out name))
+                            replacementMap.Add(typeParameter, name);
                     }
                 }
             }
