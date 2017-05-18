@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<ClassDeclarationSyntax> classDeclarations,
             CancellationToken cancellationToken)
         {
-            var newDocuments = new Dictionary<DocumentId, SyntaxNode>();
+            var newDocuments = new List<KeyValuePair<DocumentId, SyntaxNode>>();
 
             foreach (SyntaxTree syntaxTree in classDeclarations.Select(f => f.SyntaxTree).Distinct())
             {
@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.Refactorings
                     classDeclarations.Where(f => f.SyntaxTree == syntaxTree),
                     (node, rewrittenNode) => UpdateModifiers(node));
 
-                newDocuments.Add(document.Id, newRoot);
+                newDocuments.Add(new KeyValuePair<DocumentId, SyntaxNode>(document.Id, newRoot));
             }
 
             Solution newSolution = solution;
