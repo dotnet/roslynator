@@ -1932,6 +1932,11 @@ namespace Roslynator.CSharp
         {
             return list.IndexOf(kind) != -1;
         }
+
+        public static bool Contains<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
+        {
+            return list.IndexOf(node) != -1;
+        }
         #endregion SeparatedSyntaxList<T>
 
         #region StatementSyntax

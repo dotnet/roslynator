@@ -1,14 +1,16 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable RCS1004, RCS1016, RCS1048, RCS1111, RCS1118, RCS1124, RCS1126, RCS1163, RCS1176 
-
 using System.Collections.Generic;
 using System.Linq;
+
+#pragma warning disable CS0219, RCS1004, RCS1016, RCS1048, RCS1081, RCS1111, RCS1118, RCS1124, RCS1126, RCS1163, RCS1169, RCS1176 
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     public static class UseReturnInsteadOfAssignment
     {
+        private static bool _condition;
+
         private class UseReturnInsteadOfAssignment_IfStatement
         {
             public static int MethodName()
@@ -41,7 +43,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 bool f = false;
 
-                int x = 0;
+                int x = 0, y = 0;
+
+                void LocalFunction() => LocalFunction();
 
                 if (f)
                 {
@@ -52,12 +56,34 @@ namespace Roslynator.CSharp.Analyzers.Tests
                     x = 2;
                 }
 
+                void LocalFunction2() => LocalFunction2();
+
                 return x;
             }
 
             public static int MethodName3()
             {
                 bool f = false;
+
+                int x = 0;
+
+                if (f)
+                {
+                    int y = x;
+                    x = y;
+                }
+                else if (f)
+                {
+                    x = 2;
+                }
+
+                return x;
+            }
+
+            public static int MethodName4()
+            {
+                bool f = false;
+
                 int x;
 
                 if (f)

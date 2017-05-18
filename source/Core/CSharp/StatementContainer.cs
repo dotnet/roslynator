@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -144,6 +145,38 @@ namespace Roslynator.CSharp
                 return new StatementContainer(SwitchSection.WithStatements(statements));
 
             return default(StatementContainer);
+        }
+
+        public StatementContainer RemoveNode(SyntaxNode node, SyntaxRemoveOptions options)
+        {
+            if (IsBlock)
+                return new StatementContainer(Block.RemoveNode(node, options));
+
+            if (IsSwitchSection)
+                return new StatementContainer(SwitchSection.RemoveNode(node, options));
+
+            return this;
+        }
+
+        public StatementContainer ReplaceNode(SyntaxNode oldNode, SyntaxNode newNode)
+        {
+            if (IsBlock)
+                return new StatementContainer(Block.ReplaceNode(oldNode, newNode));
+
+            if (IsSwitchSection)
+                return new StatementContainer(SwitchSection.ReplaceNode(oldNode, newNode));
+
+            return this;
+        }
+
+        public StatementContainer RemoveStatement(StatementSyntax statementInList)
+        {
+            return WithStatements(Statements.Remove(statementInList));
+        }
+
+        public StatementContainer ReplaceStatement(StatementSyntax statementInList, StatementSyntax newStatement)
+        {
+            return WithStatements(Statements.Replace(statementInList, newStatement));
         }
 
         public bool Equals(StatementContainer other)

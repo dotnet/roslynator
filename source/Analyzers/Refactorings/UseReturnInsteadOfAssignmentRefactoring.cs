@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis.FindSymbols;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -17,98 +17,127 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseReturnInsteadOfAssignmentRefactoring
     {
-        public static void AnalyzeBlock(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            var block = (BlockSyntax)context.Node;
+            if (context.Node.ContainsDiagnostics)
+                return;
 
-            Analyze(context, block, block.Statements);
-        }
+            var ifStatement = (IfStatementSyntax)context.Node;
 
-        public static void AnalyzeSwitchSection(SyntaxNodeAnalysisContext context)
-        {
-            var switchSection = (SwitchSectionSyntax)context.Node;
-
-            Analyze(context, switchSection, switchSection.Statements);
-        }
-
-        private static void Analyze(
-            SyntaxNodeAnalysisContext context,
-            SyntaxNode containingNode,
-            SyntaxList<StatementSyntax> statements)
-        {
-            int count = statements.Count;
-
-            if (count > 1)
+            if (!ifStatement.IsSimpleIf())
             {
-                int i = count - 1;
-
-                while (i >= 0)
+                StatementContainer container;
+                if (StatementContainer.TryCreate(ifStatement, out container))
                 {
-                    if (!statements[i].IsKind(SyntaxKind.LocalFunctionStatement))
-                        break;
+                    int index = container.Statements.IndexOf(ifStatement);
 
-                    i--;
-                }
-
-                if (i >= 1
-                    && statements[i].IsKind(SyntaxKind.ReturnStatement))
-                {
-                    var returnStatement = (ReturnStatementSyntax)statements[i];
-
-                    ExpressionSyntax expression = returnStatement.Expression;
-
-                    if (expression?.IsMissing == false)
+                    ReturnStatementSyntax returnStatement = FindReturnStatementBelow(container.Statements, index);
+                    if (returnStatement?.ContainsDiagnostics == false)
                     {
-                        StatementSyntax statement = statements[i - 1];
-
-                        SyntaxKind statementKind = statement.Kind();
-
-                        if (statementKind == SyntaxKind.IfStatement)
-                        {
-                            var ifStatement = (IfStatementSyntax)statements[i - 1];
-
-                            if (!ifStatement.IsSimpleIf())
-                            {
-                                SemanticModel semanticModel = context.SemanticModel;
-                                CancellationToken cancellationToken = context.CancellationToken;
-
-                                ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
-
-                                if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, containingNode, semanticModel, cancellationToken)
-                                    && ifStatement.GetChain().All(ifOrElse => IsValueAssignedInLastStatement(ifOrElse, symbol, semanticModel, cancellationToken))
-                                    && !containingNode.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)))
-                                {
-                                    context.ReportDiagnostic(
-                                        DiagnosticDescriptors.UseReturnInsteadOfAssignment,
-                                        GetLastStatementOrDefault(ifStatement));
-                                }
-                            }
-                        }
-                        else if (statementKind == SyntaxKind.SwitchStatement)
+                        ExpressionSyntax expression = returnStatement.Expression;
+                        if (expression != null
+                            && !ifStatement.SpanOrTrailingTriviaContainsDirectives()
+                            && !returnStatement.SpanOrLeadingTriviaContainsDirectives())
                         {
                             SemanticModel semanticModel = context.SemanticModel;
                             CancellationToken cancellationToken = context.CancellationToken;
 
                             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-                            if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, containingNode, semanticModel, cancellationToken))
+                            if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, container.Node, semanticModel, cancellationToken)
+                                && ifStatement
+                                    .GetChain()
+                                    .All(ifOrElse => IsSymbolAssignedInLastStatement(ifOrElse, symbol, semanticModel, cancellationToken)))
                             {
-                                var switchStatement = (SwitchStatementSyntax)statements[i - 1];
-
-                                SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
-
-                                if (sections.All(section => IsValueAssignedInLastStatement(section, symbol, semanticModel, cancellationToken))
-                                    && !containingNode.ContainsDirectives(TextSpan.FromBounds(switchStatement.SpanStart, returnStatement.Span.End)))
-                                {
-                                    context.ReportDiagnostic(
-                                        DiagnosticDescriptors.UseReturnInsteadOfAssignment,
-                                        GetLastStatementBeforeBreakStatementOrDefault(sections.First()));
-                                }
+                                context.ReportDiagnostic(DiagnosticDescriptors.UseReturnInsteadOfAssignment, ifStatement);
                             }
                         }
                     }
                 }
             }
+        }
+
+        public static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
+        {
+            if (context.Node.ContainsDiagnostics)
+                return;
+
+            var switchStatement = (SwitchStatementSyntax)context.Node;
+
+            StatementContainer container;
+            if (StatementContainer.TryCreate(switchStatement, out container))
+            {
+                int index = container.Statements.IndexOf(switchStatement);
+
+                ReturnStatementSyntax returnStatement = FindReturnStatementBelow(container.Statements, index);
+                if (returnStatement != null)
+                {
+                    ExpressionSyntax expression = returnStatement.Expression;
+                    if (expression?.ContainsDiagnostics == false
+                        && !switchStatement.SpanOrTrailingTriviaContainsDirectives()
+                        && !returnStatement.SpanOrLeadingTriviaContainsDirectives())
+                    {
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
+
+                        ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+                        if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, container.Node, semanticModel, cancellationToken)
+                            && switchStatement
+                                .Sections
+                                .All(section => IsValueAssignedInLastStatement(section, symbol, semanticModel, cancellationToken)))
+                        {
+                            context.ReportDiagnostic(DiagnosticDescriptors.UseReturnInsteadOfAssignment, switchStatement);
+                        }
+                    }
+                }
+            }
+        }
+
+        private static ReturnStatementSyntax FindReturnStatementBelow(SyntaxList<StatementSyntax> statements, int i)
+        {
+            int count = statements.Count;
+
+            i++;
+
+            while (i <= count - 1)
+            {
+                if (!statements[i].IsKind(SyntaxKind.LocalFunctionStatement))
+                    break;
+
+                i++;
+            }
+
+            if (i <= count - 1
+                && statements[i].IsKind(SyntaxKind.ReturnStatement))
+            {
+                return (ReturnStatementSyntax)statements[i];
+            }
+
+            return null;
+        }
+
+        private static LocalDeclarationStatementSyntax FindLocalDeclarationStatementAbove(SyntaxList<StatementSyntax> statements, int i)
+        {
+            int count = statements.Count;
+
+            i--;
+
+            while (i >=0)
+            {
+                if (!statements[i].IsKind(SyntaxKind.LocalFunctionStatement))
+                    break;
+
+                i--;
+            }
+
+            if (i >= 0
+                && statements[i].IsKind(SyntaxKind.LocalDeclarationStatement))
+            {
+                return (LocalDeclarationStatementSyntax)statements[i];
+            }
+
+            return null;
         }
 
         private static bool IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(ISymbol symbol, SyntaxNode containingNode, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -119,7 +148,9 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var localSymbol = (ILocalSymbol)symbol;
 
-                        return GetLocalDeclarationStatement(localSymbol, cancellationToken)?.Parent == containingNode;
+                        var localDeclarationStatement = localSymbol.GetSyntax(cancellationToken).Parent.Parent as LocalDeclarationStatementSyntax;
+
+                        return localDeclarationStatement?.Parent == containingNode;
                     }
                 case SymbolKind.Parameter:
                     {
@@ -127,9 +158,10 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (parameterSymbol.RefKind == RefKind.None)
                         {
-                            ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(containingNode.SpanStart, cancellationToken);
-
-                            return enclosingSymbol?.GetParameters().Contains(parameterSymbol) == true;
+                            return semanticModel
+                                .GetEnclosingSymbol(containingNode.SpanStart, cancellationToken)?
+                                .GetParameters()
+                                .Contains(parameterSymbol) == true;
                         }
 
                         break;
@@ -139,39 +171,29 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static SyntaxNode GetLocalDeclarationStatement(ILocalSymbol localSymbol, CancellationToken cancellationToken)
-        {
-            var declarator = localSymbol.GetSyntax(cancellationToken) as VariableDeclaratorSyntax;
-
-            if (declarator != null)
-            {
-                var declaration = declarator.Parent as VariableDeclarationSyntax;
-
-                if (declaration != null)
-                    return declaration.Parent as LocalDeclarationStatementSyntax;
-            }
-
-            return null;
-        }
-
-        private static bool IsValueAssignedInLastStatement(IfStatementOrElseClause ifOrElse, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool IsSymbolAssignedInLastStatement(IfStatementOrElseClause ifOrElse, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             StatementSyntax statement = GetLastStatementOrDefault(ifOrElse.Statement);
 
-            ExpressionSyntax left = GetLastAssignmentOrDefault(statement)?.Left;
-
-            return left != null
-                && symbol.Equals(semanticModel.GetSymbol(left, cancellationToken));
+            return IsSymbolAssignedInStatement(symbol, statement, semanticModel, cancellationToken);
         }
 
         private static bool IsValueAssignedInLastStatement(SwitchSectionSyntax switchSection, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             StatementSyntax statement = GetLastStatementBeforeBreakStatementOrDefault(switchSection);
 
-            ExpressionSyntax left = GetLastAssignmentOrDefault(statement)?.Left;
+            return IsSymbolAssignedInStatement(symbol, statement, semanticModel, cancellationToken);
+        }
 
-            return left != null
-                && symbol.Equals(semanticModel.GetSymbol(left, cancellationToken));
+        private static bool IsSymbolAssignedInStatement(ISymbol symbol, StatementSyntax statement, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            SimpleAssignmentStatement assignment;
+            if (SimpleAssignmentStatement.TryCreate(statement, out assignment))
+            {
+                return symbol.Equals(semanticModel.GetSymbol(assignment.Left, cancellationToken));
+            }
+
+            return false;
         }
 
         private static StatementSyntax GetLastStatementOrDefault(StatementSyntax statement)
@@ -212,95 +234,80 @@ namespace Roslynator.CSharp.Refactorings
             return statements;
         }
 
-        private static AssignmentExpressionSyntax GetLastAssignmentOrDefault(StatementSyntax lastStatement)
-        {
-            if (lastStatement?.IsKind(SyntaxKind.ExpressionStatement) == true)
-            {
-                var expressionStatement = (ExpressionStatementSyntax)lastStatement;
-
-                ExpressionSyntax expression = expressionStatement.Expression;
-
-                if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                    return (AssignmentExpressionSyntax)expression;
-            }
-
-            return null;
-        }
-
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             StatementContainer container = StatementContainer.Create(statement);
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            int index = container.Statements.IndexOf(statement);
 
-            var returnStatement = (ReturnStatementSyntax)statements.Last(f => !f.IsKind(SyntaxKind.LocalFunctionStatement));
-
-            int returnStatementIndex = statements.IndexOf(returnStatement);
-
-            ExpressionSyntax expression = returnStatement.Expression;
-
-            SyntaxKind kind = statement.Kind();
-
-            if (kind == SyntaxKind.IfStatement)
+            switch (statement.Kind())
             {
-                var ifStatement = (IfStatementSyntax)statement;
-
-                IfStatement chain = Syntax.IfStatement.Create(ifStatement);
-
-                ExpressionStatementSyntax[] expressionStatements = chain
-                    .Nodes
-                    .Select(ifOrElse => (ExpressionStatementSyntax)GetLastStatementOrDefault(ifOrElse.Statement))
-                    .ToArray();
-
-                IfStatementSyntax newIfStatement = ifStatement.ReplaceNodes(
-                    expressionStatements,
-                    (f, g) =>
+                case SyntaxKind.IfStatement:
                     {
-                        var assignment = (AssignmentExpressionSyntax)f.Expression;
+                        var ifStatement = (IfStatementSyntax)statement;
 
-                        return ReturnStatement(assignment.Right).WithTriviaFrom(f);
-                    });
+                        IfStatement chain = Syntax.IfStatement.Create(ifStatement);
 
-                SyntaxList<StatementSyntax> newStatements = statements.Replace(ifStatement, newIfStatement);
+                        IEnumerable<ExpressionStatementSyntax> expressionStatements = chain
+                            .Nodes
+                            .Select(ifOrElse => (ExpressionStatementSyntax)GetLastStatementOrDefault(ifOrElse.Statement));
 
-                StatementContainer newContainer = container.WithStatements(newStatements);
+                        IfStatementSyntax newIfStatement = ifStatement.ReplaceNodes(
+                            expressionStatements,
+                            (f, g) =>
+                            {
+                                var assignment = (AssignmentExpressionSyntax)f.Expression;
 
-                SyntaxNode newNode = newContainer.Node;
+                                return ReturnStatement(assignment.Right).WithTriviaFrom(f);
+                            });
 
-                if (chain.EndsWithElse)
-                    newNode = newNode.RemoveStatement(newContainer.Statements[returnStatementIndex]);
+                        StatementContainer newContainer = await RefactorAsync(
+                            document,
+                            container,
+                            ifStatement,
+                            newIfStatement,
+                            index,
+                            chain.Nodes.Length,
+                            semanticModel,
+                            cancellationToken,
+                            chain.EndsWithElse).ConfigureAwait(false);
 
-                return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
-            }
-            else if (kind == SyntaxKind.SwitchStatement)
-            {
-                var switchStatement = (SwitchStatementSyntax)statement;
+                        return await document.ReplaceNodeAsync(container.Node, newContainer.Node, cancellationToken).ConfigureAwait(false);
+                    }
+                case SyntaxKind.SwitchStatement:
+                    {
+                        var switchStatement = (SwitchStatementSyntax)statement;
 
-                SyntaxList<SwitchSectionSyntax> newSections = switchStatement
-                    .Sections
-                    .Select(section => CreateNewSection(section))
-                    .ToSyntaxList();
+                        SyntaxList<SwitchSectionSyntax> newSections = switchStatement
+                            .Sections
+                            .Select(section => CreateNewSection(section))
+                            .ToSyntaxList();
 
-                SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);
+                        SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);
 
-                SyntaxList<StatementSyntax> newStatements = statements.Replace(switchStatement, newSwitchStatement);
+                        StatementContainer newContainer = await RefactorAsync(
+                            document,
+                            container,
+                            switchStatement,
+                            newSwitchStatement,
+                            index,
+                            switchStatement.Sections.Count,
+                            semanticModel,
+                            cancellationToken,
+                            switchStatement.Sections.Any(f => f.ContainsDefaultLabel())).ConfigureAwait(false);
 
-                StatementContainer newContainer = container.WithStatements(newStatements);
-
-                SyntaxNode newNode = newContainer.Node;
-
-                if (switchStatement.Sections.Any(f => f.ContainsDefaultLabel()))
-                    newNode = newNode.RemoveStatement(newContainer.Statements[returnStatementIndex]);
-
-                return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
+                        return await document.ReplaceNodeAsync(container.Node, newContainer.Node, cancellationToken).ConfigureAwait(false);
+                    }
             }
 
             Debug.Fail(statement.Kind().ToString());
 
-            return Task.FromResult(document);
+            return document;
         }
 
         private static SwitchSectionSyntax CreateNewSection(SwitchSectionSyntax section)
@@ -314,6 +321,88 @@ namespace Roslynator.CSharp.Refactorings
             section = section.RemoveStatement(GetStatements(section).Last());
 
             return section;
+        }
+
+        private static async Task<StatementContainer> RefactorAsync(
+            Document document,
+            StatementContainer container,
+            StatementSyntax statement,
+            StatementSyntax newStatement,
+            int index,
+            int count,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
+            bool removeReturnStatement)
+        {
+            ReturnStatementSyntax returnStatement = FindReturnStatementBelow(container.Statements, index);
+
+            ExpressionSyntax expression = returnStatement.Expression;
+            ExpressionSyntax newExpression = null;
+
+            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+            if (symbol.IsLocal()
+                && index > 0)
+            {
+                LocalDeclarationStatementSyntax localDeclarationStatement = FindLocalDeclarationStatementAbove(container.Statements, index);
+
+                if (localDeclarationStatement?.ContainsDiagnostics == false
+                    && !localDeclarationStatement.SpanOrTrailingTriviaContainsDirectives()
+                    && !statement.GetLeadingTrivia().Any(f => f.IsDirective))
+                {
+                    SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = localDeclarationStatement.Declaration.Variables;
+                    VariableDeclaratorSyntax declarator = FindVariableDeclarator(semanticModel, symbol, declarators, cancellationToken);
+
+                    if (declarator != null)
+                    {
+                        ExpressionSyntax value = declarator.Initializer?.Value;
+
+                        if (removeReturnStatement || value != null)
+                        {
+                            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, document.Solution(), cancellationToken).ConfigureAwait(false);
+
+                            if (referencedSymbols.First().Locations.Count() == count + 1)
+                            {
+                                newExpression = value;
+
+                                if (declarators.Count == 1)
+                                {
+                                    container = container.RemoveNode(localDeclarationStatement, RemoveHelper.GetRemoveOptions(localDeclarationStatement));
+                                    index--;
+                                }
+                                else
+                                {
+                                    container = container.ReplaceNode(localDeclarationStatement, localDeclarationStatement.RemoveNode(declarator, RemoveHelper.GetRemoveOptions(declarator)));
+                                }
+
+                                returnStatement = FindReturnStatementBelow(container.Statements, index);
+                            }
+                        }
+                    }
+                }
+            }
+
+            if (removeReturnStatement)
+            {
+                container = container.RemoveNode(returnStatement, RemoveHelper.GetRemoveOptions(returnStatement));
+            }
+            else if (newExpression != null)
+            {
+                container = container.ReplaceNode(returnStatement, returnStatement.WithExpression(newExpression.WithTriviaFrom(expression)));
+            }
+
+            return container.ReplaceNode(container.Statements[index], newStatement);
+        }
+
+        private static VariableDeclaratorSyntax FindVariableDeclarator(SemanticModel semanticModel, ISymbol symbol, SeparatedSyntaxList<VariableDeclaratorSyntax> declarators, CancellationToken cancellationToken)
+        {
+            foreach (VariableDeclaratorSyntax declarator in declarators)
+            {
+                if (semanticModel.GetDeclaredSymbol(declarator, cancellationToken)?.Equals(symbol) == true)
+                    return declarator;
+            }
+
+            return null;
         }
     }
 }
