@@ -31,15 +31,8 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            switch (bodyOrExpressionBody?.Kind())
-            {
-                case SyntaxKind.Block:
-                    return ContainsOnlyThrowNewException((BlockSyntax)bodyOrExpressionBody, semanticModel, cancellationToken);
-                case SyntaxKind.ArrowExpressionClause:
-                    return ContainsOnlyThrowNewException((ArrowExpressionClauseSyntax)bodyOrExpressionBody, semanticModel, cancellationToken);
-            }
-
-            return false;
+            return bodyOrExpressionBody?.Kind() == SyntaxKind.Block
+                && ContainsOnlyThrowNewException((BlockSyntax)bodyOrExpressionBody, semanticModel, cancellationToken);
         }
 
         public static bool ContainsOnlyThrowNewException(
