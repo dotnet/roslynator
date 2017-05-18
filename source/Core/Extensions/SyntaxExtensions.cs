@@ -104,6 +104,11 @@ namespace Roslynator
 
             return true;
         }
+
+        public static bool Contains<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
+        {
+            return list.IndexOf(node) != -1;
+        }
         #endregion SyntaxList<T>
 
         #region SyntaxNode
