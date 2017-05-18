@@ -128,9 +128,9 @@ RR0120|[Replace conditional expression with if\-else](../../docs/refactorings/Re
 RR0121|[Replace constant with field](../../docs/refactorings/ReplaceConstantWithField.md)|x
 RR0122|[Replace Count property with Length property \(or Length with Count\)](../../docs/refactorings/ReplaceCountWithLengthOrLengthWithCount.md)|x
 RR0123|[Replace do statement with while statement](../../docs/refactorings/ReplaceDoStatementWithWhileStatement.md)|x
-RR0124|[Replace equals expression with String\.Equals](../../docs/refactorings/ReplaceEqualsExpressionWithStringEquals.md)|x
-RR0125|[Replace equals expression with String\.IsNullOrEmpty](../../docs/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.md)|x
-RR0126|[Replace equals expression with String\.IsNullOrWhiteSpace](../../docs/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.md)|x
+RR0124|[Replace equals expression with string\.Equals](../../docs/refactorings/ReplaceEqualsExpressionWithStringEquals.md)|x
+RR0125|[Replace equals expression with string\.IsNullOrEmpty](../../docs/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.md)|x
+RR0126|[Replace equals expression with string\.IsNullOrWhiteSpace](../../docs/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.md)|x
 RR0127|[Replace expression with constant value](../../docs/refactorings/ReplaceExpressionWithConstantValue.md)|x
 RR0128|[Replace field with constant](../../docs/refactorings/ReplaceFieldWithConstant.md)|x
 RR0130|[Replace for statement with foreach statement](../../docs/refactorings/ReplaceForWithForEach.md)|x
@@ -149,8 +149,8 @@ RR0141|[Replace property with method](../../docs/refactorings/ReplacePropertyWit
 RR0142|[Replace regular string literal with verbatim string literal](../../docs/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.md)|x
 RR0143|[Replace statement with if statement](../../docs/refactorings/ReplaceStatementWithIfStatement.md)|x
 RR0146|[Replace string literal with character literal](../../docs/refactorings/ReplaceStringLiteralWithCharacterLiteral.md)|x
-RR0144|[Replace String\.Contains with String\.IndexOf](../../docs/refactorings/ReplaceStringContainsWithStringIndexOf.md)|x
-RR0145|[Replace String\.Format with interpolated string](../../docs/refactorings/ReplaceStringFormatWithInterpolatedString.md)|x
+RR0144|[Replace string\.Contains with string\.IndexOf](../../docs/refactorings/ReplaceStringContainsWithStringIndexOf.md)|x
+RR0145|[Replace string\.Format with interpolated string](../../docs/refactorings/ReplaceStringFormatWithInterpolatedString.md)|x
 RR0147|[Replace switch statement with if\-else](../../docs/refactorings/ReplaceSwitchWithIfElse.md)|x
 RR0148|[Replace verbatim string literal with regular string literal](../../docs/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiteral.md)|x
 RR0149|[Replace verbatim string literal with regular string literals](../../docs/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiterals.md)|x
@@ -168,14 +168,14 @@ RR0160|[Swap expressions in conditional expression](../../docs/refactorings/Swap
 RR0161|[Swap member declarations](../../docs/refactorings/SwapMemberDeclarations.md)|x
 RR0162|[Swap statements in if\-else](../../docs/refactorings/SwapStatementsInIfElse.md)|x
 RR0163|[Uncomment](../../docs/refactorings/Uncomment.md)|x
-RR0168|[Use "" instead of String\.Empty](../../docs/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.md)|x
+RR0168|[Use "" instead of string\.Empty](../../docs/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.md)|x
 RR0164|[Use bitwise operation instead of calling 'HasFlag'](../../docs/refactorings/UseBitwiseOperationInsteadOfCallingHasFlag.md)|x
 RR0165|[Use coalesce expression instead of if](../../docs/refactorings/UseCoalesceExpressionInsteadOfIf.md)|x
 RR0166|[Use conditional expression instead of if](../../docs/refactorings/UseConditionalExpressionInsteadOfIf.md)|x
 RR0167|[Use element access instead of 'First/Last'ElementAt' method](../../docs/refactorings/UseElementAccessInsteadOfEnumerableMethod.md)|x
 RR0169|[Use expression\-bodied member](../../docs/refactorings/UseExpressionBodiedMember.md)|x
 RR0170|[Use lambda expression instead of anonymous method](../../docs/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.md)|x
-RR0171|[Use String\.Empty instead of ""](../../docs/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.md)|
+RR0171|[Use string\.Empty instead of ""](../../docs/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.md)|
 RR0174|[Wrap in \#if directive](../../docs/refactorings/WrapInIfDirective.md)|x
 RR0172|[Wrap in condition](../../docs/refactorings/WrapInCondition.md)|x
 RR0173|[Wrap in else clause](../../docs/refactorings/WrapInElseClause.md)|x

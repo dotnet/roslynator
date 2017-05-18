@@ -838,26 +838,26 @@
 
 ![Replace do statement with while statement](../../images/refactorings/ReplaceDoStatementWithWhileStatement.png)
 
-#### Replace equals expression with String\.Equals (RR0124)
+#### Replace equals expression with string\.Equals (RR0124)
 
 * **Syntax**: equals expression, not equals expression
 * **Scope**: operator
 
-![Replace equals expression with String\.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
+![Replace equals expression with string\.Equals](../../images/refactorings/ReplaceEqualsExpressionWithStringEquals.png)
 
-#### Replace equals expression with String\.IsNullOrEmpty (RR0125)
-
-* **Syntax**: equals expression, not equals expression
-* **Scope**: operator
-
-![Replace equals expression with String\.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
-
-#### Replace equals expression with String\.IsNullOrWhiteSpace (RR0126)
+#### Replace equals expression with string\.IsNullOrEmpty (RR0125)
 
 * **Syntax**: equals expression, not equals expression
 * **Scope**: operator
 
-![Replace equals expression with String\.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
+![Replace equals expression with string\.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
+
+#### Replace equals expression with string\.IsNullOrWhiteSpace (RR0126)
+
+* **Syntax**: equals expression, not equals expression
+* **Scope**: operator
+
+![Replace equals expression with string\.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
 
 #### Replace expression with constant value (RR0127)
 
@@ -970,18 +970,18 @@
 
 ![Replace string literal with character literal](../../images/refactorings/ReplaceStringLiteralWithCharacterLiteral.png)
 
-#### Replace String\.Contains with String\.IndexOf (RR0144)
+#### Replace string\.Contains with string\.IndexOf (RR0144)
 
 * **Syntax**: method invocation
 * **Scope**: method name
 
-![Replace String\.Contains with String\.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
+![Replace string\.Contains with string\.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
 
-#### Replace String\.Format with interpolated string (RR0145)
+#### Replace string\.Format with interpolated string (RR0145)
 
-* **Syntax**: String\.Format method
+* **Syntax**: string\.Format method
 
-![Replace String\.Format with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
+![Replace string\.Format with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
 
 #### Replace switch statement with if\-else (RR0147)
 
@@ -1098,11 +1098,11 @@
 
 ![Uncomment](../../images/refactorings/Uncomment.png)
 
-#### Use "" instead of String\.Empty (RR0168)
+#### Use "" instead of string\.Empty (RR0168)
 
-* **Syntax**: String\.Empty field
+* **Syntax**: string\.Empty field
 
-![Use "" instead of String\.Empty](../../images/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.png)
+![Use "" instead of string\.Empty](../../images/refactorings/UseEmptyStringLiteralInsteadOfStringEmpty.png)
 
 #### Use bitwise operation instead of calling 'HasFlag' (RR0164)
 
@@ -1143,11 +1143,11 @@
 
 ![Use lambda expression instead of anonymous method](../../images/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.png)
 
-#### Use String\.Empty instead of "" (RR0171)
+#### Use string\.Empty instead of "" (RR0171)
 
 * **Syntax**: empty string literal
 
-![Use String\.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
+![Use string\.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
 
 #### Wrap in \#if directive (RR0174)
 

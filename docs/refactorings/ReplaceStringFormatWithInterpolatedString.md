@@ -1,14 +1,14 @@
-## Replace String.Format with interpolated string
+## Replace string.Format with interpolated string
 
 Property | Value
 --- | --- 
 Id | RR0145
-Title | Replace String\.Format with interpolated string
-Syntax | String\.Format method
+Title | Replace string\.Format with interpolated string
+Syntax | string\.Format method
 Enabled by Default | yes
 
 ### Usage
 
-![Replace String\.Format with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
+![Replace string\.Format with interpolated string](../../images/refactorings/ReplaceStringFormatWithInterpolatedString.png)
 
 [full list of refactorings](Refactorings.md)
