@@ -1,3 +1,7 @@
+### 1.3.11 (2017-05-18)
+
+* A lot of bug fixes and improvements.
+
 ### 1.3.10 (2017-04-24)
 
 #### Analyzers
