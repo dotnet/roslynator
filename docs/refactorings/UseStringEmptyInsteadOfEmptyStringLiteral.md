@@ -1,14 +1,14 @@
-## Use String.Empty instead of ""
+## Use string.Empty instead of ""
 
 Property | Value
 --- | --- 
 Id | RR0171
-Title | Use String\.Empty instead of ""
+Title | Use string\.Empty instead of ""
 Syntax | empty string literal
 Enabled by Default | no
 
 ### Usage
 
-![Use String\.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
+![Use string\.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
 
 [full list of refactorings](Refactorings.md)

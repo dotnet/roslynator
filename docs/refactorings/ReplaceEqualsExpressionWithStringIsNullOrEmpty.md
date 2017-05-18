@@ -1,15 +1,15 @@
-## Replace equals expression with String.IsNullOrEmpty
+## Replace equals expression with string.IsNullOrEmpty
 
 Property | Value
 --- | --- 
 Id | RR0125
-Title | Replace equals expression with String\.IsNullOrEmpty
+Title | Replace equals expression with string\.IsNullOrEmpty
 Syntax | equals expression, not equals expression
 Scope | operator
 Enabled by Default | yes
 
 ### Usage
 
-![Replace equals expression with String\.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
+![Replace equals expression with string\.IsNullOrEmpty](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.png)
 
 [full list of refactorings](Refactorings.md)
