@@ -575,9 +575,17 @@ namespace Roslynator.CSharp
             }
         }
 
+        public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
+        {
+            while (expression?.Parent?.Kind() == SyntaxKind.ParenthesizedExpression)
+                expression = (ParenthesizedExpressionSyntax)expression.Parent;
+
+            return expression;
+        }
+
         public static ExpressionSyntax WalkDownParentheses(this ExpressionSyntax expression)
         {
-            while (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
+            while (expression?.Kind() == SyntaxKind.ParenthesizedExpression)
                 expression = ((ParenthesizedExpressionSyntax)expression).Expression;
 
             return expression;
