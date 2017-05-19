@@ -454,6 +454,23 @@ namespace Roslynator
         }
         #endregion ISymbol
 
+        #region IEventSymbol
+        public static IEnumerable<IEventSymbol> OverriddenEvents(this IEventSymbol eventSymbol)
+        {
+            if (eventSymbol == null)
+                throw new ArgumentNullException(nameof(eventSymbol));
+
+            IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
+
+            while (overriddenEvent != null)
+            {
+                yield return overriddenEvent;
+
+                overriddenEvent = overriddenEvent.OverriddenEvent;
+            }
+        }
+        #endregion IEventSymbol
+
         #region IFieldSymbol
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, bool value)
         {
@@ -801,6 +818,21 @@ namespace Roslynator
             return (parameters.Length == 1)
                 ? parameters[0]
                 : null;
+        }
+
+        public static IEnumerable<IPropertySymbol> OverriddenProperties(this IPropertySymbol propertySymbol)
+        {
+            if (propertySymbol == null)
+                throw new ArgumentNullException(nameof(propertySymbol));
+
+            IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+
+            while (overriddenProperty != null)
+            {
+                yield return overriddenProperty;
+
+                overriddenProperty = overriddenProperty.OverriddenProperty;
+            }
         }
         #endregion IPropertySymbol
 
