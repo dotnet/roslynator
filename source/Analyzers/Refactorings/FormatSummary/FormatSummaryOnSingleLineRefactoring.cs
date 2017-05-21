@@ -12,6 +12,27 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
 {
     internal static class FormatSummaryOnSingleLineRefactoring
     {
+        private static readonly Regex _regex = new Regex(
+            @"
+            ^
+            (
+                [\s-[\r\n]]*
+                \r?\n
+                [\s-[\r\n]]*
+                ///
+                [\s-[\r\n]]*
+            )?
+            (?<1>[^\r\n]*)
+            (
+                [\s-[\r\n]]*
+                \r?\n
+                [\s-[\r\n]]*
+                ///
+                [\s-[\r\n]]*
+            )?
+            $
+            ", RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
+
         public static void AnalyzeSingleLineDocumentationCommentTrivia(SyntaxNodeAnalysisContext context)
         {
             var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
@@ -29,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
                     if (endTag?.IsMissing == false
                         && startTag.GetSpanEndLine() < endTag.GetSpanStartLine())
                     {
-                        Match match = FormatSummaryRefactoring.Regex.Match(
+                        Match match = _regex.Match(
                             summaryElement.ToString(),
                             startTag.Span.End - summaryElement.Span.Start,
                             endTag.Span.Start - startTag.Span.End);
@@ -57,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings.FormatSummary
             XmlElementStartTagSyntax startTag = summaryElement.StartTag;
             XmlElementEndTagSyntax endTag = summaryElement.EndTag;
 
-            Match match = FormatSummaryRefactoring.Regex.Match(
+            Match match = _regex.Match(
                 summaryElement.ToString(),
                 startTag.Span.End - summaryElement.Span.Start,
                 endTag.Span.Start - startTag.Span.End);
