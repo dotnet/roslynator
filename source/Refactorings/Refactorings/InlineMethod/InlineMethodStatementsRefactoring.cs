@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -17,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             INamedTypeSymbol invocationEnclosingType,
             IMethodSymbol methodSymbol,
             MethodDeclarationSyntax methodDeclaration,
-            ParameterInfo[] parameterInfos,
+            ImmutableArray<ParameterInfo> parameterInfos,
             SemanticModel invocationSemanticModel,
             SemanticModel declarationSemanticModel,
             CancellationToken cancellationToken) : base(document, invocationExpression, invocationEnclosingType, methodSymbol, methodDeclaration, parameterInfos, invocationSemanticModel, declarationSemanticModel, cancellationToken)

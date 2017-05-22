@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -32,9 +33,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                         if (expression != null)
                         {
-                            List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
+                            ImmutableArray<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
 
-                            if (parameterInfos != null)
+                            if (!parameterInfos.IsDefault)
                             {
                                 INamedTypeSymbol enclosingType = semanticModel.GetEnclosingNamedType(invocation.SpanStart, context.CancellationToken);
 
@@ -42,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                                     ? semanticModel
                                     : await context.Solution.GetDocument(methodDeclaration.SyntaxTree).GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-                                var refactoring = new InlineMethodExpressionRefactoring(context.Document, invocation, enclosingType, methodSymbol, methodDeclaration, parameterInfos.ToArray(), semanticModel, declarationSemanticModel, context.CancellationToken);
+                                var refactoring = new InlineMethodExpressionRefactoring(context.Document, invocation, enclosingType, methodSymbol, methodDeclaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
 
                                 context.RegisterRefactoring("Inline method", c => refactoring.InlineMethodAsync(invocation, expression));
 
@@ -60,9 +61,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                                 if (statements.Any())
                                 {
-                                    List<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
+                                    ImmutableArray<ParameterInfo> parameterInfos = GetParameterInfos(invocation, methodSymbol, semanticModel, context.CancellationToken);
 
-                                    if (parameterInfos != null)
+                                    if (!parameterInfos.IsDefault)
                                     {
                                         var expressionStatement = (ExpressionStatementSyntax)invocation.Parent;
 
@@ -72,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                                             ? semanticModel
                                             : await context.Solution.GetDocument(methodDeclaration.SyntaxTree).GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
 
-                                        var refactoring = new InlineMethodStatementsRefactoring(context.Document, invocation, enclosingType, methodSymbol, methodDeclaration, parameterInfos.ToArray(), semanticModel, declarationSemanticModel, context.CancellationToken);
+                                        var refactoring = new InlineMethodStatementsRefactoring(context.Document, invocation, enclosingType, methodSymbol, methodDeclaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
 
                                         context.RegisterRefactoring("Inline method", c => refactoring.InlineMethodAsync(expressionStatement, statements));
 
@@ -223,27 +224,29 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             return methodDeclaration.ExpressionBody?.Expression;
         }
 
-        private static List<ParameterInfo> GetParameterInfos(
+        private static ImmutableArray<ParameterInfo> GetParameterInfos(
             InvocationExpressionSyntax invocation,
             IMethodSymbol methodSymbol,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            List<ParameterInfo> parameterInfos = GetParameterInfos(invocation.ArgumentList, semanticModel, cancellationToken);
-
-            if (parameterInfos != null)
+            List<ParameterInfo> parameterInfos;
+            if (TryGetParameterInfos(invocation.ArgumentList, semanticModel, cancellationToken, out parameterInfos))
             {
                 foreach (IParameterSymbol parameterSymbol in methodSymbol.Parameters)
                 {
-                    if (!parameterInfos.Any(f => f.ParameterSymbol == parameterSymbol))
+                    if (parameterInfos == null
+                        || parameterInfos.FindIndex(f => f.ParameterSymbol == parameterSymbol) == -1)
                     {
                         if (parameterSymbol.HasExplicitDefaultValue)
                         {
-                            parameterInfos.Add(new ParameterInfo(parameterSymbol, parameterSymbol.GetDefaultValueSyntax()));
+                            var parameterInfo = new ParameterInfo(parameterSymbol, parameterSymbol.GetDefaultValueSyntax());
+
+                            (parameterInfos ?? (parameterInfos = new List<ParameterInfo>())).Add(parameterInfo);
                         }
                         else
                         {
-                            return null;
+                            return default(ImmutableArray<ParameterInfo>);
                         }
                     }
                 }
@@ -254,17 +257,22 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                     var parameterInfo = new ParameterInfo(methodSymbol.ReducedFrom.Parameters[0], memberAccess.Expression);
 
-                    parameterInfos.Add(parameterInfo);
+                    (parameterInfos ?? (parameterInfos = new List<ParameterInfo>())).Add(parameterInfo);
                 }
+
+                return (parameterInfos != null)
+                    ? parameterInfos.ToImmutableArray()
+                    : ImmutableArray<ParameterInfo>.Empty;
             }
 
-            return parameterInfos;
+            return default(ImmutableArray<ParameterInfo>);
         }
 
-        private static List<ParameterInfo> GetParameterInfos(
+        private static bool TryGetParameterInfos(
             ArgumentListSyntax argumentList,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken,
+            out List<ParameterInfo> parameterInfos)
         {
             List<ParameterInfo> list = null;
 
@@ -278,11 +286,13 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 }
                 else
                 {
-                    return null;
+                    parameterInfos = null;
+                    return false;
                 }
             }
 
-            return list;
+            parameterInfos = list;
+            return true;
         }
     }
 }
