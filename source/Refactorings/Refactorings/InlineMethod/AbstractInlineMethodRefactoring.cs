@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             INamedTypeSymbol invocationEnclosingType,
             IMethodSymbol methodSymbol,
             MethodDeclarationSyntax methodDeclaration,
-            ParameterInfo[] parameterInfos,
+            ImmutableArray<ParameterInfo> parameterInfos,
             SemanticModel invocationSemanticModel,
             SemanticModel declarationSemanticModel,
             CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             InvocationEnclosingType = invocationEnclosingType;
             MethodSymbol = methodSymbol;
             MethodDeclaration = methodDeclaration;
-            ParameterInfos = parameterInfos.ToImmutableArray();
+            ParameterInfos = parameterInfos;
             InvocationSemanticModel = invocationSemanticModel;
             DeclarationSemanticModel = declarationSemanticModel;
             CancellationToken = cancellationToken;
