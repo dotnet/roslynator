@@ -61,6 +61,11 @@ namespace Roslynator.CSharp.Refactorings
                  membersToRemove,
                  SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
+            SyntaxList<AttributeListSyntax> attributeLists = newCompilationUnit.AttributeLists;
+
+            if (attributeLists.Any())
+                newCompilationUnit = newCompilationUnit.RemoveNodes(attributeLists, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+
             return RemoveEmptyNamespaces(newCompilationUnit, SyntaxRemoveOptions.KeepUnbalancedDirectives);
         }
 
