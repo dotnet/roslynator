@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
             if (methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && ((IMethodSymbol)context.ContainingSymbol)?.OverriddenMethod != null)
+                && ((IMethodSymbol)context.ContainingSymbol)?.OverriddenMethod?.ReturnType?.IsErrorType() == false)
             {
                 Analyze(context, methodDeclaration.Identifier);
             }
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
             if (propertyDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty != null)
+                && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty?.Type?.IsErrorType() == false)
             {
                 Analyze(context, propertyDeclaration.Identifier);
             }
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
             if (indexerDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty != null)
+                && ((IPropertySymbol)context.ContainingSymbol)?.OverriddenProperty?.Type?.IsErrorType() == false)
             {
                 Analyze(context, indexerDeclaration.ThisKeyword);
             }
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
             var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
             if (eventDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent != null)
+                && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent?.Type?.IsErrorType() == false)
             {
                 Analyze(context, eventDeclaration.Identifier);
             }
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
             if (eventFieldDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
-                && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent != null)
+                && ((IEventSymbol)context.ContainingSymbol)?.OverriddenEvent?.Type?.IsErrorType() == false)
             {
                 VariableDeclaratorSyntax declarator = eventFieldDeclaration.Declaration?.Variables.FirstOrDefault();
 
