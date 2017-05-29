@@ -225,7 +225,6 @@
     <Compile Include="CodeFixProviders\DeclareTypeInsideNamespaceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantBooleanLiteralCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BitwiseOperatorDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\YieldStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LocalDeclarationStatementDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddReturnStatementThatReturnsDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\AddBreakStatementToSwitchSectionRefactoring.cs" />
@@ -234,7 +233,6 @@
     <Compile Include="DiagnosticAnalyzers\DestructorDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereMethodChainRefactoring.cs" />
     <Compile Include="Refactorings\MarkLocalVariableAsConstRefactoring.cs" />
-    <Compile Include="Refactorings\MergeLocalDeclarationWithReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\NonAsynchronousMethodNameShouldNotEndWithAsyncRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEmptyArgumentListRefactoring.cs" />
@@ -329,7 +327,6 @@
     <Compile Include="CodeFixProviders\ForStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InvocationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MemberDeclarationCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\MergeLocalDeclarationWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\IfStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatCaseLabelStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InterpolatedStringCodeFixProvider.cs" />
@@ -408,7 +405,7 @@
     <Compile Include="DiagnosticAnalyzers\EnumDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ImplicitArrayCreationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NamedTypeDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\ReturnStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ReplaceReturnStatementWithExpressionStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SwitchSectionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\QualifiedNameDiagnosticAnalyzer.cs" />

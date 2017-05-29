@@ -59,7 +59,7 @@ namespace Roslynator.CSharp
         public const string ParenthesizeConditionInConditionalExpression = Prefix + "1051";
         public const string DeclareEachAttributeSeparately = Prefix + "1052";
         //public const string ReplaceForEachWithFor = Prefix + "1053";
-        public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
+        //public const string MergeLocalDeclarationWithReturnStatement = Prefix + "1054";
         public const string AvoidSemicolonAtEndOfDeclaration = Prefix + "1055";
         public const string AvoidUsageOfUsingAliasDirective = Prefix + "1056";
         public const string AddEmptyLineBetweenDeclarations = Prefix + "1057";
