@@ -29,7 +29,7 @@ Formatting|Add empty line after embedded statement|RCS1030|
 Formatting|Add empty line after last statement in do statement|RCS1092|
 Formatting|Add empty line between declarations|RCS1057|x
 Formatting|Avoid single\-line block|RCS1185|
-Formatting|Format accessor list|RCS1024|x
+Formatting|Format accessor list|RCS1024|
 Formatting|Format binary operator on next line|RCS1029|x
 Formatting|Format conditional expression \(format ? and : on next line\)|RCS1184|
 Formatting|Format declaration braces|RCS1076|x
@@ -38,7 +38,7 @@ Formatting|Format documentation summary on multiple lines|RCS1101|
 Formatting|Format each enum member on a separate line|RCS1025|
 Formatting|Format each statement on a separate line|RCS1026|
 Formatting|Format embedded statement on a separate line|RCS1027|
-Formatting|Format empty block|RCS1023|x
+Formatting|Format empty block|RCS1023|
 Formatting|Format initializer with single expression on single line|RCS1183|x
 Formatting|Format switch section's statement on a separate line|RCS1028|
 General|Bitwise operation on enum without Flags attribute|RCS1130|x
@@ -132,7 +132,6 @@ Simplification|Merge else clause with nested if statement|RCS1006|x
 Simplification|Merge if statement with nested if statement|RCS1061|x
 Simplification|Merge interpolation into interpolated string|RCS1105|x
 Simplification|Merge local declaration with assignment|RCS1127|x
-Simplification|Merge local declaration with return statement|RCS1054|x
 Simplification|Merge switch sections with equivalent content|RCS1136|x
 Simplification|Replace if statement with assignment|RCS1103|x
 Simplification|Replace if statement with return statement|RCS1073|

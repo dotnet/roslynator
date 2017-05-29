@@ -23,8 +23,8 @@ RCS1019|Reorder modifiers|Readability|
 RCS1020|Simplify Nullable\<T\> to T?|Simplification|x
 RCS1021|Simplify lambda expression|Simplification|x
 RCS1022|Simplify lambda expression parameter list|Simplification|
-RCS1023|Format empty block|Formatting|x
-RCS1024|Format accessor list|Formatting|x
+RCS1023|Format empty block|Formatting|
+RCS1024|Format accessor list|Formatting|
 RCS1025|Format each enum member on a separate line|Formatting|
 RCS1026|Format each statement on a separate line|Formatting|
 RCS1027|Format embedded statement on a separate line|Formatting|
@@ -52,7 +52,6 @@ RCS1049|Simplify boolean comparison|Simplification|x
 RCS1050|Add constructor argument list|Style|
 RCS1051|Parenthesize condition in conditional expression|Style|
 RCS1052|Declare each attribute separately|Readability|
-RCS1054|Merge local declaration with return statement|Simplification|x
 RCS1055|Avoid semicolon at the end of declaration|Redundancy|x
 RCS1056|Avoid usage of using alias directive|Readability|
 RCS1057|Add empty line between declarations|Formatting|x
