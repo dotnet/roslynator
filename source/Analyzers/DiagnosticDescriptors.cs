@@ -853,7 +853,7 @@ namespace Roslynator.CSharp
              title: "Remove empty region.",
              messageFormat: "Remove empty region.",
              category: DiagnosticCategories.Redundancy,
-             defaultSeverity: DiagnosticSeverity.Info,
+             defaultSeverity: DiagnosticSeverity.Hidden,
              isEnabledByDefault: true
         );
 
@@ -1472,7 +1472,7 @@ namespace Roslynator.CSharp
             title: "Composite enum value contains undefined flag.",
             messageFormat: "Composite enum value contains undefined flag {0}.",
             category: DiagnosticCategories.Design,
-            defaultSeverity: DiagnosticSeverity.Warning,
+            defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
 
