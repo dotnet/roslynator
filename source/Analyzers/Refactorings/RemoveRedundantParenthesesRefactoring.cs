@@ -63,13 +63,6 @@ namespace Roslynator.CSharp.Refactorings
             AnalyzeExpression(context, switchStatement.Expression);
         }
 
-        internal static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
-        {
-            var forEachStatement = (CommonForEachStatementSyntax)context.Node;
-
-            AnalyzeExpression(context, forEachStatement.Expression);
-        }
-
         public static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
             var returnStatement = (ReturnStatementSyntax)context.Node;
@@ -103,13 +96,6 @@ namespace Roslynator.CSharp.Refactorings
             var attributeArgument = (AttributeArgumentSyntax)context.Node;
 
             AnalyzeExpression(context, attributeArgument.Expression);
-        }
-
-        public static void AnalyzeEqualsValueClause(SyntaxNodeAnalysisContext context)
-        {
-            var equalsValueClause = (EqualsValueClauseSyntax)context.Node;
-
-            AnalyzeExpression(context, equalsValueClause.Value);
         }
 
         public static void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
@@ -154,7 +140,6 @@ namespace Roslynator.CSharp.Refactorings
             var assignment = (AssignmentExpressionSyntax)context.Node;
 
             AnalyzeExpression(context, assignment.Left);
-            AnalyzeExpression(context, assignment.Right);
         }
 
         private static void AnalyzeExpression(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
