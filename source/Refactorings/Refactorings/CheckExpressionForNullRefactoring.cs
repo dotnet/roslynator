@@ -383,9 +383,7 @@ namespace Roslynator.CSharp.Refactorings
                 NotEqualsExpression(expression.WithoutTrivia(), NullLiteralExpression()),
                 Block(openBrace, statements, closeBrace));
 
-            return ifStatement
-                .WithLeadingTrivia(NewLine())
-                .WithFormatterAnnotation();
+            return ifStatement.WithFormatterAnnotation();
         }
 
         private static int IncludeAllReferencesOfSymbol(
