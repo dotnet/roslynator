@@ -12,16 +12,20 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceReturnStatementWithExpressionStatementRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, ReturnStatementSyntax returnStatement)
+        public static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
+            var returnStatement = (ReturnStatementSyntax)context.Node;
+
             if (CanRefactor(returnStatement, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.ReplaceReturnStatementWithExpressionStatement, returnStatement.ReturnKeyword, "return");
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, YieldStatementSyntax yieldStatement)
+        public static void AnalyzeYieldReturnStatement(SyntaxNodeAnalysisContext context)
         {
+            var yieldStatement = (YieldStatementSyntax)context.Node;
+
             if (CanRefactor(yieldStatement, context.SemanticModel, context.CancellationToken)
                 && !yieldStatement.ContainsDirectives(TextSpan.FromBounds(yieldStatement.YieldKeyword.Span.End, yieldStatement.Expression.Span.Start)))
             {

@@ -493,17 +493,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement,
-            title: "Merge local declaration with return statement.",
-            messageFormat: "Merge local declaration with return statement.",
-            category: DiagnosticCategories.Simplification,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
-        );
-
-        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatementFadeOut = MergeLocalDeclarationWithReturnStatement.CreateFadeOut();
-
         public static readonly DiagnosticDescriptor AvoidSemicolonAtEndOfDeclaration = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
             title: "Avoid semicolon at the end of declaration.",
