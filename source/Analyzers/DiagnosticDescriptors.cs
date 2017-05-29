@@ -220,7 +220,7 @@ namespace Roslynator.CSharp
             messageFormat: "Format empty block.",
             category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor FormatAccessorList = new DiagnosticDescriptor(
@@ -229,7 +229,7 @@ namespace Roslynator.CSharp
             messageFormat: "Format accessor list.",
             category: DiagnosticCategories.Formatting,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
 
         public static readonly DiagnosticDescriptor FormatEachEnumMemberOnSeparateLine = new DiagnosticDescriptor(
