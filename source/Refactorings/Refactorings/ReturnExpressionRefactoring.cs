@@ -26,66 +26,61 @@ namespace Roslynator.CSharp.Refactorings
                         .GetSyntaxAsync(context.CancellationToken)
                         .ConfigureAwait(false);
 
-                    var declaration = node as MemberDeclarationSyntax;
+                    TypeSyntax type = GetTypeOrReturnType(node);
 
-                    if (declaration != null)
+                    if (type != null)
                     {
-                        TypeSyntax memberType = GetMemberType(declaration);
+                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                        if (memberType != null)
+                        if (memberTypeSymbol != null)
                         {
-                            ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(memberType, context.CancellationToken);
+                            ITypeSymbol expressionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                            if (memberTypeSymbol != null)
+                            if (expressionSymbol?.IsErrorType() == false)
                             {
-                                ITypeSymbol expressionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-                                if (expressionSymbol?.IsErrorType() == false)
+                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
                                 {
-                                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                                    ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, expression, expressionSymbol, semanticModel, context.CancellationToken);
+
+                                    if (newType?.IsErrorType() == false
+                                        && !memberTypeSymbol.Equals(newType)
+                                        && !memberSymbol.IsOverride
+                                        && !memberSymbol.ImplementsInterfaceMember())
                                     {
-                                        ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, expression, expressionSymbol, semanticModel, context.CancellationToken);
-
-                                        if (newType?.IsErrorType() == false
-                                            && !memberTypeSymbol.Equals(newType)
-                                            && !memberSymbol.IsOverride
-                                            && !memberSymbol.ImplementsInterfaceMember())
+                                        if (newType.IsNamedType() && memberTypeSymbol.IsNamedType())
                                         {
-                                            if (newType.IsNamedType() && memberTypeSymbol.IsNamedType())
+                                            var newNamedType = (INamedTypeSymbol)newType;
+
+                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
+
+                                            if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
                                             {
-                                                var newNamedType = (INamedTypeSymbol)newType;
+                                                INamedTypeSymbol enumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
 
-                                                INamedTypeSymbol orderedEnumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
-
-                                                if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
+                                                if (enumerableSymbol != null
+                                                    && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
                                                 {
-                                                    INamedTypeSymbol enumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
-
-                                                    if (enumerableSymbol != null
-                                                        && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
-                                                    {
-                                                        RegisterChangeType(context, declaration, memberType, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()), semanticModel);
-                                                    }
+                                                    RegisterChangeType(context, node, type, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()), semanticModel);
                                                 }
                                             }
-
-                                            RegisterChangeType(context, declaration, memberType, newType, semanticModel);
                                         }
+
+                                        RegisterChangeType(context, node, type, newType, semanticModel);
                                     }
+                                }
 
-                                    if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
-                                        && !memberTypeSymbol.IsErrorType())
+                                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
+                                    && !memberTypeSymbol.IsErrorType())
+                                {
+                                    ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
+
+                                    if (castTypeSymbol != null)
                                     {
-                                        ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
-
-                                        if (castTypeSymbol != null)
-                                        {
-                                            ModifyExpressionRefactoring.ComputeRefactoring(
-                                               context,
-                                               expression,
-                                               castTypeSymbol,
-                                               semanticModel);
-                                        }
+                                        ModifyExpressionRefactoring.ComputeRefactoring(
+                                           context,
+                                           expression,
+                                           castTypeSymbol,
+                                           semanticModel);
                                     }
                                 }
                             }
@@ -95,10 +90,10 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static void RegisterChangeType(RefactoringContext context, MemberDeclarationSyntax member, TypeSyntax type, ITypeSymbol newType, SemanticModel semanticModel)
+        private static void RegisterChangeType(RefactoringContext context, SyntaxNode node, TypeSyntax type, ITypeSymbol newType, SemanticModel semanticModel)
         {
             context.RegisterRefactoring(
-            $"Change {GetText(member)} type to '{SymbolDisplay.GetMinimalString(newType, semanticModel, type.Span.Start)}'",
+            $"Change {GetText(node)} type to '{SymbolDisplay.GetMinimalString(newType, semanticModel, type.Span.Start)}'",
             cancellationToken =>
             {
                 return ChangeTypeRefactoring.ChangeTypeAsync(
@@ -195,26 +190,29 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        internal static TypeSyntax GetMemberType(MemberDeclarationSyntax declaration)
+        internal static TypeSyntax GetTypeOrReturnType(SyntaxNode node)
         {
-            switch (declaration.Kind())
+            switch (node.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)declaration).ReturnType;
+                    return ((MethodDeclarationSyntax)node).ReturnType;
                 case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)declaration).Type;
+                    return ((PropertyDeclarationSyntax)node).Type;
                 case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)declaration).Type;
+                    return ((IndexerDeclarationSyntax)node).Type;
+                case SyntaxKind.LocalFunctionStatement:
+                    return ((LocalFunctionStatementSyntax)node).ReturnType;
                 default:
                     return null;
             }
         }
 
-        internal static string GetText(MemberDeclarationSyntax declaration)
+        internal static string GetText(SyntaxNode node)
         {
-            switch (declaration.Kind())
+            switch (node.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
                     return "return";
                 case SyntaxKind.PropertyDeclaration:
                     return "property";

@@ -30,13 +30,11 @@ namespace Roslynator.CSharp.Refactorings
                         .GetSyntaxAsync(context.CancellationToken)
                         .ConfigureAwait(false);
 
-                    var containingMember = node as MemberDeclarationSyntax;
+                    TypeSyntax type = ReturnExpressionRefactoring.GetTypeOrReturnType(node);
 
-                    TypeSyntax memberType = ReturnExpressionRefactoring.GetMemberType(containingMember);
-
-                    if (memberType != null)
+                    if (type != null)
                     {
-                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(memberType, context.CancellationToken);
+                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
                         if (memberTypeSymbol?.SpecialType != SpecialType.System_Collections_IEnumerable)
                         {
@@ -56,15 +54,15 @@ namespace Roslynator.CSharp.Refactorings
                                     .GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T)
                                     .Construct(typeSymbol);
 
-                                TypeSyntax newType = newTypeSymbol.ToMinimalTypeSyntax(semanticModel, memberType.SpanStart);
+                                TypeSyntax newType = newTypeSymbol.ToMinimalTypeSyntax(semanticModel, type.SpanStart);
 
                                 context.RegisterRefactoring(
-                                    $"Change {ReturnExpressionRefactoring.GetText(containingMember)} type to '{SymbolDisplay.GetMinimalString(newTypeSymbol, semanticModel, memberType.SpanStart)}'",
+                                    $"Change {ReturnExpressionRefactoring.GetText(node)} type to '{SymbolDisplay.GetMinimalString(newTypeSymbol, semanticModel, type.SpanStart)}'",
                                     cancellationToken =>
                                     {
                                         return ChangeTypeRefactoring.ChangeTypeAsync(
                                             context.Document,
-                                            memberType,
+                                            type,
                                             newType,
                                             cancellationToken);
                                     });
