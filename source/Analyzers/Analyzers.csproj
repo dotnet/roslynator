@@ -103,6 +103,7 @@
     <Compile Include="DiagnosticAnalyzers\CallDebugFailInsteadOfDebugAssertDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\DeclareEnumValueAsCombinationOfNamesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReadOnlyAutoPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseVarInForEachDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReturnInsteadOfAssignmentDiagnosticAnalyzer.cs" />
@@ -157,6 +158,7 @@
     <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
     <Compile Include="Refactorings\CallDebugFailInsteadOfDebugAssertRefactoring.cs" />
     <Compile Include="Refactorings\UseRegexInstanceInsteadOfStaticMethodRefactoring.cs" />
+    <Compile Include="Refactorings\DeclareEnumValueAsCombinationOfNamesRefactoring.cs" />
     <Compile Include="Refactorings\UseReturnInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\UseIsOperatorInsteadOfAsOperatorRefactoring.cs" />
     <Compile Include="Refactorings\ValueTypeCheckedForNullRefactoring.cs" />

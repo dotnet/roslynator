@@ -17,7 +17,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue,
+                    DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -31,12 +36,32 @@ namespace Roslynator.CSharp.CodeFixProviders
             if (enumMemberDeclaration == null)
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Declare explicit value",
-                cancellationToken => EnumMemberShouldDeclareExplicitValueRefactoring.RefactorAsync(context.Document, enumMemberDeclaration, cancellationToken),
-                DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue + EquivalenceKeySuffix);
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Declare explicit value",
+                                cancellationToken => EnumMemberShouldDeclareExplicitValueRefactoring.RefactorAsync(context.Document, enumMemberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Declare value as combination of names",
+                                cancellationToken => DeclareEnumValueAsCombinationOfNamesRefactoring.RefactorAsync(context.Document, enumMemberDeclaration, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
     }
 }
