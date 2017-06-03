@@ -1198,4 +1198,9 @@
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0182" Identifier="UseStringBuilderInsteadOfConcatenation" Title="Use StringBuilder instead of concatenation">
+    <Syntaxes>
+      <Syntax>string concatenation</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

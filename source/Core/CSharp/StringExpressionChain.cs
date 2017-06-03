@@ -189,7 +189,7 @@ namespace Roslynator.CSharp
 
                     if (right?.IsMissing == false)
                     {
-                        if (right.IsKind(SyntaxKind.StringLiteralExpression)
+                        if (right.IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression)
                             || IsString(right, semanticModel, cancellationToken))
                         {
                             (expressions ?? (expressions = new List<ExpressionSyntax>())).Add(right);
@@ -201,6 +201,7 @@ namespace Roslynator.CSharp
                                 switch (left.Kind())
                                 {
                                     case SyntaxKind.StringLiteralExpression:
+                                    case SyntaxKind.InterpolatedStringExpression:
                                         {
                                             expressions.Add(left);
                                             return expressions;

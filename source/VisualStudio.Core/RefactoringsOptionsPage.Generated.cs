@@ -566,6 +566,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.ImplementIEquatableOfT, "Implement IEquatable<T>", IsEnabled(RefactoringIdentifiers.ImplementIEquatableOfT)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.InlineUsingStatic, "Inline using static", IsEnabled(RefactoringIdentifiers.InlineUsingStatic)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.InlineConstant, "Inline constant", IsEnabled(RefactoringIdentifiers.InlineConstant)));
+            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation, "Use StringBuilder instead of concatenation", IsEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)));
         }
 
         [Browsable(false)]

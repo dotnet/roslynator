@@ -9,6 +9,7 @@ namespace Roslynator
         public const string ForEachVariable = "item";
         public const string EventArgsVariable = "e";
         public const string EventHandlerVariable = "handler";
+        public const string StringBuilderVariable = "sb";
         public const string Namespace = "Namespace";
         public const string EnumMember = "EnumMember";
         public const string TypeParameter = "T";

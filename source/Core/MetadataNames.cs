@@ -45,6 +45,7 @@ namespace Roslynator
         public const string System_Text_RegularExpressions = "System.Text.RegularExpressions";
         public const string System_Text_RegularExpressions_Regex = "System.Text.RegularExpressions.Regex";
         public const string System_Text_RegularExpressions_RegexOptions = "System.Text.RegularExpressions.RegexOptions";
+        public const string System_Text_StringBuilder = "System.Text.StringBuilder";
         public const string System_Threading_SpinLock = "System.Threading.SpinLock";
         public const string System_Threading_Tasks_Task = "System.Threading.Tasks.Task";
         public const string System_Threading_Tasks_Task_T = "System.Threading.Tasks.Task`1";

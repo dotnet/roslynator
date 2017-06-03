@@ -2,10 +2,10 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ExtractCondition;
 using Roslynator.CSharp.Refactorings.ReplaceEqualsExpression;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -38,10 +38,23 @@ namespace Roslynator.CSharp.Refactorings
                 ExpandCoalesceExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringExpressions)
-                && context.Span.IsBetweenSpans(binaryExpression))
+            if (context.IsAnyRefactoringEnabled(
+                    RefactoringIdentifiers.MergeStringExpressions,
+                    RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)
+                && context.Span.IsBetweenSpans(binaryExpression)
+                && binaryExpression.IsKind(SyntaxKind.AddExpression))
             {
-                await MergeStringExpressionsRefactoring.ComputeRefactoringAsync(context, binaryExpression).ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                StringExpressionChain chain;
+                if (StringExpressionChain.TryCreate(binaryExpression, semanticModel, context.CancellationToken, out chain))
+                {
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringExpressions))
+                        MergeStringExpressionsRefactoring.ComputeRefactoring(context, chain);
+
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation))
+                        UseStringBuilderInsteadOfConcatenationRefactoring.ComputeRefactoring(context, chain);
+                }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
@@ -84,8 +97,17 @@ namespace Roslynator.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition))
                         ExtractConditionRefactoring.ComputeRefactoring(context, binaryExpressionSelection);
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringExpressions))
-                        await MergeStringExpressionsRefactoring.ComputeRefactoringAsync(context, binaryExpressionSelection).ConfigureAwait(false);
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeStringExpressions)
+                        && binaryExpression.IsKind(SyntaxKind.AddExpression))
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        StringExpressionChain chain;
+                        if (StringExpressionChain.TryCreate(binaryExpressionSelection, semanticModel, context.CancellationToken, out chain))
+                        {
+                            MergeStringExpressionsRefactoring.ComputeRefactoring(context, chain);
+                        }
+                    }
                 }
             }
         }
