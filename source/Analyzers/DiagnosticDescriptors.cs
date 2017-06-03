@@ -1751,5 +1751,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor AddOrRemoveRegionName = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AddOrRemoveRegionName,
+            title: "Add or remove region name.",
+            messageFormat: "{0} region name {1} #endregion.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

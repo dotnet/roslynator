@@ -492,6 +492,47 @@ namespace Roslynator.CSharp
         }
         #endregion ElseClauseSyntax
 
+        #region EndRegionDirectiveTriviaSyntax
+        public static RegionDirectiveTriviaSyntax GetRegionDirective(this EndRegionDirectiveTriviaSyntax endRegionDirective)
+        {
+            if (endRegionDirective == null)
+                throw new ArgumentNullException(nameof(endRegionDirective));
+
+            List<DirectiveTriviaSyntax> relatedDirectives = endRegionDirective.GetRelatedDirectives();
+
+            if (relatedDirectives.Count == 2)
+            {
+                foreach (DirectiveTriviaSyntax directive in relatedDirectives)
+                {
+                    if (directive.IsKind(SyntaxKind.RegionDirectiveTrivia))
+                        return (RegionDirectiveTriviaSyntax)directive;
+                }
+            }
+
+            return null;
+        }
+
+        public static SyntaxTrivia GetPreprocessingMessageTrivia(this EndRegionDirectiveTriviaSyntax endRegionDirective)
+        {
+            if (endRegionDirective == null)
+                throw new ArgumentNullException(nameof(endRegionDirective));
+
+            SyntaxToken endOfDirective = endRegionDirective.EndOfDirectiveToken;
+
+            SyntaxTriviaList leading = endOfDirective.LeadingTrivia;
+
+            if (leading.Count == 1)
+            {
+                SyntaxTrivia trivia = leading[0];
+
+                if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
+                    return trivia;
+            }
+
+            return default(SyntaxTrivia);
+        }
+        #endregion EndRegionDirectiveTriviaSyntax
+
         #region EnumDeclarationSyntax
         public static TextSpan BracesSpan(this EnumDeclarationSyntax enumDeclaration)
         {
@@ -1883,6 +1924,47 @@ namespace Roslynator.CSharp
         }
         #endregion PropertyDeclarationSyntax
 
+        #region RegionDirectiveTriviaSyntax
+        public static EndRegionDirectiveTriviaSyntax GetEndRegionDirective(this RegionDirectiveTriviaSyntax regionDirective)
+        {
+            if (regionDirective == null)
+                throw new ArgumentNullException(nameof(regionDirective));
+
+            List<DirectiveTriviaSyntax> relatedDirectives = regionDirective.GetRelatedDirectives();
+
+            if (relatedDirectives.Count == 2)
+            {
+                foreach (DirectiveTriviaSyntax directive in relatedDirectives)
+                {
+                    if (directive.IsKind(SyntaxKind.EndRegionDirectiveTrivia))
+                        return (EndRegionDirectiveTriviaSyntax)directive;
+                }
+            }
+
+            return null;
+        }
+
+        public static SyntaxTrivia GetPreprocessingMessageTrivia(this RegionDirectiveTriviaSyntax regionDirective)
+        {
+            if (regionDirective == null)
+                throw new ArgumentNullException(nameof(regionDirective));
+
+            SyntaxToken endOfDirective = regionDirective.EndOfDirectiveToken;
+
+            SyntaxTriviaList leading = endOfDirective.LeadingTrivia;
+
+            if (leading.Count == 1)
+            {
+                SyntaxTrivia trivia = leading[0];
+
+                if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
+                    return trivia;
+            }
+
+            return default(SyntaxTrivia);
+        }
+        #endregion RegionDirectiveTriviaSyntax
+
         #region SeparatedSyntaxList<T>
         public static int LastIndexOf<TNode>(this SeparatedSyntaxList<TNode> list, SyntaxKind kind) where TNode : SyntaxNode
         {
@@ -3259,7 +3341,7 @@ namespace Roslynator.CSharp
         {
             return xmlElement.StartTag?.Name?.IsLocalName(localName1, localName2) == true;
         }
-        #endregion
+        #endregion XmlElementSyntax
 
         #region XmlNameSyntax
         internal static bool IsLocalName(this XmlNameSyntax xmlName, string localName)
