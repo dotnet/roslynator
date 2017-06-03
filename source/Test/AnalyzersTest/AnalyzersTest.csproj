@@ -48,6 +48,7 @@
     <Compile Include="MarkClassAsStatic2.cs" />
     <Compile Include="RemoveEmptyInitializer.cs" />
     <Compile Include="RemoveRedundantDefaultSwitchSection.cs" />
+    <Compile Include="MarkFieldAsConst.cs" />
     <Compile Include="ReplaceCommentWithDocumentationComment.cs" />
     <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddEmptyLineAfterClosingBrace.cs" />
