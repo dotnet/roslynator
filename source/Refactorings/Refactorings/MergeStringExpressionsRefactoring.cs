@@ -18,10 +18,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                StringExpressionChain chain = StringExpressionChain.TryCreate(binaryExpressionSelection, semanticModel, context.CancellationToken);
-
-                if (chain != null)
+                StringExpressionChain chain;
+                if (StringExpressionChain.TryCreate(binaryExpressionSelection, semanticModel, context.CancellationToken, out chain))
+                {
                     ComputeRefactoring(context, chain);
+                }
             }
         }
 
@@ -31,25 +32,26 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                StringExpressionChain chain = StringExpressionChain.TryCreate(binaryExpression, semanticModel, context.CancellationToken);
-
-                if (chain != null)
+                StringExpressionChain chain;
+                if (StringExpressionChain.TryCreate(binaryExpression, semanticModel, context.CancellationToken, out chain))
+                {
                     ComputeRefactoring(context, chain);
+                }
             }
         }
 
         private static void ComputeRefactoring(RefactoringContext context, StringExpressionChain chain)
         {
-            if (chain.ContainsExpression)
+            if (chain.ContainsNonLiteralExpression)
             {
-                if (chain.ContainsLiteral || chain.ContainsInterpolatedStringExpression)
+                if (chain.ContainsLiteralExpression || chain.ContainsInterpolatedStringExpression)
                 {
                     context.RegisterRefactoring(
                         "Merge string expressions",
                         cancellationToken => ToInterpolatedStringAsync(context.Document, chain, cancellationToken));
                 }
             }
-            else if (chain.ContainsLiteral)
+            else if (chain.ContainsLiteralExpression)
             {
                 context.RegisterRefactoring(
                     "Merge string literals",
@@ -71,30 +73,9 @@ namespace Roslynator.CSharp.Refactorings
             StringExpressionChain chain,
             CancellationToken cancellationToken)
         {
-            BinaryExpressionSyntax binaryExpression = chain.OriginalExpression;
+            InterpolatedStringExpressionSyntax newExpression = chain.ToInterpolatedString();
 
-            SyntaxNode newNode = chain.ToInterpolatedString();
-
-            if (chain.Span.HasValue)
-            {
-                TextSpan span = chain.Span.Value;
-
-                int start = binaryExpression.SpanStart;
-
-                string s = binaryExpression.ToString();
-
-                s = s.Remove(span.Start - start)
-                    + newNode
-                    + s.Substring(span.End - start);
-
-                newNode = SyntaxFactory.ParseExpression(s);
-            }
-
-            newNode = newNode
-                .WithTriviaFrom(binaryExpression)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+            return RefactorAsync(document, chain, newExpression, cancellationToken);
         }
 
         public static Task<Document> ToStringLiteralAsync(
@@ -103,17 +84,39 @@ namespace Roslynator.CSharp.Refactorings
             bool multiline,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            BinaryExpressionSyntax binaryExpression = chain.OriginalExpression;
-
-            LiteralExpressionSyntax newNode = (multiline)
+            ExpressionSyntax newExpression = (multiline)
                 ? chain.ToMultilineStringLiteral()
                 : chain.ToStringLiteral();
 
-            newNode = newNode
-                .WithTriviaFrom(binaryExpression)
+            return RefactorAsync(document, chain, newExpression, cancellationToken);
+        }
+
+        private static Task<Document> RefactorAsync(
+            Document document,
+            StringExpressionChain chain,
+            ExpressionSyntax expression,
+            CancellationToken cancellationToken)
+        {
+            if (chain.Span.HasValue)
+            {
+                TextSpan span = chain.Span.Value;
+
+                int start = chain.OriginalExpression.SpanStart;
+
+                string s = chain.OriginalExpression.ToString();
+
+                s = s.Remove(span.Start - start)
+                    + expression
+                    + s.Substring(span.End - start);
+
+                expression = SyntaxFactory.ParseExpression(s);
+            }
+
+            expression = expression
+                .WithTriviaFrom(chain.OriginalExpression)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(chain.OriginalExpression, expression, cancellationToken);
         }
     }
 }

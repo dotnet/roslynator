@@ -136,11 +136,16 @@ namespace Roslynator.Utilities
                 .Replace("}", "}}");
         }
 
-        public static string EscapeQuote(string value)
+        public static string DoubleBackslash(string value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
+            return value.Replace(@"\", @"\\");
+        }
+
+        public static string EscapeQuote(string value)
+        {
             return value.Replace("\"", @"\" + "\"");
         }
 
