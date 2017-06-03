@@ -30,6 +30,11 @@ namespace Roslynator.CSharp.Syntax
             get { return (MemberAccessExpressionSyntax)Expression?.Parent; }
         }
 
+        public SyntaxToken OperatorToken
+        {
+            get { return MemberAccessExpression?.OperatorToken ?? default(SyntaxToken); }
+        }
+
         private SyntaxNode Parent
         {
             get { return ArgumentList?.Parent; }

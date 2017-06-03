@@ -1,27 +1,73 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+#pragma warning disable RCS1016, RCS1058
+
+using System;
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     internal static class RemoveRedundantToStringCall
     {
-        public static void Foo()
+        public static void Bar()
         {
-            object o = null;
-
             string s = null;
 
-            Entity e = null;
+            object o = null;
+
+            Entity e1 = null;
+            EntityWithNew en = null;
+            EntityWithOperator eo = null;
 
             s = s.ToString();
 
-            s = $"{o.ToString()}{s.ToString()}{e.ToString()}";
+            s = $"{o.ToString()}{s.ToString()}{e1.ToString()}{eo.ToString()}";
+
+            s = s + e1.ToString();
+            s = s + (e1.ToString());
+            s = "" + e1.ToString();
+            s = e1.ToString() + s;
+            s = (e1.ToString()) + s;
+            s = e1.ToString() + "";
+
+            //n
+
+            s = $"{en.ToString()}";
+
+            s = s + en.ToString();
+            s = s + eo.ToString();
+
+            s = en.ToString() + s;
+            s = eo.ToString() + s;
         }
 
-        public abstract class Entity
+        private abstract class Entity
+        {
+            public override string ToString()
+            {
+                return null;
+            }
+        }
+
+        private abstract class EntityWithNew
         {
             new public string ToString()
             {
-                return null;
+                return "new";
+            }
+        }
+
+        private abstract class EntityWithOperator
+        {
+            [Obsolete("message", true)]
+            public static string operator +(EntityWithOperator left, string right)
+            {
+                return "operator";
+            }
+
+            [Obsolete("message", true)]
+            public static string operator +(string left, EntityWithOperator right)
+            {
+                return "operator";
             }
         }
     }
