@@ -65,6 +65,7 @@
     <Compile Include="CodeFixProviders\ReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseRegexInstanceInsteadOfStaticMethodCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseReturnInsteadOfAssignmentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseStringComparisonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
     <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
     <Compile Include="Refactorings\CallDebugFailInsteadOfDebugAssertRefactoring.cs" />
+    <Compile Include="Refactorings\UseRegexInstanceInsteadOfStaticMethodRefactoring.cs" />
     <Compile Include="Refactorings\UseReturnInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\UseIsOperatorInsteadOfAsOperatorRefactoring.cs" />
     <Compile Include="Refactorings\ValueTypeCheckedForNullRefactoring.cs" />

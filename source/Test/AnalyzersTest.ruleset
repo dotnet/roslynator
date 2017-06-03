@@ -363,5 +363,6 @@
     <Rule Id="RCS1177" Action="Info" />
     <Rule Id="RCS1184" Action="Info" />
     <Rule Id="RCS1185" Action="Info" />
+    <Rule Id="RCS1186" Action="Info" />
   </Rules>
 </RuleSet>

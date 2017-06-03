@@ -136,6 +136,15 @@ namespace Roslynator
                 && IsGenericMethod == isGenericMethod;
         }
 
+        internal bool IsPublicStaticRegexMethod(string name = null, bool isGenericMethod = false)
+        {
+            return IsNullOrName(name)
+                && IsContainingType(MetadataNames.System_Text_RegularExpressions_Regex)
+                && IsPublic
+                && IsStatic
+                && IsGenericMethod == isGenericMethod;
+        }
+
         internal bool IsPublicInstanceStringMethod(string name = null, bool isGenericMethod = false)
         {
             return IsNullOrName(name)

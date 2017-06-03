@@ -191,5 +191,6 @@ namespace Roslynator.CSharp
         public const string FormatInitializerWithSingleExpressionOnSingleLine = Prefix + "1183";
         public const string FormatConditionalExpression = Prefix + "1184";
         public const string AvoidSingleLineBlock = Prefix + "1185";
+        public const string UseRegexInstanceInsteadOfStaticMethod = Prefix + "1186";
     }
 }
