@@ -103,6 +103,11 @@ namespace Roslynator.CSharp.Syntax
             return false;
         }
 
+        public override string ToString()
+        {
+            return Node?.ToString() ?? base.ToString();
+        }
+
         public bool Equals(MemberInvocationExpressionWithSingleParameter other)
         {
             return Node == other.Node;

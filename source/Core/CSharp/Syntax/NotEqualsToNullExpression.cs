@@ -17,13 +17,13 @@ namespace Roslynator.CSharp.Syntax
 
         public BinaryExpressionSyntax NotEqualsExpression
         {
-            get { return (BinaryExpressionSyntax)Parent; }
+            get { return (BinaryExpressionSyntax)Node; }
         }
 
         public ExpressionSyntax Left { get; }
         public ExpressionSyntax Right { get; }
 
-        private SyntaxNode Parent
+        private SyntaxNode Node
         {
             get { return Left?.Parent; }
         }
@@ -83,9 +83,14 @@ namespace Roslynator.CSharp.Syntax
             return false;
         }
 
+        public override string ToString()
+        {
+            return Node?.ToString() ?? base.ToString();
+        }
+
         public bool Equals(NotEqualsToNullExpression other)
         {
-            return Parent == other.Parent;
+            return Node == other.Node;
         }
 
         public override bool Equals(object obj)
@@ -96,7 +101,7 @@ namespace Roslynator.CSharp.Syntax
 
         public override int GetHashCode()
         {
-            return Parent?.GetHashCode() ?? 0;
+            return Node?.GetHashCode() ?? 0;
         }
 
         public static bool operator ==(NotEqualsToNullExpression left, NotEqualsToNullExpression right)

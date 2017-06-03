@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Syntax
 
         public IfStatementSyntax IfStatement
         {
-            get { return (IfStatementSyntax)Parent; }
+            get { return (IfStatementSyntax)Node; }
         }
 
         public ExpressionSyntax Condition { get; }
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Syntax
 
         public StatementSyntax SingleStatement { get; }
 
-        private SyntaxNode Parent
+        private SyntaxNode Node
         {
             get { return Condition?.Parent; }
         }
@@ -108,9 +108,14 @@ namespace Roslynator.CSharp.Syntax
             return false;
         }
 
+        public override string ToString()
+        {
+            return Node?.ToString() ?? base.ToString();
+        }
+
         public bool Equals(SimpleIfStatementWithSingleStatement other)
         {
-            return Parent == other.Parent;
+            return Node == other.Node;
         }
 
         public override bool Equals(object obj)
@@ -121,7 +126,7 @@ namespace Roslynator.CSharp.Syntax
 
         public override int GetHashCode()
         {
-            return Parent?.GetHashCode() ?? 0;
+            return Node?.GetHashCode() ?? 0;
         }
 
         public static bool operator ==(SimpleIfStatementWithSingleStatement left, SimpleIfStatementWithSingleStatement right)
