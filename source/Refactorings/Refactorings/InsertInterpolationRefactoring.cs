@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -51,20 +52,36 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             InterpolatedStringExpressionSyntax interpolatedString,
             TextSpan span,
+            bool addNameOf = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             string s = interpolatedString.ToString();
 
             int startIndex = span.Start - interpolatedString.SpanStart;
 
-            s = s.Substring(0, startIndex) +
-                "{" +
-                s.Substring(startIndex, span.Length) +
-                "}" +
-                s.Substring(startIndex + span.Length);
+            var sb = new StringBuilder();
 
-            var newNode = (InterpolatedStringExpressionSyntax)ParseExpression(s)
-                .WithTriviaFrom(interpolatedString);
+            sb.Append(s, 0, startIndex);
+            sb.Append('{');
+
+            if (addNameOf)
+            {
+                sb.Append(
+                    CSharpFactory.NameOfExpression(
+                        StringLiteralParser.Parse(
+                            s,
+                            startIndex,
+                            span.Length,
+                            isVerbatim: interpolatedString.IsVerbatim(),
+                            isInterpolatedText: true)));
+            }
+
+            sb.Append('}');
+
+            startIndex += span.Length;
+            sb.Append(s, startIndex, s.Length - startIndex);
+
+            ExpressionSyntax newNode = ParseExpression(sb.ToString()).WithTriviaFrom(interpolatedString);
 
             return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
         }

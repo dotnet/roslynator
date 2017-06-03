@@ -19,7 +19,8 @@ namespace Roslynator.CSharp.Refactorings
                             context.Document,
                             interpolatedString,
                             context.Span,
-                            cancellationToken);
+                            addNameOf: false,
+                            cancellationToken: cancellationToken);
                     });
             }
 

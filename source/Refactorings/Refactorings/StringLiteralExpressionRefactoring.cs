@@ -3,8 +3,9 @@
 using System;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Text;
+using Microsoft.CodeAnalysis.Text;
 using static Roslynator.CSharp.Refactorings.ReplaceStringLiteralRefactoring;
+using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -16,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
                 && context.SupportsCSharp6
                 && context.Span.End < literalExpression.Span.End)
             {
-                int startIndex = GetStartIndex(context, literalExpression);
+                int startIndex = GetStartIndex(literalExpression, context.Span);
 
                 if (startIndex != -1)
                 {
@@ -29,8 +30,37 @@ namespace Roslynator.CSharp.Refactorings
                                 literalExpression,
                                 startIndex,
                                 context.Span.Length,
-                                cancellationToken);
+                                addNameOf: false,
+                                cancellationToken: cancellationToken);
                         });
+
+                    if (!context.Span.IsEmpty)
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        string name = StringLiteralParser.Parse(literalExpression.Token.Text, startIndex, context.Span.Length, literalExpression.IsVerbatimStringLiteral(), isInterpolatedText: false);
+
+                        foreach (ISymbol symbol in semanticModel.LookupSymbols(literalExpression.SpanStart))
+                        {
+                            if (string.Equals(name, symbol.MetadataName, StringComparison.Ordinal))
+                            {
+                                context.RegisterRefactoring(
+                                    "Insert interpolation with nameof",
+                                    cancellationToken =>
+                                    {
+                                        return ReplaceWithInterpolatedStringAsync(
+                                            context.Document,
+                                            literalExpression,
+                                            startIndex,
+                                            context.Span.Length,
+                                            addNameOf: true,
+                                            cancellationToken: cancellationToken);
+                                    });
+
+                                break;
+                            }
+                        }
+                    }
                 }
             }
 
@@ -103,16 +133,22 @@ namespace Roslynator.CSharp.Refactorings
                 await ReplaceStringLiteralWithCharacterLiteralRefactoring.ComputeRefactoringAsync(context, literalExpression).ConfigureAwait(false);
         }
 
-        private static int GetStartIndex(RefactoringContext context, LiteralExpressionSyntax literalExpression)
+        private static int GetStartIndex(LiteralExpressionSyntax literalExpression, TextSpan span)
         {
-            int index = context.Span.Start - literalExpression.Span.Start;
+            int index = span.Start - literalExpression.Span.Start;
 
-            if (literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal))
+            string text = literalExpression.Token.Text;
+
+            if (text.StartsWith("@", StringComparison.Ordinal))
             {
-                if (index > 1)
+                if (index > 1
+                    && StringLiteralParser.CanExtractSpan(text, 2, text.Length - 3, span.Offset(-literalExpression.Span.Start), isVerbatim: true, isInterpolatedText: false))
+                {
                     return index;
+                }
             }
-            else if (index > 0)
+            else if (index > 0
+                && StringLiteralParser.CanExtractSpan(text, 1, text.Length - 2, span.Offset(-literalExpression.SpanStart), isVerbatim: false, isInterpolatedText: false))
             {
                 return index;
             }

@@ -424,7 +424,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (!fInterpolatedStringText
                         && kind == SyntaxKind.InterpolatedStringText)
                     {
-                        InterpolatedStringTextRefactoring.ComputeRefactorings(this, (InterpolatedStringTextSyntax)node);
+                        await InterpolatedStringTextRefactoring.ComputeRefactoringsAsync(this, (InterpolatedStringTextSyntax)node).ConfigureAwait(false);
                         fInterpolatedStringText = true;
                         continue;
                     }
