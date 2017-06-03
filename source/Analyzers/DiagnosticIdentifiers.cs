@@ -193,5 +193,6 @@ namespace Roslynator.CSharp
         public const string AvoidSingleLineBlock = Prefix + "1185";
         public const string UseRegexInstanceInsteadOfStaticMethod = Prefix + "1186";
         public const string MarkFieldAsConst = Prefix + "1187";
+        public const string RemoveRedundantAutoPropertyInitialization = Prefix + "1188";
     }
 }

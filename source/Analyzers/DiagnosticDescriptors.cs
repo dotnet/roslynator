@@ -1741,5 +1741,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor RemoveRedundantAutoPropertyInitialization = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization,
+            title: "Remove redundant auto-property initialization.",
+            messageFormat: "Remove redundant auto-property initialization.",
+            category: DiagnosticCategories.Redundancy,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }
