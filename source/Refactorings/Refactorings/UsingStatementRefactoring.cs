@@ -11,6 +11,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractDeclarationFromUsingStatement))
                 await ExtractDeclarationFromUsingStatementRefactoring.ComputeRefactoringAsync(context, usingStatement).ConfigureAwait(false);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceLocalVariable))
+                IntroduceLocalVariableRefactoring.ComputeRefactoring(context, usingStatement);
         }
     }
 }

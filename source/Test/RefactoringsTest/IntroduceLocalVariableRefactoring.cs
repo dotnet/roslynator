@@ -5,10 +5,14 @@ using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Refactorings.Test
 {
-    internal static class IntroduceLocalFromExpressionStatementThatReturnsValueRefactoring
+    internal static class IntroduceLocalVariableRefactoring
     {
         public static void Foo()
         {
+            using (default(IDisposable))
+            {
+            }
+
             int i;
             i = 0;
             i++;

@@ -71,7 +71,7 @@
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToNestedIfRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToIfRefactoring.cs" />
-    <Compile Include="Refactorings\IntroduceLocalFromStatementThatReturnsValueRefactoring.cs" />
+    <Compile Include="Refactorings\IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="Refactorings\CallExtensionMethodAsInstanceMethodRefactoring.cs" />
     <Compile Include="Refactorings\ConstructorDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\LockStatementRefactoring.cs" />

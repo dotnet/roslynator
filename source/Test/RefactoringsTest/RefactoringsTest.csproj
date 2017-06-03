@@ -53,7 +53,7 @@
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="GenerateOnEventMethodRefactoring.cs" />
-    <Compile Include="IntroduceLocalFromExpressionStatementThatReturnsValueRefactoring.cs" />
+    <Compile Include="IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="MarkContainingClassAsAbstractRefactoring.cs" />
     <Compile Include="MakeMemberVirtualRefactoring.cs" />
     <Compile Include="MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
