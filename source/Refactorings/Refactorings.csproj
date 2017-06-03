@@ -41,6 +41,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodExpressionRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodRewriter.cs" />

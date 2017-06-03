@@ -13,6 +13,19 @@ namespace Roslynator.CSharp
             get { return SyntaxRemoveOptions.KeepExteriorTrivia | SyntaxRemoveOptions.KeepUnbalancedDirectives; }
         }
 
+        public static SyntaxRemoveOptions GetRemoveOptions(SyntaxNode node)
+        {
+            SyntaxRemoveOptions removeOptions = DefaultRemoveOptions;
+
+            if (node.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+
+            if (node.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+
+            return removeOptions;
+        }
+
         public static SyntaxRemoveOptions GetRemoveOptions(CSharpSyntaxNode node)
         {
             SyntaxRemoveOptions removeOptions = DefaultRemoveOptions;
