@@ -49,6 +49,8 @@
     <Compile Include="GenerateCombinedEnumMemberRefactoring.cs" />
     <Compile Include="GenerateEnumValuesRefactoring.cs" />
     <Compile Include="ImplementIEquatableOfTRefactoring.cs" />
+    <Compile Include="InlineConstant\InlineConstant2.cs" />
+    <Compile Include="InlineConstant\InlineConstant.cs" />
     <Compile Include="InlineUsingStaticRefactoring.cs" />
     <Compile Include="IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="GenerateBaseConstructorsRefactoring.cs" />
