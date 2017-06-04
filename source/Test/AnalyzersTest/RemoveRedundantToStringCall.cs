@@ -14,6 +14,8 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             object o = null;
 
+            int i = 0;
+
             Entity e1 = null;
             EntityWithNew en = null;
             EntityWithOperator eo = null;
@@ -30,6 +32,8 @@ namespace Roslynator.CSharp.Analyzers.Test
             s = e1.ToString() + "";
 
             //n
+
+            s = s + i.ToString();
 
             s = $"{en.ToString()}";
 
