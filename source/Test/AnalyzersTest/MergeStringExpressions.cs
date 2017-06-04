@@ -10,11 +10,11 @@ namespace Roslynator.CSharp.Refactorings.Test
         {
             s = "\"\r\n\\{}" + "\"\r\n\\{}";
 
+            s = @"""\{}" + @"""\{}";
+
             s = @"""
 \{}" + @"""
 \{}";
-
-            s = "\"\r\n\\{}" + @"""\{}";
 
             s = $"\"\r\n\\{{}}{s}" + $"\"\r\n\\{{}}{s}";
 
@@ -23,6 +23,17 @@ namespace Roslynator.CSharp.Refactorings.Test
 \{{}}{s}";
 
             // n
+
+            s = "x"
+                + "x";
+
+            s = "x" + @"x";
+
+            s = @"x" + "x";
+
+            s = "x" + $"{s}";
+
+            s = $"{s}" + "x";
 
             s = "\"\r\n\\{}" + @"""
 \{}";

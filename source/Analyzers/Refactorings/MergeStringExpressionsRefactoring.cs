@@ -13,29 +13,26 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)
         {
-            var addExpression = (BinaryExpressionSyntax)context.Node;
+            SyntaxNode node = context.Node;
 
-            if (IsFixable(addExpression, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.MergeStringExpressions, addExpression);
-        }
+            if (node.ContainsDiagnostics)
+                return;
 
-        private static bool IsFixable(BinaryExpressionSyntax addExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
+            if (node.SpanContainsDirectives())
+                return;
+
+            var addExpression = (BinaryExpressionSyntax)node;
+
             StringExpressionChain chain;
-            if (StringExpressionChain.TryCreate(addExpression, semanticModel, out chain)
+
+            if (StringExpressionChain.TryCreate(addExpression, context.SemanticModel, out chain)
                 && !chain.ContainsNonSpecificExpression
-                && (chain.ContainsLiteralExpression ^ chain.ContainsInterpolatedStringExpression))
+                && (chain.ContainsLiteralExpression ^ chain.ContainsInterpolatedStringExpression)
+                && (chain.ContainsRegular ^ chain.ContainsVerbatim)
+                && (chain.ContainsVerbatim || addExpression.IsSingleLine(includeExteriorTrivia: false, cancellationToken: context.CancellationToken)))
             {
-                if (chain.ContainsRegular
-                    && chain.ContainsVerbatim)
-                {
-                    return !ContainsMultiLine(chain, cancellationToken);
-                }
-
-                return true;
+                context.ReportDiagnostic(DiagnosticDescriptors.MergeStringExpressions, addExpression);
             }
-
-            return false;
         }
 
         private static bool ContainsMultiLine(StringExpressionChain chain, CancellationToken cancellationToken)
@@ -63,7 +60,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (chain.ContainsLiteralExpression)
                 {
-                    if (ContainsMultiLine(chain, cancellationToken))
+                    if (chain.ContainsVerbatim
+                        && ContainsMultiLine(chain, cancellationToken))
                     {
                         newNode = chain.ToMultilineStringLiteral();
                     }
