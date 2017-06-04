@@ -46,7 +46,8 @@ namespace Roslynator.CSharp.Refactorings
                 && info.IsReturnType(SpecialType.System_String)
                 && !info.IsGenericMethod
                 && !info.IsExtensionMethod
-                && !info.Parameters.Any())
+                && !info.Parameters.Any()
+                && info.ContainingType?.IsReferenceType == true)
             {
                 if (info.IsContainingType(SpecialType.System_String))
                 {
