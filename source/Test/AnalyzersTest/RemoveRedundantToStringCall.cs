@@ -3,6 +3,7 @@
 #pragma warning disable RCS1016, RCS1058
 
 using System;
+using System.Text.RegularExpressions;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -15,6 +16,8 @@ namespace Roslynator.CSharp.Analyzers.Test
             object o = null;
 
             int i = 0;
+
+            var options = RegexOptions.None;
 
             Entity e1 = null;
             EntityWithNew en = null;
@@ -34,6 +37,8 @@ namespace Roslynator.CSharp.Analyzers.Test
             //n
 
             s = s + i.ToString();
+
+            s = options.ToString() + "";
 
             s = $"{en.ToString()}";
 
