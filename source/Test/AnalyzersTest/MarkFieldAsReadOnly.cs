@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
@@ -14,6 +15,7 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             private static string _sf;
             private int _f;
+            private StringSplitOptions _options;
 
             //n
 
@@ -34,6 +36,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             public Foo()
             {
                 _f = 0;
+                _options = 0;
                 _f2 = null;
                 _spinLock = new SpinLock();
                 _staticAssignedInInstanceConstructor = null;

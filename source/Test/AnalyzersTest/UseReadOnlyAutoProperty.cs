@@ -14,6 +14,8 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         public static string StaticProperty { get; private set; }
         public string Property { get; private set; }
+        public int IntProperty { get; private set; }
+        public StringSplitOptions EnumProperty { get; private set; }
 
         //n
 
@@ -37,6 +39,8 @@ namespace Roslynator.CSharp.Analyzers.Test
         public Foo()
         {
             Property = null;
+            IntProperty = 0;
+            EnumProperty = StringSplitOptions.None;
             StaticAssignedInInstanceConstructor = null;
         }
 
