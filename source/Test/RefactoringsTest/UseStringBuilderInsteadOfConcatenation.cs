@@ -13,6 +13,9 @@ namespace Roslynator.CSharp.Refactorings.Test
             s = x + "x";
 
             s += x + "x";
+
+            while (true)
+                s = x + "x";
         }
     }
 }

@@ -171,7 +171,15 @@ namespace Roslynator.CSharp.Refactorings
 
             statements.Add(statement.ReplaceNode(chain.OriginalExpression, SimpleMemberInvocationExpression(identifierName, IdentifierName("ToString"))).WithTrailingTrivia(statement.GetTrailingTrivia()));
 
-            return await document.ReplaceNodeAsync(statement, statements, cancellationToken).ConfigureAwait(false);
+            if (EmbeddedStatementHelper.IsEmbeddedStatement(statement))
+            {
+                return await document.ReplaceNodeAsync(statement, Block(statements), cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                return await document.ReplaceNodeAsync(statement, statements, cancellationToken).ConfigureAwait(false);
+            }
+
         }
 
         private static ExpressionStatementSyntax CreateStatement(ExpressionSyntax argumentExpression, IdentifierNameSyntax identifierName, IdentifierNameSyntax appendName)
