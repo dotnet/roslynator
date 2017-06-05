@@ -183,3 +183,9 @@ RCS1182|Remove redundant base interface|Redundancy|x
 RCS1183|Format initializer with single expression on single line|Formatting|x
 RCS1184|Format conditional expression \(format ? and : on next line\)|Formatting|
 RCS1185|Avoid single\-line block|Formatting|
+RCS1186|Use Regex instance instead of static method|Usage|x
+RCS1187|Mark field as const|Design|x
+RCS1188|Remove redundant auto\-property initialization|Redundancy|x
+RCS1189|Add or remove region name|Readability|x
+RCS1190|Merge string expressions|Simplification|x
+RCS1191|Declare enum value as combination of names|Readability|x

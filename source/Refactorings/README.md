@@ -65,6 +65,7 @@ RR0059|[Generate switch sections](../../docs/refactorings/GenerateSwitchSections
 RR0179|[Implement IEquatable\<T\>](../../docs/refactorings/ImplementIEquatableOfT.md)|x
 RR0060|[Initialize local with default value](../../docs/refactorings/InitializeLocalWithDefaultValue.md)|x
 RR0061|[Inline alias expression](../../docs/refactorings/InlineAliasExpression.md)|x
+RR0181|[Inline constant](../../docs/refactorings/InlineConstant.md)|x
 RR0062|[Inline method](../../docs/refactorings/InlineMethod.md)|x
 RR0180|[Inline using static](../../docs/refactorings/InlineUsingStatic.md)|x
 RR0063|[Insert string interpolation](../../docs/refactorings/InsertStringInterpolation.md)|x
@@ -72,7 +73,7 @@ RR0064|[Introduce and initialize field](../../docs/refactorings/IntroduceAndInit
 RR0065|[Introduce and initialize property](../../docs/refactorings/IntroduceAndInitializeProperty.md)|x
 RR0066|[Introduce constructor](../../docs/refactorings/IntroduceConstructor.md)|
 RR0067|[Introduce field to lock on](../../docs/refactorings/IntroduceFieldToLockOn.md)|x
-RR0068|[Introduce local from statement that returns value](../../docs/refactorings/IntroduceLocalFromStatementThatReturnsValue.md)|x
+RR0068|[Introduce local variable](../../docs/refactorings/IntroduceLocalVariable.md)|x
 RR0069|[Make member abstract](../../docs/refactorings/MakeMemberAbstract.md)|x
 RR0070|[Make member virtual](../../docs/refactorings/MakeMemberVirtual.md)|x
 RR0071|[Mark containing class as abstract](../../docs/refactorings/MarkContainingClassAsAbstract.md)|x
@@ -176,6 +177,7 @@ RR0167|[Use element access instead of 'First/Last'ElementAt' method](../../docs/
 RR0169|[Use expression\-bodied member](../../docs/refactorings/UseExpressionBodiedMember.md)|x
 RR0170|[Use lambda expression instead of anonymous method](../../docs/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.md)|x
 RR0171|[Use string\.Empty instead of ""](../../docs/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.md)|
+RR0182|[Use StringBuilder instead of concatenation](../../docs/refactorings/UseStringBuilderInsteadOfConcatenation.md)|x
 RR0174|[Wrap in \#if directive](../../docs/refactorings/WrapInIfDirective.md)|x
 RR0172|[Wrap in condition](../../docs/refactorings/WrapInCondition.md)|x
 RR0173|[Wrap in else clause](../../docs/refactorings/WrapInElseClause.md)|x

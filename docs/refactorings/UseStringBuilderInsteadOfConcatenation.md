@@ -1,0 +1,14 @@
+## Use StringBuilder instead of concatenation
+
+Property | Value
+--- | --- 
+Id | RR0182
+Title | Use StringBuilder instead of concatenation
+Syntax | string concatenation
+Enabled by Default | yes
+
+### Usage
+
+![Use StringBuilder instead of concatenation](../../images/refactorings/UseStringBuilderInsteadOfConcatenation.png)
+
+[full list of refactorings](Refactorings.md)

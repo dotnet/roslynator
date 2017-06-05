@@ -1,0 +1,14 @@
+## Inline constant
+
+Property | Value
+--- | --- 
+Id | RR0181
+Title | Inline constant
+Syntax | constant declaration
+Enabled by Default | yes
+
+### Usage
+
+![Inline constant](../../images/refactorings/InlineConstant.png)
+
+[full list of refactorings](Refactorings.md)

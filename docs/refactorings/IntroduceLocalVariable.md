@@ -1,0 +1,14 @@
+## Introduce local variable
+
+Property | Value
+--- | --- 
+Id | RR0068
+Title | Introduce local variable
+Syntax | expression statement, expression in using statement
+Enabled by Default | yes
+
+### Usage
+
+![Introduce local variable](../../images/refactorings/IntroduceLocalVariable.png)
+
+[full list of refactorings](Refactorings.md)
