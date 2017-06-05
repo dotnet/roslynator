@@ -46,42 +46,39 @@ namespace Roslynator.CSharp.Refactorings
                 && info.IsReturnType(SpecialType.System_String)
                 && !info.IsGenericMethod
                 && !info.IsExtensionMethod
-                && !info.Parameters.Any()
-                && info.ContainingType?.IsReferenceType == true)
+                && !info.Parameters.Any())
             {
-                if (info.IsContainingType(SpecialType.System_String))
+                INamedTypeSymbol containingType = info.ContainingType;
+
+                if (containingType?.IsReferenceType == true
+                    && containingType.SpecialType != SpecialType.System_Enum)
                 {
-                    return true;
-                }
-                else
-                {
+                    if (containingType.IsString())
+                        return true;
+
                     if (invocationExpression.IsParentKind(SyntaxKind.Interpolation))
-                    {
-                        return IsNotHidden(info.Symbol);
-                    }
-                    else
-                    {
-                        ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
+                        return IsNotHidden(info.Symbol, containingType);
 
-                        SyntaxNode parent = expression.Parent;
+                    ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
 
-                        if (parent?.IsKind(SyntaxKind.AddExpression) == true
-                            && !parent.ContainsDiagnostics
-                            && IsNotHidden(info.Symbol))
+                    SyntaxNode parent = expression.Parent;
+
+                    if (parent?.IsKind(SyntaxKind.AddExpression) == true
+                        && !parent.ContainsDiagnostics
+                        && IsNotHidden(info.Symbol, containingType))
+                    {
+                        var addExpression = (BinaryExpressionSyntax)expression.Parent;
+
+                        ExpressionSyntax left = addExpression.Left;
+                        ExpressionSyntax right = addExpression.Right;
+
+                        if (left == expression)
                         {
-                            var addExpression = (BinaryExpressionSyntax)expression.Parent;
-
-                            ExpressionSyntax left = addExpression.Left;
-                            ExpressionSyntax right = addExpression.Right;
-
-                            if (left == expression)
-                            {
-                                return IsFixable(memberInvocation, addExpression, right, left, semanticModel, cancellationToken);
-                            }
-                            else
-                            {
-                                return IsFixable(memberInvocation, addExpression, left, right, semanticModel, cancellationToken);
-                            }
+                            return IsFixable(memberInvocation, addExpression, right, left, semanticModel, cancellationToken);
+                        }
+                        else
+                        {
+                            return IsFixable(memberInvocation, addExpression, left, right, semanticModel, cancellationToken);
                         }
                     }
                 }
@@ -111,13 +108,12 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool IsNotHidden(IMethodSymbol methodSymbol)
+        private static bool IsNotHidden(IMethodSymbol methodSymbol, INamedTypeSymbol containingType)
         {
-            if (methodSymbol.ContainingType?.SpecialType == SpecialType.System_Object)
-            {
+            if (containingType.IsObject())
                 return true;
-            }
-            else if (methodSymbol.IsOverride)
+
+            if (methodSymbol.IsOverride)
             {
                 IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
 
