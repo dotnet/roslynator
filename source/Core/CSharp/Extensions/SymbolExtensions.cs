@@ -291,7 +291,7 @@ namespace Roslynator.CSharp
                 case SpecialType.System_String:
                     return true;
                 default:
-                    return false;
+                    return typeSymbol.IsEnum();
             }
         }
 
