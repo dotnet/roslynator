@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -21,16 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                 StatementSyntax statement = GetStatement(context, block, block.Parent);
 
                 if (statement != null)
-                {
-                    if (!EmbeddedStatementHelper.IsEmbeddedStatement(statement)
-                        && statement.IsParentKind(SyntaxKind.Block))
-                    {
-                        RegisterRefactoring(context, statement);
-                    }
-
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
-                        CommentOutRefactoring.RegisterRefactoring(context, statement);
-                }
+                    RegisterRefactoring(context, statement);
             }
         }
 
@@ -39,11 +29,7 @@ namespace Roslynator.CSharp.Refactorings
             if (switchStatement.OpenBraceToken.Span.Contains(context.Span)
                 || switchStatement.CloseBraceToken.Span.Contains(context.Span))
             {
-                if (switchStatement.IsParentKind(SyntaxKind.Block))
-                    RegisterRefactoring(context, switchStatement);
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement))
-                    CommentOutRefactoring.RegisterRefactoring(context, switchStatement);
+                RegisterRefactoring(context, switchStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveAllSwitchSections)
                     && switchStatement.Sections.Any())
@@ -57,11 +43,14 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement))
+            bool isEmbedded = EmbeddedStatementHelper.IsEmbeddedStatement(statement);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement)
+                && !isEmbedded)
             {
                 context.RegisterRefactoring(
                     "Remove statement",
-                    cancellationToken => RemoveStatementAsync(context.Document, statement, cancellationToken));
+                    cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken));
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateStatement))
@@ -69,6 +58,12 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Duplicate statement",
                     cancellationToken => DuplicateStatementAsync(context.Document, statement, cancellationToken));
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement)
+                && !isEmbedded)
+            {
+                CommentOutRefactoring.RegisterRefactoring(context, statement);
             }
         }
 
@@ -181,45 +176,37 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static Task<Document> RemoveStatementAsync(
-            Document document,
-            StatementSyntax statement,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return document.RemoveNodeAsync(statement, GetRemoveOptions(statement), cancellationToken);
-        }
-
         private static Task<Document> DuplicateStatementAsync(
             Document document,
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var block = (BlockSyntax)statement.Parent;
-
-            int index = block.Statements.IndexOf(statement);
-
-            if (index == 0
-                && block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
+            StatementContainer container;
+            if (StatementContainer.TryCreate(statement, out container))
             {
-                statement = statement.WithLeadingTrivia(statement.GetLeadingTrivia().Insert(0, CSharpFactory.NewLine()));
+                int index = container.Statements.IndexOf(statement);
+
+                if (index == 0
+                    && container.IsBlock
+                    && container.Block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
+                {
+                    statement = statement.PrependToLeadingTrivia(CSharpFactory.NewLine());
+                }
+
+                SyntaxList<StatementSyntax> newStatements = container.Statements.Insert(index + 1, statement);
+
+                SyntaxNode newNode = container.NodeWithStatements(newStatements);
+
+                return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
             }
+            else
+            {
+                SyntaxList<StatementSyntax> statements = SyntaxFactory.List(new StatementSyntax[] { statement, statement });
 
-            BlockSyntax newBlock = block.WithStatements(block.Statements.Insert(index + 1, statement));
+                BlockSyntax block = SyntaxFactory.Block(statements);
 
-            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
-        }
-
-        private static SyntaxRemoveOptions GetRemoveOptions(StatementSyntax statement)
-        {
-            SyntaxRemoveOptions removeOptions = RemoveHelper.DefaultRemoveOptions;
-
-            if (statement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-
-            if (statement.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
-
-            return removeOptions;
+                return document.ReplaceNodeAsync(statement, block, cancellationToken);
+            }
         }
 
         private static Task<Document> RemoveAllSwitchSectionsAsync(
