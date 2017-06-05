@@ -32,6 +32,12 @@ namespace Roslynator.CSharp.Refactorings.Test
             {
 
             }
+
+            while (true)
+                for (int i = 0; i < items.Count; i++)
+                {
+                    items[i] = null;
+                }
         }
     }
 }
