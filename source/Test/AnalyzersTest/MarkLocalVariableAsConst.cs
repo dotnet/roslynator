@@ -1,8 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+#pragma warning disable CS0219, RCS1008, RCS1078, RCS1081, RCS1124, RCS1176
+
+using System;
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1081, CS0219
     internal static class MarkLocalAsConst
     {
         public static void Foo()
@@ -19,6 +22,14 @@ namespace Roslynator.CSharp.Analyzers.Test
             string s4 = "", s5 = "";
             string x4 = s4;
             string x5 = s5;
+
+            bool f = false;
+            bool f2 = f;
+
+            var options = StringSplitOptions.None;
+            StringSplitOptions options2 = options;
+
+            // n
 
             string s6 = "", s7 = string.Empty;
             string x6 = s6;
