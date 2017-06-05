@@ -1,3 +1,23 @@
+### 1.4.1 (2017-06-05)
+
+#### Analyzers
+
+##### New Analyzers
+
+* DeclareEnumValueAsCombinationOfNames (RCS1191)
+* MergeStringExpressions (RCS1190)
+* AddOrRemoveRegionName (RCS1189)
+* RemoveRedundantAutoPropertyInitialization (RCS1188)
+* MarkFieldAsConst (RCS1187)
+* UseRegexInstanceInsteadOfStaticMethod (RCS1186)
+
+#### Refactorings
+
+##### New Refactorings
+
+* UseStringBuilderInsteadOfConcatenation (RR0182)
+* InlineConstant (RR0181)
+
 ### 1.4.0 (2017-05-29)
 
 #### Analyzers
