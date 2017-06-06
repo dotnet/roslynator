@@ -22,6 +22,12 @@ namespace Roslynator.CSharp.Refactorings.Test
 
             if (TryGet("", out var x))
             {
+                x = null;
+            }
+
+            if (q is Entity e)
+            {
+                e = null;
             }
         }
 
