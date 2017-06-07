@@ -83,8 +83,6 @@ namespace Roslynator.CSharp.Refactorings
 
             statements.Add(LocalDeclarationStatement(VarType(), name, ObjectCreationExpression(type, ArgumentList())).WithLeadingTrivia(statement.GetLeadingTrivia()));
 
-            IdentifierNameSyntax appendName = IdentifierName("Append");
-
             foreach (ExpressionSyntax expression in chain.Expressions)
             {
                 switch (expression.Kind())
@@ -136,7 +134,7 @@ namespace Roslynator.CSharp.Refactorings
                                             }
                                             else
                                             {
-                                                statements.Add(CreateStatement(interpolation.Expression, identifierName, appendName));
+                                                statements.Add(CreateStatement(interpolation.Expression, identifierName));
                                             }
 
                                             break;
@@ -153,7 +151,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                             ExpressionSyntax stringLiteral = ParseExpression(text);
 
-                                            statements.Add(CreateStatement(stringLiteral, identifierName, appendName));
+                                            statements.Add(CreateStatement(stringLiteral, identifierName));
                                             break;
                                         }
                                 }
@@ -163,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     default:
                         {
-                            statements.Add(CreateStatement(expression, identifierName, appendName));
+                            statements.Add(CreateStatement(expression, identifierName));
                             break;
                         }
                 }
@@ -171,24 +169,38 @@ namespace Roslynator.CSharp.Refactorings
 
             statements.Add(statement.ReplaceNode(chain.OriginalExpression, SimpleMemberInvocationExpression(identifierName, IdentifierName("ToString"))).WithTrailingTrivia(statement.GetTrailingTrivia()));
 
+            for (int i = 0; i < statements.Count; i++)
+            {
+                SyntaxTriviaList trailingTrivia = statements[i].GetTrailingTrivia();
+
+                if (!trailingTrivia.Any(f => f.IsEndOfLineTrivia()))
+                    statements[i] = statements[i].WithTrailingTrivia(trailingTrivia.Add(NewLine()));
+            }
+
             if (EmbeddedStatementHelper.IsEmbeddedStatement(statement))
             {
-                return await document.ReplaceNodeAsync(statement, Block(statements), cancellationToken).ConfigureAwait(false);
+                BlockSyntax block = Block(statements).WithFormatterAnnotation();
+
+                return await document.ReplaceNodeAsync(statement, block, cancellationToken).ConfigureAwait(false);
             }
             else
             {
+                for (int i = 0; i < statements.Count; i++)
+                    statements[i] = statements[i].WithFormatterAnnotation();
+
                 return await document.ReplaceNodeAsync(statement, statements, cancellationToken).ConfigureAwait(false);
             }
-
         }
 
-        private static ExpressionStatementSyntax CreateStatement(ExpressionSyntax argumentExpression, IdentifierNameSyntax identifierName, IdentifierNameSyntax appendName)
+        private static ExpressionStatementSyntax CreateStatement(ExpressionSyntax expression, IdentifierNameSyntax identifierName)
         {
-            return ExpressionStatement(
+            ExpressionStatementSyntax statement = ExpressionStatement(
                 SimpleMemberInvocationExpression(
                     identifierName,
-                    appendName,
-                    Argument(argumentExpression)));
+                    IdentifierName("Append"),
+                    Argument(expression.WithoutTrivia())));
+
+            return statement.WithTriviaFrom(expression);
         }
     }
 }
