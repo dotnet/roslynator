@@ -166,9 +166,24 @@ namespace Roslynator.CSharp
 
         private static bool IsStringExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            return expression != null
-                && (expression.IsKind(SyntaxKind.StringLiteralExpression)
-                    || IsString(expression, semanticModel, cancellationToken));
+            if (expression != null)
+            {
+                if (expression.IsKind(
+                    SyntaxKind.StringLiteralExpression,
+                    SyntaxKind.InterpolatedStringExpression))
+                {
+                    return true;
+                }
+
+                if (semanticModel.GetTypeInfo(expression, cancellationToken)
+                    .ConvertedType?
+                    .IsString() == true)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static List<ExpressionSyntax> GetExpressions(
@@ -177,59 +192,35 @@ namespace Roslynator.CSharp
             CancellationToken cancellationToken)
         {
             List<ExpressionSyntax> expressions = null;
-            bool success = true;
 
-            while (success)
+            while (true)
             {
-                success = false;
+                MethodInfo methodInfo = semanticModel.GetMethodInfo(binaryExpression, cancellationToken);
 
-                if (binaryExpression.IsKind(SyntaxKind.AddExpression))
+                if (methodInfo.IsValid
+                    && methodInfo.MethodKind == MethodKind.BuiltinOperator
+                    && methodInfo.Name == WellKnownMemberNames.AdditionOperatorName
+                    && methodInfo.IsContainingType(SpecialType.System_String))
                 {
-                    ExpressionSyntax right = binaryExpression.Right;
+                    (expressions ?? (expressions = new List<ExpressionSyntax>())).Add(binaryExpression.Right);
 
-                    if (right?.IsMissing == false)
+                    ExpressionSyntax left = binaryExpression.Left;
+
+                    if (left.IsKind(SyntaxKind.AddExpression))
                     {
-                        if (right.IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression)
-                            || IsString(right, semanticModel, cancellationToken))
-                        {
-                            (expressions ?? (expressions = new List<ExpressionSyntax>())).Add(right);
-
-                            ExpressionSyntax left = binaryExpression.Left;
-
-                            if (left?.IsMissing == false)
-                            {
-                                switch (left.Kind())
-                                {
-                                    case SyntaxKind.StringLiteralExpression:
-                                    case SyntaxKind.InterpolatedStringExpression:
-                                        {
-                                            expressions.Add(left);
-                                            return expressions;
-                                        }
-                                    case SyntaxKind.AddExpression:
-                                        {
-                                            binaryExpression = (BinaryExpressionSyntax)left;
-                                            success = true;
-                                            break;
-                                        }
-                                    default:
-                                        {
-                                            if (IsString(left, semanticModel, cancellationToken))
-                                            {
-                                                expressions.Add(left);
-                                                return expressions;
-                                            }
-
-                                            break;
-                                        }
-                                }
-                            }
-                        }
+                        binaryExpression = (BinaryExpressionSyntax)left;
+                    }
+                    else
+                    {
+                        expressions.Add(left);
+                        return expressions;
                     }
                 }
+                else
+                {
+                    return null;
+                }
             }
-
-            return null;
         }
 
         public InterpolatedStringExpressionSyntax ToInterpolatedString()
@@ -437,14 +428,6 @@ namespace Roslynator.CSharp
             return (s[0] == '@')
                 ? s.Substring(2, s.Length - 3)
                 : s.Substring(1, s.Length - 2);
-        }
-
-        private static bool IsString(ExpressionSyntax right, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            return semanticModel
-                .GetTypeInfo(right, cancellationToken)
-                .ConvertedType?
-                .IsString() == true;
         }
     }
 }
