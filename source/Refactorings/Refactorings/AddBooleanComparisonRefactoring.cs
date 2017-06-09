@@ -12,10 +12,8 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddBooleanComparisonRefactoring
     {
-        internal static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
+        public static void ComputeRefactoring(RefactoringContext context, ExpressionSyntax expression, SemanticModel semanticModel)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
             foreach (Diagnostic diagnostic in semanticModel.GetDiagnostics(expression.Span, context.CancellationToken))
             {
                 if (diagnostic.Id == CSharpErrorCodes.CannotImplicitlyConvertTypeExplicitConversionExists
@@ -23,18 +21,22 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     if (context.Span.IsEmpty || diagnostic.Location.SourceSpan == expression.Span)
                     {
-                        expression = expression
+                        var expression2 = expression
                             .Ancestors()
                             .FirstOrDefault(f => f.Span == diagnostic.Location.SourceSpan) as ExpressionSyntax;
 
-                        if (expression != null
-                            && semanticModel.GetTypeSymbol(expression, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
+                        if (expression2 != null)
                         {
-                            if (semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType?.IsBoolean() == true
-                                || IsCondition(expression))
+                            TypeInfo typeInfo = semanticModel.GetTypeInfo(expression2, context.CancellationToken);
+
+                            if (typeInfo.Type?.IsNullableOf(SpecialType.System_Boolean) == true)
                             {
-                                RegisterRefactoring(context, expression);
-                                break;
+                                if (typeInfo.ConvertedType?.IsBoolean() == true
+                                    || IsCondition(expression2))
+                                {
+                                    RegisterRefactoring(context, expression2);
+                                    break;
+                                }
                             }
                         }
                     }
@@ -52,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             ExpressionSyntax left = binaryExpression.Left;
 
-                            if (left.Span.Contains(context.Span))
+                            if (left?.Span.Contains(context.Span) == true)
                             {
                                 if (semanticModel.GetTypeSymbol(left, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                                 {
@@ -64,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 ExpressionSyntax right = binaryExpression.Right;
 
-                                if (right.Span.Contains(context.Span)
+                                if (right?.Span.Contains(context.Span) == true
                                     && semanticModel.GetTypeSymbol(right, context.CancellationToken)?.IsNullableOf(SpecialType.System_Boolean) == true)
                                 {
                                     RegisterRefactoring(context, right);

@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ExtractCondition;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -12,7 +12,11 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison))
-                await AddBooleanComparisonRefactoring.ComputeRefactoringAsync(context, expression).ConfigureAwait(false);
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                AddBooleanComparisonRefactoring.ComputeRefactoring(context, expression, semanticModel);
+            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition)
                 && context.Span.IsBetweenSpans(expression))
