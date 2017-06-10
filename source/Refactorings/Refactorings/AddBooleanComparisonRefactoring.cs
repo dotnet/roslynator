@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -16,14 +17,16 @@ namespace Roslynator.CSharp.Refactorings
         {
             foreach (Diagnostic diagnostic in semanticModel.GetDiagnostics(expression.Span, context.CancellationToken))
             {
+                TextSpan span = diagnostic.Location.SourceSpan;
+
                 if (diagnostic.Id == CSharpErrorCodes.CannotImplicitlyConvertTypeExplicitConversionExists
                     && diagnostic.IsCompilerDiagnostic())
                 {
-                    if (context.Span.IsEmpty || diagnostic.Location.SourceSpan == expression.Span)
+                    if (context.Span.IsEmpty || span == expression.Span)
                     {
                         var expression2 = expression
-                            .Ancestors()
-                            .FirstOrDefault(f => f.Span == diagnostic.Location.SourceSpan) as ExpressionSyntax;
+                            .AncestorsAndSelf()
+                            .FirstOrDefault(f => f.Span == span) as ExpressionSyntax;
 
                         if (expression2 != null)
                         {
@@ -44,11 +47,11 @@ namespace Roslynator.CSharp.Refactorings
                 else if (diagnostic.Id == CSharpErrorCodes.OperatorCannotBeAppliedToOperands
                     && diagnostic.IsCompilerDiagnostic())
                 {
-                    if (context.Span.IsEmpty || diagnostic.Location.SourceSpan == expression.Span)
+                    if (context.Span.IsEmpty || span == expression.Span)
                     {
                         var binaryExpression = expression
                             .Ancestors()
-                            .FirstOrDefault(f => f.Span == diagnostic.Location.SourceSpan) as BinaryExpressionSyntax;
+                            .FirstOrDefault(f => f.Span == span) as BinaryExpressionSyntax;
 
                         if (binaryExpression != null)
                         {
