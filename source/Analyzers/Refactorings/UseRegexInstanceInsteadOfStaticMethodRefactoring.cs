@@ -27,9 +27,8 @@ namespace Roslynator.CSharp.Refactorings
                 case "Replace":
                 case "Split":
                     {
-                        MethodInfo methodInfo = context.SemanticModel.GetMethodInfo(memberInvocation.InvocationExpression, context.CancellationToken);
-
-                        if (methodInfo.IsValid
+                        MethodInfo methodInfo;
+                        if (context.SemanticModel.TryGetMethodInfo(memberInvocation.InvocationExpression, context.CancellationToken, out methodInfo)
                             && methodInfo.IsPublicStaticRegexMethod()
                             && methodInfo.ContainingType != null)
                         {

@@ -54,9 +54,8 @@ namespace Roslynator.CSharp.Refactorings
                     && arguments.Count <= 3
                     && arguments[0].Expression?.IsKind(SyntaxKind.FalseLiteralExpression) == true)
                 {
-                    MethodInfo info = context.SemanticModel.GetMethodInfo(invocation, context.CancellationToken);
-
-                    if (info.IsValid
+                    MethodInfo info;
+                    if (context.SemanticModel.TryGetMethodInfo(invocation, context.CancellationToken, out info)
                         && info.IsContainingType(MetadataNames.System_Diagnostics_Debug)
                         && info.IsName("Assert")
                         && info.IsStatic
