@@ -14,6 +14,8 @@ namespace Roslynator
 {
     public static class SyntaxExtensions
     {
+        private static readonly SyntaxAnnotation[] _formatterAndSimplifierAnnotations = new SyntaxAnnotation[] { Formatter.Annotation, Simplifier.Annotation };
+
         #region SeparatedSyntaxList<T>
         public static SeparatedSyntaxList<TNode> ReplaceAt<TNode>(this SeparatedSyntaxList<TNode> list, int index, TNode newNode) where TNode : SyntaxNode
         {
@@ -334,6 +336,14 @@ namespace Roslynator
             return node.WithAdditionalAnnotations(Simplifier.Annotation);
         }
 
+        internal static TNode WithFormatterAndSimplifierAnnotations<TNode>(this TNode node) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.WithAdditionalAnnotations(_formatterAndSimplifierAnnotations);
+        }
+
         internal static string ToString(this SyntaxNode node, TextSpan span)
         {
             return GetSubstring(node, node.ToString(), span);
@@ -516,6 +526,11 @@ namespace Roslynator
         public static SyntaxToken WithSimplifierAnnotation(this SyntaxToken token)
         {
             return token.WithAdditionalAnnotations(Simplifier.Annotation);
+        }
+
+        internal static SyntaxToken WithFormatterAndSimplifierAnnotations(this SyntaxToken token)
+        {
+            return token.WithAdditionalAnnotations(_formatterAndSimplifierAnnotations);
         }
 
         public static SyntaxToken WithRenameAnnotation(this SyntaxToken token)

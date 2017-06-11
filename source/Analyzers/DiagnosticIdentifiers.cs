@@ -200,5 +200,6 @@ namespace Roslynator.CSharp
         public const string UseRegularStringLiteralInsteadOfVerbatimStringLiteral = Prefix + "1192";
         public const string OverridingMemberCannotChangeParamsModifier = Prefix + "1193";
         public const string ImplementExceptionConstructors = Prefix + "1194";
+        public const string UseExclusiveOrOperator = Prefix + "1195";
     }
 }

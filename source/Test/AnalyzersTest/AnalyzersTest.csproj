@@ -94,6 +94,7 @@
     <Compile Include="UseAutoProperty.cs" />
     <Compile Include="UseAutoProperty3.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfConditionalExpression.cs" />
+    <Compile Include="UseExclusiveOrOperator.cs" />
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
     <Compile Include="UseLambdaExpressionInsteadOfAnonymousMethod.cs" />
