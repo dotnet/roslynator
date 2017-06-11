@@ -15,20 +15,31 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static AnalysisResult Analyze(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (invocationExpression.ArgumentList?.Arguments.Any() == true)
+            ArgumentListSyntax argumentList = invocationExpression.ArgumentList;
+
+            if (argumentList != null)
             {
-                ExtensionMethodInfo extensionMethodInfo = semanticModel.GetExtensionMethodInfo(invocationExpression, ExtensionMethodKind.Ordinary, cancellationToken);
+                SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-                if (extensionMethodInfo.IsValid)
+                if (arguments.Any())
                 {
-                    InvocationExpressionSyntax newInvocationExpression = GetNewInvocation(invocationExpression);
-
-                    if (semanticModel
-                        .GetSpeculativeMethodSymbol(invocationExpression.SpanStart, newInvocationExpression)?
-                        .ReducedFromOrSelf()
-                        .Equals(extensionMethodInfo.Symbol.ConstructedFrom) == true)
+                    if (arguments.Count > 1
+                        || !(arguments[0].Expression is LiteralExpressionSyntax))
                     {
-                        return new AnalysisResult(invocationExpression, newInvocationExpression, extensionMethodInfo);
+                        ExtensionMethodInfo extensionMethodInfo = semanticModel.GetExtensionMethodInfo(invocationExpression, ExtensionMethodKind.Ordinary, cancellationToken);
+
+                        if (extensionMethodInfo.IsValid)
+                        {
+                            InvocationExpressionSyntax newInvocationExpression = GetNewInvocation(invocationExpression);
+
+                            if (semanticModel
+                                .GetSpeculativeMethodSymbol(invocationExpression.SpanStart, newInvocationExpression)?
+                                .ReducedFromOrSelf()
+                                .Equals(extensionMethodInfo.Symbol.ConstructedFrom) == true)
+                            {
+                                return new AnalysisResult(invocationExpression, newInvocationExpression, extensionMethodInfo);
+                            }
+                        }
                     }
                 }
             }
