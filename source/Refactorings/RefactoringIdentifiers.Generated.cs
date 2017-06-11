@@ -149,6 +149,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceMethodGroupWithLambda = Prefix + "0137";
         public const string ReplaceMethodWithProperty = Prefix + "0138";
         public const string ReplaceNullLiteralExpressionWithDefaultExpression = Prefix + "0139";
+        public const string ReplaceObjectCreationWithDefaultValue = Prefix + "0185";
         public const string ReplacePrefixOperatorWithPostfixOperator = Prefix + "0140";
         public const string ReplacePropertyWithMethod = Prefix + "0141";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = Prefix + "0142";

@@ -569,6 +569,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation, "Use StringBuilder instead of concatenation", IsEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.UseListInsteadOfYield, "Use List<T> instead of yield", IsEnabled(RefactoringIdentifiers.UseListInsteadOfYield)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.SplitIfStatement, "Split if statement", IsEnabled(RefactoringIdentifiers.SplitIfStatement)));
+            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue, "Replace object creation with default value", IsEnabled(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue)));
         }
 
         [Browsable(false)]
