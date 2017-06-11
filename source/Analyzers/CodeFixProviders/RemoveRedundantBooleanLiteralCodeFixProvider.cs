@@ -85,26 +85,6 @@ namespace Roslynator.CSharp.CodeFixProviders
             }
         }
 
-        private static string GetTextToRemove(BinaryExpressionSyntax binaryExpression)
-        {
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
-            SyntaxToken operatorToken = binaryExpression.OperatorToken;
-
-            if (left.IsBooleanLiteralExpression())
-            {
-                return binaryExpression.ToString(TextSpan.FromBounds(left.SpanStart, operatorToken.Span.End));
-            }
-            else if (right.IsBooleanLiteralExpression())
-            {
-                return binaryExpression.ToString(TextSpan.FromBounds(operatorToken.SpanStart, right.Span.End));
-            }
-
-            Debug.Fail(binaryExpression.ToString());
-
-            return "";
-        }
-
         private static void RegisterCodeFix(CodeFixContext context, string textToRemove, Func<CancellationToken, Task<Document>> createChangedDocument)
         {
             CodeAction codeAction = CodeAction.Create(

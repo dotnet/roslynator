@@ -38,7 +38,7 @@ namespace Roslynator.CSharp
             }
             else
             {
-                var parentMember = (MemberDeclarationSyntax)parent;
+                var parentMember = parent as MemberDeclarationSyntax;
 
                 if (parentMember != null)
                 {

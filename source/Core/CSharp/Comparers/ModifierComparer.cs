@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Comparers
     {
         public static readonly ModifierComparer Instance = new ModifierComparer();
 
-        private static readonly int _maxOrderIndex = 16;
+        private const int _maxOrderIndex = 16;
 
         private ModifierComparer()
         {
@@ -18,9 +18,6 @@ namespace Roslynator.CSharp.Comparers
 
         public int Compare(SyntaxToken x, SyntaxToken y)
         {
-            if (object.ReferenceEquals(x, y))
-                return 0;
-
             return GetOrderIndex(x).CompareTo(GetOrderIndex(y));
         }
 

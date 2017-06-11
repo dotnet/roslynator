@@ -299,7 +299,7 @@ namespace Roslynator.CSharp.Refactorings
                         return default(ImmutableArray<EnumFieldInfo>);
                 }
 
-                infos.Sort((f, g) => ((IComparable)f.Value).CompareTo(g.Value));
+                infos = infos.Sort((f, g) => ((IComparable)f.Value).CompareTo(g.Value));
 
                 return infos;
             }

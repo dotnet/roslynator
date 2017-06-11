@@ -62,7 +62,6 @@ namespace Roslynator.CSharp.CodeFixProviders
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
-
                         }
                 }
             }

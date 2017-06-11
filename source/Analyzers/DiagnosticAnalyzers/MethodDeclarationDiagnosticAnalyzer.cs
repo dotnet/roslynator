@@ -13,8 +13,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class MethodDeclarationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
-        private const string AsyncSuffix = "Async";
-
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get

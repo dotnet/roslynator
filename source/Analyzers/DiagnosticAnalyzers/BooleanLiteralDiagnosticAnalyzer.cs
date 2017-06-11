@@ -188,11 +188,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             ExpressionSyntax right,
             SyntaxKind kind)
         {
-            if (left.IsKind(kind))
-            {
-                RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right);
-            }
-            else if (right.IsKind(kind))
+            if (left.IsKind(kind)
+                || right.IsKind(kind))
             {
                 RemoveRedundantBooleanLiteralRefactoring.ReportDiagnostic(context, binaryExpression, left, right);
             }

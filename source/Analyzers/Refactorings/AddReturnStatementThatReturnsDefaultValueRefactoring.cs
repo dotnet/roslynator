@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(methodDeclaration.ReturnType, cancellationToken);
 
-            int position = -1;
+            int position;
             BlockSyntax body = methodDeclaration.Body;
             SyntaxList<StatementSyntax> statements = body.Statements;
 

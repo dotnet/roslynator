@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Comparers
 
         public static readonly MemberDeclarationComparer ByKindThenByName = new MemberDeclarationComparer(MemberDeclarationSortMode.ByKindThenByName);
 
-        private static readonly int _maxOrderIndex = 18;
+        private const int _maxOrderIndex = 18;
 
         private MemberDeclarationComparer(MemberDeclarationSortMode sortMode = MemberDeclarationSortMode.ByKind)
         {

@@ -202,28 +202,6 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             return null;
         }
 
-        private static ExpressionSyntax GetExpression(MethodDeclarationSyntax methodDeclaration)
-        {
-            BlockSyntax body = methodDeclaration.Body;
-
-            if (body != null)
-            {
-                StatementSyntax statement = body.SingleStatementOrDefault();
-
-                switch (statement?.Kind())
-                {
-                    case SyntaxKind.ReturnStatement:
-                        return ((ReturnStatementSyntax)statement).Expression;
-                    case SyntaxKind.ExpressionStatement:
-                        return ((ExpressionStatementSyntax)statement).Expression;
-                }
-
-                return null;
-            }
-
-            return methodDeclaration.ExpressionBody?.Expression;
-        }
-
         private static ImmutableArray<ParameterInfo> GetParameterInfos(
             InvocationExpressionSyntax invocation,
             IMethodSymbol methodSymbol,

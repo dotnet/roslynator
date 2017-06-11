@@ -137,28 +137,24 @@ namespace Roslynator.CSharp.Refactorings
                             var lambda1 = (ParenthesizedLambdaExpressionSyntax)expression1;
                             var lambda2 = (ParenthesizedLambdaExpressionSyntax)expression2;
 
-                            if (lambda1 is ExpressionSyntax
-                                && lambda2 is ExpressionSyntax)
+                            ParameterListSyntax parameterList1 = lambda1.ParameterList;
+                            ParameterListSyntax parameterList2 = lambda2.ParameterList;
+
+                            if (parameterList1 != null
+                                && parameterList2 != null)
                             {
-                                ParameterListSyntax parameterList1 = lambda1.ParameterList;
-                                ParameterListSyntax parameterList2 = lambda2.ParameterList;
+                                SeparatedSyntaxList<ParameterSyntax> parameters1 = parameterList1.Parameters;
+                                SeparatedSyntaxList<ParameterSyntax> parameters2 = parameterList2.Parameters;
 
-                                if (parameterList1 != null
-                                    && parameterList2 != null)
+                                if (parameters1.Count == parameters2.Count)
                                 {
-                                    SeparatedSyntaxList<ParameterSyntax> parameters1 = parameterList1.Parameters;
-                                    SeparatedSyntaxList<ParameterSyntax> parameters2 = parameterList2.Parameters;
-
-                                    if (parameters1.Count == parameters2.Count)
+                                    for (int i = 0; i < parameters1.Count; i++)
                                     {
-                                        for (int i = 0; i < parameters1.Count; i++)
-                                        {
-                                            if (!ParameterIdentifierEquals(parameters1[i], parameters2[i]))
-                                                return false;
-                                        }
-
-                                        return true;
+                                        if (!ParameterIdentifierEquals(parameters1[i], parameters2[i]))
+                                            return false;
                                     }
+
+                                    return true;
                                 }
                             }
                         }
@@ -183,8 +179,6 @@ namespace Roslynator.CSharp.Refactorings
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
             var invocation2 = (InvocationExpressionSyntax)memberAccess.Expression;
-
-            var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
 
             ExpressionSyntax expression1 = GetCondition(invocation);
             ExpressionSyntax expression2 = GetCondition(invocation2);

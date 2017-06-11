@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings.If
     internal abstract class ToAssignmentWithConditionalExpression<TStatement> : ToAssignmentWithConditionalExpression
         where TStatement : StatementSyntax
     {
-        internal ToAssignmentWithConditionalExpression(
+        protected ToAssignmentWithConditionalExpression(
             TStatement statement,
             IfStatementSyntax ifStatement,
             ExpressionSyntax whenTrue,

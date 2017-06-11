@@ -119,8 +119,6 @@ namespace Roslynator.CSharp.Refactorings
 
         private static LocalDeclarationStatementSyntax FindLocalDeclarationStatementAbove(SyntaxList<StatementSyntax> statements, int i)
         {
-            int count = statements.Count;
-
             i--;
 
             while (i >=0)

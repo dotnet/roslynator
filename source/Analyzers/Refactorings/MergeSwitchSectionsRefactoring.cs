@@ -144,8 +144,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             SwitchSectionSyntax newSection = section.WithStatements(List<StatementSyntax>());
 
-            SyntaxTriviaList x = newSection.GetTrailingTrivia();
-
             if (newSection
                 .GetTrailingTrivia()
                 .All(f => f.IsWhitespaceTrivia()))

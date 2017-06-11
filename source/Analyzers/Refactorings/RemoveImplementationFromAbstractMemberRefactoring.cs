@@ -72,8 +72,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
-            eventDeclaration = (EventDeclarationSyntax)context.Node;
-
             if (eventDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration)
                 || eventDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
             {

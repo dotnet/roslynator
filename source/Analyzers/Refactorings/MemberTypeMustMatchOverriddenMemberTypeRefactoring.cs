@@ -80,14 +80,12 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
             TypeSyntax newType,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             switch (memberDeclaration.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
@@ -96,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         MethodDeclarationSyntax newNode = methodDeclaration.WithReturnType(newType.WithTriviaFrom(methodDeclaration.ReturnType));
 
-                        return await document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+                        return document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken);
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
@@ -104,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         PropertyDeclarationSyntax newNode = propertyDeclaration.WithType(newType.WithTriviaFrom(propertyDeclaration.Type));
 
-                        return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+                        return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
@@ -112,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         IndexerDeclarationSyntax newNode = indexerDeclaration.WithType(newType.WithTriviaFrom(indexerDeclaration.Type));
 
-                        return await document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+                        return document.ReplaceNodeAsync(indexerDeclaration, newNode, cancellationToken);
                     }
                 case SyntaxKind.EventDeclaration:
                     {
@@ -120,23 +118,22 @@ namespace Roslynator.CSharp.Refactorings
 
                         EventDeclarationSyntax newNode = eventDeclaration.WithType(newType.WithTriviaFrom(eventDeclaration.Type));
 
-                        return await document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+                        return document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken);
                     }
                 case SyntaxKind.EventFieldDeclaration:
                     {
                         var eventDeclaration = (EventFieldDeclarationSyntax)memberDeclaration;
 
                         VariableDeclarationSyntax declaration = eventDeclaration.Declaration;
-                        VariableDeclaratorSyntax declarator = declaration.Variables.First();
 
                         EventFieldDeclarationSyntax newNode = eventDeclaration.WithDeclaration(declaration.WithType(newType.WithTriviaFrom(declaration.Type)));
 
-                        return await document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken).ConfigureAwait(false);
+                        return document.ReplaceNodeAsync(eventDeclaration, newNode, cancellationToken);
                     }
                 default:
                     {
                         Debug.Fail(memberDeclaration.Kind().ToString());
-                        return document;
+                        return Task.FromResult(document);
                     }
             }
         }

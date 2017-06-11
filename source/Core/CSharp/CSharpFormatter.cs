@@ -34,7 +34,7 @@ namespace Roslynator.CSharp
                 .WithFormatterAnnotation();
         }
 
-        public static async Task<Document> ToSingleLineAsync(
+        public static Task<Document> ToSingleLineAsync(
             Document document,
             InitializerExpressionSyntax initializer,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -44,7 +44,8 @@ namespace Roslynator.CSharp
                 .WithFormatterAnnotation();
 
             SyntaxNode parent = initializer.Parent;
-            SyntaxNode newParent = parent;
+
+            SyntaxNode newParent;
 
             switch (parent.Kind())
             {
@@ -91,11 +92,11 @@ namespace Roslynator.CSharp
                     {
                         Debug.Fail(parent.Kind().ToString());
 
-                        return await document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken).ConfigureAwait(false);
+                        return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
                     }
             }
 
-            return await document.ReplaceNodeAsync(parent, newParent, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(parent, newParent, cancellationToken);
         }
 
         public static Task<Document> ToMultiLineAsync(

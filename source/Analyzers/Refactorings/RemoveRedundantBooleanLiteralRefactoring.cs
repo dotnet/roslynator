@@ -53,7 +53,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
-            SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
             ExpressionSyntax newNode = binaryExpression;
 
@@ -94,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
             ForStatementSyntax forStatement,
             CancellationToken cancellationToken)
         {
-            ForStatementSyntax newForStatement = forStatement;
+            ForStatementSyntax newForStatement;
 
             if (forStatement
                 .DescendantTrivia(TextSpan.FromBounds(forStatement.FirstSemicolonToken.Span.End, forStatement.SecondSemicolonToken.Span.Start))

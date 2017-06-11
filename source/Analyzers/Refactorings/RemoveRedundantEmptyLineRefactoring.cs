@@ -432,13 +432,8 @@ namespace Roslynator.CSharp.Refactorings
                     if (kind == SyntaxKind.WhitespaceTrivia)
                         continue;
 
-                    if (kind == SyntaxKind.EndOfLineTrivia
-                        && !en.MoveNext())
-                    {
-                        return true;
-                    }
-
-                    break;
+                    return kind == SyntaxKind.EndOfLineTrivia
+                        && !en.MoveNext();
                 }
             }
 

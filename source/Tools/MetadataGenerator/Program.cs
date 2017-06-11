@@ -49,7 +49,7 @@ namespace MetadataGenerator
 
             SaveFile(
                 Path.Combine(dirPath, @"Analyzers\Analyzers.xml"),
-                XmlGenerator.CreateAnalyzersXml(analyzers));
+                XmlGenerator.CreateAnalyzersXml());
 
             //var htmlGenerator = new HtmlGenerator();
 

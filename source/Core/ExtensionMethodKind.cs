@@ -10,6 +10,6 @@ namespace Roslynator
         None = 0,
         Ordinary = 1,
         Reduced = 2,
-        OrdinaryOrReduced = 3
+        OrdinaryOrReduced = Ordinary | Reduced
     }
 }

@@ -41,7 +41,6 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             MemberDeclarationSelection selectedMembers;
             if (MemberDeclarationSelection.TryCreate(interfaceDeclaration, context.Span, out selectedMembers))
                 ComputeRefactoring(context, selectedMembers);
-
         }
 
         private static void ComputeRefactoring(RefactoringContext context, MemberDeclarationSelection selectedMembers)

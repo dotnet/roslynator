@@ -200,7 +200,6 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var logicalNot = (PrefixUnaryExpressionSyntax)right;
                 ExpressionSyntax operand = logicalNot.Operand;
-                SyntaxToken operatorToken = logicalNot.OperatorToken;
 
                 string s = operand.ToFullString();
 

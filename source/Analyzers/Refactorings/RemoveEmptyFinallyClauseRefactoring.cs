@@ -41,8 +41,6 @@ namespace Roslynator.CSharp.Refactorings
             FinallyClauseSyntax finallyClause,
             CancellationToken cancellationToken)
         {
-            SyntaxNode oldRoot = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             if (finallyClause.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 var tryStatement = (TryStatementSyntax)finallyClause.Parent;

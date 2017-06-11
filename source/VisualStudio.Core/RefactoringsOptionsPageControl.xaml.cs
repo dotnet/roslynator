@@ -9,7 +9,7 @@ using System.Windows.Data;
 
 namespace Roslynator.VisualStudio
 {
-    public partial class RefactoringsOptionsPageControl : UserControl
+    public class RefactoringsOptionsPageControl : UserControl
     {
         private GridViewColumnHeader _lastClickedHeader;
         private ListSortDirection _lastDirection;
