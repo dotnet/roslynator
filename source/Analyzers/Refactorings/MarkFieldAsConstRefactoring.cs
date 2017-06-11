@@ -28,6 +28,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (modifiers.Contains(SyntaxKind.StaticKeyword)
                 && modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
+                && !modifiers.Contains(SyntaxKind.NewKeyword)
                 && IsFixable(fieldDeclaration.Declaration, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.MarkFieldAsConst, fieldDeclaration);
