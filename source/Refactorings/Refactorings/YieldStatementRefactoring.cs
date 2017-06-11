@@ -99,6 +99,9 @@ namespace Roslynator.CSharp.Refactorings
                 var refactoring = new ReplaceYieldStatementWithIfStatementRefactoring();
                 await refactoring.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield))
+                UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, yieldStatement);
         }
     }
 }
