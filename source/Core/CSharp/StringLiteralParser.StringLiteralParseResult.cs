@@ -12,7 +12,6 @@ namespace Roslynator.CSharp
                 Success = success;
             }
 
-
             public StringLiteralParseResult(string text)
             {
                 Text = text;

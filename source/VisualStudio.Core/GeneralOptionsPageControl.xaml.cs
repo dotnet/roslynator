@@ -5,7 +5,7 @@ using System.Windows.Controls;
 
 namespace Roslynator.VisualStudio
 {
-    public class GeneralOptionsPageControl : UserControl, INotifyPropertyChanged
+    public partial class GeneralOptionsPageControl : UserControl, INotifyPropertyChanged
     {
         private bool _prefixFieldIdentifierWithUnderscore;
         private bool _useConfigFile;

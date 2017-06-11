@@ -2575,8 +2575,7 @@ namespace Roslynator.CSharp
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind)
         {
-            return node != null
-                && Microsoft.CodeAnalysis.CSharpExtensions.IsKind(node.Parent, kind);
+            return node?.Parent.IsKind(kind) == true;
         }
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
@@ -3105,7 +3104,7 @@ namespace Roslynator.CSharp
 
         public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind)
         {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(token.Parent, kind);
+            return token.Parent.IsKind(kind);
         }
 
         public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2)
@@ -3251,12 +3250,12 @@ namespace Roslynator.CSharp
 
         public static bool IsWhitespaceTrivia(this SyntaxTrivia trivia)
         {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.WhitespaceTrivia);
+            return trivia.IsKind(SyntaxKind.WhitespaceTrivia);
         }
 
         public static bool IsEndOfLineTrivia(this SyntaxTrivia trivia)
         {
-            return Microsoft.CodeAnalysis.CSharpExtensions.IsKind(trivia, SyntaxKind.EndOfLineTrivia);
+            return trivia.IsKind(SyntaxKind.EndOfLineTrivia);
         }
 
         public static bool IsWhitespaceOrEndOfLineTrivia(this SyntaxTrivia trivia)

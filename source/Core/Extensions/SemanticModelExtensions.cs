@@ -107,8 +107,8 @@ namespace Roslynator
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return ModelExtensions
-                .GetSymbolInfo(semanticModel, node, cancellationToken)
+            return semanticModel
+                .GetSymbolInfo(node, cancellationToken)
                 .Symbol;
         }
 
@@ -117,8 +117,8 @@ namespace Roslynator
             SyntaxNode node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return ModelExtensions
-                .GetTypeInfo(semanticModel, node, cancellationToken)
+            return semanticModel
+                .GetTypeInfo(node, cancellationToken)
                 .Type;
         }
 
@@ -137,8 +137,7 @@ namespace Roslynator
             int position,
             SyntaxNode expression)
         {
-            SymbolInfo symbolInfo = ModelExtensions.GetSpeculativeSymbolInfo(
-                semanticModel,
+            SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(
                 position,
                 expression,
                 SpeculativeBindingOption.BindAsExpression);

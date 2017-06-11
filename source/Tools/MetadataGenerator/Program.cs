@@ -64,7 +64,7 @@ namespace MetadataGenerator
             var markdownGenerator = new MarkdownGenerator();
 
             SaveFile(
-                 Path.Combine(Path.GetDirectoryName(dirPath), @"README.md"),
+                 Path.Combine(Path.GetDirectoryName(dirPath), "README.md"),
                  File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8) /*+ markdownGenerator.CreateReadMeMarkDown(analyzers, refactorings)*/);
 
             foreach (string imagePath in MarkdownGenerator.FindMissingImages(refactorings, Path.Combine(Path.GetDirectoryName(dirPath), @"images\refactorings")))

@@ -12,17 +12,16 @@ namespace Roslynator.CSharp
 {
     internal static class Negator
     {
-        public static ExpressionSyntax LogicallyNegate(this ExpressionSyntax booleanExpression)
+        public static ExpressionSyntax LogicallyNegate(ExpressionSyntax booleanExpression)
         {
             if (booleanExpression == null)
                 throw new ArgumentNullException(nameof(booleanExpression));
 
-            return booleanExpression
-                .LogicallyNegatePrivate()
+            return LogicallyNegateCore(booleanExpression)
                 .WithTriviaFrom(booleanExpression);
         }
 
-        private static ExpressionSyntax LogicallyNegatePrivate(this ExpressionSyntax expression)
+        private static ExpressionSyntax LogicallyNegateCore(ExpressionSyntax expression)
         {
             switch (expression?.Kind())
             {
@@ -195,15 +194,9 @@ namespace Roslynator.CSharp
 
             SyntaxKind kind = NegateBinaryExpressionKind(binaryExpression);
 
-            left = left?
-                .LogicallyNegate()
-                .ParenthesizeIfNecessary(kind)
-                .WithTriviaFrom(left);
+            left = LogicallyNegate(left, kind);
 
-            right = right?
-               .LogicallyNegate()
-               .ParenthesizeIfNecessary(kind)
-               .WithTriviaFrom(right);
+            right = LogicallyNegate(right, kind);
 
             BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
                 kind,
@@ -253,18 +246,12 @@ namespace Roslynator.CSharp
 
             if (whenTrue?.IsKind(SyntaxKind.ThrowExpression) == false)
             {
-                whenTrue = whenTrue
-                    .LogicallyNegate()
-                    .ParenthesizeIfNecessary(SyntaxKind.ConditionalExpression)
-                    .WithTriviaFrom(whenTrue);
+                whenTrue = LogicallyNegate(whenTrue, SyntaxKind.ConditionalExpression);
             }
 
             if (whenFalse?.IsKind(SyntaxKind.ThrowExpression) == false)
             {
-                whenFalse = whenFalse
-                    .LogicallyNegate()
-                    .ParenthesizeIfNecessary(SyntaxKind.ConditionalExpression)
-                    .WithTriviaFrom(whenFalse);
+                whenFalse = LogicallyNegate(whenFalse, SyntaxKind.ConditionalExpression);
             }
 
             ConditionalExpressionSyntax newConditionalExpression = conditionalExpression.Update(
@@ -275,6 +262,16 @@ namespace Roslynator.CSharp
                 whenFalse);
 
             return newConditionalExpression.WithTriviaFrom(conditionalExpression);
+        }
+
+        private static ExpressionSyntax LogicallyNegate(ExpressionSyntax expression, SyntaxKind kind)
+        {
+            if (expression == null)
+                return null;
+
+            return LogicallyNegate(expression)
+                .ParenthesizeIfNecessary(kind)
+                .WithTriviaFrom(expression);
         }
 
         private static ExpressionSyntax ParenthesizeIfNecessary(this ExpressionSyntax expression, SyntaxKind kind)
