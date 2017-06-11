@@ -1797,5 +1797,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor ImplementExceptionConstructors = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ImplementExceptionConstructors,
+            title: "Implement exception constructors.",
+            messageFormat: "Implement exception constructors.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }

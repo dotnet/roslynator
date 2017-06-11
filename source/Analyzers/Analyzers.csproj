@@ -73,6 +73,7 @@
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ImplementExceptionConstructorsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MarkFieldAsConstDiagnosticAnalyzer.cs" />
@@ -115,6 +116,7 @@
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddOrRemoveRegionNameRefactoring.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereAndAnyRefactoring.cs" />
+    <Compile Include="Refactorings\ImplementExceptionConstructorsRefactoring.cs" />
     <Compile Include="Refactorings\FormatInitializerWithSingleExpressionOnSingleLineRefactoring.cs" />
     <Compile Include="Refactorings\AvoidSingleLineBlockRefactoring.cs" />
     <Compile Include="Refactorings\FormatConditionalExpressionRefactoring.cs" />
