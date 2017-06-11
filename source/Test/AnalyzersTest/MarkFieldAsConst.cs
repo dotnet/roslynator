@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         private static string GetValue() => null;
 
-        public class Foo
+        private class Foo : BaseFoo
         {
             private const bool BoolConst = false;
             private const char CharConst = '\0';
@@ -83,6 +83,13 @@ namespace Roslynator.CSharp.Analyzers.Test
             private readonly float _ft = (float)0;
             private readonly double _de = (double)0;
             private readonly decimal _dl = (decimal)0;
+
+            new protected static readonly string Bar = "";
+        }
+
+        private class BaseFoo
+        {
+            protected static readonly string Bar = "";
         }
     }
 }
