@@ -49,6 +49,7 @@
     <Compile Include="MarkClassAsStatic2.cs" />
     <Compile Include="AddOrRemoveRegionName.cs" />
     <Compile Include="MergeStringExpressions.cs" />
+    <Compile Include="OverridingMemberCannotChangeParamsModifier.cs" />
     <Compile Include="RemoveEmptyInitializer.cs" />
     <Compile Include="RemoveRedundantAutoPropertyInitialization.cs" />
     <Compile Include="RemoveRedundantDefaultSwitchSection.cs" />

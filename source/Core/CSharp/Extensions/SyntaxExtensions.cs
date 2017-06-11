@@ -1910,6 +1910,11 @@ namespace Roslynator.CSharp
         {
             return parameter?.Modifiers.Contains(SyntaxKind.ThisKeyword) == true;
         }
+
+        public static bool IsParams(this ParameterSyntax parameter)
+        {
+            return parameter?.Modifiers.Contains(SyntaxKind.ParamsKeyword) == true;
+        }
         #endregion ParameterSyntax
 
         #region PropertyDeclarationSyntax

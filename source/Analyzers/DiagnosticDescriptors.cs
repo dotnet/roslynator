@@ -1788,5 +1788,14 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
+
+        public static readonly DiagnosticDescriptor OverridingMemberCannotChangeParamsModifier = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier,
+            title: "Overriding member cannot change 'params' modifier.",
+            messageFormat: "Overriding member cannot change 'params' modifier.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }
