@@ -1815,5 +1815,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor CallExtensionMethodAsInstanceMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod,
+            title: "Call extension method as instance method.",
+            messageFormat: "Call extension method as instance method.",
+            category: DiagnosticCategories.Style,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
