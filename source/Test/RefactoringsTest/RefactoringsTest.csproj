@@ -88,6 +88,7 @@
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="GenerateEnumMemberRefactoring.cs" />
     <Compile Include="UseListInsteadOfYield.cs" />
+    <Compile Include="ReplaceObjectCreationWithDefaultValue.cs" />
     <Compile Include="SplitIfStatementsRefactoring.cs" />
     <Compile Include="UseInsteadOfIfRefactoring.cs" />
     <Compile Include="ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />

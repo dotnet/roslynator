@@ -24,6 +24,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 await ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue))
+                await ReplaceObjectCreationWithDefaultValueRefactoring.ComputeRefactoringAsync(context, localDeclaration).ConfigureAwait(false);
         }
     }
 }
