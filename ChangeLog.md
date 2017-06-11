@@ -1,3 +1,23 @@
+### 1.4.12 (2017-06-11)
+
+#### Analyzers
+
+##### New Analyzers
+
+* UseRegularStringLiteralInsteadOfVerbatimStringLiteral (RCS1192)
+* OverridingMemberCannotChangeParamsModifier (RCS1193)
+* ImplementExceptionConstructors (RCS1194)
+* UseExclusiveOrOperator (RCS1195)
+* CallExtensionMethodAsInstanceMethod (RCS1196)
+
+#### Refactorings
+
+##### New Refactorings
+
+* UseListInsteadOfYield (RR0183)
+* SplitIfStatement (RR0184)
+* ReplaceObjectCreationWithDefaultValue (RR0185)
+
 ### 1.4.1 (2017-06-05)
 
 #### Analyzers
