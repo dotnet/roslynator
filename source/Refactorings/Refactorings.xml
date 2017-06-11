@@ -552,14 +552,14 @@
       <Syntax>local declarations with same type</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0078" Identifier="MergeStringExpressions" Title="Merge string expressions">
+  <Refactoring Id="RR0078" Identifier="JoinStringExpressions" Title="Join string expressions">
     <Syntaxes>
       <Syntax>concatenated string expressions</Syntax>
     </Syntaxes>
     <Images>
-      <Image>MergeStringExpressions</Image>
-      <Image>MergeStringLiterals</Image>
-      <Image>MergeStringLiteralsIntoMultilineStringLiteral</Image>
+      <Image>JoinStringExpressions</Image>
+      <Image>JoinStringLiterals</Image>
+      <Image>JoinStringLiteralsIntoMultilineStringLiteral</Image>
     </Images>
   </Refactoring>
   <Refactoring Id="RR0079" Identifier="NegateBinaryExpression" Title="Negate binary expression">

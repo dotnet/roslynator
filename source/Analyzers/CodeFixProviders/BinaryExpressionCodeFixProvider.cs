@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull,
                     DiagnosticIdentifiers.ValueTypeCheckedForNull,
                     DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator,
-                    DiagnosticIdentifiers.MergeStringExpressions);
+                    DiagnosticIdentifiers.JoinStringExpressions);
             }
         }
 
@@ -181,11 +181,11 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.MergeStringExpressions:
+                    case DiagnosticIdentifiers.JoinStringExpressions:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Merge string expressions",
-                                cancellationToken => MergeStringExpressionsRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                "Join string expressions",
+                                cancellationToken => JoinStringExpressionsRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

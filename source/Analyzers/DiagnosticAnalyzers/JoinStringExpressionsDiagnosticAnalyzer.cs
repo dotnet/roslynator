@@ -10,11 +10,11 @@ using Roslynator.CSharp.Refactorings;
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MergeStringExpressionsDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class JoinStringExpressionsDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MergeStringExpressions); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.JoinStringExpressions); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => MergeStringExpressionsRefactoring.AnalyzeAddExpression(f),
+                f => JoinStringExpressionsRefactoring.AnalyzeAddExpression(f),
                 SyntaxKind.AddExpression);
         }
     }
