@@ -74,6 +74,7 @@ RR0065|[Introduce and initialize property](../../docs/refactorings/IntroduceAndI
 RR0066|[Introduce constructor](../../docs/refactorings/IntroduceConstructor.md)|
 RR0067|[Introduce field to lock on](../../docs/refactorings/IntroduceFieldToLockOn.md)|x
 RR0068|[Introduce local variable](../../docs/refactorings/IntroduceLocalVariable.md)|x
+RR0078|[Join string expressions](../../docs/refactorings/JoinStringExpressions.md)|x
 RR0069|[Make member abstract](../../docs/refactorings/MakeMemberAbstract.md)|x
 RR0070|[Make member virtual](../../docs/refactorings/MakeMemberVirtual.md)|x
 RR0071|[Mark containing class as abstract](../../docs/refactorings/MarkContainingClassAsAbstract.md)|x
@@ -83,7 +84,6 @@ RR0074|[Merge attributes](../../docs/refactorings/MergeAttributes.md)|x
 RR0075|[Merge if statements](../../docs/refactorings/MergeIfStatements.md)|x
 RR0076|[Merge interpolation into interpolated string](../../docs/refactorings/MergeInterpolationIntoInterpolatedString.md)|x
 RR0077|[Merge local declarations](../../docs/refactorings/MergeLocalDeclarations.md)|x
-RR0078|[Merge string expressions](../../docs/refactorings/MergeStringExpressions.md)|x
 RR0079|[Negate binary expression](../../docs/refactorings/NegateBinaryExpression.md)|x
 RR0080|[Negate boolean literal](../../docs/refactorings/NegateBooleanLiteral.md)|x
 RR0081|[Negate is expression](../../docs/refactorings/NegateIsExpression.md)|x
@@ -145,6 +145,7 @@ RR0136|[Replace interpolated string with string literal](../../docs/refactorings
 RR0137|[Replace method group with lambda](../../docs/refactorings/ReplaceMethodGroupWithLambda.md)|x
 RR0138|[Replace method with property](../../docs/refactorings/ReplaceMethodWithProperty.md)|
 RR0139|[Replace null literal expression with default expression](../../docs/refactorings/ReplaceNullLiteralExpressionWithDefaultExpression.md)|x
+RR0185|[Replace object creation with default value](../../docs/refactorings/ReplaceObjectCreationWithDefaultValue.md)|x
 RR0140|[Replace prefix operator to postfix operator](../../docs/refactorings/ReplacePrefixOperatorWithPostfixOperator.md)|x
 RR0141|[Replace property with method](../../docs/refactorings/ReplacePropertyWithMethod.md)|x
 RR0142|[Replace regular string literal with verbatim string literal](../../docs/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.md)|x
@@ -162,6 +163,7 @@ RR0153|[Simplify if](../../docs/refactorings/SimplifyIf.md)|x
 RR0154|[Simplify lambda expression](../../docs/refactorings/SimplifyLambdaExpression.md)|x
 RR0155|[Sort member declarations](../../docs/refactorings/SortMemberDeclarations.md)|x
 RR0156|[Split attributes](../../docs/refactorings/SplitAttributes.md)|x
+RR0184|[Split if statement](../../docs/refactorings/SplitIfStatement.md)|x
 RR0157|[Split switch labels](../../docs/refactorings/SplitSwitchLabels.md)|x
 RR0158|[Split variable declaration](../../docs/refactorings/SplitVariableDeclaration.md)|x
 RR0159|[Swap expressions in binary expression](../../docs/refactorings/SwapExpressionsInBinaryExpression.md)|x
@@ -176,6 +178,7 @@ RR0166|[Use conditional expression instead of if](../../docs/refactorings/UseCon
 RR0167|[Use element access instead of 'First/Last'ElementAt' method](../../docs/refactorings/UseElementAccessInsteadOfEnumerableMethod.md)|x
 RR0169|[Use expression\-bodied member](../../docs/refactorings/UseExpressionBodiedMember.md)|x
 RR0170|[Use lambda expression instead of anonymous method](../../docs/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.md)|x
+RR0183|[Use List\<T\> instead of yield](../../docs/refactorings/UseListInsteadOfYield.md)|x
 RR0171|[Use string\.Empty instead of ""](../../docs/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.md)|
 RR0182|[Use StringBuilder instead of concatenation](../../docs/refactorings/UseStringBuilderInsteadOfConcatenation.md)|x
 RR0174|[Wrap in \#if directive](../../docs/refactorings/WrapInIfDirective.md)|x

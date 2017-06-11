@@ -1,0 +1,18 @@
+## Join string expressions
+
+Property | Value
+--- | --- 
+Id | RR0078
+Title | Join string expressions
+Syntax | concatenated string expressions
+Enabled by Default | yes
+
+### Usage
+
+![Join string expressions](../../images/refactorings/JoinStringExpressions.png)
+
+![Join string expressions](../../images/refactorings/JoinStringLiterals.png)
+
+![Join string expressions](../../images/refactorings/JoinStringLiteralsIntoMultilineStringLiteral.png)
+
+[full list of refactorings](Refactorings.md)

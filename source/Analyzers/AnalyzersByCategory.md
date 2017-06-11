@@ -9,9 +9,11 @@ Design|Call 'ConfigureAwait\(false\)'|RCS1090|x
 Design|Composite enum value contains undefined flag|RCS1157|x
 Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1135|x
 Design|Declare type inside namespace|RCS1110|x
+Design|Implement exception constructors|RCS1194|x
 Design|Mark class as static|RCS1102|x
 Design|Mark field as const|RCS1187|x
 Design|Mark field as read\-only|RCS1169|x
+Design|Overriding member cannot change 'params' modifier|RCS1193|x
 Design|Static member in generic type should use a type parameter|RCS1158|x
 Design|Use read\-only auto\-implemented property|RCS1170|x
 ErrorFix|Add break statement to switch section|RCS1116|x
@@ -90,6 +92,7 @@ Readability|Split variable declaration|RCS1081|
 Readability|Use explicit type instead of 'var' \(foreach variable\)|RCS1009|x
 Readability|Use explicit type instead of 'var' \(when the type is not obvious\)|RCS1008|x
 Readability|Use explicit type instead of 'var' \(when the type is obvious\)|RCS1012|
+Readability|Use regular string literal instead of verbatim string literal|RCS1192|x
 Redundancy|Avoid interpolated string with no interpolation|RCS1062|x
 Redundancy|Avoid semicolon at the end of declaration|RCS1055|x
 Redundancy|Remove empty attribute argument list|RCS1039|x
@@ -132,11 +135,11 @@ Simplification|Call string\.Concat instead of string\.Join|RCS1150|x
 Simplification|Combine 'Enumerable\.Where' method chain|RCS1112|x
 Simplification|Inline lazy initialization|RCS1180|x
 Simplification|Inline local variable|RCS1124|x
+Simplification|Join string expressions|RCS1190|x
 Simplification|Merge else clause with nested if statement|RCS1006|x
 Simplification|Merge if statement with nested if statement|RCS1061|x
 Simplification|Merge interpolation into interpolated string|RCS1105|x
 Simplification|Merge local declaration with assignment|RCS1127|x
-Simplification|Merge string expressions|RCS1190|x
 Simplification|Merge switch sections with equivalent content|RCS1136|x
 Simplification|Replace if statement with assignment|RCS1103|x
 Simplification|Replace if statement with return statement|RCS1073|
@@ -150,6 +153,7 @@ Simplification|Simplify LINQ method chain|RCS1077|x
 Simplification|Simplify logical not expression|RCS1068|x
 Simplification|Simplify nested using statement|RCS1005|x
 Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
+Simplification|Use ^ operator|RCS1195|x
 Simplification|Use auto\-implemented property|RCS1085|x
 Simplification|Use 'Cast' method instead of 'Select' method|RCS1109|x
 Simplification|Use coalesce expression instead of conditional expression|RCS1084|x
@@ -172,6 +176,7 @@ Style|Avoid multiline expression body|RCS1017|
 Style|Avoid usage of do statement to create an infinite loop|RCS1063|x
 Style|Avoid usage of for statement to create an infinite loop|RCS1064|
 Style|Avoid usage of while statement to create an inifinite loop|RCS1065|
+Style|Call extension method as instance method|RCS1196|x
 Style|Parenthesize condition in conditional expression|RCS1051|
 Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|

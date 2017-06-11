@@ -487,6 +487,16 @@
 
 ![Introduce local variable](../../images/refactorings/IntroduceLocalVariable.png)
 
+#### Join string expressions (RR0078)
+
+* **Syntax**: concatenated string expressions
+
+![Join string expressions](../../images/refactorings/JoinStringExpressions.png)
+
+![Join string expressions](../../images/refactorings/JoinStringLiterals.png)
+
+![Join string expressions](../../images/refactorings/JoinStringLiteralsIntoMultilineStringLiteral.png)
+
 #### Make member abstract (RR0069)
 
 * **Syntax**: non\-abstract indexer/method/property in abstract class
@@ -541,16 +551,6 @@
 * **Syntax**: local declarations with same type
 
 ![Merge local declarations](../../images/refactorings/MergeLocalDeclarations.png)
-
-#### Merge string expressions (RR0078)
-
-* **Syntax**: concatenated string expressions
-
-![Merge string expressions](../../images/refactorings/MergeStringExpressions.png)
-
-![Merge string expressions](../../images/refactorings/MergeStringLiterals.png)
-
-![Merge string expressions](../../images/refactorings/MergeStringLiteralsIntoMultilineStringLiteral.png)
 
 #### Negate binary expression (RR0079)
 
@@ -945,6 +945,12 @@
 
 ![Replace null literal expression with default expression](../../images/refactorings/ReplaceNullLiteralExpressionWithDefaultExpression.png)
 
+#### Replace object creation with default value (RR0185)
+
+* **Syntax**: object creation expression
+
+![Replace object creation with default value](../../images/refactorings/ReplaceObjectCreationWithDefaultValue.png)
+
 #### Replace prefix operator to postfix operator (RR0140)
 
 * **Syntax**: prefix/postfix unary expression
@@ -1059,6 +1065,12 @@
 
 ![Split attributes](../../images/refactorings/SplitAttributes.png)
 
+#### Split if statement (RR0184)
+
+* **Syntax**: if statement that has logical or expression as a condition
+
+![Split if statement](../../images/refactorings/SplitIfStatement.png)
+
 #### Split switch labels (RR0157)
 
 * **Syntax**: selected switch labels
@@ -1148,6 +1160,12 @@
 * **Scope**: delegate keyword
 
 ![Use lambda expression instead of anonymous method](../../images/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.png)
+
+#### Use List\<T\> instead of yield (RR0183)
+
+* **Syntax**: yield return, yield break
+
+![Use List\<T\> instead of yield](../../images/refactorings/UseListInsteadOfYield.png)
 
 #### Use string\.Empty instead of "" (RR0171)
 
