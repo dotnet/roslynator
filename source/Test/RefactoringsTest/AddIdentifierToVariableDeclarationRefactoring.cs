@@ -6,15 +6,22 @@ namespace Roslynator.CSharp.Refactorings.Test
 {
     internal static class AddIdentifierToVariableDeclarationRefactoring
     {
-        public static void GetValue()
+        public static void GetValue(object value)
         {
+            XmlReader;
+
             XmlReader
 
             object x = null;
 
             XmlReader xmlReader;
             XmlReader xmlReader2;
-        }
 
+            // n
+
+            xmlReader;
+
+            value;
+        }
     }
 }
