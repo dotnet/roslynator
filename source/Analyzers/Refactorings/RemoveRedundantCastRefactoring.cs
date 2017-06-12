@@ -147,27 +147,32 @@ namespace Roslynator.CSharp.Refactorings
                                 SemanticModel semanticModel = context.SemanticModel;
                                 CancellationToken cancellationToken = context.CancellationToken;
 
-                                ExtensionMethodInfo info = semanticModel.GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken);
+                                ISymbol symbol = semanticModel.GetSymbol(invocation, cancellationToken);
 
-                                if (info.MethodInfo.IsLinqCast())
+                                if (symbol?.IsMethod() == true)
                                 {
-                                    ImmutableArray<ITypeSymbol> typeArguments = info.ReducedSymbol.TypeArguments;
-
-                                    if (typeArguments.Length == 1)
+                                    ExtensionMethodInfo extensionMethodInfo;
+                                    if (ExtensionMethodInfo.TryCreate((IMethodSymbol)symbol, semanticModel, out extensionMethodInfo, ExtensionMethodKind.Reduced)
+                                        && extensionMethodInfo.MethodInfo.IsLinqCast())
                                     {
-                                        ExpressionSyntax memberAccessExpression = memberAccess.Expression;
+                                        ImmutableArray<ITypeSymbol> typeArguments = extensionMethodInfo.ReducedSymbol.TypeArguments;
 
-                                        if (memberAccessExpression != null)
+                                        if (typeArguments.Length == 1)
                                         {
-                                            var memberAccessExpressionType = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken) as INamedTypeSymbol;
+                                            ExpressionSyntax memberAccessExpression = memberAccess.Expression;
 
-                                            if (memberAccessExpressionType?.IsConstructedFromIEnumerableOfT() == true
-                                                && typeArguments[0].Equals(memberAccessExpressionType.TypeArguments[0])
-                                                && !invocation.ContainsDirectives(TextSpan.FromBounds(memberAccessExpression.Span.End, invocation.Span.End)))
+                                            if (memberAccessExpression != null)
                                             {
-                                                context.ReportDiagnostic(
-                                                    DiagnosticDescriptors.RemoveRedundantCast,
-                                                    Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(name.SpanStart, argumentList.Span.End)));
+                                                var memberAccessExpressionType = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken) as INamedTypeSymbol;
+
+                                                if (memberAccessExpressionType?.IsConstructedFromIEnumerableOfT() == true
+                                                    && typeArguments[0].Equals(memberAccessExpressionType.TypeArguments[0])
+                                                    && !invocation.ContainsDirectives(TextSpan.FromBounds(memberAccessExpression.Span.End, invocation.Span.End)))
+                                                {
+                                                    context.ReportDiagnostic(
+                                                        DiagnosticDescriptors.RemoveRedundantCast,
+                                                        Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(name.SpanStart, argumentList.Span.End)));
+                                                }
                                             }
                                         }
                                     }

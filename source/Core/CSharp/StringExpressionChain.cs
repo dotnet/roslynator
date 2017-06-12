@@ -196,7 +196,7 @@ namespace Roslynator.CSharp
             while (true)
             {
                 MethodInfo methodInfo;
-                if (semanticModel.TryGetMethodInfo(binaryExpression, cancellationToken, out methodInfo)
+                if (semanticModel.TryGetMethodInfo(binaryExpression, out methodInfo, cancellationToken)
                     && methodInfo.MethodKind == MethodKind.BuiltinOperator
                     && methodInfo.Name == WellKnownMemberNames.AdditionOperatorName
                     && methodInfo.IsContainingType(SpecialType.System_String))

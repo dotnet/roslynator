@@ -24,10 +24,9 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel = context.SemanticModel;
                 CancellationToken cancellationToken = context.CancellationToken;
 
-                if (semanticModel
-                    .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
-                    .MethodInfo
-                    .IsLinqExtensionOfIEnumerableOfTWithoutParameters("Any"))
+                MethodInfo methodInfo;
+                if (semanticModel.TryGetExtensionMethodInfo(invocation, out methodInfo, ExtensionMethodKind.Reduced, cancellationToken)
+                    && methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("Any"))
                 {
                     string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, cancellationToken);
 

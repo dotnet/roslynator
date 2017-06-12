@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     if (result.Success
                         && context.SemanticModel
                             .GetEnclosingNamedType(result.InvocationExpression.SpanStart, context.CancellationToken)?
-                            .Equals(result.ExtensionMethodInfo.Symbol.ContainingType) == false)
+                            .Equals(result.MethodSymbol.ContainingType) == false)
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod, invocation);
                     }

@@ -40,10 +40,9 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (semanticModel
-                .GetExtensionMethodInfo(invocation, cancellationToken)
-                .MethodInfo
-                .IsLinqSelect(allowImmutableArrayExtension: true))
+            MethodInfo methodInfo;
+            if (semanticModel.TryGetExtensionMethodInfo(invocation, out methodInfo, ExtensionMethodKind.None, cancellationToken)
+                && methodInfo.IsLinqSelect(allowImmutableArrayExtension: true))
             {
                 ArgumentListSyntax argumentList = invocation.ArgumentList;
 

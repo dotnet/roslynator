@@ -17,6 +17,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             Assert(false, "message");
             Assert(false, "message", "detailMessage");
 
+            // n
+
             Debug.Assert(true, "message");
             Debug.Assert(true, "message", "detailMessage");
         }

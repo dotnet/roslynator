@@ -48,13 +48,12 @@ namespace Roslynator.CSharp.Internal.DiagnosticAnalyzers
 
                     if (expression?.IsKind(SyntaxKind.InvocationExpression) == true)
                     {
-                        ExtensionMethodInfo info = semanticModel.GetExtensionMethodInfo(expression, ExtensionMethodKind.Reduced, cancellationToken);
-
-                        if (info.IsValid
-                            && string.Equals(info.Symbol.Name, "GetTypeInfo", StringComparison.Ordinal)
-                            && info.Symbol.ReturnType == semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.TypeInfo"))
+                        MethodInfo methodInfo;
+                        if (semanticModel.TryGetExtensionMethodInfo(expression, out methodInfo, ExtensionMethodKind.Reduced, cancellationToken)
+                            && string.Equals(methodInfo.Name, "GetTypeInfo", StringComparison.Ordinal)
+                            && methodInfo.ReturnType == semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.TypeInfo"))
                         {
-                            ImmutableArray<IParameterSymbol> parameters = info.Symbol.Parameters;
+                            ImmutableArray<IParameterSymbol> parameters = methodInfo.Parameters;
 
                             if (parameters.Length == 3
                                 && parameters[0].Type == semanticModel.GetTypeByMetadataName("Microsoft.CodeAnalysis.SemanticModel"))
