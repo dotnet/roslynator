@@ -15,7 +15,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseCastMethodInsteadOfSelectMethodRefactoring
+    internal static class CallCastInsteadOfSelectRefactoring
     {
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (!invocation.ContainsDirectives(span))
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.UseCastMethodInsteadOfSelectMethod,
+                        DiagnosticDescriptors.CallCastInsteadOfSelect,
                         Location.Create(invocation.SyntaxTree, span));
                 }
             }

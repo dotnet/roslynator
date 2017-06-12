@@ -302,7 +302,7 @@
     <Compile Include="Refactorings\UseInsteadOfCountMethod\ReplaceCountMethodRefactoring.cs" />
     <Compile Include="Refactorings\UseAutoPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceReturnStatementWithExpressionStatementRefactoring.cs" />
-    <Compile Include="Refactorings\UseCastMethodInsteadOfSelectMethodRefactoring.cs" />
+    <Compile Include="Refactorings\CallCastInsteadOfSelectRefactoring.cs" />
     <Compile Include="Refactorings\CallOfTypeInsteadOfWhereAndCastRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyLambdaExpressionParameterListRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyLogicalNotExpressionRefactoring.cs" />
