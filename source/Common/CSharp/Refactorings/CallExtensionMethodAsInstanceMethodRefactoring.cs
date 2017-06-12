@@ -26,18 +26,18 @@ namespace Roslynator.CSharp.Refactorings
                     if (arguments.Count > 1
                         || !(arguments[0].Expression is LiteralExpressionSyntax))
                     {
-                        ExtensionMethodInfo extensionMethodInfo = semanticModel.GetExtensionMethodInfo(invocationExpression, ExtensionMethodKind.Ordinary, cancellationToken);
-
-                        if (extensionMethodInfo.IsValid)
+                        MethodInfo methodInfo;
+                        if (semanticModel.TryGetMethodInfo(invocationExpression, out methodInfo, cancellationToken)
+                            && methodInfo.Symbol.IsNonReducedExtensionMethod())
                         {
                             InvocationExpressionSyntax newInvocationExpression = GetNewInvocation(invocationExpression);
 
                             if (semanticModel
                                 .GetSpeculativeMethodSymbol(invocationExpression.SpanStart, newInvocationExpression)?
                                 .ReducedFromOrSelf()
-                                .Equals(extensionMethodInfo.Symbol.ConstructedFrom) == true)
+                                .Equals(methodInfo.ConstructedFrom) == true)
                             {
-                                return new AnalysisResult(invocationExpression, newInvocationExpression, extensionMethodInfo);
+                                return new AnalysisResult(invocationExpression, newInvocationExpression, methodInfo.Symbol);
                             }
                         }
                     }
@@ -131,7 +131,7 @@ namespace Roslynator.CSharp.Refactorings
             public AnalysisResult(
                 InvocationExpressionSyntax invocationExpression,
                 InvocationExpressionSyntax newInvocationExpression,
-                ExtensionMethodInfo extensionMethodInfo)
+                IMethodSymbol methodSymbol)
             {
                 if (invocationExpression == null)
                     throw new ArgumentNullException(nameof(invocationExpression));
@@ -141,12 +141,12 @@ namespace Roslynator.CSharp.Refactorings
 
                 InvocationExpression = invocationExpression;
                 NewInvocationExpression = newInvocationExpression;
-                ExtensionMethodInfo = extensionMethodInfo;
+                MethodSymbol = methodSymbol;
             }
 
             public InvocationExpressionSyntax InvocationExpression { get; }
             public InvocationExpressionSyntax NewInvocationExpression { get; }
-            public ExtensionMethodInfo ExtensionMethodInfo { get; }
+            public IMethodSymbol MethodSymbol { get; }
 
             public bool Success
             {

@@ -21,10 +21,9 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            if (semanticModel
-                .GetExtensionMethodInfo(invocation, ExtensionMethodKind.Reduced, cancellationToken)
-                .MethodInfo
-                .IsLinqExtensionOfIEnumerableOfTWithPredicate("FirstOrDefault"))
+            MethodInfo methodInfo;
+            if (semanticModel.TryGetExtensionMethodInfo(invocation, out methodInfo, ExtensionMethodKind.Reduced, cancellationToken)
+                && methodInfo.IsLinqExtensionOfIEnumerableOfTWithPredicate("FirstOrDefault"))
             {
                 ExpressionSyntax expression = memberAccess.Expression;
 

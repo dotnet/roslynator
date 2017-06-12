@@ -296,45 +296,34 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        public static ExtensionMethodInfo GetExtensionMethodInfo(
+        public static bool TryGetExtensionMethodInfo(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
+            out MethodInfo methodInfo,
+            ExtensionMethodKind kind = ExtensionMethodKind.None,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return GetExtensionMethodInfo(semanticModel, expression, ExtensionMethodKind.OrdinaryOrReduced, cancellationToken);
-        }
-
-        public static ExtensionMethodInfo GetExtensionMethodInfo(
-            this SemanticModel semanticModel,
-            ExpressionSyntax expression,
-            ExtensionMethodKind allowedKinds,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ISymbol symbol = GetSymbol(semanticModel, expression, cancellationToken);
+            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
             if (symbol?.IsMethod() == true)
             {
-                return ExtensionMethodInfo.Create((IMethodSymbol)symbol, semanticModel, allowedKinds);
+                ExtensionMethodInfo extensionMethodInfo;
+                if (ExtensionMethodInfo.TryCreate((IMethodSymbol)symbol, semanticModel, out extensionMethodInfo, kind))
+                {
+                    methodInfo = extensionMethodInfo.MethodInfo;
+                    return true;
+                }
             }
-            else
-            {
-                return default(ExtensionMethodInfo);
-            }
+
+            methodInfo = default(MethodInfo);
+            return false;
         }
 
         public static bool TryGetMethodInfo(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            out MethodInfo methodInfo)
-        {
-            return TryGetMethodInfo(semanticModel, expression, default(CancellationToken), out methodInfo);
-        }
-
-        public static bool TryGetMethodInfo(
-            this SemanticModel semanticModel,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken,
-            out MethodInfo methodInfo)
+            out MethodInfo methodInfo,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             ISymbol symbol = GetSymbol(semanticModel, expression, cancellationToken);
 

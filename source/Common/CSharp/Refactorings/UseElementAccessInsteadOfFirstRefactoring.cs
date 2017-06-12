@@ -17,18 +17,19 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(MemberInvocationExpression memberInvocation, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (memberInvocation.Expression?.IsMissing == false
-                && semanticModel
-                    .GetExtensionMethodInfo(memberInvocation.InvocationExpression, ExtensionMethodKind.Reduced, cancellationToken)
-                    .MethodInfo
-                    .IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
+            if (memberInvocation.Expression?.IsMissing == false)
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
-
-                if (typeSymbol?.IsErrorType() == false
-                    && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, typeSymbol, semanticModel)))
+                MethodInfo methodInfo;
+                if (semanticModel.TryGetExtensionMethodInfo(memberInvocation.InvocationExpression, out methodInfo, ExtensionMethodKind.Reduced, cancellationToken)
+                    && methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
                 {
-                    return true;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
+
+                    if (typeSymbol?.IsErrorType() == false
+                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, typeSymbol, semanticModel)))
+                    {
+                        return true;
+                    }
                 }
             }
 

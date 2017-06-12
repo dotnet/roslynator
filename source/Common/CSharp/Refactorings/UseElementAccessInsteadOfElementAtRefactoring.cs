@@ -24,18 +24,19 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax argumentExpression = memberInvocation.ArgumentList.Arguments[0].Expression;
 
             if (argumentExpression?.IsMissing == false
-                && memberInvocation.Expression?.IsMissing == false
-                    && semanticModel
-                        .GetExtensionMethodInfo(memberInvocation.InvocationExpression, cancellationToken)
-                        .MethodInfo
-                        .IsLinqElementAt(allowImmutableArrayExtension: true))
+                && memberInvocation.Expression?.IsMissing == false)
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
-
-                if (typeSymbol?.IsErrorType() == false
-                    && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, argumentExpression, typeSymbol, semanticModel)))
+                MethodInfo methodInfo;
+                if (semanticModel.TryGetExtensionMethodInfo(memberInvocation.InvocationExpression, out methodInfo, cancellationToken: cancellationToken)
+                    && methodInfo.IsLinqElementAt(allowImmutableArrayExtension: true))
                 {
-                    return true;
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
+
+                    if (typeSymbol?.IsErrorType() == false
+                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, argumentExpression, typeSymbol, semanticModel)))
+                    {
+                        return true;
+                    }
                 }
             }
 

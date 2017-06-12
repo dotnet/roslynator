@@ -1,11 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
-    public struct ExtensionMethodInfo
+    internal struct ExtensionMethodInfo
     {
         private ExtensionMethodInfo(IMethodSymbol methodSymbol, IMethodSymbol reducedSymbol, SemanticModel semanticModel)
             : this()
@@ -38,45 +37,29 @@ namespace Roslynator
             get { return IsValid && object.ReferenceEquals(ReducedSymbol, MethodInfo.Symbol); }
         }
 
-        internal static ExtensionMethodInfo FromOrdinary(IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        public static bool TryCreate(IMethodSymbol methodSymbol, SemanticModel semanticModel, out ExtensionMethodInfo extensionMethodInfo, ExtensionMethodKind kind = ExtensionMethodKind.None)
         {
-            return Create(methodSymbol, semanticModel, ExtensionMethodKind.Ordinary);
-        }
-
-        internal static ExtensionMethodInfo FromReduced(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            return Create(methodSymbol, semanticModel, ExtensionMethodKind.Reduced);
-        }
-
-        internal static ExtensionMethodInfo FromOrdinaryOrReduced(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            return Create(methodSymbol, semanticModel, ExtensionMethodKind.OrdinaryOrReduced);
-        }
-
-        internal static ExtensionMethodInfo Create(IMethodSymbol methodSymbol, SemanticModel semanticModel, ExtensionMethodKind allowedKinds)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (methodSymbol.IsExtensionMethod)
+            if (methodSymbol?.IsExtensionMethod == true)
             {
                 IMethodSymbol reducedFrom = methodSymbol.ReducedFrom;
 
                 if (reducedFrom != null)
                 {
-                    if ((allowedKinds & ExtensionMethodKind.Reduced) != 0)
-                        return new ExtensionMethodInfo(reducedFrom, methodSymbol, semanticModel);
+                    if (kind != ExtensionMethodKind.NonReduced)
+                    {
+                        extensionMethodInfo = new ExtensionMethodInfo(reducedFrom, methodSymbol, semanticModel);
+                        return true;
+                    }
                 }
-                else if ((allowedKinds & ExtensionMethodKind.Ordinary) != 0)
+                else if (kind != ExtensionMethodKind.Reduced)
                 {
-                    return new ExtensionMethodInfo(methodSymbol, methodSymbol, semanticModel);
+                    extensionMethodInfo = new ExtensionMethodInfo(methodSymbol, methodSymbol, semanticModel);
+                    return true;
                 }
             }
 
-            return default(ExtensionMethodInfo);
+            extensionMethodInfo = default(ExtensionMethodInfo);
+            return false;
         }
     }
 }

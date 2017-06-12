@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = invocation.Expression;
 
             if (expression != null
-                && CanRefactor(context, invocation)
+                && CanRefactor(invocation, context.SemanticModel, context.CancellationToken)
                 && !invocation.SpanContainsDirectives()
                 && (expression.IsKind(SyntaxKind.SimpleMemberAccessExpression) || WillBindToDebugFail(context, invocation)))
             {
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Equals(context.GetTypeByMetadataName(MetadataNames.System_Diagnostics_Debug)) == true;
         }
 
-        public static bool CanRefactor(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        public static bool CanRefactor(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             ArgumentListSyntax argumentList = invocation.ArgumentList;
 
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                     && arguments[0].Expression?.IsKind(SyntaxKind.FalseLiteralExpression) == true)
                 {
                     MethodInfo info;
-                    if (context.SemanticModel.TryGetMethodInfo(invocation, context.CancellationToken, out info)
+                    if (semanticModel.TryGetMethodInfo(invocation, out info, cancellationToken)
                         && info.IsContainingType(MetadataNames.System_Diagnostics_Debug)
                         && info.IsName("Assert")
                         && info.IsStatic

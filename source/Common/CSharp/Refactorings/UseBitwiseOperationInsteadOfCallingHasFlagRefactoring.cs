@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (memberAccess.Name.Identifier.ValueText == "HasFlag")
                 {
                     MethodInfo info;
-                    if (semanticModel.TryGetMethodInfo(memberAccess, cancellationToken, out info)
+                    if (semanticModel.TryGetMethodInfo(memberAccess, out info, cancellationToken)
                         && info.IsName("HasFlag")
                         && !info.IsExtensionMethod
                         && info.IsReturnType(SpecialType.System_Boolean)

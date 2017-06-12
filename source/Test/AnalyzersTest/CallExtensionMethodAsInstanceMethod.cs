@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             string s = StringExtension("");
         }
 
-        internal static IEnumerable<TResult> Select<TResult, TSource>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
+        private static IEnumerable<TResult> Select<TResult, TSource>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             foreach (TSource item in items)
                 yield return selector(item);
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             IEnumerable<int> items = Enumerable.Select(Enumerable.Range(0, 1), f => f);
         }
 
-        internal static IEnumerable<TResult> Select<TResult, TSource>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
+        private static IEnumerable<TResult> Select<TResult, TSource>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             foreach (TSource item in items)
                 yield return selector(item);
