@@ -23,21 +23,21 @@ namespace Roslynator.CSharp.Refactorings
 
             var addExpression = (BinaryExpressionSyntax)node;
 
-            StringExpressionChain chain;
+            StringConcatenationExpression concatenation;
 
-            if (StringExpressionChain.TryCreate(addExpression, context.SemanticModel, out chain)
-                && !chain.ContainsNonSpecificExpression
-                && (chain.ContainsLiteralExpression ^ chain.ContainsInterpolatedStringExpression)
-                && (chain.ContainsRegular ^ chain.ContainsVerbatim)
-                && (chain.ContainsVerbatim || addExpression.IsSingleLine(includeExteriorTrivia: false, cancellationToken: context.CancellationToken)))
+            if (StringConcatenationExpression.TryCreate(addExpression, context.SemanticModel, out concatenation)
+                && !concatenation.ContainsNonSpecificExpression
+                && (concatenation.ContainsLiteralExpression ^ concatenation.ContainsInterpolatedStringExpression)
+                && (concatenation.ContainsRegular ^ concatenation.ContainsVerbatim)
+                && (concatenation.ContainsVerbatim || addExpression.IsSingleLine(includeExteriorTrivia: false, cancellationToken: context.CancellationToken)))
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.JoinStringExpressions, addExpression);
             }
         }
 
-        private static bool ContainsMultiLine(StringExpressionChain chain, CancellationToken cancellationToken)
+        private static bool ContainsMultiLine(StringConcatenationExpression concatenation, CancellationToken cancellationToken)
         {
-            foreach (ExpressionSyntax expression in chain.Expressions)
+            foreach (ExpressionSyntax expression in concatenation.Expressions)
             {
                 if (expression.IsMultiLine(includeExteriorTrivia: false, cancellationToken: cancellationToken))
                     return true;
@@ -53,26 +53,26 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            StringExpressionChain chain;
-            if (StringExpressionChain.TryCreate(binaryExpression, semanticModel, out chain))
+            StringConcatenationExpression concatenation;
+            if (StringConcatenationExpression.TryCreate(binaryExpression, semanticModel, out concatenation))
             {
                 ExpressionSyntax newNode = null;
 
-                if (chain.ContainsLiteralExpression)
+                if (concatenation.ContainsLiteralExpression)
                 {
-                    if (chain.ContainsVerbatim
-                        && ContainsMultiLine(chain, cancellationToken))
+                    if (concatenation.ContainsVerbatim
+                        && ContainsMultiLine(concatenation, cancellationToken))
                     {
-                        newNode = chain.ToMultilineStringLiteral();
+                        newNode = concatenation.ToMultilineStringLiteral();
                     }
                     else
                     {
-                        newNode = chain.ToStringLiteral();
+                        newNode = concatenation.ToStringLiteral();
                     }
                 }
                 else
                 {
-                    newNode = chain.ToInterpolatedString();
+                    newNode = concatenation.ToInterpolatedString();
                 }
 
                 newNode = newNode.WithTriviaFrom(binaryExpression);

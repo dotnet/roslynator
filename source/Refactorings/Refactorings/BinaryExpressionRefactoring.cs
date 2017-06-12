@@ -46,14 +46,14 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                StringExpressionChain chain;
-                if (StringExpressionChain.TryCreate(binaryExpression, semanticModel, context.CancellationToken, out chain))
+                StringConcatenationExpression concatenation;
+                if (StringConcatenationExpression.TryCreate(binaryExpression, semanticModel, context.CancellationToken, out concatenation))
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.JoinStringExpressions))
-                        JoinStringExpressionsRefactoring.ComputeRefactoring(context, chain);
+                        JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenation);
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation))
-                        UseStringBuilderInsteadOfConcatenationRefactoring.ComputeRefactoring(context, chain);
+                        UseStringBuilderInsteadOfConcatenationRefactoring.ComputeRefactoring(context, concatenation);
                 }
             }
 
@@ -102,10 +102,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        StringExpressionChain chain;
-                        if (StringExpressionChain.TryCreate(binaryExpressionSelection, semanticModel, context.CancellationToken, out chain))
+                        StringConcatenationExpression concatenation;
+                        if (StringConcatenationExpression.TryCreate(binaryExpressionSelection, semanticModel, context.CancellationToken, out concatenation))
                         {
-                            JoinStringExpressionsRefactoring.ComputeRefactoring(context, chain);
+                            JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenation);
                         }
                     }
                 }

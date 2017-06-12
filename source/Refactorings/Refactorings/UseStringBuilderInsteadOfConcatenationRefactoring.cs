@@ -14,9 +14,9 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseStringBuilderInsteadOfConcatenationRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, StringExpressionChain chain)
+        public static void ComputeRefactoring(RefactoringContext context, StringConcatenationExpression concatenation)
         {
-            BinaryExpressionSyntax expression = chain.OriginalExpression;
+            BinaryExpressionSyntax expression = concatenation.OriginalExpression;
 
             switch (expression.Parent.Kind())
             {
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (assignment.Parent.IsKind(SyntaxKind.ExpressionStatement)
                             && assignment.Right == expression)
                         {
-                            RegisterRefactoring(context, chain, (StatementSyntax)assignment.Parent);
+                            RegisterRefactoring(context, concatenation, (StatementSyntax)assignment.Parent);
                         }
 
                         break;
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                                 if (variableDeclaration.Parent.IsKind(SyntaxKind.LocalDeclarationStatement)
                                     && variableDeclaration.Variables.Count == 1)
                                 {
-                                    RegisterRefactoring(context, chain, (StatementSyntax)variableDeclaration.Parent);
+                                    RegisterRefactoring(context, concatenation, (StatementSyntax)variableDeclaration.Parent);
                                 }
                             }
                         }
@@ -58,16 +58,16 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static void RegisterRefactoring(RefactoringContext context, StringExpressionChain chain, StatementSyntax statement)
+        private static void RegisterRefactoring(RefactoringContext context, StringConcatenationExpression concatenation, StatementSyntax statement)
         {
             context.RegisterRefactoring(
                 "Use StringBuilder instead of concatenation",
-                cancellationToken => RefactorAsync(context.Document, chain, statement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, concatenation, statement, cancellationToken));
         }
 
         private static async Task<Document> RefactorAsync(
             Document document,
-            StringExpressionChain chain,
+            StringConcatenationExpression concatenation,
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
 
             statements.Add(LocalDeclarationStatement(VarType(), name, ObjectCreationExpression(type, ArgumentList())).WithLeadingTrivia(statement.GetLeadingTrivia()));
 
-            foreach (ExpressionSyntax expression in chain.Expressions)
+            foreach (ExpressionSyntax expression in concatenation.Expressions)
             {
                 switch (expression.Kind())
                 {
@@ -167,7 +167,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            statements.Add(statement.ReplaceNode(chain.OriginalExpression, SimpleMemberInvocationExpression(identifierName, IdentifierName("ToString"))).WithTrailingTrivia(statement.GetTrailingTrivia()));
+            statements.Add(statement.ReplaceNode(concatenation.OriginalExpression, SimpleMemberInvocationExpression(identifierName, IdentifierName("ToString"))).WithTrailingTrivia(statement.GetTrailingTrivia()));
 
             for (int i = 0; i < statements.Count; i++)
             {
