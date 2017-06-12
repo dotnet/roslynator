@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.ReorderModifiers,
                     DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers,
                     DiagnosticIdentifiers.MarkFieldAsReadOnly,
-                    DiagnosticIdentifiers.MarkFieldAsConst,
+                    DiagnosticIdentifiers.UseConstantInsteadOfField,
                     DiagnosticIdentifiers.UseReadOnlyAutoProperty,
                     DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment);
             }
@@ -261,19 +261,11 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.MarkFieldAsConst:
+                    case DiagnosticIdentifiers.UseConstantInsteadOfField:
                         {
-                            var fieldDeclaration = (FieldDeclarationSyntax)memberDeclaration;
-
-                            SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
-
-                            string title = (declarators.Count == 1)
-                                ? $"Mark '{declarators[0].Identifier.ValueText}' as const"
-                                : "Mark fields as const";
-
                             CodeAction codeAction = CodeAction.Create(
-                                title,
-                                cancellationToken => MarkFieldAsConstRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken),
+                                "Use constant instead of field",
+                                cancellationToken => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, (FieldDeclarationSyntax)memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

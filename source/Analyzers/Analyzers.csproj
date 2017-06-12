@@ -75,7 +75,7 @@
     <Compile Include="DiagnosticAnalyzers\ImplementExceptionConstructorsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\MarkFieldAsConstDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseConstantInsteadOfFieldDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MarkFieldAsReadOnlyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\JoinStringExpressionsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\OverridingMemberCannotChangeAccessModifiersDiagnosticAnalyzer.cs" />
@@ -121,7 +121,7 @@
     <Compile Include="Refactorings\AvoidSingleLineBlockRefactoring.cs" />
     <Compile Include="Refactorings\FormatConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyRefactoring.cs" />
-    <Compile Include="Refactorings\MarkFieldAsConstRefactoring.cs" />
+    <Compile Include="Refactorings\UseConstantInsteadOfFieldRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MarkFieldAsReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\UseReadOnlyAutoPropertyRefactoring.cs" />
     <Compile Include="Refactorings\JoinStringExpressionsRefactoring.cs" />
