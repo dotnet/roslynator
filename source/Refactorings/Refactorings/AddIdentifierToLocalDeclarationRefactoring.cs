@@ -68,19 +68,25 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+                ISymbol symbol = semanticModel.GetSymbol(expression, context.CancellationToken);
 
-                string name = NameGenerator.Default.CreateUniqueLocalName(
-                    typeSymbol,
-                    semanticModel,
-                    expression.SpanStart,
-                    cancellationToken: context.CancellationToken);
-
-                if (name != null)
+                if (symbol == null
+                    || symbol.IsNamedType())
                 {
-                    context.RegisterRefactoring(
-                        $"Add identifier '{name}'",
-                        c => RefactorAsync(context.Document, expressionStatement, name, c));
+                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                    string name = NameGenerator.Default.CreateUniqueLocalName(
+                        typeSymbol,
+                        semanticModel,
+                        expression.SpanStart,
+                        cancellationToken: context.CancellationToken);
+
+                    if (name != null)
+                    {
+                        context.RegisterRefactoring(
+                            $"Add identifier '{name}'",
+                            c => RefactorAsync(context.Document, expressionStatement, name, c));
+                    }
                 }
             }
         }
