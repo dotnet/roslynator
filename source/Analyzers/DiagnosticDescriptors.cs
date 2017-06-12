@@ -1733,10 +1733,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor MarkFieldAsConst = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MarkFieldAsConst,
-            title: "Mark field as const.",
-            messageFormat: "Mark field as const.",
+        public static readonly DiagnosticDescriptor UseConstantInsteadOfField = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseConstantInsteadOfField,
+            title: "Use constant instead of field.",
+            messageFormat: "Use constant instead of field.",
             category: DiagnosticCategories.Design,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true

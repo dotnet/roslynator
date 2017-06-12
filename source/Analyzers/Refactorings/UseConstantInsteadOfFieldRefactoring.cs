@@ -10,7 +10,7 @@ using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class MarkFieldAsConstRefactoring
+    internal static class UseConstantInsteadOfFieldRefactoring
     {
         public static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                 && !modifiers.Contains(SyntaxKind.NewKeyword)
                 && IsFixable(fieldDeclaration.Declaration, context.SemanticModel, context.CancellationToken))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.MarkFieldAsConst, fieldDeclaration);
+                context.ReportDiagnostic(DiagnosticDescriptors.UseConstantInsteadOfField, fieldDeclaration);
             }
         }
 

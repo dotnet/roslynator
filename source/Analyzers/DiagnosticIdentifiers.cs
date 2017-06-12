@@ -192,7 +192,7 @@ namespace Roslynator.CSharp
         public const string FormatConditionalExpression = Prefix + "1184";
         public const string AvoidSingleLineBlock = Prefix + "1185";
         public const string UseRegexInstanceInsteadOfStaticMethod = Prefix + "1186";
-        public const string MarkFieldAsConst = Prefix + "1187";
+        public const string UseConstantInsteadOfField = Prefix + "1187";
         public const string RemoveRedundantAutoPropertyInitialization = Prefix + "1188";
         public const string AddOrRemoveRegionName = Prefix + "1189";
         public const string JoinStringExpressions = Prefix + "1190";
