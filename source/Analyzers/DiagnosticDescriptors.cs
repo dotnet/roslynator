@@ -1004,10 +1004,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor UseCastMethodInsteadOfSelectMethod = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.UseCastMethodInsteadOfSelectMethod,
-            title: "Use 'Cast' method instead of 'Select' method.",
-            messageFormat: "Use 'Cast' method instead of 'Select' method.",
+        public static readonly DiagnosticDescriptor CallCastInsteadOfSelect = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CallCastInsteadOfSelect,
+            title: "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.",
+            messageFormat: "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true

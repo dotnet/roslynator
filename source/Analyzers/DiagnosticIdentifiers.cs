@@ -114,7 +114,7 @@ namespace Roslynator.CSharp
         public const string RemoveEmptyDestructor = Prefix + "1106";
         public const string RemoveRedundantStringToCharArrayCall = Prefix + "1107";
         public const string AddStaticModifierToAllPartialClassDeclarations = Prefix + "1108";
-        public const string UseCastMethodInsteadOfSelectMethod = Prefix + "1109";
+        public const string CallCastInsteadOfSelect = Prefix + "1109";
         public const string DeclareTypeInsideNamespace = Prefix + "1110";
         public const string AddBracesToSwitchSectionWithMultipleStatements = Prefix + "1111";
         public const string CombineEnumerableWhereMethodChain = Prefix + "1112";
