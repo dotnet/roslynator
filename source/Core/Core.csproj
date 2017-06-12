@@ -93,7 +93,7 @@
     <Compile Include="CSharp\MemberDeclarationSelection.cs" />
     <Compile Include="CSharp\Syntax\SimpleAssignmentStatement.cs" />
     <Compile Include="CSharp\Syntax\SimpleIfStatementWithSingleStatement.cs" />
-    <Compile Include="CSharp\StringExpressionChain.cs" />
+    <Compile Include="CSharp\StringConcatenationExpression.cs" />
     <Compile Include="CommentRemoveOptions.cs" />
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Helpers\DetermineParameterHelper.cs" />
