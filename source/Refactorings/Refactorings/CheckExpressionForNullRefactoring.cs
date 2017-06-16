@@ -36,8 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             var statement = (ExpressionStatementSyntax)parent;
 
-                            if (statement != null
-                                && !NullCheckExists(expression, statement))
+                            if (!NullCheckExists(expression, statement))
                             {
                                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

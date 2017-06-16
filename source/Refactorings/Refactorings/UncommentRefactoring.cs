@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxToken token = comment.Token;
 
-            var triviaList = default(SyntaxTriviaList);
+            SyntaxTriviaList triviaList;
 
             int index = token.LeadingTrivia.IndexOf(comment);
 

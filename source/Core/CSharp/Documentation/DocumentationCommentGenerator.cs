@@ -266,7 +266,7 @@ namespace Roslynator.CSharp.Documentation
             var sb = new StringBuilder();
 
             sb.Append(settings.Indent);
-            sb.Append(@"/// <summary>");
+            sb.Append("/// <summary>");
 
             if (settings.SingleLineSummary
                 && comments.Length <= 1)
@@ -274,7 +274,7 @@ namespace Roslynator.CSharp.Documentation
                 if (comments.Length == 1)
                     sb.Append(comments[0]);
 
-                sb.AppendLine(@"</summary>");
+                sb.AppendLine("</summary>");
             }
             else
             {
@@ -285,18 +285,18 @@ namespace Roslynator.CSharp.Documentation
                     foreach (string comment in comments)
                     {
                         sb.Append(settings.Indent);
-                        sb.Append(@"/// ");
+                        sb.Append("/// ");
                         sb.AppendLine(comment);
                     }
                 }
                 else
                 {
                     sb.Append(settings.Indent);
-                    sb.AppendLine(@"/// ");
+                    sb.AppendLine("/// ");
                 }
 
                 sb.Append(settings.Indent);
-                sb.AppendLine(@"/// </summary>");
+                sb.AppendLine("/// </summary>");
             }
 
             foreach (TypeParameterSyntax typeParameter in typeParameters)

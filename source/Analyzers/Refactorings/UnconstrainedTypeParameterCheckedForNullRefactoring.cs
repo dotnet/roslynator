@@ -45,12 +45,6 @@ namespace Roslynator.CSharp.Refactorings
                 && ((ITypeParameterSymbol)typeSymbol).VerifyConstraint(allowReference: false, allowValueType: false, allowConstructor: true);
         }
 
-        private static bool HasValueTypeOrReferenceConstraint(ITypeParameterSymbol typeParameterSymbol)
-        {
-            return typeParameterSymbol.HasValueTypeConstraint
-                || typeParameterSymbol.HasReferenceTypeConstraint;
-        }
-
         public static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,

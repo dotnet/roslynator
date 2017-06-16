@@ -55,12 +55,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 TextSpan triviaSpan = trivia.Span;
 
-                if (span.Contains(triviaSpan))
-                {
-                    if (!trivia.IsWhitespaceOrEndOfLineTrivia())
-                        return false;
-                }
-                else if (span2.Contains(triviaSpan))
+                if (span.Contains(triviaSpan)
+                    || span2.Contains(triviaSpan))
                 {
                     if (!trivia.IsWhitespaceOrEndOfLineTrivia())
                         return false;

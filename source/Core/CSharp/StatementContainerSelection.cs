@@ -52,7 +52,6 @@ namespace Roslynator.CSharp
                 selectedStatements = null;
                 return false;
             }
-
         }
 
         public static bool TryCreate(SwitchSectionSyntax switchSection, TextSpan span, out StatementContainerSelection selectedStatements)

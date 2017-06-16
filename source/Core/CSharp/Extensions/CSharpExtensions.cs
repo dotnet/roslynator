@@ -16,8 +16,8 @@ namespace Roslynator.CSharp
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetSymbolInfo(semanticModel, expression, cancellationToken)
+            return semanticModel
+                .GetSymbolInfo(expression, cancellationToken)
                 .Symbol;
         }
 
@@ -26,8 +26,8 @@ namespace Roslynator.CSharp
             AttributeSyntax attribute,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, attribute, cancellationToken)
+            return semanticModel
+                .GetTypeInfo(attribute, cancellationToken)
                 .Type;
         }
 
@@ -36,8 +36,8 @@ namespace Roslynator.CSharp
             ConstructorInitializerSyntax constructorInitializer,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, constructorInitializer, cancellationToken)
+            return semanticModel
+                .GetTypeInfo(constructorInitializer, cancellationToken)
                 .Type;
         }
 
@@ -46,8 +46,8 @@ namespace Roslynator.CSharp
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, expression, cancellationToken)
+            return semanticModel
+                .GetTypeInfo(expression, cancellationToken)
                 .Type;
         }
 
@@ -56,8 +56,8 @@ namespace Roslynator.CSharp
             SelectOrGroupClauseSyntax selectOrGroupClause,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Microsoft.CodeAnalysis.CSharp.CSharpExtensions
-                .GetTypeInfo(semanticModel, selectOrGroupClause, cancellationToken)
+            return semanticModel
+                .GetTypeInfo(selectOrGroupClause, cancellationToken)
                 .Type;
         }
 

@@ -6,7 +6,7 @@ namespace Roslynator.CSharp.Refactorings.If
 {
     internal abstract class ToAssignmentWithConditionalExpression : IfRefactoring
     {
-        internal ToAssignmentWithConditionalExpression(
+        protected ToAssignmentWithConditionalExpression(
             IfStatementSyntax ifStatement,
             ExpressionSyntax whenTrue,
             ExpressionSyntax whenFalse) : base(ifStatement)

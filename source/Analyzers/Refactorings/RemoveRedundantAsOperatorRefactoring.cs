@@ -50,7 +50,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
-            SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
             TextSpan span = TextSpan.FromBounds(left.Span.End, right.Span.End);
             IEnumerable<SyntaxTrivia> trivia = binaryExpression.DescendantTrivia(span);

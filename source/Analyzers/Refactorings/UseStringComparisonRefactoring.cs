@@ -293,8 +293,6 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax left = binaryExpression.Left;
             ExpressionSyntax right = binaryExpression.Right;
 
-            string name = GetMethodName(left);
-
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
                 IdentifierName("Equals"),

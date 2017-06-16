@@ -121,23 +121,5 @@ namespace CodeGenerator
         {
             return int.Parse(refactoring.Id.Substring(2)) <= 177;
         }
-
-        private static string CreateDescription(RefactoringDescriptor refactoring)
-        {
-            string s = "";
-
-            if (refactoring.Syntaxes.Count > 0)
-                s = "Syntax: " + string.Join(", ", refactoring.Syntaxes.Select(f => f.Name));
-
-            if (!string.IsNullOrEmpty(refactoring.Scope))
-            {
-                if (!string.IsNullOrEmpty(s))
-                    s += "\r\n";
-
-                s += "Scope: " + refactoring.Scope;
-            }
-
-            return s;
-        }
     }
 }

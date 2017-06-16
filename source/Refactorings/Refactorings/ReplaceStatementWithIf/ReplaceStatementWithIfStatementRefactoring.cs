@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
 
         private BlockSyntax CreateBlock(TStatement statement, ExpressionSyntax expression)
         {
-            return Block(SetExpression(statement.WithoutLeadingTrivia(), expression));
+            return Block(SingletonList(SetExpression(statement.WithoutLeadingTrivia(), expression)));
         }
 
         private Task<Document> RefactorAsync(

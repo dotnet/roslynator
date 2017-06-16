@@ -69,17 +69,13 @@ namespace Roslynator.CSharp.Refactorings
 
                                                 VariableDeclaratorSyntax declarator = usingDeclaration.Variables.LastOrDefault();
 
-                                                if (declarator != null)
+                                                if (declarator != null
+                                                    && declarator.Identifier.ValueText == name)
                                                 {
-                                                    SyntaxToken identifier = declarator.Identifier;
+                                                    ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
-                                                    if (declarator.Identifier.ValueText == name)
-                                                    {
-                                                        ISymbol symbol = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
-
-                                                        if (symbol?.Equals(context.SemanticModel.GetSymbol(identifierName, context.CancellationToken)) == true)
-                                                            ReportDiagnostic(context, expressionStatement, methodName);
-                                                    }
+                                                    if (symbol?.Equals(context.SemanticModel.GetSymbol(identifierName, context.CancellationToken)) == true)
+                                                        ReportDiagnostic(context, expressionStatement, methodName);
                                                 }
                                             }
                                         }

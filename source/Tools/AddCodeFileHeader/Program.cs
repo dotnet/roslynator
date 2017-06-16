@@ -11,7 +11,7 @@ namespace AddCodeFileHeader
 {
     internal static class Program
     {
-        private static readonly StringComparison _comparison = StringComparison.OrdinalIgnoreCase;
+        private const StringComparison _comparison = StringComparison.OrdinalIgnoreCase;
 
         private const string Header = "// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.";
 

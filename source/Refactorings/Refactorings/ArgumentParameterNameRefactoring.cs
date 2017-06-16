@@ -192,13 +192,6 @@ namespace Roslynator.CSharp.Refactorings
                 _arguments = new HashSet<ArgumentSyntax>(arguments);
             }
 
-            public static TNode VisitNode<TNode>(TNode node) where TNode : SyntaxNode
-            {
-                var remover = new RemoveParameterNameSyntaxRewriter();
-
-                return (TNode)remover.Visit(node);
-            }
-
             public static TNode VisitNode<TNode>(TNode node, IEnumerable<ArgumentSyntax> arguments) where TNode : SyntaxNode
             {
                 var remover = new RemoveParameterNameSyntaxRewriter(arguments);

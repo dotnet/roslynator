@@ -140,11 +140,8 @@ namespace Roslynator.Helpers
                     return typeSymbol.Name.Substring(1);
                 }
             }
-            else if (typeSymbol.IsAnonymousType)
-            {
-                return null;
-            }
-            else if (typeSymbol.SupportsPredefinedType())
+            else if (typeSymbol.IsAnonymousType
+                || typeSymbol.SupportsPredefinedType())
             {
                 return null;
             }

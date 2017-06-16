@@ -45,7 +45,6 @@ namespace Roslynator.CSharp.Refactorings
 
                                 context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyRegionFadeOut, region.GetLocation());
                                 context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyRegionFadeOut, endRegion.GetLocation());
-
                             }
                         }
                     }

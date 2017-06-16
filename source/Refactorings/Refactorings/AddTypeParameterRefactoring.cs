@@ -190,22 +190,22 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
-                        newNode = GetNewNode((ClassDeclarationSyntax)node, constraint, semanticModel, cancellationToken);
+                        newNode = GetNewNode((ClassDeclarationSyntax)node, constraint, semanticModel);
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
                     {
-                        newNode = GetNewNode((StructDeclarationSyntax)node, constraint, semanticModel, cancellationToken);
+                        newNode = GetNewNode((StructDeclarationSyntax)node, constraint, semanticModel);
                         break;
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
-                        newNode = GetNewNode((InterfaceDeclarationSyntax)node, constraint, semanticModel, cancellationToken);
+                        newNode = GetNewNode((InterfaceDeclarationSyntax)node, constraint, semanticModel);
                         break;
                     }
                 case SyntaxKind.DelegateDeclaration:
                     {
-                        newNode = GetNewNode((DelegateDeclarationSyntax)node, constraint, semanticModel, cancellationToken);
+                        newNode = GetNewNode((DelegateDeclarationSyntax)node, constraint, semanticModel);
                         break;
                     }
             }
@@ -219,10 +219,6 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            TypeParameterListSyntax typeParameterList = methodDeclaration.TypeParameterList;
-
-            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
-
             string name = GetMethodTypeParameterName(semanticModel, methodDeclaration.BodyOrExpressionBody().SpanStart, cancellationToken);
 
             MethodDeclarationSyntax newNode = methodDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
@@ -236,13 +232,8 @@ namespace Roslynator.CSharp.Refactorings
         private static SyntaxNode GetNewNode(
             ClassDeclarationSyntax classDeclaration,
             TypeParameterConstraintSyntax constraint,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            SemanticModel semanticModel)
         {
-            TypeParameterListSyntax typeParameterList = classDeclaration.TypeParameterList;
-
-            INamedTypeSymbol classSymbol = semanticModel.GetDeclaredSymbol(classDeclaration, cancellationToken);
-
             string name = GetTypeParameterName(classDeclaration.OpenBraceToken.SpanStart, semanticModel);
 
             ClassDeclarationSyntax newNode = classDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
@@ -256,13 +247,8 @@ namespace Roslynator.CSharp.Refactorings
         private static SyntaxNode GetNewNode(
             StructDeclarationSyntax structDeclaration,
             TypeParameterConstraintSyntax typeParameterConstraint,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            SemanticModel semanticModel)
         {
-            TypeParameterListSyntax typeParameterList = structDeclaration.TypeParameterList;
-
-            INamedTypeSymbol structSymbol = semanticModel.GetDeclaredSymbol(structDeclaration, cancellationToken);
-
             string name = GetTypeParameterName(structDeclaration.OpenBraceToken.SpanStart, semanticModel);
 
             StructDeclarationSyntax newNode = structDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
@@ -276,13 +262,8 @@ namespace Roslynator.CSharp.Refactorings
         private static SyntaxNode GetNewNode(
             InterfaceDeclarationSyntax interfaceDeclaration,
             TypeParameterConstraintSyntax constraint,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            SemanticModel semanticModel)
         {
-            TypeParameterListSyntax typeParameterList = interfaceDeclaration.TypeParameterList;
-
-            INamedTypeSymbol interfaceSymbol = semanticModel.GetDeclaredSymbol(interfaceDeclaration, cancellationToken);
-
             string name = GetTypeParameterName(interfaceDeclaration.OpenBraceToken.SpanStart, semanticModel);
 
             InterfaceDeclarationSyntax newNode = interfaceDeclaration.AddTypeParameterListParameters(TypeParameter(Identifier(name).WithRenameAnnotation()));
@@ -296,12 +277,9 @@ namespace Roslynator.CSharp.Refactorings
         private static SyntaxNode GetNewNode(
             DelegateDeclarationSyntax delegateDeclaration,
             TypeParameterConstraintSyntax constraint,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            SemanticModel semanticModel)
         {
             TypeParameterListSyntax typeParameterList = delegateDeclaration.TypeParameterList;
-
-            INamedTypeSymbol delegateSymbol = semanticModel.GetDeclaredSymbol(delegateDeclaration, cancellationToken);
 
             int position = (typeParameterList != null)
                 ? typeParameterList.SpanStart

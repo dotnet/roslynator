@@ -47,8 +47,6 @@ namespace Roslynator.CSharp.Refactorings
             {
                 TypeSyntax type = objectCreationExpression.Type;
 
-                SyntaxTriviaList trailingTrivia = type.GetTrailingTrivia();
-
                 ArgumentListSyntax newArgumentList = SyntaxFactory.ArgumentList();
 
                 IEnumerable<SyntaxTrivia> trivia = objectCreationExpression.DescendantTrivia(TextSpan.FromBounds(type.Span.End, initializer.Span.End));

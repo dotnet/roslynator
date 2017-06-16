@@ -44,7 +44,7 @@ namespace MetadataGenerator
         {
             using (var sw = new StringWriter())
             {
-                sw.WriteLine("## " + "Roslynator Refactorings");
+                sw.WriteLine("## Roslynator Refactorings");
 
                 foreach (RefactoringDescriptor info in refactorings
                     .OrderBy(f => f.Title, StringComparer))
@@ -199,23 +199,6 @@ namespace MetadataGenerator
                 }
 
                 return sw.ToString();
-            }
-        }
-
-        private void WriteAnalyzersTable(IEnumerable<AnalyzerDescriptor> infos, StringWriter sw)
-        {
-            sw.WriteLine(" Id | Title | Enabled by Default ");
-            sw.WriteLine(" --- | --- |:---:");
-
-            foreach (AnalyzerDescriptor info in infos)
-            {
-                sw.Write(info.Id);
-                sw.Write('|');
-                sw.Write(info.Title.TrimEnd('.').EscapeMarkdown());
-                sw.Write('|');
-                sw.Write((info.IsEnabledByDefault) ? "x" : "");
-
-                sw.WriteLine();
             }
         }
 

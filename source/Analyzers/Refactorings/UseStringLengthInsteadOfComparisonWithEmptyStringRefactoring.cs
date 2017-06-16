@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax right = binaryExpression.Right;
 
-            BinaryExpressionSyntax newNode = binaryExpression;
+            BinaryExpressionSyntax newNode;
 
             if (CSharpUtility.IsEmptyString(left, semanticModel, cancellationToken))
             {

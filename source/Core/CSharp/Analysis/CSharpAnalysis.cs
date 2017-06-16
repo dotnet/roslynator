@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Analysis
 
                         if (typeSymbol?.IsErrorType() == false)
                         {
-                            var flags = TypeAnalysisFlags.None;
+                            TypeAnalysisFlags flags;
 
                             if (typeSymbol.IsDynamicType())
                             {
@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (typeSymbol?.IsErrorType() == false)
                 {
-                    var flags = TypeAnalysisFlags.None;
+                    TypeAnalysisFlags flags;
 
                     if (typeSymbol.IsDynamicType())
                     {
