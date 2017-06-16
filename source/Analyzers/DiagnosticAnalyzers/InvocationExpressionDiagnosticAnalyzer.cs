@@ -34,7 +34,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,
                     DiagnosticDescriptors.UseElementAccessInsteadOfElementAt,
                     DiagnosticDescriptors.UseElementAccessInsteadOfFirst,
-                    DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod);
+                    DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod,
+                    DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod);
             }
         }
 
@@ -136,6 +137,20 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             if (!invocation.ContainsDiagnostics)
             {
+                if (!invocation.SpanContainsDirectives())
+                {
+                    CallExtensionMethodAsInstanceMethodRefactoring.AnalysisResult result =
+                        CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocation, context.SemanticModel, context.CancellationToken);
+
+                    if (result.Success
+                        && context.SemanticModel
+                            .GetEnclosingNamedType(result.InvocationExpression.SpanStart, context.CancellationToken)?
+                            .Equals(result.ExtensionMethodInfo.Symbol.ContainingType) == false)
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod, invocation);
+                    }
+                }
+
                 MemberInvocationExpression memberInvocation;
                 if (MemberInvocationExpression.TryCreate(invocation, out memberInvocation))
                 {

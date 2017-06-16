@@ -37,7 +37,31 @@ namespace Roslynator.CSharp.Refactorings
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod))
-                        await CallExtensionMethodAsInstanceMethodRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
+                    {
+                        SyntaxNodeOrToken nodeOrToken = CallExtensionMethodAsInstanceMethodRefactoring.GetNodeOrToken(expression);
+
+                        if (nodeOrToken.Span.Contains(context.Span))
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            CallExtensionMethodAsInstanceMethodRefactoring.AnalysisResult result =
+                                CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocationExpression, semanticModel, context.CancellationToken);
+
+                            if (result.Success)
+                            {
+                                context.RegisterRefactoring(
+                                    "Call extension method as instance method",
+                                    cancellationToken =>
+                                    {
+                                        return CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(
+                                            context.Document,
+                                            result.InvocationExpression,
+                                            result.NewInvocationExpression,
+                                            context.CancellationToken);
+                                    });
+                            }
+                        }
+                    }
                 }
             }
 
