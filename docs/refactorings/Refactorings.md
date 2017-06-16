@@ -430,6 +430,12 @@
 
 ![Inline alias expression](../../images/refactorings/InlineAliasExpression.png)
 
+#### Inline constant (RR0181)
+
+* **Syntax**: constant declaration
+
+![Inline constant](../../images/refactorings/InlineConstant.png)
+
 #### Inline method (RR0062)
 
 * **Syntax**: static/extension method invocation
@@ -475,11 +481,11 @@
 
 ![Introduce field to lock on](../../images/refactorings/IntroduceFieldToLockOn.png)
 
-#### Introduce local from statement that returns value (RR0068)
+#### Introduce local variable (RR0068)
 
-* **Syntax**: expression statement
+* **Syntax**: expression statement, expression in using statement
 
-![Introduce local from statement that returns value](../../images/refactorings/IntroduceLocalFromStatementThatReturnsValue.png)
+![Introduce local variable](../../images/refactorings/IntroduceLocalVariable.png)
 
 #### Make member abstract (RR0069)
 
@@ -1148,6 +1154,12 @@
 * **Syntax**: empty string literal
 
 ![Use string\.Empty instead of ""](../../images/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.png)
+
+#### Use StringBuilder instead of concatenation (RR0182)
+
+* **Syntax**: string concatenation
+
+![Use StringBuilder instead of concatenation](../../images/refactorings/UseStringBuilderInsteadOfConcatenation.png)
 
 #### Wrap in \#if directive (RR0174)
 
