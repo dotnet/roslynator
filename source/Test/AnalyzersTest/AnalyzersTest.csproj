@@ -92,6 +92,7 @@
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
     <Compile Include="UseLambdaExpressionInsteadOfAnonymousMethod.cs" />
     <Compile Include="UseReadOnlyAutoProperty.cs" />
+    <Compile Include="UseRegexInstanceInsteadOfStaticMethod.cs" />
     <Compile Include="UseReturnInsteadOfAssignment.cs" />
     <Compile Include="ValueTypeCheckedForNull.cs" />
     <Compile Include="NullCheckOfUnconstrainedTypeParameter.cs" />

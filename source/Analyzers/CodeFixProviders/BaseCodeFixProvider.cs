@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public const string EquivalenceKeySuffix = "CodeFixProvider";
 
-        public sealed override FixAllProvider GetFixAllProvider()
+        public override FixAllProvider GetFixAllProvider()
         {
             return WellKnownFixAllProviders.BatchFixer;
         }

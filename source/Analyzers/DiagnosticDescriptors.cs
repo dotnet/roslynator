@@ -1723,5 +1723,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor UseRegexInstanceInsteadOfStaticMethod = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod,
+            title: "Use Regex instance instead of static method.",
+            messageFormat: "Use Regex instance instead of static method.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

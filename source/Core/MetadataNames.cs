@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis;
-
 namespace Roslynator
 {
     internal static class MetadataNames
@@ -44,8 +42,12 @@ namespace Roslynator
         public const string System_Runtime_Serialization_DataMemberAttribute = "System.Runtime.Serialization.DataMemberAttribute";
         public const string System_String = "System.String";
         public const string System_StringComparison = "System.StringComparison";
+        public const string System_Text_RegularExpressions = "System.Text.RegularExpressions";
+        public const string System_Text_RegularExpressions_Regex = "System.Text.RegularExpressions.Regex";
+        public const string System_Text_RegularExpressions_RegexOptions = "System.Text.RegularExpressions.RegexOptions";
         public const string System_Threading_SpinLock = "System.Threading.SpinLock";
         public const string System_Threading_Tasks_Task = "System.Threading.Tasks.Task";
         public const string System_Threading_Tasks_Task_T = "System.Threading.Tasks.Task`1";
+        public const string System_TimeSpan = "System.TimeSpan";
     }
 }
