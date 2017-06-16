@@ -91,6 +91,7 @@
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\EnumMemberShouldDeclareExplicitValueDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\OverridingMemberCannotChangeParamsModifierDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAutoPropertyInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\StaticMemberInGenericTypeShouldUseTypeParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAsyncAwaitDiagnosticAnalyzer.cs" />
@@ -121,6 +122,7 @@
     <Compile Include="Refactorings\MakeMemberReadOnly\MarkFieldAsReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\UseReadOnlyAutoPropertyRefactoring.cs" />
     <Compile Include="Refactorings\JoinStringExpressionsRefactoring.cs" />
+    <Compile Include="Refactorings\OverridingMemberCannotChangeParamsModifierRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.AwaitRemover.cs" />
     <Compile Include="Refactorings\RemoveRedundantAutoPropertyInitializationRefactoring.cs" />

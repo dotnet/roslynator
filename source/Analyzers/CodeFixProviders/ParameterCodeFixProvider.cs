@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.DocumentationComment;
 
 namespace Roslynator.CSharp.CodeFixProviders
@@ -18,7 +20,12 @@ namespace Roslynator.CSharp.CodeFixProviders
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddParameterToDocumentationComment); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.AddParameterToDocumentationComment,
+                    DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -45,6 +52,18 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Add parameter to documentation comment",
                                 cancellationToken => refactoring.RefactorAsync(context.Document, parameter, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                (parameter.IsParams())
+                                    ? "Remove 'params' modifier"
+                                    : "Add 'params' modifier",
+                                cancellationToken => OverridingMemberCannotChangeParamsModifierRefactoring.RefactorAsync(context.Document, parameter, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
