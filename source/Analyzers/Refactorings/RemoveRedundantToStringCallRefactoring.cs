@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -8,67 +7,125 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantToStringCallRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
         {
-            if (CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
+            if (IsFixable(memberInvocation, context.SemanticModel, context.CancellationToken))
             {
-                var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+                InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
 
-                TextSpan span = TextSpan.FromBounds(memberAccess.OperatorToken.Span.Start, invocation.Span.End);
+                TextSpan span = TextSpan.FromBounds(memberInvocation.OperatorToken.Span.Start, invocationExpression.Span.End);
 
-                if (!invocation.ContainsDirectives(span))
-                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantToStringCall, Location.Create(invocation.SyntaxTree, span));
+                if (!invocationExpression.ContainsDirectives(span))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantToStringCall,
+                        Location.Create(invocationExpression.SyntaxTree, span));
+                }
             }
         }
 
-        public static bool CanRefactor(
-            InvocationExpressionSyntax invocation,
+        public static bool IsFixable(
+            MemberInvocationExpression memberInvocation,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (invocation.ArgumentList?.Arguments.Any() == false)
+            InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+
+            MethodInfo info = semanticModel.GetMethodInfo(invocationExpression, cancellationToken);
+
+            if (info.IsValid
+                && info.IsName("ToString")
+                && info.IsPublic
+                && info.IsInstance
+                && info.IsReturnType(SpecialType.System_String)
+                && !info.IsGenericMethod
+                && !info.IsExtensionMethod
+                && !info.Parameters.Any())
             {
-                ExpressionSyntax expression = invocation.Expression;
-
-                if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                if (info.IsContainingType(SpecialType.System_String))
                 {
-                    var memberAccess = (MemberAccessExpressionSyntax)expression;
-
-                    if (memberAccess.Name?.Identifier.ValueText.Equals("ToString", StringComparison.Ordinal) == true)
+                    return true;
+                }
+                else
+                {
+                    if (invocationExpression.IsParentKind(SyntaxKind.Interpolation))
                     {
-                        MethodInfo info = semanticModel.GetMethodInfo(invocation, cancellationToken);
+                        return IsNotHidden(info.Symbol);
+                    }
+                    else
+                    {
+                        ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
 
-                        if (info.IsValid
-                            && info.IsName("ToString")
-                            && info.IsPublic
-                            && info.IsInstance
-                            && info.IsReturnType(SpecialType.System_String)
-                            && !info.IsGenericMethod
-                            && !info.Parameters.Any())
+                        SyntaxNode parent = expression.Parent;
+
+                        if (parent?.IsKind(SyntaxKind.AddExpression) == true
+                            && !parent.ContainsDiagnostics
+                            && IsNotHidden(info.Symbol))
                         {
-                            if (info.IsContainingType(SpecialType.System_String))
+                            var addExpression = (BinaryExpressionSyntax)expression.Parent;
+
+                            ExpressionSyntax left = addExpression.Left;
+                            ExpressionSyntax right = addExpression.Right;
+
+                            if (left == expression)
                             {
-                                return true;
+                                return IsFixable(memberInvocation, addExpression, right, left, semanticModel, cancellationToken);
                             }
-                            else if (invocation.IsParentKind(SyntaxKind.Interpolation))
+                            else
                             {
-                                if (info.IsContainingType(SpecialType.System_Object))
-                                {
-                                    return true;
-                                }
-                                else if (info.IsOverride)
-                                {
-                                    return info.Symbol.OverriddenMethods().Any(f => f.ContainingType?.IsObject() == true);
-                                }
+                                return IsFixable(memberInvocation, addExpression, left, right, semanticModel, cancellationToken);
                             }
                         }
                     }
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsFixable(
+            MemberInvocationExpression memberInvocation,
+            BinaryExpressionSyntax addExpression,
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (semanticModel.GetTypeSymbol(left, cancellationToken)?.SpecialType == SpecialType.System_String)
+            {
+                BinaryExpressionSyntax newAddExpression = addExpression.ReplaceNode(right, memberInvocation.Expression);
+
+                return semanticModel
+                    .GetSpeculativeMethodSymbol(addExpression.SpanStart, newAddExpression)?
+                    .ContainingType?
+                    .SpecialType == SpecialType.System_String;
+            }
+
+            return false;
+        }
+
+        private static bool IsNotHidden(IMethodSymbol methodSymbol)
+        {
+            if (methodSymbol.ContainingType?.SpecialType == SpecialType.System_Object)
+            {
+                return true;
+            }
+            else if (methodSymbol.IsOverride)
+            {
+                IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+
+                while (overriddenMethod != null)
+                {
+                    if (overriddenMethod.ContainingType?.SpecialType == SpecialType.System_Object)
+                        return true;
+
+                    overriddenMethod = overriddenMethod.OverriddenMethod;
                 }
             }
 

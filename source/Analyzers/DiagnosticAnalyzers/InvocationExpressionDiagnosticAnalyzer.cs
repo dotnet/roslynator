@@ -129,8 +129,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 context.ReportDiagnostic(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation);
             }
 
-            RemoveRedundantToStringCallRefactoring.Analyze(context, invocation);
-
             RemoveRedundantStringToCharArrayCallRefactoring.Analyze(context, invocation);
 
             CombineEnumerableWhereAndAnyRefactoring.AnalyzeInvocationExpression(context);
@@ -156,6 +154,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                                 context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, memberInvocation.Name);
                                             }
 
+                                            break;
+                                        }
+                                    case "ToString":
+                                        {
+                                            RemoveRedundantToStringCallRefactoring.Analyze(context, memberInvocation);
                                             break;
                                         }
                                 }
