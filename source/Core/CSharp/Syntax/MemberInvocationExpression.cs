@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Syntax
             return false;
         }
 
-        internal static bool TryCreateCore(InvocationExpressionSyntax invocationExpression, out MemberInvocationExpression result)
+        private static bool TryCreateCore(InvocationExpressionSyntax invocationExpression, out MemberInvocationExpression result)
         {
             ExpressionSyntax expression = invocationExpression.Expression;
 
