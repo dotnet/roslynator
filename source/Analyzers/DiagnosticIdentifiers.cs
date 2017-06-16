@@ -196,5 +196,6 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantAutoPropertyInitialization = Prefix + "1188";
         public const string AddOrRemoveRegionName = Prefix + "1189";
         public const string MergeStringExpressions = Prefix + "1190";
+        public const string DeclareEnumValueAsCombinationOfNames = Prefix + "1191";
     }
 }

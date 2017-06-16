@@ -1769,5 +1769,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor DeclareEnumValueAsCombinationOfNames = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.DeclareEnumValueAsCombinationOfNames,
+            title: "Declare enum value as combination of names.",
+            messageFormat: "Declare enum value as combination of names.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
