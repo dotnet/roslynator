@@ -54,12 +54,28 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxToken endRegionKeyword = endRegionDirective.EndRegionKeyword;
 
-            EndRegionDirectiveTriviaSyntax newNode = endRegionDirective.WithEndOfDirectiveToken(endRegionDirective.EndOfDirectiveToken.WithLeadingTrivia(trivia));
+            EndRegionDirectiveTriviaSyntax newNode = endRegionDirective;
 
-            if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia)
-                && !endRegionKeyword.HasTrailingTrivia)
+            if (trivia.IsKind(SyntaxKind.PreprocessingMessageTrivia))
             {
-                newNode = newNode.WithEndRegionKeyword(endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space));
+                SyntaxTriviaList trailingTrivia = endRegionKeyword.TrailingTrivia;
+
+                if (trailingTrivia.Any())
+                {
+                    newNode = newNode.WithEndRegionKeyword(endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space, trivia));
+                }
+                else
+                {
+                    newNode = endRegionDirective.Update(
+                        endRegionDirective.HashToken,
+                        endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space),
+                        endRegionDirective.EndOfDirectiveToken.WithLeadingTrivia(trivia),
+                        endRegionDirective.IsActive);
+                }
+            }
+            else
+            {
+                newNode = endRegionDirective.WithEndOfDirectiveToken(endRegionDirective.EndOfDirectiveToken.WithoutLeadingTrivia());
             }
 
             return document.ReplaceNodeAsync(endRegionDirective, newNode, cancellationToken);
