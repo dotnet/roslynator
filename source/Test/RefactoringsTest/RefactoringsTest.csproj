@@ -98,6 +98,7 @@
     <Compile Include="SortMemberDeclarationsRefactoring.cs" />
     <Compile Include="SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
+    <Compile Include="UseStringBuilderInsteadOfConcatenation.cs" />
     <Compile Include="WrapInElseClauseRefactoring.cs" />
     <Compile Include="WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="WrapInRegionRefactoring.cs" />
