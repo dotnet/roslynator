@@ -1203,4 +1203,10 @@
       <Syntax>string concatenation</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0183" Identifier="UseListInsteadOfYield" Title="Use List&lt;T&gt; instead of yield">
+    <Syntaxes>
+      <Syntax>yield return</Syntax>
+      <Syntax>yield break</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

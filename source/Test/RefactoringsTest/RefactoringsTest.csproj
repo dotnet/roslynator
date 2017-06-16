@@ -86,6 +86,7 @@
     <Compile Include="ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="GenerateEnumMemberRefactoring.cs" />
+    <Compile Include="UseListInsteadOfYield.cs" />
     <Compile Include="UseInsteadOfIfRefactoring.cs" />
     <Compile Include="ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
