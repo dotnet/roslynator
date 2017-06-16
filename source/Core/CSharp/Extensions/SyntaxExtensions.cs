@@ -39,7 +39,7 @@ namespace Roslynator.CSharp
                 && IsAutoAccessor(accessorDeclaration);
         }
 
-        private static bool IsAutoAccessor(this AccessorDeclarationSyntax accessorDeclaration)
+        internal static bool IsAutoAccessor(this AccessorDeclarationSyntax accessorDeclaration)
         {
             return accessorDeclaration.SemicolonToken.IsKind(SyntaxKind.SemicolonToken)
                 && accessorDeclaration.Body == null;

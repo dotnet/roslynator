@@ -4,9 +4,10 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
+#pragma warning disable RCS1081
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1081
     public class RemoveRedundantFieldInitialization
     {
         private const bool BoolConst = false;
@@ -46,5 +47,4 @@ namespace Roslynator.CSharp.Analyzers.Test
         private double _de = (double)0;
         private decimal _dl = (decimal)0;
     }
-#pragma warning restore RCS1081
 }
