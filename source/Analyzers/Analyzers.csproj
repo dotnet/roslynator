@@ -103,6 +103,7 @@
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CallDebugFailInsteadOfDebugAssertDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseExclusiveOrOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclareEnumValueAsCombinationOfNamesDiagnosticAnalyzer.cs" />
@@ -159,6 +160,7 @@
     <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
     <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
     <Compile Include="Refactorings\CallDebugFailInsteadOfDebugAssertRefactoring.cs" />
+    <Compile Include="Refactorings\UseExclusiveOrOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UseRegexInstanceInsteadOfStaticMethodRefactoring.cs" />
     <Compile Include="Refactorings\DeclareEnumValueAsCombinationOfNamesRefactoring.cs" />
     <Compile Include="Refactorings\UseRegularStringLiteralInsteadOfVerbatimStringLiteralRefactoring.cs" />

@@ -1806,5 +1806,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseExclusiveOrOperator = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseExclusiveOrOperator,
+            title: "Use ^ operator.",
+            messageFormat: "Use ^ operator.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
