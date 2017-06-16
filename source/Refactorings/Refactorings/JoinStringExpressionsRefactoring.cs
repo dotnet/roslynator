@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class MergeStringExpressionsRefactoring
+    internal static class JoinStringExpressionsRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, StringExpressionChain chain)
         {
@@ -19,14 +19,14 @@ namespace Roslynator.CSharp.Refactorings
                 if (chain.ContainsLiteralExpression || chain.ContainsInterpolatedStringExpression)
                 {
                     context.RegisterRefactoring(
-                        "Merge string expressions",
+                        "Join string expressions",
                         cancellationToken => ToInterpolatedStringAsync(context.Document, chain, cancellationToken));
                 }
             }
             else if (chain.ContainsLiteralExpression)
             {
                 context.RegisterRefactoring(
-                    "Merge string literals",
+                    "Join string literals",
                     cancellationToken => ToStringLiteralAsync(context.Document, chain, multiline: false, cancellationToken: cancellationToken));
 
                 if (chain.OriginalExpression
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
                         .Any(f => f.IsKind(SyntaxKind.EndOfLineTrivia)))
                 {
                     context.RegisterRefactoring(
-                        "Merge string literals into multiline string literal",
+                        "Join string literals into multiline string literal",
                         cancellationToken => ToStringLiteralAsync(context.Document, chain, multiline: true, cancellationToken: cancellationToken));
                 }
             }

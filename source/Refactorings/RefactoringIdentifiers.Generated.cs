@@ -78,6 +78,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string IntroduceConstructor = Prefix + "0066";
         public const string IntroduceFieldToLockOn = Prefix + "0067";
         public const string IntroduceLocalVariable = Prefix + "0068";
+        public const string JoinStringExpressions = Prefix + "0078";
         public const string MakeMemberAbstract = Prefix + "0069";
         public const string MakeMemberVirtual = Prefix + "0070";
         public const string MarkContainingClassAsAbstract = Prefix + "0071";
@@ -87,7 +88,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeIfStatements = Prefix + "0075";
         public const string MergeInterpolationIntoInterpolatedString = Prefix + "0076";
         public const string MergeLocalDeclarations = Prefix + "0077";
-        public const string MergeStringExpressions = Prefix + "0078";
         public const string NegateBinaryExpression = Prefix + "0079";
         public const string NegateBooleanLiteral = Prefix + "0080";
         public const string NegateIsExpression = Prefix + "0081";

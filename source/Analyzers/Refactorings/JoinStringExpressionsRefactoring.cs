@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class MergeStringExpressionsRefactoring
+    internal static class JoinStringExpressionsRefactoring
     {
         public static void AnalyzeAddExpression(SyntaxNodeAnalysisContext context)
         {
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                 && (chain.ContainsRegular ^ chain.ContainsVerbatim)
                 && (chain.ContainsVerbatim || addExpression.IsSingleLine(includeExteriorTrivia: false, cancellationToken: context.CancellationToken)))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.MergeStringExpressions, addExpression);
+                context.ReportDiagnostic(DiagnosticDescriptors.JoinStringExpressions, addExpression);
             }
         }
 

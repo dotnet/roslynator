@@ -90,7 +90,7 @@ namespace Roslynator.VisualStudio
             MergeIfStatements = true;
             MergeInterpolationIntoInterpolatedString = true;
             MergeLocalDeclarations = true;
-            MergeStringExpressions = true;
+            JoinStringExpressions = true;
             NegateBinaryExpression = true;
             NegateBooleanLiteral = true;
             NegateIsExpression = true;
@@ -272,7 +272,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.MergeIfStatements, MergeIfStatements);
             SetIsEnabled(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString, MergeInterpolationIntoInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.MergeLocalDeclarations, MergeLocalDeclarations);
-            SetIsEnabled(RefactoringIdentifiers.MergeStringExpressions, MergeStringExpressions);
+            SetIsEnabled(RefactoringIdentifiers.JoinStringExpressions, JoinStringExpressions);
             SetIsEnabled(RefactoringIdentifiers.NegateBinaryExpression, NegateBinaryExpression);
             SetIsEnabled(RefactoringIdentifiers.NegateBooleanLiteral, NegateBooleanLiteral);
             SetIsEnabled(RefactoringIdentifiers.NegateIsExpression, NegateIsExpression);
@@ -462,7 +462,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.MergeIfStatements, "Merge if statements", IsEnabled(RefactoringIdentifiers.MergeIfStatements)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString, "Merge interpolation into interpolated string", IsEnabled(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.MergeLocalDeclarations, "Merge local declarations", IsEnabled(RefactoringIdentifiers.MergeLocalDeclarations)));
-            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.MergeStringExpressions, "Merge string expressions", IsEnabled(RefactoringIdentifiers.MergeStringExpressions)));
+            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.JoinStringExpressions, "Join string expressions", IsEnabled(RefactoringIdentifiers.JoinStringExpressions)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.NegateBinaryExpression, "Negate binary expression", IsEnabled(RefactoringIdentifiers.NegateBinaryExpression)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.NegateBooleanLiteral, "Negate boolean literal", IsEnabled(RefactoringIdentifiers.NegateBooleanLiteral)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.NegateIsExpression, "Negate is expression", IsEnabled(RefactoringIdentifiers.NegateIsExpression)));
@@ -1184,6 +1184,15 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool JoinStringExpressions
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        [Category(RefactoringCategory)]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MakeMemberAbstract
         {
             get;
@@ -1257,15 +1266,6 @@ namespace Roslynator.VisualStudio
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MergeLocalDeclarations
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool MergeStringExpressions
         {
             get;
             set;

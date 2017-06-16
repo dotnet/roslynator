@@ -1761,10 +1761,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor MergeStringExpressions = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MergeStringExpressions,
-            title: "Merge string expressions.",
-            messageFormat: "Merge string expressions.",
+        public static readonly DiagnosticDescriptor JoinStringExpressions = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.JoinStringExpressions,
+            title: "Join string expressions.",
+            messageFormat: "Join string expressions.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
