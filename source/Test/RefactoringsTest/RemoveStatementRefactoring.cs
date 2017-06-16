@@ -12,6 +12,28 @@ namespace Roslynator.CSharp.Refactorings.Test
             {
             }
 
+            string s = null;
+
+            switch (s)
+            {
+                case "":
+                    if (condition)
+                    {
+                        return false;
+                    }
+                    break;
+                default:
+                    break;
+            }
+
+            // n
+
+            if (condition)
+                if (condition)
+                {
+                    return false;
+                }
+
             return true;
         }
     }

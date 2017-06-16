@@ -31,26 +31,22 @@ namespace Roslynator.CSharp.Refactorings.Test
             switch (options)
             {
                 case RegexOptions.CultureInvariant:
-                    break;
-                case RegexOptions.ECMAScript:
-                    break;
-                case RegexOptions.ExplicitCapture:
-                    break;
-                case RegexOptions.IgnoreCase:
-                    break;
-                case RegexOptions.IgnorePatternWhitespace:
-                    break;
-                case RegexOptions.Multiline:
-                    break;
-                case RegexOptions.None:
-                    break;
-                case RegexOptions.RightToLeft:
-                    break;
-                case RegexOptions.Singleline:
+                    if (condition)
+                    {
+                        return value;
+                    }
                     break;
                 default:
                     break;
             }
+
+            // n
+
+            if (condition)
+                if (condition)
+                {
+                    return value;
+                }
 
             return null;
         }
