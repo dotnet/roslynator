@@ -1665,9 +1665,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MergeStringExpressions">
+  <Analyzer Identifier="JoinStringExpressions">
     <Id>RCS1190</Id>
-    <Title>Merge string expressions.</Title>
+    <Title>Join string expressions.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1678,6 +1678,51 @@
     <Id>RCS1191</Id>
     <Title>Declare enum value as combination of names.</Title>
     <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseRegularStringLiteralInsteadOfVerbatimStringLiteral">
+    <Id>RCS1192</Id>
+    <Title>Use regular string literal instead of verbatim string literal.</Title>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="OverridingMemberCannotChangeParamsModifier">
+    <Id>RCS1193</Id>
+    <Title>Overriding member cannot change 'params' modifier.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="ImplementExceptionConstructors">
+    <Id>RCS1194</Id>
+    <Title>Implement exception constructors.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseExclusiveOrOperator">
+    <Id>RCS1195</Id>
+    <Title>Use ^ operator.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="CallExtensionMethodAsInstanceMethod">
+    <Id>RCS1196</Id>
+    <Title>Call extension method as instance method.</Title>
+    <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>

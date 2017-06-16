@@ -82,7 +82,7 @@
       <Refactoring Id="RR0075" IsEnabled="true" /> <!-- MergeIfStatements -->
       <Refactoring Id="RR0076" IsEnabled="true" /> <!-- MergeInterpolationIntoInterpolatedString -->
       <Refactoring Id="RR0077" IsEnabled="true" /> <!-- MergeLocalDeclarations -->
-      <Refactoring Id="RR0078" IsEnabled="true" /> <!-- MergeStringExpressions -->
+      <Refactoring Id="RR0078" IsEnabled="true" /> <!-- JoinStringExpressions -->
       <Refactoring Id="RR0079" IsEnabled="true" /> <!-- NegateBinaryExpression -->
       <Refactoring Id="RR0080" IsEnabled="true" /> <!-- NegateBooleanLiteral -->
       <Refactoring Id="RR0081" IsEnabled="true" /> <!-- NegateIsExpression -->
@@ -187,6 +187,9 @@
       <Refactoring Id="RR0180" IsEnabled="true" /> <!-- InlineUsingStatic -->
       <Refactoring Id="RR0181" IsEnabled="true" /> <!-- InlineConstant -->
       <Refactoring Id="RR0182" IsEnabled="true" /> <!-- UseStringBuilderInsteadOfConcatenation -->
+      <Refactoring Id="RR0183" IsEnabled="true" /> <!-- UseListInsteadOfYield -->
+      <Refactoring Id="RR0184" IsEnabled="true" /> <!-- SplitIfStatement -->
+      <Refactoring Id="RR0185" IsEnabled="true" /> <!-- ReplaceObjectCreationWithDefaultValue -->
     </Refactorings>
   </Settings>
 </Roslynator>

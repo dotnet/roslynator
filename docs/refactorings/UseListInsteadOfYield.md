@@ -1,0 +1,14 @@
+## Use List<T> instead of yield
+
+Property | Value
+--- | --- 
+Id | RR0183
+Title | Use List\<T\> instead of yield
+Syntax | yield return, yield break
+Enabled by Default | yes
+
+### Usage
+
+![Use List\<T\> instead of yield](../../images/refactorings/UseListInsteadOfYield.png)
+
+[full list of refactorings](Refactorings.md)

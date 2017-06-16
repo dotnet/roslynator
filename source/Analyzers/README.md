@@ -187,5 +187,10 @@ RCS1186|Use Regex instance instead of static method|Usage|x
 RCS1187|Mark field as const|Design|x
 RCS1188|Remove redundant auto\-property initialization|Redundancy|x
 RCS1189|Add or remove region name|Readability|x
-RCS1190|Merge string expressions|Simplification|x
+RCS1190|Join string expressions|Simplification|x
 RCS1191|Declare enum value as combination of names|Readability|x
+RCS1192|Use regular string literal instead of verbatim string literal|Readability|x
+RCS1193|Overriding member cannot change 'params' modifier|Design|x
+RCS1194|Implement exception constructors|Design|x
+RCS1195|Use ^ operator|Simplification|x
+RCS1196|Call extension method as instance method|Style|x
