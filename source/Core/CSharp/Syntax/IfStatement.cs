@@ -90,6 +90,11 @@ namespace Roslynator.CSharp.Syntax
             return new IfStatement(ifStatement);
         }
 
+        public override string ToString()
+        {
+            return (!Nodes.IsDefaultOrEmpty) ? Nodes[0].ToString() : base.ToString();
+        }
+
         public bool Equals(IfStatement other)
         {
             if (IsDefault)

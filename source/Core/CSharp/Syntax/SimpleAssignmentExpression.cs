@@ -20,10 +20,10 @@ namespace Roslynator.CSharp.Syntax
 
         public AssignmentExpressionSyntax AssignmentExpression
         {
-            get { return (AssignmentExpressionSyntax)Parent; }
+            get { return (AssignmentExpressionSyntax)Node; }
         }
 
-        private SyntaxNode Parent
+        private SyntaxNode Node
         {
             get { return Left?.Parent; }
         }
@@ -67,9 +67,14 @@ namespace Roslynator.CSharp.Syntax
             return true;
         }
 
+        public override string ToString()
+        {
+            return Node?.ToString() ?? base.ToString();
+        }
+
         public bool Equals(SimpleAssignmentExpression other)
         {
-            return Parent == other.Parent;
+            return Node == other.Node;
         }
 
         public override bool Equals(object obj)
@@ -80,7 +85,7 @@ namespace Roslynator.CSharp.Syntax
 
         public override int GetHashCode()
         {
-            return Parent?.GetHashCode() ?? 0;
+            return Node?.GetHashCode() ?? 0;
         }
 
         public static bool operator ==(SimpleAssignmentExpression left, SimpleAssignmentExpression right)

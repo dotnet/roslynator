@@ -21,10 +21,10 @@ namespace Roslynator.CSharp.Syntax
 
         public LambdaExpressionSyntax LambdaExpression
         {
-            get { return (LambdaExpressionSyntax)Parent; }
+            get { return (LambdaExpressionSyntax)Node; }
         }
 
-        private SyntaxNode Parent
+        private SyntaxNode Node
         {
             get { return Body?.Parent; }
         }
@@ -49,12 +49,12 @@ namespace Roslynator.CSharp.Syntax
 
         public bool IsSimpleLambda
         {
-            get { return Parent?.IsKind(SyntaxKind.SimpleLambdaExpression) == true; }
+            get { return Node?.IsKind(SyntaxKind.SimpleLambdaExpression) == true; }
         }
 
         public bool IsParenthesizedLambda
         {
-            get { return Parent?.IsKind(SyntaxKind.ParenthesizedLambdaExpression) == true; }
+            get { return Node?.IsKind(SyntaxKind.ParenthesizedLambdaExpression) == true; }
         }
 
         public static LambdaExpressionWithSingleParameter Create(LambdaExpressionSyntax lambdaExpression)
@@ -129,9 +129,14 @@ namespace Roslynator.CSharp.Syntax
             return false;
         }
 
+        public override string ToString()
+        {
+            return Node?.ToString() ?? base.ToString();
+        }
+
         public bool Equals(LambdaExpressionWithSingleParameter other)
         {
-            return Parent == other.Parent;
+            return Node == other.Node;
         }
 
         public override bool Equals(object obj)
@@ -142,7 +147,7 @@ namespace Roslynator.CSharp.Syntax
 
         public override int GetHashCode()
         {
-            return Parent?.GetHashCode() ?? 0;
+            return Node?.GetHashCode() ?? 0;
         }
 
         public static bool operator ==(LambdaExpressionWithSingleParameter left, LambdaExpressionWithSingleParameter right)
