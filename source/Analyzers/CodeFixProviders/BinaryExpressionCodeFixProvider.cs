@@ -30,7 +30,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.UseStringLengthInsteadOfComparisonWithEmptyString,
                     DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull,
                     DiagnosticIdentifiers.ValueTypeCheckedForNull,
-                    DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator);
+                    DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator,
+                    DiagnosticIdentifiers.MergeStringExpressions);
             }
         }
 
@@ -174,8 +175,17 @@ namespace Roslynator.CSharp.CodeFixProviders
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use is operator",
-                                cancellationToken => UseIsOperatorInsteadOfAsOperatorRefactoring.
-                                RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                cancellationToken => UseIsOperatorInsteadOfAsOperatorRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.MergeStringExpressions:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Merge string expressions",
+                                cancellationToken => MergeStringExpressionsRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

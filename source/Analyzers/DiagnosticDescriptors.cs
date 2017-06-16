@@ -1760,5 +1760,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor MergeStringExpressions = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MergeStringExpressions,
+            title: "Merge string expressions.",
+            messageFormat: "Merge string expressions.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

@@ -195,5 +195,6 @@ namespace Roslynator.CSharp
         public const string MarkFieldAsConst = Prefix + "1187";
         public const string RemoveRedundantAutoPropertyInitialization = Prefix + "1188";
         public const string AddOrRemoveRegionName = Prefix + "1189";
+        public const string MergeStringExpressions = Prefix + "1190";
     }
 }

@@ -1,28 +1,45 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+#pragma warning disable RCS1127
+
 namespace Roslynator.CSharp.Refactorings.Test
 {
     internal static class MergeStringExpressionsRefactoring
     {
-        public static string Foo()
+        public static void Foo(string s)
         {
-            string s = "a" + "b" + "c" + "d";
+            s = "\"\r\n\\{}" + "\"\r\n\\{}";
+            s = "\"\r\n\\{}" + @"""
+\{}";
 
-            s = "\"1\"" +
-"\"2\"";
+            s = $"\"\r\n\\{{}}{s}" + $"\"\r\n\\{{}}{s}";
+            s = $"\"\r\n\\{{}}{s}" + $@"""
+\{{}}{s}";
 
-            return s;
-        }
+            s = "\"\r\n\\{}" + "\"\r\n\\{}" + $"\"\r\n\\{{}}{s}";
+            s = "\"\r\n\\{}" + "\"\r\n\\{}" + $@"""
+\{{}}{s}";
+            s = "\"\r\n\\{}" + @"""
+\{}" + $"\"\r\n\\{{}}{s}";
+            s = "\"\r\n\\{}" + @"""
+\{}" + $@"""
+\{{}}{s}";
+            s = @"""
+\{}" + @"""
+\{}" + $"\"\r\n\\{{}}{s}";
 
-        public static string Foo2()
-        {
-            string x = null;
+            s = @"""
+\{}" + @"""
+\{}";
 
-            x = "{\"}" + x + x + "{" + @"""" + "}" + Foo() + $@"{{""}}{Foo()}{{""}}";
+            s = @"""
+\{}" + @"""
+\{}" + $@"""
+\{{}}{s}";
 
-            string s = x + "a" + x + "b";
-
-            return s;
+            s = $@"""
+\{{}}{s}" + $@"""
+\{{}}{s}";
         }
     }
 }

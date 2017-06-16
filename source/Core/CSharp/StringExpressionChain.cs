@@ -15,10 +15,16 @@ using Roslynator.Utilities;
 
 namespace Roslynator.CSharp
 {
-    internal class StringExpressionChain
+    internal struct StringExpressionChain
     {
         private StringExpressionChain(BinaryExpressionSyntax addExpression, IEnumerable<ExpressionSyntax> expressions, TextSpan? span = null)
         {
+            ContainsNonSpecificExpression = false;
+            ContainsRegularLiteralExpression = false;
+            ContainsVerbatimLiteralExpression = false;
+            ContainsRegularInterpolatedStringExpression = false;
+            ContainsVerbatimInterpolatedStringExpression = false;
+
             OriginalExpression = addExpression;
             Expressions = ImmutableArray.CreateRange(expressions);
             Span = span;
@@ -31,21 +37,17 @@ namespace Roslynator.CSharp
                 {
                     if (((LiteralExpressionSyntax)expression).IsVerbatimStringLiteral())
                     {
-                        ContainsVerbatimLiteral = true;
+                        ContainsVerbatimLiteralExpression = true;
                     }
                     else
                     {
-                        ContainsRegularLiteral = true;
+                        ContainsRegularLiteralExpression = true;
                     }
                 }
                 else
                 {
-                    ContainsExpression = true;
-
                     if (kind == SyntaxKind.InterpolatedStringExpression)
                     {
-                        ContainsInterpolatedStringExpression = true;
-
                         if (((InterpolatedStringExpressionSyntax)expression).IsVerbatim())
                         {
                             ContainsVerbatimInterpolatedStringExpression = true;
@@ -54,6 +56,10 @@ namespace Roslynator.CSharp
                         {
                             ContainsRegularInterpolatedStringExpression = true;
                         }
+                    }
+                    else
+                    {
+                        ContainsNonSpecificExpression = true;
                     }
                 }
             }
@@ -65,18 +71,26 @@ namespace Roslynator.CSharp
 
         public TextSpan? Span { get; }
 
-        public bool ContainsExpression { get; }
+        public bool ContainsNonSpecificExpression { get; }
 
-        public bool ContainsLiteral
+        public bool ContainsNonLiteralExpression
         {
-            get { return ContainsRegularLiteral || ContainsVerbatimLiteral; }
+            get { return ContainsInterpolatedStringExpression || ContainsNonSpecificExpression; }
         }
 
-        public bool ContainsRegularLiteral { get; }
+        public bool ContainsLiteralExpression
+        {
+            get { return ContainsRegularLiteralExpression || ContainsVerbatimLiteralExpression; }
+        }
 
-        public bool ContainsVerbatimLiteral { get; }
+        public bool ContainsRegularLiteralExpression { get; }
 
-        public bool ContainsInterpolatedStringExpression { get; }
+        public bool ContainsVerbatimLiteralExpression { get; }
+
+        public bool ContainsInterpolatedStringExpression
+        {
+            get { return ContainsRegularInterpolatedStringExpression || ContainsVerbatimInterpolatedStringExpression; }
+        }
 
         public bool ContainsRegularInterpolatedStringExpression { get; }
 
@@ -84,23 +98,27 @@ namespace Roslynator.CSharp
 
         public bool ContainsRegular
         {
-            get { return ContainsRegularLiteral || ContainsRegularInterpolatedStringExpression; }
+            get { return ContainsRegularLiteralExpression || ContainsRegularInterpolatedStringExpression; }
         }
 
         public bool ContainsVerbatim
         {
-            get { return ContainsVerbatimLiteral || ContainsVerbatimInterpolatedStringExpression; }
+            get { return ContainsVerbatimLiteralExpression || ContainsVerbatimInterpolatedStringExpression; }
         }
 
-        private SyntaxTree SyntaxTree
-        {
-            get { return OriginalExpression.SyntaxTree; }
-        }
-
-        public static StringExpressionChain TryCreate(
+        public static bool TryCreate(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            out StringExpressionChain chain)
+        {
+            return TryCreate(binaryExpression, semanticModel, default(CancellationToken), out chain);
+        }
+
+        public static bool TryCreate(
+            BinaryExpressionSyntax binaryExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
+            out StringExpressionChain chain)
         {
             if (binaryExpression.IsKind(SyntaxKind.AddExpression))
             {
@@ -109,17 +127,28 @@ namespace Roslynator.CSharp
                 if (expressions != null)
                 {
                     expressions.Reverse();
-                    return new StringExpressionChain(binaryExpression, expressions);
+                    chain = new StringExpressionChain(binaryExpression, expressions);
+                    return true;
                 }
             }
 
-            return null;
+            chain = default(StringExpressionChain);
+            return false;
         }
 
-        public static StringExpressionChain TryCreate(
+        public static bool TryCreate(
             BinaryExpressionSelection binaryExpressionSelection,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            out StringExpressionChain chain)
+        {
+            return TryCreate(binaryExpressionSelection, semanticModel, default(CancellationToken), out chain);
+        }
+
+        public static bool TryCreate(
+            BinaryExpressionSelection binaryExpressionSelection,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
+            out StringExpressionChain chain)
         {
             BinaryExpressionSyntax binaryExpression = binaryExpressionSelection.BinaryExpression;
             ImmutableArray<ExpressionSyntax> expressions = binaryExpressionSelection.Expressions;
@@ -127,10 +156,12 @@ namespace Roslynator.CSharp
             if (binaryExpression.IsKind(SyntaxKind.AddExpression)
                 && expressions.All(expression => IsStringExpression(expression, semanticModel, cancellationToken)))
             {
-                return new StringExpressionChain(binaryExpression, expressions, binaryExpressionSelection.Span);
+                chain = new StringExpressionChain(binaryExpression, expressions, binaryExpressionSelection.Span);
+                return true;
             }
 
-            return null;
+            chain = default(StringExpressionChain);
+            return false;
         }
 
         private static bool IsStringExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -220,12 +251,14 @@ namespace Roslynator.CSharp
                     var literal = (LiteralExpressionSyntax)Expressions[i];
 
                     if (ContainsRegular
-                        && ContainsVerbatimLiteral
                         && literal.IsVerbatimStringLiteral())
                     {
                         string s = literal.Token.ValueText;
+                        s = StringUtility.DoubleBackslash(s);
                         s = StringUtility.EscapeQuote(s);
                         s = StringUtility.DoubleBraces(s);
+                        s = s.Replace("\n", @"\n");
+                        s = s.Replace("\r", @"\r");
                         sb.Append(s);
                     }
                     else
@@ -243,29 +276,36 @@ namespace Roslynator.CSharp
 
                     foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
                     {
-                        SyntaxKind contentKind = content.Kind();
-
                         Debug.Assert(content.IsKind(SyntaxKind.Interpolation, SyntaxKind.InterpolatedStringText), content.Kind().ToString());
 
-                        if (contentKind == SyntaxKind.InterpolatedStringText)
+                        switch (content.Kind())
                         {
-                            var text = (InterpolatedStringTextSyntax)content;
+                            case SyntaxKind.InterpolatedStringText:
+                                {
+                                    var text = (InterpolatedStringTextSyntax)content;
 
-                            if (ContainsRegular
-                                && isVerbatimInterpolatedString)
-                            {
-                                string s = text.TextToken.ValueText;
-                                s = StringUtility.EscapeQuote(s);
-                                sb.Append(s);
-                            }
-                            else
-                            {
-                                sb.Append(content.ToString());
-                            }
-                        }
-                        else if (contentKind == SyntaxKind.Interpolation)
-                        {
-                            sb.Append(content.ToString());
+                                    if (ContainsRegular
+                                        && isVerbatimInterpolatedString)
+                                    {
+                                        string s = text.TextToken.ValueText;
+                                        s = StringUtility.DoubleBackslash(s);
+                                        s = StringUtility.EscapeQuote(s);
+                                        s = s.Replace("\n", @"\n");
+                                        s = s.Replace("\r", @"\r");
+                                        sb.Append(s);
+                                    }
+                                    else
+                                    {
+                                        sb.Append(content.ToString());
+                                    }
+
+                                    break;
+                                }
+                            case SyntaxKind.Interpolation:
+                                {
+                                    sb.Append(content.ToString());
+                                    break;
+                                }
                         }
                     }
                 }
@@ -284,7 +324,7 @@ namespace Roslynator.CSharp
 
         public LiteralExpressionSyntax ToStringLiteral()
         {
-            if (ContainsExpression)
+            if (ContainsNonLiteralExpression)
                 throw new InvalidOperationException();
 
             var sb = new StringBuilder();
@@ -300,10 +340,15 @@ namespace Roslynator.CSharp
                 {
                     var literal = (LiteralExpressionSyntax)expression;
 
-                    if (ContainsVerbatimLiteral
+                    if (ContainsRegular
                         && literal.IsVerbatimStringLiteral())
                     {
-                        sb.Append(StringUtility.EscapeQuote(literal.Token.ValueText));
+                        string s = literal.Token.ValueText;
+                        s = StringUtility.DoubleBackslash(s);
+                        s = StringUtility.EscapeQuote(s);
+                        s = s.Replace("\n", @"\n");
+                        s = s.Replace("\r", @"\r");
+                        sb.Append(s);
                     }
                     else
                     {
@@ -319,7 +364,7 @@ namespace Roslynator.CSharp
 
         public LiteralExpressionSyntax ToMultilineStringLiteral()
         {
-            if (ContainsExpression)
+            if (ContainsNonLiteralExpression)
                 throw new InvalidOperationException();
 
             var sb = new StringBuilder();
@@ -359,7 +404,7 @@ namespace Roslynator.CSharp
                     {
                         TextSpan span = TextSpan.FromBounds(Expressions[i].Span.End, Expressions[i + 1].SpanStart);
 
-                        if (SyntaxTree.IsMultiLineSpan(span))
+                        if (OriginalExpression.SyntaxTree.IsMultiLineSpan(span))
                             sb.AppendLine();
                     }
                 }
