@@ -16,15 +16,18 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxNode node = context.Node;
 
-            if (node.ContainsDiagnostics
-                || node.SpanContainsDirectives())
-            {
+            if (node.ContainsDiagnostics)
                 return;
-            }
+
+            if (node.SpanContainsDirectives())
+                return;
 
             var fieldDeclaration = (FieldDeclarationSyntax)node;
 
-            if (fieldDeclaration.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
+            SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
+
+            if (modifiers.Contains(SyntaxKind.StaticKeyword)
+                && modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
                 && IsFixable(fieldDeclaration.Declaration, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.MarkFieldAsConst, fieldDeclaration);
@@ -65,6 +68,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             FieldDeclarationSyntax newNode = fieldDeclaration
                 .InsertModifier(SyntaxKind.ConstKeyword, ModifierComparer.Instance)
+                .RemoveModifier(SyntaxKind.StaticKeyword)
                 .RemoveModifier(SyntaxKind.ReadOnlyKeyword);
 
             return document.ReplaceNodeAsync(fieldDeclaration, newNode, cancellationToken);
