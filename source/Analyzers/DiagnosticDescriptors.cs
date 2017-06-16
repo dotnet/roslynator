@@ -1778,5 +1778,15 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseRegularStringLiteralInsteadOfVerbatimStringLiteral = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseRegularStringLiteralInsteadOfVerbatimStringLiteral,
+            title: "Use regular string literal instead of verbatim string literal.",
+            messageFormat: "Use regular string literal instead of verbatim string literal.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            customTags: WellKnownDiagnosticTags.Unnecessary
+        );
     }
 }

@@ -197,5 +197,6 @@ namespace Roslynator.CSharp
         public const string AddOrRemoveRegionName = Prefix + "1189";
         public const string JoinStringExpressions = Prefix + "1190";
         public const string DeclareEnumValueAsCombinationOfNames = Prefix + "1191";
+        public const string UseRegularStringLiteralInsteadOfVerbatimStringLiteral = Prefix + "1192";
     }
 }
