@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-    public static class UseNamesForCompositeEnumValue
+    public static class DeclareEnumValueAsCombinationOfNames
     {
         [Flags]
         private enum Foo

@@ -31,6 +31,9 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var fieldSymbol = (IFieldSymbol)member;
 
+                        if (!fieldSymbol.HasConstantValue)
+                            break;
+
                         var info = new EnumFieldInfo(fieldSymbol);
 
                         if (info.IsComposite())
@@ -46,7 +49,12 @@ namespace Roslynator.CSharp.Refactorings
                                         .Any(f => f.IsKind(SyntaxKind.NumericLiteralExpression))))
                             {
                                 if (infos.IsDefault)
+                                {
                                     infos = EnumFieldInfo.CreateRange(enumSymbol);
+
+                                    if (infos.IsDefault)
+                                        break;
+                                }
 
                                 List<EnumFieldInfo> values = info.Decompose(infos);
 
@@ -222,7 +230,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 while (i >= 0)
                 {
-                    var value2 = Convert.ToInt64(infos[i].Value);
+                    long value2 = Convert.ToInt64(infos[i].Value);
 
                     if ((value & value2) == value2)
                     {
@@ -284,6 +292,12 @@ namespace Roslynator.CSharp.Refactorings
                     .OfType<IFieldSymbol>()
                     .Select(symbol => new EnumFieldInfo(symbol))
                     .ToImmutableArray();
+
+                foreach (EnumFieldInfo info in infos)
+                {
+                    if (!info.Symbol.HasConstantValue)
+                        return default(ImmutableArray<EnumFieldInfo>);
+                }
 
                 infos.Sort(EnumFieldInfoValueComparer.Instance);
 
