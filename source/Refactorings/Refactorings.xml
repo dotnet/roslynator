@@ -1209,4 +1209,9 @@
       <Syntax>yield break</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0184" Identifier="SplitIfStatement" Title="Split if statement">
+    <Syntaxes>
+      <Syntax>if statement that has logical or expression as a condition</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>
