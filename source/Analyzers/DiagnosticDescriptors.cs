@@ -1732,5 +1732,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor MarkFieldAsConst = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MarkFieldAsConst,
+            title: "Mark field as const.",
+            messageFormat: "Mark field as const.",
+            category: DiagnosticCategories.Design,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
