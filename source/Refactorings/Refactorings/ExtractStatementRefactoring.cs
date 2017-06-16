@@ -33,7 +33,9 @@ namespace Roslynator.CSharp.Refactorings
                         && GetContainingBlock(parent)?.IsKind(SyntaxKind.Block) == true))
                     {
                         context.RegisterRefactoring(
-                            "Extract from containing statement",
+                            (parent.IsKind(SyntaxKind.ElseClause))
+                                ? "Extract from containing else clause"
+                                : "Extract from containing statement",
                             cancellationToken => RefactorAsync(context.Document, statement, cancellationToken));
                     }
                 }
