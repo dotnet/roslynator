@@ -322,20 +322,31 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static MethodInfo GetMethodInfo(
+        public static bool TryGetMethodInfo(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            out MethodInfo methodInfo)
+        {
+            return TryGetMethodInfo(semanticModel, expression, default(CancellationToken), out methodInfo);
+        }
+
+        public static bool TryGetMethodInfo(
+            this SemanticModel semanticModel,
+            ExpressionSyntax expression,
+            CancellationToken cancellationToken,
+            out MethodInfo methodInfo)
         {
             ISymbol symbol = GetSymbol(semanticModel, expression, cancellationToken);
 
             if (symbol?.IsMethod() == true)
             {
-                return new MethodInfo((IMethodSymbol)symbol, semanticModel);
+                methodInfo = new MethodInfo((IMethodSymbol)symbol, semanticModel);
+                return true;
             }
             else
             {
-                return default(MethodInfo);
+                methodInfo = default(MethodInfo);
+                return false;
             }
         }
     }

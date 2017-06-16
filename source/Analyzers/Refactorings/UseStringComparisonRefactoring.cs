@@ -258,9 +258,8 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            MethodInfo info = semanticModel.GetMethodInfo(expression, cancellationToken);
-
-            return info.IsValid
+            MethodInfo info;
+            return semanticModel.TryGetMethodInfo(expression, cancellationToken, out info)
                 && info.IsPublicInstanceStringMethod(name)
                 && info.ReturnsString
                 && !info.Parameters.Any();
@@ -268,9 +267,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsPublicStaticStringEqualsWithTwoStringParameters(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            MethodInfo info = semanticModel.GetMethodInfo(invocation, cancellationToken);
-
-            return info.IsValid
+            MethodInfo info;
+            return semanticModel.TryGetMethodInfo(invocation, cancellationToken, out info)
                 && info.IsPublicStaticStringMethod("Equals")
                 && info.ReturnsBoolean
                 && info.HasParameters(SpecialType.System_String, SpecialType.System_String);
@@ -278,9 +276,9 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsInstanceStringEqualsWithOneStringParameter(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            MethodInfo info = semanticModel.GetMethodInfo(invocation, cancellationToken);
+            MethodInfo info;
 
-            return info.IsValid
+            return semanticModel.TryGetMethodInfo(invocation, cancellationToken, out info)
                 && info.IsPublicInstanceStringMethod("Equals")
                 && info.ReturnsBoolean
                 && info.HasParameter(SpecialType.System_String);
