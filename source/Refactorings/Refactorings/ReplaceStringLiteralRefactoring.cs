@@ -24,23 +24,35 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax literalExpression,
             int interpolationStartIndex = -1,
             int interpolationLength = 0,
+            bool addNameOf = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             string s = literalExpression.Token.Text;
 
-            if (interpolationStartIndex != -1)
+            var sb = new StringBuilder();
+
+            sb.Append('$');
+            sb.Append(StringUtility.DoubleBraces(s.Substring(0, interpolationStartIndex)));
+            sb.Append('{');
+
+            if (addNameOf)
             {
-                s = StringUtility.DoubleBraces(s.Substring(0, interpolationStartIndex)) +
-                   "{" +
-                   s.Substring(interpolationStartIndex, interpolationLength) +
-                   "}" +
-                   StringUtility.DoubleBraces(s.Substring(interpolationStartIndex + interpolationLength));
+                sb.Append(
+                    NameOfExpression(
+                        StringLiteralParser.Parse(
+                            s,
+                            interpolationStartIndex,
+                            interpolationLength,
+                            isVerbatim: s.StartsWith("@"),
+                            isInterpolatedText: false)));
             }
 
-            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + s)
-                .WithTriviaFrom(literalExpression);
+            sb.Append('}');
+            sb.Append(StringUtility.DoubleBraces(s.Substring(interpolationStartIndex + interpolationLength)));
 
-            return document.ReplaceNodeAsync(literalExpression, interpolatedString, cancellationToken);
+            ExpressionSyntax newNode = ParseExpression(sb.ToString()).WithTriviaFrom(literalExpression);
+
+            return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
         public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)

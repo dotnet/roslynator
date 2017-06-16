@@ -8,6 +8,11 @@ namespace Roslynator
 {
     internal static class TextSpanExtensions
     {
+        public static TextSpan Offset(this TextSpan span, int value)
+        {
+            return new TextSpan(span.Start + value, span.Length);
+        }
+
         public static bool IsBetweenSpans(this TextSpan span, SyntaxNode node)
         {
             if (node == null)

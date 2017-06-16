@@ -4,13 +4,13 @@ namespace Roslynator.CSharp.Refactorings.Test
 {
     internal class InsertInterpolationIntoStringLiteralRefactoring
     {
-        public string SomeMethod()
+        public void Foo(string s)
         {
-            string s = "value: ";
+            s = "x\tx\u1234x\U00001234x\x9x\x09x\x009x{}xFoox\u0046oo";
+            s = @"x\tx\u1234x\U00001234x\x9x\x09x\x009x{}x""xFoox\u0046oo";
 
-            s = "} {} {";
-
-            return s;
+            s = $"x\tx\u1234x\U00001234x\x9x\x09x\x009x{{}}x{s}xFoox\u0046oo";
+            s = $@"x\tx\u1234x\U00001234x\x9x\x09x\x009x{{}}x""x{s}xFoox\u0046oo";
         }
     }
 }
