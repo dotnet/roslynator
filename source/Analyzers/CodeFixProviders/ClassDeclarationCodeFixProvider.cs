@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.MarkClassAsStatic,
-                    DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations);
+                    DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations,
+                    DiagnosticIdentifiers.ImplementExceptionConstructors);
             }
         }
 
@@ -95,6 +96,22 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 cancellationToken =>
                                 {
                                     return AddStaticModifierToAllPartialClassDeclarationsRefactoring.RefactorAsync(
+                                        context.Document,
+                                        classDeclaration,
+                                        cancellationToken);
+                                },
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.ImplementExceptionConstructors:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Generate exception constructors",
+                                cancellationToken =>
+                                {
+                                    return ImplementExceptionConstructorsRefactoring.RefactorAsync(
                                         context.Document,
                                         classDeclaration,
                                         cancellationToken);

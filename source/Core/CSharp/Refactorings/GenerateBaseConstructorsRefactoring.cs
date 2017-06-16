@@ -16,66 +16,94 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class GenerateBaseConstructorsRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
+        public static List<IMethodSymbol> GetMissingBaseConstructors(
+            ClassDeclarationSyntax classDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            if (classDeclaration.Identifier.Span.Contains(context.Span))
+            INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, cancellationToken);
+
+            if (symbol?.IsStatic == false)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                INamedTypeSymbol baseSymbol = symbol.BaseType;
 
-                INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
-
-                if (symbol?.IsStatic == false)
-                {
-                    INamedTypeSymbol baseSymbol = symbol.BaseType;
-
-                    if (baseSymbol != null)
-                    {
-                        IEnumerable<IMethodSymbol> declaredConstructors = classDeclaration.Members
-                            .Where(f => f.IsKind(SyntaxKind.ConstructorDeclaration))
-                            .Select(f => semanticModel.GetDeclaredSymbol(f, context.CancellationToken))
-                            .Where(f => f?.IsMethod() == true && !f.IsStatic)
-                            .Cast<IMethodSymbol>();
-
-                        using (IEnumerator<IMethodSymbol> en = baseSymbol
-                            .InstanceConstructors
-                            .Where(f => !f.IsPrivate() && !f.Parameters.Any(parameter => parameter.Type.IsErrorType()))
-                            .Except(declaredConstructors, ConstructorComparer.Instance)
-                            .GetEnumerator())
-                        {
-                            if (en.MoveNext())
-                            {
-                                var constructors = new List<IMethodSymbol>() { en.Current };
-
-                                string title = "Generate base constructor";
-
-                                if (en.MoveNext())
-                                {
-                                    title += "s";
-                                    constructors.Add(en.Current);
-
-                                    while (en.MoveNext())
-                                        constructors.Add(en.Current);
-                                }
-
-                                context.RegisterRefactoring(
-                                    title,
-                                    cancellationToken => RefactorAsync(context.Document, classDeclaration, constructors.ToArray(), context.CancellationToken));
-                            }
-                        }
-                    }
-                }
+                if (baseSymbol?.IsObject() == false)
+                    return GetMissingBaseConstructors(symbol, baseSymbol);
             }
+
+            return null;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static List<IMethodSymbol> GetMissingBaseConstructors(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
+        {
+            ImmutableArray<IMethodSymbol> constructors = symbol.InstanceConstructors.RemoveAll(f => f.IsImplicitlyDeclared);
+
+            List<IMethodSymbol> missing = null;
+
+            foreach (IMethodSymbol baseConstructor in GetBaseConstructors(baseSymbol))
+            {
+                if (IsAccessibleFromDerivedClass(baseConstructor)
+                    && constructors.IndexOf(baseConstructor, ConstructorComparer.Instance) == -1)
+                {
+                    (missing ?? (missing = new List<IMethodSymbol>())).Add(baseConstructor);
+                }
+            }
+
+            return missing;
+        }
+
+        public static bool IsAnyBaseConstructorMissing(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
+        {
+            ImmutableArray<IMethodSymbol> constructors = symbol.InstanceConstructors;
+
+            foreach (IMethodSymbol baseConstructor in GetBaseConstructors(baseSymbol))
+            {
+                if (!baseConstructor.IsImplicitlyDeclared
+                    && IsAccessibleFromDerivedClass(baseConstructor)
+                    && constructors.IndexOf(baseConstructor, ConstructorComparer.Instance) == -1)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static ImmutableArray<IMethodSymbol> GetBaseConstructors(INamedTypeSymbol baseSymbol)
+        {
+            ImmutableArray<IMethodSymbol> constructors = baseSymbol.InstanceConstructors;
+
+            while (constructors.Length == 1
+                && constructors[0].IsImplicitlyDeclared
+                && baseSymbol.BaseType?.IsObject() == false)
+            {
+                baseSymbol = baseSymbol.BaseType;
+
+                constructors = baseSymbol.InstanceConstructors;
+            }
+
+            return constructors;
+        }
+
+        private static bool IsAccessibleFromDerivedClass(IMethodSymbol methodSymbol)
+        {
+            Accessibility accessibility = methodSymbol.DeclaredAccessibility;
+
+            return accessibility == Accessibility.Public
+                || accessibility == Accessibility.Protected
+                || accessibility == Accessibility.ProtectedOrInternal;
+        }
+
+        public static Task<Document> RefactorAsync(
             Document document,
             ClassDeclarationSyntax classDeclaration,
             IMethodSymbol[] constructorSymbols,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxList<MemberDeclarationSyntax> members = classDeclaration.Members;
 
-            string name = classDeclaration.Identifier.ValueText;
+            string className = classDeclaration.Identifier.ValueText;
 
             int insertIndex = MemberDeclarationComparer.ByKind.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
 
@@ -83,18 +111,16 @@ namespace Roslynator.CSharp.Refactorings
                 ? classDeclaration.OpenBraceToken.FullSpan.End
                 : members[insertIndex - 1].FullSpan.End;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             IEnumerable<ConstructorDeclarationSyntax> constructors = constructorSymbols
-                .Select(symbol => CreateConstructor(symbol, name, semanticModel, position));
+                .Select(symbol => CreateConstructor(symbol, className, semanticModel, position));
 
             ClassDeclarationSyntax newClassDeclaration = classDeclaration
                 .WithMembers(members.InsertRange(insertIndex, constructors));
 
-            return await document.ReplaceNodeAsync(classDeclaration, newClassDeclaration, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(classDeclaration, newClassDeclaration, cancellationToken);
         }
 
-        private static ConstructorDeclarationSyntax CreateConstructor(IMethodSymbol methodSymbol, string name, SemanticModel semanticModel, int position)
+        private static ConstructorDeclarationSyntax CreateConstructor(IMethodSymbol methodSymbol, string className, SemanticModel semanticModel, int position)
         {
             var parameters = new List<ParameterSyntax>();
             var arguments = new List<ArgumentSyntax>();
@@ -124,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings
             ConstructorDeclarationSyntax constructor = ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 Modifiers.FromAccessibility(methodSymbol.DeclaredAccessibility),
-                Identifier(name),
+                Identifier(className),
                 ParameterList(SeparatedList(parameters)),
                 BaseConstructorInitializer(ArgumentList(arguments.ToArray())),
                 Block());

@@ -63,6 +63,7 @@
     <Compile Include="AddMissingSemicolon.cs" />
     <Compile Include="AvoidEmbeddedStatement.cs" />
     <Compile Include="FormatConditionalExpressionOperatorsOnNextLine.cs" />
+    <Compile Include="ImplementExceptionConstructors.cs" />
     <Compile Include="AvoidSingleLineBlock.cs" />
     <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="StaticMemberInGenericClassShouldUseTypeParameter.cs" />

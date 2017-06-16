@@ -199,5 +199,6 @@ namespace Roslynator.CSharp
         public const string DeclareEnumValueAsCombinationOfNames = Prefix + "1191";
         public const string UseRegularStringLiteralInsteadOfVerbatimStringLiteral = Prefix + "1192";
         public const string OverridingMemberCannotChangeParamsModifier = Prefix + "1193";
+        public const string ImplementExceptionConstructors = Prefix + "1194";
     }
 }
