@@ -14,14 +14,14 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration))
                 await AddIdentifierToLocalDeclarationRefactoring.ComputeRefactoringAsync(context, expressionStatement).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceLocalVariable))
             {
                 ExpressionSyntax expression = expressionStatement.Expression;
 
                 if (expression?.IsMissing == false
                     && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression))
                 {
-                    await IntroduceLocalFromStatementThatReturnsValueRefactoring.ComputeRefactoringAsync(context, expressionStatement, expression).ConfigureAwait(false);
+                    await IntroduceLocalVariableRefactoring.ComputeRefactoringAsync(context, expressionStatement, expression).ConfigureAwait(false);
                 }
             }
 

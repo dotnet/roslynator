@@ -80,7 +80,7 @@ namespace Roslynator.VisualStudio
             IntroduceAndInitializeProperty = true;
             IntroduceConstructor = false;
             IntroduceFieldToLockOn = true;
-            IntroduceLocalFromStatementThatReturnsValue = true;
+            IntroduceLocalVariable = true;
             MakeMemberAbstract = true;
             MakeMemberVirtual = true;
             MarkContainingClassAsAbstract = true;
@@ -262,7 +262,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty, IntroduceAndInitializeProperty);
             SetIsEnabled(RefactoringIdentifiers.IntroduceConstructor, IntroduceConstructor);
             SetIsEnabled(RefactoringIdentifiers.IntroduceFieldToLockOn, IntroduceFieldToLockOn);
-            SetIsEnabled(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue, IntroduceLocalFromStatementThatReturnsValue);
+            SetIsEnabled(RefactoringIdentifiers.IntroduceLocalVariable, IntroduceLocalVariable);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberVirtual, MakeMemberVirtual);
             SetIsEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract, MarkContainingClassAsAbstract);
@@ -452,7 +452,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.IntroduceAndInitializeProperty, "Introduce and initialize property", IsEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.IntroduceConstructor, "Introduce constructor", IsEnabled(RefactoringIdentifiers.IntroduceConstructor)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.IntroduceFieldToLockOn, "Introduce field to lock on", IsEnabled(RefactoringIdentifiers.IntroduceFieldToLockOn)));
-            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue, "Introduce local from statement that returns value", IsEnabled(RefactoringIdentifiers.IntroduceLocalFromStatementThatReturnsValue)));
+            refactorings.Add(new RefactoringModel(RefactoringIdentifiers.IntroduceLocalVariable, "Introduce local variable", IsEnabled(RefactoringIdentifiers.IntroduceLocalVariable)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.MakeMemberAbstract, "Make member abstract", IsEnabled(RefactoringIdentifiers.MakeMemberAbstract)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.MakeMemberVirtual, "Make member virtual", IsEnabled(RefactoringIdentifiers.MakeMemberVirtual)));
             refactorings.Add(new RefactoringModel(RefactoringIdentifiers.MarkContainingClassAsAbstract, "Mark containing class as abstract", IsEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)));
@@ -1173,7 +1173,7 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool IntroduceLocalFromStatementThatReturnsValue
+        public bool IntroduceLocalVariable
         {
             get;
             set;

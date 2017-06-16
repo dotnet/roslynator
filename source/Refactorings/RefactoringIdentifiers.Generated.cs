@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string IntroduceAndInitializeProperty = Prefix + "0065";
         public const string IntroduceConstructor = Prefix + "0066";
         public const string IntroduceFieldToLockOn = Prefix + "0067";
-        public const string IntroduceLocalFromStatementThatReturnsValue = Prefix + "0068";
+        public const string IntroduceLocalVariable = Prefix + "0068";
         public const string MakeMemberAbstract = Prefix + "0069";
         public const string MakeMemberVirtual = Prefix + "0070";
         public const string MarkContainingClassAsAbstract = Prefix + "0071";

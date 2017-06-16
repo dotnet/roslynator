@@ -9,18 +9,8 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class IntroduceLocalFromStatementThatReturnsValueRefactoring
+    internal static class IntroduceLocalVariableRefactoring
     {
-        public static async Task ComputeRefactoringAsync(
-            RefactoringContext context,
-            ExpressionStatementSyntax expressionStatement)
-        {
-            ExpressionSyntax expression = expressionStatement.Expression;
-
-            if (expression?.IsMissing == false)
-                await ComputeRefactoringAsync(context, expressionStatement, expression).ConfigureAwait(false);
-        }
-
         public static async Task ComputeRefactoringAsync(
             RefactoringContext context,
             ExpressionStatementSyntax expressionStatement,
@@ -53,6 +43,18 @@ namespace Roslynator.CSharp.Refactorings
                             cancellationToken => RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait: addAwait, cancellationToken: cancellationToken));
                     }
                 }
+            }
+        }
+
+        public static void ComputeRefactoring(RefactoringContext context, UsingStatementSyntax usingStatement)
+        {
+            ExpressionSyntax expression = usingStatement.Expression;
+
+            if (expression != null)
+            {
+                context.RegisterRefactoring(
+                    GetTitle(expression),
+                    cancellationToken => RefactorAsync(context.Document, usingStatement, expression, cancellationToken));
             }
         }
 
@@ -96,6 +98,32 @@ namespace Roslynator.CSharp.Refactorings
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(expressionStatement, newNode, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task<Document> RefactorAsync(
+            Document document,
+            UsingStatementSyntax usingStatement,
+            ExpressionSyntax expression,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.Variable, semanticModel, expression.SpanStart);
+
+            VariableDeclarationSyntax declaration = VariableDeclaration(
+                VarType(),
+                name,
+                EqualsValueClause(expression.WithoutTrivia()));
+
+            declaration = declaration
+                .WithTriviaFrom(expression)
+                .WithFormatterAnnotation();
+
+            UsingStatementSyntax newNode = usingStatement
+                .WithExpression(null)
+                .WithDeclaration(declaration);
+
+            return await document.ReplaceNodeAsync(usingStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

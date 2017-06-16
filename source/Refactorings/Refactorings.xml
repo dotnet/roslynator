@@ -496,9 +496,10 @@
     </Syntaxes>
     <Scope>missing expression</Scope>
   </Refactoring>
-  <Refactoring Id="RR0068" Identifier="IntroduceLocalFromStatementThatReturnsValue" Title="Introduce local from statement that returns value">
+  <Refactoring Id="RR0068" Identifier="IntroduceLocalVariable" Title="Introduce local variable">
     <Syntaxes>
       <Syntax>expression statement</Syntax>
+      <Syntax>expression in using statement</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0069" Identifier="MakeMemberAbstract" Title="Make member abstract">
