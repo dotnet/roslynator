@@ -332,5 +332,35 @@ namespace Roslynator.CSharp
 
             return name;
         }
+
+        public static bool IsNameOfExpression(
+            SyntaxNode node,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return node.IsKind(SyntaxKind.InvocationExpression)
+                && IsNameOfExpression((InvocationExpressionSyntax)node, semanticModel, cancellationToken);
+        }
+
+        public static bool IsNameOfExpression(
+            InvocationExpressionSyntax invocationExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ExpressionSyntax expression = invocationExpression.Expression;
+
+            if (expression?.IsKind(SyntaxKind.IdentifierName) == true)
+            {
+                var identifierName = (IdentifierNameSyntax)expression;
+
+                if (string.Equals(identifierName.Identifier.ValueText, "nameof", StringComparison.Ordinal)
+                    && semanticModel.GetSymbol(invocationExpression, cancellationToken) == null)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

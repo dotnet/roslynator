@@ -19,9 +19,10 @@ namespace Roslynator.CSharp.Refactorings
             var genericName = (GenericNameSyntax)context.Node;
 
             if (!genericName.IsParentKind(
-                SyntaxKind.QualifiedName,
-                SyntaxKind.UsingDirective,
-                SyntaxKind.NameMemberCref))
+                    SyntaxKind.QualifiedName,
+                    SyntaxKind.UsingDirective,
+                    SyntaxKind.NameMemberCref)
+                && !IsWithinNameOfExpression(genericName, context.SemanticModel, context.CancellationToken))
             {
                 TypeArgumentListSyntax typeArgumentList = genericName.TypeArgumentList;
 
@@ -47,7 +48,8 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void Analyze(SyntaxNodeAnalysisContext context, QualifiedNameSyntax qualifiedName)
         {
-            if (!qualifiedName.IsParentKind(SyntaxKind.UsingDirective))
+            if (!qualifiedName.IsParentKind(SyntaxKind.UsingDirective)
+                && !IsWithinNameOfExpression(qualifiedName, context.SemanticModel, context.CancellationToken))
             {
                 var typeSymbol = context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) as INamedTypeSymbol;
 
@@ -70,6 +72,35 @@ namespace Roslynator.CSharp.Refactorings
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(type, newType, cancellationToken);
+        }
+
+        private static bool IsWithinNameOfExpression(
+            SyntaxNode node,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            for (node = node.Parent; node != null; node = node.Parent)
+            {
+                SyntaxKind kind = node.Kind();
+
+                if (kind == SyntaxKind.InvocationExpression)
+                {
+                    if (CSharpUtility.IsNameOfExpression((InvocationExpressionSyntax)node, semanticModel, cancellationToken))
+                        return true;
+                }
+                else if (kind == SyntaxKind.TypeArgumentList)
+                {
+                    break;
+                }
+
+                if (node is StatementSyntax
+                    || node is MemberDeclarationSyntax)
+                {
+                    break;
+                }
+            }
+
+            return false;
         }
     }
 }

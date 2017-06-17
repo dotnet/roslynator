@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+
+#pragma warning disable RCS1013, RCS1127
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -11,13 +14,27 @@ namespace Roslynator.CSharp.Analyzers.Test
     /// </summary>
     public static class SimplifyNullableOfT
     {
-        public static void Foo()
+        public static void Foo(Nullable<int> x, string s)
         {
-            Nullable<int> x = null;
+            x = default(Nullable<int>);
+            x = default(System.Nullable<int>);
+            x = default(global::System.Nullable<int>);
 
-            Nullable<System.Int32> y = null;
+            x = default(Nullable<Int32>);
+            x = default(System.Nullable<Int32>);
+            x = default(global::System.Nullable<Int32>);
 
-            System.Nullable<System.Int32> z = null;
+            s = nameof(List<Nullable<int>>);
+
+            // n
+
+            s = nameof(Nullable<int>);
+            s = nameof(System.Nullable<int>);
+            s = nameof(global::System.Nullable<int>);
+
+            s = nameof(Nullable<int>.Value);
+            s = nameof(System.Nullable<int>.Value);
+            s = nameof(global::System.Nullable<int>.Value);
         }
     }
 }
