@@ -3,6 +3,7 @@
 #pragma warning disable RCS1078, RCS1056, RCS1176
 
 using System;
+using System.Collections.Generic;
 using s = System.String;
 
 namespace Roslynator.CSharp.Analyzers.Test
@@ -15,13 +16,27 @@ namespace Roslynator.CSharp.Analyzers.Test
     /// </summary>
     internal static class UsePredefinedType
     {
-        public static void MethodName()
+        public static void MethodName(String x)
         {
+            x = default(String);
+            x = default(System.String);
+            x = default(global::System.String);
+
+            x = String.Empty;
+            x = System.String.Empty;
+            x = global::System.String.Empty;
+
+            x = nameof(String.Empty);
+            x = nameof(List<String>);
+            x = nameof(Dictionary<System.String, global::System.String>);
+
+            // n
+
             s value = s.Empty;
 
-            String s1 = String.Empty;
-            System.String s2 = System.String.Empty;
-            global::System.String s3 = global::System.String.Empty;
+            x = nameof(String);
+            x = nameof(System.String);
+            x = nameof(global::System.String);
         }
     }
 }

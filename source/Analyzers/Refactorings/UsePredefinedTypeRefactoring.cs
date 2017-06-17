@@ -20,7 +20,8 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxKind.SimpleMemberAccessExpression,
                     SyntaxKind.QualifiedName,
                     SyntaxKind.UsingDirective)
-                && !identifierName.IsPartOfDocumentationComment())
+                && !identifierName.IsPartOfDocumentationComment()
+                && !IsArgumentExpressionOfNameOfExpression(context, identifierName))
             {
                 var typeSymbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken) as ITypeSymbol;
 
@@ -34,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static void AnalyzeXmlCrefAttribute(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeXmlCrefAttribute(SyntaxNodeAnalysisContext context)
         {
             var xmlCrefAttribute = (XmlCrefAttributeSyntax)context.Node;
 
@@ -96,7 +97,8 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void Analyze(SyntaxNodeAnalysisContext context, QualifiedNameSyntax qualifiedName)
         {
-            if (!qualifiedName.IsParentKind(SyntaxKind.UsingDirective))
+            if (!qualifiedName.IsParentKind(SyntaxKind.UsingDirective)
+                && !IsArgumentExpressionOfNameOfExpression(context, qualifiedName))
             {
                 var typeSymbol = context.SemanticModel.GetSymbol(qualifiedName, context.CancellationToken) as ITypeSymbol;
 
@@ -128,6 +130,26 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+        }
+
+        private static bool IsArgumentExpressionOfNameOfExpression(SyntaxNodeAnalysisContext context, SyntaxNode node)
+        {
+            SyntaxNode parent = node.Parent;
+
+            if (parent?.IsKind(SyntaxKind.Argument) == true)
+            {
+                parent = parent.Parent;
+
+                if (parent?.IsKind(SyntaxKind.ArgumentList) == true)
+                {
+                    parent = parent.Parent;
+
+                    return parent != null
+                        && CSharpUtility.IsNameOfExpression(parent, context.SemanticModel, context.CancellationToken);
+                }
+            }
+
+            return false;
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
