@@ -124,24 +124,26 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
+                ITypeSymbol elementType = semanticModel.GetForEachStatementInfo(forEachStatement).ElementType;
 
-                if (info.ElementType != null)
+                if (elementType?.IsErrorType() == false)
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type).ConvertedType;
 
-                    if (!info.ElementType.Equals(typeSymbol))
+                    if (!elementType.Equals(typeSymbol))
                     {
-                        context.RegisterRefactoring(
-                            $"Change type to '{SymbolDisplay.GetMinimalString(info.ElementType, semanticModel, type.SpanStart)}'",
-                            cancellationToken =>
-                            {
-                                return ChangeTypeRefactoring.ChangeTypeAsync(
-                                    context.Document,
-                                    type,
-                                    info.ElementType,
-                                    cancellationToken);
-                            });
+                        if (elementType.SupportsExplicitDeclaration())
+                        {
+                            context.RegisterRefactoring(
+                                $"Change type to '{SymbolDisplay.GetMinimalString(elementType, semanticModel, type.SpanStart)}'",
+                                cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, elementType, cancellationToken));
+                        }
+                        else
+                        {
+                            context.RegisterRefactoring(
+                                "Change type to 'var'",
+                                cancellationToken => ChangeTypeRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken));
+                        }
                     }
                 }
             }
