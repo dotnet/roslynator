@@ -48,7 +48,18 @@ namespace Roslynator.CSharp.Refactorings
                         ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type).ConvertedType;
 
                         if (!initializerTypeSymbol.Equals(typeSymbol))
-                            ChangeType(context, variableDeclaration, initializerTypeSymbol, semanticModel, context.CancellationToken);
+                        {
+                            if (initializerTypeSymbol.SupportsExplicitDeclaration())
+                            {
+                                ChangeType(context, variableDeclaration, initializerTypeSymbol, semanticModel, context.CancellationToken);
+                            }
+                            else
+                            {
+                                context.RegisterRefactoring(
+                                    "Change type to 'var'",
+                                    cancellationToken => ChangeTypeRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken));
+                            }
+                        }
                     }
                 }
             }
