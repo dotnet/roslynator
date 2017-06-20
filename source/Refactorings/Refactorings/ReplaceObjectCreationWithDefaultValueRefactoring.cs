@@ -34,9 +34,12 @@ namespace Roslynator.CSharp.Refactorings
 
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
 
-                                context.RegisterRefactoring(
-                                    "Replace object creation with default value",
-                                    cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
+                                if (typeSymbol?.IsErrorType() == false)
+                                {
+                                    context.RegisterRefactoring(
+                                        "Replace object creation with default value",
+                                        cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
+                                }
 
                                 break;
                             }
@@ -48,9 +51,12 @@ namespace Roslynator.CSharp.Refactorings
 
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
 
-                                context.RegisterRefactoring(
-                                    "Replace array creation with default value",
-                                    cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
+                                if (typeSymbol?.IsArrayType() == true)
+                                {
+                                    context.RegisterRefactoring(
+                                   "Replace array creation with default value",
+                                   cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
+                                }
 
                                 break;
                             }
