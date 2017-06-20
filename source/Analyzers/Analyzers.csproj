@@ -51,7 +51,9 @@
     <Compile Include="CodeFixProviders\CompositeEnumValueContainsUndefinedFlagCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EndRegionDirectiveTriviaCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EnumMemberDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ObjectCreationExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\ArgumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveInapplicableModifierCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantAsyncAwaitCodeFixProvider.cs" />
@@ -74,6 +76,7 @@
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ImplementExceptionConstructorsDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidBoxingOfValueTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseConstantInsteadOfFieldDiagnosticAnalyzer.cs" />
@@ -116,6 +119,8 @@
     <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddOrRemoveRegionNameRefactoring.cs" />
+    <Compile Include="Refactorings\OptimizeStringBuilderAppendCallRefactoring.cs" />
+    <Compile Include="Refactorings\AvoidBoxingOfValueTypeRefactoring.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereAndAnyRefactoring.cs" />
     <Compile Include="Refactorings\ImplementExceptionConstructorsRefactoring.cs" />
     <Compile Include="Refactorings\FormatInitializerWithSingleExpressionOnSingleLineRefactoring.cs" />

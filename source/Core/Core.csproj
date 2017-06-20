@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\BinaryExpressionChain.cs" />
+    <Compile Include="CSharp\StringExpressionKind.cs" />
     <Compile Include="CSharp\StringLiteralParser.cs" />
     <Compile Include="CSharp\StringLiteralParser.StringLiteralParseResult.cs" />
     <Compile Include="CSharp\XmlElementInfo.cs" />

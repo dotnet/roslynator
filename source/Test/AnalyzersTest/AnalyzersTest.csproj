@@ -45,12 +45,14 @@
     <Compile Include="AbstractTypeShouldNotHavePublicConstructors.cs" />
     <Compile Include="AddBraces.cs" />
     <Compile Include="AddBracesToSwitchSectionWithMultipleStatements.cs" />
+    <Compile Include="AvoidBoxingOfValueType.cs" />
     <Compile Include="DeclareEnumValueAsCombinationOfNames.cs" />
     <Compile Include="CallExtensionMethodAsInstanceMethod.cs" />
     <Compile Include="MarkClassAsStatic2.cs" />
     <Compile Include="AddOrRemoveRegionName.cs" />
     <Compile Include="MergeStringExpressions.cs" />
     <Compile Include="OverridingMemberCannotChangeParamsModifier.cs" />
+    <Compile Include="OptimizeStringBuilderAppendCall.cs" />
     <Compile Include="RemoveEmptyInitializer.cs" />
     <Compile Include="RemoveRedundantAutoPropertyInitialization.cs" />
     <Compile Include="RemoveRedundantDefaultSwitchSection.cs" />
