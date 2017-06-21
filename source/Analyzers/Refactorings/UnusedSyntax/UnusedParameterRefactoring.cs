@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 
@@ -27,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             ImmutableArray<ParameterSyntax> unusedParameters = UnusedMethodParameterRefactoring.Instance.FindUnusedSyntax(methodDeclaration, context.SemanticModel, context.CancellationToken);
 
             if (unusedParameters.Any()
-                && !UnusedMethodParameterRefactoring.IsReferencedAsMethodGroup(methodDeclaration, context.SemanticModel, context.CancellationToken))
+                && !IsReferencedAsMethodGroup(context, methodDeclaration))
             {
                 foreach (ParameterSyntax parameter in unusedParameters)
                 {
@@ -72,6 +74,67 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, ParameterSyntax parameter)
         {
             context.ReportDiagnostic(descriptor, parameter, parameter.Identifier.ValueText);
+        }
+
+        private static bool IsReferencedAsMethodGroup(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
+        {
+            ISymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+            string methodName = methodSymbol.Name;
+
+            foreach (SyntaxReference syntaxReference in methodSymbol.ContainingType.DeclaringSyntaxReferences)
+            {
+                SyntaxNode typeDeclaration = syntaxReference.GetSyntax(context.CancellationToken);
+
+                SemanticModel semanticModel = null;
+
+                foreach (SyntaxNode node in typeDeclaration.DescendantNodes())
+                {
+                    if (node.IsKind(SyntaxKind.IdentifierName))
+                    {
+                        var identifierName = (IdentifierNameSyntax)node;
+
+                        if (string.Equals(methodName, identifierName.Identifier.ValueText, StringComparison.Ordinal)
+                            && !IsInvoked(identifierName))
+                        {
+                            if (semanticModel == null)
+                            {
+                                semanticModel = (context.SemanticModel.SyntaxTree == typeDeclaration.SyntaxTree)
+                                    ? context.SemanticModel
+                                    : context.Compilation.GetSemanticModel(typeDeclaration.SyntaxTree);
+                            }
+
+                            if (methodSymbol.Equals(semanticModel.GetSymbol(identifierName, context.CancellationToken)))
+                                return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private static bool IsInvoked(IdentifierNameSyntax identifierName)
+        {
+            SyntaxNode parent = identifierName.Parent;
+
+            switch (parent.Kind())
+            {
+                case SyntaxKind.InvocationExpression:
+                    {
+                        return true;
+                    }
+                case SyntaxKind.SimpleMemberAccessExpression:
+                case SyntaxKind.MemberBindingExpression:
+                    {
+                        if (parent.Parent?.IsKind(SyntaxKind.InvocationExpression) == true)
+                            return true;
+
+                        break;
+                    }
+            }
+
+            return false;
         }
 
         public static Task<Document> RefactorAsync(

@@ -3,34 +3,18 @@
 using System;
 using System.ComponentModel;
 
-#pragma warning disable RCS1100, RCS1016, RCS1023, RCS1079, RCS1185, CS0168
+#pragma warning disable RCS1100, RCS1016, RCS1023, RCS1079, RCS1140, RCS1185, CS0168
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-    public static class UnusedParameter
+    public static partial class UnusedParameter
     {
-        private interface IFoo
+        private static void ExtensionMethod(this Foo foo, object parameter)
         {
-            void Bar(object parameter);
         }
 
         private abstract class Foo : IFoo
         {
-            public void Bar(object parameter) { }
-
-            public virtual void Bar2(object parameter) { }
-
-            public abstract void Bar3(object parameter);
-
-            private void EventHandlerMethod(object sender, EventArgs args) { }
-
-            private void EventHandlerMethod2(object sender, ConsoleCancelEventArgs args) { }
-
-            public void Bar4(object parameter)
-            {
-                Bar4(parameter);
-            }
-
             protected Foo(object parameter)
             {
                 object LocalFunction(object value) => null;
@@ -50,10 +34,23 @@ namespace Roslynator.CSharp.Analyzers.Test
             public void Bar7(object parameter1, object parameter2) { }
 
             public void Bar8(object parameter1, object parameter2) { Bar7(parameter1: null, parameter2: null); }
-        }
 
-        private static void ExtensionMethod(this Foo foo, object parameter)
-        {
+            // n
+
+            public void Bar(object parameter) { }
+
+            public virtual void Bar2(object parameter) { }
+
+            public abstract void Bar3(object parameter);
+
+            private void EventHandlerMethod(object sender, EventArgs args) { }
+
+            private void EventHandlerMethod2(object sender, ConsoleCancelEventArgs args) { }
+
+            public void Bar4(object parameter)
+            {
+                Bar4(parameter);
+            }
         }
 
         private static void ExtensionMethod2(this Foo foo, object parameter)
@@ -96,20 +93,29 @@ namespace Roslynator.CSharp.Analyzers.Test
             public void Bar2(object parameter1, object parameter2) { throw new NotImplementedException(); }
         }
 
-        private partial class Foo3 : Foo
+        private partial class FooPartial : Foo
         {
-            public Foo3(object parameter) : base(parameter) { }
+            public FooPartial(object parameter) : base(parameter) { }
 
             public override void Bar2(object parameter) { }
 
             public override void Bar3(object parameter) { }
 
-            partial void BarPartial<T>();
+            partial void BarPartial<T>(object parameter);
 
-            private void MethodGroup(object parameter)
+            private void Method(object parameter)
             {
-                Action<object> action = MethodGroup;
+                Action<object> action = Method;
             }
+
+            private void Method2(object parameter)
+            {
+            }
+        }
+
+        private interface IFoo
+        {
+            void Bar(object parameter);
         }
     }
 }
