@@ -1,12 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings.UnusedSyntax
 {
@@ -60,56 +58,6 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
         protected override SeparatedSyntaxList<ParameterSyntax> GetSeparatedList(ParameterListSyntax list)
         {
             return list.Parameters;
-        }
-
-        public static bool IsReferencedAsMethodGroup(MethodDeclarationSyntax methodDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            ISymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
-
-            string methodName = methodSymbol.Name;
-
-            foreach (SyntaxNode node in semanticModel
-                .SyntaxTree
-                .GetRoot(cancellationToken)
-                .DescendantNodes())
-            {
-                if (node.IsKind(SyntaxKind.IdentifierName))
-                {
-                    var identifierName = (IdentifierNameSyntax)node;
-
-                    if (string.Equals(methodName, identifierName.Identifier.ValueText, StringComparison.Ordinal)
-                        && semanticModel.GetSymbol(identifierName, cancellationToken)?.Equals(methodSymbol) == true
-                        && !IsInvoked(identifierName))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsInvoked(IdentifierNameSyntax identifierName)
-        {
-            SyntaxNode parent = identifierName.Parent;
-
-            switch (parent.Kind())
-            {
-                case SyntaxKind.InvocationExpression:
-                    {
-                        return true;
-                    }
-                case SyntaxKind.SimpleMemberAccessExpression:
-                case SyntaxKind.MemberBindingExpression:
-                    {
-                        if (parent.Parent?.IsKind(SyntaxKind.InvocationExpression) == true)
-                            return true;
-
-                        break;
-                    }
-            }
-
-            return false;
         }
     }
 }
