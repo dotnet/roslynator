@@ -106,7 +106,7 @@ RCS1105|Merge interpolation into interpolated string|Simplification|x
 RCS1106|Remove empty destructor|Redundancy|x
 RCS1107|Remove redundant 'ToCharArray' call|Redundancy|x
 RCS1108|Add static modifier to all partial class declarations|Readability|x
-RCS1109|Use 'Cast' method instead of 'Select' method|Simplification|x
+RCS1109|Call 'Enumerable\.Cast' instead of 'Enumerable\.Select'|Simplification|x
 RCS1110|Declare type inside namespace|Design|x
 RCS1111|Add braces to switch section with multiple statements|Style|
 RCS1112|Combine 'Enumerable\.Where' method chain|Simplification|x
@@ -184,7 +184,7 @@ RCS1183|Format initializer with single expression on single line|Formatting|x
 RCS1184|Format conditional expression \(format ? and : on next line\)|Formatting|
 RCS1185|Avoid single\-line block|Formatting|
 RCS1186|Use Regex instance instead of static method|Usage|x
-RCS1187|Mark field as const|Design|x
+RCS1187|Use constant instead of field|Design|x
 RCS1188|Remove redundant auto\-property initialization|Redundancy|x
 RCS1189|Add or remove region name|Readability|x
 RCS1190|Join string expressions|Simplification|x
@@ -194,3 +194,5 @@ RCS1193|Overriding member cannot change 'params' modifier|Design|x
 RCS1194|Implement exception constructors|Design|x
 RCS1195|Use ^ operator|Simplification|x
 RCS1196|Call extension method as instance method|Style|x
+RCS1197|Optimize StringBuilder\.Append/AppendLine call|Performance|x
+RCS1198|Avoid unnecessary boxing of value type|Performance|x

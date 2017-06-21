@@ -936,9 +936,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCastMethodInsteadOfSelectMethod">
+  <Analyzer Identifier="CallCastInsteadOfSelect">
     <Id>RCS1109</Id>
-    <Title>Use 'Cast' method instead of 'Select' method.</Title>
+    <Title>Call 'Enumerable.Cast' instead of 'Enumerable.Select'.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1638,9 +1638,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkFieldAsConst">
+  <Analyzer Identifier="UseConstantInsteadOfField">
     <Id>RCS1187</Id>
-    <Title>Mark field as const.</Title>
+    <Title>Use constant instead of field.</Title>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1724,6 +1724,24 @@
     <Title>Call extension method as instance method.</Title>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="OptimizeStringBuilderAppendCall">
+    <Id>RCS1197</Id>
+    <Title>Optimize StringBuilder.Append/AppendLine call.</Title>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="AvoidBoxingOfValueType">
+    <Id>RCS1198</Id>
+    <Title>Avoid unnecessary boxing of value type.</Title>
+    <Category>Performance</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

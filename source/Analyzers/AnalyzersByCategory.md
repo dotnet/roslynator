@@ -11,10 +11,10 @@ Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1
 Design|Declare type inside namespace|RCS1110|x
 Design|Implement exception constructors|RCS1194|x
 Design|Mark class as static|RCS1102|x
-Design|Mark field as const|RCS1187|x
 Design|Mark field as read\-only|RCS1169|x
 Design|Overriding member cannot change 'params' modifier|RCS1193|x
 Design|Static member in generic type should use a type parameter|RCS1158|x
+Design|Use constant instead of field|RCS1187|x
 Design|Use read\-only auto\-implemented property|RCS1170|x
 ErrorFix|Add break statement to switch section|RCS1116|x
 ErrorFix|Add missing semicolon|RCS1122|
@@ -66,7 +66,9 @@ Maintainability|Use nameof operator|RCS1015|x
 Naming|Asynchronous method name should end with 'Async'|RCS1046|
 Naming|Non\-asynchronous method name should not end with 'Async'|RCS1047|x
 Naming|Rename private field according to camel case with underscore|RCS1045|
+Performance|Avoid unnecessary boxing of value type|RCS1198|x
 Performance|Call 'Find' method instead of 'FirstOrDefault' method|RCS1119|x
+Performance|Optimize StringBuilder\.Append/AppendLine call|RCS1197|x
 Performance|Use \[\] instead of calling 'ElementAt'|RCS1120|x
 Performance|Use \[\] instead of calling 'First'|RCS1121|x
 Performance|Use 'Any' method instead of 'Count' method|RCS1083|x
@@ -131,6 +133,7 @@ Redundancy|Remove unnecessary case label|RCS1069|x
 Redundancy|Unused parameter|RCS1163|x
 Redundancy|Unused this parameter|RCS1175|x
 Redundancy|Unused type parameter|RCS1164|x
+Simplification|Call 'Enumerable\.Cast' instead of 'Enumerable\.Select'|RCS1109|x
 Simplification|Call string\.Concat instead of string\.Join|RCS1150|x
 Simplification|Combine 'Enumerable\.Where' method chain|RCS1112|x
 Simplification|Inline lazy initialization|RCS1180|x
@@ -155,7 +158,6 @@ Simplification|Simplify nested using statement|RCS1005|x
 Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
 Simplification|Use ^ operator|RCS1195|x
 Simplification|Use auto\-implemented property|RCS1085|x
-Simplification|Use 'Cast' method instead of 'Select' method|RCS1109|x
 Simplification|Use coalesce expression instead of conditional expression|RCS1084|x
 Simplification|Use coalesce expression instead of if|RCS1173|x
 Simplification|Use coalesce expression|RCS1128|x
