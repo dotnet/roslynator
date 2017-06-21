@@ -1,3 +1,12 @@
+### 1.4.13 (2017-06-21)
+
+#### Analyzers
+
+##### New Analyzers
+
+* OptimizeStringBuilderAppendCall (RCS1197)
+* AvoidBoxingOfValueType (RCS1198)
+
 ### 1.4.12 (2017-06-11)
 
 #### Analyzers
