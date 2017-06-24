@@ -85,6 +85,17 @@ namespace MetadataGenerator
                     markdownGenerator.CreateRefactoringMarkDown(refactoring), fileMustExists: false);
             }
 
+            foreach (string path in Directory.EnumerateFiles(Path.Combine(dirPath, @"..\docs\refactorings")))
+            {
+                if (Path.GetFileName(path) == "Refactorings.md")
+                    continue;
+
+                string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(path);
+
+                if (Array.Find(refactorings, f => f.Identifier == fileNameWithoutExtension) == null)
+                    Console.WriteLine($"file to delete: {path}");
+            }
+
             SaveFile(
                 Path.Combine(dirPath, @"Refactorings\DefaultConfigFile.xml"),
                 XmlGenerator.CreateDefaultConfigFile(refactorings));
