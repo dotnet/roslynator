@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Add static modifier",
+                                "Add 'static' modifier",
                                 cancellationToken =>
                                 {
                                     return AddStaticModifierToAllPartialClassDeclarationsRefactoring.RefactorAsync(

@@ -200,7 +200,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.RemoveRedundantSealedModifier:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove sealed modifier",
+                                "Remove 'sealed' modifier",
                                 cancellationToken => RemoveRedundantSealedModifierRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
