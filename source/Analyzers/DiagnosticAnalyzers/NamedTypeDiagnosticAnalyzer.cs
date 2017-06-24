@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
-                    DiagnosticDescriptors.MarkClassAsStatic,
+                    DiagnosticDescriptors.MakeClassStatic,
                     DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations,
                     DiagnosticDescriptors.DeclareTypeInsideNamespace);
             }
@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             RemovePartialModifierFromTypeWithSinglePartRefactoring.Analyze(context, symbol);
 
-            MarkClassAsStaticRefactoring.Analyze(context, symbol);
+            MakeClassStaticRefactoring.Analyze(context, symbol);
 
             AddStaticModifierToAllPartialClassDeclarationsRefactoring.Analyze(context, symbol);
 

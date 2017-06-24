@@ -14,7 +14,7 @@ using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class MarkClassAsStaticRefactoring
+    internal static class MakeClassStaticRefactoring
     {
         public static void Analyze(SymbolAnalysisContext context, INamedTypeSymbol symbol)
         {
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (classDeclaration?.IsStatic() == false)
                     {
                         context.ReportDiagnostic(
-                            DiagnosticDescriptors.MarkClassAsStatic,
+                            DiagnosticDescriptors.MakeClassStatic,
                             classDeclaration.Identifier);
 
                         break;

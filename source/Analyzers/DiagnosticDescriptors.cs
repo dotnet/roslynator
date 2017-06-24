@@ -939,10 +939,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false
         );
 
-        public static readonly DiagnosticDescriptor MarkClassAsStatic = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MarkClassAsStatic,
-            title: "Mark class as static.",
-            messageFormat: "Mark class as static.",
+        public static readonly DiagnosticDescriptor MakeClassStatic = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.MakeClassStatic,
+            title: "Make class static.",
+            messageFormat: "Make class static.",
             category: DiagnosticCategories.Design,
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
