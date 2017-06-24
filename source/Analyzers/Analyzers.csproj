@@ -323,7 +323,7 @@
     <Compile Include="Refactorings\SwapExpressionsInBinaryExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\ComplexElementInitializerDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />
-    <Compile Include="Refactorings\MarkClassAsStaticRefactoring.cs" />
+    <Compile Include="Refactorings\MakeClassStaticRefactoring.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfStatementWithReturnStatementRefactoring.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />

@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.MarkClassAsStatic,
+                    DiagnosticIdentifiers.MakeClassStatic,
                     DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations,
                     DiagnosticIdentifiers.ImplementExceptionConstructors);
             }
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.MarkClassAsStatic:
+                    case DiagnosticIdentifiers.MakeClassStatic:
                         {
                             CodeAction codeAction = null;
 
@@ -58,10 +58,10 @@ namespace Roslynator.CSharp.CodeFixProviders
                             if (syntaxReferences.Length == 1)
                             {
                                 codeAction = CodeAction.Create(
-                                    $"Mark '{classDeclaration.Identifier.ValueText}' as static",
+                                    $"Make '{classDeclaration.Identifier.ValueText}' static",
                                     cancellationToken =>
                                     {
-                                        return MarkClassAsStaticRefactoring.RefactorAsync(
+                                        return MakeClassStaticRefactoring.RefactorAsync(
                                             context.Document,
                                             classDeclaration,
                                             cancellationToken);
@@ -75,10 +75,10 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     .ToImmutableArray();
 
                                 codeAction = CodeAction.Create(
-                                    $"Mark '{classDeclaration.Identifier.ValueText}' as static",
+                                    $"Make '{classDeclaration.Identifier.ValueText}' static",
                                     cancellationToken =>
                                     {
-                                        return MarkClassAsStaticRefactoring.RefactorAsync(
+                                        return MakeClassStaticRefactoring.RefactorAsync(
                                             context.Solution(),
                                             classDeclarations,
                                             cancellationToken);
