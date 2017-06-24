@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove partial modifier",
+                "Remove 'partial' modifier",
                 cancellationToken => RemovePartialModifierFromTypeWithSinglePartRefactoring.RefactorAsync(context.Document, typeDeclaration, cancellationToken),
                 DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart + EquivalenceKeySuffix);
 
