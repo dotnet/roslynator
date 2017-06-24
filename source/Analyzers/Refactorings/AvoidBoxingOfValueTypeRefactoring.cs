@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings
                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression2, context.CancellationToken);
 
                 if (typeSymbol?.IsValueType == true)
-                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression2);
             }
         }
 
@@ -83,29 +83,36 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
-
-            ParenthesizedExpressionSyntax newExpression = expression
-                .WithoutTrivia()
-                .Parenthesize()
-                .WithSimplifierAnnotation();
-
             ExpressionSyntax newNode = null;
 
-            if (typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
+            if (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
             {
-                newNode = ConditionalAccessExpression(
-                    newExpression,
-                    InvocationExpression(MemberBindingExpression(IdentifierName("ToString")), ArgumentList()));
+                var literalExpression = (LiteralExpressionSyntax)expression;
+
+                newNode = StringLiteralExpression(literalExpression.Token.ValueText);
             }
             else
             {
-                newNode = SimpleMemberInvocationExpression(
-                    newExpression,
-                    IdentifierName("ToString"),
-                    ArgumentList());
+                ParenthesizedExpressionSyntax newExpression = expression
+                    .WithoutTrivia()
+                    .Parenthesize()
+                    .WithSimplifierAnnotation();
+
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                if (semanticModel.GetTypeSymbol(expression, cancellationToken).IsConstructedFrom(SpecialType.System_Nullable_T))
+                {
+                    newNode = ConditionalAccessExpression(
+                        newExpression,
+                        InvocationExpression(MemberBindingExpression(IdentifierName("ToString")), ArgumentList()));
+                }
+                else
+                {
+                    newNode = SimpleMemberInvocationExpression(
+                        newExpression,
+                        IdentifierName("ToString"),
+                        ArgumentList());
+                }
             }
 
             newNode = newNode.WithTriviaFrom(expression);
