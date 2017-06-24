@@ -882,7 +882,7 @@
       <Syntax>expression that has constant value</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0128" Identifier="ReplaceFieldWithConstant" Title="Replace field with constant">
+  <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfField" Title="Use constant instead of field">
     <Syntaxes>
       <Syntax>read-only field</Syntax>
     </Syntaxes>
