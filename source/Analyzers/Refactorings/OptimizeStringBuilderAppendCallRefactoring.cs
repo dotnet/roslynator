@@ -194,15 +194,12 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task<Document> RefactorAsync(
             Document document,
             ArgumentSyntax argument,
+            MemberInvocationExpression memberInvocation,
             CancellationToken cancellationToken)
         {
             ExpressionSyntax expression = argument.Expression;
 
-            var invocationExpression = (InvocationExpressionSyntax)argument.Parent.Parent;
-
-            var expressionStatement = (ExpressionStatementSyntax)invocationExpression.Parent;
-
-            MemberInvocationExpression memberInvocation = MemberInvocationExpression.Create(invocationExpression);
+            var expressionStatement = (ExpressionStatementSyntax)memberInvocation.InvocationExpression.Parent;
 
             ExpressionSyntax stringBuilderExpression = memberInvocation.Expression.WithoutTrivia();
 
@@ -238,9 +235,11 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
+                        InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+
                         InvocationExpressionSyntax newNode = CreateNewInvocationExpression(
                             (InvocationExpressionSyntax)expression,
-                            (InvocationExpressionSyntax)argument.Parent.Parent);
+                            invocationExpression);
 
                         statements = new List<ExpressionStatementSyntax>() { expressionStatement.ReplaceNode(invocationExpression, newNode) };
                         break;

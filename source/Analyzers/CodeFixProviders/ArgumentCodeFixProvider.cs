@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -34,9 +35,11 @@ namespace Roslynator.CSharp.CodeFixProviders
                 {
                     case DiagnosticIdentifiers.OptimizeStringBuilderAppendCall:
                         {
+                            MemberInvocationExpression memberInvocation = MemberInvocationExpression.Create((InvocationExpressionSyntax)argument.Parent.Parent);
+
                             CodeAction codeAction = CodeAction.Create(
-                                "Optimize 'Append' call",
-                                cancellationToken => OptimizeStringBuilderAppendCallRefactoring.RefactorAsync(context.Document, argument, cancellationToken),
+                                $"Optimize '{memberInvocation.NameText}' call",
+                                cancellationToken => OptimizeStringBuilderAppendCallRefactoring.RefactorAsync(context.Document, argument, memberInvocation, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
