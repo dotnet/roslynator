@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
@@ -49,6 +50,28 @@ namespace Roslynator.CSharp.Refactorings
             if (!expression2.IsKind(SyntaxKind.AddExpression))
             {
                 ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression2, context.CancellationToken);
+
+                if (typeSymbol?.IsValueType == true)
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
+            }
+        }
+
+        public static void Interpolation(SyntaxNodeAnalysisContext context)
+        {
+            SyntaxNode node = context.Node;
+
+            if (node.ContainsDiagnostics)
+                return;
+
+            var interpolation = (InterpolationSyntax)context.Node;
+
+            ExpressionSyntax expression = interpolation.Expression;
+
+            if (expression != null)
+            {
+                expression = expression.WalkDownParentheses();
+
+                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                 if (typeSymbol?.IsValueType == true)
                     context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);

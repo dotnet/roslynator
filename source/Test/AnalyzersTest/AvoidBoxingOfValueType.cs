@@ -23,10 +23,12 @@ namespace Roslynator.CSharp.Analyzers.Test
             var options = RegexOptions.None;
 
             s = s + i;
-
             s = s + ni;
-
             s = s + options;
+
+            s = $"{i}";
+            s = $"{ni}";
+            s = $"{options}";
 
             var sb = new StringBuilder();
 

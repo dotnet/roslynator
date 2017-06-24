@@ -23,8 +23,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(f => AvoidBoxingOfValueTypeRefactoring.AddExpression(f), SyntaxKind.AddExpression);
+            context.RegisterSyntaxNodeAction(f => AvoidBoxingOfValueTypeRefactoring.Interpolation(f), SyntaxKind.Interpolation);
         }
     }
 }
