@@ -173,7 +173,7 @@
     <Compile Include="Refactorings\RemovePropertyInitializerRefactoring.cs" />
     <Compile Include="Refactorings\ArgumentParameterNameRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceFieldWithConstantRefactoring.cs" />
+    <Compile Include="Refactorings\UseConstantInsteadOfFieldRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />

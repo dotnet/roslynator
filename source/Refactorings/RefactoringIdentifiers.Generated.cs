@@ -137,7 +137,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = Prefix + "0125";
         public const string ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = Prefix + "0126";
         public const string ReplaceExpressionWithConstantValue = Prefix + "0127";
-        public const string ReplaceFieldWithConstant = Prefix + "0128";
         public const string ReplaceForEachWithFor = Prefix + "0129";
         public const string ReplaceForWithForEach = Prefix + "0130";
         public const string ReplaceForWithWhile = Prefix + "0131";
@@ -178,6 +177,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseBitwiseOperationInsteadOfCallingHasFlag = Prefix + "0164";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "0165";
         public const string UseConditionalExpressionInsteadOfIf = Prefix + "0166";
+        public const string UseConstantInsteadOfField = Prefix + "0128";
         public const string UseElementAccessInsteadOfEnumerableMethod = Prefix + "0167";
         public const string UseEmptyStringLiteralInsteadOfStringEmpty = Prefix + "0168";
         public const string UseExpressionBodiedMember = Prefix + "0169";

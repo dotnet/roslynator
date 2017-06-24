@@ -37,16 +37,16 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceFieldWithConstant)
+            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseConstantInsteadOfField)
                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
                 && fieldDeclaration.IsStatic()
                 && fieldDeclaration.Span.Contains(context.Span))
             {
-                if (await ReplaceFieldWithConstantRefactoring.CanRefactorAsync(context, fieldDeclaration).ConfigureAwait(false))
+                if (await UseConstantInsteadOfFieldRefactoring.CanRefactorAsync(context, fieldDeclaration).ConfigureAwait(false))
                 {
                     context.RegisterRefactoring(
-                        "Replace field with constant",
-                        cancellationToken => ReplaceFieldWithConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
+                        "Use constant instead of field",
+                        cancellationToken => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
                 }
             }
 
