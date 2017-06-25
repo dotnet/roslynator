@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     if (invocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument);
+                                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodInfo.Name);
                                         return;
                                     }
 
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                                         StringConcatenationExpression concatenation;
                                         if (StringConcatenationExpression.TryCreate((BinaryExpressionSyntax)expression, context.SemanticModel, out concatenation))
                                         {
-                                            context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument);
+                                            context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodInfo.Name);
                                             return;
                                         }
                                     }
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
                                         if (methodInfo.IsName("Append")
                                             || invocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
                                         {
-                                            context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument);
+                                            context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodInfo.Name);
                                             return;
                                         }
                                     }
