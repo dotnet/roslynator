@@ -1828,7 +1828,7 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor OptimizeStringBuilderAppendCall = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.OptimizeStringBuilderAppendCall,
             title: "Optimize StringBuilder.Append/AppendLine call.",
-            messageFormat: "Optimize StringBuilder.Append/AppendLine call.",
+            messageFormat: "Optimize StringBuilder.{0} call.",
             category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
