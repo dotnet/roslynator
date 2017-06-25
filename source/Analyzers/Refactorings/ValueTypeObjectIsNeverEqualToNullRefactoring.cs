@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ValueTypeCheckedForNullRefactoring
+    internal static class ValueTypeObjectIsNeverEqualToNullRefactoring
     {
         internal static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                     && !binaryExpression.SpanContainsDirectives())
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.ValueTypeCheckedForNull,
+                        DiagnosticDescriptors.ValueTypeObjectIsNeverEqualToNull,
                         binaryExpression);
                 }
             }

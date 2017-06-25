@@ -116,7 +116,7 @@
     <Compile Include="DiagnosticAnalyzers\UseVarInForEachDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReturnInsteadOfAssignmentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseVarWhenTypeIsNotObviousDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\ValueTypeCheckedForNullDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ValueTypeObjectIsNeverEqualToNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\AddOrRemoveRegionNameRefactoring.cs" />
     <Compile Include="Refactorings\OptimizeStringBuilderAppendCallRefactoring.cs" />
@@ -175,7 +175,7 @@
     <Compile Include="Refactorings\UseRegularStringLiteralInsteadOfVerbatimStringLiteralRefactoring.cs" />
     <Compile Include="Refactorings\UseReturnInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\UseIsOperatorInsteadOfAsOperatorRefactoring.cs" />
-    <Compile Include="Refactorings\ValueTypeCheckedForNullRefactoring.cs" />
+    <Compile Include="Refactorings\ValueTypeObjectIsNeverEqualToNullRefactoring.cs" />
     <Compile Include="Refactorings\OverrideInfo.cs" />
     <Compile Include="Refactorings\OverridingMemberCannotChangeAccessModifiersRefactoring.cs" />
     <Compile Include="Refactorings\UnconstrainedTypeParameterCheckedForNullRefactoring.cs" />
