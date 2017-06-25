@@ -5,16 +5,16 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.Refactorings.ValueTypeCheckedForNullRefactoring;
+using static Roslynator.CSharp.Refactorings.ValueTypeObjectIsNeverEqualToNullRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ValueTypeCheckedForNullDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class ValueTypeObjectIsNeverEqualToNullDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ValueTypeCheckedForNull); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.ValueTypeObjectIsNeverEqualToNull); }
         }
 
         public override void Initialize(AnalysisContext context)
