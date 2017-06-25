@@ -24,6 +24,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             s = s + '\t';
             s = s + ('\t');
             s = s + '"';
+            s = s + '\'';
 
             s = $"{i}";
             s = $"{ni}";
@@ -31,6 +32,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             s = $"{'\t'}";
             s = $"{('\t')}";
             s = $"{'"'}";
+            s = $"{'\''}";
 
             var sb = new StringBuilder();
 

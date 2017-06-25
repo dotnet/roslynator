@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -41,7 +42,9 @@ namespace Roslynator.CSharp.CodeFixProviders
                     case DiagnosticIdentifiers.AvoidBoxingOfValueType:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Call 'ToString'",
+                                (expression.IsKind(SyntaxKind.CharacterLiteralExpression))
+                                    ? "Use string literal instead of character literal"
+                                    : "Call 'ToString'",
                                 cancellationToken => AvoidBoxingOfValueTypeRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
