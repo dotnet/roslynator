@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
 
             VariableDeclarationSyntax declaration = VariableDeclaration(
                 VarType(),
-                name,
+                Identifier(name).WithRenameAnnotation(),
                 EqualsValueClause(expression.WithoutTrivia()));
 
             declaration = declaration
