@@ -14,17 +14,23 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseListInsteadOfYieldRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, YieldStatementSyntax yieldStatement)
+        public static void ComputeRefactoring(RefactoringContext context, YieldStatementSyntax yieldStatement, SemanticModel semanticModel)
         {
             ExpressionSyntax expression = yieldStatement.Expression;
             if (expression != null)
             {
-                BlockSyntax block = GetContainigBlock(yieldStatement);
-                if (block != null)
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                if (typeSymbol?.IsErrorType() == false
+                    && !typeSymbol.IsVoid())
                 {
-                    context.RegisterRefactoring(
-                        "Use List<T> instead of yield",
-                        cancellationToken => RefactorAsync(context.Document, yieldStatement, block, block.Statements, cancellationToken));
+                    BlockSyntax block = GetContainigBlock(yieldStatement);
+                    if (block != null)
+                    {
+                        context.RegisterRefactoring(
+                            "Use List<T> instead of yield",
+                            cancellationToken => RefactorAsync(context.Document, yieldStatement, block, block.Statements, cancellationToken));
+                    }
                 }
             }
         }
