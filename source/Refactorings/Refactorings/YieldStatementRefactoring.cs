@@ -101,7 +101,11 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield))
-                UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, yieldStatement);
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, yieldStatement, semanticModel);
+            }
         }
     }
 }
