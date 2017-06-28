@@ -23,6 +23,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string CallConfigureAwait = Prefix + "0015";
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "0016";
         public const string CallToMethod = Prefix + "0017";
+        public const string ChangeAccessibility = Prefix + "0186";
         public const string ChangeExplicitTypeToVar = Prefix + "0018";
         public const string ChangeMemberTypeAccordingToReturnExpression = Prefix + "0019";
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = Prefix + "0020";

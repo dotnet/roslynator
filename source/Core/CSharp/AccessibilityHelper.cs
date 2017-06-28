@@ -32,24 +32,45 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.EventDeclaration:
                     {
-                        return CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
-                            && CheckAccessorAccessibility(((EventDeclarationSyntax)node).AccessorList, accessibility);
+                        var eventDeclaration = (EventDeclarationSyntax)node;
+
+                        return !eventDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
+                            && CheckAccessorAccessibility(eventDeclaration.AccessorList, accessibility);
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
-                        return CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
-                            && CheckAccessorAccessibility(((IndexerDeclarationSyntax)node).AccessorList, accessibility);
+                        var indexerDeclaration = (IndexerDeclarationSyntax)node;
+
+                        return !indexerDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
+                            && CheckAccessorAccessibility(indexerDeclaration.AccessorList, accessibility);
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
-                        return CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
-                            && CheckAccessorAccessibility(((PropertyDeclarationSyntax)node).AccessorList, accessibility);
+                        var propertyDeclaration = (PropertyDeclarationSyntax)node;
+
+                        return !propertyDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
+                            && CheckAccessorAccessibility(propertyDeclaration.AccessorList, accessibility);
+                    }
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        var methodDeclaration = (MethodDeclarationSyntax)node;
+
+                        return !methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
+                    }
+                case SyntaxKind.EventFieldDeclaration:
+                    {
+                        var eventFieldDeclaration = (EventFieldDeclarationSyntax)node;
+
+                        return !eventFieldDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
                     }
                 case SyntaxKind.ConstructorDeclaration:
                 case SyntaxKind.DelegateDeclaration:
-                case SyntaxKind.EventFieldDeclaration:
                 case SyntaxKind.FieldDeclaration:
-                case SyntaxKind.MethodDeclaration:
                 case SyntaxKind.IncompleteMember:
                     {
                         return CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
