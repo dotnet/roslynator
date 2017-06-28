@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Documentation;
-using Roslynator.CSharp.Helpers;
+using Roslynator.CSharp.Helpers.ModifierHelpers;
 using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
@@ -192,12 +192,12 @@ namespace Roslynator.CSharp
 
         public static ClassDeclarationSyntax InsertModifier(this ClassDeclarationSyntax classDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(classDeclaration, modifier, comparer);
+            return ClassDeclarationModifierHelper.Instance.InsertModifier(classDeclaration, modifier, comparer);
         }
 
         public static ClassDeclarationSyntax InsertModifier(this ClassDeclarationSyntax classDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(classDeclaration, modifierKind, comparer);
+            return ClassDeclarationModifierHelper.Instance.InsertModifier(classDeclaration, modifierKind, comparer);
         }
 
         public static ClassDeclarationSyntax InsertMember(this ClassDeclarationSyntax classDeclaration, MemberDeclarationSyntax member, IMemberDeclarationComparer comparer)
@@ -370,12 +370,12 @@ namespace Roslynator.CSharp
 
         public static ConstructorDeclarationSyntax InsertModifier(this ConstructorDeclarationSyntax constructorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(constructorDeclaration, modifier, comparer);
+            return ConstructorDeclarationModifierHelper.Instance.InsertModifier(constructorDeclaration, modifier, comparer);
         }
 
         public static ConstructorDeclarationSyntax InsertModifier(this ConstructorDeclarationSyntax constructorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(constructorDeclaration, modifierKind, comparer);
+            return ConstructorDeclarationModifierHelper.Instance.InsertModifier(constructorDeclaration, modifierKind, comparer);
         }
         #endregion ConstructorDeclarationSyntax
 
@@ -404,24 +404,24 @@ namespace Roslynator.CSharp
 
         public static ConversionOperatorDeclarationSyntax InsertModifier(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(conversionOperatorDeclaration, modifier, comparer);
+            return ConversionOperatorDeclarationModifierHelper.Instance.InsertModifier(conversionOperatorDeclaration, modifier, comparer);
         }
 
         public static ConversionOperatorDeclarationSyntax InsertModifier(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(conversionOperatorDeclaration, modifierKind, comparer);
+            return ConversionOperatorDeclarationModifierHelper.Instance.InsertModifier(conversionOperatorDeclaration, modifierKind, comparer);
         }
         #endregion ConversionOperatorDeclarationSyntax
 
         #region DelegateDeclarationSyntax
         public static DelegateDeclarationSyntax InsertModifier(this DelegateDeclarationSyntax delegateDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(delegateDeclaration, modifier, comparer);
+            return DelegateDeclarationModifierHelper.Instance.InsertModifier(delegateDeclaration, modifier, comparer);
         }
 
         public static DelegateDeclarationSyntax InsertModifier(this DelegateDeclarationSyntax delegateDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(delegateDeclaration, modifierKind, comparer);
+            return DelegateDeclarationModifierHelper.Instance.InsertModifier(delegateDeclaration, modifierKind, comparer);
         }
 
         public static bool ReturnsVoid(this DelegateDeclarationSyntax delegateDeclaration)
@@ -443,12 +443,12 @@ namespace Roslynator.CSharp
 
         public static DestructorDeclarationSyntax InsertModifier(this DestructorDeclarationSyntax destructorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(destructorDeclaration, modifier, comparer);
+            return DestructorDeclarationModifierHelper.Instance.InsertModifier(destructorDeclaration, modifier, comparer);
         }
 
         public static DestructorDeclarationSyntax InsertModifier(this DestructorDeclarationSyntax destructorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(destructorDeclaration, modifierKind, comparer);
+            return DestructorDeclarationModifierHelper.Instance.InsertModifier(destructorDeclaration, modifierKind, comparer);
         }
         #endregion DestructorDeclarationSyntax
 
@@ -586,12 +586,12 @@ namespace Roslynator.CSharp
 
         public static EnumDeclarationSyntax InsertModifier(this EnumDeclarationSyntax enumDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(enumDeclaration, modifier, comparer);
+            return EnumDeclarationModifierHelper.Instance.InsertModifier(enumDeclaration, modifier, comparer);
         }
 
         public static EnumDeclarationSyntax InsertModifier(this EnumDeclarationSyntax enumDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(enumDeclaration, modifierKind, comparer);
+            return EnumDeclarationModifierHelper.Instance.InsertModifier(enumDeclaration, modifierKind, comparer);
         }
         #endregion EnumDeclarationSyntax
 
@@ -613,12 +613,12 @@ namespace Roslynator.CSharp
 
         public static EventDeclarationSyntax InsertModifier(this EventDeclarationSyntax eventDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(eventDeclaration, modifier, comparer);
+            return EventDeclarationModifierHelper.Instance.InsertModifier(eventDeclaration, modifier, comparer);
         }
 
         public static EventDeclarationSyntax InsertModifier(this EventDeclarationSyntax eventDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(eventDeclaration, modifierKind, comparer);
+            return EventDeclarationModifierHelper.Instance.InsertModifier(eventDeclaration, modifierKind, comparer);
         }
         #endregion EventDeclarationSyntax
 
@@ -630,12 +630,12 @@ namespace Roslynator.CSharp
 
         public static EventFieldDeclarationSyntax InsertModifier(this EventFieldDeclarationSyntax eventFieldDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(eventFieldDeclaration, modifier, comparer);
+            return EventFieldDeclarationModifierHelper.Instance.InsertModifier(eventFieldDeclaration, modifier, comparer);
         }
 
         public static EventFieldDeclarationSyntax InsertModifier(this EventFieldDeclarationSyntax eventFieldDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(eventFieldDeclaration, modifierKind, comparer);
+            return EventFieldDeclarationModifierHelper.Instance.InsertModifier(eventFieldDeclaration, modifierKind, comparer);
         }
         #endregion EventFieldDeclarationSyntax
 
@@ -715,12 +715,12 @@ namespace Roslynator.CSharp
 
         public static FieldDeclarationSyntax InsertModifier(this FieldDeclarationSyntax fieldDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(fieldDeclaration, modifier, comparer);
+            return FieldDeclarationModifierHelper.Instance.InsertModifier(fieldDeclaration, modifier, comparer);
         }
 
         public static FieldDeclarationSyntax InsertModifier(this FieldDeclarationSyntax fieldDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(fieldDeclaration, modifierKind, comparer);
+            return FieldDeclarationModifierHelper.Instance.InsertModifier(fieldDeclaration, modifierKind, comparer);
         }
         #endregion FieldDeclarationSyntax
 
@@ -905,12 +905,12 @@ namespace Roslynator.CSharp
 
         public static IndexerDeclarationSyntax InsertModifier(this IndexerDeclarationSyntax indexerDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(indexerDeclaration, modifier, comparer);
+            return IndexerDeclarationModifierHelper.Instance.InsertModifier(indexerDeclaration, modifier, comparer);
         }
 
         public static IndexerDeclarationSyntax InsertModifier(this IndexerDeclarationSyntax indexerDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(indexerDeclaration, modifierKind, comparer);
+            return IndexerDeclarationModifierHelper.Instance.InsertModifier(indexerDeclaration, modifierKind, comparer);
         }
         #endregion IndexerDeclarationSyntax
 
@@ -992,12 +992,12 @@ namespace Roslynator.CSharp
 
         public static InterfaceDeclarationSyntax InsertModifier(this InterfaceDeclarationSyntax interfaceDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(interfaceDeclaration, modifier, comparer);
+            return InterfaceDeclarationModifierHelper.Instance.InsertModifier(interfaceDeclaration, modifier, comparer);
         }
 
         public static InterfaceDeclarationSyntax InsertModifier(this InterfaceDeclarationSyntax interfaceDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(interfaceDeclaration, modifierKind, comparer);
+            return InterfaceDeclarationModifierHelper.Instance.InsertModifier(interfaceDeclaration, modifierKind, comparer);
         }
         #endregion InterfaceDeclarationSyntax
 
@@ -1255,53 +1255,6 @@ namespace Roslynator.CSharp
                     {
                         Debug.Fail(member.Kind().ToString());
                         return default(SyntaxTokenList);
-                    }
-            }
-        }
-
-        public static MemberDeclarationSyntax WithModifiers(this MemberDeclarationSyntax member, SyntaxTokenList modifiers)
-        {
-            if (member == null)
-                throw new ArgumentNullException(nameof(member));
-
-            switch (member.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.DestructorDeclaration:
-                    return ((DestructorDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.EventDeclaration:
-                    return ((EventDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.EventFieldDeclaration:
-                    return ((EventFieldDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)member).WithModifiers(modifiers);
-                case SyntaxKind.IncompleteMember:
-                    return ((IncompleteMemberSyntax)member).WithModifiers(modifiers);
-                default:
-                    {
-                        Debug.Fail(member.Kind().ToString());
-                        return member;
                     }
             }
         }
@@ -1782,12 +1735,12 @@ namespace Roslynator.CSharp
 
         public static MethodDeclarationSyntax InsertModifier(this MethodDeclarationSyntax methodDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(methodDeclaration, modifier, comparer);
+            return MethodDeclarationModifierHelper.Instance.InsertModifier(methodDeclaration, modifier, comparer);
         }
 
         public static MethodDeclarationSyntax InsertModifier(this MethodDeclarationSyntax methodDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(methodDeclaration, modifierKind, comparer);
+            return MethodDeclarationModifierHelper.Instance.InsertModifier(methodDeclaration, modifierKind, comparer);
         }
         #endregion MethodDeclarationSyntax
 
@@ -1891,12 +1844,12 @@ namespace Roslynator.CSharp
 
         public static OperatorDeclarationSyntax InsertModifier(this OperatorDeclarationSyntax operatorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(operatorDeclaration, modifier, comparer);
+            return OperatorDeclarationModifierHelper.Instance.InsertModifier(operatorDeclaration, modifier, comparer);
         }
 
         public static OperatorDeclarationSyntax InsertModifier(this OperatorDeclarationSyntax operatorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(operatorDeclaration, modifierKind, comparer);
+            return OperatorDeclarationModifierHelper.Instance.InsertModifier(operatorDeclaration, modifierKind, comparer);
         }
 
         public static bool ReturnsVoid(this OperatorDeclarationSyntax operatorDeclaration)
@@ -1967,12 +1920,12 @@ namespace Roslynator.CSharp
 
         public static PropertyDeclarationSyntax InsertModifier(this PropertyDeclarationSyntax propertyDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(propertyDeclaration, modifier, comparer);
+            return PropertyDeclarationModifierHelper.Instance.InsertModifier(propertyDeclaration, modifier, comparer);
         }
 
         public static PropertyDeclarationSyntax InsertModifier(this PropertyDeclarationSyntax propertyDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(propertyDeclaration, modifierKind, comparer);
+            return PropertyDeclarationModifierHelper.Instance.InsertModifier(propertyDeclaration, modifierKind, comparer);
         }
         #endregion PropertyDeclarationSyntax
 
@@ -2189,12 +2142,12 @@ namespace Roslynator.CSharp
 
         public static StructDeclarationSyntax InsertModifier(this StructDeclarationSyntax structDeclaration, SyntaxToken modifier, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(structDeclaration, modifier, comparer);
+            return StructDeclarationModifierHelper.Instance.InsertModifier(structDeclaration, modifier, comparer);
         }
 
         public static StructDeclarationSyntax InsertModifier(this StructDeclarationSyntax structDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
-            return InsertModifierHelper.InsertModifier(structDeclaration, modifierKind, comparer);
+            return StructDeclarationModifierHelper.Instance.InsertModifier(structDeclaration, modifierKind, comparer);
         }
 
         public static StructDeclarationSyntax InsertMember(this StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member, IMemberDeclarationComparer comparer)
@@ -2341,7 +2294,7 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        internal static SyntaxNode WithModifiers(this SyntaxNode node, SyntaxTokenList modifiers)
+        internal static TNode WithModifiers<TNode>(this TNode node, SyntaxTokenList modifiers) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -2349,49 +2302,49 @@ namespace Roslynator.CSharp
             switch (node.Kind())
             {
                 case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((ClassDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((ConstructorDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.OperatorDeclaration:
-                    return ((OperatorDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((OperatorDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    return ((ConversionOperatorDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((ConversionOperatorDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((DelegateDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.DestructorDeclaration:
-                    return ((DestructorDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((DestructorDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.EnumDeclaration:
-                    return ((EnumDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((EnumDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.EventDeclaration:
-                    return ((EventDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((EventDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.EventFieldDeclaration:
-                    return ((EventFieldDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((EventFieldDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((FieldDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((IndexerDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((InterfaceDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((MethodDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((PropertyDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((StructDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.IncompleteMember:
-                    return ((IncompleteMemberSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((IncompleteMemberSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
                 case SyntaxKind.AddAccessorDeclaration:
                 case SyntaxKind.RemoveAccessorDeclaration:
                 case SyntaxKind.UnknownAccessorDeclaration:
-                    return ((AccessorDeclarationSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((AccessorDeclarationSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.LocalDeclarationStatement:
-                    return ((LocalDeclarationStatementSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((LocalDeclarationStatementSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.LocalFunctionStatement:
-                    return ((LocalFunctionStatementSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((LocalFunctionStatementSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 case SyntaxKind.Parameter:
-                    return ((ParameterSyntax)node).WithModifiers(modifiers);
+                    return (TNode)(SyntaxNode)((ParameterSyntax)(SyntaxNode)node).WithModifiers(modifiers);
                 default:
                     {
                         Debug.Fail(node.Kind().ToString());
@@ -2925,12 +2878,22 @@ namespace Roslynator.CSharp
 
         internal static TNode RemoveModifier<TNode>(this TNode node, SyntaxKind modifierKind) where TNode : SyntaxNode
         {
-            return RemoveModifierHelper.RemoveModifier(node, modifierKind);
+            return ModifierHelper.RemoveModifier(node, modifierKind);
         }
 
         internal static TNode RemoveModifier<TNode>(this TNode node, SyntaxToken modifier) where TNode : SyntaxNode
         {
-            return RemoveModifierHelper.RemoveModifier(node, modifier);
+            return ModifierHelper.RemoveModifier(node, modifier);
+        }
+
+        internal static TNode InsertModifier<TNode>(this TNode node, SyntaxKind modifierKind, IModifierComparer comparer = null) where TNode : SyntaxNode
+        {
+            return ModifierHelper.InsertModifier(node, modifierKind, comparer);
+        }
+
+        internal static TNode InsertModifier<TNode>(this TNode node, SyntaxToken modifier, IModifierComparer comparer = null) where TNode : SyntaxNode
+        {
+            return ModifierHelper.InsertModifier(node, modifier, comparer);
         }
 
         public static TNode RemoveComments<TNode>(this TNode node, TextSpan? span = null) where TNode : SyntaxNode
@@ -3192,11 +3155,6 @@ namespace Roslynator.CSharp
             }
 
             return modifiers.Insert(index, modifier);
-        }
-
-        internal static SyntaxTokenList RemoveAccessModifiers(this SyntaxTokenList tokenList)
-        {
-            return TokenList(tokenList.Where(token => !token.IsAccessModifier()));
         }
 
         internal static bool ContainsAccessModifier(this SyntaxTokenList tokenList)

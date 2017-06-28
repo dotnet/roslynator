@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Comparers;
-using Roslynator.CSharp.Helpers;
+using Roslynator.CSharp.Helpers.ModifierHelpers;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
@@ -163,16 +163,16 @@ namespace Roslynator.CSharp
 
                     SyntaxTokenList newModifiers = info.Modifiers.Replace(info.Token, newToken);
 
-                    return (TNode)node.WithModifiers(newModifiers);
+                    return node.WithModifiers(newModifiers);
                 }
             }
 
             if (accessibility != Accessibility.NotApplicable)
             {
-                node = RemoveModifierHelper.RemoveModifierAt(node, Math.Max(info.Index, info.AdditionalIndex));
+                node = ModifierHelper.RemoveModifierAt(node, Math.Max(info.Index, info.AdditionalIndex));
 
                 if (accessibility == Accessibility.ProtectedOrInternal)
-                    node = RemoveModifierHelper.RemoveModifierAt(node, Math.Min(info.Index, info.AdditionalIndex));
+                    node = ModifierHelper.RemoveModifierAt(node, Math.Min(info.Index, info.AdditionalIndex));
             }
 
             if (newAccessibility != Accessibility.NotApplicable)
@@ -189,24 +189,24 @@ namespace Roslynator.CSharp
             {
                 case Accessibility.Private:
                     {
-                        return InsertModifierHelper.InsertModifier(node, SyntaxKind.PrivateKeyword, comparer);
+                        return node.InsertModifier(SyntaxKind.PrivateKeyword, comparer);
                     }
                 case Accessibility.Protected:
                     {
-                        return InsertModifierHelper.InsertModifier(node, SyntaxKind.ProtectedKeyword, comparer);
+                        return node.InsertModifier(SyntaxKind.ProtectedKeyword, comparer);
                     }
                 case Accessibility.Internal:
                     {
-                        return InsertModifierHelper.InsertModifier(node, SyntaxKind.InternalKeyword, comparer);
+                        return node.InsertModifier(SyntaxKind.InternalKeyword, comparer);
                     }
                 case Accessibility.Public:
                     {
-                        return InsertModifierHelper.InsertModifier(node, SyntaxKind.PublicKeyword, comparer);
+                        return node.InsertModifier(SyntaxKind.PublicKeyword, comparer);
                     }
                 case Accessibility.ProtectedOrInternal:
                     {
-                        node = InsertModifierHelper.InsertModifier(node, SyntaxKind.ProtectedKeyword, comparer);
-                        node = InsertModifierHelper.InsertModifier(node, SyntaxKind.InternalKeyword, comparer);
+                        node = node.InsertModifier(SyntaxKind.ProtectedKeyword, comparer);
+                        node = node.InsertModifier(SyntaxKind.InternalKeyword, comparer);
 
                         return node;
                     }

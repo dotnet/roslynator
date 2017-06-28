@@ -77,9 +77,7 @@ namespace Roslynator.CSharp.Refactorings
             TypeDeclarationSyntax typeDeclaration,
             CancellationToken cancellationToken)
         {
-            SyntaxNode newNode = typeDeclaration.RemoveModifier(SyntaxKind.PartialKeyword);
-
-            return document.ReplaceNodeAsync(typeDeclaration, newNode, cancellationToken);
+            return document.RemoveModifierAsync(typeDeclaration, SyntaxKind.PartialKeyword, cancellationToken);
         }
     }
 }

@@ -92,9 +92,9 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     SyntaxNode node = token.Parent;
 
-                                    SyntaxNode newNode = RemoveModifierHelper.RemoveModifier(node, token);
+                                    SyntaxNode newNode = node.RemoveModifier(token);
 
-                                    newNode = InsertModifierHelper.InsertModifier(newNode, SyntaxKind.PartialKeyword, ModifierComparer.Instance);
+                                    newNode = newNode.InsertModifier(SyntaxKind.PartialKeyword, ModifierComparer.Instance);
 
                                     return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                                 },

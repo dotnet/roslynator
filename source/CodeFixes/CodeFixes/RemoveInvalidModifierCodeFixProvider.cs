@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Helpers;
+using Roslynator.CSharp.Helpers.ModifierHelpers;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -108,7 +109,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                 SyntaxNode newNode = node;
 
                                                 for (int i = indexes.Count - 1; i >= 0; i--)
-                                                    newNode = RemoveModifierHelper.RemoveModifierAt(newNode, indexes[i]);
+                                                    newNode = ModifierHelper.RemoveModifierAt(newNode, indexes[i]);
 
                                                 return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                                             },
@@ -227,7 +228,7 @@ namespace Roslynator.CSharp.CodeFixes
                 $"Remove '{token.ToString()}' modifier",
                 cancellationToken =>
                 {
-                    SyntaxNode newNode = RemoveModifierHelper.RemoveModifier(node, token);
+                    SyntaxNode newNode = node.RemoveModifier(token);
 
                     return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                 },
@@ -268,7 +269,7 @@ namespace Roslynator.CSharp.CodeFixes
                     "Remove accessibility modifiers",
                     cancellationToken =>
                     {
-                        SyntaxNode newNode = node.WithModifiers(node.GetModifiers().RemoveAccessModifiers());
+                        SyntaxNode newNode = ModifierHelper.RemoveAccessModifiers(node);
 
                         return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                     },
@@ -312,7 +313,7 @@ namespace Roslynator.CSharp.CodeFixes
             SyntaxToken firstModifier = modifiers.First();
 
             if (modifiers.Count == 1)
-                return RemoveModifierHelper.RemoveModifier(node, firstModifier);
+                return node.RemoveModifier(firstModifier);
 
             SyntaxToken nextToken = modifiers.Last().GetNextToken();
 

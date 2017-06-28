@@ -45,12 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                "Remove 'new' modifier",
-                               cancellationToken =>
-                               {
-                                   MemberDeclarationSyntax newNode = memberDeclaration.RemoveModifier(SyntaxKind.NewKeyword);
-
-                                   return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
-                               },
+                               cancellationToken => context.Document.RemoveModifierAsync(memberDeclaration, SyntaxKind.NewKeyword, cancellationToken),
                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

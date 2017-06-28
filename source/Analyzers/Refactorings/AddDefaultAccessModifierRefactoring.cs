@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxTokenList modifiers = declaration.GetModifiers();
 
-            Accessibility accessibility = GetAccessModifier(context, declaration, modifiers);
+            Accessibility accessibility = GetAccessibility(context, declaration, modifiers);
 
             if (accessibility != Accessibility.NotApplicable)
             {
@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static Accessibility GetAccessModifier(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
+        private static Accessibility GetAccessibility(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxTokenList modifiers)
         {
             if (!modifiers.ContainsAccessModifier())
             {
@@ -85,9 +85,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (declaration2 != null)
                     {
-                        SyntaxTokenList modifiers = declaration2.GetModifiers();
-
-                        Accessibility accessibility2 = DetermineAccessibility(modifiers);
+                        Accessibility accessibility2 = declaration2.GetModifiers().GetAccessibility();
 
                         if (accessibility2 != Accessibility.NotApplicable)
                         {
@@ -102,44 +100,6 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     }
                 }
-            }
-
-            return accessibility;
-        }
-
-        private static Accessibility DetermineAccessibility(SyntaxTokenList tokenList)
-        {
-            int count = tokenList.Count;
-
-            for (int i = 0; i < count; i++)
-            {
-                switch (tokenList[i].Kind())
-                {
-                    case SyntaxKind.PublicKeyword:
-                        return Accessibility.Public;
-                    case SyntaxKind.PrivateKeyword:
-                        return Accessibility.Private;
-                    case SyntaxKind.InternalKeyword:
-                        return GetAccessModifier(tokenList, i + 1, count, SyntaxKind.ProtectedKeyword, Accessibility.Internal);
-                    case SyntaxKind.ProtectedKeyword:
-                        return GetAccessModifier(tokenList, i + 1, count, SyntaxKind.InternalKeyword, Accessibility.Protected);
-                }
-            }
-
-            return Accessibility.NotApplicable;
-        }
-
-        private static Accessibility GetAccessModifier(
-            SyntaxTokenList tokenList,
-            int startIndex,
-            int count,
-            SyntaxKind kind,
-            Accessibility accessibility)
-        {
-            for (int i = startIndex; i < count; i++)
-            {
-                if (tokenList[i].Kind() == kind)
-                    return Accessibility.ProtectedOrInternal;
             }
 
             return accessibility;
@@ -193,6 +153,8 @@ namespace Roslynator.CSharp.Refactorings
                     return GetToken(((EventFieldDeclarationSyntax)declaration).Declaration);
             }
 
+            Debug.Fail(declaration.Kind().ToString());
+
             return default(SyntaxToken);
         }
 
@@ -215,126 +177,9 @@ namespace Roslynator.CSharp.Refactorings
             Accessibility accessibility,
             CancellationToken cancellationToken)
         {
-            MemberDeclarationSyntax newNode = GetNewMemberDeclaration(member, accessibility, ModifierComparer.Instance);
+            MemberDeclarationSyntax newNode = AccessibilityHelper.ChangeAccessibility(member, accessibility, ModifierComparer.Instance);
 
             return document.ReplaceNodeAsync(member, newNode, cancellationToken);
-        }
-
-        private static MemberDeclarationSyntax GetNewMemberDeclaration(MemberDeclarationSyntax member, Accessibility accessibility, IModifierComparer comparer)
-        {
-            SyntaxKind modifierKind = GetFirstModifierKind(accessibility);
-
-            switch (member.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    {
-                        ClassDeclarationSyntax declaration = ((ClassDeclarationSyntax)member)
-                            .InsertModifier(modifierKind, comparer);
-
-                        if (accessibility == Accessibility.ProtectedOrInternal)
-                            return declaration.InsertModifier(SyntaxKind.InternalKeyword, comparer);
-
-                        return declaration;
-                    }
-                case SyntaxKind.ConstructorDeclaration:
-                    {
-                        return ((ConstructorDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    {
-                        return ((ConversionOperatorDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.DelegateDeclaration:
-                    {
-                        return ((DelegateDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.EnumDeclaration:
-                    {
-                        return ((EnumDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.EventDeclaration:
-                    {
-                        return ((EventDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.EventFieldDeclaration:
-                    {
-                        return ((EventFieldDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.FieldDeclaration:
-                    {
-                        return ((FieldDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.IndexerDeclaration:
-                    {
-                        return ((IndexerDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.InterfaceDeclaration:
-                    {
-                        InterfaceDeclarationSyntax declaration = ((InterfaceDeclarationSyntax)member)
-                            .InsertModifier(modifierKind, comparer);
-
-                        if (accessibility == Accessibility.ProtectedOrInternal)
-                            return declaration.InsertModifier(SyntaxKind.InternalKeyword, comparer);
-
-                        return declaration;
-                    }
-                case SyntaxKind.MethodDeclaration:
-                    {
-                        return ((MethodDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.OperatorDeclaration:
-                    {
-                        return ((OperatorDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.PropertyDeclaration:
-                    {
-                        return ((PropertyDeclarationSyntax)member).InsertModifier(modifierKind, comparer);
-                    }
-                case SyntaxKind.StructDeclaration:
-                    {
-                        StructDeclarationSyntax declaration = ((StructDeclarationSyntax)member)
-                            .InsertModifier(modifierKind, comparer);
-
-                        if (accessibility == Accessibility.ProtectedOrInternal)
-                            return declaration.InsertModifier(SyntaxKind.InternalKeyword, comparer);
-
-                        return declaration;
-                    }
-                default:
-                    {
-                        Debug.Fail(member.Kind().ToString());
-                        return member;
-                    }
-            }
-        }
-
-        private static SyntaxKind GetFirstModifierKind(Accessibility accessibility)
-        {
-            switch (accessibility)
-            {
-                case Accessibility.Public:
-                    {
-                        return SyntaxKind.PublicKeyword;
-                    }
-                case Accessibility.Internal:
-                    {
-                        return SyntaxKind.InternalKeyword;
-                    }
-                case Accessibility.Protected:
-                case Accessibility.ProtectedOrInternal:
-                    {
-                        return SyntaxKind.ProtectedKeyword;
-                    }
-                case Accessibility.Private:
-                    {
-                        return SyntaxKind.PrivateKeyword;
-                    }
-                default:
-                    {
-                        Debug.Fail(accessibility.ToString());
-                        return SyntaxKind.None;
-                    }
-            }
         }
     }
 }

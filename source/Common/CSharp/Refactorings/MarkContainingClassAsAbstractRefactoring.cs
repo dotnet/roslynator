@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Comparers;
+using Roslynator.CSharp.Helpers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -60,12 +62,10 @@ namespace Roslynator.CSharp.Refactorings
             MemberDeclarationSyntax memberDeclaration,
             CancellationToken cancellationToken)
         {
-            var classDeclaration = (ClassDeclarationSyntax)memberDeclaration.Parent;
-
-            return InsertModifierRefactoring.RefactorAsync(
-                document,
-                classDeclaration,
+            return document.InsertModifierAsync(
+                memberDeclaration.Parent,
                 SyntaxKind.AbstractKeyword,
+                ModifierComparer.Instance,
                 cancellationToken);
         }
     }

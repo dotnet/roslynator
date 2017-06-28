@@ -78,7 +78,6 @@
     <Compile Include="CSharp\Refactorings\If\IfElseToYieldReturnWithBooleanExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfElseToYieldReturnWithCoalesceExpression.cs" />
     <Compile Include="CSharp\Refactorings\If\IfElseToYieldReturnWithConditionalExpression.cs" />
-    <Compile Include="CSharp\Refactorings\InsertModifierRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExpandExpressionBodyRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />

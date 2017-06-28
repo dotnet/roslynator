@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Comparers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -246,7 +247,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (newNode.Modifiers.Any())
             {
-                newNode = newNode.AddModifiers(ConstKeyword());
+                newNode = newNode.InsertModifier(SyntaxKind.ConstKeyword, ModifierComparer.Instance);
             }
             else
             {

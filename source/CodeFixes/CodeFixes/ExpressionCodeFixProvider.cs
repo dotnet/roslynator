@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 "Remove 'const' modifier",
                                 cancellationToken =>
                                 {
-                                    LocalDeclarationStatementSyntax newNode = RemoveModifierHelper.RemoveModifier(localDeclarationStatement, SyntaxKind.ConstKeyword);
+                                    LocalDeclarationStatementSyntax newNode = localDeclarationStatement.RemoveModifier(SyntaxKind.ConstKeyword);
 
                                     return context.Document.ReplaceNodeAsync(localDeclarationStatement, newNode, cancellationToken);
                                 },

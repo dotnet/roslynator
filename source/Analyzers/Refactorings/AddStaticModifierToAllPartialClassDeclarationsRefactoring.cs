@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -70,10 +71,10 @@ namespace Roslynator.CSharp.Refactorings
             ClassDeclarationSyntax classDeclaration,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return InsertModifierRefactoring.RefactorAsync(
-                document,
+            return document.InsertModifierAsync(
                 classDeclaration,
                 SyntaxKind.StaticKeyword,
+                ModifierComparer.Instance,
                 cancellationToken);
         }
     }

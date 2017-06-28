@@ -6,7 +6,13 @@ namespace Roslynator.CSharp.CodeFixes.Test
     {
         private class Foo
         {
+            /// <summary></summary>
             new public void Bar()
+            {
+            }
+
+            /// <summary></summary>
+            new void Bar2()
             {
             }
         }
