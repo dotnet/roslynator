@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -82,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                newNode = parameter.AddModifiers(CSharpFactory.ParamsKeyword());
+                newNode = parameter.InsertModifier(SyntaxKind.ParamsKeyword, ModifierComparer.Instance);
             }
 
             newNode = newNode.WithFormatterAnnotation();

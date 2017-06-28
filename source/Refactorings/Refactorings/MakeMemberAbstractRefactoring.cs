@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -102,21 +101,23 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return propertyDeclaration
+            propertyDeclaration = propertyDeclaration
                 .WithExpressionBody(null)
                 .WithSemicolonToken(default(SyntaxToken))
-                .WithAccessorList(accessorList)
-                .WithModifiers(CreateModifiers(propertyDeclaration.Modifiers));
+                .WithAccessorList(accessorList);
+
+            return UpdateModifiers(propertyDeclaration, propertyDeclaration.Modifiers);
         }
 
         private static MethodDeclarationSyntax MakeAbstract(MethodDeclarationSyntax methodDeclaration)
         {
-            return methodDeclaration
+            methodDeclaration = methodDeclaration
                 .WithExpressionBody(null)
                 .WithSemicolonToken(default(SyntaxToken))
                 .WithBody(null)
-                .WithModifiers(CreateModifiers(methodDeclaration.Modifiers))
                 .WithSemicolonToken(SemicolonToken());
+
+            return UpdateModifiers(methodDeclaration, methodDeclaration.Modifiers);
         }
 
         private static IndexerDeclarationSyntax MakeAbstract(IndexerDeclarationSyntax indexerDeclaration)
@@ -148,41 +149,24 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return indexerDeclaration
+            indexerDeclaration = indexerDeclaration
                 .WithExpressionBody(null)
                 .WithSemicolonToken(default(SyntaxToken))
-                .WithAccessorList(accessorList)
-                .WithModifiers(CreateModifiers(indexerDeclaration.Modifiers));
+                .WithAccessorList(accessorList);
+
+            return UpdateModifiers(indexerDeclaration, indexerDeclaration.Modifiers);
         }
 
-        private static SyntaxTokenList CreateModifiers(SyntaxTokenList modifiers)
-        {
-            modifiers = RemoveVirtualKeywordIfPresent(modifiers);
-
-            modifiers = AddAbstractKeywordIfNotPresent(modifiers);
-
-            if (!ModifierComparer.Instance.IsListSorted(modifiers))
-                modifiers = TokenList(modifiers.OrderBy(f => f, ModifierComparer.Instance));
-
-            return modifiers;
-        }
-
-        private static SyntaxTokenList RemoveVirtualKeywordIfPresent(SyntaxTokenList modifiers)
-        {
-            int index = modifiers.IndexOf(SyntaxKind.VirtualKeyword);
-
-            if (index != -1)
-                return modifiers.RemoveAt(index);
-
-            return modifiers;
-        }
-
-        private static SyntaxTokenList AddAbstractKeywordIfNotPresent(SyntaxTokenList modifiers)
+        private static TNode UpdateModifiers<TNode>(TNode node, SyntaxTokenList modifiers) where TNode : SyntaxNode
         {
             if (!modifiers.Contains(SyntaxKind.AbstractKeyword))
-                modifiers = modifiers.Add(AbstractKeyword());
+            {
+                modifiers = modifiers.InsertModifier(SyntaxKind.AbstractKeyword, ModifierComparer.Instance);
 
-            return modifiers;
+                node = (TNode)node.WithModifiers(modifiers);
+            }
+
+            return node.RemoveModifier(SyntaxKind.VirtualKeyword);
         }
     }
 }

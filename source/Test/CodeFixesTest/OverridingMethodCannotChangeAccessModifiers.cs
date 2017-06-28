@@ -8,6 +8,7 @@ namespace Roslynator.CSharp.CodeFixes.Test
     {
         public class Foo : FooBase
         {
+            /// <summary></summary>
             protected internal override string Method() => null;
 
             internal override string Property => null;

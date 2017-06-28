@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Comparers;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,78 +18,11 @@ namespace Roslynator.CSharp.Refactorings
             OverrideInfo overrideInfo,
             CancellationToken cancellationToken)
         {
-            SyntaxTokenList modifiers = memberDeclaration.GetModifiers();
-
-            Accessibility accessibility = overrideInfo.Symbol.DeclaredAccessibility;
-
             Accessibility newAccessibility = overrideInfo.OverriddenSymbol.DeclaredAccessibility;
 
-            int index = IndexOfFirstAccessModifier(modifiers);
+            MemberDeclarationSyntax newNode = AccessibilityHelper.ChangeAccessibility(memberDeclaration, newAccessibility, ModifierComparer.Instance);
 
-            SyntaxTokenList newModifiers = modifiers;
-
-            if (index == -1)
-            {
-                foreach (SyntaxToken modifier in Modifiers.FromAccessibility(newAccessibility))
-                    newModifiers = newModifiers.InsertModifier(modifier, ModifierComparer.Instance);
-            }
-            else
-            {
-                SyntaxToken modifier = modifiers[index];
-
-                if (accessibility == Accessibility.ProtectedOrInternal)
-                {
-                    SyntaxToken newModifier = CreateAccessModifier(newAccessibility)
-                        .WithLeadingTrivia(modifier.LeadingTrivia)
-                        .WithTrailingTrivia(modifiers[index + 1].TrailingTrivia);
-
-                    newModifiers = newModifiers
-                        .ReplaceAt(index, newModifier)
-                        .RemoveAt(index + 1);
-                }
-                else if (newAccessibility == Accessibility.ProtectedOrInternal)
-                {
-                    newModifiers = newModifiers
-                        .ReplaceAt(index, ProtectedKeyword().WithLeadingTrivia(modifier.LeadingTrivia))
-                        .Insert(index + 1, InternalKeyword().WithTrailingTrivia(modifier.TrailingTrivia));
-                }
-                else
-                {
-                    SyntaxToken newModifier = CreateAccessModifier(newAccessibility).WithTriviaFrom(modifier);
-
-                    newModifiers = newModifiers.ReplaceAt(index, newModifier);
-                }
-            }
-
-            return document.ReplaceNodeAsync(memberDeclaration, memberDeclaration.WithModifiers(newModifiers), cancellationToken);
-        }
-
-        private static SyntaxToken CreateAccessModifier(Accessibility accessibility)
-        {
-            switch (accessibility)
-            {
-                case Accessibility.Private:
-                    return PrivateKeyword();
-                case Accessibility.Protected:
-                    return ProtectedKeyword();
-                case Accessibility.Internal:
-                    return InternalKeyword();
-                case Accessibility.Public:
-                    return PublicKeyword();
-                default:
-                    return default(SyntaxToken);
-            }
-        }
-
-        private static int IndexOfFirstAccessModifier(SyntaxTokenList modifiers)
-        {
-            for (int i = 0; i < modifiers.Count; i++)
-            {
-                if (modifiers[i].IsAccessModifier())
-                    return i;
-            }
-
-            return -1;
+            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
 
         internal static OverrideInfo GetOverrideInfo(MemberDeclarationSyntax memberDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)

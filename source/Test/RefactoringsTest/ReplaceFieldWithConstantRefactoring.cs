@@ -4,8 +4,9 @@ namespace Roslynator.CSharp.Refactorings.Test
 {
     internal static class ReplaceFieldWithConstantRefactoring
     {
+        public static readonly string Value = "Value";
 
-        public static readonly string Value = "value";
-
+        /// <summary>.</summary>
+        static readonly string Value2 = "Value2";
     }
 }

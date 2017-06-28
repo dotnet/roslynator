@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Roslynator.CSharp.CSharpFactory;
+using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -35,21 +35,10 @@ namespace Roslynator.CSharp.Refactorings
             FieldDeclarationSyntax node,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxTokenList modifiers = node.Modifiers;
-
-            int index = modifiers.IndexOf(SyntaxKind.StaticKeyword);
-
-            if (index != -1)
-                modifiers = modifiers.RemoveAt(index);
-
-            index = modifiers.IndexOf(SyntaxKind.ReadOnlyKeyword);
-
-            modifiers = modifiers
-                .RemoveAt(index)
-                .Insert(index, ConstKeyword().WithTriviaFrom(modifiers[index]));
-
             FieldDeclarationSyntax newNode = node
-                .WithModifiers(modifiers)
+                .RemoveModifier(SyntaxKind.StaticKeyword)
+                .RemoveModifier(SyntaxKind.ReadOnlyKeyword)
+                .InsertModifier(SyntaxKind.ConstKeyword, ModifierComparer.Instance)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);

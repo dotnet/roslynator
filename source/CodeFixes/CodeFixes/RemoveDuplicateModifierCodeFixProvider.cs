@@ -42,14 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 $"Remove '{token}' modifier",
-                                cancellationToken =>
-                                {
-                                    SyntaxNode node = token.Parent;
-
-                                    SyntaxNode newNode = node.RemoveModifier(token);
-
-                                    return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
-                                },
+                                cancellationToken => context.Document.RemoveModifierAsync(token.Parent, token, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

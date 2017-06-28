@@ -52,14 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Add 'override' modifier",
-                                    cancellationToken =>
-                                    {
-                                        SyntaxTokenList newModifiers = memberDeclaration.GetModifiers().InsertModifier(SyntaxKind.OverrideKeyword, ModifierComparer.Instance);
-
-                                        MemberDeclarationSyntax newNode = memberDeclaration.WithModifiers(newModifiers);
-
-                                        return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, context.CancellationToken);
-                                    },
+                                    cancellationToken => context.Document.InsertModifierAsync(memberDeclaration, SyntaxKind.OverrideKeyword, ModifierComparer.Instance, cancellationToken),
                                     GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddOverrideModifier));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -69,14 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Add 'new' modifier",
-                                    cancellationToken =>
-                                    {
-                                        SyntaxTokenList newModifiers = memberDeclaration.GetModifiers().InsertModifier(SyntaxKind.NewKeyword, ModifierComparer.Instance);
-
-                                        MemberDeclarationSyntax newNode = memberDeclaration.WithModifiers(newModifiers);
-
-                                        return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, context.CancellationToken);
-                                    },
+                                    cancellationToken => context.Document.InsertModifierAsync(memberDeclaration, SyntaxKind.NewKeyword, ModifierComparer.Instance, cancellationToken),
                                     GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddNewModifier));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);

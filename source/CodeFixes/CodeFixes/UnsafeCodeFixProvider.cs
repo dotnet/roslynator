@@ -107,11 +107,14 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     var memberDeclaration = (MemberDeclarationSyntax)ancestor;
 
-                                    SyntaxNode newNode = InsertModifierHelper.InsertModifier(ancestor, SyntaxKind.UnsafeKeyword, ModifierComparer.Instance);
-
                                     CodeAction codeAction = CodeAction.Create(
                                         "Add 'unsafe' modifier to containing declaration",
-                                        cancellationToken => context.Document.ReplaceNodeAsync(ancestor, newNode, context.CancellationToken),
+                                        cancellationToken =>
+                                        {
+                                            SyntaxNode newNode = ancestor.InsertModifier(SyntaxKind.UnsafeKeyword, ModifierComparer.Instance);
+
+                                            return context.Document.ReplaceNodeAsync(ancestor, newNode, context.CancellationToken);
+                                        },
                                         GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddUnsafeModifier));
 
                                     context.RegisterCodeFix(codeAction, diagnostic);
