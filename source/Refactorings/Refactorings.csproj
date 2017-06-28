@@ -42,6 +42,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="RefactoringIdentifiers.Deprecated.cs" />
     <Compile Include="Refactorings\DeclarationPatternRefactoring.cs" />
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />
@@ -73,7 +74,6 @@
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToNestedIfRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfToIfRefactoring.cs" />
-    <Compile Include="Refactorings\IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="Refactorings\ConstructorDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\LockStatementRefactoring.cs" />
     <Compile Include="Refactorings\CopyDocumentationCommentFromBaseMemberRefactoring.cs" />
@@ -100,7 +100,6 @@
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceExpressionStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring`1.cs" />
     <Compile Include="Refactorings\PromoteLocalToParameterRefactoring.cs" />
@@ -156,7 +155,6 @@
     <Compile Include="Refactorings\AddIdentifierToLocalDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\ExpressionStatementRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllMemberDeclarationsRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
     <Compile Include="Refactorings\ReverseReversedForLoopRefactoringy.cs" />
     <Compile Include="Refactorings\StatementRefactoring.cs" />
     <Compile Include="Refactorings\ElseClauseRefactoring.cs" />
@@ -176,7 +174,6 @@
     <Compile Include="Refactorings\UseConstantInsteadOfFieldRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
-    <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromParenthesesRefactoring.cs" />
     <Compile Include="Refactorings\ExtractGenericTypeRefactoring.cs" />
     <Compile Include="Refactorings\LambdaExpressionRefactoring.cs" />
@@ -229,7 +226,6 @@
     <Compile Include="Refactorings\UseElementAccessInsteadOfEnumerableMethodRefactoring.cs" />
     <Compile Include="Refactorings\NodeInList\DuplicateParameterRefactoring.cs" />
     <Compile Include="Refactorings\ExpandCoalesceExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\AddBooleanComparisonRefactoring.cs" />
     <Compile Include="Refactorings\ExpandEventRefactoring.cs" />
     <Compile Include="Refactorings\PropertyDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\StringLiteralExpressionRefactoring.cs" />
@@ -305,7 +301,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="DefaultConfigFile.xml" />
     <Content Include="Refactorings.xml">
       <SubType>Designer</SubType>
     </Content>

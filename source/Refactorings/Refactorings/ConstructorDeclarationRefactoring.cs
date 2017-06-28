@@ -9,15 +9,6 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
-                && constructorDeclaration.Span.Contains(context.Span)
-                && MarkMemberAsStaticRefactoring.CanRefactor(constructorDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Mark constructor as static",
-                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, constructorDeclaration, cancellationToken));
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && constructorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6

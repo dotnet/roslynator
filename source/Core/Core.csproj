@@ -41,7 +41,11 @@
     <AssemblyOriginatorKeyFile>Roslynator.Core.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSharp\AccessibilityHelper.cs" />
+    <Compile Include="CSharp\AccessibilityInfo.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
+    <Compile Include="CSharp\Extensions\AccessibilityExtensions.cs" />
+    <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="CSharp\BinaryExpressionChain.cs" />
     <Compile Include="CSharp\StringExpressionKind.cs" />
     <Compile Include="CSharp\StringLiteralParser.cs" />
@@ -54,7 +58,7 @@
     <Compile Include="CSharp\CSharpUtility.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisFlagsExtensions.cs" />
     <Compile Include="CSharp\Analysis\CSharpAnalysis.cs" />
-    <Compile Include="CSharp\CSharpErrorCodes.cs" />
+    <Compile Include="CSharp\CompilerDiagnosticIdentifiers.cs" />
     <Compile Include="CSharp\Documentation\AddBaseOrNewDocumentationCommentRewriter.cs" />
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentData.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentInserter.cs" />
@@ -105,7 +109,6 @@
     <Compile Include="CSharp\Syntax\MemberInvocationExpression.cs" />
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
-    <Compile Include="Extensions\DiagnosticExtensions.cs" />
     <Compile Include="Extensions\CodeFixContextExtensions.cs" />
     <Compile Include="Utilities\FlagsUtility.cs" />
     <Compile Include="Utilities\Deferred`1.cs" />

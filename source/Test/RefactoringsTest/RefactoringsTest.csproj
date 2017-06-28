@@ -120,7 +120,6 @@
     <Compile Include="RemoveAllDocumentationCommentsRefactoring.cs" />
     <Compile Include="RemoveConditionFromLastElseRefactoring.cs" />
     <Compile Include="RemoveAllMemberDeclarationsRefactoring.cs" />
-    <Compile Include="ReplaceCountWithLengthOrLengthWithCountRefactoring.cs" />
     <Compile Include="AddIdentifierToVariableDeclarationRefactoring.cs" />
     <Compile Include="SplitLocalDeclarationRefactoring.cs" />
     <Compile Include="ReplaceAnonymousMethodWithLambdaExpressionRefactoring.cs" />
@@ -133,8 +132,6 @@
     <Compile Include="RemoveBracesRefactoring.cs" />
     <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="InsertInterpolationIntoInterpolatedStringRefactoring.cs" />
-    <Compile Include="ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
-    <Compile Include="MarkMemberAsStaticRefactoring.cs" />
     <Compile Include="GenerateSwitchSectionsRefactoring.cs" />
     <Compile Include="ExtractExpressionFromConditionRefactoring.cs" />
     <Compile Include="UseExpressionBodiedMemberRefactoring.cs" />
@@ -198,7 +195,6 @@
     <Compile Include="ExpandLambdaExpressionBodyRefactoring.cs" />
     <Compile Include="ExpandInitializerRefactoring.cs" />
     <Compile Include="ExpandPropertyRefactoring.cs" />
-    <Compile Include="ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="RemoveParenthesesRefactoring.cs" />
     <Compile Include="ExtractGenericTypeRefactoring.cs" />
     <Compile Include="ExtractStatementRefactoring.cs" />
@@ -219,7 +215,6 @@
     <Compile Include="RemoveBracesFromIfElseRefactoring.cs" />
     <Compile Include="AddBracesToIfElseRefactoring.cs" />
     <Compile Include="AddBracesRefactoring.cs" />
-    <Compile Include="AddBooleanComparisonRefactoring.cs" />
     <Compile Include="UseElementAccessInsteadOfEnumerableMethodRefactoring.cs" />
     <Compile Include="MergeAttributesRefactoring.cs" />
     <Compile Include="SplitAttributesRefactoring.cs" />

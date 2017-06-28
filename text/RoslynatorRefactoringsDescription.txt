@@ -10,7 +10,10 @@
         <a href="http://github.com/JosefPihrt/Roslynator">Project Website</a>
     </li>  
     <li>
-        <a href="http://github.com/JosefPihrt/Roslynator#list-of-refactorings">List of Refactorings</a>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md">List of Refactorings</a>
+    </li>  
+    <li>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/CodeFixes/README.md>List of Code Fixes (that fix compiler diagnostics (like CS0001))</a>
     </li>  
     <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md">Release Notes</a>

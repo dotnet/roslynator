@@ -23,7 +23,6 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
-                    DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement,
                     DiagnosticIdentifiers.UseCoalesceExpression,
                     DiagnosticIdentifiers.InlineLazyInitialization,
                     DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
@@ -62,39 +61,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement:
-                        {
-                            switch (statement.Kind())
-                            {
-                                case SyntaxKind.ReturnStatement:
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            "Remove 'return'",
-                                            cancellationToken => ReplaceReturnStatementWithExpressionStatementRefactoring.RefactorAsync(context.Document, (ReturnStatementSyntax)statement, cancellationToken),
-                                            diagnostic.Id + EquivalenceKeySuffix);
-
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                        break;
-                                    }
-                                case SyntaxKind.YieldReturnStatement:
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            "Remove 'yield return'",
-                                            cancellationToken => ReplaceReturnStatementWithExpressionStatementRefactoring.RefactorAsync(context.Document, (YieldStatementSyntax)statement, cancellationToken),
-                                            diagnostic.Id + EquivalenceKeySuffix);
-
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                        break;
-                                    }
-                                default:
-                                    {
-                                        Debug.Fail(statement.Kind().ToString());
-                                        break;
-                                    }
-                            }
-
                             break;
                         }
                     case DiagnosticIdentifiers.UseCoalesceExpression:

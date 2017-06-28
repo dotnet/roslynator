@@ -1,10 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Refactorings>
-  <Refactoring Id="RR0001" Identifier="AddBooleanComparison" Title="Add boolean comparison">
-    <Syntaxes>
-      <Syntax>boolean? expression in place where must be boolean expression</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="RR0002" Identifier="AddBraces" Title="Add braces">
     <Syntaxes>
       <Syntax>do statement</Syntax>
@@ -303,12 +298,6 @@
       <Syntax>auto-property</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0042" Identifier="ExtractDeclarationFromUsingStatement" Title="Extract declaration from using statement">
-    <Syntaxes>
-      <Syntax>using statement</Syntax>
-    </Syntaxes>
-    <Scope>declaration</Scope>
-  </Refactoring>
   <Refactoring Id="RR0043" Identifier="ExtractExpressionFromCondition" Title="Extract expression from condition">
     <Syntaxes>
       <Syntax>if statement</Syntax>
@@ -520,11 +509,6 @@
       <Syntax>property declaration</Syntax>
       <Syntax>indexer declaration</Syntax>
       <Syntax>event declaration</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="RR0072" Identifier="MarkMemberAsStatic" Title="Mark member as static">
-    <Syntaxes>
-      <Syntax>non-static field/method/property/event in static class</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0073" Identifier="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement">
@@ -844,12 +828,6 @@
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0122" Identifier="ReplaceCountWithLengthOrLengthWithCount" Title="Replace Count property with Length property (or Length with Count)">
-    <Syntaxes>
-      <Syntax>member access expression</Syntax>
-    </Syntaxes>
-    <Scope>name</Scope>
-  </Refactoring>
   <Refactoring Id="RR0123" Identifier="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement">
     <Syntaxes>
       <Syntax>do statement</Syntax>
@@ -980,11 +958,6 @@
   <Refactoring Id="RR0145" Identifier="ReplaceStringFormatWithInterpolatedString" Title="Replace string.Format with interpolated string">
     <Syntaxes>
       <Syntax>string.Format method</Syntax>
-    </Syntaxes>
-  </Refactoring>
-  <Refactoring Id="RR0146" Identifier="ReplaceStringLiteralWithCharacterLiteral" Title="Replace string literal with character literal">
-    <Syntaxes>
-      <Syntax>string literal</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0147" Identifier="ReplaceSwitchWithIfElse" Title="Replace switch statement with if-else">

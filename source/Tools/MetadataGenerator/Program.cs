@@ -40,6 +40,18 @@ namespace MetadataGenerator
 
             Console.WriteLine($"number of refactorings: {refactorings.Length}");
 
+            CodeFixDescriptor[] codeFixes = CodeFixDescriptor
+                .LoadFromFile(Path.Combine(dirPath, @"CodeFixes\CodeFixes.xml"))
+                .OrderBy(f => f.Identifier, _invariantComparer)
+                .ToArray();
+
+            CompilerDiagnosticDescriptor[] diagnostics = CompilerDiagnosticDescriptor
+                .LoadFromFile(Path.Combine(dirPath, @"CodeFixes\Diagnostics.xml"))
+                .OrderBy(f => f.Id, _invariantComparer)
+                .ToArray();
+
+            Console.WriteLine($"number of code fixes: {codeFixes.Length}");
+
             AnalyzerDescriptor[] analyzers = AnalyzerDescriptor
                 .LoadFromFile(Path.Combine(dirPath, @"Analyzers\Analyzers.xml"))
                 .OrderBy(f => f.Id, _invariantComparer)
@@ -78,6 +90,14 @@ namespace MetadataGenerator
                 Path.Combine(dirPath, @"Refactorings\README.md"),
                 markdownGenerator.CreateRefactoringsReadMe(refactorings));
 
+            SaveFile(
+                Path.Combine(dirPath, @"CodeFixes\README.md"),
+                markdownGenerator.CreateCodeFixesReadMe(codeFixes, diagnostics));
+
+            SaveFile(
+                Path.Combine(dirPath, @"CodeFixes\CodeFixesByDiagnosticId.md"),
+                markdownGenerator.CreateCodeFixesByDiagnosticId(codeFixes, diagnostics));
+
             foreach (RefactoringDescriptor refactoring in refactorings)
             {
                 SaveFile(
@@ -97,8 +117,8 @@ namespace MetadataGenerator
             }
 
             SaveFile(
-                Path.Combine(dirPath, @"Refactorings\DefaultConfigFile.xml"),
-                XmlGenerator.CreateDefaultConfigFile(refactorings));
+                Path.Combine(dirPath, "DefaultConfigFile.xml"),
+                XmlGenerator.CreateDefaultConfigFile(refactorings, codeFixes));
 
             SaveFile(
                 Path.Combine(dirPath, @"Analyzers\README.md"),

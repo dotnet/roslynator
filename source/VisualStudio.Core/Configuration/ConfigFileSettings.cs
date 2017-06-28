@@ -44,6 +44,10 @@ namespace Roslynator.Configuration
                 {
                     LoadRefactorings(child, settings);
                 }
+                else if (name == "CodeFixes")
+                {
+                    LoadCodeFixes(child, settings);
+                }
             }
         }
 
@@ -73,6 +77,23 @@ namespace Roslynator.Configuration
                 bool isEnabled;
                 if (element.TryGetAttributeValueAsBoolean("IsEnabled", out isEnabled))
                     settings.Refactorings[id] = isEnabled;
+            }
+        }
+
+        private static void LoadCodeFixes(XElement element, ConfigFileSettings settings)
+        {
+            foreach (XElement child in element.Elements("CodeFix"))
+                LoadCodeFix(child, settings);
+        }
+
+        private static void LoadCodeFix(XElement element, ConfigFileSettings settings)
+        {
+            string id;
+            if (element.TryGetAttributeValueAsString("Id", out id))
+            {
+                bool isEnabled;
+                if (element.TryGetAttributeValueAsBoolean("IsEnabled", out isEnabled))
+                    settings.CodeFixes[id] = isEnabled;
             }
         }
     }

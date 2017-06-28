@@ -1,12 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using System.Collections.Immutable;
-using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace Roslynator
 {
@@ -19,15 +18,6 @@ namespace Roslynator
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return GetDiagnostic(semanticModel, id, span, cancellationToken) != null;
-        }
-
-        public static bool ContainsCompilerDiagnostic(
-            this SemanticModel semanticModel,
-            string id,
-            TextSpan? span = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return GetCompilerDiagnostic(semanticModel, id, span, cancellationToken) != null;
         }
 
         public static Diagnostic GetDiagnostic(
@@ -45,29 +35,6 @@ namespace Roslynator
             {
                 if (string.Equals(diagnostics[i].Id, id, StringComparison.Ordinal))
                     return diagnostics[i];
-            }
-
-            return null;
-        }
-
-        public static Diagnostic GetCompilerDiagnostic(
-            this SemanticModel semanticModel,
-            string id,
-            TextSpan? span = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            ImmutableArray<Diagnostic> diagnostics = semanticModel.GetDiagnostics(span, cancellationToken);
-
-            for (int i = 0; i < diagnostics.Length; i++)
-            {
-                if (string.Equals(diagnostics[i].Id, id, StringComparison.Ordinal)
-                    && diagnostics[i].IsCompilerDiagnostic())
-                {
-                    return diagnostics[i];
-                }
             }
 
             return null;

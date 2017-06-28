@@ -11,13 +11,6 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBooleanComparison))
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                AddBooleanComparisonRefactoring.ComputeRefactoring(context, expression, semanticModel);
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractExpressionFromCondition)
                 && context.Span.IsBetweenSpans(expression))
             {

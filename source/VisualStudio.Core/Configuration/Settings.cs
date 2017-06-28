@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using Roslynator.CSharp.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.Configuration
@@ -12,6 +13,8 @@ namespace Roslynator.Configuration
 
         public Dictionary<string, bool> Refactorings { get; set; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
+        public Dictionary<string, bool> CodeFixes { get; set; } = new Dictionary<string, bool>(StringComparer.Ordinal);
+
         public virtual void Update(Settings settings)
         {
             PrefixFieldIdentifierWithUnderscore = settings.PrefixFieldIdentifierWithUnderscore;
@@ -20,6 +23,11 @@ namespace Roslynator.Configuration
 
             foreach (KeyValuePair<string, bool> kvp in settings.Refactorings)
                 Refactorings[kvp.Key] = kvp.Value;
+
+            CodeFixes.Clear();
+
+            foreach (KeyValuePair<string, bool> kvp in settings.CodeFixes)
+                CodeFixes[kvp.Key] = kvp.Value;
         }
 
         public void ApplyTo(RefactoringSettings settings)
@@ -28,6 +36,12 @@ namespace Roslynator.Configuration
 
             foreach (KeyValuePair<string, bool> kvp in Refactorings)
                 settings.SetRefactoring(kvp.Key, kvp.Value);
+        }
+
+        public void ApplyTo(CodeFixSettings settings)
+        {
+            foreach (KeyValuePair<string, bool> kvp in CodeFixes)
+                settings.SetCodeFix(kvp.Key, kvp.Value);
         }
     }
 }

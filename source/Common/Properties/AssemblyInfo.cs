@@ -32,6 +32,12 @@ using System.Runtime.InteropServices;
     + "8183943c6eb96fce9d8773c4acfaa27abdf712580c89f284de3cb440abc59a7152501d5c4dabf4"
     + "83721eba")]
 
+[assembly: InternalsVisibleTo("Roslynator.CSharp.CodeFixes, PublicKey=0024000004800000940000000602000000240000525341310004000001000100fdda624b34aff4"
+    + "a1cf16c648096fd7b1a6e96504643548e9a7dcbfd68a931547ce5b93cc0d226933ed6916430996"
+    + "538977ee05972c1c4ccde1e7199eecde8ad67ab397c09d4626a7b58003746be42e6c02560128c6"
+    + "53981af331e2c3ce8932209c17c27ef91f0bcc9594885730f62ae3d6584bf4b4849ddd850ec20d"
+    + "8d1be8c7")]
+
 // Version information for an assembly consists of the following four values:
 //
 //      Major Version

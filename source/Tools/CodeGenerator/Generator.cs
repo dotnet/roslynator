@@ -4,6 +4,9 @@ namespace CodeGenerator
 {
     public abstract class Generator
     {
-        public string DefaultNamespace { get; set; } = "Roslynator.CSharp.Refactorings";
+        public virtual string DefaultNamespace
+        {
+            get { return "Roslynator.CSharp.Refactorings"; }
+        }
     }
 }

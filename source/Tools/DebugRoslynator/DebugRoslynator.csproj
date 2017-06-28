@@ -76,6 +76,10 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\CodeFixes\CodeFixes.csproj">
+      <Project>{9c9ef15b-2cb0-485e-bb48-90f670f6a3d8}</Project>
+      <Name>CodeFixes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Core\Core.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>Core</Name>

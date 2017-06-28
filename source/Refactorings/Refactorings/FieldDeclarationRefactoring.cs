@@ -49,15 +49,6 @@ namespace Roslynator.CSharp.Refactorings
                         cancellationToken => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
                 }
             }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
-                && fieldDeclaration.Span.Contains(context.Span)
-                && MarkMemberAsStaticRefactoring.CanRefactor(fieldDeclaration))
-            {
-                context.RegisterRefactoring(
-                   "Mark field as static",
-                   cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
-            }
         }
     }
 }

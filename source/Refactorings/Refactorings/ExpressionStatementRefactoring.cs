@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ReplaceStatementWithIf;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,9 +19,34 @@ namespace Roslynator.CSharp.Refactorings
                 ExpressionSyntax expression = expressionStatement.Expression;
 
                 if (expression?.IsMissing == false
-                    && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression))
+                    && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(expression)
+                    && !(expression is AssignmentExpressionSyntax)
+                    && !expression.IsIncrementOrDecrementExpression())
                 {
-                    await IntroduceLocalVariableRefactoring.ComputeRefactoringAsync(context, expressionStatement, expression).ConfigureAwait(false);
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() == false)
+                    {
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                        if (typeSymbol?.IsErrorType() == false
+                            && !typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))
+                            && !typeSymbol.IsVoid())
+                        {
+                            bool addAwait = false;
+
+                            if (typeSymbol.IsConstructedFromTaskOfT(semanticModel))
+                            {
+                                ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken);
+
+                                addAwait = enclosingSymbol.IsAsyncMethod();
+                            }
+
+                            context.RegisterRefactoring(
+                                IntroduceLocalVariableRefactoring.GetTitle(expression),
+                                cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken));
+                        }
+                    }
                 }
             }
 

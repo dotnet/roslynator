@@ -16,15 +16,6 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, PropertyDeclarationSyntax propertyDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkMemberAsStatic)
-                && propertyDeclaration.Span.Contains(context.Span)
-                && MarkMemberAsStaticRefactoring.CanRefactor(propertyDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Mark property as static",
-                    cancellationToken => MarkMemberAsStaticRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
                 && propertyDeclaration.HeaderSpan().Contains(context.Span)
                 && MarkContainingClassAsAbstractRefactoring.CanRefactor(propertyDeclaration))

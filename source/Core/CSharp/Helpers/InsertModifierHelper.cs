@@ -10,6 +10,48 @@ namespace Roslynator.CSharp.Helpers
 {
     internal static class InsertModifierHelper
     {
+        public static SyntaxNode InsertModifier(SyntaxNode node, SyntaxKind modifierKind, IModifierComparer comparer)
+        {
+            return InsertModifier(node, Token(modifierKind), comparer);
+        }
+
+        public static SyntaxNode InsertModifier(SyntaxNode node, SyntaxToken modifier, IModifierComparer comparer)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            SyntaxTokenList modifiers = node.GetModifiers();
+
+            if (!modifiers.Any())
+            {
+                int position = modifiers.FullSpan.End;
+
+                if (node.FullSpan.Contains(position))
+                {
+                    SyntaxToken nextToken = node.FindToken(position);
+
+                    if (!nextToken.IsKind(SyntaxKind.None))
+                    {
+                        SyntaxTriviaList trivia = nextToken.LeadingTrivia;
+
+                        if (trivia.Any())
+                        {
+                            SyntaxTriviaList leadingTrivia = modifier.LeadingTrivia;
+
+                            if (!leadingTrivia.IsSingleElasticMarker())
+                                trivia = trivia.AddRange(leadingTrivia);
+
+                            return node
+                                .ReplaceToken(nextToken, nextToken.WithoutLeadingTrivia())
+                                .WithModifiers(TokenList(modifier.WithLeadingTrivia(trivia)));
+                        }
+                    }
+                }
+            }
+
+            return node.WithModifiers(modifiers.InsertModifier(modifier, comparer));
+        }
+
         public static ClassDeclarationSyntax InsertModifier(ClassDeclarationSyntax classDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
         {
             return InsertModifier(classDeclaration, Token(modifierKind), comparer);

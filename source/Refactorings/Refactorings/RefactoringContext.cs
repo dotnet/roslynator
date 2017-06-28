@@ -719,7 +719,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!fUsingStatement
                             && kind == SyntaxKind.UsingStatement)
                         {
-                            await UsingStatementRefactoring.ComputeRefactoringsAsync(this, (UsingStatementSyntax)statement).ConfigureAwait(false);
+                            UsingStatementRefactoring.ComputeRefactorings(this, (UsingStatementSyntax)statement);
                             fUsingStatement = true;
                         }
 

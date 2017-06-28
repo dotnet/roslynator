@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -14,7 +13,6 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression != null
                 && context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.AddBooleanComparison,
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
                     RefactoringIdentifiers.CallToMethod))

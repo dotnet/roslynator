@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -97,6 +96,18 @@ namespace Roslynator.CSharp
             }
         }
 
+        public static bool CanCreate(StatementSyntax statement)
+        {
+            switch (statement?.Parent?.Kind())
+            {
+                case SyntaxKind.Block:
+                case SyntaxKind.SwitchSection:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         public static StatementContainer Create(StatementSyntax statement)
         {
             if (statement == null)
@@ -174,9 +185,19 @@ namespace Roslynator.CSharp
             return WithStatements(Statements.Remove(statementInList));
         }
 
+        public StatementContainer RemoveStatementAt(int index)
+        {
+            return WithStatements(Statements.RemoveAt(index));
+        }
+
         public StatementContainer ReplaceStatement(StatementSyntax statementInList, StatementSyntax newStatement)
         {
             return WithStatements(Statements.Replace(statementInList, newStatement));
+        }
+
+        public StatementContainer ReplaceStatementAt(int index, StatementSyntax newStatement)
+        {
+            return WithStatements(Statements.ReplaceAt(index, newStatement));
         }
 
         public bool Equals(StatementContainer other)

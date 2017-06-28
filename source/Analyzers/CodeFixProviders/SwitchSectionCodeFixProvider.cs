@@ -24,7 +24,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.RemoveRedundantDefaultSwitchSection,
                     DiagnosticIdentifiers.DefaultLabelShouldBeLastLabelInSwitchSection,
                     DiagnosticIdentifiers.AddBracesToSwitchSectionWithMultipleStatements,
-                    DiagnosticIdentifiers.AddBreakStatementToSwitchSection,
                     DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent);
             }
         }
@@ -71,16 +70,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 AddBracesToSwitchSectionRefactoring.Title,
                                 cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.AddBreakStatementToSwitchSection:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add break;",
-                                cancellationToken => AddBreakStatementToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
