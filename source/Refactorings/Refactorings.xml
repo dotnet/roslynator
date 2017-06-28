@@ -1192,4 +1192,9 @@
       <Syntax>object creation expression</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0186" Identifier="ChangeAccessibility" Title="Change accessibility">
+    <Syntaxes>
+      <Syntax>access modifier</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

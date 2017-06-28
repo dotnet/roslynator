@@ -44,7 +44,7 @@
     <Compile Include="CSharp\AccessibilityHelper.cs" />
     <Compile Include="CSharp\AccessibilityInfo.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
-    <Compile Include="CSharp\Extensions\AccessibilityExtensions.cs" />
+    <Compile Include="Extensions\AccessibilityExtensions.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\AbstractModifierHelper.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\AccessorDeclarationModifierHelper.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\ClassDeclarationModifierHelper.cs" />

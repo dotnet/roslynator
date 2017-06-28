@@ -242,6 +242,18 @@ namespace Roslynator.CSharp.Refactorings
                             SemicolonTokenRefactoring.ComputeRefactorings(this, token);
                             break;
                         }
+                    case SyntaxKind.PublicKeyword:
+                    case SyntaxKind.InternalKeyword:
+                    case SyntaxKind.ProtectedKeyword:
+                    case SyntaxKind.PrivateKeyword:
+                        {
+                            {
+                                if (IsRefactoringEnabled(RefactoringIdentifiers.ChangeAccessibility))
+                                    await AccessModifierRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
+
+                                break;
+                            }
+                        }
                 }
             }
         }
