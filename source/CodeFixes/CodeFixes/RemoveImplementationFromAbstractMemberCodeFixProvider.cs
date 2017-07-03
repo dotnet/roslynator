@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.EventInInterfaceCannotHaveAddOrRemoveAccessors,
-                    CompilerDiagnosticIdentifiers.MemberCannotDeclareBodyBecauseItIsNotMarkedAbstract,
+                    CompilerDiagnosticIdentifiers.MemberCannotDeclareBodyBecauseItIsMarkedAbstract,
                     CompilerDiagnosticIdentifiers.InterfaceMembersCannotHaveDefinition);
             }
         }
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
                 switch (diagnostic.Id)
                 {
                     case CompilerDiagnosticIdentifiers.EventInInterfaceCannotHaveAddOrRemoveAccessors:
-                    case CompilerDiagnosticIdentifiers.MemberCannotDeclareBodyBecauseItIsNotMarkedAbstract:
+                    case CompilerDiagnosticIdentifiers.MemberCannotDeclareBodyBecauseItIsMarkedAbstract:
                     case CompilerDiagnosticIdentifiers.InterfaceMembersCannotHaveDefinition:
                         {
                             if (node.IsKind(SyntaxKind.AddAccessorDeclaration, SyntaxKind.RemoveAccessorDeclaration))

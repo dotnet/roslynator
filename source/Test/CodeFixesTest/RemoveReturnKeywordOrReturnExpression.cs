@@ -5,9 +5,17 @@ using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.CodeFixes.Test
 {
-    internal static class RemoveReturnKeyword
+    internal static class RemoveReturnKeywordOrReturnExpression
     {
         public static void Foo()
+        {
+            if (true)
+                return true;
+
+            return false;
+        }
+
+        public static void Foo2()
         {
             if (true)
                 return Foo();

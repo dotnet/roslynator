@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -25,7 +26,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists,
                     CompilerDiagnosticIdentifiers.ConstantValueCannotBeConverted,
-                    CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant);
+                    CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant,
+                    CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType);
             }
         }
 
@@ -35,7 +37,8 @@ namespace Roslynator.CSharp.CodeFixes
                 CodeFixIdentifiers.AddComparisonWithBooleanLiteral,
                 CodeFixIdentifiers.CreateSingletonArray,
                 CodeFixIdentifiers.UseUncheckedExpression,
-                CodeFixIdentifiers.RemoveConstModifier))
+                CodeFixIdentifiers.RemoveConstModifier,
+                CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
             {
                 return;
             }
@@ -143,6 +146,32 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
+
+                            if (typeSymbol?.SupportsExplicitDeclaration() == true)
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Replace 'null' with default value",
+                                    cancellationToken =>
+                                    {
+                                        ExpressionSyntax newNode = typeSymbol.ToDefaultValueSyntax(semanticModel, expression.SpanStart);
+
+                                        return context.Document.ReplaceNodeAsync(expression, newNode, cancellationToken);
+                                    },
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+
                             break;
                         }
                 }

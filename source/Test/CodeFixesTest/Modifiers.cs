@@ -4,7 +4,7 @@ using System;
 
 namespace Roslynator.CSharp.CodeFixes.Test
 {
-    internal static class RemoveInvalidModifier
+    internal static class Modifiers
     {
         private class Foo
         {
@@ -68,6 +68,83 @@ namespace Roslynator.CSharp.CodeFixes.Test
 
             private static sealed class StaticAndSealed
             {
+            }
+        }
+
+        private sealed class SealedFoo
+        {
+            protected void Bar()
+            {
+            }
+
+            public string Property { get; protected set; }
+        }
+
+        private static class StaticFoo
+        {
+            protected static void Bar()
+            {
+            }
+
+            protected static void Bar2()
+            {
+            }
+
+            public static override string ToString()
+            {
+                return null;
+            }
+
+            public static virtual string FooVirtual()
+            {
+                return null;
+            }
+
+            public static abstract string FooAbstract()
+            {
+                return null;
+            }
+        }
+
+        private class NonStaticFoo
+        {
+            public static override string ToString()
+            {
+                return null;
+            }
+
+            public static virtual string FooVirtual()
+            {
+                return null;
+            }
+
+            public static abstract string FooAbstract()
+            {
+                return null;
+            }
+        }
+
+        private abstract class AbstractFoo
+        {
+            private abstract void FooMethod();
+
+            private abstract object FooProperty { get; private set; }
+
+            private abstract object this[int index] { get; private set; }
+        }
+
+        private class VirtualFoo
+        {
+            private virtual void FooMethod()
+            {
+            }
+
+            private virtual object FooProperty { get; set; }
+
+            private virtual object this[int index]
+            {
+                get { return null; }
+                set { }
             }
         }
     }

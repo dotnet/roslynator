@@ -3,17 +3,22 @@
   <Diagnostic Id="CS0019" Identifier="OperatorCannotBeAppliedToOperands" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019" />
   <Diagnostic Id="CS0023" Identifier="OperatorCannotBeAppliedToOperandOfType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023" />
   <Diagnostic Id="CS0029" Identifier="CannotImplicitlyConvertType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029" />
+  <Diagnostic Id="CS0037" Identifier="CannotConvertNullToTypeBecauseItIsNonNullableValueType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037" />
   <Diagnostic Id="CS0069" Identifier="EventInInterfaceCannotHaveAddOrRemoveAccessors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0069" />
   <Diagnostic Id="CS0080" Identifier="ConstraintsAreNotAllowedOnNonGenericDeclarations" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0080" />
   <Diagnostic Id="CS0106" Identifier="ModifierIsNotValidForThisItem" HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0106" />
   <Diagnostic Id="CS0107" Identifier="MoreThanOneProtectionModifier" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0107" />
+  <Diagnostic Id="CS0108" Identifier="MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0108" />
   <Diagnostic Id="CS0109" Identifier="MemberDoesNotHideAccessibleMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0109" />
-  <Diagnostic Id="CS0114" Identifier="MemberHidesInheritedMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114" />
+  <Diagnostic Id="CS0112" Identifier="StaticMemberCannotBeMarkedOverrideVirtualOrAbstract" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0112" />
+  <Diagnostic Id="CS0114" Identifier="MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114" />
   <Diagnostic Id="CS0120" Identifier="ObjectReferenceIsRequiredForNonStaticMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0120" />
   <Diagnostic Id="CS0123" Identifier="NoOverloadMatchesDelegate" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123" />
   <Diagnostic Id="CS0127" Identifier="SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127" />
+  <Diagnostic Id="CS0128" Identifier="LocalVariableOrFunctionIsAlreadyDefinedInThisScope" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128" />
   <Diagnostic Id="CS0132" Identifier="StaticConstructorMustBeParameterless" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0132" />
   <Diagnostic Id="CS0133" Identifier="ExpressionBeingAssignedMustBeConstant" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133" />
+  <Diagnostic Id="CS0136" Identifier="LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136" />
   <Diagnostic Id="CS0161" Identifier="NotAllCodePathsReturnValue" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0161" />
   <Diagnostic Id="CS0162" Identifier="UnreachableCodeDetected" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0162" />
   <Diagnostic Id="CS0163" Identifier="ControlCannotFallThroughFromOneCaseLabelToAnother" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0163" />
@@ -34,7 +39,9 @@
   <Diagnostic Id="CS0407" Identifier="MethodHasWrongReturnType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0407" />
   <Diagnostic Id="CS0428" Identifier="CannotConvertMethodGroupToNonDelegateType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428" />
   <Diagnostic Id="CS0441" Identifier="ClassCannotBeBothStaticAndSealed" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0441" />
-  <Diagnostic Id="CS0500" Identifier="MemberCannotDeclareBodyBecauseItIsNotMarkedAbstract" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0500" />
+  <Diagnostic Id="CS0442" Identifier="AbstractPropertiesCannotHavePrivateAccessors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0442" />
+  <Diagnostic Id="CS0500" Identifier="MemberCannotDeclareBodyBecauseItIsMarkedAbstract" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0500" />
+  <Diagnostic Id="CS0501" Identifier="MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501" />
   <Diagnostic Id="CS0507" Identifier="CannotChangeAccessModifiersWhenOverridingInheritedMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0507" />
   <Diagnostic Id="CS0508" Identifier="MemberReturnTypeMustMatchOverriddenMemberReturnType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0508" />
   <Diagnostic Id="CS0513" Identifier="MemberIsAbstractButItIsContainedInNonAbstractClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0513" />
@@ -43,6 +50,7 @@
   <Diagnostic Id="CS0558" Identifier="UserDefinedOperatorMustBeDeclaredStaticAndPublic" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0558" />
   <Diagnostic Id="CS0573" Identifier="CannotHaveInstancePropertyOrFieldInitializersInStruct" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0573" />
   <Diagnostic Id="CS0579" Identifier="DuplicateAttribute" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0579" />
+  <Diagnostic Id="CS0621" Identifier="VirtualOrAbstractmembersCannotBePrivate " HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0621" />
   <Diagnostic Id="CS0628" Identifier="NewProtectedMemberDeclaredInSealedClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628" />
   <Diagnostic Id="CS0678" Identifier="FieldCanNotBeBothVolatileAndReadOnly" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0678" />
   <Diagnostic Id="CS0708" Identifier="CannotDeclareInstanceMembersInStaticClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0708" />

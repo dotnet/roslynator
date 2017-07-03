@@ -29,7 +29,6 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.MemberReturnTypeMustMatchOverriddenMemberReturnType,
                     CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType,
                     CompilerDiagnosticIdentifiers.MissingPartialModifier,
-                    CompilerDiagnosticIdentifiers.PartialMethodMayNotHaveMultipleDefiningDeclarations,
                     CompilerDiagnosticIdentifiers.PartialMethodMustBeDeclaredWithinPartialClassOrPartialStruct,
                     CompilerDiagnosticIdentifiers.CannotDeclareInstanceMembersInStaticClass,
                     CompilerDiagnosticIdentifiers.StaticClassesCannotHaveInstanceConstructors,
@@ -46,7 +45,6 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MemberReturnTypeMustMatchOverriddenMemberReturnType)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MemberTypeMustMatchOverriddenMemberType)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddPartialModifier)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMethodBody)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingClassAbstract)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberNonStatic)
@@ -210,33 +208,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case CompilerDiagnosticIdentifiers.PartialMethodMayNotHaveMultipleDefiningDeclarations:
-                        {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMethodBody))
-                                break;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add body",
-                                cancellationToken =>
-                                {
-                                    var methodDeclaration = (MethodDeclarationSyntax)memberDeclaration;
-
-                                    ParameterListSyntax parameterList = methodDeclaration.ParameterList ?? SyntaxFactory.ParameterList();
-
-                                    MethodDeclarationSyntax newNode = methodDeclaration
-                                        .WithParameterList(parameterList.AppendToTrailingTrivia(methodDeclaration.SemicolonToken.GetLeadingAndTrailingTrivia()))
-                                        .WithSemicolonToken(default(SyntaxToken))
-                                        .WithBody(SyntaxFactory.Block())
-                                        .WithFormatterAnnotation();
-
-                                    return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, context.CancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.CannotDeclareInstanceMembersInStaticClass:

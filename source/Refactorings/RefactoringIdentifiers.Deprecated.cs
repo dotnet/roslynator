@@ -6,6 +6,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         //public const string AddBooleanComparison = Prefix + "0001";
         //public const string ExtractDeclarationFromUsingStatement = Prefix + "0042";
+        //public const string MarkMemberAsStatic = Prefix + "0072";
         //public const string ReplaceCountWithLengthOrLengthWithCount = Prefix + "0122";
         //public const string ReplaceStringLiteralWithCharacterLiteral = Prefix + "0146";
     }
