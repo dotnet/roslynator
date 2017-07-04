@@ -1,3 +1,39 @@
+### 1.4.50 (2017-07-04)
+
+* Add code fixes that fix 80+ compiler diagnostics (like 'CS0001')
+
+#### Analyzers
+
+* Following analyzers have been replaced with code fixes:
+
+  * ReplaceReturnStatementWithExpressionStatement (RCS1115)
+  * AddBreakStatementToSwitchSection (RCS1116)
+  * AddReturnStatementThatReturnsDefaultValue (RCS1117)
+  * AddMissingSemicolon (RCS1122)
+  * MarkMemberAsStatic (RCS1125)
+  * ReplaceReturnWithYieldReturn (RCS1131)
+  * AddDocumentationComment (RCS1137)
+  * MarkContainingClassAsAbstract (RCS1144)
+  * RemoveInapplicableModifier (RCS1147)
+  * RemoveUnreachableCode (RCS1148)
+  * RemoveImplementationFromAbstractMember (RCS1149)
+  * MemberTypeMustMatchOverriddenMemberType (RCS1152)
+  * OverridingMemberCannotChangeAccessModifiers (RCS1176)
+
+#### Refactorings
+
+* Following refactorings have been replaced with code fixes:
+
+  * AddBooleanComparison (RR0001)
+  * ExtractDeclarationFromUsingStatement (RR0042)
+  * MarkMemberAsStatic (RR0072)
+  * ReplaceCountWithLengthOrLengthWitCount (RR0122)
+  * ReplaceStringLiteralWithCharacterLiteral (RR0146)
+
+##### New Refactorings
+
+  * ChangeAccessibility (RR0177)
+
 ### 1.4.13 (2017-06-21)
 
 #### Analyzers
