@@ -10,23 +10,12 @@ Design|Composite enum value contains undefined flag|RCS1157|x
 Design|Declare enum member with zero value \(when enum has FlagsAttribute\)|RCS1135|x
 Design|Declare type inside namespace|RCS1110|x
 Design|Implement exception constructors|RCS1194|x
-Design|Mark class as static|RCS1102|x
+Design|Make class static|RCS1102|x
 Design|Mark field as read\-only|RCS1169|x
 Design|Overriding member cannot change 'params' modifier|RCS1193|x
 Design|Static member in generic type should use a type parameter|RCS1158|x
 Design|Use constant instead of field|RCS1187|x
 Design|Use read\-only auto\-implemented property|RCS1170|x
-ErrorFix|Add break statement to switch section|RCS1116|x
-ErrorFix|Add missing semicolon|RCS1122|
-ErrorFix|Add return statement that returns default value|RCS1117|x
-ErrorFix|Mark containing class as abstract|RCS1144|x
-ErrorFix|Mark member as static|RCS1125|x
-ErrorFix|Member type must match overriden member type|RCS1152|x
-ErrorFix|Overriding member cannot change access modifiers|RCS1167|x
-ErrorFix|Remove implementation from abstract member|RCS1149|x
-ErrorFix|Remove inapplicable modifier|RCS1147|x
-ErrorFix|Replace return with yield return|RCS1131|x
-ErrorFix|Replace yield/return statement with expression statement|RCS1115|x
 Formatting|Add empty line after closing brace|RCS1153|
 Formatting|Add empty line after embedded statement|RCS1030|
 Formatting|Add empty line after last statement in do statement|RCS1092|
@@ -46,14 +35,12 @@ Formatting|Format initializer with single expression on single line|RCS1183|x
 Formatting|Format switch section's statement on a separate line|RCS1028|
 General|Bitwise operation on enum without Flags attribute|RCS1130|x
 General|Mark local variable as const|RCS1118|x
-General|Remove unreachable code|RCS1148|x
 General|Replace comment with documentation comment|RCS1181|x
 General|Throwing of new NotImplementedException|RCS1079|x
 General|Use "" instead of string\.Empty|RCS1078|
 General|Use carriage return \+ linefeed as newline|RCS1087|
 General|Use linefeed as newline|RCS1086|
 General|Use space\(s\) instead of tab|RCS1088|
-Maintainability|Add documentation comment to publicly visible type or member|RCS1137|x
 Maintainability|Add exception to documentation comment|RCS1140|x
 Maintainability|Add parameter to documentation comment|RCS1141|x
 Maintainability|Add summary element to documentation comment|RCS1139|x
@@ -78,7 +65,7 @@ Performance|Use 'Count/Length' property instead of 'Count' method|RCS1082|x
 Readability|Add default access modifier|RCS1018|x
 Readability|Add or remove region name|RCS1189|x
 Readability|Add parentheses according to operator precedence|RCS1123|x
-Readability|Add static modifier to all partial class declarations|RCS1108|x
+Readability|Add 'static' modifier to all partial class declarations|RCS1108|x
 Readability|Avoid chain of assignments|RCS1162|
 Readability|Avoid implicitly\-typed array|RCS1014|
 Readability|Avoid 'null' on the left side of a binary expression|RCS1098|x
@@ -107,7 +94,7 @@ Redundancy|Remove empty region|RCS1091|x
 Redundancy|Remove empty statement|RCS1038|x
 Redundancy|Remove enum default underlying type|RCS1042|x
 Redundancy|Remove file with no code|RCS1093|x
-Redundancy|Remove partial modifier from type with a single part|RCS1043|x
+Redundancy|Remove 'partial' modifier from type with a single part|RCS1043|x
 Redundancy|Remove redundant 'as' operator|RCS1145|x
 Redundancy|Remove redundant async/await|RCS1174|x
 Redundancy|Remove redundant auto\-property initialization|RCS1188|x
@@ -125,7 +112,7 @@ Redundancy|Remove redundant empty line|RCS1036|x
 Redundancy|Remove redundant field initalization|RCS1129|x
 Redundancy|Remove redundant overriding member|RCS1132|x
 Redundancy|Remove redundant parentheses|RCS1032|x
-Redundancy|Remove redundant sealed modifier|RCS1034|x
+Redundancy|Remove redundant 'sealed' modifier|RCS1034|x
 Redundancy|Remove redundant 'ToCharArray' call|RCS1107|x
 Redundancy|Remove redundant 'ToString' call|RCS1097|x
 Redundancy|Remove trailing white\-space|RCS1037|x
@@ -195,4 +182,4 @@ Usage|Use Regex instance instead of static method|RCS1186|x
 Usage|Use 'string\.IsNullOrEmpty' method|RCS1113|x
 Usage|Use string\.Length instead of comparison with empty string|RCS1156|x
 Usage|Use StringComparison when comparing strings|RCS1155|x
-Usage|Value type checked for null|RCS1166|x
+Usage|Value type object is never equal to null|RCS1166|x

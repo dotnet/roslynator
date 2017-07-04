@@ -281,7 +281,7 @@
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantSealedModifier">
     <Id>RCS1034</Id>
-    <Title>Remove redundant sealed modifier.</Title>
+    <Title>Remove redundant 'sealed' modifier.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -362,7 +362,7 @@
   </Analyzer>
   <Analyzer Identifier="RemovePartialModifierFromTypeWithSinglePart">
     <Id>RCS1043</Id>
-    <Title>Remove partial modifier from type with a single part.</Title>
+    <Title>Remove 'partial' modifier from type with a single part.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -873,9 +873,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkClassAsStatic">
+  <Analyzer Identifier="MakeClassStatic">
     <Id>RCS1102</Id>
-    <Title>Mark class as static.</Title>
+    <Title>Make class static.</Title>
     <Category>Design</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -929,7 +929,7 @@
   </Analyzer>
   <Analyzer Identifier="AddStaticModifierToAllPartialClassDeclarations">
     <Id>RCS1108</Id>
-    <Title>Add static modifier to all partial class declarations.</Title>
+    <Title>Add 'static' modifier to all partial class declarations.</Title>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -990,33 +990,6 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ReplaceReturnStatementWithExpressionStatement">
-    <Id>RCS1115</Id>
-    <Title>Replace yield/return statement with expression statement.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="AddBreakStatementToSwitchSection">
-    <Id>RCS1116</Id>
-    <Title>Add break statement to switch section.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="AddReturnStatementThatReturnsDefaultValue">
-    <Id>RCS1117</Id>
-    <Title>Add return statement that returns default value.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
   <Analyzer Identifier="MarkLocalVariableAsConst">
     <Id>RCS1118</Id>
     <Title>Mark local variable as const.</Title>
@@ -1053,15 +1026,6 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddMissingSemicolon">
-    <Id>RCS1122</Id>
-    <Title>Add missing semicolon.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
   <Analyzer Identifier="AddParenthesesAccordingToOperatorPrecedence">
     <Id>RCS1123</Id>
     <Title>Add parentheses according to operator precedence.</Title>
@@ -1079,15 +1043,6 @@
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="MarkMemberAsStatic">
-    <Id>RCS1125</Id>
-    <Title>Mark member as static.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="AvoidEmbeddedStatementInIfElse">
     <Id>RCS1126</Id>
@@ -1130,15 +1085,6 @@
     <Title>Bitwise operation on enum without Flags attribute.</Title>
     <Category>General</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="ReplaceReturnWithYieldReturn">
-    <Id>RCS1131</Id>
-    <Title>Replace return with yield return.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1186,15 +1132,6 @@
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="AddDocumentationComment">
-    <Id>RCS1137</Id>
-    <Title>Add documentation comment to publicly visible type or member.</Title>
-    <Category>Maintainability</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="AddSummaryToDocumentationComment">
@@ -1251,15 +1188,6 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="MarkContainingClassAsAbstract">
-    <Id>RCS1144</Id>
-    <Title>Mark containing class as abstract.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
   <Analyzer Identifier="RemoveRedundantAsOperator">
     <Id>RCS1145</Id>
     <Title>Remove redundant 'as' operator.</Title>
@@ -1278,33 +1206,6 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveInapplicableModifier">
-    <Id>RCS1147</Id>
-    <Title>Remove inapplicable modifier.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="RemoveUnreachableCode">
-    <Id>RCS1148</Id>
-    <Title>Remove unreachable code.</Title>
-    <Category>General</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="RemoveImplementationFromAbstractMember">
-    <Id>RCS1149</Id>
-    <Title>Remove implementation from abstract member.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
   <Analyzer Identifier="CallStringConcatInsteadOfStringJoin">
     <Id>RCS1150</Id>
     <Title>Call string.Concat instead of string.Join.</Title>
@@ -1321,15 +1222,6 @@
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="MemberTypeMustMatchOverriddenMemberType">
-    <Id>RCS1152</Id>
-    <Title>Member type must match overriden member type.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
   <Analyzer Identifier="AddEmptyLineAfterClosingBrace">
@@ -1449,20 +1341,11 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="ValueTypeCheckedForNull">
+  <Analyzer Identifier="ValueTypeObjectIsNeverEqualToNull">
     <Id>RCS1166</Id>
-    <Title>Value type checked for null.</Title>
+    <Title>Value type object is never equal to null.</Title>
     <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
-    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-  </Analyzer>
-  <Analyzer Identifier="OverridingMemberCannotChangeAccessModifiers">
-    <Id>RCS1167</Id>
-    <Title>Overriding member cannot change access modifiers.</Title>
-    <Category>ErrorFix</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

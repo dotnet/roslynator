@@ -5,7 +5,6 @@
       <PrefixFieldIdentifierWithUnderscore IsEnabled="true" />
     </General>
     <Refactorings>
-      <Refactoring Id="RR0001" IsEnabled="true" /> <!-- AddBooleanComparison -->
       <Refactoring Id="RR0002" IsEnabled="true" /> <!-- AddBraces -->
       <Refactoring Id="RR0003" IsEnabled="true" /> <!-- AddBracesToIfElse -->
       <Refactoring Id="RR0004" IsEnabled="true" /> <!-- AddBracesToSwitchSection -->
@@ -46,7 +45,6 @@
       <Refactoring Id="RR0039" IsEnabled="true" /> <!-- ExpandLambdaExpressionBody -->
       <Refactoring Id="RR0040" IsEnabled="true" /> <!-- ExpandProperty -->
       <Refactoring Id="RR0041" IsEnabled="true" /> <!-- ExpandPropertyAndAddBackingField -->
-      <Refactoring Id="RR0042" IsEnabled="true" /> <!-- ExtractDeclarationFromUsingStatement -->
       <Refactoring Id="RR0043" IsEnabled="true" /> <!-- ExtractExpressionFromCondition -->
       <Refactoring Id="RR0044" IsEnabled="true" /> <!-- ExtractGenericType -->
       <Refactoring Id="RR0045" IsEnabled="true" /> <!-- ExtractStatement -->
@@ -76,7 +74,6 @@
       <Refactoring Id="RR0069" IsEnabled="true" /> <!-- MakeMemberAbstract -->
       <Refactoring Id="RR0070" IsEnabled="true" /> <!-- MakeMemberVirtual -->
       <Refactoring Id="RR0071" IsEnabled="true" /> <!-- MarkContainingClassAsAbstract -->
-      <Refactoring Id="RR0072" IsEnabled="true" /> <!-- MarkMemberAsStatic -->
       <Refactoring Id="RR0073" IsEnabled="true" /> <!-- MergeAssignmentExpressionWithReturnStatement -->
       <Refactoring Id="RR0074" IsEnabled="true" /> <!-- MergeAttributes -->
       <Refactoring Id="RR0075" IsEnabled="true" /> <!-- MergeIfStatements -->
@@ -126,13 +123,12 @@
       <Refactoring Id="RR0119" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithExpression -->
       <Refactoring Id="RR0120" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithIfElse -->
       <Refactoring Id="RR0121" IsEnabled="true" /> <!-- ReplaceConstantWithField -->
-      <Refactoring Id="RR0122" IsEnabled="true" /> <!-- ReplaceCountWithLengthOrLengthWithCount -->
       <Refactoring Id="RR0123" IsEnabled="true" /> <!-- ReplaceDoStatementWithWhileStatement -->
       <Refactoring Id="RR0124" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringEquals -->
       <Refactoring Id="RR0125" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrEmpty -->
       <Refactoring Id="RR0126" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace -->
       <Refactoring Id="RR0127" IsEnabled="true" /> <!-- ReplaceExpressionWithConstantValue -->
-      <Refactoring Id="RR0128" IsEnabled="true" /> <!-- ReplaceFieldWithConstant -->
+      <Refactoring Id="RR0128" IsEnabled="true" /> <!-- UseConstantInsteadOfField -->
       <Refactoring Id="RR0129" IsEnabled="true" /> <!-- ReplaceForEachWithFor -->
       <Refactoring Id="RR0130" IsEnabled="true" /> <!-- ReplaceForWithForEach -->
       <Refactoring Id="RR0131" IsEnabled="true" /> <!-- ReplaceForWithWhile -->
@@ -150,7 +146,6 @@
       <Refactoring Id="RR0143" IsEnabled="true" /> <!-- ReplaceStatementWithIfStatement -->
       <Refactoring Id="RR0144" IsEnabled="true" /> <!-- ReplaceStringContainsWithStringIndexOf -->
       <Refactoring Id="RR0145" IsEnabled="true" /> <!-- ReplaceStringFormatWithInterpolatedString -->
-      <Refactoring Id="RR0146" IsEnabled="true" /> <!-- ReplaceStringLiteralWithCharacterLiteral -->
       <Refactoring Id="RR0147" IsEnabled="true" /> <!-- ReplaceSwitchWithIfElse -->
       <Refactoring Id="RR0148" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiteral -->
       <Refactoring Id="RR0149" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiterals -->
@@ -190,6 +185,7 @@
       <Refactoring Id="RR0183" IsEnabled="true" /> <!-- UseListInsteadOfYield -->
       <Refactoring Id="RR0184" IsEnabled="true" /> <!-- SplitIfStatement -->
       <Refactoring Id="RR0185" IsEnabled="true" /> <!-- ReplaceObjectCreationWithDefaultValue -->
+      <Refactoring Id="RR0186" IsEnabled="true" /> <!-- ChangeAccessibility -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -211,16 +207,16 @@
       <CodeFix Id="RCF0017" IsEnabled="true" /> <!-- RemoveUnreachableCode (fixes CS0162) -->
       <CodeFix Id="RCF0018" IsEnabled="true" /> <!-- MemberReturnTypeMustMatchOverriddenMemberReturnType (fixes CS0508) -->
       <CodeFix Id="RCF0019" IsEnabled="true" /> <!-- MemberTypeMustMatchOverriddenMemberType (fixes CS1715) -->
-      <CodeFix Id="RCF0020" IsEnabled="true" /> <!-- AddReturnStatementThatReturnsDefaultValue (fixes CS0161) -->
+      <CodeFix Id="RCF0020" IsEnabled="true" /> <!-- AddReturnStatementThatReturnsDefaultValue (fixes CS0161, CS1643) -->
       <CodeFix Id="RCF0021" IsEnabled="true" /> <!-- UseYieldReturnInsteadOfReturn (fixes CS0029, CS1622) -->
       <CodeFix Id="RCF0022" IsEnabled="true" /> <!-- ReplaceStringLiteralWithCharacterLiteral (fixes CS0029) -->
       <CodeFix Id="RCF0023" IsEnabled="true" /> <!-- AddComparisonWithBooleanLiteral (fixes CS0019, CS0266) -->
       <CodeFix Id="RCF0024" IsEnabled="true" /> <!-- RemovePropertyOrFieldInitializer (fixes CS0573) -->
       <CodeFix Id="RCF0025" IsEnabled="true" /> <!-- AddPartialModifier (fixes CS0260, CS0751) -->
-      <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddMethodBody (fixes CS0756) -->
+      <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddBody (fixes CS0501, CS0756) -->
       <CodeFix Id="RCF0027" IsEnabled="true" /> <!-- RemoveRefModifier (fixes CS1615) -->
       <CodeFix Id="RCF0028" IsEnabled="true" /> <!-- RemoveRedundantAssignment (fixes CS1717) -->
-      <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0628, CS1057) -->
+      <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0261, CS0442, CS0628, CS1057) -->
       <CodeFix Id="RCF0030" IsEnabled="true" /> <!-- ChangeTypeOfParamsParameter (fixes CS0225) -->
       <CodeFix Id="RCF0031" IsEnabled="true" /> <!-- UseUncheckedExpression (fixes CS0221) -->
       <CodeFix Id="RCF0032" IsEnabled="true" /> <!-- RemoveImplementationFromAbstractMember (fixes CS0069, CS0500, CS0531) -->
@@ -236,6 +232,21 @@
       <CodeFix Id="RCF0042" IsEnabled="true" /> <!-- MakeMemberNonStatic (fixes CS0120) -->
       <CodeFix Id="RCF0043" IsEnabled="true" /> <!-- RemoveConstraintClause (fixes CS0080) -->
       <CodeFix Id="RCF0044" IsEnabled="true" /> <!-- AddTypeArgument (fixes CS0305) -->
+      <CodeFix Id="RCF0045" IsEnabled="true" /> <!-- RemoveConstModifier (fixes CS0133) -->
+      <CodeFix Id="RCF0046" IsEnabled="true" /> <!-- RemoveEmptySwitchStatement (fixes CS1522) -->
+      <CodeFix Id="RCF0047" IsEnabled="true" /> <!-- IntroduceLocalVariable (fixes CS0201) -->
+      <CodeFix Id="RCF0048" IsEnabled="true" /> <!-- UseExplicitTypeInsteadOfVar (fixes CS0819, CS0822) -->
+      <CodeFix Id="RCF0049" IsEnabled="true" /> <!-- RemoveAwaitKeyword (fixes CS1061) -->
+      <CodeFix Id="RCF0050" IsEnabled="true" /> <!-- WrapInUnsafeStatement (fixes CS0214) -->
+      <CodeFix Id="RCF0051" IsEnabled="true" /> <!-- AddUnsafeModifier (fixes CS0214) -->
+      <CodeFix Id="RCF0052" IsEnabled="true" /> <!-- RemoveReturnKeyword (fixes CS0127, CS1997) -->
+      <CodeFix Id="RCF0053" IsEnabled="true" /> <!-- RemoveParametersFromStaticConstructor (fixes CS0132) -->
+      <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- ReorderModifiers (fixes CS0267) -->
+      <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0275, CS0441, CS0515, CS0678, CS0753, CS1609) -->
+      <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114) -->
+      <CodeFix Id="RCF0057" IsEnabled="true" /> <!-- RemoveReturnExpression (fixes CS0127, CS1997) -->
+      <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037) -->
+      <CodeFix Id="RCF0059" IsEnabled="true" /> <!-- ReplaceVariableDeclarationWithAssignment (fixes CS0128, CS0136) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

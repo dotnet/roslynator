@@ -1,0 +1,14 @@
+## Use constant instead of field
+
+Property | Value
+--- | --- 
+Id | RR0128
+Title | Use constant instead of field
+Syntax | read\-only field
+Enabled by Default | yes
+
+### Usage
+
+![Use constant instead of field](../../images/refactorings/UseConstantInsteadOfField.png)
+
+[full list of refactorings](Refactorings.md)

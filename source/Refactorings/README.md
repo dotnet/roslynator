@@ -2,7 +2,6 @@
 
 Id | Title | Enabled by Default 
 --- | --- |:---:
-RR0001|[Add boolean comparison](../../docs/refactorings/AddBooleanComparison.md)|x
 RR0002|[Add braces](../../docs/refactorings/AddBraces.md)|x
 RR0003|[Add braces to if\-else](../../docs/refactorings/AddBracesToIfElse.md)|x
 RR0004|[Add braces to switch section](../../docs/refactorings/AddBracesToSwitchSection.md)|x
@@ -20,6 +19,7 @@ RR0014|[Add using static directive](../../docs/refactorings/AddUsingStaticDirect
 RR0015|[Call 'ConfigureAwait\(false\)'](../../docs/refactorings/CallConfigureAwait.md)|x
 RR0016|[Call extension method as instance method](../../docs/refactorings/CallExtensionMethodAsInstanceMethod.md)|x
 RR0017|[Call 'To\.\.\.' method \(ToString, ToArray, ToList\)](../../docs/refactorings/CallToMethod.md)|x
+RR0186|[Change accessibility](../../docs/refactorings/ChangeAccessibility.md)|x
 RR0018|[Change explicit type to 'var'](../../docs/refactorings/ChangeExplicitTypeToVar.md)|x
 RR0021|[Change method return type to 'void'](../../docs/refactorings/ChangeMethodReturnTypeToVoid.md)|x
 RR0019|[Change method/property/indexer type according to return expression](../../docs/refactorings/ChangeMemberTypeAccordingToReturnExpression.md)|x
@@ -44,7 +44,6 @@ RR0038|[Expand initializer](../../docs/refactorings/ExpandInitializer.md)|x
 RR0039|[Expand lambda expression body](../../docs/refactorings/ExpandLambdaExpressionBody.md)|x
 RR0040|[Expand property](../../docs/refactorings/ExpandProperty.md)|x
 RR0041|[Expand property and add backing field](../../docs/refactorings/ExpandPropertyAndAddBackingField.md)|x
-RR0042|[Extract declaration from using statement](../../docs/refactorings/ExtractDeclarationFromUsingStatement.md)|x
 RR0043|[Extract expression from condition](../../docs/refactorings/ExtractExpressionFromCondition.md)|x
 RR0044|[Extract generic type](../../docs/refactorings/ExtractGenericType.md)|x
 RR0045|[Extract statement\(s\)](../../docs/refactorings/ExtractStatement.md)|x
@@ -78,7 +77,6 @@ RR0078|[Join string expressions](../../docs/refactorings/JoinStringExpressions.m
 RR0069|[Make member abstract](../../docs/refactorings/MakeMemberAbstract.md)|x
 RR0070|[Make member virtual](../../docs/refactorings/MakeMemberVirtual.md)|x
 RR0071|[Mark containing class as abstract](../../docs/refactorings/MarkContainingClassAsAbstract.md)|x
-RR0072|[Mark member as static](../../docs/refactorings/MarkMemberAsStatic.md)|x
 RR0073|[Merge assignment expression with return statement](../../docs/refactorings/MergeAssignmentExpressionWithReturnStatement.md)|x
 RR0074|[Merge attributes](../../docs/refactorings/MergeAttributes.md)|x
 RR0075|[Merge if statements](../../docs/refactorings/MergeIfStatements.md)|x
@@ -127,13 +125,11 @@ RR0118|[Replace cast expression with as expression](../../docs/refactorings/Repl
 RR0119|[Replace conditional expression with expression](../../docs/refactorings/ReplaceConditionalExpressionWithExpression.md)|x
 RR0120|[Replace conditional expression with if\-else](../../docs/refactorings/ReplaceConditionalExpressionWithIfElse.md)|x
 RR0121|[Replace constant with field](../../docs/refactorings/ReplaceConstantWithField.md)|x
-RR0122|[Replace Count property with Length property \(or Length with Count\)](../../docs/refactorings/ReplaceCountWithLengthOrLengthWithCount.md)|x
 RR0123|[Replace do statement with while statement](../../docs/refactorings/ReplaceDoStatementWithWhileStatement.md)|x
 RR0124|[Replace equals expression with string\.Equals](../../docs/refactorings/ReplaceEqualsExpressionWithStringEquals.md)|x
 RR0125|[Replace equals expression with string\.IsNullOrEmpty](../../docs/refactorings/ReplaceEqualsExpressionWithStringIsNullOrEmpty.md)|x
 RR0126|[Replace equals expression with string\.IsNullOrWhiteSpace](../../docs/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.md)|x
 RR0127|[Replace expression with constant value](../../docs/refactorings/ReplaceExpressionWithConstantValue.md)|x
-RR0128|[Replace field with constant](../../docs/refactorings/ReplaceFieldWithConstant.md)|x
 RR0130|[Replace for statement with foreach statement](../../docs/refactorings/ReplaceForWithForEach.md)|x
 RR0131|[Replace for statement with while statement](../../docs/refactorings/ReplaceForWithWhile.md)|x
 RR0129|[Replace foreach statement with for statement](../../docs/refactorings/ReplaceForEachWithFor.md)|x
@@ -150,7 +146,6 @@ RR0140|[Replace prefix operator to postfix operator](../../docs/refactorings/Rep
 RR0141|[Replace property with method](../../docs/refactorings/ReplacePropertyWithMethod.md)|x
 RR0142|[Replace regular string literal with verbatim string literal](../../docs/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.md)|x
 RR0143|[Replace statement with if statement](../../docs/refactorings/ReplaceStatementWithIfStatement.md)|x
-RR0146|[Replace string literal with character literal](../../docs/refactorings/ReplaceStringLiteralWithCharacterLiteral.md)|x
 RR0144|[Replace string\.Contains with string\.IndexOf](../../docs/refactorings/ReplaceStringContainsWithStringIndexOf.md)|x
 RR0145|[Replace string\.Format with interpolated string](../../docs/refactorings/ReplaceStringFormatWithInterpolatedString.md)|x
 RR0147|[Replace switch statement with if\-else](../../docs/refactorings/ReplaceSwitchWithIfElse.md)|x
@@ -175,6 +170,7 @@ RR0168|[Use "" instead of string\.Empty](../../docs/refactorings/UseEmptyStringL
 RR0164|[Use bitwise operation instead of calling 'HasFlag'](../../docs/refactorings/UseBitwiseOperationInsteadOfCallingHasFlag.md)|x
 RR0165|[Use coalesce expression instead of if](../../docs/refactorings/UseCoalesceExpressionInsteadOfIf.md)|x
 RR0166|[Use conditional expression instead of if](../../docs/refactorings/UseConditionalExpressionInsteadOfIf.md)|x
+RR0128|[Use constant instead of field](../../docs/refactorings/UseConstantInsteadOfField.md)|x
 RR0167|[Use element access instead of 'First/Last'ElementAt' method](../../docs/refactorings/UseElementAccessInsteadOfEnumerableMethod.md)|x
 RR0169|[Use expression\-bodied member](../../docs/refactorings/UseExpressionBodiedMember.md)|x
 RR0170|[Use lambda expression instead of anonymous method](../../docs/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.md)|x
