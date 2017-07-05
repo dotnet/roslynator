@@ -170,7 +170,7 @@
     <Compile Include="ChangeMemberTypeAccordingToReturnStatementRefactoring.cs" />
     <Compile Include="ChangeMemberTypeAccordingToYieldReturnStatementRefactoring.cs" />
     <Compile Include="ChangeVarToExplicitTypeRefactoring.cs" />
-    <Compile Include="ReplaceConditionalExpressionWithIfElseRefactoring.cs" />
+    <Compile Include="UseIfElseInsteadOfConditionalExpressionRefactoring.cs" />
     <Compile Include="ReplaceIncrementOperatorWithDecrementOperatorRefactoring.cs" />
     <Compile Include="ReplacePrefixOperatorWithPostfixOperatorRefactoring.cs" />
     <Compile Include="ReplaceStringFormatWithInterpolatedStringRefactoring.cs" />

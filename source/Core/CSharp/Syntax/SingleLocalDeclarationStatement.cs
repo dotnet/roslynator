@@ -100,6 +100,36 @@ namespace Roslynator.CSharp.Syntax
             return false;
         }
 
+        public static bool TryCreateFromValue(ExpressionSyntax expression, out SingleLocalDeclarationStatement result)
+        {
+            SyntaxNode parent = expression?.WalkUpParentheses().Parent;
+
+            if (parent?.IsKind(SyntaxKind.EqualsValueClause) == true)
+            {
+                parent = parent.Parent;
+
+                if (parent?.IsKind(SyntaxKind.VariableDeclarator) == true)
+                {
+                    var declarator = (VariableDeclaratorSyntax)parent;
+
+                    if (declarator.Parent?.IsKind(SyntaxKind.VariableDeclaration) == true)
+                    {
+                        var declaration = (VariableDeclarationSyntax)declarator.Parent;
+
+                        if (declaration.Variables.Count == 1
+                            && declaration.Parent?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
+                        {
+                            result = new SingleLocalDeclarationStatement(declaration, declarator);
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            result = default(SingleLocalDeclarationStatement);
+            return false;
+        }
+
         private static bool TryCreateCore(LocalDeclarationStatementSyntax localDeclarationStatement, out SingleLocalDeclarationStatement result)
         {
             VariableDeclarationSyntax variableDeclaration = localDeclarationStatement.Declaration;

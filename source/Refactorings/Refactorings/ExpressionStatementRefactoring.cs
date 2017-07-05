@@ -49,13 +49,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement)
-                && context.Span.IsBetweenSpans(expressionStatement))
-            {
-                var refactoring = new ReplaceExpressionStatementWithIfStatementRefactoring();
-                await refactoring.ComputeRefactoringAsync(context, expressionStatement).ConfigureAwait(false);
-            }
         }
     }
 }

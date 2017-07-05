@@ -21,36 +21,9 @@ namespace Roslynator.CSharp.Refactorings.Test
             return f || f2 || f3;
         }
 
-        public static bool Foo(bool f, bool fTrue, bool fFalse)
-        {
-            return (f) ? fTrue : fFalse;
-        }
-
-        public static bool Foo(bool f, bool fTrue, bool fFalse)
-        {
-            bool x = false;
-
-            x = (f) ? fTrue : fFalse;
-        }
-
-        public static void Foo(bool f, bool fTrue, bool fFalse)
-        {
-            var x = (f) ? fTrue : fFalse;
-
-            var a = new { Value = 1 };
-            var b = new { Value = 2 };
-
-            var s = (f) ? a : b;
-        }
-
-        public static IEnumerable<bool> Foo(bool f)
+        public static IEnumerable<bool> Foo2(bool f)
         {
             yield return f;
-        }
-
-        public static IEnumerable<bool> Foo(bool f, bool fTrue, bool fFalse)
-        {
-            yield return (f) ? fTrue : fFalse;
         }
     }
 }

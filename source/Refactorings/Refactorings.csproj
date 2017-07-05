@@ -98,7 +98,6 @@
     <Compile Include="Refactorings\ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceObjectCreationWithDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
-    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceExpressionStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
@@ -254,7 +253,7 @@
     <Compile Include="Refactorings\ConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SwitchStatementRefactoring.cs" />
     <Compile Include="Refactorings\SwitchSectionRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceConditionalExpressionWithIfElseRefactoring.cs" />
+    <Compile Include="Refactorings\UseIfElseInsteadOfConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReverseForLoopRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceForWithForEachRefactoring.cs" />
     <Compile Include="Refactorings\SwapExpressionsInBinaryExpressionRefactoring.cs" />

@@ -1509,6 +1509,16 @@ namespace Roslynator.CSharp
         {
             return ExpressionStatement(SimpleAssignmentExpression(left, operatorToken, right));
         }
+
+        public static BlockSyntax Block(StatementSyntax statement)
+        {
+            return SyntaxFactory.Block(SingletonList(statement));
+        }
+
+        public static BlockSyntax Block(SyntaxToken openBrace, StatementSyntax statement, SyntaxToken closeBrace)
+        {
+            return SyntaxFactory.Block(openBrace, SingletonList(statement), closeBrace);
+        }
         #endregion Statement
 
         #region BinaryExpression
