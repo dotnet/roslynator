@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+
 #pragma warning disable RCS1016, RCS1163
 
 namespace Roslynator.CSharp.Analyzers.Test
@@ -24,6 +26,10 @@ namespace Roslynator.CSharp.Analyzers.Test
             #region
             public string Property{ get; }
             #endregion Properties
+
+            #region Events
+            public event EventHandler Changed;
+            #endregion Event
         }
     }
 }

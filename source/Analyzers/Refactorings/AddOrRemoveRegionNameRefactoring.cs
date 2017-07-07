@@ -62,6 +62,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (trailingTrivia.Any())
                 {
+                    if (endRegionDirective.HasPreprocessingMessageTrivia())
+                        newNode = newNode.WithEndOfDirectiveToken(newNode.EndOfDirectiveToken.WithoutLeadingTrivia());
+
                     newNode = newNode.WithEndRegionKeyword(endRegionKeyword.WithTrailingTrivia(SyntaxFactory.Space, trivia));
                 }
                 else
