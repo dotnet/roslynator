@@ -571,6 +571,11 @@ namespace Roslynator.CSharp
 
             return default(SyntaxTrivia);
         }
+
+        public static bool HasPreprocessingMessageTrivia(this EndRegionDirectiveTriviaSyntax endRegionDirective)
+        {
+            return GetPreprocessingMessageTrivia(endRegionDirective).IsKind(SyntaxKind.PreprocessingMessageTrivia);
+        }
         #endregion EndRegionDirectiveTriviaSyntax
 
         #region EnumDeclarationSyntax
@@ -1967,6 +1972,11 @@ namespace Roslynator.CSharp
             }
 
             return default(SyntaxTrivia);
+        }
+
+        public static bool HasPreprocessingMessageTrivia(this RegionDirectiveTriviaSyntax regionDirective)
+        {
+            return GetPreprocessingMessageTrivia(regionDirective).IsKind(SyntaxKind.PreprocessingMessageTrivia);
         }
         #endregion RegionDirectiveTriviaSyntax
 
