@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
                 ExpressionSyntax innerExpression = parenthesizedExpression.Expression;
 
                 if (innerExpression != null
-                    && CSharpUtility.GetOperatorPrecedence(innerExpression.Kind()) <= CSharpUtility.GetOperatorPrecedence(SyntaxKind.AwaitExpression))
+                    && OperatorPrecedence.GetPrecedence(innerExpression.Kind()) <= OperatorPrecedence.GetPrecedence(SyntaxKind.AwaitExpression))
                 {
                     AnalyzeParenthesizedExpression(context, parenthesizedExpression);
                 }

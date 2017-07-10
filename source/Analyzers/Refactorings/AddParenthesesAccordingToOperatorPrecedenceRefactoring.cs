@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 return groupNumber != 0
                     && groupNumber == GetGroupNumber(node)
-                    && CSharpUtility.GetOperatorPrecedence(node) < CSharpUtility.GetOperatorPrecedence(parentKind);
+                    && OperatorPrecedence.GetPrecedence(node) < OperatorPrecedence.GetPrecedence(parentKind);
             }
 
             return false;
