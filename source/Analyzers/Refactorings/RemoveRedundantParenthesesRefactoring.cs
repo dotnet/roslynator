@@ -102,7 +102,20 @@ namespace Roslynator.CSharp.Refactorings
         {
             var awaitExpression = (AwaitExpressionSyntax)context.Node;
 
-            AnalyzeExpression(context, awaitExpression.Expression);
+            ExpressionSyntax expression = awaitExpression.Expression;
+
+            if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
+            {
+                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
+
+                ExpressionSyntax innerExpression = parenthesizedExpression.Expression;
+
+                if (innerExpression != null
+                    && CSharpUtility.GetOperatorPrecedence(innerExpression.Kind()) <= CSharpUtility.GetOperatorPrecedence(SyntaxKind.AwaitExpression))
+                {
+                    AnalyzeParenthesizedExpression(context, parenthesizedExpression);
+                }
+            }
         }
 
         internal static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
