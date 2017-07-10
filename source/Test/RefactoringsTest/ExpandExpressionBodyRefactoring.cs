@@ -1,15 +1,22 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Refactorings.Test
 {
     internal class ExpandExpressionBodyRefactoring
     {
-        public void GetValue() => GetValue2();
+        public string Foo() => Foo();
 
-        public string GetValue2() => null;
+        public void FooVoid() => FooVoid();
 
-        public string GetValue3() => throw new Exception();
+        public string FooThrow() => throw new Exception();
+
+        private async Task FooAsync() => await FooAsync().ConfigureAwait(false);
+
+        private async void FooVoidAsync() => await FooAsync().ConfigureAwait(false);
+
+        private async Task<object> FooAsync(object parameter) => await FooAsync(parameter).ConfigureAwait(false);
     }
 }

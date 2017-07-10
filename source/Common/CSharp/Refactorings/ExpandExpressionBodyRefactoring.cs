@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             return arrowExpressionClause.Parent?.SupportsExpressionBody() == true;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             ArrowExpressionClauseSyntax arrowExpressionClause,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -33,14 +33,20 @@ namespace Roslynator.CSharp.Refactorings
             if (arrowExpressionClause == null)
                 throw new ArgumentNullException(nameof(arrowExpressionClause));
 
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             SyntaxNode parent = arrowExpressionClause.Parent;
 
-            SyntaxNode newNode = Refactor(parent, arrowExpressionClause.Expression).WithFormatterAnnotation();
+            SyntaxNode newNode = Refactor(parent, arrowExpressionClause.Expression, semanticModel, cancellationToken).WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(parent, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static SyntaxNode Refactor(SyntaxNode node, ExpressionSyntax expression)
+        private static SyntaxNode Refactor(
+            SyntaxNode node,
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             switch (node.Kind())
             {
@@ -51,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
                         return method
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(method.ReturnType, expression, method.SemicolonToken));
+                            .WithBody(CreateBlock(method.ReturnType, expression, method.SemicolonToken, semanticModel, cancellationToken));
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
@@ -134,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
                         return localFunction
                             .WithExpressionBody(null)
                             .WithSemicolonToken(default(SyntaxToken))
-                            .WithBody(CreateBlock(localFunction.ReturnType, expression, localFunction.SemicolonToken));
+                            .WithBody(CreateBlock(localFunction.ReturnType, expression, localFunction.SemicolonToken, semanticModel, cancellationToken));
                     }
                 default:
                     {
@@ -156,11 +162,14 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static BlockSyntax CreateBlock(TypeSyntax returnType, ExpressionSyntax expression, SyntaxToken semicolon)
+        private static BlockSyntax CreateBlock(
+            TypeSyntax returnType,
+            ExpressionSyntax expression,
+            SyntaxToken semicolon,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            if (returnType == null
-                || returnType.IsVoid()
-                || expression.IsKind(SyntaxKind.ThrowExpression))
+            if (ShouldCreateExpressionStatement(returnType, expression, semanticModel, cancellationToken))
             {
                 return CreateBlockWithExpressionStatement(expression, semicolon);
             }
@@ -168,6 +177,37 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return CreateBlockWithReturnStatement(expression, semicolon);
             }
+        }
+
+        private static bool ShouldCreateExpressionStatement(
+            TypeSyntax returnType,
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (returnType == null)
+                return true;
+
+            if (returnType.IsVoid())
+                return true;
+
+            SyntaxKind kind = expression.Kind();
+
+            if (kind == SyntaxKind.ThrowExpression)
+                return true;
+
+            if (kind == SyntaxKind.AwaitExpression)
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(returnType, cancellationToken);
+
+                if (typeSymbol?.IsNamedType() == true
+                    && !((INamedTypeSymbol)typeSymbol).ConstructedFrom.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static AccessorListSyntax CreateAccessorList(ExpressionSyntax expression, SyntaxToken semicolon)
