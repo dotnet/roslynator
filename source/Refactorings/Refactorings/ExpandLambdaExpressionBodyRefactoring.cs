@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -13,9 +14,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, LambdaExpressionSyntax lambda)
         {
-            var expression = lambda.Body as ExpressionSyntax;
+            CSharpSyntaxNode body = lambda.Body;
 
-            return expression?.Span.Contains(context.Span) == true;
+            return body is ExpressionSyntax
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(body);
         }
 
         public static async Task<Document> RefactorAsync(
@@ -26,54 +28,63 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ISymbol symbol = semanticModel.GetSymbol(lambda, cancellationToken);
+            var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(lambda, cancellationToken);
 
-            LambdaExpressionSyntax newNode = GetNewNode(lambda, expression, symbol)
-                .WithFormatterAnnotation();
+            StatementSyntax statement;
+            if (ShouldCreateExpressionStatement(expression, methodSymbol, semanticModel))
+            {
+                statement = ExpressionStatement(expression);
+            }
+            else
+            {
+                statement = ReturnStatement(expression);
+            }
 
-            return await document.ReplaceNodeAsync(lambda, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static LambdaExpressionSyntax GetNewNode(
-            LambdaExpressionSyntax lambda,
-            ExpressionSyntax expression,
-            ISymbol symbol)
-        {
-            BlockSyntax block = Block(GetStatement(expression, symbol));
+            BlockSyntax block = Block(statement);
 
             block = block
                 .WithCloseBraceToken(
                     block.CloseBraceToken
-                        .WithLeadingTrivia(TriviaList(CSharpFactory.NewLine())));
+                        .WithLeadingTrivia(TriviaList(NewLine())));
+
+            LambdaExpressionSyntax newLambda = lambda;
 
             switch (lambda.Kind())
             {
                 case SyntaxKind.SimpleLambdaExpression:
                     {
-                        return ((SimpleLambdaExpressionSyntax)lambda)
-                            .WithBody(block);
+                        newLambda = ((SimpleLambdaExpressionSyntax)lambda).WithBody(block);
+                        break;
                     }
                 case SyntaxKind.ParenthesizedLambdaExpression:
                     {
-                        return ((ParenthesizedLambdaExpressionSyntax)lambda)
-                            .WithBody(block);
+                        newLambda = ((ParenthesizedLambdaExpressionSyntax)lambda).WithBody(block);
+                        break;
                     }
             }
 
-            return lambda;
+            newLambda = newLambda.WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(lambda, newLambda, cancellationToken).ConfigureAwait(false);
         }
 
-        private static StatementSyntax GetStatement(ExpressionSyntax expression, ISymbol symbol)
+        private static bool ShouldCreateExpressionStatement(ExpressionSyntax expression, IMethodSymbol methodSymbol, SemanticModel semanticModel)
         {
-            if (symbol?.IsMethod() == true)
-            {
-                var methodSymbol = (IMethodSymbol)symbol;
+            if (methodSymbol.ReturnsVoid)
+                return true;
 
-                if (!methodSymbol.ReturnsVoid)
-                    return ReturnStatement(expression);
+            if (expression.IsKind(SyntaxKind.AwaitExpression))
+            {
+                ITypeSymbol returnType = methodSymbol.ReturnType;
+
+                if (returnType?.IsNamedType() == true
+                    && !((INamedTypeSymbol)returnType).ConstructedFrom.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T)))
+                {
+                    return true;
+                }
             }
 
-            return ExpressionStatement(expression);
+            return false;
         }
     }
 }
