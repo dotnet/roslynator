@@ -171,6 +171,7 @@ namespace Roslynator.CSharp
             return GetOperatorPrecedence(node.Kind());
         }
 
+        // http://github.com/dotnet/docs/blob/master/docs/csharp/language-reference/operators/index.md
         public static int GetOperatorPrecedence(SyntaxKind kind)
         {
             switch (kind)
@@ -191,8 +192,9 @@ namespace Roslynator.CSharp
                 case SyntaxKind.CheckedExpression:
                 case SyntaxKind.UncheckedExpression:
                 case SyntaxKind.DefaultExpression:
-                case SyntaxKind.AwaitExpression:
                 case SyntaxKind.AnonymousMethodExpression:
+                case SyntaxKind.SizeOfExpression:
+                case SyntaxKind.PointerMemberAccessExpression:
                     return 1;
                 case SyntaxKind.UnaryPlusExpression:
                 case SyntaxKind.UnaryMinusExpression:
@@ -201,8 +203,9 @@ namespace Roslynator.CSharp
                 case SyntaxKind.PreIncrementExpression:
                 case SyntaxKind.PreDecrementExpression:
                 case SyntaxKind.CastExpression:
-                case SyntaxKind.PointerIndirectionExpression:
+                case SyntaxKind.AwaitExpression:
                 case SyntaxKind.AddressOfExpression:
+                case SyntaxKind.PointerIndirectionExpression:
                     return 2;
                 case SyntaxKind.MultiplyExpression:
                 case SyntaxKind.DivideExpression:

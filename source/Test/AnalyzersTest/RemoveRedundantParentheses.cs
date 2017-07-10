@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable CS0162, CS1522, RCS1065
+#pragma warning disable CS0162, CS1522, RCS1065, RCS1176, RCS1177
+
     public static class RemoveRedundantParentheses
     {
         private static readonly object _lockObject = new object();
@@ -85,5 +87,16 @@ namespace Roslynator.CSharp.Analyzers.Test
         {
             yield return (null);
         }
+
+        private static async Task FooAsync()
+        {
+            await (FooAsync().ConfigureAwait(false));
+
+            await ((Task)FooAsync());
+        }
+
+        //n
+
+        private static async Task FooAsync(Task task) => await (task = Task.Run(default(Action)));
     }
 }
