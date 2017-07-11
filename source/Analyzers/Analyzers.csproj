@@ -110,6 +110,7 @@
     <Compile Include="DiagnosticAnalyzers\UseVarWhenTypeIsNotObviousDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ValueTypeObjectIsNeverEqualToNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticIdentifiers.cs" />
     <Compile Include="Refactorings\AddOrRemoveRegionNameRefactoring.cs" />
     <Compile Include="Refactorings\OptimizeStringBuilderAppendCallRefactoring.cs" />
     <Compile Include="Refactorings\AvoidBoxingOfValueTypeRefactoring.cs" />
@@ -437,7 +438,7 @@
     <Compile Include="DiagnosticAnalyzers\WhitespaceDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseExpressionBodiedMemberDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticCategories.cs" />
-    <Compile Include="DiagnosticIdentifiers.cs" />
+    <Compile Include="DiagnosticIdentifiers.Deprecated.cs" />
     <Compile Include="DiagnosticDescriptors.cs" />
     <Compile Include="DiagnosticAnalyzers\AttributeListDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\DeclareEachAttributeSeparatelyCodeFixProvider.cs" />
