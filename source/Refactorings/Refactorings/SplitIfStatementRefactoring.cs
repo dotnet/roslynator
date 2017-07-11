@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
             var ifStatements = new List<IfStatementSyntax>();
 
             foreach (ExpressionSyntax expression in chain.Expressions)
-                ifStatements.Add(SyntaxFactory.IfStatement(expression, statement).WithFormatterAnnotation());
+                ifStatements.Add(SyntaxFactory.IfStatement(expression.TrimTrivia(), statement).WithFormatterAnnotation());
 
             ifStatements[0] = ifStatements[0].WithLeadingTrivia(ifStatement.GetLeadingTrivia());
             ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(ifStatement.GetTrailingTrivia());
