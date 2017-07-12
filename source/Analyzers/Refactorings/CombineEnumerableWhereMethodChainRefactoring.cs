@@ -123,7 +123,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             return ParameterIdentifierEquals(lambda1.Parameter, lambda2.Parameter)
                                 && lambda1.Body is ExpressionSyntax
-                                && lambda1.Body is ExpressionSyntax;
+                                && lambda2.Body is ExpressionSyntax;
                         }
 
                         break;
