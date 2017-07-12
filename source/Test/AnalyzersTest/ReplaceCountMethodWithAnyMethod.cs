@@ -18,6 +18,22 @@ namespace Roslynator.CSharp.Analyzers.Test
             if (sequence.Count() > 0)
             {
             }
+
+            if (sequence.Count() >= 1)
+            {
+            }
+
+            if (0 == sequence.Count())
+            {
+            }
+
+            if (0 < sequence.Count())
+            {
+            }
+
+            if (1 <= sequence.Count())
+            {
+            }
         }
     }
 }

@@ -45,7 +45,9 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
                 else if (invocation.Parent?.IsKind(
                     SyntaxKind.EqualsExpression,
                     SyntaxKind.GreaterThanExpression,
-                    SyntaxKind.LessThanExpression) == true)
+                    SyntaxKind.GreaterThanOrEqualExpression,
+                    SyntaxKind.LessThanExpression,
+                    SyntaxKind.LessThanOrEqualExpression) == true)
                 {
                     var binaryExpression = (BinaryExpressionSyntax)invocation.Parent;
 
@@ -95,10 +97,18 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 
             if (left?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
             {
-                return ((LiteralExpressionSyntax)left).IsZeroNumericLiteral()
-                    && binaryExpression.IsKind(
-                        SyntaxKind.EqualsExpression,
-                        SyntaxKind.LessThanExpression);
+                var leftExpression = (LiteralExpressionSyntax)left;
+
+                if (leftExpression.IsZeroNumericLiteral()
+                     && binaryExpression.IsKind(
+                         SyntaxKind.EqualsExpression,
+                         SyntaxKind.LessThanExpression))
+                {
+                    return true;
+                }
+
+                return leftExpression.IsOneNumericLiteral()
+                    && binaryExpression.IsKind(SyntaxKind.LessThanOrEqualExpression);
             }
             else
             {
@@ -106,10 +116,18 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 
                 if (right?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
                 {
-                    return ((LiteralExpressionSyntax)right).IsZeroNumericLiteral()
+                    var rightExpression = (LiteralExpressionSyntax)right;
+
+                    if (rightExpression.IsZeroNumericLiteral()
                         && binaryExpression.IsKind(
                             SyntaxKind.EqualsExpression,
-                            SyntaxKind.GreaterThanExpression);
+                            SyntaxKind.GreaterThanExpression))
+                    {
+                        return true;
+                    }
+
+                    return rightExpression.IsOneNumericLiteral()
+                        && binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression);
                 }
             }
 
