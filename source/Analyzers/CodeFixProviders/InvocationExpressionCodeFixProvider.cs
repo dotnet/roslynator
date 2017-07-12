@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -45,6 +46,11 @@ namespace Roslynator.CSharp.CodeFixProviders
             InvocationExpressionSyntax invocation = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<InvocationExpressionSyntax>();
+
+            Debug.Assert(invocation != null, $"{nameof(invocation)} is null");
+
+            if (invocation == null)
+                return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
