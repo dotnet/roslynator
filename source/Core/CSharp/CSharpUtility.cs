@@ -1,14 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
@@ -241,81 +237,6 @@ namespace Roslynator.CSharp
             }
 
             return name;
-        }
-
-        public static IEnumerable<InvocationExpressionSyntax> ConvertInterpolatedStringToStringBuilderAppend(
-            InterpolatedStringExpressionSyntax interpolatedString,
-            ExpressionSyntax stringBuilderExpression)
-        {
-            bool isVerbatim = interpolatedString.IsVerbatim();
-
-            foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
-            {
-                switch (content.Kind())
-                {
-                    case SyntaxKind.Interpolation:
-                        {
-                            var interpolation = (InterpolationSyntax)content;
-
-                            InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
-                            InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
-
-                            if (alignmentClause != null
-                                || formatClause != null)
-                            {
-                                var sb = new StringBuilder();
-                                sb.Append("\"{0");
-
-                                if (alignmentClause != null)
-                                {
-                                    sb.Append(',');
-                                    sb.Append(alignmentClause.Value.ToString());
-                                }
-
-                                if (formatClause != null)
-                                {
-                                    sb.Append(':');
-                                    sb.Append(formatClause.FormatStringToken.Text);
-                                }
-
-                                sb.Append("}\"");
-
-                                yield return SimpleMemberInvocationExpression(
-                                    stringBuilderExpression,
-                                    IdentifierName("AppendFormat"),
-                                    ArgumentList(Argument(ParseExpression(sb.ToString())), Argument(interpolation.Expression)));
-                            }
-                            else
-                            {
-                                yield return SimpleMemberInvocationExpression(
-                                    stringBuilderExpression,
-                                    IdentifierName("Append"),
-                                    Argument(interpolation.Expression));
-                            }
-
-                            break;
-                        }
-                    case SyntaxKind.InterpolatedStringText:
-                        {
-                            var interpolatedStringText = (InterpolatedStringTextSyntax)content;
-
-                            string text = interpolatedStringText.TextToken.Text;
-
-                            text = (isVerbatim)
-                                ? "@\"" + text + "\""
-                                : "\"" + text + "\"";
-
-                            ExpressionSyntax stringLiteral = ParseExpression(text);
-
-                            yield return SimpleMemberInvocationExpression(
-                                stringBuilderExpression,
-                                IdentifierName("Append"),
-                                Argument(stringLiteral));
-
-                            break;
-                        }
-                }
-            }
         }
 
         public static bool IsNameOfExpression(

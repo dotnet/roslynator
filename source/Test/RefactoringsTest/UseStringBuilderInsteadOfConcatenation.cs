@@ -8,7 +8,8 @@ namespace Roslynator.CSharp.Refactorings.Test
     {
         public static void Foo(string x)
         {
-            var s = x + "x" + x + @"x" + $"{x}x" + $@"{x}x" + $"{x,1}x" + $"{x:f}x" + $"{x,1:f}x";
+            //a
+            var s = x + "x" + x + @"x" + $"{x}x" + $@"{x}x" + $"{x,1}x" + $"{x:f}x" + $"{x,1:f}x"; //b
 
             s = x + "x";
 

@@ -13,35 +13,31 @@ namespace Roslynator.CSharp.Refactorings.Test
             //a
             sb.Append(s.Substring(0, 2)); //b
 
-            //a
-            sb.Append(s.Remove(2)); //b
+            sb.Append(s.Remove(2));
 
-            //a
-            sb.Append(string.Format("f", s)); //b
+            sb.Append(string.Format("f", s));
 
-            //a
-            sb.Append($"{s}s"); //b
+            sb.Append($"{s}s");
 
-            //a
-            sb.Append(s + "s"); //b
+            sb.Append("a" + s + "b").Append("c" + s + "d");
 
-            //a
-            sb.AppendLine(s.Substring(0, 2)); //b
+            sb.Append(s + "s");
 
-            //a
-            sb.AppendLine(s.Remove(2)); //b
+            sb.AppendLine(s.Substring(0, 2));
 
-            //a
-            sb.AppendLine(string.Format("f", s)); //b
+            sb.AppendLine(s.Remove(2));
 
-            //a
-            sb.AppendLine($"{s}s"); //b
+            sb.AppendLine(string.Format("f", s));
 
-            //a
-            sb.AppendLine(s + "s"); //b
+            sb.AppendLine($"{s}s");
 
-            //a
-            sb.Append(s + "s" + s + @"s" + $"{s}s" + $@"{s}s" + $"{s,1}s" + $"{s:f}s" + $"{s,1:f}s"); //b
+            sb.AppendLine($"{s,1:f}");
+
+            sb.AppendLine(s + "s");
+
+            sb.AppendLine("a" + s + "b").AppendLine("c" + s + "d");
+
+            sb.Append(s + "s" + s + @"s" + $"{s}s" + $@"{s}s" + $"{s,1}s" + $"{s:f}s" + $"{s,1:f}s");
 
             //n 
 
