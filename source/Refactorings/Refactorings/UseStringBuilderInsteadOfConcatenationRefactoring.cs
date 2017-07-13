@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Text;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -75,42 +75,53 @@ namespace Roslynator.CSharp.Refactorings
 
             string name = NameGenerator.Default.EnsureUniqueLocalName(DefaultNames.StringBuilderVariable, semanticModel, statement.SpanStart, cancellationToken: cancellationToken);
 
-            IdentifierNameSyntax identifierName = IdentifierName(name);
-
-            var statements = new List<StatementSyntax>();
+            IdentifierNameSyntax stringBuilderName = IdentifierName(name);
 
             TypeSyntax type = semanticModel.GetTypeByMetadataName(MetadataNames.System_Text_StringBuilder).ToMinimalTypeSyntax(semanticModel, statement.SpanStart);
 
-            statements.Add(LocalDeclarationStatement(VarType(), name, ObjectCreationExpression(type, ArgumentList())).WithLeadingTrivia(statement.GetLeadingTrivia()));
-
-            foreach (ExpressionSyntax expression in concatenation.Expressions)
+            var statements = new List<StatementSyntax>()
             {
-                switch (expression.Kind())
-                {
-                    case SyntaxKind.InterpolatedStringExpression:
-                        {
-                            foreach (InvocationExpressionSyntax invocationExpression in CSharpUtility.ConvertInterpolatedStringToStringBuilderAppend((InterpolatedStringExpressionSyntax)expression, identifierName))
-                                statements.Add(ExpressionStatement(invocationExpression));
+                LocalDeclarationStatement(VarType(), Identifier(name).WithRenameAnnotation(), ObjectCreationExpression(type, ArgumentList())).WithLeadingTrivia(statement.GetLeadingTrivia())
+            };
 
-                            break;
-                        }
-                    default:
-                        {
-                            statements.Add(CreateStatement(expression, identifierName));
-                            break;
-                        }
+            ImmutableArray<ExpressionSyntax> expressions = concatenation.Expressions;
+
+            ExpressionSyntax newInvocation = null;
+            for (int i = 0; i < expressions.Length; i++)
+            {
+                if (expressions[i].IsKind(SyntaxKind.InterpolatedStringExpression))
+                {
+                    var interpolatedString = (InterpolatedStringExpressionSyntax)expressions[i];
+
+                    bool isVerbatim = interpolatedString.IsVerbatim();
+
+                    SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
+
+                    for (int j = 0; j < contents.Count; j++)
+                    {
+                        InterpolatedStringContentConversion conversion = InterpolatedStringContentConversion.Create(contents[j], isVerbatim);
+
+                        newInvocation = SimpleMemberInvocationExpression(
+                            newInvocation ?? stringBuilderName,
+                            IdentifierName(conversion.Name),
+                            ArgumentList(conversion.Arguments));
+                    }
+                }
+                else
+                {
+                    newInvocation = SimpleMemberInvocationExpression(
+                        newInvocation ?? stringBuilderName,
+                        IdentifierName("Append"),
+                        Argument(expressions[i].WithoutTrivia()));
                 }
             }
 
-            statements.Add(statement.ReplaceNode(concatenation.OriginalExpression, SimpleMemberInvocationExpression(identifierName, IdentifierName("ToString"))).WithTrailingTrivia(statement.GetTrailingTrivia()));
+            statements.Add(ExpressionStatement(newInvocation));
 
-            for (int i = 0; i < statements.Count; i++)
-            {
-                SyntaxTriviaList trailingTrivia = statements[i].GetTrailingTrivia();
-
-                if (!trailingTrivia.Any(f => f.IsEndOfLineTrivia()))
-                    statements[i] = statements[i].WithTrailingTrivia(trailingTrivia.Add(NewLine()));
-            }
+            statements.Add(statement
+                .ReplaceNode(concatenation.OriginalExpression, SimpleMemberInvocationExpression(stringBuilderName, IdentifierName("ToString")))
+                .WithTrailingTrivia(statement.GetTrailingTrivia())
+                .WithoutLeadingTrivia());
 
             if (EmbeddedStatementHelper.IsEmbeddedStatement(statement))
             {
@@ -125,17 +136,6 @@ namespace Roslynator.CSharp.Refactorings
 
                 return await document.ReplaceNodeAsync(statement, statements, cancellationToken).ConfigureAwait(false);
             }
-        }
-
-        private static ExpressionStatementSyntax CreateStatement(ExpressionSyntax expression, IdentifierNameSyntax identifierName)
-        {
-            ExpressionStatementSyntax statement = ExpressionStatement(
-                SimpleMemberInvocationExpression(
-                    identifierName,
-                    IdentifierName("Append"),
-                    Argument(expression.WithoutTrivia())));
-
-            return statement.WithTriviaFrom(expression);
         }
     }
 }
