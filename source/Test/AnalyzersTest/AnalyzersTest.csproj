@@ -48,7 +48,7 @@
     <Compile Include="AvoidBoxingOfValueType.cs" />
     <Compile Include="DeclareEnumValueAsCombinationOfNames.cs" />
     <Compile Include="CallExtensionMethodAsInstanceMethod.cs" />
-    <Compile Include="MarkClassAsStatic2.cs" />
+    <Compile Include="MakeClassStatic2.cs" />
     <Compile Include="AddOrRemoveRegionName.cs" />
     <Compile Include="MergeStringExpressions.cs" />
     <Compile Include="OverridingMemberCannotChangeParamsModifier.cs" />
@@ -122,7 +122,7 @@
     <Compile Include="GenerateCombinedEnumMember.cs" />
     <Compile Include="GenerateEnumMember.cs" />
     <Compile Include="GenerateEnumValues.cs" />
-    <Compile Include="MarkClassAsStatic.cs" />
+    <Compile Include="MakeClassStatic.cs" />
     <Compile Include="DeclareUsingDirectiveOnTopLevel.cs" />
     <Compile Include="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression.cs" />
     <Compile Include="MergeIfStatementWithNestedIfStatement.cs" />
