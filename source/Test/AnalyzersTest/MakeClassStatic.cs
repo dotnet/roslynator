@@ -6,7 +6,7 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
-    internal partial class MarkClassAsStatic
+    internal partial class MakeClassStatic
     {
         public class Foo
         {
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             }
         }
 
-        public sealed partial class FooPartial
+        public partial class FooPartial
         {
         }
 
@@ -67,6 +67,10 @@ namespace Roslynator.CSharp.Analyzers.Test
         }
 
         //n
+
+        public partial class FooSealedPartial
+        {
+        }
 
         public class Foo5
         {
