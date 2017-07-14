@@ -83,58 +83,13 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     }
                     else if (parameters.Length > 1
-                        && methodInfo.IsName("AppendFormat", "Insert"))
+                        && methodInfo.IsName("Insert")
+                        && methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Object)
+                        && context.SemanticModel
+                            .GetTypeSymbol(arguments[1].Expression, context.CancellationToken)
+                            .IsValueType)
                     {
-                        int index = -1;
-
-                        for (int i = 0; i < parameters.Length; i++)
-                        {
-                            ITypeSymbol type = parameters[i].Type;
-
-                            if (type.IsObject())
-                            {
-                                index = i;
-                                break;
-                            }
-                            else if (parameters[i].IsParams
-                                && type.IsArrayType()
-                                && ((IArrayTypeSymbol)type).ElementType.IsObject())
-                            {
-                                index = i;
-                                break;
-                            }
-                        }
-
-                        if (index != -1)
-                        {
-                            if (parameters[index].IsParams)
-                            {
-                                for (int i = index; i < arguments.Count; i++)
-                                {
-                                    if (context.SemanticModel
-                                        .GetTypeSymbol(arguments[i].Expression, context.CancellationToken)
-                                        .IsValueType)
-                                    {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, arguments[i]);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                int min = Math.Min(parameters.Length, arguments.Count);
-
-                                for (int i = index; i < min; i++)
-                                {
-                                    if (parameters[i].Type.IsObject()
-                                        && context.SemanticModel
-                                            .GetTypeSymbol(arguments[i].Expression, context.CancellationToken)
-                                            .IsValueType)
-                                    {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, arguments[i]);
-                                    }
-                                }
-                            }
-                        }
+                        context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, arguments[1]);
                     }
                 }
             }
@@ -258,7 +213,7 @@ namespace Roslynator.CSharp.Refactorings
                 InterpolatedStringContentConversion conversion = InterpolatedStringContentConversion.Create(contents[i], isVerbatim);
 
                 string name = conversion.Name;
-                var arguments = conversion.Arguments;
+                SeparatedSyntaxList<ArgumentSyntax> arguments = conversion.Arguments;
 
                 if (i == contents.Count - 1
                     && isAppendLine

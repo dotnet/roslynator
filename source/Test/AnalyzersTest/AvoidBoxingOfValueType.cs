@@ -37,16 +37,21 @@ namespace Roslynator.CSharp.Analyzers.Test
             var sb = new StringBuilder();
 
             sb.Append(options);
-            sb.AppendFormat("f", options);
-            sb.AppendFormat("f", options, options);
-            sb.AppendFormat("f", options, options, options);
-            sb.AppendFormat("f", options, options, options, options);
             sb.Insert(0, options);
 
             //n
 
             s = s + "";
             s = s + o;
+
+            s = $"{i,1}";
+            s = $"{i:f}";
+            s = $"{i,1:f}";
+
+            sb.AppendFormat("f", options);
+            sb.AppendFormat("f", options, options);
+            sb.AppendFormat("f", options, options, options);
+            sb.AppendFormat("f", options, options, options, options);
         }
     }
 }
