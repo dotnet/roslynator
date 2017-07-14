@@ -1719,7 +1719,7 @@ namespace Roslynator.CSharp
             messageFormat: "Avoid unnecessary boxing of value type.",
             category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Warning,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
     }
 }

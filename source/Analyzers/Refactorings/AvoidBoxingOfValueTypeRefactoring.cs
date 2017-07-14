@@ -17,9 +17,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void AddExpression(SyntaxNodeAnalysisContext context)
         {
-            SyntaxNode node = context.Node;
-
-            if (node.ContainsDiagnostics)
+            if (context.Node.ContainsDiagnostics)
                 return;
 
             var addExpression = (BinaryExpressionSyntax)context.Node;
@@ -45,36 +43,38 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void Analyze(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
         {
-            ExpressionSyntax expression2 = expression.WalkDownParentheses();
+            expression = expression.WalkDownParentheses();
 
-            if (!expression2.IsKind(SyntaxKind.AddExpression))
+            if (!expression.IsKind(SyntaxKind.AddExpression))
             {
-                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression2, context.CancellationToken);
+                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
                 if (typeSymbol?.IsValueType == true)
-                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression2);
+                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
             }
         }
 
         public static void Interpolation(SyntaxNodeAnalysisContext context)
         {
-            SyntaxNode node = context.Node;
-
-            if (node.ContainsDiagnostics)
+            if (context.Node.ContainsDiagnostics)
                 return;
 
             var interpolation = (InterpolationSyntax)context.Node;
 
-            ExpressionSyntax expression = interpolation.Expression;
-
-            if (expression != null)
+            if (interpolation.AlignmentClause == null
+                && interpolation.FormatClause == null)
             {
-                expression = expression.WalkDownParentheses();
+                ExpressionSyntax expression = interpolation.Expression;
 
-                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+                if (expression != null)
+                {
+                    expression = expression.WalkDownParentheses();
 
-                if (typeSymbol?.IsValueType == true)
-                    context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
+                    ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                    if (typeSymbol?.IsValueType == true)
+                        context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
+                }
             }
         }
 
