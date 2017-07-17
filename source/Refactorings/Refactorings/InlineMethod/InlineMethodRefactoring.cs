@@ -181,10 +181,8 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                             if (expression != null)
                             {
-                                SyntaxKind kind = expression.Kind();
-
-                                if (kind == SyntaxKind.ThisExpression
-                                    || kind != SyntaxKind.SimpleMemberAccessExpression)
+                                if (!expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                                    || ((MemberAccessExpressionSyntax)expression).Expression.IsKind(SyntaxKind.ThisExpression))
                                 {
                                     return methodSymbol;
                                 }
