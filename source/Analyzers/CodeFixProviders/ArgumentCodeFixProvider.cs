@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
+using System.Diagnostics;
 
 namespace Roslynator.CSharp.CodeFixProviders
 {
@@ -28,6 +29,11 @@ namespace Roslynator.CSharp.CodeFixProviders
             ArgumentSyntax argument = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
                 .FirstAncestorOrSelf<ArgumentSyntax>();
+
+            Debug.Assert(argument != null, $"{nameof(argument)} is null");
+
+            if (argument == null)
+                return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
