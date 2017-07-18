@@ -105,6 +105,8 @@ namespace Roslynator.CSharp.Refactorings
 
             string className = classDeclaration.Identifier.ValueText;
 
+            bool isSealedClass = classDeclaration.Modifiers.Contains(SyntaxKind.SealedKeyword);
+
             int insertIndex = MemberDeclarationComparer.ByKind.GetInsertIndex(members, SyntaxKind.ConstructorDeclaration);
 
             int position = (insertIndex == 0)
@@ -112,7 +114,7 @@ namespace Roslynator.CSharp.Refactorings
                 : members[insertIndex - 1].FullSpan.End;
 
             IEnumerable<ConstructorDeclarationSyntax> constructors = constructorSymbols
-                .Select(symbol => CreateConstructor(symbol, className, semanticModel, position));
+                .Select(symbol => CreateConstructor(symbol, className, isSealedClass, semanticModel, position));
 
             ClassDeclarationSyntax newClassDeclaration = classDeclaration
                 .WithMembers(members.InsertRange(insertIndex, constructors));
@@ -120,7 +122,12 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(classDeclaration, newClassDeclaration, cancellationToken);
         }
 
-        private static ConstructorDeclarationSyntax CreateConstructor(IMethodSymbol methodSymbol, string className, SemanticModel semanticModel, int position)
+        private static ConstructorDeclarationSyntax CreateConstructor(
+            IMethodSymbol methodSymbol,
+            string className,
+            bool isSealedClass,
+            SemanticModel semanticModel,
+            int position)
         {
             var parameters = new List<ParameterSyntax>();
             var arguments = new List<ArgumentSyntax>();
@@ -147,9 +154,23 @@ namespace Roslynator.CSharp.Refactorings
                 arguments.Add(Argument(IdentifierName(parameterSymbol.Name)));
             }
 
+            Accessibility accessibility = methodSymbol.DeclaredAccessibility;
+
+            if (isSealedClass)
+            {
+                if (accessibility == Accessibility.ProtectedOrInternal)
+                {
+                    accessibility = Accessibility.Internal;
+                }
+                else if (accessibility == Accessibility.Protected)
+                {
+                    accessibility = Accessibility.Private;
+                }
+            }
+
             ConstructorDeclarationSyntax constructor = ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
-                Modifiers.FromAccessibility(methodSymbol.DeclaredAccessibility),
+                Modifiers.FromAccessibility(accessibility),
                 Identifier(className),
                 ParameterList(SeparatedList(parameters)),
                 BaseConstructorInitializer(ArgumentList(arguments.ToArray())),
