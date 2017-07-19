@@ -1205,4 +1205,9 @@
       <Syntax>type parameter constraint clause</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0187" Identifier="ReplaceForEachWithForAndReverseLoop" Title="Replace foreach with for and reverse loop" IsEnabledByDefault="false">
+    <Syntaxes>
+      <Syntax>foreach statement</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

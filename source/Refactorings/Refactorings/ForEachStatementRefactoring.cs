@@ -27,13 +27,27 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameIdentifierAccordingToTypeName))
                 await RenameIdentifierAccordingToTypeNameAsync(context, forEachStatement).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor)
-                && context.Span.IsEmpty
-                && ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, await context.GetSemanticModelAsync().ConfigureAwait(false), context.CancellationToken))
+            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor, RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(forEachStatement))
             {
-                context.RegisterRefactoring(
-                    "Replace foreach with for",
-                    cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, cancellationToken));
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (ReplaceForEachWithForRefactoring.CanRefactor(forEachStatement, semanticModel, context.CancellationToken))
+                {
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithFor))
+                    {
+                        context.RegisterRefactoring(
+                            "Replace foreach with for",
+                            cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, reverseLoop: false, semanticModel: semanticModel, cancellationToken: cancellationToken));
+                    }
+
+                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop))
+                    {
+                        context.RegisterRefactoring(
+                            "Replace foreach with for and reverse loop",
+                            cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, reverseLoop: true, semanticModel: semanticModel, cancellationToken: cancellationToken));
+                    }
+                }
             }
         }
 

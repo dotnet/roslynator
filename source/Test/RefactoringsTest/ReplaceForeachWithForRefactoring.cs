@@ -15,37 +15,39 @@ namespace Roslynator.CSharp.Refactorings.Test
             string s = null;
             foreach (var ch in s)
             {
-                char ch2 = ch; 
+                char x = ch; 
             }
 
             var arr = new string[] { null };
             foreach (var item in arr)
             {
-                string item2 = item;
+                string x = item;
             }
 
             var ia = ImmutableArray.Create<string>("");
             foreach (var item in ia)
             {
-                string item2 = item;
+                string x = item;
             }
 
             var items = new List<string>();
             foreach (string item in items)
             {
-                string item2 = item;
+                string x = item;
             }
 
             MatchCollection matches = null;
             foreach (Match item in matches)
             {
-                Match item2 = item;
+                Match x = item;
             }
+
+            //n
 
             Foo foo = null;
             foreach (var item in foo)
             {
-                string item2 = item;
+                string x = item;
             }
         }
 
