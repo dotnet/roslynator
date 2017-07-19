@@ -15,11 +15,9 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
-            OverrideInfo overrideInfo,
+            Accessibility newAccessibility,
             CancellationToken cancellationToken)
         {
-            Accessibility newAccessibility = overrideInfo.OverriddenSymbol.DeclaredAccessibility;
-
             MemberDeclarationSyntax newNode = AccessibilityHelper.ChangeAccessibility(memberDeclaration, newAccessibility, ModifierComparer.Instance);
 
             return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);

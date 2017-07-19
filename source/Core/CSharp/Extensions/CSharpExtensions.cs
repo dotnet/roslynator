@@ -338,5 +338,20 @@ namespace Roslynator.CSharp
                 return false;
             }
         }
+
+        internal static MethodDeclarationSyntax GetOtherPart(
+            this SemanticModel semanticModel,
+            MethodDeclarationSyntax methodDeclaration,
+            CancellationToken cancellationToken)
+        {
+            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, cancellationToken);
+
+            IMethodSymbol otherSymbol = methodSymbol.PartialDefinitionPart ?? methodSymbol.PartialImplementationPart;
+
+            if (otherSymbol != null)
+                return (MethodDeclarationSyntax)otherSymbol.GetSyntax(cancellationToken);
+
+            return null;
+        }
     }
 }

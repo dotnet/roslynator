@@ -30,13 +30,13 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            BaseTypeSyntax baseType = root
+            TypeSyntax type = root
                 .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<BaseTypeSyntax>();
+                .FirstAncestorOrSelf<TypeSyntax>();
 
-            Debug.Assert(baseType != null, $"{nameof(baseType)} is null");
+            Debug.Assert(type != null, $"{nameof(type)} is null");
 
-            if (baseType == null)
+            if (type == null)
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -45,13 +45,6 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.UsingGenericTypeRequiresTypeArguments:
                         {
-                            TypeSyntax type = baseType.Type;
-
-                            if (!type.IsKind(SyntaxKind.IdentifierName))
-                                break;
-
-                            var baseList = (BaseListSyntax)baseType.Parent;
-
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                             SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(type, context.CancellationToken);
@@ -70,9 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             GetTitle(typeParameters),
                                             cancellationToken =>
                                             {
-                                                int position = GetPosition(baseList.Parent);
-
-                                                SeparatedSyntaxList<TypeSyntax> typeArguments = CreateTypeArguments(typeParameters, position, semanticModel).ToSeparatedSyntaxList();
+                                                SeparatedSyntaxList<TypeSyntax> typeArguments = CreateTypeArguments(typeParameters, type.SpanStart, semanticModel).ToSeparatedSyntaxList();
 
                                                 var identifierName = (IdentifierNameSyntax)type;
 
@@ -137,21 +128,6 @@ namespace Roslynator.CSharp.CodeFixes
 
                 yield return SyntaxFactory.IdentifierName(identifier);
             }
-        }
-
-        private static int GetPosition(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)node).OpenBraceToken.SpanStart;
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)node).OpenBraceToken.SpanStart;
-            }
-
-            Debug.Fail(node.Kind().ToString());
-
-            return node.SpanStart;
         }
     }
 }

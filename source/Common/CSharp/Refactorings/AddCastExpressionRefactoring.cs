@@ -10,31 +10,13 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AddCastExpressionRefactoring
     {
-        public static void RegisterRefactoring(
-            RefactoringContext context,
-            ExpressionSyntax expression,
-            ITypeSymbol destinationType)
-        {
-            context.RegisterRefactoring(
-                $"Cast to '{SymbolDisplay.GetString(destinationType)}'",
-                cancellationToken =>
-                {
-                    return RefactorAsync(
-                        context.Document,
-                        expression,
-                        destinationType,
-                        cancellationToken);
-                });
-        }
-
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             TypeSyntax type = destinationType.ToMinimalTypeSyntax(semanticModel, expression.SpanStart);
 
             ExpressionSyntax newExpression = expression
@@ -45,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
             CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, newExpression)
                 .WithTriviaFrom(expression);
 
-            return await document.ReplaceNodeAsync(expression, castExpression, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(expression, castExpression, cancellationToken);
         }
     }
 }

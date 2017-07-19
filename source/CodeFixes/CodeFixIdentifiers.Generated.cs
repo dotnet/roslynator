@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
         public const string OverridingMemberCannotChangeAccessModifiers = Prefix + "0015";
         public const string AddDocumentationComment = Prefix + "0016";
         public const string RemoveUnreachableCode = Prefix + "0017";
-        public const string MemberReturnTypeMustMatchOverriddenMemberReturnType = Prefix + "0018";
+        public const string ChangeMethodReturnType = Prefix + "0018";
         public const string MemberTypeMustMatchOverriddenMemberType = Prefix + "0019";
         public const string AddReturnStatementThatReturnsDefaultValue = Prefix + "0020";
         public const string UseYieldReturnInsteadOfReturn = Prefix + "0021";
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
         public const string InitializeLocalVariableWithDefaultValue = Prefix + "0040";
         public const string ChangeTypeOfLocalVariable = Prefix + "0041";
         public const string MakeMemberNonStatic = Prefix + "0042";
-        public const string RemoveConstraintClause = Prefix + "0043";
+        public const string RemoveConstraintClauses = Prefix + "0043";
         public const string AddTypeArgument = Prefix + "0044";
         public const string RemoveConstModifier = Prefix + "0045";
         public const string RemoveEmptySwitchStatement = Prefix + "0046";
@@ -65,5 +65,14 @@ namespace Roslynator.CSharp.CodeFixes
         public const string RemoveReturnExpression = Prefix + "0057";
         public const string ReplaceNullLiteralExpressionWithDefaultValue = Prefix + "0058";
         public const string ReplaceVariableDeclarationWithAssignment = Prefix + "0059";
+        public const string RemoveThisModifier = Prefix + "0060";
+        public const string RemoveTypeParameter = Prefix + "0061";
+        public const string MakeContainingClassNonStatic = Prefix + "0062";
+        public const string AddCastExpression = Prefix + "0063";
+        public const string MoveConstraint = Prefix + "0064";
+        public const string RemoveConstraint = Prefix + "0065";
+        public const string CombineConstraintClauses = Prefix + "0066";
+        public const string AssignDefaultValueToOutParameter = Prefix + "0067";
+        public const string MakeClassNonStatic = Prefix + "0068";
     }
 }

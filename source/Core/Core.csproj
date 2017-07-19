@@ -43,7 +43,9 @@
     <Compile Include="CSharp\AccessibilityHelper.cs" />
     <Compile Include="CSharp\AccessibilityInfo.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
+    <Compile Include="CSharp\GenericDeclarationHelper.cs" />
     <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
+    <Compile Include="CSharp\TypeParameterInfo.cs" />
     <Compile Include="CSharp\InterpolatedStringContentConversion.cs" />
     <Compile Include="CSharp\OperatorPrecedence.cs" />
     <Compile Include="Extensions\AccessibilityExtensions.cs" />
@@ -129,6 +131,7 @@
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
     <Compile Include="Extensions\CodeFixContextExtensions.cs" />
+    <Compile Include="Extensions\SolutionExtensions.cs" />
     <Compile Include="Utilities\FlagsUtility.cs" />
     <Compile Include="Utilities\Deferred`1.cs" />
     <Compile Include="MethodInfo.cs" />

@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
                     CallToMethod(context, expression, destinationType, semanticModel);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
-                    AddCastExpressionRefactoring.RegisterRefactoring(context, expression, destinationType);
+                    RegisterAddCastExpressionRefactoring(context, expression, destinationType, semanticModel);
             }
             else if (destinationType.IsString())
             {
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
             {
                 foreach (ITypeSymbol destinationType in convertibleDestinationTypes)
-                    AddCastExpressionRefactoring.RegisterRefactoring(context, expression, destinationType);
+                    RegisterAddCastExpressionRefactoring(context, expression, destinationType, semanticModel);
             }
         }
 
@@ -139,6 +139,25 @@ namespace Roslynator.CSharp.Refactorings
                 if (enumerable != null)
                     CallToMethodRefactoring.ComputeRefactoring(context, expression, enumerable, "ToList");
             }
+        }
+
+        private static void RegisterAddCastExpressionRefactoring(
+            RefactoringContext context,
+            ExpressionSyntax expression,
+            ITypeSymbol destinationType,
+            SemanticModel semanticModel)
+        {
+            context.RegisterRefactoring(
+                $"Cast to '{SymbolDisplay.GetString(destinationType)}'",
+                cancellationToken =>
+                {
+                    return AddCastExpressionRefactoring.RefactorAsync(
+                        context.Document,
+                        expression,
+                        destinationType,
+                        semanticModel,
+                        cancellationToken);
+                });
         }
     }
 }
