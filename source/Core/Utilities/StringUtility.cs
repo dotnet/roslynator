@@ -342,5 +342,27 @@ namespace Roslynator.Utilities
                 return false;
             }
         }
+
+        public static bool Any(string s, char ch)
+        {
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] == ch)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool All(string s, char ch)
+        {
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (s[i] != ch)
+                    return false;
+            }
+
+            return true;
+        }
     }
 }

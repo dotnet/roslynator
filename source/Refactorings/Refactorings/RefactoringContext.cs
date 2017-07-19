@@ -279,6 +279,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fElseClause = false;
             bool fCaseSwitchLabel = false;
             bool fUsingDirective = false;
+            bool fTypeParameterConstraintClause = false;
 
             bool fExpression = false;
             bool fAnonymousMethod = false;
@@ -443,6 +444,14 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         UsingDirectiveRefactoring.ComputeRefactoring(this, (UsingDirectiveSyntax)node);
                         fUsingDirective = true;
+                        continue;
+                    }
+
+                    if (!fTypeParameterConstraintClause
+                        && kind == SyntaxKind.TypeParameterConstraintClause)
+                    {
+                        TypeParameterConstraintClauseRefactoring.ComputeRefactoring(this, (TypeParameterConstraintClauseSyntax)node);
+                        fTypeParameterConstraintClause = true;
                         continue;
                     }
 

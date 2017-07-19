@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="RefactoringIdentifiers.Deprecated.cs" />
     <Compile Include="Refactorings\AccessModifierRefactoring.cs" />
+    <Compile Include="Refactorings\FormatConstraintClausesRefactoring.cs" />
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodExpressionRefactoring.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Refactorings\SemicolonTokenRefactoring.cs" />
     <Compile Include="Refactorings\SortMemberDeclarations\SortMemberDeclarationsRewriter.cs" />
     <Compile Include="Refactorings\SplitIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\TypeParameterConstraintClauseRefactoring.cs" />
     <Compile Include="Refactorings\UseStringBuilderInsteadOfConcatenationRefactoring.cs" />
     <Compile Include="Refactorings\UseListInsteadOfYieldRefactoring.cs" />
     <Compile Include="Refactorings\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
