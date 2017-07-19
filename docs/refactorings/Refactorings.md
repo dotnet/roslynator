@@ -340,6 +340,12 @@
 
 ![Format conditional expression](../../images/refactorings/FormatConditionalExpressionOnSingleLine.png)
 
+#### Format constraint clauses (RR0187)
+
+* **Syntax**: type parameter constraint clause
+
+![Format constraint clauses](../../images/refactorings/FormatConstraintClauses.png)
+
 #### Format expression chain (RR0051)
 
 * **Syntax**: expression chain
@@ -502,12 +508,6 @@
 * **Syntax**: method declaration, indexer declaration
 
 ![Make member virtual](../../images/refactorings/MakeMemberVirtual.png)
-
-#### Mark containing class as abstract (RR0071)
-
-* **Syntax**: method declaration, property declaration, indexer declaration, event declaration
-
-![Mark containing class as abstract](../../images/refactorings/MarkContainingClassAsAbstract.png)
 
 #### Merge assignment expression with return statement (RR0073)
 
@@ -805,12 +805,6 @@
 
 ![Replace conditional expression with expression](../../images/refactorings/ReplaceConditionalExpressionWithExpression.png)
 
-#### Replace conditional expression with if\-else (RR0120)
-
-* **Syntax**: conditional expression
-
-![Replace conditional expression with if\-else](../../images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
-
 #### Replace constant with field (RR0121)
 
 * **Syntax**: constant declaration
@@ -868,6 +862,12 @@
 * **Syntax**: foreach statement
 
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
+
+#### Replace foreach with for and reverse loop (RR0187)
+
+* **Syntax**: foreach statement
+
+![Replace foreach with for and reverse loop](../../images/refactorings/ReplaceForEachWithForAndReverseLoop.png)
 
 #### Replace hexadecimal literal with decimal literal (RR0132)
 
@@ -1127,6 +1127,12 @@
 * **Scope**: body or accessor list
 
 ![Use expression\-bodied member](../../images/refactorings/UseExpressionBodiedMember.png)
+
+#### Use if\-else instead of conditional expression (RR0120)
+
+* **Syntax**: local declaration statement with conditional expression, assignment with conditional expression, return statement conditional expression, yield statement conditional expression
+
+![Use if\-else instead of conditional expression](../../images/refactorings/UseIfElseInsteadOfConditionalExpression.png)
 
 #### Use lambda expression instead of anonymous method (RR0170)
 

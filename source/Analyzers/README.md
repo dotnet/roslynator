@@ -182,4 +182,4 @@ RCS1194|Implement exception constructors|Design|x
 RCS1195|Use ^ operator|Simplification|x
 RCS1196|Call extension method as instance method|Style|x
 RCS1197|Optimize StringBuilder\.Append/AppendLine call|Performance|x
-RCS1198|Avoid unnecessary boxing of value type|Performance|x
+RCS1198|Avoid unnecessary boxing of value type|Performance|

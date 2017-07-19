@@ -52,6 +52,7 @@ RR0047|[Format accessor braces](../../docs/refactorings/FormatAccessorBraces.md)
 RR0048|[Format argument list](../../docs/refactorings/FormatArgumentList.md)|x
 RR0049|[Format binary expression](../../docs/refactorings/FormatBinaryExpression.md)|x
 RR0050|[Format conditional expression](../../docs/refactorings/FormatConditionalExpression.md)|x
+RR0187|[Format constraint clauses](../../docs/refactorings/FormatConstraintClauses.md)|x
 RR0051|[Format expression chain](../../docs/refactorings/FormatExpressionChain.md)|x
 RR0052|[Format initializer](../../docs/refactorings/FormatInitializer.md)|x
 RR0053|[Format parameter list](../../docs/refactorings/FormatParameterList.md)|x
@@ -76,7 +77,6 @@ RR0068|[Introduce local variable](../../docs/refactorings/IntroduceLocalVariable
 RR0078|[Join string expressions](../../docs/refactorings/JoinStringExpressions.md)|x
 RR0069|[Make member abstract](../../docs/refactorings/MakeMemberAbstract.md)|x
 RR0070|[Make member virtual](../../docs/refactorings/MakeMemberVirtual.md)|x
-RR0071|[Mark containing class as abstract](../../docs/refactorings/MarkContainingClassAsAbstract.md)|x
 RR0073|[Merge assignment expression with return statement](../../docs/refactorings/MergeAssignmentExpressionWithReturnStatement.md)|x
 RR0074|[Merge attributes](../../docs/refactorings/MergeAttributes.md)|x
 RR0075|[Merge if statements](../../docs/refactorings/MergeIfStatements.md)|x
@@ -123,7 +123,6 @@ RR0116|[Replace Any with All \(or All with Any\)](../../docs/refactorings/Replac
 RR0117|[Replace as expression with cast expression](../../docs/refactorings/ReplaceAsWithCast.md)|x
 RR0118|[Replace cast expression with as expression](../../docs/refactorings/ReplaceCastWithAs.md)|x
 RR0119|[Replace conditional expression with expression](../../docs/refactorings/ReplaceConditionalExpressionWithExpression.md)|x
-RR0120|[Replace conditional expression with if\-else](../../docs/refactorings/ReplaceConditionalExpressionWithIfElse.md)|x
 RR0121|[Replace constant with field](../../docs/refactorings/ReplaceConstantWithField.md)|x
 RR0123|[Replace do statement with while statement](../../docs/refactorings/ReplaceDoStatementWithWhileStatement.md)|x
 RR0124|[Replace equals expression with string\.Equals](../../docs/refactorings/ReplaceEqualsExpressionWithStringEquals.md)|x
@@ -133,6 +132,7 @@ RR0127|[Replace expression with constant value](../../docs/refactorings/ReplaceE
 RR0130|[Replace for statement with foreach statement](../../docs/refactorings/ReplaceForWithForEach.md)|x
 RR0131|[Replace for statement with while statement](../../docs/refactorings/ReplaceForWithWhile.md)|x
 RR0129|[Replace foreach statement with for statement](../../docs/refactorings/ReplaceForEachWithFor.md)|x
+RR0187|[Replace foreach with for and reverse loop](../../docs/refactorings/ReplaceForEachWithForAndReverseLoop.md)|
 RR0132|[Replace hexadecimal literal with decimal literal](../../docs/refactorings/ReplaceHexadecimalLiteralWithDecimalLiteral.md)|x
 RR0133|[Replace if\-else with switch statement](../../docs/refactorings/ReplaceIfElseWithSwitch.md)|x
 RR0134|[Replace increment operator with decrement operator](../../docs/refactorings/ReplaceIncrementOperatorWithDecrementOperator.md)|x
@@ -173,6 +173,7 @@ RR0166|[Use conditional expression instead of if](../../docs/refactorings/UseCon
 RR0128|[Use constant instead of field](../../docs/refactorings/UseConstantInsteadOfField.md)|x
 RR0167|[Use element access instead of 'First/Last'ElementAt' method](../../docs/refactorings/UseElementAccessInsteadOfEnumerableMethod.md)|x
 RR0169|[Use expression\-bodied member](../../docs/refactorings/UseExpressionBodiedMember.md)|x
+RR0120|[Use if\-else instead of conditional expression](../../docs/refactorings/UseIfElseInsteadOfConditionalExpression.md)|x
 RR0170|[Use lambda expression instead of anonymous method](../../docs/refactorings/UseLambdaExpressionInsteadOfAnonymousMethod.md)|x
 RR0183|[Use List\<T\> instead of yield](../../docs/refactorings/UseListInsteadOfYield.md)|x
 RR0171|[Use string\.Empty instead of ""](../../docs/refactorings/UseStringEmptyInsteadOfEmptyStringLiteral.md)|

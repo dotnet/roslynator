@@ -73,7 +73,6 @@
       <Refactoring Id="RR0068" IsEnabled="true" /> <!-- IntroduceLocalVariable -->
       <Refactoring Id="RR0069" IsEnabled="true" /> <!-- MakeMemberAbstract -->
       <Refactoring Id="RR0070" IsEnabled="true" /> <!-- MakeMemberVirtual -->
-      <Refactoring Id="RR0071" IsEnabled="true" /> <!-- MarkContainingClassAsAbstract -->
       <Refactoring Id="RR0073" IsEnabled="true" /> <!-- MergeAssignmentExpressionWithReturnStatement -->
       <Refactoring Id="RR0074" IsEnabled="true" /> <!-- MergeAttributes -->
       <Refactoring Id="RR0075" IsEnabled="true" /> <!-- MergeIfStatements -->
@@ -121,7 +120,7 @@
       <Refactoring Id="RR0117" IsEnabled="true" /> <!-- ReplaceAsWithCast -->
       <Refactoring Id="RR0118" IsEnabled="true" /> <!-- ReplaceCastWithAs -->
       <Refactoring Id="RR0119" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithExpression -->
-      <Refactoring Id="RR0120" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithIfElse -->
+      <Refactoring Id="RR0120" IsEnabled="true" /> <!-- UseIfElseInsteadOfConditionalExpression -->
       <Refactoring Id="RR0121" IsEnabled="true" /> <!-- ReplaceConstantWithField -->
       <Refactoring Id="RR0123" IsEnabled="true" /> <!-- ReplaceDoStatementWithWhileStatement -->
       <Refactoring Id="RR0124" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringEquals -->
@@ -186,6 +185,8 @@
       <Refactoring Id="RR0184" IsEnabled="true" /> <!-- SplitIfStatement -->
       <Refactoring Id="RR0185" IsEnabled="true" /> <!-- ReplaceObjectCreationWithDefaultValue -->
       <Refactoring Id="RR0186" IsEnabled="true" /> <!-- ChangeAccessibility -->
+      <Refactoring Id="RR0187" IsEnabled="true" /> <!-- FormatConstraintClauses -->
+      <Refactoring Id="RR0187" IsEnabled="false" /> <!-- ReplaceForEachWithForAndReverseLoop -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -205,22 +206,22 @@
       <CodeFix Id="RCF0015" IsEnabled="true" /> <!-- OverridingMemberCannotChangeAccessModifiers (fixes CS0507) -->
       <CodeFix Id="RCF0016" IsEnabled="true" /> <!-- AddDocumentationComment (fixes CS1591) -->
       <CodeFix Id="RCF0017" IsEnabled="true" /> <!-- RemoveUnreachableCode (fixes CS0162) -->
-      <CodeFix Id="RCF0018" IsEnabled="true" /> <!-- MemberReturnTypeMustMatchOverriddenMemberReturnType (fixes CS0508) -->
+      <CodeFix Id="RCF0018" IsEnabled="true" /> <!-- ChangeMethodReturnType (fixes CS0508, CS0766) -->
       <CodeFix Id="RCF0019" IsEnabled="true" /> <!-- MemberTypeMustMatchOverriddenMemberType (fixes CS1715) -->
       <CodeFix Id="RCF0020" IsEnabled="true" /> <!-- AddReturnStatementThatReturnsDefaultValue (fixes CS0161, CS1643) -->
       <CodeFix Id="RCF0021" IsEnabled="true" /> <!-- UseYieldReturnInsteadOfReturn (fixes CS0029, CS1622) -->
       <CodeFix Id="RCF0022" IsEnabled="true" /> <!-- ReplaceStringLiteralWithCharacterLiteral (fixes CS0029) -->
       <CodeFix Id="RCF0023" IsEnabled="true" /> <!-- AddComparisonWithBooleanLiteral (fixes CS0019, CS0266) -->
       <CodeFix Id="RCF0024" IsEnabled="true" /> <!-- RemovePropertyOrFieldInitializer (fixes CS0573) -->
-      <CodeFix Id="RCF0025" IsEnabled="true" /> <!-- AddPartialModifier (fixes CS0260, CS0751) -->
+      <CodeFix Id="RCF0025" IsEnabled="true" /> <!-- AddPartialModifier (fixes CS0101, CS0102, CS0260, CS0751) -->
       <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddBody (fixes CS0501, CS0756) -->
       <CodeFix Id="RCF0027" IsEnabled="true" /> <!-- RemoveRefModifier (fixes CS1615) -->
       <CodeFix Id="RCF0028" IsEnabled="true" /> <!-- RemoveRedundantAssignment (fixes CS1717) -->
-      <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0261, CS0442, CS0628, CS1057) -->
+      <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0261, CS0442, CS0628, CS1057, CS1527) -->
       <CodeFix Id="RCF0030" IsEnabled="true" /> <!-- ChangeTypeOfParamsParameter (fixes CS0225) -->
       <CodeFix Id="RCF0031" IsEnabled="true" /> <!-- UseUncheckedExpression (fixes CS0221) -->
       <CodeFix Id="RCF0032" IsEnabled="true" /> <!-- RemoveImplementationFromAbstractMember (fixes CS0069, CS0500, CS0531) -->
-      <CodeFix Id="RCF0033" IsEnabled="true" /> <!-- AddStaticModifier (fixes CS0708, CS0710) -->
+      <CodeFix Id="RCF0033" IsEnabled="true" /> <!-- AddStaticModifier (fixes CS0708, CS0710, CS1105) -->
       <CodeFix Id="RCF0034" IsEnabled="true" /> <!-- MakeContainingClassAbstract (fixes CS0513) -->
       <CodeFix Id="RCF0035" IsEnabled="false" /> <!-- AddSemicolon (fixes CS1002) -->
       <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- SynchronizeAccessibility (fixes CS0266) -->
@@ -230,7 +231,7 @@
       <CodeFix Id="RCF0040" IsEnabled="true" /> <!-- InitializeLocalVariableWithDefaultValue (fixes CS0165) -->
       <CodeFix Id="RCF0041" IsEnabled="true" /> <!-- ChangeTypeOfLocalVariable (fixes CS0123, CS0407, CS0815) -->
       <CodeFix Id="RCF0042" IsEnabled="true" /> <!-- MakeMemberNonStatic (fixes CS0120) -->
-      <CodeFix Id="RCF0043" IsEnabled="true" /> <!-- RemoveConstraintClause (fixes CS0080) -->
+      <CodeFix Id="RCF0043" IsEnabled="true" /> <!-- RemoveConstraintClauses (fixes CS0080) -->
       <CodeFix Id="RCF0044" IsEnabled="true" /> <!-- AddTypeArgument (fixes CS0305) -->
       <CodeFix Id="RCF0045" IsEnabled="true" /> <!-- RemoveConstModifier (fixes CS0133) -->
       <CodeFix Id="RCF0046" IsEnabled="true" /> <!-- RemoveEmptySwitchStatement (fixes CS1522) -->
@@ -242,11 +243,20 @@
       <CodeFix Id="RCF0052" IsEnabled="true" /> <!-- RemoveReturnKeyword (fixes CS0127, CS1997) -->
       <CodeFix Id="RCF0053" IsEnabled="true" /> <!-- RemoveParametersFromStaticConstructor (fixes CS0132) -->
       <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- ReorderModifiers (fixes CS0267) -->
-      <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0275, CS0441, CS0515, CS0678, CS0753, CS1609) -->
+      <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994) -->
       <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114) -->
       <CodeFix Id="RCF0057" IsEnabled="true" /> <!-- RemoveReturnExpression (fixes CS0127, CS1997) -->
       <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037) -->
       <CodeFix Id="RCF0059" IsEnabled="true" /> <!-- ReplaceVariableDeclarationWithAssignment (fixes CS0128, CS0136) -->
+      <CodeFix Id="RCF0060" IsEnabled="true" /> <!-- RemoveThisModifier (fixes CS1100, CS1105) -->
+      <CodeFix Id="RCF0061" IsEnabled="true" /> <!-- RemoveTypeParameter (fixes CS0693) -->
+      <CodeFix Id="RCF0062" IsEnabled="true" /> <!-- MakeContainingClassNonStatic (fixes CS0708, CS0710) -->
+      <CodeFix Id="RCF0063" IsEnabled="true" /> <!-- AddCastExpression (fixes CS0173) -->
+      <CodeFix Id="RCF0064" IsEnabled="true" /> <!-- MoveConstraint (fixes CS0401, CS0449) -->
+      <CodeFix Id="RCF0065" IsEnabled="true" /> <!-- RemoveConstraint (fixes CS0405, CS0450, CS0451) -->
+      <CodeFix Id="RCF0066" IsEnabled="true" /> <!-- CombineConstraintClauses (fixes CS0409) -->
+      <CodeFix Id="RCF0067" IsEnabled="true" /> <!-- AssignDefaultValueToOutParameter (fixes CS0177) -->
+      <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- MakeClassNonStatic (fixes CS0718) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

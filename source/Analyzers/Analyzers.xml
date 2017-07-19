@@ -1625,7 +1625,7 @@
     <Title>Avoid unnecessary boxing of value type.</Title>
     <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>

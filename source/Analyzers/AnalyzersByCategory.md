@@ -53,7 +53,7 @@ Maintainability|Use nameof operator|RCS1015|x
 Naming|Asynchronous method name should end with 'Async'|RCS1046|
 Naming|Non\-asynchronous method name should not end with 'Async'|RCS1047|x
 Naming|Rename private field according to camel case with underscore|RCS1045|
-Performance|Avoid unnecessary boxing of value type|RCS1198|x
+Performance|Avoid unnecessary boxing of value type|RCS1198|
 Performance|Call 'Find' method instead of 'FirstOrDefault' method|RCS1119|x
 Performance|Optimize StringBuilder\.Append/AppendLine call|RCS1197|x
 Performance|Use \[\] instead of calling 'ElementAt'|RCS1120|x
