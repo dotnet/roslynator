@@ -9,15 +9,6 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IndexerDeclarationSyntax indexerDeclaration)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
-                && indexerDeclaration.HeaderSpan().Contains(context.Span)
-                && MarkContainingClassAsAbstractRefactoring.CanRefactor(indexerDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Mark containing class as abstract",
-                    cancellationToken => MarkContainingClassAsAbstractRefactoring.RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
                 && indexerDeclaration.HeaderSpan().Contains(context.Span)
                 && MakeMemberAbstractRefactoring.CanRefactor(indexerDeclaration))

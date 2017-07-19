@@ -503,14 +503,6 @@
       <Syntax>indexer declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0071" Identifier="MarkContainingClassAsAbstract" Title="Mark containing class as abstract">
-    <Syntaxes>
-      <Syntax>method declaration</Syntax>
-      <Syntax>property declaration</Syntax>
-      <Syntax>indexer declaration</Syntax>
-      <Syntax>event declaration</Syntax>
-    </Syntaxes>
-  </Refactoring>
   <Refactoring Id="RR0073" Identifier="MergeAssignmentExpressionWithReturnStatement" Title="Merge assignment expression with return statement">
     <Syntaxes>
       <Syntax>assignment expression followed with return statement</Syntax>

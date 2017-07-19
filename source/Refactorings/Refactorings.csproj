@@ -217,7 +217,6 @@
     <Compile Include="Refactorings\SwapStatementInIfElseRefactoring.cs" />
     <Compile Include="Refactorings\UncommentRefactoring.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
-    <Compile Include="Refactorings\AddCastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckParameterForNullRefactoring.cs" />
     <Compile Include="Refactorings\ArgumentRefactoring.cs" />
     <Compile Include="Refactorings\AccessorDeclarationRefactoring.cs" />

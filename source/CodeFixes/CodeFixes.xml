@@ -87,9 +87,10 @@
       <Id>CS0162</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0018" Identifier="MemberReturnTypeMustMatchOverriddenMemberReturnType" Title="Member return type must match overridden member return type">
+  <CodeFix Id="RCF0018" Identifier="ChangeMethodReturnType" Title="Change method return type">
     <FixableDiagnosticIds>
       <Id>CS0508</Id>
+      <Id>CS0766</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0019" Identifier="MemberTypeMustMatchOverriddenMemberType" Title="Member type must match overridden member type">
@@ -125,8 +126,10 @@
       <Id>CS0573</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0025" Identifier="AddPartialModifier" Title="Add partial modifier">
+  <CodeFix Id="RCF0025" Identifier="AddPartialModifier" Title="Add 'partial' modifier">
     <FixableDiagnosticIds>
+      <Id>CS0101</Id>
+      <Id>CS0102</Id>
       <Id>CS0260</Id>
       <Id>CS0751</Id>
     </FixableDiagnosticIds>
@@ -153,6 +156,7 @@
       <Id>CS0442</Id>
       <Id>CS0628</Id>
       <Id>CS1057</Id>
+      <Id>CS1527</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0030" Identifier="ChangeTypeOfParamsParameter" Title="Change type of 'params' parameter">
@@ -176,6 +180,7 @@
     <FixableDiagnosticIds>
       <Id>CS0708</Id>
       <Id>CS0710</Id>
+      <Id>CS1105</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0034" Identifier="MakeContainingClassAbstract" Title="Make containing class abstract">
@@ -226,7 +231,7 @@
       <Id>CS0120</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0043" Identifier="RemoveConstraintClause" Title="Remove constraint clause">
+  <CodeFix Id="RCF0043" Identifier="RemoveConstraintClauses" Title="Remove constraint clauses">
     <FixableDiagnosticIds>
       <Id>CS0080</Id>
     </FixableDiagnosticIds>
@@ -296,8 +301,11 @@
       <Id>CS0441</Id>
       <Id>CS0515</Id>
       <Id>CS0678</Id>
+      <Id>CS0750</Id>
       <Id>CS0753</Id>
+      <Id>CS0759</Id>
       <Id>CS1609</Id>
+      <Id>CS1994</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0056" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
@@ -320,6 +328,56 @@
     <FixableDiagnosticIds>
       <Id>CS0128</Id>
       <Id>CS0136</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0060" Identifier="RemoveThisModifier" Title="Remove 'this' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS1100</Id>
+      <Id>CS1105</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0061" Identifier="RemoveTypeParameter" Title="Remove type parameter">
+    <FixableDiagnosticIds>
+      <Id>CS0693</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0062" Identifier="MakeContainingClassNonStatic" Title="Make containing class non-static">
+    <FixableDiagnosticIds>
+      <Id>CS0708</Id>
+      <Id>CS0710</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0063" Identifier="AddCastExpression" Title="Add cast expression">
+    <FixableDiagnosticIds>
+      <Id>CS0173</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0064" Identifier="MoveConstraint" Title="Move constraint">
+    <FixableDiagnosticIds>
+      <Id>CS0401</Id>
+      <Id>CS0449</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0065" Identifier="RemoveConstraint" Title="Remove constraint">
+    <FixableDiagnosticIds>
+      <Id>CS0405</Id>
+      <Id>CS0450</Id>
+      <Id>CS0451</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0066" Identifier="CombineConstraintClauses" Title="Combine constraint clauses">
+    <FixableDiagnosticIds>
+      <Id>CS0409</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0067" Identifier="AssignDefaultValueToOutParameter" Title="Assign default value to 'out' parameter">
+    <FixableDiagnosticIds>
+      <Id>CS0177</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0068" Identifier="MakeClassNonStatic" Title="Make class non-static">
+    <FixableDiagnosticIds>
+      <Id>CS0718</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

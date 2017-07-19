@@ -19,15 +19,6 @@ namespace Roslynator.CSharp.Refactorings
             if (methodDeclaration.Span.Contains(context.Span))
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)
-                && methodDeclaration.HeaderSpan().Contains(context.Span)
-                && MarkContainingClassAsAbstractRefactoring.CanRefactor(methodDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Mark containing class as abstract",
-                    cancellationToken => MarkContainingClassAsAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
                 AddTypeParameterRefactoring.ComputeRefactoring(context, methodDeclaration);
 

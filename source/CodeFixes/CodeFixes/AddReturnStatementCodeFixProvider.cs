@@ -45,28 +45,30 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             var methodDeclaration = (MethodDeclarationSyntax)ancestor;
 
-                            ComputeCodeFix(context, context.Diagnostics[0], methodDeclaration.Body, methodDeclaration.ReturnType, semanticModel);
+                            if (!methodDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                                ComputeCodeFix(context, context.Diagnostics[0], methodDeclaration.ReturnType, methodDeclaration.Body, semanticModel);
+
                             return;
                         }
                     case SyntaxKind.OperatorDeclaration:
                         {
                             var operatorDeclaration = (OperatorDeclarationSyntax)ancestor;
 
-                            ComputeCodeFix(context, context.Diagnostics[0], operatorDeclaration.Body, operatorDeclaration.ReturnType, semanticModel);
+                            ComputeCodeFix(context, context.Diagnostics[0], operatorDeclaration.ReturnType, operatorDeclaration.Body, semanticModel);
                             return;
                         }
                     case SyntaxKind.ConversionOperatorDeclaration:
                         {
                             var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)ancestor;
 
-                            ComputeCodeFix(context, context.Diagnostics[0], conversionOperatorDeclaration.Body, conversionOperatorDeclaration.Type, semanticModel);
+                            ComputeCodeFix(context, context.Diagnostics[0], conversionOperatorDeclaration.Type, conversionOperatorDeclaration.Body, semanticModel);
                             return;
                         }
                     case SyntaxKind.LocalFunctionStatement:
                         {
                             var localFunction = (LocalFunctionStatementSyntax)ancestor;
 
-                            ComputeCodeFix(context, context.Diagnostics[0], localFunction.Body, localFunction.ReturnType, semanticModel);
+                            ComputeCodeFix(context, context.Diagnostics[0], localFunction.ReturnType, localFunction.Body, semanticModel);
                             return;
                         }
                     case SyntaxKind.GetAccessorDeclaration:
@@ -79,14 +81,14 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         var propertyDeclaration = (PropertyDeclarationSyntax)accessor.Parent.Parent;
 
-                                        ComputeCodeFix(context, context.Diagnostics[0], accessor.Body, propertyDeclaration.Type, semanticModel);
+                                        ComputeCodeFix(context, context.Diagnostics[0], propertyDeclaration.Type, accessor.Body, semanticModel);
                                         break;
                                     }
                                 case SyntaxKind.IndexerDeclaration:
                                     {
                                         var indexerDeclaration = (IndexerDeclarationSyntax)accessor.Parent.Parent;
 
-                                        ComputeCodeFix(context, context.Diagnostics[0], accessor.Body, indexerDeclaration.Type, semanticModel);
+                                        ComputeCodeFix(context, context.Diagnostics[0], indexerDeclaration.Type, accessor.Body, semanticModel);
                                         break;
                                     }
                             }
@@ -99,10 +101,15 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             var anonymousFunction = (AnonymousFunctionExpressionSyntax)ancestor;
 
-                            var methodSymbol = semanticModel.GetSymbol(anonymousFunction, context.CancellationToken) as IMethodSymbol;
+                            var body = anonymousFunction.Body as BlockSyntax;
 
-                            if (methodSymbol?.IsErrorType() == false)
-                                ComputeCodeFix(context, context.Diagnostics[0], anonymousFunction.Body as BlockSyntax, methodSymbol.ReturnType, semanticModel);
+                            if (body?.Statements.Count > 0)
+                            {
+                                var methodSymbol = semanticModel.GetSymbol(anonymousFunction, context.CancellationToken) as IMethodSymbol;
+
+                                if (methodSymbol?.IsErrorType() == false)
+                                    ComputeCodeFix(context, context.Diagnostics[0], methodSymbol.ReturnType, body, semanticModel);
+                            }
 
                             return;
                         }
@@ -113,26 +120,24 @@ namespace Roslynator.CSharp.CodeFixes
         private void ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
-            BlockSyntax body,
             TypeSyntax type,
+            BlockSyntax body,
             SemanticModel semanticModel)
         {
-            if (body == null)
-                return;
+            if (type != null
+                && body?.Statements.Count > 0)
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-            if (type == null)
-                return;
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
-
-            ComputeCodeFix(context, diagnostic, body, typeSymbol, semanticModel);
+                ComputeCodeFix(context, diagnostic, typeSymbol, body, semanticModel);
+            }
         }
 
         private void ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
-            BlockSyntax body,
             ITypeSymbol typeSymbol,
+            BlockSyntax body,
             SemanticModel semanticModel)
         {
             if (typeSymbol?.IsErrorType() == false
@@ -155,22 +160,13 @@ namespace Roslynator.CSharp.CodeFixes
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            int position = -1;
-            SyntaxList<StatementSyntax> statements = body.Statements;
+            int position = body.OpenBraceToken.FullSpan.End;
 
-            if (statements.Any())
-            {
-                position = statements.Last().FullSpan.End;
-            }
-            else
-            {
-                position = body.OpenBraceToken.FullSpan.End;
-            }
+            ExpressionSyntax returnExpression = typeSymbol.ToDefaultValueSyntax(semanticModel, position);
 
-            BlockSyntax newBody = body.AddStatements(SyntaxFactory.ReturnStatement(typeSymbol.ToDefaultValueSyntax(semanticModel, position)));
+            ReturnStatementSyntax returnStatement = SyntaxFactory.ReturnStatement(returnExpression);
 
-            if (!statements.Any())
-                newBody = newBody.WithFormatterAnnotation();
+            BlockSyntax newBody = body.InsertStatement(returnStatement);
 
             return document.ReplaceNodeAsync(body, newBody, cancellationToken);
         }

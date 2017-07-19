@@ -81,7 +81,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string JoinStringExpressions = Prefix + "0078";
         public const string MakeMemberAbstract = Prefix + "0069";
         public const string MakeMemberVirtual = Prefix + "0070";
-        public const string MarkContainingClassAsAbstract = Prefix + "0071";
         public const string MergeAssignmentExpressionWithReturnStatement = Prefix + "0073";
         public const string MergeAttributes = Prefix + "0074";
         public const string MergeIfStatements = Prefix + "0075";

@@ -41,6 +41,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.Common.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSharp\Refactorings\AddCastExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ChangeAccessibilityRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringHelper.cs" />

@@ -81,7 +81,6 @@ namespace Roslynator.VisualStudio
             IntroduceLocalVariable = true;
             MakeMemberAbstract = true;
             MakeMemberVirtual = true;
-            MarkContainingClassAsAbstract = true;
             MergeAssignmentExpressionWithReturnStatement = true;
             MergeAttributes = true;
             MergeIfStatements = true;
@@ -258,7 +257,6 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.IntroduceLocalVariable, IntroduceLocalVariable);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberAbstract, MakeMemberAbstract);
             SetIsEnabled(RefactoringIdentifiers.MakeMemberVirtual, MakeMemberVirtual);
-            SetIsEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract, MarkContainingClassAsAbstract);
             SetIsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, MergeAssignmentExpressionWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.MergeAttributes, MergeAttributes);
             SetIsEnabled(RefactoringIdentifiers.MergeIfStatements, MergeIfStatements);
@@ -444,7 +442,6 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.IntroduceLocalVariable, "Introduce local variable", IsEnabled(RefactoringIdentifiers.IntroduceLocalVariable)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MakeMemberAbstract, "Make member abstract", IsEnabled(RefactoringIdentifiers.MakeMemberAbstract)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MakeMemberVirtual, "Make member virtual", IsEnabled(RefactoringIdentifiers.MakeMemberVirtual)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.MarkContainingClassAsAbstract, "Mark containing class as abstract", IsEnabled(RefactoringIdentifiers.MarkContainingClassAsAbstract)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, "Merge assignment expression with return statement", IsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeAttributes, "Merge attributes", IsEnabled(RefactoringIdentifiers.MergeAttributes)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfStatements, "Merge if statements", IsEnabled(RefactoringIdentifiers.MergeIfStatements)));
@@ -1177,15 +1174,6 @@ namespace Roslynator.VisualStudio
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MakeMemberVirtual
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool MarkContainingClassAsAbstract
         {
             get;
             set;

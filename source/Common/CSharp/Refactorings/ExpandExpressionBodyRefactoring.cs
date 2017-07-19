@@ -35,19 +35,20 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode parent = arrowExpressionClause.Parent;
+            SyntaxNode newNode = Refactor(arrowExpressionClause, semanticModel, cancellationToken).WithFormatterAnnotation();
 
-            SyntaxNode newNode = Refactor(parent, arrowExpressionClause.Expression, semanticModel, cancellationToken).WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(arrowExpressionClause.Parent, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static SyntaxNode Refactor(
-            SyntaxNode node,
-            ExpressionSyntax expression,
+        public static SyntaxNode Refactor(
+            ArrowExpressionClauseSyntax arrowExpressionClause,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
+            SyntaxNode node = arrowExpressionClause.Parent;
+
+            ExpressionSyntax expression = arrowExpressionClause.Expression;
+
             switch (node.Kind())
             {
                 case SyntaxKind.MethodDeclaration:
