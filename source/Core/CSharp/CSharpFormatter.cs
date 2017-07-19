@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -111,9 +110,9 @@ namespace Roslynator.CSharp
 
         public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string indent = GetIncreasedLineIndent(conditionalExpression.Parent, cancellationToken);
+            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(conditionalExpression, cancellationToken);
 
-            SyntaxTriviaList leadingTrivia = ParseLeadingTrivia(Environment.NewLine + indent);
+            leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
             return ConditionalExpression(
                     conditionalExpression.Condition.WithoutTrailingTrivia(),
@@ -135,9 +134,7 @@ namespace Roslynator.CSharp
 
         public static ParameterListSyntax ToMultiLine(ParameterListSyntax parameterList, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string indent = GetIncreasedLineIndent(parameterList.Parent, cancellationToken);
-
-            SyntaxTriviaList trivia = ParseLeadingTrivia(indent);
+            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(parameterList, cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -145,13 +142,13 @@ namespace Roslynator.CSharp
 
             if (en.MoveNext())
             {
-                nodesAndTokens.Add(en.Current.WithLeadingTrivia(trivia));
+                nodesAndTokens.Add(en.Current.WithLeadingTrivia(leadingTrivia));
 
                 while (en.MoveNext())
                 {
                     nodesAndTokens.Add(CommaToken().WithTrailingTrivia(NewLine()));
 
-                    nodesAndTokens.Add(en.Current.WithLeadingTrivia(trivia));
+                    nodesAndTokens.Add(en.Current.WithLeadingTrivia(leadingTrivia));
                 }
             }
 
@@ -186,10 +183,10 @@ namespace Roslynator.CSharp
             }
             else
             {
-                string indent = GetLineIndent(initializer, cancellationToken);
+                SyntaxTrivia trivia = GetIndentation(initializer, cancellationToken);
 
-                SyntaxTriviaList braceTrivia = ParseLeadingTrivia(Environment.NewLine + indent);
-                SyntaxTriviaList expressionTrivia = ParseLeadingTrivia(Environment.NewLine + IncreaseIndent(indent));
+                SyntaxTriviaList braceTrivia = TriviaList(NewLine(), trivia);
+                SyntaxTriviaList expressionTrivia = TriviaList(NewLine(), trivia, ComputeIndentation(trivia));
 
                 return initializer
                     .WithExpressions(
@@ -212,9 +209,7 @@ namespace Roslynator.CSharp
 
         public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string s = GetIncreasedLineIndent(argumentList.Parent, cancellationToken);
-
-            SyntaxTriviaList leadingTrivia = ParseLeadingTrivia(s);
+            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(argumentList, cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -249,9 +244,9 @@ namespace Roslynator.CSharp
         {
             MemberAccessExpressionSyntax expression = expressions[0];
 
-            string indent = GetIncreasedLineIndent(expression, cancellationToken);
+            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(expression, cancellationToken);
 
-            SyntaxTriviaList triviaList = ParseLeadingTrivia(Environment.NewLine + indent);
+            leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
             MemberAccessExpressionSyntax newNode = expression.ReplaceNodes(expressions, (node, node2) =>
             {
@@ -259,7 +254,7 @@ namespace Roslynator.CSharp
 
                 if (!operatorToken.HasLeadingTrivia)
                 {
-                    return node2.WithOperatorToken(operatorToken.WithLeadingTrivia(triviaList));
+                    return node2.WithOperatorToken(operatorToken.WithLeadingTrivia(leadingTrivia));
                 }
                 else
                 {
@@ -284,9 +279,7 @@ namespace Roslynator.CSharp
 
         private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
         {
-            string indent = GetIncreasedLineIndent(argumentList.Parent, cancellationToken);
-
-            SyntaxTriviaList leadingTrivia = ParseLeadingTrivia(indent);
+            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(argumentList, cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -319,11 +312,11 @@ namespace Roslynator.CSharp
             BinaryExpressionSyntax condition,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            string indent = GetIncreasedLineIndent(condition, cancellationToken);
+            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(condition, cancellationToken);
 
-            SyntaxTriviaList triviaList = ParseLeadingTrivia(Environment.NewLine + indent);
+            leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
-            var rewriter = new BinaryExpressionToMultiLineRewriter(triviaList);
+            var rewriter = new BinaryExpressionToMultiLineRewriter(leadingTrivia);
 
             var newCondition = (ExpressionSyntax)rewriter.Visit(condition);
 
@@ -363,51 +356,66 @@ namespace Roslynator.CSharp
             return accessor;
         }
 
-        private static string GetLineIndent(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        private static SyntaxTrivia GetIndentation(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
+            SyntaxTree tree = node.SyntaxTree;
 
-            SyntaxTree syntaxTree = node.SyntaxTree;
+            if (tree == null)
+                return default(SyntaxTrivia);
 
-            if (syntaxTree != null)
+            TextSpan span = node.Span;
+
+            int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
+
+            while (!node.FullSpan.Contains(lineStartIndex))
+                node = node.Parent;
+
+            SyntaxTriviaList trivia = node.GetLeadingTrivia();
+
+            return (trivia.Any()) ? trivia.Last() : default(SyntaxTrivia);
+        }
+
+        private static SyntaxTriviaList GetIncreasedIndentation(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxTrivia trivia = GetIndentation(node, cancellationToken);
+
+            return IncreaseIndentation(trivia);
+        }
+
+        internal static SyntaxTriviaList IncreaseIndentation(SyntaxTrivia trivia)
+        {
+            return TriviaList(trivia, ComputeIndentation(trivia));
+        }
+
+        private static SyntaxTrivia ComputeIndentation(SyntaxTrivia trivia)
+        {
+            if (trivia.IsKind(SyntaxKind.WhitespaceTrivia))
             {
-                SourceText sourceText = syntaxTree.GetText(cancellationToken);
+                string s = trivia.ToString();
 
-                int lineNumber = node.GetSpanStartLine(cancellationToken);
-                TextLine line = sourceText.Lines[lineNumber];
-                string s = line.ToString();
+                int length = s.Length;
 
-                int i = 0;
-                while (i < s.Length
-                    && char.IsWhiteSpace(s[i]))
+                if (length > 0)
                 {
-                    i++;
+                    if (s.All(f => f == '\t'))
+                    {
+                        return Tab;
+                    }
+                    else if (s.All(f => f == ' '))
+                    {
+                        if (length % 4 == 0)
+                            return Whitespace("    ");
+
+                        if (length % 3 == 0)
+                            return Whitespace("   ");
+
+                        if (length % 2 == 0)
+                            return Whitespace("  ");
+                    }
                 }
-
-                return s.Substring(0, i);
             }
 
-            return string.Empty;
-        }
-
-        private static string GetIncreasedLineIndent(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            string s = GetLineIndent(node, cancellationToken);
-
-            return IncreaseIndent(s);
-        }
-
-        private static string IncreaseIndent(string s)
-        {
-            if (s.Length > 0 && s.All(f => f == '\t'))
-            {
-                return s + '\t';
-            }
-            else
-            {
-                return s + new string(' ', 4);
-            }
+            return DefaultIndentation;
         }
     }
 }

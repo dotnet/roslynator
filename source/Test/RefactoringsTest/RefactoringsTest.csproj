@@ -48,6 +48,7 @@
     <Compile Include="ExpandExpressionBodyRefactoring.cs" />
     <Compile Include="ExpandPropertyAndAddBackingFieldRefactoring.cs" />
     <Compile Include="FormatAttributeArgumentListRefactoring.cs" />
+    <Compile Include="FormatConstraintClauses.cs" />
     <Compile Include="GenerateCombinedEnumMemberRefactoring.cs" />
     <Compile Include="GenerateEnumValuesRefactoring.cs" />
     <Compile Include="ImplementIEquatableOfTRefactoring.cs" />

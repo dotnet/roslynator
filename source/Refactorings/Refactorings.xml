@@ -1200,4 +1200,9 @@
       <Syntax>access modifier</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0187" Identifier="FormatConstraintClauses" Title="Format constraint clauses">
+    <Syntaxes>
+      <Syntax>type parameter constraint clause</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

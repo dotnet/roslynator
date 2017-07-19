@@ -29,6 +29,8 @@ namespace Roslynator.CSharp
                     return CarriageReturnLineFeed;
             }
         }
+
+        internal static SyntaxTrivia DefaultIndentation { get; } = Whitespace("    ");
         #endregion Trivia
 
         #region Token
