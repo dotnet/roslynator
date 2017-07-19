@@ -1,3 +1,40 @@
+### 1.4.51 (2017-07-19)
+
+#### Refactorings
+
+  * MarkContainingClassAsAbstract (RR0073) has been replaced with code fix.
+
+##### New Refactorings
+
+  * FormatWhereConstraint (RR0187)
+  * ReplaceForEachWithForAndReverseLoop (RR0188)
+
+#### Code Fixes
+
+##### New Code Fixes
+
+Code fixes has been added for the following compiler diagnostics:
+
+  * NamespaceAlreadyContainsDefinition (CS0101)
+  * TypeAlreadyContainsDefinition (CS0102)
+  * TypeOfConditionalExpressionCannotBeDetermined (CS0173)
+  * OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod (CS0177)
+  * NewConstraintMustBeLastConstraintSpecified (CS0401)
+  * DuplicateConstraintForTypeParameter (CS0405)
+  * ConstraintClauseHasAlreadyBeenSpecified (CS0409)
+  * ClassOrStructConstraintMustComeBeforeAnyOtherConstraints (CS0449)
+  * CannotSpecifyBothConstraintClassAndClassOrStructConstraint (CS0450)
+  * NewConstraintCannotBeUsedWithStructConstraint (CS0451)
+  * TypeParameterHasSameNameAsTypeParameterFromOuterType (CS0693)
+  * StaticTypesCannotBeUsedAsTypeArguments (CS0718)
+  * PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers (CS0750)
+  * NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod (CS0759)
+  * PartialMethodsMustHaveVoidReturnType (CS0766)
+  * MethodHasParameterModifierThisWhichIsNotOnFirstParameter (CS1100)
+  * ExtensionMethodMustBeStatic (CS1105)
+  * ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal (CS1527)
+  * AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody (CS1994)
+
 ### 1.4.50 (2017-07-04)
 
 * Add code fixes that fix 80+ compiler diagnostics (like 'CS0001')
@@ -32,7 +69,7 @@
 
 ##### New Refactorings
 
-  * ChangeAccessibility (RR0177)
+  * ChangeAccessibility (RR0186)
 
 ### 1.4.13 (2017-06-21)
 
