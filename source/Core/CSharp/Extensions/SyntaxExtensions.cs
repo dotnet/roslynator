@@ -1035,6 +1035,15 @@ namespace Roslynator.CSharp
                 && string.Equals(literalExpression.Token.ValueText, "0", StringComparison.Ordinal);
         }
 
+        internal static bool IsOneNumericLiteral(this LiteralExpressionSyntax literalExpression)
+        {
+            if (literalExpression == null)
+                throw new ArgumentNullException(nameof(literalExpression));
+
+            return literalExpression.IsKind(SyntaxKind.NumericLiteralExpression)
+                && string.Equals(literalExpression.Token.ValueText, "1", StringComparison.Ordinal);
+        }
+
         internal static string GetStringLiteralInnerText(this LiteralExpressionSyntax literalExpression)
         {
             if (literalExpression == null)
