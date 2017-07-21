@@ -8,11 +8,8 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         public static int Property { get; set; }
 
-        public static void Method()
+        public static void Method(int i, int i2)
         {
-            int i = 0;
-            int i2 = 0;
-
             i = i + 1;
             i = i - 1;
             i += 1;
@@ -28,6 +25,10 @@ namespace Roslynator.CSharp.Analyzers.Test
             Property += 1;
             Property -= 1;
 
+            i /*a*/ = /*b*/ i /*c*/ + /*d*/ 1 /*e*/ ; /*f*/
+
+            //n
+
             i = i2 + 1;
             i = i2 - 1;
 
@@ -35,8 +36,18 @@ namespace Roslynator.CSharp.Analyzers.Test
             #region
                 i + 1;
             #endregion
+        }
 
-            i /*a*/ = /*b*/ i /*c*/ + /*d*/ 1 /*e*/ ; /*f*/
+        private class Foo
+        {
+            public int Property { get; set; }
+
+            private void Bar()
+            {
+                var foo = new Foo() { Property = Property + 1 };
+
+                var x = new { Property = Property + 1 };
+            }
         }
     }
 }

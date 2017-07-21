@@ -2669,6 +2669,15 @@ namespace Roslynator.CSharp
             return false;
         }
 
+        internal static bool IsNumericLiteralExpression(this SyntaxNode node, string valueText)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return node.IsKind(SyntaxKind.NumericLiteralExpression)
+                && string.Equals(((LiteralExpressionSyntax)node).Token.ValueText, valueText, StringComparison.Ordinal);
+        }
+
         public static bool IsKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
         {
             if (node == null)

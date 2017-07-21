@@ -103,6 +103,7 @@
     <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclareEnumValueAsCombinationOfNamesDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UsePostfixUnaryOperatorInsteadOfAssignmentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReadOnlyAutoPropertyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseRegularStringLiteralInsteadOfVerbatimStringLiteralDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseVarInForEachDiagnosticAnalyzer.cs" />

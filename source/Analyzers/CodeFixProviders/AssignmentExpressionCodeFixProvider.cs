@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -58,13 +57,11 @@ namespace Roslynator.CSharp.CodeFixProviders
                         }
                     case DiagnosticIdentifiers.UsePostfixUnaryOperatorInsteadOfAssignment:
                         {
-                            SyntaxKind kind = UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.GetPostfixUnaryOperatorKind(assignment);
-
-                            string operatorText = UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.GetOperatorText(kind);
+                            string operatorText = UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.GetOperatorText(assignment);
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Use {operatorText} operator",
-                                c => UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.RefactorAsync(context.Document, assignment, kind, c),
+                                c => UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.RefactorAsync(context.Document, assignment, c),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
