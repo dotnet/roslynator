@@ -4,22 +4,21 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AssignmentExpressionDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class UsePostfixUnaryOperatorInsteadOfAssignmentDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveRedundantDelegateCreation,
-                    DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut);
+                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
+                    DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut);
             }
         }
 
@@ -31,15 +30,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f), SyntaxKind.AddAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f), SyntaxKind.SubtractAssignmentExpression);
-        }
-
-        private void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context)
-        {
-            var assignment = (AssignmentExpressionSyntax)context.Node;
-
-            RemoveRedundantDelegateCreationRefactoring.Analyze(context, assignment);
+            context.RegisterSyntaxNodeAction(f => AnalyzeSimpleAssignmentExpression(f), SyntaxKind.SimpleAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeAddAssignmentExpression(f), SyntaxKind.AddAssignmentExpression);
+            context.RegisterSyntaxNodeAction(f => AnalyzeSubtractAssignmentExpression(f), SyntaxKind.SubtractAssignmentExpression);
         }
     }
 }
