@@ -139,34 +139,34 @@ namespace Roslynator
             return context.Node.SyntaxTree;
         }
 
-        internal static void ReportToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token)
+        internal static void ReportToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object[] messageArgs)
         {
             if (!token.IsMissing)
-                context.ReportDiagnostic(descriptor, token);
+                context.ReportDiagnostic(descriptor, token, messageArgs);
         }
 
-        internal static void ReportNode(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node)
+        internal static void ReportNode(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node, params object[] messageArgs)
         {
             if (!node.IsMissing)
-                context.ReportDiagnostic(descriptor, node);
+                context.ReportDiagnostic(descriptor, node, messageArgs);
         }
 
-        internal static void ReportBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, BlockSyntax block)
+        internal static void ReportBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, BlockSyntax block, params object[] messageArgs)
         {
-            ReportToken(context, descriptor, block.OpenBraceToken);
-            ReportToken(context, descriptor, block.CloseBraceToken);
+            ReportToken(context, descriptor, block.OpenBraceToken, messageArgs);
+            ReportToken(context, descriptor, block.CloseBraceToken, messageArgs);
         }
 
-        internal static void ReportBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, AccessorListSyntax accessorList)
+        internal static void ReportBraces(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, AccessorListSyntax accessorList, params object[] messageArgs)
         {
-            ReportToken(context, descriptor, accessorList.OpenBraceToken);
-            ReportToken(context, descriptor, accessorList.CloseBraceToken);
+            ReportToken(context, descriptor, accessorList.OpenBraceToken, messageArgs);
+            ReportToken(context, descriptor, accessorList.CloseBraceToken, messageArgs);
         }
 
-        internal static void ReportParentheses(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, ArgumentListSyntax argumentList)
+        internal static void ReportParentheses(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, ArgumentListSyntax argumentList, params object[] messageArgs)
         {
-            ReportToken(context, descriptor, argumentList.OpenParenToken);
-            ReportToken(context, descriptor, argumentList.CloseParenToken);
+            ReportToken(context, descriptor, argumentList.OpenParenToken, messageArgs);
+            ReportToken(context, descriptor, argumentList.CloseParenToken, messageArgs);
         }
         #endregion SyntaxNodeAnalysisContextExtensions
 

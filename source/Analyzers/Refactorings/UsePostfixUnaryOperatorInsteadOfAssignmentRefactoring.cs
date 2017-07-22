@@ -44,11 +44,13 @@ namespace Roslynator.CSharp.Refactorings
                         if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true
                             && left.IsEquivalentTo(binaryLeft, topLevel: false))
                         {
-                            ReportDiagnostic(context, assignment);
+                            string operatorText = GetOperatorText(assignment);
 
-                            context.ReportToken(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.OperatorToken);
-                            context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryLeft);
-                            context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryRight);
+                            ReportDiagnostic(context, assignment, operatorText);
+
+                            context.ReportToken(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.OperatorToken, operatorText);
+                            context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryLeft, operatorText);
+                            context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryRight, operatorText);
                         }
                     }
                 }
@@ -82,22 +84,24 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (typeSymbol?.SupportsPrefixOrPostfixUnaryOperator() == true)
                 {
-                    ReportDiagnostic(context, assignment);
+                    string operatorText = GetOperatorText(assignment);
+
+                    ReportDiagnostic(context, assignment, operatorText);
 
                     SyntaxToken operatorToken = assignment.OperatorToken;
 
-                    context.ReportDiagnostic(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)));
-                    context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.Right);
+                    context.ReportDiagnostic(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)), operatorText);
+                    context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.Right, operatorText);
                 }
             }
         }
 
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment, string operatorText)
         {
             context.ReportDiagnostic(
                 DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
                 assignment,
-                GetOperatorText(assignment));
+                operatorText);
         }
 
         public static Task<Document> RefactorAsync(
