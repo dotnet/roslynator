@@ -32,12 +32,11 @@ namespace Roslynator.CSharp.Refactorings
                         && openBrace.GetLeadingAndTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
                         && closeBrace.GetLeadingAndTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.RemoveBraces,
-                            block,
-                            node.GetTitle());
+                        string title = node.GetTitle();
 
-                        context.ReportBraces(DiagnosticDescriptors.RemoveBracesFadeOut, block);
+                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveBraces, block, title);
+
+                        context.ReportBraces(DiagnosticDescriptors.RemoveBracesFadeOut, block, title);
                     }
                 }
             }
