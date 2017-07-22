@@ -23,5 +23,15 @@ namespace Roslynator.CSharp.CodeFixes.Test
         private class Base<T, T2>
         {
         }
+
+        private class Base2<T, T2>
+        {
+        }
+
+        //n
+
+        public class Foo2 : Base2<>
+        {
+        }
     }
 }

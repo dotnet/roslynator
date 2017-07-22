@@ -39,6 +39,9 @@ namespace Roslynator.CSharp.CodeFixes
             if (type == null)
                 return;
 
+            if (!type.IsKind(SyntaxKind.IdentifierName))
+                return;
+
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
                 switch (diagnostic.Id)
