@@ -121,7 +121,6 @@
     <Compile Include="Refactorings\AvoidSingleLineBlockRefactoring.cs" />
     <Compile Include="Refactorings\FormatConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyRefactoring.cs" />
-    <Compile Include="Refactorings\UseConstantInsteadOfFieldRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MarkFieldAsReadOnlyRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\UseReadOnlyAutoPropertyRefactoring.cs" />
     <Compile Include="Refactorings\JoinStringExpressionsRefactoring.cs" />

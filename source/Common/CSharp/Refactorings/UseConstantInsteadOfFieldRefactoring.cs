@@ -5,51 +5,37 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseConstantInsteadOfFieldRefactoring
     {
-        public static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
+        public static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            SyntaxNode node = context.Node;
-
-            if (node.ContainsDiagnostics)
-                return;
-
-            if (node.SpanContainsDirectives())
-                return;
-
-            var fieldDeclaration = (FieldDeclarationSyntax)node;
-
             SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
 
-            if (modifiers.Contains(SyntaxKind.StaticKeyword)
+            return modifiers.Contains(SyntaxKind.StaticKeyword)
                 && modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
                 && !modifiers.Contains(SyntaxKind.NewKeyword)
-                && IsFixable(fieldDeclaration.Declaration, context.SemanticModel, context.CancellationToken))
-            {
-                context.ReportDiagnostic(DiagnosticDescriptors.UseConstantInsteadOfField, fieldDeclaration);
-            }
+                && SupportsConstant(fieldDeclaration.Declaration, semanticModel, cancellationToken);
         }
 
-        private static bool IsFixable(
+        private static bool SupportsConstant(
             VariableDeclarationSyntax variableDeclaration,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
             foreach (VariableDeclaratorSyntax declarator in variableDeclaration.Variables)
             {
-                if (!IsFixable(variableDeclaration.Type, declarator, semanticModel, cancellationToken))
+                if (!SupportsConstant(variableDeclaration.Type, declarator, semanticModel, cancellationToken))
                     return false;
             }
 
             return true;
         }
 
-        private static bool IsFixable(
+        private static bool SupportsConstant(
             TypeSyntax type,
             VariableDeclaratorSyntax declarator,
             SemanticModel semanticModel,

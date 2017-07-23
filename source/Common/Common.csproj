@@ -46,6 +46,7 @@
     <Compile Include="CSharp\Refactorings\IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringHelper.cs" />
     <Compile Include="CSharp\Refactorings\CallExtensionMethodAsInstanceMethodRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\UseConstantInsteadOfFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfLastRefactoring.cs" />

@@ -2,7 +2,7 @@
 
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -38,11 +38,11 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
             else if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseConstantInsteadOfField)
-                && fieldDeclaration.Modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
-                && fieldDeclaration.IsStatic()
-                && fieldDeclaration.Span.Contains(context.Span))
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(fieldDeclaration))
             {
-                if (await UseConstantInsteadOfFieldRefactoring.CanRefactorAsync(context, fieldDeclaration).ConfigureAwait(false))
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (UseConstantInsteadOfFieldRefactoring.CanRefactor(fieldDeclaration, semanticModel, context.CancellationToken))
                 {
                     context.RegisterRefactoring(
                         "Use constant instead of field",
