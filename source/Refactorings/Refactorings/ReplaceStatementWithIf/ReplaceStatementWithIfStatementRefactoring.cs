@@ -22,39 +22,18 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
         {
             ExpressionSyntax expression = GetExpression(statement);
 
-            if (expression != null)
+            if (expression?.IsBooleanLiteralExpression() == false)
             {
-                switch (expression.Kind())
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (semanticModel
+                    .GetTypeInfo(expression, context.CancellationToken)
+                    .ConvertedType?
+                    .IsBoolean() == true)
                 {
-                    case SyntaxKind.TrueLiteralExpression:
-                    case SyntaxKind.FalseLiteralExpression:
-                        {
-                            break;
-                        }
-                    case SyntaxKind.ConditionalExpression:
-                        {
-                            context.RegisterRefactoring(
-                                GetTitle(statement),
-                                cancellationToken => RefactorAsync(context.Document, statement, (ConditionalExpressionSyntax)expression, cancellationToken));
-
-                            break;
-                        }
-                    default:
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            if (semanticModel
-                                .GetTypeInfo(expression, context.CancellationToken)
-                                .ConvertedType?
-                                .IsBoolean() == true)
-                            {
-                                context.RegisterRefactoring(
-                                    GetTitle(statement),
-                                    cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken));
-                            }
-
-                            break;
-                        }
+                    context.RegisterRefactoring(
+                        GetTitle(statement),
+                        cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken));
                 }
             }
         }
@@ -94,40 +73,13 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
 
         private IfStatementSyntax CreateIfStatement(TStatement statement, ExpressionSyntax condition, ExpressionSyntax left, ExpressionSyntax right)
         {
+            statement = statement.WithoutLeadingTrivia();
+
             return IfStatement(
                 condition,
-                CreateBlock(statement, left),
+                Block(SetExpression(statement, left)),
                 ElseClause(
-                    CreateBlock(statement, right)));
-        }
-
-        private BlockSyntax CreateBlock(TStatement statement, ExpressionSyntax expression)
-        {
-            return Block(SingletonList(SetExpression(statement.WithoutLeadingTrivia(), expression)));
-        }
-
-        private Task<Document> RefactorAsync(
-            Document document,
-            TStatement statement,
-            ConditionalExpressionSyntax conditionalExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ExpressionSyntax condition = conditionalExpression.Condition.WithoutTrivia();
-
-            if (condition.IsKind(SyntaxKind.ParenthesizedExpression))
-                condition = ((ParenthesizedExpressionSyntax)condition).Expression;
-
-            IfStatementSyntax ifStatement = IfStatement(
-                condition,
-                CreateBlock(statement.WithoutLeadingTrivia(), conditionalExpression.WhenTrue.WithoutTrivia()),
-                ElseClause(
-                    CreateBlock(statement.WithoutLeadingTrivia(), conditionalExpression.WhenFalse.WithoutTrivia())));
-
-            ifStatement = ifStatement
-                .WithTriviaFrom(statement)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(statement, ifStatement, cancellationToken);
+                    Block(SetExpression(statement, right))));
         }
     }
 }

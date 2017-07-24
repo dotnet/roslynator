@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.ReplaceStatementWithIf;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -23,8 +22,8 @@ namespace Roslynator.CSharp.Refactorings
                     await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
                 }
 
-                if (context.Span.IsBetweenSpans(returnStatement)
-                    && context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement)
+                    && context.Span.IsBetweenSpans(returnStatement))
                 {
                     var refactoring = new ReplaceReturnStatementWithIfStatementRefactoring();
                     await refactoring.ComputeRefactoringAsync(context, returnStatement).ConfigureAwait(false);

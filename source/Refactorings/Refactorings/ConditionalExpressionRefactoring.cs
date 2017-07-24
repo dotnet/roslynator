@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -10,39 +9,38 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression)
-                && (context.Span.IsEmpty || context.Span.IsBetweenSpans(conditionalExpression)))
+            if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(conditionalExpression))
             {
-                if (conditionalExpression.IsSingleLine())
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatConditionalExpression))
                 {
-                    context.RegisterRefactoring(
-                        "Format ?: on separate lines",
-                        cancellationToken =>
-                        {
-                            return CSharpFormatter.ToMultiLineAsync(
-                                context.Document,
-                                conditionalExpression,
-                                cancellationToken);
-                        });
+                    if (conditionalExpression.IsSingleLine())
+                    {
+                        context.RegisterRefactoring(
+                            "Format ?: on separate lines",
+                            cancellationToken =>
+                            {
+                                return CSharpFormatter.ToMultiLineAsync(
+                                    context.Document,
+                                    conditionalExpression,
+                                    cancellationToken);
+                            });
+                    }
+                    else
+                    {
+                        context.RegisterRefactoring(
+                            "Format ?: on a single line",
+                            cancellationToken =>
+                            {
+                                return CSharpFormatter.ToSingleLineAsync(
+                                    context.Document,
+                                    conditionalExpression,
+                                    cancellationToken);
+                            });
+                    }
                 }
-                else
-                {
-                    context.RegisterRefactoring(
-                        "Format ?: on a single line",
-                        cancellationToken =>
-                        {
-                            return CSharpFormatter.ToSingleLineAsync(
-                                context.Document,
-                                conditionalExpression,
-                                cancellationToken);
-                        });
-                }
-            }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)
-                && context.Span.IsBetweenSpans(conditionalExpression))
-            {
-                await ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoringAsync(context, conditionalExpression).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseIfElseInsteadOfConditionalExpression))
+                    await UseIfElseInsteadOfConditionalExpressionRefactoring.ComputeRefactoringAsync(context, conditionalExpression).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)

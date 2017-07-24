@@ -818,9 +818,12 @@
     </Syntaxes>
     <Scope>selected true/false expression</Scope>
   </Refactoring>
-  <Refactoring Id="RR0120" Identifier="ReplaceConditionalExpressionWithIfElse" Title="Replace conditional expression with if-else">
+  <Refactoring Id="RR0120" Identifier="UseIfElseInsteadOfConditionalExpression" Title="Use if-else instead of conditional expression">
     <Syntaxes>
-      <Syntax>conditional expression</Syntax>
+      <Syntax>local declaration statement with conditional expression</Syntax>
+      <Syntax>assignment with conditional expression</Syntax>
+      <Syntax>return statement conditional expression</Syntax>
+      <Syntax>yield statement conditional expression</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0121" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
