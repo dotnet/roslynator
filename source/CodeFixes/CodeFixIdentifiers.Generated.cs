@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
         public const string AddComparisonWithBooleanLiteral = Prefix + "0023";
         public const string RemovePropertyOrFieldInitializer = Prefix + "0024";
         public const string AddPartialModifier = Prefix + "0025";
-        public const string AddMethodBody = Prefix + "0026";
+        public const string AddBody = Prefix + "0026";
         public const string RemoveRefModifier = Prefix + "0027";
         public const string RemoveRedundantAssignment = Prefix + "0028";
         public const string ChangeAccessibility = Prefix + "0029";
@@ -61,5 +61,9 @@ namespace Roslynator.CSharp.CodeFixes
         public const string RemoveParametersFromStaticConstructor = Prefix + "0053";
         public const string ReorderModifiers = Prefix + "0054";
         public const string RemoveInvalidModifier = Prefix + "0055";
+        public const string RemoveMemberDeclaration = Prefix + "0056";
+        public const string RemoveReturnExpression = Prefix + "0057";
+        public const string ReplaceNullLiteralExpressionWithDefaultValue = Prefix + "0058";
+        public const string ReplaceVariableDeclarationWithAssignment = Prefix + "0059";
     }
 }

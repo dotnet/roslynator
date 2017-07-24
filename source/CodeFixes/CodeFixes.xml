@@ -131,8 +131,9 @@
       <Id>CS0751</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0026" Identifier="AddMethodBody" Title="Add method body">
+  <CodeFix Id="RCF0026" Identifier="AddBody" Title="Add body">
     <FixableDiagnosticIds>
+      <Id>CS0501</Id>
       <Id>CS0756</Id>
     </FixableDiagnosticIds>
   </CodeFix>
@@ -148,6 +149,8 @@
   </CodeFix>
   <CodeFix Id="RCF0029" Identifier="ChangeAccessibility" Title="Change accessibility">
     <FixableDiagnosticIds>
+      <Id>CS0261</Id>
+      <Id>CS0442</Id>
       <Id>CS0628</Id>
       <Id>CS1057</Id>
     </FixableDiagnosticIds>
@@ -288,12 +291,35 @@
   <CodeFix Id="RCF0055" Identifier="RemoveInvalidModifier" Title="Remove invalid modifier">
     <FixableDiagnosticIds>
       <Id>CS0107</Id>
+      <Id>CS0112</Id>
       <Id>CS0275</Id>
       <Id>CS0441</Id>
       <Id>CS0515</Id>
       <Id>CS0678</Id>
       <Id>CS0753</Id>
       <Id>CS1609</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0056" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
+    <FixableDiagnosticIds>
+      <Id>CS0114</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression">
+    <FixableDiagnosticIds>
+      <Id>CS0127</Id>
+      <Id>CS1997</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0058" Identifier="ReplaceNullLiteralExpressionWithDefaultValue" Title="Replace 'null' with default value">
+    <FixableDiagnosticIds>
+      <Id>CS0037</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0059" Identifier="ReplaceVariableDeclarationWithAssignment" Title="Replace variable declaration with assignment">
+    <FixableDiagnosticIds>
+      <Id>CS0128</Id>
+      <Id>CS0136</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

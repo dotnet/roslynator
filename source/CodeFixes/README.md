@@ -3,11 +3,11 @@
 Id | Title | Fixable Diagnostics | Enabled by Default 
 --- | --- | --- |:---:
 RCF0039|Add argument list|[CS0428](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428), [CS0023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023)|x
+RCF0026|Add body|[CS0501](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501), [CS0756](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756)|x
 RCF0009|Add braces to declaration or labeled statement|[CS1023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1023)|x
 RCF0002|Add break statement to switch section|[CS0163](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0163), CS8070|x
 RCF0023|Add comparison with boolean literal|[CS0019](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019), [CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x
 RCF0016|Add documentation comment|[CS1591](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591)|x
-RCF0026|Add method body|[CS0756](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756)|x
 RCF0007|Add 'new' modifier|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x
 RCF0004|Add 'out' modifier to argument|[CS1620](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620)|x
 RCF0006|Add 'override' modifier|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x
@@ -18,7 +18,7 @@ RCF0033|Add 'static' modifier|[CS0708](http://docs.microsoft.com/en-us/dotnet/cs
 RCF0044|Add type argument|[CS0305](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0305)|x
 RCF0051|Add 'unsafe' modifier|[CS0214](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0214)|x
 RCF0005|Base base class before any interface|[CS1722](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722)|x
-RCF0029|Change accessibility|[CS0628](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628), [CS1057](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057)|x
+RCF0029|Change accessibility|[CS0442](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0442), [CS0628](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628), [CS1057](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057)|x
 RCF0041|Change type of local variable|[CS0123](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123), [CS0407](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0407), [CS0815](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0815)|x
 RCF0030|Change type of 'params' parameter|[CS0225](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225)|x
 RCF0003|Create singleton array|[CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x
@@ -40,17 +40,21 @@ RCF0012|Remove duplicate attribute|[CS0579](http://docs.microsoft.com/en-us/dotn
 RCF0011|Remove duplicate modifier|[CS1004](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1004)|x
 RCF0046|Remove empty switch statement|[CS1522](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522)|x
 RCF0032|Remove implementation from abstract member|[CS0069](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0069), [CS0500](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0500), [CS0531](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0531)|x
-RCF0055|Remove invalid modifier|[CS0107](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0107), [CS0275](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0275), [CS0441](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0441), [CS0515](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0515), [CS0678](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0678), [CS0753](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0753), [CS1609](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609)|x
+RCF0055|Remove invalid modifier|[CS0107](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0107), [CS0112](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0112), [CS0275](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0275), [CS0441](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0441), [CS0515](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0515), [CS0678](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0678), [CS0753](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0753), [CS1609](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609)|x
+RCF0056|Remove member declaration|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x
 RCF0013|Remove new modifier|[CS0109](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0109)|x
 RCF0053|Remove parameters from static constructor|[CS0132](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0132)|x
 RCF0024|Remove property or field initializer|[CS0573](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0573)|x
 RCF0028|Remove redundant assignment|[CS1717](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1717)|x
 RCF0027|Remove 'ref' modifier|[CS1615](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615)|x
+RCF0057|Remove return expression|[CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), CS1997|x
 RCF0052|Remove 'return' keyword|[CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), CS1997|x
 RCF0014|Remove unused label|[CS0164](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0164)|x
 RCF0001|Remove unused variable|[CS0168](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0168), [CS0219](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0219)|x
 RCF0054|Reorder modifiers|[CS0267](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267)|x
+RCF0058|Replace 'null' with default value|[CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037)|x
 RCF0022|Replace string literal with character literal|[CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029)|x
+RCF0059|Replace variable declaration with assignment|[CS0128](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128), [CS0136](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136)|x
 RCF0036|SynchronizeAccessibility|[CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x
 RCF0017|Unreachable code detected|[CS0162](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0162)|x
 RCF0048|Use explicit type instead of 'var'|[CS0819](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0819), [CS0822](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0822)|x

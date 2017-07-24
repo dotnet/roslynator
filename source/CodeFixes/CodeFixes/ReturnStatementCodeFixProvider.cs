@@ -30,8 +30,13 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
+            if (!Settings.IsAnyCodeFixEnabled(
+                CodeFixIdentifiers.UseYieldReturnInsteadOfReturn,
+                CodeFixIdentifiers.RemoveReturnKeyword,
+                CodeFixIdentifiers.RemoveReturnExpression))
+            {
                 return;
+            }
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
@@ -50,6 +55,9 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CannotReturnValueFromIterator:
                         {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
+                                break;
+
                             ExpressionSyntax expression = returnStatement.Expression;
 
                             if (expression != null)
@@ -114,29 +122,70 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression:
                     case CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveReturnKeyword))
-                                break;
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveReturnExpression))
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove 'return'",
-                                cancellationToken =>
+                                ISymbol symbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
+
+                                if (symbol?.IsMethod() == true)
                                 {
-                                    ExpressionSyntax expression = returnStatement.Expression;
+                                    var methodSymbol = (IMethodSymbol)symbol;
 
-                                    SyntaxTriviaList leadingTrivia = returnStatement
-                                        .GetLeadingTrivia()
-                                        .AddRange(returnStatement.ReturnKeyword.TrailingTrivia.EmptyIfWhitespace())
-                                        .AddRange(expression.GetLeadingTrivia().EmptyIfWhitespace());
+                                    if (methodSymbol.ReturnsVoid
+                                        || methodSymbol.ReturnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task)))
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Remove return expression",
+                                            cancellationToken =>
+                                            {
+                                                ReturnStatementSyntax newNode = returnStatement
+                                                    .WithExpression(null)
+                                                    .WithFormatterAnnotation();
 
-                                    ExpressionStatementSyntax newNode = SyntaxFactory.ExpressionStatement(
-                                        expression.WithLeadingTrivia(leadingTrivia),
-                                        returnStatement.SemicolonToken);
+                                                return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
+                                            },
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveReturnExpression));
 
-                                    return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
+                                }
+                            }
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveReturnKeyword))
+                            {
+                                ExpressionSyntax expression = returnStatement.Expression;
+
+                                if (expression.IsKind(
+                                        SyntaxKind.InvocationExpression,
+                                        SyntaxKind.ObjectCreationExpression,
+                                        SyntaxKind.PreDecrementExpression,
+                                        SyntaxKind.PreIncrementExpression,
+                                        SyntaxKind.PostDecrementExpression,
+                                        SyntaxKind.PostIncrementExpression)
+                                    || expression is AssignmentExpressionSyntax)
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Remove 'return'",
+                                        cancellationToken =>
+                                        {
+                                            SyntaxTriviaList leadingTrivia = returnStatement
+                                                .GetLeadingTrivia()
+                                                .AddRange(returnStatement.ReturnKeyword.TrailingTrivia.EmptyIfWhitespace())
+                                                .AddRange(expression.GetLeadingTrivia().EmptyIfWhitespace());
+
+                                            ExpressionStatementSyntax newNode = SyntaxFactory.ExpressionStatement(
+                                                expression.WithLeadingTrivia(leadingTrivia),
+                                                returnStatement.SemicolonToken);
+
+                                            return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
+                                        },
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveReturnKeyword));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
+                            }
+
                             break;
                         }
                 }

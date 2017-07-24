@@ -34,7 +34,10 @@ namespace Roslynator.CSharp
                     {
                         var eventDeclaration = (EventDeclarationSyntax)node;
 
-                        return !eventDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                        SyntaxTokenList modifiers = eventDeclaration.Modifiers;
+
+                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
                             && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
                             && CheckAccessorAccessibility(eventDeclaration.AccessorList, accessibility);
                     }
@@ -42,7 +45,10 @@ namespace Roslynator.CSharp
                     {
                         var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
-                        return !indexerDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                        SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+
+                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
                             && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
                             && CheckAccessorAccessibility(indexerDeclaration.AccessorList, accessibility);
                     }
@@ -50,7 +56,10 @@ namespace Roslynator.CSharp
                     {
                         var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
-                        return !propertyDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                        SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+
+                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
                             && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
                             && CheckAccessorAccessibility(propertyDeclaration.AccessorList, accessibility);
                     }
@@ -58,14 +67,20 @@ namespace Roslynator.CSharp
                     {
                         var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                        return !methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                        SyntaxTokenList modifiers = methodDeclaration.Modifiers;
+
+                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
                             && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
                     }
                 case SyntaxKind.EventFieldDeclaration:
                     {
                         var eventFieldDeclaration = (EventFieldDeclarationSyntax)node;
 
-                        return !eventFieldDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword)
+                        SyntaxTokenList modifiers = eventFieldDeclaration.Modifiers;
+
+                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
+                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
                             && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
                     }
                 case SyntaxKind.ConstructorDeclaration:
@@ -115,6 +130,12 @@ namespace Roslynator.CSharp
                         return false;
                     }
             }
+        }
+
+        private static bool CheckPrivateForAbstractOrVirtualMember(Accessibility accessibility, SyntaxTokenList modifiers)
+        {
+            return accessibility != Accessibility.Private
+                || !modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword);
         }
 
         private static bool CheckProtectedOrProtectedInternalInStaticOrSealedClass(SyntaxNode node, Accessibility accessibility)

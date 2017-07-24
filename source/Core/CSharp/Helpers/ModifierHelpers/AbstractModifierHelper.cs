@@ -196,5 +196,50 @@ namespace Roslynator.CSharp.Helpers.ModifierHelpers
 
             return node;
         }
+
+        public TNode RemoveModifiers(TNode node)
+        {
+            SyntaxTokenList modifiers = GetModifiers(node);
+
+            if (!modifiers.Any())
+                return node;
+
+            SyntaxToken firstModifier = modifiers.First();
+
+            if (modifiers.Count == 1)
+                return RemoveModifier(node, firstModifier);
+
+            SyntaxToken nextToken = modifiers.Last().GetNextToken();
+
+            if (!nextToken.IsKind(SyntaxKind.None))
+            {
+                SyntaxTriviaList trivia = firstModifier.LeadingTrivia;
+
+                trivia = trivia.AddRange(firstModifier.TrailingTrivia.EmptyIfWhitespace());
+
+                for (int i = 1; i < modifiers.Count; i++)
+                    trivia = trivia.AddRange(modifiers[i].GetLeadingAndTrailingTrivia().EmptyIfWhitespace());
+
+                trivia = trivia.AddRange(nextToken.LeadingTrivia.EmptyIfWhitespace());
+
+                node = node.ReplaceToken(nextToken, nextToken.WithLeadingTrivia(trivia));
+            }
+            else
+            {
+                SyntaxToken previousToken = firstModifier.GetPreviousToken();
+
+                if (!previousToken.IsKind(SyntaxKind.None))
+                {
+                    SyntaxTriviaList trivia = firstModifier.GetLeadingAndTrailingTrivia();
+
+                    for (int i = 1; i < modifiers.Count; i++)
+                        trivia = trivia.AddRange(modifiers[i].GetLeadingAndTrailingTrivia().EmptyIfWhitespace());
+
+                    node = node.ReplaceToken(nextToken, nextToken.AppendToTrailingTrivia(trivia));
+                }
+            }
+
+            return WithModifiers(node, default(SyntaxTokenList));
+        }
     }
 }

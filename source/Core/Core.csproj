@@ -43,6 +43,7 @@
     <Compile Include="CSharp\AccessibilityHelper.cs" />
     <Compile Include="CSharp\AccessibilityInfo.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
+    <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="Extensions\AccessibilityExtensions.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\AbstractModifierHelper.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\AccessorDeclarationModifierHelper.cs" />
@@ -63,7 +64,6 @@
     <Compile Include="CSharp\Helpers\ModifierHelpers\ParameterModifierHelper.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\PropertyDeclarationModifierHelper.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\StructDeclarationModifierHelper.cs" />
-    <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="CSharp\BinaryExpressionChain.cs" />
     <Compile Include="CSharp\StringExpressionKind.cs" />
     <Compile Include="CSharp\StringLiteralParser.cs" />

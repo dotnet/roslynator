@@ -4,13 +4,18 @@ using System;
 
 namespace Roslynator.CSharp.CodeFixes.Test
 {
-    internal static class AddOverrideOrNewModifier
+    internal static class MemberHidesInheritedMember
     {
         public class Foo
         {
             public string ToString()
             {
-                return base.ToString();
+                return null;
+            }
+
+            public Type GetType()
+            {
+                return null;
             }
         }
     }

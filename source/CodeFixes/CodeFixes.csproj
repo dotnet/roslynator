@@ -45,16 +45,17 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeFixes\AddBodyCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBracesToDeclarationOrLabeledStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBreakStatementToSwitchSectionCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\AddOverrideOrNewModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\LocalDeclarationStatementCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\MemberHidesInheritedMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddSemicolonCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseListCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\ChangeAccessibilityCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\RemoveInvalidModifierCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\ModifiersCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeDoesNotContainDefinitionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterConstraintClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ExtractDeclarationFromUsingStatementCodeFixProvider.cs" />
