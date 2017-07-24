@@ -80,6 +80,12 @@ namespace Roslynator
             return string.Equals(Name, name, StringComparison.Ordinal);
         }
 
+        internal bool IsName(string name1, string name2)
+        {
+            return IsName(name1)
+                || IsName(name2);
+        }
+
         private bool IsNullOrName(string name)
         {
             return name == null || IsName(name);

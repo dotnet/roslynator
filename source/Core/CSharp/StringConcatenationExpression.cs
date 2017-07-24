@@ -106,6 +106,51 @@ namespace Roslynator.CSharp
             get { return ContainsVerbatimLiteralExpression || ContainsVerbatimInterpolatedStringExpression; }
         }
 
+        public static StringConcatenationExpression Create(BinaryExpressionSyntax binaryExpression, SemanticModel semanticModel)
+        {
+            return Create(binaryExpression, semanticModel, default(CancellationToken));
+        }
+
+        public static StringConcatenationExpression Create(
+            BinaryExpressionSyntax binaryExpression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (!binaryExpression.IsKind(SyntaxKind.AddExpression))
+                throw new ArgumentException("", nameof(binaryExpression));
+
+            List<ExpressionSyntax> expressions = GetExpressions(binaryExpression, semanticModel, cancellationToken);
+
+            if (expressions == null)
+                throw new ArgumentException("", nameof(binaryExpression));
+
+            expressions.Reverse();
+
+            return new StringConcatenationExpression(binaryExpression, expressions);
+        }
+
+        public static StringConcatenationExpression Create(BinaryExpressionSelection binaryExpressionSelection, SemanticModel semanticModel)
+        {
+            return Create(binaryExpressionSelection, semanticModel, default(CancellationToken));
+        }
+
+        public static StringConcatenationExpression Create(
+            BinaryExpressionSelection binaryExpressionSelection,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            BinaryExpressionSyntax binaryExpression = binaryExpressionSelection.BinaryExpression;
+            ImmutableArray<ExpressionSyntax> expressions = binaryExpressionSelection.Expressions;
+
+            if (!binaryExpression.IsKind(SyntaxKind.AddExpression))
+                throw new ArgumentException("", nameof(binaryExpressionSelection));
+
+            if (expressions.Any(expression => !IsStringExpression(expression, semanticModel, cancellationToken)))
+                throw new ArgumentException("", nameof(BinaryExpressionSelection));
+
+            return new StringConcatenationExpression(binaryExpression, expressions, binaryExpressionSelection.Span);
+        }
+
         public static bool TryCreate(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,

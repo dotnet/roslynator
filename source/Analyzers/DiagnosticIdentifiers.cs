@@ -202,5 +202,7 @@ namespace Roslynator.CSharp
         public const string ImplementExceptionConstructors = Prefix + "1194";
         public const string UseExclusiveOrOperator = Prefix + "1195";
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "1196";
+        public const string OptimizeStringBuilderAppendCall = Prefix + "1197";
+        public const string AvoidBoxingOfValueType = Prefix + "1198";
     }
 }

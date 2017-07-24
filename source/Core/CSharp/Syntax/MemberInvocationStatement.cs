@@ -36,6 +36,11 @@ namespace Roslynator.CSharp.Syntax
             get { return (MemberAccessExpressionSyntax)Expression?.Parent; }
         }
 
+        public string NameText
+        {
+            get { return Name?.Identifier.ValueText; }
+        }
+
         private SyntaxNode Node
         {
             get { return InvocationExpression?.Parent; }

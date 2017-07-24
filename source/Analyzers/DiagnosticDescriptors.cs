@@ -1824,5 +1824,23 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor OptimizeStringBuilderAppendCall = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.OptimizeStringBuilderAppendCall,
+            title: "Optimize StringBuilder.Append/AppendLine call.",
+            messageFormat: "Optimize StringBuilder.Append/AppendLine call.",
+            category: DiagnosticCategories.Performance,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor AvoidBoxingOfValueType = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidBoxingOfValueType,
+            title: "Avoid unnecessary boxing of value type.",
+            messageFormat: "Avoid unnecessary boxing of value type.",
+            category: DiagnosticCategories.Performance,
+            defaultSeverity: DiagnosticSeverity.Warning,
+            isEnabledByDefault: true
+        );
     }
 }

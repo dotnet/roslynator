@@ -35,7 +35,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.UseElementAccessInsteadOfElementAt,
                     DiagnosticDescriptors.UseElementAccessInsteadOfFirst,
                     DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod,
-                    DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod);
+                    DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod,
+                    DiagnosticDescriptors.OptimizeStringBuilderAppendCall,
+                    DiagnosticDescriptors.AvoidBoxingOfValueType);
             }
         }
 
@@ -157,7 +159,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     if (!invocation.SpanContainsDirectives())
                         UseRegexInstanceInsteadOfStaticMethodRefactoring.Analyze(context, memberInvocation);
 
-                    string methodName = memberInvocation.Name.Identifier.ValueText;
+                    string methodName = memberInvocation.NameText;
 
                     switch (memberInvocation.ArgumentList.Arguments.Count)
                     {
@@ -200,6 +202,18 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                         }
                                 }
 
+                                break;
+                            }
+                    }
+
+                    switch (methodName)
+                    {
+                        case "Append":
+                        case "AppendLine":
+                        case "AppendFormat":
+                        case "Insert":
+                            {
+                                OptimizeStringBuilderAppendCallRefactoring.Analyze(context, memberInvocation);
                                 break;
                             }
                     }

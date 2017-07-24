@@ -89,73 +89,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     case SyntaxKind.InterpolatedStringExpression:
                         {
-                            var interpolatedString = (InterpolatedStringExpressionSyntax)expression;
-
-                            bool isVerbatim = interpolatedString.IsVerbatim();
-
-                            foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
-                            {
-                                switch (content.Kind())
-                                {
-                                    case SyntaxKind.Interpolation:
-                                        {
-                                            var interpolation = (InterpolationSyntax)content;
-
-                                            InterpolationAlignmentClauseSyntax alignmentClause = interpolation.AlignmentClause;
-                                            InterpolationFormatClauseSyntax formatClause = interpolation.FormatClause;
-
-                                            if (alignmentClause != null
-                                                || formatClause != null)
-                                            {
-                                                var sb = new StringBuilder();
-                                                sb.Append("\"{0");
-
-                                                if (alignmentClause != null)
-                                                {
-                                                    sb.Append(',');
-                                                    sb.Append(alignmentClause.Value.ToString());
-                                                }
-
-                                                if (formatClause != null)
-                                                {
-                                                    sb.Append(':');
-                                                    sb.Append(formatClause.FormatStringToken.Text);
-                                                }
-
-                                                sb.Append("}\"");
-
-                                                ExpressionStatementSyntax appendFormatStatement = ExpressionStatement(
-                                                    SimpleMemberInvocationExpression(
-                                                        identifierName,
-                                                        IdentifierName("AppendFormat"),
-                                                        ArgumentList(Argument(ParseExpression(sb.ToString())), Argument(interpolation.Expression))));
-
-                                                statements.Add(appendFormatStatement);
-                                            }
-                                            else
-                                            {
-                                                statements.Add(CreateStatement(interpolation.Expression, identifierName));
-                                            }
-
-                                            break;
-                                        }
-                                    case SyntaxKind.InterpolatedStringText:
-                                        {
-                                            var interpolatedStringText = (InterpolatedStringTextSyntax)content;
-
-                                            string text = interpolatedStringText.TextToken.Text;
-
-                                            text = (isVerbatim)
-                                                ? "@\"" + text + "\""
-                                                : "\"" + text + "\"";
-
-                                            ExpressionSyntax stringLiteral = ParseExpression(text);
-
-                                            statements.Add(CreateStatement(stringLiteral, identifierName));
-                                            break;
-                                        }
-                                }
-                            }
+                            foreach (InvocationExpressionSyntax invocationExpression in CSharpUtility.ConvertInterpolatedStringToStringBuilderAppend((InterpolatedStringExpressionSyntax)expression, identifierName))
+                                statements.Add(ExpressionStatement(invocationExpression));
 
                             break;
                         }
