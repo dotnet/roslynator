@@ -9,12 +9,19 @@ namespace Roslynator.VisualStudio
 {
     public partial class CodeFixesOptionsPage
     {
-        public CodeFixesOptionsPage()
+        protected override string DisabledByDefault
         {
-            DisabledCodeFixes = $"{CodeFixIdentifiers.AddSemicolon},{CodeFixIdentifiers.RemoveReturnExpression},{CodeFixIdentifiers.RemoveReturnKeyword}";
+            get;
         }
 
-        public void Fill(ICollection<BaseModel> codeFixes)
+        = $"{CodeFixIdentifiers.AddSemicolon},{CodeFixIdentifiers.RemoveReturnExpression},{CodeFixIdentifiers.RemoveReturnKeyword}";
+        protected override string MaxId
+        {
+            get;
+        }
+
+        = CodeFixIdentifiers.RemoveOutModifier;
+        protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveUnusedVariable, "Remove unused variable (fixes CS0168, CS0219)", IsEnabled(CodeFixIdentifiers.RemoveUnusedVariable)));

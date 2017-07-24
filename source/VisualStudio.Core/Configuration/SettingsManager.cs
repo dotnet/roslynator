@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
+using Microsoft.VisualStudio.Shell;
 using Roslynator.CSharp.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.VisualStudio;
@@ -31,7 +33,7 @@ namespace Roslynator.Configuration
         {
             VisualStudioSettings.Refactorings.Clear();
 
-            foreach (string id in refactoringsOptionsPage.GetDisabledRefactorings())
+            foreach (string id in refactoringsOptionsPage.GetDisabledItems())
                 VisualStudioSettings.Refactorings[id] = false;
         }
 
@@ -39,7 +41,7 @@ namespace Roslynator.Configuration
         {
             VisualStudioSettings.CodeFixes.Clear();
 
-            foreach (string id in codeFixOptionsPage.GetDisabledCodeFixes())
+            foreach (string id in codeFixOptionsPage.GetDisabledItems())
                 VisualStudioSettings.CodeFixes[id] = false;
         }
 

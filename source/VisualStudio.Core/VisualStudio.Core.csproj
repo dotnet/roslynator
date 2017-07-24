@@ -114,6 +114,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseModel.cs" />
+    <Compile Include="BaseOptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GeneralOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>

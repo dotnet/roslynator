@@ -11,6 +11,18 @@ namespace Roslynator.VisualStudio
 {
     public partial class RefactoringsOptionsPage
     {
+        protected override string DisabledByDefault
+        {
+            get;
+        }
+
+        = $"{RefactoringIdentifiers.IntroduceConstructor},{RefactoringIdentifiers.RemoveAllDocumentationComments},{RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop},{RefactoringIdentifiers.ReplaceMethodWithProperty},{RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral}";
+        protected override string MaxId
+        {
+            get;
+        }
+
+        = RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -184,7 +196,6 @@ namespace Roslynator.VisualStudio
             WrapInRegion = true;
             WrapInTryCatch = true;
             WrapInUsingStatement = true;
-            DisabledRefactorings = $"{RefactoringIdentifiers.IntroduceConstructor},{RefactoringIdentifiers.RemoveAllDocumentationComments},{RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop},{RefactoringIdentifiers.ReplaceMethodWithProperty},{RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral}";
         }
 
         public void MigrateValuesFromIdentifierProperties()
@@ -371,7 +382,7 @@ namespace Roslynator.VisualStudio
             settings.DisableRefactoring(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral);
         }
 
-        public void Fill(ICollection<BaseModel> refactorings)
+        protected override void Fill(ICollection<BaseModel> refactorings)
         {
             refactorings.Clear();
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddBraces, "Add braces", IsEnabled(RefactoringIdentifiers.AddBraces)));

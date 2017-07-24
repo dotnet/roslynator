@@ -82,10 +82,12 @@ namespace Roslynator.VisualStudio
                 generalOptionsPage.SaveSettingsToStorage();
             }
 
+            codeFixesOptionsPage.CheckNewItemsDisabledByDefault();
+            refactoringsOptionsPage.CheckNewItemsDisabledByDefault();
+
             SettingsManager.Instance.UpdateVisualStudioSettings(generalOptionsPage);
             SettingsManager.Instance.UpdateVisualStudioSettings(refactoringsOptionsPage);
             SettingsManager.Instance.UpdateVisualStudioSettings(codeFixesOptionsPage);
-            SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
         }
 
         private void UpdateSettingsAfterConfigFileChanged()

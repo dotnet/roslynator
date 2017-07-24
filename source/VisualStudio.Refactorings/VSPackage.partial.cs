@@ -8,6 +8,7 @@ using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Roslynator.Configuration;
+using Roslynator.CSharp.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.VisualStudio
@@ -61,6 +62,7 @@ namespace Roslynator.VisualStudio
         {
             var generalOptionsPage = (GeneralOptionsPage)GetDialogPage(typeof(GeneralOptionsPage));
             var refactoringsOptionsPage = (RefactoringsOptionsPage)GetDialogPage(typeof(RefactoringsOptionsPage));
+            var codeFixesOptionsPage = (CodeFixesOptionsPage)GetDialogPage(typeof(CodeFixesOptionsPage));
 
             Version version;
             if (!Version.TryParse(generalOptionsPage.ApplicationVersion, out version)
@@ -80,15 +82,19 @@ namespace Roslynator.VisualStudio
                 generalOptionsPage.SaveSettingsToStorage();
             }
 
+            codeFixesOptionsPage.CheckNewItemsDisabledByDefault();
+            refactoringsOptionsPage.CheckNewItemsDisabledByDefault();
+
             SettingsManager.Instance.UpdateVisualStudioSettings(generalOptionsPage);
             SettingsManager.Instance.UpdateVisualStudioSettings(refactoringsOptionsPage);
-            SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
+            SettingsManager.Instance.UpdateVisualStudioSettings(codeFixesOptionsPage);
         }
 
         private void UpdateSettingsAfterConfigFileChanged()
         {
             SettingsManager.Instance.ConfigFileSettings = LoadConfigFileSettings();
             SettingsManager.Instance.ApplyTo(RefactoringSettings.Current);
+            SettingsManager.Instance.ApplyTo(CodeFixSettings.Current);
         }
 
         private ConfigFileSettings LoadConfigFileSettings()
