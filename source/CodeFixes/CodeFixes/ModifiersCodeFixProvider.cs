@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -68,19 +69,23 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.StaticClassesCannotHaveInstanceConstructors,
                     CompilerDiagnosticIdentifiers.ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal,
                     CompilerDiagnosticIdentifiers.NamespaceAlreadyContainsDefinition,
-                    CompilerDiagnosticIdentifiers.TypeAlreadyContainsDefinition);
+                    CompilerDiagnosticIdentifiers.TypeAlreadyContainsDefinition,
+                    CompilerDiagnosticIdentifiers.NoSuitableMethodFoundToOverride,
+                    CompilerDiagnosticIdentifiers.ExtensionMethodMustBeDefinedInNonGenericStaticClass,
+                    CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters);
             }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
-                CodeFixIdentifiers.RemoveInvalidModifier,
-                CodeFixIdentifiers.ChangeAccessibility,
-                CodeFixIdentifiers.AddStaticModifier,
-                CodeFixIdentifiers.RemoveThisModifier,
-                CodeFixIdentifiers.MakeContainingClassNonStatic,
-                CodeFixIdentifiers.AddPartialModifier))
+            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveInvalidModifier)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeAccessibility)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveThisModifier)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingClassNonStatic)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddPartialModifier)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveOutModifier)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRefModifier))
             {
                 return;
             }
@@ -290,6 +295,43 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
+                    case CompilerDiagnosticIdentifiers.ExtensionMethodMustBeDefinedInNonGenericStaticClass:
+                        {
+                            if (!node.IsKind(SyntaxKind.ClassDeclaration))
+                                return;
+
+                            var classDeclaration = (ClassDeclarationSyntax)node;
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier)
+                                && !classDeclaration.IsStatic())
+                            {
+                                AddStaticModifier(context, diagnostic, node, CodeFixIdentifiers.AddStaticModifier);
+                            }
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveThisModifier))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Remove 'this' modifier from extension methods",
+                                    cancellationToken =>
+                                    {
+                                        IEnumerable<ParameterSyntax> thisParameters = classDeclaration.Members
+                                            .Where(f => f.IsKind(SyntaxKind.MethodDeclaration))
+                                            .Cast<MethodDeclarationSyntax>()
+                                            .Select(f => f.ParameterList?.Parameters.FirstOrDefault())
+                                            .Where(f => f?.Modifiers.Contains(SyntaxKind.ThisKeyword) == true);
+
+                                        return context.Document.ReplaceNodesAsync(
+                                            thisParameters,
+                                            (f, g) => f.RemoveModifier(f.Modifiers.Find(SyntaxKind.ThisKeyword)),
+                                            cancellationToken);
+                                    },
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveThisModifier));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+
+                            break;
+                        }
                     case CompilerDiagnosticIdentifiers.NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod:
                         {
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveInvalidModifier))
@@ -334,6 +376,15 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddPartialModifier))
                                 break;
 
+                            if (!node.IsKind(
+                                SyntaxKind.ClassDeclaration,
+                                SyntaxKind.StructDeclaration,
+                                SyntaxKind.InterfaceDeclaration,
+                                SyntaxKind.MethodDeclaration))
+                            {
+                                return;
+                            }
+
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                             ISymbol symbol = semanticModel.GetDeclaredSymbol(node, context.CancellationToken);
@@ -342,6 +393,23 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (syntaxReferences.Length > 1)
                                 AddPartialModifier(context, diagnostic, ImmutableArray.CreateRange(syntaxReferences, f => f.GetSyntax(context.CancellationToken)));
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.NoSuitableMethodFoundToOverride:
+                        {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveInvalidModifier))
+                                RemoveModifier(context, diagnostic, node, SyntaxKind.OverrideKeyword);
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters:
+                        {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRefModifier))
+                                RemoveModifier(context, diagnostic, node, SyntaxKind.RefKeyword);
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveOutModifier))
+                                RemoveModifier(context, diagnostic, node, SyntaxKind.OutKeyword);
 
                             break;
                         }
