@@ -60,6 +60,36 @@ namespace Roslynator.CSharp
             return TokenList(ProtectedKeyword(), VirtualKeyword());
         }
 
+        public static SyntaxTokenList PublicAbstract()
+        {
+            return TokenList(PublicKeyword(), AbstractKeyword());
+        }
+
+        public static SyntaxTokenList InternalAbstract()
+        {
+            return TokenList(InternalKeyword(), AbstractKeyword());
+        }
+
+        public static SyntaxTokenList ProtectedAbstract()
+        {
+            return TokenList(ProtectedKeyword(), AbstractKeyword());
+        }
+
+        public static SyntaxTokenList PublicOverride()
+        {
+            return TokenList(PublicKeyword(), OverrideKeyword());
+        }
+
+        public static SyntaxTokenList InternalOverride()
+        {
+            return TokenList(InternalKeyword(), OverrideKeyword());
+        }
+
+        public static SyntaxTokenList ProtectedOverride()
+        {
+            return TokenList(ProtectedKeyword(), OverrideKeyword());
+        }
+
         public static SyntaxTokenList Const()
         {
             return TokenList(ConstKeyword());
