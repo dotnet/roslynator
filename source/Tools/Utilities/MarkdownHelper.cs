@@ -2,7 +2,7 @@
 
 using System.Text;
 
-namespace MetadataGenerator
+namespace Roslynator.Utilities
 {
     public static class MarkdownHelper
     {

@@ -130,15 +130,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeFileWriter.cs" />
-    <Compile Include="CodeFixesOptionsPageGenerator.cs" />
-    <Compile Include="CodeFixIdentifiersGenerator.cs" />
-    <Compile Include="CompilerDiagnosticIdentifiersGenerator.cs" />
-    <Compile Include="Generator.cs" />
-    <Compile Include="RefactoringsOptionsPageGenerator.cs" />
+    <Compile Include="CodeGenerator.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RefactoringIdentifiersGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -158,9 +152,17 @@
       <Project>{3AD7B124-7B99-440D-84A1-858BE5AE268B}</Project>
       <Name>Refactorings</Name>
     </ProjectReference>
+    <ProjectReference Include="..\CodeGeneration\CodeGeneration.csproj">
+      <Project>{06884E7F-9DE1-4A42-9D45-42C19714F0B2}</Project>
+      <Name>CodeGeneration</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Metadata\Metadata.csproj">
       <Project>{7f6f6533-e406-4225-a435-dee22c717f48}</Project>
       <Name>Metadata</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Utilities\Utilities.csproj">
+      <Project>{62abff60-67fc-4d33-91bd-ed1cd7db5007}</Project>
+      <Name>Utilities</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

@@ -62,10 +62,6 @@ namespace AddCodeFileHeader
             {
                 Console.WriteLine("No file without header found.");
             }
-#if DEBUG
-            Console.WriteLine("DONE");
-            Console.ReadKey();
-#endif
         }
 
         private static IEnumerable<string> FindFilesWithoutHeader(string dirPath)

@@ -3,7 +3,7 @@
 using System.IO;
 using System.Text;
 
-namespace MetadataGenerator
+namespace Roslynator.Utilities
 {
     public class Utf8StringWriter : StringWriter
     {

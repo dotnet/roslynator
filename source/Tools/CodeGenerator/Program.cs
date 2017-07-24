@@ -1,16 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.IO;
 using System.Linq;
-using Roslynator.Metadata;
 
-namespace CodeGenerator
+namespace Roslynator.CodeGeneration
 {
     internal static class Program
     {
-        private static readonly StringComparer _invariantComparer = StringComparer.InvariantCulture;
-
         private static void Main(string[] args)
         {
             if (args == null || args.Length == 0)
@@ -24,55 +20,14 @@ namespace CodeGenerator
 
             string dirPath = args[0];
 
-            var writer = new CodeFileWriter();
+            var generator = new CodeGenerator(dirPath, StringComparer.InvariantCulture);
 
-            RefactoringDescriptor[] refactorings = RefactoringDescriptor
-                .LoadFromFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"))
-                .ToArray();
+            generator.Generate();
 
-            var refactoringIdentifiersGenerator = new RefactoringIdentifiersGenerator();
-
-            writer.SaveCode(
-                Path.Combine(dirPath, @"Refactorings\RefactoringIdentifiers.Generated.cs"),
-                refactoringIdentifiersGenerator.Generate(refactorings));
-
-            var refactoringsOptionsPageGenerator = new RefactoringsOptionsPageGenerator();
-
-            writer.SaveCode(
-                Path.Combine(dirPath, @"VisualStudio.Core\RefactoringsOptionsPage.Generated.cs"),
-                refactoringsOptionsPageGenerator.Generate(refactorings));
-
-            CodeFixDescriptor[] codeFixes = CodeFixDescriptor
-                .LoadFromFile(Path.Combine(dirPath, @"CodeFixes\CodeFixes.xml"))
-                .ToArray();
-
-            var codeFixIdentifiersGenerator = new CodeFixIdentifiersGenerator();
-
-            writer.SaveCode(
-                Path.Combine(dirPath, @"CodeFixes\CodeFixIdentifiers.Generated.cs"),
-                codeFixIdentifiersGenerator.Generate(codeFixes));
-
-            var codeFixesOptionsPageGenerator = new CodeFixesOptionsPageGenerator();
-
-            writer.SaveCode(
-                Path.Combine(dirPath, @"VisualStudio.Core\CodeFixesOptionsPage.Generated.cs"),
-                codeFixesOptionsPageGenerator.Generate(codeFixes));
-
-            CompilerDiagnosticDescriptor[] compilerDiagnostics = CompilerDiagnosticDescriptor
-                .LoadFromFile(Path.Combine(dirPath, @"CodeFixes\Diagnostics.xml"))
-                .OrderBy(f => f.Id, _invariantComparer)
-                .ToArray();
-
-            var compilerDiagnosticIdentifiersGenerator = new CompilerDiagnosticIdentifiersGenerator();
-
-            writer.SaveCode(
-                Path.Combine(dirPath, @"Core\CSharp\CompilerDiagnosticIdentifiers.cs"),
-                compilerDiagnosticIdentifiersGenerator.Generate(compilerDiagnostics));
-
-#if DEBUG
-            Console.WriteLine("DONE");
-            Console.ReadKey();
-#endif
+            Console.WriteLine($"number of analyzers: {generator.Analyzers.Length}");
+            Console.WriteLine($"number of refactorings: {generator.Refactorings.Length}");
+            Console.WriteLine($"number of code fixes: {generator.CodeFixes.Length}");
+            Console.WriteLine($"number of fixable compiler diagnostics: {generator.CodeFixes.SelectMany(f => f.FixableDiagnosticIds).Distinct().Count()}");
         }
     }
 }

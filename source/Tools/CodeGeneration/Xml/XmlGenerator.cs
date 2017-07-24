@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -10,12 +9,15 @@ using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
 using Roslynator.CSharp;
 using Roslynator.Metadata;
+using Roslynator.Utilities;
 
-namespace MetadataGenerator
+namespace Roslynator.CodeGeneration.Xml
 {
-    internal static class XmlGenerator
+    public static class XmlGenerator
     {
-        public static string CreateDefaultConfigFile(IEnumerable<RefactoringDescriptor> refactorings, IEnumerable<CodeFixDescriptor> codeFixes)
+        public static string CreateDefaultConfigFile(
+            IEnumerable<RefactoringDescriptor> refactorings,
+            IEnumerable<CodeFixDescriptor> codeFixes)
         {
             var doc = new XDocument(
                 new XElement("Roslynator",
