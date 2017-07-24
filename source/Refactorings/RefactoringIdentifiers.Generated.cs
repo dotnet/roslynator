@@ -6,7 +6,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static partial class RefactoringIdentifiers
     {
-        public const string AddBooleanComparison = Prefix + "0001";
         public const string AddBraces = Prefix + "0002";
         public const string AddBracesToIfElse = Prefix + "0003";
         public const string AddBracesToSwitchSection = Prefix + "0004";
@@ -48,7 +47,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExpandLambdaExpressionBody = Prefix + "0039";
         public const string ExpandProperty = Prefix + "0040";
         public const string ExpandPropertyAndAddBackingField = Prefix + "0041";
-        public const string ExtractDeclarationFromUsingStatement = Prefix + "0042";
         public const string ExtractExpressionFromCondition = Prefix + "0043";
         public const string ExtractGenericType = Prefix + "0044";
         public const string ExtractStatement = Prefix + "0045";
@@ -82,7 +80,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string MakeMemberAbstract = Prefix + "0069";
         public const string MakeMemberVirtual = Prefix + "0070";
         public const string MarkContainingClassAsAbstract = Prefix + "0071";
-        public const string MarkMemberAsStatic = Prefix + "0072";
         public const string MergeAssignmentExpressionWithReturnStatement = Prefix + "0073";
         public const string MergeAttributes = Prefix + "0074";
         public const string MergeIfStatements = Prefix + "0075";
@@ -131,7 +128,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceConditionalExpressionWithExpression = Prefix + "0119";
         public const string ReplaceConditionalExpressionWithIfElse = Prefix + "0120";
         public const string ReplaceConstantWithField = Prefix + "0121";
-        public const string ReplaceCountWithLengthOrLengthWithCount = Prefix + "0122";
         public const string ReplaceDoStatementWithWhileStatement = Prefix + "0123";
         public const string ReplaceEqualsExpressionWithStringEquals = Prefix + "0124";
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = Prefix + "0125";
@@ -155,7 +151,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceStatementWithIfStatement = Prefix + "0143";
         public const string ReplaceStringContainsWithStringIndexOf = Prefix + "0144";
         public const string ReplaceStringFormatWithInterpolatedString = Prefix + "0145";
-        public const string ReplaceStringLiteralWithCharacterLiteral = Prefix + "0146";
         public const string ReplaceSwitchWithIfElse = Prefix + "0147";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = Prefix + "0148";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = Prefix + "0149";

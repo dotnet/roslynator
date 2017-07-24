@@ -128,9 +128,6 @@ namespace Roslynator.CSharp.Refactorings
                             cancellationToken);
                     });
             }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStringLiteralWithCharacterLiteral))
-                await ReplaceStringLiteralWithCharacterLiteralRefactoring.ComputeRefactoringAsync(context, literalExpression).ConfigureAwait(false);
         }
 
         private static int GetStartIndex(LiteralExpressionSyntax literalExpression, TextSpan span)

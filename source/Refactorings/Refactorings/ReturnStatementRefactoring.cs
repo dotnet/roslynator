@@ -16,7 +16,6 @@ namespace Roslynator.CSharp.Refactorings
             if (expression != null)
             {
                 if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.AddBooleanComparison,
                     RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
                     RefactoringIdentifiers.AddCastExpression,
                     RefactoringIdentifiers.CallToMethod))

@@ -27,8 +27,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             {
                 return ImmutableArray.Create(
                   DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync,
-                  DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                  DiagnosticIdentifiers.AddReturnStatementThatReturnsDefaultValue);
+                  DiagnosticIdentifiers.NonAsynchronousMethodNameShouldNotEndWithAsync);
             }
         }
 
@@ -68,16 +67,6 @@ namespace Roslynator.CSharp.CodeFixProviders
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Rename '{oldName}' to '{newName}'",
                                     c => Renamer.RenameSymbolAsync(context.Solution(), methodSymbol, newName, default(OptionSet), c),
-                                    diagnostic.Id + EquivalenceKeySuffix);
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                                break;
-                            }
-                        case DiagnosticIdentifiers.AddReturnStatementThatReturnsDefaultValue:
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Add return statement that returns default value",
-                                    c => AddReturnStatementThatReturnsDefaultValueRefactoring.RefactorAsync(context.Document, methodDeclaration, c),
                                     diagnostic.Id + EquivalenceKeySuffix);
 
                                 context.RegisterCodeFix(codeAction, diagnostic);

@@ -13,13 +13,13 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace CodeGenerator
 {
-    public class OptionsPagePropertiesGenerator : Generator
+    public class RefactoringsOptionsPageGenerator : Generator
     {
         public StringComparer InvariantComparer { get; } = StringComparer.InvariantCulture;
 
-        public OptionsPagePropertiesGenerator()
+        public override string DefaultNamespace
         {
-            DefaultNamespace = "Roslynator.VisualStudio";
+            get { return "Roslynator.VisualStudio"; }
         }
 
         public CompilationUnitSyntax Generate(IEnumerable<RefactoringDescriptor> refactorings)
@@ -84,7 +84,7 @@ namespace CodeGenerator
 
             yield return MethodDeclaration(VoidType(), "Fill")
                 .WithModifiers(Modifiers.Public())
-                .WithParameterList(ParameterList(Parameter(ParseTypeName("ICollection<RefactoringModel>"), Identifier("refactorings"))))
+                .WithParameterList(ParameterList(Parameter(ParseTypeName("ICollection<BaseModel>"), Identifier("refactorings"))))
                 .WithBody(
                     Block((new StatementSyntax[] { ExpressionStatement(ParseExpression("refactorings.Clear()")) })
                         .Concat(refactorings
@@ -92,7 +92,7 @@ namespace CodeGenerator
                             .Select(refactoring =>
                             {
                                 return ExpressionStatement(
-                                    ParseExpression($"refactorings.Add(new RefactoringModel(RefactoringIdentifiers.{refactoring.Identifier}, \"{StringUtility.EscapeQuote(refactoring.Title)}\", IsEnabled(RefactoringIdentifiers.{refactoring.Identifier})))"));
+                                    ParseExpression($"refactorings.Add(new BaseModel(RefactoringIdentifiers.{refactoring.Identifier}, \"{StringUtility.EscapeQuote(refactoring.Title)}\", IsEnabled(RefactoringIdentifiers.{refactoring.Identifier})))"));
                             }))));
 
             foreach (RefactoringDescriptor info in refactorings

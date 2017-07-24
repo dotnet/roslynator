@@ -18,7 +18,7 @@ namespace Roslynator.VisualStudio
         private const string RefactoringCategory = "Refactoring";
 
         private bool _isActive;
-        private readonly RefactoringsOptionsPageControl _control = new RefactoringsOptionsPageControl();
+        private readonly BaseOptionsPageControl _control = new BaseOptionsPageControl();
         private readonly HashSet<string> _disabledRefactorings = new HashSet<string>();
 
         protected override UIElement Child
@@ -55,7 +55,7 @@ namespace Roslynator.VisualStudio
 
             if (!_isActive)
             {
-                Fill(_control.Refactorings);
+                Fill(_control.Items);
                 _isActive = true;
             }
         }
@@ -69,7 +69,7 @@ namespace Roslynator.VisualStudio
         {
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                foreach (RefactoringModel refactoring in _control.Refactorings)
+                foreach (BaseModel refactoring in _control.Items)
                     SetIsEnabled(refactoring.Id, refactoring.Enabled);
 
                 SettingsManager.Instance.UpdateVisualStudioSettings(this);

@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 
@@ -47,106 +46,82 @@ namespace Roslynator.CSharp.Helpers
             }
         }
 
-        private static TNode RemoveModifier<TNode>(TNode node, SyntaxTokenList modifiers, SyntaxToken modifier, int i) where TNode : SyntaxNode
+        public static TNode RemoveModifierAt<TNode>(TNode node, int index) where TNode : SyntaxNode
         {
-            SyntaxTriviaList trivia = GetTrivia(node, modifiers, modifier, i);
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
 
-            SyntaxTokenList newModifiers = modifiers.Remove(modifier);
+            SyntaxTokenList modifiers = node.GetModifiers();
 
-            if (i < modifiers.Count - 1)
-            {
-                newModifiers = newModifiers.ReplaceAt(i, newModifiers[i].PrependToLeadingTrivia(trivia));
-            }
-            else
-            {
-                SyntaxToken nextToken = FindNextToken(node, modifier);
-
-                if (!nextToken.IsKind(SyntaxKind.None))
-                {
-                    TNode newNode = node.ReplaceToken(nextToken, nextToken.PrependToLeadingTrivia(trivia));
-
-                    return (TNode)newNode.WithModifiers(newModifiers);
-                }
-            }
-
-            return (TNode)node.WithModifiers(newModifiers);
+            return RemoveModifier(node, modifiers, modifiers[index], index);
         }
 
-        private static SyntaxToken FindPreviousToken(SyntaxNode node, SyntaxToken token)
-        {
-            int position = token.FullSpan.Start - 1;
-
-            if (position >= node.FullSpan.Start)
-            {
-                return FindToken(node, position);
-            }
-            else
-            {
-                node = node.Parent;
-
-                if (node != null)
-                {
-                    return FindToken(node, position);
-                }
-                else
-                {
-                    return default(SyntaxToken);
-                }
-            }
-        }
-
-        private static SyntaxToken FindNextToken(SyntaxNode node, SyntaxToken token)
-        {
-            return FindToken(node, token.FullSpan.End);
-        }
-
-        private static SyntaxToken FindToken(SyntaxNode node, int position)
-        {
-            SyntaxToken token = node.FindToken(position);
-
-            if (token.IsKind(SyntaxKind.None))
-            {
-                return node.FindTrivia(position).Token;
-            }
-            else
-            {
-                return token;
-            }
-        }
-
-        private static SyntaxTriviaList GetTrivia(SyntaxNode node, SyntaxTokenList modifiers, SyntaxToken modifier, int i)
+        private static TNode RemoveModifier<TNode>(
+            TNode node,
+            SyntaxTokenList modifiers,
+            SyntaxToken modifier,
+            int index) where TNode : SyntaxNode
         {
             SyntaxTriviaList leading = modifier.LeadingTrivia;
             SyntaxTriviaList trailing = modifier.TrailingTrivia;
 
-            if (leading.Any())
+            if (modifiers.Count == 1)
             {
-                if (trailing.All(f => f.IsWhitespaceTrivia()))
+                SyntaxToken nextToken = modifier.GetNextToken();
+
+                if (!nextToken.IsKind(SyntaxKind.None))
                 {
-                    return leading;
+                    SyntaxTriviaList trivia = leading.AddIfNotEmptyOrWhitespace(trailing, nextToken.LeadingTrivia);
+
+                    node = node.ReplaceToken(nextToken, nextToken.WithLeadingTrivia(trivia));
                 }
                 else
                 {
-                    return leading.Concat(trailing).ToSyntaxTriviaList();
+                    SyntaxToken previousToken = modifier.GetPreviousToken();
+
+                    if (!previousToken.IsKind(SyntaxKind.None))
+                    {
+                        SyntaxTriviaList trivia = previousToken.TrailingTrivia.AddIfNotEmptyOrWhitespace(leading, trailing);
+
+                        node = node.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(trivia));
+                    }
                 }
             }
             else
             {
-                SyntaxToken previousToken = (i == 0)
-                    ? FindPreviousToken(node, modifier)
-                    : modifiers[i - 1];
-
-                if (!previousToken.IsKind(SyntaxKind.None)
-                    && previousToken.TrailingTrivia.Any()
-                    && trailing.All(f => f.IsWhitespaceTrivia()))
+                if (index == 0)
                 {
-                    return default(SyntaxTriviaList);
+                    SyntaxToken nextModifier = modifiers[index + 1];
+
+                    SyntaxTriviaList trivia = leading.AddIfNotEmptyOrWhitespace(trailing, nextModifier.LeadingTrivia);
+
+                    modifiers = modifiers.Replace(nextModifier, nextModifier.WithLeadingTrivia(trivia));
                 }
                 else
                 {
-                    return trailing;
+                    SyntaxToken previousModifier = modifiers[index - 1];
+
+                    SyntaxTriviaList trivia = previousModifier.TrailingTrivia.AddIfNotEmptyOrWhitespace(leading, trailing);
+
+                    modifiers = modifiers.Replace(previousModifier, previousModifier.WithTrailingTrivia(trivia));
                 }
             }
+
+            modifiers = modifiers.RemoveAt(index);
+
+            return (TNode)node.WithModifiers(modifiers);
+        }
+
+        private static SyntaxTriviaList AddIfNotEmptyOrWhitespace(this SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd)
+        {
+            return (triviaToAdd.IsEmptyOrWhitespace()) ? trivia : trivia.AddRange(triviaToAdd);
+        }
+
+        private static SyntaxTriviaList AddIfNotEmptyOrWhitespace(this SyntaxTriviaList trivia, SyntaxTriviaList triviaToAdd1, SyntaxTriviaList triviaToAdd2)
+        {
+            return trivia
+                .AddIfNotEmptyOrWhitespace(triviaToAdd1)
+                .AddIfNotEmptyOrWhitespace(triviaToAdd2);
         }
     }
 }

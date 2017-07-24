@@ -170,6 +170,72 @@ namespace MetadataGenerator
             }
         }
 
+        public string CreateCodeFixesReadMe(CodeFixDescriptor[] codeFixes, CompilerDiagnosticDescriptor[] diagnostics)
+        {
+            using (var sw = new StringWriter())
+            {
+                sw.WriteLine("## Roslynator Code Fixes");
+                sw.WriteLine();
+
+                sw.WriteLine("Id | Title | Fixable Diagnostics | Enabled by Default ");
+                sw.WriteLine("--- | --- | --- |:---:");
+
+                foreach (CodeFixDescriptor descriptor in codeFixes.OrderBy(f => f.Title, StringComparer))
+                {
+                    IEnumerable<string> fixableDiagnostics = descriptor
+                        .FixableDiagnosticIds
+                        .Join(diagnostics, f => f, f => f.Id, (f, g) => (!string.IsNullOrEmpty(g.HelpUrl)) ? $"[{g.Id}]({g.HelpUrl})" : g.Id);
+
+                    sw.Write(descriptor.Id);
+                    sw.Write('|');
+                    sw.Write(descriptor.Title.TrimEnd('.').EscapeMarkdown());
+                    sw.Write('|');
+                    sw.Write(string.Join(", ", fixableDiagnostics));
+                    sw.Write('|');
+                    sw.Write((descriptor.IsEnabledByDefault) ? "x" : "");
+                    sw.WriteLine();
+                }
+
+                return sw.ToString();
+            }
+        }
+
+        public string CreateCodeFixesByDiagnosticId(CodeFixDescriptor[] codeFixes, CompilerDiagnosticDescriptor[] diagnostics)
+        {
+            using (var sw = new StringWriter())
+            {
+                sw.WriteLine("## Roslynator Code Fixes by Diagnostic Id");
+                sw.WriteLine();
+
+                sw.WriteLine("Diagnostic | Code Fixes");
+                sw.WriteLine("--- | ---");
+
+                foreach (var grouping in codeFixes
+                    .SelectMany(f => f.FixableDiagnosticIds.Select(ff => new { DiagnosticId = ff, CodeFixDescriptor = f}))
+                    .OrderBy(f => f.DiagnosticId)
+                    .ThenBy(f => f.CodeFixDescriptor.Id)
+                    .GroupBy(f => f.DiagnosticId))
+                {
+                    CompilerDiagnosticDescriptor diagnostic = Array.Find(diagnostics, f => f.Id == grouping.Key);
+
+                    if (!string.IsNullOrEmpty(diagnostic?.HelpUrl))
+                    {
+                        sw.Write($"[{diagnostic.Id}]({diagnostic.HelpUrl})");
+                    }
+                    else
+                    {
+                        sw.Write(grouping.Key);
+                    }
+
+                    sw.Write('|');
+                    sw.Write(string.Join(", ", grouping.Select(f => f.CodeFixDescriptor.Id)));
+                    sw.WriteLine();
+                }
+
+                return sw.ToString();
+            }
+        }
+
         public string CreateAnalyzersByCategoryMarkDown(IEnumerable<AnalyzerDescriptor> analyzers)
         {
             using (var sw = new StringWriter())

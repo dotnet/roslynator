@@ -22,8 +22,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.FormatEachStatementOnSeparateLine,
                     DiagnosticDescriptors.RemoveUnnecessaryCaseLabel,
                     DiagnosticDescriptors.DefaultLabelShouldBeLastLabelInSwitchSection,
-                    DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements,
-                    DiagnosticDescriptors.AddBreakStatementToSwitchSection);
+                    DiagnosticDescriptors.AddBracesToSwitchSectionWithMultipleStatements);
             }
         }
 
@@ -42,13 +41,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var switchSection = (SwitchSectionSyntax)context.Node;
 
             FormatEachStatementOnSeparateLineRefactoring.Analyze(context, switchSection);
-
-            if (AddBreakStatementToSwitchSectionRefactoring.CanRefactor(context, switchSection))
-            {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.AddBreakStatementToSwitchSection,
-                    switchSection);
-            }
 
             RemoveUnnecessaryCaseLabelRefactoring.Analyze(context, switchSection);
 

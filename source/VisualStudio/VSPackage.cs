@@ -12,6 +12,7 @@ namespace Roslynator.VisualStudio
     [Guid("7AD86013-9E55-4BBE-98CC-DE72FADAB1E6")]
     [ProvideOptionPage(typeof(GeneralOptionsPage), "Roslynator", "General", 0, 0, true)]
     [ProvideOptionPage(typeof(RefactoringsOptionsPage), "Roslynator", "Refactorings", 0, 0, true)]
+    [ProvideOptionPage(typeof(CodeFixesOptionsPage), "Roslynator", "Code Fixes", 0, 0, true)]
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionOpening_string)]
     public sealed partial class VSPackage : Package, IVsSolutionEvents
     {

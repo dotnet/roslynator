@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Roslynator.CSharp.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.VisualStudio;
 
@@ -34,7 +35,25 @@ namespace Roslynator.Configuration
                 VisualStudioSettings.Refactorings[id] = false;
         }
 
+        public void UpdateVisualStudioSettings(CodeFixesOptionsPage codeFixOptionsPage)
+        {
+            VisualStudioSettings.CodeFixes.Clear();
+
+            foreach (string id in codeFixOptionsPage.GetDisabledCodeFixes())
+                VisualStudioSettings.CodeFixes[id] = false;
+        }
+
         public void ApplyTo(RefactoringSettings settings)
+        {
+            settings.Reset();
+
+            VisualStudioSettings.ApplyTo(settings);
+
+            if (UseConfigFile)
+                ConfigFileSettings?.ApplyTo(settings);
+        }
+
+        public void ApplyTo(CodeFixSettings settings)
         {
             settings.Reset();
 

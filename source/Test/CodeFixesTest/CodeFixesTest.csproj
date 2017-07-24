@@ -1,0 +1,107 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{73C0BB00-F170-44A1-AB72-008E29F8D34A}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Roslynator.CSharp.CodeFixes.Test</RootNamespace>
+    <AssemblyName>Roslynator.CSharp.CodeFixes.Test</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>..\CodeFixesTest.ruleset</CodeAnalysisRuleSet>
+    <DocumentationFile>
+    </DocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="AddArgumentList.cs" />
+    <Compile Include="AddComparisonWithBooleanLiteralRefactoring.cs" />
+    <Compile Include="AddBracesToDeclarationOrLabeledStatement.cs" />
+    <Compile Include="AddBreakStatementToSwitchSection.cs" />
+    <Compile Include="AddDocumentationComment.cs" />
+    <Compile Include="AddMethodBody.cs" />
+    <Compile Include="AddSemicolon.cs" />
+    <Compile Include="AddOverrideOrNewModifier.cs" />
+    <Compile Include="AddPartialModifier.cs" />
+    <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />
+    <Compile Include="AddTypeArgument.cs" />
+    <Compile Include="ChangeTypeOfLocalVariable.cs" />
+    <Compile Include="ChangeTypeOfParamsParameter.cs" />
+    <Compile Include="CreateSingletonArray.cs" />
+    <Compile Include="ExtractDeclarationFromUsingStatement.cs" />
+    <Compile Include="AddStaticModifier.cs" />
+    <Compile Include="FixMemberAccessName.cs" />
+    <Compile Include="InitializeLocalVariableWithDefaultValue.cs" />
+    <Compile Include="IntroduceLocalVariable.cs" />
+    <Compile Include="MakeContainingClassAbstract.cs" />
+    <Compile Include="MakeMemberNonStatic.cs" />
+    <Compile Include="MarkOperatorAsPublicAndStatic.cs" />
+    <Compile Include="MemberTypeMustMatchOverriddenMemberType.cs" />
+    <Compile Include="MoveBaseClassBeforeAnyInterface.cs" />
+    <Compile Include="OverridingMethodCannotChangeAccessModifiers.cs" />
+    <Compile Include="PartialModifierCanOnlyAppearImmediatelyBeforeClassOrStructOrInterfaceOrVoid.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="AddOutModifierToArgument.cs" />
+    <Compile Include="ChangeAccessibility.cs" />
+    <Compile Include="RemoveArgumentList.cs" />
+    <Compile Include="RemoveAwaitKeyword.cs" />
+    <Compile Include="RemoveConstModifier.cs" />
+    <Compile Include="RemoveConstraintClause.cs" />
+    <Compile Include="RemoveDuplicateAttribute.cs" />
+    <Compile Include="RemoveImplementationFromAbstractMember.cs" />
+    <Compile Include="RemoveInvalidModifier.cs" />
+    <Compile Include="RemoveNewModifier.cs" />
+    <Compile Include="RemoveDuplicateModifier.cs" />
+    <Compile Include="RemovePropertyOrFieldInitializer.cs" />
+    <Compile Include="RemoveRedundantAssignment.cs" />
+    <Compile Include="RemoveRefModifier.cs" />
+    <Compile Include="RemoveSwitchStatement.cs" />
+    <Compile Include="RemoveUnreachableCode.cs" />
+    <Compile Include="RemoveUnusedLabel.cs" />
+    <Compile Include="RemoveUnusedVariable.cs" />
+    <Compile Include="RemoveReturnKeyword.cs" />
+    <Compile Include="ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
+    <Compile Include="StaticConstructorMustBeParameterless.cs" />
+    <Compile Include="SynchronizeAccessibility.partial.cs" />
+    <Compile Include="SynchronizeAccessibility.cs" />
+    <Compile Include="Unsafe.cs" />
+    <Compile Include="UseExplicitTypeInsteadOfVar.cs" />
+    <Compile Include="UseYieldReturnInsteadOfReturn.cs" />
+    <Compile Include="WrapInUncheckedExpression.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="project.json" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -47,6 +47,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AnalyzerDescriptor.cs" />
+    <Compile Include="CodeFixDescriptor.cs" />
+    <Compile Include="CompilerDiagnosticDescriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefactoringDescriptor.cs" />
     <Compile Include="ImageDescriptor.cs" />

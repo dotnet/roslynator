@@ -692,7 +692,7 @@ namespace Roslynator.CSharp
 
             return TextSpan.FromBounds(forEachStatement.OpenParenToken.Span.Start, forEachStatement.CloseParenToken.Span.End);
         }
-        #endregion
+        #endregion ForEachStatementSyntax
 
         #region ForStatementSyntax
         public static TextSpan ParenthesesSpan(this ForStatementSyntax forStatement)
@@ -2253,6 +2253,42 @@ namespace Roslynator.CSharp
             }
         }
 
+        public static bool SupportsModifiers(this SyntaxNode node)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            switch (node.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.EnumDeclaration:
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                case SyntaxKind.FieldDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.PropertyDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.IncompleteMember:
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                case SyntaxKind.LocalDeclarationStatement:
+                case SyntaxKind.Parameter:
+                    return true;
+            }
+
+            return false;
+        }
+
         internal static SyntaxNode WithModifiers(this SyntaxNode node, SyntaxTokenList modifiers)
         {
             if (node == null)
@@ -3073,31 +3109,33 @@ namespace Roslynator.CSharp
 
         public static SyntaxTokenList InsertModifier(this SyntaxTokenList modifiers, SyntaxToken modifier, IModifierComparer comparer)
         {
+            int index = 0;
+
             if (modifiers.Any())
             {
-                int index = comparer.GetInsertIndex(modifiers, modifier);
+                index = comparer.GetInsertIndex(modifiers, modifier);
 
-                if (index == modifiers.Count)
+                if (index == 0)
                 {
-                    return modifiers.Add(modifier.PrependToLeadingTrivia(Space));
-                }
-                else
-                {
-                    SyntaxToken nextModifier = modifiers[index];
+                    SyntaxToken firstModifier = modifiers[index];
 
-                    return modifiers
-                        .Replace(nextModifier, nextModifier.WithoutLeadingTrivia())
-                        .Insert(
-                            index,
-                            modifier
-                                .WithLeadingTrivia(nextModifier.LeadingTrivia)
-                                .WithTrailingTrivia(Space));
+                    SyntaxTriviaList trivia = firstModifier.LeadingTrivia;
+
+                    if (trivia.Any())
+                    {
+                        SyntaxTriviaList leadingTrivia = modifier.LeadingTrivia;
+
+                        if (!leadingTrivia.IsSingleElasticMarker())
+                            trivia = trivia.AddRange(leadingTrivia);
+
+                        modifier = modifier.WithLeadingTrivia(trivia);
+
+                        modifiers = modifiers.ReplaceAt(index, firstModifier.WithoutLeadingTrivia());
+                    }
                 }
             }
-            else
-            {
-                return modifiers.Add(modifier);
-            }
+
+            return modifiers.Insert(index, modifier);
         }
 
         internal static SyntaxTokenList RemoveAccessModifiers(this SyntaxTokenList tokenList)
@@ -3207,7 +3245,14 @@ namespace Roslynator.CSharp
 
         public static bool IsWhitespaceOrEndOfLineTrivia(this SyntaxTrivia trivia)
         {
-            return trivia.IsWhitespaceTrivia() || trivia.IsEndOfLineTrivia();
+            return trivia.IsKind(SyntaxKind.WhitespaceTrivia, SyntaxKind.EndOfLineTrivia);
+        }
+
+        internal static bool IsElasticMarker(this SyntaxTrivia trivia)
+        {
+            return trivia.IsWhitespaceTrivia()
+                && trivia.Span.IsEmpty
+                && trivia.HasAnnotation(SyntaxAnnotation.ElasticAnnotation);
         }
         #endregion SyntaxTrivia
 
@@ -3268,36 +3313,29 @@ namespace Roslynator.CSharp
             return SyntaxTriviaList.Empty;
         }
 
-        public static SyntaxTriviaList TrimTrivia(this SyntaxTriviaList triviaList)
+        internal static bool IsEmptyOrWhitespace(this SyntaxTriviaList triviaList)
         {
-            int startIndex = 0;
-            for (int i = 0; i < triviaList.Count; i++)
+            if (!triviaList.Any())
+                return true;
+
+            foreach (SyntaxTrivia trivia in triviaList)
             {
-                if (!triviaList[i].IsWhitespaceOrEndOfLineTrivia())
-                {
-                    startIndex = i;
-                    break;
-                }
+                if (!trivia.IsWhitespaceOrEndOfLineTrivia())
+                    return false;
             }
 
-            int endIndex = -1;
-            for (int i = triviaList.Count - 1; i > startIndex; i--)
-            {
-                if (!triviaList[i].IsWhitespaceOrEndOfLineTrivia())
-                {
-                    endIndex = i;
-                    break;
-                }
-            }
+            return true;
+        }
 
-            if (startIndex > 0 || endIndex >= 0)
-            {
-                return TriviaList(triviaList.Skip(startIndex).Take(endIndex + 1 - startIndex));
-            }
-            else
-            {
-                return triviaList;
-            }
+        internal static SyntaxTriviaList EmptyIfWhitespace(this SyntaxTriviaList triviaList)
+        {
+            return (triviaList.IsEmptyOrWhitespace()) ? default(SyntaxTriviaList) : triviaList;
+        }
+
+        internal static bool IsSingleElasticMarker(this SyntaxTriviaList triviaList)
+        {
+            return triviaList.Count == 1
+                && triviaList[0].IsElasticMarker();
         }
         #endregion SyntaxTriviaList
 

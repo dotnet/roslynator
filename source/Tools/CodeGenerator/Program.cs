@@ -9,6 +9,8 @@ namespace CodeGenerator
 {
     internal static class Program
     {
+        private static readonly StringComparer _invariantComparer = StringComparer.InvariantCulture;
+
         private static void Main(string[] args)
         {
             if (args == null || args.Length == 0)
@@ -22,21 +24,50 @@ namespace CodeGenerator
 
             string dirPath = args[0];
 
+            var writer = new CodeFileWriter();
+
             RefactoringDescriptor[] refactorings = RefactoringDescriptor
                 .LoadFromFile(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"))
                 .ToArray();
 
-            var writer = new CodeFileWriter();
-
             var refactoringIdentifiersGenerator = new RefactoringIdentifiersGenerator();
+
             writer.SaveCode(
                 Path.Combine(dirPath, @"Refactorings\RefactoringIdentifiers.Generated.cs"),
                 refactoringIdentifiersGenerator.Generate(refactorings));
 
-            var optionsPagePropertiesGenerator = new OptionsPagePropertiesGenerator();
+            var refactoringsOptionsPageGenerator = new RefactoringsOptionsPageGenerator();
+
             writer.SaveCode(
                 Path.Combine(dirPath, @"VisualStudio.Core\RefactoringsOptionsPage.Generated.cs"),
-                optionsPagePropertiesGenerator.Generate(refactorings));
+                refactoringsOptionsPageGenerator.Generate(refactorings));
+
+            CodeFixDescriptor[] codeFixes = CodeFixDescriptor
+                .LoadFromFile(Path.Combine(dirPath, @"CodeFixes\CodeFixes.xml"))
+                .ToArray();
+
+            var codeFixIdentifiersGenerator = new CodeFixIdentifiersGenerator();
+
+            writer.SaveCode(
+                Path.Combine(dirPath, @"CodeFixes\CodeFixIdentifiers.Generated.cs"),
+                codeFixIdentifiersGenerator.Generate(codeFixes));
+
+            var codeFixesOptionsPageGenerator = new CodeFixesOptionsPageGenerator();
+
+            writer.SaveCode(
+                Path.Combine(dirPath, @"VisualStudio.Core\CodeFixesOptionsPage.Generated.cs"),
+                codeFixesOptionsPageGenerator.Generate(codeFixes));
+
+            CompilerDiagnosticDescriptor[] compilerDiagnostics = CompilerDiagnosticDescriptor
+                .LoadFromFile(Path.Combine(dirPath, @"CodeFixes\Diagnostics.xml"))
+                .OrderBy(f => f.Id, _invariantComparer)
+                .ToArray();
+
+            var compilerDiagnosticIdentifiersGenerator = new CompilerDiagnosticIdentifiersGenerator();
+
+            writer.SaveCode(
+                Path.Combine(dirPath, @"Core\CSharp\CompilerDiagnosticIdentifiers.cs"),
+                compilerDiagnosticIdentifiersGenerator.Generate(compilerDiagnostics));
 
 #if DEBUG
             Console.WriteLine("DONE");

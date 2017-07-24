@@ -1062,34 +1062,6 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor RemoveRedundantDelegateCreationFadeOut = RemoveRedundantDelegateCreation.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor ReplaceReturnStatementWithExpressionStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement,
-            title: "Replace yield/return statement with expression statement.",
-            messageFormat: "Replace {0} statement with expression statement.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
-        );
-
-        public static readonly DiagnosticDescriptor AddBreakStatementToSwitchSection = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AddBreakStatementToSwitchSection,
-            title: "Add break statement to switch section.",
-            messageFormat: "Add break statement to switch section.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
-        );
-
-        public static readonly DiagnosticDescriptor AddReturnStatementThatReturnsDefaultValue = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AddReturnStatementThatReturnsDefaultValue,
-            title: "Add return statement that returns default value.",
-            messageFormat: "Add return statement that returns default value.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
-        );
-
         public static readonly DiagnosticDescriptor MarkLocalVariableAsConst = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.MarkLocalVariableAsConst,
             title: "Mark local variable as const.",
@@ -1126,15 +1098,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor AddMissingSemicolon = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AddMissingSemicolon,
-            title: "Add missing semicolon.",
-            messageFormat: "Add missing semicolon.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: false
-        );
-
         public static readonly DiagnosticDescriptor AddParenthesesAccordingToOperatorPrecedence = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence,
             title: "Add parentheses according to operator precedence.",
@@ -1154,15 +1117,6 @@ namespace Roslynator.CSharp
         );
 
         public static readonly DiagnosticDescriptor InlineLocalVariableFadeOut = InlineLocalVariable.CreateFadeOut();
-
-        public static readonly DiagnosticDescriptor MarkMemberAsStatic = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MarkMemberAsStatic,
-            title: "Mark member as static.",
-            messageFormat: "Mark member as static.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
-        );
 
         public static readonly DiagnosticDescriptor AvoidEmbeddedStatementInIfElse = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse,
@@ -1209,15 +1163,6 @@ namespace Roslynator.CSharp
             messageFormat: "Bitwise operation on enum without Flags attribute.",
             category: DiagnosticCategories.General,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
-        );
-
-        public static readonly DiagnosticDescriptor ReplaceReturnWithYieldReturn = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.ReplaceReturnWithYieldReturn,
-            title: "Replace return with yield return.",
-            messageFormat: "Replace return with yield return.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 
@@ -1268,15 +1213,6 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
-        );
-
-        public static readonly DiagnosticDescriptor AddDocumentationComment = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.AddDocumentationComment,
-            title: "Add documentation comment to publicly visible type or member.",
-            messageFormat: "Add documentation comment to publicly visible type or member.",
-            category: DiagnosticCategories.Maintainability,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
         );
 
         public static readonly DiagnosticDescriptor AddSummaryToDocumentationComment = new DiagnosticDescriptor(
@@ -1334,15 +1270,6 @@ namespace Roslynator.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor MarkContainingClassAsAbstract = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MarkContainingClassAsAbstract,
-            title: "Mark containing class as abstract.",
-            messageFormat: "Mark containing class as abstract.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
-        );
-
         public static readonly DiagnosticDescriptor RemoveRedundantAsOperator = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.RemoveRedundantAsOperator,
             title: "Remove redundant 'as' operator.",
@@ -1362,36 +1289,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor RemoveInapplicableModifier = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveInapplicableModifier,
-            title: "Remove inapplicable modifier.",
-            messageFormat: "Remove inapplicable modifier.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
-        );
-
-        public static readonly DiagnosticDescriptor RemoveUnreachableCode = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveUnreachableCode,
-            title: "Remove unreachable code.",
-            messageFormat: "Remove unreachable code.",
-            category: DiagnosticCategories.General,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
-        );
-
-        public static readonly DiagnosticDescriptor RemoveImplementationFromAbstractMember = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveImplementationFromAbstractMember,
-            title: "Remove implementation from abstract member.",
-            messageFormat: "Remove implementation from {0}.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true,
-            customTags: WellKnownDiagnosticTags.Unnecessary
-        );
-
         public static readonly DiagnosticDescriptor CallStringConcatInsteadOfStringJoin = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin,
             title: "Call string.Concat instead of string.Join.",
@@ -1409,15 +1306,6 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,
             customTags: WellKnownDiagnosticTags.Unnecessary
-        );
-
-        public static readonly DiagnosticDescriptor MemberTypeMustMatchOverriddenMemberType = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType,
-            title: "Member type must match overriden member type.",
-            messageFormat: "Member type must match overriden member type.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
-            isEnabledByDefault: true
         );
 
         public static readonly DiagnosticDescriptor AddEmptyLineAfterClosingBrace = new DiagnosticDescriptor(
@@ -1545,15 +1433,6 @@ namespace Roslynator.CSharp
             messageFormat: "Value type object is never equal to null.",
             category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
-        );
-
-        public static readonly DiagnosticDescriptor OverridingMemberCannotChangeAccessModifiers = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers,
-            title: "Overriding member cannot change access modifiers.",
-            messageFormat: "Overriding member cannot change access modifiers.",
-            category: DiagnosticCategories.ErrorFix,
-            defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
 

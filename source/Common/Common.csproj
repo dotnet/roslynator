@@ -40,6 +40,8 @@
     <AssemblyOriginatorKeyFile>Roslynator.Common.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CSharp\Refactorings\ChangeAccessibilityRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringHelper.cs" />
     <Compile Include="CSharp\Refactorings\CallExtensionMethodAsInstanceMethodRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
@@ -79,7 +81,6 @@
     <Compile Include="CSharp\Refactorings\ExtractTypeDeclarationToNewDocumentRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldToLockOnRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\MarkContainingClassAsAbstractRefactoring.cs" />
-    <Compile Include="CSharp\Refactorings\MarkMemberAsStaticRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\MergeInterpolationIntoInterpolatedStringRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseBitwiseOperationInsteadOfCallingHasFlagRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\CallConfigureAwaitRefactoring.cs" />

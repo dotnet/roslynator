@@ -114,12 +114,12 @@ namespace Roslynator
         #endregion SyntaxList<T>
 
         #region SyntaxNode
-        public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxNode node)
+        public static SyntaxTriviaList GetLeadingAndTrailingTrivia(this SyntaxNode node)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.GetLeadingTrivia().Concat(node.GetTrailingTrivia());
+            return node.GetLeadingTrivia().AddRange(node.GetTrailingTrivia());
         }
 
         public static TNode PrependToLeadingTrivia<TNode>(this TNode node, IEnumerable<SyntaxTrivia> trivia) where TNode : SyntaxNode
@@ -455,9 +455,9 @@ namespace Roslynator
             return token.WithLeadingTrivia(token.LeadingTrivia.Add(trivia));
         }
 
-        public static IEnumerable<SyntaxTrivia> GetLeadingAndTrailingTrivia(this SyntaxToken token)
+        public static SyntaxTriviaList GetLeadingAndTrailingTrivia(this SyntaxToken token)
         {
-            return token.LeadingTrivia.Concat(token.TrailingTrivia);
+            return token.LeadingTrivia.AddRange(token.TrailingTrivia);
         }
 
         public static int GetSpanStartLine(this SyntaxToken token, CancellationToken cancellationToken = default(CancellationToken))
@@ -598,6 +598,11 @@ namespace Roslynator
             }
 
             return true;
+        }
+
+        public static bool Contains(this SyntaxTokenList tokens, SyntaxToken token)
+        {
+            return tokens.IndexOf(token) != -1;
         }
         #endregion SyntaxTokenList
 
