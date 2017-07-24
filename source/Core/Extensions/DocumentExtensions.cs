@@ -110,6 +110,28 @@ namespace Roslynator
             return document.WithSyntaxRoot(newRoot);
         }
 
+        public static async Task<Document> ReplaceNodesAsync<TNode>(
+            this Document document,
+            IEnumerable<TNode> nodes,
+            Func<TNode, TNode, SyntaxNode> computeReplacementNode,
+            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (nodes == null)
+                throw new ArgumentNullException(nameof(nodes));
+
+            if (computeReplacementNode == null)
+                throw new ArgumentNullException(nameof(computeReplacementNode));
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.ReplaceNodes(nodes, computeReplacementNode);
+
+            return document.WithSyntaxRoot(newRoot);
+        }
+
         public static async Task<Document> ReplaceTokenAsync(
             this Document document,
             SyntaxToken oldToken,

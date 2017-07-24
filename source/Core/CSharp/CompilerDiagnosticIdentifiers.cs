@@ -20,6 +20,7 @@ namespace Roslynator.CSharp
         public const string MemberDoesNotHideAccessibleMember = "CS0109";
         public const string StaticMemberCannotBeMarkedOverrideVirtualOrAbstract = "CS0112";
         public const string MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword = "CS0114";
+        public const string NoSuitableMethodFoundToOverride = "CS0115";
         public const string ObjectReferenceIsRequiredForNonStaticMember = "CS0120";
         public const string NoOverloadMatchesDelegate = "CS0123";
         public const string SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression = "CS0127";
@@ -89,6 +90,7 @@ namespace Roslynator.CSharp
         public const string TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound = "CS1061";
         public const string MethodHasParameterModifierThisWhichIsNotOnFirstParameter = "CS1100";
         public const string ExtensionMethodMustBeStatic = "CS1105";
+        public const string ExtensionMethodMustBeDefinedInNonGenericStaticClass = "CS1106";
         public const string CannotConvertArgumentType = "CS1503";
         public const string EmptySwitchBlock = "CS1522";
         public const string ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal = "CS1527";
@@ -96,6 +98,7 @@ namespace Roslynator.CSharp
         public const string ModifiersCannotBePlacedOnEventAccessorDeclarations = "CS1609";
         public const string ArgumentMayNotBePassedWithRefKeyword = "CS1615";
         public const string ArgumentMustBePassedWithOutKeyword = "CS1620";
+        public const string YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression = "CS1621";
         public const string CannotReturnValueFromIterator = "CS1622";
         public const string NotAllCodePathsReturnValueInAnonymousFunction = "CS1643";
         public const string TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable = "CS1674";
@@ -103,6 +106,7 @@ namespace Roslynator.CSharp
         public const string AssignmentMadeToSameVariable = "CS1717";
         public const string BaseClassMustComeBeforeAnyInterface = "CS1722";
         public const string NonInvocableMemberCannotBeUsedLikeMethod = "CS1955";
+        public const string AsyncMethodsCannotHaveRefOrOutParameters = "CS1988";
         public const string AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody = "CS1994";
         public const string SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression = "CS1997";
         public const string ControlCannotFallOutOfSwitchFromFinalCaseLabel = "CS8070";

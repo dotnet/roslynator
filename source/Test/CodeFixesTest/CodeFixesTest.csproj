@@ -49,6 +49,7 @@
     <Compile Include="CS0101_NamespaceAlreadyContainsDefinition2.cs" />
     <Compile Include="CS0102_TypeAlreadyContainsDefinition.cs" />
     <Compile Include="CS0102_TypeAlreadyContainsDefinition2.cs" />
+    <Compile Include="CS0115_NoSuitableMethodFoundToOverride.cs" />
     <Compile Include="CS0173_TypeOfConditionalExpressionCannotBeDetermined.cs" />
     <Compile Include="CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod.cs" />
     <Compile Include="CS0401_NewConstraintMustBeLastConstraintSpecified.cs" />
@@ -68,8 +69,11 @@
     <Compile Include="CS0766_PartialMethodsMustHaveVoidReturnType2.cs" />
     <Compile Include="CS1100_MethodHasParameterModifierThisWhichIsNotOnFirstParameter.cs" />
     <Compile Include="CS1105_ExtensionMethodMustBeStatic.cs" />
+    <Compile Include="CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass.cs" />
     <Compile Include="CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal.cs" />
+    <Compile Include="CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression.cs" />
     <Compile Include="CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody.cs" />
+    <Compile Include="CS1998_AsyncMethodsCannotHaveRefOrOutParameters.cs" />
     <Compile Include="MemberHidesInheritedMember.cs" />
     <Compile Include="AddPartialModifier.cs" />
     <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />

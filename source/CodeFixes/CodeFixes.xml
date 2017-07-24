@@ -143,6 +143,7 @@
   <CodeFix Id="RCF0027" Identifier="RemoveRefModifier" Title="Remove 'ref' modifier">
     <FixableDiagnosticIds>
       <Id>CS1615</Id>
+      <Id>CS1988</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0028" Identifier="RemoveRedundantAssignment" Title="Remove redundant assignment">
@@ -181,6 +182,7 @@
       <Id>CS0708</Id>
       <Id>CS0710</Id>
       <Id>CS1105</Id>
+      <Id>CS1106</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0034" Identifier="MakeContainingClassAbstract" Title="Make containing class abstract">
@@ -277,7 +279,7 @@
       <Id>CS0214</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0052" Identifier="RemoveReturnKeyword" Title="Remove 'return' keyword">
+  <CodeFix Id="RCF0052" Identifier="RemoveReturnKeyword" Title="Remove 'return' keyword" IsEnabledByDefault="false">
     <FixableDiagnosticIds>
       <Id>CS0127</Id>
       <Id>CS1997</Id>
@@ -297,6 +299,7 @@
     <FixableDiagnosticIds>
       <Id>CS0107</Id>
       <Id>CS0112</Id>
+      <Id>CS0115</Id>
       <Id>CS0275</Id>
       <Id>CS0441</Id>
       <Id>CS0515</Id>
@@ -313,7 +316,7 @@
       <Id>CS0114</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression">
+  <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression" IsEnabledByDefault="false">
     <FixableDiagnosticIds>
       <Id>CS0127</Id>
       <Id>CS1997</Id>
@@ -334,6 +337,7 @@
     <FixableDiagnosticIds>
       <Id>CS1100</Id>
       <Id>CS1105</Id>
+      <Id>CS1106</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0061" Identifier="RemoveTypeParameter" Title="Remove type parameter">
@@ -378,6 +382,16 @@
   <CodeFix Id="RCF0068" Identifier="MakeClassNonStatic" Title="Make class non-static">
     <FixableDiagnosticIds>
       <Id>CS0718</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0069" Identifier="RemoveYieldKeyword" Title="Remove 'yield' keyword">
+    <FixableDiagnosticIds>
+      <Id>CS1621</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0070" Identifier="RemoveOutModifier" Title="Remove 'out' modifier">
+    <FixableDiagnosticIds>
+      <Id>CS1988</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>
