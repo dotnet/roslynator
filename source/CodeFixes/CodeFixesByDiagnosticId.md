@@ -14,6 +14,7 @@ Diagnostic | Code Fixes
 [CS0109](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0109)|RCF0013
 [CS0112](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0112)|RCF0055
 [CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|RCF0006, RCF0007, RCF0056
+[CS0115](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0115)|RCF0055
 [CS0120](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0120)|RCF0042
 [CS0123](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123)|RCF0041
 [CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127)|RCF0052, RCF0057
@@ -82,12 +83,14 @@ CS0261|RCF0029
 [CS1061](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061)|RCF0038, RCF0049
 [CS1100](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100)|RCF0060
 [CS1105](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105)|RCF0033, RCF0060
+[CS1106](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106)|RCF0033, RCF0060
 [CS1522](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522)|RCF0046
 [CS1527](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527)|RCF0029
 [CS1591](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591)|RCF0016
 [CS1609](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609)|RCF0055
 [CS1615](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615)|RCF0027
 [CS1620](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620)|RCF0004
+[CS1621](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1621)|RCF0069
 [CS1622](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1622)|RCF0021
 [CS1643](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1643)|RCF0020
 [CS1674](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1674)|RCF0008
@@ -95,6 +98,7 @@ CS0261|RCF0029
 [CS1717](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1717)|RCF0028
 [CS1722](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722)|RCF0005
 [CS1955](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955)|RCF0037
+CS1988|RCF0027, RCF0070
 CS1994|RCF0055
 CS1997|RCF0052, RCF0057
 CS8070|RCF0002

@@ -1,3 +1,9 @@
+### 1.4.52 (2017-07-24)
+
+#### Code Fixes
+
+  * New code fixes for CS0115, CS1106, CS1621, CS1988.
+
 ### 1.4.51 (2017-07-19)
 
 #### Refactorings
