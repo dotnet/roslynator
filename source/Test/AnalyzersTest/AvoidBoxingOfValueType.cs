@@ -13,22 +13,26 @@ namespace Roslynator.CSharp.Analyzers.Test
         public static void Bar()
         {
             string s = null;
-
             object o = null;
-
             int i = 0;
-
             int? ni = null;
-
             var options = RegexOptions.None;
 
             s = s + i;
             s = s + ni;
             s = s + options;
+            s = s + '\t';
+            s = s + ('\t');
+            s = s + '"';
+            s = s + '\'';
 
             s = $"{i}";
             s = $"{ni}";
             s = $"{options}";
+            s = $"{'\t'}";
+            s = $"{('\t')}";
+            s = $"{'"'}";
+            s = $"{'\''}";
 
             var sb = new StringBuilder();
 
