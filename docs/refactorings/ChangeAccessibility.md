@@ -1,0 +1,14 @@
+## Change accessibility
+
+Property | Value
+--- | --- 
+Id | RR0186
+Title | Change accessibility
+Syntax | access modifier
+Enabled by Default | yes
+
+### Usage
+
+![Change accessibility](../../images/refactorings/ChangeAccessibility.png)
+
+[full list of refactorings](Refactorings.md)

@@ -1,11 +1,5 @@
 ## Roslynator Refactorings
 
-#### Add boolean comparison (RR0001)
-
-* **Syntax**: boolean? expression in place where must be boolean expression
-
-![Add boolean comparison](../../images/refactorings/AddBooleanComparison.png)
-
 #### Add braces (RR0002)
 
 * **Syntax**: do statement, else clause, fixed statement, for statement, foreach statement, if statement, lock statement, using statement, while statement
@@ -122,6 +116,12 @@
 * **Syntax**: argument, assignment expression, return statement, variable declaration
 
 ![Call 'To\.\.\.' method \(ToString, ToArray, ToList\)](../../images/refactorings/CallToMethod.png)
+
+#### Change accessibility (RR0186)
+
+* **Syntax**: access modifier
+
+![Change accessibility](../../images/refactorings/ChangeAccessibility.png)
 
 #### Change explicit type to 'var' (RR0018)
 
@@ -282,13 +282,6 @@
 
 ![Expand property and add backing field](../../images/refactorings/ExpandPropertyAndAddBackingField.png)
 
-#### Extract declaration from using statement (RR0042)
-
-* **Syntax**: using statement
-* **Scope**: declaration
-
-![Extract declaration from using statement](../../images/refactorings/ExtractDeclarationFromUsingStatement.png)
-
 #### Extract expression from condition (RR0043)
 
 * **Syntax**: if statement, while statement
@@ -346,6 +339,12 @@
 ![Format conditional expression](../../images/refactorings/FormatConditionalExpressionOnMultipleLines.png)
 
 ![Format conditional expression](../../images/refactorings/FormatConditionalExpressionOnSingleLine.png)
+
+#### Format constraint clauses (RR0187)
+
+* **Syntax**: type parameter constraint clause
+
+![Format constraint clauses](../../images/refactorings/FormatConstraintClauses.png)
 
 #### Format expression chain (RR0051)
 
@@ -509,18 +508,6 @@
 * **Syntax**: method declaration, indexer declaration
 
 ![Make member virtual](../../images/refactorings/MakeMemberVirtual.png)
-
-#### Mark containing class as abstract (RR0071)
-
-* **Syntax**: method declaration, property declaration, indexer declaration, event declaration
-
-![Mark containing class as abstract](../../images/refactorings/MarkContainingClassAsAbstract.png)
-
-#### Mark member as static (RR0072)
-
-* **Syntax**: non\-static field/method/property/event in static class
-
-![Mark member as static](../../images/refactorings/MarkMemberAsStatic.png)
 
 #### Merge assignment expression with return statement (RR0073)
 
@@ -818,24 +805,11 @@
 
 ![Replace conditional expression with expression](../../images/refactorings/ReplaceConditionalExpressionWithExpression.png)
 
-#### Replace conditional expression with if\-else (RR0120)
-
-* **Syntax**: conditional expression
-
-![Replace conditional expression with if\-else](../../images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
-
 #### Replace constant with field (RR0121)
 
 * **Syntax**: constant declaration
 
 ![Replace constant with field](../../images/refactorings/ReplaceConstantWithField.png)
-
-#### Replace Count property with Length property \(or Length with Count\) (RR0122)
-
-* **Syntax**: member access expression
-* **Scope**: name
-
-![Replace Count property with Length property \(or Length with Count\)](../../images/refactorings/ReplaceCountWithLengthOrLengthWithCount.png)
 
 #### Replace do statement with while statement (RR0123)
 
@@ -871,12 +845,6 @@
 
 ![Replace expression with constant value](../../images/refactorings/ReplaceExpressionWithConstantValue.png)
 
-#### Replace field with constant (RR0128)
-
-* **Syntax**: read\-only field
-
-![Replace field with constant](../../images/refactorings/ReplaceFieldWithConstant.png)
-
 #### Replace for statement with foreach statement (RR0130)
 
 * **Syntax**: for statement
@@ -894,6 +862,12 @@
 * **Syntax**: foreach statement
 
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
+
+#### Replace foreach with for and reverse loop (RR0187)
+
+* **Syntax**: foreach statement
+
+![Replace foreach with for and reverse loop](../../images/refactorings/ReplaceForEachWithForAndReverseLoop.png)
 
 #### Replace hexadecimal literal with decimal literal (RR0132)
 
@@ -975,12 +949,6 @@
 * **Syntax**: return statement, yield return statement, assignment statement, local declaration statement
 
 ![Replace statement with if statement](../../images/refactorings/ReplaceReturnStatementWithIfStatement.png)
-
-#### Replace string literal with character literal (RR0146)
-
-* **Syntax**: string literal
-
-![Replace string literal with character literal](../../images/refactorings/ReplaceStringLiteralWithCharacterLiteral.png)
 
 #### Replace string\.Contains with string\.IndexOf (RR0144)
 
@@ -1140,6 +1108,12 @@
 
 ![Use conditional expression instead of if](../../images/refactorings/UseConditionalExpressionInsteadOfIf.png)
 
+#### Use constant instead of field (RR0128)
+
+* **Syntax**: read\-only field
+
+![Use constant instead of field](../../images/refactorings/UseConstantInsteadOfField.png)
+
 #### Use element access instead of 'First/Last'ElementAt' method (RR0167)
 
 * **Syntax**: First/Last/ElementAt method invocation
@@ -1153,6 +1127,12 @@
 * **Scope**: body or accessor list
 
 ![Use expression\-bodied member](../../images/refactorings/UseExpressionBodiedMember.png)
+
+#### Use if\-else instead of conditional expression (RR0120)
+
+* **Syntax**: local declaration statement with conditional expression, assignment with conditional expression, return statement conditional expression, yield statement conditional expression
+
+![Use if\-else instead of conditional expression](../../images/refactorings/UseIfElseInsteadOfConditionalExpression.png)
 
 #### Use lambda expression instead of anonymous method (RR0170)
 

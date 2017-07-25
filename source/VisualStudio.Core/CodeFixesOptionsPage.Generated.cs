@@ -11,7 +11,7 @@ namespace Roslynator.VisualStudio
     {
         public CodeFixesOptionsPage()
         {
-            DisabledCodeFixes = $"{CodeFixIdentifiers.AddSemicolon}";
+            DisabledCodeFixes = $"{CodeFixIdentifiers.AddSemicolon},{CodeFixIdentifiers.RemoveReturnExpression},{CodeFixIdentifiers.RemoveReturnKeyword}";
         }
 
         public void Fill(ICollection<BaseModel> codeFixes)
