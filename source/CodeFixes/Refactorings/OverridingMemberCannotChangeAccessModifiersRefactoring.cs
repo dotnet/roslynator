@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Fail(memberDeclaration.Kind().ToString());
+                        Debug.Assert(false, memberDeclaration.Kind().ToString());
 
                         return null;
                     }

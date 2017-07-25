@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.CodeFixes
                     return ((ExternAliasDirectiveSyntax)node).SemicolonToken;
             }
 
-            Debug.Fail(node.Kind().ToString());
+            Debug.Assert(false, node.Kind().ToString());
 
             return default(SyntaxToken);
         }

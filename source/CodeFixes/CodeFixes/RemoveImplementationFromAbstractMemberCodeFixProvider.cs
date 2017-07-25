@@ -149,7 +149,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
             }
 
-            Debug.Fail("");
+            Debug.Assert(false, "");
 
             return Task.FromResult(document);
         }

@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Fail("");
+                        Debug.Assert(false, "");
                         return Task.FromResult(document);
                     }
             }

@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
                 }
             }
 
-            Debug.Fail(identifierName.ToString());
+            Debug.Assert(false, identifierName.ToString());
 
             return document;
         }

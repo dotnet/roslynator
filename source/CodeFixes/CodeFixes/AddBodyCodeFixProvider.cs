@@ -182,7 +182,7 @@ namespace Roslynator.CSharp.CodeFixes
                     }
             }
 
-            Debug.Fail(node.Kind().ToString());
+            Debug.Assert(false, node.Kind().ToString());
 
             return null;
         }
