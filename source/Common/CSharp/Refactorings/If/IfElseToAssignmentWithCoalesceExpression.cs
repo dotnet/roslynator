@@ -12,12 +12,10 @@ namespace Roslynator.CSharp.Refactorings.If
     {
         public IfElseToAssignmentWithCoalesceExpression(
             IfStatementSyntax ifStatement,
-            ExpressionSyntax condition,
             ExpressionSyntax left,
             ExpressionSyntax right1,
             ExpressionSyntax right2) : base(ifStatement)
         {
-            Condition = condition;
             Left = left;
             Right1 = right1;
             Right2 = right2;
@@ -32,8 +30,6 @@ namespace Roslynator.CSharp.Refactorings.If
         {
             get { return "Use coalesce expression"; }
         }
-
-        public ExpressionSyntax Condition { get; }
 
         public ExpressionSyntax Left { get; }
 

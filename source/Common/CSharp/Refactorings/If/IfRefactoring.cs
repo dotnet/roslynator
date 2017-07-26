@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
+using Roslynator.Utilities;
 using static Roslynator.CSharp.Refactorings.If.IfRefactoringHelper;
 
 namespace Roslynator.CSharp.Refactorings.If
@@ -75,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings.If
                                         {
                                             case SyntaxKind.ExpressionStatement:
                                                 {
-                                                    return Analyze(ifStatement, condition, (ExpressionStatementSyntax)statement1, (ExpressionStatementSyntax)statement2, options);
+                                                    return Analyze(ifStatement, condition, (ExpressionStatementSyntax)statement1, (ExpressionStatementSyntax)statement2, semanticModel, cancellationToken, options);
                                                 }
                                             case SyntaxKind.ReturnStatement:
                                                 {
@@ -119,27 +120,20 @@ namespace Roslynator.CSharp.Refactorings.If
             {
                 if (options.UseCoalesceExpression)
                 {
-                    SyntaxKind conditionKind = condition.Kind();
-
-                    if (conditionKind == SyntaxKind.EqualsExpression)
+                    NullCheckExpression nullCheck;
+                    if (NullCheckExpression.TryCreate(condition, semanticModel, out nullCheck, cancellationToken))
                     {
-                        var binaryExpression = (BinaryExpressionSyntax)condition;
+                        IfRefactoring refactoring = CreateIfToReturnWithCoalesceExpression(
+                            ifStatement,
+                            (nullCheck.IsCheckingNull) ? expression2 : expression1,
+                            (nullCheck.IsCheckingNull) ? expression1 : expression2,
+                            nullCheck,
+                            isYield,
+                            semanticModel,
+                            cancellationToken);
 
-                        if (IsNullLiteral(binaryExpression.Right)
-                            && IsEquivalent(binaryExpression.Left, expression2))
-                        {
-                            return IfToReturnWithCoalesceExpression.Create(ifStatement, expression2, expression1, isYield).ToImmutableArray();
-                        }
-                    }
-                    else if (conditionKind == SyntaxKind.NotEqualsExpression)
-                    {
-                        var binaryExpression = (BinaryExpressionSyntax)condition;
-
-                        if (IsNullLiteral(binaryExpression.Right)
-                            && IsEquivalent(binaryExpression.Left, expression1))
-                        {
-                            return IfToReturnWithCoalesceExpression.Create(ifStatement, expression1, expression2, isYield).ToImmutableArray();
-                        }
+                        if (refactoring != null)
+                            return refactoring.ToImmutableArray();
                     }
                 }
 
@@ -167,11 +161,45 @@ namespace Roslynator.CSharp.Refactorings.If
             return ImmutableArray<IfRefactoring>.Empty;
         }
 
+        private static IfRefactoring CreateIfToReturnWithCoalesceExpression(
+            IfStatementSyntax ifStatement,
+            ExpressionSyntax expression1,
+            ExpressionSyntax expression2,
+            NullCheckExpression nullCheck,
+            bool isYield,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (nullCheck.Kind == NullCheckKind.EqualsToNull
+                || nullCheck.Kind == NullCheckKind.NotEqualsToNull)
+            {
+                if (IsEquivalent(nullCheck.Expression, expression1))
+                {
+                    return IfToReturnWithCoalesceExpression.Create(ifStatement, expression1, expression2, isYield);
+                }
+            }
+
+            if (expression1.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                && SemanticUtilities.IsPropertyOfNullableOfT(expression1, "Value", semanticModel, cancellationToken))
+            {
+                expression1 = ((MemberAccessExpressionSyntax)expression1).Expression;
+
+                if (IsEquivalent(nullCheck.Expression, expression1))
+                {
+                    return IfToReturnWithCoalesceExpression.Create(ifStatement, expression1, expression2, isYield);
+                }
+            }
+
+            return null;
+        }
+
         private static ImmutableArray<IfRefactoring> Analyze(
             IfStatementSyntax ifStatement,
             ExpressionSyntax condition,
             ExpressionStatementSyntax expressionStatement1,
             ExpressionStatementSyntax expressionStatement2,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken,
             IfAnalysisOptions options)
         {
             ExpressionSyntax expression1 = expressionStatement1.Expression;
@@ -200,27 +228,20 @@ namespace Roslynator.CSharp.Refactorings.If
                         {
                             if (options.UseCoalesceExpression)
                             {
-                                SyntaxKind conditionKind = condition.Kind();
-
-                                if (conditionKind == SyntaxKind.EqualsExpression)
+                                NullCheckExpression nullCheck;
+                                if (NullCheckExpression.TryCreate(condition, semanticModel, out nullCheck, cancellationToken))
                                 {
-                                    var binaryExpression = (BinaryExpressionSyntax)condition;
+                                    IfRefactoring refactoring = CreateIfToAssignmentWithWithCoalesceExpression(
+                                        ifStatement,
+                                        left1,
+                                        (nullCheck.IsCheckingNull) ? right2 : right1,
+                                        (nullCheck.IsCheckingNull) ? right1 : right2,
+                                        nullCheck,
+                                        semanticModel,
+                                        cancellationToken);
 
-                                    if (IsNullLiteral(binaryExpression.Right)
-                                        && IsEquivalent(binaryExpression.Left, right2))
-                                    {
-                                        return new IfElseToAssignmentWithCoalesceExpression(ifStatement, condition, left1, right2, right1).ToImmutableArray();
-                                    }
-                                }
-                                else if (conditionKind == SyntaxKind.NotEqualsExpression)
-                                {
-                                    var binaryExpression = (BinaryExpressionSyntax)condition;
-
-                                    if (IsNullLiteral(binaryExpression.Right)
-                                        && IsEquivalent(binaryExpression.Left, right1))
-                                    {
-                                        return new IfElseToAssignmentWithCoalesceExpression(ifStatement, condition, left1, right1, right2).ToImmutableArray();
-                                    }
+                                    if (refactoring != null)
+                                        return refactoring.ToImmutableArray();
                                 }
                             }
 
@@ -232,6 +253,34 @@ namespace Roslynator.CSharp.Refactorings.If
             }
 
             return ImmutableArray<IfRefactoring>.Empty;
+        }
+
+        private static IfRefactoring CreateIfToAssignmentWithWithCoalesceExpression(
+            IfStatementSyntax ifStatement,
+            ExpressionSyntax left,
+            ExpressionSyntax expression1,
+            ExpressionSyntax expression2,
+            NullCheckExpression nullCheck,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (nullCheck.Kind == NullCheckKind.EqualsToNull
+                || nullCheck.Kind == NullCheckKind.NotEqualsToNull)
+            {
+                if (IsEquivalent(nullCheck.Expression, expression1))
+                    return new IfElseToAssignmentWithCoalesceExpression(ifStatement, left, expression1, expression2);
+            }
+
+            if (expression1.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                && SemanticUtilities.IsPropertyOfNullableOfT(expression1, "Value", semanticModel, cancellationToken))
+            {
+                expression1 = ((MemberAccessExpressionSyntax)expression1).Expression;
+
+                if (IsEquivalent(nullCheck.Expression, expression1))
+                    return new IfElseToAssignmentWithCoalesceExpression(ifStatement, left, expression1, expression2);
+            }
+
+            return null;
         }
 
         public static ImmutableArray<IfRefactoring> Analyze(
