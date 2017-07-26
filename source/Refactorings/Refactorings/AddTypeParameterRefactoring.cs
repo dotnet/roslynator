@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -30,15 +29,10 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxToken identifier = classDeclaration.Identifier;
 
                 if (!identifier.IsMissing
-                    && span.Start >= identifier.Span.End)
+                    && span.Start >= identifier.Span.End
+                    && span.End <= identifier.GetNextToken().Span.Start)
                 {
-                    SyntaxToken openBrace = classDeclaration.OpenBraceToken;
-
-                    if (!openBrace.IsMissing
-                        && span.End <= openBrace.Span.Start)
-                    {
-                        RegisterRefactoring(context, classDeclaration);
-                    }
+                    RegisterRefactoring(context, classDeclaration);
                 }
             }
         }
@@ -59,15 +53,10 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxToken identifier = structDeclaration.Identifier;
 
                 if (!identifier.IsMissing
-                    && span.Start >= identifier.Span.End)
+                    && span.Start >= identifier.Span.End
+                    && span.End <= identifier.GetNextToken().Span.Start)
                 {
-                    SyntaxToken openBrace = structDeclaration.OpenBraceToken;
-
-                    if (!openBrace.IsMissing
-                        && span.End <= openBrace.Span.Start)
-                    {
-                        RegisterRefactoring(context, structDeclaration);
-                    }
+                    RegisterRefactoring(context, structDeclaration);
                 }
             }
         }
@@ -88,15 +77,10 @@ namespace Roslynator.CSharp.Refactorings
                 SyntaxToken identifier = interfaceDeclaration.Identifier;
 
                 if (!identifier.IsMissing
-                    && span.Start >= identifier.Span.End)
+                    && span.Start >= identifier.Span.End
+                    && span.End <= identifier.GetNextToken().Span.Start)
                 {
-                    SyntaxToken openBrace = interfaceDeclaration.OpenBraceToken;
-
-                    if (!openBrace.IsMissing
-                        && span.End <= openBrace.Span.Start)
-                    {
-                        RegisterRefactoring(context, interfaceDeclaration);
-                    }
+                    RegisterRefactoring(context, interfaceDeclaration);
                 }
             }
         }
