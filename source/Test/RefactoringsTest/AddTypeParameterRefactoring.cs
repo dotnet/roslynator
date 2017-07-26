@@ -30,6 +30,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
             }
         }
 
+        private struct ClassName<T> where T : IInterfaceName
+        {
+        }
+
         private struct StructName
         {
         }
