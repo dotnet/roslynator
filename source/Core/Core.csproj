@@ -141,7 +141,7 @@
     <Compile Include="MethodInfo.cs" />
     <Compile Include="Utilities\SemanticUtilities.cs" />
     <Compile Include="Utilities\SymbolUtility.cs" />
-    <Compile Include="NodeWriter.cs" />
+    <Compile Include="Text\SyntaxNodeTextBuilder.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisFlags.cs" />
     <Compile Include="CSharp\RemoveHelper.cs" />

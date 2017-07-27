@@ -675,6 +675,16 @@ namespace Roslynator
                 return -1;
             }
         }
+
+        internal static TextSpan LeadingTriviaSpan(this SyntaxTrivia trivia)
+        {
+            return TextSpan.FromBounds(trivia.FullSpan.Start, trivia.Span.Start);
+        }
+
+        internal static TextSpan TrailingTriviaSpan(this SyntaxTrivia trivia)
+        {
+            return TextSpan.FromBounds(trivia.Span.End, trivia.FullSpan.End);
+        }
         #endregion SyntaxTrivia
 
         #region SyntaxTriviaList
