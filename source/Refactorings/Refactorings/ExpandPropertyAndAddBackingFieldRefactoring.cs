@@ -53,11 +53,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                ImmutableArray<SyntaxNode> oldNodes = await document.FindNodesAsync(propertySymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
+                ImmutableArray<SyntaxNode> nodes = await SyntaxFinder.FindReferencesAsync(propertySymbol, document, cancellationToken: cancellationToken).ConfigureAwait(false);
 
                 IdentifierNameSyntax newNode = IdentifierName(fieldName);
 
-                MemberDeclarationSyntax newParentMember = parentMember.ReplaceNodes(oldNodes, (f, g) => newNode.WithTriviaFrom(f));
+                MemberDeclarationSyntax newParentMember = parentMember.ReplaceNodes(nodes, (f, g) => newNode.WithTriviaFrom(f));
 
                 members = newParentMember.GetMembers();
             }

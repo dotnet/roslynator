@@ -4,6 +4,11 @@ namespace Roslynator.CSharp.Refactorings.Test
 {
     internal class ExpandPropertyRefactoring
     {
+        private ExpandPropertyRefactoring()
+        {
+            Value3 = null;
+        }
+
         public string Value { get; set; }
 
         public string Value2 { get; set; } = null;

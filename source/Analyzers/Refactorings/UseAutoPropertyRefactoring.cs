@@ -408,8 +408,6 @@ namespace Roslynator.CSharp.Refactorings
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken)
         {
-            Solution solution = document.Solution();
-
             SyntaxToken propertyIdentifier = propertyDeclaration.Identifier.WithoutTrivia();
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -426,23 +424,13 @@ namespace Roslynator.CSharp.Refactorings
 
             bool isSingleDeclarator = variableDeclaration.Variables.Count == 1;
 
-            var newDocuments = new List<Document>();
+            Solution solution = document.Solution();
 
-            foreach (SyntaxTree syntaxTree in propertySymbol
-                .ContainingType
-                .DeclaringSyntaxReferences
-                .Select(f => f.GetSyntax(cancellationToken).SyntaxTree)
-                .Distinct())
+            foreach (DocumentReferenceInfo info in await SyntaxFinder.FindReferencesByDocumentAsync(fieldSymbol, solution, allowCandidate: false, cancellationToken: cancellationToken).ConfigureAwait(false))
             {
-                document = solution.GetDocument(syntaxTree);
+                ImmutableArray<SyntaxNode> nodes = info.References;
 
-                semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-                ImmutableArray<SyntaxNode> nodes = await document.FindNodesAsync(fieldSymbol, cancellationToken: cancellationToken).ConfigureAwait(false);
-
-                if (propertyDeclaration.SyntaxTree == semanticModel.SyntaxTree)
+                if (propertyDeclaration.SyntaxTree == info.SyntaxTree)
                 {
                     nodes = nodes.Add(propertyDeclaration);
 
@@ -456,7 +444,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                SyntaxNode newRoot = root.ReplaceNodes(nodes, (node, rewrittenNode) =>
+                SyntaxNode newRoot = info.Root.ReplaceNodes(nodes, (node, rewrittenNode) =>
                 {
                     switch (node.Kind())
                     {
@@ -488,11 +476,8 @@ namespace Roslynator.CSharp.Refactorings
                 if (nodeToRemove != null)
                     newRoot = newRoot.RemoveNode(nodeToRemove, SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
-                newDocuments.Add(document.WithSyntaxRoot(newRoot));
+                solution = solution.WithDocumentSyntaxRoot(info.Document.Id, newRoot);
             }
-
-            foreach (Document newDocument in newDocuments)
-                solution = solution.WithDocumentSyntaxRoot(newDocument.Id, await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false));
 
             return solution;
         }

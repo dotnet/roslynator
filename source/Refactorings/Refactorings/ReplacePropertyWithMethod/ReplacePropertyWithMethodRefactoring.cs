@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.FindSymbols;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.Utilities;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 {
@@ -32,15 +31,8 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
         {
             if (CanRefactor(context, propertyDeclaration))
             {
-                string propertyName = propertyDeclaration.Identifier.ValueText;
-
-                string title = $"Replace '{propertyName}' with method";
-
-                if (propertyDeclaration.AccessorList.Accessors.Count > 1)
-                    title += "s";
-
                 context.RegisterRefactoring(
-                    title,
+                    $"Replace '{propertyDeclaration.Identifier.ValueText}' with method",
                     cancellationToken => RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
         }
@@ -81,56 +73,32 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
             PropertyDeclarationSyntax property,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Solution solution = document.Project.Solution;
+            Solution solution = document.Solution();
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, cancellationToken);
 
-            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(propertySymbol, solution, cancellationToken).ConfigureAwait(false);
-
-            ReferenceLocation[] locations = referencedSymbols
-                .SelectMany(f => f.Locations)
-                .Where(f => !f.IsCandidateLocation && !f.IsImplicit)
-                .ToArray();
-
             string methodName = GetMethodName(property);
 
-            bool isPropertyReplaced = false;
+            ImmutableArray<DocumentReferenceInfo> infos = await SyntaxFinder.FindReferencesByDocumentAsync(propertySymbol, solution, allowCandidate: false, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            foreach (IGrouping<DocumentId, ReferenceLocation> grouping in locations
-                .GroupBy(f => f.Document.Id))
+            foreach (DocumentReferenceInfo info in infos)
             {
-                Document document2 = solution.GetDocument(grouping.Key);
+                Document document2 = solution.GetDocument(info.Document.Id);
 
-                SyntaxNode root = await document2.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+                var rewriter = new ReplacePropertyWithMethodSyntaxRewriter(info.References, methodName, property);
 
-                TextSpan[] spans = grouping.Select(f => f.Location.SourceSpan).ToArray();
+                SyntaxNode newRoot = rewriter.Visit(info.Root);
 
-                PropertyDeclarationSyntax property2 = null;
-
-                if (document.Id == document2.Id)
-                {
-                    isPropertyReplaced = true;
-                    property2 = property;
-                }
-
-                var rewriter = new ReplacePropertyWithMethodSyntaxRewriter(spans, methodName, property2);
-
-                SyntaxNode newRoot = rewriter.Visit(root);
-
-                solution = solution.WithDocumentSyntaxRoot(grouping.Key, newRoot);
+                solution = solution.WithDocumentSyntaxRoot(info.Document.Id, newRoot);
             }
 
-            if (!isPropertyReplaced)
+            if (!infos.Any(f => f.Document.Id == document.Id))
             {
-                document = solution.GetDocument(document.Id);
-
                 SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-                var rewriter = new ReplacePropertyWithMethodSyntaxRewriter(new TextSpan[0], methodName, property);
-
-                SyntaxNode newRoot = rewriter.Visit(root);
+                SyntaxNode newRoot = root.ReplaceNode(property, ToMethodDeclaration(property));
 
                 solution = solution.WithDocumentSyntaxRoot(document.Id, newRoot);
             }
@@ -138,7 +106,52 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
             return solution;
         }
 
-        private static string GetMethodName(PropertyDeclarationSyntax propertyDeclaration)
+        public static MethodDeclarationSyntax ToMethodDeclaration(PropertyDeclarationSyntax property)
+        {
+            AccessorDeclarationSyntax getter = property.Getter();
+
+            BlockSyntax getterBody = getter.Body;
+
+            BlockSyntax methodBody = null;
+
+            if (getterBody != null)
+            {
+                methodBody = Block(getterBody.Statements);
+            }
+            else
+            {
+                ArrowExpressionClauseSyntax getterExpressionBody = getter.ExpressionBody;
+
+                if (getterExpressionBody != null)
+                {
+                    methodBody = Block(ReturnStatement(getterExpressionBody.Expression));
+                }
+                else
+                {
+                    methodBody = Block(ReturnStatement(property.Initializer.Value));
+                }
+            }
+
+            methodBody = methodBody.WithTrailingTrivia(property.GetTrailingTrivia());
+
+            MethodDeclarationSyntax method = MethodDeclaration(
+                property.AttributeLists,
+                property.Modifiers,
+                property.Type,
+                property.ExplicitInterfaceSpecifier,
+                Identifier(GetMethodName(property)).WithLeadingTrivia(property.Identifier.LeadingTrivia),
+                default(TypeParameterListSyntax),
+                ParameterList().WithTrailingTrivia(property.Identifier.TrailingTrivia),
+                default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+                methodBody,
+                default(ArrowExpressionClauseSyntax));
+
+            return method
+                .WithLeadingTrivia(property.GetLeadingTrivia())
+                .WithFormatterAnnotation();
+        }
+
+        public static string GetMethodName(PropertyDeclarationSyntax propertyDeclaration)
         {
             string methodName = propertyDeclaration.Identifier.ValueText;
 
