@@ -17,11 +17,8 @@ namespace Roslynator.CSharp.Refactorings.Test
                 string value = items[i];
                 string value2 = items[i];
             }
-        }
 
-        public static void Foo2()
-        {
-            var items = new List<string>();
+            //n
 
             for (int i = 1; i < items.Count; i++)
             {

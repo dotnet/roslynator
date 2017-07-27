@@ -17,11 +17,18 @@ namespace Roslynator.CSharp.Refactorings.Test
         }
 #endif
 
+        public string Foo()
+        {
+            return "Foo";
+        }
+
         public ReplaceMethodWithPropertyRefactoring()
         {
             var a = GetValue();
             var b = this.GetValue();
         }
+
+        //n
 
         public async Task<bool> FooAsync()
         {

@@ -2,13 +2,10 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.FindSymbols;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator
@@ -311,58 +308,6 @@ namespace Roslynator
         internal static Solution Solution(this Document document)
         {
             return document.Project.Solution;
-        }
-
-        internal static async Task<ImmutableArray<SyntaxNode>> FindNodesAsync(
-            this Document document,
-            ISymbol symbol,
-            bool allowCandidate = false,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (symbol == null)
-                throw new ArgumentNullException(nameof(symbol));
-
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            List<SyntaxNode> nodes = null;
-
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(
-                symbol,
-                document.Solution(),
-                ImmutableHashSet.Create(document),
-                cancellationToken).ConfigureAwait(false))
-            {
-                foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
-                {
-                    if (!referenceLocation.IsImplicit
-                        && (allowCandidate || !referenceLocation.IsCandidateLocation))
-                    {
-                        Location location = referenceLocation.Location;
-
-                        if (location.IsInSource)
-                        {
-                            SyntaxNode node = root.FindNode(location.SourceSpan, findInsideTrivia: true, getInnermostNodeForTie: true);
-
-                            Debug.Assert(node != null);
-
-                            if (node != null)
-                                (nodes ?? (nodes = new List<SyntaxNode>())).Add(node);
-                        }
-                    }
-                }
-            }
-
-            if (nodes != null)
-            {
-                return ImmutableArray.CreateRange(nodes);
-            }
-            else
-            {
-                return ImmutableArray<SyntaxNode>.Empty;
-            }
         }
     }
 }

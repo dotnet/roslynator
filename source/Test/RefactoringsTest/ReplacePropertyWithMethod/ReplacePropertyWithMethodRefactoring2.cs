@@ -10,6 +10,8 @@ namespace Roslynator.CSharp.Refactorings.Test
 
             x = x.Value;
             x = x.Value;
+
+            var s = x.Value4;
         }
     }
 }

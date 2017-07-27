@@ -47,6 +47,8 @@
     <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="CSharp\Syntax\NullCheckExpression.cs" />
     <Compile Include="CSharp\Syntax\NullCheckKind.cs" />
+    <Compile Include="DocumentReferenceInfo.cs" />
+    <Compile Include="SyntaxFinder.cs" />
     <Compile Include="CSharp\TypeParameterInfo.cs" />
     <Compile Include="CSharp\InterpolatedStringContentConversion.cs" />
     <Compile Include="CSharp\OperatorPrecedence.cs" />

@@ -24,21 +24,6 @@ namespace Roslynator.CSharp.Refactorings.Test
         }
 #endif
 
-        private string _value2;
-
-        public string Value2
-        {
-            get { return _value2; }
-            set { _value2 = value; }
-        }
-
-        private string _value3;
-
-        public string Value3
-        {
-            get => _value3;
-            set => _value3 = value;
-        }
 #if DEBUG
         public string Value4 { get; } = new string(' ', 1); /**/
 #endif
@@ -65,6 +50,24 @@ namespace Roslynator.CSharp.Refactorings.Test
 
                 return false;
             }
+        }
+
+        //n
+
+        private string _value2;
+
+        public string Value2
+        {
+            get { return _value2; }
+            set { _value2 = value; }
+        }
+
+        private string _value3;
+
+        public string Value3
+        {
+            get => _value3;
+            set => _value3 = value;
         }
     }
 }

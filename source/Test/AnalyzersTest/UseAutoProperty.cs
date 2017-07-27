@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable RCS1016, RCS1036, RCS1060, RCS1081, RCS1118
+#pragma warning disable CS0219, RCS1016, RCS1036, RCS1060, RCS1081, RCS1118
 
 using System.Runtime.InteropServices;
 
