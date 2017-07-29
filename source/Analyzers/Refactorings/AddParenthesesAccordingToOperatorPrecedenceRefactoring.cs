@@ -112,7 +112,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             var newNode = (ExpressionSyntax)AddParenthesesSyntaxRewriter.Instance.Visit(expression);
 
-            newNode = newNode.Parenthesize(moveTrivia: true);
+            newNode = newNode.Parenthesize(simplifiable: false);
 
             return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
         }
@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings
                 expression = (ExpressionSyntax)base.Visit(expression);
 
                 if (isFixable)
-                    expression = expression.Parenthesize(moveTrivia: true);
+                    expression = expression.Parenthesize(simplifiable: false);
 
                 return expression;
             }

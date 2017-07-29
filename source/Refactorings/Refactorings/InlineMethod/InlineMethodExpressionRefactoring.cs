@@ -60,10 +60,8 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         private ExpressionSyntax RewriteExpression(InvocationExpressionSyntax invocation, ExpressionSyntax expression)
         {
             return RewriteNode(expression)
-                .WithoutTrivia()
-                .Parenthesize()
                 .WithTriviaFrom(invocation)
-                .WithSimplifierAnnotation()
+                .Parenthesize()
                 .WithFormatterAnnotation();
         }
     }

@@ -41,9 +41,8 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ExpressionSyntax newNode = CreateNewExpression(expression)
-                .Parenthesize()
                 .WithTriviaFrom(expression)
-                .WithSimplifierAnnotation()
+                .Parenthesize()
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(expression, newNode, cancellationToken);

@@ -109,11 +109,11 @@ namespace Roslynator.CSharp.Refactorings
         {
             IfStatementSyntax nestedIf = GetNestedIfStatement(ifStatement);
 
-            ExpressionSyntax left = ifStatement.Condition.Parenthesize().WithSimplifierAnnotation();
+            ExpressionSyntax left = ifStatement.Condition.Parenthesize();
             ExpressionSyntax right = nestedIf.Condition;
 
             if (!right.IsKind(SyntaxKind.LogicalAndExpression))
-                right = right.Parenthesize().WithSimplifierAnnotation();
+                right = right.Parenthesize();
 
             BinaryExpressionSyntax newCondition = CSharpFactory.LogicalAndExpression(left, right);
 

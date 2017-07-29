@@ -184,8 +184,8 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax newInvocation = invocation2.ReplaceNode(
                 expression2,
                 LogicalAndExpression(
-                    expression2.Parenthesize().WithSimplifierAnnotation(),
-                    expression1.Parenthesize().WithSimplifierAnnotation()));
+                    expression2.Parenthesize(),
+                    expression1.Parenthesize()));
 
             var newMemberAccess = (MemberAccessExpressionSyntax)newInvocation.Expression;
 

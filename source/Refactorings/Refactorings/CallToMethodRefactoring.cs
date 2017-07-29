@@ -69,8 +69,7 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax invocation = SimpleMemberInvocationExpression(
                 expression
                     .WithoutTrailingTrivia()
-                    .Parenthesize(moveTrivia: true)
-                    .WithSimplifierAnnotation(),
+                    .Parenthesize(),
                 IdentifierName(methodSymbol.Name));
 
             invocation = invocation.WithTrailingTrivia(expression.GetTrailingTrivia());

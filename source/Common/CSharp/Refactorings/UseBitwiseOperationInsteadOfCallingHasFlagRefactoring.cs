@@ -90,8 +90,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ParenthesizedExpressionSyntax newNode = BinaryExpression(binaryExpressionKind, parenthesizedExpression, NumericLiteralExpression(0))
                 .WithTriviaFrom(nodeToReplace)
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation()
+                .Parenthesize()
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(nodeToReplace, newNode, cancellationToken);

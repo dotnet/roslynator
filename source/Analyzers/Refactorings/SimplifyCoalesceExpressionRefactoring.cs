@@ -176,8 +176,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             newNode = newNode
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation()
+                .Parenthesize()
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);

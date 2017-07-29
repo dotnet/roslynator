@@ -84,12 +84,12 @@ namespace Roslynator.CSharp
             {
                 right = CastExpression(
                     targetType.ToMinimalTypeSyntax(semanticModel, position),
-                    right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation()).WithSimplifierAnnotation();
+                    right.Parenthesize()).WithSimplifierAnnotation();
             }
 
             return CSharpFactory.CoalesceExpression(
-                left.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
-                right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
+                left.Parenthesize(),
+                right.Parenthesize());
         }
     }
 }

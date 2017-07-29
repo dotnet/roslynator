@@ -23,9 +23,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax value = variableDeclarator.Initializer.Value;
 
-            ParenthesizedExpressionSyntax newValue = value
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation();
+            ParenthesizedExpressionSyntax newValue = value.Parenthesize();
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 

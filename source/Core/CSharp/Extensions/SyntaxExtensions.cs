@@ -663,20 +663,34 @@ namespace Roslynator.CSharp
         #endregion EventFieldDeclarationSyntax
 
         #region ExpressionSyntax
-        public static ParenthesizedExpressionSyntax Parenthesize(this ExpressionSyntax expression, bool moveTrivia = false)
+        public static ParenthesizedExpressionSyntax Parenthesize(
+            this ExpressionSyntax expression,
+            bool includeElasticTrivia = true,
+            bool simplifiable = true)
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            if (moveTrivia)
+            ParenthesizedExpressionSyntax parenthesizedExpression = null;
+
+            if (includeElasticTrivia)
             {
-                return ParenthesizedExpression(expression.WithoutTrivia())
-                    .WithTriviaFrom(expression);
+                parenthesizedExpression = ParenthesizedExpression(expression.WithoutTrivia());
             }
             else
             {
-                return ParenthesizedExpression(expression);
+                parenthesizedExpression = ParenthesizedExpression(
+                    Token(SyntaxTriviaList.Empty, SyntaxKind.OpenParenToken, SyntaxTriviaList.Empty),
+                    expression.WithoutTrivia(),
+                    Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, SyntaxTriviaList.Empty));
             }
+
+            parenthesizedExpression = parenthesizedExpression.WithTriviaFrom(expression);
+
+            if (simplifiable)
+                parenthesizedExpression = parenthesizedExpression.WithSimplifierAnnotation();
+
+            return parenthesizedExpression;
         }
 
         public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
@@ -2039,7 +2053,7 @@ namespace Roslynator.CSharp
 
             return default(TNode);
         }
-        
+
         public static bool IsSingleLine<TNode>(
             this SeparatedSyntaxList<TNode> list,
             bool includeExteriorTrivia = true,
@@ -3600,7 +3614,7 @@ namespace Roslynator.CSharp
         {
             return constraintClause.Name.Identifier.ValueText;
         }
-        
+
         internal static SyntaxList<TypeParameterConstraintClauseSyntax> GetContainingList(this TypeParameterConstraintClauseSyntax constraintClause)
         {
             SyntaxNode parent = constraintClause.Parent;

@@ -102,21 +102,16 @@ namespace Roslynator.CSharp.Refactorings
                 newRight = ((PrefixUnaryExpressionSyntax)newRight).Operand.WalkDownParentheses();
             }
 
-            if (!newLeft.IsKind(SyntaxKind.ParenthesizedExpression))
-                newLeft = newLeft.Parenthesize(moveTrivia: true).WithSimplifierAnnotation();
-
-            if (!newRight.IsKind(SyntaxKind.ParenthesizedExpression))
-                newRight = newRight.Parenthesize(moveTrivia: true).WithSimplifierAnnotation();
-
+            //TODO: test
             ExpressionSyntax newNode = ExclusiveOrExpression(
-                newLeft.WithTriviaFrom(left),
+                newLeft.WithTriviaFrom(left).Parenthesize(),
                 CaretToken().WithTriviaFrom(logicalOr.OperatorToken),
-                newRight.WithTriviaFrom(right));
+                newRight.WithTriviaFrom(right).Parenthesize());
 
             newNode = newNode
-                .Parenthesize()
                 .WithTriviaFrom(logicalOr)
-                .WithFormatterAndSimplifierAnnotations();
+                .Parenthesize()
+                .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(logicalOr, newNode, cancellationToken);
         }
