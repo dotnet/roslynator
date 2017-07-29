@@ -178,8 +178,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax newNode = CreateExpressionWithConditionalAccess(logicalAnd)
                 .WithLeadingTrivia(logicalAnd.GetLeadingTrivia())
                 .WithFormatterAnnotation()
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation();
+                .Parenthesize();
 
             return document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken);
         }

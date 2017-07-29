@@ -127,7 +127,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             return root.ReplaceNode(
                 expression,
-                expression.Parenthesize(moveTrivia: true));
+                expression.Parenthesize(simplifiable: false));
         }
     }
 }

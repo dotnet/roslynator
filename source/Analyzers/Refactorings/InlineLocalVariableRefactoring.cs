@@ -335,9 +335,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                expression = expression
-                    .Parenthesize(moveTrivia: true)
-                    .WithSimplifierAnnotation();
+                expression = expression.Parenthesize();
 
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Type, cancellationToken);
 

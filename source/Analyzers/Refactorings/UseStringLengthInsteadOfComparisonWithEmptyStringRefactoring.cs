@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
         private static ConditionalAccessExpressionSyntax CreateConditionalAccess(ExpressionSyntax expression)
         {
             return ConditionalAccessExpression(
-                expression.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
+                expression.Parenthesize(),
                 MemberBindingExpression(IdentifierName("Length")));
         }
     }

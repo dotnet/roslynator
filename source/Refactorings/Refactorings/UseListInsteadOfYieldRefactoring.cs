@@ -155,9 +155,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (kind == SyntaxKind.YieldReturnStatement)
                 {
-                    ParenthesizedExpressionSyntax parenthesizedExpression = expression
-                        .Parenthesize(moveTrivia: true)
-                        .WithSimplifierAnnotation();
+                    ParenthesizedExpressionSyntax parenthesizedExpression = expression.Parenthesize();
 
                     CastExpressionSyntax castExpression = CastExpression(
                         _typeSymbol.ToMinimalTypeSyntax(_semanticModel, node.SpanStart),

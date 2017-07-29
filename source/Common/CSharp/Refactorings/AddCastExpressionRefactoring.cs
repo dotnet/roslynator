@@ -21,8 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newExpression = expression
                 .WithoutTrivia()
-                .Parenthesize()
-                .WithSimplifierAnnotation();
+                .Parenthesize();
 
             CastExpressionSyntax castExpression = SyntaxFactory.CastExpression(type, newExpression)
                 .WithTriviaFrom(expression);

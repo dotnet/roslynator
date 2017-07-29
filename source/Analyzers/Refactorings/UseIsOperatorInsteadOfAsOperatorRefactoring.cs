@@ -60,11 +60,10 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax newNode = IsExpression(asExpression.Left, (TypeSyntax)asExpression.Right);
 
             if (binaryExpression.IsKind(SyntaxKind.EqualsExpression))
-                newNode = LogicalNotExpression(newNode.Parenthesize()).WithTriviaFrom(newNode);
+                newNode = LogicalNotExpression(newNode.WithoutTrivia().Parenthesize()).WithTriviaFrom(newNode);
 
             newNode = newNode
-                .Parenthesize(moveTrivia: true)
-                .WithSimplifierAnnotation()
+                .Parenthesize()
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);

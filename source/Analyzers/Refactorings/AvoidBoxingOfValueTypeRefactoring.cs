@@ -95,8 +95,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ParenthesizedExpressionSyntax newExpression = expression
                     .WithoutTrivia()
-                    .Parenthesize()
-                    .WithSimplifierAnnotation();
+                    .Parenthesize();
 
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 

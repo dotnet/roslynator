@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                 var newNode = (ExpressionSyntax)newValue;
 
                 if (!newNode.IsKind(SyntaxKind.IdentifierName))
-                    newNode = newNode.Parenthesize(moveTrivia: true).WithSimplifierAnnotation();
+                    newNode = newNode.Parenthesize();
 
                 return newNode;
             }

@@ -78,8 +78,8 @@ namespace Roslynator.CSharp.Refactorings
                 : conditionalExpression.WhenFalse;
 
             BinaryExpressionSyntax newNode = CSharpFactory.CoalesceExpression(
-                left.WithoutTrivia().Parenthesize().WithSimplifierAnnotation(),
-                right.WithoutTrivia().Parenthesize().WithSimplifierAnnotation());
+                left.WithoutTrivia().Parenthesize(),
+                right.WithoutTrivia().Parenthesize());
 
             return document.ReplaceNodeAsync(
                 conditionalExpression,

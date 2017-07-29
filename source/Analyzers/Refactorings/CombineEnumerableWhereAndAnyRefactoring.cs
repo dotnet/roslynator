@@ -72,8 +72,8 @@ namespace Roslynator.CSharp.Refactorings
             LambdaExpressionWithSingleParameter lambda2 = LambdaExpressionWithSingleParameter.Create((LambdaExpressionSyntax)invocation2.Argument.Expression);
 
             BinaryExpressionSyntax logicalAnd = CSharpFactory.LogicalAndExpression(
-                ((ExpressionSyntax)lambda2.Body).Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
-                ((ExpressionSyntax)lambda.Body).Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
+                ((ExpressionSyntax)lambda2.Body).Parenthesize(),
+                ((ExpressionSyntax)lambda.Body).Parenthesize());
 
             InvocationExpressionSyntax newNode = invocation2.InvocationExpression
                 .ReplaceNode(invocation2.Name, invocation.Name.WithTriviaFrom(invocation2.Name))

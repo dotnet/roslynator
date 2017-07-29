@@ -38,9 +38,8 @@ namespace Roslynator.CSharp.Refactorings
                 anonymousMethod.Block);
 
             newNode = newNode
-                .Parenthesize()
                 .WithTriviaFrom(anonymousMethod)
-                .WithSimplifierAnnotation()
+                .Parenthesize()
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(anonymousMethod, newNode, cancellationToken);

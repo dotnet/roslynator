@@ -84,15 +84,15 @@ namespace Roslynator.CSharp.Refactorings.If
         private static ExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return CSharpFactory.LogicalAndExpression(
-                left.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
-                right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
+                left.Parenthesize(),
+                right.Parenthesize());
         }
 
         private static ExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return CSharpFactory.LogicalOrExpression(
-                left.Parenthesize(moveTrivia: true).WithSimplifierAnnotation(),
-                right.Parenthesize(moveTrivia: true).WithSimplifierAnnotation());
+                left.Parenthesize(),
+                right.Parenthesize());
         }
     }
 }
