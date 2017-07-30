@@ -22,6 +22,11 @@ namespace Roslynator
             get { return MethodInfo.Symbol; }
         }
 
+        public IMethodSymbol ReducedSymbolOrSymbol
+        {
+            get { return ReducedSymbol ?? Symbol; }
+        }
+
         public bool IsValid
         {
             get { return MethodInfo.IsValid; }
@@ -53,7 +58,7 @@ namespace Roslynator
                 }
                 else if (kind != ExtensionMethodKind.Reduced)
                 {
-                    extensionMethodInfo = new ExtensionMethodInfo(methodSymbol, methodSymbol, semanticModel);
+                    extensionMethodInfo = new ExtensionMethodInfo(methodSymbol, null, semanticModel);
                     return true;
                 }
             }

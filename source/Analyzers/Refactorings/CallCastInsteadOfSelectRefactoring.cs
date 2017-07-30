@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -19,69 +19,79 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
-            InvocationExpressionSyntax invocation,
-            MemberAccessExpressionSyntax memberAccess)
+            MemberInvocationExpression memberInvocation)
         {
-            if (CanRefactor(invocation, context.SemanticModel, context.CancellationToken))
-            {
-                TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
+            InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
 
-                if (!invocation.ContainsDirectives(span))
+            if (IsFixable(invocationExpression, context.SemanticModel, context.CancellationToken))
+            {
+                TextSpan span = TextSpan.FromBounds(memberInvocation.Name.Span.Start, invocationExpression.Span.End);
+
+                if (!invocationExpression.ContainsDirectives(span))
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.CallCastInsteadOfSelect,
-                        Location.Create(invocation.SyntaxTree, span));
+                        Location.Create(invocationExpression.SyntaxTree, span));
                 }
             }
         }
 
-        public static bool CanRefactor(
+        public static bool IsFixable(
             InvocationExpressionSyntax invocation,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            MethodInfo methodInfo;
-            if (semanticModel.TryGetExtensionMethodInfo(invocation, out methodInfo, ExtensionMethodKind.None, cancellationToken)
-                && methodInfo.IsLinqSelect(allowImmutableArrayExtension: true))
+            ISymbol symbol = semanticModel.GetSymbol(invocation, cancellationToken);
+
+            if (symbol?.IsMethod() == true)
             {
-                ArgumentListSyntax argumentList = invocation.ArgumentList;
-
-                if (argumentList?.IsMissing == false)
+                ExtensionMethodInfo extensionMethodInfo;
+                if (ExtensionMethodInfo.TryCreate((IMethodSymbol)symbol, semanticModel, out extensionMethodInfo)
+                    && extensionMethodInfo.MethodInfo.IsLinqSelect(allowImmutableArrayExtension: true))
                 {
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+                    ITypeSymbol firstTypeArgument = extensionMethodInfo.ReducedSymbolOrSymbol.TypeArguments[0];
 
-                    if (arguments.Count == 1)
+                    if (firstTypeArgument.IsReferenceType
+                        && !firstTypeArgument.IsObject())
                     {
-                        ArgumentSyntax argument = arguments.First();
+                        ArgumentListSyntax argumentList = invocation.ArgumentList;
 
-                        ExpressionSyntax expression = argument.Expression;
-
-                        if (expression?.IsMissing == false)
+                        if (argumentList?.IsMissing == false)
                         {
-                            SyntaxKind expressionKind = expression.Kind();
+                            ExpressionSyntax expression = argumentList.Arguments.Last().Expression;
 
-                            if (expressionKind == SyntaxKind.SimpleLambdaExpression)
+                            if (expression?.IsMissing == false)
                             {
-                                var lambda = (SimpleLambdaExpressionSyntax)expression;
-
-                                if (CanRefactor(lambda.Parameter, lambda.Body))
-                                    return true;
-                            }
-                            else if (expressionKind == SyntaxKind.ParenthesizedLambdaExpression)
-                            {
-                                var lambda = (ParenthesizedLambdaExpressionSyntax)expression;
-
-                                ParameterListSyntax parameterList = lambda.ParameterList;
-
-                                if (parameterList != null)
+                                switch (expression.Kind())
                                 {
-                                    SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
+                                    case SyntaxKind.SimpleLambdaExpression:
+                                        {
+                                            var lambda = (SimpleLambdaExpressionSyntax)expression;
 
-                                    if (parameters.Count == 1
-                                        && CanRefactor(parameters.First(), lambda.Body))
-                                    {
-                                        return true;
-                                    }
+                                            if (IsFixable(lambda.Parameter, lambda.Body))
+                                                return true;
+
+                                            break;
+                                        }
+                                    case SyntaxKind.ParenthesizedLambdaExpression:
+                                        {
+                                            var lambda = (ParenthesizedLambdaExpressionSyntax)expression;
+
+                                            ParameterListSyntax parameterList = lambda.ParameterList;
+
+                                            if (parameterList != null)
+                                            {
+                                                SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
+
+                                                if (parameters.Count == 1
+                                                    && IsFixable(parameters.First(), lambda.Body))
+                                                {
+                                                    return true;
+                                                }
+                                            }
+
+                                            break;
+                                        }
                                 }
                             }
                         }
@@ -92,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool CanRefactor(ParameterSyntax parameter, CSharpSyntaxNode body)
+        private static bool IsFixable(ParameterSyntax parameter, CSharpSyntaxNode body)
         {
             if (parameter != null && body != null)
             {
@@ -152,39 +162,19 @@ namespace Roslynator.CSharp.Refactorings
         {
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
-            TypeSyntax type = GetType(invocation);
+            ArgumentSyntax lastArgument = invocation.ArgumentList.Arguments.Last();
 
-            InvocationExpressionSyntax newInvocation = invocation.Update(
-                memberAccess.WithName(GenericName(Identifier("Cast"), type)),
-                invocation.ArgumentList.WithArguments(SeparatedList<ArgumentSyntax>()));
+            var lambdaExpression = (LambdaExpressionSyntax)lastArgument.Expression;
+
+            GenericNameSyntax newName = GenericName(
+                Identifier("Cast"),
+                GetCastExpression(lambdaExpression.Body).Type);
+
+            InvocationExpressionSyntax newInvocation = invocation
+                .RemoveNode(lastArgument, RemoveHelper.GetRemoveOptions(lastArgument))
+                .WithExpression(memberAccess.WithName(newName));
 
             return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
-        }
-
-        private static TypeSyntax GetType(InvocationExpressionSyntax invocation)
-        {
-            ExpressionSyntax expression = invocation.ArgumentList.Arguments.First().Expression;
-
-            switch (expression.Kind())
-            {
-                case SyntaxKind.SimpleLambdaExpression:
-                    {
-                        var lambda = (SimpleLambdaExpressionSyntax)expression;
-
-                        return GetCastExpression(lambda.Body).Type;
-                    }
-                case SyntaxKind.ParenthesizedLambdaExpression:
-                    {
-                        var lambda = (ParenthesizedLambdaExpressionSyntax)expression;
-
-                        return GetCastExpression(lambda.Body).Type;
-                    }
-                default:
-                    {
-                        Debug.Fail(expression.Kind().ToString());
-                        return null;
-                    }
-            }
         }
     }
 }

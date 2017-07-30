@@ -179,7 +179,7 @@
     <Compile Include="UseStringComparison.cs" />
     <Compile Include="UseStringIsNullOrEmptyMethod.cs" />
     <Compile Include="SimplifyLinqMethodChain.cs" />
-    <Compile Include="UseCastMethodInsteadOfSelectMethod.cs" />
+    <Compile Include="CallCastInsteadOfSelect.cs" />
     <Compile Include="ReplaceIfStatementWithAssignment.cs" />
     <Compile Include="UseBitwiseOperationInsteadOfHasFlag.cs" />
     <Compile Include="ReplacePropertyWithAutoProperty.cs" />
