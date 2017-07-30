@@ -70,9 +70,9 @@ namespace Roslynator
             return ReturnType.IsIEnumerableOf(typeArgument);
         }
 
-        public bool ReturnsIEnumerableOf(SpecialType specialTypeArgument)
+        public bool ReturnsIEnumerableOf(Func<ITypeSymbol, bool> typeArgumentPredicate)
         {
-            return ReturnType.IsIEnumerableOf(specialTypeArgument);
+            return ReturnType.IsIEnumerableOf(typeArgumentPredicate);
         }
 
         internal bool IsName(string name)

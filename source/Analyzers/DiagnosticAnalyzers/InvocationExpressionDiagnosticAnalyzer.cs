@@ -112,11 +112,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.Analyze(context, invocation, memberAccess);
                                     break;
                                 }
-                            case "Select":
-                                {
-                                    CallCastInsteadOfSelectRefactoring.Analyze(context, invocation, memberAccess);
-                                    break;
-                                }
                             case "Where":
                                 {
                                     CombineEnumerableWhereMethodChainRefactoring.Analyze(context, invocation, memberAccess);
@@ -161,7 +156,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                     string methodName = memberInvocation.NameText;
 
-                    switch (memberInvocation.ArgumentList.Arguments.Count)
+                    int argumentCount = memberInvocation.ArgumentList.Arguments.Count;
+
+                    switch (argumentCount)
                     {
                         case 0:
                             {
@@ -214,6 +211,16 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         case "Insert":
                             {
                                 OptimizeStringBuilderAppendCallRefactoring.Analyze(context, memberInvocation);
+                                break;
+                            }
+                        case "Select":
+                            {
+                                if (argumentCount == 1
+                                    || argumentCount == 2)
+                                {
+                                    CallCastInsteadOfSelectRefactoring.Analyze(context, memberInvocation);
+                                }
+
                                 break;
                             }
                     }
