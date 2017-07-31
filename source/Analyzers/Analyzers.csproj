@@ -293,7 +293,7 @@
     <Compile Include="Refactorings\SimplifyNullableOfTRefactoring.cs" />
     <Compile Include="Refactorings\ThrowingOfNewNotImplementedExceptionRefactoring.cs" />
     <Compile Include="Refactorings\UseCarriageReturnAndLinefeedAsNewLineRefactoring.cs" />
-    <Compile Include="Refactorings\CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.cs" />
+    <Compile Include="Refactorings\CallFindInsteadOfFirstOrDefaultRefactoring.cs" />
     <Compile Include="Refactorings\UseCoalesceExpressionRefactoring.cs" />
     <Compile Include="Refactorings\UseLinefeedAsNewLineRefactoring.cs" />
     <Compile Include="Refactorings\UseNameOfOperatorRefactoring.cs" />

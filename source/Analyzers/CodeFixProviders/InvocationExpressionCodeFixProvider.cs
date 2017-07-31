@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.RemoveRedundantStringToCharArrayCall,
                     DiagnosticIdentifiers.CallCastInsteadOfSelect,
                     DiagnosticIdentifiers.CombineEnumerableWhereMethodChain,
-                    DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod,
+                    DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault,
                     DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt,
                     DiagnosticIdentifiers.UseElementAccessInsteadOfFirst,
                     DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin,
@@ -167,11 +167,11 @@ namespace Roslynator.CSharp.CodeFixProviders
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod:
+                    case DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Call 'Find' instead of 'FirstOrDefault'",
-                                cancellationToken => CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
+                                cancellationToken => CallFindInsteadOfFirstOrDefaultRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);
