@@ -118,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 list = statement.Parent.GetLeadingTrivia()
                     .Reverse()
-                    .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
+                    .SkipWhile(f => f.IsWhitespaceTrivia())
                     .Reverse()
                     .ToList();
             }

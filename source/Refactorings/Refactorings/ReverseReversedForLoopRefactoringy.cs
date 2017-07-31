@@ -20,12 +20,12 @@ namespace Roslynator.CSharp.Refactorings
                 .Value;
 
             if (value?.IsKind(SyntaxKind.SubtractExpression) == true
-                && ((BinaryExpressionSyntax)value).Right?.IsNumericLiteralExpression(1) == true)
+                && ((BinaryExpressionSyntax)value).Right?.IsNumericLiteralExpression("1") == true)
             {
                 ExpressionSyntax condition = forStatement.Condition;
 
                 if (condition?.IsKind(SyntaxKind.GreaterThanOrEqualExpression) == true
-                    && ((BinaryExpressionSyntax)condition).Right?.IsNumericLiteralExpression(0) == true)
+                    && ((BinaryExpressionSyntax)condition).Right?.IsNumericLiteralExpression("0") == true)
                 {
                     SeparatedSyntaxList<ExpressionSyntax> incrementors = forStatement.Incrementors;
 

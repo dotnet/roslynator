@@ -13,7 +13,10 @@ namespace Roslynator.CSharp.Refactorings.Test
 
             if (items.Any(f => f.Contains("a")))
             {
+            }
 
+            if (items.Any((f) => f.Contains("a")))
+            {
             }
         }
     }

@@ -42,8 +42,8 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
 
-                                if (logicalNot.OperatorToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                                    && logicalNot.Operand.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                if (logicalNot.OperatorToken.TrailingTrivia.IsEmptyOrWhitespace()
+                                    && logicalNot.Operand.GetLeadingTrivia().IsEmptyOrWhitespace())
                                 {
                                     success = true;
                                 }

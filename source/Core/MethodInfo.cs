@@ -108,11 +108,6 @@ namespace Roslynator
                 && parameters[1].Type.SpecialType == secondParameterType;
         }
 
-        public bool IsInstance
-        {
-            get { return !IsStatic; }
-        }
-
         public bool IsPublic
         {
             get { return DeclaredAccessibility == Accessibility.Public; }
@@ -156,7 +151,7 @@ namespace Roslynator
             return IsNullOrName(name)
                 && IsContainingType(SpecialType.System_String)
                 && IsPublic
-                && IsInstance
+                && !IsStatic
                 && IsGenericMethod == isGenericMethod;
         }
 

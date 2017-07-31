@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -97,29 +98,15 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 
             if (left?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
             {
-                var leftExpression = (LiteralExpressionSyntax)left;
+                var literalExpression = (LiteralExpressionSyntax)left;
 
                 switch (binaryExpression.Kind())
                 {
                     case SyntaxKind.EqualsExpression:
                     case SyntaxKind.LessThanExpression:
-                        {
-                            if (leftExpression.IsZeroNumericLiteral())
-                                return true;
-
-                            break;
-                        }
+                        return string.Equals(literalExpression.Token.ValueText, "0", StringComparison.Ordinal);
                     case SyntaxKind.LessThanOrEqualExpression:
-                        {
-                            if (leftExpression.IsOneNumericLiteral())
-                                return true;
-
-                            break;
-                        }
-                    default:
-                        {
-                            return false;
-                        }
+                        return string.Equals(literalExpression.Token.ValueText, "1", StringComparison.Ordinal);
                 }
             }
             else
@@ -128,29 +115,15 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 
                 if (right?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
                 {
-                    var rightExpression = (LiteralExpressionSyntax)right;
+                    var literalExpression = (LiteralExpressionSyntax)right;
 
                     switch (binaryExpression.Kind())
                     {
                         case SyntaxKind.EqualsExpression:
                         case SyntaxKind.GreaterThanExpression:
-                            {
-                                if (rightExpression.IsZeroNumericLiteral())
-                                    return true;
-
-                                break;
-                            }
+                            return string.Equals(literalExpression.Token.ValueText, "0", StringComparison.Ordinal);
                         case SyntaxKind.GreaterThanOrEqualExpression:
-                            {
-                                if (rightExpression.IsOneNumericLiteral())
-                                    return true;
-
-                                break;
-                            }
-                        default:
-                            {
-                                return false;
-                            }
+                            return string.Equals(literalExpression.Token.ValueText, "1", StringComparison.Ordinal);
                     }
                 }
             }

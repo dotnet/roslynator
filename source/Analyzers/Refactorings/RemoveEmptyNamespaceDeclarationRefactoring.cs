@@ -20,8 +20,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (!openBrace.IsMissing
                     && !closeBrace.IsMissing
-                    && openBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && closeBrace.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                    && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
+                    && closeBrace.LeadingTrivia.IsEmptyOrWhitespace())
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration,
@@ -40,9 +40,9 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxRemoveOptions GetRemoveOptions(NamespaceDeclarationSyntax declaration)
         {
-            if (declaration.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (declaration.GetLeadingTrivia().IsEmptyOrWhitespace())
             {
-                if (declaration.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                if (declaration.GetTrailingTrivia().IsEmptyOrWhitespace())
                 {
                     return SyntaxRemoveOptions.KeepNoTrivia;
                 }
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
                     return SyntaxRemoveOptions.KeepTrailingTrivia;
                 }
             }
-            else if (declaration.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            else if (declaration.GetTrailingTrivia().IsEmptyOrWhitespace())
             {
                 return SyntaxRemoveOptions.KeepLeadingTrivia;
             }

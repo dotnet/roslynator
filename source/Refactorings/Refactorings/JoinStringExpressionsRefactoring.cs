@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (concatenation.OriginalExpression
                         .DescendantTrivia(concatenation.Span ?? concatenation.OriginalExpression.Span)
-                        .Any(f => f.IsKind(SyntaxKind.EndOfLineTrivia)))
+                        .Any(f => f.IsEndOfLineTrivia()))
                 {
                     context.RegisterRefactoring(
                         "Join string literals into multiline string literal",

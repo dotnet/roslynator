@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             return Renamer.RenameSymbolAsync(
-                document.Project.Solution,
+                document.Solution(),
                 symbol,
                 newName,
                 default(OptionSet),

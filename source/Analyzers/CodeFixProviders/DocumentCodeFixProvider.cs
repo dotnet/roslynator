@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixProviders
 
         public static Task<Solution> RemoveFromSolutionAsync(Document document)
         {
-            return Task.FromResult(document.Project.Solution.RemoveDocument(document.Id));
+            return Task.FromResult(document.Solution().RemoveDocument(document.Id));
         }
     }
 }

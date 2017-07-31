@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (SyntaxTrivia trivia in root.DescendantTrivia(descendIntoTrivia: true))
             {
-                if (trivia.IsKind(SyntaxKind.WhitespaceTrivia))
+                if (trivia.IsWhitespaceTrivia())
                 {
                     string text = trivia.ToString();
 

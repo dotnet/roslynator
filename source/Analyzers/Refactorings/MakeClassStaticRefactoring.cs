@@ -127,32 +127,15 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
         }
 
-        public static async Task<Solution> RefactorAsync(
+        public static Task<Solution> RefactorAsync(
             Solution solution,
             ImmutableArray<ClassDeclarationSyntax> classDeclarations,
             CancellationToken cancellationToken)
         {
-            var newDocuments = new List<KeyValuePair<DocumentId, SyntaxNode>>();
-
-            foreach (SyntaxTree syntaxTree in classDeclarations.Select(f => f.SyntaxTree).Distinct())
-            {
-                Document document = solution.GetDocument(syntaxTree);
-
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-                SyntaxNode newRoot = root.ReplaceNodes(
-                    classDeclarations.Where(f => f.SyntaxTree == syntaxTree),
-                    (node, rewrittenNode) => UpdateModifiers(node));
-
-                newDocuments.Add(new KeyValuePair<DocumentId, SyntaxNode>(document.Id, newRoot));
-            }
-
-            Solution newSolution = solution;
-
-            foreach (KeyValuePair<DocumentId, SyntaxNode> kvp in newDocuments)
-                newSolution = newSolution.WithDocumentSyntaxRoot(kvp.Key, kvp.Value);
-
-            return newSolution;
+            return solution.ReplaceNodesAsync(
+                classDeclarations,
+                (node, rewrittenNode) => UpdateModifiers(node),
+                cancellationToken);
         }
 
         private static ClassDeclarationSyntax UpdateModifiers(ClassDeclarationSyntax classDeclaration)

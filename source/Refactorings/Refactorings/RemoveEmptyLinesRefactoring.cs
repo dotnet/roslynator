@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (node
                 .DescendantTrivia(context.Span, descendIntoTrivia: true)
-                .Any(f => f.IsKind(SyntaxKind.EndOfLineTrivia)))
+                .Any(f => f.IsEndOfLineTrivia()))
             {
                 SourceText sourceText = await context.Document.GetTextAsync(context.CancellationToken).ConfigureAwait(false);
 
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SyntaxTrivia endOfLine = root.FindTrivia(line.End, findInsideTrivia: true);
 
-                    if (endOfLine.IsKind(SyntaxKind.EndOfLineTrivia))
+                    if (endOfLine.IsEndOfLineTrivia())
                         yield return line;
                 }
             }

@@ -102,7 +102,6 @@ namespace Roslynator.CSharp.Refactorings
                 newRight = ((PrefixUnaryExpressionSyntax)newRight).Operand.WalkDownParentheses();
             }
 
-            //TODO: test
             ExpressionSyntax newNode = ExclusiveOrExpression(
                 newLeft.WithTriviaFrom(left).Parenthesize(),
                 CaretToken().WithTriviaFrom(logicalOr.OperatorToken),

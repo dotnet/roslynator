@@ -150,7 +150,6 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax expression = returnStatement.Expression.WithoutTrivia();
 
-            //TODO: test
             BinaryExpressionSyntax coalesceExpression = CSharpFactory.CoalesceExpression(
                 expression,
                 CSharpFactory.SimpleAssignmentExpression(expression, assignment.Right.WithoutTrivia()).Parenthesize());

@@ -170,7 +170,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxTriviaList trailingTrivia = localDeclaration.GetTrailingTrivia();
 
-            if (trailingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+            if (!trailingTrivia.IsEmptyOrWhitespace())
             {
                 newLocalDeclaration = newLocalDeclaration.WithTrailingTrivia(trailingTrivia.Concat(nextStatement.GetTrailingTrivia()));
             }
@@ -181,7 +181,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxTriviaList leadingTrivia = nextStatement.GetLeadingTrivia();
 
-            if (leadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+            if (!leadingTrivia.IsEmptyOrWhitespace())
             {
                 newLocalDeclaration = newLocalDeclaration.WithLeadingTrivia(newLocalDeclaration.GetLeadingTrivia().Concat(leadingTrivia));
             }

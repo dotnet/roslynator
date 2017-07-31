@@ -54,20 +54,18 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ExpressionSyntax GetExpression(InvocationExpressionSyntax invocation)
         {
-            ArgumentSyntax argument = invocation
+            ExpressionSyntax expression = invocation
                 .ArgumentList?
                 .Arguments
-                .Last();
+                .Last()
+                .Expression;
 
-            switch (argument?.Expression?.Kind())
+            switch (expression?.Kind())
             {
                 case SyntaxKind.SimpleLambdaExpression:
-                    {
-                        return ((SimpleLambdaExpressionSyntax)argument.Expression).Body as ExpressionSyntax;
-                    }
                 case SyntaxKind.ParenthesizedLambdaExpression:
                     {
-                        return ((ParenthesizedLambdaExpressionSyntax)argument.Expression).Body as ExpressionSyntax;
+                        return ((LambdaExpressionSyntax)expression).Body as ExpressionSyntax;
                     }
             }
 

@@ -31,11 +31,13 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public override MemberDeclarationSyntax CreateDeclaration()
         {
-            AutoPropertyKind propertyKind = (SupportsCSharp6)
-                ? AutoPropertyKind.ReadOnly
-                : AutoPropertyKind.PrivateSet;
-
-            return AutoPropertyDeclaration(propertyKind, Modifiers.Public(), Type, SyntaxFactory.Identifier(Name));
+            return PropertyDeclaration(
+                Modifiers.Public(),
+                Type,
+                SyntaxFactory.Identifier(Name),
+                (SupportsCSharp6)
+                    ? AccessorList(AutoGetAccessorDeclaration())
+                    : AccessorList(AutoGetAccessorDeclaration(), AutoSetAccessorDeclaration(Modifiers.Private())));
         }
     }
 }

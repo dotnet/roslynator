@@ -44,10 +44,10 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var usingStatement2 = (UsingStatementSyntax)statements[0];
 
-                    return block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && usingStatement2.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && usingStatement2.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
+                    return block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
+                        && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace()
+                        && usingStatement2.GetLeadingTrivia().IsEmptyOrWhitespace()
+                        && usingStatement2.GetTrailingTrivia().IsEmptyOrWhitespace();
                 }
             }
 

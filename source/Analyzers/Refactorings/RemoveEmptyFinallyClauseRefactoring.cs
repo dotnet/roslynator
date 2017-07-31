@@ -25,10 +25,10 @@ namespace Roslynator.CSharp.Refactorings
                     BlockSyntax block = finallyClause.Block;
 
                     if (block?.Statements.Any() == false
-                        && finallyClause.FinallyKeyword.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && block.OpenBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && block.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && block.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        && finallyClause.FinallyKeyword.TrailingTrivia.IsEmptyOrWhitespace()
+                        && block.OpenBraceToken.LeadingTrivia.IsEmptyOrWhitespace()
+                        && block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
+                        && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
                     }
@@ -41,14 +41,14 @@ namespace Roslynator.CSharp.Refactorings
             FinallyClauseSyntax finallyClause,
             CancellationToken cancellationToken)
         {
-            if (finallyClause.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (finallyClause.GetLeadingTrivia().IsEmptyOrWhitespace())
             {
                 var tryStatement = (TryStatementSyntax)finallyClause.Parent;
 
                 SyntaxList<CatchClauseSyntax> catches = tryStatement.Catches;
                 CatchClauseSyntax lastCatch = catches[catches.Count - 1];
 
-                if (lastCatch.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                if (lastCatch.GetTrailingTrivia().IsEmptyOrWhitespace())
                 {
                     TryStatementSyntax newTryStatement = tryStatement
                         .WithCatches(catches.Replace(lastCatch, lastCatch.WithTrailingTrivia(finallyClause.GetTrailingTrivia())))

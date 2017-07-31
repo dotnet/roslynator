@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.Test
             var items = Enumerable.Select(Enumerable.Range(0, 1), f => f);
         }
 
-        internal static IEnumerable<TResult> Select<TResult, TSource>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
+        private static IEnumerable<TResult> Select<TResult, TSource>(this IEnumerable<TSource> items, Func<TSource, TResult> selector)
         {
             foreach (var item in items)
                 yield return selector(item);

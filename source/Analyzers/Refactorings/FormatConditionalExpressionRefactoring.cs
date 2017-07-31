@@ -33,11 +33,11 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxTriviaList expressionTrailing = expression.GetTrailingTrivia();
 
-            if (expressionTrailing.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (expressionTrailing.IsEmptyOrWhitespace())
             {
                 SyntaxTriviaList tokenLeading = token.LeadingTrivia;
 
-                if (tokenLeading.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                if (tokenLeading.IsEmptyOrWhitespace())
                 {
                     SyntaxTriviaList tokenTrailing = token.TrailingTrivia;
 
@@ -101,8 +101,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (IsFixable(expression, token))
             {
-                if (expression.GetTrailingTrivia().Any(f => !f.IsWhitespaceOrEndOfLineTrivia())
-                    || token.LeadingTrivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                if (!expression.GetTrailingTrivia().IsEmptyOrWhitespace()
+                    || !token.LeadingTrivia.IsEmptyOrWhitespace())
                 {
                     builder.AppendTrailingTrivia(expression);
                     builder.AppendLeadingTrivia(token);

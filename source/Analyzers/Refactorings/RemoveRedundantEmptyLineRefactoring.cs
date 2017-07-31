@@ -235,8 +235,8 @@ namespace Roslynator.CSharp.Refactorings
                     .FirstOrDefault();
 
                 if (trivia.IsEndOfLineTrivia()
-                    && trailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && leadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                    && trailingTrivia.IsEmptyOrWhitespace()
+                    && leadingTrivia.IsEmptyOrWhitespace())
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.RemoveRedundantEmptyLine,
@@ -264,8 +264,8 @@ namespace Roslynator.CSharp.Refactorings
                     .FirstOrDefault();
 
                 if (trivia.IsEndOfLineTrivia()
-                    && trailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && leadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                    && trailingTrivia.IsEmptyOrWhitespace()
+                    && leadingTrivia.IsEmptyOrWhitespace())
                 {
                     context.ReportDiagnostic(
                         DiagnosticDescriptors.RemoveRedundantEmptyLine,

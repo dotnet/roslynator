@@ -24,42 +24,24 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
-        public static async Task<Solution> RefactorAsync(
+        public static Task<Solution> RefactorAsync(
             Solution solution,
             ImmutableArray<MemberDeclarationSyntax> memberDeclarations,
             Accessibility newAccessibility,
             CancellationToken cancellationToken)
         {
-            var newDocuments = new List<KeyValuePair<DocumentId, SyntaxNode>>();
+            return solution.ReplaceNodesAsync(
+                memberDeclarations,
+                (node, rewrittenNode) =>
+                {
+                    AccessibilityInfo info = AccessibilityInfo.Create(node.GetModifiers());
 
-            foreach (IGrouping<SyntaxTree, MemberDeclarationSyntax> grouping in memberDeclarations
-                .GroupBy(f => f.SyntaxTree))
-            {
-                Document document = solution.GetDocument(grouping.Key);
+                    if (info.Accessibility == Accessibility.NotApplicable)
+                        return node;
 
-                SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-                SyntaxNode newRoot = root.ReplaceNodes(
-                    grouping,
-                    (node, rewrittenNode) =>
-                    {
-                        AccessibilityInfo info = AccessibilityInfo.Create(node.GetModifiers());
-
-                        if (info.Accessibility == Accessibility.NotApplicable)
-                            return node;
-
-                        return AccessibilityHelper.ChangeAccessibility(node, info, newAccessibility, ModifierComparer.Instance);
-                    });
-
-                newDocuments.Add(new KeyValuePair<DocumentId, SyntaxNode>(document.Id, newRoot));
-            }
-
-            Solution newSolution = solution;
-
-            foreach (KeyValuePair<DocumentId, SyntaxNode> kvp in newDocuments)
-                newSolution = newSolution.WithDocumentSyntaxRoot(kvp.Key, kvp.Value);
-
-            return newSolution;
+                    return AccessibilityHelper.ChangeAccessibility(node, info, newAccessibility, ModifierComparer.Instance);
+                },
+                cancellationToken);
         }
     }
 }

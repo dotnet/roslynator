@@ -63,8 +63,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
-                if (value?.IsKind(SyntaxKind.NumericLiteralExpression) == true
-                    && ((LiteralExpressionSyntax)value).IsZeroNumericLiteral())
+                if (value?.IsNumericLiteralExpression("0") == true)
                 {
                     ExpressionSyntax condition = forStatement.Condition;
 

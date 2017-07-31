@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 SyntaxTrivia trivia = declaration.GetTrailingTrivia().LastOrDefault();
 
-                                if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                                if (trivia.IsEndOfLineTrivia())
                                 {
                                     context.ReportDiagnostic(
                                         DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,

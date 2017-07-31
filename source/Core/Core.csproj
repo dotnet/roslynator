@@ -130,7 +130,6 @@
     <Compile Include="CSharp\CSharpFactory.cs" />
     <Compile Include="CSharp\Helpers\DetermineParameterHelper.cs" />
     <Compile Include="CSharp\Extensions\SyntaxExtensions.cs" />
-    <Compile Include="CSharp\AutoPropertyKind.cs" />
     <Compile Include="CSharp\Documentation\AddNewDocumentationCommentRewriter.cs" />
     <Compile Include="DefaultNames.cs" />
     <Compile Include="CSharp\Syntax\MemberInvocationExpression.cs" />
