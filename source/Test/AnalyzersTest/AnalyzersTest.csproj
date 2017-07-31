@@ -46,6 +46,7 @@
     <Compile Include="AddBraces.cs" />
     <Compile Include="AddBracesToSwitchSectionWithMultipleStatements.cs" />
     <Compile Include="AvoidBoxingOfValueType.cs" />
+    <Compile Include="CallThenByInsteadOfOrderBy.cs" />
     <Compile Include="DeclareEnumValueAsCombinationOfNames.cs" />
     <Compile Include="CallExtensionMethodAsInstanceMethod.cs" />
     <Compile Include="MakeClassStatic2.cs" />

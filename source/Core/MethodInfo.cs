@@ -230,13 +230,13 @@ namespace Roslynator
         }
 
         internal bool IsLinqExtensionOfIEnumerableOfT(
-            string name,
-            int parameterCount,
+            string name = null,
+            int parameterCount = -1,
             bool allowImmutableArrayExtension = false)
         {
             if (IsValid
                 && Symbol.IsPublic()
-                && IsName(name))
+                && IsNullOrName(name))
             {
                 INamedTypeSymbol containingType = Symbol.ContainingType;
 
@@ -246,7 +246,7 @@ namespace Roslynator
                     {
                         ImmutableArray<IParameterSymbol> parameters = Parameters;
 
-                        return parameters.Length == parameterCount
+                        return (parameterCount == -1 || parameters.Length == parameterCount)
                             && parameters[0].Type.IsConstructedFromIEnumerableOfT();
                     }
                     else if (allowImmutableArrayExtension
@@ -254,7 +254,7 @@ namespace Roslynator
                     {
                         ImmutableArray<IParameterSymbol> parameters = Parameters;
 
-                        return parameters.Length == parameterCount
+                        return (parameterCount == -1 || parameters.Length == parameterCount)
                             && parameters[0].Type.IsConstructedFromImmutableArrayOfT(SemanticModel);
                     }
                 }

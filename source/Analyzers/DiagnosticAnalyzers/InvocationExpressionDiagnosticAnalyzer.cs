@@ -37,7 +37,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod,
                     DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod,
                     DiagnosticDescriptors.OptimizeStringBuilderAppendCall,
-                    DiagnosticDescriptors.AvoidBoxingOfValueType);
+                    DiagnosticDescriptors.AvoidBoxingOfValueType,
+                    DiagnosticDescriptors.CallThenByInsteadOfOrderBy);
             }
         }
 
@@ -219,6 +220,18 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     || argumentCount == 2)
                                 {
                                     CallCastInsteadOfSelectRefactoring.Analyze(context, memberInvocation);
+                                }
+
+                                break;
+                            }
+                        case "OrderBy":
+                        case "OrderByDescending":
+                            {
+                                if (argumentCount == 1
+                                    || argumentCount == 2
+                                    || argumentCount == 3)
+                                {
+                                    CallThenByInsteadOfOrderByRefactoring.Analyze(context, memberInvocation);
                                 }
 
                                 break;
