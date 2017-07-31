@@ -39,8 +39,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.OptimizeStringBuilderAppendCall,
                     DiagnosticDescriptors.AvoidBoxingOfValueType,
                     DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
-                    DiagnosticDescriptors.UseMethodChaining);
-            }
+                    DiagnosticDescriptors.UseMethodChaining,
+                    DiagnosticDescriptors.UseConditionalAccessToAvoidNullReferenceException);
+
+           }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -157,6 +159,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         UseRegexInstanceInsteadOfStaticMethodRefactoring.Analyze(context, memberInvocation);
 
                     string methodName = memberInvocation.NameText;
+
+                    UseConditionalAccessToAvoidNullReferenceExceptionRefactoring.Analyze(context, memberInvocation);
 
                     int argumentCount = memberInvocation.ArgumentList.Arguments.Count;
 

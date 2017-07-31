@@ -1748,5 +1748,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseConditionalAccessToAvoidNullReferenceException = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseConditionalAccessToAvoidNullReferenceException,
+            title: "Use conditional access to avoid NullReferenceException.",
+            messageFormat: "Use conditional access to avoid NullReferenceException.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

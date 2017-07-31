@@ -190,5 +190,6 @@ namespace Roslynator.CSharp
         public const string SimplifyBooleanExpression = Prefix + "1199";
         public const string CallThenByInsteadOfOrderBy = Prefix + "1200";
         public const string UseMethodChaining = Prefix + "1201";
+        public const string UseConditionalAccessToAvoidNullReferenceException = Prefix + "1202";
     }
 }
