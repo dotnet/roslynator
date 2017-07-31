@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.ValueTypeObjectIsNeverEqualToNull,
                     DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator,
                     DiagnosticIdentifiers.JoinStringExpressions,
-                    DiagnosticIdentifiers.UseExclusiveOrOperator);
+                    DiagnosticIdentifiers.UseExclusiveOrOperator,
+                    DiagnosticIdentifiers.SimplifyBooleanExpression);
             }
         }
 
@@ -197,6 +198,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Use ^ operator",
                                 cancellationToken => UseExclusiveOrOperatorRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.SimplifyBooleanExpression:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Simplify boolean expression",
+                                cancellationToken => SimplifyBooleanExpressionRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

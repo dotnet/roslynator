@@ -1721,5 +1721,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor SimplifyBooleanExpression = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.SimplifyBooleanExpression,
+            title: "Simplify boolean expression.",
+            messageFormat: "Simplify boolean expression.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

@@ -187,5 +187,6 @@ namespace Roslynator.CSharp
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "1196";
         public const string OptimizeStringBuilderAppendCall = Prefix + "1197";
         public const string AvoidBoxingOfValueType = Prefix + "1198";
+        public const string SimplifyBooleanExpression = Prefix + "1199";
     }
 }
