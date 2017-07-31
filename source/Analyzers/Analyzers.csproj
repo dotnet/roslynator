@@ -113,6 +113,7 @@
     <Compile Include="DiagnosticAnalyzers\UnconstrainedTypeParameterCheckedForNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticIdentifiers.cs" />
     <Compile Include="Refactorings\AddOrRemoveRegionNameRefactoring.cs" />
+    <Compile Include="Refactorings\CallThenByInsteadOfOrderByRefactoring.cs" />
     <Compile Include="Refactorings\OptimizeStringBuilderAppendCallRefactoring.cs" />
     <Compile Include="Refactorings\AvoidBoxingOfValueTypeRefactoring.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereAndAnyRefactoring.cs" />

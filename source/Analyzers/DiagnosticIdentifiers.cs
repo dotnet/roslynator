@@ -188,5 +188,6 @@ namespace Roslynator.CSharp
         public const string OptimizeStringBuilderAppendCall = Prefix + "1197";
         public const string AvoidBoxingOfValueType = Prefix + "1198";
         public const string SimplifyBooleanExpression = Prefix + "1199";
+        public const string CallThenByInsteadOfOrderBy = Prefix + "1200";
     }
 }

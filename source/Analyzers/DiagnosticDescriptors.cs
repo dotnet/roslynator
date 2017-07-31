@@ -1730,5 +1730,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor CallThenByInsteadOfOrderBy = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CallThenByInsteadOfOrderBy,
+            title: "Call 'Enumerable.ThenBy' instead of 'Enumerable.OrderBy'.",
+            messageFormat: "Call 'Enumerable.ThenBy{0}' instead of 'Enumerable.OrderBy{0}'.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
