@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.RemoveOutModifier;
+        = CodeFixIdentifiers.UseCoalesceExpression;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -59,7 +59,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddStaticModifier, "Add 'static' modifier (fixes CS0708, CS0710, CS1105, CS1106)", IsEnabled(CodeFixIdentifiers.AddStaticModifier)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeContainingClassAbstract, "Make containing class abstract (fixes CS0513)", IsEnabled(CodeFixIdentifiers.MakeContainingClassAbstract)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddSemicolon, "Add semicolon (fixes CS1002)", IsEnabled(CodeFixIdentifiers.AddSemicolon)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.SynchronizeAccessibility, "SynchronizeAccessibility (fixes CS0266)", IsEnabled(CodeFixIdentifiers.SynchronizeAccessibility)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.SynchronizeAccessibility, "SynchronizeAccessibility (fixes CS0262)", IsEnabled(CodeFixIdentifiers.SynchronizeAccessibility)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveArgumentList, "Remove argument list (fixes CS1955)", IsEnabled(CodeFixIdentifiers.RemoveArgumentList)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.FixMemberAccessName, "Fix member access name (fixes CS1061)", IsEnabled(CodeFixIdentifiers.FixMemberAccessName)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddArgumentList, "Add argument list (fixes CS0428, CS0023)", IsEnabled(CodeFixIdentifiers.AddArgumentList)));
@@ -94,6 +94,9 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeClassNonStatic, "Make class non-static (fixes CS0718)", IsEnabled(CodeFixIdentifiers.MakeClassNonStatic)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveYieldKeyword, "Remove 'yield' keyword (fixes CS1621)", IsEnabled(CodeFixIdentifiers.RemoveYieldKeyword)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveOutModifier, "Remove 'out' modifier (fixes CS1988)", IsEnabled(CodeFixIdentifiers.RemoveOutModifier)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveAttribute, "Remove attribute (fixes CS0592, CS1689)", IsEnabled(CodeFixIdentifiers.RemoveAttribute)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveJumpStatement, "Remove jump statement (fixes CS0139)", IsEnabled(CodeFixIdentifiers.RemoveJumpStatement)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.UseCoalesceExpression, "Use coalesce expression (fixes CS0266)", IsEnabled(CodeFixIdentifiers.UseCoalesceExpression)));
         }
     }
 }

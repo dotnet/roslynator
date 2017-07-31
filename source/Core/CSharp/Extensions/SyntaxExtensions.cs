@@ -2423,9 +2423,7 @@ namespace Roslynator.CSharp
                     }
             }
         }
-        #endregion SyntaxNode
 
-        #region SyntaxNode
         public static bool SupportsModifiers(this SyntaxNode node)
         {
             if (node == null)
@@ -2566,6 +2564,10 @@ namespace Roslynator.CSharp
                     return "lock statement";
                 case SyntaxKind.FixedStatement:
                     return "fixed statement";
+                case SyntaxKind.BreakStatement:
+                    return "break statement";
+                case SyntaxKind.ContinueStatement:
+                    return "continue statement";
                 case SyntaxKind.MethodDeclaration:
                     return "method";
                 case SyntaxKind.OperatorDeclaration:

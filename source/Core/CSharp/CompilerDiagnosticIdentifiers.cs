@@ -28,6 +28,7 @@ namespace Roslynator.CSharp
         public const string StaticConstructorMustBeParameterless = "CS0132";
         public const string ExpressionBeingAssignedMustBeConstant = "CS0133";
         public const string LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter = "CS0136";
+        public const string NoEnclosingLoopOutOfWhichToBreakOrContinue = "CS0139";
         public const string NotAllCodePathsReturnValue = "CS0161";
         public const string UnreachableCodeDetected = "CS0162";
         public const string ControlCannotFallThroughFromOneCaseLabelToAnother = "CS0163";
@@ -67,6 +68,7 @@ namespace Roslynator.CSharp
         public const string UserDefinedOperatorMustBeDeclaredStaticAndPublic = "CS0558";
         public const string CannotHaveInstancePropertyOrFieldInitializersInStruct = "CS0573";
         public const string DuplicateAttribute = "CS0579";
+        public const string AttributeIsNotValidOnThisDeclarationType = "CS0592";
         public const string VirtualOrAbstractmembersCannotBePrivate  = "CS0621";
         public const string NewProtectedMemberDeclaredInSealedClass = "CS0628";
         public const string FieldCanNotBeBothVolatileAndReadOnly = "CS0678";
@@ -102,6 +104,7 @@ namespace Roslynator.CSharp
         public const string CannotReturnValueFromIterator = "CS1622";
         public const string NotAllCodePathsReturnValueInAnonymousFunction = "CS1643";
         public const string TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable = "CS1674";
+        public const string AttributeIsOnlyValidOnMethodsOrAttributeClasses = "CS1689";
         public const string MemberTypeMustMatchOverriddenMemberType = "CS1715";
         public const string AssignmentMadeToSameVariable = "CS1717";
         public const string BaseClassMustComeBeforeAnyInterface = "CS1722";
