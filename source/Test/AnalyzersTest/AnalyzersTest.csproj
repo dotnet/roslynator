@@ -65,6 +65,7 @@
     <Compile Include="FormatConditionalExpressionOperatorsOnNextLine.cs" />
     <Compile Include="ImplementExceptionConstructors.cs" />
     <Compile Include="AvoidSingleLineBlock.cs" />
+    <Compile Include="SimplifyBooleanExpression.cs" />
     <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="StaticMemberInGenericClassShouldUseTypeParameter.cs" />
     <Compile Include="AvoidChainOfAssignments.cs" />
