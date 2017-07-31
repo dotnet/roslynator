@@ -100,6 +100,7 @@
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />
     <Compile Include="UseLambdaExpressionInsteadOfAnonymousMethod.cs" />
+    <Compile Include="UseMethodChaining.cs" />
     <Compile Include="UseReadOnlyAutoProperty.cs" />
     <Compile Include="UseRegexInstanceInsteadOfStaticMethod.cs" />
     <Compile Include="UseRegularStringLiteralInsteadOfVerbatimStringLiteral.cs" />

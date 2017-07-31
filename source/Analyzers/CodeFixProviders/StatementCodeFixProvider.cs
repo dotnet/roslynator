@@ -26,7 +26,8 @@ namespace Roslynator.CSharp.CodeFixProviders
                     DiagnosticIdentifiers.UseCoalesceExpression,
                     DiagnosticIdentifiers.InlineLazyInitialization,
                     DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
-                    DiagnosticIdentifiers.RemoveRedundantStatement);
+                    DiagnosticIdentifiers.RemoveRedundantStatement,
+                    DiagnosticIdentifiers.UseMethodChaining);
             }
         }
 
@@ -114,6 +115,16 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 $"Remove redundant {statement.GetTitle()}",
                                 cancellationToken => RemoveRedundantStatementRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
+                                diagnostic.Id + EquivalenceKeySuffix);
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseMethodChaining:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use method chaining",
+                                cancellationToken => UseMethodChainingRefactoring.RefactorAsync(context.Document, (ExpressionStatementSyntax)statement, cancellationToken),
                                 diagnostic.Id + EquivalenceKeySuffix);
 
                             context.RegisterCodeFix(codeAction, diagnostic);

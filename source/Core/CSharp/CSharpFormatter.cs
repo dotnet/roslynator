@@ -390,7 +390,7 @@ namespace Roslynator.CSharp
             return EmptyWhitespace();
         }
 
-        private static SyntaxTriviaList GetIncreasedIndentation(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        internal static SyntaxTriviaList GetIncreasedIndentation(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxTrivia trivia = GetIndentation(node, cancellationToken);
 
