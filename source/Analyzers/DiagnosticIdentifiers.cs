@@ -129,7 +129,7 @@ namespace Roslynator.CSharp
         public const string BitwiseOperationOnEnumWithoutFlagsAttribute = Prefix + "1130";
         public const string RemoveRedundantOverridingMember = Prefix + "1132";
         public const string RemoveRedundantDisposeOrCloseCall = Prefix + "1133";
-        public const string RemoveRedundantContinueStatement = Prefix + "1134";
+        public const string RemoveRedundantStatement = Prefix + "1134";
         public const string DeclareEnumMemberWithZeroValue = Prefix + "1135";
         public const string MergeSwitchSectionsWithEquivalentContent = Prefix + "1136";
         public const string AddSummaryToDocumentationComment = Prefix + "1138";

@@ -1186,10 +1186,10 @@ namespace Roslynator.CSharp
             customTags: WellKnownDiagnosticTags.Unnecessary
         );
 
-        public static readonly DiagnosticDescriptor RemoveRedundantContinueStatement = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.RemoveRedundantContinueStatement,
-            title: "Remove redundant continue statement.",
-            messageFormat: "Remove redundant continue statement.",
+        public static readonly DiagnosticDescriptor RemoveRedundantStatement = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.RemoveRedundantStatement,
+            title: "Remove redundant statement.",
+            messageFormat: "Remove redundant statement.",
             category: DiagnosticCategories.Redundancy,
             defaultSeverity: DiagnosticSeverity.Hidden,
             isEnabledByDefault: true,

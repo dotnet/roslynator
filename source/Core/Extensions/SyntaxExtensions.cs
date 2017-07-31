@@ -28,13 +28,14 @@ namespace Roslynator
 
         public static bool IsFirst<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
         {
-            return list.IndexOf(node) == 0;
+            return list.Any()
+                && list.First() == node;
         }
 
         public static bool IsLast<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
         {
             return list.Any()
-                && list.IndexOf(node) == list.Count - 1;
+                && list.Last() == node;
         }
 
         public static bool Any<TNode>(this SeparatedSyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode
@@ -74,13 +75,14 @@ namespace Roslynator
 
         public static bool IsFirst<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
         {
-            return list.IndexOf(node) == 0;
+            return list.Any()
+                && list.First() == node;
         }
 
         public static bool IsLast<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
         {
             return list.Any()
-                && list.IndexOf(node) == list.Count - 1;
+                && list.Last() == node;
         }
 
         public static bool Any<TNode>(this SyntaxList<TNode> list, Func<TNode, bool> predicate) where TNode : SyntaxNode

@@ -2568,6 +2568,12 @@ namespace Roslynator.CSharp
                     return "break statement";
                 case SyntaxKind.ContinueStatement:
                     return "continue statement";
+                case SyntaxKind.ReturnStatement:
+                    return "return statement";
+                case SyntaxKind.YieldReturnStatement:
+                    return "yield return statement";
+                case SyntaxKind.YieldBreakStatement:
+                    return "yield break statement";
                 case SyntaxKind.MethodDeclaration:
                     return "method";
                 case SyntaxKind.OperatorDeclaration:
