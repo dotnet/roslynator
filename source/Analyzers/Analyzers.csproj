@@ -63,6 +63,7 @@
     <Compile Include="CodeFixProviders\DocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseConditionalAccessToAvoidNullReferenceExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseRegexInstanceInsteadOfStaticMethodCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseRegularStringLiteralInsteadOfVerbatimStringLiteralCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseReturnInsteadOfAssignmentCodeFixProvider.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AsExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ImplementExceptionConstructorsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidBoxingOfValueTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatConditionalExpressionDiagnosticAnalyzer.cs" />
@@ -159,6 +161,7 @@
     <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
     <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
     <Compile Include="Refactorings\CallDebugFailInsteadOfDebugAssertRefactoring.cs" />
+    <Compile Include="Refactorings\UseConditionalAccessToAvoidNullReferenceExceptionRefactoring.cs" />
     <Compile Include="Refactorings\UseExclusiveOrOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UseMethodChainingRefactoring.cs" />
     <Compile Include="Refactorings\UseRegexInstanceInsteadOfStaticMethodRefactoring.cs" />
