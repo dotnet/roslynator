@@ -1739,5 +1739,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseMethodChaining = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseMethodChaining,
+            title: "Use method chaining.",
+            messageFormat: "Use method chaining.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
     }
 }

@@ -38,7 +38,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod,
                     DiagnosticDescriptors.OptimizeStringBuilderAppendCall,
                     DiagnosticDescriptors.AvoidBoxingOfValueType,
-                    DiagnosticDescriptors.CallThenByInsteadOfOrderBy);
+                    DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
+                    DiagnosticDescriptors.UseMethodChaining);
             }
         }
 
@@ -237,6 +238,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                 break;
                             }
                     }
+
+                    UseMethodChainingRefactoring.Analyze(context, memberInvocation);
                 }
             }
         }
