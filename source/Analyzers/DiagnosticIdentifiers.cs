@@ -117,7 +117,7 @@ namespace Roslynator.CSharp
         public const string UseStringIsNullOrEmptyMethod = Prefix + "1113";
         public const string RemoveRedundantDelegateCreation = Prefix + "1114";
         public const string MarkLocalVariableAsConst = Prefix + "1118";
-        public const string CallFindMethodInsteadOfFirstOrDefaultMethod = Prefix + "1119";
+        public const string CallFindInsteadOfFirstOrDefault = Prefix + "1119";
         public const string UseElementAccessInsteadOfElementAt = Prefix + "1120";
         public const string UseElementAccessInsteadOfFirst = Prefix + "1121";
         public const string AddParenthesesAccordingToOperatorPrecedence = Prefix + "1123";

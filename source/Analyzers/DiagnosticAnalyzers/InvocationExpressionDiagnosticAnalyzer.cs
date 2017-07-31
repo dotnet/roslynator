@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.CallCastInsteadOfSelect,
                     DiagnosticDescriptors.CombineEnumerableWhereMethodChain,
                     DiagnosticDescriptors.CombineEnumerableWhereMethodChainFadeOut,
-                    DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,
+                    DiagnosticDescriptors.CallFindInsteadOfFirstOrDefault,
                     DiagnosticDescriptors.UseElementAccessInsteadOfElementAt,
                     DiagnosticDescriptors.UseElementAccessInsteadOfFirst,
                     DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod,
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         {
                             case "FirstOrDefault":
                                 {
-                                    CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring.Analyze(context, invocation, memberAccess);
+                                    CallFindInsteadOfFirstOrDefaultRefactoring.Analyze(context, invocation, memberAccess);
                                     break;
                                 }
                             case "Where":

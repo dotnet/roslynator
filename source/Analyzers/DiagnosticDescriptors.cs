@@ -1071,10 +1071,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor CallFindMethodInsteadOfFirstOrDefaultMethod = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.CallFindMethodInsteadOfFirstOrDefaultMethod,
-            title: "Call 'Find' method instead of 'FirstOrDefault' method.",
-            messageFormat: "Call 'Find' method instead of 'FirstOrDefault' method.",
+        public static readonly DiagnosticDescriptor CallFindInsteadOfFirstOrDefault = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault,
+            title: "Call 'Find' instead of 'FirstOrDefault'.",
+            messageFormat: "Call 'Find' instead of 'FirstOrDefault'.",
             category: DiagnosticCategories.Performance,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true

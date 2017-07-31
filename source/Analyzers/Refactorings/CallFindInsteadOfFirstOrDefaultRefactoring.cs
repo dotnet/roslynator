@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class CallFindMethodInsteadOfFirstOrDefaultMethodRefactoring
+    internal static class CallFindInsteadOfFirstOrDefaultRefactoring
     {
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (typeSymbol.IsConstructedFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_List_T)))
                         {
                             context.ReportDiagnostic(
-                                DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,
+                                DiagnosticDescriptors.CallFindInsteadOfFirstOrDefault,
                                 memberAccess.Name);
                         }
                         else if (typeSymbol.IsArrayType())
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                             if (arrayType.Rank == 1)
                             {
                                 context.ReportDiagnostic(
-                                    DiagnosticDescriptors.CallFindMethodInsteadOfFirstOrDefaultMethod,
+                                    DiagnosticDescriptors.CallFindInsteadOfFirstOrDefault,
                                     memberAccess.Name);
                             }
                         }
