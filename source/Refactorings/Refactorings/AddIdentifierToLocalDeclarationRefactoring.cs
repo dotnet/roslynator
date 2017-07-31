@@ -32,10 +32,10 @@ namespace Roslynator.CSharp.Refactorings
                     if (triviaList.Any())
                     {
                         SyntaxTrivia trivia = triviaList
-                            .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
+                            .SkipWhile(f => f.IsWhitespaceTrivia())
                             .FirstOrDefault();
 
-                        if (trivia.IsKind(SyntaxKind.EndOfLineTrivia)
+                        if (trivia.IsEndOfLineTrivia()
                             && context.Span.End <= trivia.Span.Start)
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxTrivia endOfLine = type.GetTrailingTrivia()
-                .SkipWhile(f => f.IsKind(SyntaxKind.WhitespaceTrivia))
+                .SkipWhile(f => f.IsWhitespaceTrivia())
                 .First();
 
             TextSpan span = TextSpan.FromBounds(type.Span.End, endOfLine.Span.Start);

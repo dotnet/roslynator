@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.Refactorings
                     InitializerExpressionSyntax initializer = objectCreationExpression.Initializer;
 
                     if (initializer?.Expressions.Any() == false
-                        && initializer.OpenBraceToken.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && initializer.CloseBraceToken.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        && initializer.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
+                        && initializer.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyInitializer, initializer);
                     }

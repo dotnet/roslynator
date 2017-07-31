@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
             if (semanticModel.TryGetMethodInfo(invocationExpression, out info, cancellationToken)
                 && info.IsName("ToString")
                 && info.IsPublic
-                && info.IsInstance
+                && !info.IsStatic
                 && info.IsReturnType(SpecialType.System_String)
                 && !info.IsGenericMethod
                 && !info.IsExtensionMethod

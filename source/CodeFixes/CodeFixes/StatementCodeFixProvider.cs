@@ -77,10 +77,10 @@ namespace Roslynator.CSharp.CodeFixes
                                             {
                                                 SyntaxRemoveOptions removeOptions = RemoveHelper.DefaultRemoveOptions;
 
-                                                if (statement.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                                if (statement.GetLeadingTrivia().IsEmptyOrWhitespace())
                                                     removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-                                                if (statements.Last().GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                                                if (statements.Last().GetTrailingTrivia().IsEmptyOrWhitespace())
                                                     removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
                                                 return context.Document.RemoveNodesAsync(statements.Skip(index), removeOptions, context.CancellationToken);

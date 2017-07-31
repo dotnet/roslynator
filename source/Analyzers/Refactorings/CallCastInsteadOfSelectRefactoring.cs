@@ -169,7 +169,6 @@ namespace Roslynator.CSharp.Refactorings
             GenericNameSyntax newName = GenericName(
                 Identifier("Cast"),
                 GetCastExpression(lambdaExpression.Body).Type);
-
             InvocationExpressionSyntax newInvocation = invocation
                 .RemoveNode(lastArgument, RemoveHelper.GetRemoveOptions(lastArgument))
                 .WithExpression(memberAccess.WithName(newName));

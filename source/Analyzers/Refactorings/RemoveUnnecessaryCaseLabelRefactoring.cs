@@ -53,8 +53,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxRemoveOptions GetRemoveOptions(CaseSwitchLabelSyntax label)
         {
-            if (label.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && label.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (label.GetLeadingTrivia().IsEmptyOrWhitespace()
+                && label.GetTrailingTrivia().IsEmptyOrWhitespace())
             {
                 return SyntaxRemoveOptions.KeepNoTrivia;
             }

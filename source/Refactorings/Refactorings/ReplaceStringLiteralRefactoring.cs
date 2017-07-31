@@ -125,12 +125,14 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     case '"':
                         {
-                            sb.Append(Backslash + Quote);
+                            sb.Append(Backslash);
+                            sb.Append(Quote);
                             break;
                         }
                     case '\\':
                         {
-                            sb.Append(Backslash + Backslash);
+                            sb.Append(Backslash);
+                            sb.Append(Backslash);
                             break;
                         }
                     case '\r':
@@ -166,12 +168,14 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     case '"':
                         {
-                            sb.Append(Backslash + Quote);
+                            sb.Append(Backslash);
+                            sb.Append(Quote);
                             break;
                         }
                     case '\\':
                         {
-                            sb.Append(Backslash + Backslash);
+                            sb.Append(Backslash);
+                            sb.Append(Backslash);
                             break;
                         }
                     case '\r':

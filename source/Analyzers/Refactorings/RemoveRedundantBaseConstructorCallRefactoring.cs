@@ -37,8 +37,8 @@ namespace Roslynator.CSharp.Refactorings
             ParameterListSyntax parameterList = constructor.ParameterList;
             ConstructorInitializerSyntax initializer = constructor.Initializer;
 
-            if (parameterList.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && initializer.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (parameterList.GetTrailingTrivia().IsEmptyOrWhitespace()
+                && initializer.GetLeadingTrivia().IsEmptyOrWhitespace())
             {
                 ConstructorDeclarationSyntax newConstructor = constructor
                     .WithParameterList(parameterList.WithTrailingTrivia(initializer.GetTrailingTrivia()))

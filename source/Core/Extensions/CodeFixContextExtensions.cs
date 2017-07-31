@@ -25,7 +25,7 @@ namespace Roslynator
 
         public static Solution Solution(this CodeFixContext context)
         {
-            return context.Document.Project.Solution;
+            return context.Document.Solution();
         }
     }
 }

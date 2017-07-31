@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 {
                     SyntaxTrivia endOfLine = root.FindTrivia(textLine.End);
 
-                    if (endOfLine.IsKind(SyntaxKind.EndOfLineTrivia))
+                    if (endOfLine.IsEndOfLineTrivia())
                     {
                         lineIsEmpty = true;
 
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                         TextSpan whitespace = TextSpan.FromBounds(start, end + 1);
 
-                        if (root.FindTrivia(start).IsKind(SyntaxKind.WhitespaceTrivia))
+                        if (root.FindTrivia(start).IsWhitespaceTrivia())
                         {
                             if (previousLineIsEmpty && start == textLine.Start)
                             {

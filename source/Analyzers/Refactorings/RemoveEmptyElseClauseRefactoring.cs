@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                 var ifStatement = (IfStatementSyntax)elseClause.Parent;
                 StatementSyntax statement = ifStatement.Statement;
 
-                if (statement?.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()) == true)
+                if (statement?.GetTrailingTrivia().IsEmptyOrWhitespace() == true)
                 {
                     IfStatementSyntax newIfStatement = ifStatement
                         .WithStatement(statement.WithTrailingTrivia(elseClause.GetTrailingTrivia()))

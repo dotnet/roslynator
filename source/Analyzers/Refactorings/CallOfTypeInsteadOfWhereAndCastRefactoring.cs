@@ -119,14 +119,9 @@ namespace Roslynator.CSharp.Refactorings
             switch (expression?.Kind())
             {
                 case SyntaxKind.SimpleLambdaExpression:
-                    {
-                        var lambda = (SimpleLambdaExpressionSyntax)expression;
-
-                        return GetIsExpression(lambda.Body);
-                    }
                 case SyntaxKind.ParenthesizedLambdaExpression:
                     {
-                        var lambda = (ParenthesizedLambdaExpressionSyntax)expression;
+                        var lambda = (LambdaExpressionSyntax)expression;
 
                         return GetIsExpression(lambda.Body);
                     }

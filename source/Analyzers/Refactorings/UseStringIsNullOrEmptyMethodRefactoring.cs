@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                     var memberAccess = (MemberAccessExpressionSyntax)rightLeft;
 
                     if (string.Equals(memberAccess.Name.Identifier.ValueText, "Length", StringComparison.Ordinal)
-                        && right.Right.IsNumericLiteralExpression(0))
+                        && right.Right.IsNumericLiteralExpression("0"))
                     {
                         ISymbol symbol = semanticModel.GetSymbol(memberAccess, cancellationToken);
 

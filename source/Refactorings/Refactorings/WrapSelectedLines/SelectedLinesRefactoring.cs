@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
                 if (start == 0
                     || root
                         .FindTrivia(start - 1, findInsideTrivia: true)
-                        .IsKind(SyntaxKind.EndOfLineTrivia)
+                        .IsEndOfLineTrivia()
                     || root
                         .FindToken(start - 1, findInsideTrivia: true)
                         .IsKind(SyntaxKind.XmlTextLiteralNewLineToken))

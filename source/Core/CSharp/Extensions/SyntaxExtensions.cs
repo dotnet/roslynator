@@ -610,9 +610,6 @@ namespace Roslynator.CSharp
             bool includeElasticTrivia = true,
             bool simplifiable = true)
         {
-            if (expression == null)
-                throw new ArgumentNullException(nameof(expression));
-
             ParenthesizedExpressionSyntax parenthesizedExpression = null;
 
             if (includeElasticTrivia)
@@ -1008,24 +1005,6 @@ namespace Roslynator.CSharp
 
             return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
                 && literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal);
-        }
-
-        public static bool IsZeroNumericLiteral(this LiteralExpressionSyntax literalExpression)
-        {
-            if (literalExpression == null)
-                throw new ArgumentNullException(nameof(literalExpression));
-
-            return literalExpression.IsKind(SyntaxKind.NumericLiteralExpression)
-                && string.Equals(literalExpression.Token.ValueText, "0", StringComparison.Ordinal);
-        }
-
-        internal static bool IsOneNumericLiteral(this LiteralExpressionSyntax literalExpression)
-        {
-            if (literalExpression == null)
-                throw new ArgumentNullException(nameof(literalExpression));
-
-            return literalExpression.IsKind(SyntaxKind.NumericLiteralExpression)
-                && string.Equals(literalExpression.Token.ValueText, "1", StringComparison.Ordinal);
         }
 
         internal static string GetStringLiteralInnerText(this LiteralExpressionSyntax literalExpression)
@@ -2600,7 +2579,7 @@ namespace Roslynator.CSharp
             return node?.IsKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression) == true;
         }
 
-        public static bool IsNumericLiteralExpression(this SyntaxNode node, int value)
+        internal static bool IsNumericLiteralExpression(this SyntaxNode node, int value)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -3511,9 +3490,6 @@ namespace Roslynator.CSharp
 
         internal static bool IsEmptyOrWhitespace(this SyntaxTriviaList triviaList)
         {
-            if (!triviaList.Any())
-                return true;
-
             foreach (SyntaxTrivia trivia in triviaList)
             {
                 if (!trivia.IsWhitespaceOrEndOfLineTrivia())

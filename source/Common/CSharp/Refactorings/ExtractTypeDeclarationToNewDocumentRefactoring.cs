@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
                 newRoot,
                 ImmutableArray.CreateRange(folders));
 
-            return document.Project.Solution;
+            return document.Solution();
         }
 
         private static SyntaxNode RemoveAllButMember(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax memberDeclaration)

@@ -169,8 +169,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxTriviaList GetNewTrailingTrivia(SyntaxToken closeBrace, SyntaxToken semicolon)
         {
-            if (closeBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && semicolon.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (closeBrace.TrailingTrivia.IsEmptyOrWhitespace()
+                && semicolon.LeadingTrivia.IsEmptyOrWhitespace())
             {
                 return semicolon.TrailingTrivia;
             }

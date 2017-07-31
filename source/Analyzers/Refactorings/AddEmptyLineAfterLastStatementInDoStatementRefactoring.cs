@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                                         .GetTrailingTrivia()
                                         .FirstOrDefault(f => f.IsEndOfLineTrivia());
 
-                                    if (trivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                                    if (trivia.IsEndOfLineTrivia())
                                     {
                                         context.ReportDiagnostic(
                                             DiagnosticDescriptors.AddEmptyLineAfterLastStatementInDoStatement,

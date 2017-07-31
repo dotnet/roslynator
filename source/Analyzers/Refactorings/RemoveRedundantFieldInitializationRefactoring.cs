@@ -57,10 +57,10 @@ namespace Roslynator.CSharp.Refactorings
 
             var removeOptions = SyntaxRemoveOptions.KeepExteriorTrivia;
 
-            if (initializer.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (initializer.GetLeadingTrivia().IsEmptyOrWhitespace())
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (initializer.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (initializer.GetTrailingTrivia().IsEmptyOrWhitespace())
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
             VariableDeclaratorSyntax newNode = variableDeclarator

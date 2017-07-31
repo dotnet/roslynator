@@ -87,14 +87,20 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             {
                 int endIndex = grouping.Key - start;
 
-                sb.Append(text.Substring(startIndex, endIndex - startIndex));
+                sb.Append(text, startIndex, endIndex - startIndex);
 
                 foreach (ElementInfo<TNode> elementInfo in grouping)
                 {
                     if (elementInfo.NewLinePosition == NewLinePosition.Beginning)
                         sb.AppendLine();
 
-                    sb.Append($"/// <{ElementName} name=\"{elementInfo.Name}\"></{ElementName}>");
+                    sb.Append("/// <")
+                        .Append(ElementName)
+                        .Append(" name=\"")
+                        .Append(elementInfo.Name)
+                        .Append("\"></")
+                        .Append(ElementName)
+                        .Append(">");
 
                     if (elementInfo.NewLinePosition == NewLinePosition.End)
                         sb.AppendLine();

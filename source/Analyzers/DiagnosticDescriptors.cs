@@ -819,7 +819,7 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor UsePostfixUnaryOperatorInsteadOfAssignment = new DiagnosticDescriptor(
             id: DiagnosticIdentifiers.UsePostfixUnaryOperatorInsteadOfAssignment,
-            title: "Use postfix unary operator instead of assignment.",
+            title: "Use --/++ operator instead of assignment.",
             messageFormat: "Use {0} operator instead of assignment.",
             category: DiagnosticCategories.Simplification,
             defaultSeverity: DiagnosticSeverity.Info,

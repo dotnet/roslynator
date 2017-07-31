@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (!openParen.IsMissing
                         && !closeParen.IsMissing
-                        && openParen.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && closeParen.LeadingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        && openParen.TrailingTrivia.IsEmptyOrWhitespace()
+                        && closeParen.LeadingTrivia.IsEmptyOrWhitespace())
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyArgumentList, argumentList);
                     }

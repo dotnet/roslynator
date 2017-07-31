@@ -57,6 +57,7 @@ namespace Roslynator.CSharp.Analyzers.Test
             var items = new List<string>();
 
             IEnumerable<object> q = items.Where(f => f is object).Cast<object>();
+            IEnumerable<object> q2 = items.Where((f) => f is object).Cast<object>();
 
             q = items.Where(f =>
             {

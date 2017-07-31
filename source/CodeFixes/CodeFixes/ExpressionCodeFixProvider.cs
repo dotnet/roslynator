@@ -186,7 +186,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 parent = parent.Parent;
 
-                if (parent.IsKind(SyntaxKind.VariableDeclarator))
+                if (parent?.IsKind(SyntaxKind.VariableDeclarator) == true)
                 {
                     parent = parent.Parent;
 

@@ -29,8 +29,10 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (!openBrace.IsMissing
                         && !closeBrace.IsMissing
-                        && openBrace.GetLeadingAndTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                        && closeBrace.GetLeadingAndTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        && openBrace.LeadingTrivia.IsEmptyOrWhitespace()
+                        && openBrace.TrailingTrivia.IsEmptyOrWhitespace()
+                        && closeBrace.LeadingTrivia.IsEmptyOrWhitespace()
+                        && closeBrace.TrailingTrivia.IsEmptyOrWhitespace())
                     {
                         string title = node.GetTitle();
 

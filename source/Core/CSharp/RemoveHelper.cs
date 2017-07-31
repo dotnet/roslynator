@@ -17,10 +17,10 @@ namespace Roslynator.CSharp
         {
             SyntaxRemoveOptions removeOptions = DefaultRemoveOptions;
 
-            if (node.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (node.GetLeadingTrivia().IsEmptyOrWhitespace())
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (node.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (node.GetTrailingTrivia().IsEmptyOrWhitespace())
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
             return removeOptions;
@@ -30,10 +30,10 @@ namespace Roslynator.CSharp
         {
             SyntaxRemoveOptions removeOptions = DefaultRemoveOptions;
 
-            if (node.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (node.GetLeadingTrivia().IsEmptyOrWhitespace())
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
-            if (node.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (node.GetTrailingTrivia().IsEmptyOrWhitespace())
                 removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
 
             return removeOptions;

@@ -14,6 +14,10 @@ namespace Roslynator
 {
     public static class SyntaxExtensions
     {
+        private static readonly SyntaxAnnotation[] _formatterAnnotationArray = new SyntaxAnnotation[] { Formatter.Annotation };
+
+        private static readonly SyntaxAnnotation[] _simplifierAnnotationArray = new SyntaxAnnotation[] { Simplifier.Annotation };
+
         private static readonly SyntaxAnnotation[] _formatterAndSimplifierAnnotations = new SyntaxAnnotation[] { Formatter.Annotation, Simplifier.Annotation };
 
         #region SeparatedSyntaxList<T>
@@ -325,7 +329,7 @@ namespace Roslynator
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.WithAdditionalAnnotations(Formatter.Annotation);
+            return node.WithAdditionalAnnotations(_formatterAnnotationArray);
         }
 
         public static TNode WithSimplifierAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
@@ -333,7 +337,7 @@ namespace Roslynator
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.WithAdditionalAnnotations(Simplifier.Annotation);
+            return node.WithAdditionalAnnotations(_simplifierAnnotationArray);
         }
 
         internal static TNode WithFormatterAndSimplifierAnnotations<TNode>(this TNode node) where TNode : SyntaxNode
@@ -520,12 +524,12 @@ namespace Roslynator
 
         public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)
         {
-            return token.WithAdditionalAnnotations(Formatter.Annotation);
+            return token.WithAdditionalAnnotations(_formatterAnnotationArray);
         }
 
         public static SyntaxToken WithSimplifierAnnotation(this SyntaxToken token)
         {
-            return token.WithAdditionalAnnotations(Simplifier.Annotation);
+            return token.WithAdditionalAnnotations(_simplifierAnnotationArray);
         }
 
         internal static SyntaxToken WithFormatterAndSimplifierAnnotations(this SyntaxToken token)

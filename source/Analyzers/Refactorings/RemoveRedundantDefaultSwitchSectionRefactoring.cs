@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SwitchStatementSyntax GetNewSwitchStatement(SwitchSectionSyntax switchSection, SwitchStatementSyntax switchStatement)
         {
-            if (switchSection.GetLeadingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (switchSection.GetLeadingTrivia().IsEmptyOrWhitespace())
             {
                 int index = switchStatement.Sections.IndexOf(switchSection);
 
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SwitchSectionSyntax previousSection = switchStatement.Sections[index - 1];
 
-                    if (previousSection.GetTrailingTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                    if (previousSection.GetTrailingTrivia().IsEmptyOrWhitespace())
                     {
                         SwitchStatementSyntax newSwitchStatement = switchStatement.RemoveNode(
                             switchSection,
@@ -107,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxToken openBrace = switchStatement.OpenBraceToken;
 
                     if (!openBrace.IsMissing
-                        && openBrace.TrailingTrivia.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                        && openBrace.TrailingTrivia.IsEmptyOrWhitespace())
                     {
                         return switchStatement
                             .RemoveNode(switchSection, SyntaxRemoveOptions.KeepNoTrivia)
