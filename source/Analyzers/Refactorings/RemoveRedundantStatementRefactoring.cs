@@ -19,20 +19,29 @@ namespace Roslynator.CSharp.Refactorings
             Analyze(
                 context,
                 f => f == SyntaxKind.DoStatement
-                    || f == SyntaxKind.WhileStatement
-                    || f == SyntaxKind.ForStatement
-                    || f == SyntaxKind.ForEachStatement);
+                     || f == SyntaxKind.WhileStatement
+                     || f == SyntaxKind.ForStatement
+                     || f == SyntaxKind.ForEachStatement);
         }
 
         internal static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
         {
-            Analyze(
-                context,
-                f => f == SyntaxKind.ConstructorDeclaration
-                    || f == SyntaxKind.DestructorDeclaration
-                    || f == SyntaxKind.MethodDeclaration
-                    || f == SyntaxKind.SetAccessorDeclaration
-                    || f == SyntaxKind.LocalFunctionStatement);
+            if (context.Node.SpanContainsDirectives())
+                return;
+
+            var returnStatement = (ReturnStatementSyntax)context.Node;
+
+            if (returnStatement.Expression == null)
+            {
+                Analyze(
+                    context,
+                    returnStatement,
+                    f => f == SyntaxKind.ConstructorDeclaration
+                         || f == SyntaxKind.DestructorDeclaration
+                         || f == SyntaxKind.MethodDeclaration
+                         || f == SyntaxKind.SetAccessorDeclaration
+                         || f == SyntaxKind.LocalFunctionStatement);
+            }
         }
 
         internal static void AnalyzeYieldBreakStatement(SyntaxNodeAnalysisContext context)
@@ -40,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
             Analyze(
                 context,
                 f => f == SyntaxKind.MethodDeclaration
-                    || f == SyntaxKind.LocalFunctionStatement);
+                     || f == SyntaxKind.LocalFunctionStatement);
         }
 
         private static void Analyze(SyntaxNodeAnalysisContext context, Func<SyntaxKind, bool> predicate)
@@ -50,6 +59,11 @@ namespace Roslynator.CSharp.Refactorings
 
             var statement = (StatementSyntax)context.Node;
 
+            Analyze(context, statement, predicate);
+        }
+
+        private static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement, Func<SyntaxKind, bool> predicate)
+        {
             if (statement.IsParentKind(SyntaxKind.Block))
             {
                 var block = (BlockSyntax)statement.Parent;
