@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -28,13 +27,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ConditionalExpressionSyntax conditionalExpression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ConditionalExpressionSyntax>();
-
-            Debug.Assert(conditionalExpression != null, $"{nameof(conditionalExpression)} is null");
-
-            if (conditionalExpression == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConditionalExpressionSyntax conditionalExpression))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

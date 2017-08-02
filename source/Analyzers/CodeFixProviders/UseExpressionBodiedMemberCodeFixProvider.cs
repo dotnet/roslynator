@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExpressionBodiedMemberCodeFixProvider))]
     [Shared]
@@ -25,21 +24,15 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SyntaxNode node = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<SyntaxNode>(f => Predicate(f));
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => Predicate(f)))
+                return;
 
-            Debug.Assert(node != null, "");
+            CodeAction codeAction = CodeAction.Create(
+                "Use expression-bodied member",
+                cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, node, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.UseExpressionBodiedMember));
 
-            if (node != null)
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    "Use expression-bodied member",
-                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, node, cancellationToken),
-                    DiagnosticIdentifiers.UseExpressionBodiedMember + EquivalenceKeySuffix);
-
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
-            }
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
 
         private bool Predicate(SyntaxNode node)

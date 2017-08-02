@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -12,7 +11,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddParenthesesCodeFixProvider))]
     [Shared]
@@ -27,19 +26,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            var expression = (ExpressionSyntax)root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf(f => f.IsKind(SyntaxKind.ConditionalExpression) || f is BinaryExpressionSyntax);
-
-            Debug.Assert(expression != null, $"{nameof(expression)} is null");
-
-            if (expression == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression, predicate: f => f.IsKind(SyntaxKind.ConditionalExpression) || f is BinaryExpressionSyntax))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 $"Parenthesize '{expression}'",
                 cancellationToken => AddParenthesesAccordingToOperatorPrecedenceRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
-                DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AddParenthesesAccordingToOperatorPrecedence));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

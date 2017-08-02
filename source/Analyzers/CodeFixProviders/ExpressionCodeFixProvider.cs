@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -11,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ExpressionCodeFixProvider))]
     [Shared]
@@ -26,13 +25,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ExpressionSyntax expression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ExpressionSyntax>();
-
-            Debug.Assert(expression != null, $"{nameof(expression)} is null");
-
-            if (expression == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -46,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     ? "Use string literal instead of character literal"
                                     : "Call 'ToString'",
                                 cancellationToken => AvoidBoxingOfValueTypeRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

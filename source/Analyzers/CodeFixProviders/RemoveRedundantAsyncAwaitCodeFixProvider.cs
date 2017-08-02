@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantAsyncAwaitCodeFixProvider))]
     [Shared]
@@ -25,24 +24,20 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SyntaxNode node = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf(f => f.IsKind(
-                    SyntaxKind.MethodDeclaration,
-                    SyntaxKind.LocalFunctionStatement,
-                    SyntaxKind.SimpleLambdaExpression,
-                    SyntaxKind.ParenthesizedLambdaExpression,
-                    SyntaxKind.AnonymousMethodExpression));
-
-            Debug.Assert(node != null, $"{nameof(node)} is null");
-
-            if (node == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
+                 SyntaxKind.MethodDeclaration,
+                SyntaxKind.LocalFunctionStatement,
+                SyntaxKind.SimpleLambdaExpression,
+                SyntaxKind.ParenthesizedLambdaExpression,
+                SyntaxKind.AnonymousMethodExpression)))
+{
                 return;
+            }
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove redundant async/await",
                 cancellationToken => RemoveRedundantAsyncAwaitRefactoring.RefactorAsync(context.Document, node, cancellationToken),
-                DiagnosticIdentifiers.RemoveRedundantAsyncAwait + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantAsyncAwait));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

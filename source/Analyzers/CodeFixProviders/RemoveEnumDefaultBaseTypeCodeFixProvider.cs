@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveEnumDefaultBaseTypeCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SimpleBaseTypeSyntax baseType = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<SimpleBaseTypeSyntax>();
-
-            if (baseType == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SimpleBaseTypeSyntax baseType))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove default underlying type",
                 cancellationToken => RemoveEnumDefaultUnderlyingTypeRefactoring.RefactorAsync(context.Document, baseType, cancellationToken),
-                DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEnumDefaultUnderlyingType));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

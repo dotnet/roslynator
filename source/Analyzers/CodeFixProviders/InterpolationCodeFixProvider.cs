@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InterpolationCodeFixProvider))]
     [Shared]
@@ -25,13 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            InterpolationSyntax interpolation = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<InterpolationSyntax>();
-
-            Debug.Assert(interpolation != null, $"{nameof(interpolation)} is null");
-
-            if (interpolation == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out InterpolationSyntax interpolation))
                 return;
 
             string innerText = ((LiteralExpressionSyntax)interpolation.Expression).GetStringLiteralInnerText();
@@ -39,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 $"Merge '{innerText}' into interpolated string",
                 cancellationToken => MergeInterpolationIntoInterpolatedStringRefactoring.RefactorAsync(context.Document, interpolation, cancellationToken),
-                DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

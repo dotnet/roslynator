@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,11 +9,11 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CompositeEnumValueContainsUndefinedFlagCodeFixProvider))]
     [Shared]
-    public class CompositeEnumValueContainsUndefinedFlagCodeFixProvider : CodeFixProvider
+    public class CompositeEnumValueContainsUndefinedFlagCodeFixProvider : AbstractCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -25,13 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            EnumDeclarationSyntax enumDeclaration = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<EnumDeclarationSyntax>();
-
-            Debug.Assert(enumDeclaration != null, $"{enumDeclaration} is null");
-
-            if (enumDeclaration == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out EnumDeclarationSyntax enumDeclaration))
                 return;
 
             string value = context.Diagnostics[0].Properties["Value"];
@@ -39,9 +32,9 @@ namespace Roslynator.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 $"Declare enum member with value {value}",
                 cancellationToken => CompositeEnumValueContainsUndefinedFlagRefactoring.RefactorAsync(context.Document, enumDeclaration, value, cancellationToken),
-                DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag + BaseCodeFixProvider.EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+            context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
         }
     }
 }

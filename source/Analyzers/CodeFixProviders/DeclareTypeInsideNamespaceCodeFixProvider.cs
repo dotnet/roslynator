@@ -2,16 +2,14 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DeclareTypeInsideNamespaceCodeFixProvider))]
     [Shared]
@@ -26,14 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SyntaxToken identifier = root.FindToken(context.Span.Start);
-
-            Debug.Assert(!identifier.IsKind(SyntaxKind.None), identifier.Kind().ToString());
+            if (TryFindToken(root, context.Span.Start, out SyntaxToken identifier))
+                return;
 
             CodeAction codeAction = CodeAction.Create(
                 $"Declare '{identifier.ValueText}' inside namespace",
                 cancellationToken => DeclareTypeInsideNamespaceRefactoring.RefactorAsync(context.Document, (MemberDeclarationSyntax)identifier.Parent, cancellationToken),
-                DiagnosticIdentifiers.DeclareTypeInsideNamespace + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.DeclareTypeInsideNamespace));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

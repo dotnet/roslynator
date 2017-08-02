@@ -31,12 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            //TODO: TryFindFirstAncestorOrSelf
-            AttributeSyntax attribute = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<AttributeSyntax>();
-
-            if (attribute == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeSyntax attribute))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

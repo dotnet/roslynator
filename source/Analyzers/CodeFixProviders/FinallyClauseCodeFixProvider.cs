@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FinallyClauseCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            FinallyClauseSyntax finallyClause = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<FinallyClauseSyntax>();
-
-            if (finallyClause == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out FinallyClauseSyntax finallyClause))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty finally clause",
                 cancellationToken => RemoveEmptyFinallyClauseRefactoring.RefactorAsync(context.Document, finallyClause, cancellationToken),
-                DiagnosticIdentifiers.RemoveEmptyFinallyClause + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyFinallyClause));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

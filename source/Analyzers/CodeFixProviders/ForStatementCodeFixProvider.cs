@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ForStatementCodeFixProvider))]
     [Shared]
@@ -25,13 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ForStatementSyntax forStatement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ForStatementSyntax>();
-
-            Debug.Assert(forStatement != null, $"{nameof(forStatement)} is null");
-
-            if (forStatement == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ForStatementSyntax forStatement))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -49,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                         forStatement,
                                         cancellationToken);
                                 },
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

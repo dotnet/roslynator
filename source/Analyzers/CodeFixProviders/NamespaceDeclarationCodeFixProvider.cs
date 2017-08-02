@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(NamespaceDeclarationCodeFixProvider))]
     [Shared]
@@ -30,13 +29,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            NamespaceDeclarationSyntax namespaceDeclaration = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<NamespaceDeclarationSyntax>();
-
-            Debug.Assert(namespaceDeclaration != null, $"{nameof(namespaceDeclaration)} is null");
-
-            if (namespaceDeclaration == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out NamespaceDeclarationSyntax namespaceDeclaration))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -48,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove empty namespace declaration",
                                 cancellationToken => RemoveEmptyNamespaceDeclarationRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
@@ -62,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 title,
                                 cancellationToken => DeclareUsingDirectiveOnTopLevelRefactoring.RefactorAsync(context.Document, namespaceDeclaration, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

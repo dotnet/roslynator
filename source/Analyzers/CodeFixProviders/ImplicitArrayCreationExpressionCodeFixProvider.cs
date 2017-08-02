@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ImplicitArrayCreationExpressionCodeFixProvider))]
     [Shared]
@@ -24,11 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ImplicitArrayCreationExpressionSyntax expression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ImplicitArrayCreationExpressionSyntax>();
-
-            if (expression == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ImplicitArrayCreationExpressionSyntax expression))
                 return;
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -38,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 $"Declare explicit type '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, expression.Span.Start)}'",
                 cancellationToken => AvoidImplicitlyTypedArrayRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
-                DiagnosticIdentifiers.AvoidImplicitlyTypedArray + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AvoidImplicitlyTypedArray));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

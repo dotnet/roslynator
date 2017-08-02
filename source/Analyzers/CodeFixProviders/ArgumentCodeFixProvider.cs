@@ -9,9 +9,8 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
-using System.Diagnostics;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ArgumentCodeFixProvider))]
     [Shared]
@@ -26,13 +25,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ArgumentSyntax argument = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ArgumentSyntax>();
-
-            Debug.Assert(argument != null, $"{nameof(argument)} is null");
-
-            if (argument == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ArgumentSyntax argument))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -46,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 $"Optimize '{memberInvocation.NameText}' call",
                                 cancellationToken => OptimizeStringBuilderAppendCallRefactoring.RefactorAsync(context.Document, argument, memberInvocation, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

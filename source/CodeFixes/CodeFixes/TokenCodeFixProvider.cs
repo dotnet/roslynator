@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Comparers;
-using Roslynator.CSharp.Helpers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -40,14 +38,10 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SyntaxToken token = root.FindToken(context.Span.Start);
-
-            Debug.Assert(!token.IsKind(SyntaxKind.None), $"{nameof(token)} is none");
+            if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
+                return;
 
             SyntaxKind kind = token.Kind();
-
-            if (kind == SyntaxKind.None)
-                return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {

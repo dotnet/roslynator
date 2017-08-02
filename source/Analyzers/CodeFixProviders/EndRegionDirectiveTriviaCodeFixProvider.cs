@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -11,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(EndRegionDirectiveTriviaCodeFixProvider))]
     [Shared]
@@ -26,13 +25,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            EndRegionDirectiveTriviaSyntax endRegionDirective = root
-                .FindNode(context.Span, findInsideTrivia: true, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<EndRegionDirectiveTriviaSyntax>();
-
-            Debug.Assert(endRegionDirective != null, $"{nameof(endRegionDirective)} is null");
-
-            if (endRegionDirective == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out EndRegionDirectiveTriviaSyntax endRegionDirective, findInsideTrivia: true))
                 return;
 
             RegionDirectiveTriviaSyntax regionDirective = endRegionDirective.GetRegionDirective();
@@ -44,7 +37,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                     ? "Add region name to #endregion"
                     : "Remove region name from #endregion",
                 cancellationToken => AddOrRemoveRegionNameRefactoring.RefactorAsync(context.Document, endRegionDirective, trivia, cancellationToken),
-                DiagnosticIdentifiers.AddOrRemoveRegionName + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AddOrRemoveRegionName));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

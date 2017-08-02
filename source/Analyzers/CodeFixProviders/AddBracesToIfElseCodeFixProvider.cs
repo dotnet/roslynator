@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBracesToIfElseCodeFixProvider))]
     [Shared]
@@ -24,11 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            IfStatementSyntax ifStatement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<IfStatementSyntax>();
-
-            if (ifStatement == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out IfStatementSyntax ifStatement))
                 return;
 
             ifStatement = ifStatement.GetTopmostIf();
@@ -36,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 "Add braces to if-else",
                 cancellationToken => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
-                DiagnosticIdentifiers.AddBracesToIfElse + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AddBracesToIfElse));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

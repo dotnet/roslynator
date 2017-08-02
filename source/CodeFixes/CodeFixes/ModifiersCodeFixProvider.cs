@@ -92,9 +92,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SyntaxToken token = root.FindToken(context.Span.Start);
-
-            if (token.IsKind(SyntaxKind.None))
+            if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
                 return;
 
             SyntaxNode node = token.Parent;

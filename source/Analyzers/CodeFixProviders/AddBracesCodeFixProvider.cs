@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddBracesCodeFixProvider))]
     [Shared]
@@ -31,13 +30,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            StatementSyntax statement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<StatementSyntax>();
-
-            Debug.Assert(statement != null, $"{nameof(statement)} is null");
-
-            if (statement == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -45,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                 CodeAction codeAction = CodeAction.Create(
                     "Add braces",
                     cancellationToken => AddBracesRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
-                    diagnostic.Id + EquivalenceKeySuffix);
+                    GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }

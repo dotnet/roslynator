@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -28,11 +27,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            var binaryExpression = root.FindNode(context.Span, getInnermostNodeForTie: true) as BinaryExpressionSyntax;
-
-            Debug.Assert(binaryExpression != null, $"{nameof(binaryExpression)} is null");
-
-            if (binaryExpression == null)
+            if (!TryFindNode(root, context.Span, out BinaryExpressionSyntax binaryExpression))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

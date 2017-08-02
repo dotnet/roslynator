@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ArgumentListCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ArgumentListSyntax argumentList = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ArgumentListSyntax>();
-
-            if (argumentList == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ArgumentListSyntax argumentList))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty argument list",
                 cancellationToken => RemoveEmptyArgumentListRefactoring.RefactorAsync(context.Document, argumentList, cancellationToken),
-                DiagnosticIdentifiers.RemoveEmptyArgumentList + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyArgumentList));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

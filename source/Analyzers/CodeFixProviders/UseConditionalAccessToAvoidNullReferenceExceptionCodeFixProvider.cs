@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseConditionalAccessToAvoidNullReferenceExceptionCodeFixProvider))]
     [Shared]
@@ -25,12 +25,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            //TODO: TryFindFirstAncestorOrSelf
-            SyntaxNode node = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression);
-
-            if (node == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)))
                 return;
 
             ExpressionSyntax expression = null;
@@ -52,7 +47,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 "Use conditional access",
                 cancellationToken => UseConditionalAccessToAvoidNullReferenceExceptionRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
-                DiagnosticIdentifiers.UseConditionalAccessToAvoidNullReferenceException + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.UseConditionalAccessToAvoidNullReferenceException));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

@@ -49,6 +49,7 @@
     <Compile Include="CodeFixes\AddBracesToDeclarationOrLabeledStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBreakStatementToSwitchSectionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AssignDefaultValueToOutParameterCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AttributeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ConditionalExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\LocalDeclarationStatementCodeFixProvider.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="CodeFixes\ExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\RemovePropertyOrFieldInitializerCodeFixProvider.cs" />
     <Compile Include="CodeFixes\RemoveUnusedVariableCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixes\SimpleNameCodeFixProvider.cs" />
     <Compile Include="CodeFixes\StatementCodeFixProvider.cs" />

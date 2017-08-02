@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(TypeCodeFixProvider))]
     [Shared]
@@ -25,13 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            TypeSyntax type = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<TypeSyntax>();
-
-            Debug.Assert(type != null, $"{nameof(type)} is null");
-
-            if (type == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeSyntax type))
                 return;
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -41,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 $"Use '{newType}'",
                 cancellationToken => UseGenericEventHandlerRefactoring.RefactorAsync(context.Document, type, cancellationToken),
-                DiagnosticIdentifiers.UseGenericEventHandler + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.UseGenericEventHandler));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

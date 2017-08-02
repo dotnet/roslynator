@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(InterpolatedStringCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            InterpolatedStringExpressionSyntax interpolatedString = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<InterpolatedStringExpressionSyntax>();
-
-            if (interpolatedString == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out InterpolatedStringExpressionSyntax interpolatedString))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove $",
                 cancellationToken => ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
-                DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

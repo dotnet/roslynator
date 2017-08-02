@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -38,13 +37,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            TypeParameterConstraintClauseSyntax constraintClause = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<TypeParameterConstraintClauseSyntax>();
-
-            Debug.Assert(constraintClause != null, $"{nameof(constraintClause)} is null");
-
-            if (constraintClause == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeParameterConstraintClauseSyntax constraintClause))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

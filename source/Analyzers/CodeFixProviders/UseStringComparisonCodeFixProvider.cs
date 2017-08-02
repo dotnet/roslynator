@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -12,7 +11,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseStringComparisonCodeFixProvider))]
     [Shared]
@@ -27,17 +26,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SyntaxNode node = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf(f => f.IsKind(
-                    SyntaxKind.EqualsExpression,
-                    SyntaxKind.NotEqualsExpression,
-                    SyntaxKind.InvocationExpression));
-
-            Debug.Assert(node != null, $"{nameof(node)} is null");
-
-            if (node == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
+                 SyntaxKind.EqualsExpression,
+                SyntaxKind.NotEqualsExpression,
+                SyntaxKind.InvocationExpression)))
+            {
                 return;
+            }
 
             switch (node.Kind())
             {
@@ -66,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             return CodeAction.Create(
                 GetTitle(stringComparison),
                 cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, binaryExpression, stringComparison, cancellationToken),
-                DiagnosticIdentifiers.UseStringComparison + stringComparison + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.UseStringComparison, stringComparison.ToString()));
         }
 
         private static CodeAction CreateCodeAction(CodeFixContext context, InvocationExpressionSyntax invocation, StringComparison stringComparison)
@@ -74,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             return CodeAction.Create(
                 GetTitle(stringComparison),
                 cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, invocation, stringComparison, cancellationToken),
-                DiagnosticIdentifiers.UseStringComparison + stringComparison + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.UseStringComparison, stringComparison.ToString()));
         }
 
         private static string GetTitle(StringComparison stringComparison)

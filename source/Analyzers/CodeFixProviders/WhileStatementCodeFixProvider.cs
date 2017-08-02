@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(WhileStatementCodeFixProvider))]
     [Shared]
@@ -24,11 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            WhileStatementSyntax whileStatement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<WhileStatementSyntax>();
-
-            if (whileStatement == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out WhileStatementSyntax whileStatement))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
@@ -40,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         whileStatement,
                         cancellationToken);
                 },
-                DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfWhileStatementToCreateInfiniteLoop));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
