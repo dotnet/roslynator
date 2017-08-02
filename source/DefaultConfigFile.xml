@@ -224,7 +224,7 @@
       <CodeFix Id="RCF0033" IsEnabled="true" /> <!-- AddStaticModifier (fixes CS0708, CS0710, CS1105, CS1106) -->
       <CodeFix Id="RCF0034" IsEnabled="true" /> <!-- MakeContainingClassAbstract (fixes CS0513) -->
       <CodeFix Id="RCF0035" IsEnabled="false" /> <!-- AddSemicolon (fixes CS1002) -->
-      <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- SynchronizeAccessibility (fixes CS0266) -->
+      <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- SynchronizeAccessibility (fixes CS0262) -->
       <CodeFix Id="RCF0037" IsEnabled="true" /> <!-- RemoveArgumentList (fixes CS1955) -->
       <CodeFix Id="RCF0038" IsEnabled="true" /> <!-- FixMemberAccessName (fixes CS1061) -->
       <CodeFix Id="RCF0039" IsEnabled="true" /> <!-- AddArgumentList (fixes CS0428, CS0023) -->
@@ -259,6 +259,9 @@
       <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- MakeClassNonStatic (fixes CS0718) -->
       <CodeFix Id="RCF0069" IsEnabled="true" /> <!-- RemoveYieldKeyword (fixes CS1621) -->
       <CodeFix Id="RCF0070" IsEnabled="true" /> <!-- RemoveOutModifier (fixes CS1988) -->
+      <CodeFix Id="RCF0071" IsEnabled="true" /> <!-- RemoveAttribute (fixes CS0592, CS1689) -->
+      <CodeFix Id="RCF0072" IsEnabled="true" /> <!-- RemoveJumpStatement (fixes CS0139) -->
+      <CodeFix Id="RCF0073" IsEnabled="true" /> <!-- UseCoalesceExpression (fixes CS0266) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

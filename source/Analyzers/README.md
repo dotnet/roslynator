@@ -86,7 +86,7 @@ RCS1085|Use auto\-implemented property|Simplification|x
 RCS1086|Use linefeed as newline|General|
 RCS1087|Use carriage return \+ linefeed as newline|General|
 RCS1088|Use space\(s\) instead of tab|General|
-RCS1089|Use postfix unary operator instead of assignment|Simplification|x
+RCS1089|Use \-\-/\+\+ operator instead of assignment|Simplification|x
 RCS1090|Call 'ConfigureAwait\(false\)'|Design|x
 RCS1091|Remove empty region|Redundancy|x
 RCS1092|Add empty line after last statement in do statement|Formatting|
@@ -113,7 +113,7 @@ RCS1112|Combine 'Enumerable\.Where' method chain|Simplification|x
 RCS1113|Use 'string\.IsNullOrEmpty' method|Usage|x
 RCS1114|Remove redundant delegate creation|Redundancy|x
 RCS1118|Mark local variable as const|General|x
-RCS1119|Call 'Find' method instead of 'FirstOrDefault' method|Performance|x
+RCS1119|Call 'Find' instead of 'FirstOrDefault'|Performance|x
 RCS1120|Use \[\] instead of calling 'ElementAt'|Performance|x
 RCS1121|Use \[\] instead of calling 'First'|Performance|x
 RCS1123|Add parentheses according to operator precedence|Readability|x
@@ -125,7 +125,7 @@ RCS1129|Remove redundant field initalization|Redundancy|x
 RCS1130|Bitwise operation on enum without Flags attribute|General|x
 RCS1132|Remove redundant overriding member|Redundancy|x
 RCS1133|Remove redundant Dispose/Close call|Redundancy|x
-RCS1134|Remove redundant continue statement|Redundancy|x
+RCS1134|Remove redundant statement|Redundancy|x
 RCS1135|Declare enum member with zero value \(when enum has FlagsAttribute\)|Design|x
 RCS1136|Merge switch sections with equivalent content|Simplification|x
 RCS1138|Add summary to documentation comment|Maintainability|x
@@ -183,3 +183,12 @@ RCS1195|Use ^ operator|Simplification|x
 RCS1196|Call extension method as instance method|Style|x
 RCS1197|Optimize StringBuilder\.Append/AppendLine call|Performance|x
 RCS1198|Avoid unnecessary boxing of value type|Performance|
+RCS1199|Simplify boolean expression|Simplification|x
+RCS1200|Call 'Enumerable\.ThenBy' instead of 'Enumerable\.OrderBy'|Usage|x
+RCS1201|Use method chaining|Simplification|x
+RCS1202|Avoid NullReferenceException|Usage|x
+RCS1203|Use AttributeUsageAttribute|Design|x
+RCS1204|Use EventArgs\.Empty|Usage|x
+RCS1205|Reorder named arguments according to the order of parameters|Readability|x
+RCS1206|Use conditional access instead of conditional expression|Usage|x
+RCS1207|Use method group instead of anonymous function|Simplification|x

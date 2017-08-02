@@ -14,6 +14,7 @@ Design|Make class static|RCS1102|x
 Design|Mark field as read\-only|RCS1169|x
 Design|Overriding member cannot change 'params' modifier|RCS1193|x
 Design|Static member in generic type should use a type parameter|RCS1158|x
+Design|Use AttributeUsageAttribute|RCS1203|x
 Design|Use constant instead of field|RCS1187|x
 Design|Use read\-only auto\-implemented property|RCS1170|x
 Formatting|Add empty line after closing brace|RCS1153|
@@ -54,7 +55,7 @@ Naming|Asynchronous method name should end with 'Async'|RCS1046|x
 Naming|Non\-asynchronous method name should not end with 'Async'|RCS1047|x
 Naming|Rename private field according to camel case with underscore|RCS1045|
 Performance|Avoid unnecessary boxing of value type|RCS1198|
-Performance|Call 'Find' method instead of 'FirstOrDefault' method|RCS1119|x
+Performance|Call 'Find' instead of 'FirstOrDefault'|RCS1119|x
 Performance|Optimize StringBuilder\.Append/AppendLine call|RCS1197|x
 Performance|Use \[\] instead of calling 'ElementAt'|RCS1120|x
 Performance|Use \[\] instead of calling 'First'|RCS1121|x
@@ -76,6 +77,7 @@ Readability|Declare using directive on top level|RCS1094|
 Readability|Default label should be last label in switch section|RCS1099|x
 Readability|Enum member should declare explicit value|RCS1161|x
 Readability|Reorder modifiers|RCS1019|
+Readability|Reorder named arguments according to the order of parameters|RCS1205|x
 Readability|Sort enum members|RCS1154|x
 Readability|Split variable declaration|RCS1081|
 Readability|Use explicit type instead of 'var' \(foreach variable\)|RCS1009|x
@@ -104,7 +106,6 @@ Redundancy|Remove redundant boolean literal|RCS1033|x
 Redundancy|Remove redundant cast|RCS1151|x
 Redundancy|Remove redundant comma in initializer|RCS1035|x
 Redundancy|Remove redundant constructor|RCS1074|x
-Redundancy|Remove redundant continue statement|RCS1134|x
 Redundancy|Remove redundant default switch section|RCS1070|x
 Redundancy|Remove redundant delegate creation|RCS1114|x
 Redundancy|Remove redundant Dispose/Close call|RCS1133|x
@@ -113,6 +114,7 @@ Redundancy|Remove redundant field initalization|RCS1129|x
 Redundancy|Remove redundant overriding member|RCS1132|x
 Redundancy|Remove redundant parentheses|RCS1032|x
 Redundancy|Remove redundant 'sealed' modifier|RCS1034|x
+Redundancy|Remove redundant statement|RCS1134|x
 Redundancy|Remove redundant 'ToCharArray' call|RCS1107|x
 Redundancy|Remove redundant 'ToString' call|RCS1097|x
 Redundancy|Remove trailing white\-space|RCS1037|x
@@ -134,6 +136,7 @@ Simplification|Merge switch sections with equivalent content|RCS1136|x
 Simplification|Replace if statement with assignment|RCS1103|x
 Simplification|Replace if statement with return statement|RCS1073|
 Simplification|Simplify boolean comparison|RCS1049|x
+Simplification|Simplify boolean expression|RCS1199|x
 Simplification|Simplify coalesce expression|RCS1143|x
 Simplification|Simplify conditional expression|RCS1104|x
 Simplification|Simplify lambda expression parameter list|RCS1022|
@@ -143,6 +146,7 @@ Simplification|Simplify LINQ method chain|RCS1077|x
 Simplification|Simplify logical not expression|RCS1068|x
 Simplification|Simplify nested using statement|RCS1005|x
 Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
+Simplification|Use \-\-/\+\+ operator instead of assignment|RCS1089|x
 Simplification|Use ^ operator|RCS1195|x
 Simplification|Use auto\-implemented property|RCS1085|x
 Simplification|Use coalesce expression instead of conditional expression|RCS1084|x
@@ -150,7 +154,8 @@ Simplification|Use coalesce expression instead of if|RCS1173|x
 Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
 Simplification|Use is operator instead of as operator|RCS1172|x
-Simplification|Use postfix unary operator instead of assignment|RCS1089|x
+Simplification|Use method chaining|RCS1201|x
+Simplification|Use method group instead of anonymous function|RCS1207|x
 Simplification|Use return instead of assignment|RCS1179|x
 Simplification|Use 'var' instead of explicit type \(in foreach\)|RCS1177|
 Simplification|Use 'var' instead of explicit type \(when the type is not obvious\)|RCS1176|
@@ -170,10 +175,14 @@ Style|Parenthesize condition in conditional expression|RCS1051|
 Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|
+Usage|Avoid NullReferenceException|RCS1202|x
 Usage|Call Debug\.Fail instead of Debug\.Assert|RCS1178|x
+Usage|Call 'Enumerable\.ThenBy' instead of 'Enumerable\.OrderBy'|RCS1200|x
 Usage|Unconstrained type parameter checked for null|RCS1165|x
 Usage|Use C\# 6\.0 dictionary initializer|RCS1095|x
+Usage|Use conditional access instead of conditional expression|RCS1206|x
 Usage|Use conditional access|RCS1146|x
+Usage|Use EventArgs\.Empty|RCS1204|x
 Usage|Use EventHandler\<T\>|RCS1159|x
 Usage|Use expression\-bodied member|RCS1016|
 Usage|Use lambda expression instead of anonymous method|RCS1048|x
