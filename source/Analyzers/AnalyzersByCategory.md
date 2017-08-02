@@ -54,7 +54,7 @@ Naming|Asynchronous method name should end with 'Async'|RCS1046|
 Naming|Non\-asynchronous method name should not end with 'Async'|RCS1047|x
 Naming|Rename private field according to camel case with underscore|RCS1045|
 Performance|Avoid unnecessary boxing of value type|RCS1198|
-Performance|Call 'Find' method instead of 'FirstOrDefault' method|RCS1119|x
+Performance|Call 'Find' instead of 'FirstOrDefault'|RCS1119|x
 Performance|Optimize StringBuilder\.Append/AppendLine call|RCS1197|x
 Performance|Use \[\] instead of calling 'ElementAt'|RCS1120|x
 Performance|Use \[\] instead of calling 'First'|RCS1121|x
@@ -104,7 +104,6 @@ Redundancy|Remove redundant boolean literal|RCS1033|x
 Redundancy|Remove redundant cast|RCS1151|x
 Redundancy|Remove redundant comma in initializer|RCS1035|x
 Redundancy|Remove redundant constructor|RCS1074|x
-Redundancy|Remove redundant continue statement|RCS1134|x
 Redundancy|Remove redundant default switch section|RCS1070|x
 Redundancy|Remove redundant delegate creation|RCS1114|x
 Redundancy|Remove redundant Dispose/Close call|RCS1133|x
@@ -113,6 +112,7 @@ Redundancy|Remove redundant field initalization|RCS1129|x
 Redundancy|Remove redundant overriding member|RCS1132|x
 Redundancy|Remove redundant parentheses|RCS1032|x
 Redundancy|Remove redundant 'sealed' modifier|RCS1034|x
+Redundancy|Remove redundant statement|RCS1134|x
 Redundancy|Remove redundant 'ToCharArray' call|RCS1107|x
 Redundancy|Remove redundant 'ToString' call|RCS1097|x
 Redundancy|Remove trailing white\-space|RCS1037|x
@@ -134,6 +134,7 @@ Simplification|Merge switch sections with equivalent content|RCS1136|x
 Simplification|Replace if statement with assignment|RCS1103|x
 Simplification|Replace if statement with return statement|RCS1073|
 Simplification|Simplify boolean comparison|RCS1049|x
+Simplification|Simplify boolean expression|RCS1199|x
 Simplification|Simplify coalesce expression|RCS1143|x
 Simplification|Simplify conditional expression|RCS1104|x
 Simplification|Simplify lambda expression parameter list|RCS1022|
@@ -143,6 +144,7 @@ Simplification|Simplify LINQ method chain|RCS1077|x
 Simplification|Simplify logical not expression|RCS1068|x
 Simplification|Simplify nested using statement|RCS1005|x
 Simplification|Simplify Nullable\<T\> to T?|RCS1020|x
+Simplification|Use \-\-/\+\+ operator instead of assignment|RCS1089|x
 Simplification|Use ^ operator|RCS1195|x
 Simplification|Use auto\-implemented property|RCS1085|x
 Simplification|Use coalesce expression instead of conditional expression|RCS1084|x
@@ -150,7 +152,7 @@ Simplification|Use coalesce expression instead of if|RCS1173|x
 Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
 Simplification|Use is operator instead of as operator|RCS1172|x
-Simplification|Use postfix unary operator instead of assignment|RCS1089|x
+Simplification|Use method chaining|RCS1201|x
 Simplification|Use return instead of assignment|RCS1179|x
 Simplification|Use 'var' instead of explicit type \(in foreach\)|RCS1177|
 Simplification|Use 'var' instead of explicit type \(when the type is not obvious\)|RCS1176|
@@ -171,8 +173,10 @@ Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|
 Usage|Call Debug\.Fail instead of Debug\.Assert|RCS1178|x
+Usage|Call 'Enumerable\.ThenBy' instead of 'Enumerable\.OrderBy'|RCS1200|x
 Usage|Unconstrained type parameter checked for null|RCS1165|x
 Usage|Use C\# 6\.0 dictionary initializer|RCS1095|x
+Usage|Use conditional access to avoid NullReferenceException|RCS1202|x
 Usage|Use conditional access|RCS1146|x
 Usage|Use EventHandler\<T\>|RCS1159|x
 Usage|Use expression\-bodied member|RCS1016|

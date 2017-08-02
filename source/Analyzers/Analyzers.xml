@@ -758,7 +758,7 @@
   </Analyzer>
   <Analyzer Identifier="UsePostfixUnaryOperatorInsteadOfAssignment">
     <Id>RCS1089</Id>
-    <Title>Use postfix unary operator instead of assignment.</Title>
+    <Title>Use --/++ operator instead of assignment.</Title>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -999,9 +999,9 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CallFindMethodInsteadOfFirstOrDefaultMethod">
+  <Analyzer Identifier="CallFindInsteadOfFirstOrDefault">
     <Id>RCS1119</Id>
-    <Title>Call 'Find' method instead of 'FirstOrDefault' method.</Title>
+    <Title>Call 'Find' instead of 'FirstOrDefault'.</Title>
     <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1107,9 +1107,9 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantContinueStatement">
+  <Analyzer Identifier="RemoveRedundantStatement">
     <Id>RCS1134</Id>
-    <Title>Remove redundant continue statement.</Title>
+    <Title>Remove redundant statement.</Title>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -1626,6 +1626,42 @@
     <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="SimplifyBooleanExpression">
+    <Id>RCS1199</Id>
+    <Title>Simplify boolean expression.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="CallThenByInsteadOfOrderBy">
+    <Id>RCS1200</Id>
+    <Title>Call 'Enumerable.ThenBy' instead of 'Enumerable.OrderBy'.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseMethodChaining">
+    <Id>RCS1201</Id>
+    <Title>Use method chaining.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseConditionalAccessToAvoidNullReferenceException">
+    <Id>RCS1202</Id>
+    <Title>Use conditional access to avoid NullReferenceException.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>

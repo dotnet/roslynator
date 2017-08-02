@@ -39,6 +39,7 @@ RCF0019|Member type must match overridden member type|[CS1715](http://docs.micro
 RCF0064|Move constraint|[CS0401](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0401), [CS0449](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0449)|x
 RCF0015|Overriding member cannot change access modifiers|[CS0507](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0507)|x
 RCF0037|Remove argument list|[CS1955](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955)|x
+RCF0071|Remove attribute|[CS0592](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0592), [CS1689](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1689)|x
 RCF0049|Remove 'await' keyword|[CS1061](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061)|x
 RCF0045|Remove 'const' modifier|[CS0133](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133)|x
 RCF0065|Remove constraint|[CS0405](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0405), [CS0450](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0450), [CS0451](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0451)|x
@@ -48,6 +49,7 @@ RCF0011|Remove duplicate modifier|[CS1004](http://docs.microsoft.com/en-us/dotne
 RCF0046|Remove empty switch statement|[CS1522](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522)|x
 RCF0032|Remove implementation from abstract member|[CS0069](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0069), [CS0500](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0500), [CS0531](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0531)|x
 RCF0055|Remove invalid modifier|[CS0107](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0107), [CS0112](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0112), [CS0115](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0115), [CS0275](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0275), [CS0441](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0441), [CS0515](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0515), [CS0678](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0678), [CS0750](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0750), [CS0753](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0753), [CS0759](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0759), [CS1609](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609), CS1994|x
+RCF0072|Remove jump statement|[CS0139](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139)|x
 RCF0056|Remove member declaration|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x
 RCF0013|Remove new modifier|[CS0109](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0109)|x
 RCF0070|Remove 'out' modifier|CS1988|x
@@ -66,8 +68,9 @@ RCF0054|Reorder modifiers|[CS0267](http://docs.microsoft.com/en-us/dotnet/csharp
 RCF0058|Replace 'null' with default value|[CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037)|x
 RCF0022|Replace string literal with character literal|[CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029)|x
 RCF0059|Replace variable declaration with assignment|[CS0128](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128), [CS0136](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136)|x
-RCF0036|SynchronizeAccessibility|[CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x
+RCF0036|SynchronizeAccessibility|[CS0262](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0262)|x
 RCF0017|Unreachable code detected|[CS0162](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0162)|x
+RCF0073|Use coalesce expression|[CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x
 RCF0048|Use explicit type instead of 'var'|[CS0819](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0819), [CS0822](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0822)|x
 RCF0031|Use unchecked expression|[CS0221](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0221)|x
 RCF0021|Use yield return instead of return|[CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029), [CS1622](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1622)|x

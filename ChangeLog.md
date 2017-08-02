@@ -1,3 +1,18 @@
+### 1.4.53 (2017-08-02)
+
+#### Code Fixes
+
+  * New code fixes for CS0139, CS0266, CS0592, CS1689.
+
+#### Analyzers
+
+##### New Analyzers
+
+* SimplifyBooleanExpression (RCS1199)
+* CallThenByInsteadOfOrderBy (RCS1200)
+* UseMethodChaining (RCS1201)
+* UseConditionalAccessToAvoidNullReferenceException (RCS1202)
+
 ### 1.4.52 (2017-07-24)
 
 #### Code Fixes
