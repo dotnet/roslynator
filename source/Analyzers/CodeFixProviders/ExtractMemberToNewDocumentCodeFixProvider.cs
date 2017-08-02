@@ -9,11 +9,11 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ExtractMemberToNewDocumentCodeFixProvider))]
     [Shared]
-    public class ExtractMemberToNewDocumentCodeFixProvider : CodeFixProvider
+    public class ExtractMemberToNewDocumentCodeFixProvider : AbstractCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -24,9 +24,8 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            MemberDeclarationSyntax memberDeclaration = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<MemberDeclarationSyntax>();
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out MemberDeclarationSyntax memberDeclaration))
+                return;
 
             string name = ExtractTypeDeclarationToNewDocumentRefactoring.GetIdentifier(memberDeclaration).ValueText;
             string title = ExtractTypeDeclarationToNewDocumentRefactoring.GetTitle(name);
@@ -34,7 +33,7 @@ namespace Roslynator.CSharp.CodeFixProviders
             CodeAction codeAction = CodeAction.Create(
                 title,
                 cancellationToken => ExtractTypeDeclarationToNewDocumentRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
-                DiagnosticIdentifiers.DeclareEachTypeInSeparateFile + BaseCodeFixProvider.EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachTypeInSeparateFile));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

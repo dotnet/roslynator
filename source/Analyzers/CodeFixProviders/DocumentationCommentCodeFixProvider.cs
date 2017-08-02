@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -10,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DocumentationCommentCodeFixProvider))]
     [Shared]
@@ -25,13 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            DocumentationCommentTriviaSyntax documentationComment = root
-                .FindNode(context.Span, findInsideTrivia: true, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<DocumentationCommentTriviaSyntax>();
-
-            Debug.Assert(documentationComment != null, $"{nameof(documentationComment)} is null");
-
-            if (documentationComment == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out DocumentationCommentTriviaSyntax documentationComment, findInsideTrivia: true))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -43,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Add summary element",
                                 cancellationToken => AddSummaryToDocumentationCommentRefactoring.RefactorAsync(context.Document, documentationComment, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

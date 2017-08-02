@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DoStatementCodeFixProvider))]
     [Shared]
@@ -22,11 +22,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            DoStatementSyntax doStatement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<DoStatementSyntax>();
-
-            if (doStatement == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out DoStatementSyntax doStatement))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
@@ -38,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         doStatement,
                         cancellationToken);
                 },
-                DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AvoidUsageOfDoStatementToCreateInfiniteLoop));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

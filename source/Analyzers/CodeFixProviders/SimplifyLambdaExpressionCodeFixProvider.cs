@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyLambdaExpressionCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            BlockSyntax block = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<BlockSyntax>();
-
-            if (block == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BlockSyntax block))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Simplify lambda expression",
                 cancellationToken => SimplifyLambdaExpressionRefactoring.RefactorAsync(context.Document, (LambdaExpressionSyntax)block.Parent, cancellationToken),
-                DiagnosticIdentifiers.SimplifyLambdaExpression + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.SimplifyLambdaExpression));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

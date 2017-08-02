@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -33,13 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            VariableDeclarationSyntax variableDeclaration = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<VariableDeclarationSyntax>();
-
-            Debug.Assert(variableDeclaration != null, $"{nameof(variableDeclaration)} is null");
-
-            if (variableDeclaration == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out VariableDeclarationSyntax variableDeclaration))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

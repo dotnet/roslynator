@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FormatBinaryOperatorOnNewLineCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            BinaryExpressionSyntax binaryExpression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<BinaryExpressionSyntax>();
-
-            if (binaryExpression == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BinaryExpressionSyntax binaryExpression))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Format binary operator on next line",
                 cancellationToken => FormatBinaryOperatorOnNextLineRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
-                DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

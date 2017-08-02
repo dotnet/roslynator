@@ -29,13 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            IdentifierNameSyntax identifierName = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<IdentifierNameSyntax>();
-
-            Debug.Assert(identifierName != null, $"{nameof(identifierName)} is null");
-
-            if (identifierName == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out IdentifierNameSyntax identifierName))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

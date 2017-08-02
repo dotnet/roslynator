@@ -9,11 +9,11 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(LockStatementCodeFixProvider))]
     [Shared]
-    public class LockStatementCodeFixProvider : CodeFixProvider
+    public class LockStatementCodeFixProvider : AbstractCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            LockStatementSyntax lockStatement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<LockStatementSyntax>();
-
-            if (lockStatement == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out LockStatementSyntax lockStatement))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Introduce field to lock on",
                 cancellationToken => AvoidLockingOnPubliclyAccessibleInstanceRefactoring.RefactorAsync(context.Document, lockStatement, cancellationToken),
-                DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance + BaseCodeFixProvider.EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AvoidLockingOnPubliclyAccessibleInstance));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyLogicalNotExpressionCodeFixProvider))]
     [Shared]
@@ -24,14 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            PrefixUnaryExpressionSyntax prefixUnaryExpression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<PrefixUnaryExpressionSyntax>();
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out PrefixUnaryExpressionSyntax prefixUnaryExpression))
+                return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Simplify '!' expression",
                 cancellationToken => SimplifyLogicalNotExpressionRefactoring.RefactorAsync(context.Document, prefixUnaryExpression, cancellationToken),
-                DiagnosticIdentifiers.SimplifyLogicalNotExpression + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.SimplifyLogicalNotExpression));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

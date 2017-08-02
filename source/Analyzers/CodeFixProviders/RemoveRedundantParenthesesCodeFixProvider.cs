@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RemoveRedundantParenthesesCodeFixProvider))]
     [Shared]
@@ -24,14 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ParenthesizedExpressionSyntax parenthesizedExpression = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ParenthesizedExpressionSyntax>();
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ParenthesizedExpressionSyntax parenthesizedExpression))
+                return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove redundant parentheses",
                 cancellationToken => RemoveRedundantParenthesesRefactoring.RefactorAsync(context.Document, parenthesizedExpression, cancellationToken),
-                DiagnosticIdentifiers.RemoveRedundantParentheses + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveRedundantParentheses));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

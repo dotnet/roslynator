@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FormatAccessorListCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            AccessorListSyntax accessorList = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<AccessorListSyntax>();
-
-            if (accessorList == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AccessorListSyntax accessorList))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Format accessor list",
                 cancellationToken => FormatAccessorListRefactoring.RefactorAsync(context.Document, accessorList, cancellationToken),
-                DiagnosticIdentifiers.FormatAccessorList + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.FormatAccessorList));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

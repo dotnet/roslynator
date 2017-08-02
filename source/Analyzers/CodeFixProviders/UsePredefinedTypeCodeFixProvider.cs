@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UsePredefinedTypeCodeFixProvider))]
     [Shared]
@@ -24,29 +24,26 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            SyntaxNode node = root.FindNode(context.Span, findInsideTrivia: true, getInnermostNodeForTie: true);
-
-            if (node?.IsKind(
-                    SyntaxKind.QualifiedName,
-                    SyntaxKind.IdentifierName,
-                    SyntaxKind.SimpleMemberAccessExpression,
-                    SyntaxKind.NameMemberCref,
-                    SyntaxKind.QualifiedCref) == true)
+            if (!TryFindNode(root, context.Span, out SyntaxNode node, findInsideTrivia: true, predicate: f => f.IsKind(
+                SyntaxKind.QualifiedName,
+                SyntaxKind.IdentifierName,
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.NameMemberCref,
+                SyntaxKind.QualifiedCref)))
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                var typeSymbol = semanticModel.GetSymbol(node, context.CancellationToken) as INamedTypeSymbol;
-
-                if (typeSymbol?.SupportsPredefinedType() == true)
-                {
-                    CodeAction codeAction = CodeAction.Create(
-                        $"Use predefined type '{SymbolDisplay.GetString(typeSymbol)}'",
-                        cancellationToken => UsePredefinedTypeRefactoring.RefactorAsync(context.Document, node, typeSymbol, cancellationToken),
-                        DiagnosticIdentifiers.UsePredefinedType + EquivalenceKeySuffix);
-
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
-                }
+                return;
             }
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            var typeSymbol = semanticModel.GetSymbol(node, context.CancellationToken) as INamedTypeSymbol;
+
+            CodeAction codeAction = CodeAction.Create(
+                $"Use predefined type '{SymbolDisplay.GetString(typeSymbol)}'",
+                cancellationToken => UsePredefinedTypeRefactoring.RefactorAsync(context.Document, node, typeSymbol, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.UsePredefinedType));
+
+            context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
     }
 }

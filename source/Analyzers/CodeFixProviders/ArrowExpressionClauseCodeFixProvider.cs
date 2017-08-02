@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ArrowExpressionClauseCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ArrowExpressionClauseSyntax arrowExpressionClause = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ArrowExpressionClauseSyntax>();
-
-            if (arrowExpressionClause == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ArrowExpressionClauseSyntax arrowExpressionClause))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Expand expression body",
                 cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
-                DiagnosticIdentifiers.AvoidMultilineExpressionBody + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.AvoidMultilineExpressionBody));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

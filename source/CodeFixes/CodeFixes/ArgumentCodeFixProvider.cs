@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -39,13 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ArgumentSyntax argument = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ArgumentSyntax>();
-
-            Debug.Assert(argument != null, $"{nameof(argument)} is null");
-
-            if (argument == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ArgumentSyntax argument))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

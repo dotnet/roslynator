@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(CaseSwitchLabelCodeFixProvider))]
     [Shared]
@@ -24,11 +24,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            CaseSwitchLabelSyntax label = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<CaseSwitchLabelSyntax>();
-
-            if (label == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out CaseSwitchLabelSyntax label))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
@@ -40,7 +36,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                         label,
                         cancellationToken);
                 },
-                DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveUnnecessaryCaseLabel));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

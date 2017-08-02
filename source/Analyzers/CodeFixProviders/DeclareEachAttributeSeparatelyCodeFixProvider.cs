@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(DeclareEachAttributeSeparatelyCodeFixProvider))]
     [Shared]
@@ -24,17 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            AttributeListSyntax attributeList = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<AttributeListSyntax>();
-
-            if (attributeList == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeListSyntax attributeList))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Split attributes",
                 cancellationToken => DeclareEachAttributeSeparatelyRefactoring.RefactorAsync(context.Document, attributeList, cancellationToken),
-                DiagnosticIdentifiers.DeclareEachAttributeSeparately + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.DeclareEachAttributeSeparately));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

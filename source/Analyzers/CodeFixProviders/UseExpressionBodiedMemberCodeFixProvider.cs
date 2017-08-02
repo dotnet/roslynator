@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseExpressionBodiedMemberCodeFixProvider))]
     [Shared]
@@ -22,17 +22,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            MemberDeclarationSyntax declaration = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<MemberDeclarationSyntax>();
-
-            if (declaration == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out MemberDeclarationSyntax memberDeclaration))
                 return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Use expression-bodied member",
-                cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, declaration, cancellationToken),
-                DiagnosticIdentifiers.UseExpressionBodiedMember + EquivalenceKeySuffix);
+                cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.UseExpressionBodiedMember));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

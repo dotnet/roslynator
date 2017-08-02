@@ -33,11 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            LocalDeclarationStatementSyntax localDeclaration = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<LocalDeclarationStatementSyntax>();
-
-            if (localDeclaration == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out LocalDeclarationStatementSyntax localDeclaration))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

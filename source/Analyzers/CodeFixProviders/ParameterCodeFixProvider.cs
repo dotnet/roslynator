@@ -2,17 +2,15 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.DocumentationComment;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ParameterCodeFixProvider))]
     [Shared]
@@ -32,13 +30,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ParameterSyntax parameter = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ParameterSyntax>();
-
-            Debug.Assert(parameter != null, $"{nameof(parameter)} is null");
-
-            if (parameter == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ParameterSyntax parameter))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -52,7 +44,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                             CodeAction codeAction = CodeAction.Create(
                                 "Add parameter to documentation comment",
                                 cancellationToken => refactoring.RefactorAsync(context.Document, parameter, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
@@ -64,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                     ? "Remove 'params' modifier"
                                     : "Add 'params' modifier",
                                 cancellationToken => OverridingMemberCannotChangeParamsModifierRefactoring.RefactorAsync(context.Document, parameter, cancellationToken),
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

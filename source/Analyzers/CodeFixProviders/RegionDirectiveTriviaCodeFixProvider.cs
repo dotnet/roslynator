@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(RegionDirectiveTriviaCodeFixProvider))]
     [Shared]
@@ -24,14 +24,13 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            RegionDirectiveTriviaSyntax region = root
-                .FindNode(context.Span, findInsideTrivia: true, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<RegionDirectiveTriviaSyntax>();
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out RegionDirectiveTriviaSyntax region, findInsideTrivia: true))
+                return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty region",
                 cancellationToken => RemoveEmptyRegionRefactoring.RefactorAsync(context.Document, region, cancellationToken),
-                DiagnosticIdentifiers.RemoveEmptyRegion + EquivalenceKeySuffix);
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyRegion));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,7 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
-namespace Roslynator.CSharp.CodeFixProviders
+namespace Roslynator.CSharp.CodeFixes
 {
     [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ClassDeclarationCodeFixProvider))]
     [Shared]
@@ -32,13 +31,7 @@ namespace Roslynator.CSharp.CodeFixProviders
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            ClassDeclarationSyntax classDeclaration = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<ClassDeclarationSyntax>();
-
-            Debug.Assert(classDeclaration != null, $"{nameof(classDeclaration)} is null");
-
-            if (classDeclaration == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ClassDeclarationSyntax classDeclaration))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -66,7 +59,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                             classDeclaration,
                                             cancellationToken);
                                     },
-                                    diagnostic.Id + EquivalenceKeySuffix);
+                                    GetEquivalenceKey(diagnostic));
                             }
                             else
                             {
@@ -83,7 +76,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                             classDeclarations,
                                             cancellationToken);
                                     },
-                                    diagnostic.Id + EquivalenceKeySuffix);
+                                    GetEquivalenceKey(diagnostic));
                             }
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -100,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                         classDeclaration,
                                         cancellationToken);
                                 },
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
@@ -116,7 +109,7 @@ namespace Roslynator.CSharp.CodeFixProviders
                                         classDeclaration,
                                         cancellationToken);
                                 },
-                                diagnostic.Id + EquivalenceKeySuffix);
+                                GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
