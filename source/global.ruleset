@@ -262,19 +262,19 @@
     <Rule Id="RCS1009" Action="Info" />
     <Rule Id="RCS1010" Action="Info" />
     <Rule Id="RCS1013" Action="Info" />
-    <Rule Id="RCS1014" Action="Warning" />
+    <Rule Id="RCS1014" Action="Info" />
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
-    <Rule Id="RCS1019" Action="Warning" />
+    <Rule Id="RCS1019" Action="Info" />
     <Rule Id="RCS1023" Action="Info" />
     <Rule Id="RCS1024" Action="Info" />
     <Rule Id="RCS1025" Action="Info" />
-    <Rule Id="RCS1026" Action="Warning" />
-    <Rule Id="RCS1027" Action="Warning" />
-    <Rule Id="RCS1028" Action="Warning" />
-    <Rule Id="RCS1029" Action="Warning" />
-    <Rule Id="RCS1030" Action="Warning" />
+    <Rule Id="RCS1026" Action="Info" />
+    <Rule Id="RCS1027" Action="Info" />
+    <Rule Id="RCS1028" Action="Info" />
+    <Rule Id="RCS1030" Action="Info" />
     <Rule Id="RCS1034" Action="Info" />
+    <Rule Id="RCS1035" Action="Info" />
     <Rule Id="RCS1037" Action="Warning" />
     <Rule Id="RCS1039" Action="Info" />
     <Rule Id="RCS1040" Action="Info" />
@@ -284,28 +284,28 @@
     <Rule Id="RCS1050" Action="Info" />
     <Rule Id="RCS1051" Action="Info" />
     <Rule Id="RCS1052" Action="Info" />
-    <Rule Id="RCS1055" Action="Warning" />
-    <Rule Id="RCS1056" Action="Warning" />
-    <Rule Id="RCS1057" Action="Warning" />
-    <Rule Id="RCS1060" Action="Warning" />
+    <Rule Id="RCS1056" Action="Info" />
+    <Rule Id="RCS1060" Action="Info" />
     <Rule Id="RCS1061" Action="Info" />
     <Rule Id="RCS1062" Action="Info" />
-    <Rule Id="RCS1064" Action="Warning" />
+    <Rule Id="RCS1064" Action="Info" />
     <Rule Id="RCS1066" Action="Info" />
+    <Rule Id="RCS1068" Action="Info" />
     <Rule Id="RCS1069" Action="Info" />
     <Rule Id="RCS1070" Action="Info" />
     <Rule Id="RCS1071" Action="Info" />
-    <Rule Id="RCS1073" Action="Hidden" />
+    <Rule Id="RCS1073" Action="Info" />
     <Rule Id="RCS1073FadeOut" Action="Hidden" />
     <Rule Id="RCS1074" Action="Info" />
-    <Rule Id="RCS1081" Action="Warning" />
-    <Rule Id="RCS1087" Action="Warning" />
-    <Rule Id="RCS1088" Action="Warning" />
-    <Rule Id="RCS1089" Action="Warning" />
-    <Rule Id="RCS1090" Action="Warning" />
+    <Rule Id="RCS1078" Action="Info" />
+    <Rule Id="RCS1081" Action="Info" />
+    <Rule Id="RCS1082" Action="Info" />
+    <Rule Id="RCS1083" Action="Info" />
+    <Rule Id="RCS1087" Action="Info" />
+    <Rule Id="RCS1088" Action="Info" />
     <Rule Id="RCS1091" Action="Info" />
-    <Rule Id="RCS1092" Action="Warning" />
-    <Rule Id="RCS1094" Action="Warning" />
+    <Rule Id="RCS1092" Action="Info" />
+    <Rule Id="RCS1094" Action="Info" />
     <Rule Id="RCS1096" Action="Warning" />
     <Rule Id="RCS1101" Action="Info" />
     <Rule Id="RCS1111" Action="Info" />
@@ -313,9 +313,13 @@
     <Rule Id="RCS1126" Action="Warning" />
     <Rule Id="RCS1129" Action="Info" />
     <Rule Id="RCS1133" Action="Info" />
+    <Rule Id="RCS1134" Action="Info" />
     <Rule Id="RCS1136" Action="Info" />
+    <Rule Id="RCS1138" Action="Info" />
+    <Rule Id="RCS1139" Action="Info" />
     <Rule Id="RCS1143" Action="Info" />
     <Rule Id="RCS1145" Action="Info" />
+    <Rule Id="RCS1151" Action="Info" />
     <Rule Id="RCS1153" Action="Info" />
     <Rule Id="RCS1162" Action="Info" />
     <Rule Id="RCS1184" Action="Info" />
