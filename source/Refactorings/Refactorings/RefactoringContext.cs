@@ -242,6 +242,11 @@ namespace Roslynator.CSharp.Refactorings
                             SemicolonTokenRefactoring.ComputeRefactorings(this, token);
                             break;
                         }
+                    case SyntaxKind.PlusToken:
+                        {
+                            await PlusTokenRefactoring.ComputeRefactoringsAsync(this, token).ConfigureAwait(false);
+                            break;
+                        }
                     case SyntaxKind.PublicKeyword:
                     case SyntaxKind.InternalKeyword:
                     case SyntaxKind.ProtectedKeyword:

@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                 StringConcatenationExpression concatenation;
-                if (StringConcatenationExpression.TryCreate(binaryExpression, semanticModel, context.CancellationToken, out concatenation))
+                if (StringConcatenationExpression.TryCreate(binaryExpression, semanticModel, out concatenation, context.CancellationToken))
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.JoinStringExpressions))
                         JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenation);
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         StringConcatenationExpression concatenation;
-                        if (StringConcatenationExpression.TryCreate(binaryExpressionSelection, semanticModel, context.CancellationToken, out concatenation))
+                        if (StringConcatenationExpression.TryCreate(binaryExpressionSelection, semanticModel, out concatenation, context.CancellationToken))
                         {
                             JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenation);
                         }

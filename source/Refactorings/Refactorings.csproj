@@ -92,6 +92,7 @@
     <Compile Include="Refactorings\MergeLocalDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\JoinStringExpressionsRefactoring.cs" />
     <Compile Include="Refactorings\NegateIsExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\PlusTokenRefactoring.cs" />
     <Compile Include="Refactorings\RemoveConditionFromLastElseRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring.cs" />
