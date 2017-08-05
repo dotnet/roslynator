@@ -154,16 +154,8 @@ namespace Roslynator.CSharp
         public static bool TryCreate(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
-            out StringConcatenationExpression concatenation)
-        {
-            return TryCreate(binaryExpression, semanticModel, default(CancellationToken), out concatenation);
-        }
-
-        public static bool TryCreate(
-            BinaryExpressionSyntax binaryExpression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken,
-            out StringConcatenationExpression concatenation)
+            out StringConcatenationExpression concatenation,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (binaryExpression.IsKind(SyntaxKind.AddExpression))
             {
@@ -184,16 +176,8 @@ namespace Roslynator.CSharp
         public static bool TryCreate(
             BinaryExpressionSelection binaryExpressionSelection,
             SemanticModel semanticModel,
-            out StringConcatenationExpression concatenation)
-        {
-            return TryCreate(binaryExpressionSelection, semanticModel, default(CancellationToken), out concatenation);
-        }
-
-        public static bool TryCreate(
-            BinaryExpressionSelection binaryExpressionSelection,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken,
-            out StringConcatenationExpression concatenation)
+            out StringConcatenationExpression concatenation,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             BinaryExpressionSyntax binaryExpression = binaryExpressionSelection.BinaryExpression;
             ImmutableArray<ExpressionSyntax> expressions = binaryExpressionSelection.Expressions;
