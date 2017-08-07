@@ -790,7 +790,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!fLocalFunctionStatement
                             && kind == SyntaxKind.LocalFunctionStatement)
                         {
-                            LocalFunctionStatementRefactoring.ComputeRefactorings(this, (LocalFunctionStatementSyntax)node);
+                            await LocalFunctionStatementRefactoring.ComputeRefactoringsAsync(this, (LocalFunctionStatementSyntax)node).ConfigureAwait(false);
                             fLocalFunctionStatement = true;
                         }
 

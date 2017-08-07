@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -14,48 +15,54 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseListInsteadOfYieldRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, YieldStatementSyntax yieldStatement, SemanticModel semanticModel)
+        public static void ComputeRefactoring(RefactoringContext context, MethodDeclarationSyntax methodDeclaration, SemanticModel semanticModel)
         {
-            ExpressionSyntax expression = yieldStatement.Expression;
-            if (expression != null)
-            {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+            ComputeRefactoring(context, methodDeclaration, methodDeclaration.Body, semanticModel);
+        }
 
-                if (typeSymbol?.IsErrorType() == false
-                    && !typeSymbol.IsVoid())
+        public static void ComputeRefactoring(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement, SemanticModel semanticModel)
+        {
+            ComputeRefactoring(context, localFunctionStatement, localFunctionStatement.Body, semanticModel);
+        }
+
+        private static void ComputeRefactoring(
+            RefactoringContext context,
+            SyntaxNode node,
+            BlockSyntax body,
+            SemanticModel semanticModel)
+        {
+            if (body?
+                .DescendantNodes(body.Span, f => !f.IsNestedMethod())
+                .Any(f => f.IsKind(SyntaxKind.YieldReturnStatement)) == true)
+            {
+                var symbol = (IMethodSymbol)semanticModel.GetDeclaredSymbol(node, context.CancellationToken);
+
+                if (symbol?.IsErrorType() == false)
                 {
-                    BlockSyntax block = GetContainigBlock(yieldStatement);
-                    if (block != null)
+                    ITypeSymbol type = GetElementType(symbol.ReturnType, semanticModel);
+
+                    if (type?.IsErrorType() == false)
                     {
                         context.RegisterRefactoring(
                             "Use List<T> instead of yield",
-                            cancellationToken => RefactorAsync(context.Document, yieldStatement, block, block.Statements, cancellationToken));
+                            cancellationToken => RefactorAsync(context.Document, type, body, body.Statements, cancellationToken));
                     }
                 }
             }
         }
 
-        private static BlockSyntax GetContainigBlock(YieldStatementSyntax yieldStatement)
+        private static ITypeSymbol GetElementType(ITypeSymbol returnType, SemanticModel semanticModel)
         {
-            SyntaxNode current = yieldStatement.Parent;
-
-            while (current != null)
+            if (returnType.IsIEnumerable())
             {
-                switch (current.Kind())
-                {
-                    case SyntaxKind.MethodDeclaration:
-                        return ((MethodDeclarationSyntax)current).Body;
-                    case SyntaxKind.GetAccessorDeclaration:
-                        return ((AccessorDeclarationSyntax)current).Body;
-                    case SyntaxKind.LocalFunctionStatement:
-                        return ((LocalFunctionStatementSyntax)current).Body;
-                    case SyntaxKind.SimpleLambdaExpression:
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                    case SyntaxKind.AnonymousMethodExpression:
-                        return null;
-                }
+                return semanticModel.Compilation.ObjectType;
+            }
+            else if (returnType.IsNamedType())
+            {
+                var namedType = (INamedTypeSymbol)returnType;
 
-                current = current.Parent;
+                if (namedType.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                    return namedType.TypeArguments[0];
             }
 
             return null;
@@ -63,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static async Task<Document> RefactorAsync(
             Document document,
-            YieldStatementSyntax yieldStatement,
+            ITypeSymbol typeSymbol,
             BlockSyntax block,
             SyntaxList<StatementSyntax> statements,
             CancellationToken cancellationToken)
@@ -75,8 +82,6 @@ namespace Roslynator.CSharp.Refactorings
             string name = NameGenerator.Default.EnsureUniqueLocalName("items", semanticModel, position);
 
             IdentifierNameSyntax identifierName = IdentifierName(name);
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(yieldStatement.Expression, cancellationToken);
 
             TypeSyntax listType = semanticModel
                 .GetTypeByMetadataName(MetadataNames.System_Collections_Generic_List_T)
