@@ -2,6 +2,8 @@
 
 using System;
 
+#pragma warning disable CS0219
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
     public static class ParameterNameDiffersFromBase
@@ -22,16 +24,38 @@ namespace Roslynator.CSharp.Analyzers.Test
 
         public class Foo2 : Foo
         {
-            public override string this[int index2] => null;
+            public override string this[int index2] => index2.ToString();
 
-            public override string Method(object parameter2) => null;
+            public override string Method(object parameter2) => parameter2.ToString();
         }
 
         public class Foo3 : Interface
         {
-            public string this[int index2] => null;
+            public string this[int index2] => index2.ToString();
 
-            public string Method(object parameter2) => null;
+            public string Method(object parameter2) => parameter2.ToString();
+        }
+
+        // no code fix
+
+        public class Foo4 : Foo
+        {
+            public override string this[int index2]
+            {
+                get
+                {
+                    string index = null;
+
+                    return index2.ToString();
+                }
+            }
+
+            public override string Method(object parameter2)
+            {
+                string parameter = null;
+
+                return parameter2.ToString();
+            }
         }
     }
 }
