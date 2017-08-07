@@ -78,6 +78,7 @@
     <Compile Include="DiagnosticAnalyzers\FormatConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyBooleanExpressionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseAttributeUsageAttributeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseConstantInsteadOfFieldDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MarkFieldAsReadOnlyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\JoinStringExpressionsDiagnosticAnalyzer.cs" />
@@ -163,6 +164,7 @@
     <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
     <Compile Include="Refactorings\CallDebugFailInsteadOfDebugAssertRefactoring.cs" />
     <Compile Include="Refactorings\AvoidNullReferenceExceptionRefactoring.cs" />
+    <Compile Include="Refactorings\UseAttributeUsageAttributeRefactoring.cs" />
     <Compile Include="Refactorings\UseExclusiveOrOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UseMethodChainingRefactoring.cs" />
     <Compile Include="Refactorings\UseRegexInstanceInsteadOfStaticMethodRefactoring.cs" />

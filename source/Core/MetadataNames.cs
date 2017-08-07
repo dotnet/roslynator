@@ -6,6 +6,9 @@ namespace Roslynator
     {
         public const string System_ArgumentException = "System.ArgumentException";
         public const string System_ArgumentNullException = "System.ArgumentNullException";
+        public const string System_Attribute = "System.Attribute";
+        public const string System_AttributeTargets = "System.AttributeTargets";
+        public const string System_AttributeUsageAttribute = "System.AttributeUsageAttribute";
         public const string System_Collections = "System.Collections";
         public const string System_Collections_Generic = "System.Collections.Generic";
         public const string System_Collections_Generic_EqualityComparer_T = "System.Collections.Generic.EqualityComparer`1";

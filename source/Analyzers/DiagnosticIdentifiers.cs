@@ -191,5 +191,6 @@ namespace Roslynator.CSharp
         public const string CallThenByInsteadOfOrderBy = Prefix + "1200";
         public const string UseMethodChaining = Prefix + "1201";
         public const string AvoidNullReferenceException = Prefix + "1202";
+        public const string UseAttributeUsageAttribute = Prefix + "1203";
     }
 }

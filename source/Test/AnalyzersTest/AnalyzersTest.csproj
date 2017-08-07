@@ -92,6 +92,7 @@
     <Compile Include="UnusedParameter.cs" />
     <Compile Include="ParameterNameDiffersFromBase.cs" />
     <Compile Include="InlineLazyInitialization.cs" />
+    <Compile Include="UseAttributeUsageAttribute.cs" />
     <Compile Include="UseAutoProperty.cs" />
     <Compile Include="UseAutoProperty3.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfConditionalExpression.cs" />
