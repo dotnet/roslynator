@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.UseConditionalAccessToAvoidNullReferenceException); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidNullReferenceException); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => UseConditionalAccessToAvoidNullReferenceExceptionRefactoring.AnalyzeAsExpression(f),
+                f => AvoidNullReferenceExceptionRefactoring.AnalyzeAsExpression(f),
                 SyntaxKind.AsExpression);
         }
     }
