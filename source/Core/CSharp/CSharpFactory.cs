@@ -2223,6 +2223,22 @@ namespace Roslynator.CSharp
                 AttributeArgumentList(argument));
         }
 
+        public static AttributeArgumentSyntax AttributeArgument(NameEqualsSyntax nameEquals, ExpressionSyntax expression)
+        {
+            return SyntaxFactory.AttributeArgument(
+                nameEquals: nameEquals,
+                nameColon: null,
+                expression: expression);
+        }
+
+        public static AttributeArgumentSyntax AttributeArgument(NameColonSyntax nameColon, ExpressionSyntax expression)
+        {
+            return SyntaxFactory.AttributeArgument(
+                nameEquals: null,
+                nameColon: nameColon,
+                expression: expression);
+        }
+
         public static ParameterSyntax Parameter(TypeSyntax type, string identifier, EqualsValueClauseSyntax @default = null)
         {
             return Parameter(type, Identifier(identifier), @default);
