@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -10,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -17,41 +16,33 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ConditionalExpressionSyntax conditionalExpression)
         {
-            if (CanRefactor(conditionalExpression, context.SemanticModel, context.CancellationToken)
-                && !conditionalExpression.SpanContainsDirectives())
+            if (context.Node.ContainsDiagnostics)
+                return;
+
+            if (context.Node.SpanContainsDirectives())
+                return;
+
+            ConditionalExpressionInfo info;
+            if (ConditionalExpressionInfo.TryCreate(conditionalExpression, out info))
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.SimplifyConditionalExpression,
-                    conditionalExpression);
-            }
-        }
-
-        public static bool CanRefactor(
-            ConditionalExpressionSyntax conditionalExpression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ExpressionSyntax condition = conditionalExpression.Condition;
-
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(condition, cancellationToken);
-
-            if (typeSymbol?.IsBoolean() == true)
-            {
-                ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
-
-                if (whenTrue?.IsBooleanLiteralExpression() == true)
+                switch (info.WhenTrue.Kind())
                 {
-                    ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
+                    case SyntaxKind.TrueLiteralExpression:
+                        {
+                            if (info.WhenFalse.IsKind(SyntaxKind.FalseLiteralExpression))
+                                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
 
-                    if (whenFalse?.IsBooleanLiteralExpression() == true
-                        && whenTrue.IsKind(SyntaxKind.TrueLiteralExpression) != whenFalse.IsKind(SyntaxKind.TrueLiteralExpression))
-                    {
-                        return true;
-                    }
+                            break;
+                        }
+                    case SyntaxKind.FalseLiteralExpression:
+                        {
+                            if (info.WhenFalse.IsKind(SyntaxKind.TrueLiteralExpression))
+                                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+
+                            break;
+                        }
                 }
             }
-
-            return false;
         }
 
         public static Task<Document> RefactorAsync(
@@ -61,24 +52,19 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax condition = conditionalExpression.Condition;
 
-            ExpressionSyntax newNode = (conditionalExpression.WhenTrue.IsKind(SyntaxKind.TrueLiteralExpression))
+            ExpressionSyntax newNode = (conditionalExpression.WhenTrue.WalkDownParentheses().IsKind(SyntaxKind.TrueLiteralExpression))
                 ? condition
                 : Negator.LogicallyNegate(condition);
 
-            TextSpan span = TextSpan.FromBounds(
-                conditionalExpression.Condition.Span.End,
-                conditionalExpression.FullSpan.End);
+            SyntaxTriviaList trailingTrivia = conditionalExpression
+                .DescendantTrivia(TextSpan.FromBounds(condition.Span.End, conditionalExpression.Span.End))
+                .ToSyntaxTriviaList()
+                .EmptyIfWhitespace()
+                .AddRange(conditionalExpression.GetTrailingTrivia());
 
-            IEnumerable<SyntaxTrivia> trivia = conditionalExpression.DescendantTrivia(span);
-
-            if (trivia.Any(f => !f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                newNode = newNode.WithTrailingTrivia(trivia);
-            }
-            else
-            {
-                newNode = newNode.WithoutTrailingTrivia();
-            }
+            newNode = newNode
+                .WithLeadingTrivia(conditionalExpression.GetLeadingTrivia())
+                .WithTrailingTrivia(trailingTrivia);
 
             return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
         }
