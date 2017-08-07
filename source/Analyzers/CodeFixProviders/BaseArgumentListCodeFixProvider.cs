@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -25,13 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            BaseArgumentListSyntax baseArgumentList = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<BaseArgumentListSyntax>();
-
-            Debug.Assert(baseArgumentList != null, $"{nameof(baseArgumentList)} is null");
-
-            if (baseArgumentList == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseArgumentListSyntax baseArgumentList))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -40,7 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case DiagnosticIdentifiers.ReorderNamedArguments:
                         {
-                            var codeAction = CodeAction.Create(
+                            CodeAction codeAction = CodeAction.Create(
                                 "Reorder arguments",
                                 cancellationToken =>
                                 {

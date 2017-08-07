@@ -25,6 +25,8 @@ namespace Roslynator.CSharp.Refactorings
                     return ((WhileStatementSyntax)parent).Condition == expression;
                 case SyntaxKind.ForStatement:
                     return ((ForStatementSyntax)parent).Condition == expression;
+                case SyntaxKind.ConditionalExpression:
+                    return ((ConditionalExpressionSyntax)parent).Condition == expression;
                 default:
                     return false;
             }

@@ -302,7 +302,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static bool SupportsEmbedded(StatementSyntax statement)
         {
-            if (statement.Parent.IsKind(SyntaxKind.IfStatement)
+            if (statement.IsParentKind(SyntaxKind.IfStatement)
                 && ((IfStatementSyntax)statement.Parent).Condition?.IsMultiLine() == true)
             {
                 return false;

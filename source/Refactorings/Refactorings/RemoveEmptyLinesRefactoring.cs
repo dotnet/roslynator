@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Utilities;
 
@@ -38,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
             SourceText sourceText = await document.GetTextAsync(cancellationToken).ConfigureAwait(false);
 
             IEnumerable<TextChange> textChanges = GetEmptyLines(sourceText, root, span)
-                .Select(line => new TextChange(line.SpanIncludingLineBreak, string.Empty));
+                .Select(line => new TextChange(line.SpanIncludingLineBreak, ""));
 
             SourceText newSourceText = sourceText.WithChanges(textChanges);
 

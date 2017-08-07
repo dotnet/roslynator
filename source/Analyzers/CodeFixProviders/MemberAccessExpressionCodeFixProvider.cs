@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Replace '{memberAccess}' with \"\"",
+                $"Use \"\" instead of '{memberAccess}'",
                 cancellationToken =>
                 {
                     return UseEmptyStringLiteralInsteadOfStringEmptyRefactoring.RefactorAsync(

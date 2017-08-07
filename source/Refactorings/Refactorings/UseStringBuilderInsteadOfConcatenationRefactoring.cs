@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var assignment = (AssignmentExpressionSyntax)expression.Parent;
 
-                        if (assignment.Parent.IsKind(SyntaxKind.ExpressionStatement)
+                        if (assignment.IsParentKind(SyntaxKind.ExpressionStatement)
                             && assignment.Right == expression)
                         {
                             RegisterRefactoring(context, concatenation, (StatementSyntax)assignment.Parent);
@@ -37,15 +37,15 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var equalsValue = (EqualsValueClauseSyntax)expression.Parent;
 
-                        if (equalsValue.Parent.IsKind(SyntaxKind.VariableDeclarator))
+                        if (equalsValue.IsParentKind(SyntaxKind.VariableDeclarator))
                         {
                             var variableDeclarator = (VariableDeclaratorSyntax)equalsValue.Parent;
 
-                            if (variableDeclarator.Parent.IsKind(SyntaxKind.VariableDeclaration))
+                            if (variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
                             {
                                 var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
 
-                                if (variableDeclaration.Parent.IsKind(SyntaxKind.LocalDeclarationStatement)
+                                if (variableDeclaration.IsParentKind(SyntaxKind.LocalDeclarationStatement)
                                     && variableDeclaration.Variables.Count == 1)
                                 {
                                     RegisterRefactoring(context, concatenation, (StatementSyntax)variableDeclaration.Parent);

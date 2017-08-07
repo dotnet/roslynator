@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (statements.Any()
                             && !ContainsOnlyThrowStatement(statements)
-                            && !methodDeclaration.IsIterator())
+                            && !methodDeclaration.ContainsYield())
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

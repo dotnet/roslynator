@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
             IEnumerable<StatementSyntax> newNodes = GetNewNodes(statement)
                 .Select(f => f.WithFormatterAnnotation());
 
-            if (statement.Parent.IsKind(SyntaxKind.ElseClause))
+            if (statement.IsParentKind(SyntaxKind.ElseClause))
             {
                 IfStatementSyntax ifStatement = ((ElseClauseSyntax)statement.Parent).GetTopmostIf();
                 var block = (BlockSyntax)ifStatement.Parent;
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             List<SyntaxTrivia> list = null;
 
-            if (statement.Parent.IsKind(SyntaxKind.ElseClause))
+            if (statement.IsParentKind(SyntaxKind.ElseClause))
             {
                 list = new List<SyntaxTrivia>() { CSharpFactory.NewLine() };
             }

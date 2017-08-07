@@ -127,7 +127,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.MemberBindingExpression:
                     {
-                        if (parent.Parent?.IsKind(SyntaxKind.InvocationExpression) == true)
+                        if (parent.IsParentKind(SyntaxKind.InvocationExpression))
                             return true;
 
                         break;

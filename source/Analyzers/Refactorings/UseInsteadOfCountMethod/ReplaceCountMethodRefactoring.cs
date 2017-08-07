@@ -43,12 +43,12 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
                         context.ReportDiagnostic(diagnostic);
                     }
                 }
-                else if (invocation.Parent?.IsKind(
+                else if (invocation.IsParentKind(
                     SyntaxKind.EqualsExpression,
                     SyntaxKind.GreaterThanExpression,
                     SyntaxKind.GreaterThanOrEqualExpression,
                     SyntaxKind.LessThanExpression,
-                    SyntaxKind.LessThanOrEqualExpression) == true)
+                    SyntaxKind.LessThanOrEqualExpression))
                 {
                     var binaryExpression = (BinaryExpressionSyntax)invocation.Parent;
 

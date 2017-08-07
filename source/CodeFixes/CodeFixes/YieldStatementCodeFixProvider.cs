@@ -28,13 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            YieldStatementSyntax yieldStatement = root
-                .FindNode(context.Span, getInnermostNodeForTie: true)?
-                .FirstAncestorOrSelf<YieldStatementSyntax>();
-
-            Debug.Assert(yieldStatement != null, $"{nameof(yieldStatement)} is null");
-
-            if (yieldStatement == null)
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out YieldStatementSyntax yieldStatement))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)

@@ -107,7 +107,7 @@ namespace Roslynator.Utilities
                 throw new ArgumentNullException(nameof(value));
 
             if (value.Length == 0)
-                return string.Empty;
+                return "";
 
             var sb = new StringBuilder();
 
