@@ -88,6 +88,7 @@
     <Compile Include="CodeFixes\TokenCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ChangeTypeOfLocalVariableCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterConstraintCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\UnreachableCodeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\UnsafeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\YieldStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixIdentifiers.cs" />
