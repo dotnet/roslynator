@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.ParenthesizeConditionInConditionalExpression,
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression,
-                    DiagnosticIdentifiers.FormatConditionalExpression);
+                    DiagnosticIdentifiers.FormatConditionalExpression,
+                    DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression);
             }
         }
 
@@ -87,6 +88,22 @@ namespace Roslynator.CSharp.CodeFixes
                                 cancellationToken =>
                                 {
                                     return FormatConditionalExpressionRefactoring.RefactorAsync(
+                                        context.Document,
+                                        conditionalExpression,
+                                        cancellationToken);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use conditional access",
+                                cancellationToken =>
+                                {
+                                    return UseConditionalAccessRefactoring.RefactorAsync(
                                         context.Document,
                                         conditionalExpression,
                                         cancellationToken);

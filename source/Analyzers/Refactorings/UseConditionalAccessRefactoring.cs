@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -12,7 +14,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -59,12 +61,60 @@ namespace Roslynator.CSharp.Refactorings
                         && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken)
                         && !ContainsOutArgumentWithLocal(right, context.SemanticModel, context.CancellationToken))
                     {
-                        SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(expression, right);
+                        ExpressionSyntax expression2 = FindExpressionThatCanBeConditionallyAccessed(expression, right);
 
-                        if (node?.SpanContainsDirectives() == false
+                        if (expression2?.SpanContainsDirectives() == false
                             && !logicalAndExpression.IsInExpressionTree(expressionType, context.SemanticModel, context.CancellationToken))
                         {
                             context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
+                        }
+                    }
+                }
+            }
+        }
+
+        public static void AnalyzeConditionalExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol expressionType)
+        {
+            if (context.Node.SpanContainsDirectives())
+                return;
+
+            ConditionalExpressionInfo conditionalExpression;
+            if (ConditionalExpressionInfo.TryCreate((ConditionalExpressionSyntax)context.Node, out conditionalExpression))
+            {
+                SemanticModel semanticModel = context.SemanticModel;
+                CancellationToken cancellationToken = context.CancellationToken;
+
+                NullCheckExpression nullCheck;
+                if (NullCheckExpression.TryCreate(conditionalExpression.Condition, semanticModel, out nullCheck, cancellationToken))
+                {
+                    ExpressionSyntax whenNotNull = (nullCheck.IsCheckingNotNull)
+                        ? conditionalExpression.WhenTrue
+                        : conditionalExpression.WhenFalse;
+
+                    if (whenNotNull.IsKind(
+                            SyntaxKind.SimpleMemberAccessExpression,
+                            SyntaxKind.ElementAccessExpression,
+                            SyntaxKind.ConditionalAccessExpression,
+                            SyntaxKind.InvocationExpression)
+                        && !ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken))
+                    {
+                        ExpressionSyntax expression = FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
+
+                        if (expression != null)
+                        {
+                            ExpressionSyntax whenNull = (nullCheck.IsCheckingNull)
+                                ? conditionalExpression.WhenTrue
+                                : conditionalExpression.WhenFalse;
+
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(whenNotNull, cancellationToken);
+
+                            if (semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
+                                && !conditionalExpression.Node.IsInExpressionTree(expressionType, semanticModel, cancellationToken))
+                            {
+                                context.ReportDiagnostic(
+                                    DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
+                                    conditionalExpression.Node);
+                            }
                         }
                     }
                 }
@@ -86,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static SyntaxNode FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression)
+        private static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression)
         {
             if (expression.IsKind(SyntaxKind.LogicalNotExpression))
                 expression = ((PrefixUnaryExpressionSyntax)expression).Operand;
@@ -105,7 +155,7 @@ namespace Roslynator.CSharp.Refactorings
                     && node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)
                     && expressionToFind.IsEquivalentTo(node, topLevel: false))
                 {
-                    return node;
+                    return (ExpressionSyntax)node;
                 }
 
                 node = node.Parent;
@@ -189,7 +239,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax right = logicalAnd.Right;
 
-            SyntaxNode node = FindExpressionThatCanBeConditionallyAccessed(
+            ExpressionSyntax expression2 = FindExpressionThatCanBeConditionallyAccessed(
                 expression,
                 right);
 
@@ -202,7 +252,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 string s = operand.ToFullString();
 
-                int length = node.Span.End - operand.FullSpan.Start;
+                int length = expression2.Span.End - operand.FullSpan.Start;
                 int trailingLength = operand.GetTrailingTrivia().Span.Length;
 
                 var sb = new StringBuilder();
@@ -212,13 +262,13 @@ namespace Roslynator.CSharp.Refactorings
                 sb.Append(" == false");
                 sb.Append(s, s.Length - trailingLength, trailingLength);
 
-                return ParseExpression(sb.ToString());
+                return SyntaxFactory.ParseExpression(sb.ToString());
             }
             else
             {
                 string s = right.ToFullString();
 
-                int length = node.Span.End - right.FullSpan.Start;
+                int length = expression2.Span.End - right.FullSpan.Start;
                 int trailingLength = right.GetTrailingTrivia().Span.Length;
 
                 var sb = new StringBuilder();
@@ -252,7 +302,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 sb.Append(s, s.Length - trailingLength, trailingLength);
 
-                return ParseExpression(sb.ToString());
+                return SyntaxFactory.ParseExpression(sb.ToString());
             }
         }
 
@@ -266,7 +316,7 @@ namespace Roslynator.CSharp.Refactorings
             MemberInvocationStatement memberInvocation = MemberInvocationStatement.Create(statement);
 
             int insertIndex = memberInvocation.Expression.Span.End - statement.FullSpan.Start;
-            StatementSyntax newStatement = ParseStatement(statement.ToFullString().Insert(insertIndex, "?"));
+            StatementSyntax newStatement = SyntaxFactory.ParseStatement(statement.ToFullString().Insert(insertIndex, "?"));
 
             IEnumerable<SyntaxTrivia> leading = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, statement.SpanStart));
 
@@ -281,6 +331,55 @@ namespace Roslynator.CSharp.Refactorings
                 : newStatement.WithTrailingTrivia(trailing.Concat(ifStatement.GetTrailingTrivia()));
 
             return document.ReplaceNodeAsync(ifStatement, newStatement, cancellationToken);
+        }
+
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            ConditionalExpressionSyntax conditionalExpressionSyntax,
+            CancellationToken cancellationToken)
+        {
+            ConditionalExpressionInfo conditionalExpression;
+            if (ConditionalExpressionInfo.TryCreate(conditionalExpressionSyntax, out conditionalExpression))
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+
+                NullCheckExpression nullCheck;
+                if (NullCheckExpression.TryCreate(conditionalExpression.Condition, semanticModel, out nullCheck, cancellationToken))
+                {
+                    ExpressionSyntax whenNotNull = (nullCheck.IsCheckingNotNull)
+                        ? conditionalExpression.WhenTrue
+                        : conditionalExpression.WhenFalse;
+
+                    ExpressionSyntax whenNull = (nullCheck.IsCheckingNull)
+                        ? conditionalExpression.WhenTrue
+                        : conditionalExpression.WhenFalse;
+
+                    ExpressionSyntax expression = FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
+
+                    ExpressionSyntax newNode;
+
+                    if (expression.Parent == whenNotNull
+                        && whenNotNull.IsKind(SyntaxKind.SimpleMemberAccessExpression)
+                        && SemanticUtilities.IsPropertyOfNullableOfT(whenNotNull, "Value", semanticModel, cancellationToken))
+                    {
+                        newNode = expression;
+                    }
+                    else
+                    {
+                        newNode = SyntaxFactory.ParseExpression(whenNotNull.ToString().Insert(expression.Span.End - whenNotNull.SpanStart, "?"));
+                    }
+
+                    newNode = CSharpFactory.CoalesceExpression(newNode.Parenthesize(), whenNull.Parenthesize())
+                        .WithTriviaFrom(conditionalExpressionSyntax)
+                        .Parenthesize();
+
+                    return await document.ReplaceNodeAsync(conditionalExpressionSyntax, newNode, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            Debug.Fail(conditionalExpressionSyntax.ToString());
+
+            return document;
         }
     }
 }
