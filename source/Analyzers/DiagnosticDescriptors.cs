@@ -1794,5 +1794,16 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseMethodGroupInsteadOfAnonymousFunction = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction,
+            title: "Use method group instead of anonymous function.",
+            messageFormat: "Use method group instead of anonymous function.",
+            category: DiagnosticCategories.Simplification,
+            defaultSeverity: DiagnosticSeverity.Hidden,
+            isEnabledByDefault: true
+        );
+
+        public static readonly DiagnosticDescriptor UseMethodGroupInsteadOfAnonymousFunctionFadeOut = UseMethodGroupInsteadOfAnonymousFunction.CreateFadeOut();
     }
 }

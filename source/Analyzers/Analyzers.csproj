@@ -52,6 +52,7 @@
     <Compile Include="CodeFixProviders\EndRegionDirectiveTriviaCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EnumMemberDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\LambdaExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ObjectCreationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />
@@ -78,6 +79,7 @@
     <Compile Include="DiagnosticAnalyzers\AvoidBoxingOfValueTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseMethodGroupInsteadOfAnonymousFunctionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyBooleanExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseAttributeUsageAttributeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseConditionalAccessInsteadOfConditionalExpressionDiagnosticAnalyzer.cs" />
@@ -140,6 +142,7 @@
     <Compile Include="Refactorings\ReorderNamedArgumentsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCommentWithDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantBaseInterfaceRefactoring.cs" />
+    <Compile Include="Refactorings\UseMethodGroupInsteadOfAnonymousFunctionRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyBooleanExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyLazilyInitializedPropertyRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedConstructorParameterRefactoring.cs" />

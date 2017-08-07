@@ -832,6 +832,11 @@ namespace Roslynator
 
             return false;
         }
+
+        public static bool IsRefOrOut(this IParameterSymbol parameterSymbol)
+        {
+            return parameterSymbol?.RefKind.IsRefOrOut() == true;
+        }
         #endregion IParameterSymbol
 
         #region IPropertySymbol

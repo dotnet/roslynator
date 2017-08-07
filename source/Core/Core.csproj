@@ -51,6 +51,7 @@
     <Compile Include="CSharp\Syntax\NullCheckKind.cs" />
     <Compile Include="DocumentReferenceInfo.cs" />
     <Compile Include="Diagnostics\Assert.cs" />
+    <Compile Include="Extensions\RefKindExtensions.cs" />
     <Compile Include="SyntaxComparer.cs" />
     <Compile Include="SyntaxFinder.cs" />
     <Compile Include="CSharp\TypeParameterInfo.cs" />
