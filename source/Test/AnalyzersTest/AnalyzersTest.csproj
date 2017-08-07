@@ -98,6 +98,7 @@
     <Compile Include="UseAutoProperty3.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfConditionalExpression.cs" />
     <Compile Include="AvoidNullReferenceException.cs" />
+    <Compile Include="UseEventArgsEmpty.cs" />
     <Compile Include="UseExclusiveOrOperator.cs" />
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
     <Compile Include="UseCoalesceExpressionInsteadOfIf.cs" />

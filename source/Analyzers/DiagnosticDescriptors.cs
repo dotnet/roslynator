@@ -1767,5 +1767,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Warning,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseEventArgsEmpty = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseEventArgsEmpty,
+            title: "Use EventArgs.Empty.",
+            messageFormat: "Use EventArgs.Empty.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

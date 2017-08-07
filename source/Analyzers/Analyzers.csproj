@@ -103,6 +103,7 @@
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CallDebugFailInsteadOfDebugAssertDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UseEventArgsEmptyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseExclusiveOrOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.cs" />
@@ -161,6 +162,7 @@
     <Compile Include="Refactorings\CallDebugFailInsteadOfDebugAssertRefactoring.cs" />
     <Compile Include="Refactorings\AvoidNullReferenceExceptionRefactoring.cs" />
     <Compile Include="Refactorings\UseAttributeUsageAttributeRefactoring.cs" />
+    <Compile Include="Refactorings\UseEventArgsEmptyRefactoring.cs" />
     <Compile Include="Refactorings\UseExclusiveOrOperatorRefactoring.cs" />
     <Compile Include="Refactorings\UseMethodChainingRefactoring.cs" />
     <Compile Include="Refactorings\UseRegexInstanceInsteadOfStaticMethodRefactoring.cs" />
