@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.AvoidBoxingOfValueType,
                     DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
                     DiagnosticDescriptors.UseMethodChaining,
-                    DiagnosticDescriptors.UseConditionalAccessToAvoidNullReferenceException);
+                    DiagnosticDescriptors.AvoidNullReferenceException);
 
            }
         }
@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                     string methodName = memberInvocation.NameText;
 
-                    UseConditionalAccessToAvoidNullReferenceExceptionRefactoring.Analyze(context, memberInvocation);
+                    AvoidNullReferenceExceptionRefactoring.Analyze(context, memberInvocation);
 
                     int argumentCount = memberInvocation.ArgumentList.Arguments.Count;
 

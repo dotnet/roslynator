@@ -11,7 +11,7 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseConditionalAccessToAvoidNullReferenceExceptionRefactoring
+    internal static class AvoidNullReferenceExceptionRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
         {
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
         {
             context.ReportDiagnostic(
-                DiagnosticDescriptors.UseConditionalAccessToAvoidNullReferenceException,
+                DiagnosticDescriptors.AvoidNullReferenceException,
                 Location.Create(expression.SyntaxTree, new TextSpan(expression.Span.End, 1)));
         }
 

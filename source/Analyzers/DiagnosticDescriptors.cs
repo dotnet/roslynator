@@ -1749,10 +1749,10 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true
         );
 
-        public static readonly DiagnosticDescriptor UseConditionalAccessToAvoidNullReferenceException = new DiagnosticDescriptor(
-            id: DiagnosticIdentifiers.UseConditionalAccessToAvoidNullReferenceException,
-            title: "Use conditional access to avoid NullReferenceException.",
-            messageFormat: "Use conditional access to avoid NullReferenceException.",
+        public static readonly DiagnosticDescriptor AvoidNullReferenceException = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.AvoidNullReferenceException,
+            title: "Avoid NullReferenceException.",
+            messageFormat: "Avoid NullReferenceException.",
             category: DiagnosticCategories.Usage,
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
