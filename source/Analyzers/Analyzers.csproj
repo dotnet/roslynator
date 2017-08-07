@@ -43,6 +43,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Analyzers.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeFixProviders\BaseArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\BlockCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineAfterClosingBraceCodeFixProvider.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="CodeFixProviders\UseStringComparisonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ReorderNamedArgumentsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AsExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ImplementExceptionConstructorsDiagnosticAnalyzer.cs" />
@@ -134,6 +136,7 @@
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.AwaitRemover.cs" />
     <Compile Include="Refactorings\RemoveRedundantAutoPropertyInitializationRefactoring.cs" />
+    <Compile Include="Refactorings\ReorderNamedArgumentsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCommentWithDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantBaseInterfaceRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyBooleanExpressionRefactoring.cs" />
