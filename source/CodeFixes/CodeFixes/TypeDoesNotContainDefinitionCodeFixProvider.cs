@@ -60,23 +60,23 @@ namespace Roslynator.CSharp.CodeFixes
                                         if (memberAccess.IsParentKind(SyntaxKind.InvocationExpression))
                                             break;
 
-                                        switch (simpleName.Identifier.ValueText)
-                                        {
-                                            case "Count":
-                                                {
-                                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                        await ComputeCodeFix(context, diagnostic, memberAccess.Expression, simpleName).ConfigureAwait(false);
 
-                                                    ComputeCodeFix(context, diagnostic, memberAccess, semanticModel, "Count", "Length");
-                                                    break;
-                                                }
-                                            case "Length":
-                                                {
-                                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                        break;
+                                    }
+                                case SyntaxKind.MemberBindingExpression:
+                                    {
+                                        if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.FixMemberAccessName))
+                                            break;
 
-                                                    ComputeCodeFix(context, diagnostic, memberAccess, semanticModel, "Length", "Count");
-                                                    break;
-                                                }
-                                        }
+                                        var memberBindingExpression = (MemberBindingExpressionSyntax)node;
+
+                                        if (!memberBindingExpression.IsParentKind(SyntaxKind.ConditionalAccessExpression))
+                                            break;
+
+                                        var conditionalAccessExpression = (ConditionalAccessExpressionSyntax)memberBindingExpression.Parent;
+
+                                        await ComputeCodeFix(context, diagnostic, conditionalAccessExpression.Expression, memberBindingExpression.Name).ConfigureAwait(false);
 
                                         break;
                                     }
@@ -115,19 +115,41 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
+        private async Task ComputeCodeFix(CodeFixContext context, Diagnostic diagnostic, ExpressionSyntax expression, SimpleNameSyntax simpleName)
+        {
+            switch (simpleName.Identifier.ValueText)
+            {
+                case "Count":
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        ComputeCodeFix(context, diagnostic, expression, simpleName, semanticModel, "Count", "Length");
+                        break;
+                    }
+                case "Length":
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        ComputeCodeFix(context, diagnostic, expression, simpleName, semanticModel, "Length", "Count");
+                        break;
+                    }
+            }
+        }
+
         private void ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
-            MemberAccessExpressionSyntax memberAccess,
+            ExpressionSyntax expression,
+            SimpleNameSyntax simpleName,
             SemanticModel semanticModel,
             string name,
             string newName)
         {
-            if (IsFixable(memberAccess, newName, semanticModel, context.CancellationToken))
+            if (IsFixable(expression, newName, semanticModel, context.CancellationToken))
             {
                 CodeAction codeAction = CodeAction.Create(
                     $"Use '{newName}' instead of '{name}'",
-                    cancellationToken => RefactorAsync(context.Document, memberAccess, newName, cancellationToken),
+                    cancellationToken => RefactorAsync(context.Document, simpleName, newName, cancellationToken),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -135,12 +157,12 @@ namespace Roslynator.CSharp.CodeFixes
         }
 
         private static bool IsFixable(
-            MemberAccessExpressionSyntax memberAccess,
+            ExpressionSyntax expression,
             string newName,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberAccess.Expression, cancellationToken);
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
             if (typeSymbol != null)
             {
@@ -156,7 +178,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         if (!propertySymbol.IsIndexer
                             && propertySymbol.IsReadOnly
-                            && semanticModel.IsAccessible(memberAccess.SpanStart, symbol))
+                            && semanticModel.IsAccessible(expression.SpanStart, symbol))
                         {
                             return true;
                         }
@@ -169,15 +191,13 @@ namespace Roslynator.CSharp.CodeFixes
 
         private static Task<Document> RefactorAsync(
             Document document,
-            MemberAccessExpressionSyntax memberAccess,
+            SimpleNameSyntax simpleName,
             string newName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            MemberAccessExpressionSyntax newNode = memberAccess
-                .WithName(IdentifierName(newName))
-                .WithTriviaFrom(memberAccess.Name);
+            SimpleNameSyntax newNode = simpleName.WithIdentifier(Identifier(newName).WithTriviaFrom(simpleName.Identifier));
 
-            return document.ReplaceNodeAsync(memberAccess, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(simpleName, newNode, cancellationToken);
         }
     }
 }
