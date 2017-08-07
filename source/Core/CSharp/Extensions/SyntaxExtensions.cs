@@ -1634,12 +1634,15 @@ namespace Roslynator.CSharp
             return member.WithLeadingTrivia(newLeadingTrivia);
         }
 
-        public static bool IsIterator(this MethodDeclarationSyntax methodDeclaration)
+        public static bool ContainsYield(this MethodDeclarationSyntax methodDeclaration)
         {
             if (methodDeclaration == null)
                 throw new ArgumentNullException(nameof(methodDeclaration));
 
-            return methodDeclaration
+            BlockSyntax body = methodDeclaration.Body;
+
+            return body?.Statements.Any() == true
+                && body
                     .DescendantNodes(node => !node.IsNestedMethod())
                     .Any(f => f.IsKind(SyntaxKind.YieldReturnStatement, SyntaxKind.YieldBreakStatement));
         }
@@ -2703,37 +2706,32 @@ namespace Roslynator.CSharp
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind)
         {
-            return node?.Parent.IsKind(kind) == true;
+            return node?.Parent?.IsKind(kind) == true;
         }
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2)
         {
-            return node != null
-                && IsKind(node.Parent, kind1, kind2);
+            return IsKind(node?.Parent, kind1, kind2);
         }
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
         {
-            return node != null
-                && IsKind(node.Parent, kind1, kind2, kind3);
+            return IsKind(node?.Parent, kind1, kind2, kind3);
         }
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
         {
-            return node != null
-                && IsKind(node.Parent, kind1, kind2, kind3, kind4);
+            return IsKind(node?.Parent, kind1, kind2, kind3, kind4);
         }
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
         {
-            return node != null
-                && IsKind(node.Parent, kind1, kind2, kind3, kind4, kind5);
+            return IsKind(node?.Parent, kind1, kind2, kind3, kind4, kind5);
         }
 
         public static bool IsParentKind(this SyntaxNode node, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
         {
-            return node != null
-                && IsKind(node.Parent, kind1, kind2, kind3, kind4, kind5, kind6);
+            return IsKind(node?.Parent, kind1, kind2, kind3, kind4, kind5, kind6);
         }
 
         public static bool IsSingleLine(
@@ -3288,7 +3286,7 @@ namespace Roslynator.CSharp
 
         public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind)
         {
-            return token.Parent.IsKind(kind);
+            return token.Parent?.IsKind(kind) == true;
         }
 
         public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2)
@@ -3299,6 +3297,21 @@ namespace Roslynator.CSharp
         public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
         {
             return IsKind(token.Parent, kind1, kind2, kind3);
+        }
+
+        public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
+        {
+            return IsKind(token.Parent, kind1, kind2, kind3, kind4);
+        }
+
+        public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
+        {
+            return IsKind(token.Parent, kind1, kind2, kind3, kind4, kind5);
+        }
+
+        public static bool IsParentKind(this SyntaxToken token, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
+        {
+            return IsKind(token.Parent, kind1, kind2, kind3, kind4, kind5, kind6);
         }
         #endregion SyntaxToken
 

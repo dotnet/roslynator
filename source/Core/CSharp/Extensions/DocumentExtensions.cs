@@ -236,7 +236,7 @@ namespace Roslynator.CSharp
             {
                 int startLine = directive.GetSpanStartLine();
 
-                changes.Add(new TextChange(lines[startLine].SpanIncludingLineBreak, string.Empty));
+                changes.Add(new TextChange(lines[startLine].SpanIncludingLineBreak, ""));
             }
 
             return sourceText.WithChanges(changes);
@@ -303,7 +303,7 @@ namespace Roslynator.CSharp
                 lines[startLine].Start,
                 lines[endLine].EndIncludingLineBreak);
 
-            var textChange = new TextChange(span, string.Empty);
+            var textChange = new TextChange(span, "");
 
             SourceText newSourceText = sourceText.WithChanges(textChange);
 

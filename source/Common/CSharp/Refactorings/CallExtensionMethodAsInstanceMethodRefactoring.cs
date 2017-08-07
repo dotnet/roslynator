@@ -98,6 +98,7 @@ namespace Roslynator.CSharp.Refactorings
             switch (expression.Kind())
             {
                 case SyntaxKind.IdentifierName:
+                case SyntaxKind.GenericName:
                     {
                         newMemberAccess = SimpleMemberAccessExpression(
                             argument.Expression.WithLeadingTrivia(expression.GetLeadingTrivia()),

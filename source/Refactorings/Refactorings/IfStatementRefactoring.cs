@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.If;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {

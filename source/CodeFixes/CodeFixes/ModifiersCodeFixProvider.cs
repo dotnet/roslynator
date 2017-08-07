@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.CodeFixes
         private static readonly Accessibility[] _publicOrInternal = new Accessibility[]
         {
             Accessibility.Public,
-            Accessibility.Internal,
+            Accessibility.Internal
         };
 
         private static readonly Accessibility[] _publicOrInternalOrProtected = new Accessibility[]

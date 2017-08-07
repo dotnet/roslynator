@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -26,11 +25,11 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatInitializer)
                     && expressions.Any()
                     && !initializer.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                    && initializer.Parent?.IsKind(
+                    && initializer.IsParentKind(
                         SyntaxKind.ArrayCreationExpression,
                         SyntaxKind.ImplicitArrayCreationExpression,
                         SyntaxKind.ObjectCreationExpression,
-                        SyntaxKind.CollectionInitializerExpression) == true)
+                        SyntaxKind.CollectionInitializerExpression))
                 {
                     if (initializer.IsSingleLine(includeExteriorTrivia: false))
                     {

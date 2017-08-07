@@ -112,12 +112,12 @@ namespace Roslynator.CSharp.Syntax
                 {
                     var declarator = (VariableDeclaratorSyntax)parent;
 
-                    if (declarator.Parent?.IsKind(SyntaxKind.VariableDeclaration) == true)
+                    if (declarator.IsParentKind(SyntaxKind.VariableDeclaration))
                     {
                         var declaration = (VariableDeclarationSyntax)declarator.Parent;
 
                         if (declaration.Variables.Count == 1
-                            && declaration.Parent?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
+                            && declaration.IsParentKind(SyntaxKind.LocalDeclarationStatement))
                         {
                             result = new SingleLocalDeclarationStatement(declaration, declarator);
                             return true;

@@ -193,8 +193,6 @@ namespace Roslynator.CSharp.CodeFixes
 
                 context.RegisterCodeFix(codeAction, diagnostic);
             }
-
-            return;
         }
     }
 }

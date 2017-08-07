@@ -74,7 +74,7 @@ namespace AddCodeFileHeader
 
                     if (!_headerRegex.IsMatch(s))
                     {
-                        Console.WriteLine($"header not found in {filePath.Replace(dirPath, string.Empty)}");
+                        Console.WriteLine($"header not found in {filePath.Replace(dirPath, "")}");
 
                         yield return filePath;
                     }

@@ -4,7 +4,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.InlineAliasExpression;
-using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {

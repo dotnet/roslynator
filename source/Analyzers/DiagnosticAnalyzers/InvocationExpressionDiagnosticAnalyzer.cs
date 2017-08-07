@@ -41,7 +41,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
                     DiagnosticDescriptors.UseMethodChaining,
                     DiagnosticDescriptors.AvoidNullReferenceException);
-
            }
         }
 

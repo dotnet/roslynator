@@ -32,12 +32,12 @@ namespace Roslynator.CSharp.Refactorings
                                 RefactoringIdentifiers.CommentOutMember)
                             && BraceContainsSpan(context, member))
                         {
-                            if (member.Parent?.IsKind(
+                            if (member.IsParentKind(
                                 SyntaxKind.NamespaceDeclaration,
                                 SyntaxKind.ClassDeclaration,
                                 SyntaxKind.StructDeclaration,
                                 SyntaxKind.InterfaceDeclaration,
-                                SyntaxKind.CompilationUnit) == true)
+                                SyntaxKind.CompilationUnit))
                             {
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
                                 {
