@@ -1785,5 +1785,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor UseConditionalAccessInsteadOfConditionalExpression = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression,
+            title: "Use conditional access instead of conditional expression.",
+            messageFormat: "Use conditional access instead of conditional expression.",
+            category: DiagnosticCategories.Usage,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }

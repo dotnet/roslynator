@@ -665,6 +665,11 @@ namespace Roslynator.CSharp
             return expression;
         }
 
+        internal static ExpressionSyntax WalkDownParenthesesIf(this ExpressionSyntax expression, bool condition)
+        {
+            return (condition) ? WalkDownParentheses(expression) : expression;
+        }
+
         internal static bool IsIncrementOrDecrementExpression(this ExpressionSyntax expression)
         {
             return expression?.IsKind(
