@@ -10,11 +10,15 @@ namespace Roslynator.CSharp.Analyzers.Test
             {
             }
 
-            internal Foo(object parameter)
+            protected internal Foo(object parameter)
             {
             }
 
-            protected Foo(object parameter1, object parameter2)
+            internal Foo(object parameter, object parameter2)
+            {
+            }
+
+            protected Foo(object parameter1, object parameter2, object parameter3)
             {
             }
         }
