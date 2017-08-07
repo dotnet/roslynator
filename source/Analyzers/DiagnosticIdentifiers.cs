@@ -193,5 +193,6 @@ namespace Roslynator.CSharp
         public const string AvoidNullReferenceException = Prefix + "1202";
         public const string UseAttributeUsageAttribute = Prefix + "1203";
         public const string UseEventArgsEmpty = Prefix + "1204";
+        public const string ReorderNamedArguments = Prefix + "1205";
     }
 }

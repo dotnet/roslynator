@@ -1776,5 +1776,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: true
         );
+
+        public static readonly DiagnosticDescriptor ReorderNamedArguments = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ReorderNamedArguments,
+            title: "Reorder named arguments according to the order of parameters.",
+            messageFormat: "Reorder named arguments according to the order of parameters.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
