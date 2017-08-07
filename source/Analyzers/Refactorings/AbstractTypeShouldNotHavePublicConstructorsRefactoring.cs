@@ -1,14 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
+using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -18,13 +16,14 @@ namespace Roslynator.CSharp.Refactorings
         {
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
-            if (constructorDeclaration.Modifiers.Contains(SyntaxKind.PublicKeyword))
-            {
-                SyntaxNode parent = constructorDeclaration.Parent;
+            Accessibility accessibility = constructorDeclaration.Modifiers.GetAccessibility();
 
-                if (parent?.IsKind(SyntaxKind.ClassDeclaration) == true)
+            if (accessibility == Accessibility.Public
+                || accessibility == Accessibility.ProtectedOrInternal)
+            {
+                if (constructorDeclaration.IsParentKind(SyntaxKind.ClassDeclaration))
                 {
-                    var classDeclaration = (ClassDeclarationSyntax)parent;
+                    var classDeclaration = (ClassDeclarationSyntax)constructorDeclaration.Parent;
 
                     SyntaxTokenList modifiers = classDeclaration.Modifiers;
 
@@ -49,27 +48,14 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
-            ConstructorDeclarationSyntax constructor,
+            ConstructorDeclarationSyntax constructorDeclaration,
             CancellationToken cancellationToken)
         {
-            SyntaxTokenList modifiers = constructor.Modifiers;
+            ConstructorDeclarationSyntax newNode = AccessibilityHelper.ChangeAccessibility(constructorDeclaration, Accessibility.Protected, ModifierComparer.Instance);
 
-            int index = modifiers.IndexOf(SyntaxKind.PublicKeyword);
-
-            Debug.Assert(index != -1, modifiers.ToString());
-
-            if (index != -1)
-            {
-                SyntaxToken modifier = modifiers[index];
-
-                SyntaxToken newModifier = CSharpFactory.ProtectedKeyword().WithTriviaFrom(modifier);
-
-                return await document.ReplaceTokenAsync(modifier, newModifier, cancellationToken).ConfigureAwait(false);
-            }
-
-            return document;
+            return document.ReplaceNodeAsync(constructorDeclaration, newNode, cancellationToken);
         }
     }
 }
