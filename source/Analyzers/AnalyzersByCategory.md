@@ -14,6 +14,7 @@ Design|Make class static|RCS1102|x
 Design|Mark field as read\-only|RCS1169|x
 Design|Overriding member cannot change 'params' modifier|RCS1193|x
 Design|Static member in generic type should use a type parameter|RCS1158|x
+Design|Use AttributeUsageAttribute|RCS1203|x
 Design|Use constant instead of field|RCS1187|x
 Design|Use read\-only auto\-implemented property|RCS1170|x
 Formatting|Add empty line after closing brace|RCS1153|
@@ -76,6 +77,7 @@ Readability|Declare using directive on top level|RCS1094|
 Readability|Default label should be last label in switch section|RCS1099|x
 Readability|Enum member should declare explicit value|RCS1161|x
 Readability|Reorder modifiers|RCS1019|
+Readability|Reorder named arguments according to the order of parameters|RCS1205|x
 Readability|Sort enum members|RCS1154|x
 Readability|Split variable declaration|RCS1081|
 Readability|Use explicit type instead of 'var' \(foreach variable\)|RCS1009|x
@@ -153,6 +155,7 @@ Simplification|Use coalesce expression|RCS1128|x
 Simplification|Use compound assignment|RCS1058|x
 Simplification|Use is operator instead of as operator|RCS1172|x
 Simplification|Use method chaining|RCS1201|x
+Simplification|Use method group instead of anonymous function|RCS1207|x
 Simplification|Use return instead of assignment|RCS1179|x
 Simplification|Use 'var' instead of explicit type \(in foreach\)|RCS1177|
 Simplification|Use 'var' instead of explicit type \(when the type is not obvious\)|RCS1176|
@@ -172,12 +175,14 @@ Style|Parenthesize condition in conditional expression|RCS1051|
 Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|
+Usage|Avoid NullReferenceException|RCS1202|x
 Usage|Call Debug\.Fail instead of Debug\.Assert|RCS1178|x
 Usage|Call 'Enumerable\.ThenBy' instead of 'Enumerable\.OrderBy'|RCS1200|x
 Usage|Unconstrained type parameter checked for null|RCS1165|x
 Usage|Use C\# 6\.0 dictionary initializer|RCS1095|x
-Usage|Use conditional access to avoid NullReferenceException|RCS1202|x
+Usage|Use conditional access instead of conditional expression|RCS1206|x
 Usage|Use conditional access|RCS1146|x
+Usage|Use EventArgs\.Empty|RCS1204|x
 Usage|Use EventHandler\<T\>|RCS1159|x
 Usage|Use expression\-bodied member|RCS1016|
 Usage|Use lambda expression instead of anonymous method|RCS1048|x

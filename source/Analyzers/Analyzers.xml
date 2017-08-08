@@ -1656,13 +1656,58 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseConditionalAccessToAvoidNullReferenceException">
+  <Analyzer Identifier="AvoidNullReferenceException">
     <Id>RCS1202</Id>
-    <Title>Use conditional access to avoid NullReferenceException.</Title>
+    <Title>Avoid NullReferenceException.</Title>
     <Category>Usage</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseAttributeUsageAttribute">
+    <Id>RCS1203</Id>
+    <Title>Use AttributeUsageAttribute.</Title>
+    <Category>Design</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseEventArgsEmpty">
+    <Id>RCS1204</Id>
+    <Title>Use EventArgs.Empty.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="ReorderNamedArguments">
+    <Id>RCS1205</Id>
+    <Title>Reorder named arguments according to the order of parameters.</Title>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseConditionalAccessInsteadOfConditionalExpression">
+    <Id>RCS1206</Id>
+    <Title>Use conditional access instead of conditional expression.</Title>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
+  <Analyzer Identifier="UseMethodGroupInsteadOfAnonymousFunction">
+    <Id>RCS1207</Id>
+    <Title>Use method group instead of anonymous function.</Title>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
 </Analyzers>

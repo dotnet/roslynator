@@ -186,4 +186,9 @@ RCS1198|Avoid unnecessary boxing of value type|Performance|
 RCS1199|Simplify boolean expression|Simplification|x
 RCS1200|Call 'Enumerable\.ThenBy' instead of 'Enumerable\.OrderBy'|Usage|x
 RCS1201|Use method chaining|Simplification|x
-RCS1202|Use conditional access to avoid NullReferenceException|Usage|x
+RCS1202|Avoid NullReferenceException|Usage|x
+RCS1203|Use AttributeUsageAttribute|Design|x
+RCS1204|Use EventArgs\.Empty|Usage|x
+RCS1205|Reorder named arguments according to the order of parameters|Readability|x
+RCS1206|Use conditional access instead of conditional expression|Usage|x
+RCS1207|Use method group instead of anonymous function|Simplification|x
