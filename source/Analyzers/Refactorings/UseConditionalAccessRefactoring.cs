@@ -369,7 +369,10 @@ namespace Roslynator.CSharp.Refactorings
                         newNode = SyntaxFactory.ParseExpression(whenNotNull.ToString().Insert(expression.Span.End - whenNotNull.SpanStart, "?"));
                     }
 
-                    newNode = CSharpFactory.CoalesceExpression(newNode.Parenthesize(), whenNull.Parenthesize())
+                    if (!semanticModel.GetTypeSymbol(whenNotNull, cancellationToken).IsReferenceType)
+                        newNode = CSharpFactory.CoalesceExpression(newNode.Parenthesize(), whenNull.Parenthesize());
+
+                    newNode = newNode
                         .WithTriviaFrom(conditionalExpressionSyntax)
                         .Parenthesize();
 
