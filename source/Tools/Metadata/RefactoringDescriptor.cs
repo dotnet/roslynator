@@ -2,9 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Xml.Linq;
 
 namespace Roslynator.Metadata
 {
@@ -26,33 +24,6 @@ namespace Roslynator.Metadata
             Scope = scope;
             Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes);
             Images = new ReadOnlyCollection<ImageDescriptor>(images);
-        }
-
-        public static IEnumerable<RefactoringDescriptor> LoadFromFile(string filePath)
-        {
-            XDocument doc = XDocument.Load(filePath);
-
-            foreach (XElement element in doc.Root.Elements())
-            {
-                yield return new RefactoringDescriptor(
-                    element.Attribute("Id")?.Value,
-                    element.Attribute("Identifier").Value,
-                    element.Attribute("Title").Value,
-                    (element.Attribute("IsEnabledByDefault") != null)
-                        ? bool.Parse(element.Attribute("IsEnabledByDefault").Value)
-                        : true,
-                    element.Element("Scope")?.Value,
-                    element.Element("Syntaxes")
-                        .Elements("Syntax")
-                        .Select(f => new SyntaxDescriptor(f.Value))
-                        .ToList(),
-                    (element.Element("Images") != null)
-                        ? element.Element("Images")?
-                            .Elements("Image")
-                            .Select(f => new ImageDescriptor(f.Value))
-                            .ToList()
-                        : new List<ImageDescriptor>());
-            }
         }
 
         public string Id { get; }

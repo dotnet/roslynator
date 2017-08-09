@@ -1,8 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using System.Xml.Linq;
-
 namespace Roslynator.Metadata
 {
     public class AnalyzerDescriptor
@@ -25,24 +22,6 @@ namespace Roslynator.Metadata
             IsEnabledByDefault = isEnabledByDefault;
             SupportsFadeOut = supportsFadeOut;
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
-        }
-
-        public static IEnumerable<AnalyzerDescriptor> LoadFromFile(string filePath)
-        {
-            XDocument doc = XDocument.Load(filePath);
-
-            foreach (XElement element in doc.Root.Elements())
-            {
-                yield return new AnalyzerDescriptor(
-                    element.Attribute("Identifier").Value,
-                    element.Element("Title").Value,
-                    element.Element("Id").Value,
-                    element.Element("Category").Value,
-                    element.Element("DefaultSeverity").Value,
-                    bool.Parse(element.Element("IsEnabledByDefault").Value),
-                    bool.Parse(element.Element("SupportsFadeOut").Value),
-                    bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value));
-            }
         }
 
         public string Identifier { get; }

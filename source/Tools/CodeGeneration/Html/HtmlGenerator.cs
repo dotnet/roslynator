@@ -7,73 +7,63 @@ using System.Linq;
 using System.Xml;
 using Roslynator.Metadata;
 
-namespace MetadataGenerator
+namespace Roslynator.CodeGeneration.Html
 {
-    internal class HtmlGenerator
+    internal static class HtmlGenerator
     {
         private static StringComparer StringComparer { get; } = StringComparer.InvariantCulture;
 
-        public string CreateRoslynatorRefactoringsDescription(IEnumerable<RefactoringDescriptor> refactorings)
+        public static string CreateRoslynatorRefactoringsDescription(IEnumerable<RefactoringDescriptor> refactorings)
         {
             using (var sw = new StringWriter())
             {
                 using (XmlWriter xw = XmlWriter.Create(sw, CreateXmlWriterSettings()))
                 {
-                    WriteRefactoringsExtensionDescription(xw, refactorings);
+                    WriteRefactorings(xw, refactorings);
                 }
 
                 return sw.ToString();
             }
         }
 
-        public string CreateRoslynatorDescription(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings)
+        public static string CreateRoslynatorDescription(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings)
         {
             using (var sw = new StringWriter())
             {
                 using (XmlWriter xw = XmlWriter.Create(sw, CreateXmlWriterSettings()))
                 {
-                    WriteAnalyzersExtensionDescription(xw, analyzers);
-                    WriteRefactoringsExtensionDescription(xw, refactorings);
+                    WriteAnalyzers(xw, analyzers);
+                    WriteRefactorings(xw, refactorings);
                 }
 
                 return sw.ToString();
             }
         }
 
-        private void WriteRefactoringsExtensionDescription(XmlWriter writer, IEnumerable<RefactoringDescriptor> refactorings)
+        private static void WriteRefactorings(XmlWriter writer, IEnumerable<RefactoringDescriptor> refactorings)
         {
             writer.WriteElementString("h3", "List of Refactorings");
             writer.WriteStartElement("ul");
 
-            foreach (RefactoringDescriptor info in SortRefactorings(refactorings))
+            foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, StringComparer))
                 WriteRefactoring(writer, info);
 
             writer.WriteEndElement();
         }
 
-        private void WriteAnalyzersExtensionDescription(XmlWriter writer, IEnumerable<AnalyzerDescriptor> analyzers)
+        private static void WriteAnalyzers(XmlWriter writer, IEnumerable<AnalyzerDescriptor> analyzers)
         {
             writer.WriteElementString("h3", "List of Analyzers");
 
             writer.WriteStartElement("ul");
 
-            foreach (AnalyzerDescriptor analyzer in SortAnalyzers(analyzers))
+            foreach (AnalyzerDescriptor analyzer in analyzers.OrderBy(f => f.Id, StringComparer))
                 WriteAnalyzer(writer, analyzer);
 
             writer.WriteEndElement();
         }
 
-        protected virtual IOrderedEnumerable<RefactoringDescriptor> SortRefactorings(IEnumerable<RefactoringDescriptor> refactorings)
-        {
-            return refactorings.OrderBy(f => f.Title, StringComparer);
-        }
-
-        protected virtual IOrderedEnumerable<AnalyzerDescriptor> SortAnalyzers(IEnumerable<AnalyzerDescriptor> analyzers)
-        {
-            return analyzers.OrderBy(f => f.Id, StringComparer);
-        }
-
-        private void WriteRefactoring(XmlWriter writer, RefactoringDescriptor refactoring)
+        private static void WriteRefactoring(XmlWriter writer, RefactoringDescriptor refactoring)
         {
             string href = $"http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/{refactoring.Identifier}.md";
             writer.WriteStartElement("li");
@@ -84,12 +74,12 @@ namespace MetadataGenerator
             writer.WriteEndElement();
         }
 
-        private void WriteAnalyzer(XmlWriter writer, AnalyzerDescriptor analyzer)
+        private static void WriteAnalyzer(XmlWriter writer, AnalyzerDescriptor analyzer)
         {
             writer.WriteElementString("li", $"{analyzer.Id} - {analyzer.Title}");
         }
 
-        protected virtual XmlWriterSettings CreateXmlWriterSettings()
+        private static XmlWriterSettings CreateXmlWriterSettings()
         {
             return new XmlWriterSettings()
             {

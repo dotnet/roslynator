@@ -2,8 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Xml.Linq;
 
 namespace Roslynator.Metadata
 {
@@ -21,26 +19,6 @@ namespace Roslynator.Metadata
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
             FixableDiagnosticIds = new ReadOnlyCollection<string>(fixableDiagnosticIds);
-        }
-
-        public static IEnumerable<CodeFixDescriptor> LoadFromFile(string filePath)
-        {
-            XDocument doc = XDocument.Load(filePath);
-
-            foreach (XElement element in doc.Root.Elements())
-            {
-                yield return new CodeFixDescriptor(
-                    element.Attribute("Id").Value,
-                    element.Attribute("Identifier").Value,
-                    element.Attribute("Title").Value,
-                    (element.Attribute("IsEnabledByDefault") != null)
-                        ? bool.Parse(element.Attribute("IsEnabledByDefault").Value)
-                        : true,
-                    element.Element("FixableDiagnosticIds")
-                        .Elements("Id")
-                        .Select(f => f.Value)
-                        .ToList());
-            }
         }
 
         public string Id { get; }

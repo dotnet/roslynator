@@ -1,19 +1,17 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Roslynator.Metadata;
+using Roslynator.Utilities;
 
-namespace MetadataGenerator
+namespace Roslynator.CodeGeneration.Markdown
 {
-    internal class MarkdownGenerator
+    public static class MarkdownGenerator
     {
-        private static StringComparer StringComparer { get; } = StringComparer.InvariantCulture;
-
-        public string CreateReadMeMarkDown(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings)
+        public static string CreateReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
             using (var sw = new StringWriter())
             {
@@ -22,7 +20,7 @@ namespace MetadataGenerator
                 sw.WriteLine("### List of Analyzers");
                 sw.WriteLine();
 
-                foreach (AnalyzerDescriptor info in analyzers.OrderBy(f => f.Id, StringComparer))
+                foreach (AnalyzerDescriptor info in analyzers.OrderBy(f => f.Id, comparer))
                 {
                     sw.WriteLine($"* {info.Id} - {info.Title.TrimEnd('.').EscapeMarkdown()}");
                 }
@@ -31,7 +29,7 @@ namespace MetadataGenerator
                 sw.WriteLine("### List of Refactorings");
                 sw.WriteLine();
 
-                foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, StringComparer))
+                foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, comparer))
                 {
                     sw.WriteLine($"* [{info.Title.TrimEnd('.').EscapeMarkdown()}](docs/refactorings/{info.Identifier}.md)");
                 }
@@ -40,14 +38,14 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateRefactoringsMarkDown(IEnumerable<RefactoringDescriptor> refactorings)
+        public static string CreateRefactoringsMarkDown(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
             using (var sw = new StringWriter())
             {
                 sw.WriteLine("## Roslynator Refactorings");
 
                 foreach (RefactoringDescriptor info in refactorings
-                    .OrderBy(f => f.Title, StringComparer))
+                    .OrderBy(f => f.Title, comparer))
                 {
                     sw.WriteLine("");
                     sw.WriteLine($"#### {info.Title.EscapeMarkdown()} ({info.Id})");
@@ -87,7 +85,7 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateRefactoringMarkDown(RefactoringDescriptor refactoring)
+        public static string CreateRefactoringMarkDown(RefactoringDescriptor refactoring)
         {
             using (var sw = new StringWriter())
             {
@@ -119,7 +117,7 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateAnalyzersReadMe(IEnumerable<AnalyzerDescriptor> analyzers)
+        public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
             using (var sw = new StringWriter())
             {
@@ -129,7 +127,7 @@ namespace MetadataGenerator
                 sw.WriteLine(" Id | Title | Category | Enabled by Default ");
                 sw.WriteLine(" --- | --- | --- |:---:");
 
-                foreach (AnalyzerDescriptor info in analyzers.OrderBy(f => f.Id, StringComparer))
+                foreach (AnalyzerDescriptor info in analyzers.OrderBy(f => f.Id, comparer))
                 {
                     sw.Write(info.Id);
                     sw.Write('|');
@@ -146,7 +144,7 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateRefactoringsReadMe(IEnumerable<RefactoringDescriptor> refactorings)
+        public static string CreateRefactoringsReadMe(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
             using (var sw = new StringWriter())
             {
@@ -156,7 +154,7 @@ namespace MetadataGenerator
                 sw.WriteLine("Id | Title | Enabled by Default ");
                 sw.WriteLine("--- | --- |:---:");
 
-                foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, StringComparer))
+                foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, comparer))
                 {
                     sw.Write(info.Id);
                     sw.Write('|');
@@ -170,7 +168,7 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateCodeFixesReadMe(CodeFixDescriptor[] codeFixes, CompilerDiagnosticDescriptor[] diagnostics)
+        public static string CreateCodeFixesReadMe(IEnumerable<CodeFixDescriptor> codeFixes, IEnumerable<CompilerDiagnosticDescriptor> diagnostics, IComparer<string> comparer)
         {
             using (var sw = new StringWriter())
             {
@@ -180,7 +178,7 @@ namespace MetadataGenerator
                 sw.WriteLine("Id | Title | Fixable Diagnostics | Enabled by Default ");
                 sw.WriteLine("--- | --- | --- |:---:");
 
-                foreach (CodeFixDescriptor descriptor in codeFixes.OrderBy(f => f.Title, StringComparer))
+                foreach (CodeFixDescriptor descriptor in codeFixes.OrderBy(f => f.Title, comparer))
                 {
                     IEnumerable<string> fixableDiagnostics = descriptor
                         .FixableDiagnosticIds
@@ -200,7 +198,7 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateCodeFixesByDiagnosticId(CodeFixDescriptor[] codeFixes, CompilerDiagnosticDescriptor[] diagnostics)
+        public static string CreateCodeFixesByDiagnosticId(IEnumerable<CodeFixDescriptor> codeFixes, IEnumerable<CompilerDiagnosticDescriptor> diagnostics)
         {
             using (var sw = new StringWriter())
             {
@@ -216,7 +214,7 @@ namespace MetadataGenerator
                     .ThenBy(f => f.CodeFixDescriptor.Id)
                     .GroupBy(f => f.DiagnosticId))
                 {
-                    CompilerDiagnosticDescriptor diagnostic = Array.Find(diagnostics, f => f.Id == grouping.Key);
+                    CompilerDiagnosticDescriptor diagnostic = diagnostics.FirstOrDefault(f => f.Id == grouping.Key);
 
                     if (!string.IsNullOrEmpty(diagnostic?.HelpUrl))
                     {
@@ -236,7 +234,7 @@ namespace MetadataGenerator
             }
         }
 
-        public string CreateAnalyzersByCategoryMarkDown(IEnumerable<AnalyzerDescriptor> analyzers)
+        public static string CreateAnalyzersByCategoryMarkDown(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
             using (var sw = new StringWriter())
             {
@@ -248,9 +246,9 @@ namespace MetadataGenerator
 
                 foreach (IGrouping<string, AnalyzerDescriptor> grouping in analyzers
                     .GroupBy(f => f.Category.EscapeMarkdown())
-                    .OrderBy(f => f.Key, StringComparer))
+                    .OrderBy(f => f.Key, comparer))
                 {
-                    foreach (AnalyzerDescriptor info in grouping.OrderBy(f => f.Title, StringComparer))
+                    foreach (AnalyzerDescriptor info in grouping.OrderBy(f => f.Title, comparer))
                     {
                         sw.Write(grouping.Key);
                         sw.Write('|');
@@ -265,21 +263,6 @@ namespace MetadataGenerator
                 }
 
                 return sw.ToString();
-            }
-        }
-
-        public static IEnumerable<string> FindMissingImages(IEnumerable<RefactoringDescriptor> refactorings, string imagesDirPath)
-        {
-            foreach (RefactoringDescriptor refactoring in refactorings
-                .OrderBy(f => f.Title, StringComparer))
-            {
-                foreach (ImageDescriptor image in refactoring.ImagesOrDefaultImage())
-                {
-                    string imagePath = Path.Combine(imagesDirPath, image.Name + ".png");
-
-                    if (!File.Exists(imagePath))
-                        yield return imagePath;
-                }
             }
         }
 
