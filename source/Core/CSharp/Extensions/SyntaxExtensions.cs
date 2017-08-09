@@ -2493,6 +2493,10 @@ namespace Roslynator.CSharp
                     return "lock statement";
                 case SyntaxKind.FixedStatement:
                     return "fixed statement";
+                case SyntaxKind.BreakStatement:
+                    return "break statement";
+                case SyntaxKind.ContinueStatement:
+                    return "continue statement";
                 case SyntaxKind.MethodDeclaration:
                     return "method";
                 case SyntaxKind.OperatorDeclaration:

@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.UnreachableCodeDetected,
                     CompilerDiagnosticIdentifiers.EmptySwitchBlock,
-                    CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement);
+                    CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement,
+                    CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue);
             }
         }
 
@@ -34,7 +35,8 @@ namespace Roslynator.CSharp.CodeFixes
             if (!Settings.IsAnyCodeFixEnabled(
                 CodeFixIdentifiers.RemoveUnreachableCode,
                 CodeFixIdentifiers.RemoveEmptySwitchStatement,
-                CodeFixIdentifiers.IntroduceLocalVariable))
+                CodeFixIdentifiers.IntroduceLocalVariable,
+                CodeFixIdentifiers.RemoveJumpStatement))
             {
                 return;
             }
@@ -144,6 +146,19 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveJumpStatement))
+                                break;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Remove {statement.GetTitle()}",
+                                cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

@@ -197,7 +197,7 @@
   </CodeFix>
   <CodeFix Id="RCF0036" Identifier="SynchronizeAccessibility" Title="SynchronizeAccessibility">
     <FixableDiagnosticIds>
-      <Id>CS0266</Id>
+      <Id>CS0262</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0037" Identifier="RemoveArgumentList" Title="Remove argument list">
@@ -392,6 +392,22 @@
   <CodeFix Id="RCF0070" Identifier="RemoveOutModifier" Title="Remove 'out' modifier">
     <FixableDiagnosticIds>
       <Id>CS1988</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0071" Identifier="RemoveAttribute" Title="Remove attribute">
+    <FixableDiagnosticIds>
+      <Id>CS0592</Id>
+      <Id>CS1689</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0072" Identifier="RemoveJumpStatement" Title="Remove jump statement">
+    <FixableDiagnosticIds>
+      <Id>CS0139</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0073" Identifier="UseCoalesceExpression" Title="Use coalesce expression">
+    <FixableDiagnosticIds>
+      <Id>CS0266</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>
