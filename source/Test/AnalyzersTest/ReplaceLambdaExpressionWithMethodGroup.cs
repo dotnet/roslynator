@@ -101,6 +101,24 @@ namespace Roslynator.CSharp.Analyzers.Test
             private static void Do(string value)
             {
             }
+
+            //n
+
+            private void FunctionToAction()
+            {
+                string s = "";
+
+                Action action = () => s.GetHashCode();
+            }
+
+            private void FunctionToAction(Action action)
+            {
+                action();
+
+                string s = "";
+
+                FunctionToAction(() => s.GetHashCode());
+            }
         }
     }
 }

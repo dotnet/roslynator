@@ -54,7 +54,10 @@ namespace Roslynator.CSharp.Refactorings
 
             ParameterSyntax parameter = lambda.Parameter;
 
-            if (!CheckParameter(parameter, arguments[0], parameterSymbols[0], semanticModel, context.CancellationToken))
+            if (!CheckInvokeMethod(lambda, methodSymbol, semanticModel, context.CancellationToken))
+                return;
+
+            if (!CheckParameter(parameter, arguments[0], parameterSymbols[0]))
                 return;
 
             if (!CheckSpeculativeSymbol(lambda, expression, methodSymbol, semanticModel))
@@ -106,7 +109,10 @@ namespace Roslynator.CSharp.Refactorings
             if (parameters.Count != arguments.Count)
                 return;
 
-            if (!CheckParameters(parameters, arguments, parameterSymbols, semanticModel, cancellationToken))
+            if (!CheckInvokeMethod(lambda, methodSymbol, semanticModel, context.CancellationToken))
+                return;
+
+            if (!CheckParameters(parameters, arguments, parameterSymbols))
                 return;
 
             if (!CheckSpeculativeSymbol(lambda, expression, methodSymbol, semanticModel))
@@ -158,7 +164,10 @@ namespace Roslynator.CSharp.Refactorings
             if (parameters.Count != arguments.Count)
                 return;
 
-            if (!CheckParameters(parameters, arguments, parameterSymbols, semanticModel, cancellationToken))
+            if (!CheckInvokeMethod(anonymousMethod, methodSymbol, semanticModel, context.CancellationToken))
+                return;
+
+            if (!CheckParameters(parameters, arguments, parameterSymbols))
                 return;
 
             if (!CheckSpeculativeSymbol(anonymousMethod, expression, methodSymbol, semanticModel))
@@ -169,16 +178,49 @@ namespace Roslynator.CSharp.Refactorings
             FadeOut(context, null, parameterList, anonymousMethod.Block, argumentList, anonymousMethod.DelegateKeyword);
         }
 
-        private static bool CheckParameters(
-            SeparatedSyntaxList<ParameterSyntax> parameters,
-            SeparatedSyntaxList<ArgumentSyntax> arguments,
-            ImmutableArray<IParameterSymbol> parameterSymbols,
+        private static bool CheckInvokeMethod(
+            AnonymousFunctionExpressionSyntax anonymousFunction,
+            IMethodSymbol methodSymbol,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
+            var typeSymbol = semanticModel.GetTypeInfo(anonymousFunction, cancellationToken).ConvertedType as INamedTypeSymbol;
+
+            IMethodSymbol invokeMethod = typeSymbol?.DelegateInvokeMethod;
+
+            if (invokeMethod == null)
+                return false;
+
+            if (invokeMethod.ReturnType.IsVoid()
+                && !methodSymbol.ReturnType.IsVoid())
+            {
+                return false;
+            }
+
+            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+            ImmutableArray<IParameterSymbol> parameters2 = invokeMethod.Parameters;
+
+            if (parameters.Length != parameters2.Length)
+                return false;
+
+            for (int i = 0; i < parameters.Length; i++)
+            {
+                if (!parameters[i].Type.Equals(parameters2[i].Type))
+                    return false;
+            }
+
+            return true;
+        }
+
+        private static bool CheckParameters(
+            SeparatedSyntaxList<ParameterSyntax> parameters,
+            SeparatedSyntaxList<ArgumentSyntax> arguments,
+            ImmutableArray<IParameterSymbol> parameterSymbols)
+        {
             for (int i = 0; i < parameters.Count; i++)
             {
-                if (!CheckParameter(parameters[i], arguments[i], parameterSymbols[i], semanticModel, cancellationToken))
+                if (!CheckParameter(parameters[i], arguments[i], parameterSymbols[i]))
                     return false;
             }
 
@@ -188,17 +230,14 @@ namespace Roslynator.CSharp.Refactorings
         private static bool CheckParameter(
             ParameterSyntax parameter,
             ArgumentSyntax argument,
-            IParameterSymbol parameterSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            IParameterSymbol parameterSymbol)
         {
             return !parameterSymbol.IsRefOrOut()
                 && !parameterSymbol.IsParams
                 && string.Equals(
                     parameter.Identifier.ValueText,
                     (argument.Expression as IdentifierNameSyntax)?.Identifier.ValueText,
-                    StringComparison.Ordinal)
-                && semanticModel.GetDeclaredSymbol(parameter, cancellationToken)?.Type.Equals(parameterSymbol.Type) == true;
+                    StringComparison.Ordinal);
         }
 
         private static bool CheckSpeculativeSymbol(
