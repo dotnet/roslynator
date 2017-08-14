@@ -102,6 +102,24 @@ namespace Roslynator.CSharp.Analyzers.Test
 
                 string value;
                 string result = (dic != null && dic.TryGetValue(0, out value)) ? value : null;
+
+                int i = 0;
+                if (i != null && i.ToString() == "0") { }
+
+                DateTime dt = DateTime.MinValue;
+                if (dt != null && dt.Ticks == 0) { }
+            }
+
+            private struct CustomStruct
+            {
+                public int Value { get; }
+
+                private void Foo()
+                {
+                    var x = new CustomStruct();
+
+                    if (x != null && x.Value > 0) { }
+                }
             }
 
             private static void A(object obj)
