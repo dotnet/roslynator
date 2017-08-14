@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (expression != null
                     && context.SemanticModel
                         .GetTypeSymbol(expression, context.CancellationToken)?
-                        .IsConstructedFrom(SpecialType.System_Nullable_T) == false)
+                        .IsReferenceType == true)
                 {
                     ExpressionSyntax right = logicalAndExpression.Right;
 
