@@ -50,6 +50,24 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfStatement))
                     SplitIfStatementRefactoring.ComputeRefactoring(context, ifStatement);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReduceIfNesting)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(ifStatement.IfKeyword))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                if (ReduceIfNestingRefactoring.IsFixable(
+                    ifStatement,
+                    semanticModel,
+                    semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task),
+                    context.CancellationToken,
+                    topLevelOnly: false))
+                {
+                    context.RegisterRefactoring(
+                        "Reduce if nesting",
+                        cancellationToken => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, context.CancellationToken));
+                }
+            }
         }
     }
 }

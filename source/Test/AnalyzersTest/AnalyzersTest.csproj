@@ -54,6 +54,7 @@
     <Compile Include="MergeStringExpressions.cs" />
     <Compile Include="OverridingMemberCannotChangeParamsModifier.cs" />
     <Compile Include="OptimizeStringBuilderAppendCall.cs" />
+    <Compile Include="ReduceIfNesting.cs" />
     <Compile Include="RemoveEmptyInitializer.cs" />
     <Compile Include="RemoveRedundantAutoPropertyInitialization.cs" />
     <Compile Include="RemoveRedundantDefaultSwitchSection.cs" />

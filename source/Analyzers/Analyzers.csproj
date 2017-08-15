@@ -80,6 +80,7 @@
     <Compile Include="DiagnosticAnalyzers\AvoidBoxingOfValueTypeDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ReduceIfNestingDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseMethodGroupInsteadOfAnonymousFunctionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyBooleanExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseAttributeUsageAttributeDiagnosticAnalyzer.cs" />

@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
                     DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
-                    DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf);
+                    DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf,
+                    DiagnosticIdentifiers.ReduceIfNesting);
             }
         }
 
@@ -85,6 +86,22 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 refactoring.Title,
                                 cancellationToken => refactoring.RefactorAsync(context.Document, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.ReduceIfNesting:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Reduce if nesting",
+                                cancellationToken =>
+                                {
+                                    return ReduceIfNestingRefactoring.RefactorAsync(
+                                        context.Document,
+                                        ifStatement,
+                                        cancellationToken);
+                                },
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

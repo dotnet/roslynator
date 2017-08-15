@@ -196,5 +196,6 @@ namespace Roslynator.CSharp
         public const string ReorderNamedArguments = Prefix + "1205";
         public const string UseConditionalAccessInsteadOfConditionalExpression = Prefix + "1206";
         public const string UseMethodGroupInsteadOfAnonymousFunction = Prefix + "1207";
+        public const string ReduceIfNesting = Prefix + "1208";
     }
 }
