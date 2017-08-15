@@ -72,7 +72,9 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.TypeAlreadyContainsDefinition,
                     CompilerDiagnosticIdentifiers.NoSuitableMethodFoundToOverride,
                     CompilerDiagnosticIdentifiers.ExtensionMethodMustBeDefinedInNonGenericStaticClass,
-                    CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters);
+                    CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters,
+                    CompilerDiagnosticIdentifiers.IteratorsCannotHaveRefOrOutParameters,
+                    CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct);
             }
         }
 
@@ -402,12 +404,20 @@ namespace Roslynator.CSharp.CodeFixes
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.AsyncMethodsCannotHaveRefOrOutParameters:
+                    case CompilerDiagnosticIdentifiers.IteratorsCannotHaveRefOrOutParameters:
                         {
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRefModifier))
                                 RemoveModifier(context, diagnostic, node, SyntaxKind.RefKeyword);
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveOutModifier))
                                 RemoveModifier(context, diagnostic, node, SyntaxKind.OutKeyword);
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct:
+                        {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier))
+                                AddStaticModifier(context, diagnostic, node, CodeFixIdentifiers.AddStaticModifier);
 
                             break;
                         }

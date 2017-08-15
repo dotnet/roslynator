@@ -51,6 +51,9 @@ namespace Roslynator.CSharp.CodeFixes
                             if (statement != null)
                                 node = node.FirstAncestor(f => f.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement));
 
+                            if (ContainsYield(node))
+                                break;
+
                             bodyOrExpressionBody = GetBodyOrExpressionBody(node);
 
                             SemanticModel semanticModel = await context.Document.GetSemanticModelAsync().ConfigureAwait(false);
@@ -130,7 +133,14 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 if (statement != null)
                 {
-                    newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
+                    if (EmbeddedStatementHelper.IsEmbeddedStatement(statement))
+                    {
+                        newNode = node.ReplaceNode(statement, Block(expressionStatement, statement));
+                    }
+                    else
+                    {
+                        newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
+                    }
                 }
                 else
                 {
@@ -176,6 +186,18 @@ namespace Roslynator.CSharp.CodeFixes
             else
             {
                 return ((LocalFunctionStatementSyntax)node).BodyOrExpressionBody();
+            }
+        }
+
+        private static bool ContainsYield(SyntaxNode node)
+        {
+            if (node.IsKind(SyntaxKind.MethodDeclaration))
+            {
+                return ((MethodDeclarationSyntax)node).ContainsYield();
+            }
+            else
+            {
+                return ((LocalFunctionStatementSyntax)node).ContainsYield();
             }
         }
     }

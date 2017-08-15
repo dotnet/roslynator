@@ -79,5 +79,8 @@ namespace Roslynator.CSharp.CodeFixes
         public const string RemoveAttribute = Prefix + "0071";
         public const string RemoveJumpStatement = Prefix + "0072";
         public const string UseCoalesceExpression = Prefix + "0073";
+        public const string ReplaceAsExpressionWithCastExpression = Prefix + "0074";
+        public const string RemoveConditionThatIsAlwaysEqualToTrueOrFalse = Prefix + "0075";
+        public const string IntroduceField = Prefix + "0076";
     }
 }

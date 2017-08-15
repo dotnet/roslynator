@@ -66,31 +66,44 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable))
-                                break;
-
-                            if (!statement.IsKind(SyntaxKind.ExpressionStatement))
-                                break;
-
-                            var expressionStatement = (ExpressionStatementSyntax)statement;
-
-                            ExpressionSyntax expression = expressionStatement.Expression;
-
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() == false)
+                            if (Settings.IsAnyCodeFixEnabled(
+                                CodeFixIdentifiers.IntroduceLocalVariable,
+                                CodeFixIdentifiers.IntroduceField))
                             {
+                                if (!(statement is ExpressionStatementSyntax expressionStatement))
+                                    break;
+
+                                ExpressionSyntax expression = expressionStatement.Expression;
+
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() != false)
+                                    break;
+
                                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                                if (typeSymbol?.IsErrorType() == false)
-                                {
-                                    bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
-                                        && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
+                                if (typeSymbol?.IsErrorType() != false)
+                                    break;
 
+                                bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
+                                    && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
+
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable))
+                                {
                                     CodeAction codeAction = CodeAction.Create(
                                         IntroduceLocalVariableRefactoring.GetTitle(expression),
                                         cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken),
-                                        GetEquivalenceKey(diagnostic));
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceLocalVariable));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
+
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceField))
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        $"Introduce field for '{expression}'",
+                                        cancellationToken => IntroduceFieldRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, semanticModel, cancellationToken),
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceField));
 
                                     context.RegisterCodeFix(codeAction, diagnostic);
                                 }

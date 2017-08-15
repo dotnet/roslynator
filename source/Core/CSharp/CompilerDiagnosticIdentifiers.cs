@@ -11,6 +11,7 @@ namespace Roslynator.CSharp
         public const string CannotImplicitlyConvertType = "CS0029";
         public const string CannotConvertNullToTypeBecauseItIsNonNullableValueType = "CS0037";
         public const string EventInInterfaceCannotHaveAddOrRemoveAccessors = "CS0069";
+        public const string AsOperatorMustBeUsedWithReferenceTypeOrNullableType = "CS0077";
         public const string ConstraintsAreNotAllowedOnNonGenericDeclarations = "CS0080";
         public const string NamespaceAlreadyContainsDefinition = "CS0101";
         public const string TypeAlreadyContainsDefinition = "CS0102";
@@ -58,6 +59,7 @@ namespace Roslynator.CSharp
         public const string ClassOrStructConstraintMustComeBeforeAnyOtherConstraints = "CS0449";
         public const string CannotSpecifyBothConstraintClassAndClassOrStructConstraint = "CS0450";
         public const string NewConstraintCannotBeUsedWithStructConstraint = "CS0451";
+        public const string ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull = "CS0472";
         public const string MemberCannotDeclareBodyBecauseItIsMarkedAbstract = "CS0500";
         public const string MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial = "CS0501";
         public const string CannotChangeAccessModifiersWhenOverridingInheritedMember = "CS0507";
@@ -102,6 +104,7 @@ namespace Roslynator.CSharp
         public const string ArgumentMustBePassedWithOutKeyword = "CS1620";
         public const string YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression = "CS1621";
         public const string CannotReturnValueFromIterator = "CS1622";
+        public const string IteratorsCannotHaveRefOrOutParameters = "CS1623";
         public const string NotAllCodePathsReturnValueInAnonymousFunction = "CS1643";
         public const string TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable = "CS1674";
         public const string AttributeIsOnlyValidOnMethodsOrAttributeClasses = "CS1689";

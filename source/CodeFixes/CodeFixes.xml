@@ -144,6 +144,7 @@
     <FixableDiagnosticIds>
       <Id>CS1615</Id>
       <Id>CS1988</Id>
+      <Id>CS1623</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0028" Identifier="RemoveRedundantAssignment" Title="Remove redundant assignment">
@@ -392,6 +393,7 @@
   <CodeFix Id="RCF0070" Identifier="RemoveOutModifier" Title="Remove 'out' modifier">
     <FixableDiagnosticIds>
       <Id>CS1988</Id>
+      <Id>CS1623</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0071" Identifier="RemoveAttribute" Title="Remove attribute">
@@ -408,6 +410,21 @@
   <CodeFix Id="RCF0073" Identifier="UseCoalesceExpression" Title="Use coalesce expression">
     <FixableDiagnosticIds>
       <Id>CS0266</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0074" Identifier="ReplaceAsExpressionWithCastExpression" Title="Replace as expression with cast expression">
+    <FixableDiagnosticIds>
+      <Id>CS0077</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0075" Identifier="RemoveConditionThatIsAlwaysEqualToTrueOrFalse" Title="Remove condition that is always equal to true/false">
+    <FixableDiagnosticIds>
+      <Id>CS0472</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0076" Identifier="IntroduceField" Title="Introduce field">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

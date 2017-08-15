@@ -1,20 +1,22 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Text;
 
 namespace Roslynator.CSharp.CodeFixes.Test
 {
-    internal static class IntroduceLocalVariable
+    internal static class CS0077_AsOperatorMustBeUsedWithReferenceTypeOrNullableType
     {
-        private class Foo
+        private static void Foo()
         {
-            private void Method()
-            {
-                Property;
-            }
+            object o = null;
 
-            public string Property { get; }
+            int i = o as int;
+
+            //n
+
+            StringBuilder sb = null;
+
+            i = sb as int;
         }
     }
 }

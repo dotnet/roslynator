@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
                             },
-                            GetEquivalenceKey(CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct));
+                            GetEquivalenceKey(CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
                         context.RegisterCodeFix(codeAction, context.Diagnostics);
                         break;
@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 return context.Document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken);
                             },
-                            GetEquivalenceKey(CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct));
+                            GetEquivalenceKey(CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
                         context.RegisterCodeFix(codeAction, context.Diagnostics);
                         break;

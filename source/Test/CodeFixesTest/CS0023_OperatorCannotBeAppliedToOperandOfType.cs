@@ -2,14 +2,15 @@
 
 namespace Roslynator.CSharp.CodeFixes.Test
 {
-    internal static class RemovePropertyOrFieldInitializer
+    internal static class CS0023_OperatorCannotBeAppliedToOperandOfType
     {
-        private struct Foo
+        private static void Foo()
         {
-            private string _fieldName = "";
+            int i = 0;
 
-            public string PropertyName { get; set; } = "";
+            if (i?.ToString() == "0")
+            {
+            }
         }
-
     }
 }

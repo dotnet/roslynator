@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    public class RefactoringIdentifierSet : HashSet<string>
+    internal class RefactoringIdentifierSet : HashSet<string>
     {
         public RefactoringIdentifierSet()
             : base(StringComparer.Ordinal)

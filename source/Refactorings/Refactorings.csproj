@@ -86,8 +86,6 @@
     <Compile Include="Refactorings\InterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AttributeListRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.Generated.cs" />
-    <Compile Include="RefactoringIdentifierSet.cs" />
-    <Compile Include="RefactoringSettings.cs" />
     <Compile Include="Refactorings\ExtractTypeDeclarationToNewFileRefactoring.cs" />
     <Compile Include="Refactorings\MergeLocalDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\JoinStringExpressionsRefactoring.cs" />
@@ -266,7 +264,6 @@
     <Compile Include="Refactorings\ReplaceIfElseWithSwitchRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodGroupWithLambdaRefactoring.cs" />
     <Compile Include="Refactorings\SplitSwitchLabelsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceForWithWhileRefactoring.cs" />

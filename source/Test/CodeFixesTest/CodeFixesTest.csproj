@@ -45,6 +45,8 @@
     <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddBody.cs" />
     <Compile Include="AddSemicolon.cs" />
+    <Compile Include="CS0023_OperatorCannotBeAppliedToOperandOfType.cs" />
+    <Compile Include="CS0077_AsOperatorMustBeUsedWithReferenceTypeOrNullableType.cs" />
     <Compile Include="CS0101_NamespaceAlreadyContainsDefinition.cs" />
     <Compile Include="CS0101_NamespaceAlreadyContainsDefinition2.cs" />
     <Compile Include="CS0102_TypeAlreadyContainsDefinition.cs" />
@@ -60,6 +62,7 @@
     <Compile Include="CS0449_ClassOrStructConstraintMustComeBeforeAnyOtherConstraints.cs" />
     <Compile Include="CS0450_CannotSpecifyBothConstraintClassAndClassOrStructConstraint.cs" />
     <Compile Include="CS0451_NewConstraintCannotBeUsedWithStructConstraint.cs" />
+    <Compile Include="CS0472_ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull.cs" />
     <Compile Include="CS0592_AttributeIsNotValidOnThisDeclarationType.cs" />
     <Compile Include="CS0693_TypeParameterHasSameNameAsTypeParameterFromOuterType.cs" />
     <Compile Include="CS0708_CannotDeclareInstanceMembersInStaticClass.cs" />
@@ -75,6 +78,7 @@
     <Compile Include="CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass.cs" />
     <Compile Include="CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal.cs" />
     <Compile Include="CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression.cs" />
+    <Compile Include="CS1623_IteratorsCannotHaveRefOrOutParameters.cs" />
     <Compile Include="CS1689_AttributeIsNotValidOnThisDeclarationType.cs" />
     <Compile Include="CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody.cs" />
     <Compile Include="CS1998_AsyncMethodsCannotHaveRefOrOutParameters.cs" />
@@ -89,7 +93,7 @@
     <Compile Include="AddStaticModifier.cs" />
     <Compile Include="FixMemberAccessName.cs" />
     <Compile Include="InitializeLocalVariableWithDefaultValue.cs" />
-    <Compile Include="IntroduceLocalVariable.cs" />
+    <Compile Include="CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement.cs" />
     <Compile Include="MakeContainingClassAbstract.cs" />
     <Compile Include="MakeMemberNonStatic.cs" />
     <Compile Include="MarkOperatorAsPublicAndStatic.cs" />
@@ -108,7 +112,7 @@
     <Compile Include="Modifiers.cs" />
     <Compile Include="RemoveNewModifier.cs" />
     <Compile Include="RemoveDuplicateModifier.cs" />
-    <Compile Include="RemovePropertyOrFieldInitializer.cs" />
+    <Compile Include="CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct.cs" />
     <Compile Include="RemoveRedundantAssignment.cs" />
     <Compile Include="RemoveRefModifier.cs" />
     <Compile Include="RemoveSwitchStatement.cs" />

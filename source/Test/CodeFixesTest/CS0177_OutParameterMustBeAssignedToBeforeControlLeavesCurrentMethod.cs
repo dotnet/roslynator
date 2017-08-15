@@ -24,9 +24,13 @@ namespace Roslynator.CSharp.CodeFixes.Test
                 return false;
             }
 
-            public bool Bar4(object p1, out object p2, out object p3)
+            public bool Bar4(bool p1, out object p2, out object p3)
             {
-                p1 = null;
+                p1 = false;
+
+                if (p1)
+                    return false;
+
                 return false;
             }
 

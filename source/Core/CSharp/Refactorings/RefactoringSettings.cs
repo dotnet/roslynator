@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
+
 namespace Roslynator.CSharp.Refactorings
 {
-    public sealed class RefactoringSettings
+    internal sealed class RefactoringSettings
     {
         public RefactoringSettings()
         {

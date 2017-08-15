@@ -8,8 +8,8 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Comparers;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -60,15 +60,24 @@ namespace Roslynator.CSharp.CodeFixes
 
                             var conditionalAccess = (ConditionalAccessExpressionSyntax)token.Parent;
 
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(conditionalAccess.Expression, context.CancellationToken);
+
+                            if (typeSymbol == null
+                                || typeSymbol.IsErrorType()
+                                || !typeSymbol.IsValueType
+                                || typeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T))
+                            {
+                                break;
+                            }
+
                             CodeAction codeAction = CodeAction.Create(
-                                "Add argument list",
+                                "Remove '?' operator",
                                 cancellationToken =>
                                 {
-                                    InvocationExpressionSyntax invocationExpression = InvocationExpression(
-                                        conditionalAccess.WithoutTrailingTrivia(),
-                                        ArgumentList().WithTrailingTrivia(conditionalAccess.GetTrailingTrivia()));
-
-                                    return context.Document.ReplaceNodeAsync(conditionalAccess, invocationExpression, cancellationToken);
+                                    var textChange = new TextChange(token.Span, "");
+                                    return context.Document.WithTextChangeAsync(textChange, cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
