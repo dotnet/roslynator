@@ -373,7 +373,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.WrapInUsingStatement, WrapInUsingStatement);
         }
 
-        public static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
+        internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
             settings.DisableRefactoring(RefactoringIdentifiers.IntroduceConstructor);
             settings.DisableRefactoring(RefactoringIdentifiers.RemoveAllDocumentationComments);
