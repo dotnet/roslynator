@@ -2,7 +2,7 @@
 
 Property | Value
 --- | --- 
-Id | RR0187
+Id | RR0188
 Title | Replace foreach with for and reverse loop
 Syntax | foreach statement
 Enabled by Default | no

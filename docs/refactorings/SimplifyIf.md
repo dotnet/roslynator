@@ -5,6 +5,7 @@ Property | Value
 Id | RR0153
 Title | Simplify if
 Syntax | if statement
+Scope | top if keyword or selected if statement
 Enabled by Default | yes
 
 ### Usage

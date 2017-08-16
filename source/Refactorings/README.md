@@ -89,6 +89,7 @@ RR0082|[Negate operator](../../docs/refactorings/NegateOperator.md)|x
 RR0083|[Notify property changed](../../docs/refactorings/NotifyPropertyChanged.md)|x
 RR0084|[Parenthesize expression](../../docs/refactorings/ParenthesizeExpression.md)|x
 RR0085|[Promote local to parameter](../../docs/refactorings/PromoteLocalToParameter.md)|x
+RR0189|[Reduce if nesting](../../docs/refactorings/ReduceIfNesting.md)|x
 RR0086|[Remove all comments](../../docs/refactorings/RemoveAllComments.md)|x
 RR0087|[Remove all comments \(except documentation comments\)](../../docs/refactorings/RemoveAllCommentsExceptDocumentationComments.md)|x
 RR0088|[Remove all documentation comments](../../docs/refactorings/RemoveAllDocumentationComments.md)|
@@ -132,7 +133,7 @@ RR0127|[Replace expression with constant value](../../docs/refactorings/ReplaceE
 RR0130|[Replace for statement with foreach statement](../../docs/refactorings/ReplaceForWithForEach.md)|x
 RR0131|[Replace for statement with while statement](../../docs/refactorings/ReplaceForWithWhile.md)|x
 RR0129|[Replace foreach statement with for statement](../../docs/refactorings/ReplaceForEachWithFor.md)|x
-RR0187|[Replace foreach with for and reverse loop](../../docs/refactorings/ReplaceForEachWithForAndReverseLoop.md)|
+RR0188|[Replace foreach with for and reverse loop](../../docs/refactorings/ReplaceForEachWithForAndReverseLoop.md)|
 RR0132|[Replace hexadecimal literal with decimal literal](../../docs/refactorings/ReplaceHexadecimalLiteralWithDecimalLiteral.md)|x
 RR0133|[Replace if\-else with switch statement](../../docs/refactorings/ReplaceIfElseWithSwitch.md)|x
 RR0134|[Replace increment operator with decrement operator](../../docs/refactorings/ReplaceIncrementOperatorWithDecrementOperator.md)|x
