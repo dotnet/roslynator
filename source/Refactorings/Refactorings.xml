@@ -135,7 +135,7 @@
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
-    </Syntaxes> 
+    </Syntaxes>
     <Scope>type</Scope>
     <Images>
       <Image>ChangeTypeAccordingToExpression</Image>
@@ -1201,5 +1201,11 @@
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
+  </Refactoring>
+  <Refactoring Id="RR0189" Identifier="ReduceIfNesting" Title="Reduce if nesting">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+    <Scope>if keyword</Scope>
   </Refactoring>
 </Refactorings>

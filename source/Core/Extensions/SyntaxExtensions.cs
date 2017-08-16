@@ -332,7 +332,7 @@ namespace Roslynator
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            Assert.HasNotAnnotation(node, Formatter.Annotation);
+            //Assert.HasNotAnnotation(node, Formatter.Annotation);
 
             return node.WithAdditionalAnnotations(_formatterAnnotationArray);
         }

@@ -1805,5 +1805,14 @@ namespace Roslynator.CSharp
         );
 
         public static readonly DiagnosticDescriptor UseMethodGroupInsteadOfAnonymousFunctionFadeOut = UseMethodGroupInsteadOfAnonymousFunction.CreateFadeOut();
+
+        public static readonly DiagnosticDescriptor ReduceIfNesting = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ReduceIfNesting,
+            title: "Reduce if nesting.",
+            messageFormat: "Reduce if nesting.",
+            category: DiagnosticCategories.Style,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: false
+        );
     }
 }
