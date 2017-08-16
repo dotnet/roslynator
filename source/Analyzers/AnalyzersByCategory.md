@@ -172,6 +172,7 @@ Style|Avoid usage of for statement to create an infinite loop|RCS1064|
 Style|Avoid usage of while statement to create an inifinite loop|RCS1065|
 Style|Call extension method as instance method|RCS1196|x
 Style|Parenthesize condition in conditional expression|RCS1051|
+Style|Reduce if nesting|RCS1208|
 Style|Remove braces from if\-else|RCS1004|
 Style|Remove braces|RCS1002|
 Style|Remove empty argument list|RCS1067|

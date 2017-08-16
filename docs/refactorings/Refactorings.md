@@ -583,6 +583,13 @@
 
 ![Promote local to parameter](../../images/refactorings/PromoteLocalToParameter.png)
 
+#### Reduce if nesting (RR0189)
+
+* **Syntax**: if statement
+* **Scope**: if keyword
+
+![Reduce if nesting](../../images/refactorings/ReduceIfNesting.png)
+
 #### Remove all comments (RR0086)
 
 * **Syntax**: singleline/multiline comment, singleline/multiline documentation documentation comment
@@ -863,7 +870,7 @@
 
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
 
-#### Replace foreach with for and reverse loop (RR0187)
+#### Replace foreach with for and reverse loop (RR0188)
 
 * **Syntax**: foreach statement
 
@@ -878,6 +885,7 @@
 #### Replace if\-else with switch statement (RR0133)
 
 * **Syntax**: if statement
+* **Scope**: top if keyword or selected if statement
 
 ![Replace if\-else with switch statement](../../images/refactorings/ReplaceIfElseWithSwitch.png)
 
@@ -1004,6 +1012,7 @@
 #### Simplify if (RR0153)
 
 * **Syntax**: if statement
+* **Scope**: top if keyword or selected if statement
 
 ![Simplify if](../../images/refactorings/SimplifyIf.png)
 
@@ -1036,6 +1045,7 @@
 #### Split if statement (RR0184)
 
 * **Syntax**: if statement that has logical or expression as a condition
+* **Scope**: top if keyword or selected if statement
 
 ![Split if statement](../../images/refactorings/SplitIfStatement.png)
 
@@ -1074,7 +1084,7 @@
 #### Swap statements in if\-else (RR0162)
 
 * **Syntax**: if statement
-* **Scope**: if keyword
+* **Scope**: top if keyword or selected if statement
 
 ![Swap statements in if\-else](../../images/refactorings/SwapStatementsInIfElse.png)
 
@@ -1099,12 +1109,14 @@
 #### Use coalesce expression instead of if (RR0165)
 
 * **Syntax**: if statement
+* **Scope**: top if keyword or selected if statement
 
 ![Use coalesce expression instead of if](../../images/refactorings/UseCoalesceExpressionInsteadOfIf.png)
 
 #### Use conditional expression instead of if (RR0166)
 
 * **Syntax**: if statement
+* **Scope**: top if keyword or selected if statement
 
 ![Use conditional expression instead of if](../../images/refactorings/UseConditionalExpressionInsteadOfIf.png)
 

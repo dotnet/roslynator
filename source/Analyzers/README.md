@@ -192,3 +192,4 @@ RCS1204|Use EventArgs\.Empty|Usage|x
 RCS1205|Reorder named arguments according to the order of parameters|Readability|x
 RCS1206|Use conditional access instead of conditional expression|Usage|x
 RCS1207|Use method group instead of anonymous function|Simplification|x
+RCS1208|Reduce if nesting|Style|

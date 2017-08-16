@@ -5,6 +5,7 @@ Property | Value
 Id | RR0166
 Title | Use conditional expression instead of if
 Syntax | if statement
+Scope | top if keyword or selected if statement
 Enabled by Default | yes
 
 ### Usage

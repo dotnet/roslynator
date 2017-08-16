@@ -29,6 +29,7 @@ RCF0003|Create singleton array|[CS0266](http://docs.microsoft.com/en-us/dotnet/c
 RCF0008|Extract declaration from using statement|[CS1674](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1674)|x
 RCF0038|Fix member access name|[CS1061](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061)|x
 RCF0040|Initialize local variable with default value|[CS0165](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0165)|x
+RCF0076|Introduce field|[CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201)|x
 RCF0047|Introduce local variable|[CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201)|x
 RCF0068|Make class non\-static|[CS0718](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0718)|x
 RCF0034|Make containing class abstract|[CS0513](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0513)|x
@@ -41,6 +42,7 @@ RCF0015|Overriding member cannot change access modifiers|[CS0507](http://docs.mi
 RCF0037|Remove argument list|[CS1955](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955)|x
 RCF0071|Remove attribute|[CS0592](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0592), [CS1689](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1689)|x
 RCF0049|Remove 'await' keyword|[CS1061](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061)|x
+RCF0075|Remove condition that is always equal to true/false|[CS0472](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0472)|x
 RCF0045|Remove 'const' modifier|[CS0133](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133)|x
 RCF0065|Remove constraint|[CS0405](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0405), [CS0450](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0450), [CS0451](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0451)|x
 RCF0043|Remove constraint clauses|[CS0080](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0080)|x
@@ -52,11 +54,11 @@ RCF0055|Remove invalid modifier|[CS0107](http://docs.microsoft.com/en-us/dotnet/
 RCF0072|Remove jump statement|[CS0139](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139)|x
 RCF0056|Remove member declaration|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x
 RCF0013|Remove new modifier|[CS0109](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0109)|x
-RCF0070|Remove 'out' modifier|CS1988|x
+RCF0070|Remove 'out' modifier|CS1988, [CS1623](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1623)|x
 RCF0053|Remove parameters from static constructor|[CS0132](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0132)|x
 RCF0024|Remove property or field initializer|[CS0573](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0573)|x
 RCF0028|Remove redundant assignment|[CS1717](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1717)|x
-RCF0027|Remove 'ref' modifier|[CS1615](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615), CS1988|x
+RCF0027|Remove 'ref' modifier|[CS1615](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615), CS1988, [CS1623](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1623)|x
 RCF0057|Remove return expression|[CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), CS1997|
 RCF0052|Remove 'return' keyword|[CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), CS1997|
 RCF0060|Remove 'this' modifier|[CS1100](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100), [CS1105](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105), [CS1106](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106)|x
@@ -65,6 +67,7 @@ RCF0014|Remove unused label|[CS0164](http://docs.microsoft.com/en-us/dotnet/csha
 RCF0001|Remove unused variable|[CS0168](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0168), [CS0219](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0219)|x
 RCF0069|Remove 'yield' keyword|[CS1621](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1621)|x
 RCF0054|Reorder modifiers|[CS0267](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267)|x
+RCF0074|Replace as expression with cast expression|[CS0077](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077)|x
 RCF0058|Replace 'null' with default value|[CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037)|x
 RCF0022|Replace string literal with character literal|[CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029)|x
 RCF0059|Replace variable declaration with assignment|[CS0128](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128), [CS0136](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136)|x

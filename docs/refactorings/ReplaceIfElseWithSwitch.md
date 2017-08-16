@@ -5,6 +5,7 @@ Property | Value
 Id | RR0133
 Title | Replace if\-else with switch statement
 Syntax | if statement
+Scope | top if keyword or selected if statement
 Enabled by Default | yes
 
 ### Usage
