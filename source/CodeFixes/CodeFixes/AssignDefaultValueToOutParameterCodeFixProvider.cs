@@ -48,6 +48,12 @@ namespace Roslynator.CSharp.CodeFixes
                             if (statement != null)
                                 node = node.FirstAncestor(f => f.IsKind(SyntaxKind.MethodDeclaration));
 
+                            if (node.IsKind(SyntaxKind.MethodDeclaration)
+                                && ((MethodDeclarationSyntax)node).ContainsYield())
+                            {
+                                break;
+                            }
+
                             bodyOrExpressionBody = GetBodyOrExpressionBody(node);
 
                             SemanticModel semanticModel = await context.Document.GetSemanticModelAsync().ConfigureAwait(false);
@@ -127,7 +133,14 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 if (statement != null)
                 {
-                    newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
+                    if (EmbeddedStatementHelper.IsEmbeddedStatement(statement))
+                    {
+                        newNode = node.ReplaceNode(statement, Block(expressionStatement, statement));
+                    }
+                    else
+                    {
+                        newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
+                    }
                 }
                 else
                 {

@@ -2,13 +2,14 @@
 
 namespace Roslynator.CSharp.CodeFixes.Test
 {
-    internal static class AddArgumentList
+    internal static class CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct
     {
-        private static void Foo()
+        private struct Foo
         {
-            string s = null;
+            private string _fieldName = "";
 
-            s = s.ToString;
+            public string PropertyName { get; set; } = "";
         }
+
     }
 }

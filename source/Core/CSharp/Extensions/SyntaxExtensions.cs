@@ -1271,7 +1271,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static MemberDeclarationSyntax WithMembers(this MemberDeclarationSyntax member, SyntaxList<MemberDeclarationSyntax> newMembers)
+        internal static MemberDeclarationSyntax WithMembers(this MemberDeclarationSyntax member, SyntaxList<MemberDeclarationSyntax> newMembers)
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -3555,6 +3555,37 @@ namespace Roslynator.CSharp
                 && triviaList[0].IsElasticMarker();
         }
         #endregion SyntaxTriviaList
+
+        #region TypeDeclarationSyntax
+        public static TypeDeclarationSyntax InsertMember(this TypeDeclarationSyntax typeDeclaration, MemberDeclarationSyntax member, IMemberDeclarationComparer comparer)
+        {
+            if (typeDeclaration == null)
+                throw new ArgumentNullException(nameof(typeDeclaration));
+
+            return typeDeclaration.WithMembers(typeDeclaration.Members.InsertMember(member, comparer));
+        }
+
+        internal static TypeDeclarationSyntax WithMembers(this TypeDeclarationSyntax typeDeclaration, SyntaxList<MemberDeclarationSyntax> newMembers)
+        {
+            if (typeDeclaration == null)
+                throw new ArgumentNullException(nameof(typeDeclaration));
+
+            switch (typeDeclaration.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
+                case SyntaxKind.InterfaceDeclaration:
+                    return ((InterfaceDeclarationSyntax)typeDeclaration).WithMembers(newMembers);
+                default:
+                    {
+                        Debug.Assert(false, typeDeclaration.Kind().ToString());
+                        return typeDeclaration;
+                    }
+            }
+        }
+        #endregion TypeDeclarationSyntax
 
         #region TypeParameterConstraintClauseSyntax
         internal static string NameText(this TypeParameterConstraintClauseSyntax constraintClause)

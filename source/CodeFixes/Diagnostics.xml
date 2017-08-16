@@ -5,6 +5,7 @@
   <Diagnostic Id="CS0029" Identifier="CannotImplicitlyConvertType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029" />
   <Diagnostic Id="CS0037" Identifier="CannotConvertNullToTypeBecauseItIsNonNullableValueType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037" />
   <Diagnostic Id="CS0069" Identifier="EventInInterfaceCannotHaveAddOrRemoveAccessors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0069" />
+  <Diagnostic Id="CS0077" Identifier="AsOperatorMustBeUsedWithReferenceTypeOrNullableType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077" />
   <Diagnostic Id="CS0080" Identifier="ConstraintsAreNotAllowedOnNonGenericDeclarations" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0080" />
   <Diagnostic Id="CS0101" Identifier="NamespaceAlreadyContainsDefinition" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0101" />
   <Diagnostic Id="CS0102" Identifier="TypeAlreadyContainsDefinition" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0102" />
@@ -52,6 +53,7 @@
   <Diagnostic Id="CS0449" Identifier="ClassOrStructConstraintMustComeBeforeAnyOtherConstraints" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0449" />
   <Diagnostic Id="CS0450" Identifier="CannotSpecifyBothConstraintClassAndClassOrStructConstraint" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0450" />
   <Diagnostic Id="CS0451" Identifier="NewConstraintCannotBeUsedWithStructConstraint" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0451" />
+  <Diagnostic Id="CS0472" Identifier="ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0472" />
   <Diagnostic Id="CS0500" Identifier="MemberCannotDeclareBodyBecauseItIsMarkedAbstract" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0500" />
   <Diagnostic Id="CS0501" Identifier="MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501" />
   <Diagnostic Id="CS0507" Identifier="CannotChangeAccessModifiersWhenOverridingInheritedMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0507" />
@@ -96,6 +98,7 @@
   <Diagnostic Id="CS1620" Identifier="ArgumentMustBePassedWithOutKeyword" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620" />
   <Diagnostic Id="CS1621" Identifier="YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1621" />
   <Diagnostic Id="CS1622" Identifier="CannotReturnValueFromIterator" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1622" />
+  <Diagnostic Id="CS1623" Identifier="IteratorsCannotHaveRefOrOutParameters" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1623" />
   <Diagnostic Id="CS1643" Identifier="NotAllCodePathsReturnValueInAnonymousFunction" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1643" />
   <Diagnostic Id="CS1674" Identifier="TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1674" />
   <Diagnostic Id="CS1689" Identifier="AttributeIsOnlyValidOnMethodsOrAttributeClasses" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1689" />

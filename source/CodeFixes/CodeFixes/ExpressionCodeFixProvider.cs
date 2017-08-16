@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -25,19 +26,20 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists,
                     CompilerDiagnosticIdentifiers.ConstantValueCannotBeConverted,
                     CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant,
-                    CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType);
+                    CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType,
+                    CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull);
             }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
-                CodeFixIdentifiers.AddComparisonWithBooleanLiteral,
-                CodeFixIdentifiers.CreateSingletonArray,
-                CodeFixIdentifiers.UseUncheckedExpression,
-                CodeFixIdentifiers.RemoveConstModifier,
-                CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue,
-                CodeFixIdentifiers.UseCoalesceExpression))
+            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddComparisonWithBooleanLiteral)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.CreateSingletonArray)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseUncheckedExpression)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstModifier)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseCoalesceExpression)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionThatIsAlwaysEqualToTrueOrFalse))
             {
                 return;
             }
@@ -195,6 +197,36 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                             }
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionThatIsAlwaysEqualToTrueOrFalse))
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (!NullCheckExpression.TryCreate(expression, semanticModel, out NullCheckExpression nullCheck, context.CancellationToken))
+                                break;
+
+                            if (nullCheck.Kind != NullCheckKind.EqualsToNull
+                                && nullCheck.Kind!= NullCheckKind.NotEqualsToNull)
+                            {
+                                break;
+                            }
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove condition",
+                                cancellationToken =>
+                                {
+                                    SyntaxNode newRoot = RemoveHelper.RemoveCondition(root, expression, nullCheck.Kind == NullCheckKind.NotEqualsToNull);
+
+                                    return Task.FromResult(context.Document.WithSyntaxRoot(newRoot));
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
 
                             break;
                         }

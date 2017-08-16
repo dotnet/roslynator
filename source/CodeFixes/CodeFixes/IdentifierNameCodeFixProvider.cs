@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
 
-                    ExpressionSyntax value = typeSymbol.ToDefaultValueSyntax(variableDeclaration.Type);
+                    ExpressionSyntax value = typeSymbol.ToDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
 
                     EqualsValueClauseSyntax newEqualsValue = EqualsValueClause(value)
                         .WithLeadingTrivia(TriviaList(Space))
