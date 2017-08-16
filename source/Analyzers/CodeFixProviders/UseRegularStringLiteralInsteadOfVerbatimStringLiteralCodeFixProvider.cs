@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class UseRegularStringLiteralInsteadOfVerbatimStringLiteralCodeFixProvider : BaseCodeFixProvider
     {
-        private const string Title = "Remove @";
+        private const string Title = "Remove '@'";
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {

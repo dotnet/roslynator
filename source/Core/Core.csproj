@@ -100,7 +100,6 @@
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentOrigin.cs" />
     <Compile Include="CSharp\Extensions\DocumentExtensions.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineTriviaRewriter.cs" />
-    <Compile Include="CSharp\Refactorings\GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="CSharp\Syntax\EqualsToNullExpression.cs" />
     <Compile Include="CSharp\StatementContainer.cs" />
     <Compile Include="CSharp\Syntax\SingleLocalDeclarationStatement.cs" />
@@ -186,7 +185,9 @@
     <None Include="Roslynator.Core.snk" />
     <None Include="Roslynator.Core.nuspec" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="CSharp\Refactorings\" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="AfterBuild">
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">

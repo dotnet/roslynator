@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CSharp\Refactorings\AddCastExpressionRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ChangeAccessibilityRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReduceIfNestingRefactoring.cs" />

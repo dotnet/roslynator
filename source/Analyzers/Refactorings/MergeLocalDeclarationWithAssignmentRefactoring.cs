@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (variables.Count == 1)
                     {
-                        StatementSyntax nextStatement = localDeclaration.NextStatement();
+                        StatementSyntax nextStatement = localDeclaration.NextStatementOrDefault();
 
                         if (nextStatement?.ContainsDiagnostics == false
                             && nextStatement?.SpanOrLeadingTriviaContainsDirectives() == false)

@@ -523,8 +523,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                return SimpleMemberAccessExpression(ThisExpression(), IdentifierName(identifier))
-                    .WithSimplifierAnnotation();
+                return IdentifierName(identifier).QualifyWithThis();
             }
         }
 

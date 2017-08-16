@@ -57,6 +57,7 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.IsExpression:
                 case SyntaxKind.AsExpression:
+                case SyntaxKind.IsPatternExpression:
                     {
                         return LogicalNotExpressionWithParentheses(expression);
                     }

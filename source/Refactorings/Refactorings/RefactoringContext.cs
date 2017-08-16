@@ -333,6 +333,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fCastExpression = false;
             bool fThrowExpression = false;
             bool fDeclarationExpression = false;
+            bool fIsPatternExpression = false;
 
             bool fMemberDeclaration = false;
             bool fStatement = false;
@@ -664,6 +665,13 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             await DeclarationExpressionRefactoring.ComputeRefactoringsAsync(this, (DeclarationExpressionSyntax)node).ConfigureAwait(false);
                             fDeclarationExpression = true;
+                        }
+
+                        if (!fIsPatternExpression
+                            && kind == SyntaxKind.IsPatternExpression)
+                        {
+                            NegateIsExpressionRefactoring.ComputeRefactoring(this, (IsPatternExpressionSyntax)node);
+                            fIsPatternExpression = true;
                         }
 
                         continue;

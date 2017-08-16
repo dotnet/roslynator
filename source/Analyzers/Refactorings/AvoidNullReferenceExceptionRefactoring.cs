@@ -51,8 +51,13 @@ namespace Roslynator.CSharp.Refactorings
 
                 expression = expression.WalkUpParentheses();
 
-                if (IsExpressionOfAccessExpression(expression))
+                if (IsExpressionOfAccessExpression(expression)
+                    && context.SemanticModel
+                        .GetTypeSymbol(asExpression, context.CancellationToken)?
+                        .IsReferenceType == true)
+                {
                     ReportDiagnostic(context, expression);
+                }
             }
         }
 

@@ -14,6 +14,7 @@ using Roslynator.CSharp.Documentation;
 using Roslynator.CSharp.Helpers.ModifierHelpers;
 using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
@@ -120,6 +121,13 @@ namespace Roslynator.CSharp
             }
 
             return block.WithStatements(statements.Insert(insertIndex, statement));
+        }
+
+        internal static bool ContainsYield(this BlockSyntax block)
+        {
+            return block?
+                .DescendantNodes(block.Span, node => !node.IsNestedMethod())
+                .Any(f => f.IsKind(SyntaxKind.YieldReturnStatement, SyntaxKind.YieldBreakStatement)) == true;
         }
         #endregion BlockSyntax
 
@@ -699,12 +707,9 @@ namespace Roslynator.CSharp
                     Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, SyntaxTriviaList.Empty));
             }
 
-            parenthesizedExpression = parenthesizedExpression.WithTriviaFrom(expression);
-
-            if (simplifiable)
-                parenthesizedExpression = parenthesizedExpression.WithSimplifierAnnotation();
-
-            return parenthesizedExpression;
+            return parenthesizedExpression
+                .WithTriviaFrom(expression)
+                .WithSimplifierAnnotationIf(simplifiable);
         }
 
         public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
@@ -1135,10 +1140,7 @@ namespace Roslynator.CSharp
             if (localFunctionStatement == null)
                 throw new ArgumentNullException(nameof(localFunctionStatement));
 
-            return localFunctionStatement
-                    .Body?
-                    .DescendantNodes(node => !node.IsNestedMethod())
-                    .Any(f => f.IsKind(SyntaxKind.YieldReturnStatement, SyntaxKind.YieldBreakStatement)) == true;
+            return localFunctionStatement.Body?.ContainsYield() == true;
         }
         #endregion LocalFunctionStatementSyntax
 
@@ -1715,12 +1717,7 @@ namespace Roslynator.CSharp
             if (methodDeclaration == null)
                 throw new ArgumentNullException(nameof(methodDeclaration));
 
-            BlockSyntax body = methodDeclaration.Body;
-
-            return body?.Statements.Any() == true
-                && body
-                    .DescendantNodes(node => !node.IsNestedMethod())
-                    .Any(f => f.IsKind(SyntaxKind.YieldReturnStatement, SyntaxKind.YieldBreakStatement));
+            return methodDeclaration.Body?.ContainsYield() == true;
         }
 
         private static MemberDeclarationSyntax RemoveSingleLineDocumentationComment(MemberDeclarationSyntax member)
@@ -2126,6 +2123,13 @@ namespace Roslynator.CSharp
         }
         #endregion SeparatedSyntaxList<T>
 
+        #region SimpleNameSyntax
+        public static MemberAccessExpressionSyntax QualifyWithThis(this SimpleNameSyntax simpleName, bool simplifiable = true)
+        {
+            return SimpleMemberAccessExpression(ThisExpression(), simpleName).WithSimplifierAnnotationIf(simplifiable);
+        }
+        #endregion SimpleNameSyntax
+
         #region StatementSyntax
         private static StatementSyntax GetSingleStatementOrDefault(StatementSyntax statement)
         {
@@ -2139,7 +2143,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static StatementSyntax PreviousStatement(this StatementSyntax statement)
+        public static StatementSyntax PreviousStatementOrDefault(this StatementSyntax statement)
         {
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
@@ -2150,19 +2154,13 @@ namespace Roslynator.CSharp
                 int index = statements.IndexOf(statement);
 
                 if (index > 0)
-                {
                     return statements[index - 1];
-                }
-                else
-                {
-                    return null;
-                }
             }
 
             return null;
         }
 
-        public static StatementSyntax NextStatement(this StatementSyntax statement)
+        public static StatementSyntax NextStatementOrDefault(this StatementSyntax statement)
         {
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
@@ -2173,13 +2171,7 @@ namespace Roslynator.CSharp
                 int index = statements.IndexOf(statement);
 
                 if (index < statements.Count - 1)
-                {
                     return statements[index + 1];
-                }
-                else
-                {
-                    return null;
-                }
             }
 
             return null;

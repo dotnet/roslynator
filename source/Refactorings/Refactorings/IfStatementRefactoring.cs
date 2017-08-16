@@ -11,20 +11,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IfStatementSyntax ifStatement)
         {
-            if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                    RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf,
-                    RefactoringIdentifiers.SimplifyIf,
-                    RefactoringIdentifiers.SwapStatementsInIfElse,
-                    RefactoringIdentifiers.ReplaceIfElseWithSwitch)
-                && ifStatement.IsTopmostIf()
-                && context.Span.IsBetweenSpans(ifStatement))
+            if (ifStatement.IsTopmostIf()
+                && (context.Span.IsEmptyAndContainedInSpan(ifStatement.IfKeyword) || context.Span.IsBetweenSpans(ifStatement)))
             {
                 if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
                     RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf,
-                    RefactoringIdentifiers.SimplifyIf,
-                    RefactoringIdentifiers.SplitIfStatement))
+                    RefactoringIdentifiers.SimplifyIf))
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

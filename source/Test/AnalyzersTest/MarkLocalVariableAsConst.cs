@@ -1,8 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable CS0219, RCS1008, RCS1078, RCS1081, RCS1124, RCS1176
-
 using System;
+
+#pragma warning disable CS0219, RCS1008, RCS1078, RCS1081, RCS1124, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -48,5 +48,4 @@ namespace Roslynator.CSharp.Analyzers.Test
             }
         }
     }
-#pragma warning restore RCS1081, CS0219
 }

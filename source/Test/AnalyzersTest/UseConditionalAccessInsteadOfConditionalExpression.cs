@@ -67,6 +67,9 @@ namespace Roslynator.CSharp.Analyzers.Test
 
                 i = (ni.HasValue) ? ni.Value : 1;
                 i = (!ni.HasValue) ? 1 : ni.Value;
+
+                s = (i != null) ? i.ToString() : null;
+                s = (i == null) ? null : i.ToString();
             }
         }
     }
