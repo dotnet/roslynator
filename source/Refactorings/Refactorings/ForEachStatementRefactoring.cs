@@ -38,14 +38,14 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Replace foreach with for",
-                            cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, reverseLoop: false, semanticModel: semanticModel, cancellationToken: cancellationToken));
+                            cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: false, cancellationToken: cancellationToken));
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop))
                     {
                         context.RegisterRefactoring(
                             "Replace foreach with for and reverse loop",
-                            cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, reverseLoop: true, semanticModel: semanticModel, cancellationToken: cancellationToken));
+                            cancellationToken => ReplaceForEachWithForRefactoring.RefactorAsync(context.Document, forEachStatement, semanticModel: semanticModel, reverseLoop: true, cancellationToken: cancellationToken));
                     }
                 }
             }

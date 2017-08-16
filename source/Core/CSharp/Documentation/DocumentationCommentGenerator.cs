@@ -242,13 +242,9 @@ namespace Roslynator.CSharp.Documentation
             bool generateReturns = false,
             DocumentationCommentGeneratorSettings settings = null)
         {
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = (typeParameterList != null)
-                ? typeParameterList.Parameters
-                : default(SeparatedSyntaxList<TypeParameterSyntax>);
+            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList?.Parameters ?? default(SeparatedSyntaxList<TypeParameterSyntax>);
 
-            SeparatedSyntaxList<ParameterSyntax> parameters = (parameterList != null)
-                ? parameterList.Parameters
-                : default(SeparatedSyntaxList<ParameterSyntax>);
+            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList?.Parameters ?? default(SeparatedSyntaxList<ParameterSyntax>);
 
             return Generate(typeParameters, parameters, generateReturns, settings);
         }

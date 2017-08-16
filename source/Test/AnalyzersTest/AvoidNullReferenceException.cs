@@ -59,6 +59,8 @@ namespace Roslynator.CSharp.Analyzers.Test
                 ch = ((Enumerable.FirstOrDefault(items)))[0];
                 ch = ((Enumerable.LastOrDefault(items)))[0];
 
+                //no fix
+
                 (o as Foo).Value = s;
 
                 //n
@@ -120,6 +122,14 @@ namespace Roslynator.CSharp.Analyzers.Test
                 ch = ((Enumerable.ElementAtOrDefault(items, 1)))?[0] ?? default(char);
                 ch = ((Enumerable.FirstOrDefault(items)))?[0] ?? default(char);
                 ch = ((Enumerable.LastOrDefault(items)))?[0] ?? default(char);
+
+                var nullables = new List<int?>();
+
+                o = nullables.ElementAtOrDefault(1).ToString();
+
+                o = Enumerable.ElementAtOrDefault(nullables, 1).ToString();
+
+                o = (i as int?).ToString();
             }
         }
     }

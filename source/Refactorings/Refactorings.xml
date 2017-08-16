@@ -884,6 +884,7 @@
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
+    <Scope>top if keyword or selected if statement</Scope>
   </Refactoring>
   <Refactoring Id="RR0134" Identifier="ReplaceIncrementOperatorWithDecrementOperator" Title="Replace increment operator with decrement operator">
     <Syntaxes>
@@ -991,6 +992,7 @@
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
+    <Scope>top if keyword or selected if statement</Scope>
   </Refactoring>
   <Refactoring Id="RR0154" Identifier="SimplifyLambdaExpression" Title="Simplify lambda expression">
     <Syntaxes>
@@ -1055,7 +1057,7 @@
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
-    <Scope>if keyword</Scope>
+    <Scope>top if keyword or selected if statement</Scope>
   </Refactoring>
   <Refactoring Id="RR0163" Identifier="Uncomment" Title="Uncomment">
     <Syntaxes>
@@ -1071,11 +1073,13 @@
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
+    <Scope>top if keyword or selected if statement</Scope>
   </Refactoring>
   <Refactoring Id="RR0166" Identifier="UseConditionalExpressionInsteadOfIf" Title="Use conditional expression instead of if">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
+    <Scope>top if keyword or selected if statement</Scope>
   </Refactoring>
   <Refactoring Id="RR0167" Identifier="UseElementAccessInsteadOfEnumerableMethod" Title="Use element access instead of 'First/Last'ElementAt' method">
     <Syntaxes>
@@ -1181,6 +1185,7 @@
     <Syntaxes>
       <Syntax>if statement that has logical or expression as a condition</Syntax>
     </Syntaxes>
+    <Scope>top if keyword or selected if statement</Scope>
   </Refactoring>
   <Refactoring Id="RR0185" Identifier="ReplaceObjectCreationWithDefaultValue" Title="Replace object creation with default value">
     <Syntaxes>
@@ -1197,7 +1202,7 @@
       <Syntax>type parameter constraint clause</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0187" Identifier="ReplaceForEachWithForAndReverseLoop" Title="Replace foreach with for and reverse loop" IsEnabledByDefault="false">
+  <Refactoring Id="RR0188" Identifier="ReplaceForEachWithForAndReverseLoop" Title="Replace foreach with for and reverse loop" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>

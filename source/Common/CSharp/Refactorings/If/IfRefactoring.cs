@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings.If
                     }
                     else
                     {
-                        StatementSyntax nextStatement = ifStatement.NextStatement();
+                        StatementSyntax nextStatement = ifStatement.NextStatementOrDefault();
 
                         if (nextStatement?.IsKind(SyntaxKind.ReturnStatement) == true)
                             return Analyze(ifStatement, (ReturnStatementSyntax)nextStatement, options, semanticModel, cancellationToken);

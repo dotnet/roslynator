@@ -19,6 +19,18 @@ namespace Roslynator.CSharp.Refactorings.Test
             if (!(x is Entity))
             {
             }
+
+            if (x is Entity entity)
+            {
+            }
+
+            if ((x is Entity entity2))
+            {
+            }
+
+            if (!(x is Entity entity3))
+            {
+            }
         }
     }
 }

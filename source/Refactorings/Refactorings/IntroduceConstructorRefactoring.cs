@@ -314,7 +314,7 @@ namespace Roslynator.CSharp.Refactorings
                 string parameterName = StringUtility.ToCamelCase(name);
 
                 statements.Add(SimpleAssignmentStatement(
-                        SimpleMemberAccessExpression(ThisExpression(), IdentifierName(name)).WithSimplifierAnnotation(),
+                        IdentifierName(name).QualifyWithThis(),
                         IdentifierName(parameterName)));
 
                 parameters.Add(Parameter(

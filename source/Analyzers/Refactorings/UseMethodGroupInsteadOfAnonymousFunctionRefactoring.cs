@@ -262,7 +262,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (candidateSymbols[0].Equals(methodSymbol))
                         return true;
                 }
-                else if (!anonymousFunction.WalkUpParentheses().IsParentKind(SyntaxKind.Argument))
+                else if (!anonymousFunction.WalkUpParentheses().IsParentKind(SyntaxKind.Argument, SyntaxKind.AttributeArgument))
                 {
                     foreach (ISymbol candidateSymbol in candidateSymbols)
                     {

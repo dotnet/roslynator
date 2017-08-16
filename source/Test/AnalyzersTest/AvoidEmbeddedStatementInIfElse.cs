@@ -2,9 +2,10 @@
 
 using System.Collections.Generic;
 
+#pragma warning disable RCS1004, RCS1007, RCS1073
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1004, RCS1007, RCS1073
     internal static class AvoidEmbeddedStatementInIfElse
     {
         public static bool Foo()
@@ -20,5 +21,4 @@ namespace Roslynator.CSharp.Analyzers.Test
                 return false;
         }
     }
-#pragma warning restore RCS1004, RCS1007, RCS1073
 }

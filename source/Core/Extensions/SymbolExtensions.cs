@@ -833,6 +833,16 @@ namespace Roslynator
             return false;
         }
 
+        public static bool IsRef(this IParameterSymbol parameterSymbol)
+        {
+            return parameterSymbol?.RefKind == RefKind.Ref;
+        }
+
+        public static bool IsOut(this IParameterSymbol parameterSymbol)
+        {
+            return parameterSymbol?.RefKind == RefKind.Out;
+        }
+
         public static bool IsRefOrOut(this IParameterSymbol parameterSymbol)
         {
             return parameterSymbol?.RefKind.IsRefOrOut() == true;
@@ -1776,6 +1786,12 @@ namespace Roslynator
         {
             return IsIEnumerable(typeSymbol)
                 || IsConstructedFromIEnumerableOfT(typeSymbol);
+        }
+
+        public static bool IsReferenceTypeOrNullableType(this ITypeSymbol typeSymbol)
+        {
+            return typeSymbol?.IsReferenceType == true
+                || IsConstructedFrom(typeSymbol, SpecialType.System_Nullable_T);
         }
         #endregion ITypeSymbol
     }

@@ -33,16 +33,8 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         public virtual ExpressionStatementSyntax CreateAssignment()
         {
             return SimpleAssignmentStatement(
-                CreateAssignmentLeft(),
+                IdentifierName(Name).QualifyWithThis(),
                 IdentifierName(Parameter.Identifier.WithoutTrivia()));
-        }
-
-        private ExpressionSyntax CreateAssignmentLeft()
-        {
-            if (string.Equals(Name, ParameterName, StringComparison.Ordinal))
-                return SimpleMemberAccessExpression(ThisExpression(), IdentifierName(Name));
-
-            return IdentifierName(Name);
         }
     }
 }

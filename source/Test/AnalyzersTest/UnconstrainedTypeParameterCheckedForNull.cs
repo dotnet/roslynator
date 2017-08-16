@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Roslynator.CSharp.Analyzers.Test
 {
 #pragma warning disable RCS1023
-    public static class NullCheckOfUnconstrainedTypeParameter
+    public static class UnconstrainedTypeParameterCheckedForNull
     {
         private static void Foo<T1, T2, T3>()
             where T2 : class

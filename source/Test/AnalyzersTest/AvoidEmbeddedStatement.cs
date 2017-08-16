@@ -2,9 +2,10 @@
 
 using System.Collections.Generic;
 
+#pragma warning disable RCS1002
+
 namespace Roslynator.CSharp.Analyzers.Test
 {
-#pragma warning disable RCS1002
     internal static class AvoidEmbeddedStatement
     {
         public static void Foo()
@@ -18,5 +19,4 @@ namespace Roslynator.CSharp.Analyzers.Test
                 Foo();
         }
     }
-#pragma warning restore RCS1002
 }
