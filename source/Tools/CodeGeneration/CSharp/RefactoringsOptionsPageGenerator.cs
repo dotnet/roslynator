@@ -72,7 +72,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     .Select(refactoring => ExpressionStatement(ParseExpression($"SetIsEnabled(RefactoringIdentifiers.{refactoring.Identifier}, {refactoring.Identifier})")))));
 
             yield return MethodDeclaration(
-                Modifiers.PublicStatic(),
+                Modifiers.InternalStatic(),
                 VoidType(),
                 "SetRefactoringsDisabledByDefault",
                 ParameterList(Parameter(IdentifierName("RefactoringSettings"), Identifier("settings"))),

@@ -45,7 +45,7 @@ namespace Roslynator.Configuration
                 VisualStudioSettings.CodeFixes[id] = false;
         }
 
-        public void ApplyTo(RefactoringSettings settings)
+        internal void ApplyTo(RefactoringSettings settings)
         {
             settings.Reset();
 
