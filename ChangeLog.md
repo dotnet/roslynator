@@ -1,3 +1,21 @@
+### 1.4.55 (2017-08-16)
+
+#### Code Fixes
+
+  * Add code fixes for CS0077, CS0201, CS0472, CS1623.
+
+#### Analyzers
+
+##### New Analyzers
+
+  * ReduceIfNesting (RCS1208)
+
+#### Refactorings
+
+##### New Refactorings
+
+  * ReduceIfNesting (RR0189)
+
 ### 1.4.54 (2017-08-08)
 
 #### Code Fixes
