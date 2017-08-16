@@ -1812,7 +1812,7 @@ namespace Roslynator.CSharp
             messageFormat: "Reduce if nesting.",
             category: DiagnosticCategories.Style,
             defaultSeverity: DiagnosticSeverity.Info,
-            isEnabledByDefault: true
+            isEnabledByDefault: false
         );
     }
 }
