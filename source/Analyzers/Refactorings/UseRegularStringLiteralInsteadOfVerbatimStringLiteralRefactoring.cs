@@ -57,12 +57,13 @@ namespace Roslynator.CSharp.Refactorings
             if (!interpolatedString.IsVerbatim())
                 return;
 
+            if (interpolatedString.SyntaxTree.IsMultiLineSpan(interpolatedString.Span, context.CancellationToken))
+                return;
+
             foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
             {
-                if (content.IsKind(SyntaxKind.InterpolatedStringText))
+                if (content is InterpolatedStringTextSyntax interpolatedStringText)
                 {
-                    var interpolatedStringText = (InterpolatedStringTextSyntax)content;
-
                     string text = interpolatedStringText.TextToken.Text;
 
                     if (ContainsQuoteOrBackslashOrCarriageReturnOrLinefeed(text, 0, text.Length))
@@ -104,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             int start = node.SpanStart;
 
-            if (node.IsKind( SyntaxKind.InterpolatedStringExpression))
+            if (node.IsKind(SyntaxKind.InterpolatedStringExpression))
                 start++;
 
             ExpressionSyntax newNode = SyntaxFactory.ParseExpression(node.ToFullString().Remove(start - node.FullSpan.Start, 1));

@@ -28,6 +28,9 @@ namespace Roslynator.CSharp.Analyzers.Test
             s = $@"{s}
 ";
 
+            s = $@"s{
+                s}s";
+
             return s;
         }
     }
