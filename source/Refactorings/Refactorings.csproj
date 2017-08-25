@@ -99,6 +99,7 @@
     <Compile Include="Refactorings\ReplaceObjectCreationWithDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring`1.cs" />
@@ -142,7 +143,7 @@
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapInTryCatchRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceStatementWithIfStatementRefactoring`1.cs" />
     <Compile Include="Refactorings\RemoveEmptyLinesRefactoring.cs" />
     <Compile Include="Refactorings\SyntaxNodeRefactoring.cs" />
     <Compile Include="Refactorings\AddDefaultValueToParameterRefactoring.cs" />

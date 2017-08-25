@@ -934,15 +934,14 @@
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0143" Identifier="ReplaceStatementWithIfStatement" Title="Replace statement with if statement">
+  <Refactoring Id="RR0143" Identifier="ReplaceStatementWithIfElse" Title="Replace (yield) return statement with if-else">
     <Syntaxes>
       <Syntax>return statement</Syntax>
       <Syntax>yield return statement</Syntax>
-      <Syntax>assignment statement</Syntax>
-      <Syntax>local declaration statement</Syntax>
     </Syntaxes>
+    <Scope>selected statement, yield keyword or return keyword</Scope>
     <Images>
-      <Image>ReplaceReturnStatementWithIfStatement</Image>
+      <Image>ReplaceReturnStatementWithIfElse</Image>
     </Images>
   </Refactoring>
   <Refactoring Id="RR0144" Identifier="ReplaceStringContainsWithStringIndexOf" Title="Replace string.Contains with string.IndexOf">

@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplacePrefixOperatorWithPostfixOperator = Prefix + "0140";
         public const string ReplacePropertyWithMethod = Prefix + "0141";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = Prefix + "0142";
-        public const string ReplaceStatementWithIfStatement = Prefix + "0143";
+        public const string ReplaceStatementWithIfElse = Prefix + "0143";
         public const string ReplaceStringContainsWithStringIndexOf = Prefix + "0144";
         public const string ReplaceStringFormatWithInterpolatedString = Prefix + "0145";
         public const string ReplaceSwitchWithIfElse = Prefix + "0147";

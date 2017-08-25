@@ -162,7 +162,7 @@ namespace Roslynator.VisualStudio
             ReplacePrefixOperatorWithPostfixOperator = true;
             ReplacePropertyWithMethod = true;
             ReplaceRegularStringLiteralWithVerbatimStringLiteral = true;
-            ReplaceStatementWithIfStatement = true;
+            ReplaceStatementWithIfElse = true;
             ReplaceStringContainsWithStringIndexOf = true;
             ReplaceStringFormatWithInterpolatedString = true;
             ReplaceSwitchWithIfElse = true;
@@ -337,7 +337,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, ReplacePrefixOperatorWithPostfixOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod, ReplacePropertyWithMethod);
             SetIsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, ReplaceRegularStringLiteralWithVerbatimStringLiteral);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement, ReplaceStatementWithIfStatement);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfElse, ReplaceStatementWithIfElse);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf, ReplaceStringContainsWithStringIndexOf);
             SetIsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, ReplaceStringFormatWithInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse, ReplaceSwitchWithIfElse);
@@ -522,7 +522,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator, "Replace prefix operator to postfix operator", IsEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplacePropertyWithMethod, "Replace property with method", IsEnabled(RefactoringIdentifiers.ReplacePropertyWithMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral, "Replace regular string literal with verbatim string literal", IsEnabled(RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStatementWithIfStatement, "Replace statement with if statement", IsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfStatement)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStatementWithIfElse, "Replace (yield) return statement with if-else", IsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf, "Replace string.Contains with string.IndexOf", IsEnabled(RefactoringIdentifiers.ReplaceStringContainsWithStringIndexOf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, "Replace string.Format with interpolated string", IsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceSwitchWithIfElse, "Replace switch statement with if-else", IsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse)));
@@ -1788,7 +1788,7 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceStatementWithIfStatement
+        public bool ReplaceStatementWithIfElse
         {
             get;
             set;
