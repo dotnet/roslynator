@@ -11,49 +11,44 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         public static void Foo()
         {
-            string x = "";
+            string s = "";
 
-            string x1 = (x == null) ? "" : x;
+            int i = 0;
 
-            string x2 = (x != null) ? x : "";
-        }
+            int? ni = null;
 
-        public static void Foo2()
-        {
-            string x = "";
+            s = s == null ? "" : s;
 
-            string x1 = x == null ? "" : x;
+            s = s != null ? s : "";
 
-            string x2 = x != null ? x : "";
-        }
+            s = (s == null) ? ("") : (s);
 
-        public static void NullableType()
-        {
-            int? x = null;
+            s = (s != null) ? (s) : ("");
 
-            int? x1 = (x == null) ? default(int?) : x;
+            i = (ni == null) ? 1 : ni.Value;
 
-            int? x2 = (x != null) ? x : default(int?);
+            i = (ni != null) ? ni.Value : 1;
+
+            i = (!ni.HasValue) ? 1 : ni.Value;
+
+            i = (ni.HasValue) ? ni.Value : 1;
         }
 
         //n
 
-        public static void Foo3()
+        public static unsafe void Foo2()
         {
-            string x = "";
+            string s = "";
 
-            string x1 = (x != null) ? "" : x;
+            s = (s != null) ? "" : s;
 
-            string x2 = (x == null) ? x : "";
-        }
+            s = (s == null) ? s : "";
 
-        public static unsafe void PointerType()
-        {
-            int* x = null;
+            int* i = null;
 
-            int* x1 = (x == null) ? default(int*) : x;
+            i = (i == null) ? default(int*) : i;
 
-            int* x2 = (x != null) ? x : default(int*);
+            i = (i != null) ? i : default(int*);
         }
     }
 }

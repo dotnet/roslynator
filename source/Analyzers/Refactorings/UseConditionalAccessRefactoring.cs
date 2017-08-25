@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -14,7 +12,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
-using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -59,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (right != null
                         && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken)
-                        && !ContainsOutArgumentWithLocal(right, context.SemanticModel, context.CancellationToken))
+                        && !RefactoringHelper.ContainsOutArgumentWithLocal(right, context.SemanticModel, context.CancellationToken))
                     {
                         ExpressionSyntax expression2 = FindExpressionThatCanBeConditionallyAccessed(expression, right);
 
@@ -67,55 +64,6 @@ namespace Roslynator.CSharp.Refactorings
                             && !logicalAndExpression.IsInExpressionTree(expressionType, context.SemanticModel, context.CancellationToken))
                         {
                             context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
-                        }
-                    }
-                }
-            }
-        }
-
-        public static void AnalyzeConditionalExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol expressionType)
-        {
-            if (context.Node.SpanContainsDirectives())
-                return;
-
-            ConditionalExpressionInfo conditionalExpression;
-            if (ConditionalExpressionInfo.TryCreate((ConditionalExpressionSyntax)context.Node, out conditionalExpression))
-            {
-                SemanticModel semanticModel = context.SemanticModel;
-                CancellationToken cancellationToken = context.CancellationToken;
-
-                NullCheckExpression nullCheck;
-                if (NullCheckExpression.TryCreate(conditionalExpression.Condition, semanticModel, out nullCheck, cancellationToken))
-                {
-                    ExpressionSyntax whenNotNull = (nullCheck.IsCheckingNotNull)
-                        ? conditionalExpression.WhenTrue
-                        : conditionalExpression.WhenFalse;
-
-                    if (whenNotNull.IsKind(
-                            SyntaxKind.SimpleMemberAccessExpression,
-                            SyntaxKind.ElementAccessExpression,
-                            SyntaxKind.ConditionalAccessExpression,
-                            SyntaxKind.InvocationExpression)
-                        && semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken)?.IsReferenceTypeOrNullableType() == true
-                        && !ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken))
-                    {
-                        ExpressionSyntax expression = FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
-
-                        if (expression != null)
-                        {
-                            ExpressionSyntax whenNull = (nullCheck.IsCheckingNull)
-                                ? conditionalExpression.WhenTrue
-                                : conditionalExpression.WhenFalse;
-
-                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(whenNotNull, cancellationToken);
-
-                            if (semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
-                                && !conditionalExpression.Node.IsInExpressionTree(expressionType, semanticModel, cancellationToken))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
-                                    conditionalExpression.Node);
-                            }
                         }
                     }
                 }
@@ -137,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression)
+        internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression)
         {
             if (expression.IsKind(SyntaxKind.LogicalNotExpression))
                 expression = ((PrefixUnaryExpressionSyntax)expression).Operand;
@@ -203,30 +151,6 @@ namespace Roslynator.CSharp.Refactorings
                         return false;
                     }
             }
-        }
-
-        private static bool ContainsOutArgumentWithLocal(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            foreach (SyntaxNode node in expression.DescendantNodes())
-            {
-                if (node.IsKind(SyntaxKind.Argument))
-                {
-                    var argument = (ArgumentSyntax)node;
-
-                    if (argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
-                    {
-                        ExpressionSyntax argumentExpression = argument.Expression;
-
-                        if (argumentExpression?.IsMissing == false
-                            && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.IsLocal() == true)
-                        {
-                            return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
         }
 
         private static bool HasConstantNonNullValue(this ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -348,58 +272,6 @@ namespace Roslynator.CSharp.Refactorings
                 : newStatement.WithTrailingTrivia(trailing.Concat(ifStatement.GetTrailingTrivia()));
 
             return document.ReplaceNodeAsync(ifStatement, newStatement, cancellationToken);
-        }
-
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            ConditionalExpressionSyntax conditionalExpressionSyntax,
-            CancellationToken cancellationToken)
-        {
-            ConditionalExpressionInfo conditionalExpression;
-            if (ConditionalExpressionInfo.TryCreate(conditionalExpressionSyntax, out conditionalExpression))
-            {
-                SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
-
-                NullCheckExpression nullCheck;
-                if (NullCheckExpression.TryCreate(conditionalExpression.Condition, semanticModel, out nullCheck, cancellationToken))
-                {
-                    ExpressionSyntax whenNotNull = (nullCheck.IsCheckingNotNull)
-                        ? conditionalExpression.WhenTrue
-                        : conditionalExpression.WhenFalse;
-
-                    ExpressionSyntax whenNull = (nullCheck.IsCheckingNull)
-                        ? conditionalExpression.WhenTrue
-                        : conditionalExpression.WhenFalse;
-
-                    ExpressionSyntax expression = FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
-
-                    ExpressionSyntax newNode;
-
-                    if (expression.Parent == whenNotNull
-                        && whenNotNull.IsKind(SyntaxKind.SimpleMemberAccessExpression)
-                        && SemanticUtilities.IsPropertyOfNullableOfT(whenNotNull, "Value", semanticModel, cancellationToken))
-                    {
-                        newNode = expression;
-                    }
-                    else
-                    {
-                        newNode = SyntaxFactory.ParseExpression(whenNotNull.ToString().Insert(expression.Span.End - whenNotNull.SpanStart, "?"));
-                    }
-
-                    if (!semanticModel.GetTypeSymbol(whenNotNull, cancellationToken).IsReferenceType)
-                        newNode = CSharpFactory.CoalesceExpression(newNode.Parenthesize(), whenNull.Parenthesize());
-
-                    newNode = newNode
-                        .WithTriviaFrom(conditionalExpressionSyntax)
-                        .Parenthesize();
-
-                    return await document.ReplaceNodeAsync(conditionalExpressionSyntax, newNode, cancellationToken).ConfigureAwait(false);
-                }
-            }
-
-            Debug.Fail(conditionalExpressionSyntax.ToString());
-
-            return document;
         }
     }
 }

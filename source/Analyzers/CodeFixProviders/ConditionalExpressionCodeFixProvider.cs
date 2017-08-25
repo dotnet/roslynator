@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 "Use coalesce expression",
                                 cancellationToken =>
                                 {
-                                    return UseCoalesceExpressionInsteadOfConditionalExpressionRefactoring.RefactorAsync(
+                                    return SimplifyNullCheckRefactoring.RefactorAsync(
                                         context.Document,
                                         conditionalExpression,
                                         cancellationToken);
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 "Use conditional access",
                                 cancellationToken =>
                                 {
-                                    return UseConditionalAccessRefactoring.RefactorAsync(
+                                    return SimplifyNullCheckRefactoring.RefactorAsync(
                                         context.Document,
                                         conditionalExpression,
                                         cancellationToken);

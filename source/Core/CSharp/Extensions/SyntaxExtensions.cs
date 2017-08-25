@@ -3203,6 +3203,18 @@ namespace Roslynator.CSharp
 
         internal static bool IsInExpressionTree(
             this SyntaxNode node,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return IsInExpressionTree(
+                node,
+                semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Expressions_Expression_1),
+                semanticModel,
+                cancellationToken);
+        }
+
+        internal static bool IsInExpressionTree(
+            this SyntaxNode node,
             INamedTypeSymbol expressionType,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))

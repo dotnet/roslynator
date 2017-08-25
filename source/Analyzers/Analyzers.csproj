@@ -84,7 +84,6 @@
     <Compile Include="DiagnosticAnalyzers\UseMethodGroupInsteadOfAnonymousFunctionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyBooleanExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseAttributeUsageAttributeDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\UseConditionalAccessInsteadOfConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseConstantInsteadOfFieldDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MarkFieldAsReadOnlyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\JoinStringExpressionsDiagnosticAnalyzer.cs" />
@@ -302,7 +301,7 @@
     <Compile Include="Refactorings\RemoveUnnecessaryCaseLabelRefactoring.cs" />
     <Compile Include="Refactorings\RenamePrivateFieldAccordingToCamelCaseWithUnderscoreRefactoring.cs" />
     <Compile Include="Refactorings\ReorderModifiersRefactoring.cs" />
-    <Compile Include="Refactorings\UseCoalesceExpressionInsteadOfConditionalExpressionRefactoring.cs" />
+    <Compile Include="Refactorings\SimplifyNullCheckRefactoring.cs" />
     <Compile Include="Refactorings\UseInsteadOfCountMethod\ReplaceCountMethodRefactoring.cs" />
     <Compile Include="Refactorings\UseAutoPropertyRefactoring.cs" />
     <Compile Include="Refactorings\CallCastInsteadOfSelectRefactoring.cs" />

@@ -20,6 +20,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.ParenthesizeConditionInConditionalExpression,
                     DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
+                    DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
                     DiagnosticDescriptors.SimplifyConditionalExpression);
             }
         }
@@ -30,8 +31,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 throw new ArgumentNullException(nameof(context));
 
             base.Initialize(context);
+            context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(f => AnalyzeConditionalExpression(f), SyntaxKind.ConditionalExpression);
+
+            context.RegisterSyntaxNodeAction(f => SimplifyNullCheckRefactoring.AnalyzeConditionalExpression(f), SyntaxKind.ConditionalExpression);
         }
 
         private void AnalyzeConditionalExpression(SyntaxNodeAnalysisContext context)
@@ -39,8 +43,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             var conditionalExpression = (ConditionalExpressionSyntax)context.Node;
 
             ParenthesizeConditionInConditionalExpressionRefactoring.Analyze(context, conditionalExpression);
-
-            UseCoalesceExpressionInsteadOfConditionalExpressionRefactoring.Analyze(context, conditionalExpression);
 
             SimplifyConditionalExpressionRefactoring.Analyze(context, conditionalExpression);
         }
