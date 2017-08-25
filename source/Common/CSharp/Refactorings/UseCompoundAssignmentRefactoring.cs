@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     return binaryLeft?.IsMissing == false
                         && binaryRight?.IsMissing == false
-                        && left.IsEquivalentTo(binaryLeft, topLevel: false)
+                        && SyntaxComparer.AreEquivalent(left, binaryLeft)
                         && (assignment
                             .DescendantTrivia(assignment.Span)
                             .All(f => f.IsWhitespaceOrEndOfLineTrivia()));

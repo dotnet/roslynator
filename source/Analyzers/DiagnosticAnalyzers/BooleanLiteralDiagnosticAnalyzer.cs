@@ -34,10 +34,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeEqualsExpression(f), SyntaxKind.EqualsExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeNotEqualsExpression(f), SyntaxKind.NotEqualsExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeLogicalAndExpression(f), SyntaxKind.LogicalAndExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeLogicalOrExpression(f), SyntaxKind.LogicalOrExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeEqualsExpression, SyntaxKind.EqualsExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeNotEqualsExpression, SyntaxKind.NotEqualsExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeLogicalAndExpression, SyntaxKind.LogicalAndExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeLogicalOrExpression, SyntaxKind.LogicalOrExpression);
         }
 
         private void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)

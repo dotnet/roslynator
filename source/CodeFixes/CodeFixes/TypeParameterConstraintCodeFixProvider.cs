@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SeparatedSyntaxList<TypeParameterConstraintSyntax> constraints;
 
-                            if (GenericDeclarationHelper.TryGetContainingList(constraint, out constraints))
+                            if (GenericSyntax.TryGetContainingList(constraint, out constraints))
                                 MoveConstraint(context, diagnostic, constraint, constraints, constraints.Count - 1);
 
                             break;
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 break;
 
                             SeparatedSyntaxList<TypeParameterConstraintSyntax> constraints;
-                            if (GenericDeclarationHelper.TryGetContainingList(constraint, out constraints))
+                            if (GenericSyntax.TryGetContainingList(constraint, out constraints))
                             {
                                 if (IsDuplicateConstraint(constraint, constraints))
                                 {
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
                             RemoveConstraint(context, diagnostic, constraint);
 
                             SeparatedSyntaxList<TypeParameterConstraintSyntax> constraintClauses;
-                            if (GenericDeclarationHelper.TryGetContainingList(constraint, out constraintClauses))
+                            if (GenericSyntax.TryGetContainingList(constraint, out constraintClauses))
                             {
                                 TypeParameterConstraintSyntax classConstraint = constraintClauses.Find(SyntaxKind.ClassConstraint);
 
@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.CodeFixes
                             RemoveConstraint(context, diagnostic, constraint);
 
                             SeparatedSyntaxList<TypeParameterConstraintSyntax> constraintClauses;
-                            if (GenericDeclarationHelper.TryGetContainingList(constraint, out constraintClauses))
+                            if (GenericSyntax.TryGetContainingList(constraint, out constraintClauses))
                             {
                                 TypeParameterConstraintSyntax structConstraint = constraintClauses.Find(SyntaxKind.StructConstraint);
                                 RemoveConstraint(context, diagnostic, structConstraint);
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.CodeFixes
             TypeParameterConstraintSyntax constraint)
         {
             SeparatedSyntaxList<TypeParameterConstraintSyntax> constraints;
-            if (GenericDeclarationHelper.TryGetContainingList(constraint, out constraints))
+            if (GenericSyntax.TryGetContainingList(constraint, out constraints))
             {
                 CodeAction codeAction = CodeAction.Create(
                     $"Remove constraint '{constraint}'",

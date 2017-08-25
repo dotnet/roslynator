@@ -26,11 +26,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(
-                f => UsePredefinedTypeRefactoring.AnalyzeIdentifierName(f),
+                UsePredefinedTypeRefactoring.AnalyzeIdentifierName,
                 SyntaxKind.IdentifierName);
 
             context.RegisterSyntaxNodeAction(
-                f => UsePredefinedTypeRefactoring.AnalyzeXmlCrefAttribute(f),
+                UsePredefinedTypeRefactoring.AnalyzeXmlCrefAttribute,
                 SyntaxKind.XmlCrefAttribute);
         }
     }

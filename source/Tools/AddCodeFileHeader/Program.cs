@@ -29,7 +29,7 @@ namespace AddCodeFileHeader
             }
 
             string[] filesWithoutHeader = args
-                .SelectMany(dirPath => FindFilesWithoutHeader(dirPath))
+                .SelectMany(FindFilesWithoutHeader)
                 .ToArray();
 
             if (filesWithoutHeader.Length > 0)

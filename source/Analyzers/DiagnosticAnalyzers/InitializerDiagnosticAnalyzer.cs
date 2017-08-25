@@ -31,13 +31,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.EnableConcurrentExecution();
 
             context.RegisterSyntaxNodeAction(
-                f => RemoveRedundantCommaInInitializerRefactoring.AnalyzeInitializerExpression(f),
+                RemoveRedundantCommaInInitializerRefactoring.AnalyzeInitializerExpression,
                 SyntaxKind.ArrayInitializerExpression,
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.CollectionInitializerExpression);
 
             context.RegisterSyntaxNodeAction(
-                f => FormatInitializerWithSingleExpressionOnSingleLineRefactoring.AnalyzeInitializerExpression(f),
+                FormatInitializerWithSingleExpressionOnSingleLineRefactoring.AnalyzeInitializerExpression,
                 SyntaxKind.ArrayInitializerExpression,
                 SyntaxKind.ObjectInitializerExpression,
                 SyntaxKind.CollectionInitializerExpression);

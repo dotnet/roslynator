@@ -45,7 +45,7 @@
     <Compile Include="CSharp\AccessibilityInfo.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\CodeFixes\AbstractCodeFixProvider.cs" />
-    <Compile Include="CSharp\GenericDeclarationHelper.cs" />
+    <Compile Include="CSharp\GenericSyntax.cs" />
     <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringIdentifierSet.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringSettings.cs" />
@@ -82,7 +82,6 @@
     <Compile Include="CSharp\Helpers\ModifierHelpers\PropertyDeclarationModifierHelper.cs" />
     <Compile Include="CSharp\Helpers\ModifierHelpers\StructDeclarationModifierHelper.cs" />
     <Compile Include="CSharp\BinaryExpressionChain.cs" />
-    <Compile Include="CSharp\StringExpressionKind.cs" />
     <Compile Include="CSharp\StringLiteralParser.cs" />
     <Compile Include="CSharp\StringLiteralParser.StringLiteralParseResult.cs" />
     <Compile Include="CSharp\XmlElementInfo.cs" />
@@ -185,9 +184,7 @@
     <None Include="Roslynator.Core.snk" />
     <None Include="Roslynator.Core.nuspec" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="CSharp\Refactorings\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Target Name="AfterBuild">
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">

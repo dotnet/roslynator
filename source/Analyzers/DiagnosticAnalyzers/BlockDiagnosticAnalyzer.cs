@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBlock(f), SyntaxKind.Block);
+            context.RegisterSyntaxNodeAction(AnalyzeBlock, SyntaxKind.Block);
         }
 
         private void AnalyzeBlock(SyntaxNodeAnalysisContext context)

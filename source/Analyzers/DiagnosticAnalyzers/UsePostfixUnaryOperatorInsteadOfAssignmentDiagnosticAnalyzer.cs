@@ -30,9 +30,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeSimpleAssignmentExpression(f), SyntaxKind.SimpleAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeAddAssignmentExpression(f), SyntaxKind.AddAssignmentExpression);
-            context.RegisterSyntaxNodeAction(f => AnalyzeSubtractAssignmentExpression(f), SyntaxKind.SubtractAssignmentExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeSimpleAssignmentExpression, SyntaxKind.SimpleAssignmentExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeAddAssignmentExpression, SyntaxKind.AddAssignmentExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeSubtractAssignmentExpression, SyntaxKind.SubtractAssignmentExpression);
         }
     }
 }

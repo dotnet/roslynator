@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => RemoveEmptyRegionRefactoring.AnalyzeRegionDirective(f),
+                RemoveEmptyRegionRefactoring.AnalyzeRegionDirective,
                 SyntaxKind.RegionDirectiveTrivia);
         }
     }

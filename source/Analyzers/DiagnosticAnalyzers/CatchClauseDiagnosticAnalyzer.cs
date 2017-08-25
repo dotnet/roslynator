@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeCatchClause(f), SyntaxKind.CatchClause);
+            context.RegisterSyntaxNodeAction(AnalyzeCatchClause, SyntaxKind.CatchClause);
         }
 
         private void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)

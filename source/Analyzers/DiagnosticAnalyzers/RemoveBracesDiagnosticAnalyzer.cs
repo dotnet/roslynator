@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => RemoveBracesRefactoring.Analyze(f),
+                RemoveBracesRefactoring.Analyze,
                 SyntaxKind.IfStatement,
                 SyntaxKind.ForEachStatement,
                 SyntaxKind.ForEachVariableStatement,

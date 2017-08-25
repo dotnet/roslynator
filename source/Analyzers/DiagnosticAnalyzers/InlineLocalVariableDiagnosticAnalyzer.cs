@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => InlineLocalVariableRefactoring.AnalyzeLocalDeclarationStatement(f),
+                InlineLocalVariableRefactoring.AnalyzeLocalDeclarationStatement,
                 SyntaxKind.LocalDeclarationStatement);
         }
     }

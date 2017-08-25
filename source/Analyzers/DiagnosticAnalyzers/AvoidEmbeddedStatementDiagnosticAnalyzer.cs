@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeStatement(f),
+            context.RegisterSyntaxNodeAction(AnalyzeStatement,
                 SyntaxKind.IfStatement,
                 SyntaxKind.ElseClause,
                 SyntaxKind.ForEachStatement,

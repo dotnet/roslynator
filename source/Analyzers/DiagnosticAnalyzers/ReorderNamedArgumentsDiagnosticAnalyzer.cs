@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseArgumentList(f), SyntaxKind.ArgumentList);
-            context.RegisterSyntaxNodeAction(f => AnalyzeBaseArgumentList(f), SyntaxKind.BracketedArgumentList);
+            context.RegisterSyntaxNodeAction(AnalyzeBaseArgumentList, SyntaxKind.ArgumentList);
+            context.RegisterSyntaxNodeAction(AnalyzeBaseArgumentList, SyntaxKind.BracketedArgumentList);
         }
     }
 }

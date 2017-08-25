@@ -24,8 +24,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSymbolAction(f => AnalyzeMethodSymbol(f), SymbolKind.Method);
-            context.RegisterSymbolAction(f => AnalyzePropertySymbol(f), SymbolKind.Property);
+            context.RegisterSymbolAction(AnalyzeMethodSymbol, SymbolKind.Method);
+            context.RegisterSymbolAction(AnalyzePropertySymbol, SymbolKind.Property);
         }
     }
 }

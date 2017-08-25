@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeObjectCreationExpression(f), SyntaxKind.ObjectCreationExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeObjectCreationExpression, SyntaxKind.ObjectCreationExpression);
         }
 
         private void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)

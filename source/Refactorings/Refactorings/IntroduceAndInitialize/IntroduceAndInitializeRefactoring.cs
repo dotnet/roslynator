@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         private static ImmutableArray<ParameterSyntax> GetParameters(ParameterListSyntax parameterList, TextSpan span)
         {
             return GetSelectedParameters(parameterList, span)
-                .Where(f => IsValid(f))
+                .Where(IsValid)
                 .ToImmutableArray();
         }
 

@@ -252,7 +252,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                 ExpressionSyntax left = notEqualsExpression.Left;
 
-                                if (left?.IsEquivalentTo(expression, topLevel: false) == true)
+                                if (SyntaxComparer.AreEquivalent(left, expression, requireNotNull: true))
                                 {
                                     ExpressionSyntax right = notEqualsExpression.Right;
 

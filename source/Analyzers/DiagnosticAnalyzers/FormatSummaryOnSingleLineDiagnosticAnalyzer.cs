@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => FormatSummaryOnSingleLineRefactoring.AnalyzeSingleLineDocumentationCommentTrivia(f),
+                FormatSummaryOnSingleLineRefactoring.AnalyzeSingleLineDocumentationCommentTrivia,
                 SyntaxKind.SingleLineDocumentationCommentTrivia);
         }
     }

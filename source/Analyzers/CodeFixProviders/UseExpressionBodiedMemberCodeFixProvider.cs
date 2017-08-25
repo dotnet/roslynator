@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => Predicate(f)))
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: Predicate))
                 return;
 
             CodeAction codeAction = CodeAction.Create(

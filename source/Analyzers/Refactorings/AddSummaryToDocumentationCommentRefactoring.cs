@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var xmlText = (XmlTextSyntax)node;
 
-                    return xmlText.TextTokens.All(f => IsWhitespaceOrNewLine(f));
+                    return xmlText.TextTokens.All(IsWhitespaceOrNewLine);
                 }
             }
 

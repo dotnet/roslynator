@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxTreeAction(f => AnalyzeTrailingTrivia(f));
+            context.RegisterSyntaxTreeAction(AnalyzeTrailingTrivia);
         }
 
         private void AnalyzeTrailingTrivia(SyntaxTreeAnalysisContext context)

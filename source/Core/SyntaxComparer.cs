@@ -44,5 +44,17 @@ namespace Roslynator
                 return node1.IsEquivalentTo(node2, topLevel: topLevel);
             }
         }
+
+        public static bool AreEquivalent(
+            SyntaxNode node1,
+            SyntaxNode node2,
+            SyntaxNode node3,
+            bool disregardTrivia = true,
+            bool topLevel = false,
+            bool requireNotNull = false)
+        {
+            return AreEquivalent(node1, node2, disregardTrivia: disregardTrivia, topLevel: topLevel, requireNotNull: requireNotNull)
+                && AreEquivalent(node1, node3, disregardTrivia: disregardTrivia, topLevel: topLevel, requireNotNull: requireNotNull);
+        }
     }
 }

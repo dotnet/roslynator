@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     MemberInvocationStatement memberInvocation;
                     if (MemberInvocationStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out memberInvocation)
-                        && notEqualsToNull.Left.IsEquivalentTo(memberInvocation.Expression, topLevel: false)
+                        && SyntaxComparer.AreEquivalent(notEqualsToNull.Left, memberInvocation.Expression)
                         && !ifStatement.IsInExpressionTree(expressionType, context.SemanticModel, context.CancellationToken)
                         && !ifStatement.SpanContainsDirectives())
                     {
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (kind == node.Kind()
                     && node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)
-                    && expressionToFind.IsEquivalentTo(node, topLevel: false))
+                    && SyntaxComparer.AreEquivalent(expressionToFind, node))
                 {
                     return (ExpressionSyntax)node;
                 }

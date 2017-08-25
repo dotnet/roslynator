@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                                 ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
 
                                 if (analysis.Succeeded
-                                    && analysis.ReturnStatements.All(node => IsReturnStatementWithoutExpression(node)))
+                                    && analysis.ReturnStatements.All(IsReturnStatementWithoutExpression))
                                 {
                                     context.RegisterRefactoring(
                                         "Change return type to 'void'",

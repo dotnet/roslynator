@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = 0; i < index; i++)
                 newLists.Add(lists[i]);
 
-            newLists.AddRange(attributeLists.SelectMany(f => AttributeRefactoring.SplitAttributes(f)));
+            newLists.AddRange(attributeLists.SelectMany(AttributeRefactoring.SplitAttributes));
 
             for (int i = index + attributeLists.Length; i < lists.Count; i++)
                 newLists.Add(lists[i]);

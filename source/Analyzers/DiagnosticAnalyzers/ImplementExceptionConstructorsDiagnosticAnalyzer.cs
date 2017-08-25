@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSymbolAction(
-                f => ImplementExceptionConstructorsRefactoring.AnalyzeNamedType(f),
+                ImplementExceptionConstructorsRefactoring.AnalyzeNamedType,
                 SymbolKind.NamedType);
         }
     }

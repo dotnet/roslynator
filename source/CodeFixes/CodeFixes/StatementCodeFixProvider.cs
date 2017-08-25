@@ -85,11 +85,12 @@ namespace Roslynator.CSharp.CodeFixes
                                 if (typeSymbol?.IsErrorType() != false)
                                     break;
 
-                                bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
-                                    && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
-
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable))
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable)
+                                    && !statement.IsEmbedded())
                                 {
+                                    bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
+                                        && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
+
                                     CodeAction codeAction = CodeAction.Create(
                                         IntroduceLocalVariableRefactoring.GetTitle(expression),
                                         cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken),

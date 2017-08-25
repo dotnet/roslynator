@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
+            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression,
                 SyntaxKind.AddExpression,
                 SyntaxKind.SubtractExpression,
                 SyntaxKind.MultiplyExpression,

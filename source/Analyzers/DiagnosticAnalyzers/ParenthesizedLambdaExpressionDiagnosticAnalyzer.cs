@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => SimplifyLambdaExpressionParameterListRefactoring.AnalyzeParenthesizedLambdaExpression(f),
+                SimplifyLambdaExpressionParameterListRefactoring.AnalyzeParenthesizedLambdaExpression,
                 SyntaxKind.ParenthesizedLambdaExpression);
         }
     }

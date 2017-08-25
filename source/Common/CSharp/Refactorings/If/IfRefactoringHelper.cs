@@ -10,13 +10,6 @@ namespace Roslynator.CSharp.Refactorings.If
 {
     internal static class IfRefactoringHelper
     {
-        public static bool IsEquivalent(SyntaxNode node1, SyntaxNode node2)
-        {
-            return node1 != null
-                && node2 != null
-                && node1.IsEquivalentTo(node2, topLevel: false);
-        }
-
         public static bool IsNullLiteral(SyntaxNode node)
         {
             return node?.IsKind(SyntaxKind.NullLiteralExpression) == true;

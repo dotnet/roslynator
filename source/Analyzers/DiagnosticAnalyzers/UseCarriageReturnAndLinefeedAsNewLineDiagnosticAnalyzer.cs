@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxTreeAction(f => UseCarriageReturnAndLinefeedAsNewLineRefactoring.Analyze(f));
+            context.RegisterSyntaxTreeAction(UseCarriageReturnAndLinefeedAsNewLineRefactoring.Analyze);
         }
     }
 }

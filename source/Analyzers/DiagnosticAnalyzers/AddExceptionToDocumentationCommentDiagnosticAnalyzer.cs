@@ -26,8 +26,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeThrowStatement(f), SyntaxKind.ThrowStatement);
-            context.RegisterSyntaxNodeAction(f => AnalyzeThrowExpression(f), SyntaxKind.ThrowExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeThrowStatement, SyntaxKind.ThrowStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeThrowExpression, SyntaxKind.ThrowExpression);
         }
 
         private static void AnalyzeThrowStatement(SyntaxNodeAnalysisContext context)
