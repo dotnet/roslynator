@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            bool isEmbedded = EmbeddedStatementHelper.IsEmbeddedStatement(statement);
+            bool isEmbedded = statement.IsEmbedded(ifInsideElse: false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement)
                 && !isEmbedded)

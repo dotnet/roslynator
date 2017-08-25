@@ -10,12 +10,15 @@ namespace Roslynator.CSharp
 {
     internal static class EmbeddedStatementHelper
     {
-        public static StatementSyntax GetEmbeddedStatement(SyntaxNode node)
+        public static StatementSyntax GetEmbeddedStatement(
+            SyntaxNode node,
+            bool ifInsideElse = true,
+            bool usingInsideUsing = true)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            StatementSyntax statement = GetBlockOrEmbeddedStatement(node);
+            StatementSyntax statement = GetChildStatement(node, ifInsideElse, usingInsideUsing);
 
             if (statement?.IsKind(SyntaxKind.Block) == false)
             {
@@ -27,53 +30,15 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool IsEmbeddableBlock(BlockSyntax block)
-        {
-            if (block == null)
-                throw new ArgumentNullException(nameof(block));
-
-            if (CanContainEmbeddedStatement(block.Parent))
-            {
-                SyntaxList<StatementSyntax> statements = block.Statements;
-
-                return statements.Count == 1
-                    && !statements[0].IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool IsEmbeddedStatement(StatementSyntax statement)
-        {
-            if (statement == null)
-                throw new ArgumentNullException(nameof(statement));
-
-            if (!statement.IsKind(SyntaxKind.Block))
-            {
-                SyntaxNode parent = statement.Parent;
-
-                return CanContainEmbeddedStatement(parent)
-                    && (!parent.IsKind(SyntaxKind.ElseClause) || !statement.IsKind(SyntaxKind.IfStatement));
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static bool ContainsEmbeddedStatement(SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return GetBlockOrEmbeddedStatement(node)?.IsKind(SyntaxKind.Block) == false;
-        }
-
         public static bool CanContainEmbeddedStatement(SyntaxNode node)
         {
-            switch (node?.Kind())
+            return node != null
+                && CanContainEmbeddedStatement(node.Kind());
+        }
+
+        public static bool CanContainEmbeddedStatement(SyntaxKind kind)
+        {
+            switch (kind)
             {
                 case SyntaxKind.IfStatement:
                 case SyntaxKind.ElseClause:
@@ -91,7 +56,10 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static StatementSyntax GetBlockOrEmbeddedStatement(SyntaxNode node)
+        private static StatementSyntax GetChildStatement(
+            SyntaxNode node,
+            bool ifInsideElse = true,
+            bool usingInsideUsing = true)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
@@ -116,17 +84,24 @@ namespace Roslynator.CSharp
                 case SyntaxKind.UsingStatement:
                     {
                         StatementSyntax statement = ((UsingStatementSyntax)node).Statement;
-                        if (statement?.IsKind(SyntaxKind.UsingStatement) != true)
+
+                        if (usingInsideUsing
+                            || statement?.IsKind(SyntaxKind.UsingStatement) != true)
+                        {
                             return statement;
+                        }
 
                         break;
                     }
                 case SyntaxKind.ElseClause:
                     {
-                        var elseClause = (ElseClauseSyntax)node;
+                        StatementSyntax statement = ((ElseClauseSyntax)node).Statement;
 
-                        if (!elseClause.ContinuesWithIf())
-                            return elseClause.Statement;
+                        if (ifInsideElse
+                            || statement?.IsKind(SyntaxKind.IfStatement) != true)
+                        {
+                            return statement;
+                        }
 
                         break;
                     }
@@ -135,7 +110,48 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        internal static bool FormattingSupportsEmbeddedStatement(SyntaxNode containingNode)
+        internal static BlockSyntax AnalyzeBlockToEmbeddedStatement(
+            SyntaxNode node,
+            bool ifInsideElse = true,
+            bool usingInsideUsing = true)
+        {
+            if (!(GetChildStatement(node, ifInsideElse, usingInsideUsing) is BlockSyntax block))
+                return null;
+
+            StatementSyntax statement = block.SingleStatementOrDefault();
+
+            if (statement == null)
+                return null;
+
+            if (statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement))
+                return null;
+
+            if (!statement.IsSingleLine())
+                return null;
+
+            if (!CheckFormatting(node))
+                return null;
+
+            return block;
+        }
+
+        internal static StatementSyntax AnalyzeEmbeddedStatementToBlock(
+            SyntaxNode node,
+            bool ifInsideElse = true,
+            bool usingInsideUsing = true)
+        {
+            StatementSyntax statement = GetEmbeddedStatement(node, ifInsideElse, usingInsideUsing);
+
+            if (statement == null)
+                return null;
+
+            if (statement.IsSingleLine() && CheckFormatting(node))
+                return null;
+
+            return statement;
+        }
+
+        private static bool CheckFormatting(SyntaxNode containingNode)
         {
             switch (containingNode.Kind())
             {

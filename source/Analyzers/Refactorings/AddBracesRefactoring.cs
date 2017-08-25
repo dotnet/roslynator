@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!statement.IsKind(SyntaxKind.IfStatement)
                 || ((IfStatementSyntax)statement).IsSimpleIf())
             {
-                StatementSyntax embeddedStatement = GetEmbeddedStatementThatShouldBeInsideBlock(statement);
+                StatementSyntax embeddedStatement = EmbeddedStatementHelper.AnalyzeEmbeddedStatementToBlock(statement, ifInsideElse: false, usingInsideUsing: false);
 
                 if (embeddedStatement != null)
                 {
@@ -27,19 +27,6 @@ namespace Roslynator.CSharp.Refactorings
                         statement.GetTitle());
                 }
             }
-        }
-
-        private static StatementSyntax GetEmbeddedStatementThatShouldBeInsideBlock(SyntaxNode node)
-        {
-            StatementSyntax statement = EmbeddedStatementHelper.GetBlockOrEmbeddedStatement(node);
-
-            if (statement?.IsKind(SyntaxKind.Block) == false)
-            {
-                if (!statement.IsSingleLine() || !EmbeddedStatementHelper.FormattingSupportsEmbeddedStatement(node))
-                    return statement;
-            }
-
-            return null;
         }
 
         public static Task<Document> RefactorAsync(

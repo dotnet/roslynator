@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 if (statement != null)
                 {
-                    if (EmbeddedStatementHelper.IsEmbeddedStatement(statement))
+                    if (statement.IsEmbedded())
                     {
                         newNode = node.ReplaceNode(statement, Block(expressionStatement, statement));
                     }

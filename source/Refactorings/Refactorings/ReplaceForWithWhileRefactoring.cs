@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
 
             statements[0] = statements[0].WithLeadingTrivia(forStatement.GetLeadingTrivia());
 
-            if (EmbeddedStatementHelper.IsEmbeddedStatement(forStatement))
+            if (forStatement.IsEmbedded())
             {
                 return document.ReplaceNodeAsync(forStatement, Block(statements), cancellationToken);
             }

@@ -2,6 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
+
+#pragma warning disable RCS1007, RCS1126
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -90,6 +93,20 @@ namespace Roslynator.CSharp.Analyzers.Test
                     Foo(
                         x,
                         y);
+            }
+
+            //n
+
+            if (f)
+            {
+            }
+            else if (f)
+            {
+            }
+
+            using (var sr = new StringReader(""))
+            using (var sr2 = new StringReader(""))
+            {
             }
         }
     }

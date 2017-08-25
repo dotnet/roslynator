@@ -209,11 +209,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void AnalyzeEmbeddedStatement(SyntaxNodeAnalysisContext context, SyntaxToken token, StatementSyntax statement)
         {
-            if (statement != null
-                && EmbeddedStatementHelper.IsEmbeddedStatement(statement))
-            {
+            if (statement?.IsEmbedded() == true)
                 Analyze(context, token, statement);
-            }
         }
 
         private static void Analyze(
