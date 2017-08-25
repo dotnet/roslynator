@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     continue;
                 }
-                else if (EmbeddedStatementHelper.IsEmbeddableBlock(block))
+                else if (IsEmbeddableBlock(block))
                 {
                     success = true;
                 }
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
         private static bool CanRefactor(RefactoringContext context, BlockSyntax block)
         {
             if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(block)
-                && EmbeddedStatementHelper.IsEmbeddableBlock(block))
+                && IsEmbeddableBlock(block))
             {
                 StatementSyntax statement = EmbeddedStatementHelper.GetEmbeddedStatement(block.Statements[0]);
 
@@ -126,6 +126,14 @@ namespace Roslynator.CSharp.Refactorings
                 default:
                     return null;
             }
+        }
+
+        private static bool IsEmbeddableBlock(BlockSyntax block)
+        {
+            return EmbeddedStatementHelper.CanContainEmbeddedStatement(block.Parent)
+                && block
+                    .SingleStatementOrDefault()?
+                    .IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement) == false;
         }
 
         public static Task<Document> RefactorAsync(

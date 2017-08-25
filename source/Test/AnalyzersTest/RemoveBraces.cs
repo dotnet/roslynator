@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-#pragma warning disable RCS1126
+#pragma warning disable RCS1001, RCS1003, RCS1007, RCS1118, RCS1126, RCS1176, RCS1177
 
 namespace Roslynator.CSharp.Analyzers.Test
 {
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Analyzers.Test
 
             unsafe
             {
-                fixed ()
+                fixed (char* p = "")
                 {
                     Foo();
                 }

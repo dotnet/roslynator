@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!node.IsKind(SyntaxKind.IfStatement)
                 || ((IfStatementSyntax)node).IsSimpleIf())
             {
-                BlockSyntax block = GetBlockThatCanBeEmbeddedStatement(node);
+                BlockSyntax block = EmbeddedStatementHelper.AnalyzeBlockToEmbeddedStatement(node);
 
                 if (block != null)
                 {
@@ -42,27 +42,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-        }
-
-        private static BlockSyntax GetBlockThatCanBeEmbeddedStatement(SyntaxNode node)
-        {
-            StatementSyntax childStatement = EmbeddedStatementHelper.GetBlockOrEmbeddedStatement(node);
-
-            if (childStatement?.IsKind(SyntaxKind.Block) == true)
-            {
-                var block = (BlockSyntax)childStatement;
-
-                StatementSyntax statement = block.SingleStatementOrDefault();
-
-                if (statement?.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement) == false
-                    && statement.IsSingleLine()
-                    && EmbeddedStatementHelper.FormattingSupportsEmbeddedStatement(node))
-                {
-                    return block;
-                }
-            }
-
-            return null;
         }
 
         public static Task<Document> RefactorAsync(

@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             ifStatements[0] = ifStatements[0].WithLeadingTrivia(ifStatement.GetLeadingTrivia());
             ifStatements[ifStatements.Count - 1] = ifStatements[ifStatements.Count - 1].WithTrailingTrivia(ifStatement.GetTrailingTrivia());
 
-            if (EmbeddedStatementHelper.IsEmbeddedStatement(ifStatement))
+            if (ifStatement.IsEmbedded())
             {
                 BlockSyntax block = SyntaxFactory.Block(ifStatements);
 
