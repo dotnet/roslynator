@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => RemoveRedundantFieldInitializationRefactoring.AnalyzeFieldDeclaration(f),
+                RemoveRedundantFieldInitializationRefactoring.AnalyzeFieldDeclaration,
                 SyntaxKind.FieldDeclaration);
         }
     }

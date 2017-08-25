@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => SimplifyLogicalNotExpressionRefactoring.AnalyzeLogicalNotExpression(f),
+                SimplifyLogicalNotExpressionRefactoring.AnalyzeLogicalNotExpression,
                 SyntaxKind.LogicalNotExpression);
         }
     }

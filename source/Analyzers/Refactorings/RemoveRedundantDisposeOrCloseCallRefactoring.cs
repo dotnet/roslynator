@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                         if (usingExpression != null)
                                         {
-                                            if (memberAccessExpression.IsEquivalentTo(usingExpression, topLevel: false))
+                                            if (SyntaxComparer.AreEquivalent(memberAccessExpression, usingExpression))
                                                 ReportDiagnostic(context, expressionStatement, methodName);
                                         }
                                         else if (memberAccessExpression.IsKind(SyntaxKind.IdentifierName))

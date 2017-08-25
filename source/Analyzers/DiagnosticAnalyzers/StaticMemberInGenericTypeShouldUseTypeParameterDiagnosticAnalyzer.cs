@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSymbolAction(
-                f => StaticMemberInGenericTypeShouldUseTypeParameterRefactoring.AnalyzeNamedType(f),
+                StaticMemberInGenericTypeShouldUseTypeParameterRefactoring.AnalyzeNamedType,
                 SymbolKind.NamedType);
         }
     }

@@ -263,7 +263,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         SyntaxList<SwitchSectionSyntax> newSections = switchStatement
                             .Sections
-                            .Select(section => CreateNewSection(section))
+                            .Select(CreateNewSection)
                             .ToSyntaxList();
 
                         SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);

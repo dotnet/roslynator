@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => UseStringLengthInsteadOfComparisonWithEmptyStringRefactoring.AnalyzeEqualsExpression(f),
+                UseStringLengthInsteadOfComparisonWithEmptyStringRefactoring.AnalyzeEqualsExpression,
                 SyntaxKind.EqualsExpression);
         }
     }

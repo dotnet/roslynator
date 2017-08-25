@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxTreeAction(f => UseSpacesInsteadOfTabRefactoring.Analyze(f));
+            context.RegisterSyntaxTreeAction(UseSpacesInsteadOfTabRefactoring.Analyze);
         }
     }
 }

@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 for (int i = 0; i < first.Count; i++)
                 {
-                    if (!first[i].IsEquivalentTo(second[i], topLevel: false))
+                    if (!SyntaxComparer.AreEquivalent(first[i], second[i]))
                         return false;
                 }
 

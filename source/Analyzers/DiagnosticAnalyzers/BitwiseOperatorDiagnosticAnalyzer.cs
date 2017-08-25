@@ -25,12 +25,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(f => AnalyzeBinaryExpression(f),
+            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression,
                 SyntaxKind.BitwiseAndExpression,
                 SyntaxKind.BitwiseOrExpression,
                 SyntaxKind.ExclusiveOrExpression);
 
-            context.RegisterSyntaxNodeAction(f => AnalyzePrefixUnaryExpression(f),
+            context.RegisterSyntaxNodeAction(AnalyzePrefixUnaryExpression,
                 SyntaxKind.BitwiseNotExpression);
         }
 

@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
                                     var falseBooleanLiteral = (LiteralExpressionSyntax)falseRight;
 
                                     if (trueBooleanLiteral.IsKind(SyntaxKind.TrueLiteralExpression) != falseBooleanLiteral.IsKind(SyntaxKind.TrueLiteralExpression)
-                                        && trueExpression.Left?.IsEquivalentTo(falseExpression.Left, topLevel: false) == true)
+                                        && SyntaxComparer.AreEquivalent(trueExpression.Left, falseExpression.Left, requireNotNull: true))
                                     {
                                         return true;
                                     }

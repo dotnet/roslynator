@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSymbolAction(f => UseGenericEventHandlerRefactoring.AnalyzeEvent(f), SymbolKind.Event);
+            context.RegisterSymbolAction(UseGenericEventHandlerRefactoring.AnalyzeEvent, SymbolKind.Event);
         }
     }
 }

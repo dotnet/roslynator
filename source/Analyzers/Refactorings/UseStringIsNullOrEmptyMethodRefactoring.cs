@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 ExpressionSyntax expression = left.Left;
 
-                if (expression.IsEquivalentTo(rightLeft, topLevel: false))
+                if (SyntaxComparer.AreEquivalent(expression, rightLeft))
                 {
                     if (right.IsKind(SyntaxKind.EqualsExpression, SyntaxKind.NotEqualsExpression)
                         && SymbolEquals(expression, rightLeft, semanticModel, cancellationToken)
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
                                 && propertySymbol.Type.IsInt()
                                 && propertySymbol.ContainingType?.IsString() == true
                                 && string.Equals(propertySymbol.Name, "Length", StringComparison.Ordinal)
-                                && expression.IsEquivalentTo(memberAccess.Expression, topLevel: false)
+                                && SyntaxComparer.AreEquivalent(expression, memberAccess.Expression)
                                 && SymbolEquals(expression, memberAccess.Expression, semanticModel, cancellationToken))
                             {
                                 return true;

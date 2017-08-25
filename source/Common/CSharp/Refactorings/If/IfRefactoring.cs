@@ -173,7 +173,7 @@ namespace Roslynator.CSharp.Refactorings.If
             if (nullCheck.Kind == NullCheckKind.EqualsToNull
                 || nullCheck.Kind == NullCheckKind.NotEqualsToNull)
             {
-                if (IsEquivalent(nullCheck.Expression, expression1))
+                if (SyntaxComparer.AreEquivalent(nullCheck.Expression, expression1, requireNotNull: true))
                 {
                     return IfToReturnWithCoalesceExpression.Create(ifStatement, expression1, expression2, isYield);
                 }
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.Refactorings.If
             {
                 expression1 = ((MemberAccessExpressionSyntax)expression1).Expression;
 
-                if (IsEquivalent(nullCheck.Expression, expression1))
+                if (SyntaxComparer.AreEquivalent(nullCheck.Expression, expression1, requireNotNull: true))
                 {
                     return IfToReturnWithCoalesceExpression.Create(ifStatement, expression1, expression2, isYield);
                 }
@@ -224,7 +224,7 @@ namespace Roslynator.CSharp.Refactorings.If
 
                         if (left2?.IsMissing == false
                             && right2?.IsMissing == false
-                            && IsEquivalent(left1, left2))
+                            && SyntaxComparer.AreEquivalent(left1, left2))
                         {
                             if (options.UseCoalesceExpression)
                             {
@@ -267,7 +267,7 @@ namespace Roslynator.CSharp.Refactorings.If
             if (nullCheck.Kind == NullCheckKind.EqualsToNull
                 || nullCheck.Kind == NullCheckKind.NotEqualsToNull)
             {
-                if (IsEquivalent(nullCheck.Expression, expression1))
+                if (SyntaxComparer.AreEquivalent(nullCheck.Expression, expression1, requireNotNull: true))
                     return new IfElseToAssignmentWithCoalesceExpression(ifStatement, left, expression1, expression2);
             }
 
@@ -276,7 +276,7 @@ namespace Roslynator.CSharp.Refactorings.If
             {
                 expression1 = ((MemberAccessExpressionSyntax)expression1).Expression;
 
-                if (IsEquivalent(nullCheck.Expression, expression1))
+                if (SyntaxComparer.AreEquivalent(nullCheck.Expression, expression1, requireNotNull: true))
                     return new IfElseToAssignmentWithCoalesceExpression(ifStatement, left, expression1, expression2);
             }
 
@@ -394,8 +394,7 @@ namespace Roslynator.CSharp.Refactorings.If
                     {
                         SimpleAssignmentStatement assignment2;
                         if (SimpleAssignmentStatement.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
-                            && assignment1.Left.IsEquivalentTo(assignment2.Left, topLevel: false)
-                            && assignment1.Left.IsEquivalentTo(assignment.Left, topLevel: false)
+                            && SyntaxComparer.AreEquivalent(assignment1.Left, assignment2.Left, assignment.Left)
                             && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))
                         {
                             return new AssignmentAndIfElseToAssignmentWithConditionalExpression(expressionStatement, assignment.Right, ifStatement, assignment1.Right, assignment2.Right).ToImmutableArray();

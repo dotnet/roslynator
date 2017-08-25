@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     SyntaxNode node = constraintClause.Parent;
 
-                                    SyntaxNode newNode = GenericDeclarationHelper.RemoveConstraintClauses(node);
+                                    SyntaxNode newNode = GenericSyntax.RemoveConstraintClauses(node);
 
                                     return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                                 },
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.CombineConstraintClauses))
                                 break;
 
-                            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = GenericDeclarationHelper.GetContainingList(constraintClause);
+                            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = GenericSyntax.GetContainingList(constraintClause);
 
                             int index = constraintClauses.IndexOf(constraintClause);
 
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         .Replace(constraintClause2, newConstraintClause)
                                         .RemoveAt(index);
 
-                                    SyntaxNode newNode = GenericDeclarationHelper.WithConstraintClauses(node, newConstraintClauses);
+                                    SyntaxNode newNode = GenericSyntax.WithConstraintClauses(node, newConstraintClauses);
 
                                     return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                                 },

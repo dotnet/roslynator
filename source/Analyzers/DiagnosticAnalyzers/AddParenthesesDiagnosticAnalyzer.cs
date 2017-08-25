@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => AddParenthesesAccordingToOperatorPrecedenceRefactoring.AnalyzeBinaryExpression(f),
+                AddParenthesesAccordingToOperatorPrecedenceRefactoring.AnalyzeBinaryExpression,
                 SyntaxKind.MultiplyExpression,
                 SyntaxKind.DivideExpression,
                 SyntaxKind.ModuloExpression,

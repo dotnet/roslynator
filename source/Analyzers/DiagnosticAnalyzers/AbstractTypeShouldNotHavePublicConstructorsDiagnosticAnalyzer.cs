@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => AbstractTypeShouldNotHavePublicConstructorsRefactoring.AnalyzeConstructorDeclaration(f),
+                AbstractTypeShouldNotHavePublicConstructorsRefactoring.AnalyzeConstructorDeclaration,
                 SyntaxKind.ConstructorDeclaration);
         }
     }

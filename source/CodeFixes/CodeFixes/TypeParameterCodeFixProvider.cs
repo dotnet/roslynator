@@ -48,12 +48,12 @@ namespace Roslynator.CSharp.CodeFixes
                                             ? default(TypeParameterListSyntax)
                                             : info.TypeParameterList.WithParameters(parameters.Remove(typeParameter));
 
-                                        SyntaxNode newNode = GenericDeclarationHelper.WithTypeParameterList(info.Declaration, newTypeParameterList);
+                                        SyntaxNode newNode = GenericSyntax.WithTypeParameterList(info.Declaration, newTypeParameterList);
 
                                         TypeParameterConstraintClauseSyntax constraintClause = info.ConstraintClause;
 
                                         if (constraintClause != null)
-                                            newNode = GenericDeclarationHelper.WithConstraintClauses(newNode, info.ConstraintClauses.Remove(constraintClause));
+                                            newNode = GenericSyntax.WithConstraintClauses(newNode, info.ConstraintClauses.Remove(constraintClause));
 
                                         return context.Document.ReplaceNodeAsync(info.Declaration, newNode, cancellationToken);
                                     },

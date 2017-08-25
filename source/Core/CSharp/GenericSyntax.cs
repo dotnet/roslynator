@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
-    internal static class GenericDeclarationHelper
+    internal static class GenericSyntax
     {
-        public static SyntaxNode GetTypeParameterList(SyntaxNode node)
+        public static TypeParameterListSyntax GetTypeParameterList(SyntaxNode node)
         {
             TypeParameterListSyntax typeParameterList;
 

@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                f => AvoidImplicitlyTypedArrayRefactoring.AnalyzeImplicitArrayCreationExpression(f),
+                AvoidImplicitlyTypedArrayRefactoring.AnalyzeImplicitArrayCreationExpression,
                 SyntaxKind.ImplicitArrayCreationExpression);
         }
     }

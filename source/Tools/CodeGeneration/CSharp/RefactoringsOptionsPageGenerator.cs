@@ -57,7 +57,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 ParameterList(),
                 Block(
                     refactorings
-                        .Where(f => ShouldGenerateProperty(f))
+                        .Where(ShouldGenerateProperty)
                         .Select(f => ExpressionStatement(ParseExpression($"{f.Identifier} = {TrueOrFalseLiteralExpression(f.IsEnabledByDefault)}")))
                         .ToSyntaxList()));
 
@@ -67,7 +67,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 "MigrateValuesFromIdentifierProperties",
                 ParameterList(),
                 Block(refactorings
-                    .Where(f => ShouldGenerateProperty(f))
+                    .Where(ShouldGenerateProperty)
                     .OrderBy(f => f.Id, comparer)
                     .Select(refactoring => ExpressionStatement(ParseExpression($"SetIsEnabled(RefactoringIdentifiers.{refactoring.Identifier}, {refactoring.Identifier})")))));
 
@@ -101,7 +101,7 @@ namespace Roslynator.CodeGeneration.CSharp
                             }))));
 
             foreach (RefactoringDescriptor info in refactorings
-                .Where(f => ShouldGenerateProperty(f))
+                .Where(ShouldGenerateProperty)
                 .OrderBy(f => f.Identifier, comparer))
             {
                 yield return PropertyDeclaration(
