@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                         .GetTypeSymbol(expression, context.CancellationToken)?
                         .IsReferenceType == true)
                 {
-                    ExpressionSyntax right = logicalAndExpression.Right;
+                    ExpressionSyntax right = logicalAndExpression.Right?.WalkDownParentheses();
 
                     if (right != null
                         && ValidateRightExpression(right, context.SemanticModel, context.CancellationToken)
@@ -124,7 +124,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ExpressionSyntax FindExpressionCheckedForNull(BinaryExpressionSyntax logicalAndExpression)
         {
-            ExpressionSyntax left = logicalAndExpression.Left;
+            ExpressionSyntax left = logicalAndExpression.Left?.WalkDownParentheses();
 
             if (left?.IsKind(SyntaxKind.NotEqualsExpression) == true)
             {
@@ -167,25 +167,41 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool ValidateRightExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            SyntaxKind kind = expression.Kind();
-
-            if (kind == SyntaxKind.EqualsExpression)
+            switch (expression.Kind())
             {
-                return ((BinaryExpressionSyntax)expression)
-                    .Right?
-                    .WalkDownParentheses()
-                    .HasConstantNonNullValue(semanticModel, cancellationToken) == true;
-            }
-            else if (kind == SyntaxKind.NotEqualsExpression)
-            {
-                return ((BinaryExpressionSyntax)expression)
-                    .Right?
-                    .WalkDownParentheses()
-                    .IsKind(SyntaxKind.NullLiteralExpression) == true;
-            }
-            else
-            {
-                return true;
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                case SyntaxKind.EqualsExpression:
+                    {
+                        return ((BinaryExpressionSyntax)expression)
+                            .Right?
+                            .WalkDownParentheses()
+                            .HasConstantNonNullValue(semanticModel, cancellationToken) == true;
+                    }
+                case SyntaxKind.NotEqualsExpression:
+                    {
+                        return ((BinaryExpressionSyntax)expression)
+                            .Right?
+                            .WalkDownParentheses()
+                            .IsKind(SyntaxKind.NullLiteralExpression) == true;
+                    }
+                case SyntaxKind.SimpleMemberAccessExpression:
+                case SyntaxKind.InvocationExpression:
+                case SyntaxKind.ElementAccessExpression:
+                case SyntaxKind.LogicalNotExpression:
+                case SyntaxKind.IsExpression:
+                case SyntaxKind.IsPatternExpression:
+                case SyntaxKind.AsExpression:
+                case SyntaxKind.LogicalAndExpression:
+                    {
+                        return true;
+                    }
+                default:
+                    {
+                        return false;
+                    }
             }
         }
 
@@ -238,7 +254,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAnd);
 
-            ExpressionSyntax right = logicalAnd.Right;
+            ExpressionSyntax right = logicalAnd.Right?.WalkDownParentheses();
 
             ExpressionSyntax expression2 = FindExpressionThatCanBeConditionallyAccessed(
                 expression,
