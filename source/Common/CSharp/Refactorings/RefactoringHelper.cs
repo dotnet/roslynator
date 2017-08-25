@@ -2,6 +2,7 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -90,6 +91,33 @@ namespace Roslynator.CSharp
             return CSharpFactory.CoalesceExpression(
                 left.Parenthesize(),
                 right.Parenthesize());
+        }
+
+        public static bool ContainsOutArgumentWithLocal(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            foreach (SyntaxNode node in expression.DescendantNodes())
+            {
+                if (node.IsKind(SyntaxKind.Argument))
+                {
+                    var argument = (ArgumentSyntax)node;
+
+                    if (argument.RefOrOutKeyword.IsKind(SyntaxKind.OutKeyword))
+                    {
+                        ExpressionSyntax argumentExpression = argument.Expression;
+
+                        if (argumentExpression?.IsMissing == false
+                            && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.IsLocal() == true)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

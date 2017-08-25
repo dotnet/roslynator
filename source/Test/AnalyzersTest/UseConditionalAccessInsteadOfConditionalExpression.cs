@@ -30,23 +30,23 @@ namespace Roslynator.CSharp.Analyzers.Test
                 i = (x != null) ? x.Value : 0;
                 i = (x == null) ? 0 : x.Value;
 
-                i = (ni != null) ? ni.Value : default(int);
-                i = (ni == null) ? default(int) : ni.Value;
-
-                i = (ni.HasValue) ? ni.Value : default(int);
-                i = (!ni.HasValue) ? default(int) : ni.Value;
-
-                i = (ni != null) ? ni.Value : 0;
-                i = (ni == null) ? 0 : ni.Value;
-
-                i = (ni.HasValue) ? ni.Value : 0;
-                i = (!ni.HasValue) ? 0 : ni.Value;
-
                 s = (x != null) ? x.ToString() : null;
                 s = (x == null) ? null : x.ToString();
 
                 s = (x != null) ? x.ToString() : default(string);
                 s = (x == null) ? default(string) : x.ToString();
+
+                i = (ni != null) ? ni.Value.GetHashCode() : 0;
+                i = (ni == null) ? 0 : ni.Value.GetHashCode();
+
+                i = (ni.HasValue) ? ni.Value.GetHashCode() : 0;
+                i = (!ni.HasValue) ? 0 : ni.Value.GetHashCode();
+
+                s = (ni != null) ? ni.Value.ToString() : null;
+                s = (ni == null) ? null : ni.Value.ToString();
+
+                s = (ni.HasValue) ? ni.Value.ToString() : null;
+                s = (!ni.HasValue) ? null : ni.Value.ToString();
 
                 //n
 
