@@ -60,6 +60,7 @@
     <Compile Include="RemoveRedundantDefaultSwitchSection.cs" />
     <Compile Include="MarkFieldAsConst.cs" />
     <Compile Include="ReorderNamedArguments.cs" />
+    <Compile Include="ReorderTypeParameterConstraints.cs" />
     <Compile Include="ReplaceCommentWithDocumentationComment.cs" />
     <Compile Include="AddEmptyLineAfterClosingBrace.cs" />
     <Compile Include="AddEmptyLineAfterEmbeddedStatement.cs" />

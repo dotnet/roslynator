@@ -1814,5 +1814,14 @@ namespace Roslynator.CSharp
             defaultSeverity: DiagnosticSeverity.Info,
             isEnabledByDefault: false
         );
+
+        public static readonly DiagnosticDescriptor ReorderTypeParameterConstraints = new DiagnosticDescriptor(
+            id: DiagnosticIdentifiers.ReorderTypeParameterConstraints,
+            title: "Reorder type parameter constraints.",
+            messageFormat: "Reorder type parameter constraints.",
+            category: DiagnosticCategories.Readability,
+            defaultSeverity: DiagnosticSeverity.Info,
+            isEnabledByDefault: true
+        );
     }
 }
