@@ -17,7 +17,7 @@
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/Refactorings/README.md">List of Refactorings</a>
     </li>  
     <li>
-        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/CodeFixes/README.md">List of Code Fixes (that fix compiler diagnostics (like CS0000))</a>
+        <a href="http://github.com/JosefPihrt/Roslynator/blob/master/source/CodeFixes/README.md">List of Code Fixes (that fix compiler diagnostics (CS....))</a>
     </li>  
     <li>
         <a href="http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md">Release Notes</a>
