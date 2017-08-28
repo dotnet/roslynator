@@ -120,6 +120,7 @@ RR0112|[Rename identifier according to type name](../../docs/refactorings/Rename
 RR0113|[Rename method according to type name](../../docs/refactorings/RenameMethodAccordingToTypeName.md)|x
 RR0114|[Rename parameter according to its type name](../../docs/refactorings/RenameParameterAccordingToTypeName.md)|x
 RR0115|[Rename property according to type name](../../docs/refactorings/RenamePropertyAccordingToTypeName.md)|x
+RR0143|[Replace \(yield\) return statement with if\-else](../../docs/refactorings/ReplaceStatementWithIfElse.md)|x
 RR0116|[Replace Any with All \(or All with Any\)](../../docs/refactorings/ReplaceAnyWithAllOrAllWithAny.md)|x
 RR0117|[Replace as expression with cast expression](../../docs/refactorings/ReplaceAsWithCast.md)|x
 RR0118|[Replace cast expression with as expression](../../docs/refactorings/ReplaceCastWithAs.md)|x
@@ -146,7 +147,6 @@ RR0185|[Replace object creation with default value](../../docs/refactorings/Repl
 RR0140|[Replace prefix operator to postfix operator](../../docs/refactorings/ReplacePrefixOperatorWithPostfixOperator.md)|x
 RR0141|[Replace property with method](../../docs/refactorings/ReplacePropertyWithMethod.md)|x
 RR0142|[Replace regular string literal with verbatim string literal](../../docs/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.md)|x
-RR0143|[Replace statement with if statement](../../docs/refactorings/ReplaceStatementWithIfStatement.md)|x
 RR0144|[Replace string\.Contains with string\.IndexOf](../../docs/refactorings/ReplaceStringContainsWithStringIndexOf.md)|x
 RR0145|[Replace string\.Format with interpolated string](../../docs/refactorings/ReplaceStringFormatWithInterpolatedString.md)|x
 RR0147|[Replace switch statement with if\-else](../../docs/refactorings/ReplaceSwitchWithIfElse.md)|x

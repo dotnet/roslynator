@@ -193,3 +193,4 @@ RCS1205|Reorder named arguments according to the order of parameters|Readability
 RCS1206|Use conditional access instead of conditional expression|Usage|x
 RCS1207|Use method group instead of anonymous function|Simplification|x
 RCS1208|Reduce if nesting|Style|
+RCS1209|Reorder type parameter constraints|Readability|x

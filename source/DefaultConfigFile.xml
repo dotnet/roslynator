@@ -142,7 +142,7 @@
       <Refactoring Id="RR0140" IsEnabled="true" /> <!-- ReplacePrefixOperatorWithPostfixOperator -->
       <Refactoring Id="RR0141" IsEnabled="true" /> <!-- ReplacePropertyWithMethod -->
       <Refactoring Id="RR0142" IsEnabled="true" /> <!-- ReplaceRegularStringLiteralWithVerbatimStringLiteral -->
-      <Refactoring Id="RR0143" IsEnabled="true" /> <!-- ReplaceStatementWithIfStatement -->
+      <Refactoring Id="RR0143" IsEnabled="true" /> <!-- ReplaceStatementWithIfElse -->
       <Refactoring Id="RR0144" IsEnabled="true" /> <!-- ReplaceStringContainsWithStringIndexOf -->
       <Refactoring Id="RR0145" IsEnabled="true" /> <!-- ReplaceStringFormatWithInterpolatedString -->
       <Refactoring Id="RR0147" IsEnabled="true" /> <!-- ReplaceSwitchWithIfElse -->

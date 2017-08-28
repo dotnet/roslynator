@@ -1,3 +1,11 @@
+### 1.4.56 (2017-08-28)
+
+#### Analyzers
+
+##### New Analyzers
+
+  * ReorderTypeParameterConstraints (RCS1209)
+
 ### 1.4.12 (2017-06-11)
 
 #### Analyzers

@@ -78,6 +78,7 @@ Readability|Default label should be last label in switch section|RCS1099|x
 Readability|Enum member should declare explicit value|RCS1161|x
 Readability|Reorder modifiers|RCS1019|
 Readability|Reorder named arguments according to the order of parameters|RCS1205|x
+Readability|Reorder type parameter constraints|RCS1209|x
 Readability|Sort enum members|RCS1154|x
 Readability|Split variable declaration|RCS1081|
 Readability|Use explicit type instead of 'var' \(foreach variable\)|RCS1009|x

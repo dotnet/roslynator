@@ -786,6 +786,13 @@
 
 ![Rename property according to type name](../../images/refactorings/RenamePropertyAccordingToTypeName.png)
 
+#### Replace \(yield\) return statement with if\-else (RR0143)
+
+* **Syntax**: return statement, yield return statement
+* **Scope**: selected statement, yield keyword or return keyword
+
+![Replace \(yield\) return statement with if\-else](../../images/refactorings/ReplaceReturnStatementWithIfElse.png)
+
 #### Replace Any with All \(or All with Any\) (RR0116)
 
 * **Syntax**: Any\(Func\<T, bool\> or All\(Func\<T, bool\> from System\.Linq\.Enumerable namespace
@@ -951,12 +958,6 @@
 * **Syntax**: regular string literal
 
 ![Replace regular string literal with verbatim string literal](../../images/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.png)
-
-#### Replace statement with if statement (RR0143)
-
-* **Syntax**: return statement, yield return statement, assignment statement, local declaration statement
-
-![Replace statement with if statement](../../images/refactorings/ReplaceReturnStatementWithIfStatement.png)
 
 #### Replace string\.Contains with string\.IndexOf (RR0144)
 
