@@ -7,6 +7,7 @@ namespace Roslynator.CSharp
     internal static class CompilerDiagnosticIdentifiers
     {
         public const string OperatorCannotBeAppliedToOperands = "CS0019";
+        public const string CannotApplyIndexingToExpression = "CS0021";
         public const string OperatorCannotBeAppliedToOperandOfType = "CS0023";
         public const string CannotImplicitlyConvertType = "CS0029";
         public const string CannotConvertNullToTypeBecauseItIsNonNullableValueType = "CS0037";
