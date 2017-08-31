@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Diagnostics>
   <Diagnostic Id="CS0019" Identifier="OperatorCannotBeAppliedToOperands" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019" />
+  <Diagnostic Id="CS0021" Identifier="CannotApplyIndexingToExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021" />
   <Diagnostic Id="CS0023" Identifier="OperatorCannotBeAppliedToOperandOfType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023" />
   <Diagnostic Id="CS0029" Identifier="CannotImplicitlyConvertType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029" />
   <Diagnostic Id="CS0037" Identifier="CannotConvertNullToTypeBecauseItIsNonNullableValueType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037" />

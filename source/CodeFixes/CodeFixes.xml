@@ -427,4 +427,9 @@
       <Id>CS0201</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0077" Identifier="ReplaceElementAccessWithInvocation" Title="Replace element access with invocation">
+    <FixableDiagnosticIds>
+      <Id>CS0021</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>
