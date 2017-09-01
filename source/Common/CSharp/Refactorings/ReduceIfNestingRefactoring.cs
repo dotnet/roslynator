@@ -20,50 +20,62 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken),
             bool topLevelOnly = false)
         {
-            if (IsFixable(ifStatement))
+            if (!IsFixable(ifStatement))
+                return false;
+
+            var block = (BlockSyntax)ifStatement.Parent;
+
+            if (!block.Statements.IsLast(ifStatement))
+                return false;
+
+            SyntaxNode parent = block.Parent;
+
+            switch (parent.Kind())
             {
-                var block = (BlockSyntax)ifStatement.Parent;
-
-                if (block.Statements.IsLast(ifStatement))
-                {
-                    SyntaxNode parent = block.Parent;
-
-                    switch (parent.Kind())
+                case SyntaxKind.MethodDeclaration:
                     {
-                        case SyntaxKind.MethodDeclaration:
-                            {
-                                var methodDeclaration = (MethodDeclarationSyntax)parent;
+                        var methodDeclaration = (MethodDeclarationSyntax)parent;
 
-                                if (methodDeclaration.ReturnsVoid())
-                                {
-                                    return true;
-                                }
-                                else if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword))
-                                {
-                                    return taskType != null
-                                        && semanticModel
-                                            .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
-                                            .ReturnType
-                                            .Equals(taskType) == true;
-                                }
-                                else
-                                {
-                                    return semanticModel
-                                            .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
-                                            .ReturnType
-                                            .IsIEnumerableOrConstructedFromIEnumerableOfT() == true
-                                        && methodDeclaration.ContainsYield();
-                                }
-                            }
-                        case SyntaxKind.IfStatement:
-                            {
-                                if (!topLevelOnly)
-                                    return  IsFixable((IfStatementSyntax)parent, semanticModel, taskType, cancellationToken, topLevelOnly);
+                        if (methodDeclaration.ReturnsVoid())
+                            return true;
 
-                                break;
-                            }
+                        if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword))
+                        {
+                            return taskType != null
+                                && semanticModel
+                                    .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
+                                    .ReturnType
+                                    .Equals(taskType) == true;
+                        }
+
+                        return semanticModel
+                                .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
+                                .ReturnType
+                                .IsIEnumerableOrConstructedFromIEnumerableOfT() == true
+                            && methodDeclaration.ContainsYield();
                     }
-                }
+                case SyntaxKind.SimpleLambdaExpression:
+                case SyntaxKind.ParenthesizedLambdaExpression:
+                case SyntaxKind.AnonymousMethodExpression:
+                    {
+                        var function = (AnonymousFunctionExpressionSyntax)parent;
+
+                        var methodSymbol = semanticModel.GetSymbol(function, cancellationToken) as IMethodSymbol;
+
+                        if (methodSymbol == null)
+                            return false;
+
+                        if (methodSymbol.ReturnsVoid)
+                            return true;
+
+                        return function.AsyncKeyword.IsKind(SyntaxKind.AsyncKeyword)
+                            && methodSymbol.ReturnType.Equals(taskType);
+                    }
+                case SyntaxKind.IfStatement:
+                    {
+                        return !topLevelOnly
+                            && IsFixable((IfStatementSyntax)parent, semanticModel, taskType, cancellationToken, topLevelOnly);
+                    }
             }
 
             return false;
@@ -84,18 +96,30 @@ namespace Roslynator.CSharp.Refactorings
         {
             var block = (BlockSyntax)ifStatement.Parent;
 
-            SyntaxNode node = block;
+            SyntaxNode outermostBlock = block;
 
-            while (!node.IsParentKind(SyntaxKind.MethodDeclaration))
-                node = node.Parent;
+            while (!outermostBlock.IsParentKind(
+                SyntaxKind.MethodDeclaration,
+                SyntaxKind.SimpleLambdaExpression,
+                SyntaxKind.ParenthesizedLambdaExpression,
+                SyntaxKind.AnonymousMethodExpression))
+            {
+                outermostBlock = outermostBlock.Parent;
+            }
 
-            bool containsYield = node
-                .DescendantNodes(f => !f.IsNestedMethod())
-                .Any(f => f.IsKind(SyntaxKind.YieldBreakStatement, SyntaxKind.YieldReturnStatement));
+            StatementSyntax jumpStatement = null;
 
-            StatementSyntax jumpStatement = (containsYield)
-                ? (StatementSyntax)YieldBreakStatement()
-                : ReturnStatement();
+            if (outermostBlock.IsParentKind(SyntaxKind.MethodDeclaration)
+                && outermostBlock
+                    .DescendantNodes(f => !f.IsNestedMethod())
+                    .Any(f => f.IsKind(SyntaxKind.YieldBreakStatement, SyntaxKind.YieldReturnStatement)))
+            {
+                jumpStatement = YieldBreakStatement();
+            }
+            else
+            {
+                jumpStatement = ReturnStatement();
+            }
 
             var rewriter = new IfStatementRewriter(jumpStatement);
 
@@ -107,24 +131,38 @@ namespace Roslynator.CSharp.Refactorings
         private class IfStatementRewriter : CSharpSyntaxRewriter
         {
             private readonly StatementSyntax _jumpStatement;
+            private BlockSyntax _block;
 
             public IfStatementRewriter(StatementSyntax jumpStatement)
             {
                 _jumpStatement = jumpStatement;
             }
 
+            public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
+            {
+                if (node.Parent == _block)
+                {
+                    return base.VisitIfStatement(node);
+                }
+                else
+                {
+                    return node;
+                }
+            }
+
             public override SyntaxNode VisitBlock(BlockSyntax node)
             {
-                node = (BlockSyntax)base.VisitBlock(node);
+                _block = node;
 
-                SyntaxList<StatementSyntax> statements = node.Statements;
-
-                var ifStatement = statements.LastOrDefault() as IfStatementSyntax;
-
-                if (ifStatement != null
-                    && IsFixable(ifStatement)
-                    && ((BlockSyntax)ifStatement.Parent).Statements.IsLast(ifStatement))
+                if (node.Statements.LastOrDefault() is IfStatementSyntax ifStatement
+                    && IsFixable(ifStatement))
                 {
+                    SyntaxList<StatementSyntax> statements = node.Statements;
+
+                    int index = statements.IndexOf(ifStatement);
+
+                    ifStatement = (IfStatementSyntax)VisitIfStatement(ifStatement);
+
                     var block = (BlockSyntax)ifStatement.Statement;
 
                     ExpressionSyntax newCondition = Negator.LogicallyNegate(ifStatement.Condition);
@@ -133,8 +171,6 @@ namespace Roslynator.CSharp.Refactorings
                         .WithCondition(newCondition)
                         .WithStatement(block.WithStatements(SingletonList(_jumpStatement)))
                         .WithFormatterAnnotation();
-
-                    int index = statements.IndexOf(ifStatement);
 
                     SyntaxList<StatementSyntax> newStatements = statements
                         .ReplaceAt(index, newIfStatement)
