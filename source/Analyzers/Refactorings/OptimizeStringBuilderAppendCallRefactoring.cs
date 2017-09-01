@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             ArgumentSyntax argument,
             MemberInvocationExpression memberInvocation,
@@ -160,16 +160,34 @@ namespace Roslynator.CSharp.Refactorings
                             .ReplaceNode(memberInvocation.Name, IdentifierName("Append").WithTriviaFrom(memberInvocation.Name))
                             .WithArgumentList(invocation.ArgumentList.WithArguments(SingletonSeparatedList(Argument(expressions[0]))).WithoutTrailingTrivia());
 
+                        SemanticModel semanticModel = null;
+
                         for (int i = 1; i < expressions.Length; i++)
                         {
                             string name = (i == expressions.Length - 1 && isAppendLine)
                                 ? "AppendLine"
                                 : "Append";
 
+                            ExpressionSyntax argumentExpression = expressions[i];
+
+                            if (isAppendLine)
+                            {
+                                if (semanticModel == null)
+                                    semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                                if (semanticModel
+                                    .GetTypeInfo(argumentExpression, cancellationToken)
+                                    .ConvertedType?
+                                    .IsString() != true)
+                                {
+                                    argumentExpression = SimpleMemberInvocationExpression(argumentExpression.Parenthesize(), IdentifierName("ToString"));
+                                }
+                            }
+
                             newInvocation = SimpleMemberInvocationExpression(
                                 newInvocation,
                                 IdentifierName(name),
-                                ArgumentList(Argument(expressions[i])));
+                                ArgumentList(Argument(argumentExpression)));
                         }
 
                         break;
@@ -191,7 +209,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithTriviaFrom(invocation)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
+            return await document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken).ConfigureAwait(false);
         }
 
         private static InvocationExpressionSyntax ConvertInterpolatedStringExpressionToInvocationExpression(
