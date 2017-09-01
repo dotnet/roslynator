@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable CS0168, RCS1002, RCS1049, RCS1090, RCS1118, RCS1176, RCS1187
+#pragma warning disable CS0168, RCS1002, RCS1016, RCS1048, RCS1049, RCS1090, RCS1118, RCS1163, RCS1176, RCS1187
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -154,6 +155,77 @@ namespace Roslynator.CSharp.Analyzers.Test
                     }
                 }
             }
+        }
+
+        private static void FooSimpleLambda()
+        {
+            Foo(f =>
+            {
+                if (_condition)
+                {
+                    Foo();
+
+                    if (!_condition)
+                    {
+                        Foo2();
+
+                        if (_condition)
+                        {
+                            Foo3();
+                        }
+                    }
+                }
+            });
+        }
+
+        private static void FooParenthesizedLambda()
+        {
+            Foo(() =>
+            {
+                if (_condition)
+                {
+                    Foo();
+
+                    if (!_condition)
+                    {
+                        Foo2();
+
+                        if (_condition)
+                        {
+                            Foo3();
+                        }
+                    }
+                }
+            });
+        }
+
+        private static void FooAnonymousMethod()
+        {
+            Foo(delegate()
+            {
+                if (_condition)
+                {
+                    Foo();
+
+                    if (!_condition)
+                    {
+                        Foo2();
+
+                        if (_condition)
+                        {
+                            Foo3();
+                        }
+                    }
+                }
+            });
+        }
+
+        private static void Foo(Action action)
+        {
+        }
+
+        private static void Foo(Action<object> action)
+        {
         }
 
         private static void Foo2()
