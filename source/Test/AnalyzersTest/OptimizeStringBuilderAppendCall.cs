@@ -6,8 +6,12 @@ namespace Roslynator.CSharp.Refactorings.Test
 {
     internal static class OptimizeStringBuilderAppendCall
     {
-        public static void Foo(string s)
+        public static void Foo()
         {
+            string s = null;
+            int i = 0;
+            object o = null;
+
             var sb = new StringBuilder();
 
             //a
@@ -33,7 +37,11 @@ namespace Roslynator.CSharp.Refactorings.Test
 
             sb.AppendLine($"{s,1:f}");
 
-            sb.AppendLine(s + "s");
+            sb.AppendLine("s" + s);
+
+            sb.AppendLine("s" + i);
+
+            sb.AppendLine("s" + o);
 
             sb.AppendLine("a" + s + "b").AppendLine("c" + s + "d");
 
