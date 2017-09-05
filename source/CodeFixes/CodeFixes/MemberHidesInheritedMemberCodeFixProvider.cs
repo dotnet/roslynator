@@ -8,8 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Comparers;
-using Roslynator.CSharp.Helpers.ModifierHelpers;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -49,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended:
                         {
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddNewModifier))
-                                AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword);
+                                ModifiersRefactoring.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword);
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
                                 RemoveMember(context, memberDeclaration, diagnostic);
@@ -61,11 +60,11 @@ namespace Roslynator.CSharp.CodeFixes
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddOverrideModifier)
                                 && !memberDeclaration.GetModifiers().Contains(SyntaxKind.StaticKeyword))
                             {
-                                AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.OverrideKeyword);
+                                ModifiersRefactoring.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.OverrideKeyword);
                             }
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddNewModifier))
-                                AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword);
+                                ModifiersRefactoring.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword);
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
                                 RemoveMember(context, memberDeclaration, diagnostic);
@@ -74,16 +73,6 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
-        }
-
-        private void AddModifier(CodeFixContext context, Diagnostic diagnostic, MemberDeclarationSyntax memberDeclaration, SyntaxKind kind)
-        {
-            CodeAction codeAction = CodeAction.Create(
-                $"Add '{ModifierHelper.GetModifierName(kind)}' modifier",
-                cancellationToken => context.Document.InsertModifierAsync(memberDeclaration, kind, ModifierComparer.Instance, cancellationToken),
-                GetEquivalenceKey(diagnostic, kind.ToString()));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private void RemoveMember(CodeFixContext context, MemberDeclarationSyntax memberDeclaration, Diagnostic diagnostic)
