@@ -58,7 +58,14 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Reduce if nesting",
-                        cancellationToken => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, context.CancellationToken));
+                        cancellationToken => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, false, context.CancellationToken));
+
+                    if (ReduceIfNestingRefactoring.IsFixableRecursively(ifStatement))
+                    {
+                        context.RegisterRefactoring(
+                            "Reduce if nesting (recursively)",
+                            cancellationToken => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, true, context.CancellationToken));
+                    }
                 }
             }
         }

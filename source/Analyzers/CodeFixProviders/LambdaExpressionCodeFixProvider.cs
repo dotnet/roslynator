@@ -35,9 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                (anonymousFunction.IsKind(SyntaxKind.AnonymousMethodExpression))
-                                    ? "Use method group instead of anonymous method"
-                                    : "Use method group instead of lambda expression",
+                                "Use method group",
                                 cancellationToken => UseMethodGroupInsteadOfAnonymousFunctionRefactoring.RefactorAsync(context.Document, anonymousFunction, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 

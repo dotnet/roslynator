@@ -47,6 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                     case MethodKind.PropertyGet:
                     case MethodKind.UserDefinedOperator:
                     case MethodKind.Conversion:
+                    case MethodKind.LocalFunction:
                         return methodSymbol;
                     case MethodKind.Constructor:
                     case MethodKind.DelegateInvoke:

@@ -100,7 +100,8 @@ namespace Roslynator.CSharp.CodeFixes
                                     return ReduceIfNestingRefactoring.RefactorAsync(
                                         context.Document,
                                         ifStatement,
-                                        cancellationToken);
+                                        recursive: true,
+                                        cancellationToken: cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
