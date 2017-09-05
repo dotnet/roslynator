@@ -101,6 +101,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(whenNotNull, cancellationToken);
 
             if (typeSymbol?.IsErrorType() == false
+                && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
                 && semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
                 && !RefactoringHelper.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
                 && !conditionalExpressionInfo.Node.IsInExpressionTree(semanticModel, cancellationToken))
