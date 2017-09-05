@@ -1,7 +1,7 @@
 ﻿<h3>Introduction</h3>
 
 <p>
-    A collection of 180+ analyzers and 180+ refactorings for C#, powered by Roslyn.
+    A collection of 190+ analyzers and 180+ refactorings for C#, powered by Roslyn.
 </p>
 
 <h3>Links</h3>
