@@ -35,6 +35,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ReplaceIfElseWithIfReturnRefactoring.cs" />
     <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="AddTypeParameterRefactoring.cs" />
     <Compile Include="CallConfigureAwaitRefactoring.cs" />

@@ -139,6 +139,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceForWithForEach = Prefix + "0130";
         public const string ReplaceForWithWhile = Prefix + "0131";
         public const string ReplaceHexadecimalLiteralWithDecimalLiteral = Prefix + "0132";
+        public const string ReplaceIfElseWithIfReturn = Prefix + "0190";
         public const string ReplaceIfElseWithSwitch = Prefix + "0133";
         public const string ReplaceIncrementOperatorWithDecrementOperator = Prefix + "0134";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = Prefix + "0135";
