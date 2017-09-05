@@ -11,29 +11,29 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (!(expression is LiteralExpressionSyntax))
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            if (expression is LiteralExpressionSyntax)
+                return;
 
-                Optional<object> optional = semanticModel.GetConstantValue(expression, context.CancellationToken);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (optional.HasValue)
-                {
-                    context.RegisterRefactoring(
-                        "Replace with constant value",
-                        cancellationToken => RefactorAsync(context.Document, expression, optional.Value, cancellationToken));
-                }
-            }
+            Optional<object> optional = semanticModel.GetConstantValue(expression, context.CancellationToken);
+
+            if (!optional.HasValue)
+                return;
+
+            ExpressionSyntax newExpression = CSharpFactory.LiteralExpression(optional.Value);
+
+            context.RegisterRefactoring(
+                $"Replace expression with '{newExpression}'",
+                cancellationToken => RefactorAsync(context.Document, expression, newExpression, cancellationToken));
         }
 
         private static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
-            object constantValue,
+            ExpressionSyntax newExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newExpression = CSharpFactory.LiteralExpression(constantValue);
-
             return document.ReplaceNodeAsync(expression, newExpression.WithTriviaFrom(expression), cancellationToken);
         }
     }
