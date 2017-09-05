@@ -22,7 +22,7 @@ namespace Roslynator.CodeGeneration.Markdown
 
                 foreach (AnalyzerDescriptor info in analyzers.OrderBy(f => f.Id, comparer))
                 {
-                    sw.WriteLine($"* {info.Id} - {info.Title.TrimEnd('.').EscapeMarkdown()}");
+                    sw.WriteLine($"* {info.Id} - [{info.Title.TrimEnd('.').EscapeMarkdown()}](docs/analyzers/{info.Id}.md)");
                 }
 
                 sw.WriteLine();
@@ -31,7 +31,7 @@ namespace Roslynator.CodeGeneration.Markdown
 
                 foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, comparer))
                 {
-                    sw.WriteLine($"* [{info.Title.TrimEnd('.').EscapeMarkdown()}](docs/refactorings/{info.Identifier}.md)");
+                    sw.WriteLine($"* [{info.Title.TrimEnd('.').EscapeMarkdown()}](docs/refactorings/{info.Id}.md)");
                 }
 
                 return sw.ToString();
@@ -117,6 +117,28 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
+        public static string CreateAnalyzerMarkDown(AnalyzerDescriptor analyzer)
+        {
+            using (var sw = new StringWriter())
+            {
+                string title = analyzer.Title.TrimEnd('.').EscapeMarkdown();
+                sw.WriteLine($"## {title}");
+                sw.WriteLine("");
+
+                sw.WriteLine("Property | Value");
+                sw.WriteLine("--- | --- ");
+                sw.WriteLine($"Id | {analyzer.Id}");
+                sw.WriteLine($"Title | {title}");
+                sw.WriteLine($"Category | {analyzer.Category}");
+                sw.WriteLine($"Default Severity | {analyzer.DefaultSeverity}");
+                sw.WriteLine($"Enabled by Default | {((analyzer.IsEnabledByDefault) ? "yes" : "no")}");
+                sw.WriteLine($"Supports Fade-Out | {analyzer.SupportsFadeOut}");
+                sw.WriteLine($"Supports Fade-Out Analyzer | {analyzer.SupportsFadeOutAnalyzer}");
+
+                return sw.ToString();
+            }
+        }
+
         public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
             using (var sw = new StringWriter())
@@ -131,7 +153,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 {
                     sw.Write(info.Id);
                     sw.Write('|');
-                    sw.Write(info.Title.TrimEnd('.').EscapeMarkdown());
+                    sw.Write($"[{info.Title.TrimEnd('.').EscapeMarkdown()}](../../docs/analyzers/{info.Id}.md)");
                     sw.Write('|');
                     sw.Write(info.Category.EscapeMarkdown());
                     sw.Write('|');
@@ -158,7 +180,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 {
                     sw.Write(info.Id);
                     sw.Write('|');
-                    sw.Write($"[{info.Title.TrimEnd('.').EscapeMarkdown()}](../../docs/refactorings/{info.Identifier}.md)");
+                    sw.Write($"[{info.Title.TrimEnd('.').EscapeMarkdown()}](../../docs/refactorings/{info.Id}.md)");
                     sw.Write('|');
                     sw.Write((info.IsEnabledByDefault) ? "x" : "");
                     sw.WriteLine();
@@ -252,7 +274,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     {
                         sw.Write(grouping.Key);
                         sw.Write('|');
-                        sw.Write(info.Title.TrimEnd('.').EscapeMarkdown());
+                        sw.Write($"[{info.Title.TrimEnd('.').EscapeMarkdown()}](../../docs/analyzers/{info.Id}.md)");
                         sw.Write('|');
                         sw.Write(info.Id);
                         sw.Write('|');
