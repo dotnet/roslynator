@@ -1,13 +1,17 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Refactorings.UseMethodChaining;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -114,9 +118,21 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.UseMethodChaining:
                         {
+                            var expressionStatement = (ExpressionStatementSyntax)statement;
+
+                            Func<CancellationToken, Task<Document>> createChangedDocument;
+                            if (expressionStatement.Expression.IsKind(SyntaxKind.InvocationExpression))
+                            {
+                                createChangedDocument = cancellationToken => UseMethodChainingRefactoring.WithoutAssignment.RefactorAsync(context.Document, expressionStatement, cancellationToken);
+                            }
+                            else
+                            {
+                                createChangedDocument = cancellationToken => UseMethodChainingRefactoring.WithAssignment.RefactorAsync(context.Document, expressionStatement, cancellationToken);
+                            }
+
                             CodeAction codeAction = CodeAction.Create(
                                 "Use method chaining",
-                                cancellationToken => UseMethodChainingRefactoring.RefactorAsync(context.Document, (ExpressionStatementSyntax)statement, cancellationToken),
+                                createChangedDocument,
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
