@@ -191,11 +191,6 @@
       <Id>CS0513</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0035" Identifier="AddSemicolon" Title="Add semicolon" IsEnabledByDefault="false">
-    <FixableDiagnosticIds>
-      <Id>CS1002</Id>
-    </FixableDiagnosticIds>
-  </CodeFix>
   <CodeFix Id="RCF0036" Identifier="SynchronizeAccessibility" Title="SynchronizeAccessibility">
     <FixableDiagnosticIds>
       <Id>CS0262</Id>

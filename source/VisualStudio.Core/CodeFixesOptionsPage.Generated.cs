@@ -14,7 +14,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = $"{CodeFixIdentifiers.AddSemicolon},{CodeFixIdentifiers.RemoveReturnExpression},{CodeFixIdentifiers.RemoveReturnKeyword}";
+        = $"{CodeFixIdentifiers.RemoveReturnExpression},{CodeFixIdentifiers.RemoveReturnKeyword}";
         protected override string MaxId
         {
             get;
@@ -58,7 +58,6 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveImplementationFromAbstractMember, "Remove implementation from abstract member (fixes CS0069, CS0500, CS0531)", IsEnabled(CodeFixIdentifiers.RemoveImplementationFromAbstractMember)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddStaticModifier, "Add 'static' modifier (fixes CS0708, CS0710, CS1105, CS1106)", IsEnabled(CodeFixIdentifiers.AddStaticModifier)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeContainingClassAbstract, "Make containing class abstract (fixes CS0513)", IsEnabled(CodeFixIdentifiers.MakeContainingClassAbstract)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddSemicolon, "Add semicolon (fixes CS1002)", IsEnabled(CodeFixIdentifiers.AddSemicolon)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.SynchronizeAccessibility, "SynchronizeAccessibility (fixes CS0262)", IsEnabled(CodeFixIdentifiers.SynchronizeAccessibility)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveArgumentList, "Remove argument list (fixes CS1955)", IsEnabled(CodeFixIdentifiers.RemoveArgumentList)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.FixMemberAccessName, "Fix member access name (fixes CS1061)", IsEnabled(CodeFixIdentifiers.FixMemberAccessName)));
