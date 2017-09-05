@@ -178,7 +178,6 @@
     <Compile Include="Refactorings\UseAttributeUsageAttributeRefactoring.cs" />
     <Compile Include="Refactorings\UseEventArgsEmptyRefactoring.cs" />
     <Compile Include="Refactorings\UseExclusiveOrOperatorRefactoring.cs" />
-    <Compile Include="Refactorings\UseMethodChainingRefactoring.cs" />
     <Compile Include="Refactorings\UseRegexInstanceInsteadOfStaticMethodRefactoring.cs" />
     <Compile Include="Refactorings\DeclareEnumValueAsCombinationOfNamesRefactoring.cs" />
     <Compile Include="Refactorings\UseRegularStringLiteralInsteadOfVerbatimStringLiteralRefactoring.cs" />

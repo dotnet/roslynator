@@ -1100,6 +1100,59 @@ namespace Roslynator.CSharp
         }
         #endregion InterpolatedStringExpressionSyntax
 
+        #region InvocationExpressionSyntax
+        internal static ExpressionSyntax WalkDownMethodChain(
+            this InvocationExpressionSyntax invocationExpression,
+            bool walkInvocation = true,
+            bool walkElementAccess = true)
+        {
+            ExpressionSyntax expression = invocationExpression;
+            ExpressionSyntax current = invocationExpression.Expression;
+
+            while (current.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)current;
+
+                current = memberAccessExpression.Expression;
+
+                SyntaxKind kind = current.Kind();
+
+                if (kind == SyntaxKind.InvocationExpression)
+                {
+                    if (walkInvocation)
+                    {
+                        invocationExpression = (InvocationExpressionSyntax)current;
+                        expression = invocationExpression;
+                        current = invocationExpression.Expression;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else if (kind == SyntaxKind.ElementAccessExpression)
+                {
+                    if (walkElementAccess)
+                    {
+                        var elementAccess = (ElementAccessExpressionSyntax)current;
+                        expression = elementAccess;
+                        current = elementAccess.Expression;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+                else
+                {
+                    break;
+                }
+            }
+
+            return expression;
+        }
+        #endregion InvocationExpressionSyntax
+
         #region LiteralExpressionSyntax
         public static bool IsVerbatimStringLiteral(this LiteralExpressionSyntax literalExpression)
         {

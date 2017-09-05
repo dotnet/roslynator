@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
+using Roslynator.CSharp.Refactorings.UseMethodChaining;
 using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
@@ -242,7 +243,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             }
                     }
 
-                    UseMethodChainingRefactoring.Analyze(context, memberInvocation);
+                    if (UseMethodChainingRefactoring.IsFixable(memberInvocation, context.SemanticModel, context.CancellationToken))
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseMethodChaining, memberInvocation.InvocationExpression);
                 }
             }
         }
