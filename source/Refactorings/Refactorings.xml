@@ -1212,4 +1212,10 @@
     </Syntaxes>
     <Scope>if keyword</Scope>
   </Refactoring>
+  <Refactoring Id="RR0190" Identifier="ReplaceIfElseWithIfReturn" Title="Replace if-else with if-return">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+    <Scope>selected if statement or if keyword</Scope>
+  </Refactoring>
 </Refactorings>

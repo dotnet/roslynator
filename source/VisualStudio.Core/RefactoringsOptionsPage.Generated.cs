@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.ReduceIfNesting;
+        = RefactoringIdentifiers.ReplaceIfElseWithIfReturn;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -568,6 +568,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatConstraintClauses, "Format constraint clauses", IsEnabled(RefactoringIdentifiers.FormatConstraintClauses)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop, "Replace foreach with for and reverse loop", IsEnabled(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReduceIfNesting, "Reduce if nesting", IsEnabled(RefactoringIdentifiers.ReduceIfNesting)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfElseWithIfReturn, "Replace if-else with if-return", IsEnabled(RefactoringIdentifiers.ReplaceIfElseWithIfReturn)));
         }
 
         [Browsable(false)]
