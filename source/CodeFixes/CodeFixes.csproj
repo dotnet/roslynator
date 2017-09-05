@@ -56,7 +56,6 @@
     <Compile Include="CodeFixes\ElementAccessCodeFixProvider.cs" />
     <Compile Include="CodeFixes\MemberHidesInheritedMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddReturnStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\AddSemicolonCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseListCodeFixProvider.cs" />
