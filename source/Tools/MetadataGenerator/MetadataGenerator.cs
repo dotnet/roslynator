@@ -34,6 +34,14 @@ namespace Roslynator.CodeGeneration
                 @"Analyzers\AnalyzersByCategory.md",
                 MarkdownGenerator.CreateAnalyzersByCategoryMarkDown(Analyzers, Comparer));
 
+            foreach (AnalyzerDescriptor analyzer in Analyzers)
+            {
+                WriteAllText(
+                    $@"..\docs\analyzers\{analyzer.Id}.md",
+                    MarkdownGenerator.CreateAnalyzerMarkDown(analyzer),
+                    fileMustExists: false);
+            }
+
             WriteAllText(
                 @"..\docs\refactorings\Refactorings.md",
                 MarkdownGenerator.CreateRefactoringsMarkDown(Refactorings, Comparer));
@@ -45,7 +53,7 @@ namespace Roslynator.CodeGeneration
             foreach (RefactoringDescriptor refactoring in Refactorings)
             {
                 WriteAllText(
-                    $@"..\docs\refactorings\{refactoring.Identifier}.md",
+                    $@"..\docs\refactorings\{refactoring.Id}.md",
                     MarkdownGenerator.CreateRefactoringMarkDown(refactoring),
                     fileMustExists: false);
             }
@@ -89,7 +97,7 @@ namespace Roslynator.CodeGeneration
             foreach (string path in Directory.EnumerateFiles(GetPath(@"..\docs\refactorings")))
             {
                 if (Path.GetFileName(path) != "Refactorings.md"
-                    && Refactorings.FirstOrDefault(f => f.Identifier == Path.GetFileNameWithoutExtension(path)) == null)
+                    && Refactorings.FirstOrDefault(f => f.Id == Path.GetFileNameWithoutExtension(path)) == null)
                 {
                     Console.WriteLine($"FILE TO DELETE: {path}");
                 }
