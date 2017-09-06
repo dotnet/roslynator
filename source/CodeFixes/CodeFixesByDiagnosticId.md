@@ -3,6 +3,7 @@
 Diagnostic | Code Fixes
 --- | ---
 [CS0019](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019)|RCF0023
+[CS0021](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021)|RCF0077
 [CS0023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023)|RCF0039
 [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029)|RCF0021, RCF0022
 [CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037)|RCF0058
@@ -81,7 +82,6 @@ CS0261|RCF0029
 [CS0815](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0815)|RCF0041
 [CS0819](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0819)|RCF0048
 [CS0822](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0822)|RCF0048
-[CS1002](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1002)|RCF0035
 [CS1004](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1004)|RCF0011
 [CS1023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1023)|RCF0009
 [CS1057](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057)|RCF0029

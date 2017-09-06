@@ -188,6 +188,7 @@
       <Refactoring Id="RR0187" IsEnabled="true" /> <!-- FormatConstraintClauses -->
       <Refactoring Id="RR0188" IsEnabled="false" /> <!-- ReplaceForEachWithForAndReverseLoop -->
       <Refactoring Id="RR0189" IsEnabled="true" /> <!-- ReduceIfNesting -->
+      <Refactoring Id="RR0190" IsEnabled="true" /> <!-- ReplaceIfElseWithIfReturn -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -224,7 +225,6 @@
       <CodeFix Id="RCF0032" IsEnabled="true" /> <!-- RemoveImplementationFromAbstractMember (fixes CS0069, CS0500, CS0531) -->
       <CodeFix Id="RCF0033" IsEnabled="true" /> <!-- AddStaticModifier (fixes CS0708, CS0710, CS1105, CS1106) -->
       <CodeFix Id="RCF0034" IsEnabled="true" /> <!-- MakeContainingClassAbstract (fixes CS0513) -->
-      <CodeFix Id="RCF0035" IsEnabled="false" /> <!-- AddSemicolon (fixes CS1002) -->
       <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- SynchronizeAccessibility (fixes CS0262) -->
       <CodeFix Id="RCF0037" IsEnabled="true" /> <!-- RemoveArgumentList (fixes CS1955) -->
       <CodeFix Id="RCF0038" IsEnabled="true" /> <!-- FixMemberAccessName (fixes CS1061) -->
@@ -266,6 +266,7 @@
       <CodeFix Id="RCF0074" IsEnabled="true" /> <!-- ReplaceAsExpressionWithCastExpression (fixes CS0077) -->
       <CodeFix Id="RCF0075" IsEnabled="true" /> <!-- RemoveConditionThatIsAlwaysEqualToTrueOrFalse (fixes CS0472) -->
       <CodeFix Id="RCF0076" IsEnabled="true" /> <!-- IntroduceField (fixes CS0201) -->
+      <CodeFix Id="RCF0077" IsEnabled="true" /> <!-- ReplaceElementAccessWithInvocation (fixes CS0021) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

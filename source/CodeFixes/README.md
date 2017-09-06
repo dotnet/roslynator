@@ -14,7 +14,6 @@ RCF0004|Add 'out' modifier to argument|[CS1620](http://docs.microsoft.com/en-us/
 RCF0006|Add 'override' modifier|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x
 RCF0025|Add 'partial' modifier|[CS0101](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0101), [CS0102](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0102), [CS0260](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0260), [CS0751](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0751)|x
 RCF0020|Add return statement that returns default value|[CS0161](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0161), [CS1643](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1643)|x
-RCF0035|Add semicolon|[CS1002](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1002)|
 RCF0033|Add 'static' modifier|[CS0708](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0708), [CS0710](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0710), [CS1105](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105), [CS1106](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106)|x
 RCF0044|Add type argument|[CS0305](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0305)|x
 RCF0051|Add 'unsafe' modifier|[CS0214](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0214)|x
@@ -68,6 +67,7 @@ RCF0001|Remove unused variable|[CS0168](http://docs.microsoft.com/en-us/dotnet/c
 RCF0069|Remove 'yield' keyword|[CS1621](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1621)|x
 RCF0054|Reorder modifiers|[CS0267](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267)|x
 RCF0074|Replace as expression with cast expression|[CS0077](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077)|x
+RCF0077|Replace element access with invocation|[CS0021](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021)|x
 RCF0058|Replace 'null' with default value|[CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037)|x
 RCF0022|Replace string literal with character literal|[CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029)|x
 RCF0059|Replace variable declaration with assignment|[CS0128](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128), [CS0136](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136)|x
