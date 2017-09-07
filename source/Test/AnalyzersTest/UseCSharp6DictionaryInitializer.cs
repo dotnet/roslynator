@@ -23,7 +23,17 @@ namespace Roslynator.CSharp.Analyzers.Test
             dic = new Dictionary<int, string>()
             {
                 { 0, "0" },
-                { 0, "1" }
+                { 1, "1" }
+            };
+
+            dic = new Dictionary<int, string>()
+            {
+                {
+                    0, "0"
+                },
+                {
+                    1, "1"
+                }
             };
 
             var dic2 = new DerivedDictionary<string, string>() { { "a", "b" } };

@@ -124,9 +124,7 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = 0; i < expressions.Count; i++)
                 expressions = expressions.ReplaceAt(i, CreateNewExpression((InitializerExpressionSyntax)expressions[i]));
 
-            InitializerExpressionSyntax newInitializer = initializer
-                .WithExpressions(expressions)
-                .WithFormatterAnnotation();
+            InitializerExpressionSyntax newInitializer = initializer.WithExpressions(expressions);
 
             return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
         }
@@ -134,18 +132,16 @@ namespace Roslynator.CSharp.Refactorings
         public static ExpressionSyntax CreateNewExpression(InitializerExpressionSyntax initializer)
         {
             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-            SyntaxTriviaList openBraceTrailing = initializer.OpenBraceToken.TrailingTrivia;
-            SyntaxTriviaList closeBraceLeading = initializer.CloseBraceToken.LeadingTrivia;
 
             SyntaxToken openBracket = Token(
-                        initializer.OpenBraceToken.LeadingTrivia,
-                        SyntaxKind.OpenBracketToken,
-                        (openBraceTrailing.All(f => f.IsWhitespaceTrivia())) ? default(SyntaxTriviaList) : openBraceTrailing);
+                initializer.OpenBraceToken.LeadingTrivia,
+                SyntaxKind.OpenBracketToken,
+                initializer.OpenBraceToken.TrailingTrivia.EmptyIfWhitespace());
 
             ImplicitElementAccessSyntax implicitElementAccess = ImplicitElementAccess(
                 BracketedArgumentList(
                     openBracket,
-                    SingletonSeparatedList(Argument(expressions[0])),
+                    SingletonSeparatedList(Argument(expressions[0].TrimTrivia())),
                     CloseBracketToken()));
 
             SyntaxToken comma = initializer.ChildTokens().FirstOrDefault(f => f.IsKind(SyntaxKind.CommaToken));
@@ -159,8 +155,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax valueExpression = expressions[1];
 
-            if (closeBraceLeading.Any(f => !f.IsWhitespaceTrivia()))
-                valueExpression = valueExpression.AppendToTrailingTrivia(closeBraceLeading);
+            valueExpression = valueExpression.AppendToTrailingTrivia(initializer.CloseBraceToken.LeadingTrivia.EmptyIfWhitespace());
 
             return SimpleAssignmentExpression(implicitElementAccess, equalsToken, valueExpression)
                 .WithTriviaFrom(initializer);
