@@ -128,8 +128,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             return ifStatement.IsSimpleIf()
                 && ifStatement.Condition?.IsMissing == false
-                && ifStatement.Statement?.IsKind(SyntaxKind.Block) == true
-                && ifStatement.IsParentKind(SyntaxKind.Block);
+                && ifStatement.IsParentKind(SyntaxKind.Block)
+                && (ifStatement.Statement is BlockSyntax block)
+                && block.Statements.Any();
         }
 
         public static Task<Document> RefactorAsync(
@@ -215,9 +216,20 @@ namespace Roslynator.CSharp.Refactorings
 
                     ExpressionSyntax newCondition = Negator.LogicallyNegate(ifStatement.Condition);
 
+                    BlockSyntax newBlock = block.WithStatements(SingletonList(_jumpStatement));
+
+                    if (!block
+                        .Statements
+                        .First()
+                        .GetLeadingTrivia()
+                        .Any(f => f.IsEndOfLineTrivia()))
+                    {
+                        newBlock = newBlock.WithCloseBraceToken(newBlock.CloseBraceToken.AppendToTrailingTrivia(NewLine()));
+                    }
+
                     IfStatementSyntax newIfStatement = ifStatement
                         .WithCondition(newCondition)
-                        .WithStatement(block.WithStatements(SingletonList(_jumpStatement)))
+                        .WithStatement(newBlock)
                         .WithFormatterAnnotation();
 
                     SyntaxList<StatementSyntax> newStatements = statements
