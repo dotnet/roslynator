@@ -70,6 +70,11 @@ namespace Roslynator.CSharp
             return constraintClauses;
         }
 
+        public static bool HasConstraintClauses(SyntaxNode node)
+        {
+            return TryGetConstraintClauses(node, out SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses);
+        }
+
         public static bool TryGetConstraintClauses(SyntaxNode node, out SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
         {
             switch (node.Kind())
