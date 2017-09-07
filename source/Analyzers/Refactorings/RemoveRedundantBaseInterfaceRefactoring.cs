@@ -128,7 +128,15 @@ namespace Roslynator.CSharp.Refactorings
                 removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
 
             if (baseType.GetTrailingTrivia().All(f => f.IsWhitespaceTrivia()))
-                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+            {
+                var baseList = (BaseListSyntax)baseType.Parent;
+
+                if (baseList.Types.IsLast(baseType)
+                    && !GenericSyntax.HasConstraintClauses(baseList.Parent))
+                {
+                    removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+                }
+            }
 
             return document.RemoveNodeAsync(baseType, removeOptions, cancellationToken);
         }

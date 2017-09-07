@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analyzers.Test
     {
         private static class Yes
         {
-            private class Foo1 : List<string>, IEnumerable<string>
+            private class Foo1<T> : List<T>, IEnumerable<T> where T : class
             {
             }
 
