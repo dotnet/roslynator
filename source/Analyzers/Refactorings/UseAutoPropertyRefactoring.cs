@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -21,39 +22,103 @@ namespace Roslynator.CSharp.Refactorings
     {
         private static readonly SyntaxAnnotation _removeAnnotation = new SyntaxAnnotation();
 
-        private static SymbolDisplayFormat _symbolDisplayFormat { get; } = new SymbolDisplayFormat(
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             var property = (PropertyDeclarationSyntax)context.Node;
 
-            if (!property.ContainsDiagnostics)
+            if (property.ContainsDiagnostics)
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            IFieldSymbol fieldSymbol = null;
+
+            AccessorDeclarationSyntax getter = null;
+            AccessorDeclarationSyntax setter = null;
+
+            ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
+
+            if (expressionBody != null)
             {
-                IFieldSymbol fieldSymbol = GetBackingFieldSymbol(context, property);
+                fieldSymbol = GetBackingFieldSymbol(expressionBody, semanticModel, cancellationToken);
+            }
+            else
+            {
+                getter = property.Getter();
 
-                if (fieldSymbol != null)
+                if (getter != null)
                 {
-                    var variableDeclarator = (VariableDeclaratorSyntax)fieldSymbol.GetSyntax(context.CancellationToken);
+                    setter = property.Setter();
 
-                    if (variableDeclarator.SyntaxTree == property.SyntaxTree)
+                    if (setter != null)
                     {
-                        IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(property, context.CancellationToken);
-
-                        if (propertySymbol?.ExplicitInterfaceImplementations.IsDefaultOrEmpty == true
-                            && propertySymbol.IsStatic == fieldSymbol.IsStatic
-                            && propertySymbol.Type.Equals(fieldSymbol.Type)
-                            && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
-                            && !HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType, context.Compilation)
-                            && !IsBackingFieldUsedInRefOrOutArgument(context, fieldSymbol, property)
-                            && CheckPreprocessorDirectives(property, variableDeclarator))
-                        {
-                            context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
-
-                            FadeOut(context, property);
-                        }
+                        fieldSymbol = GetBackingFieldSymbol(getter, setter, semanticModel, cancellationToken);
+                    }
+                    else
+                    {
+                        fieldSymbol = GetBackingFieldSymbol(getter, semanticModel, cancellationToken);
                     }
                 }
+            }
+
+            if (fieldSymbol == null)
+                return;
+
+            var variableDeclarator = (VariableDeclaratorSyntax)fieldSymbol.GetSyntax(cancellationToken);
+
+            if (variableDeclarator.SyntaxTree != property.SyntaxTree)
+                return;
+
+            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, cancellationToken);
+
+            if (propertySymbol == null)
+                return;
+
+            if (!propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
+                return;
+
+            if (propertySymbol.IsStatic != fieldSymbol.IsStatic)
+                return;
+
+            if (!propertySymbol.Type.Equals(fieldSymbol.Type))
+                return;
+
+            if (propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) != true)
+                return;
+
+            if (setter == null
+                && propertySymbol.IsOverride
+                && propertySymbol.OverriddenProperty?.SetMethod != null)
+            {
+                return;
+            }
+
+            if (HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType, context.Compilation))
+                return;
+
+            if (IsBackingFieldUsedInRefOrOutArgument(context, fieldSymbol, property))
+                return;
+
+            if (!CheckPreprocessorDirectives(property, variableDeclarator))
+                return;
+
+            context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
+
+            if (property.ExpressionBody != null)
+            {
+                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
+            }
+            else
+            {
+                if (getter != null)
+                    FadeOutBody(context, getter);
+
+                if (setter != null)
+                    FadeOutBody(context, setter);
             }
         }
 
@@ -86,26 +151,6 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool HasStructLayoutAttributeWithExplicitKind(INamedTypeSymbol typeSymbol, Compilation compilation)
-        {
-            AttributeData attribute = typeSymbol.GetAttributeByMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute, compilation);
-
-            if (attribute != null)
-            {
-                ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
-
-                if (constructorArguments.Length == 1)
-                {
-                    TypedConstant typedConstant = constructorArguments[0];
-
-                    return typedConstant.Type?.Equals(compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_InteropServices_LayoutKind)) == true
-                        && (((LayoutKind)typedConstant.Value) == LayoutKind.Explicit);
-                }
-            }
-
-            return false;
-        }
-
         private static bool IsBackingFieldUsedInRefOrOutArgument(
             IFieldSymbol fieldSymbol,
             SyntaxNode declaration,
@@ -136,45 +181,84 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static IFieldSymbol GetBackingFieldSymbol(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
+        private static bool HasStructLayoutAttributeWithExplicitKind(INamedTypeSymbol typeSymbol, Compilation compilation)
         {
-            if (property.ExpressionBody != null)
-            {
-                NameSyntax identifier = GetIdentifierFromExpression(property.ExpressionBody.Expression);
+            AttributeData attribute = typeSymbol.GetAttributeByMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute, compilation);
 
-                if (identifier != null)
-                    return GetBackingFieldSymbol(context, identifier);
-            }
-            else
+            if (attribute != null)
             {
-                AccessorDeclarationSyntax getter = property.Getter();
+                ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
 
-                if (getter != null)
+                if (constructorArguments.Length == 1)
                 {
-                    AccessorDeclarationSyntax setter = property.Setter();
+                    TypedConstant typedConstant = constructorArguments[0];
 
-                    if (setter != null)
-                    {
-                        return GetBackingFieldSymbol(context, getter, setter);
-                    }
-                    else
-                    {
-                        NameSyntax identifier = GetIdentifierFromGetter(getter);
-
-                        if (identifier != null)
-                            return GetBackingFieldSymbol(context, identifier);
-                    }
+                    return typedConstant.Type?.Equals(compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_InteropServices_LayoutKind)) == true
+                        && (((LayoutKind)typedConstant.Value) == LayoutKind.Explicit);
                 }
             }
+
+            return false;
+        }
+
+        private static void FadeOutBody(SyntaxNodeAnalysisContext context, AccessorDeclarationSyntax accessor)
+        {
+            BlockSyntax body = accessor.Body;
+
+            if (body != null)
+            {
+                StatementSyntax statement = body.Statements.First();
+
+                switch (statement.Kind())
+                {
+                    case SyntaxKind.ReturnStatement:
+                        {
+                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ReturnStatementSyntax)statement).Expression);
+                            break;
+                        }
+                    case SyntaxKind.ExpressionStatement:
+                        {
+                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ExpressionStatementSyntax)statement).Expression);
+                            break;
+                        }
+                }
+
+                context.ReportBraces(DiagnosticDescriptors.UseAutoPropertyFadeOut, body);
+            }
+        }
+
+        private static IFieldSymbol GetBackingFieldSymbol(
+            AccessorDeclarationSyntax getter,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            NameSyntax identifier = GetIdentifierFromGetter(getter);
+
+            if (identifier != null)
+                return GetBackingFieldSymbol(identifier, semanticModel, cancellationToken);
 
             return null;
         }
 
         private static IFieldSymbol GetBackingFieldSymbol(
-            SyntaxNodeAnalysisContext context,
-            NameSyntax identifier)
+            ArrowExpressionClauseSyntax expressionBody,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            ISymbol symbol = context.SemanticModel.GetSymbol(identifier, context.CancellationToken);
+            NameSyntax identifier = GetIdentifierFromExpression(expressionBody.Expression);
+
+            if (identifier != null)
+                return GetBackingFieldSymbol(identifier, semanticModel, cancellationToken);
+
+            return null;
+        }
+
+        private static IFieldSymbol GetBackingFieldSymbol(
+            NameSyntax identifier,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            ISymbol symbol = semanticModel.GetSymbol(identifier, cancellationToken);
 
             if (symbol.IsPrivate()
                 && symbol.IsField())
@@ -192,9 +276,10 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static IFieldSymbol GetBackingFieldSymbol(
-            SyntaxNodeAnalysisContext context,
             AccessorDeclarationSyntax getter,
-            AccessorDeclarationSyntax setter)
+            AccessorDeclarationSyntax setter,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             NameSyntax getterIdentifier = GetIdentifierFromGetter(getter);
 
@@ -204,7 +289,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (setterIdentifier != null)
                 {
-                    ISymbol symbol = context.SemanticModel.GetSymbol(getterIdentifier, context.CancellationToken);
+                    ISymbol symbol = semanticModel.GetSymbol(getterIdentifier, cancellationToken);
 
                     if (symbol?.IsPrivate() == true
                         && symbol.IsField())
@@ -213,7 +298,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (!fieldSymbol.IsVolatile)
                         {
-                            ISymbol symbol2 = context.SemanticModel.GetSymbol(setterIdentifier, context.CancellationToken);
+                            ISymbol symbol2 = semanticModel.GetSymbol(setterIdentifier, cancellationToken);
 
                             if (fieldSymbol.Equals(symbol2))
                                 return fieldSymbol;
@@ -262,22 +347,27 @@ namespace Roslynator.CSharp.Refactorings
                         && statements[0].IsKind(SyntaxKind.ExpressionStatement))
                     {
                         var statement = (ExpressionStatementSyntax)statements[0];
-
                         ExpressionSyntax expression = statement.Expression;
 
-                        if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                        {
-                            var assignment = (AssignmentExpressionSyntax)expression;
-
-                            ExpressionSyntax right = assignment.Right;
-
-                            if (right?.IsKind(SyntaxKind.IdentifierName) == true
-                                && ((IdentifierNameSyntax)right).Identifier.ValueText == "value")
-                            {
-                                return GetIdentifierFromExpression(assignment.Left);
-                            }
-                        }
+                        return GetIdentifierFromSetterExpression(expression);
                     }
+                }
+            }
+
+            return null;
+        }
+
+        private static NameSyntax GetIdentifierFromSetterExpression(ExpressionSyntax expression)
+        {
+            if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
+            {
+                var assignment = (AssignmentExpressionSyntax)expression;
+                ExpressionSyntax right = assignment.Right;
+
+                if (right?.IsKind(SyntaxKind.IdentifierName) == true
+                    && ((IdentifierNameSyntax)right).Identifier.ValueText == "value")
+                {
+                    return GetIdentifierFromExpression(assignment.Left);
                 }
             }
 
@@ -310,9 +400,11 @@ namespace Roslynator.CSharp.Refactorings
             PropertyDeclarationSyntax property,
             VariableDeclaratorSyntax declarator)
         {
-            if (property.ExpressionBody != null)
+            ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
+
+            if (expressionBody != null)
             {
-                if (property.ExpressionBody.SpanContainsDirectives())
+                if (expressionBody.SpanContainsDirectives())
                     return false;
             }
             else if (property.AccessorList.Accessors.Any(f => f.SpanContainsDirectives()))
@@ -333,26 +425,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return true;
-        }
-
-        private static void FadeOut(SyntaxNodeAnalysisContext context, PropertyDeclarationSyntax property)
-        {
-            if (property.ExpressionBody != null)
-            {
-                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
-            }
-            else
-            {
-                AccessorDeclarationSyntax getter = property.Getter();
-
-                if (getter != null)
-                    context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, getter.Body);
-
-                AccessorDeclarationSyntax setter = property.Setter();
-
-                if (setter != null)
-                    context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, setter.Body);
-            }
         }
 
         public static async Task<Solution> RefactorAsync(
@@ -436,13 +508,17 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ISymbol GetFieldSymbol(PropertyDeclarationSyntax property, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (property.ExpressionBody != null)
+            ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
+
+            if (expressionBody != null)
             {
-                return semanticModel.GetSymbol(property.ExpressionBody.Expression, cancellationToken);
+                return semanticModel.GetSymbol(expressionBody.Expression, cancellationToken);
             }
             else
             {
-                var returnStatement = (ReturnStatementSyntax)property.Getter().Body.Statements[0];
+                AccessorDeclarationSyntax getter = property.Getter();
+
+                var returnStatement = (ReturnStatementSyntax)getter.Body.Statements[0];
 
                 return semanticModel.GetSymbol(returnStatement.Expression, cancellationToken);
             }
