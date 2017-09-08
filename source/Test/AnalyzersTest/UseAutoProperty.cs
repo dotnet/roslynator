@@ -91,7 +91,48 @@ namespace Roslynator.CSharp.Analyzers.Test
         private readonly string _readOnlyProperty2;
         private static readonly string _readOnlyStaticProperty;
 
+        private static class FooOverride
+        {
+            private class FooBase
+            {
+                public virtual bool Value { get; set; }
+            }
+
+            private class FooDerived : FooBase
+            {
+                private bool _value;
+
+                public override bool Value
+                {
+                    get { return _value; }
+                    set { _value = value; }
+                }
+            }
+        }
+
         //n
+
+        private static class FooOverrideWithNotImplementedAccessor
+        {
+            private class FooBase
+            {
+                public virtual bool Value { get; set; }
+                public virtual bool Value2 { get; set; }
+            }
+
+            private class FooDerived : FooBase
+            {
+                private readonly bool _value;
+                private readonly bool _value2;
+
+                public override bool Value => _value;
+
+                public override bool Value2
+                {
+                    get { return _value2; }
+                }
+            }
+        }
 
         private string _propertyRef = "";
         private string _propertyOut = "";

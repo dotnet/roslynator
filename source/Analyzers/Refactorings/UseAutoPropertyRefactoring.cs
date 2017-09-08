@@ -22,54 +22,103 @@ namespace Roslynator.CSharp.Refactorings
     {
         private static readonly SyntaxAnnotation _removeAnnotation = new SyntaxAnnotation();
 
-        private static SymbolDisplayFormat _symbolDisplayFormat { get; } = new SymbolDisplayFormat(
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
             var property = (PropertyDeclarationSyntax)context.Node;
 
-            if (!property.ContainsDiagnostics)
+            if (property.ContainsDiagnostics)
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            IFieldSymbol fieldSymbol = null;
+
+            AccessorDeclarationSyntax getter = null;
+            AccessorDeclarationSyntax setter = null;
+
+            ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
+
+            if (expressionBody != null)
             {
-                IFieldSymbol fieldSymbol = GetBackingFieldSymbol(property, context.SemanticModel, context.CancellationToken);
+                fieldSymbol = GetBackingFieldSymbol(expressionBody, semanticModel, cancellationToken);
+            }
+            else
+            {
+                getter = property.Getter();
 
-                if (fieldSymbol != null)
+                if (getter != null)
                 {
-                    var variableDeclarator = (VariableDeclaratorSyntax)fieldSymbol.GetSyntax(context.CancellationToken);
+                    setter = property.Setter();
 
-                    if (variableDeclarator.SyntaxTree == property.SyntaxTree)
+                    if (setter != null)
                     {
-                        IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(property, context.CancellationToken);
-
-                        if (propertySymbol?.ExplicitInterfaceImplementations.IsDefaultOrEmpty == true
-                            && propertySymbol.IsStatic == fieldSymbol.IsStatic
-                            && propertySymbol.Type.Equals(fieldSymbol.Type)
-                            && propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) == true
-                            && !HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType, context.Compilation)
-                            && !IsBackingFieldUsedInRefOrOutArgument(context, fieldSymbol, property)
-                            && CheckPreprocessorDirectives(property, variableDeclarator))
-                        {
-                            context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
-
-                            if (property.ExpressionBody != null)
-                            {
-                                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
-                            }
-                            else
-                            {
-                                AccessorDeclarationSyntax getter = property.Getter();
-
-                                if (getter != null)
-                                    FadeOutBodyOrExpressionBody(context, getter);
-
-                                AccessorDeclarationSyntax setter = property.Setter();
-
-                                if (setter != null)
-                                    FadeOutBodyOrExpressionBody(context, setter);
-                            }
-                        }
+                        fieldSymbol = GetBackingFieldSymbol(getter, setter, semanticModel, cancellationToken);
+                    }
+                    else
+                    {
+                        fieldSymbol = GetBackingFieldSymbol(getter, semanticModel, cancellationToken);
                     }
                 }
+            }
+
+            if (fieldSymbol == null)
+                return;
+
+            var variableDeclarator = (VariableDeclaratorSyntax)fieldSymbol.GetSyntax(cancellationToken);
+
+            if (variableDeclarator.SyntaxTree != property.SyntaxTree)
+                return;
+
+            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(property, cancellationToken);
+
+            if (propertySymbol == null)
+                return;
+
+            if (!propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
+                return;
+
+            if (propertySymbol.IsStatic != fieldSymbol.IsStatic)
+                return;
+
+            if (!propertySymbol.Type.Equals(fieldSymbol.Type))
+                return;
+
+            if (propertySymbol.ContainingType?.Equals(fieldSymbol.ContainingType) != true)
+                return;
+
+            if (setter == null
+                && propertySymbol.IsOverride
+                && propertySymbol.OverriddenProperty?.SetMethod != null)
+            {
+                return;
+            }
+
+            if (HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType, context.Compilation))
+                return;
+
+            if (IsBackingFieldUsedInRefOrOutArgument(context, fieldSymbol, property))
+                return;
+
+            if (!CheckPreprocessorDirectives(property, variableDeclarator))
+                return;
+
+            context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
+
+            if (property.ExpressionBody != null)
+            {
+                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
+            }
+            else
+            {
+                if (getter != null)
+                    FadeOutBodyOrExpressionBody(context, getter);
+
+                if (setter != null)
+                    FadeOutBodyOrExpressionBody(context, setter);
             }
         }
 
@@ -183,40 +232,27 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static IFieldSymbol GetBackingFieldSymbol(
-            PropertyDeclarationSyntax property,
+            AccessorDeclarationSyntax getter,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken)
         {
-            ArrowExpressionClauseSyntax expressionBody = property.ExpressionBody;
+            NameSyntax identifier = GetIdentifierFromGetter(getter);
 
-            if (expressionBody != null)
-            {
-                NameSyntax identifier = GetIdentifierFromExpression(expressionBody.Expression);
+            if (identifier != null)
+                return GetBackingFieldSymbol(identifier, semanticModel, cancellationToken);
 
-                if (identifier != null)
-                    return GetBackingFieldSymbol(identifier, semanticModel, cancellationToken);
-            }
-            else
-            {
-                AccessorDeclarationSyntax getter = property.Getter();
+            return null;
+        }
 
-                if (getter != null)
-                {
-                    AccessorDeclarationSyntax setter = property.Setter();
+        private static IFieldSymbol GetBackingFieldSymbol(
+            ArrowExpressionClauseSyntax expressionBody,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            NameSyntax identifier = GetIdentifierFromExpression(expressionBody.Expression);
 
-                    if (setter != null)
-                    {
-                        return GetBackingFieldSymbol(getter, setter, semanticModel, cancellationToken);
-                    }
-                    else
-                    {
-                        NameSyntax identifier = GetIdentifierFromGetter(getter);
-
-                        if (identifier != null)
-                            return GetBackingFieldSymbol(identifier, semanticModel, cancellationToken);
-                    }
-                }
-            }
+            if (identifier != null)
+                return GetBackingFieldSymbol(identifier, semanticModel, cancellationToken);
 
             return null;
         }
