@@ -89,12 +89,12 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             MemberDeclarationSelection selectedMembers,
             ImmutableArray<MemberDeclarationSyntax> members)
         {
-            if (!MemberDeclarationComparer.GetInstance(sortMode).IsSorted(members))
-            {
-                context.RegisterRefactoring(
-                    title,
-                    cancellationToken => RefactorAsync(context.Document, selectedMembers, sortMode, cancellationToken));
-            }
+            if (MemberDeclarationComparer.IsSorted(members, sortMode))
+                return;
+
+            context.RegisterRefactoring(
+                title,
+                cancellationToken => RefactorAsync(context.Document, selectedMembers, sortMode, cancellationToken));
         }
 
         private static Task<Document> RefactorAsync(
