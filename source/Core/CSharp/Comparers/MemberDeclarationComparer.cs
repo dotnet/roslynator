@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Comparers
             return Compare(x, y, SortMode);
         }
 
-        private int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y, MemberDeclarationSortMode sortMode)
+        private static int Compare(MemberDeclarationSyntax x, MemberDeclarationSyntax y, MemberDeclarationSortMode sortMode)
         {
             if (object.ReferenceEquals(x, y))
                 return 0;
@@ -53,7 +53,12 @@ namespace Roslynator.CSharp.Comparers
             }
         }
 
-        public bool IsSorted(IEnumerable<MemberDeclarationSyntax> members, MemberDeclarationSortMode sortMode = MemberDeclarationSortMode.ByKind)
+        public bool IsSorted(IEnumerable<MemberDeclarationSyntax> members)
+        {
+            return IsSorted(members, SortMode);
+        }
+
+        public static bool IsSorted(IEnumerable<MemberDeclarationSyntax> members, MemberDeclarationSortMode sortMode)
         {
             if (members == null)
                 throw new ArgumentNullException(nameof(members));
@@ -125,7 +130,7 @@ namespace Roslynator.CSharp.Comparers
                 case MemberDeclarationSortMode.ByKindThenByName:
                     return ByKindThenByName;
                 default:
-                    throw new NotSupportedException();
+                    throw new ArgumentException("", nameof(sortMode));
             }
         }
 
