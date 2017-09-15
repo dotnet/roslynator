@@ -8,7 +8,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, WhileStatementSyntax whileStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileStatementWithDoStatement)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithDo)
                 && (whileStatement.WhileKeyword.Span.Contains(context.Span)))
             {
                 context.RegisterRefactoring(

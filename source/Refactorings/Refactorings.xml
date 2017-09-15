@@ -823,7 +823,7 @@
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0123" Identifier="ReplaceDoStatementWithWhileStatement" Title="Replace do statement with while statement">
+  <Refactoring Id="RR0123" Identifier="ReplaceDoWithWhile" Title="Replace do statement with while statement">
     <Syntaxes>
       <Syntax>do statement</Syntax>
     </Syntaxes>
@@ -971,7 +971,7 @@
       <Syntax>multiline verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0150" Identifier="ReplaceWhileStatementWithDoStatement" Title="Replace while statement with do statement">
+  <Refactoring Id="RR0150" Identifier="ReplaceWhileWithDo" Title="Replace while statement with do statement">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>

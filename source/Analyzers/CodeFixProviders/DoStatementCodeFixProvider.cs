@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
                 "Use while to create an infinite loop",
                 cancellationToken =>
                 {
-                    return ReplaceDoStatementWithWhileStatementRefactoring.RefactorAsync(
+                    return ReplaceDoWithWhileRefactoring.RefactorAsync(
                         context.Document,
                         doStatement,
                         cancellationToken);

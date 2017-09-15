@@ -420,7 +420,7 @@
     <Compile Include="DiagnosticAnalyzers\WhileStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticDescriptorExtensions.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceDoStatementWithWhileStatementRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceDoWithWhileRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantBooleanLiteralRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\AccessorListDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
