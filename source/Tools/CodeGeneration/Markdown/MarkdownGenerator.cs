@@ -101,7 +101,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 if (!string.IsNullOrEmpty(refactoring.Scope))
                     sw.WriteLine($"Scope | {refactoring.Scope.EscapeMarkdown()}");
 
-                sw.WriteLine($"Enabled by Default | {((refactoring.IsEnabledByDefault) ? "yes" : "no")}");
+                sw.WriteLine($"Enabled by Default | {GetBooleanAsText(refactoring.IsEnabledByDefault)}");
 
                 sw.WriteLine("");
                 sw.WriteLine("### Usage");
@@ -122,18 +122,45 @@ namespace Roslynator.CodeGeneration.Markdown
             using (var sw = new StringWriter())
             {
                 string title = analyzer.Title.TrimEnd('.').EscapeMarkdown();
-                sw.WriteLine($"## {title}");
+                sw.WriteLine($"#{((analyzer.IsObsolete) ? " [deprecated]" : "")} {analyzer.Id}: {title}");
                 sw.WriteLine("");
 
                 sw.WriteLine("Property | Value");
                 sw.WriteLine("--- | --- ");
                 sw.WriteLine($"Id | {analyzer.Id}");
-                sw.WriteLine($"Title | {title}");
                 sw.WriteLine($"Category | {analyzer.Category}");
                 sw.WriteLine($"Default Severity | {analyzer.DefaultSeverity}");
-                sw.WriteLine($"Enabled by Default | {((analyzer.IsEnabledByDefault) ? "yes" : "no")}");
-                sw.WriteLine($"Supports Fade-Out | {analyzer.SupportsFadeOut}");
-                sw.WriteLine($"Supports Fade-Out Analyzer | {analyzer.SupportsFadeOutAnalyzer}");
+                sw.WriteLine($"Enabled by Default | {GetBooleanAsText(analyzer.IsEnabledByDefault)}");
+                sw.WriteLine($"Supports Fade-Out | {GetBooleanAsText(analyzer.SupportsFadeOut)}");
+                sw.WriteLine($"Supports Fade-Out Analyzer | {GetBooleanAsText(analyzer.SupportsFadeOutAnalyzer)}");
+
+                sw.WriteLine();
+
+                sw.WriteLine("## How to Suppress");
+                sw.WriteLine();
+
+                sw.WriteLine("### SuppressMessageAttribute");
+                sw.WriteLine();
+
+                sw.WriteLine("```csharp");
+                sw.WriteLine($"[assembly: SuppressMessage(\"{analyzer.Category}\", \"{analyzer.Id}:{analyzer.Title}\", Justification = \"<Pending>\")]");
+                sw.WriteLine("```");
+                sw.WriteLine();
+
+                sw.WriteLine(@"### \#pragma");
+                sw.WriteLine();
+
+                sw.WriteLine("```csharp");
+                sw.WriteLine($"#pragma warning disable {analyzer.Id} // {analyzer.Title}");
+                sw.WriteLine($"#pragma warning restore {analyzer.Id} // {analyzer.Title}");
+                sw.WriteLine("```");
+                sw.WriteLine();
+
+                sw.WriteLine("### Ruleset");
+                sw.WriteLine();
+
+                sw.Write("* [How to configure rule set](../HowToConfigureAnalyzers.md)");
+                sw.WriteLine();
 
                 return sw.ToString();
             }
@@ -291,6 +318,11 @@ namespace Roslynator.CodeGeneration.Markdown
         private static string CreateImageMarkDown(RefactoringDescriptor refactoring, string fileName)
         {
             return $"![{refactoring.Title.EscapeMarkdown()}](../../images/refactorings/{fileName.EscapeMarkdown()}.png)";
+        }
+
+        private static string GetBooleanAsText(bool value)
+        {
+            return (value) ? "yes" : "no";
         }
     }
 }
