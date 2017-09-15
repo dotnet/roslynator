@@ -9,7 +9,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceDoStatementWithWhileStatementRefactoring
+    internal static class ReplaceDoWithWhileRefactoring
     {
         public static bool CanRefactor(DoStatementSyntax doStatement)
         {

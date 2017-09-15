@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceCastWithAs = Prefix + "0118";
         public const string ReplaceConditionalExpressionWithExpression = Prefix + "0119";
         public const string ReplaceConstantWithField = Prefix + "0121";
-        public const string ReplaceDoStatementWithWhileStatement = Prefix + "0123";
+        public const string ReplaceDoWithWhile = Prefix + "0123";
         public const string ReplaceEqualsExpressionWithStringEquals = Prefix + "0124";
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = Prefix + "0125";
         public const string ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = Prefix + "0126";
@@ -157,7 +157,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceSwitchWithIfElse = Prefix + "0147";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = Prefix + "0148";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = Prefix + "0149";
-        public const string ReplaceWhileStatementWithDoStatement = Prefix + "0150";
+        public const string ReplaceWhileWithDo = Prefix + "0150";
         public const string ReplaceWhileWithFor = Prefix + "0151";
         public const string ReverseForLoop = Prefix + "0152";
         public const string SimplifyIf = Prefix + "0153";

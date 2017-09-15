@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             var doStatement = (DoStatementSyntax)context.Node;
 
-            if (ReplaceDoStatementWithWhileStatementRefactoring.CanRefactor(doStatement))
+            if (ReplaceDoWithWhileRefactoring.CanRefactor(doStatement))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AvoidUsageOfDoStatementToCreateInfiniteLoop,
