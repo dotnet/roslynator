@@ -53,6 +53,12 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandInitializer))
                     await ExpandInitializerRefactoring.ComputeRefactoringsAsync(context, initializer).ConfigureAwait(false);
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseCSharp6DictionaryInitializer)
+                    && context.SupportsCSharp6)
+                {
+                    await UseCSharp6DictionaryInitializerRefactoring.ComputeRefactoringAsync(context, initializer).ConfigureAwait(false);
+                }
             }
         }
     }

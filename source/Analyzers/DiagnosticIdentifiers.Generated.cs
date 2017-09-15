@@ -98,7 +98,6 @@ namespace Roslynator.CSharp
         public const string AddEmptyLineAfterLastStatementInDoStatement = "RCS1092";
         public const string RemoveFileWithNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";
-        public const string UseCSharp6DictionaryInitializer = "RCS1095";
         public const string UseBitwiseOperationInsteadOfCallingHasFlag = "RCS1096";
         public const string RemoveRedundantToStringCall = "RCS1097";
         public const string AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression = "RCS1098";

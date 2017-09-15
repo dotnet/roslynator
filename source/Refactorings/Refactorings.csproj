@@ -122,6 +122,7 @@
     <Compile Include="Refactorings\SplitIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ThrowExpressionRefactoring.cs" />
     <Compile Include="Refactorings\TypeParameterConstraintClauseRefactoring.cs" />
+    <Compile Include="Refactorings\UseCSharp6DictionaryInitializerRefactoring.cs" />
     <Compile Include="Refactorings\UseStringBuilderInsteadOfConcatenationRefactoring.cs" />
     <Compile Include="Refactorings\UseListInsteadOfYieldRefactoring.cs" />
     <Compile Include="Refactorings\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
