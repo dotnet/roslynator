@@ -263,7 +263,7 @@
     <Compile Include="Refactorings\ReplaceNullLiteralExpressionWithDefaultExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceExpressionWithConstantValueRefactoring.cs" />
     <Compile Include="Refactorings\RemoveAllPreprocessorDirectivesRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfElseWithSwitchRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceIfWithSwitchRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpressionWithStringEqualsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringContainsWithStringIndexOfRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodGroupWithLambdaRefactoring.cs" />

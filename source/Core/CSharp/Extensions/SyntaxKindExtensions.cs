@@ -6,6 +6,24 @@ namespace Roslynator.CSharp
 {
     public static class SyntaxKindExtensions
     {
+        internal static bool IsNestedMethod(this SyntaxKind kind)
+        {
+            return kind.IsKind(
+                SyntaxKind.SimpleLambdaExpression,
+                SyntaxKind.ParenthesizedLambdaExpression,
+                SyntaxKind.AnonymousMethodExpression,
+                SyntaxKind.LocalFunctionStatement);
+        }
+
+        internal static bool IsLoop(this SyntaxKind kind)
+        {
+            return kind.IsKind(
+                SyntaxKind.ForStatement,
+                SyntaxKind.ForEachStatement,
+                SyntaxKind.WhileStatement,
+                SyntaxKind.DoStatement);
+        }
+
         internal static bool IsKind(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
         {
             return kind == kind1

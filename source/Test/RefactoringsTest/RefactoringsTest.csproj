@@ -90,7 +90,7 @@
     <Compile Include="ReplaceEqualsExpressionWithStringMethodRefactoring.cs" />
     <Compile Include="ReplaceHexadecimalLiteralWithDecimalLiteralRefactoring.cs" />
     <Compile Include="ReplaceForWithWhileRefactoring.cs" />
-    <Compile Include="ReplaceIfElseWithSwitchRefactoring.cs" />
+    <Compile Include="ReplaceIfWithSwitchRefactoring.cs" />
     <Compile Include="GenerateEnumMemberRefactoring.cs" />
     <Compile Include="UseListInsteadOfYield.cs" />
     <Compile Include="ReplaceObjectCreationWithDefaultValue.cs" />
