@@ -11,41 +11,76 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseConstantInsteadOfFieldRefactoring
     {
-        public static bool CanRefactor(FieldDeclarationSyntax fieldDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
-
-            return modifiers.Contains(SyntaxKind.StaticKeyword)
-                && modifiers.Contains(SyntaxKind.ReadOnlyKeyword)
-                && !modifiers.Contains(SyntaxKind.NewKeyword)
-                && SupportsConstant(fieldDeclaration.Declaration, semanticModel, cancellationToken);
-        }
-
-        private static bool SupportsConstant(
-            VariableDeclarationSyntax variableDeclaration,
+        public static bool CanRefactor(
+            FieldDeclarationSyntax fieldDeclaration,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            bool onlyPrivate = false,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            foreach (VariableDeclaratorSyntax declarator in variableDeclaration.Variables)
+            bool isStatic = false;
+            bool isReadOnly = false;
+
+            foreach (SyntaxToken modifier in fieldDeclaration.Modifiers)
             {
-                if (!SupportsConstant(variableDeclaration.Type, declarator, semanticModel, cancellationToken))
+                switch (modifier.Kind())
+                {
+                    case SyntaxKind.ConstKeyword:
+                    case SyntaxKind.NewKeyword:
+                        {
+                            return false;
+                        }
+                    case SyntaxKind.PublicKeyword:
+                    case SyntaxKind.InternalKeyword:
+                    case SyntaxKind.ProtectedKeyword:
+                        {
+                            if (onlyPrivate)
+                                return false;
+
+                            break;
+                        }
+                    case SyntaxKind.StaticKeyword:
+                        {
+                            isStatic = true;
+                            break;
+                        }
+                    case SyntaxKind.ReadOnlyKeyword:
+                        {
+                            isReadOnly = true;
+                            break;
+                        }
+                }
+            }
+
+            if (!isStatic)
+                return false;
+
+            if (!isReadOnly)
+                return false;
+
+            SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
+
+            VariableDeclaratorSyntax firstDeclarator = declarators.First();
+
+            var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
+
+            if (fieldSymbol == null)
+                return false;
+
+            if (!fieldSymbol.Type.SupportsConstantValue())
+                return false;
+
+            foreach (VariableDeclaratorSyntax declarator in declarators)
+            {
+                ExpressionSyntax value = declarator.Initializer?.Value;
+
+                if (value == null)
+                    return false;
+
+                if (!semanticModel.GetConstantValue(value, cancellationToken).HasValue)
                     return false;
             }
 
             return true;
-        }
-
-        private static bool SupportsConstant(
-            TypeSyntax type,
-            VariableDeclaratorSyntax declarator,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ExpressionSyntax value = declarator.Initializer?.Value;
-
-            return value != null
-                && semanticModel.GetTypeSymbol(type, cancellationToken)?.SupportsConstantValue() == true
-                && semanticModel.GetConstantValue(value, cancellationToken).HasValue;
         }
 
         public static Task<Document> RefactorAsync(
