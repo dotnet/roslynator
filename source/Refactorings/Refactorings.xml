@@ -981,6 +981,7 @@
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
+    <Scope>while keyword or selected statement(s)</Scope>
   </Refactoring>
   <Refactoring Id="RR0152" Identifier="ReverseForLoop" Title="Reverse for loop">
     <Syntaxes>
