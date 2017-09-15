@@ -930,7 +930,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseCSharp6DictionaryInitializer">
+  <Analyzer Identifier="UseCSharp6DictionaryInitializer" IsObsolete="true">
     <Id>RCS1095</Id>
     <Title>Use C# 6.0 dictionary initializer.</Title>
     <MessageFormat>Use C# 6.0 dictionary initializer.</MessageFormat>

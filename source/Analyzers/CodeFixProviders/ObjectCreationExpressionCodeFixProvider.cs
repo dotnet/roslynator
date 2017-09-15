@@ -17,12 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.UseCSharp6DictionaryInitializer,
-                    DiagnosticIdentifiers.UseEventArgsEmpty);
-            }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseEventArgsEmpty); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -36,16 +31,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.UseCSharp6DictionaryInitializer:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Use C# 6.0 dictionary initializer",
-                                cancellationToken => UseCSharp6DictionaryInitializerRefactoring.RefactorAsync(context.Document, objectCreationExpression.Initializer, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.UseEventArgsEmpty:
                         {
                             CodeAction codeAction = CodeAction.Create(

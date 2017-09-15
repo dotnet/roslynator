@@ -1219,4 +1219,9 @@
     </Syntaxes>
     <Scope>selected if statement or if keyword</Scope>
   </Refactoring>
+  <Refactoring Id="RR0191" Identifier="UseCSharp6DictionaryInitializer" Title="Use C# 6.0 dictionary initializer">
+    <Syntaxes>
+      <Syntax>collection initializer</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

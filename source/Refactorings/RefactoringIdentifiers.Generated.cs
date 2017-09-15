@@ -176,6 +176,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "0165";
         public const string UseConditionalExpressionInsteadOfIf = Prefix + "0166";
         public const string UseConstantInsteadOfField = Prefix + "0128";
+        public const string UseCSharp6DictionaryInitializer = Prefix + "0191";
         public const string UseElementAccessInsteadOfEnumerableMethod = Prefix + "0167";
         public const string UseEmptyStringLiteralInsteadOfStringEmpty = Prefix + "0168";
         public const string UseExpressionBodiedMember = Prefix + "0169";

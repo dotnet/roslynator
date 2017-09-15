@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -16,49 +15,49 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseCSharp6DictionaryInitializerRefactoring
     {
-        public static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, InitializerExpressionSyntax initializer)
         {
-            var initializer = (InitializerExpressionSyntax)context.Node;
+            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-            if (!initializer.ContainsDiagnostics)
+            if (!expressions.Any())
+                return;
+
+            if (!expressions.All(f => f.IsKind(SyntaxKind.ComplexElementInitializerExpression)))
+                return;
+
+            if (!(initializer.Parent is ObjectCreationExpressionSyntax objectCreationExpression))
+                return;
+
+            var complexElementInitializer = (InitializerExpressionSyntax)expressions.First();
+
+            SeparatedSyntaxList<ExpressionSyntax> expressions2 = complexElementInitializer.Expressions;
+
+            if (expressions2.Count != 2)
+                return;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            IPropertySymbol propertySymbol = FindIndexerSymbol(
+                objectCreationExpression,
+                expressions2,
+                semanticModel,
+                context.CancellationToken);
+
+            if (propertySymbol == null)
+                return;
+
+            ITypeSymbol keyType = propertySymbol.Parameters[0].Type;
+            ITypeSymbol valueType = propertySymbol.Type;
+
+            for (int i = 1; i < expressions.Count; i++)
             {
-                SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-
-                if (expressions.Any()
-                    && expressions.All(f => f.IsKind(SyntaxKind.ComplexElementInitializerExpression)
-                    && initializer.IsParentKind(SyntaxKind.ObjectCreationExpression)))
-                {
-                    var objectCreationExpression = (ObjectCreationExpressionSyntax)initializer.Parent;
-
-                    var complexElementInitializer = (InitializerExpressionSyntax)expressions.First();
-
-                    SeparatedSyntaxList<ExpressionSyntax> expressions2 = complexElementInitializer.Expressions;
-
-                    if (expressions2.Count == 2)
-                    {
-                        IPropertySymbol propertySymbol = FindIndexerSymbol(
-                            objectCreationExpression,
-                            expressions2,
-                            context.SemanticModel,
-                            context.CancellationToken);
-
-                        if (propertySymbol != null)
-                        {
-                            ITypeSymbol keyType = propertySymbol.Parameters[0].Type;
-                            ITypeSymbol valueType = propertySymbol.Type;
-
-                            if (expressions
-                                .Skip(1)
-                                .All(f => CanRefactor(((InitializerExpressionSyntax)f).Expressions, keyType, valueType, context.SemanticModel)))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.UseCSharp6DictionaryInitializer,
-                                    Location.Create(initializer.SyntaxTree, expressions.Span));
-                            }
-                        }
-                    }
-                }
+                if (!CanRefactor(((InitializerExpressionSyntax)expressions[i]).Expressions, keyType, valueType, semanticModel))
+                    return;
             }
+
+            context.RegisterRefactoring(
+                "Use C# 6.0 dictionary initializer",
+                cancellationToken => RefactorAsync(context.Document, initializer, cancellationToken));
         }
 
         private static bool CanRefactor(
@@ -68,8 +67,8 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel)
         {
             return expressions.Count == 2
-                && IsIdentityOrImplicitConversion(expressions[0], keyType, semanticModel)
-                && IsIdentityOrImplicitConversion(expressions[1], valueType, semanticModel);
+                && semanticModel.ClassifyConversion(expressions[0], keyType).IsImplicit
+                && semanticModel.ClassifyConversion(expressions[1], valueType).IsImplicit;
         }
 
         private static IPropertySymbol FindIndexerSymbol(
@@ -103,17 +102,6 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static bool IsIdentityOrImplicitConversion(
-            ExpressionSyntax expression,
-            ITypeSymbol destinationType,
-            SemanticModel semanticModel)
-        {
-            Conversion conversion = semanticModel.ClassifyConversion(expression, destinationType);
-
-            return conversion.IsIdentity
-                || conversion.IsImplicit;
-        }
-
         public static Task<Document> RefactorAsync(
             Document document,
             InitializerExpressionSyntax initializer,
@@ -129,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
         }
 
-        public static ExpressionSyntax CreateNewExpression(InitializerExpressionSyntax initializer)
+        private static ExpressionSyntax CreateNewExpression(InitializerExpressionSyntax initializer)
         {
             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
