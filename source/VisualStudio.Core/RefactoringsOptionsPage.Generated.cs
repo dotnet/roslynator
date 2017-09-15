@@ -152,7 +152,7 @@ namespace Roslynator.VisualStudio
             ReplaceForWithForEach = true;
             ReplaceForWithWhile = true;
             ReplaceHexadecimalLiteralWithDecimalLiteral = true;
-            ReplaceIfElseWithSwitch = true;
+            ReplaceIfWithSwitch = true;
             ReplaceIncrementOperatorWithDecrementOperator = true;
             ReplaceInterpolatedStringWithInterpolationExpression = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
@@ -327,7 +327,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithForEach, ReplaceForWithForEach);
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithWhile, ReplaceForWithWhile);
             SetIsEnabled(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral, ReplaceHexadecimalLiteralWithDecimalLiteral);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch, ReplaceIfElseWithSwitch);
+            SetIsEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch, ReplaceIfWithSwitch);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, ReplaceInterpolatedStringWithInterpolationExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
@@ -512,7 +512,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForWithForEach, "Replace for statement with foreach statement", IsEnabled(RefactoringIdentifiers.ReplaceForWithForEach)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForWithWhile, "Replace for statement with while statement", IsEnabled(RefactoringIdentifiers.ReplaceForWithWhile)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral, "Replace hexadecimal literal with decimal literal", IsEnabled(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfElseWithSwitch, "Replace if-else with switch statement", IsEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfWithSwitch, "Replace if statement with switch statement", IsEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, "Replace increment operator with decrement operator", IsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, "Replace interpolated string with interpolation expression", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, "Replace interpolated string with string literal", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)));
@@ -1699,7 +1699,7 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceIfElseWithSwitch
+        public bool ReplaceIfWithSwitch
         {
             get;
             set;

@@ -880,7 +880,7 @@
       <Syntax>hexadecimal literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0133" Identifier="ReplaceIfElseWithSwitch" Title="Replace if-else with switch statement">
+  <Refactoring Id="RR0133" Identifier="ReplaceIfWithSwitch" Title="Replace if statement with switch statement">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>

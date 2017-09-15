@@ -2649,10 +2649,7 @@ namespace Roslynator.CSharp
 
         internal static bool IsNestedMethod(this SyntaxNode node)
         {
-            return node?.IsKind(
-                SyntaxKind.SimpleLambdaExpression,
-                SyntaxKind.ParenthesizedLambdaExpression,
-                SyntaxKind.AnonymousMethodExpression) == true;
+            return node?.Kind().IsNestedMethod() == true;
         }
 
         internal static IEnumerable<DirectiveTriviaSyntax> DescendantDirectives(this SyntaxNode node)

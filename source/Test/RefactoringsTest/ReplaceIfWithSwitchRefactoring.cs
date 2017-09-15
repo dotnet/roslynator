@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.CSharp.Refactorings.Test
 {
-    internal class ReplaceIfElseWithSwitchRefactoring
+    internal class ReplaceIfWithSwitchRefactoring
     {
         public static void Foo()
         {
@@ -14,18 +14,33 @@ namespace Roslynator.CSharp.Refactorings.Test
 
             var sb = new StringBuilder();
 
-            using (var stringWriter = new StringReader(s))
+            using (var sw = new StringReader(s))
             {
-                var ch = stringWriter.Read();
+                var ch = sw.Read();
 
                 if (ch == 10 || ch == 13)
                 {
                     return;
                 }
-                else 
+                else
                 {
                     sb.Append(ch);
                 }
+            }
+
+            int i = 0;
+
+            if ((((i) == (1)) || ((i) == (2))))
+            {
+                for (; ; )
+                    break;
+
+                return;
+            }
+            else
+            {
+                for (; ; )
+                    break;
             }
 
             RegexOptions options = RegexOptions.None;
@@ -50,6 +65,37 @@ namespace Roslynator.CSharp.Refactorings.Test
                 Foo();
                 Foo();
                 Foo();
+            }
+        }
+
+        //n
+
+        public static void Foo2()
+        {
+            int i = 0;
+
+            for (; ; )
+            {
+                if (i == 0)
+                {
+                    break;
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            for (; ; )
+            {
+                if (i == 0)
+                {
+                    return;
+                }
+                else
+                {
+                    break;
+                }
             }
         }
     }

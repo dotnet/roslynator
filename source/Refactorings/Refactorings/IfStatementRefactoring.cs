@@ -37,8 +37,8 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse))
                     SwapStatementInIfElseRefactoring.ComputeRefactoring(context, ifStatement);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithSwitch))
-                    await ReplaceIfElseWithSwitchRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch))
+                    await ReplaceIfWithSwitchRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfStatement))
                     SplitIfStatementRefactoring.ComputeRefactoring(context, ifStatement);
