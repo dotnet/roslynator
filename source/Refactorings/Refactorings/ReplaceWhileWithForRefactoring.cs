@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -14,205 +13,233 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceWhileWithForRefactoring
     {
-        private const string Title = "Replace while with for";
-
-        public static void ComputeRefactoring(RefactoringContext context, WhileStatementSyntax whileStatement)
-        {
-            context.RegisterRefactoring(
-                Title,
-                cancellationToken => RefactorAsync(context.Document, null, null, whileStatement, cancellationToken));
-        }
+        public const string Title = "Replace while with for";
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
         {
-            if (selectedStatements.Count > 1)
+            if (!(selectedStatements.LastOrDefault() is WhileStatementSyntax whileStatement))
+                return;
+
+            if (selectedStatements.Count == 1)
             {
-                StatementSyntax lastStatement = selectedStatements.Last();
-
-                if (lastStatement.IsKind(SyntaxKind.WhileStatement))
+                context.RegisterRefactoring(
+                    Title,
+                    cancellationToken => RefactorAsync(context.Document, whileStatement, cancellationToken));
+            }
+            else
+            {
+                switch (selectedStatements.First().Kind())
                 {
-                    IEnumerable<StatementSyntax> statements = selectedStatements
-                        .Take(selectedStatements.EndIndex - selectedStatements.StartIndex);
-
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    List<LocalDeclarationStatementSyntax> localDeclarations = null;
-                    List<ExpressionSyntax> expressions = null;
-
-                    foreach (StatementSyntax statement in statements)
-                    {
-                        SyntaxKind kind = statement.Kind();
-
-                        if (kind == SyntaxKind.LocalDeclarationStatement)
+                    case SyntaxKind.LocalDeclarationStatement:
                         {
-                            var localDeclaration = (LocalDeclarationStatementSyntax)statement;
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            if (!IsAnySymbolReferenced(localDeclaration, selectedStatements.ToImmutableArray(), selectedStatements.EndIndex + 1, semanticModel, context.CancellationToken))
+                            if (VerifyLocalDeclarationStatements(selectedStatements, semanticModel, context.CancellationToken))
                             {
-                                (localDeclarations ?? (localDeclarations = new List<LocalDeclarationStatementSyntax>())).Add(localDeclaration);
+                                List<LocalDeclarationStatementSyntax> localDeclarations = selectedStatements
+                                    .Take(selectedStatements.Count - 1)
+                                    .Cast<LocalDeclarationStatementSyntax>()
+                                    .ToList();
+
+                                context.RegisterRefactoring(
+                                    Title,
+                                    cancellationToken => RefactorAsync(context.Document, whileStatement, localDeclarations, cancellationToken));
                             }
-                            else
+
+                            break;
+                        }
+                    case SyntaxKind.ExpressionStatement:
+                        {
+                            if (VerifyExpressionStatements(selectedStatements))
                             {
-                                return;
+                                List<ExpressionStatementSyntax> expressionStatements = selectedStatements
+                                    .Take(selectedStatements.Count - 1)
+                                    .Cast<ExpressionStatementSyntax>()
+                                    .ToList();
+
+                                context.RegisterRefactoring(
+                                    Title,
+                                    cancellationToken => RefactorAsync(context.Document, whileStatement, expressionStatements, cancellationToken));
                             }
-                        }
-                        else if (kind == SyntaxKind.ExpressionStatement)
-                        {
-                            var expressionStatement = (ExpressionStatementSyntax)statement;
 
-                            ExpressionSyntax expression = expressionStatement.Expression;
-
-                            if (expression != null)
-                            {
-                                if (CanBeInitializer(expression))
-                                {
-                                    (expressions ?? (expressions = new List<ExpressionSyntax>())).Add(expression);
-                                }
-                                else
-                                {
-                                    return;
-                                }
-                            }
+                            break;
                         }
-                        else
-                        {
-                            return;
-                        }
-                    }
-
-                    if (localDeclarations == null
-                        || expressions == null)
-                    {
-                        if (localDeclarations == null
-                            || localDeclarations
-                                .Select(f => f.Declaration)
-                                .Where(f => f != null)
-                                .Select(f => semanticModel.GetTypeSymbol(f.Type, context.CancellationToken))
-                                .Distinct()
-                                .Count() == 1)
-                        {
-                            context.RegisterRefactoring(
-                            Title,
-                            cancellationToken => RefactorAsync(context.Document, localDeclarations, expressions, (WhileStatementSyntax)lastStatement, cancellationToken));
-                        }
-                    }
                 }
             }
         }
 
-        private static bool IsAnySymbolReferenced(
-            LocalDeclarationStatementSyntax localDeclaration,
-            ImmutableArray<StatementSyntax> statements,
-            int startIndex,
+        private static bool VerifyLocalDeclarationStatements(
+            StatementContainerSelection selectedStatements,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+            SyntaxList<StatementSyntax> statements = selectedStatements.UnderlyingList;
 
-            if (declaration != null)
+            ITypeSymbol typeSymbol = null;
+
+            for (int i = selectedStatements.StartIndex; i < selectedStatements.EndIndex; i++)
             {
+                StatementSyntax statement = statements[i];
+
+                if (!(statement is LocalDeclarationStatementSyntax localDeclaration))
+                    return false;
+
+                VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+
                 foreach (VariableDeclaratorSyntax variable in declaration.Variables)
                 {
-                    ISymbol symbol = semanticModel.GetDeclaredSymbol(variable, cancellationToken);
+                    var symbol = (ILocalSymbol)semanticModel.GetDeclaredSymbol(variable, cancellationToken);
 
-                    if (IsSymbolReferenced(symbol, statements, startIndex, semanticModel, cancellationToken))
-                        return true;
-                }
-            }
+                    if (symbol == null)
+                        continue;
 
-            return false;
-        }
+                    if (symbol.Type.IsErrorType())
+                        continue;
 
-        private static bool IsSymbolReferenced(
-             ISymbol symbol,
-             ImmutableArray<StatementSyntax> statements,
-             int startIndex,
-             SemanticModel semanticModel,
-             CancellationToken cancellationToken)
-        {
-            for (int i = startIndex; i < statements.Length; i++)
-            {
-                foreach (SyntaxNode node in statements[i].DescendantNodes())
-                {
-                    if (node.IsKind(SyntaxKind.IdentifierName)
-                        && symbol.Equals(semanticModel.GetSymbol(node, cancellationToken)))
+                    if (typeSymbol == null)
                     {
-                        return true;
+                        typeSymbol = symbol.Type;
+                    }
+                    else if (!typeSymbol.Equals(symbol.Type))
+                    {
+                        return false;
+                    }
+
+                    for (int j = selectedStatements.EndIndex + 1; j < statements.Count; j++)
+                    {
+                        foreach (SyntaxNode node in statements[j].DescendantNodes())
+                        {
+                            if (node.IsKind(SyntaxKind.IdentifierName)
+                                && symbol.Equals(semanticModel.GetSymbol(node, cancellationToken)))
+                            {
+                                return false;
+                            }
+                        }
                     }
                 }
             }
 
-            return false;
+            return true;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static bool VerifyExpressionStatements(StatementContainerSelection selectedStatements)
+        {
+            for (int i = selectedStatements.StartIndex; i < selectedStatements.EndIndex; i++)
+            {
+                StatementSyntax statement = selectedStatements.UnderlyingList[i];
+
+                if (!(statement is ExpressionStatementSyntax expressionStatement))
+                    return false;
+
+                if (!CanBeInitializer(expressionStatement.Expression))
+                    return false;
+            }
+
+            return true;
+
+            bool CanBeInitializer(ExpressionSyntax expression)
+            {
+                switch (expression.Kind())
+                {
+                    case SyntaxKind.SimpleAssignmentExpression:
+                    case SyntaxKind.InvocationExpression:
+                    case SyntaxKind.PreIncrementExpression:
+                    case SyntaxKind.PreDecrementExpression:
+                    case SyntaxKind.PostIncrementExpression:
+                    case SyntaxKind.PostDecrementExpression:
+                    case SyntaxKind.ObjectCreationExpression:
+                    case SyntaxKind.AwaitExpression:
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        }
+
+        public static Task<Document> RefactorAsync(
             Document document,
-            List<LocalDeclarationStatementSyntax> localDeclarations,
-            List<ExpressionSyntax> expressions,
             WhileStatementSyntax whileStatement,
             CancellationToken cancellationToken)
         {
-            var declaration = default(VariableDeclarationSyntax);
-            var initializers = default(SeparatedSyntaxList<ExpressionSyntax>);
-            var incrementors = default(SeparatedSyntaxList<ExpressionSyntax>);
-
-            if (localDeclarations != null)
-            {
-                IEnumerable<VariableDeclarationSyntax> declarations = localDeclarations
-                    .Select(f => f.Declaration)
-                    .Where(f => f != null);
-
-                TypeSyntax type = declarations.First().Type.TrimTrivia();
-
-                IEnumerable<VariableDeclaratorSyntax> variables = declarations
-                    .SelectMany(f => f.Variables)
-                    .Select(f => f.TrimTrivia());
-
-                declaration = VariableDeclaration(type, SeparatedList(variables));
-
-                StatementContainer container;
-                if (StatementContainer.TryCreate(whileStatement, out container))
-                {
-                    SyntaxList<StatementSyntax> statements = container.Statements;
-
-                    int index = statements.IndexOf(localDeclarations[0]);
-
-                    ForStatementSyntax forStatement = CreateForStatement(whileStatement, declaration, initializers, incrementors);
-
-                    forStatement = forStatement
-                        .TrimLeadingTrivia()
-                        .PrependToLeadingTrivia(localDeclarations[0].GetLeadingTrivia());
-
-                    IEnumerable<StatementSyntax> newStatements = statements.Take(index)
-                        .Concat(new ForStatementSyntax[] { forStatement })
-                        .Concat(statements.Skip(index + localDeclarations.Count + 1));
-
-                    return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
-                }
-            }
-            else if (expressions != null)
-            {
-                initializers = SeparatedList(expressions);
-            }
-
-            return await document.ReplaceNodeAsync(
+            return document.ReplaceNodeAsync(
                 whileStatement,
-                CreateForStatement(whileStatement, declaration, initializers, incrementors),
-                cancellationToken).ConfigureAwait(false);
+                ConvertWhileToFor(whileStatement),
+                cancellationToken);
         }
 
-        private static ForStatementSyntax CreateForStatement(
+        private static Task<Document> RefactorAsync(
+            Document document,
             WhileStatementSyntax whileStatement,
-            VariableDeclarationSyntax declaration,
-            SeparatedSyntaxList<ExpressionSyntax> initializers,
-            SeparatedSyntaxList<ExpressionSyntax> incrementors)
+            List<ExpressionStatementSyntax> expressionStatements,
+            CancellationToken cancellationToken)
         {
+            SeparatedSyntaxList<ExpressionSyntax> initializers = expressionStatements
+                .Select(f => f.Expression.TrimTrivia())
+                .ToSeparatedSyntaxList();
+
+            ForStatementSyntax forStatement = ConvertWhileToFor(whileStatement, initializers: initializers);
+
+            return RefactorAsync(document, whileStatement, forStatement, expressionStatements, cancellationToken);
+        }
+
+        private static Task<Document> RefactorAsync(
+            Document document,
+            WhileStatementSyntax whileStatement,
+            List<LocalDeclarationStatementSyntax> localDeclarations,
+            CancellationToken cancellationToken)
+        {
+            IEnumerable<VariableDeclarationSyntax> declarations = localDeclarations
+                .Select(f => f.Declaration);
+
+            TypeSyntax type = declarations.First().Type.TrimTrivia();
+
+            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declarations
+                .SelectMany(f => f.Variables)
+                .Select(f => f.TrimTrivia())
+                .ToSeparatedSyntaxList();
+
+            VariableDeclarationSyntax declaration = VariableDeclaration(type, variables);
+
+            ForStatementSyntax forStatement = ConvertWhileToFor(whileStatement, declaration);
+
+            return RefactorAsync(document, whileStatement, forStatement, localDeclarations, cancellationToken);
+        }
+
+        private static Task<Document> RefactorAsync<TNode>(
+            Document document,
+            WhileStatementSyntax whileStatement,
+            ForStatementSyntax forStatement,
+            List<TNode> list,
+            CancellationToken cancellationToken) where TNode : StatementSyntax
+        {
+            forStatement = forStatement
+                .TrimLeadingTrivia()
+                .PrependToLeadingTrivia(list[0].GetLeadingTrivia());
+
+            StatementContainer container = StatementContainer.Create(whileStatement);
+
+            SyntaxList<StatementSyntax> statements = container.Statements;
+
+            int index = statements.IndexOf(list[0]);
+
+            IEnumerable<StatementSyntax> newStatements = statements.Take(index)
+                .Concat(new ForStatementSyntax[] { forStatement })
+                .Concat(statements.Skip(index + list.Count + 1));
+
+            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+        }
+
+        private static ForStatementSyntax ConvertWhileToFor(
+            WhileStatementSyntax whileStatement,
+            VariableDeclarationSyntax declaration = default(VariableDeclarationSyntax),
+            SeparatedSyntaxList<ExpressionSyntax> initializers = default(SeparatedSyntaxList<ExpressionSyntax>))
+        {
+            var incrementors = default(SeparatedSyntaxList<ExpressionSyntax>);
+
             StatementSyntax statement = whileStatement.Statement;
 
-            if (statement?.IsKind(SyntaxKind.Block) == true)
+            if (statement is BlockSyntax block)
             {
-                var block = (BlockSyntax)statement;
-
                 incrementors = SeparatedList(GetIncrementors(block));
 
                 if (incrementors.Any())
@@ -237,46 +264,23 @@ namespace Roslynator.CSharp.Refactorings
 
             for (int i = statements.Count - 1; i >= 0; i--)
             {
-                if (statements[i].IsKind(SyntaxKind.ExpressionStatement))
+                if (statements[i] is ExpressionStatementSyntax expressionStatement)
                 {
-                    var expressionStatement = (ExpressionStatementSyntax)statements[i];
-
                     ExpressionSyntax expression = expressionStatement.Expression;
 
-                    if (expression != null)
+                    if (expression.IsIncrementOrDecrementExpression())
                     {
-                        if (expression.IsIncrementOrDecrementExpression())
-                        {
-                            yield return expression;
-                        }
-                        else
-                        {
-                            yield break;
-                        }
+                        yield return expression;
+                    }
+                    else
+                    {
+                        yield break;
                     }
                 }
                 else
                 {
                     yield break;
                 }
-            }
-        }
-
-        private static bool CanBeInitializer(ExpressionSyntax expression)
-        {
-            switch (expression.Kind())
-            {
-                case SyntaxKind.SimpleAssignmentExpression:
-                case SyntaxKind.InvocationExpression:
-                case SyntaxKind.PreIncrementExpression:
-                case SyntaxKind.PreDecrementExpression:
-                case SyntaxKind.PostIncrementExpression:
-                case SyntaxKind.PostDecrementExpression:
-                case SyntaxKind.ObjectCreationExpression:
-                case SyntaxKind.AwaitExpression:
-                    return true;
-                default:
-                    return false;
             }
         }
     }
