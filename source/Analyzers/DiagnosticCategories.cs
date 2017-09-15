@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+
 namespace Roslynator.CSharp
 {
     public static class DiagnosticCategories
@@ -16,6 +18,9 @@ namespace Roslynator.CSharp
         public const string Simplification = "Simplification";
         public const string Style = "Style";
         public const string Usage = "Usage";
+
+        [Obsolete]
+        public const string ErrorFix = "ErrorFix";
 
         //public const string Compatibility = "Compatibility";
         //public const string Correctness = "Correctness";

@@ -23,16 +23,12 @@ namespace Roslynator.CodeGeneration
         public void Generate()
         {
             WriteAllText(
-                @"Analyzers\Analyzers.xml",
-                XmlGenerator.CreateAnalyzersXml());
-
-            WriteAllText(
                 @"Analyzers\README.md",
-                MarkdownGenerator.CreateAnalyzersReadMe(Analyzers, Comparer));
+                MarkdownGenerator.CreateAnalyzersReadMe(Analyzers.Where(f => !f.IsObsolete), Comparer));
 
             WriteAllText(
                 @"Analyzers\AnalyzersByCategory.md",
-                MarkdownGenerator.CreateAnalyzersByCategoryMarkDown(Analyzers, Comparer));
+                MarkdownGenerator.CreateAnalyzersByCategoryMarkDown(Analyzers.Where(f => !f.IsObsolete), Comparer));
 
             foreach (AnalyzerDescriptor analyzer in Analyzers)
             {

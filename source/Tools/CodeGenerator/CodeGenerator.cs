@@ -27,6 +27,22 @@ namespace Roslynator.CodeGeneration
                 RefactoringsOptionsPageGenerator.Generate(Refactorings, Comparer));
 
             WriteCompilationUnit(
+                @"Analyzers\DiagnosticDescriptors.Generated.cs",
+                DiagnosticDescriptorsGenerator.Generate(Analyzers, obsolete: false, comparer: Comparer));
+
+            WriteCompilationUnit(
+                @"Analyzers\DiagnosticDescriptors.Deprecated.Generated.cs",
+                DiagnosticDescriptorsGenerator.Generate(Analyzers, obsolete: true, comparer: Comparer));
+
+            WriteCompilationUnit(
+                @"Analyzers\DiagnosticIdentifiers.Generated.cs",
+                DiagnosticIdentifiersGenerator.Generate(Analyzers, obsolete: false, comparer: Comparer));
+
+            WriteCompilationUnit(
+                @"Analyzers\DiagnosticIdentifiers.Deprecated.Generated.cs",
+                DiagnosticIdentifiersGenerator.Generate(Analyzers, obsolete: true, comparer: Comparer));
+
+            WriteCompilationUnit(
                 @"CodeFixes\CodeFixIdentifiers.Generated.cs",
                 CodeFixIdentifiersGenerator.Generate(CodeFixes, Comparer));
 
