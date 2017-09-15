@@ -2148,7 +2148,7 @@ namespace Roslynator.CSharp
             return InvocationExpression(
                 IdentifierName("nameof"),
                 ArgumentList(
-                    Argument(IdentifierName(identifier))));
+                    SyntaxFactory.Argument(IdentifierName(identifier))));
         }
 
         public static InitializerExpressionSyntax ArrayInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default(SeparatedSyntaxList<ExpressionSyntax>))
@@ -2251,6 +2251,11 @@ namespace Roslynator.CSharp
                 nameEquals: null,
                 nameColon: nameColon,
                 expression: expression);
+        }
+
+        public static ArgumentSyntax Argument(NameColonSyntax nameColon, ExpressionSyntax expression)
+        {
+            return SyntaxFactory.Argument(nameColon, default(SyntaxToken), expression);
         }
 
         public static ParameterSyntax Parameter(TypeSyntax type, string identifier, EqualsValueClauseSyntax @default = null)

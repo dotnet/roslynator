@@ -136,6 +136,9 @@
     <Compile Include="CSharp\CodeFixesOptionsPageGenerator.cs" />
     <Compile Include="CSharp\CodeFixIdentifiersGenerator.cs" />
     <Compile Include="CSharp\CompilerDiagnosticIdentifiersGenerator.cs" />
+    <Compile Include="CSharp\DiagnosticDescriptorsGenerator.cs" />
+    <Compile Include="CSharp\DiagnosticIdentifiersGenerator.cs" />
+    <Compile Include="CSharp\Extensions.cs" />
     <Compile Include="CSharp\RefactoringIdentifiersGenerator.cs" />
     <Compile Include="CSharp\RefactoringsOptionsPageGenerator.cs" />
     <Compile Include="Html\HtmlGenerator.cs" />
