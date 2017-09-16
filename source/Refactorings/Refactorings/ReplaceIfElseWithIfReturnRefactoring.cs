@@ -92,7 +92,11 @@ namespace Roslynator.CSharp.Refactorings
                 if (elseClause != null)
                     newIfStatement = newIfStatement.PrependToLeadingTrivia(elseClause.GetLeadingTrivia());
 
-                statements.Add(newIfStatement.WithFormatterAnnotation());
+                newIfStatement = newIfStatement
+                    .AppendToTrailingTrivia(CSharpFactory.NewLine())
+                    .WithFormatterAnnotation();
+
+                statements.Add(newIfStatement);
 
                 elseClause = ifStatement.Else;
 

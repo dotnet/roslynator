@@ -617,11 +617,21 @@ namespace Roslynator.CSharp.Documentation
                         {
                             case "member":
                             case "doc":
-                                return reader.ReadInnerXml();
+                                {
+                                    try
+                                    {
+                                        return reader.ReadInnerXml();
+                                    }
+                                    catch (XmlException ex)
+                                    {
+                                        Debug.Assert(false, ex.ToString());
+                                        return null;
+                                    }
+                                }
                             default:
                                 {
                                     Debug.Assert(false, reader.Name);
-                                    break;
+                                    return null;
                                 }
                         }
                     }
