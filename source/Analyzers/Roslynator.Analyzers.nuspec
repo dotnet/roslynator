@@ -11,8 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of 190+ analyzers for C#, powered by Roslyn.
 
-  - This package can be used with Visual Studio 2017.
-  - This package supersedes package CSharpAnalyzers that can be used with Visual Studio 2015.
+  - This package cannot be used with Visual Studio 2015.
   - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 2.0.0.</description>
     <summary>A collection of 190+ analyzers for C#, powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2017 Josef Pihrt</copyright>

@@ -46,12 +46,7 @@
     <li>
         <a href="http://www.nuget.org/packages/Roslynator.Analyzers">Roslynator.Analyzers</a>
         <span> - NuGet package that contains only analyzers.</span>
-        <span> - This package supersedes package CSharpAnalyzers.</span>
         <span> - This package cannot be used with Visual Studio 2015.</span>
-    </li>  
-    <li>
-        <a href="http://www.nuget.org/packages/CSharpAnalyzers">CSharpAnalyzers</a>
-        <span> - NuGet package that contains only analyzers.</span>
     </li>  
 </ul>
 
