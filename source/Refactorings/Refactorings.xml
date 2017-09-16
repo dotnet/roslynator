@@ -874,6 +874,7 @@
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
+    <Scope>for keyword or selected for statement</Scope>
   </Refactoring>
   <Refactoring Id="RR0132" Identifier="ReplaceHexadecimalLiteralWithDecimalLiteral" Title="Replace hexadecimal literal with decimal literal">
     <Syntaxes>

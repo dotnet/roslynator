@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithWhile)
-                && context.Span.IsBetweenSpans(forStatement))
+                && (context.Span.IsEmptyAndContainedInSpan(forStatement.ForKeyword) || context.Span.IsBetweenSpans(forStatement)))
             {
                 context.RegisterRefactoring(
                     "Replace for with while",
