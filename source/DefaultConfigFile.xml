@@ -122,7 +122,7 @@
       <Refactoring Id="RR0119" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithExpression -->
       <Refactoring Id="RR0120" IsEnabled="true" /> <!-- UseIfElseInsteadOfConditionalExpression -->
       <Refactoring Id="RR0121" IsEnabled="true" /> <!-- ReplaceConstantWithField -->
-      <Refactoring Id="RR0123" IsEnabled="true" /> <!-- ReplaceDoStatementWithWhileStatement -->
+      <Refactoring Id="RR0123" IsEnabled="true" /> <!-- ReplaceDoWithWhile -->
       <Refactoring Id="RR0124" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringEquals -->
       <Refactoring Id="RR0125" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrEmpty -->
       <Refactoring Id="RR0126" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace -->
@@ -132,7 +132,7 @@
       <Refactoring Id="RR0130" IsEnabled="true" /> <!-- ReplaceForWithForEach -->
       <Refactoring Id="RR0131" IsEnabled="true" /> <!-- ReplaceForWithWhile -->
       <Refactoring Id="RR0132" IsEnabled="true" /> <!-- ReplaceHexadecimalLiteralWithDecimalLiteral -->
-      <Refactoring Id="RR0133" IsEnabled="true" /> <!-- ReplaceIfElseWithSwitch -->
+      <Refactoring Id="RR0133" IsEnabled="true" /> <!-- ReplaceIfWithSwitch -->
       <Refactoring Id="RR0134" IsEnabled="true" /> <!-- ReplaceIncrementOperatorWithDecrementOperator -->
       <Refactoring Id="RR0135" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithInterpolationExpression -->
       <Refactoring Id="RR0136" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithStringLiteral -->
@@ -148,7 +148,7 @@
       <Refactoring Id="RR0147" IsEnabled="true" /> <!-- ReplaceSwitchWithIfElse -->
       <Refactoring Id="RR0148" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiteral -->
       <Refactoring Id="RR0149" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiterals -->
-      <Refactoring Id="RR0150" IsEnabled="true" /> <!-- ReplaceWhileStatementWithDoStatement -->
+      <Refactoring Id="RR0150" IsEnabled="true" /> <!-- ReplaceWhileWithDo -->
       <Refactoring Id="RR0151" IsEnabled="true" /> <!-- ReplaceWhileWithFor -->
       <Refactoring Id="RR0152" IsEnabled="true" /> <!-- ReverseForLoop -->
       <Refactoring Id="RR0153" IsEnabled="true" /> <!-- SimplifyIf -->
@@ -189,6 +189,7 @@
       <Refactoring Id="RR0188" IsEnabled="false" /> <!-- ReplaceForEachWithForAndReverseLoop -->
       <Refactoring Id="RR0189" IsEnabled="true" /> <!-- ReduceIfNesting -->
       <Refactoring Id="RR0190" IsEnabled="true" /> <!-- ReplaceIfElseWithIfReturn -->
+      <Refactoring Id="RR0191" IsEnabled="true" /> <!-- UseCSharp6DictionaryInitializer -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->

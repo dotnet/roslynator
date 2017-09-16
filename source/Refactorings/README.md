@@ -136,8 +136,8 @@ RR0131|[Replace for statement with while statement](../../docs/refactorings/RR01
 RR0129|[Replace foreach statement with for statement](../../docs/refactorings/RR0129.md)|x
 RR0188|[Replace foreach with for and reverse loop](../../docs/refactorings/RR0188.md)|
 RR0132|[Replace hexadecimal literal with decimal literal](../../docs/refactorings/RR0132.md)|x
+RR0133|[Replace if statement with switch statement](../../docs/refactorings/RR0133.md)|x
 RR0190|[Replace if\-else with if\-return](../../docs/refactorings/RR0190.md)|x
-RR0133|[Replace if\-else with switch statement](../../docs/refactorings/RR0133.md)|x
 RR0134|[Replace increment operator with decrement operator](../../docs/refactorings/RR0134.md)|x
 RR0135|[Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md)|x
 RR0136|[Replace interpolated string with string literal](../../docs/refactorings/RR0136.md)|x
@@ -170,6 +170,7 @@ RR0162|[Swap statements in if\-else](../../docs/refactorings/RR0162.md)|x
 RR0163|[Uncomment](../../docs/refactorings/RR0163.md)|x
 RR0168|[Use "" instead of string\.Empty](../../docs/refactorings/RR0168.md)|x
 RR0164|[Use bitwise operation instead of calling 'HasFlag'](../../docs/refactorings/RR0164.md)|x
+RR0191|[Use C\# 6\.0 dictionary initializer](../../docs/refactorings/RR0191.md)|x
 RR0165|[Use coalesce expression instead of if](../../docs/refactorings/RR0165.md)|x
 RR0166|[Use conditional expression instead of if](../../docs/refactorings/RR0166.md)|x
 RR0128|[Use constant instead of field](../../docs/refactorings/RR0128.md)|x

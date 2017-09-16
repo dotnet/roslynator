@@ -1,3 +1,15 @@
+### 1.4.58 (2017-09-16)
+
+#### Analyzers
+
+  * Remove analyzer UseCSharp6DictionaryInitializer (RCS1095)
+
+#### Refactorings
+
+##### New Refactorings
+
+  * UseCSharp6DictionaryInitializer (RR0191)
+
 ### 1.4.57 (2017-09-06)
 
 #### Refactorings
