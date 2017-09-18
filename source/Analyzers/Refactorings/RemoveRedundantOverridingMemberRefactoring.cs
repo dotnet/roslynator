@@ -26,6 +26,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (modifiers.Contains(SyntaxKind.OverrideKeyword)
                     && !modifiers.ContainsAny(SyntaxKind.SealedKeyword, SyntaxKind.PartialKeyword)
+                    && !methodDeclaration.AttributeLists.Any()
                     && !methodDeclaration.HasDocumentationComment()
                     && methodDeclaration.DescendantTrivia(methodDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
@@ -187,6 +188,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (modifiers.Contains(SyntaxKind.OverrideKeyword)
                     && !modifiers.Contains(SyntaxKind.SealedKeyword)
+                    && !propertyDeclaration.AttributeLists.Any()
                     && !propertyDeclaration.HasDocumentationComment()
                     && propertyDeclaration.DescendantTrivia(propertyDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
                     && propertyDeclaration
@@ -315,6 +317,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (modifiers.Contains(SyntaxKind.OverrideKeyword)
                     && !modifiers.Contains(SyntaxKind.SealedKeyword)
+                    && !indexerDeclaration.AttributeLists.Any()
                     && !indexerDeclaration.HasDocumentationComment()
                     && indexerDeclaration.DescendantTrivia(indexerDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
                     && indexerDeclaration
