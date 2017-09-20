@@ -4,13 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-#pragma warning disable RCS1028, RCS1070
+#pragma warning disable RCS1028, RCS1069, RCS1070, RCS1111, RCS1118
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     public static class MergeSwitchSectionsWithEquivalentContent
     {
-        private static void Foo()
+        private static void Foo(object value = null)
         {
             var options = RegexOptions.None;
 
@@ -43,6 +43,36 @@ namespace Roslynator.CSharp.Analyzers.Tests
             switch (options)
             {
                 case RegexOptions.CultureInvariant:
+                    break;
+#if DEBUG
+                case RegexOptions.ECMAScript:
+                    break;
+#endif
+                case RegexOptions.ExplicitCapture:
+                    break;
+                case RegexOptions.IgnoreCase:
+                    break;
+                case RegexOptions.IgnorePatternWhitespace:
+                    break;
+#if DEBUG
+                case RegexOptions.Multiline:
+                    break;
+#endif
+                case RegexOptions.None:
+                    break;
+                case RegexOptions.RightToLeft:
+                    break;
+                case RegexOptions.Singleline:
+                    {
+                        break;
+                    }
+                default:
+                    break;
+            }
+
+            switch (options)
+            {
+                case RegexOptions.CultureInvariant:
                     {
                         break;
                     }
@@ -53,6 +83,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
                         Foo();
                         break;
                     }
+                case object x:
+                    break;
             }
 
             switch (options)
@@ -66,6 +98,22 @@ namespace Roslynator.CSharp.Analyzers.Tests
                     break;
                 case RegexOptions.ExplicitCapture:
                     {
+                        break;
+                    }
+            }
+
+            switch (options)
+            {
+                case RegexOptions.CultureInvariant:
+                    {
+                        break;
+                    }
+                case RegexOptions.ECMAScript:
+                    Foo();
+                    break;
+                case RegexOptions.ExplicitCapture:
+                    {
+                        Foo();
                         break;
                     }
             }
@@ -101,12 +149,46 @@ namespace Roslynator.CSharp.Analyzers.Tests
                     }
             }
 
+            //n
+
             switch (options)
             {
                 case RegexOptions.ECMAScript:
                     break; // xxx
                 case RegexOptions.ExplicitCapture:
                     break;
+            }
+
+            switch (value)
+            {
+                case int x:
+                    break;
+                case long x:
+                    break;
+            }
+
+            switch (value)
+            {
+                case int x:
+                    Foo(x);
+                    break;
+                case long x:
+                    Foo(x);
+                    break;
+            }
+
+            switch (value)
+            {
+                case int x:
+                    {
+                        Foo(x);
+                        break;
+                    }
+                case long x:
+                    {
+                        Foo(x);
+                        break;
+                    }
             }
         }
     }
