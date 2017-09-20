@@ -18,58 +18,48 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
+            if (context.Node.ContainsDiagnostics)
+                return;
+
             var switchStatement = (SwitchStatementSyntax)context.Node;
 
-            if (!switchStatement.ContainsDiagnostics)
-            {
-                SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
+            SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-                if (sections.Count > 1)
-                {
-                    SyntaxList<StatementSyntax> statements = GetStatements(sections[0]);
+            if (sections.Count <= 1)
+                return;
 
-                    for (int i = 1; i < sections.Count; i++)
-                    {
-                        SyntaxList<StatementSyntax> statements2 = GetStatements(sections[i]);
+            SwitchSectionSyntax section = FindFixableSection(sections);
 
-                        if (AreEquivalent(statements, statements2))
-                        {
-                            int firstIndex = i - 1;
+            if (section == null)
+                return;
 
-                            i++;
-
-                            while (i < sections.Count
-                                && AreEquivalent(statements, GetStatements(sections[i])))
-                            {
-                                i++;
-                            }
-
-                            Analyze(context, switchStatement, sections, firstIndex, i - 1);
-                            return;
-                        }
-
-                        statements = statements2;
-                    }
-                }
-            }
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.MergeSwitchSectionsWithEquivalentContent,
+                Location.Create(switchStatement.SyntaxTree, section.Statements.Span));
         }
 
-        private static void Analyze(
-            SyntaxNodeAnalysisContext context,
-            SwitchStatementSyntax switchStatement,
-            SyntaxList<SwitchSectionSyntax> sections,
-            int firstIndex,
-            int lastIndex)
+        private static SwitchSectionSyntax FindFixableSection(SyntaxList<SwitchSectionSyntax> sections)
         {
-            SwitchSectionSyntax firstSection = sections[firstIndex];
-            SwitchSectionSyntax lastSection = sections[lastIndex];
+            SyntaxList<StatementSyntax> statements = GetStatementsOrDefault(sections[0]);
 
-            if (!switchStatement.ContainsDirectives(TextSpan.FromBounds(firstSection.SpanStart, lastSection.Span.End)))
+            int i = 1;
+
+            while (i < sections.Count)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.MergeSwitchSectionsWithEquivalentContent,
-                    Location.Create(switchStatement.SyntaxTree, firstSection.Statements.Span));
+                SyntaxList<StatementSyntax> nextStatements = GetStatementsOrDefault(sections[i]);
+
+                if (AreEquivalent(statements, nextStatements)
+                    && !sections[i - 1].SpanOrTrailingTriviaContainsDirectives()
+                    && !sections[i].SpanOrLeadingTriviaContainsDirectives())
+                {
+                    return sections[i - 1];
+                }
+
+                statements = nextStatements;
+                i++;
             }
+
+            return null;
         }
 
         private static bool AreEquivalent(SyntaxList<StatementSyntax> statements, SyntaxList<StatementSyntax> statements2)
@@ -98,16 +88,25 @@ namespace Roslynator.CSharp.Refactorings
                 && statement2.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
         }
 
-        private static SyntaxList<StatementSyntax> GetStatements(SwitchSectionSyntax section)
+        private static SyntaxList<StatementSyntax> GetStatementsOrDefault(SwitchSectionSyntax section)
         {
+            foreach (SwitchLabelSyntax label in section.Labels)
+            {
+                SyntaxKind kind = label.Kind();
+
+                if (kind != SyntaxKind.CaseSwitchLabel
+                    && kind != SyntaxKind.DefaultSwitchLabel)
+                {
+                    return default(SyntaxList<StatementSyntax>);
+                }
+            }
+
             SyntaxList<StatementSyntax> statements = section.Statements;
 
-            if (statements.Count == 1)
+            if (statements.Count == 1
+                && (statements[0] is BlockSyntax block))
             {
-                StatementSyntax statement = statements[0];
-
-                if (statement.IsKind(SyntaxKind.Block))
-                    return ((BlockSyntax)statement).Statements;
+                return block.Statements;
             }
 
             return statements;
@@ -116,23 +115,34 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             SwitchSectionSyntax switchSection,
-            int numberOfAdditionalSectionsToMerge,
             CancellationToken cancellationToken)
         {
             var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
 
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
+            SyntaxList<StatementSyntax> statements = GetStatementsOrDefault(switchSection);
+
             int index = sections.IndexOf(switchSection);
+
+            int i = index + 1;
+
+            while (i < sections.Count - 1
+                && !sections[i].SpanOrLeadingTriviaContainsDirectives()
+                && AreEquivalent(statements, GetStatementsOrDefault(sections[i + 1])))
+            {
+                i++;
+            }
 
             IEnumerable<SwitchSectionSyntax> sectionsWithoutStatements = sections
                 .Skip(index)
-                .Take(numberOfAdditionalSectionsToMerge + 1)
+                .Take(i - index)
                 .Select(CreateSectionWithoutStatements);
 
-            SyntaxList<SwitchSectionSyntax> newSections = sections.Take(index)
+            SyntaxList<SwitchSectionSyntax> newSections = sections
+                .Take(index)
                 .Concat(sectionsWithoutStatements)
-                .Concat(sections.Skip(index + numberOfAdditionalSectionsToMerge + 1))
+                .Concat(sections.Skip(i))
                 .ToSyntaxList();
 
             SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);

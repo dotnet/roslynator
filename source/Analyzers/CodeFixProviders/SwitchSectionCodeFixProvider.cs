@@ -70,11 +70,9 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.MergeSwitchSectionsWithEquivalentContent:
                         {
-                            int additionalSections = diagnostic.AdditionalLocations.Count;
-
                             CodeAction codeAction = CodeAction.Create(
                                 "Merge sections",
-                                cancellationToken => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, additionalSections, cancellationToken),
+                                cancellationToken => MergeSwitchSectionsRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
