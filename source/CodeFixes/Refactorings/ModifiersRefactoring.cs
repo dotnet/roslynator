@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             CodeAction codeAction = CodeAction.Create(
                 $"Add '{ModifierHelper.GetModifierName(kind)}' modifier",
                 cancellationToken => AddModifier(document, memberDeclaration, kind, cancellationToken),
-                AbstractCodeFixProvider.GetEquivalenceKey(diagnostic, kind.ToString()));
+                EquivalenceKeyProvider.GetEquivalenceKey(diagnostic, kind.ToString()));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }
