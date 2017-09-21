@@ -2,6 +2,8 @@
 
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.Metadata;
@@ -14,7 +16,7 @@ namespace Roslynator.CodeGeneration.CSharp
     {
         public static CompilationUnitSyntax Generate(IEnumerable<AnalyzerDescriptor> analyzers, bool obsolete, IComparer<string> comparer)
         {
-            return CompilationUnit(
+            CompilationUnitSyntax compilationUnit = CompilationUnit(
                 UsingDirectives("System", "Microsoft.CodeAnalysis"),
                 NamespaceDeclaration("Roslynator.CSharp",
                     ClassDeclaration(
@@ -25,6 +27,10 @@ namespace Roslynator.CodeGeneration.CSharp
                                 analyzers
                                     .Where(f => f.IsObsolete == obsolete)
                                     .OrderBy(f => f.Id, comparer))))));
+
+            compilationUnit = compilationUnit.NormalizeWhitespace();
+
+            return (CompilationUnitSyntax)Rewriter.Instance.Visit(compilationUnit);
         }
 
         private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerDescriptor> analyzers)
@@ -79,6 +85,30 @@ namespace Roslynator.CodeGeneration.CSharp
                             IdentifierName(analyzer.Identifier),
                             IdentifierName("CreateFadeOut"))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
                 }
+            }
+        }
+
+        private class Rewriter : CSharpSyntaxRewriter
+        {
+            public static Rewriter Instance { get; } = new Rewriter();
+
+            public override SyntaxNode VisitFieldDeclaration(FieldDeclarationSyntax node)
+            {
+                node = (FieldDeclarationSyntax)base.VisitFieldDeclaration(node);
+
+                return node.AppendToTrailingTrivia(NewLine());
+            }
+
+            public override SyntaxNode VisitArgument(ArgumentSyntax node)
+            {
+                return node
+                    .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
+                    .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
+            }
+
+            public override SyntaxNode VisitAttribute(AttributeSyntax node)
+            {
+                return node;
             }
         }
     }
