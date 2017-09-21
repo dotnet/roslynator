@@ -98,6 +98,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
             void LocalFunction()
             {
                 return;
+
+                void LocalFunction2()
+                {
+                    return;
+                }
             }
         }
 
@@ -122,6 +127,17 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 {
                     return;
                 }
+
+                void LocalFunction2()
+                {
+                    if (f)
+                    {
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
             }
         }
 
@@ -141,6 +157,12 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 yield return null;
                 yield break;
+
+                IEnumerable<object> LocalFunction3()
+                {
+                    yield return null;
+                    yield break;
+                }
             }
         }
 
@@ -182,12 +204,75 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 {
                     yield break;
                 }
+
+                IEnumerable<object> LocalFunction3()
+                {
+                    yield return null;
+
+                    if (f)
+                    {
+                    }
+                    else
+                    {
+                        yield break;
+                    }
+                }
             }
         }
 
         //n
 
-        private static IEnumerable<object> Foo5()
+        private static string Foo5()
+        {
+            return;
+
+            string LocalFunction()
+            {
+                return;
+
+                string LocalFunction2()
+                {
+                    return;
+                }
+            }
+        }
+
+        private static string Foo6()
+        {
+            bool f = false;
+
+            if (f)
+            {
+            }
+            else
+            {
+                return;
+            }
+
+            string LocalFunction()
+            {
+                if (f)
+                {
+                }
+                else
+                {
+                    return;
+                }
+
+                string LocalFunction2()
+                {
+                    if (f)
+                    {
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
+        }
+
+        private static IEnumerable<object> Foo7()
         {
             yield break;
 
@@ -197,7 +282,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        private static IEnumerable<object> Foo6()
+        private static IEnumerable<object> Foo8()
         {
             IEnumerable<object> LocalFunction()
             {
