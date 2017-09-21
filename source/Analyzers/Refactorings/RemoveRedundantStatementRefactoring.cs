@@ -18,6 +18,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             Analyze(
                 context,
+                SyntaxKind.ContinueStatement,
                 f => f == SyntaxKind.DoStatement
                      || f == SyntaxKind.WhileStatement
                      || f == SyntaxKind.ForStatement
@@ -36,6 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                 Analyze(
                     context,
                     returnStatement,
+                    SyntaxKind.ReturnStatement,
                     f => f == SyntaxKind.ConstructorDeclaration
                          || f == SyntaxKind.DestructorDeclaration
                          || f == SyntaxKind.MethodDeclaration
@@ -47,20 +49,21 @@ namespace Roslynator.CSharp.Refactorings
         {
             Analyze(
                 context,
+                SyntaxKind.YieldBreakStatement,
                 f => f == SyntaxKind.MethodDeclaration);
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, Func<SyntaxKind, bool> predicate)
+        private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxKind statementKind, Func<SyntaxKind, bool> predicate)
         {
             if (context.Node.SpanContainsDirectives())
                 return;
 
             var statement = (StatementSyntax)context.Node;
 
-            Analyze(context, statement, predicate);
+            Analyze(context, statement, statementKind, predicate);
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement, Func<SyntaxKind, bool> predicate)
+        private static void Analyze(SyntaxNodeAnalysisContext context, StatementSyntax statement, SyntaxKind statementKind, Func<SyntaxKind, bool> predicate)
         {
             if (statement.IsParentKind(SyntaxKind.Block))
             {
@@ -74,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (predicate(kind))
                     {
-                        if (IsRemovable(block, statement))
+                        if (IsRemovable(block, statement, statementKind, kind))
                             ReportDiagnostic(context, statement);
                     }
                     else if (kind == SyntaxKind.ElseClause)
@@ -96,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
                                     kind = parent.Kind();
 
                                     if (predicate(kind)
-                                        && IsRemovable(block, ifStatement))
+                                        && IsRemovable(block, ifStatement, statementKind, kind))
                                     {
                                         ReportDiagnostic(context, statement);
                                     }
@@ -108,23 +111,27 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool IsRemovable(BlockSyntax block, StatementSyntax statement)
+        private static bool IsRemovable(BlockSyntax block, StatementSyntax statement, SyntaxKind statementKind, SyntaxKind parentKind)
         {
-            if (block.Statements.IsLast(statement))
+            if (!block.Statements.IsLast(statement))
+                return false;
+
+            if (statementKind == SyntaxKind.YieldBreakStatement)
             {
-                return !statement.IsKind(SyntaxKind.YieldBreakStatement)
-                    || ContainsOtherYieldStatement(block, statement);
+                TextSpan span = TextSpan.FromBounds(block.SpanStart, statement.FullSpan.Start);
+
+                return block
+                    .DescendantNodes(span, f => !f.IsNestedMethod())
+                    .Any(f => f.IsKind(SyntaxKind.YieldBreakStatement, SyntaxKind.YieldReturnStatement));
             }
 
-            return false;
-        }
+            if (statementKind == SyntaxKind.ReturnStatement
+                && parentKind == SyntaxKind.MethodDeclaration)
+            {
+                return ((MethodDeclarationSyntax)block.Parent).ReturnType?.IsVoid() == true;
+            }
 
-        private static bool ContainsOtherYieldStatement(BlockSyntax block, StatementSyntax statement)
-        {
-            TextSpan span = TextSpan.FromBounds(block.SpanStart, statement.FullSpan.Start);
-            return block
-                .DescendantNodes(span, f => !f.IsNestedMethod())
-                .Any(f => f.IsKind(SyntaxKind.YieldBreakStatement, SyntaxKind.YieldReturnStatement));
+            return true;
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, StatementSyntax statement)
