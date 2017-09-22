@@ -1,5 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -16,31 +18,67 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
 
-            if (sections.Any(section => !section.Labels.Contains(SyntaxKind.DefaultSwitchLabel)))
-            {
-                string title = (sections.Count == 1)
-                    ? "Replace switch with if"
-                    : "Replace switch with if-else";
+            if (!IsFixable(sections))
+                return;
 
-                context.RegisterRefactoring(
-                    title,
-                    cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken));
-            }
+            context.RegisterRefactoring(
+                (sections.Count == 1) ? "Replace switch with if" : "Replace switch with if-else",
+                cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken));
         }
 
-        public static Task<Document> RefactorAsync(
+        private static bool IsFixable(SyntaxList<SwitchSectionSyntax> sections)
+        {
+            bool containsSectionWithoutDefault = false;
+
+            foreach (SwitchSectionSyntax section in sections)
+            {
+                bool containsPattern = false;
+                bool containsDefault = false;
+
+                foreach (SwitchLabelSyntax label in section.Labels)
+                {
+                    switch (label.Kind())
+                    {
+                        case SyntaxKind.CasePatternSwitchLabel:
+                            {
+                                containsPattern = true;
+                                break;
+                            }
+                        case SyntaxKind.CaseSwitchLabel:
+                            {
+                                break;
+                            }
+                        case SyntaxKind.DefaultSwitchLabel:
+                            {
+                                containsDefault = true;
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Fail(label.Kind().ToString());
+                                return false;
+                            }
+                    }
+
+                    if (containsDefault)
+                    {
+                        if (containsPattern)
+                            return false;
+                    }
+                    else
+                    {
+                        containsSectionWithoutDefault = true;
+                    }
+                }
+            }
+
+            return containsSectionWithoutDefault;
+        }
+
+        public static async Task<Document> RefactorAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
             CancellationToken cancellationToken = default(CancellationToken))
-        {
-            IfStatementSyntax newNode = Refactor(switchStatement)
-                .WithTriviaFrom(switchStatement)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(switchStatement, newNode, cancellationToken);
-        }
-
-        private static IfStatementSyntax Refactor(SwitchStatementSyntax switchStatement)
         {
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
             IfStatementSyntax ifStatement = null;
@@ -63,8 +101,10 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxList<StatementSyntax> statements = GetSectionStatements(sections[i]);
 
+                SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+
                 IfStatementSyntax @if = IfStatement(
-                    CreateCondition(switchStatement, sections[i]),
+                    CreateCondition(switchStatement, sections[i], semanticModel),
                     Block(statements));
 
                 if (ifStatement != null)
@@ -80,28 +120,66 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return ifStatement;
+            ifStatement = ifStatement
+                .WithTriviaFrom(switchStatement)
+                .WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(switchStatement, ifStatement, cancellationToken).ConfigureAwait(false);
         }
 
-        private static ExpressionSyntax CreateCondition(SwitchStatementSyntax switchStatement, SwitchSectionSyntax switchSection)
+        private static ExpressionSyntax CreateCondition(
+            SwitchStatementSyntax switchStatement,
+            SwitchSectionSyntax switchSection,
+            SemanticModel semanticModel)
         {
             ExpressionSyntax condition = null;
 
-            for (int i = switchSection.Labels.Count - 1; i >= 0; i--)
+            ExpressionSyntax switchExpression = switchStatement.Expression;
+
+            SyntaxList<SwitchLabelSyntax> labels = switchSection.Labels;
+
+            for (int i = labels.Count - 1; i >= 0; i--)
             {
-                BinaryExpressionSyntax equalsExpression = EqualsExpression(
-                    switchStatement.Expression,
-                    ((CaseSwitchLabelSyntax)switchSection.Labels[i]).Value);
+                ExpressionSyntax expression;
+
+                switch (labels[i])
+                {
+                    case CaseSwitchLabelSyntax constantLabel:
+                        {
+                            BinaryExpressionSyntax equalsExpression = EqualsExpression(switchExpression, constantLabel.Value);
+
+                            if (semanticModel.GetSpeculativeMethodSymbol(switchSection.SpanStart, equalsExpression) != null)
+                            {
+                                expression = equalsExpression;
+                            }
+                            else
+                            {
+                                expression = SimpleMemberInvocationExpression(
+                                    ObjectType(),
+                                    IdentifierName("Equals"),
+                                    ArgumentList(Argument(switchExpression), Argument(constantLabel.Value)));
+                            }
+
+                            break;
+                        }
+                    case CasePatternSwitchLabelSyntax patternLabel:
+                        {
+                            expression = IsPatternExpression(switchExpression.Parenthesize(), patternLabel.Pattern).Parenthesize();
+                            break;
+                        }
+                    default:
+                        {
+                            throw new InvalidOperationException();
+                        }
+                }
 
                 if (condition != null)
                 {
-                    condition = LogicalOrExpression(
-                        equalsExpression,
-                        condition);
+                    condition = LogicalOrExpression(expression, condition);
                 }
                 else
                 {
-                    condition = equalsExpression;
+                    condition = expression;
                 }
             }
 
