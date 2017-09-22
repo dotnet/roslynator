@@ -41,7 +41,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.AvoidBoxingOfValueType,
                     DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
                     DiagnosticDescriptors.UseMethodChaining,
-                    DiagnosticDescriptors.AvoidNullReferenceException);
+                    DiagnosticDescriptors.AvoidNullReferenceException,
+                    DiagnosticDescriptors.UseStringComparison);
            }
         }
 
@@ -183,6 +184,14 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     case "ToString":
                                         {
                                             RemoveRedundantToStringCallRefactoring.Analyze(context, memberInvocation);
+                                            break;
+                                        }
+                                    case "ToLower":
+                                    case "ToLowerInvariant":
+                                    case "ToUpper":
+                                    case "ToUpperInvariant":
+                                        {
+                                            UseStringComparisonRefactoring.Analyze(context, memberInvocation);
                                             break;
                                         }
                                 }

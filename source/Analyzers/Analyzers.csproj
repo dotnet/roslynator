@@ -178,7 +178,6 @@
     <Compile Include="Refactorings\StaticMemberInGenericTypeShouldUseTypeParameterRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\UseStringLengthInsteadOfComparisonWithEmptyStringDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CompositeEnumValueContainsUndefinedFlagRefactoring.cs" />
-    <Compile Include="DiagnosticAnalyzers\UseStringComparisonDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedParameterRefactoring.cs" />
     <Compile Include="Refactorings\ParameterNameDiffersFromBaseRefactoring.cs" />
     <Compile Include="Refactorings\CallDebugFailInsteadOfDebugAssertRefactoring.cs" />
