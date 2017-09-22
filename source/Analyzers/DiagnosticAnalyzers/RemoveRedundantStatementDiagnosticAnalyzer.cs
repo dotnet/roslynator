@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.Refactorings.RemoveRedundantStatementRefactoring;
+using static Roslynator.CSharp.Refactorings.RemoveRedundantStatement.RemoveRedundantStatementRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -25,9 +25,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeContinueStatement, SyntaxKind.ContinueStatement);
-            context.RegisterSyntaxNodeAction(AnalyzeReturnStatement, SyntaxKind.ReturnStatement);
-            context.RegisterSyntaxNodeAction(AnalyzeYieldBreakStatement, SyntaxKind.YieldBreakStatement);
+            context.RegisterSyntaxNodeAction(ContinueStatement.Analyze, SyntaxKind.ContinueStatement);
+            context.RegisterSyntaxNodeAction(ReturnStatement.Analyze, SyntaxKind.ReturnStatement);
+            context.RegisterSyntaxNodeAction(YieldBreakStatement.Analyze, SyntaxKind.YieldBreakStatement);
         }
     }
 }

@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Refactorings.RemoveRedundantStatement;
 using Roslynator.CSharp.Refactorings.UseMethodChaining;
 
 namespace Roslynator.CSharp.CodeFixes

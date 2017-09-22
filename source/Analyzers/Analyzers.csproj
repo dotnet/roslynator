@@ -146,6 +146,10 @@
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantAsyncAwaitRefactoring.AwaitRemover.cs" />
     <Compile Include="Refactorings\RemoveRedundantAutoPropertyInitializationRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantStatement\RemoveRedundantContinueStatementRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantStatement\RemoveRedundantReturnStatementRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantStatement\RemoveRedundantStatementRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantStatement\RemoveRedundantYieldBreakStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReorderNamedArgumentsRefactoring.cs" />
     <Compile Include="Refactorings\ReorderTypeParameterConstraintsRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceCommentWithDocumentationCommentRefactoring.cs" />
@@ -210,7 +214,7 @@
     <Compile Include="Refactorings\RemoveRedundantDisposeOrCloseCallRefactoring.cs" />
     <Compile Include="Refactorings\MergeSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\DeclareEnumMemberWithZeroValueRefactoring.cs" />
-    <Compile Include="Refactorings\RemoveRedundantStatementRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveRedundantStatement\RemoveRedundantStatementRefactoring`1.cs" />
     <Compile Include="Refactorings\AddSummaryToDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\Documentation\AddTypeParameterToDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\Documentation\DocumentationCommentRefactoring`1.cs" />
