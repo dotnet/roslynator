@@ -205,26 +205,25 @@ namespace Roslynator.CSharp.Refactorings
         {
             BlockSyntax body = accessor.Body;
 
-            if (body != null)
+            if (body == null)
+                return;
+
+            switch (body.Statements.First())
             {
-                StatementSyntax statement = body.Statements.First();
-
-                switch (statement.Kind())
-                {
-                    case SyntaxKind.ReturnStatement:
-                        {
-                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ReturnStatementSyntax)statement).Expression);
-                            break;
-                        }
-                    case SyntaxKind.ExpressionStatement:
-                        {
-                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ExpressionStatementSyntax)statement).Expression);
-                            break;
-                        }
-                }
-
-                context.ReportBraces(DiagnosticDescriptors.UseAutoPropertyFadeOut, body);
+                case ReturnStatementSyntax returnStatement:
+                    {
+                        context.ReportToken(DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.ReturnKeyword);
+                        context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.Expression);
+                        break;
+                    }
+                case ExpressionStatementSyntax expressionStatement:
+                    {
+                        context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, expressionStatement.Expression);
+                        break;
+                    }
             }
+
+            context.ReportBraces(DiagnosticDescriptors.UseAutoPropertyFadeOut, body);
         }
 
         private static IFieldSymbol GetBackingFieldSymbol(
