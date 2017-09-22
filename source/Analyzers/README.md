@@ -92,7 +92,6 @@ RCS1091|[Remove empty region](../../docs/analyzers/RCS1091.md)|Redundancy|x
 RCS1092|[Add empty line after last statement in do statement](../../docs/analyzers/RCS1092.md)|Formatting|
 RCS1093|[Remove file with no code](../../docs/analyzers/RCS1093.md)|Redundancy|x
 RCS1094|[Declare using directive on top level](../../docs/analyzers/RCS1094.md)|Readability|
-RCS1095|[Use C\# 6\.0 dictionary initializer](../../docs/analyzers/RCS1095.md)|Usage|x
 RCS1096|[Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md)|Performance|x
 RCS1097|[Remove redundant 'ToString' call](../../docs/analyzers/RCS1097.md)|Redundancy|x
 RCS1098|[Avoid 'null' on the left side of a binary expression](../../docs/analyzers/RCS1098.md)|Readability|x

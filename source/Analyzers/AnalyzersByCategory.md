@@ -181,7 +181,6 @@ Usage|[Avoid NullReferenceException](../../docs/analyzers/RCS1202.md)|RCS1202|x
 Usage|[Call Debug\.Fail instead of Debug\.Assert](../../docs/analyzers/RCS1178.md)|RCS1178|x
 Usage|[Call 'Enumerable\.ThenBy' instead of 'Enumerable\.OrderBy'](../../docs/analyzers/RCS1200.md)|RCS1200|x
 Usage|[Unconstrained type parameter checked for null](../../docs/analyzers/RCS1165.md)|RCS1165|x
-Usage|[Use C\# 6\.0 dictionary initializer](../../docs/analyzers/RCS1095.md)|RCS1095|x
 Usage|[Use conditional access instead of conditional expression](../../docs/analyzers/RCS1206.md)|RCS1206|x
 Usage|[Use conditional access](../../docs/analyzers/RCS1146.md)|RCS1146|x
 Usage|[Use EventArgs\.Empty](../../docs/analyzers/RCS1204.md)|RCS1204|x
