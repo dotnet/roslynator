@@ -207,18 +207,17 @@ namespace Roslynator.CSharp.Refactorings
 
             if (body != null)
             {
-                StatementSyntax statement = body.Statements.First();
-
-                switch (statement.Kind())
+                switch (body.Statements.First())
                 {
-                    case SyntaxKind.ReturnStatement:
+                    case ReturnStatementSyntax returnStatement:
                         {
-                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ReturnStatementSyntax)statement).Expression);
+                            context.ReportToken(DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.ReturnKeyword);
+                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.Expression);
                             break;
                         }
-                    case SyntaxKind.ExpressionStatement:
+                    case ExpressionStatementSyntax expressionStatement:
                         {
-                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, ((ExpressionStatementSyntax)statement).Expression);
+                            context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, expressionStatement.Expression);
                             break;
                         }
                 }
