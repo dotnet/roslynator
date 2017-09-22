@@ -1,4 +1,4 @@
-## Roslynator
+# Roslynator
 
 * A collection of 190+ analyzers and 180+ refactorings for C#, powered by Roslyn.
 * [List of Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/source/Analyzers/README.md)
@@ -6,25 +6,29 @@
 * [List of Code Fixes](http://github.com/JosefPihrt/Roslynator/blob/master/source/CodeFixes/README.md) (that fix compiler diagnostics (CS....))
 * [Release Notes](http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md)
 
-### Documentation
+## Documentation
 
 * [Analyzers vs. Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/AnalyzersVsRefactorings.md)
 * [How to Configure Analyzers](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureAnalyzers.md)
 * [How to Configure Refactorings](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToConfigureRefactorings.md)
 
-### Products
+## Roslynator For Visual Studio
 
-#### Extensions for Visual Studio 2017
+### Extensions for Visual Studio 2017
 
-* [Roslynator 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) (analyzers, refactorings and code fixes for compiler diagnostics).
-* [Roslynator Refactorings 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017) (refactorings and code fixes for compiler diagnostics).
+* [Roslynator 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) (analyzers, refactorings and code fixes for compiler diagnostics)
+* [Roslynator Refactorings 2017](http://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings2017) (refactorings and code fixes for compiler diagnostics)
 
-#### Extensions for Visual Studio 2015
+### Extensions for Visual Studio 2015
 
-* [Roslynator](http://visualstudiogallery.msdn.microsoft.com/e83c5e41-92c5-42a3-80cc-e0720c621b5e) (analyzers, refactorings and code fixes for compiler diagnostics).
-* [Roslynator Refactorings](http://visualstudiogallery.msdn.microsoft.com/a9a2b4bc-70da-437d-9ab7-b6b8e7d76cd9) (refactorings and code fixes for compiler diagnostics).
+* [Roslynator](http://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator)
+* [Roslynator Refactorings](http://marketplace.visualstudio.com/items?itemName=josefpihrt.RoslynatorRefactorings)
 
-#### NuGet Package
+## Roslynator For Visual Studio Code
 
-* [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) (analyzers only).
+* [How to Enable Roslynator for Visual Studio Code](docs/RoslynatorForVisualStudioCode.md) (refactorings and code fixes for compiler diagnostics)
+
+## NuGet Package
+
+* [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) (analyzers only)
   * This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces.2.0.0 (Visual Studio 2017 or higher).

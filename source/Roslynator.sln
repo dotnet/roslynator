@@ -22,6 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		Refactorings\Refactorings.xml = Refactorings\Refactorings.xml
 		..\text\ReleaseCheckList.txt = ..\text\ReleaseCheckList.txt
 		..\text\RoslynatorDescription.txt = ..\text\RoslynatorDescription.txt
+		..\docs\RoslynatorForVisualStudioCode.md = ..\docs\RoslynatorForVisualStudioCode.md
 		..\text\RoslynatorRefactoringsDescription.txt = ..\text\RoslynatorRefactoringsDescription.txt
 	EndProjectSection
 EndProject

@@ -63,10 +63,6 @@ namespace Roslynator.CodeGeneration
                 MarkdownGenerator.CreateCodeFixesByDiagnosticId(CodeFixes, CompilerDiagnostics));
 
             WriteAllText(
-                @"..\README.md",
-                File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8));
-
-            WriteAllText(
                 "DefaultConfigFile.xml",
                 XmlGenerator.CreateDefaultConfigFile(Refactorings, CodeFixes));
 
