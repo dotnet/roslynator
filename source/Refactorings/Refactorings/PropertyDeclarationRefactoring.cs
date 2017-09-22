@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
 using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
+using Roslynator.CSharp.Refactorings.MakeMemberVirtual;
 using Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod;
 using Roslynator.Utilities;
 
@@ -71,6 +72,12 @@ namespace Roslynator.CSharp.Refactorings
                 && propertyDeclaration.HeaderSpan().Contains(context.Span))
             {
                 MakePropertyAbstractRefactoring.ComputeRefactoring(context, propertyDeclaration);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberVirtual)
+                && propertyDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                MakePropertyVirtualRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)

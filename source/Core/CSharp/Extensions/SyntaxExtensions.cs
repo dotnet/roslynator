@@ -3612,6 +3612,16 @@ namespace Roslynator.CSharp
 
             return default(SyntaxToken);
         }
+
+        internal static SyntaxTokenList Replace(this SyntaxTokenList tokens, SyntaxKind kind, SyntaxToken newToken)
+        {
+            int index = tokens.IndexOf(kind);
+
+            if (index == -1)
+                return tokens;
+
+            return tokens.ReplaceAt(index, newToken.WithTriviaFrom(tokens[index]));
+        }
         #endregion SyntaxTokenList
 
         #region SyntaxTrivia

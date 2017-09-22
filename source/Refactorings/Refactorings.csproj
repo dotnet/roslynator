@@ -65,13 +65,16 @@
     <Compile Include="Refactorings\MakeMemberAbstract\MakeIndexerAbstractRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberAbstract\MakeMethodAbstractRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberAbstract\MakePropertyAbstractRefactoring.cs" />
+    <Compile Include="Refactorings\MakeMemberVirtual\MakeIndexerVirtualRefactoring.cs" />
+    <Compile Include="Refactorings\MakeMemberVirtual\MakeMemberAbstractHelper.cs" />
+    <Compile Include="Refactorings\MakeMemberVirtual\MakeMethodVirtualRefactoring.cs" />
+    <Compile Include="Refactorings\MakeMemberVirtual\MakePropertyVirtualRefactoring.cs" />
     <Compile Include="Refactorings\NamespaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateCombinedEnumMemberRefactoring.cs" />
     <Compile Include="Refactorings\GenerateEnumMemberRefactoring.cs" />
     <Compile Include="Refactorings\EnumMemberDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateEnumValuesRefactoring.cs" />
     <Compile Include="Refactorings\DestructorDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\MakeMemberVirtualRefactoring.cs" />
     <Compile Include="Refactorings\CastExpressionRefactoring.cs" />
     <Compile Include="Refactorings\CheckExpressionForNullRefactoring.cs" />
     <Compile Include="Refactorings\ExpandPropertyAndAddBackingFieldRefactoring.cs" />
