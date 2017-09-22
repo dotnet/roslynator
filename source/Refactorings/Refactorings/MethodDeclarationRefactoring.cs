@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
+using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
 using Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty;
 
 namespace Roslynator.CSharp.Refactorings
@@ -42,12 +43,9 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
-                && methodDeclaration.HeaderSpan().Contains(context.Span)
-                && MakeMemberAbstractRefactoring.CanRefactor(methodDeclaration))
+                && methodDeclaration.HeaderSpan().Contains(context.Span))
             {
-                context.RegisterRefactoring(
-                    "Make method abstract",
-                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+                MakeMethodAbstractRefactoring.ComputeRefactoring(context, methodDeclaration);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberVirtual)

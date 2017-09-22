@@ -62,6 +62,9 @@
     <Compile Include="Refactorings\ImplementIEquatableOfTRefactoring.cs" />
     <Compile Include="Refactorings\InterfaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\LocalFunctionStatementRefactoring.cs" />
+    <Compile Include="Refactorings\MakeMemberAbstract\MakeIndexerAbstractRefactoring.cs" />
+    <Compile Include="Refactorings\MakeMemberAbstract\MakeMethodAbstractRefactoring.cs" />
+    <Compile Include="Refactorings\MakeMemberAbstract\MakePropertyAbstractRefactoring.cs" />
     <Compile Include="Refactorings\NamespaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateCombinedEnumMemberRefactoring.cs" />
     <Compile Include="Refactorings\GenerateEnumMemberRefactoring.cs" />
@@ -234,7 +237,6 @@
     <Compile Include="Refactorings\FormatExpressionChainRefactoring.cs" />
     <Compile Include="Refactorings\ExtractStatementRefactoring.cs" />
     <Compile Include="Refactorings\FormatBinaryExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\MakeMemberAbstractRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesRefactoring.cs" />
     <Compile Include="Refactorings\AddOrRenameParameterRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceSwitchWithIfElseRefactoring.cs" />
