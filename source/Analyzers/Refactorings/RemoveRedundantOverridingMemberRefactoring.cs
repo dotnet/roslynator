@@ -19,44 +19,59 @@ namespace Roslynator.CSharp.Refactorings
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            if (!methodDeclaration.ContainsDirectives
-                && !methodDeclaration.ContainsDiagnostics)
-            {
-                SyntaxTokenList modifiers = methodDeclaration.Modifiers;
+            if (methodDeclaration.ContainsDirectives)
+                return;
 
-                if (modifiers.Contains(SyntaxKind.OverrideKeyword)
-                    && !modifiers.ContainsAny(SyntaxKind.SealedKeyword, SyntaxKind.PartialKeyword)
-                    && !methodDeclaration.AttributeLists.Any()
-                    && !methodDeclaration.HasDocumentationComment()
-                    && methodDeclaration.DescendantTrivia(methodDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                {
-                    ExpressionSyntax expression = GetMethodExpression(methodDeclaration);
+            if (methodDeclaration.ContainsDiagnostics)
+                return;
 
-                    MemberInvocationExpression memberInvocation;
-                    if (MemberInvocationExpression.TryCreate(expression, out memberInvocation)
-                        && memberInvocation.Expression.IsKind(SyntaxKind.BaseExpression))
-                    {
-                        IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+            SyntaxTokenList modifiers = methodDeclaration.Modifiers;
 
-                        IMethodSymbol overriddenMethod = methodSymbol?.OverriddenMethod;
+            if (!modifiers.Contains(SyntaxKind.OverrideKeyword))
+                return;
 
-                        if (overriddenMethod != null)
-                        {
-                            ISymbol symbol = context.SemanticModel.GetSymbol(memberInvocation.Name, context.CancellationToken);
+            if (modifiers.ContainsAny(SyntaxKind.SealedKeyword, SyntaxKind.PartialKeyword))
+                return;
 
-                            if (overriddenMethod.Equals(symbol)
-                                && CheckParameters(methodDeclaration.ParameterList, memberInvocation.ArgumentList, context.SemanticModel, context.CancellationToken)
-                                && CheckDefaultValues(methodSymbol.Parameters, overriddenMethod.Parameters))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.RemoveRedundantOverridingMember,
-                                    methodDeclaration,
-                                    methodDeclaration.GetTitle());
-                            }
-                        }
-                    }
-                }
-            }
+            if (methodDeclaration.AttributeLists.Any())
+                return;
+
+            if (methodDeclaration.HasDocumentationComment())
+                return;
+
+            if (!methodDeclaration.DescendantTrivia(methodDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                return;
+
+            ExpressionSyntax expression = GetMethodExpression(methodDeclaration);
+
+            if (!MemberInvocationExpression.TryCreate(expression, out MemberInvocationExpression memberInvocation))
+                return;
+
+            if (!memberInvocation.Expression.IsKind(SyntaxKind.BaseExpression))
+                return;
+
+            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+            IMethodSymbol overriddenMethod = methodSymbol?.OverriddenMethod;
+
+            if (overriddenMethod == null)
+                return;
+
+            ISymbol symbol = context.SemanticModel.GetSymbol(memberInvocation.Name, context.CancellationToken);
+
+            if (!overriddenMethod.Equals(symbol))
+                return;
+
+            if (!CheckParameters(methodDeclaration.ParameterList, memberInvocation.ArgumentList, context.SemanticModel, context.CancellationToken))
+                return;
+
+            if (!CheckDefaultValues(methodSymbol.Parameters, overriddenMethod.Parameters))
+                return;
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantOverridingMember,
+                methodDeclaration,
+                methodDeclaration.GetTitle());
         }
 
         private static bool CheckParameters(
@@ -86,41 +101,39 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IParameterSymbol GetParameterSymbol(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (expression != null)
+            if (expression == null)
+                return null;
+
+            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+            if (symbol?.IsParameter() != true)
+                return null;
+
+            var parameterSymbol = (IParameterSymbol)symbol;
+
+            ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
+
+            if (containingSymbol?.IsMethod() == true)
             {
-                ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+                var methodSymbol = (IMethodSymbol)containingSymbol;
 
-                if (symbol?.IsParameter() == true)
+                ISymbol associatedSymbol = methodSymbol.AssociatedSymbol;
+
+                if (associatedSymbol?.IsKind(SymbolKind.Property) == true)
                 {
-                    var parameterSymbol = (IParameterSymbol)symbol;
+                    var propertySymbol = (IPropertySymbol)associatedSymbol;
 
-                    ISymbol containingSymbol = parameterSymbol.ContainingSymbol;
-
-                    if (containingSymbol?.IsMethod() == true)
+                    if (propertySymbol.IsIndexer)
                     {
-                        var methodSymbol = (IMethodSymbol)containingSymbol;
+                        ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
 
-                        ISymbol associatedSymbol = methodSymbol.AssociatedSymbol;
-
-                        if (associatedSymbol?.IsKind(SymbolKind.Property) == true)
-                        {
-                            var propertySymbol = (IPropertySymbol)associatedSymbol;
-
-                            if (propertySymbol.IsIndexer)
-                            {
-                                ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
-
-                                if (parameters.Length > parameterSymbol.Ordinal)
-                                    return propertySymbol.Parameters[parameterSymbol.Ordinal];
-                            }
-                        }
+                        if (parameters.Length > parameterSymbol.Ordinal)
+                            return propertySymbol.Parameters[parameterSymbol.Ordinal];
                     }
-
-                    return parameterSymbol;
                 }
             }
 
-            return null;
+            return parameterSymbol;
         }
 
         private static bool CheckDefaultValues(ImmutableArray<IParameterSymbol> parameters, ImmutableArray<IParameterSymbol> baseParameters)
@@ -181,30 +194,47 @@ namespace Roslynator.CSharp.Refactorings
         {
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
-            if (!propertyDeclaration.ContainsDirectives
-                && !propertyDeclaration.ContainsDiagnostics)
-            {
-                SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+            if (propertyDeclaration.ContainsDirectives)
+                return;
 
-                if (modifiers.Contains(SyntaxKind.OverrideKeyword)
-                    && !modifiers.Contains(SyntaxKind.SealedKeyword)
-                    && !propertyDeclaration.AttributeLists.Any()
-                    && !propertyDeclaration.HasDocumentationComment()
-                    && propertyDeclaration.DescendantTrivia(propertyDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && propertyDeclaration
-                        .AccessorList?
-                        .Accessors
-                        .All(accessor => CanRefactor(propertyDeclaration, accessor, context.SemanticModel, context.CancellationToken)) == true)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveRedundantOverridingMember,
-                        propertyDeclaration,
-                        propertyDeclaration.GetTitle());
-                }
+            if (propertyDeclaration.ContainsDiagnostics)
+                return;
+
+            SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+
+            if (!modifiers.Contains(SyntaxKind.OverrideKeyword))
+                return;
+
+            if (modifiers.Contains(SyntaxKind.SealedKeyword))
+                return;
+
+            if (propertyDeclaration.AttributeLists.Any())
+                return;
+
+            if (propertyDeclaration.HasDocumentationComment())
+                return;
+
+            if (!propertyDeclaration.DescendantTrivia(propertyDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                return;
+
+            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
+
+            if (accessorList == null)
+                return;
+
+            foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
+            {
+                if (!IsFixable(propertyDeclaration, accessor, context.SemanticModel, context.CancellationToken))
+                    return;
             }
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantOverridingMember,
+                propertyDeclaration,
+                propertyDeclaration.GetTitle());
         }
 
-        internal static bool CanRefactor(
+        internal static bool IsFixable(
             PropertyDeclarationSyntax propertyDeclaration,
             AccessorDeclarationSyntax accessor,
             SemanticModel semanticModel,
@@ -216,83 +246,71 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         ExpressionSyntax expression = GetGetAccessorExpression(accessor);
 
-                        if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                        {
-                            var memberAccess = (MemberAccessExpressionSyntax)expression;
+                        if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true)
+                            return false;
 
-                            if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) == true)
-                            {
-                                SimpleNameSyntax simpleName = memberAccess.Name;
+                        var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
+                        if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                            return false;
 
-                                if (propertySymbol != null)
-                                {
-                                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                        SimpleNameSyntax simpleName = memberAccess.Name;
 
-                                    if (overriddenProperty != null)
-                                    {
-                                        ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
+                        IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-                                        if (overriddenProperty.Equals(symbol))
-                                            return true;
-                                    }
-                                }
-                            }
-                        }
+                        IPropertySymbol overriddenProperty = propertySymbol?.OverriddenProperty;
 
-                        return false;
+                        if (overriddenProperty == null)
+                            return false;
+
+                        ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
+
+                        return overriddenProperty.Equals(symbol);
                     }
                 case SyntaxKind.SetAccessorDeclaration:
                     {
                         ExpressionSyntax expression = GetSetAccessorExpression(accessor);
 
-                        if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                        {
-                            var assignment = (AssignmentExpressionSyntax)expression;
+                        if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) != true)
+                            return false;
 
-                            ExpressionSyntax left = assignment.Left;
+                        var assignment = (AssignmentExpressionSyntax)expression;
 
-                            if (left?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                            {
-                                var memberAccess = (MemberAccessExpressionSyntax)left;
+                        ExpressionSyntax left = assignment.Left;
 
-                                if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) == true)
-                                {
-                                    ExpressionSyntax right = assignment.Right;
+                        if (left?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true)
+                            return false;
 
-                                    if (right?.IsKind(SyntaxKind.IdentifierName) == true)
-                                    {
-                                        var identifierName = (IdentifierNameSyntax)right;
+                        var memberAccess = (MemberAccessExpressionSyntax)left;
 
-                                        if (identifierName.Identifier.ValueText == "value")
-                                        {
-                                            SimpleNameSyntax simpleName = memberAccess.Name;
+                        if (memberAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                            return false;
 
-                                            if (simpleName != null)
-                                            {
-                                                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
+                        ExpressionSyntax right = assignment.Right;
 
-                                                if (propertySymbol != null)
-                                                {
-                                                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                        if (right?.IsKind(SyntaxKind.IdentifierName) != true)
+                            return false;
 
-                                                    if (overriddenProperty != null)
-                                                    {
-                                                        ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
+                        var identifierName = (IdentifierNameSyntax)right;
 
-                                                        if (overriddenProperty.Equals(symbol))
-                                                            return true;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        if (identifierName.Identifier.ValueText != "value")
+                            return false;
 
-                        return false;
+                        SimpleNameSyntax simpleName = memberAccess.Name;
+
+                        if (simpleName == null)
+                            return false;
+
+                        IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
+
+                        IPropertySymbol overriddenProperty = propertySymbol?.OverriddenProperty;
+
+                        if (overriddenProperty == null)
+                            return false;
+
+                        ISymbol symbol = semanticModel.GetSymbol(simpleName, cancellationToken);
+
+                        return overriddenProperty.Equals(symbol);
                     }
                 case SyntaxKind.UnknownAccessorDeclaration:
                     {
@@ -310,30 +328,47 @@ namespace Roslynator.CSharp.Refactorings
         {
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
-            if (!indexerDeclaration.ContainsDirectives
-                && !indexerDeclaration.ContainsDiagnostics)
-            {
-                SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+            if (indexerDeclaration.ContainsDirectives)
+                return;
 
-                if (modifiers.Contains(SyntaxKind.OverrideKeyword)
-                    && !modifiers.Contains(SyntaxKind.SealedKeyword)
-                    && !indexerDeclaration.AttributeLists.Any()
-                    && !indexerDeclaration.HasDocumentationComment()
-                    && indexerDeclaration.DescendantTrivia(indexerDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                    && indexerDeclaration
-                        .AccessorList?
-                        .Accessors
-                        .All(accessor => CanRefactor(indexerDeclaration, accessor, context.SemanticModel, context.CancellationToken)) == true)
-                {
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveRedundantOverridingMember,
-                        indexerDeclaration,
-                        indexerDeclaration.GetTitle());
-                }
+            if (indexerDeclaration.ContainsDiagnostics)
+                return;
+
+            SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+
+            if (!modifiers.Contains(SyntaxKind.OverrideKeyword))
+                return;
+
+            if (modifiers.Contains(SyntaxKind.SealedKeyword))
+                return;
+
+            if (indexerDeclaration.AttributeLists.Any())
+                return;
+
+            if (indexerDeclaration.HasDocumentationComment())
+                return;
+
+            if (!indexerDeclaration.DescendantTrivia(indexerDeclaration.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                return;
+
+            AccessorListSyntax accessorList = indexerDeclaration.AccessorList;
+
+            if (accessorList == null)
+                return;
+
+            foreach (AccessorDeclarationSyntax accessor in accessorList.Accessors)
+            {
+                if (!IsFixable(indexerDeclaration, accessor, context.SemanticModel, context.CancellationToken))
+                    return;
             }
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantOverridingMember,
+                indexerDeclaration,
+                indexerDeclaration.GetTitle());
         }
 
-        internal static bool CanRefactor(
+        internal static bool IsFixable(
             IndexerDeclarationSyntax indexerDeclaration,
             AccessorDeclarationSyntax accessor,
             SemanticModel semanticModel,
@@ -345,86 +380,74 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         ExpressionSyntax expression = GetGetAccessorExpression(accessor);
 
-                        if (expression?.IsKind(SyntaxKind.ElementAccessExpression) == true)
-                        {
-                            var elementAccess = (ElementAccessExpressionSyntax)expression;
+                        if (expression?.IsKind(SyntaxKind.ElementAccessExpression) != true)
+                            return false;
 
-                            if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) == true
-                                && elementAccess.ArgumentList != null)
-                            {
-                                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
+                        var elementAccess = (ElementAccessExpressionSyntax)expression;
 
-                                if (propertySymbol != null)
-                                {
-                                    IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                        if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                            return false;
 
-                                    if (overriddenProperty != null)
-                                    {
-                                        ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
+                        if (elementAccess.ArgumentList == null)
+                            return false;
 
-                                        if (overriddenProperty.Equals(symbol)
-                                            && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
-                                            && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters))
-                                        {
-                                            return true;
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
 
-                        return false;
+                        IPropertySymbol overriddenProperty = propertySymbol?.OverriddenProperty;
+
+                        if (overriddenProperty == null)
+                            return false;
+
+                        ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
+
+                        return overriddenProperty.Equals(symbol)
+                            && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
+                            && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
                     }
                 case SyntaxKind.SetAccessorDeclaration:
                     {
                         ExpressionSyntax expression = GetSetAccessorExpression(accessor);
 
-                        if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
-                        {
-                            var assignment = (AssignmentExpressionSyntax)expression;
+                        if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) != true)
+                            return false;
 
-                            ExpressionSyntax left = assignment.Left;
+                        var assignment = (AssignmentExpressionSyntax)expression;
 
-                            if (left?.IsKind(SyntaxKind.ElementAccessExpression) == true)
-                            {
-                                var elementAccess = (ElementAccessExpressionSyntax)left;
+                        ExpressionSyntax left = assignment.Left;
 
-                                if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) == true
-                                    && elementAccess.ArgumentList != null)
-                                {
-                                    ExpressionSyntax right = assignment.Right;
+                        if (left?.IsKind(SyntaxKind.ElementAccessExpression) != true)
+                            return false;
 
-                                    if (right?.IsKind(SyntaxKind.IdentifierName) == true)
-                                    {
-                                        var identifierName = (IdentifierNameSyntax)right;
+                        var elementAccess = (ElementAccessExpressionSyntax)left;
 
-                                        if (identifierName.Identifier.ValueText == "value")
-                                        {
-                                            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
+                        if (elementAccess.Expression?.IsKind(SyntaxKind.BaseExpression) != true)
+                            return false;
 
-                                            if (propertySymbol != null)
-                                            {
-                                                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                        if (elementAccess.ArgumentList == null)
+                            return false;
 
-                                                if (overriddenProperty != null)
-                                                {
-                                                    ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
+                        ExpressionSyntax right = assignment.Right;
 
-                                                    if (overriddenProperty.Equals(symbol)
-                                                        && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
-                                                        && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters))
-                                                    {
-                                                        return true;
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        if (right?.IsKind(SyntaxKind.IdentifierName) != true)
+                            return false;
 
-                        return false;
+                        var identifierName = (IdentifierNameSyntax)right;
+
+                        if (identifierName.Identifier.ValueText != "value")
+                            return false;
+
+                        IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(indexerDeclaration, cancellationToken);
+
+                        IPropertySymbol overriddenProperty = propertySymbol?.OverriddenProperty;
+
+                        if (overriddenProperty == null)
+                            return false;
+
+                        ISymbol symbol = semanticModel.GetSymbol(elementAccess, cancellationToken);
+
+                        return overriddenProperty.Equals(symbol)
+                            && CheckParameters(indexerDeclaration.ParameterList, elementAccess.ArgumentList, semanticModel, cancellationToken)
+                            && CheckDefaultValues(propertySymbol.Parameters, overriddenProperty.Parameters);
                     }
                 case SyntaxKind.UnknownAccessorDeclaration:
                     {
