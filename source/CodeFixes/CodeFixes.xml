@@ -72,11 +72,6 @@
       <Id>CS0164</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0015" Identifier="OverridingMemberCannotChangeAccessModifiers" Title="Overriding member cannot change access modifiers">
-    <FixableDiagnosticIds>
-      <Id>CS0507</Id>
-    </FixableDiagnosticIds>
-  </CodeFix>
   <CodeFix Id="RCF0016" Identifier="AddDocumentationComment" Title="Add documentation comment">
     <FixableDiagnosticIds>
       <Id>CS1591</Id>
@@ -156,6 +151,7 @@
     <FixableDiagnosticIds>
       <Id>CS0261</Id>
       <Id>CS0442</Id>
+      <Id>CS0507</Id>
       <Id>CS0628</Id>
       <Id>CS1057</Id>
       <Id>CS1527</Id>

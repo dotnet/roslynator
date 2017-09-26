@@ -20,7 +20,6 @@ namespace Roslynator.CSharp.CodeFixes
         public const string RemoveDuplicateAttribute = Prefix + "0012";
         public const string RemoveNewModifier = Prefix + "0013";
         public const string RemoveUnusedLabel = Prefix + "0014";
-        public const string OverridingMemberCannotChangeAccessModifiers = Prefix + "0015";
         public const string AddDocumentationComment = Prefix + "0016";
         public const string RemoveUnreachableCode = Prefix + "0017";
         public const string ChangeMethodReturnType = Prefix + "0018";

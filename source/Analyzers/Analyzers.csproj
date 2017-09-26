@@ -191,7 +191,6 @@
     <Compile Include="Refactorings\UseReturnInsteadOfAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\UseIsOperatorInsteadOfAsOperatorRefactoring.cs" />
     <Compile Include="Refactorings\ValueTypeObjectIsNeverEqualToNullRefactoring.cs" />
-    <Compile Include="Refactorings\OverrideInfo.cs" />
     <Compile Include="Refactorings\UnconstrainedTypeParameterCheckedForNullRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyCoalesceExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\CallStringConcatInsteadOfStringJoinDiagnosticAnalyzer.cs" />
