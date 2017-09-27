@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Call 'Any' instead of 'Count'",
-                                cancellationToken => UseAnyMethodInsteadOfCountMethodRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                cancellationToken => CallAnyInsteadOfCountRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

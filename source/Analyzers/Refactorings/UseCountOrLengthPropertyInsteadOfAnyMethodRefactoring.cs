@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("Any"))
                 return;
 
-            string propertyName = GetCountOrLengthPropertyName(invocation.Expression, semanticModel, cancellationToken);
+            string propertyName = CSharpUtility.GetCountOrLengthPropertyName(invocation.Expression, semanticModel, cancellationToken);
 
             if (propertyName == null)
                 return;
@@ -44,43 +44,6 @@ namespace Roslynator.CSharp.Refactorings
                 Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(invocation.Name.Span.Start, invocationExpression.Span.End)),
                 ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
                 propertyName);
-        }
-
-        private static string GetCountOrLengthPropertyName(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
-
-            if (typeSymbol == null)
-                return null;
-
-            if (typeSymbol.IsErrorType())
-                return null;
-
-            if (typeSymbol.IsIEnumerableOrConstructedFromIEnumerableOfT())
-                return null;
-
-            if (typeSymbol.IsString())
-                return "Length";
-
-            if (typeSymbol.IsArrayType())
-                return "Length";
-
-            const SpecialType icollectionOfT = SpecialType.System_Collections_Generic_ICollection_T;
-            const SpecialType ireadOnlyCollectionOfT = SpecialType.System_Collections_Generic_IReadOnlyCollection_T;
-
-            if (typeSymbol.IsSpecialType(icollectionOfT, ireadOnlyCollectionOfT))
-                return "Count";
-
-            if (typeSymbol.IsConstructedFrom(icollectionOfT, ireadOnlyCollectionOfT))
-                return "Count";
-
-            if (typeSymbol.ImplementsAny(icollectionOfT, ireadOnlyCollectionOfT))
-                return "Count";
-
-            return null;
         }
 
         public static Task<Document> RefactorAsync(

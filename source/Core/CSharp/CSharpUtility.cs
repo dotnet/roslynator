@@ -5,6 +5,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp
 {
@@ -13,6 +14,58 @@ namespace Roslynator.CSharp
         private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+
+        public static string GetCountOrLengthPropertyName(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            if (typeSymbol == null)
+                return null;
+
+            if (typeSymbol.IsErrorType())
+                return null;
+
+            if (typeSymbol.IsIEnumerableOrConstructedFromIEnumerableOfT())
+                return null;
+
+            if (typeSymbol.IsString())
+                return "Length";
+
+            if (typeSymbol.IsArrayType())
+                return "Length";
+
+            const SpecialType icollectionOfT = SpecialType.System_Collections_Generic_ICollection_T;
+            const SpecialType ireadOnlyCollectionOfT = SpecialType.System_Collections_Generic_IReadOnlyCollection_T;
+
+            if (typeSymbol.IsSpecialType(icollectionOfT, ireadOnlyCollectionOfT))
+                return "Count";
+
+            if (typeSymbol.IsConstructedFrom(icollectionOfT, ireadOnlyCollectionOfT))
+                return "Count";
+
+            if (typeSymbol.ImplementsAny(icollectionOfT, ireadOnlyCollectionOfT))
+            {
+                if (typeSymbol.IsInterface())
+                    return "Count";
+
+                foreach (ISymbol symbol in typeSymbol.GetMembers("Count"))
+                {
+                    if (symbol.IsProperty()
+                        && semanticModel.IsAccessible(expression.SpanStart, symbol))
+                    {
+                        return "Count";
+                    }
+                }
+
+                if (typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
+                    return "Length";
+            }
+
+            return null;
+        }
 
         public static bool IsNamespaceInScope(
             SyntaxNode node,

@@ -168,8 +168,8 @@
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="RenamePrivateFieldAccordingToCamelCaseWithUnderscore.cs" />
     <Compile Include="ReorderModifiers.cs" />
-    <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
-    <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
+    <Compile Include="UseAnyMethodInsteadOfCountMethod.cs" />
+    <Compile Include="UseCountOrLengthPropertyInsteadOfCountMethod.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />
     <Compile Include="SortEnumMembers.cs" />
     <Compile Include="UnusedTypeParameter.cs" />

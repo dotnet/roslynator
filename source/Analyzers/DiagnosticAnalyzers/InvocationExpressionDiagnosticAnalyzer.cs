@@ -91,7 +91,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             case "Count":
                                 {
                                     SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                    UseInsteadOfCountMethodRefactoring.Analyze(context, invocation, memberAccess);
                                     break;
                                 }
                             case "First":
@@ -173,6 +172,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     case "Any":
                                         {
                                             UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.Analyze(context, memberInvocation);
+                                            break;
+                                        }
+                                    case "Count":
+                                        {
+                                            UseInsteadOfCountMethodRefactoring.Analyze(context, memberInvocation);
                                             break;
                                         }
                                     case "First":

@@ -354,7 +354,7 @@
     <Compile Include="DiagnosticAnalyzers\UseLinefeedAsNewLineDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\SimplifyLinqMethodChainRefactoring.cs" />
     <Compile Include="Refactorings\UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.cs" />
-    <Compile Include="Refactorings\UseInsteadOfCountMethod\UseAnyMethodInsteadOfCountMethodRefactoring.cs" />
+    <Compile Include="Refactorings\UseInsteadOfCountMethod\CallAnyInsteadOfCountRefactoring.cs" />
     <Compile Include="Refactorings\UseInsteadOfCountMethod\UseCountOrLengthPropertyInsteadOfCountMethodRefactoring.cs" />
     <Compile Include="CodeFixProviders\ConstructorDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DoStatementCodeFixProvider.cs" />
