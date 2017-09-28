@@ -1238,11 +1238,6 @@ namespace Roslynator
             return false;
         }
 
-        internal static bool ImplementsICollectionOfT(this ITypeSymbol symbol)
-        {
-            return symbol.Implements(SpecialType.System_Collections_Generic_ICollection_T);
-        }
-
         public static bool IsClass(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Class;

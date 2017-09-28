@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -23,51 +22,21 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax argumentExpression = memberInvocation.ArgumentList.Arguments[0].Expression;
 
-            if (argumentExpression?.IsMissing == false
-                && memberInvocation.Expression?.IsMissing == false)
-            {
-                MethodInfo methodInfo;
-                if (semanticModel.TryGetExtensionMethodInfo(memberInvocation.InvocationExpression, out methodInfo, cancellationToken: cancellationToken)
-                    && methodInfo.IsLinqElementAt(allowImmutableArrayExtension: true))
-                {
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
+            if (argumentExpression?.IsMissing != false)
+                return false;
 
-                    if (typeSymbol?.IsErrorType() == false
-                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, argumentExpression, typeSymbol, semanticModel)))
-                    {
-                        return true;
-                    }
-                }
-            }
+            if (memberInvocation.Expression?.IsMissing != false)
+                return false;
 
-            return false;
-        }
+            if (!semanticModel.TryGetExtensionMethodInfo(memberInvocation.InvocationExpression, out MethodInfo methodInfo, ExtensionMethodKind.Reduced, cancellationToken))
+                return false;
 
-        private static bool ExistsApplicableIndexer(
-            ExpressionSyntax expression,
-            ExpressionSyntax argumentExpression,
-            ITypeSymbol containingType,
-            SemanticModel semanticModel)
-        {
-            foreach (ISymbol member in containingType.GetMembers("this[]"))
-            {
-                var propertySymbol = (IPropertySymbol)member;
+            if (!methodInfo.IsLinqElementAt(allowImmutableArrayExtension: true))
+                return false;
 
-                if (!propertySymbol.IsWriteOnly
-                    && semanticModel.IsAccessible(expression.SpanStart, propertySymbol.GetMethod)
-                    && semanticModel.IsImplicitConversion(expression, propertySymbol.Type))
-                {
-                    ImmutableArray<IParameterSymbol> parameters = propertySymbol.Parameters;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
 
-                    if (parameters.Length == 1
-                        && semanticModel.IsImplicitConversion(argumentExpression, parameters[0].Type))
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+            return CSharpUtility.HasAccessibleIndexer(typeSymbol, semanticModel, memberInvocation.InvocationExpression.SpanStart);
         }
 
         public static Task<Document> RefactorAsync(
