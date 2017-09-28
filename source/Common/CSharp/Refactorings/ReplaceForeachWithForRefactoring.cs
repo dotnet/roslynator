@@ -20,40 +20,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(forEachStatement.Expression, cancellationToken);
 
-            if (typeSymbol?.IsErrorType() == false)
-            {
-                return typeSymbol.IsString()
-                   || typeSymbol.IsArrayType()
-                   || typeSymbol.ImplementsAny(SpecialType.System_Collections_Generic_IList_T, SpecialType.System_Collections_Generic_IReadOnlyList_T)
-                   || (HasApplicableIndexer(typeSymbol, forEachStatement, semanticModel, cancellationToken)
-                        && typeSymbol.Implements(semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_ICollection)));
-            }
-
-            return false;
-        }
-
-        private static bool HasApplicableIndexer(
-            ITypeSymbol containingType,
-            ForEachStatementSyntax forEachStatement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
-
-            foreach (ISymbol member in containingType.GetMembers("this[]"))
-            {
-                var propertySymbol = (IPropertySymbol)member;
-
-                if (!propertySymbol.IsWriteOnly
-                    && propertySymbol.SingleParameterOrDefault()?.Type.IsInt() == true
-                    && semanticModel.IsAccessible(forEachStatement.SpanStart, propertySymbol.GetMethod)
-                    && propertySymbol.Type.Equals(semanticModel.GetTypeSymbol(forEachStatement.Type, cancellationToken)))
-                {
-                    return true;
-                }
-            }
-
-            return false;
+            return CSharpUtility.HasAccessibleIndexer(typeSymbol, semanticModel, forEachStatement.SpanStart);
         }
 
         public static Task<Document> RefactorAsync(
@@ -78,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
             MemberAccessExpressionSyntax countOrLengthMemberAccess = SimpleMemberAccessExpression(
                 forEachExpression.WithoutTrivia(),
-                IdentifierName(GetCountOrLengthPropertyName(forEachExpression, semanticModel, cancellationToken)));
+                IdentifierName(CSharpUtility.GetCountOrLengthPropertyName(forEachExpression, semanticModel, cancellationToken)));
 
             VariableDeclarationSyntax declaration = null;
             BinaryExpressionSyntax condition = null;
@@ -153,23 +120,6 @@ namespace Roslynator.CSharp.Refactorings
                     yield return (IdentifierNameSyntax)node;
                 }
             }
-        }
-
-        private static string GetCountOrLengthPropertyName(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
-
-            if (typeSymbol?.IsErrorType() == false)
-            {
-                if (typeSymbol.IsString()
-                    || typeSymbol.IsArrayType()
-                    || typeSymbol.IsConstructedFromImmutableArrayOfT(semanticModel))
-                {
-                    return "Length";
-                }
-            }
-
-            return "Count";
         }
     }
 }
