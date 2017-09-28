@@ -104,6 +104,7 @@
     <Compile Include="UseCoalesceExpressionInsteadOfConditionalExpression.cs" />
     <Compile Include="AvoidNullReferenceException.cs" />
     <Compile Include="UseConditionalAccessInsteadOfConditionalExpression.cs" />
+    <Compile Include="UseCountOrLengthPropertyInsteadOfAnyMethod.cs" />
     <Compile Include="UseEventArgsEmpty.cs" />
     <Compile Include="UseExclusiveOrOperator.cs" />
     <Compile Include="UseIsOperatorInsteadOfAsOperator.cs" />
@@ -167,7 +168,6 @@
     <Compile Include="RemoveRedundantToStringCall.cs" />
     <Compile Include="RenamePrivateFieldAccordingToCamelCaseWithUnderscore.cs" />
     <Compile Include="ReorderModifiers.cs" />
-    <Compile Include="ReplaceAnyMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceCountMethodWithAnyMethod.cs" />
     <Compile Include="ReplaceCountMethodWithCountOrLengthProperty.cs" />
     <Compile Include="ReplaceIfStatementWithReturnStatement.cs" />

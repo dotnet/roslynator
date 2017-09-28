@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -17,56 +18,32 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation, MemberAccessExpressionSyntax memberAccess)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression invocation)
         {
-            if (!invocation.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-            {
-                SemanticModel semanticModel = context.SemanticModel;
-                CancellationToken cancellationToken = context.CancellationToken;
+            InvocationExpressionSyntax invocationExpression = invocation.InvocationExpression;
 
-                MethodInfo methodInfo;
-                if (semanticModel.TryGetExtensionMethodInfo(invocation, out methodInfo, ExtensionMethodKind.Reduced, cancellationToken)
-                    && methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("Any"))
-                {
-                    string propertyName = GetCountOrLengthPropertyName(memberAccess.Expression, semanticModel, cancellationToken);
+            if (invocationExpression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+                return;
 
-                    if (propertyName != null)
-                    {
-                        bool success = false;
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
 
-                        TextSpan span = TextSpan.FromBounds(memberAccess.Name.Span.Start, invocation.Span.End);
+            if (!semanticModel.TryGetExtensionMethodInfo(invocationExpression, out MethodInfo methodInfo, ExtensionMethodKind.Reduced, cancellationToken))
+                return;
 
-                        if (invocation.DescendantTrivia(span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                        {
-                            if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
-                            {
-                                var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
+            if (!methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("Any"))
+                return;
 
-                                if (logicalNot.OperatorToken.TrailingTrivia.IsEmptyOrWhitespace()
-                                    && logicalNot.Operand.GetLeadingTrivia().IsEmptyOrWhitespace())
-                                {
-                                    success = true;
-                                }
-                            }
-                            else
-                            {
-                                success = true;
-                            }
-                        }
+            string propertyName = GetCountOrLengthPropertyName(invocation.Expression, semanticModel, cancellationToken);
 
-                        if (success)
-                        {
-                            Diagnostic diagnostic = Diagnostic.Create(
-                                DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                                Location.Create(context.Node.SyntaxTree, span),
-                                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
-                                propertyName);
+            if (propertyName == null)
+                return;
 
-                            context.ReportDiagnostic(diagnostic);
-                        }
-                    }
-                }
-            }
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
+                Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(invocation.Name.Span.Start, invocationExpression.Span.End)),
+                ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
+                propertyName);
         }
 
         private static string GetCountOrLengthPropertyName(
@@ -76,56 +53,69 @@ namespace Roslynator.CSharp.Refactorings
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
-            if (typeSymbol?.IsErrorType() == false
-                && !typeSymbol.IsConstructedFromIEnumerableOfT())
-            {
-                if (typeSymbol.IsArrayType())
-                    return "Length";
+            if (typeSymbol == null)
+                return null;
 
-                if (typeSymbol.ImplementsICollectionOfT())
-                    return "Count";
-            }
+            if (typeSymbol.IsErrorType())
+                return null;
+
+            if (typeSymbol.IsIEnumerableOrConstructedFromIEnumerableOfT())
+                return null;
+
+            if (typeSymbol.IsString())
+                return "Length";
+
+            if (typeSymbol.IsArrayType())
+                return "Length";
+
+            const SpecialType icollectionOfT = SpecialType.System_Collections_Generic_ICollection_T;
+            const SpecialType ireadOnlyCollectionOfT = SpecialType.System_Collections_Generic_IReadOnlyCollection_T;
+
+            if (typeSymbol.IsSpecialType(icollectionOfT, ireadOnlyCollectionOfT))
+                return "Count";
+
+            if (typeSymbol.IsConstructedFrom(icollectionOfT, ireadOnlyCollectionOfT))
+                return "Count";
+
+            if (typeSymbol.ImplementsAny(icollectionOfT, ireadOnlyCollectionOfT))
+                return "Count";
 
             return null;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
             string propertyName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
             var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
 
             memberAccess = memberAccess
-                .WithName(IdentifierName(propertyName).WithTriviaFrom(memberAccess.Name));
-
-            SyntaxNode newRoot = null;
+                .WithName(IdentifierName(propertyName).WithTriviaFrom(memberAccess.Name))
+                .AppendToTrailingTrivia(invocation.ArgumentList.DescendantTrivia().Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
 
             if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
             {
-                BinaryExpressionSyntax binaryExpression = EqualsExpression(
-                    memberAccess,
-                    NumericLiteralExpression(0));
+                var logicalNot = (PrefixUnaryExpressionSyntax)invocation.Parent;
 
-                newRoot = root.ReplaceNode(
-                    invocation.Parent,
-                    binaryExpression.WithTriviaFrom(invocation.Parent));
+                IEnumerable<SyntaxTrivia> leadingTrivia = logicalNot.GetLeadingTrivia()
+                    .Concat(logicalNot.OperatorToken.TrailingTrivia.Where(f => !f.IsWhitespaceOrEndOfLineTrivia()))
+                    .Concat(logicalNot.Operand.GetLeadingTrivia().Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
+
+                BinaryExpressionSyntax newNode = EqualsExpression(memberAccess, NumericLiteralExpression(0))
+                    .WithLeadingTrivia(leadingTrivia)
+                    .WithTrailingTrivia(logicalNot.GetTrailingTrivia());
+
+                return document.ReplaceNodeAsync(invocation.Parent, newNode, cancellationToken);
             }
             else
             {
-                BinaryExpressionSyntax binaryExpression = GreaterThanExpression(
-                    memberAccess,
-                    NumericLiteralExpression(0));
+                BinaryExpressionSyntax newNode = GreaterThanExpression(memberAccess, NumericLiteralExpression(0))
+                    .WithTriviaFrom(invocation);
 
-                newRoot = root.ReplaceNode(
-                    invocation,
-                    binaryExpression.WithTriviaFrom(invocation));
+                return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
             }
-
-            return document.WithSyntaxRoot(newRoot);
         }
     }
 }
