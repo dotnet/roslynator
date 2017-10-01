@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Refactorings.AddOrRemoveParameterName;
 using Roslynator.CSharp.Refactorings.NodeInList;
 
 namespace Roslynator.CSharp.Refactorings
@@ -16,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             if (arguments.Count == 0)
                 return;
 
-            await ArgumentParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
+            await AddOrRemoveParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateArgument))
             {

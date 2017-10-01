@@ -42,6 +42,10 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.Refactorings.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Refactorings\AddOrRemoveParameterName\AddParameterNameRefactoring.cs" />
+    <Compile Include="Refactorings\AddOrRemoveParameterName\AddParameterNameRewriter.cs" />
+    <Compile Include="Refactorings\AddOrRemoveParameterName\RemoveParameterNameRefactoring.cs" />
+    <Compile Include="Refactorings\AddOrRemoveParameterName\RemoveParameterNameRewriter.cs" />
     <Compile Include="RefactoringIdentifiers.Deprecated.cs" />
     <Compile Include="Refactorings\AccessModifierRefactoring.cs" />
     <Compile Include="Refactorings\DeclarationPatternRefactoring.cs" />
@@ -179,7 +183,7 @@
     <Compile Include="Refactorings\WrapStatements\WrapInUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactorings\RemovePropertyInitializerRefactoring.cs" />
-    <Compile Include="Refactorings\ArgumentParameterNameRefactoring.cs" />
+    <Compile Include="Refactorings\AddOrRemoveParameterName\AddOrRemoveParameterNameRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
