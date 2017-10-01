@@ -9,12 +9,11 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class SwapExpressionsInConditionalExpressionRefactoring
     {
-        public static bool CanRefactor(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
+        public static bool CanRefactor(ConditionalExpressionSyntax conditionalExpression)
         {
             return conditionalExpression.Condition != null
                 && conditionalExpression.WhenTrue != null
-                && conditionalExpression.WhenFalse != null
-                && context.Span.IsBetweenSpans(conditionalExpression);
+                && conditionalExpression.WhenFalse != null;
         }
 
         public static Task<Document> RefactorAsync(
@@ -22,13 +21,16 @@ namespace Roslynator.CSharp.Refactorings
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ConditionalExpressionSyntax newConditionalExpression = conditionalExpression
-                .WithCondition(Negator.LogicallyNegate(conditionalExpression.Condition))
-                .WithWhenTrue(conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue))
-                .WithWhenFalse(conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse))
-                .WithFormatterAnnotation();
+            ConditionalExpressionSyntax newNode = conditionalExpression.Update(
+                condition: Negator.LogicallyNegate(conditionalExpression.Condition),
+                questionToken: conditionalExpression.QuestionToken,
+                whenTrue: conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue),
+                colonToken: conditionalExpression.ColonToken,
+                whenFalse: conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse));
 
-            return document.ReplaceNodeAsync(conditionalExpression, newConditionalExpression, cancellationToken);
+            newNode = newNode.WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
         }
     }
 }
