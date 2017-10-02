@@ -13,7 +13,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Comparers;
-using Roslynator.CSharp.Helpers.ModifierHelpers;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -518,7 +517,7 @@ namespace Roslynator.CSharp.CodeFixes
                     "Remove accessibility modifiers",
                     cancellationToken =>
                     {
-                        SyntaxNode newNode = ModifierHelper.RemoveAccessModifiers(node);
+                        SyntaxNode newNode = Modifier.RemoveAccess(node);
 
                         return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                     },
@@ -558,7 +557,7 @@ namespace Roslynator.CSharp.CodeFixes
                             SyntaxNode newNode = node;
 
                             for (int i = indexes.Count - 1; i >= 0; i--)
-                                newNode = ModifierHelper.RemoveModifierAt(newNode, indexes[i]);
+                                newNode = Modifier.RemoveAt(newNode, indexes[i]);
 
                             return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                         },
@@ -583,7 +582,7 @@ namespace Roslynator.CSharp.CodeFixes
                     "Remove modifiers",
                     cancellationToken =>
                     {
-                        SyntaxNode newNode = ModifierHelper.RemoveModifiers(node);
+                        SyntaxNode newNode = Modifier.RemoveAll(node);
 
                         return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                     },
@@ -608,7 +607,7 @@ namespace Roslynator.CSharp.CodeFixes
                     SyntaxNode newNode = node;
 
                     if (node.IsKind(SyntaxKind.ConstructorDeclaration))
-                        newNode = ModifierHelper.RemoveAccessModifiers(newNode);
+                        newNode = Modifier.RemoveAccess(newNode);
 
                     newNode = newNode.InsertModifier(SyntaxKind.StaticKeyword, ModifierComparer.Instance);
 

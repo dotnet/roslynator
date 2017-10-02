@@ -91,7 +91,7 @@
     <Compile Include="CSharp\StringLiteralParser.StringLiteralParseResult.cs" />
     <Compile Include="CSharp\XmlElementInfo.cs" />
     <Compile Include="CSharp\XmlElementKind.cs" />
-    <Compile Include="CSharp\Helpers\ModifierHelpers\ModifierHelper.cs" />
+    <Compile Include="CSharp\Modifier.cs" />
     <Compile Include="CSharp\IMemberDeclarationComparer.cs" />
     <Compile Include="CSharp\IModifierComparer.cs" />
     <Compile Include="CSharp\CSharpUtility.cs" />

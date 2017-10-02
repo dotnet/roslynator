@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.CodeFixes;
-using Roslynator.CSharp.Helpers.ModifierHelpers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -23,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document = context.Document;
 
             CodeAction codeAction = CodeAction.Create(
-                $"Add '{ModifierHelper.GetModifierName(kind)}' modifier",
+                $"Add '{Modifier.GetName(kind)}' modifier",
                 cancellationToken => AddModifier(document, memberDeclaration, kind, cancellationToken),
                 EquivalenceKeyProvider.GetEquivalenceKey(diagnostic, kind.ToString()));
 

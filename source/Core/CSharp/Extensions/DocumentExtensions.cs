@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Documentation;
 using Roslynator.CSharp.Helpers;
-using Roslynator.CSharp.Helpers.ModifierHelpers;
 using Roslynator.CSharp.SyntaxRewriters;
 
 namespace Roslynator.CSharp
@@ -45,7 +44,7 @@ namespace Roslynator.CSharp
             SyntaxKind modifierKind,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode newNode = ModifierHelper.RemoveModifier(node, modifierKind);
+            SyntaxNode newNode = Modifier.Remove(node, modifierKind);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
@@ -56,7 +55,7 @@ namespace Roslynator.CSharp
             SyntaxToken modifier,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxNode newNode = ModifierHelper.RemoveModifier(node, modifier);
+            SyntaxNode newNode = Modifier.Remove(node, modifier);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
