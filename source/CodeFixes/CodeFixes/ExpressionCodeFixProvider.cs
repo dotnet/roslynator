@@ -161,17 +161,8 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!modifiers.Contains(SyntaxKind.ConstKeyword))
                                 break;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove 'const' modifier",
-                                cancellationToken =>
-                                {
-                                    LocalDeclarationStatementSyntax newNode = localDeclarationStatement.RemoveModifier(SyntaxKind.ConstKeyword);
+                            ModifiersCodeFixes.RemoveModifier(context, diagnostic, localDeclarationStatement, SyntaxKind.ConstKeyword);
 
-                                    return context.Document.ReplaceNodeAsync(localDeclarationStatement, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType:

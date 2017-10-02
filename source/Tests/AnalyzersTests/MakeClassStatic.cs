@@ -6,9 +6,9 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal partial class MakeClassStatic
+    internal static partial class MakeClassStatic
     {
-        public class Foo
+        public static class Foo
         {
             public const string FooConst = "";
 
@@ -41,25 +41,25 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        class Foo2
+        static class Foo2
         {
             public static void Foo()
             {
             }
         }
 
-        public partial class FooPartial
+        public static partial class FooPartial
         {
             public static void Foo()
             {
             }
         }
 
-        public partial class FooPartial
+        public static partial class FooPartial
         {
         }
 
-        public sealed class FooSealed
+        public static class FooSealed
         {
             public static void Foo()
             {

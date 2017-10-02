@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.MakeMemberReadOnly;
@@ -93,12 +94,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.RemoveRedundantSealedModifier:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove 'sealed' modifier",
-                                cancellationToken => RemoveRedundantSealedModifierRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            ModifiersCodeFixes.RemoveModifier(context, diagnostic, memberDeclaration, SyntaxKind.SealedKeyword);
                             break;
                         }
                     case DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration:
@@ -131,12 +127,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ? $"Mark '{declarators[0].Identifier.ValueText}' as read-only"
                                 : "Mark fields as read-only";
 
-                            CodeAction codeAction = CodeAction.Create(
-                                title,
-                                cancellationToken => MarkFieldAsReadOnlyRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            ModifiersCodeFixes.AddModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, title: title);
                             break;
                         }
                     case DiagnosticIdentifiers.UseConstantInsteadOfField:

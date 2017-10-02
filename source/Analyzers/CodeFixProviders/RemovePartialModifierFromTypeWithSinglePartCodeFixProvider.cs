@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 
@@ -27,12 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeDeclarationSyntax typeDeclaration))
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove 'partial' modifier",
-                cancellationToken => RemovePartialModifierFromTypeWithSinglePartRefactoring.RefactorAsync(context.Document, typeDeclaration, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemovePartialModifierFromTypeWithSinglePart));
-
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+            ModifiersCodeFixes.RemoveModifier(context, context.Diagnostics[0], typeDeclaration, SyntaxKind.PartialKeyword);
         }
     }
 }

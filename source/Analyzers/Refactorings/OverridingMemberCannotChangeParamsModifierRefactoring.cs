@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -68,27 +64,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ParameterSyntax parameter,
-            CancellationToken cancellationToken)
-        {
-            ParameterSyntax newNode;
-
-            if (parameter.IsParams())
-            {
-                newNode = parameter.RemoveModifier(SyntaxKind.ParamsKeyword);
-            }
-            else
-            {
-                newNode = parameter.InsertModifier(SyntaxKind.ParamsKeyword, ModifierComparer.Instance);
-            }
-
-            newNode = newNode.WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(parameter, newNode, cancellationToken);
         }
     }
 }

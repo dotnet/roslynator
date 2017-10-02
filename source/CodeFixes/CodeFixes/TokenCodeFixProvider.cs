@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Comparers;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -89,21 +90,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReorderModifiers))
                                 break;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Move 'partial' modifier",
-                                cancellationToken =>
-                                {
-                                    SyntaxNode node = token.Parent;
-
-                                    SyntaxNode newNode = node.RemoveModifier(token);
-
-                                    newNode = newNode.InsertModifier(SyntaxKind.PartialKeyword, ModifierComparer.Instance);
-
-                                    return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            ModifiersCodeFixes.MoveModifier(context, diagnostic, token.Parent, token);
                             break;
                         }
                 }

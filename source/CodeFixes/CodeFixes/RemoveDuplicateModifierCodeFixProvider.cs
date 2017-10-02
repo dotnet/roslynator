@@ -4,8 +4,8 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -34,12 +34,13 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.DuplicateModifier:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Remove '{token}' modifier",
-                                cancellationToken => context.Document.RemoveModifierAsync(token.Parent, token, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+                            ModifiersCodeFixes.RemoveModifier(
+                                context,
+                                diagnostic,
+                                token.Parent,
+                                token,
+                                additionalKey: CodeFixIdentifiers.RemoveDuplicateModifier);
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

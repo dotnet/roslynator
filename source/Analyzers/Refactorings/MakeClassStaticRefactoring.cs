@@ -1,16 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -115,34 +110,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ClassDeclarationSyntax classDeclaration,
-            CancellationToken cancellationToken)
-        {
-            ClassDeclarationSyntax newNode = UpdateModifiers(classDeclaration);
-
-            return document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
-        }
-
-        public static Task<Solution> RefactorAsync(
-            Solution solution,
-            ImmutableArray<ClassDeclarationSyntax> classDeclarations,
-            CancellationToken cancellationToken)
-        {
-            return solution.ReplaceNodesAsync(
-                classDeclarations,
-                (node, rewrittenNode) => UpdateModifiers(node),
-                cancellationToken);
-        }
-
-        private static ClassDeclarationSyntax UpdateModifiers(ClassDeclarationSyntax classDeclaration)
-        {
-            return classDeclaration
-                .InsertModifier(SyntaxKind.StaticKeyword, ModifierComparer.Instance)
-                .RemoveModifier(SyntaxKind.SealedKeyword);
         }
     }
 }

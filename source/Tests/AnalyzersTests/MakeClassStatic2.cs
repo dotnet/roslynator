@@ -4,9 +4,9 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal partial class MakeClassStatic
+    internal static partial class MakeClassStatic
     {
-        public partial class FooPartial
+        public static partial class FooPartial
         {
         }
 

@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.DocumentationComment;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -51,14 +52,15 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                (parameter.IsParams())
-                                    ? "Remove 'params' modifier"
-                                    : "Add 'params' modifier",
-                                cancellationToken => OverridingMemberCannotChangeParamsModifierRefactoring.RefactorAsync(context.Document, parameter, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+                            if (parameter.IsParams())
+                            {
+                                ModifiersCodeFixes.RemoveModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
+                            }
+                            else
+                            {
+                                ModifiersCodeFixes.AddModifier(context, diagnostic, parameter, SyntaxKind.ParamsKeyword);
+                            }
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

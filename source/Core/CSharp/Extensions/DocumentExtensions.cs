@@ -17,49 +17,6 @@ namespace Roslynator.CSharp
 {
     public static class DocumentExtensions
     {
-        internal static async Task<Document> InsertModifierAsync(
-            this Document document,
-            SyntaxNode node,
-            SyntaxKind modifierKind,
-            IModifierComparer comparer = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxTokenList modifiers = node.GetModifiers();
-
-            if (!modifiers.Contains(modifierKind))
-            {
-                SyntaxNode newNode = node.InsertModifier(modifierKind, comparer);
-
-                return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                return document;
-            }
-        }
-
-        internal static Task<Document> RemoveModifierAsync(
-            this Document document,
-            SyntaxNode node,
-            SyntaxKind modifierKind,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode newNode = Modifier.Remove(node, modifierKind);
-
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
-        }
-
-        internal static Task<Document> RemoveModifierAsync(
-            this Document document,
-            SyntaxNode node,
-            SyntaxToken modifier,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode newNode = Modifier.Remove(node, modifier);
-
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
-        }
-
         public static async Task<Document> RemoveMemberAsync(
             this Document document,
             MemberDeclarationSyntax member,

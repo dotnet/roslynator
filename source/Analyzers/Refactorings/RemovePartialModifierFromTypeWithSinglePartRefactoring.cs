@@ -3,8 +3,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -70,14 +68,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            TypeDeclarationSyntax typeDeclaration,
-            CancellationToken cancellationToken)
-        {
-            return document.RemoveModifierAsync(typeDeclaration, SyntaxKind.PartialKeyword, cancellationToken);
         }
     }
 }

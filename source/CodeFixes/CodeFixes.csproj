@@ -103,7 +103,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\MemberTypeMustMatchOverriddenMemberTypeRefactoring.cs" />
-    <Compile Include="Refactorings\ModifiersRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
     <Compile Include="Refactorings\UseYieldReturnInsteadOfReturnRefactoring.cs" />
     <Compile Include="CodeFixes\VariableDeclarationCodeFixProvider.cs" />
