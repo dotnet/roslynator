@@ -58,6 +58,8 @@
     <Compile Include="DocumentReferenceInfo.cs" />
     <Compile Include="Diagnostics\Assert.cs" />
     <Compile Include="Extensions\RefKindExtensions.cs" />
+    <Compile Include="Selection`1.cs" />
+    <Compile Include="SeparatedSyntaxListSelection`1.cs" />
     <Compile Include="SyntaxComparer.cs" />
     <Compile Include="SyntaxFinder.cs" />
     <Compile Include="CSharp\TypeParameterInfo.cs" />

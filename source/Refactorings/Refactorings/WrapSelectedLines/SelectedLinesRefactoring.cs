@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
             {
                 SourceText sourceText = await context.Document.GetTextAsync(context.CancellationToken).ConfigureAwait(false);
 
-                return new TextLineCollectionSelection(sourceText.Lines, span);
+                return TextLineCollectionSelection.Create(sourceText.Lines, span);
             }
 
             return null;

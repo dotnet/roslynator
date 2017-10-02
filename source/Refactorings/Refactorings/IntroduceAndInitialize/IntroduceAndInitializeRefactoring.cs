@@ -8,7 +8,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 {
@@ -63,35 +62,33 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public static void ComputeRefactoring(RefactoringContext context, ParameterListSyntax parameterList)
         {
-            ImmutableArray<ParameterSyntax> parameters = GetParameters(parameterList, context.Span);
+            if (!SeparatedSyntaxListSelection<ParameterSyntax>.TryCreate(parameterList.Parameters, context.Span, out SeparatedSyntaxListSelection<ParameterSyntax> selection))
+                return;
 
-            if (parameters.Any())
-            {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
-                {
-                    IEnumerable<IntroduceAndInitializePropertyInfo> propertyInfos = parameters
-                        .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6));
-
-                    var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfos);
-                    refactoring.RegisterRefactoring(context);
-                }
-
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
-                {
-                    IEnumerable<IntroduceAndInitializeFieldInfo> fieldInfos = parameters
-                        .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore));
-
-                    var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfos);
-                    refactoring.RegisterRefactoring(context);
-                }
-            }
-        }
-
-        private static ImmutableArray<ParameterSyntax> GetParameters(ParameterListSyntax parameterList, TextSpan span)
-        {
-            return GetSelectedParameters(parameterList, span)
+            ImmutableArray<ParameterSyntax> parameters = selection
                 .Where(IsValid)
                 .ToImmutableArray();
+
+            if (!parameters.Any())
+                return;
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeProperty))
+            {
+                IEnumerable<IntroduceAndInitializePropertyInfo> propertyInfos = parameters
+                    .Select(parameter => new IntroduceAndInitializePropertyInfo(parameter, context.SupportsCSharp6));
+
+                var refactoring = new IntroduceAndInitializePropertyRefactoring(propertyInfos);
+                refactoring.RegisterRefactoring(context);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.IntroduceAndInitializeField))
+            {
+                IEnumerable<IntroduceAndInitializeFieldInfo> fieldInfos = parameters
+                    .Select(parameter => new IntroduceAndInitializeFieldInfo(parameter, context.Settings.PrefixFieldIdentifierWithUnderscore));
+
+                var refactoring = new IntroduceAndInitializeFieldRefactoring(fieldInfos);
+                refactoring.RegisterRefactoring(context);
+            }
         }
 
         private void RegisterRefactoring(RefactoringContext context)
@@ -157,13 +154,6 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             }
 
             return Infos.Select(f => f.CreateDeclaration());
-        }
-
-        private static IEnumerable<ParameterSyntax> GetSelectedParameters(ParameterListSyntax parameterList, TextSpan span)
-        {
-            return parameterList.Parameters
-                .SkipWhile(f => span.Start > f.Span.Start)
-                .TakeWhile(f => span.End >= f.Span.End);
         }
 
         private static bool IsValid(ParameterSyntax parameter)

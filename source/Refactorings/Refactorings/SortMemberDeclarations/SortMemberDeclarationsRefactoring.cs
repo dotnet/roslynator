@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
         {
             if (selectedMembers.Count > 1)
             {
-                ImmutableArray<MemberDeclarationSyntax> members = selectedMembers.Nodes;
+                ImmutableArray<MemberDeclarationSyntax> members = selectedMembers.SelectedItems;
 
                 SyntaxKind kind = GetSingleKindOrDefault(members);
 

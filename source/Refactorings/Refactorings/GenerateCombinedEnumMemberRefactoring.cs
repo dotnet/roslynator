@@ -1,13 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -17,9 +17,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, EnumDeclarationSyntax enumDeclaration)
         {
-            EnumMemberDeclarationSyntax[] selectedMembers = GetSelectedMembers(enumDeclaration, context.Span).ToArray();
+            if (!SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax>.TryCreate(enumDeclaration.Members, context.Span, out SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selection))
+                return;
 
-            if (selectedMembers.Length > 1)
+            if (selection.Count > 1)
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -27,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (enumSymbol?.IsEnumWithFlagsAttribute(semanticModel) == true)
                 {
-                    object[] constantValues = selectedMembers
+                    object[] constantValues = selection
                         .Select(f => semanticModel.GetDeclaredSymbol(f, context.CancellationToken))
                         .Where(f => f.HasConstantValue)
                         .Select(f => f.ConstantValue)
@@ -41,12 +42,12 @@ namespace Roslynator.CSharp.Refactorings
                         SeparatedSyntaxList<EnumMemberDeclarationSyntax> enumMembers = enumDeclaration.Members;
 
                         string name = NameGenerator.Default.EnsureUniqueEnumMemberName(
-                            string.Concat(selectedMembers.Select(f => f.Identifier.ValueText)),
+                            string.Concat(selection.Select(f => f.Identifier.ValueText)),
                             enumSymbol);
 
-                        EnumMemberDeclarationSyntax newEnumMember = CreateEnumMember(name, selectedMembers);
+                        EnumMemberDeclarationSyntax newEnumMember = CreateEnumMember(name, selection.SelectedItems);
 
-                        int insertIndex = enumMembers.IndexOf(selectedMembers.Last()) + 1;
+                        int insertIndex = selection.EndIndex + 1;
 
                         context.RegisterRefactoring(
                             $"Generate enum member '{name}'",
@@ -228,7 +229,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static EnumMemberDeclarationSyntax CreateEnumMember(string name, EnumMemberDeclarationSyntax[] enumMembers)
+        private static EnumMemberDeclarationSyntax CreateEnumMember(string name, ImmutableArray<EnumMemberDeclarationSyntax> enumMembers)
         {
             ExpressionSyntax expression = IdentifierName(enumMembers.Last().Identifier.WithoutTrivia());
 
@@ -251,13 +252,6 @@ namespace Roslynator.CSharp.Refactorings
             EnumDeclarationSyntax newNode = enumDeclaration.WithMembers(enumDeclaration.Members.Insert(insertIndex, newEnumMember));
 
             return document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken);
-        }
-
-        private static IEnumerable<EnumMemberDeclarationSyntax> GetSelectedMembers(EnumDeclarationSyntax enumDeclaration, TextSpan span)
-        {
-            return enumDeclaration.Members
-                .SkipWhile(f => span.Start > f.Span.Start)
-                .TakeWhile(f => span.End >= f.Span.End);
         }
     }
 }

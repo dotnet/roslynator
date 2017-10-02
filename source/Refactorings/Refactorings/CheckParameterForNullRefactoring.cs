@@ -32,11 +32,14 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterListSyntax parameterList)
         {
+            if (!SeparatedSyntaxListSelection<ParameterSyntax>.TryCreate(parameterList.Parameters, context.Span, out SeparatedSyntaxListSelection<ParameterSyntax> selection))
+                return;
+
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            ParameterSyntax[] parameters = GetSelectedParameters(parameterList, context.Span)
+            ImmutableArray<ParameterSyntax> parameters = selection
                 .Where(parameter => IsValid(parameter) && CanRefactor(parameter, semanticModel, context.CancellationToken))
-                .ToArray();
+                .ToImmutableArray();
 
             if (parameters.Length == 1)
             {
@@ -44,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else if (parameters.Length > 0)
             {
-                RegisterRefactoring(context, parameters.ToImmutableArray(), "parameters");
+                RegisterRefactoring(context, parameters, "parameters");
             }
         }
 
@@ -267,13 +270,6 @@ namespace Roslynator.CSharp.Refactorings
             return parameter.Type != null
                 && !parameter.Identifier.IsMissing
                 && parameter.IsParentKind(SyntaxKind.ParameterList);
-        }
-
-        private static IEnumerable<ParameterSyntax> GetSelectedParameters(ParameterListSyntax parameterList, TextSpan span)
-        {
-            return parameterList.Parameters
-                .SkipWhile(f => span.Start > f.Span.Start)
-                .TakeWhile(f => span.End >= f.Span.End);
         }
     }
 }

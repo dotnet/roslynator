@@ -3,21 +3,23 @@
 using System;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CSharp
 {
     public class StatementContainerSelection : SyntaxListSelection<StatementSyntax>
     {
-        private StatementContainerSelection(StatementContainer container, TextSpan span)
-             : base(container.Statements, span)
-        {
-            Container = container;
-        }
-
         private StatementContainerSelection(StatementContainer container, TextSpan span, int startIndex, int endIndex)
              : base(container.Statements, span, startIndex, endIndex)
         {
             Container = container;
+        }
+
+        public StatementContainer Container { get; }
+
+        public SyntaxList<StatementSyntax> Statements
+        {
+            get { return Container.Statements; }
         }
 
         public static StatementContainerSelection Create(BlockSyntax block, TextSpan span)
@@ -27,7 +29,9 @@ namespace Roslynator.CSharp
 
             var container = new StatementContainer(block);
 
-            return new StatementContainerSelection(container, span);
+            (int startIndex, int endIndex) = GetIndexes(container.Statements, span);
+
+            return new StatementContainerSelection(container, span, startIndex, endIndex);
         }
 
         public static StatementContainerSelection Create(SwitchSectionSyntax switchSection, TextSpan span)
@@ -37,7 +41,9 @@ namespace Roslynator.CSharp
 
             var container = new StatementContainer(switchSection);
 
-            return new StatementContainerSelection(container, span);
+            (int startIndex, int endIndex) = GetIndexes(container.Statements, span);
+
+            return new StatementContainerSelection(container, span, startIndex, endIndex);
         }
 
         public static bool TryCreate(BlockSyntax block, TextSpan span, out StatementContainerSelection selectedStatements)
@@ -68,23 +74,22 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool TryCreate(StatementContainer container, TextSpan span, out StatementContainerSelection selectedStatements)
+        public static bool TryCreate(StatementContainer container, TextSpan span, out StatementContainerSelection selection)
         {
-            if (container.Statements.Any())
-            {
-                IndexPair indexes = GetIndexes(container.Statements, span);
+            selection = null;
 
-                if (indexes.StartIndex != -1)
-                {
-                    selectedStatements = new StatementContainerSelection(container, span, indexes.StartIndex, indexes.EndIndex);
-                    return true;
-                }
-            }
+            SyntaxList<StatementSyntax> statements = container.Statements;
 
-            selectedStatements = null;
-            return false;
+            if (!statements.Any())
+                return false;
+
+            (int startIndex, int endIndex) = GetIndexes(statements, span);
+
+            if (startIndex != -1)
+                return false;
+
+            selection = new StatementContainerSelection(container, span, startIndex, endIndex);
+            return true;
         }
-
-        public StatementContainer Container { get; }
     }
 }
