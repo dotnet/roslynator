@@ -740,6 +740,15 @@ namespace Roslynator.CSharp
                 .WithSimplifierAnnotationIf(simplifiable);
         }
 
+        internal static ExpressionSyntax ParenthesizeIf(
+            this ExpressionSyntax expression,
+            bool condition,
+            bool includeElasticTrivia = true,
+            bool simplifiable = true)
+        {
+            return (condition) ? Parenthesize(expression, includeElasticTrivia, simplifiable) : expression;
+        }
+
         public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
         {
             while (expression?.Parent?.Kind() == SyntaxKind.ParenthesizedExpression)

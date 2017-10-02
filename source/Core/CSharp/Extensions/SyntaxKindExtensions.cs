@@ -63,5 +63,25 @@ namespace Roslynator.CSharp
                 || kind == kind5
                 || kind == kind6;
         }
+
+        public static bool IsSingleTokenExpression(this SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.IdentifierName:
+                case SyntaxKind.PredefinedType:
+                case SyntaxKind.ThisExpression:
+                case SyntaxKind.BaseExpression:
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.StringLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.NullLiteralExpression:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }
