@@ -124,7 +124,7 @@ namespace Roslynator.CSharp.Refactorings
             switch (statement)
             {
                 case BlockSyntax block:
-                    return block.SingleStatementOrDefault() as ReturnStatementSyntax;
+                    return block.Statements.SingleOrDefault(throwException: false) as ReturnStatementSyntax;
                 case ReturnStatementSyntax returnStatement:
                     return returnStatement;
             }

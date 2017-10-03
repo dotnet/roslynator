@@ -223,7 +223,7 @@ namespace Roslynator
                 && Symbol.ReturnType.IsConstructedFromIEnumerableOfT()
                 && IsName("Cast")
                 && Symbol.Arity == 1
-                && Symbol.SingleParameterOrDefault()?.Type.IsIEnumerable() == true
+                && Symbol.Parameters.SingleOrDefault(throwException: false)?.Type.IsIEnumerable() == true
                 && Symbol
                     .ContainingType?
                     .Equals(SemanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) == true;

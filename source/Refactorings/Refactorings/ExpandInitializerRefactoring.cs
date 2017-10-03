@@ -179,7 +179,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var methodSymbol = (IMethodSymbol)symbol;
 
-                        IParameterSymbol parameter = methodSymbol.SingleParameterOrDefault();
+                        IParameterSymbol parameter = methodSymbol.Parameters.SingleOrDefault(throwException: false);
 
                         if (parameter != null)
                         {
@@ -214,7 +214,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (!propertySymbol.IsReadOnly
                         && semanticModel.IsAccessible(position, propertySymbol.SetMethod))
                     {
-                        IParameterSymbol parameter = propertySymbol.SingleParameterOrDefault();
+                        IParameterSymbol parameter = propertySymbol.Parameters.SingleOrDefault(throwException: false);
 
                         if (parameter != null)
                         {

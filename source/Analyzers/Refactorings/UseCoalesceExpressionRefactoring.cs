@@ -102,7 +102,10 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             SyntaxNode parent)
         {
-            VariableDeclaratorSyntax declarator = localDeclarationStatement.Declaration?.SingleVariableOrDefault();
+            VariableDeclaratorSyntax declarator = localDeclarationStatement
+                .Declaration?
+                .Variables
+                .SingleOrDefault(throwException: false);
 
             if (declarator != null)
             {

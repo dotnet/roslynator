@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings.UnusedSyntax
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            StatementSyntax statement = body?.SingleStatementOrDefault();
+            StatementSyntax statement = body?.Statements.SingleOrDefault(throwException: false);
 
             if (statement?.IsKind(SyntaxKind.ThrowStatement) == true)
             {

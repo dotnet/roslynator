@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (body != null)
                 {
-                    StatementSyntax statement = body.SingleStatementOrDefault();
+                    StatementSyntax statement = body.Statements.SingleOrDefault(throwException: false);
 
                     if (statement?.IsKind(SyntaxKind.ExpressionStatement) == true)
                     {

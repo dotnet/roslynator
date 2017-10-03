@@ -84,18 +84,6 @@ namespace Roslynator.CSharp
         #endregion AccessorListSyntax
 
         #region BlockSyntax
-        public static StatementSyntax SingleStatementOrDefault(this BlockSyntax body)
-        {
-            if (body == null)
-                throw new ArgumentNullException(nameof(body));
-
-            SyntaxList<StatementSyntax> statements = body.Statements;
-
-            return (statements.Count == 1)
-                ? statements[0]
-                : null;
-        }
-
         public static TextSpan BracesSpan(this BlockSyntax block)
         {
             if (block == null)
@@ -2084,7 +2072,7 @@ namespace Roslynator.CSharp
         {
             if (statement?.IsKind(SyntaxKind.Block) == true)
             {
-                return ((BlockSyntax)statement).SingleStatementOrDefault();
+                return ((BlockSyntax)statement).Statements.SingleOrDefault(throwException: false);
             }
             else
             {
@@ -2259,18 +2247,6 @@ namespace Roslynator.CSharp
         #endregion StructDeclarationSyntax
 
         #region SwitchSectionSyntax
-        public static StatementSyntax SingleStatementOrDefault(this SwitchSectionSyntax switchSection)
-        {
-            if (switchSection == null)
-                throw new ArgumentNullException(nameof(switchSection));
-
-            SyntaxList<StatementSyntax> statements = switchSection.Statements;
-
-            return (statements.Count == 1)
-                ? statements[0]
-                : null;
-        }
-
         public static bool ContainsDefaultLabel(this SwitchSectionSyntax switchSection)
         {
             return switchSection?.Labels.Any(f => f.IsKind(SyntaxKind.DefaultSwitchLabel)) == true;
@@ -3716,20 +3692,6 @@ namespace Roslynator.CSharp
             return declaration ?? usingStatement.Expression;
         }
         #endregion UsingStatementSyntax
-
-        #region VariableDeclarationSyntax
-        public static VariableDeclaratorSyntax SingleVariableOrDefault(this VariableDeclarationSyntax declaration)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
-
-            return (variables.Count == 1)
-                ? variables.First()
-                : null;
-        }
-        #endregion VariableDeclarationSyntax
 
         #region XmlElementSyntax
         internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName)

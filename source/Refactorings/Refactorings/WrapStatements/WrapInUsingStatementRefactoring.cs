@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
                 if (declaration != null)
                 {
-                    VariableDeclaratorSyntax variable = declaration.SingleVariableOrDefault();
+                    VariableDeclaratorSyntax variable = declaration.Variables.SingleOrDefault(throwException: false);
 
                     if (variable?.Initializer?.Value?.IsKind(SyntaxKind.ObjectCreationExpression) == true
                         && declaration.Type != null)

@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
             if (body != null)
             {
-                StatementSyntax statement = body.SingleStatementOrDefault();
+                StatementSyntax statement = body.Statements.SingleOrDefault(throwException: false);
 
                 switch (statement?.Kind())
                 {

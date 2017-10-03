@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var block = (BlockSyntax)body;
 
-                StatementSyntax statement = block.SingleStatementOrDefault();
+                StatementSyntax statement = block.Statements.SingleOrDefault(throwException: false);
 
                 if (statement != null)
                 {

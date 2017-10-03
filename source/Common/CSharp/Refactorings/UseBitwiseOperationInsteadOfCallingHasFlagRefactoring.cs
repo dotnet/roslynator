@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                         && info.IsName("HasFlag")
                         && !info.IsExtensionMethod
                         && info.IsReturnType(SpecialType.System_Boolean)
-                        && info.Symbol.SingleParameterOrDefault()?.Type.SpecialType == SpecialType.System_Enum
+                        && info.Symbol.Parameters.SingleOrDefault(throwException: false)?.Type.SpecialType == SpecialType.System_Enum
                         && info.IsContainingType(SpecialType.System_Enum))
                     {
                         return true;

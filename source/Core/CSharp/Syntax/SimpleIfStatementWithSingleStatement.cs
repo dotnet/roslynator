@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Syntax
 
             if (statement.IsKind(SyntaxKind.Block))
             {
-                StatementSyntax singleStatement = ((BlockSyntax)statement).SingleStatementOrDefault();
+                StatementSyntax singleStatement = ((BlockSyntax)statement).Statements.SingleOrDefault(throwException: false);
 
                 if (singleStatement == null)
                     throw new ArgumentException("", nameof(ifStatement));
@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Syntax
                 {
                     if (statement.IsKind(SyntaxKind.Block))
                     {
-                        StatementSyntax singleStatement = ((BlockSyntax)statement).SingleStatementOrDefault();
+                        StatementSyntax singleStatement = ((BlockSyntax)statement).Statements.SingleOrDefault(throwException: false);
 
                         if (singleStatement != null)
                         {

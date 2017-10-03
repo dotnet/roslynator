@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (type?.IsVar == false)
             {
-                ExpressionSyntax initializerValue = variableDeclaration.SingleVariableOrDefault()?.Initializer?.Value;
+                ExpressionSyntax initializerValue = variableDeclaration.Variables.SingleOrDefault(throwException: false)?.Initializer?.Value;
 
                 if (initializerValue != null)
                 {
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             TypeSyntax type = variableDeclaration.Type;
 
-            if (variableDeclaration.SingleVariableOrDefault()?.Initializer?.Value != null
+            if (variableDeclaration.Variables.SingleOrDefault(throwException: false)?.Initializer?.Value != null
                 && typeSymbol.IsConstructedFromTaskOfT(semanticModel))
             {
                 ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, cancellationToken);

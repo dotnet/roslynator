@@ -57,7 +57,10 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task<bool> CanRefactorAsync(RefactoringContext context, ForStatementSyntax forStatement)
         {
-            VariableDeclaratorSyntax variableDeclarator = forStatement.Declaration?.SingleVariableOrDefault();
+            VariableDeclaratorSyntax variableDeclarator = forStatement
+                .Declaration?
+                .Variables
+                .SingleOrDefault(throwException: false);
 
             if (variableDeclarator != null)
             {
