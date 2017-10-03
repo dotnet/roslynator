@@ -774,6 +774,11 @@ namespace Roslynator
             return false;
         }
 
+        public static bool IsReducedExtension(this IMethodSymbol methodSymbol)
+        {
+            return methodSymbol?.MethodKind == MethodKind.ReducedExtension;
+        }
+
         public static bool IsNonReducedExtensionMethod(this IMethodSymbol methodSymbol)
         {
             return methodSymbol?.IsExtensionMethod == true

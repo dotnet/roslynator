@@ -40,7 +40,9 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol == null)
                 return;
 
-            ImmutableArray<IParameterSymbol> parameterSymbols = methodSymbol.Parameters;
+            bool isReduced = methodSymbol.MethodKind == MethodKind.ReducedExtension;
+
+            ImmutableArray<IParameterSymbol> parameterSymbols = (isReduced) ? methodSymbol.ReducedFrom.Parameters : methodSymbol.Parameters;
 
             if (parameterSymbols.Length != 1)
                 return;
@@ -49,23 +51,38 @@ namespace Roslynator.CSharp.Refactorings
 
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-            if (arguments.Count != 1)
+            if (arguments.Count != ((isReduced) ? 0 : 1))
                 return;
 
             ParameterSyntax parameter = lambda.Parameter;
 
+            MemberAccessExpressionSyntax memberAccessExpression = (isReduced) ? (MemberAccessExpressionSyntax)expression : null;
+
+            if (!CheckParameter(
+                parameter,
+                (isReduced) ? memberAccessExpression.Expression : arguments[0].Expression,
+                parameterSymbols[0]))
+            {
+                return;
+            }
+
+            methodSymbol = (isReduced) ? methodSymbol.GetConstructedReducedFrom() : methodSymbol;
+
             if (!CheckInvokeMethod(lambda, methodSymbol, semanticModel, context.CancellationToken))
                 return;
 
-            if (!CheckParameter(parameter, arguments[0], parameterSymbols[0]))
+            if (!CheckSpeculativeSymbol(
+                lambda,
+                (isReduced) ? memberAccessExpression.Name.WithoutTrivia() : expression,
+                methodSymbol,
+                semanticModel))
+            {
                 return;
-
-            if (!CheckSpeculativeSymbol(lambda, expression, methodSymbol, semanticModel))
-                return;
+            }
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, lambda);
 
-            FadeOut(context, parameter, null, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken);
+            FadeOut(context, parameter, null, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
 
         public static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
@@ -106,21 +123,46 @@ namespace Roslynator.CSharp.Refactorings
 
             SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
-            if (parameters.Count != arguments.Count)
+            bool isReduced = methodSymbol.MethodKind == MethodKind.ReducedExtension;
+
+            if (parameters.Count != ((isReduced) ? arguments.Count + 1 : arguments.Count))
                 return;
 
-            if (!CheckInvokeMethod(lambda, methodSymbol, semanticModel, context.CancellationToken))
-                return;
+            MemberAccessExpressionSyntax memberAccessExpression = (isReduced) ? (MemberAccessExpressionSyntax)expression : null;
+
+            if (isReduced)
+            {
+                if (!CheckParameter(
+                    parameters[0],
+                    memberAccessExpression.Expression,
+                    methodSymbol.ReducedFrom.Parameters[0]))
+                {
+                    return;
+                }
+
+                parameters = parameters.RemoveAt(0);
+            }
 
             if (!CheckParameters(parameters, arguments, parameterSymbols))
                 return;
 
-            if (!CheckSpeculativeSymbol(lambda, expression, methodSymbol, semanticModel))
+            methodSymbol = (isReduced) ? methodSymbol.GetConstructedReducedFrom() : methodSymbol;
+
+            if (!CheckInvokeMethod(lambda, methodSymbol, semanticModel, context.CancellationToken))
                 return;
+
+            if (!CheckSpeculativeSymbol(
+                lambda,
+                (isReduced) ? memberAccessExpression.Name.WithoutTrivia() : expression,
+                methodSymbol,
+                semanticModel))
+            {
+                return;
+            }
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, lambda);
 
-            FadeOut(context, null, parameterList, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken);
+            FadeOut(context, null, parameterList, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
 
         public static void AnalyzeAnonyousMethodExpression(SyntaxNodeAnalysisContext context)
@@ -161,21 +203,46 @@ namespace Roslynator.CSharp.Refactorings
 
             SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
-            if (parameters.Count != arguments.Count)
+            bool isReduced = methodSymbol.MethodKind == MethodKind.ReducedExtension;
+
+            if (parameters.Count != ((isReduced) ? arguments.Count + 1 : arguments.Count))
                 return;
 
-            if (!CheckInvokeMethod(anonymousMethod, methodSymbol, semanticModel, context.CancellationToken))
-                return;
+            MemberAccessExpressionSyntax memberAccessExpression = (isReduced) ? (MemberAccessExpressionSyntax)expression : null;
+
+            if (isReduced)
+            {
+                if (!CheckParameter(
+                    parameters[0],
+                    ((MemberAccessExpressionSyntax)expression).Expression,
+                    methodSymbol.ReducedFrom.Parameters[0]))
+                {
+                    return;
+                }
+
+                parameters = parameters.RemoveAt(0);
+            }
 
             if (!CheckParameters(parameters, arguments, parameterSymbols))
                 return;
 
-            if (!CheckSpeculativeSymbol(anonymousMethod, expression, methodSymbol, semanticModel))
+            methodSymbol = (isReduced) ? methodSymbol.GetConstructedReducedFrom() : methodSymbol;
+
+            if (!CheckInvokeMethod(anonymousMethod, methodSymbol, semanticModel, context.CancellationToken))
                 return;
+
+            if (!CheckSpeculativeSymbol(
+                anonymousMethod,
+                (isReduced) ? memberAccessExpression.Name.WithoutTrivia() : expression,
+                methodSymbol,
+                semanticModel))
+            {
+                return;
+            }
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, anonymousMethod);
 
-            FadeOut(context, null, parameterList, anonymousMethod.Block, argumentList, anonymousMethod.DelegateKeyword);
+            FadeOut(context, null, parameterList, anonymousMethod.Block, argumentList, anonymousMethod.DelegateKeyword, memberAccessExpression);
         }
 
         private static bool CheckInvokeMethod(
@@ -220,7 +287,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             for (int i = 0; i < parameters.Count; i++)
             {
-                if (!CheckParameter(parameters[i], arguments[i], parameterSymbols[i]))
+                if (!CheckParameter(parameters[i], arguments[i].Expression, parameterSymbols[i]))
                     return false;
             }
 
@@ -229,14 +296,14 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CheckParameter(
             ParameterSyntax parameter,
-            ArgumentSyntax argument,
+            ExpressionSyntax expression,
             IParameterSymbol parameterSymbol)
         {
             return !parameterSymbol.IsRefOrOut()
                 && !parameterSymbol.IsParams
                 && string.Equals(
                     parameter.Identifier.ValueText,
-                    (argument.Expression as IdentifierNameSyntax)?.Identifier.ValueText,
+                    (expression as IdentifierNameSyntax)?.Identifier.ValueText,
                     StringComparison.Ordinal);
         }
 
@@ -336,7 +403,8 @@ namespace Roslynator.CSharp.Refactorings
             ParameterListSyntax parameterList,
             BlockSyntax block,
             ArgumentListSyntax argumentList,
-            SyntaxToken arrowTokenOrDelegateKeyword)
+            SyntaxToken arrowTokenOrDelegateKeyword,
+            MemberAccessExpressionSyntax memberAccessExpression)
         {
             if (parameter != null)
                 context.ReportNode(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, parameter);
@@ -357,19 +425,34 @@ namespace Roslynator.CSharp.Refactorings
                     context.ReportToken(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
             }
 
+            if (memberAccessExpression != null)
+            {
+                context.ReportNode(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, memberAccessExpression.Expression);
+                context.ReportToken(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, memberAccessExpression.OperatorToken);
+            }
+
             context.ReportNode(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, argumentList);
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             AnonymousFunctionExpressionSyntax anonymousFunction,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = GetInvocationExpression(anonymousFunction.Body)
-                .Expression
-                .WithTriviaFrom(anonymousFunction);
+            InvocationExpressionSyntax invocationExpression = GetInvocationExpression(anonymousFunction.Body);
 
-            return document.ReplaceNodeAsync(anonymousFunction, newNode, cancellationToken);
+            ExpressionSyntax newNode = invocationExpression.Expression;
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+
+            var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(invocationExpression, cancellationToken);
+
+            if (methodSymbol.IsReducedExtension())
+                newNode = ((MemberAccessExpressionSyntax)newNode).Name;
+
+            newNode = newNode.WithTriviaFrom(anonymousFunction);
+
+            return await document.ReplaceNodeAsync(anonymousFunction, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

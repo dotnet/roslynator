@@ -53,7 +53,7 @@
     <Compile Include="CodeFixProviders\EndRegionDirectiveTriviaCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\EnumMemberDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\LambdaExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\AnonymousFunctionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ObjectCreationExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ArgumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ParameterCodeFixProvider.cs" />

@@ -71,7 +71,7 @@
     <Compile Include="ImplementExceptionConstructors.cs" />
     <Compile Include="AvoidSingleLineBlock.cs" />
     <Compile Include="UseConstantInsteadOfField.cs" />
-    <Compile Include="ReplaceLambdaExpressionWithMethodGroup.cs" />
+    <Compile Include="UseMethodGroupInsteadOfAnonymousFunction.cs" />
     <Compile Include="SimplifyBooleanExpression.cs" />
     <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="StaticMemberInGenericClassShouldUseTypeParameter.cs" />
