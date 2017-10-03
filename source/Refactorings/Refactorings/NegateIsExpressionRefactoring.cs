@@ -52,12 +52,16 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken => RefactorAsync(context.Document, expression, context.CancellationToken));
         }
 
-        private static Task<Document> RefactorAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            return document.ReplaceNodeAsync(expression, Negator.LogicallyNegate(expression), cancellationToken);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            ExpressionSyntax newNode = CSharpUtility.LogicallyNegate(expression, semanticModel, cancellationToken);
+
+            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

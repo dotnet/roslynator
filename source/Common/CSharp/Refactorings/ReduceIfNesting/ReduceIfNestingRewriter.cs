@@ -2,6 +2,7 @@
 
 using System;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -18,13 +19,17 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
             private readonly bool _recursive;
             private readonly SyntaxKind _jumpKind;
             private StatementContainer _container;
+            private readonly SemanticModel _semanticModel;
+            private readonly CancellationToken _cancellationToken;
 
-            public ReduceIfStatementRewriter(SyntaxKind jumpKind, bool recursive)
+            public ReduceIfStatementRewriter(SyntaxKind jumpKind, bool recursive, SemanticModel semanticModel, CancellationToken cancellationToken)
             {
                 _jumpKind = jumpKind;
                 _recursive = recursive;
 
                 _jumpStatement = CreateJumpStatement(jumpKind);
+                _semanticModel = semanticModel;
+                _cancellationToken = cancellationToken;
             }
 
             private static StatementSyntax CreateJumpStatement(SyntaxKind jumpKind)
@@ -149,7 +154,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
                 var block = (BlockSyntax)ifStatement.Statement;
 
-                ExpressionSyntax newCondition = Negator.LogicallyNegate(ifStatement.Condition);
+                ExpressionSyntax newCondition = CSharpUtility.LogicallyNegate(ifStatement.Condition, _semanticModel, _cancellationToken);
 
                 BlockSyntax newBlock = block.WithStatements(SingletonList(_jumpStatement));
 

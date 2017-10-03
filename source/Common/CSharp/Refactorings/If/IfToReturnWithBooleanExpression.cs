@@ -43,15 +43,17 @@ namespace Roslynator.CSharp.Refactorings.If
             }
         }
 
-        public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionSyntax expression = IfRefactoringHelper.GetBooleanExpression(IfStatement.Condition, Expression1, Expression2);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            ExpressionSyntax expression = IfRefactoringHelper.GetBooleanExpression(IfStatement.Condition, Expression1, Expression2, semanticModel, cancellationToken);
 
             StatementSyntax newNode = CreateStatement(expression)
                 .WithTriviaFrom(IfStatement)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(IfStatement, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(IfStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

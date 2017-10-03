@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -43,13 +43,15 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax falseStatement = ifStatement.Else.Statement;
 
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             IfStatementSyntax newIfStatement = ifStatement
-                .WithCondition(Negator.LogicallyNegate(ifStatement.Condition))
+                .WithCondition(CSharpUtility.LogicallyNegate(ifStatement.Condition, semanticModel, cancellationToken))
                 .WithStatement(falseStatement.WithTriviaFrom(trueStatement))
                 .WithElse(ifStatement.Else.WithStatement(trueStatement.WithTriviaFrom(falseStatement)))
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken);
+            return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }

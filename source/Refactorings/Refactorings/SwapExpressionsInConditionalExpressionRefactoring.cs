@@ -16,13 +16,15 @@ namespace Roslynator.CSharp.Refactorings
                 && conditionalExpression.WhenFalse != null;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             ConditionalExpressionSyntax newNode = conditionalExpression.Update(
-                condition: Negator.LogicallyNegate(conditionalExpression.Condition),
+                condition: CSharpUtility.LogicallyNegate(conditionalExpression.Condition, semanticModel, cancellationToken),
                 questionToken: conditionalExpression.QuestionToken,
                 whenTrue: conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue),
                 colonToken: conditionalExpression.ColonToken,
@@ -30,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newNode = newNode.WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

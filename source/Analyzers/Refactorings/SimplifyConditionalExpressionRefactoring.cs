@@ -45,16 +45,18 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
         {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             ExpressionSyntax condition = conditionalExpression.Condition;
 
             ExpressionSyntax newNode = (conditionalExpression.WhenTrue.WalkDownParentheses().IsKind(SyntaxKind.TrueLiteralExpression))
                 ? condition
-                : Negator.LogicallyNegate(condition);
+                : CSharpUtility.LogicallyNegate(condition, semanticModel, cancellationToken);
 
             SyntaxTriviaList trailingTrivia = conditionalExpression
                 .DescendantTrivia(TextSpan.FromBounds(condition.Span.End, conditionalExpression.Span.End))
@@ -66,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithLeadingTrivia(conditionalExpression.GetLeadingTrivia())
                 .WithTrailingTrivia(trailingTrivia);
 
-            return document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

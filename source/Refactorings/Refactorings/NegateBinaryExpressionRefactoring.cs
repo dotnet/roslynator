@@ -67,15 +67,18 @@ namespace Roslynator.CSharp.Refactorings
             return binaryExpression;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionSyntax newNode = Negator.LogicallyNegate(binaryExpression)
-                .WithFormatterAnnotation();
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+            ExpressionSyntax newNode = CSharpUtility.LogicallyNegate(binaryExpression, semanticModel, cancellationToken);
+
+            newNode = newNode.WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

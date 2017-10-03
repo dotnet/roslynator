@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
@@ -140,7 +140,11 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax returnExpression = ifStatement.Condition;
 
             if (GetBooleanLiteral(ifStatement.Statement).Kind() == SyntaxKind.FalseLiteralExpression)
-                returnExpression = Negator.LogicallyNegate(returnExpression);
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                returnExpression = CSharpUtility.LogicallyNegate(returnExpression, semanticModel, cancellationToken);
+            }
 
             ReturnStatementSyntax newReturnStatement = ReturnStatement(
                 ReturnKeyword().WithTrailingTrivia(Space),
@@ -151,7 +155,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 newReturnStatement = newReturnStatement.WithTriviaFrom(ifStatement);
 
-                return document.ReplaceNodeAsync(ifStatement, newReturnStatement, cancellationToken);
+                return await document.ReplaceNodeAsync(ifStatement, newReturnStatement, cancellationToken).ConfigureAwait(false);
             }
 
             StatementContainer container = StatementContainer.Create(ifStatement);
@@ -171,7 +175,7 @@ namespace Roslynator.CSharp.Refactorings
                 .ReplaceAt(index, newReturnStatement);
 
             //TODO: ReplaceStatementsAsync
-            return document.ReplaceNodeAsync(container.Node, container.WithStatements(newStatements).Node, cancellationToken);
+            return await document.ReplaceNodeAsync(container.Node, container.WithStatements(newStatements).Node, cancellationToken).ConfigureAwait(false);
         }
     }
 }

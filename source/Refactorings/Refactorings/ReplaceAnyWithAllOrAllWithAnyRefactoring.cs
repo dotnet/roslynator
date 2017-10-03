@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocationExpression,
             string memberName,
@@ -84,11 +84,13 @@ namespace Roslynator.CSharp.Refactorings
             MemberAccessExpressionSyntax newMemberAccessExpression = memberAccessExpression
                 .WithName(SyntaxFactory.IdentifierName(memberName).WithTriviaFrom(memberAccessExpression.Name));
 
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             InvocationExpressionSyntax newNode = invocationExpression
-                .ReplaceNode(expression, Negator.LogicallyNegate(expression))
+                .ReplaceNode(expression, CSharpUtility.LogicallyNegate(expression, semanticModel, cancellationToken))
                 .WithExpression(newMemberAccessExpression);
 
-            return document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

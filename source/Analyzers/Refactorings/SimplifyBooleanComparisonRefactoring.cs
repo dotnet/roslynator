@@ -105,6 +105,8 @@ namespace Roslynator.CSharp.Refactorings
 
             bool isWhiteSpaceOrEndOfLine = trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia());
 
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             if (left.IsBooleanLiteralExpression())
             {
                 SyntaxTriviaList leadingTrivia = binaryExpression.GetLeadingTrivia();
@@ -118,17 +120,15 @@ namespace Roslynator.CSharp.Refactorings
 
                     ExpressionSyntax operand = logicalNot.Operand;
 
-                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
                     if (semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType.IsNullableOf(SpecialType.System_Boolean))
                     {
                         return binaryExpression
-                            .WithLeft(Negator.LogicallyNegate(left))
+                            .WithLeft(CSharpUtility.LogicallyNegate(left, semanticModel, cancellationToken))
                             .WithRight(operand.WithTriviaFrom(right));
                     }
                 }
 
-                return Negator.LogicallyNegate(right)
+                return CSharpUtility.LogicallyNegate(right, semanticModel, cancellationToken)
                     .WithLeadingTrivia(leadingTrivia);
             }
             else if (right.IsBooleanLiteralExpression())
@@ -144,17 +144,15 @@ namespace Roslynator.CSharp.Refactorings
 
                     ExpressionSyntax operand = logicalNot.Operand;
 
-                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
                     if (semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType.IsNullableOf(SpecialType.System_Boolean))
                     {
                         return binaryExpression
                             .WithLeft(operand.WithTriviaFrom(left))
-                            .WithRight(Negator.LogicallyNegate(right));
+                            .WithRight(CSharpUtility.LogicallyNegate(right, semanticModel, cancellationToken));
                     }
                 }
 
-                return Negator.LogicallyNegate(left)
+                return CSharpUtility.LogicallyNegate(left, semanticModel, cancellationToken)
                     .WithTrailingTrivia(trailingTrivia);
             }
 

@@ -433,7 +433,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 || !statements.First().Kind().IsJumpStatementOrYieldBreakStatement();
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             SyntaxKind jumpKind,
@@ -444,11 +444,13 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
             CSharpSyntaxNode node = container.Node;
 
-            var rewriter = new ReduceIfStatementRewriter(jumpKind, recursive);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            var rewriter = new ReduceIfStatementRewriter(jumpKind, recursive, semanticModel, cancellationToken);
 
             SyntaxNode newNode = rewriter.Visit(node);
 
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

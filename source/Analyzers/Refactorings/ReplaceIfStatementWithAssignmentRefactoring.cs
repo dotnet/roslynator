@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
@@ -98,13 +98,17 @@ namespace Roslynator.CSharp.Refactorings
             AssignmentExpressionSyntax assignment = GetSimpleAssignmentExpression(ifStatement.GetSingleStatementOrDefault());
 
             if (assignment.Right.IsKind(SyntaxKind.FalseLiteralExpression))
-                condition = Negator.LogicallyNegate(condition);
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                condition = CSharpUtility.LogicallyNegate(condition, semanticModel, cancellationToken);
+            }
 
             ExpressionStatementSyntax newNode = SimpleAssignmentStatement(assignment.Left, condition)
                 .WithTriviaFrom(ifStatement)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }
