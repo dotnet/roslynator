@@ -4,7 +4,6 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -51,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ModifiersCodeFixes.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword, additionalKey: nameof(SyntaxKind.NewKeyword));
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
-                                RemoveMember(context, diagnostic, memberDeclaration);
+                                CodeFixRegistrator.RemoveMember(context, diagnostic, memberDeclaration);
 
                             break;
                         }
@@ -67,22 +66,12 @@ namespace Roslynator.CSharp.CodeFixes
                                 ModifiersCodeFixes.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword, additionalKey: nameof(SyntaxKind.NewKeyword));
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
-                                RemoveMember(context, diagnostic, memberDeclaration);
+                                CodeFixRegistrator.RemoveMember(context, diagnostic, memberDeclaration);
 
                             break;
                         }
                 }
             }
-        }
-
-        private void RemoveMember(CodeFixContext context, Diagnostic diagnostic, MemberDeclarationSyntax memberDeclaration)
-        {
-            CodeAction codeAction = CodeAction.Create(
-                $"Remove {memberDeclaration.GetTitle()}",
-                cancellationToken => context.Document.RemoveMemberAsync(memberDeclaration, cancellationToken),
-                GetEquivalenceKey(diagnostic));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

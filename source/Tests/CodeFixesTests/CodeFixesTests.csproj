@@ -52,6 +52,7 @@
     <Compile Include="CS0101_NamespaceAlreadyContainsDefinition2.cs" />
     <Compile Include="CS0102_TypeAlreadyContainsDefinition.cs" />
     <Compile Include="CS0102_TypeAlreadyContainsDefinition2.cs" />
+    <Compile Include="CS0103_NameDoesNotExistInCurrentContext.cs" />
     <Compile Include="CS0115_NoSuitableMethodFoundToOverride.cs" />
     <Compile Include="CS0139_NoEnclosingLoopOutOfWhichToBreakOrContinue.cs" />
     <Compile Include="CS0173_TypeOfConditionalExpressionCannotBeDetermined.cs" />

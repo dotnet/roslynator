@@ -81,24 +81,31 @@ namespace Roslynator.CSharp.Helpers
         {
             IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
 
-            if (parameterSymbol != null)
-            {
-                ITypeSymbol typeSymbol = parameterSymbol.Type;
-
-                if (parameterSymbol.IsParams
-                    && typeSymbol.IsArrayType())
-                {
-                    return ((IArrayTypeSymbol)typeSymbol).ElementType;
-                }
-                else
-                {
-                    return typeSymbol;
-                }
-            }
-            else
-            {
+            if (parameterSymbol == null)
                 return null;
+
+            RefKind refKind = parameterSymbol.RefKind;
+
+            if (refKind == RefKind.Out)
+            {
+                if (argument.RefOrOutKeyword.Kind() != SyntaxKind.OutKeyword)
+                    return null;
             }
+            else if (refKind == RefKind.Ref)
+            {
+                if (argument.RefOrOutKeyword.Kind() != SyntaxKind.RefKeyword)
+                    return null;
+            }
+
+            ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+            if (parameterSymbol.IsParams
+                && typeSymbol.IsArrayType())
+            {
+                return ((IArrayTypeSymbol)typeSymbol).ElementType;
+            }
+
+            return typeSymbol;
         }
 
         private static IParameterSymbol DetermineParameterSymbol(

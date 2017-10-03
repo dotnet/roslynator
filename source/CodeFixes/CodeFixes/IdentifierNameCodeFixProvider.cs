@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -8,7 +9,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Helpers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -19,13 +22,22 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable); }
+            get
+            {
+                return ImmutableArray.Create(
+                    CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable,
+                    CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.InitializeLocalVariableWithDefaultValue))
+            if (!Settings.IsAnyCodeFixEnabled(
+                CodeFixIdentifiers.InitializeLocalVariableWithDefaultValue,
+                CodeFixIdentifiers.AddVariableType))
+            {
                 return;
+            }
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
@@ -44,6 +56,42 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.NameDoesNotExistInCurrentContext:
+                        {
+                            if (!(identifierName.Parent is ArgumentSyntax argument))
+                                break;
+
+                            if (argument.RefOrOutKeyword.Kind() != SyntaxKind.OutKeyword)
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            foreach (ITypeSymbol typeSymbol in DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, context.CancellationToken))
+                            {
+                                string typeName = SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, identifierName.SpanStart);
+
+                                CodeAction codeAction = CodeAction.Create(
+                                    $"Add variable type '{typeName}'",
+                                    cancellationToken =>
+                                    {
+                                        DeclarationExpressionSyntax newNode = DeclarationExpression(
+                                            ParseName(typeName),
+                                            SingleVariableDesignation(identifierName.Identifier.WithoutTrivia()).WithLeadingTrivia(Space));
+
+                                        newNode = newNode
+                                            .WithTriviaFrom(identifierName)
+                                            .WithFormatterAnnotation();
+
+                                        return context.Document.ReplaceNodeAsync(identifierName, newNode, cancellationToken);
+                                    },
+                                    GetEquivalenceKey(diagnostic, typeName));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                                break;
+                            }
+
                             break;
                         }
                 }

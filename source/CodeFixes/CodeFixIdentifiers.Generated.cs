@@ -81,5 +81,6 @@ namespace Roslynator.CSharp.CodeFixes
         public const string RemoveConditionThatIsAlwaysEqualToTrueOrFalse = Prefix + "0075";
         public const string IntroduceField = Prefix + "0076";
         public const string ReplaceElementAccessWithInvocation = Prefix + "0077";
+        public const string AddVariableType = Prefix + "0078";
     }
 }

@@ -137,6 +137,7 @@
   </CodeFix>
   <CodeFix Id="RCF0027" Identifier="RemoveRefModifier" Title="Remove 'ref' modifier">
     <FixableDiagnosticIds>
+      <Id>CS0192</Id>
       <Id>CS1615</Id>
       <Id>CS1988</Id>
       <Id>CS1623</Id>
@@ -306,6 +307,7 @@
   <CodeFix Id="RCF0056" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
     <FixableDiagnosticIds>
       <Id>CS0114</Id>
+      <Id>CS0541</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression" IsEnabledByDefault="false">
@@ -317,6 +319,7 @@
   <CodeFix Id="RCF0058" Identifier="ReplaceNullLiteralExpressionWithDefaultValue" Title="Replace 'null' with default value">
     <FixableDiagnosticIds>
       <Id>CS0037</Id>
+      <Id>CS0403</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0059" Identifier="ReplaceVariableDeclarationWithAssignment" Title="Replace variable declaration with assignment">
@@ -383,6 +386,7 @@
   </CodeFix>
   <CodeFix Id="RCF0070" Identifier="RemoveOutModifier" Title="Remove 'out' modifier">
     <FixableDiagnosticIds>
+      <Id>CS0192</Id>
       <Id>CS1988</Id>
       <Id>CS1623</Id>
     </FixableDiagnosticIds>
@@ -421,6 +425,11 @@
   <CodeFix Id="RCF0077" Identifier="ReplaceElementAccessWithInvocation" Title="Replace element access with invocation">
     <FixableDiagnosticIds>
       <Id>CS0021</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0078" Identifier="AddVariableType" Title="Add variable type">
+    <FixableDiagnosticIds>
+      <Id>CS0103</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

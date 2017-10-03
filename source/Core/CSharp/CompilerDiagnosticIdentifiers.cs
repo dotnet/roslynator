@@ -16,6 +16,7 @@ namespace Roslynator.CSharp
         public const string ConstraintsAreNotAllowedOnNonGenericDeclarations = "CS0080";
         public const string NamespaceAlreadyContainsDefinition = "CS0101";
         public const string TypeAlreadyContainsDefinition = "CS0102";
+        public const string NameDoesNotExistInCurrentContext = "CS0103";
         public const string ModifierIsNotValidForThisItem = "CS0106";
         public const string MoreThanOneProtectionModifier = "CS0107";
         public const string MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended = "CS0108";
@@ -39,6 +40,7 @@ namespace Roslynator.CSharp
         public const string VariableIsDeclaredButNeverUsed = "CS0168";
         public const string TypeOfConditionalExpressionCannotBeDetermined = "CS0173";
         public const string OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod = "CS0177";
+        public const string ReadOnlyFieldCannotBeUsedAsRefOrOutValue = "CS0192";
         public const string OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement = "CS0201";
         public const string PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext = "CS0214";
         public const string VariableIsAssignedButItsValueIsNeverUsed = "CS0219";
@@ -51,6 +53,7 @@ namespace Roslynator.CSharp
         public const string AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface = "CS0275";
         public const string UsingGenericTypeRequiresTypeArguments = "CS0305";
         public const string NewConstraintMustBeLastConstraintSpecified = "CS0401";
+        public const string CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType = "CS0403";
         public const string DuplicateConstraintForTypeParameter = "CS0405";
         public const string MethodHasWrongReturnType = "CS0407";
         public const string ConstraintClauseHasAlreadyBeenSpecified = "CS0409";
@@ -68,6 +71,7 @@ namespace Roslynator.CSharp
         public const string MemberIsAbstractButItIsContainedInNonAbstractClass = "CS0513";
         public const string AccessModifiersAreNotAllowedOnStaticConstructors = "CS0515";
         public const string InterfaceMembersCannotHaveDefinition = "CS0531";
+        public const string ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct = "CS0541";
         public const string UserDefinedOperatorMustBeDeclaredStaticAndPublic = "CS0558";
         public const string CannotHaveInstancePropertyOrFieldInitializersInStruct = "CS0573";
         public const string DuplicateAttribute = "CS0579";
