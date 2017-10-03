@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 IfToReturnWithBooleanExpression ifToReturnWithBooleanExpression = null;
 
                 if (options.UseBooleanExpression
-                    && (expression1.IsBooleanLiteralExpression() || expression2.IsBooleanLiteralExpression())
+                    && (expression1.Kind().IsBooleanLiteralExpression() || expression2.Kind().IsBooleanLiteralExpression())
                     && semanticModel.GetTypeSymbol(expression1, cancellationToken)?.IsBoolean() == true
                     && semanticModel.GetTypeSymbol(expression2, cancellationToken)?.IsBoolean() == true)
                 {
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 IfToReturnWithConditionalExpression ifToReturnWithConditionalExpression = null;
 
                 if (options.UseConditionalExpression
-                    && (!expression1.IsBooleanLiteralExpression() || !expression2.IsBooleanLiteralExpression()))
+                    && (!expression1.Kind().IsBooleanLiteralExpression() || !expression2.Kind().IsBooleanLiteralExpression()))
                 {
                     ifToReturnWithConditionalExpression = IfToReturnWithConditionalExpression.Create(ifStatement, expression1, expression2, isYield);
                 }

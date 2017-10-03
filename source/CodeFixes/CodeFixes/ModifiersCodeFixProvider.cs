@@ -95,8 +95,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode node = token.Parent;
 
-            if (!node.SupportsModifiers())
-                node = node.FirstAncestor(f => f.SupportsModifiers());
+            if (!node.Kind().SupportsModifiers())
+                node = node.FirstAncestor(f => f.Kind().SupportsModifiers());
 
             Debug.Assert(node != null, $"{nameof(node)} is null");
 

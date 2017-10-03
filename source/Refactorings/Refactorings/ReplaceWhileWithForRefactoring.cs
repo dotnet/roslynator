@@ -268,7 +268,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ExpressionSyntax expression = expressionStatement.Expression;
 
-                    if (expression.IsIncrementOrDecrementExpression())
+                    if (expression?.Kind().IsIncrementOrDecrementExpression() == true)
                     {
                         yield return expression;
                     }

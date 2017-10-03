@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-            if (left.IsBooleanLiteralExpression())
+            if (left.Kind().IsBooleanLiteralExpression())
             {
                 return TextSpan.FromBounds(left.SpanStart, operatorToken.Span.End);
             }
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings
 
             bool isWhiteSpaceOrEndOfLine = trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia());
 
-            if (left.IsBooleanLiteralExpression())
+            if (left.Kind().IsBooleanLiteralExpression())
             {
                 SyntaxTriviaList leadingTrivia = binaryExpression.GetLeadingTrivia();
 
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 newNode = right.WithLeadingTrivia(leadingTrivia);
             }
-            else if (right.IsBooleanLiteralExpression())
+            else if (right.Kind().IsBooleanLiteralExpression())
             {
                 SyntaxTriviaList trailingTrivia = binaryExpression.GetTrailingTrivia();
 

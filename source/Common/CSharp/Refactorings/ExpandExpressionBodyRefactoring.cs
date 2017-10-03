@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             if (arrowExpressionClause == null)
                 throw new ArgumentNullException(nameof(arrowExpressionClause));
 
-            return arrowExpressionClause.Parent?.SupportsExpressionBody() == true;
+            return arrowExpressionClause.Parent?.Kind().SupportsExpressionBody() == true;
         }
 
         public static async Task<Document> RefactorAsync(

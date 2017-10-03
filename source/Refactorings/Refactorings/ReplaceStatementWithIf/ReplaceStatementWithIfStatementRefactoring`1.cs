@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
         {
             ExpressionSyntax expression = GetExpression(statement);
 
-            if (expression?.IsBooleanLiteralExpression() == false)
+            if (expression?.Kind().IsBooleanLiteralExpression() == false)
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
