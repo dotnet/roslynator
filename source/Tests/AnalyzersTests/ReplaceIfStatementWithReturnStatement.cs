@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable RCS1002, RCS1004
+#pragma warning disable RCS1002, RCS1004, RCS1007, RCS1111, RCS1118, RCS1126, RCS1128, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -100,9 +100,25 @@ namespace Roslynator.CSharp.Analyzers.Tests
             return true;
         }
 
+        private static bool Foo9()
+        {
+            switch ("")
+            {
+                default:
+                    bool condition = false;
+
+                    if (condition)
+                    {
+                        return true;
+                    }
+
+                    return false;
+            }
+        }
+
         //n
 
-        private static bool Foo9()
+        private static bool Foo10()
         {
             bool condition = false;
 
@@ -116,7 +132,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        private static bool Foo10()
+        private static bool Foo11()
         {
             bool condition = false;
 

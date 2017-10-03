@@ -41,6 +41,13 @@ namespace Roslynator.CSharp
                 || kind == SyntaxKind.YieldBreakStatement;
         }
 
+        internal static bool IsBooleanLiteralExpression(this SyntaxKind kind)
+        {
+            return kind.IsKind(
+                SyntaxKind.TrueLiteralExpression,
+                SyntaxKind.FalseLiteralExpression);
+        }
+
         internal static bool IsKind(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
         {
             return kind == kind1
