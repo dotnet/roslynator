@@ -24,6 +24,21 @@ namespace Roslynator.CSharp
                 SyntaxKind.DoStatement);
         }
 
+        internal static bool IsLambdaExpression(this SyntaxKind kind)
+        {
+            return kind.IsKind(
+                SyntaxKind.SimpleLambdaExpression,
+                SyntaxKind.ParenthesizedLambdaExpression);
+        }
+
+        internal static bool IsAnonymousFunctionExpression(this SyntaxKind kind)
+        {
+            return kind.IsKind(
+                SyntaxKind.AnonymousMethodExpression,
+                SyntaxKind.SimpleLambdaExpression,
+                SyntaxKind.ParenthesizedLambdaExpression);
+        }
+
         internal static bool IsJumpStatement(this SyntaxKind kind)
         {
             return kind.IsKind(

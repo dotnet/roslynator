@@ -445,7 +445,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(invocationExpression, cancellationToken);
 
-            if (methodSymbol.IsReducedExtension())
+            if (methodSymbol.IsReducedExtensionMethod())
                 newNode = ((MemberAccessExpressionSyntax)newNode).Name;
 
             newNode = newNode.WithTriviaFrom(anonymousFunction);

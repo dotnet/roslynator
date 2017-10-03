@@ -4,9 +4,9 @@ using System;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Utilities
+namespace Roslynator
 {
-    internal static class SemanticUtilities
+    internal static class SyntaxUtility
     {
         public static bool IsPropertyOfNullableOfT(
             SyntaxNode node,

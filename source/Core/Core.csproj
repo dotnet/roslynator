@@ -126,7 +126,6 @@
     <Compile Include="CSharp\Syntax\IfStatement.cs" />
     <Compile Include="CSharp\IfStatementOrElseClause.cs" />
     <Compile Include="CSharp\Comparers\MemberDeclarationSortMode.cs" />
-    <Compile Include="CSharp\Negator.cs" />
     <Compile Include="CSharp\Syntax\MemberInvocationStatement.cs" />
     <Compile Include="CSharp\Syntax\SimpleAssignmentExpression.cs" />
     <Compile Include="CSharp\Syntax\MemberInvocationExpressionWithSingleParameter.cs" />
@@ -152,8 +151,8 @@
     <Compile Include="Utilities\FlagsUtility.cs" />
     <Compile Include="Utilities\Deferred`1.cs" />
     <Compile Include="MethodInfo.cs" />
-    <Compile Include="Utilities\SemanticUtilities.cs" />
-    <Compile Include="Utilities\SymbolUtility.cs" />
+    <Compile Include="SyntaxUtility.cs" />
+    <Compile Include="SymbolUtility.cs" />
     <Compile Include="Text\SyntaxNodeTextBuilder.cs" />
     <Compile Include="CSharp\SyntaxRewriters\CommentRemover.cs" />
     <Compile Include="CSharp\Analysis\TypeAnalysisFlags.cs" />

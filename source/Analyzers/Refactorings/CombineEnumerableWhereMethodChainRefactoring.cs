@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
-using Roslynator.Utilities;
 using static Roslynator.CSharp.CSharpFactory;
 using System.Collections.Generic;
 

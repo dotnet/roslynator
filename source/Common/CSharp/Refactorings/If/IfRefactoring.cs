@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
-using Roslynator.Utilities;
 using static Roslynator.CSharp.Refactorings.If.IfRefactoringHelper;
 
 namespace Roslynator.CSharp.Refactorings.If
@@ -180,7 +179,7 @@ namespace Roslynator.CSharp.Refactorings.If
             }
 
             if (expression1.IsKind(SyntaxKind.SimpleMemberAccessExpression)
-                && SemanticUtilities.IsPropertyOfNullableOfT(expression1, "Value", semanticModel, cancellationToken))
+                && SyntaxUtility.IsPropertyOfNullableOfT(expression1, "Value", semanticModel, cancellationToken))
             {
                 expression1 = ((MemberAccessExpressionSyntax)expression1).Expression;
 
@@ -272,7 +271,7 @@ namespace Roslynator.CSharp.Refactorings.If
             }
 
             if (expression1.IsKind(SyntaxKind.SimpleMemberAccessExpression)
-                && SemanticUtilities.IsPropertyOfNullableOfT(expression1, "Value", semanticModel, cancellationToken))
+                && SyntaxUtility.IsPropertyOfNullableOfT(expression1, "Value", semanticModel, cancellationToken))
             {
                 expression1 = ((MemberAccessExpressionSyntax)expression1).Expression;
 

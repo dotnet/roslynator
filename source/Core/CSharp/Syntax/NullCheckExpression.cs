@@ -4,7 +4,6 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Syntax
 {
@@ -67,7 +66,7 @@ namespace Roslynator.CSharp.Syntax
                             }
                         case SyntaxKind.SimpleMemberAccessExpression:
                             {
-                                if (SemanticUtilities.IsPropertyOfNullableOfT(expression, "HasValue", semanticModel, cancellationToken))
+                                if (SyntaxUtility.IsPropertyOfNullableOfT(expression, "HasValue", semanticModel, cancellationToken))
                                 {
                                     var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
 
@@ -84,7 +83,7 @@ namespace Roslynator.CSharp.Syntax
                                 ExpressionSyntax operand = logicalNotExpression.Operand?.WalkDownParentheses();
 
                                 if (operand?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
-                                    && SemanticUtilities.IsPropertyOfNullableOfT(operand, "HasValue", semanticModel, cancellationToken))
+                                    && SyntaxUtility.IsPropertyOfNullableOfT(operand, "HasValue", semanticModel, cancellationToken))
                                 {
                                     var memberAccessExpression = (MemberAccessExpressionSyntax)operand;
 
@@ -128,7 +127,7 @@ namespace Roslynator.CSharp.Syntax
                     case SyntaxKind.TrueLiteralExpression:
                         {
                             if (expression2?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
-                                && SemanticUtilities.IsPropertyOfNullableOfT(expression2, "HasValue", semanticModel, cancellationToken))
+                                && SyntaxUtility.IsPropertyOfNullableOfT(expression2, "HasValue", semanticModel, cancellationToken))
                             {
                                 result = new NullCheckExpression(
                                     binaryExpression,
@@ -143,7 +142,7 @@ namespace Roslynator.CSharp.Syntax
                     case SyntaxKind.FalseLiteralExpression:
                         {
                             if (expression2?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true
-                                && SemanticUtilities.IsPropertyOfNullableOfT(expression2, "HasValue", semanticModel, cancellationToken))
+                                && SyntaxUtility.IsPropertyOfNullableOfT(expression2, "HasValue", semanticModel, cancellationToken))
                             {
                                 result = new NullCheckExpression(
                                     binaryExpression,

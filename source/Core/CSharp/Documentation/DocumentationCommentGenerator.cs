@@ -628,7 +628,6 @@ namespace Roslynator.CSharp.Documentation
                                         return null;
                                     }
                                 }
-
                             default:
                                 {
                                     Debug.Fail(reader.Name);

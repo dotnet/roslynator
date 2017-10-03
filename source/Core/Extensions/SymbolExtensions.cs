@@ -762,7 +762,7 @@ namespace Roslynator
             return false;
         }
 
-        public static bool IsReducedExtension(this IMethodSymbol methodSymbol)
+        public static bool IsReducedExtensionMethod(this IMethodSymbol methodSymbol)
         {
             return methodSymbol?.MethodKind == MethodKind.ReducedExtension;
         }
@@ -1015,7 +1015,7 @@ namespace Roslynator
             {
                 var stack = new Stack<ITypeSymbol>(constraintTypes);
 
-                while (stack.Any())
+                while (stack.Count > 0)
                 {
                     ITypeSymbol type = stack.Pop();
 

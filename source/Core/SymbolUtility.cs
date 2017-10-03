@@ -3,10 +3,73 @@
 using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-namespace Roslynator.Utilities
+
+namespace Roslynator
 {
     internal static class SymbolUtility
     {
+        public static bool HasAccessibleIndexer(
+            ITypeSymbol typeSymbol,
+            SemanticModel semanticModel,
+            int position)
+        {
+            if (typeSymbol == null)
+                return false;
+
+            SymbolKind symbolKind = typeSymbol.Kind;
+
+            if (symbolKind == SymbolKind.ErrorType)
+                return false;
+
+            if (symbolKind == SymbolKind.ArrayType)
+                return true;
+
+            bool? hasIndexer = HasIndexer(typeSymbol.SpecialType);
+
+            if (hasIndexer != null)
+                return hasIndexer.Value;
+
+            if (symbolKind == SymbolKind.NamedType)
+            {
+                hasIndexer = HasIndexer(((INamedTypeSymbol)typeSymbol).ConstructedFrom.SpecialType);
+
+                if (hasIndexer != null)
+                    return hasIndexer.Value;
+            }
+
+            if (typeSymbol.ImplementsAny(
+                SpecialType.System_Collections_Generic_IList_T,
+                SpecialType.System_Collections_Generic_IReadOnlyList_T))
+            {
+                if (typeSymbol.TypeKind == TypeKind.Interface)
+                    return true;
+
+                foreach (ISymbol symbol in typeSymbol.GetMembers("this[]"))
+                {
+                    if (semanticModel.IsAccessible(position, symbol))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        private static bool? HasIndexer(SpecialType specialType)
+        {
+            switch (specialType)
+            {
+                case SpecialType.None:
+                    return null;
+                case SpecialType.System_String:
+                case SpecialType.System_Array:
+                case SpecialType.System_Collections_Generic_IList_T:
+                case SpecialType.System_Collections_Generic_IReadOnlyList_T:
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, SemanticModel semanticModel)
         {
             if (symbol == null)

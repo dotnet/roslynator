@@ -66,22 +66,5 @@ namespace Roslynator
             selection = new SyntaxListSelection<TNode>(list, span, startIndex, endIndex);
             return true;
         }
-
-        protected class IndexPair
-        {
-            public IndexPair(int startIndex, int endIndex)
-            {
-                StartIndex = startIndex;
-                EndIndex = endIndex;
-            }
-
-            public bool IsValid
-            {
-                get { return StartIndex != -1; }
-            }
-
-            public int StartIndex { get; }
-            public int EndIndex { get; }
-        }
     }
 }

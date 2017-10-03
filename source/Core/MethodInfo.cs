@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Roslynator.Utilities;
 
 namespace Roslynator
 {

@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
 
-            return CSharpUtility.HasAccessibleIndexer(typeSymbol, semanticModel, memberInvocation.InvocationExpression.SpanStart);
+            return SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, memberInvocation.InvocationExpression.SpanStart);
         }
 
         public static Task<Document> RefactorAsync(

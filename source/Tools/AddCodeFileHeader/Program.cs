@@ -36,7 +36,7 @@ namespace AddCodeFileHeader
             {
                 Console.WriteLine("Do you want to add header to the files (y/n)?");
 
-                if (Console.ReadLine().ToUpperInvariant() == "Y")
+                if (string.Equals(Console.ReadLine(), "y", StringComparison.InvariantCultureIgnoreCase))
                 {
                     foreach (string filePath in filesWithoutHeader)
                     {
