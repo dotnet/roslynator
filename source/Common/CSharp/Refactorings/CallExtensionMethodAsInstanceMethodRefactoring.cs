@@ -100,8 +100,12 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.IdentifierName:
                 case SyntaxKind.GenericName:
                     {
+                        ExpressionSyntax newExpression = argument.Expression
+                            .WithLeadingTrivia(expression.GetLeadingTrivia())
+                            .Parenthesize();
+
                         newMemberAccess = SimpleMemberAccessExpression(
-                            argument.Expression.WithLeadingTrivia(expression.GetLeadingTrivia()),
+                            newExpression,
                             (SimpleNameSyntax)expression.WithoutLeadingTrivia());
 
                         break;
@@ -110,8 +114,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                        newMemberAccess = memberAccess
-                            .WithExpression(argument.Expression.WithTriviaFrom(memberAccess.Expression));
+                        ExpressionSyntax newExpression = argument.Expression
+                            .WithTriviaFrom(memberAccess.Expression)
+                            .Parenthesize();
+
+                        newMemberAccess = memberAccess.WithExpression(newExpression);
 
                         break;
                     }
