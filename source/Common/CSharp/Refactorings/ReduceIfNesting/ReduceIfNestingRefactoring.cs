@@ -430,7 +430,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 return false;
 
             return statements.Count > 1
-                || !statements.First().Kind().IsJumpStatementOrYieldBreakStatement();
+                || GetJumpKind(statements.First()) == SyntaxKind.None;
         }
 
         public static async Task<Document> RefactorAsync(
