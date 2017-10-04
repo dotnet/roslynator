@@ -1,3 +1,9 @@
+### 1.5.10 (2017-10-04)
+
+#### Code Fixes
+
+  * Add code fixes for CS0103, CS0192, CS0403 and CS0541.
+
 ### 1.5.0 (2017-09-22)
 
  * Bug fixes.
