@@ -216,7 +216,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Call extension method as instance method",
+                                CallExtensionMethodAsInstanceMethodRefactoring.Title,
                                 cancellationToken => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 

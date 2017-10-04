@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,38 +12,50 @@ namespace Roslynator.CSharp.Refactorings
 {
     public static class CallExtensionMethodAsInstanceMethodRefactoring
     {
-        public static AnalysisResult Analyze(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public const string Title = "Call extension method as instance method";
+
+        private static CallExtensionMethodAsInstanceMethodAnalysis Fail { get; }
+
+        public static CallExtensionMethodAsInstanceMethodAnalysis Analyze(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             ArgumentListSyntax argumentList = invocationExpression.ArgumentList;
 
-            if (argumentList != null)
+            if (argumentList == null)
+                return Fail;
+
+            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+
+            if (!arguments.Any())
+                return Fail;
+
+            if (arguments[0].Expression?.IsKind(
+                SyntaxKind.IdentifierName,
+                SyntaxKind.GenericName,
+                SyntaxKind.InvocationExpression,
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.ElementAccessExpression,
+                SyntaxKind.ConditionalAccessExpression) != true)
             {
-                SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
-
-                if (arguments.Any())
-                {
-                    if (arguments.Count > 1
-                        || !(arguments[0].Expression is LiteralExpressionSyntax))
-                    {
-                        MethodInfo methodInfo;
-                        if (semanticModel.TryGetMethodInfo(invocationExpression, out methodInfo, cancellationToken)
-                            && methodInfo.Symbol.IsNonReducedExtensionMethod())
-                        {
-                            InvocationExpressionSyntax newInvocationExpression = GetNewInvocation(invocationExpression);
-
-                            if (semanticModel
-                                .GetSpeculativeMethodSymbol(invocationExpression.SpanStart, newInvocationExpression)?
-                                .ReducedFromOrSelf()
-                                .Equals(methodInfo.ConstructedFrom) == true)
-                            {
-                                return new AnalysisResult(invocationExpression, newInvocationExpression, methodInfo.Symbol);
-                            }
-                        }
-                    }
-                }
+                return Fail;
             }
 
-            return default(AnalysisResult);
+            if (!semanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, cancellationToken))
+                return Fail;
+
+            if (!methodInfo.Symbol.IsNonReducedExtensionMethod())
+                return Fail;
+
+            InvocationExpressionSyntax newInvocationExpression = GetNewInvocation(invocationExpression);
+
+            if (semanticModel
+                .GetSpeculativeMethodSymbol(invocationExpression.SpanStart, newInvocationExpression)?
+                .ReducedFromOrSelf()
+                .Equals(methodInfo.ConstructedFrom) != true)
+            {
+                return Fail;
+            }
+
+            return new CallExtensionMethodAsInstanceMethodAnalysis(invocationExpression, newInvocationExpression, methodInfo.Symbol);
         }
 
         public static SyntaxNodeOrToken GetNodeOrToken(ExpressionSyntax expression)
@@ -59,12 +70,10 @@ namespace Roslynator.CSharp.Refactorings
                     return ((MemberAccessExpressionSyntax)expression).Name;
                 case SyntaxKind.MemberBindingExpression:
                     return null;
-                default:
-                    {
-                        Debug.Fail(expression.Kind().ToString());
-                        return null;
-                    }
             }
+
+            Debug.Fail(expression.Kind().ToString());
+            return null;
         }
 
         public static Task<Document> RefactorAsync(
@@ -74,15 +83,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             InvocationExpressionSyntax newInvocation = GetNewInvocation(invocation);
 
-            return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            InvocationExpressionSyntax invocation,
-            InvocationExpressionSyntax newInvocation,
-            CancellationToken cancellationToken)
-        {
             return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
         }
 
@@ -132,38 +132,6 @@ namespace Roslynator.CSharp.Refactorings
             return invocation
                 .WithExpression(newMemberAccess)
                 .WithArgumentList(argumentList.WithArguments(arguments.Remove(argument)));
-        }
-
-        public struct AnalysisResult
-        {
-            public AnalysisResult(
-                InvocationExpressionSyntax invocationExpression,
-                InvocationExpressionSyntax newInvocationExpression,
-                IMethodSymbol methodSymbol)
-            {
-                if (invocationExpression == null)
-                    throw new ArgumentNullException(nameof(invocationExpression));
-
-                if (newInvocationExpression == null)
-                    throw new ArgumentNullException(nameof(newInvocationExpression));
-
-                InvocationExpression = invocationExpression;
-                NewInvocationExpression = newInvocationExpression;
-                MethodSymbol = methodSymbol;
-            }
-
-            public InvocationExpressionSyntax InvocationExpression { get; }
-            public InvocationExpressionSyntax NewInvocationExpression { get; }
-            public IMethodSymbol MethodSymbol { get; }
-
-            public bool Success
-            {
-                get
-                {
-                    return InvocationExpression != null
-                        && NewInvocationExpression != null;
-                }
-            }
         }
     }
 }

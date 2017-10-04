@@ -14,10 +14,17 @@ namespace Roslynator.CSharp.Analyzers.Tests
         public static void Method(string parameter1, string parameter2)
         {
             CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
+
             Roslynator.CSharp.Analyzers.Tests.CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
+
+            // n
+
+            CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1 ?? "", parameter2);
+
             parameter1.ExtensionMethod(parameter2);
 
             IEnumerable<int> items = Enumerable.Select(Enumerable.Range(0, 1), f => f);
+
             string s = StringExtension("");
         }
 

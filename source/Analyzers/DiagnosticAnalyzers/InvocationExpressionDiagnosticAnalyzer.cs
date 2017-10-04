@@ -139,13 +139,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 if (!invocation.SpanContainsDirectives())
                 {
-                    CallExtensionMethodAsInstanceMethodRefactoring.AnalysisResult result =
-                        CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocation, context.SemanticModel, context.CancellationToken);
+                    CallExtensionMethodAsInstanceMethodAnalysis analysis = CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocation, context.SemanticModel, context.CancellationToken);
 
-                    if (result.Success
+                    if (analysis.Success
                         && context.SemanticModel
-                            .GetEnclosingNamedType(result.InvocationExpression.SpanStart, context.CancellationToken)?
-                            .Equals(result.MethodSymbol.ContainingType) == false)
+                            .GetEnclosingNamedType(analysis.InvocationExpression.SpanStart, context.CancellationToken)?
+                            .Equals(analysis.MethodSymbol.ContainingType) == false)
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod, invocation);
                     }

@@ -44,19 +44,17 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            CallExtensionMethodAsInstanceMethodRefactoring.AnalysisResult result =
-                                CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocationExpression, semanticModel, context.CancellationToken);
+                            CallExtensionMethodAsInstanceMethodAnalysis analysis = CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocationExpression, semanticModel, context.CancellationToken);
 
-                            if (result.Success)
+                            if (analysis.Success)
                             {
                                 context.RegisterRefactoring(
-                                    "Call extension method as instance method",
+                                    CallExtensionMethodAsInstanceMethodRefactoring.Title,
                                     cancellationToken =>
                                     {
-                                        return CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(
-                                            context.Document,
-                                            result.InvocationExpression,
-                                            result.NewInvocationExpression,
+                                        return context.Document.ReplaceNodeAsync(
+                                            analysis.InvocationExpression,
+                                            analysis.NewInvocationExpression,
                                             context.CancellationToken);
                                     });
                             }
