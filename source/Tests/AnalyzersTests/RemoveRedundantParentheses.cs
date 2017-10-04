@@ -13,11 +13,13 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private static readonly object _lockObject = new object();
 
         [Obsolete((""))]
-        public static bool MethodName(string value)
+        public static bool Bar(string value)
         {
-            bool f = /*1*/(/*2*/
-                           /*3*/false/*4*/
-                                     /*5*/)/*6*/;
+            bool f = false;
+
+            int i = 0;
+
+            var foo = new Foo();
 
             while ((true))
             {
@@ -45,9 +47,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             return (true);
 
-            (MethodName(""));
+            (Bar(""));
 
-            MethodName((""));
+            Bar((""));
 
             var arr = new string[] { (null) };
 
@@ -55,18 +57,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             var items = new List<string>() { (null) };
 
-            foreach (string item in (items))
-            {
-            }
-
-            foreach ((string, string) item in (Tuple.Values))
-            {
-            }
-
             string s = $"{("")}";
-            s = $"{((f) ? "a" : "b")}";
-
-            int i = 0;
 
             (f) = (false);
             (i) += (0);
@@ -79,11 +70,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             (f) |= (false);
             (i) <<= (0);
             (i) >>= (0);
+
+            f = !(f);
+            f = !(s.StartsWith(""));
+            f = !(foo.Value);
+            f = !(foo[0]);
         }
 
-        public static string MethodName2() => (null);
+        public static string Bar2() => (null);
 
-        public static IEnumerable<object> MethodName3()
+        public static IEnumerable<object> Bar3()
         {
             yield return (null);
         }
@@ -97,6 +93,29 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
         //n
 
+        public static void Bar4(IEnumerable<string> items)
+        {
+            foreach (string item in (items))
+            {
+            }
+
+            foreach ((string, string) item in (Tuple.Values))
+            {
+            }
+
+            string s = $"{((true) ? "a" : "b")}";
+        }
+
         private static async Task FooAsync(Task task) => await (task = Task.Run(default(Action)));
+
+        private class Foo
+        {
+            public bool Value { get; }
+
+            public bool this[int i]
+            {
+                get { return i == 0; }
+            }
+        }
     }
 }
