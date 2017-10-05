@@ -72,7 +72,7 @@ namespace Roslynator.CSharp
 
         public static bool CanCreate(SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.MethodDeclaration,
                 SyntaxKind.PropertyDeclaration,
                 SyntaxKind.IndexerDeclaration,

@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 return Success(jumpKind, switchSection);
             }
 
-            if (parentKind.IsKind(
+            if (parentKind.Is(
                 SyntaxKind.ForStatement,
                 SyntaxKind.ForEachStatement,
                 SyntaxKind.DoStatement,
@@ -364,7 +364,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
                         SyntaxKind kind = expression.Kind();
 
-                        if (kind.IsKind(
+                        if (kind.Is(
                             SyntaxKind.NullLiteralExpression,
                             SyntaxKind.TrueLiteralExpression,
                             SyntaxKind.FalseLiteralExpression))

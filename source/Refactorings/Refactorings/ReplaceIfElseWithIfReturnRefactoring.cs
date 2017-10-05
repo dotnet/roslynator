@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                 kind = statement.Kind();
             }
 
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.ReturnStatement,
                 SyntaxKind.ContinueStatement,
                 SyntaxKind.BreakStatement,

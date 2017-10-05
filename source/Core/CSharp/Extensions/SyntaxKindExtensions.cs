@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
     {
         internal static bool IsNestedMethod(this SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.SimpleLambdaExpression,
                 SyntaxKind.ParenthesizedLambdaExpression,
                 SyntaxKind.AnonymousMethodExpression,
@@ -17,7 +17,7 @@ namespace Roslynator.CSharp
 
         internal static bool IsLoop(this SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.ForStatement,
                 SyntaxKind.ForEachStatement,
                 SyntaxKind.WhileStatement,
@@ -26,14 +26,14 @@ namespace Roslynator.CSharp
 
         internal static bool IsLambdaExpression(this SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.SimpleLambdaExpression,
                 SyntaxKind.ParenthesizedLambdaExpression);
         }
 
         internal static bool IsAnonymousFunctionExpression(this SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.AnonymousMethodExpression,
                 SyntaxKind.SimpleLambdaExpression,
                 SyntaxKind.ParenthesizedLambdaExpression);
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp
 
         internal static bool IsJumpStatement(this SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.BreakStatement,
                 SyntaxKind.ContinueStatement,
                 SyntaxKind.GotoCaseStatement,
@@ -58,14 +58,14 @@ namespace Roslynator.CSharp
 
         internal static bool IsBooleanLiteralExpression(this SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.TrueLiteralExpression,
                 SyntaxKind.FalseLiteralExpression);
         }
 
         internal static bool IsIncrementOrDecrementExpression(this SyntaxKind kind)
         {
-            return kind.IsKind(
+            return kind.Is(
                 SyntaxKind.PreIncrementExpression,
                 SyntaxKind.PreDecrementExpression,
                 SyntaxKind.PostIncrementExpression,
@@ -147,20 +147,20 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal static bool IsKind(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
+        internal static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
         {
             return kind == kind1
                 || kind == kind2;
         }
 
-        public static bool IsKind(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+        public static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
         {
             return kind == kind1
                 || kind == kind2
                 || kind == kind3;
         }
 
-        public static bool IsKind(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
+        public static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4)
         {
             return kind == kind1
                 || kind == kind2
@@ -168,7 +168,7 @@ namespace Roslynator.CSharp
                 || kind == kind4;
         }
 
-        public static bool IsKind(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
+        public static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5)
         {
             return kind == kind1
                 || kind == kind2
@@ -177,7 +177,7 @@ namespace Roslynator.CSharp
                 || kind == kind5;
         }
 
-        public static bool IsKind(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
+        public static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3, SyntaxKind kind4, SyntaxKind kind5, SyntaxKind kind6)
         {
             return kind == kind1
                 || kind == kind2

@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 
                 SyntaxKind kind = parent.Kind();
 
-                if (kind.IsKind(
+                if (kind.Is(
                     SyntaxKind.EqualsExpression,
                     SyntaxKind.NotEqualsExpression))
                 {
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
                         isFixable = true;
                     }
                 }
-                else if (kind.IsKind(
+                else if (kind.Is(
                     SyntaxKind.GreaterThanExpression,
                     SyntaxKind.GreaterThanOrEqualExpression,
                     SyntaxKind.LessThanExpression,

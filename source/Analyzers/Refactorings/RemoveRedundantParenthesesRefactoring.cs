@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
                 AnalyzeParenthesizedExpression(context, (ParenthesizedExpressionSyntax)expression);
             }
             else if (parenthesizedExpression.IsParentKind(SyntaxKind.LogicalNotExpression)
-                && kind.IsKind(
+                && kind.Is(
                     SyntaxKind.IdentifierName,
                     SyntaxKind.GenericName,
                     SyntaxKind.InvocationExpression,
