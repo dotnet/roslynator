@@ -147,6 +147,26 @@ namespace Roslynator.CSharp
             }
         }
 
+        internal static bool CanContainEmbeddedStatement(this SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.IfStatement:
+                case SyntaxKind.ElseClause:
+                case SyntaxKind.ForEachStatement:
+                case SyntaxKind.ForEachVariableStatement:
+                case SyntaxKind.ForStatement:
+                case SyntaxKind.UsingStatement:
+                case SyntaxKind.WhileStatement:
+                case SyntaxKind.DoStatement:
+                case SyntaxKind.LockStatement:
+                case SyntaxKind.FixedStatement:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         internal static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
         {
             return kind == kind1

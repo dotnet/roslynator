@@ -2130,7 +2130,7 @@ namespace Roslynator.CSharp
 
             SyntaxKind parentKind = parent.Kind();
 
-            return EmbeddedStatementHelper.CanContainEmbeddedStatement(parentKind)
+            return parentKind.CanContainEmbeddedStatement()
                 && (ifInsideElse
                     || kind != SyntaxKind.IfStatement
                     || parentKind != SyntaxKind.ElseClause)

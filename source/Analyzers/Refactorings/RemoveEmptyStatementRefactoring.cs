@@ -17,11 +17,18 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxNode parent = emptyStatement.Parent;
 
-            if (parent?.IsKind(SyntaxKind.LabeledStatement) == false
-                && !EmbeddedStatementHelper.CanContainEmbeddedStatement(parent))
-            {
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
-            }
+            if (parent == null)
+                return;
+
+            SyntaxKind kind = parent.Kind();
+
+            if (kind == SyntaxKind.LabeledStatement)
+                return;
+
+            if (kind.CanContainEmbeddedStatement())
+                return;
+
+            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
         }
 
         public static Task<Document> RefactorAsync(
