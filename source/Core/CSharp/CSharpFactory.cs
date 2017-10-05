@@ -2145,10 +2145,14 @@ namespace Roslynator.CSharp
 
         public static InvocationExpressionSyntax NameOfExpression(string identifier)
         {
+            return NameOfExpression(IdentifierName(identifier));
+        }
+
+        public static InvocationExpressionSyntax NameOfExpression(ExpressionSyntax expression)
+        {
             return InvocationExpression(
                 IdentifierName("nameof"),
-                ArgumentList(
-                    SyntaxFactory.Argument(IdentifierName(identifier))));
+                ArgumentList(SyntaxFactory.Argument(expression)));
         }
 
         public static InitializerExpressionSyntax ArrayInitializerExpression(SeparatedSyntaxList<ExpressionSyntax> expressions = default(SeparatedSyntaxList<ExpressionSyntax>))

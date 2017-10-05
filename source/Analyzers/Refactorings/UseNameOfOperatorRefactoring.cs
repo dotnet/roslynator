@@ -11,122 +11,156 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseNameOfOperatorRefactoring
     {
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        {
+            ExpressionSyntax expression = memberInvocation.Expression;
+
+            if (expression.Kind() != SyntaxKind.SimpleMemberAccessExpression)
+                return;
+
+            var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
+
+            var fieldSymbol = context.SemanticModel.GetSymbol(memberAccessExpression, context.CancellationToken) as IFieldSymbol;
+
+            if (fieldSymbol == null)
+                return;
+
+            INamedTypeSymbol containingType = fieldSymbol.ContainingType;
+
+            if (containingType?.TypeKind != TypeKind.Enum)
+                return;
+
+            if (containingType.HasAttribute(context.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute)))
+                return;
+
+            context.ReportDiagnostic(DiagnosticDescriptors.UseNameOfOperator, memberInvocation.InvocationExpression);
+        }
+
         public static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
         {
             var argument = (ArgumentSyntax)context.Node;
 
             ExpressionSyntax expression = argument.Expression;
 
-            if (expression?.IsKind(SyntaxKind.StringLiteralExpression) == true)
+            if (expression?.IsKind(SyntaxKind.StringLiteralExpression) != true)
+                return;
+
+            ParameterInfo parameterInfo = GetNextParametersInScope(argument);
+
+            if (parameterInfo.Success)
             {
-                using (IEnumerator<ParameterSyntax> en = GetParametersInScope(argument).GetEnumerator())
-                {
-                    if (en.MoveNext())
-                    {
-                        var literalExpression = (LiteralExpressionSyntax)expression;
-
-                        ParameterSyntax parameter = FindMatchingParameter(en, literalExpression.Token.ValueText);
-
-                        if (parameter != null)
-                        {
-                            IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
-
-                            if (parameterSymbol != null
-                                && (NameEquals(parameterSymbol.Name, "paramName")
-                                    || NameEquals(parameterSymbol.Name, "parameterName")))
-                            {
-                                ReportDiagnostic(context, literalExpression, parameter.Identifier.Text);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        AccessorDeclarationSyntax accessor = argument.FirstAncestor<AccessorDeclarationSyntax>();
-
-                        if (accessor?.IsKind(SyntaxKind.SetAccessorDeclaration) == true)
-                        {
-                            PropertyDeclarationSyntax property = accessor.FirstAncestor<PropertyDeclarationSyntax>();
-
-                            if (property != null)
-                            {
-                                var literalExpression = (LiteralExpressionSyntax)expression;
-
-                                string text = literalExpression.Token.ValueText;
-
-                                if (NameEquals(property.Identifier.ValueText, text))
-                                {
-                                    IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
-
-                                    if (parameterSymbol != null
-                                        && NameEquals(parameterSymbol.Name, "propertyName"))
-                                    {
-                                        ReportDiagnostic(context, literalExpression, property.Identifier.Text);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                Analyze(context, argument, expression, parameterInfo);
+            }
+            else
+            {
+                Analyze(context, argument, expression);
             }
         }
 
-        private static IEnumerable<ParameterSyntax> GetParametersInScope(SyntaxNode node)
+        private static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            ArgumentSyntax argument,
+            ExpressionSyntax expression,
+            ParameterInfo parameterInfo)
         {
-            foreach (SyntaxNode ancestor in node.AncestorsAndSelf())
-            {
-                if (ancestor.IsKind(SyntaxKind.SimpleLambdaExpression))
-                {
-                    yield return ((SimpleLambdaExpressionSyntax)ancestor).Parameter;
-                }
-                else
-                {
-                    BaseParameterListSyntax parameterList = GetParameterList(ancestor);
+            var literalExpression = (LiteralExpressionSyntax)expression;
 
-                    if (parameterList != null)
-                    {
-                        foreach (ParameterSyntax parameter in parameterList.Parameters)
-                            yield return parameter;
-                    }
-                }
+            ParameterSyntax parameter = FindMatchingParameter(parameterInfo, literalExpression.Token.ValueText);
+
+            if (parameter == null)
+                return;
+
+            IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
+
+            if (parameterSymbol == null)
+                return;
+
+            string parameterName = parameterSymbol.Name;
+
+            if (!string.Equals(parameterName, "paramName", StringComparison.Ordinal)
+                && !string.Equals(parameterName, "parameterName", StringComparison.Ordinal))
+            {
+                return;
             }
+
+            ReportDiagnostic(context, literalExpression, parameter.Identifier.Text);
         }
 
-        private static BaseParameterListSyntax GetParameterList(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).ParameterList;
-                case SyntaxKind.ConstructorDeclaration:
-                    return ((ConstructorDeclarationSyntax)node).ParameterList;
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).ParameterList;
-                case SyntaxKind.ParenthesizedLambdaExpression:
-                    return ((ParenthesizedLambdaExpressionSyntax)node).ParameterList;
-                case SyntaxKind.AnonymousMethodExpression:
-                    return ((AnonymousMethodExpressionSyntax)node).ParameterList;
-                case SyntaxKind.LocalFunctionStatement:
-                    return ((LocalFunctionStatementSyntax)node).ParameterList;
-                default:
-                    return null;
-            }
-        }
-
-        private static ParameterSyntax FindMatchingParameter(IEnumerator<ParameterSyntax> enumerator, string name)
+        private static ParameterSyntax FindMatchingParameter(ParameterInfo parameterInfo, string name)
         {
             do
             {
-                if (NameEquals(enumerator.Current.Identifier.ValueText, name))
-                    return enumerator.Current;
+                if (parameterInfo.Parameter != null)
+                {
+                    ParameterSyntax parameter = parameterInfo.Parameter;
 
-            } while (enumerator.MoveNext());
+                    if (string.Equals(parameter.Identifier.ValueText, name, StringComparison.Ordinal))
+                        return parameter;
+                }
+                else if (parameterInfo.ParameterList != null)
+                {
+                    foreach (ParameterSyntax parameter in parameterInfo.ParameterList.Parameters)
+                    {
+                        if (string.Equals(parameter.Identifier.ValueText, name, StringComparison.Ordinal))
+                            return parameter;
+                    }
+                }
+
+                parameterInfo = GetNextParametersInScope(parameterInfo.Node);
+
+            } while (parameterInfo.Success);
 
             return null;
+        }
+
+        private static ParameterInfo GetNextParametersInScope(SyntaxNode node)
+        {
+            for (SyntaxNode current = node.Parent; current != null; current = current.Parent)
+            {
+                ParameterInfo info = ParameterInfo.Create(current);
+
+                if (info.Success)
+                    return info;
+            }
+
+            return ParameterInfo.Empty;
+        }
+
+        private static void Analyze(SyntaxNodeAnalysisContext context, ArgumentSyntax argument, ExpressionSyntax expression)
+        {
+            AccessorDeclarationSyntax accessor = argument.FirstAncestor<AccessorDeclarationSyntax>();
+
+            if (accessor?.IsKind(SyntaxKind.SetAccessorDeclaration) != true)
+                return;
+
+            PropertyDeclarationSyntax property = accessor.FirstAncestor<PropertyDeclarationSyntax>();
+
+            if (property == null)
+                return;
+
+            var literalExpression = (LiteralExpressionSyntax)expression;
+
+            string text = literalExpression.Token.ValueText;
+
+            if (!string.Equals(property.Identifier.ValueText, text, StringComparison.Ordinal))
+                return;
+
+            IParameterSymbol parameterSymbol = context.SemanticModel.DetermineParameter(argument, allowParams: true, allowCandidate: false, cancellationToken: context.CancellationToken);
+
+            if (parameterSymbol == null)
+                return;
+
+            if (!string.Equals(parameterSymbol.Name, "propertyName", StringComparison.Ordinal))
+                return;
+
+            ReportDiagnostic(context, literalExpression, property.Identifier.Text);
         }
 
         private static void ReportDiagnostic(
@@ -159,22 +193,85 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static bool NameEquals(string a, string b)
-        {
-            return string.Equals(a, b, StringComparison.Ordinal);
-        }
-
         public static Task<Document> RefactorAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             string identifier,
             CancellationToken cancellationToken)
         {
-            InvocationExpressionSyntax newNode = CSharpFactory.NameOfExpression(identifier)
+            InvocationExpressionSyntax newNode = NameOfExpression(identifier)
                 .WithTriviaFrom(literalExpression)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
+        }
+
+        public static Task<Document> RefactorAsync(
+            Document document,
+            InvocationExpressionSyntax invocationExpression,
+            CancellationToken cancellationToken)
+        {
+            var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
+
+            InvocationExpressionSyntax newNode = NameOfExpression(memberAccessExpression.Expression)
+                .WithTriviaFrom(invocationExpression)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
+        }
+
+        //TODO: Roslynator.CSharp.Syntax
+        private struct ParameterInfo
+        {
+            public static ParameterInfo Empty { get; } = new ParameterInfo();
+
+            private ParameterInfo(SyntaxNode node, ParameterSyntax parameter)
+            {
+                Node = node;
+                Parameter = parameter;
+                ParameterList = null;
+            }
+
+            private ParameterInfo(SyntaxNode node, BaseParameterListSyntax parameterList)
+            {
+                Node = node;
+                Parameter = null;
+                ParameterList = parameterList;
+            }
+
+            public ParameterSyntax Parameter { get; }
+
+            public BaseParameterListSyntax ParameterList { get; }
+
+            public SyntaxNode Node { get; }
+
+            public bool Success
+            {
+                get { return Node != null; }
+            }
+
+            public static ParameterInfo Create(SyntaxNode node)
+            {
+                switch (node.Kind())
+                {
+                    case SyntaxKind.MethodDeclaration:
+                        return new ParameterInfo(node, ((MethodDeclarationSyntax)node).ParameterList);
+                    case SyntaxKind.ConstructorDeclaration:
+                        return new ParameterInfo(node, ((ConstructorDeclarationSyntax)node).ParameterList);
+                    case SyntaxKind.IndexerDeclaration:
+                        return new ParameterInfo(node, ((IndexerDeclarationSyntax)node).ParameterList);
+                    case SyntaxKind.SimpleLambdaExpression:
+                        return new ParameterInfo(node, ((SimpleLambdaExpressionSyntax)node).Parameter);
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                        return new ParameterInfo(node, ((ParenthesizedLambdaExpressionSyntax)node).ParameterList);
+                    case SyntaxKind.AnonymousMethodExpression:
+                        return new ParameterInfo(node, ((AnonymousMethodExpressionSyntax)node).ParameterList);
+                    case SyntaxKind.LocalFunctionStatement:
+                        return new ParameterInfo(node, ((LocalFunctionStatementSyntax)node).ParameterList);
+                }
+
+                return Empty;
+            }
         }
     }
 }
