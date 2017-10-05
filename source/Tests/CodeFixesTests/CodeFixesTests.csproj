@@ -85,6 +85,7 @@
     <Compile Include="CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression.cs" />
     <Compile Include="CS1623_IteratorsCannotHaveRefOrOutParameters.cs" />
     <Compile Include="CS1689_AttributeIsNotValidOnThisDeclarationType.cs" />
+    <Compile Include="CS1750_ValueCannotBeUsedAsDefaultParameter.cs" />
     <Compile Include="CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody.cs" />
     <Compile Include="CS1998_AsyncMethodsCannotHaveRefOrOutParameters.cs" />
     <Compile Include="MemberHidesInheritedMember.cs" />

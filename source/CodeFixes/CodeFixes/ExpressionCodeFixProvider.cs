@@ -180,22 +180,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
-
-                            if (typeSymbol?.SupportsExplicitDeclaration() != true)
-                                break;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Replace 'null' with default value",
-                                cancellationToken =>
-                                {
-                                    ExpressionSyntax newNode = typeSymbol.ToDefaultValueSyntax(semanticModel, expression.SpanStart);
-
-                                    return context.Document.ReplaceNodeAsync(expression, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            CodeFixRegistrator.ReplaceNullWithDefaultValue(context, diagnostic, expression, semanticModel);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull:

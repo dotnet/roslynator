@@ -320,6 +320,7 @@
     <FixableDiagnosticIds>
       <Id>CS0037</Id>
       <Id>CS0403</Id>
+      <Id>CS1750</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0059" Identifier="ReplaceVariableDeclarationWithAssignment" Title="Replace variable declaration with assignment">
