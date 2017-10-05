@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                         foreach (Accessibility accessibility in _accessibilities)
                         {
                             if (accessibility != info.Accessibility
-                                && AccessibilityHelper.IsAllowedAccessibility(node, accessibility))
+                                && CSharpUtility.IsAllowedAccessibility(node, accessibility))
                             {
                                 context.RegisterRefactoring(
                                     GetTitle(accessibility),
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                 foreach (Accessibility accessibility in _accessibilities)
                 {
                     if (accessibility != info.Accessibility
-                        && AccessibilityHelper.IsAllowedAccessibility(node, accessibility))
+                        && CSharpUtility.IsAllowedAccessibility(node, accessibility))
                     {
                         context.RegisterRefactoring(
                             GetTitle(accessibility),

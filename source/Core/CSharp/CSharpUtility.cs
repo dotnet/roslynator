@@ -523,5 +523,10 @@ namespace Roslynator.CSharp
 
             return false;
         }
+
+        public static bool IsAllowedAccessibility(SyntaxNode node, Accessibility accessibility)
+        {
+            return AllowedAccessibilityHelper.IsAllowedAccessibility(node, accessibility);
+        }
     }
 }

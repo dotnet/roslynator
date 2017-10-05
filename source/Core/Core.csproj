@@ -48,6 +48,7 @@
     <Compile Include="CSharp\CodeFixes\EquivalenceKeyProvider.cs" />
     <Compile Include="CSharp\Extensions\SyntaxKindExtensions.cs" />
     <Compile Include="CSharp\GenericSyntax.cs" />
+    <Compile Include="CSharp\Helpers\AllowedAccessibilityHelper.cs" />
     <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="CSharp\Helpers\LogicalNegationHelper.cs" />
     <Compile Include="CSharp\OverrideInfo.cs" />
