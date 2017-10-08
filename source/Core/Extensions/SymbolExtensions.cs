@@ -1269,18 +1269,37 @@ namespace Roslynator
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            if (!typeSymbol.IsAnonymousType)
+            if (typeSymbol.IsAnonymousType)
+                return false;
+
+            switch (typeSymbol.Kind)
             {
-                switch (typeSymbol.Kind)
-                {
-                    case SymbolKind.TypeParameter:
-                    case SymbolKind.DynamicType:
+                case SymbolKind.TypeParameter:
+                case SymbolKind.DynamicType:
+                    {
                         return true;
-                    case SymbolKind.ArrayType:
+                    }
+                case SymbolKind.ArrayType:
+                    {
                         return SupportsExplicitDeclaration(((IArrayTypeSymbol)typeSymbol).ElementType);
-                    case SymbolKind.NamedType:
-                        return !IsAnyTypeArgumentAnonymousType((INamedTypeSymbol)typeSymbol);
-                }
+                    }
+                case SymbolKind.NamedType:
+                    {
+                        var namedTypeSymbol = (INamedTypeSymbol)typeSymbol;
+
+                        if (typeSymbol.IsTupleType)
+                        {
+                            foreach (IFieldSymbol tupleElement in namedTypeSymbol.TupleElements)
+                            {
+                                if (!SupportsExplicitDeclaration(tupleElement.Type))
+                                    return false;
+                            }
+
+                            return true;
+                        }
+
+                        return !IsAnyTypeArgumentAnonymousType(namedTypeSymbol);
+                    }
             }
 
             return false;
