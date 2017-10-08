@@ -51,17 +51,10 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveEmptySwitchStatement))
                                 break;
 
-                            if (!statement.IsKind(SyntaxKind.SwitchStatement))
+                            if (!(statement is SwitchStatementSyntax switchStatement))
                                 break;
 
-                            var switchStatement = (SwitchStatementSyntax)statement;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove switch statement",
-                                cancellationToken => context.Document.RemoveStatementAsync(switchStatement, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            CodeFixRegistrator.RemoveStatement(context, diagnostic, switchStatement);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement:
@@ -117,12 +110,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveJumpStatement))
                                 break;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Remove {statement.GetTitle()}",
-                                cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
                             break;
                         }
                 }
