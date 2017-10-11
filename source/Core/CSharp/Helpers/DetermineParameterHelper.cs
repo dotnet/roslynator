@@ -25,49 +25,52 @@ namespace Roslynator.CSharp.Helpers
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            var argumentList = argument.Parent as BaseArgumentListSyntax;
+            if (!(argument.Parent is BaseArgumentListSyntax argumentList))
+                return null;
 
-            if (argumentList != null)
+            if (argumentList.Parent == null)
+                return null;
+
+            ISymbol symbol = GetSymbol(argumentList.Parent, allowCandidate, semanticModel, cancellationToken);
+
+            if (symbol == null)
+                return null;
+
+            return DetermineParameter(argument, argumentList.Arguments, symbol.GetParameters(), allowParams);
+        }
+
+        internal static IParameterSymbol DetermineParameter(
+            ArgumentSyntax argument,
+            SeparatedSyntaxList<ArgumentSyntax> arguments,
+            ImmutableArray<IParameterSymbol> parameters,
+            bool allowParams = false)
+        {
+            string name = argument.NameColon?.Name?.Identifier.ValueText;
+
+            if (name != null)
             {
-                SyntaxNode parent = argumentList.Parent;
-
-                if (parent != null)
+                foreach (IParameterSymbol parameter in parameters)
                 {
-                    SymbolInfo symbolInfo = GetSymbolInfo(parent, semanticModel, cancellationToken);
+                    if (parameter.Name == name)
+                        return parameter;
+                }
 
-                    ISymbol symbol = symbolInfo.Symbol;
+                return null;
+            }
 
-                    if (symbol == null
-                        && allowCandidate)
-                    {
-                        symbol = symbolInfo.CandidateSymbols.FirstOrDefault();
-                    }
+            int index = arguments.IndexOf(argument);
 
-                    if (symbol != null)
-                    {
-                        ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
+            if (index >= 0)
+            {
+                if (index < parameters.Length)
+                    return parameters[index];
 
-                        string name = argument.NameColon?.Name?.Identifier.ValueText;
+                if (allowParams)
+                {
+                    IParameterSymbol lastParameter = parameters.LastOrDefault();
 
-                        if (name != null)
-                            return parameters.FirstOrDefault(p => p.Name == name);
-
-                        int index = argumentList.Arguments.IndexOf(argument);
-
-                        if (index >= 0)
-                        {
-                            if (index < parameters.Length)
-                                return parameters[index];
-
-                            if (allowParams)
-                            {
-                                IParameterSymbol lastParameter = parameters.LastOrDefault();
-
-                                if (lastParameter?.IsParams == true)
-                                    return lastParameter;
-                            }
-                        }
-                    }
+                    if (lastParameter?.IsParams == true)
+                        return lastParameter;
                 }
             }
 
@@ -87,70 +90,84 @@ namespace Roslynator.CSharp.Helpers
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            if (attributeArgument.NameEquals == null)
+            if (attributeArgument.NameEquals != null)
+                return null;
+
+            SyntaxNode parent = attributeArgument.Parent;
+
+            if (!(parent is AttributeArgumentListSyntax argumentList))
+                return null;
+
+            if (!(argumentList.Parent is AttributeSyntax attribute))
+                return null;
+
+            ISymbol symbol = GetSymbol(attribute, allowCandidate, semanticModel, cancellationToken);
+
+            if (symbol == null)
+                return null;
+
+            return DetermineParameter(attributeArgument, argumentList.Arguments, symbol.GetParameters(), allowParams);
+        }
+
+        internal static IParameterSymbol DetermineParameter(
+            AttributeArgumentSyntax attributeArgument,
+            SeparatedSyntaxList<AttributeArgumentSyntax> arguments,
+            ImmutableArray<IParameterSymbol> parameters,
+            bool allowParams = false)
+        {
+            string name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
+
+            if (name != null)
             {
-                SyntaxNode parent = attributeArgument.Parent;
-
-                if (parent?.IsKind(SyntaxKind.AttributeArgumentList) == true)
+                foreach (IParameterSymbol parameter in parameters)
                 {
-                    var argumentList = (AttributeArgumentListSyntax)parent;
+                    if (parameter.Name == name)
+                        return parameter;
+                }
 
-                    parent = argumentList.Parent;
+                return null;
+            }
 
-                    if (parent?.IsKind(SyntaxKind.Attribute) == true)
-                    {
-                        SymbolInfo symbolInfo = semanticModel.GetSymbolInfo((AttributeSyntax)parent, cancellationToken);
+            int index = arguments.IndexOf(attributeArgument);
 
-                        ISymbol symbol = symbolInfo.Symbol;
+            if (index >= 0)
+            {
+                if (index < parameters.Length)
+                    return parameters[index];
 
-                        if (symbol == null
-                            && allowCandidate)
-                        {
-                            symbol = symbolInfo.CandidateSymbols.FirstOrDefault();
-                        }
+                if (allowParams)
+                {
+                    IParameterSymbol lastParameter = parameters.LastOrDefault();
 
-                        if (symbol != null)
-                        {
-                            ImmutableArray<IParameterSymbol> parameters = symbol.GetParameters();
-
-                            string name = attributeArgument.NameColon?.Name?.Identifier.ValueText;
-
-                            if (name != null)
-                                return parameters.FirstOrDefault(p => p.Name == name);
-
-                            int index = argumentList.Arguments.IndexOf(attributeArgument);
-
-                            if (index >= 0)
-                            {
-                                if (index < parameters.Length)
-                                    return parameters[index];
-
-                                if (allowParams)
-                                {
-                                    IParameterSymbol lastParameter = parameters.LastOrDefault();
-
-                                    if (lastParameter?.IsParams == true)
-                                        return lastParameter;
-                                }
-                            }
-                        }
-                    }
+                    if (lastParameter?.IsParams == true)
+                        return lastParameter;
                 }
             }
 
             return null;
         }
 
+        private static ISymbol GetSymbol(SyntaxNode node, bool allowCandidate, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            SymbolInfo symbolInfo = GetSymbolInfo(node, semanticModel, cancellationToken);
+
+            ISymbol symbol = symbolInfo.Symbol;
+
+            if (symbol == null
+                && allowCandidate)
+            {
+                return symbolInfo.CandidateSymbols.FirstOrDefault();
+            }
+
+            return symbol;
+        }
+
         private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            var expression = node as ExpressionSyntax;
-
-            if (expression != null)
+            if (node is ExpressionSyntax expression)
                 return semanticModel.GetSymbolInfo(expression, cancellationToken);
 
-            var constructorInitializer = node as ConstructorInitializerSyntax;
-
-            if (constructorInitializer != null)
+            if (node is ConstructorInitializerSyntax constructorInitializer)
                 return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
             return default(SymbolInfo);

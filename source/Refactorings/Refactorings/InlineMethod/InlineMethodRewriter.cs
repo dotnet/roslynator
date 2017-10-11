@@ -18,8 +18,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
         public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
         {
-            object newValue;
-            if (_replacementMap.TryGetValue(node, out newValue))
+            if (_replacementMap.TryGetValue(node, out object newValue))
             {
                 var newNode = (ExpressionSyntax)newValue;
 
@@ -38,8 +37,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         {
             var newNode = (ParameterSyntax)base.VisitParameter(node);
 
-            object newValue;
-            if (_replacementMap.TryGetValue(node, out newValue))
+            if (_replacementMap.TryGetValue(node, out object newValue))
             {
                 return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
             }
@@ -53,8 +51,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         {
             var newNode = (TypeParameterSyntax)base.VisitTypeParameter(node);
 
-            object newValue;
-            if (_replacementMap.TryGetValue(node, out newValue))
+            if (_replacementMap.TryGetValue(node, out object newValue))
             {
                 return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
             }
@@ -68,8 +65,21 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         {
             var newNode = (VariableDeclaratorSyntax)base.VisitVariableDeclarator(node);
 
-            object newValue;
-            if (_replacementMap.TryGetValue(node, out newValue))
+            if (_replacementMap.TryGetValue(node, out object newValue))
+            {
+                return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
+            }
+            else
+            {
+                return newNode;
+            }
+        }
+
+        public override SyntaxNode VisitSingleVariableDesignation(SingleVariableDesignationSyntax node)
+        {
+            var newNode = (SingleVariableDesignationSyntax)base.VisitSingleVariableDesignation(node);
+
+            if (_replacementMap.TryGetValue(node, out object newValue))
             {
                 return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
             }

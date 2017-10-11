@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using static System.Math;
 
@@ -139,5 +140,55 @@ namespace Roslynator.CSharp.Refactorings.Tests
             return entity + ep1 + ep2;
         }
 #endif
+    }
+
+    public static class InlineMethodSingleVariableDesignation
+    {
+        private static void Foo()
+        {
+            string value = null;
+            string value2 = null;
+            string value3 = null;
+            string value4 = null;
+            string value5 = null;
+
+            Foo(value, value2, value3, value4, value5);
+
+            value.Foo(value2, value3, value4, value5);
+        }
+
+        private static void Foo(this string s1, string s2, string s3, string s4, string s5)
+        {
+            if (s1 is object value)
+            {
+                value = null;
+            }
+
+            var dic = new Dictionary<object, object>();
+
+            if (dic.TryGetValue(s2, out object value2))
+            {
+                value2 = null;
+            }
+
+            switch (s3)
+            {
+                case object value3:
+                    {
+                        value3 = null;
+                        break;
+                    }
+            }
+
+            (int value4, int value5) = Foo(s4, s5);
+
+            value4 = 0;
+            value5 = 0;
+        }
+
+        private static (int x, int y) Foo(string s1, string s2)
+        {
+            return (0, 0);
+        }
     }
 }
