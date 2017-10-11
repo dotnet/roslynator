@@ -200,7 +200,7 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLambdaExpressionParameterList">
+  <Analyzer Identifier="SimplifyLambdaExpressionParameterList" IsObsolete="true">
     <Id>RCS1022</Id>
     <Title>Simplify lambda expression parameter list.</Title>
     <MessageFormat>Simplify lambda expression parameter list.</MessageFormat>

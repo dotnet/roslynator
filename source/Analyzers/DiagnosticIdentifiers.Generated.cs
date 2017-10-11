@@ -28,7 +28,6 @@ namespace Roslynator.CSharp
         public const string ReorderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
         public const string SimplifyLambdaExpression = "RCS1021";
-        public const string SimplifyLambdaExpressionParameterList = "RCS1022";
         public const string FormatEmptyBlock = "RCS1023";
         public const string FormatAccessorList = "RCS1024";
         public const string FormatEachEnumMemberOnSeparateLine = "RCS1025";

@@ -10,6 +10,21 @@ namespace Roslynator.CSharp
     public static partial class DiagnosticDescriptors
     {
         [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterList = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList, 
+            title:              "Simplify lambda expression parameter list.", 
+            messageFormat:      "Simplify lambda expression parameter list.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList}", 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterListFadeOut = SimplifyLambdaExpressionParameterList.CreateFadeOut();
+
+        [Obsolete("", error: true)]
         public static readonly DiagnosticDescriptor RemoveRedundantBraces = new DiagnosticDescriptor(
             id:                 DiagnosticIdentifiers.RemoveRedundantBraces, 
             title:              "Remove redundant braces.", 

@@ -314,7 +314,6 @@
     <Compile Include="Refactorings\UseAutoPropertyRefactoring.cs" />
     <Compile Include="Refactorings\CallCastInsteadOfSelectRefactoring.cs" />
     <Compile Include="Refactorings\CallOfTypeInsteadOfWhereAndCastRefactoring.cs" />
-    <Compile Include="Refactorings\SimplifyLambdaExpressionParameterListRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyLogicalNotExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyNestedUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyNullableOfTRefactoring.cs" />
@@ -386,7 +385,6 @@
     <Compile Include="CodeFixProviders\FormatAccessorListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\FormatEmptyBlockCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ImplicitArrayCreationExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ParenthesizedLambdaExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveEmptyInitializerCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantParenthesesCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemovePartialModifierFromTypeWithSinglePartCodeFixProvider.cs" />
@@ -447,7 +445,6 @@
     <Compile Include="DiagnosticAnalyzers\IdentifierNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\IfStatementSyntaxDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BinaryExpressionDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\ParenthesizedLambdaExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ObjectCreationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ModifiersDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BooleanLiteralDiagnosticAnalyzer.cs" />

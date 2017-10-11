@@ -243,19 +243,6 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyLambdaExpressionFadeOut = SimplifyLambdaExpression.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterList = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList, 
-            title:              "Simplify lambda expression parameter list.", 
-            messageFormat:      "Simplify lambda expression parameter list.", 
-            category:           DiagnosticCategories.Simplification, 
-            defaultSeverity:    DiagnosticSeverity.Hidden, 
-            isEnabledByDefault: false, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList}", 
-            customTags:         Array.Empty<string>());
-
-        public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterListFadeOut = SimplifyLambdaExpressionParameterList.CreateFadeOut();
-
         public static readonly DiagnosticDescriptor FormatEmptyBlock = new DiagnosticDescriptor(
             id:                 DiagnosticIdentifiers.FormatEmptyBlock, 
             title:              "Format empty block.", 
