@@ -4,12 +4,16 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class ReplaceStringFormatWithInterpolatedStringRefactoring
     {
-        public void SomeMethod()
+        public void Foo()
         {
             string name = "name";
             string value = "value";
 
-            string s = string.Format("name: {0}, value: {1}", name, value);
+            string s = string.Format("name: {0:f}, value: {1}", name, value);
+
+            s = string.Format("name: {0:f}, value: {1} \" {2}", "{\"name\"}", "{\"value\"}", (true) ? "" : "");
+
+            s = string.Format(@"name: {0:f}, value: {1} "" {2}", @"{""name""}", @"{""value""}", (true) ? "" : "");
         }
     }
 }
