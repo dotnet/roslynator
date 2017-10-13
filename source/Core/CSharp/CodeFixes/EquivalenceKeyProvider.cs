@@ -13,11 +13,28 @@ namespace Roslynator.CSharp.CodeFixes
             return GetEquivalenceKey(diagnostic.Id, additionalKey);
         }
 
+        public static string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey1, string additionalKey2)
+        {
+            return GetEquivalenceKey(diagnostic.Id, additionalKey1, additionalKey2);
+        }
+
         public static string GetEquivalenceKey(string key, string additionalKey = null)
         {
-            if (additionalKey != null)
+            return GetEquivalenceKey(key, additionalKey, null);
+        }
+
+        public static string GetEquivalenceKey(string key, string additionalKey1, string additionalKey2)
+        {
+            if (additionalKey1 != null)
             {
-                return $"{EquivalenceKeyPrefix}.{key}.{additionalKey}";
+                if (additionalKey2 != null)
+                    return $"{EquivalenceKeyPrefix}.{key}.{additionalKey1}.{additionalKey2}";
+
+                return $"{EquivalenceKeyPrefix}.{key}.{additionalKey1}";
+            }
+            else if (additionalKey2 != null)
+            {
+                return $"{EquivalenceKeyPrefix}.{key}.{additionalKey2}";
             }
             else
             {

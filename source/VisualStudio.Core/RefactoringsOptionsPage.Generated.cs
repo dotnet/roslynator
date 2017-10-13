@@ -42,8 +42,6 @@ namespace Roslynator.VisualStudio
             CallExtensionMethodAsInstanceMethod = true;
             CallToMethod = true;
             ChangeExplicitTypeToVar = true;
-            ChangeMemberTypeAccordingToReturnExpression = true;
-            ChangeMemberTypeAccordingToYieldReturnExpression = true;
             ChangeMethodReturnTypeToVoid = true;
             ChangeTypeAccordingToExpression = true;
             ChangeVarToExplicitType = true;
@@ -217,8 +215,6 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod, CallExtensionMethodAsInstanceMethod);
             SetIsEnabled(RefactoringIdentifiers.CallToMethod, CallToMethod);
             SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
-            SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, ChangeMemberTypeAccordingToReturnExpression);
-            SetIsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, ChangeMemberTypeAccordingToYieldReturnExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
             SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeVarToExplicitType, ChangeVarToExplicitType);
@@ -402,8 +398,6 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod, "Call extension method as instance method", IsEnabled(RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallToMethod, "Call 'To...' method (ToString, ToArray, ToList)", IsEnabled(RefactoringIdentifiers.CallToMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeExplicitTypeToVar, "Change explicit type to 'var'", IsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression, "Change method/property/indexer type according to return expression", IsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression, "Change method/property/indexer type according to yield return expression", IsEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, "Change method return type to 'void'", IsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeTypeAccordingToExpression, "Change type according to expression", IsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeVarToExplicitType, "Change 'var' to explicit type", IsEnabled(RefactoringIdentifiers.ChangeVarToExplicitType)));
@@ -720,24 +714,6 @@ namespace Roslynator.VisualStudio
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeExplicitTypeToVar
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ChangeMemberTypeAccordingToReturnExpression
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ChangeMemberTypeAccordingToYieldReturnExpression
         {
             get;
             set;

@@ -437,4 +437,13 @@
       <Id>CS0139</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0080" Identifier="ChangeMemberTypeAccordingToReturnExpression" Title="Change member type according to return expression">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+      <Id>CS0127</Id>
+      <Id>CS0201</Id>
+      <Id>CS0266</Id>
+      <Id>CS1997</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

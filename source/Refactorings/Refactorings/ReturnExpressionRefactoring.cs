@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -13,151 +12,30 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (expression != null)
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            if (expression == null)
+                return;
 
-                ISymbol memberSymbol = GetContainingMethodOrPropertySymbol(expression, semanticModel, context.CancellationToken);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                if (memberSymbol != null)
-                {
-                    SyntaxNode node = await memberSymbol
-                        .DeclaringSyntaxReferences[0]
-                        .GetSyntaxAsync(context.CancellationToken)
-                        .ConfigureAwait(false);
+            (ISymbol memberSymbol, ITypeSymbol memberTypeSymbol) = GetContainingSymbolAndType(expression, semanticModel, context.CancellationToken);
 
-                    TypeSyntax type = GetTypeOrReturnType(node);
+            if (memberSymbol == null)
+                return;
 
-                    if (type != null)
-                    {
-                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+            if (memberTypeSymbol?.IsErrorType() != false)
+                return;
 
-                        if (memberTypeSymbol != null)
-                        {
-                            ITypeSymbol expressionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+            ITypeSymbol expressionSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                            if (expressionSymbol?.IsErrorType() == false)
-                            {
-                                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
-                                {
-                                    ITypeSymbol newType = GetMemberNewType(memberSymbol, memberTypeSymbol, expression, expressionSymbol, semanticModel, context.CancellationToken);
+            if (expressionSymbol?.IsErrorType() != false)
+                return;
 
-                                    if (newType?.IsErrorType() == false
-                                        && !memberTypeSymbol.Equals(newType)
-                                        && !memberSymbol.IsOverride
-                                        && !memberSymbol.ImplementsInterfaceMember())
-                                    {
-                                        if (newType.IsNamedType() && memberTypeSymbol.IsNamedType())
-                                        {
-                                            var newNamedType = (INamedTypeSymbol)newType;
+            ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
 
-                                            INamedTypeSymbol orderedEnumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T);
+            if (castTypeSymbol == null)
+                return;
 
-                                            if (newNamedType.ConstructedFrom == orderedEnumerableSymbol)
-                                            {
-                                                INamedTypeSymbol enumerableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
-
-                                                if (enumerableSymbol != null
-                                                    && ((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom != enumerableSymbol)
-                                                {
-                                                    RegisterChangeType(context, node, type, enumerableSymbol.Construct(newNamedType.TypeArguments.ToArray()), semanticModel);
-                                                }
-                                            }
-                                        }
-
-                                        RegisterChangeType(context, node, type, newType, semanticModel);
-                                    }
-                                }
-
-                                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
-                                    && !memberTypeSymbol.IsErrorType())
-                                {
-                                    ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
-
-                                    if (castTypeSymbol != null)
-                                    {
-                                        ModifyExpressionRefactoring.ComputeRefactoring(
-                                           context,
-                                           expression,
-                                           castTypeSymbol,
-                                           semanticModel);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private static void RegisterChangeType(RefactoringContext context, SyntaxNode node, TypeSyntax type, ITypeSymbol newType, SemanticModel semanticModel)
-        {
-            context.RegisterRefactoring(
-            $"Change {GetText(node)} type to '{SymbolDisplay.GetMinimalString(newType, semanticModel, type.Span.Start)}'",
-            cancellationToken =>
-            {
-                return ChangeTypeRefactoring.ChangeTypeAsync(
-                    context.Document,
-                    type,
-                    newType,
-                    cancellationToken);
-            });
-        }
-
-        private static ITypeSymbol GetMemberNewType(
-            ISymbol memberSymbol,
-            ITypeSymbol memberTypeSymbol,
-            ExpressionSyntax expression,
-            ITypeSymbol expressionSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            if (memberSymbol.IsAsyncMethod())
-            {
-                if (expression.IsKind(SyntaxKind.AwaitExpression))
-                {
-                    var awaitExpression = (AwaitExpressionSyntax)expression;
-
-                    if (awaitExpression.Expression != null)
-                    {
-                        var awaitableSymbol = semanticModel.GetTypeSymbol(awaitExpression.Expression, cancellationToken) as INamedTypeSymbol;
-
-                        if (awaitableSymbol != null)
-                        {
-                            INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-                            if (awaitableSymbol.ConstructedFrom.Equals(taskOfTSymbol))
-                                return awaitableSymbol;
-                        }
-                    }
-                }
-                else if (memberTypeSymbol.IsNamedType())
-                {
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-                    if (((INamedTypeSymbol)memberTypeSymbol).ConstructedFrom.Equals(taskOfTSymbol))
-                    {
-                        if (expressionSymbol.IsNamedType()
-                            && ((INamedTypeSymbol)expressionSymbol).ConstructedFrom.Equals(taskOfTSymbol))
-                        {
-                            return null;
-                        }
-
-                        INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
-                        if (expressionSymbol.Equals(taskSymbol))
-                            return null;
-
-                        return taskOfTSymbol.Construct(expressionSymbol);
-                    }
-                }
-            }
-            else
-            {
-                return expressionSymbol;
-            }
-
-            return null;
+            ModifyExpressionRefactoring.ComputeRefactoring(context, expression, castTypeSymbol, semanticModel, addCastExpression: false);
         }
 
         private static ITypeSymbol GetCastTypeSymbol(
@@ -190,63 +68,41 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        internal static TypeSyntax GetTypeOrReturnType(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).ReturnType;
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)node).Type;
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).Type;
-                case SyntaxKind.LocalFunctionStatement:
-                    return ((LocalFunctionStatementSyntax)node).ReturnType;
-                default:
-                    return null;
-            }
-        }
-
-        internal static string GetText(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                case SyntaxKind.LocalFunctionStatement:
-                    return "return";
-                case SyntaxKind.PropertyDeclaration:
-                    return "property";
-                case SyntaxKind.IndexerDeclaration:
-                    return "indexer";
-                default:
-                    return null;
-            }
-        }
-
-        internal static ISymbol GetContainingMethodOrPropertySymbol(
+        internal static (ISymbol symbol, ITypeSymbol typeSymbol) GetContainingSymbolAndType(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ISymbol symbol = semanticModel.GetEnclosingSymbol(expression.SpanStart, cancellationToken);
-
-            if (symbol?.IsMethod() == true)
+            switch (semanticModel.GetEnclosingSymbol(expression.SpanStart, cancellationToken))
             {
-                var methodsymbol = (IMethodSymbol)symbol;
-                MethodKind methodKind = methodsymbol.MethodKind;
+                case IMethodSymbol methodSymbol:
+                    {
+                        MethodKind methodKind = methodSymbol.MethodKind;
 
-                if (methodKind == MethodKind.Ordinary)
-                {
-                    if (methodsymbol.PartialImplementationPart != null)
-                        symbol = methodsymbol.PartialImplementationPart;
-                }
-                else if (methodKind == MethodKind.PropertyGet)
-                {
-                    symbol = methodsymbol.AssociatedSymbol;
-                }
+                        if (methodKind == MethodKind.PropertyGet)
+                        {
+                            var propertySymbol = (IPropertySymbol)methodSymbol.AssociatedSymbol;
+
+                            return (propertySymbol, propertySymbol.Type);
+                        }
+
+                        if (methodKind == MethodKind.Ordinary
+                            && methodSymbol.PartialImplementationPart != null)
+                        {
+                            methodSymbol = methodSymbol.PartialImplementationPart;
+                        }
+
+                        return (methodSymbol, methodSymbol.ReturnType);
+                    }
+                case IFieldSymbol fieldSymbol:
+                    {
+                        return (fieldSymbol, fieldSymbol.Type);
+                    }
             }
 
-            return symbol;
+            Debug.Fail(expression.ToString());
+
+            return default((ISymbol, ITypeSymbol));
         }
     }
 }

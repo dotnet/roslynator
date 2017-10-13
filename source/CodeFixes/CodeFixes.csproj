@@ -100,6 +100,7 @@
     <Compile Include="Refactorings\AddBreakStatementToSwitchSectionRefactoring.cs" />
     <Compile Include="Refactorings\AddComparisonWithBooleanLiteralRefactoring.cs" />
     <Compile Include="Refactorings\AddDocumentationCommentRefactoring.cs" />
+    <Compile Include="Refactorings\ChangeMemberTypeRefactoring.cs" />
     <Compile Include="Refactorings\CreateSingletonArrayRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />

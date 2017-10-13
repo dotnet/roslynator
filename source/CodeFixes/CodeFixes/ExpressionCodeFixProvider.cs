@@ -28,7 +28,9 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant,
                     CompilerDiagnosticIdentifiers.CannotConvertNullToTypeBecauseItIsNonNullableValueType,
                     CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull,
-                    CompilerDiagnosticIdentifiers.CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType);
+                    CompilerDiagnosticIdentifiers.CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType,
+                    CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement,
+                    CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
             }
         }
 
@@ -40,7 +42,13 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstModifier)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseCoalesceExpression)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionThatIsAlwaysEqualToTrueOrFalse))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionThatIsAlwaysEqualToTrueOrFalse)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceField)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
+                )
             {
                 return;
             }
@@ -63,66 +71,64 @@ namespace Roslynator.CSharp.CodeFixes
                             ITypeSymbol type = typeInfo.Type;
                             ITypeSymbol convertedType = typeInfo.ConvertedType;
 
-                            if (type?.IsNamedType() == true)
+                            if ((type is INamedTypeSymbol namedType)
+                                && namedType.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
                             {
-                                var namedType = (INamedTypeSymbol)type;
-
-                                if (namedType.ConstructedFrom.SpecialType == SpecialType.System_Nullable_T)
+                                if (convertedType?.IsBoolean() == true
+                                    || AddComparisonWithBooleanLiteralRefactoring.IsCondition(expression))
                                 {
-                                    if (convertedType?.IsBoolean() == true
-                                        || AddComparisonWithBooleanLiteralRefactoring.IsCondition(expression))
+                                    if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddComparisonWithBooleanLiteral))
                                     {
-                                        if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddComparisonWithBooleanLiteral))
-                                        {
-                                            CodeAction codeAction = CodeAction.Create(
-                                                AddComparisonWithBooleanLiteralRefactoring.GetTitle(expression),
-                                                cancellationToken => AddComparisonWithBooleanLiteralRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
-                                                GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddComparisonWithBooleanLiteral));
+                                        CodeAction codeAction = CodeAction.Create(
+                                            AddComparisonWithBooleanLiteralRefactoring.GetTitle(expression),
+                                            cancellationToken => AddComparisonWithBooleanLiteralRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddComparisonWithBooleanLiteral));
 
-                                            context.RegisterCodeFix(codeAction, diagnostic);
-                                        }
+                                        context.RegisterCodeFix(codeAction, diagnostic);
                                     }
-                                    else if (namedType.TypeArguments[0].Equals(convertedType))
+                                }
+                                else if (namedType.TypeArguments[0].Equals(convertedType))
+                                {
+                                    if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseCoalesceExpression))
                                     {
-                                        if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseCoalesceExpression))
-                                        {
-                                            CodeAction codeAction = CodeAction.Create(
-                                                "Use coalesce expression",
-                                                cancellationToken =>
-                                                {
-                                                    ExpressionSyntax defaultValue = convertedType.ToDefaultValueSyntax(semanticModel, expression.SpanStart);
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Use coalesce expression",
+                                            cancellationToken =>
+                                            {
+                                                ExpressionSyntax defaultValue = convertedType.ToDefaultValueSyntax(semanticModel, expression.SpanStart);
 
-                                                    ExpressionSyntax newNode = CoalesceExpression(expression.WithoutTrivia(), defaultValue)
-                                                        .WithTriviaFrom(expression)
-                                                        .Parenthesize()
-                                                        .WithFormatterAnnotation();
+                                                ExpressionSyntax newNode = CoalesceExpression(expression.WithoutTrivia(), defaultValue)
+                                                    .WithTriviaFrom(expression)
+                                                    .Parenthesize()
+                                                    .WithFormatterAnnotation();
 
-                                                    return context.Document.ReplaceNodeAsync(expression, newNode, cancellationToken);
-                                                },
-                                                GetEquivalenceKey(diagnostic, CodeFixIdentifiers.UseCoalesceExpression));
+                                                return context.Document.ReplaceNodeAsync(expression, newNode, cancellationToken);
+                                            },
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.UseCoalesceExpression));
 
-                                            context.RegisterCodeFix(codeAction, diagnostic);
-                                        }
+                                        context.RegisterCodeFix(codeAction, diagnostic);
                                     }
                                 }
                             }
 
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                                ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddCastExpression))
+                                CodeFixRegistrator.AddCastExpression(context, diagnostic, expression, convertedType, semanticModel);
+
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.CreateSingletonArray)
                                 && type?.IsErrorType() == false
                                 && !type.Equals(convertedType)
-                                && convertedType.IsArrayType())
+                                && (convertedType is IArrayTypeSymbol arrayType)
+                                && semanticModel.IsImplicitConversion(expression, arrayType.ElementType))
                             {
-                                var arrayType = (IArrayTypeSymbol)convertedType;
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Create singleton array",
+                                    cancellationToken => CreateSingletonArrayRefactoring.RefactorAsync(context.Document, expression, arrayType.ElementType, semanticModel, cancellationToken),
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.CreateSingletonArray));
 
-                                if (semanticModel.IsImplicitConversion(expression, arrayType.ElementType))
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        "Create singleton array",
-                                        cancellationToken => CreateSingletonArrayRefactoring.RefactorAsync(context.Document, expression, arrayType.ElementType, semanticModel, cancellationToken),
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.CreateSingletonArray));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
+                                context.RegisterCodeFix(codeAction, diagnostic);
                             }
 
                             break;
@@ -219,6 +225,115 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement:
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (expression.Parent is ArrowExpressionClauseSyntax arrowExpresssionClause)
+                            {
+                                if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                                    break;
+
+                                ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+                            }
+                            else if (expression.Parent is ExpressionStatementSyntax expressionStatement)
+                            {
+                                if (!Settings.IsAnyCodeFixEnabled(
+                                    CodeFixIdentifiers.IntroduceLocalVariable,
+                                    CodeFixIdentifiers.IntroduceField))
+                                {
+                                    break;
+                                }
+
+                                if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() != false)
+                                    break;
+
+                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                                if (typeSymbol?.IsErrorType() != false)
+                                    break;
+
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable)
+                                    && !expressionStatement.IsEmbedded())
+                                {
+                                    bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
+                                        && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
+
+                                    CodeAction codeAction = CodeAction.Create(
+                                        IntroduceLocalVariableRefactoring.GetTitle(expression),
+                                        cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken),
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceLocalVariable));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
+
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceField))
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        $"Introduce field for '{expression}'",
+                                        cancellationToken => IntroduceFieldRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, semanticModel, cancellationToken),
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceField));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
+                            }
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType:
+                        {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+                                break;
+                            }
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
+                                && expression?.IsKind(SyntaxKind.StringLiteralExpression) == true)
+                            {
+                                var literalExpression = (LiteralExpressionSyntax)expression;
+
+                                if (literalExpression.Token.ValueText.Length == 1)
+                                {
+                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                    if (semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType?.IsChar() == true)
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Replace string literal with character literal",
+                                            cancellationToken => ReplaceStringLiteralWithCharacterLiteralRefactoring.RefactorAsync(context.Document, literalExpression, cancellationToken),
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral));
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
+                                }
+                            }
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn)
+                                && expression.IsParentKind(SyntaxKind.ReturnStatement))
+                            {
+                                var returnStatement = (ReturnStatementSyntax)expression.Parent;
+
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                ISymbol containingSymbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
+
+                                if (containingSymbol?.IsKind(SymbolKind.Method) == true
+                                    && ((IMethodSymbol)containingSymbol).ReturnType?.IsIEnumerableOrConstructedFromIEnumerableOfT() == true)
+                                {
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Use yield return instead of return",
+                                        cancellationToken => UseYieldReturnInsteadOfReturnRefactoring.RefactorAsync(context.Document, returnStatement, SyntaxKind.YieldReturnStatement, semanticModel, cancellationToken),
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.UseYieldReturnInsteadOfReturn));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                }
+                            }
 
                             break;
                         }

@@ -4,10 +4,8 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -40,29 +38,25 @@ namespace Roslynator.CSharp.CodeFixes
 
                             ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
 
-                            if (whenTrue?.IsMissing == false
-                                && whenFalse?.IsMissing == false)
-                            {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                            if (whenTrue?.IsMissing != false)
+                                break;
 
-                                ITypeSymbol falseType = semanticModel.GetTypeSymbol(whenFalse, context.CancellationToken);
+                            if (whenFalse?.IsMissing != false)
+                                break;
 
-                                if (falseType?.IsErrorType() == false)
-                                {
-                                    ITypeSymbol destinationType = FindDestinationType(whenTrue, falseType.BaseType, semanticModel);
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                                    if (destinationType != null)
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            $"Cast to '{SymbolDisplay.GetMinimalString(destinationType, semanticModel, whenTrue.SpanStart)}'",
-                                            cancellationToken => AddCastExpressionRefactoring.RefactorAsync(context.Document, whenTrue, destinationType, semanticModel, cancellationToken),
-                                            GetEquivalenceKey(diagnostic));
+                            ITypeSymbol falseType = semanticModel.GetTypeSymbol(whenFalse, context.CancellationToken);
 
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                    }
-                                }
-                            }
+                            if (falseType?.IsErrorType() != false)
+                                break;
 
+                            ITypeSymbol destinationType = FindDestinationType(whenTrue, falseType.BaseType, semanticModel);
+
+                            if (destinationType == null)
+                                break;
+
+                            CodeFixRegistrator.AddCastExpression(context, diagnostic, whenTrue, destinationType, semanticModel);
                             break;
                         }
                 }

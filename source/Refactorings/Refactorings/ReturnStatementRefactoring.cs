@@ -14,13 +14,8 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression != null)
             {
-                if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
-                    RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.CallToMethod))
-                {
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
                     await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
-                }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfElse)
                     && (context.Span.IsEmptyAndContainedInSpan(returnStatement.ReturnKeyword)

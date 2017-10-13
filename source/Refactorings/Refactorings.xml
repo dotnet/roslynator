@@ -116,12 +116,12 @@
     </Syntaxes>
     <Scope>type</Scope>
   </Refactoring>
-  <Refactoring Id="RR0019" Identifier="ChangeMemberTypeAccordingToReturnExpression" Title="Change method/property/indexer type according to return expression">
+  <Refactoring Id="RR0019" Identifier="ChangeMemberTypeAccordingToReturnExpression" Title="Change method/property/indexer type according to return expression" IsObsolete="true">
     <Syntaxes>
       <Syntax>return statement in method/property/indexer</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0020" Identifier="ChangeMemberTypeAccordingToYieldReturnExpression" Title="Change method/property/indexer type according to yield return expression">
+  <Refactoring Id="RR0020" Identifier="ChangeMemberTypeAccordingToYieldReturnExpression" Title="Change method/property/indexer type according to yield return expression" IsObsolete="true">
     <Syntaxes>
       <Syntax>yield return statement in method/property/indexer</Syntax>
     </Syntaxes>

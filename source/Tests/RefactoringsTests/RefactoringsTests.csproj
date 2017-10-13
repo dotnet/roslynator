@@ -171,8 +171,6 @@
     <Compile Include="CheckParameterForNullRefactoring.cs" />
     <Compile Include="ChangeTypeAccordingToExpressionRefactoring.cs" />
     <Compile Include="ChangeForeachTypeAccordingToExpressionRefactoring.cs" />
-    <Compile Include="ChangeMemberTypeAccordingToReturnStatementRefactoring.cs" />
-    <Compile Include="ChangeMemberTypeAccordingToYieldReturnStatementRefactoring.cs" />
     <Compile Include="ChangeVarToExplicitTypeRefactoring.cs" />
     <Compile Include="UseIfElseInsteadOfConditionalExpressionRefactoring.cs" />
     <Compile Include="ReplaceIncrementOperatorWithDecrementOperatorRefactoring.cs" />

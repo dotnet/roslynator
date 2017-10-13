@@ -7,7 +7,6 @@ using System.Xml.Linq;
 
 namespace Roslynator.Metadata
 {
-
     public static class MetadataFile
     {
         public static ImmutableArray<AnalyzerDescriptor> ReadAllAnalyzers(string filePath)
@@ -51,6 +50,7 @@ namespace Roslynator.Metadata
                     element.Attribute("Identifier").Value,
                     element.Attribute("Title").Value,
                     element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
+                    element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
                     element.Element("Scope")?.Value,
                     element.Element("Syntaxes")
                         .Elements("Syntax")

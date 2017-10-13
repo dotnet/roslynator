@@ -11,82 +11,34 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, YieldStatementSyntax yieldStatement)
         {
-            if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression,
-                    RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.CallToMethod)
-                && yieldStatement.IsYieldReturn()
-                && yieldStatement.Expression != null)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod)
+                && yieldStatement.IsYieldReturn())
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                ExpressionSyntax expression = yieldStatement.Expression;
 
-                ISymbol memberSymbol = ReturnExpressionRefactoring.GetContainingMethodOrPropertySymbol(yieldStatement.Expression, semanticModel, context.CancellationToken);
-
-                if (memberSymbol != null)
+                if (expression?.Span.Contains(context.Span) == true)
                 {
-                    SyntaxNode node = await memberSymbol
-                        .DeclaringSyntaxReferences[0]
-                        .GetSyntaxAsync(context.CancellationToken)
-                        .ConfigureAwait(false);
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    TypeSyntax type = ReturnExpressionRefactoring.GetTypeOrReturnType(node);
+                    (ISymbol memberSymbol, ITypeSymbol memberTypeSymbol) = ReturnExpressionRefactoring.GetContainingSymbolAndType(expression, semanticModel, context.CancellationToken);
 
-                    if (type != null)
+                    if (memberSymbol != null
+                        && (memberTypeSymbol is INamedTypeSymbol namedTypeSymbol)
+                        && namedTypeSymbol.SpecialType != SpecialType.System_Collections_IEnumerable
+                        && namedTypeSymbol.IsConstructedFromIEnumerableOfT())
                     {
-                        ITypeSymbol memberTypeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
+                        ITypeSymbol argumentSymbol = namedTypeSymbol.TypeArguments[0];
 
-                        if (memberTypeSymbol?.SpecialType != SpecialType.System_Collections_IEnumerable)
+                        ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                        if (argumentSymbol != expressionTypeSymbol)
                         {
-                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(yieldStatement.Expression, context.CancellationToken);
-
-                            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMemberTypeAccordingToYieldReturnExpression)
-                                && typeSymbol?.IsErrorType() == false
-                                && !typeSymbol.IsVoid()
-                                && !memberSymbol.IsOverride
-                                && (memberTypeSymbol == null
-                                    || memberTypeSymbol.IsErrorType()
-                                    || !memberTypeSymbol.IsConstructedFromIEnumerableOfT()
-                                    || !((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0].Equals(typeSymbol)))
-                            {
-                                INamedTypeSymbol newTypeSymbol = semanticModel
-                                    .Compilation
-                                    .GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T)
-                                    .Construct(typeSymbol);
-
-                                TypeSyntax newType = newTypeSymbol.ToMinimalTypeSyntax(semanticModel, type.SpanStart);
-
-                                context.RegisterRefactoring(
-                                    $"Change {ReturnExpressionRefactoring.GetText(node)} type to '{SymbolDisplay.GetMinimalString(newTypeSymbol, semanticModel, type.SpanStart)}'",
-                                    cancellationToken =>
-                                    {
-                                        return ChangeTypeRefactoring.ChangeTypeAsync(
-                                            context.Document,
-                                            type,
-                                            newType,
-                                            cancellationToken);
-                                    });
-                            }
-
-                            if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod)
-                                && yieldStatement.Expression.Span.Contains(context.Span)
-                                && memberTypeSymbol?.IsNamedType() == true)
-                            {
-                                var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
-
-                                if (namedTypeSymbol.IsConstructedFromIEnumerableOfT())
-                                {
-                                    ITypeSymbol argumentSymbol = namedTypeSymbol.TypeArguments[0];
-
-                                    if (argumentSymbol != typeSymbol)
-                                    {
-                                        ModifyExpressionRefactoring.ComputeRefactoring(
-                                           context,
-                                           yieldStatement.Expression,
-                                           argumentSymbol,
-                                           semanticModel);
-                                    }
-                                }
-                            }
+                            ModifyExpressionRefactoring.ComputeRefactoring(
+                               context,
+                               expression,
+                               argumentSymbol,
+                               semanticModel,
+                               addCastExpression: false);
                         }
                     }
                 }

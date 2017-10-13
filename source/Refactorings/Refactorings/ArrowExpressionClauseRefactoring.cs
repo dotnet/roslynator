@@ -11,14 +11,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax expression = arrowExpressionClause.Expression;
 
-            if (expression != null
-                && context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
-                    RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.CallToMethod))
-            {
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
                 await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
-            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandExpressionBody)
                 && (context.Span.IsEmptyAndContainedInSpan(arrowExpressionClause)

@@ -13,23 +13,26 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class RefactoringIdentifiersGenerator
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
+        public static CompilationUnitSyntax Generate(IEnumerable<RefactoringDescriptor> refactorings, bool obsolete, IComparer<string> comparer)
         {
             return CompilationUnit(
-                UsingDirectives(),
+                UsingDirectives("System"),
                 NamespaceDeclaration("Roslynator.CSharp.Refactorings",
                     ClassDeclaration(
                         Modifiers.PublicStaticPartial(),
                         "RefactoringIdentifiers",
                         refactorings
+                            .Where(f => f.IsObsolete == obsolete)
                             .OrderBy(f => f.Identifier, comparer)
                             .Select(f =>
                             {
-                                return FieldDeclaration(
+                                FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
                                     Modifiers.PublicConst(),
                                     StringType(),
                                     f.Identifier,
                                     AddExpression(IdentifierName("Prefix"), StringLiteralExpression(f.Id.Substring(RefactoringIdentifiers.Prefix.Length))));
+
+                                return fieldDeclaration.AddObsoleteAttributeIf(f.IsObsolete);
                             })
                             .ToSyntaxList<MemberDeclarationSyntax>())));
         }

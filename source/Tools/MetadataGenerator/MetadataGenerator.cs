@@ -44,7 +44,7 @@ namespace Roslynator.CodeGeneration
 
             WriteAllText(
                 @"Refactorings\README.md",
-                MarkdownGenerator.CreateRefactoringsReadMe(Refactorings, Comparer));
+                MarkdownGenerator.CreateRefactoringsReadMe(Refactorings.Where(f => !f.IsObsolete), Comparer));
 
             foreach (RefactoringDescriptor refactoring in Refactorings)
             {

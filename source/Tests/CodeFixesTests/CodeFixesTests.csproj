@@ -45,6 +45,7 @@
     <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddBody.cs" />
     <Compile Include="AddSemicolon.cs" />
+    <Compile Include="ChangeMemberTypeAccordingToReturnExpression.cs" />
     <Compile Include="CS0021_CannotApplyIndexingToExpression.cs" />
     <Compile Include="CS0023_OperatorCannotBeAppliedToOperandOfType.cs" />
     <Compile Include="CS0077_AsOperatorMustBeUsedWithReferenceTypeOrNullableType.cs" />

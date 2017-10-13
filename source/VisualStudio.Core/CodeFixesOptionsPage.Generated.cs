@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.ReplaceBreakWithContinue;
+        = CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -101,6 +101,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceElementAccessWithInvocation, "Replace element access with invocation (fixes CS0021)", IsEnabled(CodeFixIdentifiers.ReplaceElementAccessWithInvocation)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddVariableType, "Add variable type (fixes CS0103)", IsEnabled(CodeFixIdentifiers.AddVariableType)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceBreakWithContinue, "Replace 'break' with 'continue' (fixes CS0139)", IsEnabled(CodeFixIdentifiers.ReplaceBreakWithContinue)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression, "Change member type according to return expression (fixes CS0029, CS0127, CS0201, CS0266, CS1997)", IsEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)));
         }
     }
 }
