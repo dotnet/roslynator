@@ -432,4 +432,9 @@
       <Id>CS0103</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0079" Identifier="ReplaceBreakWithContinue" Title="Replace 'break' with 'continue'">
+    <FixableDiagnosticIds>
+      <Id>CS0139</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>
