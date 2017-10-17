@@ -376,6 +376,7 @@
   </CodeFix>
   <CodeFix Id="RCF0068" Identifier="MakeClassNonStatic" Title="Make class non-static">
     <FixableDiagnosticIds>
+      <Id>CS0713</Id>
       <Id>CS0718</Id>
     </FixableDiagnosticIds>
   </CodeFix>

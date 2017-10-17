@@ -70,6 +70,7 @@
     <Compile Include="CS0693_TypeParameterHasSameNameAsTypeParameterFromOuterType.cs" />
     <Compile Include="CS0708_CannotDeclareInstanceMembersInStaticClass.cs" />
     <Compile Include="CS0710_StaticClassesCannotHaveInstanceConstructors.cs" />
+    <Compile Include="CS0713_StaticClassCannotDeriveFromType.cs" />
     <Compile Include="CS0718_StaticTypesCannotBeUsedAsTypeArguments.cs" />
     <Compile Include="CS0718_StaticTypesCannotBeUsedAsTypeArguments2.cs" />
     <Compile Include="CS0750_PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers.cs" />

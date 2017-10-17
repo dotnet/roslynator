@@ -53,6 +53,7 @@
     <Compile Include="CodeFixes\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BinaryExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ChangeOverridingMemberAccessibilityCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\ClassDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixes\CodeFixRegistrator.cs" />
     <Compile Include="CodeFixes\ConditionalExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ElementAccessCodeFixProvider.cs" />

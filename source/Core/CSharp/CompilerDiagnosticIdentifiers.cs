@@ -82,6 +82,7 @@ namespace Roslynator.CSharp
         public const string TypeParameterHasSameNameAsTypeParameterFromOuterType = "CS0693";
         public const string CannotDeclareInstanceMembersInStaticClass = "CS0708";
         public const string StaticClassesCannotHaveInstanceConstructors = "CS0710";
+        public const string StaticClassCannotDeriveFromType = "CS0713";
         public const string StaticTypesCannotBeUsedAsTypeArguments = "CS0718";
         public const string PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers = "CS0750";
         public const string PartialMethodMustBeDeclaredWithinPartialClassOrPartialStruct = "CS0751";

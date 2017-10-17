@@ -76,6 +76,7 @@
   <Diagnostic Id="CS0693" Identifier="TypeParameterHasSameNameAsTypeParameterFromOuterType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0693" />
   <Diagnostic Id="CS0708" Identifier="CannotDeclareInstanceMembersInStaticClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0708" />
   <Diagnostic Id="CS0710" Identifier="StaticClassesCannotHaveInstanceConstructors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0710" />
+  <Diagnostic Id="CS0713" Identifier="StaticClassCannotDeriveFromType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0713" />
   <Diagnostic Id="CS0718" Identifier="StaticTypesCannotBeUsedAsTypeArguments" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0718" />
   <Diagnostic Id="CS0750" Identifier="PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0750" />
   <Diagnostic Id="CS0751" Identifier="PartialMethodMustBeDeclaredWithinPartialClassOrPartialStruct" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0751" />

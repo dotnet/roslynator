@@ -89,7 +89,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveConstraint, "Remove constraint (fixes CS0405, CS0450, CS0451)", IsEnabled(CodeFixIdentifiers.RemoveConstraint)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.CombineConstraintClauses, "Combine constraint clauses (fixes CS0409)", IsEnabled(CodeFixIdentifiers.CombineConstraintClauses)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AssignDefaultValueToOutParameter, "Assign default value to 'out' parameter (fixes CS0177)", IsEnabled(CodeFixIdentifiers.AssignDefaultValueToOutParameter)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeClassNonStatic, "Make class non-static (fixes CS0718)", IsEnabled(CodeFixIdentifiers.MakeClassNonStatic)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeClassNonStatic, "Make class non-static (fixes CS0713, CS0718)", IsEnabled(CodeFixIdentifiers.MakeClassNonStatic)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveYieldKeyword, "Remove 'yield' keyword (fixes CS1621)", IsEnabled(CodeFixIdentifiers.RemoveYieldKeyword)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveOutModifier, "Remove 'out' modifier (fixes CS0192, CS1988, CS1623)", IsEnabled(CodeFixIdentifiers.RemoveOutModifier)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveAttribute, "Remove attribute (fixes CS0592, CS1689)", IsEnabled(CodeFixIdentifiers.RemoveAttribute)));
