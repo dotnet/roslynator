@@ -14,7 +14,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddBracesToSwitchSections = Prefix + "0005";
         public const string AddCastExpression = Prefix + "0006";
         public const string AddDefaultValueToParameter = Prefix + "0007";
-        public const string AddDefaultValueToReturnStatement = Prefix + "0008";
         public const string AddExceptionToDocumentationComment = Prefix + "0009";
         public const string AddIdentifierToVariableDeclaration = Prefix + "0010";
         public const string AddParameterNameToArgument = Prefix + "0011";

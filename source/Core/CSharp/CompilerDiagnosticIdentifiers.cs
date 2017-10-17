@@ -26,6 +26,7 @@ namespace Roslynator.CSharp
         public const string NoSuitableMethodFoundToOverride = "CS0115";
         public const string ObjectReferenceIsRequiredForNonStaticMember = "CS0120";
         public const string NoOverloadMatchesDelegate = "CS0123";
+        public const string ObjectOfTypeConvertibleToTypeIsRequired = "CS0126";
         public const string SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression = "CS0127";
         public const string LocalVariableOrFunctionIsAlreadyDefinedInThisScope = "CS0128";
         public const string StaticConstructorMustBeParameterless = "CS0132";

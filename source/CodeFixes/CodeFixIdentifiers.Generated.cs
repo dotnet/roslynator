@@ -84,5 +84,6 @@ namespace Roslynator.CSharp.CodeFixes
         public const string AddVariableType = Prefix + "0078";
         public const string ReplaceBreakWithContinue = Prefix + "0079";
         public const string ChangeMemberTypeAccordingToReturnExpression = Prefix + "0080";
+        public const string ReturnDefaultValue = Prefix + "0081";
     }
 }

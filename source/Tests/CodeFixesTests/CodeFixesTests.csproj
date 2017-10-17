@@ -42,6 +42,7 @@
     <Compile Include="AddComparisonWithBooleanLiteralRefactoring.cs" />
     <Compile Include="AddBracesToDeclarationOrLabeledStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
+    <Compile Include="CS0126_ObjectOfTypeConvertibleToTypeIsRequired.cs" />
     <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddBody.cs" />
     <Compile Include="AddSemicolon.cs" />

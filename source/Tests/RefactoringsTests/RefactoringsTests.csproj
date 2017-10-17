@@ -71,7 +71,6 @@
     <Compile Include="RemoveStatementRefactoring.cs" />
     <Compile Include="DuplicateStatementRefactoring.cs" />
     <Compile Include="ExtractTypeDeclarationToNewFile\ExtractTypeDeclarationToNewFile.cs" />
-    <Compile Include="AddDefaultValueToReturnStatement.cs" />
     <Compile Include="AddUsingDirectiveRefactoring.cs" />
     <Compile Include="CollapseToInitializerRefactoring.cs" />
     <Compile Include="MergeAssignmentExpressionWithReturnStatementRefactoring.cs" />

@@ -20,6 +20,7 @@
   <Diagnostic Id="CS0115" Identifier="NoSuitableMethodFoundToOverride" HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0115" />
   <Diagnostic Id="CS0120" Identifier="ObjectReferenceIsRequiredForNonStaticMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0120" />
   <Diagnostic Id="CS0123" Identifier="NoOverloadMatchesDelegate" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123" />
+  <Diagnostic Id="CS0126" Identifier="ObjectOfTypeConvertibleToTypeIsRequired" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0126" />
   <Diagnostic Id="CS0127" Identifier="SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127" />
   <Diagnostic Id="CS0128" Identifier="LocalVariableOrFunctionIsAlreadyDefinedInThisScope" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128" />
   <Diagnostic Id="CS0132" Identifier="StaticConstructorMustBeParameterless" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0132" />

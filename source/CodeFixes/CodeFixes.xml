@@ -447,4 +447,9 @@
       <Id>CS1997</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0081" Identifier="ReturnDefaultValue" Title="Return default value">
+    <FixableDiagnosticIds>
+      <Id>CS0126</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

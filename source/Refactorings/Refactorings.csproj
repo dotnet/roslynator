@@ -149,7 +149,6 @@
     <Compile Include="Refactorings\DirectiveTriviaRefactoring.cs" />
     <Compile Include="Refactorings\MergeIfStatementsRefactoring.cs" />
     <Compile Include="Refactorings\RemoveStatementsFromSwitchSectionsRefactoring.cs" />
-    <Compile Include="Refactorings\AddDefaultValueToReturnStatementRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReturnExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfRefactoring.cs" />

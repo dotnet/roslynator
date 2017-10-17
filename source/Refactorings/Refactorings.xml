@@ -52,7 +52,7 @@
     </Syntaxes>
     <Scope>identifier</Scope>
   </Refactoring>
-  <Refactoring Id="RR0008" Identifier="AddDefaultValueToReturnStatement" Title="Add default value to return statement">
+  <Refactoring Id="RR0008" Identifier="AddDefaultValueToReturnStatement" Title="Add default value to return statement" IsObsolete="true">
     <Syntaxes>
       <Syntax>return statement without expression</Syntax>
     </Syntaxes>
