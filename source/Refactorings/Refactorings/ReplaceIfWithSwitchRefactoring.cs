@@ -138,7 +138,13 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
-            if (typeSymbol.IsEnum())
+            if (typeSymbol == null)
+                return false;
+
+            if (typeSymbol.Kind == SymbolKind.ErrorType)
+                return false;
+
+            if (typeSymbol.TypeKind == TypeKind.Enum)
                 return true;
 
             switch (typeSymbol.SpecialType)
