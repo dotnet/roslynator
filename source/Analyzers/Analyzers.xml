@@ -2090,4 +2090,14 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="RemoveUnnecessaryElseClause">
+    <Id>RCS1211</Id>
+    <Title>Remove unnecessary else clause.</Title>
+    <MessageFormat>Remove unnecessary else clause.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>
