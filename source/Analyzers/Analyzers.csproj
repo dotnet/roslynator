@@ -83,6 +83,8 @@
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReduceIfNestingDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderTypeParameterConstraintsDiagnosticAnalyzer.cs" />
+    <Compile Include="ReturnTaskInsteadOfNull\ReturnTaskInsteadOfNullCodeFixProvider.cs" />
+    <Compile Include="ReturnTaskInsteadOfNull\ReturnTaskInsteadOfNullDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseMethodGroupInsteadOfAnonymousFunctionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SimplifyBooleanExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseAttributeUsageAttributeDiagnosticAnalyzer.cs" />
@@ -477,6 +479,9 @@
     <Compile Include="DiagnosticAnalyzers\BlockDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\AddBracesToIfElseCodeFixProvider.cs" />
     <Compile Include="Refactorings\UseStringLengthInsteadOfComparisonWithEmptyStringRefactoring.cs" />
+    <Compile Include="ReturnTaskInsteadOfNull\ReturnTaskInsteadOfNullRefactoring.cs" />
+    <Compile Include="ReturnTaskInsteadOfNull\ReturnTaskInsteadOfNullWalker.cs" />
+    <Compile Include="ReturnTaskInsteadOfNull\ReturnTaskInsteadOfNullWalkerCache.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />

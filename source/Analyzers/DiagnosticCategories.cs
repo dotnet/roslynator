@@ -15,6 +15,7 @@ namespace Roslynator.CSharp
         public const string Performance = "Performance";
         public const string Readability = "Readability";
         public const string Redundancy = "Redundancy";
+        public const string Reliability = "Reliability";
         public const string Simplification = "Simplification";
         public const string Style = "Style";
         public const string Usage = "Usage";
@@ -25,7 +26,6 @@ namespace Roslynator.CSharp
         //public const string Compatibility = "Compatibility";
         //public const string Correctness = "Correctness";
         //public const string Globalization = "Globalization";
-        //public const string Reliability = "Reliability";
         //public const string Security = "Security";
     }
 }

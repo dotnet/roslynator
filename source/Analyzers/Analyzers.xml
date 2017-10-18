@@ -2080,4 +2080,14 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="ReturnTaskInsteadOfNull">
+    <Id>RCS1210</Id>
+    <Title>Return Task.FromResult instead of returning null.</Title>
+    <MessageFormat>Return Task.FromResult instead of returning null.</MessageFormat>
+    <Category>Reliability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>

@@ -198,5 +198,6 @@ namespace Roslynator.CSharp
         public const string UseMethodGroupInsteadOfAnonymousFunction = "RCS1207";
         public const string ReduceIfNesting = "RCS1208";
         public const string ReorderTypeParameterConstraints = "RCS1209";
+        public const string ReturnTaskInsteadOfNull = "RCS1210";
     }
 }
