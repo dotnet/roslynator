@@ -2084,8 +2084,8 @@
     <Id>RCS1210</Id>
     <Title>Return Task.FromResult instead of returning null.</Title>
     <MessageFormat>Return Task.FromResult instead of returning null.</MessageFormat>
-    <Category>Reliability</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <Category>Usage</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
