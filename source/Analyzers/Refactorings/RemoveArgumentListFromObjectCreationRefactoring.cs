@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -9,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class RemoveEmptyArgumentListRefactoring
+    internal static class RemoveArgumentListFromObjectCreationRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ObjectCreationExpressionSyntax objectCreationExpression)
         {
@@ -28,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                         && openParen.TrailingTrivia.IsEmptyOrWhitespace()
                         && closeParen.LeadingTrivia.IsEmptyOrWhitespace())
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyArgumentList, argumentList);
+                        context.ReportDiagnostic(DiagnosticDescriptors.RemoveArgumentListFromObjectCreation, argumentList);
                     }
                 }
             }

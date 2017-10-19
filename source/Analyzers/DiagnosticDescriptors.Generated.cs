@@ -706,15 +706,15 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveEmptyFinallyClause}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        public static readonly DiagnosticDescriptor RemoveEmptyArgumentList = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.RemoveEmptyArgumentList, 
-            title:              "Remove empty argument list.", 
-            messageFormat:      "Remove empty argument list.", 
+        public static readonly DiagnosticDescriptor RemoveArgumentListFromObjectCreation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation, 
+            title:              "Remove argument list from object creation expression.", 
+            messageFormat:      "Remove argument list from object creation expression.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveEmptyArgumentList}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         public static readonly DiagnosticDescriptor SimplifyLogicalNotExpression = new DiagnosticDescriptor(

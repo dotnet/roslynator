@@ -650,10 +650,10 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyArgumentList">
+  <Analyzer Identifier="RemoveArgumentListFromObjectCreation">
     <Id>RCS1067</Id>
-    <Title>Remove empty argument list.</Title>
-    <MessageFormat>Remove empty argument list.</MessageFormat>
+    <Title>Remove argument list from object creation expression.</Title>
+    <MessageFormat>Remove argument list from object creation expression.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

@@ -277,7 +277,7 @@
     <Compile Include="Refactorings\MarkLocalVariableAsConstRefactoring.cs" />
     <Compile Include="Refactorings\NonAsynchronousMethodNameShouldNotEndWithAsyncRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesRefactoring.cs" />
-    <Compile Include="Refactorings\RemoveEmptyArgumentListRefactoring.cs" />
+    <Compile Include="Refactorings\RemoveArgumentListFromObjectCreationRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEmptyAttributeArgumentListRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEmptyDestructorRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEmptyElseClauseRefactoring.cs" />
