@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!syntaxReferences.Any())
                                 break;
 
-                            ModifiersCodeFixes.RemoveModifier(
+                            ModifiersCodeFixRegistrator.RemoveModifier(
                                 context,
                                 diagnostic,
                                 ImmutableArray.CreateRange(syntaxReferences, f => f.GetSyntax()),

@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReorderModifiers))
                                 break;
 
-                            ModifiersCodeFixes.MoveModifier(context, diagnostic, token.Parent, token);
+                            ModifiersCodeFixRegistrator.MoveModifier(context, diagnostic, token.Parent, token);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired:

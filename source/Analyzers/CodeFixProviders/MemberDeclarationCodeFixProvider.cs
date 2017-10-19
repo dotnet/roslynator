@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.RemoveRedundantSealedModifier:
                         {
-                            ModifiersCodeFixes.RemoveModifier(context, diagnostic, memberDeclaration, SyntaxKind.SealedKeyword);
+                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, memberDeclaration, SyntaxKind.SealedKeyword);
                             break;
                         }
                     case DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration:
@@ -127,7 +127,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ? $"Mark '{declarators[0].Identifier.ValueText}' as read-only"
                                 : "Mark fields as read-only";
 
-                            ModifiersCodeFixes.AddModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, title: title);
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, title: title);
                             break;
                         }
                     case DiagnosticIdentifiers.UseConstantInsteadOfField:

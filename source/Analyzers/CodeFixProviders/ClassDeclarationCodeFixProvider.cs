@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!syntaxReferences.Any())
                                 break;
 
-                            ModifiersCodeFixes.AddModifier(
+                            ModifiersCodeFixRegistrator.AddModifier(
                                 context,
                                 diagnostic,
                                 ImmutableArray.CreateRange(syntaxReferences, f => f.GetSyntax()),
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations:
                         {
-                            ModifiersCodeFixes.AddModifier(context, diagnostic, classDeclaration, SyntaxKind.StaticKeyword);
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, classDeclaration, SyntaxKind.StaticKeyword);
                             break;
                         }
                     case DiagnosticIdentifiers.ImplementExceptionConstructors:

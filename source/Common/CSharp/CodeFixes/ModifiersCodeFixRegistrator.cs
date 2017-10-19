@@ -12,7 +12,7 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    internal static class ModifiersCodeFixes
+    internal static class ModifiersCodeFixRegistrator
     {
         public static void AddModifier(
             CodeFixContext context,
@@ -99,11 +99,16 @@ namespace Roslynator.CSharp.CodeFixes
             string additionalKey = null,
             IModifierComparer comparer = null) where TNode : SyntaxNode
         {
-            if (nodes is IList<TNode> list
-                && list.Count == 1)
+            if (nodes is IList<TNode> list)
             {
-                AddModifier(context, diagnostic, list[0], kind, title, additionalKey, comparer);
-                return;
+                if (list.Count == 0)
+                    return;
+
+                if (list.Count == 1)
+                {
+                    AddModifier(context, diagnostic, list[0], kind, title, additionalKey, comparer);
+                    return;
+                }
             }
 
             CodeAction codeAction = CodeAction.Create(
@@ -188,11 +193,16 @@ namespace Roslynator.CSharp.CodeFixes
             string title = null,
             string additionalKey = null) where TNode : SyntaxNode
         {
-            if (nodes is IList<TNode> list
-                && list.Count == 1)
+            if (nodes is IList<TNode> list)
             {
-                RemoveModifier(context, diagnostic, list[0], kind, title, additionalKey);
-                return;
+                if (list.Count == 0)
+                    return;
+
+                if (list.Count == 1)
+                {
+                    RemoveModifier(context, diagnostic, list[0], kind, title, additionalKey);
+                    return;
+                }
             }
 
             CodeAction codeAction = CodeAction.Create(

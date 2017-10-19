@@ -47,7 +47,7 @@
     <Compile Include="CSharp\Refactorings\GenerateBaseConstructorsRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceLocalVariableRefactoring.cs" />
-    <Compile Include="CSharp\CodeFixes\ModifiersCodeFixes.cs" />
+    <Compile Include="CSharp\CodeFixes\ModifiersCodeFixRegistrator.cs" />
     <Compile Include="CSharp\Refactorings\ReduceIfNesting\ReduceIfNestingAnalysis.cs" />
     <Compile Include="CSharp\Refactorings\ReduceIfNesting\ReduceIfNestingOptions.cs" />
     <Compile Include="CSharp\Refactorings\ReduceIfNesting\ReduceIfNestingOptionsExtensions.cs" />

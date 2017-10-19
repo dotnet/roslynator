@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.StaticClassCannotDeriveFromType:
                         {
-                            ModifiersCodeFixes.RemoveModifier(
+                            ModifiersCodeFixRegistrator.RemoveModifier(
                                 context,
                                 diagnostic,
                                 classDeclaration,
