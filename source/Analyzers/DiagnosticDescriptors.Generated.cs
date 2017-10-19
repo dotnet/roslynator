@@ -410,15 +410,15 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveEmptyStatement}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        public static readonly DiagnosticDescriptor RemoveEmptyAttributeArgumentList = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList, 
-            title:              "Remove empty attribute argument list.", 
-            messageFormat:      "Remove empty attribute argument list.", 
+        public static readonly DiagnosticDescriptor RemoveArgumentListFromAttribute = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.RemoveArgumentListFromAttribute, 
+            title:              "Remove argument list from attribute.", 
+            messageFormat:      "Remove argument list from attribute.", 
             category:           DiagnosticCategories.Redundancy, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveArgumentListFromAttribute}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         public static readonly DiagnosticDescriptor RemoveEmptyElseClause = new DiagnosticDescriptor(

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveEmptyAttributeArgumentList); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveArgumentListFromAttribute); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -32,8 +32,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
 
-            if (RemoveEmptyAttributeArgumentListRefactoring.CanRefactor(attributeArgumentList))
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyAttributeArgumentList, attributeArgumentList);
+            if (!attributeArgumentList.Arguments.Any())
+                context.ReportDiagnostic(DiagnosticDescriptors.RemoveArgumentListFromAttribute, attributeArgumentList);
         }
     }
 }

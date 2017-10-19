@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -17,7 +16,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveArgumentListFromAttribute); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -29,8 +28,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Remove empty argument list",
-                cancellationToken => RemoveEmptyAttributeArgumentListRefactoring.RefactorAsync(context.Document, attributeArgumentList, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyAttributeArgumentList));
+                cancellationToken => context.Document.RemoveNodeAsync(attributeArgumentList, SyntaxRemoveOptions.KeepNoTrivia, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveArgumentListFromAttribute));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

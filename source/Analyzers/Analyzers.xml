@@ -370,10 +370,10 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="RemoveEmptyAttributeArgumentList">
+  <Analyzer Identifier="RemoveArgumentListFromAttribute">
     <Id>RCS1039</Id>
-    <Title>Remove empty attribute argument list.</Title>
-    <MessageFormat>Remove empty attribute argument list.</MessageFormat>
+    <Title>Remove argument list from attribute.</Title>
+    <MessageFormat>Remove argument list from attribute.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
