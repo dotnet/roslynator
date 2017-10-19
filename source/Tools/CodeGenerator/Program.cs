@@ -24,7 +24,7 @@ namespace Roslynator.CodeGeneration
 
             generator.Generate();
 
-            Console.WriteLine($"number of analyzers: {generator.Analyzers.Length}");
+            Console.WriteLine($"number of analyzers: {generator.Analyzers.Count(f => !f.IsObsolete)}");
             Console.WriteLine($"number of refactorings: {generator.Refactorings.Length}");
             Console.WriteLine($"number of code fixes: {generator.CodeFixes.Length}");
             Console.WriteLine($"number of fixable compiler diagnostics: {generator.CodeFixes.SelectMany(f => f.FixableDiagnosticIds).Distinct().Count()}");

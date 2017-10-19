@@ -65,6 +65,9 @@ namespace Roslynator.Text
             if (lines.Count == 0)
                 return false;
 
+            if (span.IsEmpty)
+                return false;
+
             (int startIndex, int endIndex) = GetIndexes(lines, span);
 
             if (startIndex == -1)

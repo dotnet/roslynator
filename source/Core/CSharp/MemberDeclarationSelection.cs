@@ -115,6 +115,9 @@ namespace Roslynator.CSharp
             if (!members.Any())
                 return false;
 
+            if (span.IsEmpty)
+                return false;
+
             (int startIndex, int endIndex) = GetIndexes(members, span);
 
             if (startIndex == -1)

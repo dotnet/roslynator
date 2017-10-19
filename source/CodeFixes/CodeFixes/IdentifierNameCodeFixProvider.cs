@@ -70,6 +70,9 @@ namespace Roslynator.CSharp.CodeFixes
 
                             foreach (ITypeSymbol typeSymbol in DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, context.CancellationToken))
                             {
+                                if (typeSymbol.Kind == SymbolKind.TypeParameter)
+                                    continue;
+
                                 string typeName = SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, identifierName.SpanStart);
 
                                 CodeAction codeAction = CodeAction.Create(

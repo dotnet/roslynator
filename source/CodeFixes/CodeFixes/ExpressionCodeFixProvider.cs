@@ -111,8 +111,11 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
+                                && expression.IsParentKind(SyntaxKind.ReturnStatement, SyntaxKind.YieldReturnStatement))
+                            {
                                 ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+                            }
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddCastExpression))
                                 CodeFixRegistrator.AddCastExpression(context, diagnostic, expression, convertedType, semanticModel);
@@ -270,7 +273,8 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType:
                         {
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
+                                && expression.IsParentKind(SyntaxKind.ReturnStatement, SyntaxKind.YieldReturnStatement))
                             {
                                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

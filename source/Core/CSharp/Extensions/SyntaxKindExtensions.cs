@@ -126,7 +126,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool SupportsExpressionBody(this SyntaxKind kind)
+        internal static bool SupportsExpressionBody(this SyntaxKind kind)
         {
             switch (kind)
             {
@@ -167,7 +167,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
+        public static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
         {
             return kind == kind1
                 || kind == kind2;
@@ -207,7 +207,7 @@ namespace Roslynator.CSharp
                 || kind == kind6;
         }
 
-        public static bool IsSingleTokenExpression(this SyntaxKind kind)
+        internal static bool IsSingleTokenExpression(this SyntaxKind kind)
         {
             switch (kind)
             {

@@ -216,7 +216,7 @@ namespace Roslynator.CSharp
                 {
                     type = type ?? ((semanticModel != null)
                             ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
-                            : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation());
+                            : typeSymbol.ToTypeSyntax(format).WithSimplifierAnnotation());
 
                     Debug.Assert(type != null);
 
@@ -233,7 +233,7 @@ namespace Roslynator.CSharp
 
             type = type ?? ((semanticModel != null)
                 ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
-                : typeSymbol.ToTypeSyntax().WithSimplifierAnnotation());
+                : typeSymbol.ToTypeSyntax(format).WithSimplifierAnnotation());
 
             Debug.Assert(type != null);
 

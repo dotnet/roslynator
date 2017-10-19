@@ -30,7 +30,11 @@ namespace Roslynator.CSharp.CodeFixes
             context.RegisterCodeFix(codeAction, diagnostic);
         }
 
-        public static void RemoveMember(CodeFixContext context, Diagnostic diagnostic, MemberDeclarationSyntax memberDeclaration, string additionalKey = null)
+        public static void RemoveMember(
+            CodeFixContext context,
+            Diagnostic diagnostic,
+            MemberDeclarationSyntax memberDeclaration,
+            string additionalKey = null)
         {
             Document document = context.Document;
 

@@ -83,6 +83,9 @@ namespace Roslynator.CSharp
             if (!statements.Any())
                 return false;
 
+            if (span.IsEmpty)
+                return false;
+
             (int startIndex, int endIndex) = GetIndexes(statements, span);
 
             if (startIndex == -1)
