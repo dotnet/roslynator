@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class AddConstructorArgumentListRefactoring
+    internal static class AddArgumentListToObjectCreationRefactoring
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ObjectCreationExpressionSyntax objectCreationExpression)
         {
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                     var span = new TextSpan(type.Span.End, 1);
 
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddConstructorArgumentList,
+                        DiagnosticDescriptors.AddArgumentListToObjectCreation,
                         Location.Create(context.SyntaxTree(), span));
                 }
             }

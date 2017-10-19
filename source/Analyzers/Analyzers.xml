@@ -480,12 +480,12 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AddConstructorArgumentList">
+  <Analyzer Identifier="AddArgumentListToObjectCreation">
     <Id>RCS1050</Id>
-    <Title>Add constructor argument list.</Title>
-    <MessageFormat>Add constructor argument list.</MessageFormat>
+    <Title>Add argument list to object creation expression.</Title>
+    <MessageFormat>Add argument list to object creation expression.</MessageFormat>
     <Category>Style</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

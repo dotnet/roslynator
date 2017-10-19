@@ -54,7 +54,7 @@ namespace Roslynator.CSharp
         public const string NonAsynchronousMethodNameShouldNotEndWithAsync = "RCS1047";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = "RCS1048";
         public const string SimplifyBooleanComparison = "RCS1049";
-        public const string AddConstructorArgumentList = "RCS1050";
+        public const string AddArgumentListToObjectCreation = "RCS1050";
         public const string ParenthesizeConditionInConditionalExpression = "RCS1051";
         public const string DeclareEachAttributeSeparately = "RCS1052";
         public const string AvoidSemicolonAtEndOfDeclaration = "RCS1055";

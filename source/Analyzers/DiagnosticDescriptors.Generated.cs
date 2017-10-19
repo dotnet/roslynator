@@ -537,15 +537,15 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor SimplifyBooleanComparisonFadeOut = SimplifyBooleanComparison.CreateFadeOut();
 
-        public static readonly DiagnosticDescriptor AddConstructorArgumentList = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AddConstructorArgumentList, 
-            title:              "Add constructor argument list.", 
-            messageFormat:      "Add constructor argument list.", 
+        public static readonly DiagnosticDescriptor AddArgumentListToObjectCreation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddArgumentListToObjectCreation, 
+            title:              "Add argument list to object creation expression.", 
+            messageFormat:      "Add argument list to object creation expression.", 
             category:           DiagnosticCategories.Style, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddConstructorArgumentList}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddArgumentListToObjectCreation}", 
             customTags:         Array.Empty<string>());
 
         public static readonly DiagnosticDescriptor ParenthesizeConditionInConditionalExpression = new DiagnosticDescriptor(

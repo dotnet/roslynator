@@ -11,13 +11,13 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddConstructorArgumentListCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddArgumentListToObjectCreationCodeFixProvider))]
     [Shared]
-    public class AddConstructorArgumentListCodeFixProvider : BaseCodeFixProvider
+    public class AddArgumentListToObjectCreationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddConstructorArgumentList); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddArgumentListToObjectCreation); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -29,8 +29,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Add parentheses",
-                cancellationToken => AddConstructorArgumentListRefactoring.RefactorAsync(context.Document, objectCreationExpression, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.AddConstructorArgumentList));
+                cancellationToken => AddArgumentListToObjectCreationRefactoring.RefactorAsync(context.Document, objectCreationExpression, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.AddArgumentListToObjectCreation));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }
