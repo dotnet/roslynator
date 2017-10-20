@@ -8,7 +8,6 @@ RR0004|[Add braces to switch section](../../docs/refactorings/RR0004.md)|x
 RR0005|[Add braces to switch sections](../../docs/refactorings/RR0005.md)|x
 RR0006|[Add cast expression](../../docs/refactorings/RR0006.md)|x
 RR0007|[Add default value to parameter](../../docs/refactorings/RR0007.md)|x
-RR0008|[Add default value to return statement](../../docs/refactorings/RR0008.md)|x
 RR0009|[Add exception to documentation comment](../../docs/refactorings/RR0009.md)|x
 RR0010|[Add identifier to variable declaration](../../docs/refactorings/RR0010.md)|x
 RR0011|[Add parameter name to argument](../../docs/refactorings/RR0011.md)|x
@@ -22,8 +21,6 @@ RR0017|[Call 'To\.\.\.' method \(ToString, ToArray, ToList\)](../../docs/refacto
 RR0186|[Change accessibility](../../docs/refactorings/RR0186.md)|x
 RR0018|[Change explicit type to 'var'](../../docs/refactorings/RR0018.md)|x
 RR0021|[Change method return type to 'void'](../../docs/refactorings/RR0021.md)|x
-RR0019|[Change method/property/indexer type according to return expression](../../docs/refactorings/RR0019.md)|x
-RR0020|[Change method/property/indexer type according to yield return expression](../../docs/refactorings/RR0020.md)|x
 RR0022|[Change type according to expression](../../docs/refactorings/RR0022.md)|x
 RR0023|[Change 'var' to explicit type](../../docs/refactorings/RR0023.md)|x
 RR0024|[Check expression for null](../../docs/refactorings/RR0024.md)|x

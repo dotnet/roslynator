@@ -1,3 +1,21 @@
+### 1.5.12 (2017-10-19)
+
+#### Analyzers
+
+* Add analyzer ReturnTaskInsteadOfNull (RCS1210).
+* Add analyzer RemoveUnnecessaryElseClause (RCS1211).
+* Remove analyzer SimplifyLambdaExpressionParameterList (RCS1022).
+
+#### Refactorings
+
+* Replace refactoring ChangeMemberTypeAccordingToReturnExpression (RR0019) with code fix.
+* Replace refactoring ChangeMemberTypeAccordingToYieldReturnExpression (RR0020) with code fix.
+* Replace refactoring AddDefaultValueToReturnStatement (RR0008) with code fix.
+
+#### Code Fixes
+
+  * Add code fix for CS0126, CS0139, CS0713 and CS1750.
+
 ### 1.5.10 (2017-10-04)
 
 #### Code Fixes

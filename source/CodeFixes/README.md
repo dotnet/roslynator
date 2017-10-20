@@ -21,6 +21,7 @@ RCF0078|Add variable type|[CS0103](https://docs.microsoft.com/en-us/dotnet/cshar
 RCF0067|Assign default value to 'out' parameter|[CS0177](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0177)|x
 RCF0005|Base base class before any interface|[CS1722](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722)|x
 RCF0029|Change accessibility|[CS0442](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0442), [CS0507](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0507), [CS0628](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628), [CS1057](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057), [CS1527](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527)|x
+RCF0080|Change member type according to return expression|[CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029), [CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201), [CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266), CS1997|x
 RCF0018|Change method return type|[CS0508](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0508), [CS0766](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0766)|x
 RCF0041|Change type of local variable|[CS0123](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123), [CS0407](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0407), [CS0815](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0815)|x
 RCF0030|Change type of 'params' parameter|[CS0225](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225)|x
@@ -31,7 +32,7 @@ RCF0038|Fix member access name|[CS1061](http://docs.microsoft.com/en-us/dotnet/c
 RCF0040|Initialize local variable with default value|[CS0165](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0165)|x
 RCF0076|Introduce field|[CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201)|x
 RCF0047|Introduce local variable|[CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201)|x
-RCF0068|Make class non\-static|[CS0718](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0718)|x
+RCF0068|Make class non\-static|[CS0713](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0713), [CS0718](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0718)|x
 RCF0034|Make containing class abstract|[CS0513](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0513)|x
 RCF0062|Make containing class non\-static|[CS0708](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0708), [CS0710](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0710)|x
 RCF0042|Make member non\-static|[CS0120](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0120)|x
@@ -67,10 +68,12 @@ RCF0001|Remove unused variable|[CS0168](http://docs.microsoft.com/en-us/dotnet/c
 RCF0069|Remove 'yield' keyword|[CS1621](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1621)|x
 RCF0054|Reorder modifiers|[CS0267](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267)|x
 RCF0074|Replace as expression with cast expression|[CS0077](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077)|x
+RCF0079|Replace 'break' with 'continue'|[CS0139](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139)|x
 RCF0077|Replace element access with invocation|[CS0021](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021)|x
-RCF0058|Replace 'null' with default value|[CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037), [CS0403](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403)|x
+RCF0058|Replace 'null' with default value|[CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037), [CS0403](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403), CS1750|x
 RCF0022|Replace string literal with character literal|[CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029)|x
 RCF0059|Replace variable declaration with assignment|[CS0128](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128), [CS0136](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136)|x
+RCF0081|Return default value|[CS0126](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0126)|x
 RCF0036|SynchronizeAccessibility|[CS0262](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0262)|x
 RCF0017|Unreachable code detected|[CS0162](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0162)|x
 RCF0073|Use coalesce expression|[CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x

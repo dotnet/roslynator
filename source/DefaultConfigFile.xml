@@ -247,7 +247,7 @@
       <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0115, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994) -->
       <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114, CS0541) -->
       <CodeFix Id="RCF0057" IsEnabled="false" /> <!-- RemoveReturnExpression (fixes CS0127, CS1997) -->
-      <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037, CS0403) -->
+      <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037, CS0403, CS1750) -->
       <CodeFix Id="RCF0059" IsEnabled="true" /> <!-- ReplaceVariableDeclarationWithAssignment (fixes CS0128, CS0136) -->
       <CodeFix Id="RCF0060" IsEnabled="true" /> <!-- RemoveThisModifier (fixes CS1100, CS1105, CS1106) -->
       <CodeFix Id="RCF0061" IsEnabled="true" /> <!-- RemoveTypeParameter (fixes CS0693) -->
@@ -257,7 +257,7 @@
       <CodeFix Id="RCF0065" IsEnabled="true" /> <!-- RemoveConstraint (fixes CS0405, CS0450, CS0451) -->
       <CodeFix Id="RCF0066" IsEnabled="true" /> <!-- CombineConstraintClauses (fixes CS0409) -->
       <CodeFix Id="RCF0067" IsEnabled="true" /> <!-- AssignDefaultValueToOutParameter (fixes CS0177) -->
-      <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- MakeClassNonStatic (fixes CS0718) -->
+      <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- MakeClassNonStatic (fixes CS0713, CS0718) -->
       <CodeFix Id="RCF0069" IsEnabled="true" /> <!-- RemoveYieldKeyword (fixes CS1621) -->
       <CodeFix Id="RCF0070" IsEnabled="true" /> <!-- RemoveOutModifier (fixes CS0192, CS1988, CS1623) -->
       <CodeFix Id="RCF0071" IsEnabled="true" /> <!-- RemoveAttribute (fixes CS0592, CS1689) -->
@@ -268,6 +268,9 @@
       <CodeFix Id="RCF0076" IsEnabled="true" /> <!-- IntroduceField (fixes CS0201) -->
       <CodeFix Id="RCF0077" IsEnabled="true" /> <!-- ReplaceElementAccessWithInvocation (fixes CS0021) -->
       <CodeFix Id="RCF0078" IsEnabled="true" /> <!-- AddVariableType (fixes CS0103) -->
+      <CodeFix Id="RCF0079" IsEnabled="true" /> <!-- ReplaceBreakWithContinue (fixes CS0139) -->
+      <CodeFix Id="RCF0080" IsEnabled="true" /> <!-- ChangeMemberTypeAccordingToReturnExpression (fixes CS0029, CS0127, CS0201, CS0266, CS1997) -->
+      <CodeFix Id="RCF0081" IsEnabled="true" /> <!-- ReturnDefaultValue (fixes CS0126) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

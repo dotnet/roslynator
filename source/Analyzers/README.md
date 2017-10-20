@@ -22,7 +22,6 @@ RCS1018|[Add default access modifier](../../docs/analyzers/RCS1018.md)|Readabili
 RCS1019|[Reorder modifiers](../../docs/analyzers/RCS1019.md)|Readability|
 RCS1020|[Simplify Nullable\<T\> to T?](../../docs/analyzers/RCS1020.md)|Simplification|x
 RCS1021|[Simplify lambda expression](../../docs/analyzers/RCS1021.md)|Simplification|x
-RCS1022|[Simplify lambda expression parameter list](../../docs/analyzers/RCS1022.md)|Simplification|
 RCS1023|[Format empty block](../../docs/analyzers/RCS1023.md)|Formatting|
 RCS1024|[Format accessor list](../../docs/analyzers/RCS1024.md)|Formatting|
 RCS1025|[Format each enum member on a separate line](../../docs/analyzers/RCS1025.md)|Formatting|
@@ -38,7 +37,7 @@ RCS1035|[Remove redundant comma in initializer](../../docs/analyzers/RCS1035.md)
 RCS1036|[Remove redundant empty line](../../docs/analyzers/RCS1036.md)|Redundancy|x
 RCS1037|[Remove trailing white\-space](../../docs/analyzers/RCS1037.md)|Redundancy|x
 RCS1038|[Remove empty statement](../../docs/analyzers/RCS1038.md)|Redundancy|x
-RCS1039|[Remove empty attribute argument list](../../docs/analyzers/RCS1039.md)|Redundancy|x
+RCS1039|[Remove argument list from attribute](../../docs/analyzers/RCS1039.md)|Redundancy|x
 RCS1040|[Remove empty else clause](../../docs/analyzers/RCS1040.md)|Redundancy|
 RCS1041|[Remove empty initializer](../../docs/analyzers/RCS1041.md)|Redundancy|x
 RCS1042|[Remove enum default underlying type](../../docs/analyzers/RCS1042.md)|Redundancy|x
@@ -49,7 +48,7 @@ RCS1046|[Asynchronous method name should end with 'Async'](../../docs/analyzers/
 RCS1047|[Non\-asynchronous method name should not end with 'Async'](../../docs/analyzers/RCS1047.md)|Naming|x
 RCS1048|[Use lambda expression instead of anonymous method](../../docs/analyzers/RCS1048.md)|Usage|x
 RCS1049|[Simplify boolean comparison](../../docs/analyzers/RCS1049.md)|Simplification|x
-RCS1050|[Add constructor argument list](../../docs/analyzers/RCS1050.md)|Style|
+RCS1050|[Add argument list to object creation expression](../../docs/analyzers/RCS1050.md)|Style|
 RCS1051|[Parenthesize condition in conditional expression](../../docs/analyzers/RCS1051.md)|Style|
 RCS1052|[Declare each attribute separately](../../docs/analyzers/RCS1052.md)|Readability|
 RCS1055|[Avoid semicolon at the end of declaration](../../docs/analyzers/RCS1055.md)|Redundancy|x
@@ -64,7 +63,7 @@ RCS1063|[Avoid usage of do statement to create an infinite loop](../../docs/anal
 RCS1064|[Avoid usage of for statement to create an infinite loop](../../docs/analyzers/RCS1064.md)|Style|
 RCS1065|[Avoid usage of while statement to create an inifinite loop](../../docs/analyzers/RCS1065.md)|Style|
 RCS1066|[Remove empty finally clause](../../docs/analyzers/RCS1066.md)|Redundancy|x
-RCS1067|[Remove empty argument list](../../docs/analyzers/RCS1067.md)|Style|
+RCS1067|[Remove argument list from object creation expression](../../docs/analyzers/RCS1067.md)|Style|
 RCS1068|[Simplify logical not expression](../../docs/analyzers/RCS1068.md)|Simplification|x
 RCS1069|[Remove unnecessary case label](../../docs/analyzers/RCS1069.md)|Redundancy|x
 RCS1070|[Remove redundant default switch section](../../docs/analyzers/RCS1070.md)|Redundancy|x
@@ -193,3 +192,5 @@ RCS1206|[Use conditional access instead of conditional expression](../../docs/an
 RCS1207|[Use method group instead of anonymous function](../../docs/analyzers/RCS1207.md)|Simplification|x
 RCS1208|[Reduce if nesting](../../docs/analyzers/RCS1208.md)|Style|
 RCS1209|[Reorder type parameter constraints](../../docs/analyzers/RCS1209.md)|Readability|x
+RCS1210|[Return Task\.FromResult instead of returning null](../../docs/analyzers/RCS1210.md)|Usage|x
+RCS1211|[Remove unnecessary else clause](../../docs/analyzers/RCS1211.md)|Redundancy|x

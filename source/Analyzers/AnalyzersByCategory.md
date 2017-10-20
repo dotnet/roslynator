@@ -87,7 +87,7 @@ Readability|[Use explicit type instead of 'var' \(when the type is obvious\)](..
 Readability|[Use regular string literal instead of verbatim string literal](../../docs/analyzers/RCS1192.md)|RCS1192|x
 Redundancy|[Avoid interpolated string with no interpolation](../../docs/analyzers/RCS1062.md)|RCS1062|x
 Redundancy|[Avoid semicolon at the end of declaration](../../docs/analyzers/RCS1055.md)|RCS1055|x
-Redundancy|[Remove empty attribute argument list](../../docs/analyzers/RCS1039.md)|RCS1039|x
+Redundancy|[Remove argument list from attribute](../../docs/analyzers/RCS1039.md)|RCS1039|x
 Redundancy|[Remove empty destructor](../../docs/analyzers/RCS1106.md)|RCS1106|x
 Redundancy|[Remove empty else clause](../../docs/analyzers/RCS1040.md)|RCS1040|
 Redundancy|[Remove empty finally clause](../../docs/analyzers/RCS1066.md)|RCS1066|x
@@ -120,6 +120,7 @@ Redundancy|[Remove redundant 'ToCharArray' call](../../docs/analyzers/RCS1107.md
 Redundancy|[Remove redundant 'ToString' call](../../docs/analyzers/RCS1097.md)|RCS1097|x
 Redundancy|[Remove trailing white\-space](../../docs/analyzers/RCS1037.md)|RCS1037|x
 Redundancy|[Remove unnecessary case label](../../docs/analyzers/RCS1069.md)|RCS1069|x
+Redundancy|[Remove unnecessary else clause](../../docs/analyzers/RCS1211.md)|RCS1211|x
 Redundancy|[Unused parameter](../../docs/analyzers/RCS1163.md)|RCS1163|x
 Redundancy|[Unused this parameter](../../docs/analyzers/RCS1175.md)|RCS1175|x
 Redundancy|[Unused type parameter](../../docs/analyzers/RCS1164.md)|RCS1164|x
@@ -140,7 +141,6 @@ Simplification|[Simplify boolean comparison](../../docs/analyzers/RCS1049.md)|RC
 Simplification|[Simplify boolean expression](../../docs/analyzers/RCS1199.md)|RCS1199|x
 Simplification|[Simplify coalesce expression](../../docs/analyzers/RCS1143.md)|RCS1143|x
 Simplification|[Simplify conditional expression](../../docs/analyzers/RCS1104.md)|RCS1104|x
-Simplification|[Simplify lambda expression parameter list](../../docs/analyzers/RCS1022.md)|RCS1022|
 Simplification|[Simplify lambda expression](../../docs/analyzers/RCS1021.md)|RCS1021|x
 Simplification|[Simplify lazily initialized property](../../docs/analyzers/RCS1171.md)|RCS1171|x
 Simplification|[Simplify LINQ method chain](../../docs/analyzers/RCS1077.md)|RCS1077|x
@@ -161,10 +161,10 @@ Simplification|[Use return instead of assignment](../../docs/analyzers/RCS1179.m
 Simplification|[Use 'var' instead of explicit type \(in foreach\)](../../docs/analyzers/RCS1177.md)|RCS1177|
 Simplification|[Use 'var' instead of explicit type \(when the type is not obvious\)](../../docs/analyzers/RCS1176.md)|RCS1176|
 Simplification|[Use 'var' instead of explicit type \(when the type is obvious\)](../../docs/analyzers/RCS1010.md)|RCS1010|x
+Style|[Add argument list to object creation expression](../../docs/analyzers/RCS1050.md)|RCS1050|
 Style|[Add braces to if\-else](../../docs/analyzers/RCS1003.md)|RCS1003|x
 Style|[Add braces to switch section with multiple statements](../../docs/analyzers/RCS1111.md)|RCS1111|
 Style|[Add braces](../../docs/analyzers/RCS1001.md)|RCS1001|x
-Style|[Add constructor argument list](../../docs/analyzers/RCS1050.md)|RCS1050|
 Style|[Avoid embedded statement in if\-else](../../docs/analyzers/RCS1126.md)|RCS1126|
 Style|[Avoid embedded statement](../../docs/analyzers/RCS1007.md)|RCS1007|
 Style|[Avoid multiline expression body](../../docs/analyzers/RCS1017.md)|RCS1017|
@@ -174,12 +174,13 @@ Style|[Avoid usage of while statement to create an inifinite loop](../../docs/an
 Style|[Call extension method as instance method](../../docs/analyzers/RCS1196.md)|RCS1196|x
 Style|[Parenthesize condition in conditional expression](../../docs/analyzers/RCS1051.md)|RCS1051|
 Style|[Reduce if nesting](../../docs/analyzers/RCS1208.md)|RCS1208|
+Style|[Remove argument list from object creation expression](../../docs/analyzers/RCS1067.md)|RCS1067|
 Style|[Remove braces from if\-else](../../docs/analyzers/RCS1004.md)|RCS1004|
 Style|[Remove braces](../../docs/analyzers/RCS1002.md)|RCS1002|
-Style|[Remove empty argument list](../../docs/analyzers/RCS1067.md)|RCS1067|
 Usage|[Avoid NullReferenceException](../../docs/analyzers/RCS1202.md)|RCS1202|x
 Usage|[Call Debug\.Fail instead of Debug\.Assert](../../docs/analyzers/RCS1178.md)|RCS1178|x
 Usage|[Call 'Enumerable\.ThenBy' instead of 'Enumerable\.OrderBy'](../../docs/analyzers/RCS1200.md)|RCS1200|x
+Usage|[Return Task\.FromResult instead of returning null](../../docs/analyzers/RCS1210.md)|RCS1210|x
 Usage|[Unconstrained type parameter checked for null](../../docs/analyzers/RCS1165.md)|RCS1165|x
 Usage|[Use conditional access instead of conditional expression](../../docs/analyzers/RCS1206.md)|RCS1206|x
 Usage|[Use conditional access](../../docs/analyzers/RCS1146.md)|RCS1146|x
