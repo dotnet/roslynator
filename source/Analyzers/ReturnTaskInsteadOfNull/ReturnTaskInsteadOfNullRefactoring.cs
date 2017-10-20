@@ -283,16 +283,36 @@ namespace Roslynator.CSharp.Analyzers.ReturnTaskInsteadOfNull
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            var typeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType as INamedTypeSymbol;
+            var typeSymbol = (INamedTypeSymbol)semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
             int position = expression.SpanStart;
 
-            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, position);
+            ITypeSymbol typeArgument = typeSymbol.TypeArguments[0];
+
+            TypeSyntax type = typeArgument.ToMinimalTypeSyntax(semanticModel, position);
+
+            ExpressionSyntax defaultValue = typeArgument.ToDefaultValueSyntax(type);
+
+            SimpleNameSyntax name;
+
+            if (defaultValue.IsKind(
+                SyntaxKind.TrueLiteralExpression,
+                SyntaxKind.FalseLiteralExpression,
+                SyntaxKind.CharacterLiteralExpression,
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.DefaultExpression))
+            {
+                name = IdentifierName("FromResult");
+            }
+            else
+            {
+                name = GenericName("FromResult", type);
+            }
 
             InvocationExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task).ToMinimalTypeSyntax(semanticModel, position),
-                GenericName("FromResult", typeSymbol.TypeArguments[0].ToMinimalTypeSyntax(semanticModel, position)),
-                Argument(typeSymbol.ToDefaultValueSyntax(type)));
+                name,
+                Argument(defaultValue));
 
             return newNode.WithTriviaFrom(expression);
         }
