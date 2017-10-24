@@ -94,6 +94,9 @@ namespace Roslynator.CSharp.Refactorings
                             }
                             else
                             {
+                                if (!CheckAccessibility(expressionTypeSymbol.OriginalDefinition, accessedSymbol, expression.SpanStart, semanticModel, cancellationToken))
+                                    return false;
+
                                 return expressionTypeSymbol.EqualsOrInheritsFrom(containingType, includeInterfaces: true);
                             }
                         }
@@ -102,6 +105,51 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
+        }
+
+        private static bool CheckAccessibility(
+            ITypeSymbol expressionTypeSymbol,
+            ISymbol accessedSymbol,
+            int position,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            switch (accessedSymbol.DeclaredAccessibility)
+            {
+                case Accessibility.Protected:
+                    {
+                        INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
+
+                        while (containingType != null)
+                        {
+                            if (containingType.Equals(expressionTypeSymbol))
+                                return true;
+
+                            containingType = containingType.ContainingType;
+                        }
+
+                        return false;
+                    }
+                case Accessibility.ProtectedOrInternal:
+                    {
+                        INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
+
+                        if (containingType?.ContainingAssembly?.Equals(expressionTypeSymbol.ContainingAssembly) == true)
+                            return true;
+
+                        while (containingType != null)
+                        {
+                            if (containingType.Equals(expressionTypeSymbol))
+                                return true;
+
+                            containingType = containingType.ContainingType;
+                        }
+
+                        return false;
+                    }
+            }
+
+            return true;
         }
 
         private static ExpressionSyntax GetAccessedExpression(SyntaxNode parent)
