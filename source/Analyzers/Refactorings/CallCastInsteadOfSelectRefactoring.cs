@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                                         {
                                             var lambda = (SimpleLambdaExpressionSyntax)expression;
 
-                                            if (IsFixable(lambda.Parameter, lambda.Body))
+                                            if (IsFixable(lambda.Parameter, lambda.Body, semanticModel, cancellationToken))
                                                 return true;
 
                                             break;
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
                                                 SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
                                                 if (parameters.Count == 1
-                                                    && IsFixable(parameters.First(), lambda.Body))
+                                                    && IsFixable(parameters.First(), lambda.Body, semanticModel, cancellationToken))
                                                 {
                                                     return true;
                                                 }
@@ -102,7 +102,11 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool IsFixable(ParameterSyntax parameter, CSharpSyntaxNode body)
+        private static bool IsFixable(
+            ParameterSyntax parameter,
+            CSharpSyntaxNode body,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             if (parameter != null && body != null)
             {
@@ -118,7 +122,9 @@ namespace Roslynator.CSharp.Refactorings
                             ((IdentifierNameSyntax)expression).Identifier.ValueText,
                             StringComparison.Ordinal))
                     {
-                        return true;
+                        var methodSymbol = semanticModel.GetSymbol(castExpression, cancellationToken) as IMethodSymbol;
+
+                        return methodSymbol?.MethodKind != MethodKind.Conversion;
                     }
                 }
             }

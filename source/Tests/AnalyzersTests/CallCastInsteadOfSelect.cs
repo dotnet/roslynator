@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 {
     internal static class CallCastInsteadOfSelect
     {
-        private static void Foo()
+        private static void Bar()
         {
             var items = new List<string>();
 
@@ -26,11 +26,25 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             //n
 
+            var foos = Enumerable.Repeat(new Foo2(), 1).Select(b => (Foo)b);
+
             byte[] x1 = Enumerable.Range(0, 1).Select(i => (byte)i).ToArray();
             long[] x2 = Enumerable.Range(0, 1).Select(i => (long)i).ToArray();
 
             x1 = Enumerable.Select(Enumerable.Range(0, 1), i => (byte)i).ToArray();
             x2 = Enumerable.Select(Enumerable.Range(0, 1), i => (long)i).ToArray();
+        }
+
+        private class Foo
+        {
+        }
+
+        private class Foo2
+        {
+            public static explicit operator Foo(Foo2 value)
+            {
+                return new Foo();
+            }
         }
     }
 }
