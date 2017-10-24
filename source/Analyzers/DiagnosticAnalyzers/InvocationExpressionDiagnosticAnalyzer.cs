@@ -43,7 +43,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.UseMethodChaining,
                     DiagnosticDescriptors.AvoidNullReferenceException,
                     DiagnosticDescriptors.UseStringComparison,
-                    DiagnosticDescriptors.UseNameOfOperator);
+                    DiagnosticDescriptors.UseNameOfOperator,
+                    DiagnosticDescriptors.RemoveRedundantCast);
            }
         }
 
@@ -172,6 +173,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     case "Any":
                                         {
                                             UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.Analyze(context, memberInvocation);
+                                            break;
+                                        }
+                                    case "Cast":
+                                        {
+                                            RemoveRedundantCastRefactoring.Analyze(context, memberInvocation);
                                             break;
                                         }
                                     case "Count":

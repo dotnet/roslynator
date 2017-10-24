@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 Location location = ((BlockSyntax)node).GetLocation();
 
                 var q2 = ((IEnumerable<string>)new EnumerableOfString()).GetEnumerator();
-                var q3 = ((IEnumerable<string>)new EnumerableOfString2()).GetEnumerator();
+                var q3 = ((IEnumerable<string>)new DerivedEnumerableOfString()).GetEnumerator();
 
                 IEnumerableOfString i = null;
                 var q4 = ((IEnumerable<string>)i).GetEnumerator();
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        private class EnumerableOfString2 : EnumerableOfString
+        private class DerivedEnumerableOfString : EnumerableOfString
         {
         }
 
