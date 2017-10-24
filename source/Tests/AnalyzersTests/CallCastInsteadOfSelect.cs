@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-#pragma warning disable RCS1021, RCS1176, RCS1196
+#pragma warning disable RCS1016, RCS1021, RCS1176, RCS1196
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             //n
 
-            var foos = Enumerable.Repeat(new Foo2(), 1).Select(b => (Foo)b);
+            IEnumerable<Foo> foos = Enumerable.Repeat(new Foo2(), 1).Select(b => (Foo)b);
 
             byte[] x1 = Enumerable.Range(0, 1).Select(i => (byte)i).ToArray();
             long[] x2 = Enumerable.Range(0, 1).Select(i => (long)i).ToArray();
