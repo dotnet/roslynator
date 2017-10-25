@@ -76,12 +76,30 @@ namespace Roslynator.CSharp.Syntax
             if (!Check(variableDeclaration, allowMissing))
                 return Default;
 
-            VariableDeclaratorSyntax variable = variableDeclaration.Variables.SingleOrDefault(throwException: false);
+            VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(throwException: false);
 
-            if (variable == null)
+            if (!Check(variableDeclarator, allowMissing))
                 return Default;
 
-            return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclaration, variable);
+            return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclaration, variableDeclarator);
+        }
+
+        internal static SingleLocalDeclarationStatementInfo Create(
+            VariableDeclarationSyntax variableDeclaration,
+            bool allowMissing = false)
+        {
+            if (!Check(variableDeclaration, allowMissing))
+                return Default;
+
+            if (!(variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclarationStatement))
+                return Default;
+
+            VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(throwException: false);
+
+            if (!Check(variableDeclarator, allowMissing))
+                return Default;
+
+            return new SingleLocalDeclarationStatementInfo(localDeclarationStatement, variableDeclaration, variableDeclarator);
         }
 
         internal static SingleLocalDeclarationStatementInfo Create(ExpressionSyntax value)

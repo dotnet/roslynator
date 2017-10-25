@@ -288,9 +288,16 @@ namespace Roslynator.CSharp.Syntax
             return Syntax.SingleLocalDeclarationStatementInfo.Create(localDeclarationStatement, allowMissing);
         }
 
-        public static SingleLocalDeclarationStatementInfo SingleLocalDeclarationStatementInfo(ExpressionSyntax expression)
+        public static SingleLocalDeclarationStatementInfo SingleLocalDeclarationStatementInfo(
+            VariableDeclarationSyntax variableDeclaration,
+            bool allowMissing = false)
         {
-            return Syntax.SingleLocalDeclarationStatementInfo.Create(expression);
+            return Syntax.SingleLocalDeclarationStatementInfo.Create(variableDeclaration, allowMissing);
+        }
+
+        public static SingleLocalDeclarationStatementInfo SingleLocalDeclarationStatementInfo(ExpressionSyntax value)
+        {
+            return Syntax.SingleLocalDeclarationStatementInfo.Create(value);
         }
 
         public static SingleParameterLambdaExpressionInfo SingleParameterLambdaExpressionInfo(

@@ -4,35 +4,35 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal static class CheckExpressionForNullRefactoring
     {
-        public static void Foo()
+        public static void Bar()
         {
-            Entity x = GetValueOrDefault();
+            Foo x = GetFoo();
 
-            x = GetValueOrDefault();
-
-            x = new Entity();
-
-            int i = GetValue();
+            x = GetFoo();
 
             if (true)
-                x = GetValueOrDefault();
+                x = GetFoo();
 
-            i = GetValue();
+            //n
 
-            int j = GetValue();
+            x = new Foo();
+
+            int i = GetInt();
+
+            i = GetInt();
         }
 
-        private static Entity GetValueOrDefault()
+        private static Foo GetFoo()
         {
             return null;
         }
 
-        private static int GetValue()
+        private static int GetInt()
         {
             return 0;
         }
 
-        private class Entity
+        private class Foo
         {
         }
     }
