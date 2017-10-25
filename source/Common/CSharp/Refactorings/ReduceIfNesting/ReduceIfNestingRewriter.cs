@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -18,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
             private readonly StatementSyntax _jumpStatement;
             private readonly bool _recursive;
             private readonly SyntaxKind _jumpKind;
-            private StatementContainer _container;
+            private StatementsInfo _statementsInfo;
             private readonly SemanticModel _semanticModel;
             private readonly CancellationToken _cancellationToken;
 
@@ -59,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
             public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
             {
-                if (node.Parent == _container.Node)
+                if (node.Parent == _statementsInfo.Node)
                 {
                     return base.VisitIfStatement(node);
                 }
@@ -69,9 +70,9 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
             public override SyntaxNode VisitSwitchSection(SwitchSectionSyntax node)
             {
-                if (_container.Node == null)
+                if (_statementsInfo.Node == null)
                 {
-                    return Rewrite(new StatementContainer(node));
+                    return Rewrite(new StatementsInfo(node));
                 }
 
                 return node;
@@ -79,18 +80,18 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
             public override SyntaxNode VisitBlock(BlockSyntax node)
             {
-                if (_container.Node == null
+                if (_statementsInfo.Node == null
                     && node.IsParentKind(SyntaxKind.SwitchSection))
                 {
-                    return Rewrite(new StatementContainer(node));
+                    return Rewrite(new StatementsInfo(node));
                 }
 
-                _container = new StatementContainer(node);
+                _statementsInfo = new StatementsInfo(node);
 
-                IfStatementSyntax ifStatement = FindFixableIfStatement(_container.Statements, _jumpKind);
+                IfStatementSyntax ifStatement = FindFixableIfStatement(_statementsInfo.Statements, _jumpKind);
 
                 if (IsFixable(ifStatement))
-                    return Rewrite(_container, ifStatement);
+                    return Rewrite(_statementsInfo, ifStatement);
 
                 return node;
             }
@@ -134,18 +135,18 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 return null;
             }
 
-            private SyntaxNode Rewrite(StatementContainer container)
+            private SyntaxNode Rewrite(StatementsInfo statementsInfo)
             {
-                _container = container;
+                _statementsInfo = statementsInfo;
 
-                var ifStatement = (IfStatementSyntax)_container.Statements.LastButOne();
+                var ifStatement = (IfStatementSyntax)_statementsInfo.Statements.LastButOne();
 
-                return Rewrite(_container, ifStatement);
+                return Rewrite(_statementsInfo, ifStatement);
             }
 
-            private SyntaxNode Rewrite(StatementContainer container, IfStatementSyntax ifStatement)
+            private SyntaxNode Rewrite(StatementsInfo statementsInfo, IfStatementSyntax ifStatement)
             {
-                SyntaxList<StatementSyntax> statements = container.Statements;
+                SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
                 int index = statements.IndexOf(ifStatement);
 
@@ -182,7 +183,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                     .ReplaceAt(index, newIfStatement)
                     .InsertRange(index + 1, block.Statements.Select(f => f.WithFormatterAnnotation()));
 
-                return container.NodeWithStatements(newStatements);
+                return statementsInfo.WithStatements(newStatements).Node;
             }
         }
     }

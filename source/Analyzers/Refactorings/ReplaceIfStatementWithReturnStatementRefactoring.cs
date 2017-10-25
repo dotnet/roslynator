@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -17,7 +18,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
         {
-            if (!StatementContainer.TryCreate(ifStatement, out StatementContainer container))
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(ifStatement);
+
+            if (!statementsInfo.Success)
                 return;
 
             ReturnStatementSyntax returnStatement = GetReturnStatement(ifStatement.Statement);
@@ -42,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                SyntaxList<StatementSyntax> statements = container.Statements;
+                SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
                 int index = statements.IndexOf(ifStatement);
 
@@ -74,7 +77,7 @@ namespace Roslynator.CSharp.Refactorings
             if (booleanLiteral.Kind() == booleanLiteral2.Kind())
                 return;
 
-            if (!container.Node
+            if (!statementsInfo.Node
                 .DescendantTrivia(span)
                 .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
@@ -158,9 +161,9 @@ namespace Roslynator.CSharp.Refactorings
                 return await document.ReplaceNodeAsync(ifStatement, newReturnStatement, cancellationToken).ConfigureAwait(false);
             }
 
-            StatementContainer container = StatementContainer.Create(ifStatement);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(ifStatement);
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(ifStatement);
 
@@ -174,8 +177,7 @@ namespace Roslynator.CSharp.Refactorings
                 .RemoveAt(index)
                 .ReplaceAt(index, newReturnStatement);
 
-            //TODO: ReplaceStatementsAsync
-            return await document.ReplaceNodeAsync(container.Node, container.WithStatements(newStatements).Node, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
         }
     }
 }

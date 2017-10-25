@@ -34,11 +34,11 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case DiagnosticIdentifiers.OptimizeStringBuilderAppendCall:
                         {
-                            MemberInvocationExpression memberInvocation = MemberInvocationExpression.Create((InvocationExpressionSyntax)argument.Parent.Parent);
+                            MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo((InvocationExpressionSyntax)argument.Parent.Parent);
 
                             CodeAction codeAction = CodeAction.Create(
-                                $"Optimize '{memberInvocation.NameText}' call",
-                                cancellationToken => OptimizeStringBuilderAppendCallRefactoring.RefactorAsync(context.Document, argument, memberInvocation, cancellationToken),
+                                $"Optimize '{invocationInfo.NameText}' call",
+                                cancellationToken => OptimizeStringBuilderAppendCallRefactoring.RefactorAsync(context.Document, argument, invocationInfo, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

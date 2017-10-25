@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -83,6 +84,25 @@ namespace Roslynator
             }
 
             return false;
+        }
+
+        public static string GetName(this Accessibility accessibility)
+        {
+            switch (accessibility)
+            {
+                case Accessibility.Private:
+                    return "private";
+                case Accessibility.Protected:
+                    return "protected";
+                case Accessibility.Internal:
+                    return "internal";
+                case Accessibility.ProtectedOrInternal:
+                    return "protected internal";
+                case Accessibility.Public:
+                    return "public";
+            }
+
+            throw new ArgumentException("", nameof(accessibility));
         }
     }
 }

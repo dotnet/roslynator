@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeAssignmentExpressionWithReturnStatementRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public static void ComputeRefactorings(RefactoringContext context, StatementsSelection selectedStatements)
         {
             using (IEnumerator<StatementSyntax> en = selectedStatements.GetEnumerator())
             {

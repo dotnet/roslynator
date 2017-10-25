@@ -18,9 +18,9 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseNameOfOperatorRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            ExpressionSyntax expression = memberInvocation.Expression;
+            ExpressionSyntax expression = invocationInfo.Expression;
 
             if (expression.Kind() != SyntaxKind.SimpleMemberAccessExpression)
                 return;
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             if (containingType.HasAttribute(context.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute)))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseNameOfOperator, memberInvocation.InvocationExpression);
+            context.ReportDiagnostic(DiagnosticDescriptors.UseNameOfOperator, invocationInfo.InvocationExpression);
         }
 
         public static void AnalyzeArgument(SyntaxNodeAnalysisContext context)
@@ -220,7 +220,6 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
         }
 
-        //TODO: Roslynator.CSharp.Syntax
         private struct ParameterInfo
         {
             public static ParameterInfo Empty { get; } = new ParameterInfo();

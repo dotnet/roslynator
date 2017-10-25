@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Comparers;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -28,10 +29,10 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!localDeclaration.IsConst)
             {
-                StatementContainer container;
-                if (StatementContainer.TryCreate(localDeclaration, out container))
+                StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(localDeclaration);
+                if (statementsInfo.Success)
                 {
-                    SyntaxList<StatementSyntax> statements = container.Statements;
+                    SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
                     if (statements.Count > 1)
                     {
@@ -54,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                                         && variables.All(variable => HasConstantValue(variable.Initializer?.Value, typeSymbol, semanticModel, cancellationToken)))
                                     {
                                         TextSpan span = TextSpan.FromBounds(statements[index + 1].Span.Start, statements.Last().Span.End);
-                                        IEnumerable<SyntaxNode> nodes = container.Node.DescendantNodes(span);
+                                        IEnumerable<SyntaxNode> nodes = statementsInfo.Node.DescendantNodes(span);
 
                                         if (!IsAnyVariableInvalidOrAssigned(
                                             variables,

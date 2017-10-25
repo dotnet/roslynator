@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -132,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
                 var baseList = (BaseListSyntax)baseType.Parent;
 
                 if (baseList.Types.IsLast(baseType)
-                    && !GenericSyntax.HasConstraintClauses(baseList.Parent))
+                    && !SyntaxInfo.GenericInfo(baseList.Parent).ConstraintClauses.Any())
                 {
                     removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
                 }

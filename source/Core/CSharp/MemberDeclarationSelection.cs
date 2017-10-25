@@ -108,9 +108,9 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static bool TryCreate(MemberDeclarationSyntax containingMember, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, out MemberDeclarationSelection selection)
+        private static bool TryCreate(MemberDeclarationSyntax containingMember, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, out MemberDeclarationSelection selectedMembers)
         {
-            selection = null;
+            selectedMembers = null;
 
             if (!members.Any())
                 return false;
@@ -123,7 +123,7 @@ namespace Roslynator.CSharp
             if (startIndex == -1)
                 return false;
 
-            selection = new MemberDeclarationSelection(containingMember, members, span, startIndex, endIndex);
+            selectedMembers = new MemberDeclarationSelection(containingMember, members, span, startIndex, endIndex);
             return true;
         }
     }

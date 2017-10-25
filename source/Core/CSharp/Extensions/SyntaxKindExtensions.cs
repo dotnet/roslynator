@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp
@@ -161,6 +162,35 @@ namespace Roslynator.CSharp
                 case SyntaxKind.DoStatement:
                 case SyntaxKind.LockStatement:
                 case SyntaxKind.FixedStatement:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        internal static bool CanHaveAccessibility(this SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.DestructorDeclaration:
+                case SyntaxKind.EnumDeclaration:
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                case SyntaxKind.FieldDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.PropertyDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.IncompleteMember:
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
                     return true;
                 default:
                     return false;

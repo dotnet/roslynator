@@ -6,17 +6,17 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp.Syntax
 {
     internal struct OverrideInfo
     {
+        private static OverrideInfo Default { get; } = new OverrideInfo();
+
         public OverrideInfo(ISymbol symbol, ISymbol overriddenSymbol)
         {
             Symbol = symbol;
             OverriddenSymbol = overriddenSymbol;
         }
-
-        private static OverrideInfo Default { get; } = new OverrideInfo();
 
         public ISymbol Symbol { get; }
 
@@ -32,35 +32,26 @@ namespace Roslynator.CSharp
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (node == null)
+                return Default;
+
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
             switch (node)
             {
                 case MethodDeclarationSyntax methodDeclaration:
-                    {
-                        return CreateCore(methodDeclaration, semanticModel, cancellationToken);
-                    }
+                    return CreateCore(methodDeclaration, semanticModel, cancellationToken);
                 case PropertyDeclarationSyntax propertyDeclaration:
-                    {
-                        return CreateCore(propertyDeclaration, semanticModel, cancellationToken);
-                    }
+                    return CreateCore(propertyDeclaration, semanticModel, cancellationToken);
                 case IndexerDeclarationSyntax indexerDeclaration:
-                    {
-                        return CreateCore(indexerDeclaration, semanticModel, cancellationToken);
-                    }
+                    return CreateCore(indexerDeclaration, semanticModel, cancellationToken);
                 case EventDeclarationSyntax eventDeclaration:
-                    {
-                        return CreateCore(eventDeclaration, semanticModel, cancellationToken);
-                    }
+                    return CreateCore(eventDeclaration, semanticModel, cancellationToken);
                 case VariableDeclaratorSyntax variableDeclarator:
-                    {
-                        return CreateCore(variableDeclarator, semanticModel, cancellationToken);
-                    }
+                    return CreateCore(variableDeclarator, semanticModel, cancellationToken);
                 default:
-                    {
-                        return Default;
-                    }
+                    return Default;
             }
         }
 

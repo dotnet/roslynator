@@ -4,11 +4,13 @@ using System;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp.Syntax
 {
-    internal struct XmlElementInfo
+    public struct XmlElementInfo
     {
-        public XmlElementInfo(XmlNodeSyntax element, string localName, XmlElementKind elementKind)
+        private static XmlElementInfo Default { get; } = new XmlElementInfo();
+
+        private XmlElementInfo(XmlNodeSyntax element, string localName, XmlElementKind elementKind)
         {
             Element = element;
             LocalName = localName;
@@ -36,42 +38,36 @@ namespace Roslynator.CSharp
             get { return Kind == SyntaxKind.XmlEmptyElement; }
         }
 
-        public static bool TryCreate(XmlNodeSyntax node, out XmlElementInfo elementInfo)
+        public bool Success
         {
-            switch (node.Kind())
-            {
-                case SyntaxKind.XmlElement:
-                    {
-                        var element = (XmlElementSyntax)node;
+            get { return Element != null; }
+        }
 
+        internal static XmlElementInfo Create(XmlNodeSyntax node)
+        {
+            switch (node)
+            {
+                case XmlElementSyntax element:
+                    {
                         string localName = element.StartTag?.Name?.LocalName.ValueText;
 
-                        if (localName != null)
-                        {
-                            elementInfo = new XmlElementInfo(element, localName, GetXmlElementKind(localName));
-                            return true;
-                        }
+                        if (localName == null)
+                            return Default;
 
-                        break;
+                        return new XmlElementInfo(element, localName, GetXmlElementKind(localName));
                     }
-                case SyntaxKind.XmlEmptyElement:
+                case XmlEmptyElementSyntax element:
                     {
-                        var element = (XmlEmptyElementSyntax)node;
-
                         string localName = element.Name?.LocalName.ValueText;
 
-                        if (localName != null)
-                        {
-                            elementInfo = new XmlElementInfo(element, localName, GetXmlElementKind(localName));
-                            return true;
-                        }
+                        if (localName == null)
+                            return Default;
 
-                        break;
+                        return new XmlElementInfo(element, localName, GetXmlElementKind(localName));
                     }
             }
 
-            elementInfo = default(XmlElementInfo);
-            return false;
+            return Default;
         }
 
         private static XmlElementKind GetXmlElementKind(string localName)
@@ -98,12 +94,12 @@ namespace Roslynator.CSharp
             }
         }
 
-        public bool IsLocalName(string localName)
+        internal bool IsLocalName(string localName)
         {
             return string.Equals(LocalName, localName, StringComparison.Ordinal);
         }
 
-        public bool IsLocalName(string localName1, string localName2)
+        internal bool IsLocalName(string localName1, string localName2)
         {
             return IsLocalName(localName1)
                 || IsLocalName(localName2);

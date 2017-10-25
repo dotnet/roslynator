@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class WrapInElseClauseRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public static void ComputeRefactoring(RefactoringContext context, StatementsSelection selectedStatements)
         {
             StatementSyntax lastStatement = selectedStatements.Last();
 
@@ -32,10 +32,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var ifStatement = (IfStatementSyntax)prevStatement;
 
-                        IfStatement ifElse = IfStatement.Create(ifStatement);
+                        IfStatementInfo ifStatementInfo = SyntaxInfo.IfStatementInfo(ifStatement);
 
-                        if (ifElse.EndsWithIf
-                            && ifElse
+                        if (ifStatementInfo.EndsWithIf
+                            && ifStatementInfo
                                 .Nodes
                                 .Where(f => f.IsIf)
                                 .All(f => IsLastStatementReturnStatement(f)))
@@ -80,15 +80,15 @@ namespace Roslynator.CSharp.Refactorings
         private static Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
-            StatementContainerSelection selectedStatements,
+            StatementsSelection selectedStatements,
             CancellationToken cancellationToken)
         {
-            IfStatement ifElse = IfStatement.Create(ifStatement);
+            IfStatementInfo ifStatementInfo = SyntaxInfo.IfStatementInfo(ifStatement);
 
             StatementSyntax newStatement = null;
 
             if (selectedStatements.Count == 1
-                && !ifElse.Nodes.Any(f => f.Statement?.IsKind(SyntaxKind.Block) == true))
+                && !ifStatementInfo.Nodes.Any(f => f.Statement?.IsKind(SyntaxKind.Block) == true))
             {
                 newStatement = selectedStatements.First();
             }
@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ElseClauseSyntax elseClause = SyntaxFactory.ElseClause(newStatement).WithFormatterAnnotation();
 
-            IfStatementSyntax lastIfStatement = ifElse.Nodes.Last();
+            IfStatementSyntax lastIfStatement = ifStatementInfo.Nodes.Last();
 
             IfStatementSyntax newIfStatement = ifStatement.ReplaceNode(
                 lastIfStatement,
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = newStatements.Count - 1; i >= selectedStatements.StartIndex; i--)
                 newStatements = newStatements.RemoveAt(i);
 
-            return document.ReplaceNodeAsync(selectedStatements.Container.Node, selectedStatements.Container.NodeWithStatements(newStatements), cancellationToken);
+            return document.ReplaceStatementsAsync(selectedStatements.Info, newStatements, cancellationToken);
         }
     }
 }

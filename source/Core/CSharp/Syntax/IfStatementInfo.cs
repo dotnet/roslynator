@@ -1,18 +1,18 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Syntax
 {
-    internal struct IfStatement : IEquatable<IfStatement>
+    public struct IfStatementInfo
     {
-        public ImmutableArray<IfStatementOrElseClause> Nodes { get; }
+        private ImmutableArray<IfStatementOrElseClause> _nodes;
 
-        private IfStatement(IfStatementSyntax ifStatement)
+        private IfStatementInfo(IfStatementSyntax ifStatement)
         {
             ImmutableArray<IfStatementOrElseClause>.Builder builder = ImmutableArray.CreateBuilder<IfStatementOrElseClause>();
 
@@ -44,27 +44,32 @@ namespace Roslynator.CSharp.Syntax
                 }
             }
 
-            Nodes = builder.ToImmutableArray();
+            _nodes = builder.ToImmutableArray();
         }
 
-        private bool IsDefault
+        public ImmutableArray<IfStatementOrElseClause> Nodes
         {
-            get { return Nodes.IsDefault; }
+            get { return (!_nodes.IsDefault) ? _nodes : ImmutableArray<IfStatementOrElseClause>.Empty; }
+        }
+
+        public bool Success
+        {
+            get { return Nodes.Any(); }
         }
 
         public IfStatementSyntax TopmostIf
         {
-            get { return Nodes[0].AsIf(); }
+            get { return Nodes.FirstOrDefault().AsIf(); }
         }
 
         public bool EndsWithIf
         {
-            get { return Nodes[Nodes.Length - 1].IsIf; }
+            get { return Nodes.LastOrDefault().IsIf; }
         }
 
         public bool EndsWithElse
         {
-            get { return Nodes[Nodes.Length - 1].IsElse; }
+            get { return Nodes.LastOrDefault().IsElse; }
         }
 
         public bool IsSimpleIf
@@ -82,51 +87,17 @@ namespace Roslynator.CSharp.Syntax
             }
         }
 
-        public static IfStatement Create(IfStatementSyntax ifStatement)
+        internal static IfStatementInfo Create(IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
-                throw new ArgumentNullException(nameof(ifStatement));
+                return default(IfStatementInfo);
 
-            return new IfStatement(ifStatement);
+            return new IfStatementInfo(ifStatement);
         }
 
         public override string ToString()
         {
-            return (!Nodes.IsDefaultOrEmpty) ? Nodes[0].ToString() : base.ToString();
-        }
-
-        public bool Equals(IfStatement other)
-        {
-            if (IsDefault)
-            {
-                return other.IsDefault;
-            }
-            else
-            {
-                return !other.IsDefault
-                    && TopmostIf == other.TopmostIf;
-            }
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is IfStatement
-                && Equals((IfStatement)obj);
-        }
-
-        public override int GetHashCode()
-        {
-            return (IsDefault) ? 0 : TopmostIf.GetHashCode();
-        }
-
-        public static bool operator ==(IfStatement left, IfStatement right)
-        {
-            return left.Equals(right);
-        }
-
-        public static bool operator !=(IfStatement left, IfStatement right)
-        {
-            return !left.Equals(right);
+            return Nodes.FirstOrDefault().Node?.ToString() ?? base.ToString();
         }
     }
 }

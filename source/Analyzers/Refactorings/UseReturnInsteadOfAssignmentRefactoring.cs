@@ -26,12 +26,12 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!ifStatement.IsSimpleIf())
             {
-                StatementContainer container;
-                if (StatementContainer.TryCreate(ifStatement, out container))
+                StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(ifStatement);
+                if (statementsInfo.Success)
                 {
-                    int index = container.Statements.IndexOf(ifStatement);
+                    int index = statementsInfo.Statements.IndexOf(ifStatement);
 
-                    ReturnStatementSyntax returnStatement = FindReturnStatementBelow(container.Statements, index);
+                    ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, index);
                     if (returnStatement?.ContainsDiagnostics == false)
                     {
                         ExpressionSyntax expression = returnStatement.Expression;
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
                             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-                            if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, container.Node, semanticModel, cancellationToken)
+                            if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Node, semanticModel, cancellationToken)
                                 && ifStatement
                                     .GetChain()
                                     .All(ifOrElse => IsSymbolAssignedInLastStatement(ifOrElse, symbol, semanticModel, cancellationToken)))
@@ -64,12 +64,12 @@ namespace Roslynator.CSharp.Refactorings
 
             var switchStatement = (SwitchStatementSyntax)context.Node;
 
-            StatementContainer container;
-            if (StatementContainer.TryCreate(switchStatement, out container))
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(switchStatement);
+            if (statementsInfo.Success)
             {
-                int index = container.Statements.IndexOf(switchStatement);
+                int index = statementsInfo.Statements.IndexOf(switchStatement);
 
-                ReturnStatementSyntax returnStatement = FindReturnStatementBelow(container.Statements, index);
+                ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, index);
                 if (returnStatement != null)
                 {
                     ExpressionSyntax expression = returnStatement.Expression;
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-                        if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, container.Node, semanticModel, cancellationToken)
+                        if (IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Node, semanticModel, cancellationToken)
                             && switchStatement
                                 .Sections
                                 .All(section => IsValueAssignedInLastStatement(section, symbol, semanticModel, cancellationToken)))
@@ -185,13 +185,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsSymbolAssignedInStatement(ISymbol symbol, StatementSyntax statement, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            SimpleAssignmentStatement assignment;
-            if (SimpleAssignmentStatement.TryCreate(statement, out assignment))
-            {
-                return symbol.Equals(semanticModel.GetSymbol(assignment.Left, cancellationToken));
-            }
+            SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
 
-            return false;
+            return assignmentInfo.Success
+                && symbol.Equals(semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken));
         }
 
         private static StatementSyntax GetLastStatementOrDefault(StatementSyntax statement)
@@ -239,9 +236,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            StatementContainer container = StatementContainer.Create(statement);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(statement);
 
-            int index = container.Statements.IndexOf(statement);
+            int index = statementsInfo.Statements.IndexOf(statement);
 
             switch (statement.Kind())
             {
@@ -249,9 +246,9 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var ifStatement = (IfStatementSyntax)statement;
 
-                        IfStatement chain = Syntax.IfStatement.Create(ifStatement);
+                        IfStatementInfo ifStatementInfo = SyntaxInfo.IfStatementInfo(ifStatement);
 
-                        IEnumerable<ExpressionStatementSyntax> expressionStatements = chain
+                        IEnumerable<ExpressionStatementSyntax> expressionStatements = ifStatementInfo
                             .Nodes
                             .Select(ifOrElse => (ExpressionStatementSyntax)GetLastStatementOrDefault(ifOrElse.Statement));
 
@@ -264,18 +261,18 @@ namespace Roslynator.CSharp.Refactorings
                                 return ReturnStatement(assignment.Right).WithTriviaFrom(f);
                             });
 
-                        StatementContainer newContainer = await RefactorAsync(
+                        StatementsInfo newStatementsInfo = await RefactorAsync(
                             document,
-                            container,
+                            statementsInfo,
                             ifStatement,
                             newIfStatement,
                             index,
-                            chain.Nodes.Length,
+                            ifStatementInfo.Nodes.Length,
                             semanticModel,
                             cancellationToken,
-                            chain.EndsWithElse).ConfigureAwait(false);
+                            ifStatementInfo.EndsWithElse).ConfigureAwait(false);
 
-                        return await document.ReplaceNodeAsync(container.Node, newContainer.Node, cancellationToken).ConfigureAwait(false);
+                        return await document.ReplaceNodeAsync(statementsInfo.Node, newStatementsInfo.Node, cancellationToken).ConfigureAwait(false);
                     }
                 case SyntaxKind.SwitchStatement:
                     {
@@ -288,9 +285,9 @@ namespace Roslynator.CSharp.Refactorings
 
                         SwitchStatementSyntax newSwitchStatement = switchStatement.WithSections(newSections);
 
-                        StatementContainer newContainer = await RefactorAsync(
+                        StatementsInfo newStatementsInfo = await RefactorAsync(
                             document,
-                            container,
+                            statementsInfo,
                             switchStatement,
                             newSwitchStatement,
                             index,
@@ -299,7 +296,7 @@ namespace Roslynator.CSharp.Refactorings
                             cancellationToken,
                             switchStatement.Sections.Any(f => f.ContainsDefaultLabel())).ConfigureAwait(false);
 
-                        return await document.ReplaceNodeAsync(container.Node, newContainer.Node, cancellationToken).ConfigureAwait(false);
+                        return await document.ReplaceNodeAsync(statementsInfo.Node, newStatementsInfo.Node, cancellationToken).ConfigureAwait(false);
                     }
             }
 
@@ -321,9 +318,9 @@ namespace Roslynator.CSharp.Refactorings
             return section;
         }
 
-        private static async Task<StatementContainer> RefactorAsync(
+        private static async Task<StatementsInfo> RefactorAsync(
             Document document,
-            StatementContainer container,
+            StatementsInfo statementsInfo,
             StatementSyntax statement,
             StatementSyntax newStatement,
             int index,
@@ -332,7 +329,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken,
             bool removeReturnStatement)
         {
-            ReturnStatementSyntax returnStatement = FindReturnStatementBelow(container.Statements, index);
+            ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, index);
 
             ExpressionSyntax expression = returnStatement.Expression;
             ExpressionSyntax newExpression = null;
@@ -342,7 +339,7 @@ namespace Roslynator.CSharp.Refactorings
             if (symbol.IsLocal()
                 && index > 0)
             {
-                LocalDeclarationStatementSyntax localDeclarationStatement = FindLocalDeclarationStatementAbove(container.Statements, index);
+                LocalDeclarationStatementSyntax localDeclarationStatement = FindLocalDeclarationStatementAbove(statementsInfo.Statements, index);
 
                 if (localDeclarationStatement?.ContainsDiagnostics == false
                     && !localDeclarationStatement.SpanOrTrailingTriviaContainsDirectives()
@@ -365,15 +362,15 @@ namespace Roslynator.CSharp.Refactorings
 
                                 if (declarators.Count == 1)
                                 {
-                                    container = container.RemoveNode(localDeclarationStatement, RemoveHelper.GetRemoveOptions(localDeclarationStatement));
+                                    statementsInfo = statementsInfo.RemoveNode(localDeclarationStatement, RemoveHelper.GetRemoveOptions(localDeclarationStatement));
                                     index--;
                                 }
                                 else
                                 {
-                                    container = container.ReplaceNode(localDeclarationStatement, localDeclarationStatement.RemoveNode(declarator, RemoveHelper.GetRemoveOptions(declarator)));
+                                    statementsInfo = statementsInfo.ReplaceNode(localDeclarationStatement, localDeclarationStatement.RemoveNode(declarator, RemoveHelper.GetRemoveOptions(declarator)));
                                 }
 
-                                returnStatement = FindReturnStatementBelow(container.Statements, index);
+                                returnStatement = FindReturnStatementBelow(statementsInfo.Statements, index);
                             }
                         }
                     }
@@ -382,14 +379,14 @@ namespace Roslynator.CSharp.Refactorings
 
             if (removeReturnStatement)
             {
-                container = container.RemoveNode(returnStatement, RemoveHelper.GetRemoveOptions(returnStatement));
+                statementsInfo = statementsInfo.RemoveNode(returnStatement, RemoveHelper.GetRemoveOptions(returnStatement));
             }
             else if (newExpression != null)
             {
-                container = container.ReplaceNode(returnStatement, returnStatement.WithExpression(newExpression.WithTriviaFrom(expression)));
+                statementsInfo = statementsInfo.ReplaceNode(returnStatement, returnStatement.WithExpression(newExpression.WithTriviaFrom(expression)));
             }
 
-            return container.ReplaceNode(container.Statements[index], newStatement);
+            return statementsInfo.ReplaceNode(statementsInfo.Statements[index], newStatement);
         }
 
         private static VariableDeclaratorSyntax FindVariableDeclarator(SemanticModel semanticModel, ISymbol symbol, SeparatedSyntaxList<VariableDeclaratorSyntax> declarators, CancellationToken cancellationToken)

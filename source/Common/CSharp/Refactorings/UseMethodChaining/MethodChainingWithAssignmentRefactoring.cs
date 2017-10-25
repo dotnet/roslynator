@@ -23,28 +23,32 @@ namespace Roslynator.CSharp.Refactorings.UseMethodChaining
             if (!(statement is ExpressionStatementSyntax expressionStatement))
                 return false;
 
-            if (!SimpleAssignmentExpression.TryCreate(expressionStatement.Expression, out SimpleAssignmentExpression simpleAssignment))
+            SimpleAssignmentExpressionInfo assignmentInfo = SyntaxInfo.SimpleAssignmentExpressionInfo(expressionStatement.Expression);
+
+            if (!assignmentInfo.Success)
                 return false;
 
-            if (name != (simpleAssignment.Left as IdentifierNameSyntax)?.Identifier.ValueText)
+            if (name != (assignmentInfo.Left as IdentifierNameSyntax)?.Identifier.ValueText)
                 return false;
 
-            if (!MemberInvocationExpression.TryCreate(simpleAssignment.Right, out MemberInvocationExpression memberInvocation))
+            MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(assignmentInfo.Right);
+
+            if (!invocationInfo.Success)
                 return false;
 
-            if (!(WalkDownMethodChain(memberInvocation).Expression is IdentifierNameSyntax identifierName))
+            if (!(WalkDownMethodChain(invocationInfo).Expression is IdentifierNameSyntax identifierName))
                 return false;
 
             if (name != identifierName.Identifier.ValueText)
                 return false;
 
-            if (!semanticModel.TryGetMethodInfo(memberInvocation.InvocationExpression, out MethodInfo methodInfo, cancellationToken))
+            if (!semanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out MethodInfo methodInfo, cancellationToken))
                 return false;
 
             if (!methodInfo.ReturnType.Equals(typeSymbol))
                 return false;
 
-            if (IsReferenced(memberInvocation.InvocationExpression, identifierName, name, semanticModel, cancellationToken))
+            if (IsReferenced(invocationInfo.InvocationExpression, identifierName, name, semanticModel, cancellationToken))
                 return false;
 
             return true;

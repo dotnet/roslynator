@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp.Comparers;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -52,13 +53,13 @@ namespace Roslynator.CSharp.CodeFixes
                             Accessibility newAccessibility = overrideInfo.OverriddenSymbol.DeclaredAccessibility;
 
                             CodeAction codeAction = CodeAction.Create(
-                                $"Change accessibility to '{AccessibilityHelper.GetAccessibilityName(newAccessibility)}'",
+                                $"Change accessibility to '{newAccessibility.GetName()}'",
                                 cancellationToken =>
                                 {
                                     if (node.Kind() == SyntaxKind.VariableDeclarator)
                                         node = node.Parent.Parent;
 
-                                    SyntaxNode newNode = AccessibilityHelper.ChangeAccessibility(node, newAccessibility, ModifierComparer.Instance);
+                                    SyntaxNode newNode = node.WithAccessibility(newAccessibility, ModifierComparer.Instance);
 
                                     return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                                 },

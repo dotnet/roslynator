@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!node.IsKind(SyntaxKind.DestructorDeclaration))
             {
-                AccessibilityInfo info = AccessibilityInfo.Create(node.GetModifiers());
+                AccessibilityInfo info = SyntaxInfo.AccessibilityInfo(node);
 
                 if (node.IsKind(
                     SyntaxKind.ClassDeclaration,
@@ -73,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static string GetTitle(Accessibility accessibility)
         {
-            return $"Change accessibility to '{AccessibilityHelper.GetAccessibilityName(accessibility)}'";
+            return $"Change accessibility to '{accessibility.GetName()}'";
         }
     }
 }

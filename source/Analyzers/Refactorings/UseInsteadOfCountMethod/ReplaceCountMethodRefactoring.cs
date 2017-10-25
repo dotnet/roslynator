@@ -14,9 +14,9 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
 {
     internal static class UseInsteadOfCountMethodRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression invocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            InvocationExpressionSyntax invocationExpression = invocation.InvocationExpression;
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
@@ -27,13 +27,13 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
             if (!methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("Count"))
                 return;
 
-            string propertyName = CSharpUtility.GetCountOrLengthPropertyName(invocation.Expression, semanticModel, cancellationToken);
+            string propertyName = CSharpUtility.GetCountOrLengthPropertyName(invocationInfo.Expression, semanticModel, cancellationToken);
 
             if (propertyName != null)
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
-                    Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(invocation.Name.Span.Start, invocationExpression.Span.End)),
+                    Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.Span.Start, invocationExpression.Span.End)),
                     ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
                     propertyName);
             }

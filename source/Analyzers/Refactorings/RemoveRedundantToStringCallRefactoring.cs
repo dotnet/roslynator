@@ -13,13 +13,13 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveRedundantToStringCallRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            if (IsFixable(memberInvocation, context.SemanticModel, context.CancellationToken))
+            if (IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
             {
-                InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+                InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-                TextSpan span = TextSpan.FromBounds(memberInvocation.OperatorToken.Span.Start, invocationExpression.Span.End);
+                TextSpan span = TextSpan.FromBounds(invocationInfo.OperatorToken.Span.Start, invocationExpression.Span.End);
 
                 if (!invocationExpression.ContainsDirectives(span))
                 {
@@ -31,11 +31,11 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         public static bool IsFixable(
-            MemberInvocationExpression memberInvocation,
+            MemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
             MethodInfo info;
             if (semanticModel.TryGetMethodInfo(invocationExpression, out info, cancellationToken)
@@ -73,11 +73,11 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (left == expression)
                         {
-                            return IsFixable(memberInvocation, addExpression, right, left, semanticModel, cancellationToken);
+                            return IsFixable(invocationInfo, addExpression, right, left, semanticModel, cancellationToken);
                         }
                         else
                         {
-                            return IsFixable(memberInvocation, addExpression, left, right, semanticModel, cancellationToken);
+                            return IsFixable(invocationInfo, addExpression, left, right, semanticModel, cancellationToken);
                         }
                     }
                 }
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static bool IsFixable(
-            MemberInvocationExpression memberInvocation,
+            MemberInvocationExpressionInfo invocationInfo,
             BinaryExpressionSyntax addExpression,
             ExpressionSyntax left,
             ExpressionSyntax right,
@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (semanticModel.GetTypeSymbol(left, cancellationToken)?.SpecialType == SpecialType.System_String)
             {
-                BinaryExpressionSyntax newAddExpression = addExpression.ReplaceNode(right, memberInvocation.Expression);
+                BinaryExpressionSyntax newAddExpression = addExpression.ReplaceNode(right, invocationInfo.Expression);
 
                 return semanticModel
                     .GetSpeculativeMethodSymbol(addExpression.SpanStart, newAddExpression)?

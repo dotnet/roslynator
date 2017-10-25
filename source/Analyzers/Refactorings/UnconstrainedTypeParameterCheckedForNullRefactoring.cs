@@ -17,25 +17,28 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
         {
-            Analyze(context, (BinaryExpressionSyntax)context.Node);
+            if (context.Node.ContainsDiagnostics)
+                return;
+
+            Analyze(context, (BinaryExpressionSyntax)context.Node, NullCheckKind.EqualsToNull);
         }
 
         public static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
         {
-            Analyze(context, (BinaryExpressionSyntax)context.Node);
+            if (context.Node.ContainsDiagnostics)
+                return;
+
+            Analyze(context, (BinaryExpressionSyntax)context.Node, NullCheckKind.NotEqualsToNull);
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression)
+        private static void Analyze(SyntaxNodeAnalysisContext context, BinaryExpressionSyntax binaryExpression, NullCheckKind allowedKinds)
         {
-            if (!binaryExpression.ContainsDiagnostics)
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression, allowedKinds: allowedKinds);
+            if (nullCheck.Success
+                && IsUnconstrainedTypeParameter(context.SemanticModel.GetTypeSymbol(nullCheck.Expression, context.CancellationToken))
+                && !binaryExpression.SpanContainsDirectives())
             {
-                EqualsToNullExpression equalsToNull;
-                if (EqualsToNullExpression.TryCreate(binaryExpression, out equalsToNull)
-                    && IsUnconstrainedTypeParameter(context.SemanticModel.GetTypeSymbol(equalsToNull.Left, context.CancellationToken))
-                    && !binaryExpression.SpanContainsDirectives())
-                {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UnconstrainedTypeParameterCheckedForNull, binaryExpression);
-                }
+                context.ReportDiagnostic(DiagnosticDescriptors.UnconstrainedTypeParameterCheckedForNull, binaryExpression);
             }
         }
 

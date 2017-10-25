@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -15,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public const string Title = "Replace while with for";
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementsSelection selectedStatements)
         {
             if (!(selectedStatements.LastOrDefault() is WhileStatementSyntax whileStatement))
                 return;
@@ -69,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static bool VerifyLocalDeclarationStatements(
-            StatementContainerSelection selectedStatements,
+            StatementsSelection selectedStatements,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -122,7 +123,7 @@ namespace Roslynator.CSharp.Refactorings
             return true;
         }
 
-        private static bool VerifyExpressionStatements(StatementContainerSelection selectedStatements)
+        private static bool VerifyExpressionStatements(StatementsSelection selectedStatements)
         {
             for (int i = selectedStatements.StartIndex; i < selectedStatements.EndIndex; i++)
             {
@@ -216,9 +217,9 @@ namespace Roslynator.CSharp.Refactorings
                 .TrimLeadingTrivia()
                 .PrependToLeadingTrivia(list[0].GetLeadingTrivia());
 
-            StatementContainer container = StatementContainer.Create(whileStatement);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(whileStatement);
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(list[0]);
 
@@ -226,7 +227,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Concat(new ForStatementSyntax[] { forStatement })
                 .Concat(statements.Skip(index + list.Count + 1));
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
 
         private static ForStatementSyntax ConvertWhileToFor(

@@ -24,12 +24,12 @@ namespace Roslynator.CSharp.Refactorings
             if (ifStatement.IsSimpleIf()
                 && !ifStatement.ContainsDiagnostics)
             {
-                NotEqualsToNullExpression notEqualsToNull;
-                if (NotEqualsToNullExpression.TryCreate(ifStatement.Condition, out notEqualsToNull))
+                NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, allowedKinds: NullCheckKind.NotEqualsToNull);
+                if (nullCheck.Success)
                 {
-                    MemberInvocationStatement memberInvocation;
-                    if (MemberInvocationStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out memberInvocation)
-                        && SyntaxComparer.AreEquivalent(notEqualsToNull.Left, memberInvocation.Expression)
+                    MemberInvocationStatementInfo invocationInfo = SyntaxInfo.MemberInvocationStatementInfo(ifStatement.GetSingleStatementOrDefault());
+                    if (invocationInfo.Success
+                        && SyntaxComparer.AreEquivalent(nullCheck.Expression, invocationInfo.Expression)
                         && !ifStatement.IsInExpressionTree(expressionType, context.SemanticModel, context.CancellationToken)
                         && !ifStatement.SpanContainsDirectives())
                     {
@@ -254,9 +254,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             var statement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
 
-            MemberInvocationStatement memberInvocation = MemberInvocationStatement.Create(statement);
+            MemberInvocationStatementInfo invocationInfo = SyntaxInfo.MemberInvocationStatementInfo(statement);
 
-            int insertIndex = memberInvocation.Expression.Span.End - statement.FullSpan.Start;
+            int insertIndex = invocationInfo.Expression.Span.End - statement.FullSpan.Start;
             StatementSyntax newStatement = SyntaxFactory.ParseStatement(statement.ToFullString().Insert(insertIndex, "?"));
 
             IEnumerable<SyntaxTrivia> leading = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, statement.SpanStart));

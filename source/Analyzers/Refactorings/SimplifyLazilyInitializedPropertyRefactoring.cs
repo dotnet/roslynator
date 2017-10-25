@@ -59,31 +59,37 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanRefactor(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement, ReturnStatementSyntax returnStatement)
         {
-            SimpleIfStatementWithSingleStatement simpleIf;
-            if (SimpleIfStatementWithSingleStatement.TryCreate(ifStatement, out simpleIf))
+            SimpleIfStatementInfo simpleIf = SyntaxInfo.SimpleIfStatementInfo(ifStatement);
+
+            if (simpleIf.Success)
             {
-                EqualsToNullExpression equalsToNull;
-                if (EqualsToNullExpression.TryCreate(simpleIf.Condition, out equalsToNull))
+                StatementSyntax statement = simpleIf.Statement.SingleNonBlockStatementOrDefault();
+
+                if (statement != null)
                 {
-                    IdentifierNameSyntax identifierName = GetIdentifierName(equalsToNull.Left);
+                    SemanticModel semanticModel = context.SemanticModel;
+                    CancellationToken cancellationToken = context.CancellationToken;
 
-                    if (identifierName != null)
+                    NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(simpleIf.Condition, allowedKinds: NullCheckKind.IsNull, semanticModel: semanticModel, cancellationToken: cancellationToken);
+                    if (nullCheck.Success)
                     {
-                        SemanticModel semanticModel = context.SemanticModel;
-                        CancellationToken cancellationToken = context.CancellationToken;
+                        IdentifierNameSyntax identifierName = GetIdentifierName(nullCheck.Expression);
 
-                        var fieldSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as IFieldSymbol;
-
-                        if (fieldSymbol != null)
+                        if (identifierName != null)
                         {
-                            SimpleAssignmentStatement assignment;
-                            if (SimpleAssignmentStatement.TryCreate(simpleIf.SingleStatement, out assignment))
-                            {
-                                string fieldName = identifierName.Identifier.ValueText;
+                            var fieldSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as IFieldSymbol;
 
-                                return assignment.Right.IsSingleLine()
-                                    && IsBackingField(GetIdentifierName(assignment.Left), fieldName, fieldSymbol, semanticModel, cancellationToken)
-                                    && IsBackingField(GetIdentifierName(returnStatement.Expression), fieldName, fieldSymbol, semanticModel, cancellationToken);
+                            if (fieldSymbol != null)
+                            {
+                                SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
+                                if (assignmentInfo.Success)
+                                {
+                                    string fieldName = identifierName.Identifier.ValueText;
+
+                                    return assignmentInfo.Right.IsSingleLine()
+                                        && IsBackingField(GetIdentifierName(assignmentInfo.Left), fieldName, fieldSymbol, semanticModel, cancellationToken)
+                                        && IsBackingField(GetIdentifierName(returnStatement.Expression), fieldName, fieldSymbol, semanticModel, cancellationToken);
+                                }
                             }
                         }
                     }

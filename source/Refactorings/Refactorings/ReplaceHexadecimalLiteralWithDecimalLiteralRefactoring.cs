@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -11,18 +12,16 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, LiteralExpressionSyntax literalExpression)
         {
-            if (literalExpression.IsHexadecimalNumericLiteral())
-            {
-                HexadecimalLiteralInfo info;
-                if (HexadecimalLiteralInfo.TryCreate(literalExpression, out info))
-                {
-                    LiteralExpressionSyntax newLiteralExpression = info.ToDecimalLiteral();
+            HexadecimalLiteralInfo info = SyntaxInfo.HexadecimalLiteralInfo(literalExpression);
 
-                    context.RegisterRefactoring(
-                        $"Replace '{info.Text}' with '{newLiteralExpression}'",
-                        cancellationToken => RefactorAsync(context.Document, literalExpression, newLiteralExpression, cancellationToken));
-                }
-            }
+            if (!info.Success)
+                return;
+
+            LiteralExpressionSyntax newLiteralExpression = CSharpFactory.LiteralExpression(info.Value);
+
+            context.RegisterRefactoring(
+                $"Replace '{info.Text}' with '{newLiteralExpression}'",
+                cancellationToken => RefactorAsync(context.Document, literalExpression, newLiteralExpression, cancellationToken));
         }
 
         private static Task<Document> RefactorAsync(

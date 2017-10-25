@@ -119,8 +119,8 @@ namespace Roslynator.CSharp.Refactorings.If
             {
                 if (options.UseCoalesceExpression)
                 {
-                    NullCheckExpression nullCheck;
-                    if (NullCheckExpression.TryCreate(condition, semanticModel, out nullCheck, cancellationToken))
+                    NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(condition, semanticModel: semanticModel, cancellationToken: cancellationToken);
+                    if (nullCheck.Success)
                     {
                         IfRefactoring refactoring = CreateIfToReturnWithCoalesceExpression(
                             ifStatement,
@@ -164,7 +164,7 @@ namespace Roslynator.CSharp.Refactorings.If
             IfStatementSyntax ifStatement,
             ExpressionSyntax expression1,
             ExpressionSyntax expression2,
-            NullCheckExpression nullCheck,
+            NullCheckExpressionInfo nullCheck,
             bool isYield,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -227,8 +227,8 @@ namespace Roslynator.CSharp.Refactorings.If
                         {
                             if (options.UseCoalesceExpression)
                             {
-                                NullCheckExpression nullCheck;
-                                if (NullCheckExpression.TryCreate(condition, semanticModel, out nullCheck, cancellationToken))
+                                NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(condition, semanticModel: semanticModel, cancellationToken: cancellationToken);
+                                if (nullCheck.Success)
                                 {
                                     IfRefactoring refactoring = CreateIfToAssignmentWithWithCoalesceExpression(
                                         ifStatement,
@@ -259,7 +259,7 @@ namespace Roslynator.CSharp.Refactorings.If
             ExpressionSyntax left,
             ExpressionSyntax expression1,
             ExpressionSyntax expression2,
-            NullCheckExpression nullCheck,
+            NullCheckExpressionInfo nullCheck,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -283,7 +283,7 @@ namespace Roslynator.CSharp.Refactorings.If
         }
 
         public static ImmutableArray<IfRefactoring> Analyze(
-            StatementContainerSelection selectedStatements,
+            StatementsSelection selectedStatements,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -291,7 +291,7 @@ namespace Roslynator.CSharp.Refactorings.If
         }
 
         public static ImmutableArray<IfRefactoring> Analyze(
-            StatementContainerSelection selectedStatements,
+            StatementsSelection selectedStatements,
             IfAnalysisOptions options,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -354,22 +354,22 @@ namespace Roslynator.CSharp.Refactorings.If
 
                 if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
                 {
-                    SimpleAssignmentStatement assignment1;
-                    if (SimpleAssignmentStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
+                    SimpleAssignmentStatementInfo assignmentInfo1 = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.GetSingleStatementOrDefault());
+                    if (assignmentInfo1.Success)
                     {
-                        SimpleAssignmentStatement assignment2;
-                        if (SimpleAssignmentStatement.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
-                            && assignment1.Left.IsKind(SyntaxKind.IdentifierName)
-                            && assignment2.Left.IsKind(SyntaxKind.IdentifierName))
+                        SimpleAssignmentStatementInfo assignmentInfo2 = SyntaxInfo.SimpleAssignmentStatementInfo(elseClause.GetSingleStatementOrDefault());
+                        if (assignmentInfo2.Success
+                            && assignmentInfo1.Left.IsKind(SyntaxKind.IdentifierName)
+                            && assignmentInfo2.Left.IsKind(SyntaxKind.IdentifierName))
                         {
-                            string identifier1 = ((IdentifierNameSyntax)assignment1.Left).Identifier.ValueText;
-                            string identifier2 = ((IdentifierNameSyntax)assignment2.Left).Identifier.ValueText;
+                            string identifier1 = ((IdentifierNameSyntax)assignmentInfo1.Left).Identifier.ValueText;
+                            string identifier2 = ((IdentifierNameSyntax)assignmentInfo2.Left).Identifier.ValueText;
 
                             if (string.Equals(identifier1, identifier2, StringComparison.Ordinal)
                                 && string.Equals(identifier1, declarator.Identifier.ValueText, StringComparison.Ordinal)
                                 && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(localDeclarationStatement.SpanStart, ifStatement.Span.End)))
                             {
-                                return new LocalDeclarationAndIfElseAssignmentWithConditionalExpression(localDeclarationStatement, ifStatement, assignment1.Right, assignment2.Right).ToImmutableArray();
+                                return new LocalDeclarationAndIfElseAssignmentWithConditionalExpression(localDeclarationStatement, ifStatement, assignmentInfo1.Right, assignmentInfo2.Right).ToImmutableArray();
                             }
                         }
                     }
@@ -384,22 +384,22 @@ namespace Roslynator.CSharp.Refactorings.If
             IfStatementSyntax ifStatement,
             IfAnalysisOptions options)
         {
-            SimpleAssignmentStatement assignment;
-            if (SimpleAssignmentStatement.TryCreate(expressionStatement, out assignment))
+            SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(expressionStatement);
+            if (assignmentInfo.Success)
             {
                 ElseClauseSyntax elseClause = ifStatement.Else;
 
                 if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) == false)
                 {
-                    SimpleAssignmentStatement assignment1;
-                    if (SimpleAssignmentStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out assignment1))
+                    SimpleAssignmentStatementInfo assignmentInfo1 = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.GetSingleStatementOrDefault());
+                    if (assignmentInfo1.Success)
                     {
-                        SimpleAssignmentStatement assignment2;
-                        if (SimpleAssignmentStatement.TryCreate(elseClause.GetSingleStatementOrDefault(), out assignment2)
-                            && SyntaxComparer.AreEquivalent(assignment1.Left, assignment2.Left, assignment.Left)
+                        SimpleAssignmentStatementInfo assignmentInfo2 = SyntaxInfo.SimpleAssignmentStatementInfo(elseClause.GetSingleStatementOrDefault());
+                        if (assignmentInfo2.Success
+                            && SyntaxComparer.AreEquivalent(assignmentInfo1.Left, assignmentInfo2.Left, assignmentInfo.Left)
                             && options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))
                         {
-                            return new AssignmentAndIfElseToAssignmentWithConditionalExpression(expressionStatement, assignment.Right, ifStatement, assignment1.Right, assignment2.Right).ToImmutableArray();
+                            return new AssignmentAndIfElseToAssignmentWithConditionalExpression(expressionStatement, assignmentInfo.Right, ifStatement, assignmentInfo1.Right, assignmentInfo2.Right).ToImmutableArray();
                         }
                     }
                 }

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 {
@@ -42,19 +43,21 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
             INamedTypeSymbol taskSymbol = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (!StatementContainer.TryCreate(ifStatement, out StatementContainer container))
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(ifStatement);
+
+            if (!statementsInfo.Success)
                 return Fail(ifStatement);
 
-            CSharpSyntaxNode node = container.Node;
+            CSharpSyntaxNode node = statementsInfo.Node;
             SyntaxNode parent = node.Parent;
             SyntaxKind parentKind = parent.Kind();
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
-            if (container.IsSwitchSection
+            if (statementsInfo.IsInSwitchSection
                 || parentKind == SyntaxKind.SwitchSection)
             {
-                SyntaxNode switchSection = (container.IsSwitchSection) ? node : parent;
+                SyntaxNode switchSection = (statementsInfo.IsInSwitchSection) ? node : parent;
 
                 if (!options.AllowSwitchSection())
                     return Fail(switchSection);
@@ -440,9 +443,9 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
             bool recursive,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = StatementContainer.Create(ifStatement);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(ifStatement);
 
-            CSharpSyntaxNode node = container.Node;
+            CSharpSyntaxNode node = statementsInfo.Node;
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 

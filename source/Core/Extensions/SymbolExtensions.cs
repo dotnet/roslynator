@@ -874,9 +874,6 @@ namespace Roslynator
             if (namedTypeSymbol == null)
                 throw new ArgumentNullException(nameof(namedTypeSymbol));
 
-            if (typeArgument == null)
-                throw new ArgumentNullException(nameof(typeArgument));
-
             return namedTypeSymbol.IsConstructedFrom(SpecialType.System_Nullable_T)
                 && namedTypeSymbol.TypeArguments[0] == typeArgument;
         }

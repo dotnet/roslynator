@@ -72,8 +72,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
             var items = new List<string>();
             ImmutableArray<string> ia = ImmutableArray<string>.Empty;
 
-            bool any = items.Where(f => f.StartsWith("a")).Any(f => f.StartsWith("b"));
-            bool any2 = ia.Where(f => f.StartsWith("a")).Any(f => f.StartsWith("b"));
+            bool any = items.Where((f) => f.StartsWith("a")).Any(f => f.StartsWith("b"));
+            bool any2 = ia.Where(f => f.StartsWith("a")).Any((f) => f.StartsWith("b"));
+
+            //n
 
             bool any3 = items.Where(f => f.StartsWith("a")).Any(g => g.StartsWith("b"));
         }

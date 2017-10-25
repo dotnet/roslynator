@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
@@ -34,9 +35,9 @@ namespace Roslynator.CSharp.Refactorings.If
 
         public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = StatementContainer.Create(IfStatement);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(IfStatement);
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(IfStatement);
 
@@ -51,7 +52,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 .RemoveAt(index)
                 .ReplaceAt(index, newStatement);
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
     }
 }

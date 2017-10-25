@@ -17,9 +17,9 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseRegexInstanceInsteadOfStaticMethodRefactoring
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        internal static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            switch (memberInvocation.NameText)
+            switch (invocationInfo.NameText)
             {
                 case "IsMatch":
                 case "Match":
@@ -28,13 +28,13 @@ namespace Roslynator.CSharp.Refactorings
                 case "Split":
                     {
                         MethodInfo methodInfo;
-                        if (context.SemanticModel.TryGetMethodInfo(memberInvocation.InvocationExpression, out methodInfo, context.CancellationToken)
+                        if (context.SemanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out methodInfo, context.CancellationToken)
                             && methodInfo.IsPublicStaticRegexMethod()
                             && methodInfo.ContainingType != null)
                         {
                             context.ReportDiagnostic(
                                 DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod,
-                                memberInvocation.Name);
+                                invocationInfo.Name);
                         }
 
                         break;
@@ -61,13 +61,13 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (typeDeclaration != null)
                 {
-                    MemberInvocationExpression memberInvocation = MemberInvocationExpression.Create(invocationExpression);
+                    MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression);
 
                     string fieldName = NameGenerator.Default.EnsureUniqueLocalName("_regex", semanticModel, invocationExpression.SpanStart, cancellationToken: cancellationToken);
 
-                    MemberAccessExpressionSyntax newMemberAccess = memberInvocation.MemberAccessExpression.WithExpression(IdentifierName(Identifier(fieldName).WithRenameAnnotation()));
+                    MemberAccessExpressionSyntax newMemberAccess = invocationInfo.MemberAccessExpression.WithExpression(IdentifierName(Identifier(fieldName).WithRenameAnnotation()));
 
-                    ArgumentListPair pair = RewriteArgumentLists(memberInvocation.ArgumentList, semanticModel, cancellationToken);
+                    ArgumentListPair pair = RewriteArgumentLists(invocationInfo.ArgumentList, semanticModel, cancellationToken);
 
                     InvocationExpressionSyntax newInvocationExpression = invocationExpression
                         .WithExpression(newMemberAccess)

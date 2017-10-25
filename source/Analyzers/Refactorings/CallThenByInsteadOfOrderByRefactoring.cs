@@ -13,27 +13,28 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class CallThenByInsteadOfOrderByRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            ExpressionSyntax expression = memberInvocation.Expression;
+            ExpressionSyntax expression = invocationInfo.Expression;
 
             if (expression.IsKind(SyntaxKind.InvocationExpression))
             {
-                MemberInvocationExpression memberInvocation2;
-                if (MemberInvocationExpression.TryCreate((InvocationExpressionSyntax)expression, out memberInvocation2))
+                MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo((InvocationExpressionSyntax)expression);
+
+                if (invocationInfo2.Success)
                 {
-                    switch (memberInvocation2.NameText)
+                    switch (invocationInfo2.NameText)
                     {
                         case "OrderBy":
                         case "OrderByDescending":
                             {
-                                if (IsLinqExtensionOfIEnumerableOfT(context, memberInvocation.InvocationExpression)
-                                    && IsLinqExtensionOfIEnumerableOfT(context, memberInvocation2.InvocationExpression))
+                                if (IsLinqExtensionOfIEnumerableOfT(context, invocationInfo.InvocationExpression)
+                                    && IsLinqExtensionOfIEnumerableOfT(context, invocationInfo2.InvocationExpression))
                                 {
                                     context.ReportDiagnostic(
                                         DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
-                                        memberInvocation.Name,
-                                        (memberInvocation.NameText == "OrderByDescending") ? "Descending" : null);
+                                        invocationInfo.Name,
+                                        (invocationInfo.NameText == "OrderByDescending") ? "Descending" : null);
                                 }
 
                                 break;

@@ -44,16 +44,16 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         var binaryExpression = (BinaryExpressionSyntax)node;
 
-                        MemberInvocationExpression memberInvocation;
+                        MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(binaryExpression.Left.WalkDownParentheses());
 
-                        if (!MemberInvocationExpression.TryCreate(binaryExpression.Left.WalkDownParentheses(), out memberInvocation))
-                            memberInvocation = MemberInvocationExpression.Create((InvocationExpressionSyntax)binaryExpression.Right.WalkDownParentheses());
+                        if (!invocationInfo.Success)
+                            invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo((InvocationExpressionSyntax)binaryExpression.Right.WalkDownParentheses());
 
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
 
-                        if (!memberInvocation.NameText.EndsWith("Invariant", StringComparison.Ordinal)
+                        if (!invocationInfo.NameText.EndsWith("Invariant", StringComparison.Ordinal)
                             || !RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "InvariantCultureIgnoreCase"))
                         {
                             RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "OrdinalIgnoreCase");
@@ -66,15 +66,15 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         var invocationExpression = (InvocationExpressionSyntax)node;
 
-                        MemberInvocationExpression memberInvocation = MemberInvocationExpression.Create(invocationExpression);
+                        MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression);
 
-                        SeparatedSyntaxList<ArgumentSyntax> arguments = memberInvocation.ArgumentList.Arguments;
+                        SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
 
                         InvocationExpressionSyntax invocationExpression2;
 
                         if (arguments.Count == 1)
                         {
-                            invocationExpression2 = (InvocationExpressionSyntax)memberInvocation.Expression;
+                            invocationExpression2 = (InvocationExpressionSyntax)invocationInfo.Expression;
                         }
                         else
                         {
@@ -82,17 +82,17 @@ namespace Roslynator.CSharp.CodeFixes
                                 ?? (InvocationExpressionSyntax)arguments[1].Expression.WalkDownParentheses();
                         }
 
-                        MemberInvocationExpression memberInvocation2 = MemberInvocationExpression.Create(invocationExpression2);
+                        MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression2);
 
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
 
-                        if (!memberInvocation2.NameText.EndsWith("Invariant", StringComparison.Ordinal)
-                            || !RegisterCodeFix(context, diagnostic, memberInvocation, comparisonSymbol, "InvariantCultureIgnoreCase"))
+                        if (!invocationInfo2.NameText.EndsWith("Invariant", StringComparison.Ordinal)
+                            || !RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "InvariantCultureIgnoreCase"))
                         {
-                            RegisterCodeFix(context, diagnostic, memberInvocation, comparisonSymbol, "OrdinalIgnoreCase");
-                            RegisterCodeFix(context, diagnostic, memberInvocation, comparisonSymbol, "CurrentCultureIgnoreCase");
+                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "OrdinalIgnoreCase");
+                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "CurrentCultureIgnoreCase");
                         }
 
                         break;
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.CodeFixes
         private static bool RegisterCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
-            MemberInvocationExpression memberInvocation,
+            MemberInvocationExpressionInfo invocationInfo,
             INamedTypeSymbol comparisonSymbol,
             string comparisonName)
         {
@@ -131,7 +131,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 GetTitle(comparisonName),
-                cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, memberInvocation, comparisonName, cancellationToken),
+                cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, invocationInfo, comparisonName, cancellationToken),
                 GetEquivalenceKey(DiagnosticIdentifiers.UseStringComparison, comparisonName));
 
             context.RegisterCodeFix(codeAction, diagnostic);

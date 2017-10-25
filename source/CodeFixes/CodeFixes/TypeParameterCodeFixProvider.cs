@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -35,33 +36,29 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.TypeParameterHasSameNameAsTypeParameterFromOuterType:
                         {
-                            TypeParameterInfo info;
-                            if (TypeParameterInfo.TryCreate(typeParameter, out info))
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    $"Remove type parameter '{info.Name}'",
-                                    cancellationToken =>
-                                    {
-                                        SeparatedSyntaxList<TypeParameterSyntax> parameters = info.TypeParameterList.Parameters;
+                            TypeParameterInfo typeParameterInfo = SyntaxInfo.TypeParameterInfo(typeParameter);
 
-                                        TypeParameterListSyntax newTypeParameterList = (parameters.Count == 1)
-                                            ? default(TypeParameterListSyntax)
-                                            : info.TypeParameterList.WithParameters(parameters.Remove(typeParameter));
+                            if (!typeParameterInfo.Success)
+                                break;
 
-                                        SyntaxNode newNode = GenericSyntax.WithTypeParameterList(info.Declaration, newTypeParameterList);
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Remove type parameter '{typeParameterInfo.Name}'",
+                                cancellationToken =>
+                                {
+                                    GenericInfo genericInfo = SyntaxInfo.GenericInfo(typeParameterInfo.Declaration);
 
-                                        TypeParameterConstraintClauseSyntax constraintClause = info.ConstraintClause;
+                                    GenericInfo newGenericInfo = genericInfo.RemoveTypeParameter(typeParameter);
 
-                                        if (constraintClause != null)
-                                            newNode = GenericSyntax.WithConstraintClauses(newNode, info.ConstraintClauses.Remove(constraintClause));
+                                    TypeParameterConstraintClauseSyntax constraintClause = typeParameterInfo.ConstraintClause;
 
-                                        return context.Document.ReplaceNodeAsync(info.Declaration, newNode, cancellationToken);
-                                    },
-                                    GetEquivalenceKey(diagnostic));
+                                    if (constraintClause != null)
+                                        newGenericInfo = newGenericInfo.RemoveConstraintClause(constraintClause);
 
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
+                                    return context.Document.ReplaceNodeAsync(genericInfo.Declaration, newGenericInfo.Declaration, cancellationToken);
+                                },
+                                GetEquivalenceKey(diagnostic));
 
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

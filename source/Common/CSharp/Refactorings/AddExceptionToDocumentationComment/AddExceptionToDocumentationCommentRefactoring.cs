@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
@@ -167,8 +168,8 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
             foreach (XmlNodeSyntax node in comment.Content)
             {
-                XmlElementInfo info;
-                if (XmlElementInfo.TryCreate(node, out info))
+                XmlElementInfo info = SyntaxInfo.XmlElementInfo(node);
+                if (info.Success)
                 {
                     switch (info.ElementKind)
                     {

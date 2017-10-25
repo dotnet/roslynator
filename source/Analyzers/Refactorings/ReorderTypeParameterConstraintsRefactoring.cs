@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.GenericSyntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -15,25 +15,26 @@ namespace Roslynator.CSharp.Refactorings
         {
             var typeParameterList = (TypeParameterListSyntax)context.Node;
 
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList.Parameters;
+            GenericInfo genericInfo = SyntaxInfo.GenericInfo(typeParameterList);
 
-            if (!typeParameters.Any())
+            if (!genericInfo.Success)
                 return;
 
-            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = GetConstraintClauses(typeParameterList.Parent);
-
-            if (!constraintClauses.Any())
+            if (!genericInfo.TypeParameters.Any())
                 return;
 
-            if (constraintClauses.SpanContainsDirectives())
+            if (!genericInfo.ConstraintClauses.Any())
                 return;
 
-            if (!IsFixable(typeParameters, constraintClauses))
+            if (genericInfo.ConstraintClauses.SpanContainsDirectives())
+                return;
+
+            if (!IsFixable(genericInfo.TypeParameters, genericInfo.ConstraintClauses))
                 return;
 
             context.ReportDiagnostic(
                 DiagnosticDescriptors.ReorderTypeParameterConstraints,
-                constraintClauses.First());
+                genericInfo.ConstraintClauses.First());
         }
 
         private static bool IsFixable(
@@ -76,11 +77,13 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode node,
             CancellationToken cancellationToken)
         {
-            SyntaxList<TypeParameterConstraintClauseSyntax> newConstraintClauses = SortConstraints(GetTypeParameterList(node).Parameters, GetConstraintClauses(node));
+            GenericInfo genericInfo = SyntaxInfo.GenericInfo(node);
 
-            SyntaxNode newNode = WithConstraintClauses(node, newConstraintClauses);
+            SyntaxList<TypeParameterConstraintClauseSyntax> newConstraintClauses = SortConstraints(genericInfo.TypeParameters, genericInfo.ConstraintClauses);
 
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+            GenericInfo newInfo = genericInfo.WithConstraintClauses(newConstraintClauses);
+
+            return document.ReplaceNodeAsync(genericInfo.Declaration, newInfo.Declaration, cancellationToken);
         }
 
         private static SyntaxList<TypeParameterConstraintClauseSyntax> SortConstraints(

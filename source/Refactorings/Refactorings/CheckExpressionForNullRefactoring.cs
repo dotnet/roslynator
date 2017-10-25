@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -94,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        internal static async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
+        internal static async Task ComputeRefactoringAsync(RefactoringContext context, StatementsSelection selectedStatements)
         {
             if (selectedStatements.Count > 1)
             {
@@ -116,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
         private static async Task ComputeRefactoringAsync(
             RefactoringContext context,
             LocalDeclarationStatementSyntax localDeclaration,
-            StatementContainerSelection selectedStatements)
+            StatementsSelection selectedStatements)
         {
             VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
 
@@ -156,7 +157,7 @@ namespace Roslynator.CSharp.Refactorings
         private static async Task ComputeRefactoringAsync(
             RefactoringContext context,
             ExpressionStatementSyntax expressionStatement,
-            StatementContainerSelection selectedStatements)
+            StatementsSelection selectedStatements)
         {
             ExpressionSyntax expression = expressionStatement.Expression;
 
@@ -229,10 +230,10 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (!statement.IsEmbedded())
             {
-                StatementContainer container;
-                if (StatementContainer.TryCreate(statement, out container))
+                StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(statement);
+                if (statementsInfo.Success)
                 {
-                    SyntaxList<StatementSyntax> statements = container.Statements;
+                    SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
                     int index = statements.IndexOf(statement);
 
@@ -282,10 +283,10 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                StatementContainer container;
-                if (StatementContainer.TryCreate(statement, out container))
+                StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(statement);
+                if (statementsInfo.Success)
                 {
-                    SyntaxList<StatementSyntax> statements = container.Statements;
+                    SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
                     int statementIndex = statements.IndexOf(statement);
 
@@ -304,7 +305,7 @@ namespace Roslynator.CSharp.Refactorings
                             document,
                             expression,
                             statements,
-                            container,
+                            statementsInfo,
                             statementIndex,
                             lastStatementIndex,
                             cancellationToken).ConfigureAwait(false);
@@ -322,10 +323,10 @@ namespace Roslynator.CSharp.Refactorings
             int statementCount,
             CancellationToken cancellationToken)
         {
-            StatementContainer container;
-            if (StatementContainer.TryCreate(statement, out container))
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(statement);
+            if (statementsInfo.Success)
             {
-                SyntaxList<StatementSyntax> statements = container.Statements;
+                SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
                 int statementIndex = statements.IndexOf(statement);
 
@@ -333,7 +334,7 @@ namespace Roslynator.CSharp.Refactorings
                     document,
                     expression,
                     statements,
-                    container,
+                    statementsInfo,
                     statementIndex,
                     statementIndex + statementCount,
                     cancellationToken).ConfigureAwait(false);
@@ -346,7 +347,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ExpressionSyntax expression,
             SyntaxList<StatementSyntax> statements,
-            StatementContainer container,
+            StatementsInfo statementsInfo,
             int statementIndex,
             int lastStatementIndex,
             CancellationToken cancellationToken)
@@ -364,7 +365,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Concat(new IfStatementSyntax[] { ifStatement })
                 .Concat(statements.Skip(lastStatementIndex + 1));
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
 
         private static IfStatementSyntax CreateNullCheck(ExpressionSyntax expression, SyntaxList<StatementSyntax> statements = default(SyntaxList<StatementSyntax>))

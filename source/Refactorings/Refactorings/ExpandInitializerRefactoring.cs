@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -92,14 +93,14 @@ namespace Roslynator.CSharp.Refactorings
             InitializerExpressionSyntax initializer,
             ExpressionSyntax expression)
         {
-            StatementContainer container;
-            if (StatementContainer.TryCreate(statement, out container))
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(statement);
+            if (statementsInfo.Success)
             {
                 context.RegisterRefactoring(
                     Title,
                     cancellationToken => RefactorAsync(
                         context.Document,
-                        container,
+                        statementsInfo,
                         statement,
                         initializer,
                         expression.WithoutTrivia(),
@@ -232,7 +233,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> RefactorAsync(
             Document document,
-            StatementContainer statementContainer,
+            StatementsInfo statementsInfo,
             StatementSyntax statement,
             InitializerExpressionSyntax initializer,
             ExpressionSyntax initializedExpression,
@@ -256,7 +257,7 @@ namespace Roslynator.CSharp.Refactorings
                     .WithType(type.WithoutTrailingTrivia());
             }
 
-            SyntaxList<StatementSyntax> statements = statementContainer.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(statement);
 
@@ -281,11 +282,12 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<StatementSyntax> newStatements = statements.Replace(statement, newStatement);
 
-            SyntaxNode newNode = statementContainer
-                .NodeWithStatements(newStatements.InsertRange(index + 1, expressions))
+            SyntaxNode newNode = statementsInfo
+                .WithStatements(newStatements.InsertRange(index + 1, expressions))
+                .Node
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(statementContainer.Node, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(statementsInfo.Node, newNode, cancellationToken);
         }
 
         private static IEnumerable<ExpressionStatementSyntax> CreateExpressionStatements(

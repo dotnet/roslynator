@@ -21,13 +21,17 @@ namespace Roslynator.CSharp.Refactorings
 
             var conditionalExpression = (ConditionalExpressionSyntax)context.Node;
 
-            if (!ConditionalExpressionInfo.TryCreate(conditionalExpression, out ConditionalExpressionInfo conditionalExpressionInfo))
+            ConditionalExpressionInfo conditionalExpressionInfo = SyntaxInfo.ConditionalExpressionInfo(conditionalExpression);
+
+            if (!conditionalExpressionInfo.Success)
                 return;
 
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            if (!NullCheckExpression.TryCreate(conditionalExpressionInfo.Condition, semanticModel, out NullCheckExpression nullCheck, cancellationToken))
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(conditionalExpressionInfo.Condition, semanticModel: semanticModel, cancellationToken: cancellationToken);
+
+            if (!nullCheck.Success)
                 return;
 
             ExpressionSyntax whenNotNull = (nullCheck.IsCheckingNotNull) ? conditionalExpressionInfo.WhenTrue : conditionalExpressionInfo.WhenFalse;
@@ -104,11 +108,11 @@ namespace Roslynator.CSharp.Refactorings
                 && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
                 && semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
                 && !RefactoringHelper.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
-                && !conditionalExpressionInfo.Node.IsInExpressionTree(semanticModel, cancellationToken))
+                && !conditionalExpressionInfo.ConditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
-                    conditionalExpressionInfo.Node);
+                    conditionalExpressionInfo.ConditionalExpression);
             }
         }
 
@@ -119,9 +123,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
-            ConditionalExpressionInfo.TryCreate(conditionalExpression, out ConditionalExpressionInfo conditionalExpressionInfo);
+            ConditionalExpressionInfo conditionalExpressionInfo = SyntaxInfo.ConditionalExpressionInfo(conditionalExpression);
 
-            NullCheckExpression.TryCreate(conditionalExpressionInfo.Condition, semanticModel, out NullCheckExpression nullCheck, cancellationToken);
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(conditionalExpressionInfo.Condition, semanticModel: semanticModel, cancellationToken: cancellationToken);
 
             ExpressionSyntax whenNotNull = (nullCheck.IsCheckingNotNull) ? conditionalExpressionInfo.WhenTrue : conditionalExpressionInfo.WhenFalse;
 

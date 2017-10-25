@@ -183,9 +183,9 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
@@ -206,7 +206,7 @@ namespace Roslynator.CSharp.Refactorings
             if (typeArgument == null)
                 return;
 
-            var memberAccessExpressionType = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken) as INamedTypeSymbol;
+            var memberAccessExpressionType = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken) as INamedTypeSymbol;
 
             if (memberAccessExpressionType?.IsConstructedFromIEnumerableOfT() != true)
                 return;
@@ -214,12 +214,12 @@ namespace Roslynator.CSharp.Refactorings
             if (!typeArgument.Equals(memberAccessExpressionType.TypeArguments[0]))
                 return;
 
-            if (invocationExpression.ContainsDirectives(TextSpan.FromBounds(memberInvocation.Expression.Span.End, invocationExpression.Span.End)))
+            if (invocationExpression.ContainsDirectives(TextSpan.FromBounds(invocationInfo.Expression.Span.End, invocationExpression.Span.End)))
                 return;
 
             context.ReportDiagnostic(
                 DiagnosticDescriptors.RemoveRedundantCast,
-                Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(memberInvocation.Name.SpanStart, memberInvocation.ArgumentList.Span.End)));
+                Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
         }
 
         public static Task<Document> RefactorAsync(

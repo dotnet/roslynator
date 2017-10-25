@@ -19,11 +19,11 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
-            MemberInvocationExpression memberInvocation)
+            MemberInvocationExpressionInfo invocationInfo)
         {
-            InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-            TextSpan span = TextSpan.FromBounds(memberInvocation.Name.Span.Start, invocationExpression.Span.End);
+            TextSpan span = TextSpan.FromBounds(invocationInfo.Name.Span.Start, invocationExpression.Span.End);
 
             if (invocationExpression.ContainsDirectives(span))
                 return;
@@ -52,69 +52,30 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax expression = invocationExpression.ArgumentList?.Arguments.Last().Expression;
 
-            if (expression == null)
+            SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(expression);
+
+            if (!lambdaInfo.Success)
                 return;
 
-            SyntaxKind kind = expression.Kind();
+            CastExpressionSyntax castExpression = GetCastExpression(lambdaInfo.Body);
 
-            //TODO: SingleParameterLambdaExpressionInfo
-            if (kind == SyntaxKind.SimpleLambdaExpression)
-            {
-                var lambda = (SimpleLambdaExpressionSyntax)expression;
-
-                if (!IsFixableLambda(lambda.Parameter, lambda.Body, semanticModel, cancellationToken))
-                    return;
-            }
-            else if (kind == SyntaxKind.ParenthesizedLambdaExpression)
-            {
-                var lambda = (ParenthesizedLambdaExpressionSyntax)expression;
-
-                ParameterSyntax parameter = lambda.ParameterList?.Parameters.SingleOrDefault(throwException: false);
-
-                if (!IsFixableLambda(parameter, lambda.Body, semanticModel, cancellationToken))
-                    return;
-            }
-            else
-            {
+            if (castExpression == null)
                 return;
-            }
+
+            if (!(castExpression.Expression is IdentifierNameSyntax identifierName))
+                return;
+
+            if (!string.Equals(lambdaInfo.Parameter.Identifier.ValueText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+                return;
+
+            var castSymbol = semanticModel.GetSymbol(castExpression, cancellationToken) as IMethodSymbol;
+
+            if (castSymbol?.MethodKind == MethodKind.Conversion)
+                return;
 
             context.ReportDiagnostic(
                 DiagnosticDescriptors.CallCastInsteadOfSelect,
                 Location.Create(invocationExpression.SyntaxTree, span));
-        }
-
-        private static bool IsFixableLambda(
-            ParameterSyntax parameter,
-            CSharpSyntaxNode body,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            if (parameter == null)
-                return false;
-
-            if (body == null)
-                return false;
-
-            CastExpressionSyntax castExpression = GetCastExpression(body);
-
-            if (castExpression == null)
-                return false;
-
-            if (!(castExpression.Expression is IdentifierNameSyntax identifierName))
-                return false;
-
-            if (!string.Equals(
-                parameter.Identifier.ValueText,
-                identifierName.Identifier.ValueText,
-                StringComparison.Ordinal))
-            {
-                return false;
-            }
-
-            var methodSymbol = semanticModel.GetSymbol(castExpression, cancellationToken) as IMethodSymbol;
-
-            return methodSymbol?.MethodKind != MethodKind.Conversion;
         }
 
         private static CastExpressionSyntax GetCastExpression(CSharpSyntaxNode node)

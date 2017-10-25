@@ -6,12 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class CollapseToInitializerRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementsSelection selectedStatements)
         {
             if (selectedStatements.Count > 1)
             {
@@ -118,10 +119,10 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             ObjectCreationExpressionSyntax objectCreation,
-            StatementContainerSelection selectedStatements,
+            StatementsSelection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = selectedStatements.Container;
+            StatementsInfo statementsInfo = selectedStatements.Info;
 
             ExpressionStatementSyntax[] expressionStatements = selectedStatements
                 .Skip(1)
@@ -130,7 +131,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax firstStatement = selectedStatements.First();
 
-            SyntaxList<StatementSyntax> newStatements = container.Statements.Replace(
+            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.Replace(
                 firstStatement,
                 firstStatement.ReplaceNode(
                     objectCreation,
@@ -145,10 +146,7 @@ namespace Roslynator.CSharp.Refactorings
                 count--;
             }
 
-            return document.ReplaceNodeAsync(
-                container.Node,
-                container.NodeWithStatements(newStatements),
-                cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
 
         private static InitializerExpressionSyntax CreateInitializer(ObjectCreationExpressionSyntax objectCreation, ExpressionStatementSyntax[] expressionStatements)

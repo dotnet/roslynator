@@ -13,15 +13,15 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AvoidNullReferenceExceptionRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            switch (memberInvocation.NameText)
+            switch (invocationInfo.NameText)
             {
                 case "ElementAtOrDefault":
                 case "FirstOrDefault":
                 case "LastOrDefault":
                     {
-                        InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+                        InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
                         ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
 

@@ -22,26 +22,27 @@ namespace Roslynator.CSharp.Refactorings
             if (context.Node.SpanContainsDirectives())
                 return;
 
-            ConditionalExpressionInfo info;
-            if (ConditionalExpressionInfo.TryCreate(conditionalExpression, out info))
+            ConditionalExpressionInfo info = SyntaxInfo.ConditionalExpressionInfo(conditionalExpression);
+
+            if (!info.Success)
+                return;
+
+            switch (info.WhenTrue.Kind())
             {
-                switch (info.WhenTrue.Kind())
-                {
-                    case SyntaxKind.TrueLiteralExpression:
-                        {
-                            if (info.WhenFalse.IsKind(SyntaxKind.FalseLiteralExpression))
-                                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                case SyntaxKind.TrueLiteralExpression:
+                    {
+                        if (info.WhenFalse.IsKind(SyntaxKind.FalseLiteralExpression))
+                            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
 
-                            break;
-                        }
-                    case SyntaxKind.FalseLiteralExpression:
-                        {
-                            if (info.WhenFalse.IsKind(SyntaxKind.TrueLiteralExpression))
-                                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                        break;
+                    }
+                case SyntaxKind.FalseLiteralExpression:
+                    {
+                        if (info.WhenFalse.IsKind(SyntaxKind.TrueLiteralExpression))
+                            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
 
-                            break;
-                        }
-                }
+                        break;
+                    }
             }
         }
 

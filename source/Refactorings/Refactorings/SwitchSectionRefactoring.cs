@@ -13,8 +13,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context))
             {
-                StatementContainerSelection selectedStatements;
-                if (StatementContainerSelection.TryCreate(switchSection, context.Span, out selectedStatements))
+                StatementsSelection selectedStatements;
+                if (StatementsSelection.TryCreate(switchSection, context.Span, out selectedStatements))
                     await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
 

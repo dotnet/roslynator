@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -15,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeIfStatementsRefactoring
     {
-        public static void ComputeRefactorings(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public static void ComputeRefactorings(RefactoringContext context, StatementsSelection selectedStatements)
         {
             List<IfStatementSyntax> ifStatements = GetIfStatements(selectedStatements);
 
@@ -27,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         return RefactorAsync(
                             context.Document,
-                            selectedStatements.Container,
+                            selectedStatements.Info,
                             ifStatements.ToImmutableArray(),
                             cancellationToken);
                     });
@@ -58,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static Task<Document> RefactorAsync(
             Document document,
-            StatementContainer container,
+            StatementsInfo statementsInfo,
             ImmutableArray<IfStatementSyntax> ifStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -66,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                 CreateCondition(ifStatements),
                 Block(CreateStatements(ifStatements)));
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(ifStatements[0]);
 
@@ -79,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = 1; i < ifStatements.Length; i++)
                 newStatements = newStatements.RemoveAt(index + 1);
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
 
         private static BinaryExpressionSyntax CreateCondition(ImmutableArray<IfStatementSyntax> ifStatements)

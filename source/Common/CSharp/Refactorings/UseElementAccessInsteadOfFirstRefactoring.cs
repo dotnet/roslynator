@@ -15,20 +15,20 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseElementAccessInsteadOfFirstRefactoring
     {
-        public static bool CanRefactor(MemberInvocationExpression memberInvocation, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public static bool CanRefactor(MemberInvocationExpressionInfo invocationInfo, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (memberInvocation.Expression?.IsMissing != false)
+            if (invocationInfo.Expression?.IsMissing != false)
                 return false;
 
-            if (!semanticModel.TryGetExtensionMethodInfo(memberInvocation.InvocationExpression, out MethodInfo methodInfo, ExtensionMethodKind.Reduced, cancellationToken))
+            if (!semanticModel.TryGetExtensionMethodInfo(invocationInfo.InvocationExpression, out MethodInfo methodInfo, ExtensionMethodKind.Reduced, cancellationToken))
                 return false;
 
             if (!methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
                 return false;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-            return SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, memberInvocation.InvocationExpression.SpanStart);
+            return SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, invocationInfo.InvocationExpression.SpanStart);
         }
 
         public static Task<Document> RefactorAsync(

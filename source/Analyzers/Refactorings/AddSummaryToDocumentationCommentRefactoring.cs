@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
@@ -29,8 +30,8 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (XmlNodeSyntax node in documentationComment.Content)
             {
-                XmlElementInfo info;
-                if (XmlElementInfo.TryCreate(node, out info))
+                XmlElementInfo info = SyntaxInfo.XmlElementInfo(node);
+                if (info.Success)
                 {
                     switch (info.ElementKind)
                     {

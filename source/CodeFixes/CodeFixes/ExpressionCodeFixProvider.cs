@@ -193,14 +193,10 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            if (!NullCheckExpression.TryCreate(expression, semanticModel, out NullCheckExpression nullCheck, context.CancellationToken))
-                                break;
+                            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(expression, allowedKinds: NullCheckKind.ComparisonToNull);
 
-                            if (nullCheck.Kind != NullCheckKind.EqualsToNull
-                                && nullCheck.Kind!= NullCheckKind.NotEqualsToNull)
-                            {
+                            if (!nullCheck.Success)
                                 break;
-                            }
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove condition",

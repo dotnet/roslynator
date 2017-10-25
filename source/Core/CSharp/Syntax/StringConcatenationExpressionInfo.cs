@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Linq;
 using System.Text;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -13,11 +12,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Utilities;
 
-namespace Roslynator.CSharp
+namespace Roslynator.CSharp.Syntax
 {
-    internal struct StringConcatenationExpression
+    internal struct StringConcatenationExpressionInfo
     {
-        private StringConcatenationExpression(BinaryExpressionSyntax addExpression, IEnumerable<ExpressionSyntax> expressions, TextSpan? span = null)
+        private static StringConcatenationExpressionInfo Default { get; } = new StringConcatenationExpressionInfo();
+
+        private StringConcatenationExpressionInfo(BinaryExpressionSyntax addExpression, IEnumerable<ExpressionSyntax> expressions, TextSpan? span = null)
         {
             ContainsNonSpecificExpression = false;
             ContainsRegularLiteralExpression = false;
@@ -106,113 +107,72 @@ namespace Roslynator.CSharp
             get { return ContainsVerbatimLiteralExpression || ContainsVerbatimInterpolatedStringExpression; }
         }
 
-        public static StringConcatenationExpression Create(BinaryExpressionSyntax binaryExpression, SemanticModel semanticModel)
+        public bool Success
         {
-            return Create(binaryExpression, semanticModel, default(CancellationToken));
+            get { return OriginalExpression != null; }
         }
 
-        public static StringConcatenationExpression Create(
+        internal static StringConcatenationExpressionInfo Create(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (!binaryExpression.IsKind(SyntaxKind.AddExpression))
-                throw new ArgumentException("", nameof(binaryExpression));
+            if (binaryExpression?.Kind() != SyntaxKind.AddExpression)
+                return Default;
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
 
             List<ExpressionSyntax> expressions = GetExpressions(binaryExpression, semanticModel, cancellationToken);
 
             if (expressions == null)
-                throw new ArgumentException("", nameof(binaryExpression));
+                return Default;
 
             expressions.Reverse();
 
-            return new StringConcatenationExpression(binaryExpression, expressions);
+            return new StringConcatenationExpressionInfo(binaryExpression, expressions);
         }
 
-        public static StringConcatenationExpression Create(BinaryExpressionSelection binaryExpressionSelection, SemanticModel semanticModel)
-        {
-            return Create(binaryExpressionSelection, semanticModel, default(CancellationToken));
-        }
-
-        public static StringConcatenationExpression Create(
+        internal static StringConcatenationExpressionInfo Create(
             BinaryExpressionSelection binaryExpressionSelection,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            BinaryExpressionSyntax binaryExpression = binaryExpressionSelection.BinaryExpression;
-            ImmutableArray<ExpressionSyntax> expressions = binaryExpressionSelection.Expressions;
-
-            if (!binaryExpression.IsKind(SyntaxKind.AddExpression))
-                throw new ArgumentException("", nameof(binaryExpressionSelection));
-
-            if (expressions.Any(expression => !IsStringExpression(expression, semanticModel, cancellationToken)))
-                throw new ArgumentException("", nameof(BinaryExpressionSelection));
-
-            return new StringConcatenationExpression(binaryExpression, expressions, binaryExpressionSelection.Span);
-        }
-
-        public static bool TryCreate(
-            BinaryExpressionSyntax binaryExpression,
-            SemanticModel semanticModel,
-            out StringConcatenationExpression concatenation,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (binaryExpression.IsKind(SyntaxKind.AddExpression))
-            {
-                List<ExpressionSyntax> expressions = GetExpressions(binaryExpression, semanticModel, cancellationToken);
-
-                if (expressions != null)
-                {
-                    expressions.Reverse();
-                    concatenation = new StringConcatenationExpression(binaryExpression, expressions);
-                    return true;
-                }
-            }
-
-            concatenation = default(StringConcatenationExpression);
-            return false;
-        }
-
-        public static bool TryCreate(
-            BinaryExpressionSelection binaryExpressionSelection,
-            SemanticModel semanticModel,
-            out StringConcatenationExpression concatenation,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             BinaryExpressionSyntax binaryExpression = binaryExpressionSelection.BinaryExpression;
+
+            if (binaryExpression?.Kind() != SyntaxKind.AddExpression)
+                return Default;
+
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
             ImmutableArray<ExpressionSyntax> expressions = binaryExpressionSelection.Expressions;
 
-            if (binaryExpression.IsKind(SyntaxKind.AddExpression)
-                && expressions.All(expression => IsStringExpression(expression, semanticModel, cancellationToken)))
+            foreach (ExpressionSyntax expression in expressions)
             {
-                concatenation = new StringConcatenationExpression(binaryExpression, expressions, binaryExpressionSelection.Span);
-                return true;
+                if (!IsStringExpression(expression, semanticModel, cancellationToken))
+                    return Default;
             }
 
-            concatenation = default(StringConcatenationExpression);
-            return false;
+            return new StringConcatenationExpressionInfo(binaryExpression, expressions, binaryExpressionSelection.Span);
         }
 
         private static bool IsStringExpression(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (expression != null)
-            {
-                if (expression.IsKind(
-                    SyntaxKind.StringLiteralExpression,
-                    SyntaxKind.InterpolatedStringExpression))
-                {
-                    return true;
-                }
+            if (expression == null)
+                return false;
 
-                if (semanticModel.GetTypeInfo(expression, cancellationToken)
-                    .ConvertedType?
-                    .IsString() == true)
-                {
-                    return true;
-                }
-            }
+            SyntaxKind kind = expression.Kind();
 
-            return false;
+            if (kind == SyntaxKind.StringLiteralExpression)
+                return true;
+
+            if (kind == SyntaxKind.InterpolatedStringExpression)
+                return true;
+
+            return semanticModel.GetTypeInfo(expression, cancellationToken)
+                .ConvertedType?
+                .IsString() == true;
         }
 
         private static List<ExpressionSyntax> GetExpressions(
@@ -224,8 +184,7 @@ namespace Roslynator.CSharp
 
             while (true)
             {
-                MethodInfo methodInfo;
-                if (semanticModel.TryGetMethodInfo(binaryExpression, out methodInfo, cancellationToken)
+                if (semanticModel.TryGetMethodInfo(binaryExpression, out MethodInfo methodInfo, cancellationToken)
                     && methodInfo.MethodKind == MethodKind.BuiltinOperator
                     && methodInfo.Name == WellKnownMemberNames.AdditionOperatorName
                     && methodInfo.IsContainingType(SpecialType.System_String))

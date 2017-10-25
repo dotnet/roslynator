@@ -11,6 +11,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Documentation;
+using Roslynator.CSharp.Helpers;
+using Roslynator.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -84,6 +86,43 @@ namespace Roslynator.CSharp
         #endregion AccessorListSyntax
 
         #region BlockSyntax
+        internal static StatementSyntax SingleNonBlockStatementOrDefault(this BlockSyntax body, bool recursive = true)
+        {
+            if (body == null)
+                throw new ArgumentNullException(nameof(body));
+
+            if (recursive)
+            {
+                StatementSyntax statement = null;
+
+                do
+                {
+                    SyntaxList<StatementSyntax> statements = body.Statements;
+
+                    statement = (statements.Count == 1) ? statements[0] : null;
+
+                    body = statement as BlockSyntax;
+                }
+                while (body != null);
+
+                return statement;
+            }
+            else
+            {
+                SyntaxList<StatementSyntax> statements = body.Statements;
+
+                if (statements.Count == 1)
+                {
+                    StatementSyntax statement = statements[0];
+
+                    if (statement.Kind() != SyntaxKind.Block)
+                        return statement;
+                }
+
+                return null;
+            }
+        }
+
         public static TextSpan BracesSpan(this BlockSyntax block)
         {
             if (block == null)
@@ -2110,6 +2149,16 @@ namespace Roslynator.CSharp
             }
         }
 
+        internal static StatementSyntax SingleNonBlockStatementOrDefault(this StatementSyntax statement, bool recursive = true)
+        {
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
+
+            return (statement.Kind() == SyntaxKind.Block)
+                ? SingleNonBlockStatementOrDefault((BlockSyntax)statement, recursive)
+                : statement;
+        }
+
         public static bool IsEmbedded(
             this StatementSyntax statement,
             bool ifInsideElse = true,
@@ -3085,6 +3134,17 @@ namespace Roslynator.CSharp
 
             return false;
         }
+
+        internal static TNode WithAccessibility<TNode>(
+            this TNode node,
+            Accessibility newAccessibility,
+            IModifierComparer comparer = null) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return (TNode)ChangeAccessibilityHelper.ChangeAccessibility(node, newAccessibility, comparer);
+        }
         #endregion SyntaxNode
 
         #region SyntaxToken
@@ -3582,6 +3642,19 @@ namespace Roslynator.CSharp
             return default(SyntaxList<TypeParameterConstraintClauseSyntax>);
         }
         #endregion TypeParameterConstraintClauseSyntax
+
+        #region TypeParameterListSyntax
+        internal static TypeParameterSyntax GetTypeParameterByName(this TypeParameterListSyntax typeParameterList, string name)
+        {
+            foreach (TypeParameterSyntax typeParameter in typeParameterList.Parameters)
+            {
+                if (string.Equals(typeParameter.Identifier.ValueText, name, StringComparison.Ordinal))
+                    return typeParameter;
+            }
+
+            return null;
+        }
+        #endregion TypeParameterListSyntax
 
         #region TypeSyntax
         public static bool IsVoid(this TypeSyntax type)

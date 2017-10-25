@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
     internal class WrapInUsingStatementRefactoring : WrapStatementsRefactoring<UsingStatementSyntax>
     {
-        public async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public async Task ComputeRefactoringAsync(RefactoringContext context, StatementsSelection selectedStatements)
         {
             StatementSyntax statement = selectedStatements.FirstOrDefault();
 

@@ -18,9 +18,9 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression invocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            InvocationExpressionSyntax invocationExpression = invocation.InvocationExpression;
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
             if (invocationExpression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                 return;
@@ -34,14 +34,14 @@ namespace Roslynator.CSharp.Refactorings
             if (!methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("Any"))
                 return;
 
-            string propertyName = CSharpUtility.GetCountOrLengthPropertyName(invocation.Expression, semanticModel, cancellationToken);
+            string propertyName = CSharpUtility.GetCountOrLengthPropertyName(invocationInfo.Expression, semanticModel, cancellationToken);
 
             if (propertyName == null)
                 return;
 
             context.ReportDiagnostic(
                 DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
-                Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(invocation.Name.Span.Start, invocationExpression.Span.End)),
+                Location.Create(context.Node.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.Span.Start, invocationExpression.Span.End)),
                 ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("PropertyName", propertyName) }),
                 propertyName);
         }

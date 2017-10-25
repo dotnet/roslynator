@@ -173,13 +173,13 @@ namespace Roslynator.CSharp.Refactorings
 
         public static Task<Document> RefactorAsync(
             Document document,
-            MemberDeclarationSyntax member,
+            MemberDeclarationSyntax memberDeclaration,
             Accessibility accessibility,
             CancellationToken cancellationToken)
         {
-            MemberDeclarationSyntax newNode = AccessibilityHelper.ChangeAccessibility(member, accessibility, ModifierComparer.Instance);
+            MemberDeclarationSyntax newNode = memberDeclaration.WithAccessibility(accessibility, ModifierComparer.Instance);
 
-            return document.ReplaceNodeAsync(member, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
     }
 }
