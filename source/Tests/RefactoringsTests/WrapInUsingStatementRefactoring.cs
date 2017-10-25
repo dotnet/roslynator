@@ -2,6 +2,8 @@
 
 using System.IO;
 
+#pragma warning disable CS0219
+
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class WrapInUsingStatementRefactoring
@@ -24,6 +26,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
                     var sm2 = new StreamReader(stream);
                     break;
             }
+
+            //n
+
+            StreamReader sm3 = null;
+            StreamReader sm4 = default(StreamReader);
         }
     }
 }

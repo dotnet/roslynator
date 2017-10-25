@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
                 {
-                    var refactoring = new WrapInUsingStatementRefactoring();
+                    var refactoring = new WrapStatements.WrapInUsingStatementRefactoring();
                     await refactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
                 }
 

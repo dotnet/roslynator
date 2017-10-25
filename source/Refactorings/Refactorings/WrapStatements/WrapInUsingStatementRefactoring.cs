@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
@@ -15,34 +16,32 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
     {
         public async Task ComputeRefactoringAsync(RefactoringContext context, StatementsSelection selectedStatements)
         {
-            StatementSyntax statement = selectedStatements.FirstOrDefault();
+            SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(selectedStatements.FirstOrDefault() as LocalDeclarationStatementSyntax);
 
-            if (statement?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
-            {
-                var localDeclaration = (LocalDeclarationStatementSyntax)statement;
-                VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+            if (!localInfo.Success)
+                return;
 
-                if (declaration != null)
-                {
-                    VariableDeclaratorSyntax variable = declaration.Variables.SingleOrDefault(throwException: false);
+            ExpressionSyntax value = localInfo.Initializer?.Value;
 
-                    if (variable?.Initializer?.Value?.IsKind(SyntaxKind.ObjectCreationExpression) == true
-                        && declaration.Type != null)
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            if (value == null)
+                return;
 
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(declaration.Type, context.CancellationToken);
+            if (value.Kind() == SyntaxKind.DefaultExpression)
+                return;
 
-                        if (typeSymbol?.IsNamedType() == true
-                            && ((INamedTypeSymbol)typeSymbol).Implements(SpecialType.System_IDisposable))
-                        {
-                            context.RegisterRefactoring(
-                                $"Using '{variable.Identifier.ValueText}'",
-                                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken));
-                        }
-                    }
-                }
-            }
+            if (value is LiteralExpressionSyntax)
+                return;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            var typeSymbol = semanticModel.GetTypeSymbol(localInfo.Type, context.CancellationToken) as INamedTypeSymbol;
+
+            if (typeSymbol?.Implements(SpecialType.System_IDisposable) != true)
+                return;
+
+            context.RegisterRefactoring(
+                $"Using '{localInfo.IdentifierText}'",
+                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken));
         }
 
         public override UsingStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)

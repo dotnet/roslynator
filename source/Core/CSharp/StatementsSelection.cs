@@ -30,9 +30,7 @@ namespace Roslynator.CSharp
 
             var info = new StatementsInfo(block);
 
-            (int startIndex, int endIndex) = GetIndexes(info.Statements, span);
-
-            return new StatementsSelection(info, span, startIndex, endIndex);
+            return Create(info, span);
         }
 
         public static StatementsSelection Create(SwitchSectionSyntax switchSection, TextSpan span)
@@ -42,6 +40,11 @@ namespace Roslynator.CSharp
 
             var info = new StatementsInfo(switchSection);
 
+            return Create(info, span);
+        }
+
+        public static StatementsSelection Create(StatementsInfo info, TextSpan span)
+        {
             (int startIndex, int endIndex) = GetIndexes(info.Statements, span);
 
             return new StatementsSelection(info, span, startIndex, endIndex);
