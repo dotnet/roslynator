@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
             return block.Parent?.Kind().CanContainEmbeddedStatement() == true
                 && block
                     .Statements
-                    .SingleOrDefault(throwException: false)?
+                    .SingleOrDefault(shouldThrow: false)?
                     .IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement) == false;
         }
 

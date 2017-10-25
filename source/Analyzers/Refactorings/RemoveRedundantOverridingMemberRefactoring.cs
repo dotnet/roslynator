@@ -169,7 +169,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (body != null)
             {
-                StatementSyntax statement = body.Statements.SingleOrDefault(throwException: false);
+                StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
                 if (statement != null)
                 {
@@ -469,7 +469,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (body != null)
             {
-                StatementSyntax statement = body.Statements.SingleOrDefault(throwException: false);
+                StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
                 if (statement?.IsKind(SyntaxKind.ReturnStatement) == true)
                     return ((ReturnStatementSyntax)statement).Expression;
@@ -488,7 +488,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (body != null)
             {
-                StatementSyntax statement = body.Statements.SingleOrDefault(throwException: false);
+                StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
                 if (statement?.IsKind(SyntaxKind.ExpressionStatement) == true)
                     return ((ExpressionStatementSyntax)statement).Expression;

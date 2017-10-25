@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             if (length == 2)
                             {
-                                return ContainsFailMethod(containingType, methodSymbol => methodSymbol.Parameters.SingleOrDefault(throwException: false)?.Type.IsString() == true);
+                                return ContainsFailMethod(containingType, methodSymbol => methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type.IsString() == true);
                             }
                             else if (length == 3
                                 && parameters[2].Type.IsString())

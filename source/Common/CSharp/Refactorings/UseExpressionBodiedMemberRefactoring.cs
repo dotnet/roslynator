@@ -118,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (block != null)
             {
-                StatementSyntax statement = block.Statements.SingleOrDefault(throwException: false);
+                StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
                 switch (statement?.Kind())
                 {
@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (block != null)
             {
-                StatementSyntax statement = block.Statements.SingleOrDefault(throwException: false);
+                StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
                 switch (statement?.Kind())
                 {
@@ -156,7 +156,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (block != null)
             {
-                StatementSyntax statement = block.Statements.SingleOrDefault(throwException: false);
+                StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
                 switch (statement?.Kind())
                 {

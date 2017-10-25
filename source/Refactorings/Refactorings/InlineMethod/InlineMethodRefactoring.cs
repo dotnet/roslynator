@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             if (body == null)
                 return method.ExpressionBody?.Expression;
 
-            switch (body.Statements.SingleOrDefault(throwException: false))
+            switch (body.Statements.SingleOrDefault(shouldThrow: false))
             {
                 case ReturnStatementSyntax returnStatement:
                     return returnStatement.Expression;

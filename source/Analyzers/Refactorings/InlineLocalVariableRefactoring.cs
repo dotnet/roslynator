@@ -164,7 +164,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax value2 = localDeclaration2
                 .Declaration?
                 .Variables
-                .SingleOrDefault(throwException: false)?
+                .SingleOrDefault(shouldthrow: false)?
                 .Initializer?
                 .Value;
 

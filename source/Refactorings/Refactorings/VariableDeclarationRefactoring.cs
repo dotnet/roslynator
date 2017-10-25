@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
             if (type != null
                 && !variableDeclaration.IsParentKind(SyntaxKind.EventFieldDeclaration))
             {
-                VariableDeclaratorSyntax variable = variableDeclaration.Variables.SingleOrDefault(throwException: false);
+                VariableDeclaratorSyntax variable = variableDeclaration.Variables.SingleOrDefault(shouldthrow: false);
 
                 if (variable != null)
                 {

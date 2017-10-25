@@ -92,7 +92,7 @@ namespace Roslynator.CSharp
             if (!(GetChildStatement(node, ifInsideElse, usingInsideUsing) is BlockSyntax block))
                 return null;
 
-            StatementSyntax statement = block.Statements.SingleOrDefault(throwException: false);
+            StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
             if (statement == null)
                 return null;

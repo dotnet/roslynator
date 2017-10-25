@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             EqualsValueClauseSyntax initializer = localDeclarationStatement
                 .Declaration
                 .Variables
-                .SingleOrDefault(throwException: false)?
+                .SingleOrDefault(shouldthrow: false)?
                 .Initializer;
 
             if (initializer != null

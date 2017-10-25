@@ -2082,7 +2082,7 @@ namespace Roslynator.CSharp
         {
             if (statement?.IsKind(SyntaxKind.Block) == true)
             {
-                return ((BlockSyntax)statement).Statements.SingleOrDefault(throwException: false);
+                return ((BlockSyntax)statement).Statements.SingleOrDefault(shouldThrow: false);
             }
             else
             {

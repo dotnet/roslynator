@@ -142,7 +142,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.Block:
                     {
-                        StatementSyntax statement = ((BlockSyntax)body).Statements.SingleOrDefault(throwException: false);
+                        StatementSyntax statement = ((BlockSyntax)body).Statements.SingleOrDefault(shouldThrow: false);
 
                         if (statement?.IsKind(SyntaxKind.ReturnStatement) == true)
                         {

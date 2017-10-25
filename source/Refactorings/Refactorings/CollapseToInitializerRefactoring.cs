@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                     VariableDeclaratorSyntax variable = localDeclaration
                         .Declaration?
                         .Variables
-                        .SingleOrDefault(throwException: false);
+                        .SingleOrDefault(shouldthrow: false);
 
                     objectCreation = variable?.Initializer?.Value as ObjectCreationExpressionSyntax;
 

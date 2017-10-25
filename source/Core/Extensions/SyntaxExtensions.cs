@@ -67,9 +67,9 @@ namespace Roslynator
             return true;
         }
 
-        internal static TNode SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, bool throwException) where TNode : SyntaxNode
+        internal static TNode SingleOrDefault<TNode>(this SeparatedSyntaxList<TNode> list, bool shouldthrow) where TNode : SyntaxNode
         {
-            return (throwException) ? list.SingleOrDefault() : ((list.Count == 1) ? list[0] : default(TNode));
+            return (shouldthrow) ? list.SingleOrDefault() : ((list.Count == 1) ? list[0] : default(TNode));
         }
 
         public static bool SpanContainsDirectives<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
@@ -149,9 +149,9 @@ namespace Roslynator
             return list.IndexOf(node) != -1;
         }
 
-        internal static TNode SingleOrDefault<TNode>(this SyntaxList<TNode> list, bool throwException) where TNode : SyntaxNode
+        internal static TNode SingleOrDefault<TNode>(this SyntaxList<TNode> list, bool shouldThrow) where TNode : SyntaxNode
         {
-            return (throwException) ? list.SingleOrDefault() : ((list.Count == 1) ? list[0] : default(TNode));
+            return (shouldThrow) ? list.SingleOrDefault() : ((list.Count == 1) ? list[0] : default(TNode));
         }
 
         public static bool SpanContainsDirectives<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode

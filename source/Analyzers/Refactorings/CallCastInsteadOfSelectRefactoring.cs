@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var block = (BlockSyntax)node;
 
-                        var returnStatement = block.Statements.SingleOrDefault(throwException: false) as ReturnStatementSyntax;
+                        var returnStatement = block.Statements.SingleOrDefault(shouldThrow: false) as ReturnStatementSyntax;
 
                         return returnStatement?.Expression as CastExpressionSyntax;
                     }

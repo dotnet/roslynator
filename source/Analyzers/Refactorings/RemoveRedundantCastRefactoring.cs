@@ -201,7 +201,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!extensionMethodInfo.MethodInfo.IsLinqCast())
                 return;
 
-            ITypeSymbol typeArgument = extensionMethodInfo.ReducedSymbol.TypeArguments.SingleOrDefault(throwException: false);
+            ITypeSymbol typeArgument = extensionMethodInfo.ReducedSymbol.TypeArguments.SingleOrDefault(shouldThrow: false);
 
             if (typeArgument == null)
                 return;

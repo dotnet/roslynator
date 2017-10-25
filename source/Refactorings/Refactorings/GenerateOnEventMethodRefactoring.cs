@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
 
                                         if (!containingType.ExistsMethod(
                                             $"On{eventSymbol.Name}",
-                                            methodSymbol => eventArgsSymbol.Equals(methodSymbol.Parameters.SingleOrDefault(throwException: false)?.Type)))
+                                            methodSymbol => eventArgsSymbol.Equals(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type)))
                                         {
                                             methodName = NameGenerator.Default.EnsureUniqueMemberName(methodName, containingType);
 
