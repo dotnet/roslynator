@@ -4,9 +4,9 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
-    internal static class AccessibilityExtensions
+    public static class AccessibilityExtensions
     {
-        internal static bool Is(this Accessibility accessibility, Accessibility accessibility1, Accessibility accessibility2)
+        public static bool Is(this Accessibility accessibility, Accessibility accessibility1, Accessibility accessibility2)
         {
             return accessibility == accessibility1
                 || accessibility == accessibility2;
@@ -46,7 +46,12 @@ namespace Roslynator
                 || accessibility == accessibility6;
         }
 
-        public static bool IsMoreRestrictiveThan(this Accessibility accessibility, Accessibility value)
+        internal static bool ContainsProtected(this Accessibility accessibility)
+        {
+            return accessibility.Is(Accessibility.Protected, Accessibility.ProtectedAndInternal, Accessibility.ProtectedOrInternal);
+        }
+
+        internal static bool IsMoreRestrictiveThan(this Accessibility accessibility, Accessibility value)
         {
             switch (value)
             {

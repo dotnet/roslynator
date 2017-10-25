@@ -4,15 +4,15 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static partial class MakeClassStatic
+    internal partial class MakeClassStatic
     {
-        public static partial class FooPartial
+        public partial class FooPartial
         {
         }
 
         //n
 
-        public partial class FooSealedPartial
+        public sealed partial class FooSealedPartial
         {
         }
     }

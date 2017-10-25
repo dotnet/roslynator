@@ -2,13 +2,13 @@
 
 using System;
 
-#pragma warning disable RCS1018
+#pragma warning disable RCS1016, RCS1018
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static partial class MakeClassStatic
+    internal partial class MakeClassStatic
     {
-        public static class Foo
+        public class Foo
         {
             public const string FooConst = "";
 
@@ -41,25 +41,25 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        static class Foo2
+        class Foo2
         {
             public static void Foo()
             {
             }
         }
 
-        public static partial class FooPartial
+        public partial class FooPartial
         {
             public static void Foo()
             {
             }
         }
 
-        public static partial class FooPartial
+        public partial class FooPartial
         {
         }
 
-        public static class FooSealed
+        public sealed class FooSealed
         {
             public static void Foo()
             {
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
         //n
 
-        public partial class FooSealedPartial
+        public sealed partial class FooSealedPartial
         {
         }
 
@@ -149,6 +149,30 @@ namespace Roslynator.CSharp.Analyzers.Tests
         {
             protected internal enum FooEnum
             {
+            }
+        }
+
+        public class Foo17
+        {
+            public static Foo17 operator !(Foo17 value)
+            {
+                return null;
+            }
+        }
+
+        public class Foo18
+        {
+            public static implicit operator Foo18(string value)
+            {
+                return null;
+            }
+        }
+
+        public class Foo19
+        {
+            public static explicit operator Foo19(string value)
+            {
+                return null;
             }
         }
     }
