@@ -201,6 +201,9 @@ namespace Roslynator.CSharp.Refactorings
 
             ParameterListSyntax parameterList = anonymousMethod.ParameterList;
 
+            if (parameterList == null)
+                return;
+
             SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
 
             bool isReduced = methodSymbol.MethodKind == MethodKind.ReducedExtension;
