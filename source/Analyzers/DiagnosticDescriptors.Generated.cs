@@ -717,15 +717,15 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
-        public static readonly DiagnosticDescriptor SimplifyLogicalNotExpression = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.SimplifyLogicalNotExpression, 
-            title:              "Simplify logical not expression.", 
-            messageFormat:      "Simplify logical not expression.", 
+        public static readonly DiagnosticDescriptor SimplifyLogicalNegation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.SimplifyLogicalNegation, 
+            title:              "Simplify logical negation.", 
+            messageFormat:      "Simplify logical negation.", 
             category:           DiagnosticCategories.Simplification, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyLogicalNotExpression}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyLogicalNegation}", 
             customTags:         Array.Empty<string>());
 
         public static readonly DiagnosticDescriptor RemoveUnnecessaryCaseLabel = new DiagnosticDescriptor(

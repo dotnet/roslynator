@@ -44,7 +44,8 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.AvoidNullReferenceException,
                     DiagnosticDescriptors.UseStringComparison,
                     DiagnosticDescriptors.UseNameOfOperator,
-                    DiagnosticDescriptors.RemoveRedundantCast);
+                    DiagnosticDescriptors.RemoveRedundantCast,
+                    DiagnosticDescriptors.SimplifyLogicalNegation);
            }
         }
 
@@ -214,6 +215,12 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             {
                                 switch (methodName)
                                 {
+                                    case "All":
+                                    case "Any":
+                                        {
+                                            SimplifyLogicalNegationRefactoring.Analyze(context, invocationInfo);
+                                            break;
+                                        }
                                     case "ElementAt":
                                         {
                                             if (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)

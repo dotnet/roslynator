@@ -660,12 +660,12 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLogicalNotExpression">
+  <Analyzer Identifier="SimplifyLogicalNegation">
     <Id>RCS1068</Id>
-    <Title>Simplify logical not expression.</Title>
-    <MessageFormat>Simplify logical not expression.</MessageFormat>
+    <Title>Simplify logical negation.</Title>
+    <MessageFormat>Simplify logical negation.</MessageFormat>
     <Category>Simplification</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

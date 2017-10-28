@@ -11,13 +11,13 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyLogicalNotExpressionCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyLogicalNegationCodeFixProvider))]
     [Shared]
-    public class SimplifyLogicalNotExpressionCodeFixProvider : BaseCodeFixProvider
+    public class SimplifyLogicalNegationCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLogicalNotExpression); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyLogicalNegation); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -28,9 +28,9 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Simplify '!' expression",
-                cancellationToken => SimplifyLogicalNotExpressionRefactoring.RefactorAsync(context.Document, prefixUnaryExpression, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.SimplifyLogicalNotExpression));
+                "Simplify logical negation",
+                cancellationToken => SimplifyLogicalNegationRefactoring.RefactorAsync(context.Document, prefixUnaryExpression, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.SimplifyLogicalNegation));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

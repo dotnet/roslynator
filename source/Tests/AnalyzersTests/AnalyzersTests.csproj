@@ -209,7 +209,7 @@
     <Compile Include="AvoidImplicitlyTypedArray.cs" />
     <Compile Include="AddDefaultAccessModifier.cs" />
     <Compile Include="AvoidInterpolatedStringWithNoInterpolation.cs" />
-    <Compile Include="SimplifyLogicalNotExpression.cs" />
+    <Compile Include="SimplifyLogicalNegation.cs" />
     <Compile Include="FormatDeclarationBraces.cs" />
     <Compile Include="RemoveRedundantParentheses.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

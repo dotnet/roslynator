@@ -263,7 +263,7 @@ namespace Roslynator
         }
 
         internal bool IsLinqExtensionOfIEnumerableOfTWithPredicate(
-            string name,
+            string name = null,
             bool allowImmutableArrayExtension = false)
         {
             return IsLinqExtensionOfIEnumerableOfTWithPredicate(name, parameterCount: 2, allowImmutableArrayExtension: allowImmutableArrayExtension);
@@ -276,7 +276,7 @@ namespace Roslynator
         {
             if (IsValid
                 && Symbol.IsPublic()
-                && IsName(name))
+                && IsNullOrName(name))
             {
                 INamedTypeSymbol containingType = Symbol.ContainingType;
 
