@@ -83,6 +83,12 @@
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReduceIfNestingDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderTypeParameterConstraintsDiagnosticAnalyzer.cs" />
+    <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstCodeFixProvider.cs" />
+    <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstWalker.cs" />
+    <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstWalkerCache.cs" />
+    <Compile Include="Refactorings\MakeMemberReadOnly\AssignedInfo.cs" />
+    <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalker.cs" />
+    <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalkerCache.cs" />
     <Compile Include="Refactorings\RemoveUnnecessaryElseClauseRefactoring.cs" />
     <Compile Include="ReturnTaskInsteadOfNull\ReturnTaskInsteadOfNullCodeFixProvider.cs" />
     <Compile Include="ReturnTaskInsteadOfNull\ReturnTaskInsteadOfNullDiagnosticAnalyzer.cs" />
@@ -269,12 +275,12 @@
     <Compile Include="CodeFixProviders\DeclareTypeInsideNamespaceCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveRedundantBooleanLiteralCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\BitwiseOperatorDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\LocalDeclarationStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\DocumentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\ClassDeclarationCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\DestructorDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\CombineEnumerableWhereMethodChainRefactoring.cs" />
-    <Compile Include="Refactorings\MarkLocalVariableAsConstRefactoring.cs" />
+    <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstRefactoring.cs" />
     <Compile Include="Refactorings\NonAsynchronousMethodNameShouldNotEndWithAsyncRefactoring.cs" />
     <Compile Include="Refactorings\RemoveBracesRefactoring.cs" />
     <Compile Include="Refactorings\RemoveArgumentListFromObjectCreationRefactoring.cs" />

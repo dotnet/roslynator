@@ -4,10 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 {
@@ -32,28 +30,38 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 
             for (int i = 0; i < syntaxReferences.Length; i++)
             {
-                SyntaxNode syntax = syntaxReferences[i].GetSyntax(cancellationToken);
+                var typeDeclaration = (TypeDeclarationSyntax)syntaxReferences[i].GetSyntax(cancellationToken);
 
-                SemanticModel semanticModel = context.Compilation.GetSemanticModel(syntaxReferences[i].SyntaxTree);
+                SemanticModel semanticModel = context.Compilation.GetSemanticModel(typeDeclaration.SyntaxTree);
 
-                foreach (SyntaxNode descendant in syntax.DescendantNodes())
+                foreach (MemberDeclarationSyntax memberDeclaration in typeDeclaration.Members)
                 {
-                    if (descendant.IsKind(SyntaxKind.IdentifierName))
+                    MakeMemberReadOnlyWalker walker = MakeMemberReadOnlyWalkerCache.Acquire();
+
+                    walker.Visit(memberDeclaration);
+
+                    HashSet<AssignedInfo> assigned = MakeMemberReadOnlyWalkerCache.GetAssignedAndRelease(walker);
+
+                    if (assigned != null)
                     {
-                        var identifierName = (IdentifierNameSyntax)descendant;
-
-                        ISymbol symbol = semanticModel.GetSymbol(identifierName, cancellationToken);
-
-                        if (ValidateSymbol(symbol)
-                            && symbols.Contains(symbol.OriginalDefinition))
+                        foreach (AssignedInfo info in assigned)
                         {
-                            ExpressionSyntax assignedExpression = GetAssignedExpression(descendant);
-
-                            if (assignedExpression != null
-                                && semanticModel.GetSymbol(assignedExpression, cancellationToken)?.Equals(symbol) == true
-                                && !IsAssignmentThasIsAllowedForReadOnlyMember(assignedExpression, containingType, symbol.IsStatic, semanticModel, cancellationToken))
+                            foreach (ISymbol symbol in symbols)
                             {
-                                symbols.Remove(symbol.OriginalDefinition);
+                                if (symbol.Name == info.NameText
+                                    && ((symbol.IsStatic) ? !info.IsInStaticConstructor : !info.IsInInstanceConstructor))
+                                {
+                                    ISymbol nameSymbol = semanticModel.GetSymbol(info.Name, cancellationToken);
+
+                                    if (ValidateSymbol(nameSymbol)
+                                        && symbols.Remove(nameSymbol.OriginalDefinition))
+                                    {
+                                        if (symbols.Count == 0)
+                                            return symbols;
+
+                                        break;
+                                    }
+                                }
                             }
                         }
                     }
@@ -84,82 +92,6 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                         ReportFixableSymbols(context, typeSymbol, symbols);
                 }
             }
-        }
-
-        protected virtual bool IsAssignmentThasIsAllowedForReadOnlyMember(
-            SyntaxNode node,
-            INamedTypeSymbol containingType,
-            bool isStatic,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            while (node != null)
-            {
-                switch (node.Kind())
-                {
-                    case SyntaxKind.ConstructorDeclaration:
-                        {
-                            ISymbol symbol = semanticModel.GetDeclaredSymbol(node, cancellationToken);
-
-                            return symbol?.ContainingType == containingType
-                                && symbol?.IsStatic == isStatic;
-                        }
-                    case SyntaxKind.SimpleLambdaExpression:
-                    case SyntaxKind.ParenthesizedLambdaExpression:
-                    case SyntaxKind.AnonymousMethodExpression:
-                    case SyntaxKind.LocalFunctionStatement:
-                        return false;
-                }
-
-                if (node is MemberDeclarationSyntax)
-                    return false;
-
-                node = node.Parent;
-            }
-
-            return false;
-        }
-
-        protected virtual ExpressionSyntax GetAssignedExpression(SyntaxNode node)
-        {
-            for (node = node.Parent; node != null; node = node.Parent)
-            {
-                switch (node.Kind())
-                {
-                    case SyntaxKind.SimpleAssignmentExpression:
-                    case SyntaxKind.AddAssignmentExpression:
-                    case SyntaxKind.SubtractAssignmentExpression:
-                    case SyntaxKind.MultiplyAssignmentExpression:
-                    case SyntaxKind.DivideAssignmentExpression:
-                    case SyntaxKind.ModuloAssignmentExpression:
-                    case SyntaxKind.AndAssignmentExpression:
-                    case SyntaxKind.ExclusiveOrAssignmentExpression:
-                    case SyntaxKind.OrAssignmentExpression:
-                    case SyntaxKind.LeftShiftAssignmentExpression:
-                    case SyntaxKind.RightShiftAssignmentExpression:
-                        return ((AssignmentExpressionSyntax)node).Left;
-                    case SyntaxKind.PreIncrementExpression:
-                    case SyntaxKind.PreDecrementExpression:
-                        return ((PrefixUnaryExpressionSyntax)node).Operand;
-                    case SyntaxKind.PostIncrementExpression:
-                    case SyntaxKind.PostDecrementExpression:
-                        return ((PostfixUnaryExpressionSyntax)node).Operand;
-                    case SyntaxKind.Argument:
-                        {
-                            var argument = (ArgumentSyntax)node;
-
-                            if (argument.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword, SyntaxKind.OutKeyword))
-                                return argument.Expression;
-
-                            break;
-                        }
-                    case SyntaxKind.Block:
-                    case SyntaxKind.ArrowExpressionClause:
-                        return null;
-                }
-            }
-
-            return null;
         }
     }
 }

@@ -46,6 +46,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
             if (int.TryParse("", out i))
             {
             }
+
+            string tuple1 = null;
+            string tuple2 = null;
+
+            (tuple1, tuple2) = default((string, string));
         }
     }
 }

@@ -25,6 +25,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
         public string InParenthesizedLambda { get; private set; }
         public string InAnonymousMethod { get; private set; }
         public string InLocalFunction { get; private set; }
+        public int AssignedTuple1 { get; private set; }
+        public int AssignedTuple2 { get; private set; }
 
         [DataMember]
         public string PropertyWithDataMemberAttribute { get; private set; }
@@ -47,6 +49,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private void Bar()
         {
             Assigned = null;
+            (AssignedTuple1, AssignedTuple2) = default((int, int));
         }
 
         private class BaseClassName

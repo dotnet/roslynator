@@ -23,13 +23,18 @@ namespace Roslynator.CSharp.Syntax
 
         public LocalDeclarationStatementSyntax Statement { get; }
 
-        public VariableDeclarationSyntax Declaration { get; }
-
-        public TypeSyntax Type { get; }
-
         public SyntaxTokenList Modifiers
         {
             get { return Statement?.Modifiers ?? default(SyntaxTokenList); }
+        }
+
+        public TypeSyntax Type { get; }
+
+        public VariableDeclarationSyntax Declaration { get; }
+
+        public SeparatedSyntaxList<VariableDeclaratorSyntax> Variables
+        {
+            get { return Declaration?.Variables ?? default(SeparatedSyntaxList<VariableDeclaratorSyntax>); }
         }
 
         public SyntaxToken SemicolonToken
@@ -54,6 +59,9 @@ namespace Roslynator.CSharp.Syntax
             TypeSyntax type = variableDeclaration.Type;
 
             if (!Check(type, allowMissing))
+                return Default;
+
+            if (!variableDeclaration.Variables.Any())
                 return Default;
 
             return new LocalDeclarationStatementInfo(localDeclarationStatement, variableDeclaration, type);

@@ -5,9 +5,9 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.DiagnosticAnalyzers;
 
-namespace Roslynator.CSharp.DiagnosticAnalyzers
+namespace Roslynator.CSharp.Analyzers.MarkLocalVariableAsConst
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class LocalDeclarationStatementDiagnosticAnalyzer : BaseDiagnosticAnalyzer

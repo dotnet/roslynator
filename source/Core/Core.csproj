@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="CSharp\Helpers\AllowedAccessibilityHelper.cs" />
     <Compile Include="CSharp\Helpers\ChangeAccessibilityHelper.cs" />
+    <Compile Include="CSharp\SyntaxWalkers\AssignedExpressionWalker.cs" />
     <Compile Include="CSharp\Syntax\AccessibilityInfo.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
     <Compile Include="CSharp\CodeFixes\AbstractCodeFixProvider.cs" />
