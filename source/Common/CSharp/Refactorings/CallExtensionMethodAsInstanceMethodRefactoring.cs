@@ -18,25 +18,25 @@ namespace Roslynator.CSharp.Refactorings
 
         public static CallExtensionMethodAsInstanceMethodAnalysis Analyze(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            ArgumentListSyntax argumentList = invocationExpression.ArgumentList;
+            ExpressionSyntax expression = invocationExpression
+                .ArgumentList?
+                .Arguments
+                .FirstOrDefault()?
+                .Expression?
+                .WalkDownParentheses();
 
-            if (argumentList == null)
-                return Fail;
-
-            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
-
-            if (!arguments.Any())
-                return Fail;
-
-            if (arguments[0].Expression?.IsKind(
-                SyntaxKind.IdentifierName,
-                SyntaxKind.GenericName,
-                SyntaxKind.InvocationExpression,
-                SyntaxKind.SimpleMemberAccessExpression,
-                SyntaxKind.ElementAccessExpression,
-                SyntaxKind.ConditionalAccessExpression) != true)
+            switch (expression?.Kind())
             {
-                return Fail;
+                case SyntaxKind.IdentifierName:
+                case SyntaxKind.GenericName:
+                case SyntaxKind.InvocationExpression:
+                case SyntaxKind.SimpleMemberAccessExpression:
+                case SyntaxKind.ElementAccessExpression:
+                case SyntaxKind.ConditionalAccessExpression:
+                case SyntaxKind.CastExpression:
+                    break;
+                default:
+                    return Fail;
             }
 
             if (!semanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, cancellationToken))
