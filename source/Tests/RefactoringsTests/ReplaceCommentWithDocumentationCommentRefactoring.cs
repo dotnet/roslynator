@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 
-#pragma warning disable RCS1007, RCS1016, RCS1100, RCS1106, RCS1138, RCS1163, RCS1164, RCS1176
+#pragma warning disable RCS1016, RCS1100, RCS1106, RCS1138, RCS1163, RCS1164, RCS1176, RCS1181
 
 // x
-namespace Roslynator.CSharp.Analyzers.Tests
+namespace Roslynator.CSharp.Refactorings.Tests
 {
     // x
-    public static class ReplaceCommentWithDocumentationComment
+    public static class ReplaceCommentWithDocumentationCommentRefactoring
     {
         // x
         // xx
@@ -46,9 +45,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             // x
             protected virtual void OnEventName2(EventArgs e)
             {
-                EventHandler<EventArgs> handler = EventName2;
-                if (handler != null)
-                    handler(this, e);
+                EventName2?.Invoke(this, e);
             }
 
             // x
@@ -98,7 +95,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
 
             // x
-            public interface InterfaceName<T>
+            public interface IInterfaceName<T>
             {
             }
 
@@ -114,15 +111,6 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             // x
             public delegate void DelegateName<T>(object parameter);
-
-            // n
-
-            /// <summary>
-            /// x
-            /// </summary>
-            public class Foo2
-            {
-            }
         }
     }
 }

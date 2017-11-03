@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="RemoveUnnecessaryElseClauseRefactoring.cs" />
+    <Compile Include="ReplaceCommentWithDocumentationCommentRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithIfReturnRefactoring.cs" />
     <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="AddTypeParameterRefactoring.cs" />

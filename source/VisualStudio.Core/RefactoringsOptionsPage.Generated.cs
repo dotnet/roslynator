@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.UseCSharp6DictionaryInitializer;
+        = RefactoringIdentifiers.ReplaceCommentWithDocumentationComment;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -561,6 +561,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReduceIfNesting, "Reduce if nesting", IsEnabled(RefactoringIdentifiers.ReduceIfNesting)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfElseWithIfReturn, "Replace if-else with if-return", IsEnabled(RefactoringIdentifiers.ReplaceIfElseWithIfReturn)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCSharp6DictionaryInitializer, "Use C# 6.0 dictionary initializer", IsEnabled(RefactoringIdentifiers.UseCSharp6DictionaryInitializer)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment, "Replace comment with documentation comment", IsEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment)));
         }
 
         [Browsable(false)]

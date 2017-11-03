@@ -1225,4 +1225,9 @@
       <Syntax>collection initializer</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0192" Identifier="ReplaceCommentWithDocumentationComment" Title="Replace comment with documentation comment">
+    <Syntaxes>
+      <Syntax>single-line comment</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

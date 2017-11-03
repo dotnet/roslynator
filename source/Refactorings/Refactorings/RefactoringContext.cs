@@ -280,6 +280,14 @@ namespace Roslynator.CSharp.Refactorings
                                 cancellationToken => UncommentRefactoring.RefactorAsync(Document, trivia, cancellationToken));
                         }
 
+                        if (IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment)
+                            && ReplaceCommentWithDocumentationCommentRefactoring.IsFixable(trivia))
+                        {
+                            RegisterRefactoring(
+                                ReplaceCommentWithDocumentationCommentRefactoring.Title,
+                                cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, cancellationToken));
+                        }
+
                         break;
                     }
             }

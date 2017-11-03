@@ -161,7 +161,6 @@
     <Compile Include="Refactorings\RemoveRedundantStatement\RemoveRedundantYieldBreakStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReorderNamedArgumentsRefactoring.cs" />
     <Compile Include="Refactorings\ReorderTypeParameterConstraintsRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceCommentWithDocumentationCommentRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantBaseInterfaceRefactoring.cs" />
     <Compile Include="Refactorings\UseMethodGroupInsteadOfAnonymousFunctionRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyBooleanExpressionRefactoring.cs" />

@@ -126,6 +126,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceAnyWithAllOrAllWithAny = Prefix + "0116";
         public const string ReplaceAsWithCast = Prefix + "0117";
         public const string ReplaceCastWithAs = Prefix + "0118";
+        public const string ReplaceCommentWithDocumentationComment = Prefix + "0192";
         public const string ReplaceConditionalExpressionWithExpression = Prefix + "0119";
         public const string ReplaceConstantWithField = Prefix + "0121";
         public const string ReplaceDoWithWhile = Prefix + "0123";

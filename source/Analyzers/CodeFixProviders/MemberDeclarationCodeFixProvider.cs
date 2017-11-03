@@ -153,7 +153,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace comment with documentation comment",
+                                ReplaceCommentWithDocumentationCommentRefactoring.Title,
                                 cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
