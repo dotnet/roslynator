@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!(assignmentInfo.Left is IdentifierNameSyntax identifierName))
                 return;
 
-            StatementSyntax nextStatement = assignmentInfo.ExpressionStatement.NextStatementOrDefault();
+            StatementSyntax nextStatement = assignmentInfo.Statement.NextStatementOrDefault();
 
             if (nextStatement == null)
                 return;

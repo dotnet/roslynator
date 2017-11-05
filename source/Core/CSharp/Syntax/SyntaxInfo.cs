@@ -208,6 +208,15 @@ namespace Roslynator.CSharp.Syntax
                 allowMissing);
         }
 
+        public static MemberInvocationStatementInfo MemberInvocationStatementInfo(
+            InvocationExpressionSyntax invocationExpression,
+            bool allowMissing = false)
+        {
+            return Syntax.MemberInvocationStatementInfo.Create(
+                invocationExpression,
+                allowMissing);
+        }
+
         public static NullCheckExpressionInfo NullCheckExpressionInfo(
             SyntaxNode node,
             NullCheckKind allowedKinds = NullCheckKind.All,
