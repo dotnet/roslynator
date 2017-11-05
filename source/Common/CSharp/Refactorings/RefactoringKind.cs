@@ -5,15 +5,19 @@ namespace Roslynator.CSharp.Refactorings
     internal enum RefactoringKind
     {
         IfElseToAssignmentWithCoalesceExpression,
+        IfElseToAssignmentWithExpression,
         IfElseToAssignmentWithConditionalExpression,
         IfElseToReturnWithCoalesceExpression,
         IfElseToReturnWithConditionalExpression,
         IfElseToReturnWithBooleanExpression,
+        IfElseToReturnWithExpression,
         IfElseToYieldReturnWithCoalesceExpression,
         IfElseToYieldReturnWithConditionalExpression,
         IfElseToYieldReturnWithBooleanExpression,
+        IfElseToYieldReturnWithExpression,
         IfReturnToReturnWithCoalesceExpression,
         IfReturnToReturnWithConditionalExpression,
         IfReturnToReturnWithBooleanExpression,
+        IfReturnToReturnWithExpression,
     }
 }

@@ -45,6 +45,11 @@
     <Compile Include="CSharp\Refactorings\CallExtensionMethodAsInstanceMethodAnalysis.cs" />
     <Compile Include="CSharp\Refactorings\ChangeAccessibilityRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\GenerateBaseConstructorsRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\If\IfElseToAssignmentWithExpression.cs" />
+    <Compile Include="CSharp\Refactorings\If\IfElseToReturnWithExpression.cs" />
+    <Compile Include="CSharp\Refactorings\If\IfElseToYieldReturnWithExpression.cs" />
+    <Compile Include="CSharp\Refactorings\If\IfReturnToReturnWithExpression.cs" />
+    <Compile Include="CSharp\Refactorings\If\IfToReturnWithExpression.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\IntroduceLocalVariableRefactoring.cs" />
     <Compile Include="CSharp\CodeFixes\ModifiersCodeFixRegistrator.cs" />

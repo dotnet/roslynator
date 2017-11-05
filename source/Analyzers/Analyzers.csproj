@@ -74,6 +74,7 @@
     <Compile Include="CodeFixProviders\UseStringComparisonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\MergeIfStatementWithNestedIfStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderNamedArgumentsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AsExpressionDiagnosticAnalyzer.cs" />
@@ -123,7 +124,7 @@
     <Compile Include="DiagnosticAnalyzers\UseEventArgsEmptyDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseExclusiveOrOperatorDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseIsOperatorInsteadOfAsOperatorDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\IfStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\DeclareEnumValueAsCombinationOfNamesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UsePostfixUnaryOperatorInsteadOfAssignmentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UseReadOnlyAutoPropertyDiagnosticAnalyzer.cs" />
@@ -334,13 +335,11 @@
     <Compile Include="Refactorings\CallStringConcatInsteadOfStringJoinRefactoring.cs" />
     <Compile Include="Refactorings\UseStringComparisonRefactoring.cs" />
     <Compile Include="Refactorings\UseStringIsNullOrEmptyMethodRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfStatementWithAssignmentRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SwapExpressionsInBinaryExpressionRefactoring.cs" />
     <Compile Include="DiagnosticAnalyzers\RegionDirectiveTriviaDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\MakeClassStaticRefactoring.cs" />
     <Compile Include="Refactorings\UsePostfixUnaryOperatorInsteadOfAssignmentRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceIfStatementWithReturnStatementRefactoring.cs" />
     <Compile Include="CodeFixProviders\ArgumentListCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddArgumentListToObjectCreationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddEmptyLineAfterEmbeddedStatementCodeFixProvider.cs" />
@@ -379,7 +378,6 @@
     <Compile Include="CodeFixProviders\SimplifyNestedUsingStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\MemberAccessExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AssignmentExpressionCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\ReplaceIfStatementWithReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyLogicalNegationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseExplicitTypeInsteadOfVarCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\RemoveOriginalExceptionCodeFixProvider.cs" />
@@ -450,7 +448,7 @@
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\QualifiedNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\IdentifierNameDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\IfStatementSyntaxDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\BracesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BinaryExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ObjectCreationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ModifiersDiagnosticAnalyzer.cs" />

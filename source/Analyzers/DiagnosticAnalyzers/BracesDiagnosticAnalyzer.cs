@@ -6,14 +6,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp;
-using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class IfStatementSyntaxDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class BracesDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -22,12 +21,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AddBracesToIfElse,
                     DiagnosticDescriptors.RemoveBracesFromIfElse,
-                    DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut,
-                    DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement,
-                    DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut,
-                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
-                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatementFadeOut,
-                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment);
+                    DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut);
             }
         }
 
@@ -45,17 +39,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            AnalyzeBraces(context, ifStatement);
-
-            MergeIfStatementWithNestedIfStatementRefactoring.Analyze(context, ifStatement);
-
-            ReplaceIfStatementWithReturnStatementRefactoring.Analyze(context, ifStatement);
-
-            ReplaceIfStatementWithAssignmentRefactoring.Analyze(context, ifStatement);
-        }
-
-        private static void AnalyzeBraces(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
-        {
             if (!ifStatement.IsParentKind(SyntaxKind.ElseClause)
                 && ifStatement.Else != null)
             {

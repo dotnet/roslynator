@@ -14,8 +14,10 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeIfStatementWithNestedIfStatementRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement)
+        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
+            var ifStatement = (IfStatementSyntax)context.Node;
+
             if (ifStatement.IsSimpleIf()
                 && CheckCondition(ifStatement.Condition))
             {

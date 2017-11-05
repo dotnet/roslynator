@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.Refactorings
                     var options = new IfAnalysisOptions(
                         useCoalesceExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf),
                         useConditionalExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf),
-                        useBooleanExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf));
+                        useBooleanExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf),
+                        useExpression: false);
 
                     foreach (IfRefactoring refactoring in IfRefactoring.Analyze(ifStatement, options, semanticModel, context.CancellationToken))
                     {
