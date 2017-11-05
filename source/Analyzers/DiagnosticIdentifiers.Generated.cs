@@ -200,5 +200,6 @@ namespace Roslynator.CSharp
         public const string ReorderTypeParameterConstraints = "RCS1209";
         public const string ReturnTaskInsteadOfNull = "RCS1210";
         public const string RemoveUnnecessaryElseClause = "RCS1211";
+        public const string RemoveRedundantAssignment = "RCS1212";
     }
 }

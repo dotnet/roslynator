@@ -2167,5 +2167,16 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveUnnecessaryElseClause}", 
             customTags:         Array.Empty<string>());
 
+        public static readonly DiagnosticDescriptor RemoveRedundantAssignment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.RemoveRedundantAssignment, 
+            title:              "Remove redundant assignment.", 
+            messageFormat:      "Remove redundant assignment.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveRedundantAssignment}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

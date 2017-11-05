@@ -250,6 +250,14 @@ namespace Roslynator.CSharp.Syntax
         }
 
         public static SimpleAssignmentStatementInfo SimpleAssignmentStatementInfo(
+            AssignmentExpressionSyntax assignmentExpression,
+            bool walkDownParentheses = true,
+            bool allowMissing = false)
+        {
+            return Syntax.SimpleAssignmentStatementInfo.Create(assignmentExpression, walkDownParentheses, allowMissing);
+        }
+
+        public static SimpleAssignmentStatementInfo SimpleAssignmentStatementInfo(
             ExpressionStatementSyntax expressionStatement,
             bool walkDownParentheses = true,
             bool allowMissing = false)
