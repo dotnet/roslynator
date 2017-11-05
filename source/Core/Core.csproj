@@ -53,7 +53,6 @@
     <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="CSharp\Syntax\AsExpressionInfo.cs" />
     <Compile Include="CSharp\Helpers\LogicalNegationHelper.cs" />
-    <Compile Include="CSharp\Syntax\ConditionalReturnStatementInfo.cs" />
     <Compile Include="CSharp\Syntax\OverrideInfo.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringIdentifierSet.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringSettings.cs" />

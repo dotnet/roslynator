@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Helpers
                     }
                 case SyntaxKind.StructDeclaration:
                     {
-                        if (accessibility.Is(Accessibility.Protected, Accessibility.ProtectedOrInternal))
+                        if (accessibility.ContainsProtected())
                             return false;
 
                         break;
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Helpers
 
         private static bool CheckProtectedOrProtectedInternalInStaticOrSealedClass(SyntaxNode node, Accessibility accessibility)
         {
-            return !accessibility.Is(Accessibility.Protected, Accessibility.ProtectedOrInternal)
+            return !accessibility.ContainsProtected()
                 || (node.Parent as ClassDeclarationSyntax)?
                     .Modifiers
                     .ContainsAny(SyntaxKind.StaticKeyword, SyntaxKind.SealedKeyword) != true;
