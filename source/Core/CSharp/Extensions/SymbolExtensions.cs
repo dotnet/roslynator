@@ -11,17 +11,11 @@ namespace Roslynator.CSharp
 {
     public static class SymbolExtensions
     {
-        private static SymbolDisplayFormat TypeSymbolDisplayFormat { get; } = new SymbolDisplayFormat(
+        private static SymbolDisplayFormat DefaultFormat { get; } = new SymbolDisplayFormat(
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
-
-        private static SymbolDisplayFormat NamespaceSymbolDisplayFormat { get; } = new SymbolDisplayFormat(
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
-            globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining,
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         #region INamespaceOrTypeSymbol
         internal static TypeSyntax ToTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SymbolDisplayFormat format = null)
@@ -66,7 +60,7 @@ namespace Roslynator.CSharp
 
             ThrowIfExplicitDeclarationIsNotSupported(namespaceSymbol);
 
-            return ParseTypeName(namespaceSymbol.ToDisplayString(format ?? NamespaceSymbolDisplayFormat));
+            return ParseTypeName(namespaceSymbol.ToDisplayString(format ?? DefaultFormat));
         }
 
         public static TypeSyntax ToMinimalTypeSyntax(this INamespaceSymbol namespaceSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
@@ -79,7 +73,7 @@ namespace Roslynator.CSharp
 
             ThrowIfExplicitDeclarationIsNotSupported(namespaceSymbol);
 
-            return ParseTypeName(namespaceSymbol.ToMinimalDisplayString(semanticModel, position, format ?? NamespaceSymbolDisplayFormat));
+            return ParseTypeName(namespaceSymbol.ToMinimalDisplayString(semanticModel, position, format ?? DefaultFormat));
         }
 
         private static void ThrowIfExplicitDeclarationIsNotSupported(INamespaceSymbol namespaceSymbol)
@@ -133,7 +127,7 @@ namespace Roslynator.CSharp
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            format = format ?? TypeSymbolDisplayFormat;
+            format = format ?? DefaultFormat;
 
             ThrowIfExplicitDeclarationIsNotSupported(typeSymbol);
 
@@ -148,7 +142,7 @@ namespace Roslynator.CSharp
             if (semanticModel == null)
                 throw new ArgumentNullException(nameof(semanticModel));
 
-            format = format ?? TypeSymbolDisplayFormat;
+            format = format ?? DefaultFormat;
 
             ThrowIfExplicitDeclarationIsNotSupported(typeSymbol);
 
