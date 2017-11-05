@@ -1379,6 +1379,26 @@ namespace Roslynator.CSharp
                 default(ArrowExpressionClauseSyntax));
         }
 
+        public static MethodDeclarationSyntax MethodDeclaration(
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken identifier,
+            ParameterListSyntax parameterList,
+            ArrowExpressionClauseSyntax expressionBody)
+        {
+            return SyntaxFactory.MethodDeclaration(
+                default(SyntaxList<AttributeListSyntax>),
+                modifiers,
+                returnType,
+                default(ExplicitInterfaceSpecifierSyntax),
+                identifier,
+                default(TypeParameterListSyntax),
+                parameterList,
+                default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+                default(BlockSyntax),
+                expressionBody);
+        }
+
         public static PropertyDeclarationSyntax PropertyDeclaration(
             SyntaxTokenList modifiers,
             TypeSyntax type,

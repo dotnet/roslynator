@@ -85,5 +85,8 @@ namespace Roslynator.CSharp.CodeFixes
         public const string ReplaceBreakWithContinue = Prefix + "0079";
         public const string ChangeMemberTypeAccordingToReturnExpression = Prefix + "0080";
         public const string ReturnDefaultValue = Prefix + "0081";
+        public const string DefineMatchingOperator = Prefix + "0082";
+        public const string DefineObjectEquals = Prefix + "0083";
+        public const string DefineObjectGetHashCode = Prefix + "0084";
     }
 }

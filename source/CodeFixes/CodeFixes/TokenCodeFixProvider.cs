@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperandOfType,
                     CompilerDiagnosticIdentifiers.PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid,
-                    CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired,
-                    CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter);
+                    CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter,
+                    CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired);
             }
         }
 
@@ -35,8 +35,8 @@ namespace Roslynator.CSharp.CodeFixes
             if (!Settings.IsAnyCodeFixEnabled(
                 CodeFixIdentifiers.AddArgumentList,
                 CodeFixIdentifiers.ReorderModifiers,
-                CodeFixIdentifiers.ReturnDefaultValue,
-                CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue,
+                CodeFixIdentifiers.ReturnDefaultValue))
             {
                 return;
             }
@@ -95,6 +95,27 @@ namespace Roslynator.CSharp.CodeFixes
                                 break;
 
                             ModifiersCodeFixRegistrator.MoveModifier(context, diagnostic, token.Parent, token);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                                break;
+
+                            if (!(token.Parent is ParameterSyntax parameter))
+                                break;
+
+                            ExpressionSyntax value = parameter.Default?.Value;
+
+                            if (value == null)
+                                break;
+
+                            if (value.Kind() != SyntaxKind.NullLiteralExpression)
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            CodeFixRegistrator.ReplaceNullWithDefaultValue(context, diagnostic, value, semanticModel);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired:
@@ -167,27 +188,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter:
-                        {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
-                                break;
-
-                            if (!(token.Parent is ParameterSyntax parameter))
-                                break;
-
-                            ExpressionSyntax value = parameter.Default?.Value;
-
-                            if (value == null)
-                                break;
-
-                            if (value.Kind() != SyntaxKind.NullLiteralExpression)
-                                break;
-
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            CodeFixRegistrator.ReplaceNullWithDefaultValue(context, diagnostic, value, semanticModel);
                             break;
                         }
                 }

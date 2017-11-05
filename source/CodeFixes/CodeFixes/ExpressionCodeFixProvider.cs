@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
-                )
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList))
             {
                 return;
             }
@@ -225,43 +225,59 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                             else if (expression.Parent is ExpressionStatementSyntax expressionStatement)
                             {
-                                if (!Settings.IsAnyCodeFixEnabled(
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList)
+                                    && expression.IsKind(
+                                        SyntaxKind.IdentifierName,
+                                        SyntaxKind.SimpleMemberAccessExpression))
+                                {
+                                    SyntaxNode invocationExpression = SyntaxFactory.InvocationExpression(expression);
+
+                                    if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) != null)
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Add argument list",
+                                            cancellationToken => context.Document.ReplaceNodeAsync(expression, invocationExpression, cancellationToken),
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddArgumentList));
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
+                                }
+
+                                if (Settings.IsAnyCodeFixEnabled(
                                     CodeFixIdentifiers.IntroduceLocalVariable,
                                     CodeFixIdentifiers.IntroduceField))
                                 {
-                                    break;
-                                }
+                                    if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() != false)
+                                        break;
 
-                                if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() != false)
-                                    break;
+                                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+                                    if (typeSymbol?.IsErrorType() != false)
+                                        break;
 
-                                if (typeSymbol?.IsErrorType() != false)
-                                    break;
+                                    if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable)
+                                        && !expressionStatement.IsEmbedded())
+                                    {
+                                        bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
+                                            && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
 
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable)
-                                    && !expressionStatement.IsEmbedded())
-                                {
-                                    bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
-                                        && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
+                                        CodeAction codeAction = CodeAction.Create(
+                                            IntroduceLocalVariableRefactoring.GetTitle(expression),
+                                            cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken),
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceLocalVariable));
 
-                                    CodeAction codeAction = CodeAction.Create(
-                                        IntroduceLocalVariableRefactoring.GetTitle(expression),
-                                        cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken),
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceLocalVariable));
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
 
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
+                                    if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceField))
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            $"Introduce field for '{expression}'",
+                                            cancellationToken => IntroduceFieldRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, semanticModel, cancellationToken),
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceField));
 
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceField))
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        $"Introduce field for '{expression}'",
-                                        cancellationToken => IntroduceFieldRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, semanticModel, cancellationToken),
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceField));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
                                 }
                             }
 

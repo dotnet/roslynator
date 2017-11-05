@@ -45,6 +45,7 @@
     <DelaySign>false</DelaySign>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeFixes\AddArgumentListToObjectCreationCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBodyCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBracesToDeclarationOrLabeledStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBreakStatementToSwitchSectionCodeFixProvider.cs" />
@@ -63,7 +64,8 @@
     <Compile Include="CodeFixes\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseListCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ModifiersCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\TypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\OperatorDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\TypeDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeDoesNotContainDefinitionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterConstraintClauseCodeFixProvider.cs" />

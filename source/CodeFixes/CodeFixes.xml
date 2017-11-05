@@ -205,8 +205,10 @@
   </CodeFix>
   <CodeFix Id="RCF0039" Identifier="AddArgumentList" Title="Add argument list">
     <FixableDiagnosticIds>
-      <Id>CS0428</Id>
       <Id>CS0023</Id>
+      <Id>CS0428</Id>
+      <Id>CS0201</Id>
+      <Id>CS1526</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0040" Identifier="InitializeLocalVariableWithDefaultValue" Title="Initialize local variable with default value">
@@ -451,6 +453,22 @@
   <CodeFix Id="RCF0081" Identifier="ReturnDefaultValue" Title="Return default value">
     <FixableDiagnosticIds>
       <Id>CS0126</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0082" Identifier="DefineMatchingOperator" Title="Define matching operator">
+    <FixableDiagnosticIds>
+      <Id>CS0216</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0083" Identifier="DefineObjectEquals" Title="Define object.Equals">
+    <FixableDiagnosticIds>
+      <Id>CS0660</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0084" Identifier="DefineObjectGetHashCode" Title="Define object.GetHashCode">
+    <FixableDiagnosticIds>
+      <Id>CS0659</Id>
+      <Id>CS0661</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

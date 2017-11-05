@@ -38,6 +38,7 @@
   <Diagnostic Id="CS0192" Identifier="ReadOnlyFieldCannotBeUsedAsRefOrOutValue" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0192" />
   <Diagnostic Id="CS0201" Identifier="OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201" />
   <Diagnostic Id="CS0214" Identifier="PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0214" />
+  <Diagnostic Id="CS0216" Identifier="OperatorRequiresMatchingOperatorToAlsoBeDefined" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0216" />
   <Diagnostic Id="CS0219" Identifier="VariableIsAssignedButItsValueIsNeverUsed" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0219" />
   <Diagnostic Id="CS0221" Identifier="ConstantValueCannotBeConverted" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0221" />
   <Diagnostic Id="CS0225" Identifier="ParamsParameterMustBeSingleDimensionalArray" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225" />
@@ -73,6 +74,9 @@
   <Diagnostic Id="CS0592" Identifier="AttributeIsNotValidOnThisDeclarationType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0592" />
   <Diagnostic Id="CS0621" Identifier="VirtualOrAbstractmembersCannotBePrivate " HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0621" />
   <Diagnostic Id="CS0628" Identifier="NewProtectedMemberDeclaredInSealedClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628" />
+  <Diagnostic Id="CS0659" Identifier="TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0659" />
+  <Diagnostic Id="CS0660" Identifier="TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0660" />
+  <Diagnostic Id="CS0661" Identifier="TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0661" />
   <Diagnostic Id="CS0678" Identifier="FieldCanNotBeBothVolatileAndReadOnly" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0678" />
   <Diagnostic Id="CS0693" Identifier="TypeParameterHasSameNameAsTypeParameterFromOuterType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0693" />
   <Diagnostic Id="CS0708" Identifier="CannotDeclareInstanceMembersInStaticClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0708" />
@@ -96,8 +100,9 @@
   <Diagnostic Id="CS1100" Identifier="MethodHasParameterModifierThisWhichIsNotOnFirstParameter" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100" />
   <Diagnostic Id="CS1105" Identifier="ExtensionMethodMustBeStatic" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105" />
   <Diagnostic Id="CS1106" Identifier="ExtensionMethodMustBeDefinedInNonGenericStaticClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106" />
-  <Diagnostic Id="CS1522" Identifier="EmptySwitchBlock" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522" />
   <Diagnostic Id="CS1503" Identifier="CannotConvertArgumentType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1503" />
+  <Diagnostic Id="CS1522" Identifier="EmptySwitchBlock" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522" />
+  <Diagnostic Id="CS1526" Identifier="NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526" />
   <Diagnostic Id="CS1527" Identifier="ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527" />
   <Diagnostic Id="CS1591" Identifier="MissingXmlCommentForPubliclyVisibleTypeOrMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591" />
   <Diagnostic Id="CS1609" Identifier="ModifiersCannotBePlacedOnEventAccessorDeclarations" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609" />

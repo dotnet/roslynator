@@ -44,6 +44,7 @@ namespace Roslynator.CSharp
         public const string ReadOnlyFieldCannotBeUsedAsRefOrOutValue = "CS0192";
         public const string OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement = "CS0201";
         public const string PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext = "CS0214";
+        public const string OperatorRequiresMatchingOperatorToAlsoBeDefined = "CS0216";
         public const string VariableIsAssignedButItsValueIsNeverUsed = "CS0219";
         public const string ConstantValueCannotBeConverted = "CS0221";
         public const string ParamsParameterMustBeSingleDimensionalArray = "CS0225";
@@ -79,6 +80,9 @@ namespace Roslynator.CSharp
         public const string AttributeIsNotValidOnThisDeclarationType = "CS0592";
         public const string VirtualOrAbstractmembersCannotBePrivate  = "CS0621";
         public const string NewProtectedMemberDeclaredInSealedClass = "CS0628";
+        public const string TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode = "CS0659";
+        public const string TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals = "CS0660";
+        public const string TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode = "CS0661";
         public const string FieldCanNotBeBothVolatileAndReadOnly = "CS0678";
         public const string TypeParameterHasSameNameAsTypeParameterFromOuterType = "CS0693";
         public const string CannotDeclareInstanceMembersInStaticClass = "CS0708";
@@ -104,6 +108,7 @@ namespace Roslynator.CSharp
         public const string ExtensionMethodMustBeDefinedInNonGenericStaticClass = "CS1106";
         public const string CannotConvertArgumentType = "CS1503";
         public const string EmptySwitchBlock = "CS1522";
+        public const string NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType = "CS1526";
         public const string ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal = "CS1527";
         public const string MissingXmlCommentForPubliclyVisibleTypeOrMember = "CS1591";
         public const string ModifiersCannotBePlacedOnEventAccessorDeclarations = "CS1609";
