@@ -339,27 +339,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static TypeSyntax GetSpecialTypeSyntax(this SemanticModel semanticModel, SpecialType specialType, SymbolDisplayFormat format = null, bool simplifiable = true)
-        {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return GetSpecialTypeSyntax(semanticModel.Compilation, specialType, format, simplifiable);
-        }
-
-        public static TypeSyntax GetSpecialTypeSyntax(this Compilation compilation, SpecialType specialType, SymbolDisplayFormat format = null, bool simplifiable = true)
-        {
-            if (compilation == null)
-                throw new ArgumentNullException(nameof(compilation));
-
-            TypeSyntax type = compilation.GetSpecialType(specialType).ToTypeSyntax(format);
-
-            if (simplifiable)
-                type = type.WithSimplifierAnnotation();
-
-            return type;
-        }
-
         internal static MethodDeclarationSyntax GetOtherPart(
             this SemanticModel semanticModel,
             MethodDeclarationSyntax methodDeclaration,

@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -11,15 +10,14 @@ namespace Roslynator.CSharp
     {
         public static MethodDeclarationSyntax ObjectEqualsMethodDeclaration(
             TypeSyntax type,
-            SemanticModel semanticModel = null,
             string parameterName = "obj",
             string localName = "other")
         {
             return MethodDeclaration(
                 Modifiers.PublicOverride(),
-                BoolType(semanticModel),
+                BoolType(),
                 Identifier("Equals"),
-                ParameterList(Parameter(ObjectType(semanticModel), parameterName)),
+                ParameterList(Parameter(ObjectType(), parameterName)),
                 Block(
                     IfNotReturnFalse(
                         IsPatternExpression(
@@ -30,36 +28,14 @@ namespace Roslynator.CSharp
                     ThrowNewNotImplementedExceptionStatement()));
         }
 
-        public static MethodDeclarationSyntax ObjectGetHashCodeMethodDeclaration(SemanticModel semanticModel = null)
+        public static MethodDeclarationSyntax ObjectGetHashCodeMethodDeclaration()
         {
             return MethodDeclaration(
                 Modifiers.PublicOverride(),
-                IntType(semanticModel),
+                IntType(),
                 "GetHashCode",
                 ParameterList(),
                 Block(ThrowNewNotImplementedExceptionStatement()));
-        }
-
-        private static TypeSyntax ObjectType(SemanticModel semanticModel = null)
-        {
-            return GetSpecialType(SpecialType.System_Object, semanticModel);
-        }
-
-        private static TypeSyntax BoolType(SemanticModel semanticModel = null)
-        {
-            return GetSpecialType(SpecialType.System_Boolean, semanticModel);
-        }
-
-        private static TypeSyntax IntType(SemanticModel semanticModel = null)
-        {
-            return GetSpecialType(SpecialType.System_Int32, semanticModel);
-        }
-
-        private static TypeSyntax GetSpecialType(SpecialType specialType, SemanticModel semanticModel = null)
-        {
-            return (semanticModel != null)
-                ? semanticModel.GetSpecialTypeSyntax(specialType)
-                : CSharpFactory.BoolType();
         }
 
         #region If

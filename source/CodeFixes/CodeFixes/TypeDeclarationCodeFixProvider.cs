@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, typeDeclaration.Identifier.SpanStart);
 
-                                    MethodDeclarationSyntax methodDeclaration = ObjectEqualsMethodDeclaration(type, semanticModel);
+                                    MethodDeclarationSyntax methodDeclaration = ObjectEqualsMethodDeclaration(type);
 
                                     TypeDeclarationSyntax newNode = typeDeclaration.InsertMember(methodDeclaration, MemberDeclarationComparer.ByKind);
 
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            MethodDeclarationSyntax methodDeclaration = ObjectGetHashCodeMethodDeclaration(semanticModel);
+                            MethodDeclarationSyntax methodDeclaration = ObjectGetHashCodeMethodDeclaration();
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Override object.GetHashCode",
