@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable CS0219, RCS1176
+#pragma warning disable CS0162, CS0219, RCS1118, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -12,27 +12,23 @@ namespace Roslynator.CSharp.Analyzers.Tests
             bool g = false;
 
             f = false;
-            f = g;
-
-            g = false;
-            return g;
+            return f;
         }
 
-        private static bool Foo(bool f, bool g)
+        private static bool Foo(bool f)
         {
             f = false;
-            f = g;
-
-            g = false;
-            return g;
+            return f;
         }
 
         //n
 
         private static bool Foo(out bool f, out bool g)
         {
+            g = false;
+
             f = false;
-            f = false;
+            return f;
 
             g = false;
             return g;

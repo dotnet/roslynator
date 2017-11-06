@@ -1,15 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
-using System.Collections.Generic;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -41,7 +40,13 @@ namespace Roslynator.CSharp.Refactorings
             if (nextStatement.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
-            if (!IsFixableNextStatement(nextStatement, identifierName))
+            if (!(nextStatement is ReturnStatementSyntax returnStatement))
+                return;
+
+            if (!(returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName2))
+                return;
+
+            if (!string.Equals(identifierName.Identifier.ValueText, identifierName2.Identifier.ValueText, System.StringComparison.Ordinal))
                 return;
 
             ISymbol symbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken);
@@ -68,36 +73,6 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool IsFixableNextStatement(StatementSyntax statement, IdentifierNameSyntax identifierName)
-        {
-            switch (statement.Kind())
-            {
-                case SyntaxKind.ExpressionStatement:
-                    {
-                        SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo((ExpressionStatementSyntax)statement);
-
-                        if (!assignmentInfo.Success)
-                            return false;
-
-                        if (!(assignmentInfo.Left is IdentifierNameSyntax identifierName2))
-                            return false;
-
-                        return identifierName.Identifier.ValueText == identifierName2.Identifier.ValueText;
-                    }
-                case SyntaxKind.ReturnStatement:
-                    {
-                        var returnStatement = (ReturnStatementSyntax)statement;
-
-                        if (!(returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName2))
-                            return false;
-
-                        return identifierName.Identifier.ValueText == identifierName2.Identifier.ValueText;
-                    }
-            }
-
-            return false;
-        }
-
         public static Task<Document> RefactorAsync(
             Document document,
             AssignmentExpressionSyntax assignmentExpression,
@@ -109,27 +84,26 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
-            StatementSyntax nextStatement = statement.NextStatementOrDefault();
-
             int index = statements.IndexOf(statement);
 
             statements = statements.RemoveAt(index);
 
-            if (statement is ReturnStatementSyntax returnStatement)
-                nextStatement = returnStatement.WithExpression(assignmentExpression.Left.WithTriviaFrom(returnStatement.Expression));
+            var returnStatement = (ReturnStatementSyntax)statement.NextStatementOrDefault();
 
             IEnumerable<SyntaxTrivia> trivia = statementsInfo
                 .Node
-                .DescendantTrivia(TextSpan.FromBounds(statement.SpanStart, nextStatement.SpanStart))
+                .DescendantTrivia(TextSpan.FromBounds(statement.SpanStart, returnStatement.SpanStart))
                 .Where(f => !f.IsWhitespaceOrEndOfLineTrivia());
 
             trivia = statement
                 .GetLeadingTrivia()
                 .Concat(trivia);
 
-            nextStatement = nextStatement.WithLeadingTrivia(trivia);
+            returnStatement = returnStatement
+                .WithExpression(assignmentExpression.Right.WithTriviaFrom(returnStatement.Expression))
+                .WithLeadingTrivia(trivia);
 
-            statements = statements.ReplaceAt(index, nextStatement);
+            statements = statements.ReplaceAt(index, returnStatement);
 
             return document.ReplaceStatementsAsync(statementsInfo, statements, cancellationToken);
         }
