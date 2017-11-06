@@ -1634,9 +1634,9 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        internal static MemberDeclarationSyntax WithNewSingleLineDocumentationComment(
-            this MemberDeclarationSyntax member,
-            DocumentationCommentGeneratorSettings settings = null)
+        internal static TMember WithNewSingleLineDocumentationComment<TMember>(
+            this TMember member,
+            DocumentationCommentGeneratorSettings settings = null) where TMember : MemberDeclarationSyntax
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -1654,11 +1654,11 @@ namespace Roslynator.CSharp
             return member.WithLeadingTrivia(newLeadingTrivia);
         }
 
-        internal static MemberDeclarationSyntax WithBaseOrNewSingleLineDocumentationComment(
-            this MemberDeclarationSyntax member,
+        internal static TMember WithBaseOrNewSingleLineDocumentationComment<TMember>(
+            this TMember member,
             SemanticModel semanticModel,
             DocumentationCommentGeneratorSettings settings = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken)) where TMember : MemberDeclarationSyntax
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -1674,10 +1674,10 @@ namespace Roslynator.CSharp
             return WithNewSingleLineDocumentationComment(member, settings);
         }
 
-        public static MemberDeclarationSyntax WithDocumentationComment(
-            this MemberDeclarationSyntax member,
+        public static TMember WithDocumentationComment<TMember>(
+            this TMember member,
             SyntaxTrivia comment,
-            bool indent = false)
+            bool indent = false) where TMember : MemberDeclarationSyntax
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));

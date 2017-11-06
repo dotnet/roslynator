@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Documentation;
 using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -37,7 +38,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             foreach (AnalyzerDescriptor analyzer in analyzers)
             {
-                yield return FieldDeclaration(
+                FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
                     Modifiers.PublicStaticReadOnly(),
                     IdentifierName("DiagnosticDescriptor"),
                     analyzer.Identifier,
@@ -74,6 +75,18 @@ namespace Roslynator.CodeGeneration.CSharp
                                     ? SimpleMemberAccessExpression(IdentifierName("WellKnownDiagnosticTags"), IdentifierName("Unnecessary"))
                                     : ParseExpression("Array.Empty<string>()"))
                             ))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+
+                if (!analyzer.IsObsolete)
+                {
+                    var settings = new DocumentationCommentGeneratorSettings(
+                        comments: new string[] { analyzer.Id },
+                        indent: "        ",
+                        singleLineSummary: true);
+
+                    fieldDeclaration = fieldDeclaration.WithNewSingleLineDocumentationComment(settings);
+                }
+
+                yield return fieldDeclaration;
 
                 if (analyzer.SupportsFadeOutAnalyzer)
                 {
