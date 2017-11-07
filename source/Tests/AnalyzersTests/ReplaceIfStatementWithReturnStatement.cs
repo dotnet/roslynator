@@ -101,20 +101,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 yield return true;
             }
+
+            if (condition)
+                yield return false;
+            else
+                yield return true;
         }
 
         private static Base IfElseToReturn(Derived x)
         {
             if (x != null)
-            {
-                return x;
-            }
-            else
-            {
-                return null;
-            }
-
-            if (null != x)
             {
                 return x;
             }
@@ -129,15 +125,6 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 return null;
 
             if (x == null)
-            {
-                return null;
-            }
-            else
-            {
-                return x;
-            }
-
-            if (null == x)
             {
                 return null;
             }
@@ -266,6 +253,62 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 return false;
             }
+            else
+            {
+                return false;
+            }
+
+            if (condition)
+            {
+                return true;
+            }
+
+            return true;
+
+            if (condition)
+            {
+                return false;
+            }
+
+            return false;
+
+            if (condition)
+            {
+                return false;
+            }
+
+            if (condition)
+            {
+                return false;
+            }
+
+            return true;
+
+            if (condition)
+                return false;
+
+            if (condition)
+                return false;
+
+            return true;
+
+            if (condition)
+            {
+                return true;
+            }
+
+            if (condition)
+            {
+                return true;
+            }
+
+            return false;
+
+            if (condition)
+                return true;
+
+            if (condition)
+                return true;
 
             return false;
         }

@@ -4,7 +4,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
@@ -12,11 +11,9 @@ namespace Roslynator.CSharp.Refactorings.If
     {
         public IfElseToAssignmentWithExpression(
             IfStatementSyntax ifStatement,
-            ExpressionSyntax left,
-            ExpressionSyntax right) : base(ifStatement)
+            ExpressionStatementSyntax expressionStatement) : base(ifStatement)
         {
-            Left = left;
-            Right = right;
+            ExpressionStatement = expressionStatement;
         }
 
         public override RefactoringKind Kind
@@ -29,13 +26,11 @@ namespace Roslynator.CSharp.Refactorings.If
             get { return "Replace if-else with assignment"; }
         }
 
-        public ExpressionSyntax Left { get; }
-
-        public ExpressionSyntax Right { get; }
+        public ExpressionStatementSyntax ExpressionStatement { get; }
 
         public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionStatementSyntax newNode = SimpleAssignmentStatement(Left.WithoutTrivia(), Right.WithoutTrivia())
+            ExpressionStatementSyntax newNode = ExpressionStatement
                 .WithTriviaFrom(IfStatement)
                 .WithFormatterAnnotation();
 

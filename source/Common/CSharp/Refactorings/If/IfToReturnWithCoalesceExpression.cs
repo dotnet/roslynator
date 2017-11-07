@@ -4,45 +4,58 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.If
 {
-    internal abstract class IfToReturnWithCoalesceExpression : IfRefactoring
+    internal class IfToReturnWithCoalesceExpression : IfRefactoring
     {
-        protected IfToReturnWithCoalesceExpression(
+        public IfToReturnWithCoalesceExpression(
             IfStatementSyntax ifStatement,
             ExpressionSyntax left,
-            ExpressionSyntax right) : base(ifStatement)
+            ExpressionSyntax right,
+            bool isYield) : base(ifStatement)
         {
             Left = left;
             Right = right;
+            IsYield = isYield;
         }
 
         public ExpressionSyntax Left { get; }
 
         public ExpressionSyntax Right { get; }
 
-        public abstract bool IsYield { get; }
+        public bool IsYield { get; }
 
-        protected abstract StatementSyntax CreateStatement(ExpressionSyntax expression);
-
-        public static IfToReturnWithCoalesceExpression Create(IfStatementSyntax ifStatement, ExpressionSyntax expression1, ExpressionSyntax expression2, bool isYield)
+        public override RefactoringKind Kind
         {
-            if (isYield)
+            get
             {
-                return new IfElseToYieldReturnWithCoalesceExpression(ifStatement, expression1, expression2);
+                if (IsYield)
+                    return RefactoringKind.IfElseToYieldReturnWithCoalesceExpression;
+
+                return (IfStatement.IsSimpleIf())
+                    ? RefactoringKind.IfReturnToReturnWithCoalesceExpression
+                    : RefactoringKind.IfElseToReturnWithCoalesceExpression;
+            }
+        }
+
+        public override string Title
+        {
+            get { return "Use coalesce expression"; }
+        }
+
+        protected StatementSyntax CreateStatement(ExpressionSyntax expression)
+        {
+            if (IsYield)
+            {
+                return CSharpFactory.YieldReturnStatement(expression);
             }
             else
             {
-                if (ifStatement.IsSimpleIf())
-                {
-                    return new IfReturnToReturnWithCoalesceExpression(ifStatement, expression1, expression2);
-                }
-                else
-                {
-                    return new IfElseToReturnWithCoalesceExpression(ifStatement, expression1, expression2);
-                }
+                return SyntaxFactory.ReturnStatement(expression);
             }
         }
 
@@ -50,28 +63,49 @@ namespace Roslynator.CSharp.Refactorings.If
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(semanticModel, cancellationToken);
-
-            StatementSyntax newNode = CreateStatement(coalesceExpression)
-                .WithTriviaFrom(IfStatement)
-                .WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(IfStatement, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        protected BinaryExpressionSyntax CreateCoalesceExpression(SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
             int position = IfStatement.SpanStart;
 
-            return RefactoringHelper.CreateCoalesceExpression(
-                GetTargetType(position, semanticModel, cancellationToken),
+            ITypeSymbol targetType = GetTargetType(position, semanticModel, cancellationToken);
+
+            BinaryExpressionSyntax coalesceExpression = RefactoringHelper.CreateCoalesceExpression(
+                targetType,
                 Left.WithoutTrivia(),
                 Right.WithoutTrivia(),
                 position,
                 semanticModel);
+
+            StatementSyntax statement = CreateStatement(coalesceExpression);
+
+            if (IfStatement.IsSimpleIf())
+            {
+                    StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(IfStatement);
+
+                    SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
+
+                    int index = statements.IndexOf(IfStatement);
+
+                    StatementSyntax newNode = statement
+                        .WithLeadingTrivia(IfStatement.GetLeadingTrivia())
+                        .WithTrailingTrivia(statements[index + 1].GetTrailingTrivia())
+                        .WithFormatterAnnotation();
+
+                    SyntaxList<StatementSyntax> newStatements = statements
+                        .RemoveAt(index)
+                        .ReplaceAt(index, newNode);
+
+                    return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                StatementSyntax newNode = statement
+                    .WithTriviaFrom(IfStatement)
+                    .WithFormatterAnnotation();
+
+                return await document.ReplaceNodeAsync(IfStatement, newNode, cancellationToken).ConfigureAwait(false);
+            }
         }
 
-        protected ITypeSymbol GetTargetType(int position, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private ITypeSymbol GetTargetType(int position, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             IMethodSymbol methodSymbol = semanticModel.GetEnclosingSymbol<IMethodSymbol>(position, cancellationToken);
 

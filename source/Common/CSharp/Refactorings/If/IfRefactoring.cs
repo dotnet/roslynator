@@ -156,7 +156,18 @@ namespace Roslynator.CSharp.Refactorings.If
                     && kind1 != kind2)
                 {
                     if (options.UseExpression)
-                        return IfToReturnWithExpression.Create(ifStatement, condition, isYield).ToImmutableArray();
+                    {
+                        if (ifStatement.IsSimpleIf()
+                            && (ifStatement.PreviousStatementOrDefault() is IfStatementSyntax previousIf)
+                            && previousIf.IsSimpleIf()
+                            && (previousIf.GetSingleStatementOrDefault() is ReturnStatementSyntax returnStatement)
+                            && returnStatement.Expression?.WalkDownParentheses().Kind() == kind1)
+                        {
+                            return Empty;
+                        }
+
+                        return new IfToReturnWithExpression(ifStatement, condition, isYield, negate: kind1 == SyntaxKind.FalseLiteralExpression).ToImmutableArray();
+                    }
 
                     return Empty;
                 }
@@ -237,11 +248,11 @@ namespace Roslynator.CSharp.Refactorings.If
                 && expression2.Kind() == SyntaxKind.NullLiteralExpression)
             {
                 if (options.UseExpression)
-                    return IfToReturnWithExpression.Create(ifStatement, expression1, isYield);
+                    return new IfToReturnWithExpression(ifStatement, expression1, isYield);
             }
             else if (options.UseCoalesceExpression)
             {
-                return IfToReturnWithCoalesceExpression.Create(ifStatement, expression1, expression2, isYield);
+                return new IfToReturnWithCoalesceExpression(ifStatement, expression1, expression2, isYield);
             }
 
             return null;
@@ -285,7 +296,7 @@ namespace Roslynator.CSharp.Refactorings.If
                     && kind1 != kind2)
                 {
                     if (options.UseExpression)
-                        return new IfElseToAssignmentWithExpression(ifStatement, left1, condition).ToImmutableArray();
+                        return new IfElseToAssignmentWithCondition(ifStatement, left1, condition, negate: kind1 == SyntaxKind.FalseLiteralExpression).ToImmutableArray();
 
                     return Empty;
                 }
@@ -351,7 +362,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 && expression2.Kind() == SyntaxKind.NullLiteralExpression)
             {
                 if (options.UseExpression)
-                    return new IfElseToAssignmentWithExpression(ifStatement, left, expression1);
+                    return new IfElseToAssignmentWithExpression(ifStatement, expression1.FirstAncestor<ExpressionStatementSyntax>());
             }
             else if (options.UseCoalesceExpression)
             {

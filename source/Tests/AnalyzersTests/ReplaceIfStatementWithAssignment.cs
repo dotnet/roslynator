@@ -45,6 +45,25 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 f = true;
             }
 
+            if (condition)
+                f = false;
+            else
+            {
+                f = true;
+            }
+
+            if (condition)
+            {
+                f = false;
+            }
+            else
+                f = true;
+
+            if (condition)
+                f = false;
+            else
+                f = true;
+
             Base x = null;
             Derived y = null;
 
