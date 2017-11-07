@@ -12,62 +12,40 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
         }
 
-        private void VisitAssignedExpressionCore(ExpressionSyntax expression)
+        public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
         {
-            if (expression == null)
-                return;
+            ExpressionSyntax left = node.Left;
 
-            if (expression is TupleExpressionSyntax tupleExpression)
+            if (node.Kind() == SyntaxKind.SimpleAssignmentExpression
+                && (left is TupleExpressionSyntax tupleExpression))
             {
                 foreach (ArgumentSyntax argument in tupleExpression.Arguments)
                 {
-                    ExpressionSyntax argumentExpression = argument.Expression;
+                    ExpressionSyntax expression = argument.Expression;
 
-                    if (argumentExpression?.IsKind(SyntaxKind.DeclarationExpression) == false)
-                        VisitAssignedExpression(argumentExpression);
+                    if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
+                        VisitAssignedExpression(expression);
+
+                    VisitArgument(argument);
                 }
             }
             else
             {
-                VisitAssignedExpression(expression);
+                VisitAssignedExpression(left);
+                Visit(left);
             }
-        }
 
-        public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.SimpleAssignmentExpression:
-                case SyntaxKind.AddAssignmentExpression:
-                case SyntaxKind.SubtractAssignmentExpression:
-                case SyntaxKind.MultiplyAssignmentExpression:
-                case SyntaxKind.DivideAssignmentExpression:
-                case SyntaxKind.ModuloAssignmentExpression:
-                case SyntaxKind.AndAssignmentExpression:
-                case SyntaxKind.ExclusiveOrAssignmentExpression:
-                case SyntaxKind.OrAssignmentExpression:
-                case SyntaxKind.LeftShiftAssignmentExpression:
-                case SyntaxKind.RightShiftAssignmentExpression:
-                    {
-                        VisitAssignedExpressionCore(node.Left);
-                        VisitToken(node.OperatorToken);
-                        Visit(node.Right);
-                        break;
-                    }
-                default:
-                    {
-                        base.VisitAssignmentExpression(node);
-                        break;
-                    }
-            }
+            Visit(node.Right);
         }
 
         public override void VisitPrefixUnaryExpression(PrefixUnaryExpressionSyntax node)
         {
             if (node.IsKind(SyntaxKind.PreIncrementExpression, SyntaxKind.PreDecrementExpression))
             {
-                VisitToken(node.OperatorToken);
-                VisitAssignedExpressionCore(node.Operand);
+                ExpressionSyntax operand = node.Operand;
+
+                VisitAssignedExpression(operand);
+                Visit(operand);
             }
             else
             {
@@ -79,8 +57,10 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
             if (node.IsKind(SyntaxKind.PostIncrementExpression, SyntaxKind.PostDecrementExpression))
             {
-                VisitAssignedExpressionCore(node.Operand);
-                VisitToken(node.OperatorToken);
+                ExpressionSyntax operand = node.Operand;
+
+                VisitAssignedExpression(operand);
+                Visit(operand);
             }
             else
             {
@@ -92,14 +72,13 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
             if (node.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword, SyntaxKind.OutKeyword))
             {
-                VisitToken(node.RefOrOutKeyword);
-                Visit(node.NameColon);
-                VisitAssignedExpressionCore(node.Expression);
+                ExpressionSyntax expression = node.Expression;
+
+                if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
+                    VisitAssignedExpression(expression);
             }
-            else
-            {
-                base.VisitArgument(node);
-            }
+
+            base.VisitArgument(node);
         }
     }
 }

@@ -28,9 +28,12 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             var options = StringSplitOptions.None;
             StringSplitOptions options2 = options;
+        }
 
-            // n
+        //n
 
+        public static void Foo2()
+        {
             string s6 = "", s7 = string.Empty;
             string x6 = s6;
             string x7 = s7;
@@ -51,6 +54,52 @@ namespace Roslynator.CSharp.Analyzers.Tests
             string tuple2 = null;
 
             (tuple1, tuple2) = default((string, string));
+
+            var a = new int[] { 0 };
+
+            int i1 = 0;
+            int i2 = 0;
+            (a[i1++], a[i2--]) = default((int, int));
+
+            int i3 = 0;
+            int i4 = 0;
+            (a[++i3], a[--i4]) = default((int, int));
+
+            int i5 = 0;
+            a[i5++] = 0;
+
+            int i6 = 0;
+            a[i6--] = 0;
+
+            int i7 = 0;
+            a[++i7] = 0;
+
+            int i8 = 0;
+            a[--i8] = 0;
+
+            int i9 = 0;
+            i = (a[i9++])++;
+
+            int i10 = 0;
+            i = (a[i10--])--;
+
+            int i11 = 0;
+            i = ++(a[++i11]);
+
+            int i12 = 0;
+            i = --(a[--i12]);
+
+            int i13 = 0;
+            int.TryParse("", out a[i13++]);
+
+            int i14 = 0;
+            int.TryParse("", out a[i14--]);
+
+            int i15 = 0;
+            int.TryParse("", out a[++i15]);
+
+            int i16 = 0;
+            int.TryParse("", out a[--i16]);
         }
     }
 }
