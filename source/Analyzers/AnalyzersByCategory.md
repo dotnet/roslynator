@@ -99,6 +99,7 @@ Redundancy|[Remove enum default underlying type](../../docs/analyzers/RCS1042.md
 Redundancy|[Remove file with no code](../../docs/analyzers/RCS1093.md)|RCS1093|x
 Redundancy|[Remove 'partial' modifier from type with a single part](../../docs/analyzers/RCS1043.md)|RCS1043|x
 Redundancy|[Remove redundant 'as' operator](../../docs/analyzers/RCS1145.md)|RCS1145|x
+Redundancy|[Remove redundant assignment](../../docs/analyzers/RCS1212.md)|RCS1212|x
 Redundancy|[Remove redundant async/await](../../docs/analyzers/RCS1174.md)|RCS1174|x
 Redundancy|[Remove redundant auto\-property initialization](../../docs/analyzers/RCS1188.md)|RCS1188|x
 Redundancy|[Remove redundant base constructor call](../../docs/analyzers/RCS1071.md)|RCS1071|x
@@ -144,7 +145,7 @@ Simplification|[Simplify conditional expression](../../docs/analyzers/RCS1104.md
 Simplification|[Simplify lambda expression](../../docs/analyzers/RCS1021.md)|RCS1021|x
 Simplification|[Simplify lazily initialized property](../../docs/analyzers/RCS1171.md)|RCS1171|x
 Simplification|[Simplify LINQ method chain](../../docs/analyzers/RCS1077.md)|RCS1077|x
-Simplification|[Simplify logical not expression](../../docs/analyzers/RCS1068.md)|RCS1068|x
+Simplification|[Simplify logical negation](../../docs/analyzers/RCS1068.md)|RCS1068|x
 Simplification|[Simplify nested using statement](../../docs/analyzers/RCS1005.md)|RCS1005|x
 Simplification|[Simplify Nullable\<T\> to T?](../../docs/analyzers/RCS1020.md)|RCS1020|x
 Simplification|[Use \-\-/\+\+ operator instead of assignment](../../docs/analyzers/RCS1089.md)|RCS1089|x

@@ -121,6 +121,7 @@ RR0143|[Replace \(yield\) return statement with if\-else](../../docs/refactoring
 RR0116|[Replace Any with All \(or All with Any\)](../../docs/refactorings/RR0116.md)|x
 RR0117|[Replace as expression with cast expression](../../docs/refactorings/RR0117.md)|x
 RR0118|[Replace cast expression with as expression](../../docs/refactorings/RR0118.md)|x
+RR0192|[Replace comment with documentation comment](../../docs/refactorings/RR0192.md)|x
 RR0119|[Replace conditional expression with expression](../../docs/refactorings/RR0119.md)|x
 RR0121|[Replace constant with field](../../docs/refactorings/RR0121.md)|x
 RR0123|[Replace do statement with while statement](../../docs/refactorings/RR0123.md)|x

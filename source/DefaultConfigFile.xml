@@ -190,6 +190,7 @@
       <Refactoring Id="RR0189" IsEnabled="true" /> <!-- ReduceIfNesting -->
       <Refactoring Id="RR0190" IsEnabled="true" /> <!-- ReplaceIfElseWithIfReturn -->
       <Refactoring Id="RR0191" IsEnabled="true" /> <!-- UseCSharp6DictionaryInitializer -->
+      <Refactoring Id="RR0192" IsEnabled="true" /> <!-- ReplaceCommentWithDocumentationComment -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -228,7 +229,7 @@
       <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- SynchronizeAccessibility (fixes CS0262) -->
       <CodeFix Id="RCF0037" IsEnabled="true" /> <!-- RemoveArgumentList (fixes CS1955) -->
       <CodeFix Id="RCF0038" IsEnabled="true" /> <!-- FixMemberAccessName (fixes CS1061) -->
-      <CodeFix Id="RCF0039" IsEnabled="true" /> <!-- AddArgumentList (fixes CS0428, CS0023) -->
+      <CodeFix Id="RCF0039" IsEnabled="true" /> <!-- AddArgumentList (fixes CS0023, CS0428, CS0201, CS1526) -->
       <CodeFix Id="RCF0040" IsEnabled="true" /> <!-- InitializeLocalVariableWithDefaultValue (fixes CS0165) -->
       <CodeFix Id="RCF0041" IsEnabled="true" /> <!-- ChangeTypeOfLocalVariable (fixes CS0123, CS0407, CS0815) -->
       <CodeFix Id="RCF0042" IsEnabled="true" /> <!-- MakeMemberNonStatic (fixes CS0120) -->
@@ -271,6 +272,9 @@
       <CodeFix Id="RCF0079" IsEnabled="true" /> <!-- ReplaceBreakWithContinue (fixes CS0139) -->
       <CodeFix Id="RCF0080" IsEnabled="true" /> <!-- ChangeMemberTypeAccordingToReturnExpression (fixes CS0029, CS0127, CS0201, CS0266, CS1997) -->
       <CodeFix Id="RCF0081" IsEnabled="true" /> <!-- ReturnDefaultValue (fixes CS0126) -->
+      <CodeFix Id="RCF0082" IsEnabled="true" /> <!-- DefineMatchingOperator (fixes CS0216) -->
+      <CodeFix Id="RCF0083" IsEnabled="true" /> <!-- DefineObjectEquals (fixes CS0660) -->
+      <CodeFix Id="RCF0084" IsEnabled="true" /> <!-- DefineObjectGetHashCode (fixes CS0659, CS0661) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

@@ -1,3 +1,17 @@
+### 1.5.13 (2017-11-09)
+
+#### Analyzers
+
+* Add analyzer RemoveRedundantAssignment (RCS1212).
+
+#### Refactorings
+
+* Add refactoring ReplaceCommentWithDocumentationComment (RR0192).
+
+#### Code Fixes
+
+* Add code fixes for CS0216, CS0659, CS0660, CS0661 and CS1526.
+
 ### 1.5.12 (2017-10-19)
 
 #### Analyzers

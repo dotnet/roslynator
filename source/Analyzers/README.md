@@ -64,7 +64,7 @@ RCS1064|[Avoid usage of for statement to create an infinite loop](../../docs/ana
 RCS1065|[Avoid usage of while statement to create an inifinite loop](../../docs/analyzers/RCS1065.md)|Style|
 RCS1066|[Remove empty finally clause](../../docs/analyzers/RCS1066.md)|Redundancy|x
 RCS1067|[Remove argument list from object creation expression](../../docs/analyzers/RCS1067.md)|Style|
-RCS1068|[Simplify logical not expression](../../docs/analyzers/RCS1068.md)|Simplification|x
+RCS1068|[Simplify logical negation](../../docs/analyzers/RCS1068.md)|Simplification|x
 RCS1069|[Remove unnecessary case label](../../docs/analyzers/RCS1069.md)|Redundancy|x
 RCS1070|[Remove redundant default switch section](../../docs/analyzers/RCS1070.md)|Redundancy|x
 RCS1071|[Remove redundant base constructor call](../../docs/analyzers/RCS1071.md)|Redundancy|x
@@ -194,3 +194,4 @@ RCS1208|[Reduce if nesting](../../docs/analyzers/RCS1208.md)|Style|
 RCS1209|[Reorder type parameter constraints](../../docs/analyzers/RCS1209.md)|Readability|x
 RCS1210|[Return Task\.FromResult instead of returning null](../../docs/analyzers/RCS1210.md)|Usage|x
 RCS1211|[Remove unnecessary else clause](../../docs/analyzers/RCS1211.md)|Redundancy|x
+RCS1212|[Remove redundant assignment](../../docs/analyzers/RCS1212.md)|Redundancy|x

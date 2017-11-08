@@ -2,7 +2,7 @@
 
 Id | Title | Fixable Diagnostics | Enabled by Default 
 --- | --- | --- |:---:
-RCF0039|Add argument list|[CS0428](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428), [CS0023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023)|x
+RCF0039|Add argument list|[CS0023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023), [CS0428](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428), [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201), [CS1526](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526)|x
 RCF0026|Add body|[CS0501](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501), [CS0756](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756)|x
 RCF0009|Add braces to declaration or labeled statement|[CS1023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1023)|x
 RCF0002|Add break statement to switch section|[CS0163](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0163), CS8070|x
@@ -27,6 +27,9 @@ RCF0041|Change type of local variable|[CS0123](http://docs.microsoft.com/en-us/d
 RCF0030|Change type of 'params' parameter|[CS0225](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225)|x
 RCF0066|Combine constraint clauses|[CS0409](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0409)|x
 RCF0003|Create singleton array|[CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x
+RCF0082|Define matching operator|[CS0216](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0216)|x
+RCF0083|Define object\.Equals|[CS0660](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0660)|x
+RCF0084|Define object\.GetHashCode|[CS0659](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0659), [CS0661](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0661)|x
 RCF0008|Extract declaration from using statement|[CS1674](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1674)|x
 RCF0038|Fix member access name|[CS1061](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061)|x
 RCF0040|Initialize local variable with default value|[CS0165](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0165)|x
