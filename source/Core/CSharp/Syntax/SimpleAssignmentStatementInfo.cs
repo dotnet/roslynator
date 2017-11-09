@@ -27,6 +27,11 @@ namespace Roslynator.CSharp.Syntax
 
         public ExpressionSyntax Right { get; }
 
+        public SyntaxToken OperatorToken
+        {
+            get { return AssignmentExpression?.OperatorToken ?? default(SyntaxToken); }
+        }
+
         public ExpressionStatementSyntax Statement
         {
             get { return (ExpressionStatementSyntax)AssignmentExpression?.Parent; }
