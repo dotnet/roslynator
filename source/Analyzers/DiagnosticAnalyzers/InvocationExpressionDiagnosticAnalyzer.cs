@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.SimplifyLinqMethodChain,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
-                    DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod,
+                    DiagnosticDescriptors.CallAnyInsteadOfCount,
                     DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag,
                     DiagnosticDescriptors.RemoveRedundantToStringCall,
                     DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,

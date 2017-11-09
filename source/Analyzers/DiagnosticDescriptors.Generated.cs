@@ -962,15 +962,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1083</summary>
-        public static readonly DiagnosticDescriptor UseAnyMethodInsteadOfCountMethod = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod, 
-            title:              "Use 'Any' method instead of 'Count' method.", 
-            messageFormat:      "Use 'Any' method instead of 'Count' method.", 
+        public static readonly DiagnosticDescriptor CallAnyInsteadOfCount = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallAnyInsteadOfCount, 
+            title:              "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
+            messageFormat:      "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
             category:           DiagnosticCategories.Performance, 
             defaultSeverity:    DiagnosticSeverity.Warning, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallAnyInsteadOfCount}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1084</summary>

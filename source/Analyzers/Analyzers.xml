@@ -810,10 +810,10 @@
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="UseAnyMethodInsteadOfCountMethod">
+  <Analyzer Identifier="CallAnyInsteadOfCount">
     <Id>RCS1083</Id>
-    <Title>Use 'Any' method instead of 'Count' method.</Title>
-    <MessageFormat>Use 'Any' method instead of 'Count' method.</MessageFormat>
+    <Title>Call 'Enumerable.Any' instead of 'Enumerable.Count'.</Title>
+    <MessageFormat>Call 'Enumerable.Any' instead of 'Enumerable.Count'.</MessageFormat>
     <Category>Performance</Category>
     <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

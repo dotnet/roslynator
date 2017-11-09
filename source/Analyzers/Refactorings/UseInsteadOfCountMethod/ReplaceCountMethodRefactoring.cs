@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod
                 }
 
                 if (isFixable)
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod, parent);
+                    context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
             }
         }
     }
