@@ -32,9 +32,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty
                 {
                     expression = IdentifierName(_propertyName).WithTriviaFrom(expression);
 
-                    expression = AppendToTrailingTrivia(expression, node);
-
-                    return expression;
+                    return AppendToTrailingTrivia(expression, node);
                 }
                 else if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
                 {

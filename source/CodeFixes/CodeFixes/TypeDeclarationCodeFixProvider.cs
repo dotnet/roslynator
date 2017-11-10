@@ -80,8 +80,6 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.DefineObjectGetHashCode))
                                 break;
 
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
                             MethodDeclarationSyntax methodDeclaration = ObjectGetHashCodeMethodDeclaration();
 
                             CodeAction codeAction = CodeAction.Create(

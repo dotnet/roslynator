@@ -101,9 +101,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             foreach (ITypeParameterSymbol typeParameter in typeParameters)
             {
-                string name = typeParameter.Name;
-
-                name = NameGenerator.Default.EnsureUniqueName(
+                string name = NameGenerator.Default.EnsureUniqueName(
                     typeParameter.Name,
                     symbols);
 

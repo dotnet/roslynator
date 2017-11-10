@@ -36,8 +36,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(classDeclaration, cancellationToken);
-
             var attributeName = (NameSyntax)semanticModel
                 .GetTypeByMetadataName(MetadataNames.System_AttributeUsageAttribute)
                 .ToMinimalTypeSyntax(semanticModel, classDeclaration.SpanStart);

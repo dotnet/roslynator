@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             }
         }
 
-        private ExpressionSyntax RewriteExpression(InvocationExpressionSyntax invocation, ExpressionSyntax expression)
+        private ParenthesizedExpressionSyntax RewriteExpression(InvocationExpressionSyntax invocation, ExpressionSyntax expression)
         {
             return RewriteNode(expression)
                 .WithTriviaFrom(invocation)

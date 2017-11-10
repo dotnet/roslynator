@@ -5,9 +5,9 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.Refactorings.NodeInList
 {
-    internal class NodeSyntaxRewriter<TSyntax> : CSharpSyntaxRewriter where TSyntax : SyntaxNode
+    internal abstract class NodeSyntaxRewriter<TSyntax> : CSharpSyntaxRewriter where TSyntax : SyntaxNode
     {
-        public NodeSyntaxRewriter(RewriterInfo<TSyntax> info)
+        protected NodeSyntaxRewriter(RewriterInfo<TSyntax> info)
         {
             Info = info;
         }

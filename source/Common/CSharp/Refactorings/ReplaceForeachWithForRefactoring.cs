@@ -108,8 +108,6 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            string name = forEachStatement.Identifier.ValueText;
-
             ILocalSymbol symbol = semanticModel.GetDeclaredSymbol(forEachStatement, cancellationToken);
 
             foreach (SyntaxNode node in forEachStatement.Statement.DescendantNodes())

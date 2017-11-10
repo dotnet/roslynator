@@ -414,10 +414,5 @@ namespace Roslynator.CSharp.CodeFixes
         {
             return $"Remove '{Modifier.GetName(kind)}' modifier";
         }
-
-        private static string MoveModifierTitle(SyntaxKind kind)
-        {
-            return $"Move '{Modifier.GetName(kind)}' modifier";
-        }
     }
 }

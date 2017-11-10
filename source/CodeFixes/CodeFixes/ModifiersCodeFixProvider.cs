@@ -186,8 +186,6 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
 
-                            SyntaxTokenList modifiers = node.GetModifiers();
-
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.StaticKeyword, additionalKey: nameof(SyntaxKind.StaticKeyword));
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.SealedKeyword, additionalKey: nameof(SyntaxKind.SealedKeyword));
                             break;
@@ -198,8 +196,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 break;
 
                             var fieldDeclaration = (FieldDeclarationSyntax)node;
-
-                            SyntaxTokenList modifiers = fieldDeclaration.Modifiers;
 
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, fieldDeclaration, SyntaxKind.VolatileKeyword, additionalKey: nameof(SyntaxKind.VolatileKeyword));
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, additionalKey: nameof(SyntaxKind.ReadOnlyKeyword));
@@ -234,8 +230,6 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveInvalidModifier))
                                 break;
-
-                            SyntaxTokenList modifiers = node.GetModifiers();
 
                             if (!node.IsParentKind(SyntaxKind.ClassDeclaration)
                                 || !((ClassDeclarationSyntax)node.Parent).Modifiers.Contains(SyntaxKind.StaticKeyword))
@@ -438,7 +432,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private void AddStaticModifier(CodeFixContext context, Diagnostic diagnostic, SyntaxNode node, string additionalKey = null)
+        private static void AddStaticModifier(CodeFixContext context, Diagnostic diagnostic, SyntaxNode node, string additionalKey = null)
         {
             if (node.IsKind(SyntaxKind.ConstructorDeclaration)
                 && ((ConstructorDeclarationSyntax)node).ParameterList?.Parameters.Any() == true)

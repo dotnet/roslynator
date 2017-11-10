@@ -40,8 +40,6 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement = ifStatement.Statement.WithoutTrivia();
             ExpressionSyntax condition = ifStatement.Condition;
 
-            var logicalOr = (BinaryExpressionSyntax)condition;
-
             BinaryExpressionChainInfo info = SyntaxInfo.BinaryExpressionChainInfo((BinaryExpressionSyntax)condition);
 
             var ifStatements = new List<IfStatementSyntax>();

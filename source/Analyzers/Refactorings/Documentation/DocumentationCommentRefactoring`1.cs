@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                 startIndex = endIndex;
             }
 
-            sb.Append(text.Substring(startIndex));
+            sb.Append(text, startIndex, text.Length - startIndex);
 
             return sb.ToString();
         }
@@ -174,7 +174,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             return elementInfos;
         }
 
-        private XmlElementSyntax GetPreviousElement(DocumentationCommentTriviaSyntax comment, XmlElementSyntax element)
+        private static XmlElementSyntax GetPreviousElement(DocumentationCommentTriviaSyntax comment, XmlElementSyntax element)
         {
             SyntaxList<XmlNodeSyntax> content = comment.Content;
 

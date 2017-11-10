@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(initializer, newInitializer, cancellationToken);
         }
 
-        private static ExpressionSyntax CreateNewExpression(InitializerExpressionSyntax initializer)
+        private static AssignmentExpressionSyntax CreateNewExpression(InitializerExpressionSyntax initializer)
         {
             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 

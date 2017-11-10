@@ -95,9 +95,8 @@ namespace Roslynator.CSharp.Helpers
                 case Accessibility.ProtectedOrInternal:
                     {
                         node = node.InsertModifier(SyntaxKind.ProtectedKeyword, comparer);
-                        node = node.InsertModifier(SyntaxKind.InternalKeyword, comparer);
 
-                        return node;
+                        return node.InsertModifier(SyntaxKind.InternalKeyword, comparer);
                     }
             }
 

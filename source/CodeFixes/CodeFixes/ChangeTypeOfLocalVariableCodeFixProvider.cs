@@ -53,8 +53,6 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
                                 break;
 
-                            var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
-
                             ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
                             if (value == null)
@@ -80,7 +78,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private void ComputeCodeFix(
+        private static void ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             VariableDeclaratorSyntax variableDeclarator,

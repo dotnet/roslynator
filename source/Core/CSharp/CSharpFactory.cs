@@ -1569,7 +1569,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.UnknownAccessorDeclaration:
                     return SyntaxKind.IdentifierToken;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException(nameof(kind));
             }
         }
         #endregion AccessorDeclaration

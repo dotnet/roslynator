@@ -142,9 +142,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         InvocationExpressionSyntax newNode = invocationExpression.ReplaceNode(logicalNot2, logicalNot2.Operand.WithTriviaFrom(logicalNot2));
 
-                        newNode = RefactoringHelper.ChangeInvokedMethodName(newNode, (memberAccessExpression.Name.Identifier.ValueText == "All") ? "Any" : "All");
-
-                        return newNode;
+                        return RefactoringHelper.ChangeInvokedMethodName(newNode, (memberAccessExpression.Name.Identifier.ValueText == "All") ? "Any" : "All");
                     }
             }
 

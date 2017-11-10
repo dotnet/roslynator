@@ -57,9 +57,8 @@ namespace Roslynator.Utilities
         {
             trivia = trivia.Add(Comment($"// {text}"));
             trivia = trivia.Add(CarriageReturnLineFeed);
-            trivia = trivia.Add(CarriageReturnLineFeed);
 
-            return trivia;
+            return trivia.Add(CarriageReturnLineFeed);
         }
 
         public static void WriteAllText(string path, string content, Encoding encoding, bool onlyIfChanges = true, bool fileMustExists = true)

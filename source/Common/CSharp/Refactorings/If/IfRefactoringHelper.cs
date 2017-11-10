@@ -80,14 +80,14 @@ namespace Roslynator.CSharp.Refactorings.If
             }
         }
 
-        private static ExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
+        private static BinaryExpressionSyntax LogicalAndExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return CSharpFactory.LogicalAndExpression(
                 left.Parenthesize(),
                 right.Parenthesize());
         }
 
-        private static ExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
+        private static BinaryExpressionSyntax LogicalOrExpression(ExpressionSyntax left, ExpressionSyntax right)
         {
             return CSharpFactory.LogicalOrExpression(
                 left.Parenthesize(),

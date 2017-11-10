@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.Comparers
             return GetInsertIndex(members, (isConst) ? 0 : 1);
         }
 
-        private int GetInsertIndex(SyntaxList<MemberDeclarationSyntax> members, int orderIndex)
+        private static int GetInsertIndex(SyntaxList<MemberDeclarationSyntax> members, int orderIndex)
         {
             if (members.Any())
             {

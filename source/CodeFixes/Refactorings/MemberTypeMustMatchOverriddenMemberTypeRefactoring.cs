@@ -59,7 +59,6 @@ namespace Roslynator.CSharp.Refactorings
                         var eventDeclaration = (EventFieldDeclarationSyntax)memberDeclaration;
 
                         VariableDeclarationSyntax declaration = eventDeclaration.Declaration;
-                        VariableDeclaratorSyntax declarator = declaration.Variables.First();
 
                         EventFieldDeclarationSyntax newNode = eventDeclaration.WithDeclaration(declaration.WithType(newType.WithTriviaFrom(declaration.Type)));
 

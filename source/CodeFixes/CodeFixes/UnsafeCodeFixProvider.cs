@@ -99,20 +99,14 @@ namespace Roslynator.CSharp.CodeFixes
                                     if (!ancestor.Kind().SupportsModifiers())
                                         continue;
 
-                                    var memberDeclaration = (MemberDeclarationSyntax)ancestor;
-
-                                    CodeAction codeAction = CodeAction.Create(
-                                        "Add 'unsafe' modifier to containing declaration",
-                                        cancellationToken =>
-                                        {
-                                            SyntaxNode newNode = ancestor.InsertModifier(SyntaxKind.UnsafeKeyword, ModifierComparer.Instance);
-
-                                            return context.Document.ReplaceNodeAsync(ancestor, newNode, context.CancellationToken);
-                                        },
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddUnsafeModifier));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                    continue;
+                                    //TODO: test
+                                    ModifiersCodeFixRegistrator.AddModifier(
+                                        context,
+                                        diagnostic,
+                                        ancestor,
+                                        SyntaxKind.UnsafeKeyword,
+                                        title: "Add 'unsafe' modifier to containing declaration",
+                                        additionalKey: CodeFixIdentifiers.AddUnsafeModifier);
                                 }
                             }
 

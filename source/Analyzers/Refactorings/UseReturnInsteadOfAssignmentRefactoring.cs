@@ -313,9 +313,7 @@ namespace Roslynator.CSharp.Refactorings
 
             section = section.ReplaceNode(expressionStatement, ReturnStatement(assignment.Right).WithTriviaFrom(expressionStatement));
 
-            section = section.RemoveStatement(GetStatements(section).Last());
-
-            return section;
+            return section.RemoveStatement(GetStatements(section).Last());
         }
 
         private static async Task<StatementsInfo> RefactorAsync(

@@ -313,7 +313,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static NameSyntax GetIdentifierFromGetter(AccessorDeclarationSyntax getter)
+        private static SimpleNameSyntax GetIdentifierFromGetter(AccessorDeclarationSyntax getter)
         {
             if (getter != null)
             {
@@ -340,7 +340,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static NameSyntax GetIdentifierFromSetter(AccessorDeclarationSyntax setter)
+        private static SimpleNameSyntax GetIdentifierFromSetter(AccessorDeclarationSyntax setter)
         {
             if (setter != null)
             {
@@ -368,7 +368,7 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static NameSyntax GetIdentifierFromSetterExpression(ExpressionSyntax expression)
+        private static SimpleNameSyntax GetIdentifierFromSetterExpression(ExpressionSyntax expression)
         {
             if (expression?.IsKind(SyntaxKind.SimpleAssignmentExpression) == true)
             {
@@ -544,7 +544,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static SyntaxNode CreateNewExpression(SyntaxNode node, SyntaxToken identifier, IPropertySymbol propertySymbol)
+        public static ExpressionSyntax CreateNewExpression(SyntaxNode node, SyntaxToken identifier, IPropertySymbol propertySymbol)
         {
             if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
                 && ((MemberAccessExpressionSyntax)node.Parent).Name == node)

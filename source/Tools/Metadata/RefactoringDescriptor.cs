@@ -62,9 +62,8 @@ namespace Roslynator.Metadata
             string s = Title.TrimEnd('.').ToLowerInvariant();
 
             s = Regex.Replace(s, @"[^a-zA-Z0-9\ \-]", "");
-            s = Regex.Replace(s, @"\ ", "-");
 
-            return s;
+            return Regex.Replace(s, @"\ ", "-");
         }
     }
 }

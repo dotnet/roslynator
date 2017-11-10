@@ -85,8 +85,6 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 
             foreach (DocumentReferenceInfo info in infos)
             {
-                Document document2 = solution.GetDocument(info.Document.Id);
-
                 var rewriter = new ReplacePropertyWithMethodSyntaxRewriter(info.References, methodName, property);
 
                 SyntaxNode newRoot = rewriter.Visit(info.Root);

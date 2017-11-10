@@ -66,9 +66,7 @@ namespace Roslynator.CodeGeneration.Xml
 
                 string s = sw.ToString();
 
-                s = _regex.Replace(s, "${grp} ${comment}");
-
-                return s;
+                return _regex.Replace(s, "${grp} ${comment}");
             }
         }
 

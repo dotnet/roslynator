@@ -91,8 +91,6 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
-                                TypeSyntax newType = typeSymbol.ToMinimalTypeSyntax(semanticModel, memberDeclaration.SpanStart);
-
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Change return type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, memberDeclaration.SpanStart)}'",
                                     cancellationToken => MemberTypeMustMatchOverriddenMemberTypeRefactoring.RefactorAsync(context.Document, memberDeclaration, typeSymbol, semanticModel, cancellationToken),
