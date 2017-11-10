@@ -3,11 +3,8 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -15,53 +12,38 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, ElseClauseSyntax elseClause)
         {
-            StatementSyntax statement = elseClause.Statement;
+            if (!(elseClause.Statement is BlockSyntax block))
+                return;
 
-            if (statement?.IsKind(SyntaxKind.Block) == true)
-            {
-                var block = (BlockSyntax)statement;
+            if (!(block.Statements.SingleOrDefault(shouldThrow: false) is IfStatementSyntax ifStatement))
+                return;
 
-                SyntaxList<StatementSyntax> statements = block.Statements;
+            if (!CheckTrivia(elseClause, block, ifStatement))
+                return;
 
-                if (statements.Count == 1
-                    && statements[0].IsKind(SyntaxKind.IfStatement))
-                {
-                    var ifStatement = (IfStatementSyntax)statements[0];
-
-                    if (ifStatement.Else == null
-                        && CheckTrivia(elseClause, ifStatement))
-                    {
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement,
-                            block);
-
-                        context.ReportBraces(
-                            DiagnosticDescriptors.MergeElseClauseWithNestedIfStatementFadeOut,
-                            block);
-                    }
-                }
-            }
+            context.ReportDiagnostic(DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement, block);
+            context.ReportBraces(DiagnosticDescriptors.MergeElseClauseWithNestedIfStatementFadeOut, block);
         }
 
-        private static bool CheckTrivia(ElseClauseSyntax elseClause, IfStatementSyntax ifStatement)
+        private static bool CheckTrivia(ElseClauseSyntax elseClause, BlockSyntax block, IfStatementSyntax ifStatement)
         {
-            TextSpan elseSpan = elseClause.Span;
-            TextSpan ifSpan = ifStatement.Span;
+            if (!elseClause.ElseKeyword.TrailingTrivia.IsEmptyOrWhitespace())
+                return false;
 
-            TextSpan span = TextSpan.FromBounds(elseSpan.Start, ifSpan.Start);
-            TextSpan span2 = TextSpan.FromBounds(ifSpan.End, elseSpan.End);
+            if (!block.OpenBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
+                return false;
 
-            foreach (SyntaxTrivia trivia in elseClause.DescendantTrivia())
-            {
-                TextSpan triviaSpan = trivia.Span;
+            if (!block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace())
+                return false;
 
-                if (span.Contains(triviaSpan)
-                    || span2.Contains(triviaSpan))
-                {
-                    if (!trivia.IsWhitespaceOrEndOfLineTrivia())
-                        return false;
-                }
-            }
+            if (!ifStatement.IfKeyword.LeadingTrivia.IsEmptyOrWhitespace())
+                return false;
+
+            if (!ifStatement.GetTrailingTrivia().IsEmptyOrWhitespace())
+                return false;
+
+            if (!block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
+                return false;
 
             return true;
         }
@@ -69,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             ElseClauseSyntax elseClause,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var block = (BlockSyntax)elseClause.Statement;
 
