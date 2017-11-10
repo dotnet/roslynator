@@ -49,19 +49,15 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SyntaxNode node = accessor;
 
-                var accessorList = accessor.Parent as AccessorListSyntax;
-
-                if (accessorList != null)
+                if (accessor.Parent is AccessorListSyntax accessorList)
                 {
                     SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
 
                     if (accessors.Count == 1
-                        && accessors.First().IsKind(SyntaxKind.GetAccessorDeclaration))
+                        && accessors.First().IsKind(SyntaxKind.GetAccessorDeclaration)
+                        && (accessorList.Parent is MemberDeclarationSyntax parent))
                     {
-                        var parent = accessorList.Parent as MemberDeclarationSyntax;
-
-                        if (parent != null)
-                            node = parent;
+                        node = parent;
                     }
                 }
 

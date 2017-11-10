@@ -30,13 +30,9 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                var assignment = parent as AssignmentExpressionSyntax;
-
-                if (assignment != null)
+                if (parent is AssignmentExpressionSyntax assignment)
                 {
-                    var expressionStatement = assignment.Parent as ExpressionStatementSyntax;
-
-                    if (expressionStatement != null)
+                    if (assignment.Parent is ExpressionStatementSyntax expressionStatement)
                     {
                         context.RegisterRefactoring(
                             Title,

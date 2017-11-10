@@ -132,9 +132,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if (expression?.IsSingleLine() == true)
                 {
-                    var accessorList = accessor.Parent as AccessorListSyntax;
-
-                    if (accessorList != null)
+                    if (accessor.Parent is AccessorListSyntax accessorList)
                     {
                         SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
 

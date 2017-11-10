@@ -25,8 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             string fromMethodName,
             string toMethodName)
         {
-            MethodInfo methodInfo;
-            if (semanticModel.TryGetExtensionMethodInfo(invocation, out methodInfo, ExtensionMethodKind.None, context.CancellationToken)
+            if (semanticModel.TryGetExtensionMethodInfo(invocation, out MethodInfo methodInfo, ExtensionMethodKind.None, context.CancellationToken)
                 && methodInfo.IsLinqExtensionOfIEnumerableOfTWithPredicate(fromMethodName))
             {
                 ExpressionSyntax expression = GetExpression(invocation);

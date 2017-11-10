@@ -94,16 +94,12 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax expression = awaitExpression.Expression;
 
-                var typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken) as INamedTypeSymbol;
-
-                if (typeSymbol != null)
+                if (semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol typeSymbol)
                 {
                     if (typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable))
                         || typeSymbol.ConstructedFrom.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T)))
                     {
-                        var invocation = expression as InvocationExpressionSyntax;
-
-                        if (invocation != null)
+                        if (expression is InvocationExpressionSyntax invocation)
                         {
                             var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
 

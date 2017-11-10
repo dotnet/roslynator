@@ -79,12 +79,9 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     return ((ElseClauseSyntax)parent).GetTopmostIf();
                 }
-                else
+                else if (parent is IfStatementSyntax parentStatement)
                 {
-                    var parentStatement = parent as IfStatementSyntax;
-
-                    if (parentStatement != null)
-                        return parentStatement.GetTopmostIf();
+                    return parentStatement.GetTopmostIf();
                 }
             }
 

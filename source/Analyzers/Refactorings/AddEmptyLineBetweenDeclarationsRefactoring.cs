@@ -64,8 +64,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static MemberDeclarationSyntax GetNextDeclaration(MemberDeclarationSyntax declaration)
         {
-            var containingDeclaration = declaration.Parent as MemberDeclarationSyntax;
-            if (containingDeclaration != null)
+            if (declaration.Parent is MemberDeclarationSyntax containingDeclaration)
             {
                 SyntaxList<MemberDeclarationSyntax> members = containingDeclaration.GetMembers();
 

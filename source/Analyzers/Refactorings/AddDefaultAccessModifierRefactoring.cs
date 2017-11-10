@@ -81,9 +81,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
                 {
-                    var declaration2 = syntaxReference.GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
-
-                    if (declaration2 != null)
+                    if (syntaxReference.GetSyntax(context.CancellationToken) is MemberDeclarationSyntax declaration2)
                     {
                         Accessibility accessibility2 = declaration2.GetModifiers().GetAccessibility();
 

@@ -62,21 +62,16 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             {
                 ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
-                if (declarationSymbol != null)
+                if (declarationSymbol?.GetSyntax(cancellationToken) is MemberDeclarationSyntax containingMember)
                 {
-                    var containingMember = declarationSymbol.GetSyntax(cancellationToken) as MemberDeclarationSyntax;
+                    DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
 
-                    if (containingMember != null)
+                    if (comment != null
+                        && CanAddExceptionToComment(comment, exceptionSymbol, semanticModel, cancellationToken))
                     {
-                        DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
+                        ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
 
-                        if (comment != null
-                            && CanAddExceptionToComment(comment, exceptionSymbol, semanticModel, cancellationToken))
-                        {
-                            ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
-
-                            return new AddExceptionToDocumentationCommentAnalysis(throwInfo, comment.ParentTrivia);
-                        }
+                        return new AddExceptionToDocumentationCommentAnalysis(throwInfo, comment.ParentTrivia);
                     }
                 }
             }

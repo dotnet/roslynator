@@ -55,11 +55,10 @@ namespace Roslynator.Configuration
         {
             XElement element = parent.Element("PrefixFieldIdentifierWithUnderscore");
 
-            if (element != null)
+            if (element != null
+                && element.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
             {
-                bool isEnabled;
-                if (element.TryGetAttributeValueAsBoolean("IsEnabled", out isEnabled))
-                    settings.PrefixFieldIdentifierWithUnderscore = isEnabled;
+                settings.PrefixFieldIdentifierWithUnderscore = isEnabled;
             }
         }
 
@@ -71,12 +70,10 @@ namespace Roslynator.Configuration
 
         private static void LoadRefactoring(XElement element, ConfigFileSettings settings)
         {
-            string id;
-            if (element.TryGetAttributeValueAsString("Id", out id))
+            if (element.TryGetAttributeValueAsString("Id", out string id)
+                && element.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
             {
-                bool isEnabled;
-                if (element.TryGetAttributeValueAsBoolean("IsEnabled", out isEnabled))
-                    settings.Refactorings[id] = isEnabled;
+                settings.Refactorings[id] = isEnabled;
             }
         }
 
@@ -88,12 +85,10 @@ namespace Roslynator.Configuration
 
         private static void LoadCodeFix(XElement element, ConfigFileSettings settings)
         {
-            string id;
-            if (element.TryGetAttributeValueAsString("Id", out id))
+            if (element.TryGetAttributeValueAsString("Id", out string id)
+                && element.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
             {
-                bool isEnabled;
-                if (element.TryGetAttributeValueAsBoolean("IsEnabled", out isEnabled))
-                    settings.CodeFixes[id] = isEnabled;
+                settings.CodeFixes[id] = isEnabled;
             }
         }
     }

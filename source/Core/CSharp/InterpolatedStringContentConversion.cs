@@ -26,9 +26,7 @@ namespace Roslynator.CSharp
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
 
-            InterpolatedStringContentConversion conversion;
-
-            if (!TryCreate(content, isVerbatim, out conversion))
+            if (!TryCreate(content, isVerbatim, out InterpolatedStringContentConversion conversion))
                 throw new ArgumentException("", nameof(content));
 
             return conversion;

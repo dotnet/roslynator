@@ -19,17 +19,13 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax expression = interpolation.Expression;
 
-            if (expression?.IsKind(SyntaxKind.StringLiteralExpression) == true)
+            if (expression?.IsKind(SyntaxKind.StringLiteralExpression) == true
+                && (interpolation.Parent is InterpolatedStringExpressionSyntax interpolatedString))
             {
-                var interpolatedString = interpolation.Parent as InterpolatedStringExpressionSyntax;
+                var literalExpression = (LiteralExpressionSyntax)expression;
 
-                if (interpolatedString != null)
-                {
-                    var literalExpression = (LiteralExpressionSyntax)expression;
-
-                    if (interpolatedString.IsVerbatim() == literalExpression.Token.IsVerbatimStringLiteral())
-                        return true;
-                }
+                if (interpolatedString.IsVerbatim() == literalExpression.Token.IsVerbatimStringLiteral())
+                    return true;
             }
 
             return false;

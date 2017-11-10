@@ -59,21 +59,17 @@ namespace Roslynator.CSharp.Refactorings
                     string name = parameters[i].Name;
 
                     if (!string.IsNullOrEmpty(name)
-                        && !string.Equals(name, parameters2[i].Name, StringComparison.Ordinal))
-                    {
-                        var parameterSyntax = parameters[i]
+                        && !string.Equals(name, parameters2[i].Name, StringComparison.Ordinal)
+                        && (parameters[i]
                             .DeclaringSyntaxReferences
                             .FirstOrDefault()?
-                            .GetSyntax(context.CancellationToken) as ParameterSyntax;
-
-                        if (parameterSyntax != null)
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.ParameterNameDiffersFromBase,
-                                parameterSyntax.Identifier,
-                                name,
-                                parameters2[i].Name);
-                        }
+                            .GetSyntax(context.CancellationToken) is ParameterSyntax parameterSyntax))
+                    {
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.ParameterNameDiffersFromBase,
+                            parameterSyntax.Identifier,
+                            name,
+                            parameters2[i].Name);
                     }
                 }
             }

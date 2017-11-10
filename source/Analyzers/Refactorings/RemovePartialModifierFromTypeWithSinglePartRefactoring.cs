@@ -19,22 +19,18 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
 
-                if (syntaxReferences.Length == 1)
+                if (syntaxReferences.Length == 1
+                    && (syntaxReferences[0].GetSyntax(context.CancellationToken) is MemberDeclarationSyntax memberDeclaration))
                 {
-                    var memberDeclaration = syntaxReferences[0].GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
+                    SyntaxToken partialKeyword = memberDeclaration.GetModifiers()
+                        .FirstOrDefault(f => f.IsKind(SyntaxKind.PartialKeyword));
 
-                    if (memberDeclaration != null)
+                    if (partialKeyword.IsKind(SyntaxKind.PartialKeyword)
+                        && !ContainsPartialMethod(memberDeclaration))
                     {
-                        SyntaxToken partialKeyword = memberDeclaration.GetModifiers()
-                            .FirstOrDefault(f => f.IsKind(SyntaxKind.PartialKeyword));
-
-                        if (partialKeyword.IsKind(SyntaxKind.PartialKeyword)
-                            && !ContainsPartialMethod(memberDeclaration))
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
-                                partialKeyword);
-                        }
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
+                            partialKeyword);
                     }
                 }
             }

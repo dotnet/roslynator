@@ -37,49 +37,45 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         TypeSyntax type = baseType.Type;
 
-                        if (type?.IsMissing == false)
+                        if (type?.IsMissing == false
+                            && (context.SemanticModel.GetSymbol(type, context.CancellationToken) is INamedTypeSymbol baseSymbol))
                         {
-                            var baseSymbol = context.SemanticModel.GetSymbol(type, context.CancellationToken) as INamedTypeSymbol;
+                            TypeKind typeKind = baseSymbol.TypeKind;
 
-                            if (baseSymbol != null)
+                            ImmutableArray<INamedTypeSymbol> allInterfaces = baseSymbol.AllInterfaces;
+
+                            if (typeKind == TypeKind.Class)
                             {
-                                TypeKind typeKind = baseSymbol.TypeKind;
+                                if (!isFirst)
+                                    break;
 
-                                ImmutableArray<INamedTypeSymbol> allInterfaces = baseSymbol.AllInterfaces;
+                                if (allInterfaces.Any())
+                                    baseClassInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
+                            }
+                            else if (typeKind == TypeKind.Interface)
+                            {
+                                var baseInterfaceInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
 
-                                if (typeKind == TypeKind.Class)
+                                if (baseInterfaceInfos == null)
                                 {
-                                    if (!isFirst)
-                                        break;
-
                                     if (allInterfaces.Any())
-                                        baseClassInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
+                                        baseInterfaceInfos = new List<SymbolInterfaceInfo>() { baseInterfaceInfo };
                                 }
-                                else if (typeKind == TypeKind.Interface)
+                                else
                                 {
-                                    var baseInterfaceInfo = new SymbolInterfaceInfo(baseType, baseSymbol, allInterfaces);
-
-                                    if (baseInterfaceInfos == null)
+                                    foreach (SymbolInterfaceInfo baseInterfaceInfo2 in baseInterfaceInfos)
                                     {
-                                        if (allInterfaces.Any())
-                                            baseInterfaceInfos = new List<SymbolInterfaceInfo>() { baseInterfaceInfo };
+                                        Analyze(context, baseInterfaceInfo, baseInterfaceInfo2);
+                                        Analyze(context, baseInterfaceInfo2, baseInterfaceInfo);
                                     }
-                                    else
-                                    {
-                                        foreach (SymbolInterfaceInfo baseInterfaceInfo2 in baseInterfaceInfos)
-                                        {
-                                            Analyze(context, baseInterfaceInfo, baseInterfaceInfo2);
-                                            Analyze(context, baseInterfaceInfo2, baseInterfaceInfo);
-                                        }
-                                    }
+                                }
 
-                                    if (baseClassInfo.IsValid)
-                                    {
-                                        if (typeSymbol == null)
-                                            typeSymbol = context.SemanticModel.GetDeclaredSymbol((TypeDeclarationSyntax)baseList.Parent, context.CancellationToken);
+                                if (baseClassInfo.IsValid)
+                                {
+                                    if (typeSymbol == null)
+                                        typeSymbol = context.SemanticModel.GetDeclaredSymbol((TypeDeclarationSyntax)baseList.Parent, context.CancellationToken);
 
-                                        Analyze(context, baseInterfaceInfo, baseClassInfo, typeSymbol);
-                                    }
+                                    Analyze(context, baseInterfaceInfo, baseClassInfo, typeSymbol);
                                 }
                             }
                         }

@@ -87,9 +87,7 @@ namespace Roslynator.CSharp.CodeFixes
             ISymbol symbol,
             SemanticModel semanticModel)
         {
-            var methodSymbol = symbol as IMethodSymbol;
-
-            if (methodSymbol != null)
+            if (symbol is IMethodSymbol methodSymbol)
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 

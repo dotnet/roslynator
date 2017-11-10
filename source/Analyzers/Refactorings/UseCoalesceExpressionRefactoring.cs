@@ -23,47 +23,44 @@ namespace Roslynator.CSharp.Refactorings
             var ifStatement = (IfStatementSyntax)context.Node;
 
             if (ifStatement.IsSimpleIf()
-                && !ifStatement.ContainsDiagnostics)
+                && !ifStatement.ContainsDiagnostics
+                && ifStatement.TryGetContainingList(out SyntaxList<StatementSyntax> statements)
+                && !IsPartOfLazyInitialization(ifStatement, statements))
             {
-                SyntaxList<StatementSyntax> statements;
-                if (ifStatement.TryGetContainingList(out statements)
-                    && !IsPartOfLazyInitialization(ifStatement, statements))
+                NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, semanticModel: context.SemanticModel, cancellationToken: context.CancellationToken);
+                if (nullCheck.Success)
                 {
-                    NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, semanticModel: context.SemanticModel, cancellationToken: context.CancellationToken);
-                    if (nullCheck.Success)
+                    SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.GetSingleStatementOrDefault());
+                    if (assignmentInfo.Success
+                        && SyntaxComparer.AreEquivalent(assignmentInfo.Left, nullCheck.Expression)
+                        && assignmentInfo.Right.IsSingleLine()
+                        && !ifStatement.SpanContainsDirectives())
                     {
-                        SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.GetSingleStatementOrDefault());
-                        if (assignmentInfo.Success
-                            && SyntaxComparer.AreEquivalent(assignmentInfo.Left, nullCheck.Expression)
-                            && assignmentInfo.Right.IsSingleLine()
-                            && !ifStatement.SpanContainsDirectives())
+                        int index = statements.IndexOf(ifStatement);
+
+                        if (index > 0)
                         {
-                            int index = statements.IndexOf(ifStatement);
+                            StatementSyntax previousStatement = statements[index - 1];
 
-                            if (index > 0)
+                            if (!previousStatement.ContainsDiagnostics
+                                && CanRefactor(previousStatement, ifStatement, nullCheck.Expression, ifStatement.Parent))
                             {
-                                StatementSyntax previousStatement = statements[index - 1];
-
-                                if (!previousStatement.ContainsDiagnostics
-                                    && CanRefactor(previousStatement, ifStatement, nullCheck.Expression, ifStatement.Parent))
-                                {
-                                    context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, previousStatement);
-                                }
+                                context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, previousStatement);
                             }
+                        }
 
-                            if (index < statements.Count - 1)
+                        if (index < statements.Count - 1)
+                        {
+                            StatementSyntax nextStatement = statements[index + 1];
+
+                            if (!nextStatement.ContainsDiagnostics)
                             {
-                                StatementSyntax nextStatement = statements[index + 1];
-
-                                if (!nextStatement.ContainsDiagnostics)
+                                MemberInvocationStatementInfo invocationInfo = SyntaxInfo.MemberInvocationStatementInfo(nextStatement);
+                                if (invocationInfo.Success
+                                    && SyntaxComparer.AreEquivalent(nullCheck.Expression, invocationInfo.Expression)
+                                    && !ifStatement.Parent.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, nextStatement.Span.End)))
                                 {
-                                    MemberInvocationStatementInfo invocationInfo = SyntaxInfo.MemberInvocationStatementInfo(nextStatement);
-                                    if (invocationInfo.Success
-                                        && SyntaxComparer.AreEquivalent(nullCheck.Expression, invocationInfo.Expression)
-                                        && !ifStatement.Parent.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, nextStatement.Span.End)))
-                                    {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.InlineLazyInitialization, ifStatement);
-                                    }
+                                    context.ReportDiagnostic(DiagnosticDescriptors.InlineLazyInitialization, ifStatement);
                                 }
                             }
                         }

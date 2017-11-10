@@ -40,15 +40,11 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
                         IMethodSymbol setMethod = propertySymbol.SetMethod;
 
                         if (setMethod?.IsPrivate() == true
-                            && setMethod.GetAttributes().IsDefaultOrEmpty)
+                            && setMethod.GetAttributes().IsDefaultOrEmpty
+                            && setMethod.GetSyntaxOrDefault(context.CancellationToken) is AccessorDeclarationSyntax accessor
+                            && accessor.BodyOrExpressionBody() == null)
                         {
-                            var accessor = setMethod.GetSyntaxOrDefault(context.CancellationToken) as AccessorDeclarationSyntax;
-
-                            if (accessor != null
-                                && accessor.BodyOrExpressionBody() == null)
-                            {
-                                (properties ?? (properties = new HashSet<ISymbol>())).Add(propertySymbol);
-                            }
+                            (properties ?? (properties = new HashSet<ISymbol>())).Add(propertySymbol);
                         }
                     }
                 }

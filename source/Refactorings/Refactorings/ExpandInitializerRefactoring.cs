@@ -169,9 +169,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            var typeSymbol = semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) as ITypeSymbol;
-
-            if (typeSymbol != null)
+            if (semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) is ITypeSymbol typeSymbol)
             {
                 foreach (ISymbol symbol in semanticModel.LookupSymbols(objectCreationExpression.SpanStart, typeSymbol, "Add"))
                 {
@@ -202,9 +200,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            var typeSymbol = semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) as ITypeSymbol;
-
-            if (typeSymbol != null)
+            if (semanticModel.GetSymbol(objectCreationExpression.Type, cancellationToken) is ITypeSymbol typeSymbol)
             {
                 int position = objectCreationExpression.SpanStart;
 

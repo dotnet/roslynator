@@ -32,9 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                         .GetSyntaxAsync(context.CancellationToken)
                         .ConfigureAwait(false);
 
-                    var method = node as MethodDeclarationSyntax;
-
-                    if (method != null)
+                    if (node is MethodDeclarationSyntax method)
                     {
                         VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 

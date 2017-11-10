@@ -75,21 +75,17 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         IdentifierNameSyntax identifierName = GetIdentifierName(nullCheck.Expression);
 
-                        if (identifierName != null)
+                        if (identifierName != null
+                            && (semanticModel.GetSymbol(identifierName, cancellationToken) is IFieldSymbol fieldSymbol))
                         {
-                            var fieldSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as IFieldSymbol;
-
-                            if (fieldSymbol != null)
+                            SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
+                            if (assignmentInfo.Success)
                             {
-                                SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
-                                if (assignmentInfo.Success)
-                                {
-                                    string fieldName = identifierName.Identifier.ValueText;
+                                string fieldName = identifierName.Identifier.ValueText;
 
-                                    return assignmentInfo.Right.IsSingleLine()
-                                        && IsBackingField(GetIdentifierName(assignmentInfo.Left), fieldName, fieldSymbol, semanticModel, cancellationToken)
-                                        && IsBackingField(GetIdentifierName(returnStatement.Expression), fieldName, fieldSymbol, semanticModel, cancellationToken);
-                                }
+                                return assignmentInfo.Right.IsSingleLine()
+                                    && IsBackingField(GetIdentifierName(assignmentInfo.Left), fieldName, fieldSymbol, semanticModel, cancellationToken)
+                                    && IsBackingField(GetIdentifierName(returnStatement.Expression), fieldName, fieldSymbol, semanticModel, cancellationToken);
                             }
                         }
                     }

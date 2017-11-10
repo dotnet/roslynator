@@ -24,8 +24,8 @@ namespace Roslynator.CSharp.Refactorings
             if (stringBuilderSymbol != null)
             {
                 InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
-                MethodInfo methodInfo;
-                if (context.SemanticModel.TryGetMethodInfo(invocationExpression, out methodInfo, context.CancellationToken)
+
+                if (context.SemanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, context.CancellationToken)
                     && !methodInfo.IsExtensionMethod
                     && methodInfo.ContainingType?.Equals(stringBuilderSymbol) == true)
                 {
@@ -98,34 +98,32 @@ namespace Roslynator.CSharp.Refactorings
         private static bool IsFixable(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression);
-            if (invocationInfo.Success)
+
+            if (invocationInfo.Success
+                && semanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out MethodInfo methodInfo, cancellationToken)
+                && methodInfo.IsContainingType(SpecialType.System_String)
+                && methodInfo.IsReturnType(SpecialType.System_String))
             {
-                MethodInfo methodInfo;
-                if (semanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out methodInfo, cancellationToken)
-                    && methodInfo.IsContainingType(SpecialType.System_String)
-                    && methodInfo.IsReturnType(SpecialType.System_String))
+                switch (methodInfo.Name)
                 {
-                    switch (methodInfo.Name)
-                    {
-                        case "Substring":
-                            {
-                                if (methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Int32))
-                                    return true;
-
-                                break;
-                            }
-                        case "Remove":
-                            {
-                                if (methodInfo.HasParameter(SpecialType.System_Int32))
-                                    return true;
-
-                                break;
-                            }
-                        case "Format":
-                            {
+                    case "Substring":
+                        {
+                            if (methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Int32))
                                 return true;
-                            }
-                    }
+
+                            break;
+                        }
+                    case "Remove":
+                        {
+                            if (methodInfo.HasParameter(SpecialType.System_Int32))
+                                return true;
+
+                            break;
+                        }
+                    case "Format":
+                        {
+                            return true;
+                        }
                 }
             }
 

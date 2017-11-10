@@ -114,9 +114,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 ITypeSymbol typeSymbol = localSymbol.Type;
 
-                var variableDeclarator = localSymbol.GetSyntax(cancellationToken) as VariableDeclaratorSyntax;
-
-                if (variableDeclarator != null)
+                if (localSymbol.GetSyntax(cancellationToken) is VariableDeclaratorSyntax variableDeclarator)
                 {
                     SyntaxToken identifier = variableDeclarator.Identifier;
 

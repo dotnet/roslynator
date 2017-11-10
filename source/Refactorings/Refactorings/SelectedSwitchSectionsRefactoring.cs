@@ -17,8 +17,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (fRemoveStatements || fAddBraces || fRemoveBraces)
             {
-                SyntaxListSelection<SwitchSectionSyntax> selectedSections;
-                if (SyntaxListSelection<SwitchSectionSyntax>.TryCreate(switchStatement.Sections, context.Span, out selectedSections))
+                if (SyntaxListSelection<SwitchSectionSyntax>.TryCreate(switchStatement.Sections, context.Span, out SyntaxListSelection<SwitchSectionSyntax> selectedSections))
                 {
                     if (fAddBraces || fRemoveBraces)
                     {

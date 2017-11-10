@@ -25,9 +25,7 @@ namespace Roslynator.VisualStudio
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
         {
-            var clickedHeader = e.OriginalSource as GridViewColumnHeader;
-
-            if (clickedHeader != null)
+            if (e.OriginalSource is GridViewColumnHeader clickedHeader)
             {
                 ListSortDirection direction;
 

@@ -37,8 +37,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-            MethodInfo info;
-            if (semanticModel.TryGetMethodInfo(invocationExpression, out info, cancellationToken)
+            if (semanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo info, cancellationToken)
                 && info.IsName("ToString")
                 && info.IsPublic
                 && !info.IsStatic

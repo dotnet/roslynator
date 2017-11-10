@@ -17,9 +17,7 @@ namespace Roslynator.CSharp.Helpers
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var argumentList = argument.Parent as BaseArgumentListSyntax;
-
-            if (argumentList != null)
+            if (argument.Parent is BaseArgumentListSyntax argumentList)
             {
                 SyntaxNode parent = argumentList.Parent;
 
@@ -61,14 +59,10 @@ namespace Roslynator.CSharp.Helpers
 
         private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            var expression = node as ExpressionSyntax;
-
-            if (expression != null)
+            if (node is ExpressionSyntax expression)
                 return semanticModel.GetSymbolInfo(expression, cancellationToken);
 
-            var constructorInitializer = node as ConstructorInitializerSyntax;
-
-            if (constructorInitializer != null)
+            if (node is ConstructorInitializerSyntax constructorInitializer)
                 return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
             return default(SymbolInfo);

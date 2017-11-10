@@ -9,11 +9,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, BlockSyntax block)
         {
-            if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context))
+            if (SelectedStatementsRefactoring.IsAnyRefactoringEnabled(context)
+                && StatementsSelection.TryCreate(block, context.Span, out StatementsSelection selectedStatements))
             {
-                StatementsSelection selectedStatements;
-                if (StatementsSelection.TryCreate(block, context.Span, out selectedStatements))
-                    await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
+                await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
         }
     }

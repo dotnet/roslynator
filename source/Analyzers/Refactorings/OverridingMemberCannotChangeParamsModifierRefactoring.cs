@@ -19,18 +19,15 @@ namespace Roslynator.CSharp.Refactorings
             {
                 IParameterSymbol baseParameterSymbol = baseSymbol.Parameters.LastOrDefault();
 
-                if (baseParameterSymbol != null)
+                if (baseParameterSymbol != null
+                    && symbol.TryGetSyntax(out MethodDeclarationSyntax methodDeclaration))
                 {
-                    MethodDeclarationSyntax methodDeclaration;
-                    if (symbol.TryGetSyntax(out methodDeclaration))
-                    {
-                        ParameterSyntax parameter = methodDeclaration.ParameterList?.Parameters.LastOrDefault();
+                    ParameterSyntax parameter = methodDeclaration.ParameterList?.Parameters.LastOrDefault();
 
-                        if (parameter != null
-                            && parameter.IsParams() != baseParameterSymbol.IsParams)
-                        {
-                            context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
-                        }
+                    if (parameter != null
+                        && parameter.IsParams() != baseParameterSymbol.IsParams)
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
                     }
                 }
             }
@@ -48,18 +45,15 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     IParameterSymbol baseParameterSymbol = baseSymbol.Parameters.LastOrDefault();
 
-                    if (baseParameterSymbol != null)
+                    if (baseParameterSymbol != null
+                        && symbol.TryGetSyntax(out IndexerDeclarationSyntax indexerDeclaration))
                     {
-                        IndexerDeclarationSyntax indexerDeclaration;
-                        if (symbol.TryGetSyntax(out indexerDeclaration))
-                        {
-                            ParameterSyntax parameter = indexerDeclaration.ParameterList?.Parameters.LastOrDefault();
+                        ParameterSyntax parameter = indexerDeclaration.ParameterList?.Parameters.LastOrDefault();
 
-                            if (parameter != null
-                                && parameter.IsParams() != baseParameterSymbol.IsParams)
-                            {
-                                context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
-                            }
+                        if (parameter != null
+                            && parameter.IsParams() != baseParameterSymbol.IsParams)
+                        {
+                            context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
                         }
                     }
                 }

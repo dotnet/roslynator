@@ -47,9 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             foreach (ISymbol symbol in symbolInfo.CandidateSymbols)
                             {
-                                var namedTypeSymbol = symbol as INamedTypeSymbol;
-
-                                if (namedTypeSymbol != null)
+                                if (symbol is INamedTypeSymbol namedTypeSymbol)
                                 {
                                     ImmutableArray<ITypeParameterSymbol> typeParameters = namedTypeSymbol.TypeParameters;
 

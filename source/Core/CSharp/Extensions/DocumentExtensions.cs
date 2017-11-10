@@ -38,9 +38,7 @@ namespace Roslynator.CSharp
             }
             else
             {
-                var parentMember = parent as MemberDeclarationSyntax;
-
-                if (parentMember != null)
+                if (parent is MemberDeclarationSyntax parentMember)
                 {
                     return await document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member), cancellationToken).ConfigureAwait(false);
                 }

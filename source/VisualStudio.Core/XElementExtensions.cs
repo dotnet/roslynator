@@ -23,16 +23,11 @@ namespace Roslynator
 
         public static bool TryGetAttributeValueAsBoolean(this XElement element, XName name, out bool value)
         {
-            string s = null;
-
-            if (TryGetAttributeValueAsString(element, name, out s))
+            if (TryGetAttributeValueAsString(element, name, out string s)
+                && bool.TryParse(s, out bool result))
             {
-                bool result = false;
-                if (bool.TryParse(s, out result))
-                {
-                    value = result;
-                    return true;
-                }
+                value = result;
+                return true;
             }
 
             value = false;

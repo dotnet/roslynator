@@ -46,9 +46,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var expressionStatement = (ExpressionStatementSyntax)firstStatement;
 
-                    var assignment = expressionStatement.Expression as AssignmentExpressionSyntax;
-
-                    if (assignment != null)
+                    if (expressionStatement.Expression is AssignmentExpressionSyntax assignment)
                     {
                         objectCreation = assignment.Right as ObjectCreationExpressionSyntax;
 

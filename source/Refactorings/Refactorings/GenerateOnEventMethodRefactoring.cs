@@ -35,37 +35,33 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             INamedTypeSymbol containingType = eventSymbol.ContainingType;
 
-                            if (containingType?.IsInterface() == false)
+                            if (containingType?.IsInterface() == false
+                                && (eventSymbol.Type is INamedTypeSymbol eventHandlerType))
                             {
-                                var eventHandlerType = eventSymbol.Type as INamedTypeSymbol;
+                                ITypeSymbol eventArgsSymbol = GetEventArgsSymbol(eventHandlerType, semanticModel);
 
-                                if (eventHandlerType != null)
+                                if (eventArgsSymbol != null)
                                 {
-                                    ITypeSymbol eventArgsSymbol = GetEventArgsSymbol(eventHandlerType, semanticModel);
+                                    string methodName = "On" + eventSymbol.Name;
 
-                                    if (eventArgsSymbol != null)
+                                    if (!containingType.ExistsMethod(
+                                        $"On{eventSymbol.Name}",
+                                        methodSymbol => eventArgsSymbol.Equals(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type)))
                                     {
-                                        string methodName = "On" + eventSymbol.Name;
+                                        methodName = NameGenerator.Default.EnsureUniqueMemberName(methodName, containingType);
 
-                                        if (!containingType.ExistsMethod(
-                                            $"On{eventSymbol.Name}",
-                                            methodSymbol => eventArgsSymbol.Equals(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type)))
-                                        {
-                                            methodName = NameGenerator.Default.EnsureUniqueMemberName(methodName, containingType);
-
-                                            context.RegisterRefactoring(
-                                                $"Generate '{methodName}' method",
-                                                cancellationToken =>
-                                                {
-                                                    return RefactorAsync(
-                                                        context.Document,
-                                                        eventFieldDeclaration,
-                                                        eventSymbol,
-                                                        eventArgsSymbol,
-                                                        context.SupportsCSharp6,
-                                                        cancellationToken);
-                                                });
-                                        }
+                                        context.RegisterRefactoring(
+                                            $"Generate '{methodName}' method",
+                                            cancellationToken =>
+                                            {
+                                                return RefactorAsync(
+                                                    context.Document,
+                                                    eventFieldDeclaration,
+                                                    eventSymbol,
+                                                    eventArgsSymbol,
+                                                    context.SupportsCSharp6,
+                                                    cancellationToken);
+                                            });
                                     }
                                 }
                             }

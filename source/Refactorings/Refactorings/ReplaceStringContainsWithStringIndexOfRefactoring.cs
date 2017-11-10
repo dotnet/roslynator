@@ -16,8 +16,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            MethodInfo info;
-            if (semanticModel.TryGetMethodInfo(invocation, out info, context.CancellationToken)
+            if (semanticModel.TryGetMethodInfo(invocation, out MethodInfo info, context.CancellationToken)
                 && info.IsName("Contains")
                 && info.IsContainingType(SpecialType.System_String)
                 && info.Symbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type.IsString() == true)

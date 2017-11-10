@@ -52,42 +52,39 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (arguments.Count >= 2
                     && arguments.Count <= 3
-                    && arguments[0].Expression?.IsKind(SyntaxKind.FalseLiteralExpression) == true)
+                    && arguments[0].Expression?.IsKind(SyntaxKind.FalseLiteralExpression) == true
+                    && semanticModel.TryGetMethodInfo(invocation, out MethodInfo info, cancellationToken)
+                    && info.IsContainingType(MetadataNames.System_Diagnostics_Debug)
+                    && info.IsName("Assert")
+                    && info.IsStatic
+                    && info.ReturnsVoid
+                    && !info.IsGenericMethod)
                 {
-                    MethodInfo info;
-                    if (semanticModel.TryGetMethodInfo(invocation, out info, cancellationToken)
-                        && info.IsContainingType(MetadataNames.System_Diagnostics_Debug)
-                        && info.IsName("Assert")
-                        && info.IsStatic
-                        && info.ReturnsVoid
-                        && !info.IsGenericMethod)
+                    INamedTypeSymbol containingType = info.ContainingType;
+
+                    ImmutableArray<IParameterSymbol> parameters = info.Parameters;
+
+                    int length = parameters.Length;
+
+                    if (length > 1
+                        && parameters[0].Type.IsBoolean()
+                        && parameters[1].Type.IsString())
                     {
-                        INamedTypeSymbol containingType = info.ContainingType;
-
-                        ImmutableArray<IParameterSymbol> parameters = info.Parameters;
-
-                        int length = parameters.Length;
-
-                        if (length > 1
-                            && parameters[0].Type.IsBoolean()
-                            && parameters[1].Type.IsString())
+                        if (length == 2)
                         {
-                            if (length == 2)
+                            return ContainsFailMethod(containingType, methodSymbol => methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type.IsString() == true);
+                        }
+                        else if (length == 3
+                            && parameters[2].Type.IsString())
+                        {
+                            return ContainsFailMethod(containingType, methodSymbol =>
                             {
-                                return ContainsFailMethod(containingType, methodSymbol => methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type.IsString() == true);
-                            }
-                            else if (length == 3
-                                && parameters[2].Type.IsString())
-                            {
-                                return ContainsFailMethod(containingType, methodSymbol =>
-                                {
-                                    ImmutableArray<IParameterSymbol> parameters2 = methodSymbol.Parameters;
+                                ImmutableArray<IParameterSymbol> parameters2 = methodSymbol.Parameters;
 
-                                    return parameters2.Length == 2
-                                        && parameters2[0].Type.IsString()
-                                        && parameters2[1].Type.IsString();
-                                });
-                            }
+                                return parameters2.Length == 2
+                                    && parameters2[0].Type.IsString()
+                                    && parameters2[1].Type.IsString();
+                            });
                         }
                     }
                 }

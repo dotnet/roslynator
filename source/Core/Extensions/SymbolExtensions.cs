@@ -65,12 +65,10 @@ namespace Roslynator
 
                     for (int j = 0; j < members.Length; j++)
                     {
-                        if (members[j] is TSymbol)
+                        if ((members[j] is TSymbol tmember)
+                            && symbol.Equals(containingType.FindImplementationForInterfaceMember(tmember)))
                         {
-                            var tmember = (TSymbol)members[j];
-
-                            if (symbol.Equals(containingType.FindImplementationForInterfaceMember(tmember)))
-                                return tmember;
+                            return tmember;
                         }
                     }
                 }
