@@ -1230,4 +1230,9 @@
       <Syntax>single-line comment</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0193" Identifier="ReplaceInterpolatedStringWithConcatenation" Title="Replace interpolated string with concatenation">
+    <Syntaxes>
+      <Syntax>interpolated string</Syntax>
+    </Syntaxes>
+  </Refactoring>
 </Refactorings>

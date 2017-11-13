@@ -93,6 +93,7 @@
     <Compile Include="ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="ReplaceIfWithSwitchRefactoring.cs" />
     <Compile Include="GenerateEnumMemberRefactoring.cs" />
+    <Compile Include="ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
     <Compile Include="UseCSharp6DictionaryInitializerRefactoring.cs" />
     <Compile Include="UseListInsteadOfYield.cs" />
     <Compile Include="ReplaceObjectCreationWithDefaultValue.cs" />

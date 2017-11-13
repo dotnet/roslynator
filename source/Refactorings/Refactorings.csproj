@@ -107,6 +107,7 @@
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceEqualsExpression\ReplaceEqualsExpressionWithStringIsNullOrWhiteSpaceRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceIfElseWithIfReturnRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceInterpolatedStringWithInterpolationExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceObjectCreationWithDefaultValueRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodSyntaxRewriter.cs" />

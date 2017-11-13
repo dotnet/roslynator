@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.ReplaceCommentWithDocumentationComment;
+        = RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -562,6 +562,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfElseWithIfReturn, "Replace if-else with if-return", IsEnabled(RefactoringIdentifiers.ReplaceIfElseWithIfReturn)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCSharp6DictionaryInitializer, "Use C# 6.0 dictionary initializer", IsEnabled(RefactoringIdentifiers.UseCSharp6DictionaryInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment, "Replace comment with documentation comment", IsEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation, "Replace interpolated string with concatenation", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)));
         }
 
         [Browsable(false)]

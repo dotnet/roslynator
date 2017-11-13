@@ -142,6 +142,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceIfElseWithIfReturn = Prefix + "0190";
         public const string ReplaceIfWithSwitch = Prefix + "0133";
         public const string ReplaceIncrementOperatorWithDecrementOperator = Prefix + "0134";
+        public const string ReplaceInterpolatedStringWithConcatenation = Prefix + "0193";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = Prefix + "0135";
         public const string ReplaceInterpolatedStringWithStringLiteral = Prefix + "0136";
         public const string ReplaceMethodGroupWithLambda = Prefix + "0137";
