@@ -5,16 +5,16 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.Refactorings.SimplifyLazilyInitializedPropertyRefactoring;
+using static Roslynator.CSharp.Refactorings.SimplifyLazyInitializationRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class SimplifyLazilyInitializedPropertyDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class SimplifyLazyInitializationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyLazilyInitializedProperty); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyLazyInitialization); }
         }
 
         public override void Initialize(AnalysisContext context)

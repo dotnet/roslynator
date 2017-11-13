@@ -2,17 +2,17 @@
 
 using System;
 
-#pragma warning disable RCS1002, RCS1016, RCS1040, RCS1163
+#pragma warning disable RCS1002, RCS1007, RCS1016, RCS1040, RCS1098, RCS1163
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    public static class SimplifyLazilyInitializedProperty
+    public static class SimplifyLazyInitialization
     {
-        public class Foo
+        private class Foo
         {
             private object _value;
 
-            public object LazyMethod()
+            public object FooMethod()
             {
                 if (_value == null)
                 {
@@ -22,7 +22,48 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 return _value;
             }
 
-            public object LazyProperty
+            public object FooMethod2()
+            {
+                if (_value == null)
+                    _value = Initialize();
+
+                return _value;
+            }
+
+            public object FooMethod3()
+            {
+                if (null ==_value)
+                {
+                    _value = Initialize();
+                }
+
+                return _value;
+            }
+
+            public object FooMethod4()
+            {
+                if (this._value == null)
+                {
+                    this._value = Initialize();
+                }
+
+                return this._value;
+            }
+
+            public object FooMethod5()
+            {
+                if (_value == null)
+                {
+                    _value = new object[]
+                    {
+                        null
+                    };
+                }
+
+                return _value;
+            }
+
+            public object FooProperty
             {
                 get
                 {
@@ -52,11 +93,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        public class FooNullable
+        private class FooNullable
         {
             private int? _value;
 
-            public int? LazyMethod()
+            public int? FooMethod()
             {
                 if (!_value.HasValue)
                 {
@@ -66,7 +107,17 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 return _value;
             }
 
-            public int? LazyProperty
+            public int? FooMethod2()
+            {
+                if (_value == null)
+                {
+                    _value = Initialize();
+                }
+
+                return _value;
+            }
+
+            public int? FooProperty
             {
                 get
                 {
@@ -96,9 +147,63 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
+        private class FooNullable2
+        {
+            private int? _value;
+
+            public int FooMethod()
+            {
+                if (_value == null)
+                {
+                    _value = Initialize();
+                }
+
+                return _value.Value;
+            }
+
+            public int FooMethod2()
+            {
+                if (this._value == null)
+                {
+                    this._value = Initialize();
+                }
+
+                return this._value.Value;
+            }
+
+            public int? FooProperty
+            {
+                get
+                {
+                    if (_value == null)
+                        _value = Initialize();
+
+                    return _value.Value;
+                }
+            }
+
+            public int? this[int index]
+            {
+                get
+                {
+                    if (_value == null)
+                    {
+                        _value = Initialize();
+                    }
+
+                    return _value.Value;
+                }
+            }
+
+            private int Initialize()
+            {
+                return 0;
+            }
+        }
+
         // n
 
-        public class Foo2
+        private class Foo2
         {
             private object _value;
 

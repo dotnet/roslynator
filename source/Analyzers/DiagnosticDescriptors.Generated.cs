@@ -1864,15 +1864,15 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1171</summary>
-        public static readonly DiagnosticDescriptor SimplifyLazilyInitializedProperty = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.SimplifyLazilyInitializedProperty, 
-            title:              "Simplify lazily initialized property.", 
-            messageFormat:      "Simplify lazily initialized property.", 
+        public static readonly DiagnosticDescriptor SimplifyLazyInitialization = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.SimplifyLazyInitialization, 
+            title:              "Simplify lazy initialization.", 
+            messageFormat:      "Simplify lazy initialization.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyLazilyInitializedProperty}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyLazyInitialization}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1172</summary>

@@ -97,7 +97,7 @@
     <Compile Include="RemoveFileWithNoCode2.cs" />
     <Compile Include="RemoveRedundantAsyncAwait.cs" />
     <Compile Include="RemoveRedundantBaseInterface.cs" />
-    <Compile Include="SimplifyLazilyInitializedProperty.cs" />
+    <Compile Include="SimplifyLazyInitialization.cs" />
     <Compile Include="UnusedParameter2.cs" />
     <Compile Include="UnusedParameter.cs" />
     <Compile Include="ParameterNameDiffersFromBase.cs" />

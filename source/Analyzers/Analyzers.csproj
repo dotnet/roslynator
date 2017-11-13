@@ -118,7 +118,7 @@
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAsyncAwaitDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceCommentWithDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantBaseInterfaceDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\SimplifyLazilyInitializedPropertyDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\SimplifyLazyInitializationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\SwitchStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\UnusedParameterDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ParameterNameDiffersFromBaseDiagnosticAnalyzer.cs" />
@@ -167,7 +167,7 @@
     <Compile Include="Refactorings\RemoveRedundantBaseInterfaceRefactoring.cs" />
     <Compile Include="Refactorings\UseMethodGroupInsteadOfAnonymousFunctionRefactoring.cs" />
     <Compile Include="Refactorings\SimplifyBooleanExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\SimplifyLazilyInitializedPropertyRefactoring.cs" />
+    <Compile Include="Refactorings\SimplifyLazyInitializationRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedConstructorParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedIndexerParameterRefactoring.cs" />
     <Compile Include="Refactorings\UnusedSyntax\UnusedLocalFunctionParameterRefactoring.cs" />

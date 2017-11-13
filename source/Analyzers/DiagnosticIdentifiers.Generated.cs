@@ -159,7 +159,7 @@ namespace Roslynator.CSharp
         public const string ParameterNameDiffersFromBase = "RCS1168";
         public const string MarkFieldAsReadOnly = "RCS1169";
         public const string UseReadOnlyAutoProperty = "RCS1170";
-        public const string SimplifyLazilyInitializedProperty = "RCS1171";
+        public const string SimplifyLazyInitialization = "RCS1171";
         public const string UseIsOperatorInsteadOfAsOperator = "RCS1172";
         public const string UseCoalesceExpressionInsteadOfIf = "RCS1173";
         public const string RemoveRedundantAsyncAwait = "RCS1174";

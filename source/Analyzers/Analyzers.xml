@@ -1690,10 +1690,10 @@
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLazilyInitializedProperty">
+  <Analyzer Identifier="SimplifyLazyInitialization">
     <Id>RCS1171</Id>
-    <Title>Simplify lazily initialized property.</Title>
-    <MessageFormat>Simplify lazily initialized property.</MessageFormat>
+    <Title>Simplify lazy initialization.</Title>
+    <MessageFormat>Simplify lazy initialization.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

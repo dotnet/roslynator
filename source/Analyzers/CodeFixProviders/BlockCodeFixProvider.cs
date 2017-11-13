@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.SimplifyLazilyInitializedProperty,
+                    DiagnosticIdentifiers.SimplifyLazyInitialization,
                     DiagnosticIdentifiers.AvoidSingleLineBlock);
             }
         }
@@ -36,11 +36,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.SimplifyLazilyInitializedProperty:
+                    case DiagnosticIdentifiers.SimplifyLazyInitialization:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify lazy initialization",
-                                cancellationToken => SimplifyLazilyInitializedPropertyRefactoring.RefactorAsync(context.Document, block, cancellationToken),
+                                cancellationToken => SimplifyLazyInitializationRefactoring.RefactorAsync(context.Document, block, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
