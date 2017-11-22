@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         newInvocation = SimpleMemberInvocationExpression(
                             newInvocation ?? stringBuilderName,
-                            IdentifierName(conversion.Name),
+                            IdentifierName(conversion.MethodName),
                             ArgumentList(conversion.Arguments));
                     }
                 }

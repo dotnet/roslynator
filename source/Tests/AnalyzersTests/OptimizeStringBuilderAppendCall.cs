@@ -1,6 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Text;
+
+#pragma warning disable RCS1118, RCS1176, RCS1192, RCS1198, RCS1201
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
@@ -36,6 +39,10 @@ namespace Roslynator.CSharp.Refactorings.Tests
             sb.AppendLine($"{s}s");
 
             sb.AppendLine($"{s,1:f}");
+
+            sb.AppendLine($"s{'s'}");
+
+            sb.AppendLine($"s{'s'}s");
 
             sb.AppendLine("s" + s);
 

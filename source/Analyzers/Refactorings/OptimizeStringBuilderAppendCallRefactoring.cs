@@ -136,6 +136,8 @@ namespace Roslynator.CSharp.Refactorings
             MemberInvocationExpressionInfo invocationInfo,
             CancellationToken cancellationToken)
         {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
             InvocationExpressionSyntax newInvocation = null;
 
@@ -147,7 +149,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.InterpolatedStringExpression:
                     {
-                        newInvocation = ConvertInterpolatedStringExpressionToInvocationExpression((InterpolatedStringExpressionSyntax)argument.Expression, invocationInfo);
+                        newInvocation = ConvertInterpolatedStringExpressionToInvocationExpression((InterpolatedStringExpressionSyntax)argument.Expression, invocationInfo, semanticModel);
                         break;
                     }
                 case SyntaxKind.AddExpression:
@@ -158,34 +160,39 @@ namespace Roslynator.CSharp.Refactorings
                             .ReplaceNode(invocationInfo.Name, IdentifierName("Append").WithTriviaFrom(invocationInfo.Name))
                             .WithArgumentList(invocation.ArgumentList.WithArguments(SingletonSeparatedList(Argument(expressions[0]))).WithoutTrailingTrivia());
 
-                        SemanticModel semanticModel = null;
-
                         for (int i = 1; i < expressions.Length; i++)
                         {
-                            string name = (i == expressions.Length - 1 && isAppendLine)
-                                ? "AppendLine"
-                                : "Append";
-
                             ExpressionSyntax argumentExpression = expressions[i];
 
-                            if (isAppendLine)
-                            {
-                                if (semanticModel == null)
-                                    semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                                if (semanticModel
+                            string methodName;
+                            if (i == expressions.Length - 1
+                                && isAppendLine
+                                && semanticModel
                                     .GetTypeInfo(argumentExpression, cancellationToken)
                                     .ConvertedType?
-                                    .IsString() != true)
-                                {
-                                    argumentExpression = SimpleMemberInvocationExpression(argumentExpression.Parenthesize(), IdentifierName("ToString"));
-                                }
+                                    .SpecialType == SpecialType.System_String)
+                            {
+                                methodName = "AppendLine";
+                            }
+                            else
+                            {
+                                methodName = "Append";
                             }
 
                             newInvocation = SimpleMemberInvocationExpression(
                                 newInvocation,
-                                IdentifierName(name),
+                                IdentifierName(methodName),
                                 ArgumentList(Argument(argumentExpression)));
+
+                            if (i == expressions.Length - 1
+                                && isAppendLine
+                                && !string.Equals(methodName, "AppendLine", StringComparison.Ordinal))
+                            {
+                                newInvocation = SimpleMemberInvocationExpression(
+                                    newInvocation,
+                                    IdentifierName("AppendLine"),
+                                    ArgumentList());
+                            }
                         }
 
                         break;
@@ -212,7 +219,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static InvocationExpressionSyntax ConvertInterpolatedStringExpressionToInvocationExpression(
             InterpolatedStringExpressionSyntax interpolatedString,
-            MemberInvocationExpressionInfo invocationInfo)
+            MemberInvocationExpressionInfo invocationInfo,
+            SemanticModel semanticModel)
         {
             bool isVerbatim = interpolatedString.IsVerbatim();
 
@@ -228,33 +236,35 @@ namespace Roslynator.CSharp.Refactorings
             {
                 InterpolatedStringContentConversion conversion = InterpolatedStringContentConversion.Create(contents[i], isVerbatim);
 
-                string name = conversion.Name;
+                string methodName = conversion.MethodName;
                 SeparatedSyntaxList<ArgumentSyntax> arguments = conversion.Arguments;
 
                 if (i == contents.Count - 1
                     && isAppendLine
-                    && !string.Equals(name, "AppendFormat", StringComparison.Ordinal))
+                    && string.Equals(methodName, "Append", StringComparison.Ordinal)
+                    && (conversion.Kind == SyntaxKind.InterpolatedStringText
+                        || semanticModel.IsImplicitConversion(((InterpolationSyntax)contents[i]).Expression, semanticModel.Compilation.GetSpecialType(SpecialType.System_String))))
                 {
-                    name = "AppendLine";
+                    methodName = "AppendLine";
                 }
 
                 if (newExpression == null)
                 {
                     newExpression = invocation
-                        .ReplaceNode(invocationInfo.Name, IdentifierName(name).WithTriviaFrom(invocationInfo.Name))
+                        .ReplaceNode(invocationInfo.Name, IdentifierName(methodName).WithTriviaFrom(invocationInfo.Name))
                         .WithArgumentList(invocation.ArgumentList.WithArguments(arguments).WithoutTrailingTrivia());
                 }
                 else
                 {
                     newExpression = SimpleMemberInvocationExpression(
                         newExpression,
-                        IdentifierName(name),
+                        IdentifierName(methodName),
                         ArgumentList(arguments));
                 }
 
                 if (i == contents.Count - 1
                     && isAppendLine
-                    && string.Equals(name, "AppendFormat", StringComparison.Ordinal))
+                    && !string.Equals(methodName, "AppendLine", StringComparison.Ordinal))
                 {
                     newExpression = SimpleMemberInvocationExpression(
                         newExpression,

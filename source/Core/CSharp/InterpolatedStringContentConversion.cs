@@ -11,13 +11,19 @@ namespace Roslynator.CSharp
 {
     internal struct InterpolatedStringContentConversion
     {
-        private InterpolatedStringContentConversion(string name, SeparatedSyntaxList<ArgumentSyntax> arguments)
+        private InterpolatedStringContentConversion(
+            SyntaxKind kind,
+            string methodName,
+            SeparatedSyntaxList<ArgumentSyntax> arguments)
         {
-            Name = name;
+            Kind = kind;
+            MethodName = methodName;
             Arguments = arguments;
         }
 
-        public string Name { get; }
+        public SyntaxKind Kind { get; }
+
+        public string MethodName { get; }
 
         public SeparatedSyntaxList<ArgumentSyntax> Arguments { get; }
 
@@ -26,15 +32,9 @@ namespace Roslynator.CSharp
             if (content == null)
                 throw new ArgumentNullException(nameof(content));
 
-            if (!TryCreate(content, isVerbatim, out InterpolatedStringContentConversion conversion))
-                throw new ArgumentException("", nameof(content));
+            SyntaxKind kind = content.Kind();
 
-            return conversion;
-        }
-
-        public static bool TryCreate(InterpolatedStringContentSyntax content, bool isVerbatim, out InterpolatedStringContentConversion conversion)
-        {
-            switch (content?.Kind())
+            switch (kind)
             {
                 case SyntaxKind.Interpolation:
                     {
@@ -63,13 +63,11 @@ namespace Roslynator.CSharp
 
                             sb.Append("}\"");
 
-                            conversion = new InterpolatedStringContentConversion("AppendFormat", SeparatedList(new ArgumentSyntax[] { Argument(ParseExpression(sb.ToString())), Argument(interpolation.Expression) }));
-                            return true;
+                            return new InterpolatedStringContentConversion(kind,"AppendFormat", SeparatedList(new ArgumentSyntax[] { Argument(ParseExpression(sb.ToString())), Argument(interpolation.Expression) }));
                         }
                         else
                         {
-                            conversion = new InterpolatedStringContentConversion("Append", SingletonSeparatedList(Argument(interpolation.Expression)));
-                            return true;
+                            return new InterpolatedStringContentConversion(kind ,"Append", SingletonSeparatedList(Argument(interpolation.Expression)));
                         }
                     }
                 case SyntaxKind.InterpolatedStringText:
@@ -84,13 +82,13 @@ namespace Roslynator.CSharp
 
                         ExpressionSyntax stringLiteral = ParseExpression(text);
 
-                        conversion = new InterpolatedStringContentConversion("Append", SingletonSeparatedList(Argument(stringLiteral)));
-                        return true;
+                        return new InterpolatedStringContentConversion(kind, "Append", SingletonSeparatedList(Argument(stringLiteral)));
+                    }
+                default:
+                    {
+                        throw new ArgumentException("", nameof(content));
                     }
             }
-
-            conversion = default(InterpolatedStringContentConversion);
-            return false;
         }
     }
 }
