@@ -42,6 +42,7 @@
   <Diagnostic Id="CS0219" Identifier="VariableIsAssignedButItsValueIsNeverUsed" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0219" />
   <Diagnostic Id="CS0221" Identifier="ConstantValueCannotBeConverted" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0221" />
   <Diagnostic Id="CS0225" Identifier="ParamsParameterMustBeSingleDimensionalArray" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225" />
+  <Diagnostic Id="CS0246" Identifier="TypeOrNamespaceNameCouldNotBeFound" HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0246" />
   <Diagnostic Id="CS0262" Identifier="PartialDeclarationsHaveConfictingAccessibilityModifiers" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0262" />
   <Diagnostic Id="CS0260" Identifier="MissingPartialModifier" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0260" />
   <Diagnostic Id="CS0266" Identifier="CannotImplicitlyConvertTypeExplicitConversionExists" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266" />

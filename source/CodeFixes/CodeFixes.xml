@@ -471,4 +471,9 @@
       <Id>CS0661</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0085" Identifier="ChangeArrayType" Title="Change array type">
+    <FixableDiagnosticIds>
+      <Id>CS0246</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

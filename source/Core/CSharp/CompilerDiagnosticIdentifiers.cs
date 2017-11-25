@@ -48,6 +48,7 @@ namespace Roslynator.CSharp
         public const string VariableIsAssignedButItsValueIsNeverUsed = "CS0219";
         public const string ConstantValueCannotBeConverted = "CS0221";
         public const string ParamsParameterMustBeSingleDimensionalArray = "CS0225";
+        public const string TypeOrNamespaceNameCouldNotBeFound = "CS0246";
         public const string MissingPartialModifier = "CS0260";
         public const string PartialDeclarationsHaveConfictingAccessibilityModifiers = "CS0262";
         public const string CannotImplicitlyConvertTypeExplicitConversionExists = "CS0266";
