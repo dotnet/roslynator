@@ -18,68 +18,62 @@ namespace Roslynator.CSharp.Refactorings
                 .SingleOrDefault(shouldthrow: false)?
                 .Initializer;
 
-            if (initializer != null
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer))
+            if (initializer == null)
+                return;
+
+            if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(initializer))
+                return;
+
+            ExpressionSyntax value = initializer.Value;
+
+            if (value == null)
+                return;
+
+            switch (value)
             {
-                ExpressionSyntax value = initializer.Value;
-
-                if (value != null)
-                {
-                    switch (value.Kind())
+                case ObjectCreationExpressionSyntax objectCreation:
                     {
-                        case SyntaxKind.ObjectCreationExpression:
-                            {
-                                var objectCreation = (ObjectCreationExpressionSyntax)value;
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
 
-                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
-
-                                if (typeSymbol?.IsErrorType() == false)
-                                {
-                                    context.RegisterRefactoring(
-                                        "Replace object creation with default value",
-                                        cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
-                                }
-
-                                break;
-                            }
-                        case SyntaxKind.ArrayCreationExpression:
-                            {
-                                var arrayCreation = (ArrayCreationExpressionSyntax)value;
-
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
-
-                                if (typeSymbol?.IsArrayType() == true)
-                                {
-                                    context.RegisterRefactoring(
-                                   "Replace array creation with default value",
-                                   cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
-                                }
-
-                                break;
-                            }
-                        case SyntaxKind.ImplicitArrayCreationExpression:
-                            {
-                                var implicitArrayCreation = (ImplicitArrayCreationExpressionSyntax)value;
-
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken);
-
-                                if (typeSymbol?.IsArrayType() == true)
-                                {
-                                    context.RegisterRefactoring(
-                                        "Replace array creation with default value",
-                                        cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
-                                }
-
-                                break;
-                            }
+                        ComputeRefactoring(context, "Replace object creation with default value", typeSymbol, localDeclarationStatement, value, semanticModel);
+                        break;
                     }
-                }
+                case ArrayCreationExpressionSyntax arrayCreation:
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
+
+                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value, semanticModel);
+                        break;
+                    }
+                case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken);
+
+                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value, semanticModel);
+                        break;
+                    }
+            }
+        }
+
+        private static void ComputeRefactoring(
+            RefactoringContext context,
+            string title,
+            ITypeSymbol typeSymbol,
+            LocalDeclarationStatementSyntax localDeclarationStatement,
+            ExpressionSyntax value,
+            SemanticModel semanticModel)
+        {
+            if (typeSymbol?.SupportsExplicitDeclaration() == true)
+            {
+                context.RegisterRefactoring(
+                    title,
+                    cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
             }
         }
 
