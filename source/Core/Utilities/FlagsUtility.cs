@@ -178,7 +178,7 @@ namespace Roslynator.Utilities
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            byte[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
+            byte[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
 
             if (values.Length == 0)
                 return 0;
@@ -274,7 +274,7 @@ namespace Roslynator.Utilities
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            ushort[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
+            ushort[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
 
             if (values.Length == 0)
                 return 0;
@@ -370,7 +370,7 @@ namespace Roslynator.Utilities
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            uint[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
+            uint[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
 
             if (values.Length == 0)
                 return 0;
@@ -466,7 +466,7 @@ namespace Roslynator.Utilities
             if (reservedValues == null)
                 throw new ArgumentNullException(nameof(reservedValues));
 
-            ulong[] values = reservedValues.Where(f => f >= 0 && IsZeroOrPowerOfTwo(f)).ToArray();
+            ulong[] values = reservedValues.Where(IsZeroOrPowerOfTwo).ToArray();
 
             if (values.Length == 0)
                 return 0;
@@ -653,7 +653,7 @@ namespace Roslynator.Utilities
 
             for (int i = 0; i < maxValue; i++)
             {
-                var x = (long)(1 << i);
+                var x = 1L << i;
 
                 if (x > value)
                     yield break;
@@ -675,7 +675,7 @@ namespace Roslynator.Utilities
 
             for (int i = 0; i < maxValue; i++)
             {
-                var x = (ulong)(1 << i);
+                var x = 1UL << i;
 
                 if (x > value)
                     yield break;
