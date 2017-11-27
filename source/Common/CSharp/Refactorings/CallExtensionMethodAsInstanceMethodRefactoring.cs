@@ -16,7 +16,11 @@ namespace Roslynator.CSharp.Refactorings
 
         private static CallExtensionMethodAsInstanceMethodAnalysis Fail { get; }
 
-        public static CallExtensionMethodAsInstanceMethodAnalysis Analyze(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public static CallExtensionMethodAsInstanceMethodAnalysis Analyze(
+            InvocationExpressionSyntax invocationExpression,
+            SemanticModel semanticModel,
+            bool allowAnyExpression = false,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             ExpressionSyntax expression = invocationExpression
                 .ArgumentList?
@@ -25,18 +29,24 @@ namespace Roslynator.CSharp.Refactorings
                 .Expression?
                 .WalkDownParentheses();
 
-            switch (expression?.Kind())
+            if (expression == null)
+                return Fail;
+
+            if (!allowAnyExpression)
             {
-                case SyntaxKind.IdentifierName:
-                case SyntaxKind.GenericName:
-                case SyntaxKind.InvocationExpression:
-                case SyntaxKind.SimpleMemberAccessExpression:
-                case SyntaxKind.ElementAccessExpression:
-                case SyntaxKind.ConditionalAccessExpression:
-                case SyntaxKind.CastExpression:
-                    break;
-                default:
-                    return Fail;
+                switch (expression.Kind())
+                {
+                    case SyntaxKind.IdentifierName:
+                    case SyntaxKind.GenericName:
+                    case SyntaxKind.InvocationExpression:
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                    case SyntaxKind.ElementAccessExpression:
+                    case SyntaxKind.ConditionalAccessExpression:
+                    case SyntaxKind.CastExpression:
+                        break;
+                    default:
+                        return Fail;
+                }
             }
 
             if (!semanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, cancellationToken))
