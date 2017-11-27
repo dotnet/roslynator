@@ -84,19 +84,6 @@ namespace Roslynator.CSharp.Refactorings
             {
                 AnalyzeStart(context, sections.First(), switchStatement.OpenBraceToken);
                 AnalyzeEnd(context, sections.Last(), switchStatement.CloseBraceToken);
-
-                if (sections.Count > 1)
-                {
-                    SwitchSectionSyntax prevSection = sections.First();
-
-                    for (int i = 1; i < sections.Count; i++)
-                    {
-                        if (prevSection.Statements.LastOrDefault()?.IsKind(SyntaxKind.Block) == true)
-                            Analyze(context, prevSection, sections[i]);
-
-                        prevSection = sections[i];
-                    }
-                }
             }
         }
 
