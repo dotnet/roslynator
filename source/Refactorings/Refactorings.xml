@@ -1235,4 +1235,10 @@
       <Syntax>interpolated string</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0194" Identifier="SplitDeclarationAndInitialization" Title="Split declaration and initialization">
+    <Syntaxes>
+      <Syntax>local variable declaration</Syntax>
+    </Syntaxes>
+    <Scope>equals token</Scope>
+  </Refactoring>
 </Refactorings>

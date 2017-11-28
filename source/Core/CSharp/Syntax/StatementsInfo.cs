@@ -234,6 +234,11 @@ namespace Roslynator.CSharp.Syntax
             return WithStatements(Statements.Replace(nodeInList, newNode));
         }
 
+        public StatementsInfo ReplaceAt(int index, StatementSyntax newNode)
+        {
+            return WithStatements(Statements.ReplaceAt(index, newNode));
+        }
+
         public StatementsInfo ReplaceRange(StatementSyntax nodeInList, IEnumerable<StatementSyntax> newNodes)
         {
             return WithStatements(Statements.ReplaceRange(nodeInList, newNodes));

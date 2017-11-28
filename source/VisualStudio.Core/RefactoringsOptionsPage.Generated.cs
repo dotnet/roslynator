@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation;
+        = RefactoringIdentifiers.SplitDeclarationAndInitialization;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -563,6 +563,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCSharp6DictionaryInitializer, "Use C# 6.0 dictionary initializer", IsEnabled(RefactoringIdentifiers.UseCSharp6DictionaryInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment, "Replace comment with documentation comment", IsEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation, "Replace interpolated string with concatenation", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitDeclarationAndInitialization, "Split declaration and initialization", IsEnabled(RefactoringIdentifiers.SplitDeclarationAndInitialization)));
         }
 
         [Browsable(false)]

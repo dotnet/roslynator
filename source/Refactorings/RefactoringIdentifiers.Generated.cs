@@ -165,6 +165,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string SimplifyLambdaExpression = Prefix + "0154";
         public const string SortMemberDeclarations = Prefix + "0155";
         public const string SplitAttributes = Prefix + "0156";
+        public const string SplitDeclarationAndInitialization = Prefix + "0194";
         public const string SplitIfStatement = Prefix + "0184";
         public const string SplitSwitchLabels = Prefix + "0157";
         public const string SplitVariableDeclaration = Prefix + "0158";

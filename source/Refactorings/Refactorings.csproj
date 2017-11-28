@@ -131,6 +131,7 @@
     <Compile Include="Refactorings\SelectedSwitchSectionsRefactoring.cs" />
     <Compile Include="Refactorings\SemicolonTokenRefactoring.cs" />
     <Compile Include="Refactorings\SortMemberDeclarations\SortMemberDeclarationsRewriter.cs" />
+    <Compile Include="Refactorings\SplitDeclarationAndInitializationRefactoring.cs" />
     <Compile Include="Refactorings\SplitIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ThrowExpressionRefactoring.cs" />
     <Compile Include="Refactorings\TypeParameterConstraintClauseRefactoring.cs" />
