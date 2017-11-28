@@ -144,24 +144,21 @@ namespace Roslynator.CSharp.Helpers.ModifierHelpers
                     }
                 }
             }
+            else if (index == 0)
+            {
+                SyntaxToken nextModifier = modifiers[index + 1];
+
+                SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(leading, trailing, nextModifier.LeadingTrivia);
+
+                modifiers = modifiers.Replace(nextModifier, nextModifier.WithLeadingTrivia(trivia));
+            }
             else
             {
-                if (index == 0)
-                {
-                    SyntaxToken nextModifier = modifiers[index + 1];
+                SyntaxToken previousModifier = modifiers[index - 1];
 
-                    SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(leading, trailing, nextModifier.LeadingTrivia);
+                SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(previousModifier.TrailingTrivia, leading, trailing);
 
-                    modifiers = modifiers.Replace(nextModifier, nextModifier.WithLeadingTrivia(trivia));
-                }
-                else
-                {
-                    SyntaxToken previousModifier = modifiers[index - 1];
-
-                    SyntaxTriviaList trivia = AddIfNotEmptyOrWhitespace(previousModifier.TrailingTrivia, leading, trailing);
-
-                    modifiers = modifiers.Replace(previousModifier, previousModifier.WithTrailingTrivia(trivia));
-                }
+                modifiers = modifiers.Replace(previousModifier, previousModifier.WithTrailingTrivia(trivia));
             }
 
             modifiers = modifiers.RemoveAt(index);

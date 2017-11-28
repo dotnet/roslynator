@@ -30,16 +30,13 @@ namespace Roslynator.CSharp.Refactorings.If
             {
                 return new IfElseToYieldReturnWithBooleanExpression(ifStatement, expression1, expression2);
             }
+            else if (ifStatement.IsSimpleIf())
+            {
+                return new IfReturnToReturnWithBooleanExpression(ifStatement, expression1, expression2);
+            }
             else
             {
-                if (ifStatement.IsSimpleIf())
-                {
-                    return new IfReturnToReturnWithBooleanExpression(ifStatement, expression1, expression2);
-                }
-                else
-                {
-                    return new IfElseToReturnWithBooleanExpression(ifStatement, expression1, expression2);
-                }
+                return new IfElseToReturnWithBooleanExpression(ifStatement, expression1, expression2);
             }
         }
 

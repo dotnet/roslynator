@@ -263,16 +263,13 @@ namespace Roslynator.CSharp.Refactorings
                     return SingletonList<StatementSyntax>(block.AddStatements(BreakStatement()));
                 }
             }
+            else if (IsJumpStatement(statement))
+            {
+                return SingletonList(statement);
+            }
             else
             {
-                if (IsJumpStatement(statement))
-                {
-                    return SingletonList(statement);
-                }
-                else
-                {
-                    return SingletonList<StatementSyntax>(Block(statement, BreakStatement()));
-                }
+                return SingletonList<StatementSyntax>(Block(statement, BreakStatement()));
             }
         }
 

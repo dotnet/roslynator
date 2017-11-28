@@ -129,23 +129,20 @@ namespace Roslynator.CSharp.CodeFixes
 
                 newNode = InsertStatement(newNode, expressionStatement);
             }
-            else
+            else if (statement != null)
             {
-                if (statement != null)
+                if (statement.IsEmbedded())
                 {
-                    if (statement.IsEmbedded())
-                    {
-                        newNode = node.ReplaceNode(statement, Block(expressionStatement, statement));
-                    }
-                    else
-                    {
-                        newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
-                    }
+                    newNode = node.ReplaceNode(statement, Block(expressionStatement, statement));
                 }
                 else
                 {
-                    newNode = InsertStatement(node, expressionStatement);
+                    newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
                 }
+            }
+            else
+            {
+                newNode = InsertStatement(node, expressionStatement);
             }
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);

@@ -28,36 +28,33 @@ namespace Roslynator.CSharp.Refactorings
                     Title,
                     cancellationToken => RefactorAsync(context.Document, (StatementSyntax)parent, conditionalExpression, cancellationToken));
             }
+            else if (parent is AssignmentExpressionSyntax assignment)
+            {
+                if (assignment.Parent is ExpressionStatementSyntax expressionStatement)
+                {
+                    context.RegisterRefactoring(
+                        Title,
+                        cancellationToken => RefactorAsync(context.Document, expressionStatement, conditionalExpression, cancellationToken));
+                }
+            }
             else
             {
-                if (parent is AssignmentExpressionSyntax assignment)
-                {
-                    if (assignment.Parent is ExpressionStatementSyntax expressionStatement)
-                    {
-                        context.RegisterRefactoring(
-                            Title,
-                            cancellationToken => RefactorAsync(context.Document, expressionStatement, conditionalExpression, cancellationToken));
-                    }
-                }
-                else
-                {
-                    SingleLocalDeclarationStatementInfo localDeclarationInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(expression);
+                SingleLocalDeclarationStatementInfo localDeclarationInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(expression);
 
-                    if (localDeclarationInfo.Success)
-                    {
-                        TypeSyntax type = localDeclarationInfo.Type;
+                if (localDeclarationInfo.Success)
+                {
+                    TypeSyntax type = localDeclarationInfo.Type;
 
-                        if (type != null)
+                    if (type != null)
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        if (!type.IsVar
+                            || semanticModel.GetTypeSymbol(type, context.CancellationToken)?.SupportsExplicitDeclaration() == true)
                         {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            if (!type.IsVar
-                                || semanticModel.GetTypeSymbol(type, context.CancellationToken)?.SupportsExplicitDeclaration() == true)
-                            {
-                                context.RegisterRefactoring(
-                                    Title,
-                                    cancellationToken => RefactorAsync(context.Document, localDeclarationInfo.Statement, conditionalExpression, semanticModel, cancellationToken));
-                            }
+                            context.RegisterRefactoring(
+                                Title,
+                                cancellationToken => RefactorAsync(context.Document, localDeclarationInfo.Statement, conditionalExpression, semanticModel, cancellationToken));
                         }
                     }
                 }

@@ -45,23 +45,20 @@ namespace Roslynator.CSharp.Syntax
                         ContainsRegularLiteralExpression = true;
                     }
                 }
-                else
+                else if (kind == SyntaxKind.InterpolatedStringExpression)
                 {
-                    if (kind == SyntaxKind.InterpolatedStringExpression)
+                    if (((InterpolatedStringExpressionSyntax)expression).IsVerbatim())
                     {
-                        if (((InterpolatedStringExpressionSyntax)expression).IsVerbatim())
-                        {
-                            ContainsVerbatimInterpolatedStringExpression = true;
-                        }
-                        else
-                        {
-                            ContainsRegularInterpolatedStringExpression = true;
-                        }
+                        ContainsVerbatimInterpolatedStringExpression = true;
                     }
                     else
                     {
-                        ContainsNonSpecificExpression = true;
+                        ContainsRegularInterpolatedStringExpression = true;
                     }
+                }
+                else
+                {
+                    ContainsNonSpecificExpression = true;
                 }
             }
         }

@@ -17,7 +17,7 @@ namespace Roslynator.CSharp
 {
     public static class DocumentExtensions
     {
-        public static async Task<Document> RemoveMemberAsync(
+        public static Task<Document> RemoveMemberAsync(
             this Document document,
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -34,18 +34,15 @@ namespace Roslynator.CSharp
             {
                 var compilationUnit = (CompilationUnitSyntax)parent;
 
-                return await document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member), cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member), cancellationToken);
+            }
+            else if (parent is MemberDeclarationSyntax parentMember)
+            {
+                return document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member), cancellationToken);
             }
             else
             {
-                if (parent is MemberDeclarationSyntax parentMember)
-                {
-                    return await document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member), cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    return await document.RemoveNodeAsync(member, RemoveHelper.DefaultRemoveOptions, cancellationToken).ConfigureAwait(false);
-                }
+                return document.RemoveNodeAsync(member, RemoveHelper.DefaultRemoveOptions, cancellationToken);
             }
         }
 

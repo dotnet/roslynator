@@ -35,16 +35,13 @@ namespace Roslynator.VisualStudio
                     {
                         direction = ListSortDirection.Ascending;
                     }
+                    else if (_lastDirection == ListSortDirection.Ascending)
+                    {
+                        direction = ListSortDirection.Descending;
+                    }
                     else
                     {
-                        if (_lastDirection == ListSortDirection.Ascending)
-                        {
-                            direction = ListSortDirection.Descending;
-                        }
-                        else
-                        {
-                            direction = ListSortDirection.Ascending;
-                        }
+                        direction = ListSortDirection.Ascending;
                     }
 
                     var propertyName = clickedHeader.Column.Header as string;
