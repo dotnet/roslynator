@@ -1,3 +1,14 @@
+### 1.5.14 (2017-11-29)
+
+#### Refactorings
+
+* Add refactoring ReplaceInterpolatedStringWithConcatenation (RR0193).
+* Add refactoring SplitDeclarationAndInitialization (RR0194).
+
+#### Code Fixes
+
+* Add code fixes for CS0246.
+
 ### 1.5.13 (2017-11-09)
 
 #### Analyzers

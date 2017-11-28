@@ -55,11 +55,11 @@ Naming|[Asynchronous method name should end with 'Async'](../../docs/analyzers/R
 Naming|[Non\-asynchronous method name should not end with 'Async'](../../docs/analyzers/RCS1047.md)|RCS1047|x
 Naming|[Rename private field according to camel case with underscore](../../docs/analyzers/RCS1045.md)|RCS1045|
 Performance|[Avoid unnecessary boxing of value type](../../docs/analyzers/RCS1198.md)|RCS1198|
+Performance|[Call 'Enumerable\.Any' instead of 'Enumerable\.Count'](../../docs/analyzers/RCS1083.md)|RCS1083|x
 Performance|[Call 'Find' instead of 'FirstOrDefault'](../../docs/analyzers/RCS1119.md)|RCS1119|x
 Performance|[Optimize StringBuilder\.Append/AppendLine call](../../docs/analyzers/RCS1197.md)|RCS1197|x
 Performance|[Use \[\] instead of calling 'ElementAt'](../../docs/analyzers/RCS1120.md)|RCS1120|x
 Performance|[Use \[\] instead of calling 'First'](../../docs/analyzers/RCS1121.md)|RCS1121|x
-Performance|[Use 'Any' method instead of 'Count' method](../../docs/analyzers/RCS1083.md)|RCS1083|x
 Performance|[Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md)|RCS1096|x
 Performance|[Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md)|RCS1080|x
 Performance|[Use 'Count/Length' property instead of 'Count' method](../../docs/analyzers/RCS1082.md)|RCS1082|x
@@ -143,7 +143,7 @@ Simplification|[Simplify boolean expression](../../docs/analyzers/RCS1199.md)|RC
 Simplification|[Simplify coalesce expression](../../docs/analyzers/RCS1143.md)|RCS1143|x
 Simplification|[Simplify conditional expression](../../docs/analyzers/RCS1104.md)|RCS1104|x
 Simplification|[Simplify lambda expression](../../docs/analyzers/RCS1021.md)|RCS1021|x
-Simplification|[Simplify lazily initialized property](../../docs/analyzers/RCS1171.md)|RCS1171|x
+Simplification|[Simplify lazy initialization](../../docs/analyzers/RCS1171.md)|RCS1171|x
 Simplification|[Simplify LINQ method chain](../../docs/analyzers/RCS1077.md)|RCS1077|x
 Simplification|[Simplify logical negation](../../docs/analyzers/RCS1068.md)|RCS1068|x
 Simplification|[Simplify nested using statement](../../docs/analyzers/RCS1005.md)|RCS1005|x

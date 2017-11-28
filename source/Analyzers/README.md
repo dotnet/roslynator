@@ -79,7 +79,7 @@ RCS1079|[Throwing of new NotImplementedException](../../docs/analyzers/RCS1079.m
 RCS1080|[Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md)|Performance|x
 RCS1081|[Split variable declaration](../../docs/analyzers/RCS1081.md)|Readability|
 RCS1082|[Use 'Count/Length' property instead of 'Count' method](../../docs/analyzers/RCS1082.md)|Performance|x
-RCS1083|[Use 'Any' method instead of 'Count' method](../../docs/analyzers/RCS1083.md)|Performance|x
+RCS1083|[Call 'Enumerable\.Any' instead of 'Enumerable\.Count'](../../docs/analyzers/RCS1083.md)|Performance|x
 RCS1084|[Use coalesce expression instead of conditional expression](../../docs/analyzers/RCS1084.md)|Simplification|x
 RCS1085|[Use auto\-implemented property](../../docs/analyzers/RCS1085.md)|Simplification|x
 RCS1086|[Use linefeed as newline](../../docs/analyzers/RCS1086.md)|General|
@@ -153,7 +153,7 @@ RCS1166|[Value type object is never equal to null](../../docs/analyzers/RCS1166.
 RCS1168|[Parameter name differs from base name](../../docs/analyzers/RCS1168.md)|Maintainability|x
 RCS1169|[Mark field as read\-only](../../docs/analyzers/RCS1169.md)|Design|x
 RCS1170|[Use read\-only auto\-implemented property](../../docs/analyzers/RCS1170.md)|Design|x
-RCS1171|[Simplify lazily initialized property](../../docs/analyzers/RCS1171.md)|Simplification|x
+RCS1171|[Simplify lazy initialization](../../docs/analyzers/RCS1171.md)|Simplification|x
 RCS1172|[Use is operator instead of as operator](../../docs/analyzers/RCS1172.md)|Simplification|x
 RCS1173|[Use coalesce expression instead of if](../../docs/analyzers/RCS1173.md)|Simplification|x
 RCS1174|[Remove redundant async/await](../../docs/analyzers/RCS1174.md)|Redundancy|x

@@ -137,6 +137,7 @@ RR0132|[Replace hexadecimal literal with decimal literal](../../docs/refactoring
 RR0133|[Replace if statement with switch statement](../../docs/refactorings/RR0133.md)|x
 RR0190|[Replace if\-else with if\-return](../../docs/refactorings/RR0190.md)|x
 RR0134|[Replace increment operator with decrement operator](../../docs/refactorings/RR0134.md)|x
+RR0193|[Replace interpolated string with concatenation](../../docs/refactorings/RR0193.md)|x
 RR0135|[Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md)|x
 RR0136|[Replace interpolated string with string literal](../../docs/refactorings/RR0136.md)|x
 RR0137|[Replace method group with lambda](../../docs/refactorings/RR0137.md)|x
@@ -158,6 +159,7 @@ RR0153|[Simplify if](../../docs/refactorings/RR0153.md)|x
 RR0154|[Simplify lambda expression](../../docs/refactorings/RR0154.md)|x
 RR0155|[Sort member declarations](../../docs/refactorings/RR0155.md)|x
 RR0156|[Split attributes](../../docs/refactorings/RR0156.md)|x
+RR0194|[Split declaration and initialization](../../docs/refactorings/RR0194.md)|x
 RR0184|[Split if statement](../../docs/refactorings/RR0184.md)|x
 RR0157|[Split switch labels](../../docs/refactorings/RR0157.md)|x
 RR0158|[Split variable declaration](../../docs/refactorings/RR0158.md)|x
