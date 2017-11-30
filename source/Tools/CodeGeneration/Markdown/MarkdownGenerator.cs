@@ -52,21 +52,50 @@ namespace Roslynator.CodeGeneration.Markdown
                     sw.WriteLine("");
                     sw.WriteLine($"* **Syntax**: {string.Join(", ", info.Syntaxes.Select(f => f.Name.EscapeMarkdown()))}");
 
-                    if (!string.IsNullOrEmpty(info.Scope))
-                        sw.WriteLine($"* **Scope**: {info.Scope.EscapeMarkdown()}");
+                    if (!string.IsNullOrEmpty(info.Span))
+                        sw.WriteLine($"* **Span**: {info.Span.EscapeMarkdown()}");
 
                     sw.WriteLine("");
 
-                    WriteRefactoringImages(sw, info);
+                    WriteRefactoringSamples(sw, info);
                 }
 
                 return sw.ToString();
             }
         }
 
-        private static void WriteRefactoringImages(StringWriter sw, RefactoringDescriptor refactoring)
+        private static void WriteRefactoringSamples(StringWriter sw, RefactoringDescriptor refactoring)
         {
-            if (refactoring.Images.Count > 0)
+            if (refactoring.Samples.Count > 0)
+            {
+                bool isFirst = true;
+
+                foreach (SampleDescriptor sample in refactoring.Samples)
+                {
+                    if (!isFirst)
+                    {
+                        sw.WriteLine("_____");
+                    }
+                    else
+                    {
+                        isFirst = false;
+                    }
+
+                    sw.WriteLine("#### Before");
+                    sw.WriteLine();
+                    sw.WriteLine("```csharp");
+                    sw.WriteLine(sample.Before);
+                    sw.WriteLine("```");
+                    sw.WriteLine();
+
+                    sw.WriteLine("#### After");
+                    sw.WriteLine();
+                    sw.WriteLine("```csharp");
+                    sw.WriteLine(sample.After);
+                    sw.WriteLine("```");
+                }
+            }
+            else if (refactoring.Images.Count > 0)
             {
                 bool isFirst = true;
 
@@ -98,8 +127,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 sw.WriteLine($"Title | {refactoring.Title.EscapeMarkdown()}");
                 sw.WriteLine($"Syntax | {string.Join(", ", refactoring.Syntaxes.Select(f => f.Name.EscapeMarkdown()))}");
 
-                if (!string.IsNullOrEmpty(refactoring.Scope))
-                    sw.WriteLine($"Scope | {refactoring.Scope.EscapeMarkdown()}");
+                if (!string.IsNullOrEmpty(refactoring.Span))
+                    sw.WriteLine($"Span | {refactoring.Span.EscapeMarkdown()}");
 
                 sw.WriteLine($"Enabled by Default | {GetBooleanAsText(refactoring.IsEnabledByDefault)}");
 
@@ -107,7 +136,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 sw.WriteLine("### Usage");
                 sw.WriteLine("");
 
-                WriteRefactoringImages(sw, refactoring);
+                WriteRefactoringSamples(sw, refactoring);
 
                 sw.WriteLine("");
 

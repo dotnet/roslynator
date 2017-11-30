@@ -96,17 +96,21 @@ namespace Roslynator.CodeGeneration
             }
         }
 
-        public void FindMissingImages()
+        public void FindMissingSamples()
         {
             foreach (RefactoringDescriptor refactoring in Refactorings)
             {
-                foreach (ImageDescriptor image in refactoring.ImagesOrDefaultImage())
+                if (refactoring.Samples.Count == 0)
                 {
-                    string imagePath = Path.Combine(GetPath(@"..\images\refactorings"), image.Name + ".png");
+                    foreach (ImageDescriptor image in refactoring.ImagesOrDefaultImage())
+                    {
+                        string imagePath = Path.Combine(GetPath(@"..\images\refactorings"), image.Name + ".png");
 
-                    if (!File.Exists(imagePath))
-                        Console.WriteLine($"MISSING IMAGE: {imagePath}");
+                        if (!File.Exists(imagePath))
+                            Console.WriteLine($"MISSING SAMPLE: {imagePath}");
+                    }
                 }
             }
-        }    }
+        }
+    }
 }
