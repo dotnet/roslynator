@@ -88,7 +88,13 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsPartOfMemberDeclaration(DocumentationCommentTriviaSyntax documentationComment)
         {
-            return (documentationComment as IStructuredTriviaSyntax)?.ParentTrivia.Token.Parent is MemberDeclarationSyntax;
+            SyntaxNode node = (documentationComment as IStructuredTriviaSyntax)?.ParentTrivia.Token.Parent;
+
+            if (node is MemberDeclarationSyntax)
+                return true;
+
+            return node is AttributeListSyntax
+                && node.Parent is MemberDeclarationSyntax;
         }
 
         private static bool IsSummaryMissing(XmlElementSyntax summaryElement)
