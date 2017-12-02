@@ -109,6 +109,11 @@ namespace Roslynator.CSharp.Syntax
             return Syntax.GenericInfo.Create(declaration);
         }
 
+        public static GenericInfo GenericInfo(TypeParameterListSyntax typeParameterList)
+        {
+            return Syntax.GenericInfo.Create(typeParameterList);
+        }
+
         public static GenericInfo GenericInfo(ClassDeclarationSyntax classDeclaration)
         {
             return Syntax.GenericInfo.Create(classDeclaration);
