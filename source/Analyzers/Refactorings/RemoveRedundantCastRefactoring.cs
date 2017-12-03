@@ -93,7 +93,10 @@ namespace Roslynator.CSharp.Refactorings
         {
             ISymbol implementation = typeSymbol.FindImplementationForInterfaceMember(symbol);
 
-            switch (implementation?.Kind)
+            if (implementation == null)
+                return false;
+
+            switch (implementation.Kind)
             {
                 case SymbolKind.Property:
                     {
@@ -117,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 default:
                     {
-                        Debug.Fail(implementation?.Kind.ToString());
+                        Debug.Fail(implementation.Kind.ToString());
                         return false;
                     }
             }
