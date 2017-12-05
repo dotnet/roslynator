@@ -1,5 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+
 namespace Roslynator.Metadata
 {
     public class AnalyzerDescriptor
@@ -14,7 +17,8 @@ namespace Roslynator.Metadata
             bool isEnabledByDefault,
             bool isObsolete,
             bool supportsFadeOut,
-            bool supportsFadeOutAnalyzer)
+            bool supportsFadeOutAnalyzer,
+            IList<SampleDescriptor> samples)
         {
             Id = id;
             Identifier = identifier;
@@ -26,6 +30,7 @@ namespace Roslynator.Metadata
             IsObsolete = isObsolete;
             SupportsFadeOut = supportsFadeOut;
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
+            Samples = new ReadOnlyCollection<SampleDescriptor>(samples);
         }
 
         public string Id { get; }
@@ -47,5 +52,7 @@ namespace Roslynator.Metadata
         public bool SupportsFadeOut { get; }
 
         public bool SupportsFadeOutAnalyzer { get; }
+
+        public ReadOnlyCollection<SampleDescriptor> Samples { get; }
     }
 }

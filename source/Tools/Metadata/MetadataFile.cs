@@ -30,7 +30,13 @@ namespace Roslynator.Metadata
                     bool.Parse(element.Element("IsEnabledByDefault").Value),
                     element.AttributeValueAsBooleanOrDefault("IsObsolete"),
                     bool.Parse(element.Element("SupportsFadeOut").Value),
-                    bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value));
+                    bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value),
+                    (element.Element("Samples") != null)
+                        ? element.Element("Samples")?
+                            .Elements("Sample")
+                            .Select(f => new SampleDescriptor(f.Element("Before").Value, f.Element("After")?.Value))
+                            .ToList()
+                        : new List<SampleDescriptor>());
             }
         }
 

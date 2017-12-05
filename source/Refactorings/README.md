@@ -1,6 +1,6 @@
 ## Roslynator Refactorings
 
-Id | Title | Enabled by Default 
+Id | Title | Enabled by Default
 --- | --- |:---:
 RR0002|[Add braces](../../docs/refactorings/RR0002.md)|x
 RR0003|[Add braces to if\-else](../../docs/refactorings/RR0003.md)|x

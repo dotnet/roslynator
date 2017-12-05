@@ -1,7 +1,7 @@
 ## Roslynator Analyzers by Category
 
- Category | Title | Id | Enabled by Default 
- --- | --- | --- |:---:
+Category | Title | Id | Enabled by Default
+--- | --- | --- |:---:
 Design|[Abstract type should not have public constructors](../../docs/analyzers/RCS1160.md)|RCS1160|x
 Design|[Avoid empty catch clause that catches System\.Exception](../../docs/analyzers/RCS1075.md)|RCS1075|x
 Design|[Avoid locking on publicly accessible instance](../../docs/analyzers/RCS1059.md)|RCS1059|x

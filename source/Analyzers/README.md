@@ -1,7 +1,7 @@
 ## Roslynator Analyzers
 
- Id | Title | Category | Enabled by Default 
- --- | --- | --- |:---:
+Id | Title | Category | Enabled by Default
+--- | --- | --- |:---:
 RCS1001|[Add braces](../../docs/analyzers/RCS1001.md)|Style|x
 RCS1002|[Remove braces](../../docs/analyzers/RCS1002.md)|Style|
 RCS1003|[Add braces to if\-else](../../docs/analyzers/RCS1003.md)|Style|x

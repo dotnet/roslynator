@@ -44,9 +44,7 @@
     <Rule Id="CA1051" Action="Warning" />
     <Rule Id="CA1052" Action="Warning" />
     <Rule Id="CA1053" Action="Warning" />
-    <Rule Id="CA1054" Action="Warning" />
     <Rule Id="CA1055" Action="Warning" />
-    <Rule Id="CA1056" Action="Warning" />
     <Rule Id="CA1057" Action="Warning" />
     <Rule Id="CA1058" Action="Warning" />
     <Rule Id="CA1059" Action="Warning" />
@@ -86,7 +84,6 @@
     <Rule Id="CA1700" Action="Warning" />
     <Rule Id="CA1701" Action="Warning" />
     <Rule Id="CA1703" Action="Warning" />
-    <Rule Id="CA1707" Action="Warning" />
     <Rule Id="CA1708" Action="Warning" />
     <Rule Id="CA1711" Action="Warning" />
     <Rule Id="CA1712" Action="Warning" />
@@ -111,7 +108,6 @@
     <Rule Id="CA1812" Action="Warning" />
     <Rule Id="CA1813" Action="Warning" />
     <Rule Id="CA1814" Action="Warning" />
-    <Rule Id="CA1815" Action="Warning" />
     <Rule Id="CA1816" Action="Warning" />
     <Rule Id="CA1819" Action="Warning" />
     <Rule Id="CA1820" Action="Warning" />
@@ -189,7 +185,6 @@
     <Rule Id="CA2222" Action="Warning" />
     <Rule Id="CA2223" Action="Warning" />
     <Rule Id="CA2224" Action="Warning" />
-    <Rule Id="CA2225" Action="Warning" />
     <Rule Id="CA2226" Action="Warning" />
     <Rule Id="CA2227" Action="Warning" />
     <Rule Id="CA2228" Action="Warning" />
@@ -237,6 +232,9 @@
     <Rule Id="IDE0010" Action="None" />
     <Rule Id="IDE0010WithoutSuggestion" Action="None" />
     <Rule Id="IDE0033" Action="Info" />
+  </Rules>
+  <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
+    <Rule Id="CA1815" Action="None" />
   </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
     <Rule Id="RECS0008" Action="None" />
@@ -290,7 +288,6 @@
     <Rule Id="RCS1062" Action="Info" />
     <Rule Id="RCS1064" Action="Info" />
     <Rule Id="RCS1066" Action="Info" />
-    <Rule Id="RCS1068" Action="Info" />
     <Rule Id="RCS1069" Action="Info" />
     <Rule Id="RCS1070" Action="Info" />
     <Rule Id="RCS1071" Action="Info" />

@@ -1272,8 +1272,7 @@ switch (ch)
     where T2 : class
     where T3 : class
 {
-}
-]]></After>
+}]]></After>
       </Sample>
     </Samples>
   </Refactoring>
@@ -1286,13 +1285,11 @@ switch (ch)
         <Before><![CDATA[foreach (object item in items)
 {
     yield return item;
-}
-]]></Before>
+}]]></Before>
         <After><![CDATA[for (int i = items.Count - 1; i >= 0; i--)
 {
     yield return items[i];
-}
-]]></After>
+}]]></After>
       </Sample>
     </Samples>
   </Refactoring>

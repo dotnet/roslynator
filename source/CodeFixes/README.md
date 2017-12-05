@@ -1,6 +1,6 @@
 ## Roslynator Code Fixes
 
-Id | Title | Fixable Diagnostics | Enabled by Default 
+Id | Title | Fixable Diagnostics | Enabled by Default
 --- | --- | --- |:---:
 RCF0039|Add argument list|[CS0023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023), [CS0428](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428), [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201), [CS1526](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526)|x
 RCF0026|Add body|[CS0501](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501), [CS0756](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756)|x

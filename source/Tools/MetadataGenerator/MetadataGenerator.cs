@@ -28,19 +28,19 @@ namespace Roslynator.CodeGeneration
 
             WriteAllText(
                 @"Analyzers\AnalyzersByCategory.md",
-                MarkdownGenerator.CreateAnalyzersByCategoryMarkDown(Analyzers.Where(f => !f.IsObsolete), Comparer));
+                MarkdownGenerator.CreateAnalyzersByCategoryMarkdown(Analyzers.Where(f => !f.IsObsolete), Comparer));
 
             foreach (AnalyzerDescriptor analyzer in Analyzers)
             {
                 WriteAllText(
                     $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkDown(analyzer),
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer),
                     fileMustExists: false);
             }
 
             WriteAllText(
                 @"..\docs\refactorings\Refactorings.md",
-                MarkdownGenerator.CreateRefactoringsMarkDown(Refactorings, Comparer));
+                MarkdownGenerator.CreateRefactoringsMarkdown(Refactorings, Comparer));
 
             WriteAllText(
                 @"Refactorings\README.md",
@@ -50,7 +50,7 @@ namespace Roslynator.CodeGeneration
             {
                 WriteAllText(
                     $@"..\docs\refactorings\{refactoring.Id}.md",
-                    MarkdownGenerator.CreateRefactoringMarkDown(refactoring),
+                    MarkdownGenerator.CreateRefactoringMarkdown(refactoring),
                     fileMustExists: false);
             }
 
