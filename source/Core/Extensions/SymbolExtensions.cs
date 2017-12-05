@@ -985,7 +985,11 @@ namespace Roslynator
         #endregion INamespaceSymbol
 
         #region ITypeParameterSymbol
-        internal static bool VerifyConstraint(this ITypeParameterSymbol typeParameterSymbol, bool allowReference, bool allowValueType, bool allowConstructor)
+        internal static bool VerifyConstraint(
+            this ITypeParameterSymbol typeParameterSymbol,
+            bool allowReference,
+            bool allowValueType,
+            bool allowConstructor)
         {
             if (typeParameterSymbol == null)
                 throw new ArgumentNullException(nameof(typeParameterSymbol));
@@ -995,52 +999,56 @@ namespace Roslynator
 
             ImmutableArray<ITypeSymbol> constraintTypes = typeParameterSymbol.ConstraintTypes;
 
-            if (constraintTypes.Any())
+            if (!constraintTypes.Any())
+                return true;
+
+            var stack = new Stack<ITypeSymbol>(constraintTypes);
+
+            while (stack.Count > 0)
             {
-                var stack = new Stack<ITypeSymbol>(constraintTypes);
+                ITypeSymbol type = stack.Pop();
 
-                while (stack.Count > 0)
+                switch (type.TypeKind)
                 {
-                    ITypeSymbol type = stack.Pop();
+                    case TypeKind.Class:
+                        {
+                            if (!allowReference)
+                                return false;
 
-                    switch (type.TypeKind)
-                    {
-                        case TypeKind.Class:
-                            {
-                                if (!allowReference)
-                                    return false;
+                            break;
+                        }
+                    case TypeKind.Struct:
+                        {
+                            if (allowValueType)
+                                return false;
 
-                                break;
-                            }
-                        case TypeKind.Struct:
-                            {
-                                if (allowValueType)
-                                    return false;
+                            break;
+                        }
+                    case TypeKind.Interface:
+                        {
+                            break;
+                        }
+                    case TypeKind.TypeParameter:
+                        {
+                            var typeParameterSymbol2 = (ITypeParameterSymbol)type;
 
-                                break;
-                            }
-                        case TypeKind.Interface:
-                            {
-                                break;
-                            }
-                        case TypeKind.TypeParameter:
-                            {
-                                var typeParameterSymbol2 = (ITypeParameterSymbol)type;
+                            if (!CheckConstraint(typeParameterSymbol2, allowReference, allowValueType, allowConstructor))
+                                return false;
 
-                                if (!CheckConstraint(typeParameterSymbol2, allowReference, allowValueType, allowConstructor))
-                                    return false;
+                            foreach (ITypeSymbol constraintType in typeParameterSymbol2.ConstraintTypes)
+                                stack.Push(constraintType);
 
-                                foreach (ITypeSymbol constraintType in typeParameterSymbol2.ConstraintTypes)
-                                    stack.Push(constraintType);
-
-                                break;
-                            }
-                        default:
-                            {
-                                Debug.Fail(type.TypeKind.ToString());
-                                break;
-                            }
-                    }
+                            break;
+                        }
+                    case TypeKind.Error:
+                        {
+                            return false;
+                        }
+                    default:
+                        {
+                            Debug.Fail(type.TypeKind.ToString());
+                            return false;
+                        }
                 }
             }
 
