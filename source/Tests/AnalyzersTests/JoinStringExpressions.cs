@@ -4,10 +4,12 @@
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal static class MergeStringExpressions
+    internal static class JoinStringExpressions
     {
         public static void Foo(string s)
         {
+            string s = "ab";
+
             s = "\"\r\n\\{}" + "\"\r\n\\{}";
 
             s = @"""\{}" + @"""\{}";

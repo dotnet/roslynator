@@ -6,7 +6,7 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static class AvoidMultilineExpressionBodyRefactoring
+    internal static class AvoidMultilineExpressionBody
     {
         private class Entity
         {

@@ -6,7 +6,7 @@ using System;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static class SimplifyLambdaExpressionRefactoring
+    internal static class SimplifyLambdaExpression
     {
         private static void Foo(object parameter)
         {
