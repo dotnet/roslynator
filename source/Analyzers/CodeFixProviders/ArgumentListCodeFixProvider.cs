@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove empty argument list",
+                "Remove parentheses",
                 cancellationToken => RemoveArgumentListFromObjectCreationRefactoring.RefactorAsync(context.Document, argumentList, cancellationToken),
                 GetEquivalenceKey(DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation));
 
