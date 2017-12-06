@@ -50,6 +50,7 @@
     <Compile Include="RefactoringIdentifiers.Deprecated.cs" />
     <Compile Include="Refactorings\AccessModifierRefactoring.cs" />
     <Compile Include="Refactorings\DeclarationPatternRefactoring.cs" />
+    <Compile Include="Refactorings\EmbeddedStatementRefactoring.cs" />
     <Compile Include="Refactorings\FormatConstraintClausesRefactoring.cs" />
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />

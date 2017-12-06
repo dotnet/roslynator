@@ -4,7 +4,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class WrapInConditionRefactoring
     {
-        public string Method()
+        public void Foo()
         {
             string s = null;
 
@@ -15,7 +15,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
                     break;
             }
 
-            return s;
+            if (true)
+                s = null;
         }
     }
 }

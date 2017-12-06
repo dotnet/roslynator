@@ -9,6 +9,8 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
     internal class WrapInTryCatchRefactoring : WrapStatementsRefactoring<TryStatementSyntax>
     {
+        public const string Title = "Wrap in try-catch";
+
         public override TryStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
         {
             return TryStatement(

@@ -1,14 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class WrapInTryCatchRefactoring
     {
-        public void Method()
+        public void Foo()
         {
-
             MethodThatCanThrowException();
 
             MethodThatCanThrowException2();
@@ -21,17 +18,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
                     break;
             }
 
-
-
-
-
-
-
-
-
-
-
-
+            if (true)
+                MethodThatCanThrowException();
         }
 
         private void MethodThatCanThrowException()
@@ -39,14 +27,6 @@ namespace Roslynator.CSharp.Refactorings.Tests
         }
 
         private void MethodThatCanThrowException2()
-        {
-        }
-
-        private void MethodThatCanThrowException3()
-        {
-        }
-
-        private void MethodThatCanThrowException4()
         {
         }
     }

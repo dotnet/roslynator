@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
@@ -51,6 +52,17 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
             newStatements = newStatements.Insert(index, statement);
 
             return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
+        }
+
+        public Task<Document> RefactorAsync(
+            Document document,
+            StatementSyntax  embeddedStatement,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            BlockSyntax newNode = Block(CreateStatement(ImmutableArray.Create(embeddedStatement)))
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(embeddedStatement, newNode, cancellationToken);
         }
     }
 }

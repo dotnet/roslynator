@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
                 {
                     context.RegisterRefactoring(
-                        "Wrap in condition",
+                        WrapInIfStatementRefactoring.Title,
                         cancellationToken =>
                         {
                             var refactoring = new WrapInIfStatementRefactoring();
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
                 {
                     context.RegisterRefactoring(
-                        "Wrap in try-catch",
+                        WrapInTryCatchRefactoring.Title,
                         cancellationToken =>
                         {
                             var refactoring = new WrapInTryCatchRefactoring();
