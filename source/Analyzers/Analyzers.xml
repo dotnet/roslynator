@@ -551,7 +551,7 @@ Foo(s);]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) Foo();]]></Before>
+        <Before><![CDATA[if (condition) Foo(); // RCS1027]]></Before>
         <After><![CDATA[if (condition)
 {
     Foo();
@@ -996,7 +996,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public void FooAsync()
+        <Before><![CDATA[public void FooAsync() // RCS1047
 {
 }]]></Before>
         <After>
@@ -1452,10 +1452,6 @@ catch (Exception ex)
         <Before><![CDATA[bool f = !items.Any(s => !string.IsNullOrEmpty(s)); // RCS1068]]></Before>
         <After><![CDATA[bool f = items.All(s => string.IsNullOrEmpty(s));]]></After>
       </Sample>
-      <Sample>
-        <Before><![CDATA[]]></Before>
-        <After><![CDATA[]]></After>
-      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer Identifier="RemoveUnnecessaryCaseLabel">
@@ -1473,7 +1469,7 @@ catch (Exception ex)
 {
     case "a":
         return true;
-    case "b":
+    case "b": // RCS1069
     default:
         return false;
 }]]></Before>
@@ -2024,10 +2020,6 @@ namespace Foo
         <Before><![CDATA[string x = $"{s.ToString()}"; // RCS1097]]></Before>
         <After><![CDATA[string x = $"{s}";]]></After>
       </Sample>
-      <Sample>
-        <Before><![CDATA[]]></Before>
-        <After><![CDATA[]]></After>
-      </Sample>
     </Samples>
   </Analyzer>
   <Analyzer Identifier="AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression">
@@ -2320,8 +2312,15 @@ public static partial class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[]]></Before>
-        <After><![CDATA[]]></After>
+        <Before><![CDATA[public class Foo // RCS1110
+{
+}]]></Before>
+        <After><![CDATA[namespace Namespace
+{
+    public class Foo
+    {
+    }
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -2653,7 +2652,7 @@ if (s == null)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[DayOfWeek x = dayOfWeek | DayOfWeek.Tuesday;]]></Before>
+        <Before><![CDATA[DayOfWeek x = dayOfWeek | DayOfWeek.Tuesday; // RCS1130]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
@@ -3084,10 +3083,8 @@ string s2 = s as string; // RCS1145]]></Before>
       <Sample>
         <Before><![CDATA[var b = new Base();
 
-((Foo)b).Bar();]]></Before>
-        <After><![CDATA[var b = new Base();
-
-b.Bar();]]></After>
+((Foo)b).Bar(); // RCS1151]]></Before>
+        <After><![CDATA[b.Bar();]]></After>
       </Sample>
       <Sample>
         <Before><![CDATA[IEnumerable<string> x = EnumerateStrings().Cast<string>(); // RCS1151]]></Before>
@@ -3332,7 +3329,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[x = y = z;]]></Before>
+        <Before><![CDATA[x = y = z; // RCS1162]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
@@ -3450,7 +3447,7 @@ if (x == null) // RCS1166
 
 public abstract class Foo : IFoo
 {
-    public abstract string Bar(object value); // RCS1169
+    public abstract string Bar(object value); // RCS1168
 }]]></Before>
         <After><![CDATA[public abstract string Bar(object parameter);]]></After>
       </Sample>
@@ -3491,7 +3488,7 @@ public abstract class Foo : IFoo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public object Foo { get; private set; } // RCS1179]]></Before>
+        <Before><![CDATA[public object Foo { get; private set; } // RCS1170]]></Before>
         <After><![CDATA[public object Foo { get; }]]></After>
       </Sample>
     </Samples>
@@ -3536,7 +3533,7 @@ public abstract class Foo : IFoo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x as string != null)
+        <Before><![CDATA[if (x as string != null) // RCS1172
 {
 }]]></Before>
         <After><![CDATA[if (x is string)
@@ -3579,7 +3576,7 @@ else
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public static async Task<object> FooAsync()
+        <Before><![CDATA[public static async Task<object> FooAsync() // RCS1174
 {
     return await GetAsync().ConfigureAwait(false);
 }]]></Before>
@@ -3755,7 +3752,7 @@ public class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo<T> : List<T>, IEnumerable<T>
+        <Before><![CDATA[public class Foo<T> : List<T>, IEnumerable<T> // RCS1182
 {
 }]]></Before>
         <After><![CDATA[public class Foo<T> : List<T>
@@ -3776,7 +3773,7 @@ public class Foo
     <Samples>
       <Sample>
         <Before><![CDATA[var dic = new Dictionary<int, string>()
-{
+{ // RCS1183
     { 0, "0" }
 };]]></Before>
         <After><![CDATA[var dic = new Dictionary<int, string>() { { 0, "0" } };]]></After>
