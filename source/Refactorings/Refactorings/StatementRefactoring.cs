@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -194,7 +195,7 @@ namespace Roslynator.CSharp.Refactorings
                     statement = statement.PrependToLeadingTrivia(CSharpFactory.NewLine());
                 }
 
-                SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.Insert(index + 1, statement);
+                SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.Insert(index + 1, statement.WithNavigationAnnotation());
 
                 StatementsInfo newInfo = statementsInfo.WithStatements(newStatements);
 
@@ -202,7 +203,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                SyntaxList<StatementSyntax> statements = SyntaxFactory.List(new StatementSyntax[] { statement, statement });
+                SyntaxList<StatementSyntax> statements = SyntaxFactory.List(new StatementSyntax[] { statement, statement.WithNavigationAnnotation() });
 
                 BlockSyntax block = SyntaxFactory.Block(statements);
 

@@ -76,12 +76,18 @@ namespace Roslynator.CSharp.Refactorings
                             isInterpolatedText: true)));
             }
 
+            int closeBracePosition = sb.Length;
+
             sb.Append('}');
 
             startIndex += span.Length;
             sb.Append(s, startIndex, s.Length - startIndex);
 
             ExpressionSyntax newNode = ParseExpression(sb.ToString()).WithTriviaFrom(interpolatedString);
+
+            SyntaxToken closeBrace = newNode.FindToken(closeBracePosition);
+
+            newNode = newNode.ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation());
 
             return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
         }

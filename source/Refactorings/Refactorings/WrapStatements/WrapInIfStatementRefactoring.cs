@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
@@ -12,7 +13,13 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
         public override IfStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)
         {
-            return IfStatement(ParseExpression(""), Block(statements));
+            return IfStatement(
+                IfKeyword(),
+                OpenParenToken(),
+                ParseExpression(""),
+                CloseParenToken().WithNavigationAnnotation(),
+                Block(statements),
+                @else: null);
         }
     }
 }
