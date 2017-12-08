@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!logicalAndExpression.ContainsDiagnostics)
             {
-                ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAndExpression);
+                ExpressionSyntax expression = SyntaxInfo.NullCheckExpressionInfo(logicalAndExpression.Left, allowedKinds: NullCheckKind.NotEqualsToNull).Expression;
 
                 if (expression != null
                     && context.SemanticModel
@@ -68,21 +68,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-        }
-
-        private static ExpressionSyntax FindExpressionCheckedForNull(BinaryExpressionSyntax logicalAndExpression)
-        {
-            ExpressionSyntax left = logicalAndExpression.Left?.WalkDownParentheses();
-
-            if (left?.IsKind(SyntaxKind.NotEqualsExpression) == true)
-            {
-                var notEquals = (BinaryExpressionSyntax)left;
-
-                if (notEquals.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
-                    return notEquals.Left;
-            }
-
-            return null;
         }
 
         internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression)
@@ -176,7 +161,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ExpressionSyntax CreateExpressionWithConditionalAccess(BinaryExpressionSyntax logicalAnd)
         {
-            ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAnd);
+            ExpressionSyntax expression = SyntaxInfo.NullCheckExpressionInfo(logicalAnd.Left, allowedKinds: NullCheckKind.NotEqualsToNull).Expression;
 
             ExpressionSyntax right = logicalAnd.Right?.WalkDownParentheses();
 

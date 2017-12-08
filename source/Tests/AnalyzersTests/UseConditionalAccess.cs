@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-#pragma warning disable RCS1002, RCS1016, RCS1023, RCS1029, RCS1118, RCS1163, RCS1176
+#pragma warning disable CS0472, RCS1002, RCS1007, RCS1016, RCS1023, RCS1029, RCS1098, RCS1118, RCS1163, RCS1166, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -25,6 +25,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 string s = null;
 
                 if (s != null &&
+                    s.StartsWith("a")) { }
+
+                if (null != s &&
                     s.StartsWith("a")) { }
 
                 if (s != null
