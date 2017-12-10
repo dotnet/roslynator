@@ -99,7 +99,6 @@ namespace Roslynator.CSharp.CodeFixes
                                     if (!ancestor.Kind().SupportsModifiers())
                                         continue;
 
-                                    //TODO: test
                                     ModifiersCodeFixRegistrator.AddModifier(
                                         context,
                                         diagnostic,
