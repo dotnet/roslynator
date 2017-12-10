@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class GenerateBaseConstructorsRefactoring
     {
-        public static List<IMethodSymbol> GetMissingBaseConstructors(
+        public static ImmutableArray<IMethodSymbol> GetMissingBaseConstructors(
             ClassDeclarationSyntax classDeclaration,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -31,25 +31,29 @@ namespace Roslynator.CSharp.Refactorings
                     return GetMissingBaseConstructors(symbol, baseSymbol);
             }
 
-            return null;
+            return ImmutableArray<IMethodSymbol>.Empty;
         }
 
-        private static List<IMethodSymbol> GetMissingBaseConstructors(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
+        private static ImmutableArray<IMethodSymbol> GetMissingBaseConstructors(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
         {
             ImmutableArray<IMethodSymbol> constructors = symbol.InstanceConstructors.RemoveAll(f => f.IsImplicitlyDeclared);
+            ImmutableArray<IMethodSymbol> baseConstructors = GetBaseConstructors(baseSymbol);
 
-            List<IMethodSymbol> missing = null;
+            if (baseConstructors.IsDefaultOrEmpty)
+                return ImmutableArray<IMethodSymbol>.Empty;
 
-            foreach (IMethodSymbol baseConstructor in GetBaseConstructors(baseSymbol))
+            ImmutableArray<IMethodSymbol>.Builder missing = ImmutableArray.CreateBuilder<IMethodSymbol>(baseConstructors.Length);
+
+            foreach (IMethodSymbol baseConstructor in baseConstructors)
             {
                 if (IsAccessibleFromDerivedClass(baseConstructor)
                     && constructors.IndexOf(baseConstructor, ConstructorComparer.Instance) == -1)
                 {
-                    (missing ?? (missing = new List<IMethodSymbol>())).Add(baseConstructor);
+                    missing.Add(baseConstructor);
                 }
             }
 
-            return missing;
+            return missing.ToImmutableArray();
         }
 
         public static bool IsAnyBaseConstructorMissing(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
@@ -97,7 +101,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             ClassDeclarationSyntax classDeclaration,
-            IMethodSymbol[] constructorSymbols,
+            ImmutableArray<IMethodSymbol> constructorSymbols,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
