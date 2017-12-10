@@ -10,8 +10,6 @@ namespace Roslynator.CSharp.Syntax
 {
     public struct IfStatementInfo
     {
-        private ImmutableArray<IfStatementOrElseClause> _nodes;
-
         private IfStatementInfo(IfStatementSyntax ifStatement)
         {
             ImmutableArray<IfStatementOrElseClause>.Builder builder = ImmutableArray.CreateBuilder<IfStatementOrElseClause>();
@@ -44,13 +42,10 @@ namespace Roslynator.CSharp.Syntax
                 }
             }
 
-            _nodes = builder.ToImmutableArray();
+            Nodes = builder.ToImmutableArray();
         }
 
-        public ImmutableArray<IfStatementOrElseClause> Nodes
-        {
-            get { return (!_nodes.IsDefault) ? _nodes : ImmutableArray<IfStatementOrElseClause>.Empty; }
-        }
+        public ImmutableArray<IfStatementOrElseClause> Nodes { get; }
 
         public bool Success
         {
