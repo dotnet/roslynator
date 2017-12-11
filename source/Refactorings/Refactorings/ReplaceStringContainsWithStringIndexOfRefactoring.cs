@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Replace Contains with IndexOf",
-                    cancellationToken => RefactorAsync(context.Document, invocation, context.CancellationToken));
+                    cancellationToken => RefactorAsync(context.Document, invocation, cancellationToken));
             }
         }
 
