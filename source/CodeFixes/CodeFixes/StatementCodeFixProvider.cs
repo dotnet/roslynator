@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     null,
                                                     breakStatement.SemicolonToken);
 
-                                                return context.Document.ReplaceNodeAsync(statement, newStatement, context.CancellationToken);
+                                                return context.Document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
                                             },
                                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
 
@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     null,
                                                     breakStatement.SemicolonToken);
 
-                                                return context.Document.ReplaceNodeAsync(statement, newStatement, context.CancellationToken);
+                                                return context.Document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
                                             },
                                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
 

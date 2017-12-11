@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             {
                                                 CodeAction codeAction = CodeAction.Create(
                                                     "Remove unused variable",
-                                                    cancellationToken => context.Document.RemoveNodeAsync(localDeclarationStatement, RemoveHelper.GetRemoveOptions(localDeclarationStatement)),
+                                                    cancellationToken => context.Document.RemoveNodeAsync(localDeclarationStatement, RemoveHelper.GetRemoveOptions(localDeclarationStatement), cancellationToken),
                                                     GetEquivalenceKey(diagnostic));
 
                                                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         {
                                             CodeAction codeAction = CodeAction.Create(
                                                 "Remove unused variable",
-                                                cancellationToken => context.Document.RemoveNodeAsync(variableDeclarator, RemoveHelper.GetRemoveOptions(variableDeclarator)),
+                                                cancellationToken => context.Document.RemoveNodeAsync(variableDeclarator, RemoveHelper.GetRemoveOptions(variableDeclarator), cancellationToken),
                                                 GetEquivalenceKey(diagnostic));
 
                                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.CodeFixes
                                                     .WithCloseParenToken(catchDeclaration.CloseParenToken.PrependToLeadingTrivia(token.GetLeadingAndTrailingTrivia()))
                                                     .WithFormatterAnnotation();
 
-                                                return context.Document.ReplaceNodeAsync(catchDeclaration, newNode, context.CancellationToken);
+                                                return context.Document.ReplaceNodeAsync(catchDeclaration, newNode, cancellationToken);
                                             },
                                             GetEquivalenceKey(diagnostic));
 
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         CodeAction codeAction = CodeAction.Create(
                                             "Remove unused local function",
-                                            cancellationToken => context.Document.RemoveStatementAsync(localFunction, context.CancellationToken),
+                                            cancellationToken => context.Document.RemoveStatementAsync(localFunction, cancellationToken),
                                             GetEquivalenceKey(diagnostic, "LocalFunction"));
 
                                         context.RegisterCodeFix(codeAction, diagnostic);

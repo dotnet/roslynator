@@ -286,7 +286,7 @@ namespace Roslynator.CodeGeneration.Markdown
             {
                 IEnumerable<MarkdownLink> links = codeFix
                     .FixableDiagnosticIds
-                    .Join(diagnostics, f => f, f => f.Id, (f, g) => new MarkdownLink(g.Id, g.HelpUrl));
+                    .Join(diagnostics, f => f, f => f.Id, (f, g) => new MarkdownLink(f, g.HelpUrl));
 
                 sb.AppendTableRow(
                     codeFix.Id,
