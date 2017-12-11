@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Replace as with cast",
-                        cancellationToken => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, context.CancellationToken));
+                        cancellationToken => ReplaceAsWithCastRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken));
                 }
             }
 

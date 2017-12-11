@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                                         return context.Document.ReplaceNodeAsync(
                                             analysis.InvocationExpression,
                                             analysis.NewInvocationExpression,
-                                            context.CancellationToken);
+                                            cancellationToken);
                                     });
                             }
                         }

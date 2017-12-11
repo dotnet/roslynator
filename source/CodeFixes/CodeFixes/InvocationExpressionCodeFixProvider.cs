@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
                                             .WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(invocationExpression, newNode, context.CancellationToken);
+                                    return context.Document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

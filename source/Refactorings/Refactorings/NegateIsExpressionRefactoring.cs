@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 "Negate is",
-                cancellationToken => RefactorAsync(context.Document, expression, context.CancellationToken));
+                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
         }
 
         private static async Task<Document> RefactorAsync(

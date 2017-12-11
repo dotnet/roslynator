@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                                 GenericNameSyntax newNode = SyntaxFactory.GenericName(identifierName.Identifier, SyntaxFactory.TypeArgumentList(typeArguments));
 
-                                                return context.Document.ReplaceNodeAsync(type, newNode, context.CancellationToken);
+                                                return context.Document.ReplaceNodeAsync(type, newNode, cancellationToken);
                                             },
                                             GetEquivalenceKey(diagnostic, SymbolDisplay.GetString(namedTypeSymbol)));
 

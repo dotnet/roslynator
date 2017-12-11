@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     BlockSyntax block = SyntaxFactory.Block(statement).WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(statement, block, context.CancellationToken);
+                                    return context.Document.ReplaceNodeAsync(statement, block, cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

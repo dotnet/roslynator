@@ -779,10 +779,10 @@ namespace Roslynator.CSharp.Refactorings
 
                         if (!fStatement)
                         {
-                            EmbeddedStatementRefactoring.ComputeRefactoring(this, statement);
                             AddBracesRefactoring.ComputeRefactoring(this, statement);
                             RemoveBracesRefactoring.ComputeRefactoring(this, statement);
                             ExtractStatementRefactoring.ComputeRefactoring(this, statement);
+                            EmbeddedStatementRefactoring.ComputeRefactoring(this, statement);
                             fStatement = true;
                         }
 

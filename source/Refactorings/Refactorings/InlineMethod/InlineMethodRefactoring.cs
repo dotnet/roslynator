@@ -53,9 +53,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                 var refactoring = new InlineMethodExpressionRefactoring(context.Document, invocation, enclosingType, methodSymbol, methodDeclaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
 
-                context.RegisterRefactoring("Inline method", c => refactoring.InlineMethodAsync(invocation, expression));
+                context.RegisterRefactoring("Inline method", cancellationToken => refactoring.InlineMethodAsync(invocation, expression, cancellationToken));
 
-                context.RegisterRefactoring("Inline and remove method", c => refactoring.InlineAndRemoveMethodAsync(invocation, expression));
+                context.RegisterRefactoring("Inline and remove method", cancellationToken => refactoring.InlineAndRemoveMethodAsync(invocation, expression, cancellationToken));
             }
             else if (methodSymbol.ReturnsVoid
                 && invocation.IsParentKind(SyntaxKind.ExpressionStatement))
@@ -85,9 +85,9 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
                 var refactoring = new InlineMethodStatementsRefactoring(context.Document, invocation, enclosingType, methodSymbol, methodDeclaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
 
-                context.RegisterRefactoring("Inline method", c => refactoring.InlineMethodAsync(expressionStatement, statements));
+                context.RegisterRefactoring("Inline method", cancellationToken => refactoring.InlineMethodAsync(expressionStatement, statements, cancellationToken));
 
-                context.RegisterRefactoring("Inline and remove method", c => refactoring.InlineAndRemoveMethodAsync(expressionStatement, statements));
+                context.RegisterRefactoring("Inline and remove method", cancellationToken => refactoring.InlineAndRemoveMethodAsync(expressionStatement, statements, cancellationToken));
             }
         }
 

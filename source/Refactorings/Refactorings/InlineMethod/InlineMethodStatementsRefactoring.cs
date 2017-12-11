@@ -28,7 +28,8 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
 
         public Task<Document> InlineMethodAsync(
             ExpressionStatementSyntax expressionStatement,
-            SyntaxList<StatementSyntax> statements)
+            SyntaxList<StatementSyntax> statements,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             int count = statements.Count;
 
@@ -43,21 +44,22 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             {
                 StatementsInfo newInfo = statementsInfo.WithStatements(statementsInfo.Statements.ReplaceRange(expressionStatement, newStatements));
 
-                return Document.ReplaceNodeAsync(statementsInfo.Node, newInfo.Node, CancellationToken);
+                return Document.ReplaceNodeAsync(statementsInfo.Node, newInfo.Node, cancellationToken);
             }
             else
             {
-                return Document.ReplaceNodeAsync(expressionStatement, Block(newStatements), CancellationToken);
+                return Document.ReplaceNodeAsync(expressionStatement, Block(newStatements), cancellationToken);
             }
         }
 
         public async Task<Solution> InlineAndRemoveMethodAsync(
             ExpressionStatementSyntax expressionStatement,
-            SyntaxList<StatementSyntax> statements)
+            SyntaxList<StatementSyntax> statements,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             if (expressionStatement.SyntaxTree == MethodDeclaration.SyntaxTree)
             {
-                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, CancellationToken).ConfigureAwait(false);
+                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
 
                 StatementSyntax[] newStatements = RewriteStatements(statements);
 
@@ -85,11 +87,11 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             }
             else
             {
-                Document newDocument = await InlineMethodAsync(expressionStatement, statements).ConfigureAwait(false);
+                Document newDocument = await InlineMethodAsync(expressionStatement, statements, cancellationToken).ConfigureAwait(false);
 
                 DocumentId documentId = Document.Solution().GetDocumentId(MethodDeclaration.SyntaxTree);
 
-                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(MethodDeclaration, CancellationToken).ConfigureAwait(false);
+                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(MethodDeclaration, cancellationToken).ConfigureAwait(false);
 
                 return newDocument.Solution();
             }

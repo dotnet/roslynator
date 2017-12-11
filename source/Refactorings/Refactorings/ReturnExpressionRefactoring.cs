@@ -98,6 +98,10 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         return (fieldSymbol, fieldSymbol.Type);
                     }
+                case IErrorTypeSymbol _:
+                    {
+                        return default((ISymbol, ITypeSymbol));
+                    }
             }
 
             Debug.Fail(expression.ToString());
