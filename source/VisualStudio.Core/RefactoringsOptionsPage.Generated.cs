@@ -150,7 +150,7 @@ namespace Roslynator.VisualStudio
             ReplaceForWithWhile = true;
             ReplaceHexadecimalLiteralWithDecimalLiteral = true;
             ReplaceIfWithSwitch = true;
-            ReplaceIncrementOperatorWithDecrementOperator = true;
+            InvertPrefixOrPostfixUnaryOperator = true;
             ReplaceInterpolatedStringWithInterpolationExpression = true;
             ReplaceInterpolatedStringWithStringLiteral = true;
             ReplaceMethodGroupWithLambda = true;
@@ -322,7 +322,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.ReplaceForWithWhile, ReplaceForWithWhile);
             SetIsEnabled(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral, ReplaceHexadecimalLiteralWithDecimalLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch, ReplaceIfWithSwitch);
-            SetIsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, ReplaceIncrementOperatorWithDecrementOperator);
+            SetIsEnabled(RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator, InvertPrefixOrPostfixUnaryOperator);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, ReplaceInterpolatedStringWithInterpolationExpression);
             SetIsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, ReplaceInterpolatedStringWithStringLiteral);
             SetIsEnabled(RefactoringIdentifiers.ReplaceMethodGroupWithLambda, ReplaceMethodGroupWithLambda);
@@ -504,7 +504,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForWithWhile, "Replace for statement with while statement", IsEnabled(RefactoringIdentifiers.ReplaceForWithWhile)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral, "Replace hexadecimal literal with decimal literal", IsEnabled(RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfWithSwitch, "Replace if statement with switch statement", IsEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator, "Replace increment operator with decrement operator", IsEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator, "Invert prefix/postfix unary operator", IsEnabled(RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression, "Replace interpolated string with interpolation expression", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral, "Replace interpolated string with string literal", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceMethodGroupWithLambda, "Replace method group with lambda", IsEnabled(RefactoringIdentifiers.ReplaceMethodGroupWithLambda)));
@@ -1136,6 +1136,15 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool InvertPrefixOrPostfixUnaryOperator
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        [Category(RefactoringCategory)]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool JoinStringExpressions
         {
             get;
@@ -1668,15 +1677,6 @@ namespace Roslynator.VisualStudio
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ReplaceIfWithSwitch
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ReplaceIncrementOperatorWithDecrementOperator
         {
             get;
             set;

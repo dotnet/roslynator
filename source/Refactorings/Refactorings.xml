@@ -927,10 +927,29 @@ switch (ch)
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0134" Identifier="ReplaceIncrementOperatorWithDecrementOperator" Title="Replace increment operator with decrement operator">
+  <Refactoring Id="RR0134" Identifier="InvertPrefixOrPostfixUnaryOperator" Title="Invert prefix/postfix unary operator">
     <Syntaxes>
       <Syntax>prefix/postfix unary expression</Syntax>
     </Syntaxes>
+    <Span>operator token</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[int i = 0;
+
+i++;]]></Before>
+        <After><![CDATA[int i = 0;
+
+i--;]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[int i = 0;
+
+++i;]]></Before>
+        <After><![CDATA[int i = 0;
+
+--i;]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0135" Identifier="ReplaceInterpolatedStringWithInterpolationExpression" Title="Replace interpolated string with interpolation expression">
     <Syntaxes>

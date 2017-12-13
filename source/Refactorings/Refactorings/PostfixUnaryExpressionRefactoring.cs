@@ -13,86 +13,93 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, PostfixUnaryExpressionSyntax postfixUnaryExpression)
         {
-            SyntaxKind kind = postfixUnaryExpression.Kind();
+            if (!context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(postfixUnaryExpression.OperatorToken))
+                return;
 
-            if (kind == SyntaxKind.PostIncrementExpression)
+            switch (postfixUnaryExpression.Kind())
             {
-                ReplacePostIncrementWithPreIncrement(context, postfixUnaryExpression);
-                ReplacePostIncrementWithPostDecrement(context, postfixUnaryExpression);
-            }
-            else if (kind == SyntaxKind.PostDecrementExpression)
-            {
-                ReplacePostDecrementWithPreDecrement(context, postfixUnaryExpression);
-                ReplacePostDecrementWithPostIncrement(context, postfixUnaryExpression);
+                case SyntaxKind.PostIncrementExpression:
+                    {
+                        InvertPostIncrement(context, postfixUnaryExpression);
+                        ReplacePostIncrementWithPreIncrement(context, postfixUnaryExpression);
+                        break;
+                    }
+
+                case SyntaxKind.PostDecrementExpression:
+                    {
+                        InvertPostDecrement(context, postfixUnaryExpression);
+                        ReplacePostDecrementWithPreDecrement(context, postfixUnaryExpression);
+                        break;
+                    }
             }
         }
 
         private static void ReplacePostIncrementWithPreIncrement(RefactoringContext context, PostfixUnaryExpressionSyntax postIncrement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator))
-            {
-                ExpressionSyntax operand = postIncrement.Operand;
+            if (!context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator))
+                return;
 
-                if (operand != null)
-                {
-                    PrefixUnaryExpressionSyntax preIncrement = PreIncrementExpression(operand.WithoutTrivia())
-                        .WithTriviaFrom(postIncrement)
-                        .WithFormatterAnnotation();
+            ExpressionSyntax operand = postIncrement.Operand;
 
-                    context.RegisterRefactoring(
-                        $"Replace '{postIncrement}' with '{preIncrement}'",
-                        cancellationToken => ChangePostIncrementToPreIncrementAsync(context.Document, postIncrement, preIncrement, cancellationToken));
-                }
-            }
+            if (operand == null)
+                return;
+
+            PrefixUnaryExpressionSyntax preIncrement = PreIncrementExpression(operand.WithoutTrivia())
+                .WithTriviaFrom(postIncrement)
+                .WithFormatterAnnotation();
+
+            context.RegisterRefactoring(
+                $"Replace '{postIncrement}' with '{preIncrement}'",
+                cancellationToken => ChangePostIncrementToPreIncrementAsync(context.Document, postIncrement, preIncrement, cancellationToken));
         }
 
-        private static void ReplacePostIncrementWithPostDecrement(RefactoringContext context, PostfixUnaryExpressionSyntax postIncrement)
+        private static void InvertPostIncrement(RefactoringContext context, PostfixUnaryExpressionSyntax postIncrement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
-            {
-                PostfixUnaryExpressionSyntax postDecrement = postIncrement
-                    .WithOperatorToken(MinusMinusToken())
-                    .WithTriviaFrom(postIncrement)
-                    .WithFormatterAnnotation();
+            if (!context.IsRefactoringEnabled(RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator))
+                return;
 
-                context.RegisterRefactoring(
-                    $"Replace '{postIncrement}' with '{postDecrement}'",
-                    cancellationToken => ChangePostIncrementToPostDecrementAsync(context.Document, postIncrement, postDecrement, cancellationToken));
-            }
+            PostfixUnaryExpressionSyntax postDecrement = postIncrement
+                .WithOperatorToken(MinusMinusToken())
+                .WithTriviaFrom(postIncrement)
+                .WithFormatterAnnotation();
+
+            context.RegisterRefactoring(
+                $"Invert {postIncrement.OperatorToken}",
+                cancellationToken => ChangePostIncrementToPostDecrementAsync(context.Document, postIncrement, postDecrement, cancellationToken));
         }
 
         private static void ReplacePostDecrementWithPreDecrement(RefactoringContext context, PostfixUnaryExpressionSyntax postDecrement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator))
-            {
-                ExpressionSyntax operand = postDecrement.Operand;
+            if (!context.IsRefactoringEnabled(RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator))
+                return;
 
-                if (operand != null)
-                {
-                    PrefixUnaryExpressionSyntax preDecrement = PreDecrementExpression(operand.WithoutTrivia())
-                        .WithTriviaFrom(postDecrement)
-                        .WithFormatterAnnotation();
+            ExpressionSyntax operand = postDecrement.Operand;
 
-                    context.RegisterRefactoring(
-                        $"Replace '{postDecrement}' with '{preDecrement}'",
-                        cancellationToken => ChangePostDecrementToPreDecrementAsync(context.Document, postDecrement, preDecrement, cancellationToken));
-                }
-            }
+            if (operand == null)
+                return;
+
+            PrefixUnaryExpressionSyntax preDecrement = PreDecrementExpression(operand.WithoutTrivia())
+                .WithTriviaFrom(postDecrement)
+                .WithFormatterAnnotation();
+
+            context.RegisterRefactoring(
+                $"Replace '{postDecrement}' with '{preDecrement}'",
+                cancellationToken => ChangePostDecrementToPreDecrementAsync(context.Document, postDecrement, preDecrement, cancellationToken));
         }
 
-        private static void ReplacePostDecrementWithPostIncrement(RefactoringContext context, PostfixUnaryExpressionSyntax postDecrement)
+        private static void InvertPostDecrement(RefactoringContext context, PostfixUnaryExpressionSyntax postDecrement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIncrementOperatorWithDecrementOperator))
-            {
-                PostfixUnaryExpressionSyntax postIncrement = postDecrement
-                    .WithOperatorToken(PlusPlusToken())
-                    .WithTriviaFrom(postDecrement)
-                    .WithFormatterAnnotation();
+            if (!context.IsRefactoringEnabled(RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator))
+                return;
 
-                context.RegisterRefactoring(
-                    $"Replace '{postDecrement}' with '{postIncrement}'",
-                    cancellationToken => ChangePostDecrementToPostIncrementAsync(context.Document, postDecrement, postIncrement, cancellationToken));
-            }
+            PostfixUnaryExpressionSyntax postIncrement = postDecrement
+                .WithOperatorToken(PlusPlusToken())
+                .WithTriviaFrom(postDecrement)
+                .WithFormatterAnnotation();
+
+            context.RegisterRefactoring(
+                $"Invert {postDecrement.OperatorToken}",
+                cancellationToken => ChangePostDecrementToPostIncrementAsync(context.Document, postDecrement, postIncrement, cancellationToken));
         }
 
         private static Task<Document> ChangePostIncrementToPreIncrementAsync(
