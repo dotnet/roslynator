@@ -1,12 +1,12 @@
-﻿Run tools.cmd
-Change number of refactorings and/or analyzers
-Update Analyzers.xml
+﻿Change configuration to 'Release'
+Run tools.cmd
 Update ChangeLog.md
+Change number of refactorings and/or analyzers
 Change version
-Change configuration to "Release"
 Build
-Publish nuget "CSharpAnalyzers"
-Publish extension "Roslynator"
-Publish extension "Roslynator Refactorings"
+Publish package Roslynator.Analyzers
+Publish package Roslynator.Codefixes
+Publish extension Roslynator
+Publish extension Roslynator Refactorings
 Push to GitHub
 Add GitHub release
