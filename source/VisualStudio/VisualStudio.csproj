@@ -74,7 +74,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="description.txt" />
+    <None Include="Overview.md" />
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

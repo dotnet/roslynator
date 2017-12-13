@@ -21,9 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 		Refactorings\Refactorings.xml = Refactorings\Refactorings.xml
 		..\text\ReleaseCheckList.txt = ..\text\ReleaseCheckList.txt
-		..\text\RoslynatorDescription.txt = ..\text\RoslynatorDescription.txt
 		..\docs\RoslynatorForVisualStudioCode.md = ..\docs\RoslynatorForVisualStudioCode.md
-		..\text\RoslynatorRefactoringsDescription.txt = ..\text\RoslynatorRefactoringsDescription.txt
 	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AddCodeFileHeader", "Tools\AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"

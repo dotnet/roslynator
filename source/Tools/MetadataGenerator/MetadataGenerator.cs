@@ -65,14 +65,6 @@ namespace Roslynator.CodeGeneration
             WriteAllText(
                 "DefaultConfigFile.xml",
                 XmlGenerator.CreateDefaultConfigFile(Refactorings, CodeFixes));
-
-            WriteAllText(
-                @"VisualStudio\description.txt",
-                File.ReadAllText(@"..\text\RoslynatorDescription.txt", Encoding.UTF8));
-
-            WriteAllText(
-                @"VisualStudio.Refactorings\description.txt",
-                File.ReadAllText(@"..\text\RoslynatorRefactoringsDescription.txt", Encoding.UTF8));
         }
 
         public void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = true)
