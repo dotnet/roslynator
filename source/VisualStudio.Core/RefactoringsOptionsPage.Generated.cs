@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.AddMemberToInterface;
+        = RefactoringIdentifiers.MergeIfWithParentIf;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -565,6 +565,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation, "Replace interpolated string with concatenation", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitDeclarationAndInitialization, "Split declaration and initialization", IsEnabled(RefactoringIdentifiers.SplitDeclarationAndInitialization)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddMemberToInterface, "Add member to interface", IsEnabled(RefactoringIdentifiers.AddMemberToInterface)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfWithParentIf, "Merge if with parent if", IsEnabled(RefactoringIdentifiers.MergeIfWithParentIf)));
         }
 
         [Browsable(false)]

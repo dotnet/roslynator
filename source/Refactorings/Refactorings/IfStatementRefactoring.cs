@@ -44,6 +44,12 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfStatement))
                     SplitIfStatementRefactoring.ComputeRefactoring(context, ifStatement);
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfWithParentIf)
+                    && context.Span.IsEmptyAndContainedInSpan(ifStatement.IfKeyword))
+                {
+                    MergeIfWithParentIfRefactoring.ComputeRefactoring(context, ifStatement);
+                }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReduceIfNesting)

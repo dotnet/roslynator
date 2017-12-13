@@ -85,6 +85,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeAssignmentExpressionWithReturnStatement = Prefix + "0073";
         public const string MergeAttributes = Prefix + "0074";
         public const string MergeIfStatements = Prefix + "0075";
+        public const string MergeIfWithParentIf = Prefix + "0196";
         public const string MergeInterpolationIntoInterpolatedString = Prefix + "0076";
         public const string MergeLocalDeclarations = Prefix + "0077";
         public const string NegateBinaryExpression = Prefix + "0079";

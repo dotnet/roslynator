@@ -76,6 +76,7 @@
     <Compile Include="Refactorings\MakeMemberVirtual\MakeMemberAbstractHelper.cs" />
     <Compile Include="Refactorings\MakeMemberVirtual\MakeMethodVirtualRefactoring.cs" />
     <Compile Include="Refactorings\MakeMemberVirtual\MakePropertyVirtualRefactoring.cs" />
+    <Compile Include="Refactorings\MergeIfWithParentIfRefactoring.cs" />
     <Compile Include="Refactorings\NamespaceDeclarationRefactoring.cs" />
     <Compile Include="Refactorings\GenerateCombinedEnumMemberRefactoring.cs" />
     <Compile Include="Refactorings\GenerateEnumMemberRefactoring.cs" />

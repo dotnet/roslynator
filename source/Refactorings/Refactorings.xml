@@ -1450,4 +1450,29 @@ public interface IFoo
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0196" Identifier="MergeIfWithParentIf" Title="Merge if with parent if">
+    <Syntaxes>
+      <Syntax>if statement</Syntax>
+    </Syntaxes>
+    <Span>if keyword</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+{
+    if (y)
+    {
+    }
+}
+else
+{
+}]]></Before>
+        <After><![CDATA[if (x && y)
+{
+}
+else
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>
