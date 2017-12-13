@@ -1416,4 +1416,38 @@ s = GetValue();]]></After>
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0195" Identifier="AddMemberToInterface" Title="Add member to interface">
+    <Syntaxes>
+      <Syntax>method</Syntax>
+      <Syntax>property</Syntax>
+      <Syntax>indexer</Syntax>
+      <Syntax>event</Syntax>
+    </Syntaxes>
+    <Span>identifier</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public class Foo : IFoo
+{
+    public void Bar()
+    {
+    }
+}
+
+public interface IFoo
+{
+}]]></Before>
+        <After><![CDATA[public class Foo : IFoo
+{
+    public void Bar()
+    {
+    }
+}
+
+public interface IFoo
+{
+    void Bar();
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

@@ -2307,14 +2307,18 @@ namespace Roslynator.CSharp
             return SyntaxFactory.VariableDeclarator(identifier, default(BracketedArgumentListSyntax), initializer);
         }
 
-        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer)
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, string identifier, EqualsValueClauseSyntax initializer = null)
         {
             return VariableDeclaration(type, Identifier(identifier), initializer);
         }
 
-        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer)
+        public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, SyntaxToken identifier, EqualsValueClauseSyntax initializer = null)
         {
-            return VariableDeclaration(type, VariableDeclarator(identifier, initializer));
+            return VariableDeclaration(
+                type,
+                (initializer != null)
+                    ? VariableDeclarator(identifier, initializer)
+                    : SyntaxFactory.VariableDeclarator(identifier));
         }
 
         public static VariableDeclarationSyntax VariableDeclaration(TypeSyntax type, VariableDeclaratorSyntax variable)

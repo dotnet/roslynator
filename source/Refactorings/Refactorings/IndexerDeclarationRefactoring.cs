@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
 using Roslynator.CSharp.Refactorings.MakeMemberVirtual;
@@ -27,6 +28,14 @@ namespace Roslynator.CSharp.Refactorings
                 && indexerDeclaration.HeaderSpan().Contains(context.Span))
             {
                 await CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoringAsync(context, indexerDeclaration).ConfigureAwait(false);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(indexerDeclaration.ThisKeyword))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                AddMemberToInterfaceRefactoring.ComputeRefactoring(context, indexerDeclaration, semanticModel);
             }
         }
     }

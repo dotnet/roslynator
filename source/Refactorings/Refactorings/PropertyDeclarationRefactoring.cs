@@ -130,6 +130,14 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(propertyDeclaration.Identifier))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                AddMemberToInterfaceRefactoring.ComputeRefactoring(context, propertyDeclaration, semanticModel);
+            }
         }
     }
 }

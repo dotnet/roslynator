@@ -43,6 +43,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="RefactoringIdentifiers.Deprecated.Generated.cs" />
+    <Compile Include="Refactorings\AddMemberToInterfaceRefactoring.cs" />
     <Compile Include="Refactorings\AddOrRemoveParameterName\AddParameterNameRefactoring.cs" />
     <Compile Include="Refactorings\AddOrRemoveParameterName\AddParameterNameRewriter.cs" />
     <Compile Include="Refactorings\AddOrRemoveParameterName\RemoveParameterNameRefactoring.cs" />
