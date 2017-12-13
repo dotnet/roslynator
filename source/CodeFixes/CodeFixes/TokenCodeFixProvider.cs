@@ -26,7 +26,8 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperandOfType,
                     CompilerDiagnosticIdentifiers.PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid,
                     CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter,
-                    CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired);
+                    CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired,
+                    CompilerDiagnosticIdentifiers.TypeExpected);
             }
         }
 
@@ -36,7 +37,8 @@ namespace Roslynator.CSharp.CodeFixes
                 CodeFixIdentifiers.AddArgumentList,
                 CodeFixIdentifiers.ReorderModifiers,
                 CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue,
-                CodeFixIdentifiers.ReturnDefaultValue))
+                CodeFixIdentifiers.ReturnDefaultValue,
+                CodeFixIdentifiers.AddMissingType))
             {
                 return;
             }
@@ -184,6 +186,49 @@ namespace Roslynator.CSharp.CodeFixes
                                     ReturnStatementSyntax newNode = returnStatement.WithExpression(expression);
 
                                     return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.TypeExpected:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMissingType))
+                                break;
+
+                            if (token.Kind() != SyntaxKind.CloseParenToken)
+                                break;
+
+                            if (!(token.Parent is DefaultExpressionSyntax defaultExpression))
+                                break;
+
+                            if (!(defaultExpression.Type is IdentifierNameSyntax identifierName))
+                                break;
+
+                            if (!identifierName.IsMissing)
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            TypeInfo typeInfo = semanticModel.GetTypeInfo(defaultExpression, context.CancellationToken);
+
+                            ITypeSymbol convertedType = typeInfo.ConvertedType;
+
+                            if (convertedType?.SupportsExplicitDeclaration() != true)
+                                break;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Add type '{SymbolDisplay.GetMinimalString(convertedType, semanticModel, defaultExpression.SpanStart)}'",
+                                cancellationToken =>
+                                {
+                                    TypeSyntax newNode = convertedType.ToMinimalTypeSyntax(semanticModel, defaultExpression.SpanStart);
+
+                                    newNode = newNode
+                                        .WithTriviaFrom(identifierName)
+                                        .WithFormatterAnnotation();
+
+                                    return context.Document.ReplaceNodeAsync(identifierName, newNode, cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 

@@ -24,6 +24,11 @@ namespace Roslynator.CSharp.CodeFixes.Tests
             public static explicit operator Foo(string value);
 
             public static Foo operator !(Foo value);
+
+            public void MethodWithLocalFunction()
+            {
+                void Local(string value);
+            }
         }
     }
 }

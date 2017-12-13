@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.PartialMethodMayNotHaveMultipleDefiningDeclarations,
-                    CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial);
+                    CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial,
+                    CompilerDiagnosticIdentifiers.LocalFunctionMustAlwaysHaveBody);
             }
         }
 
@@ -36,8 +37,14 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f is MemberDeclarationSyntax || f is AccessorDeclarationSyntax))
+            if (!TryFindFirstAncestorOrSelf(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                predicate: f => f is MemberDeclarationSyntax || f is AccessorDeclarationSyntax || f is LocalFunctionStatementSyntax))
+            {
                 return;
+            }
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
@@ -45,6 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.PartialMethodMayNotHaveMultipleDefiningDeclarations:
                     case CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial:
+                    case CompilerDiagnosticIdentifiers.LocalFunctionMustAlwaysHaveBody:
                         {
                             Func<CancellationToken, Task<Document>> createChangedDocument = GetCreateChangedDocument(context, node);
 
@@ -69,14 +77,22 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 case SyntaxKind.MethodDeclaration:
                     {
+                        var methodDeclaration = (MethodDeclarationSyntax)node;
+
+                        SyntaxToken semicolonToken = methodDeclaration.SemicolonToken;
+
+                        if (semicolonToken.Kind() == SyntaxKind.None)
+                            break;
+
+                        ParameterListSyntax parameterList = methodDeclaration.ParameterList;
+
+                        if (parameterList == null)
+                            break;
+
                         return cancellationToken =>
                         {
-                            var methodDeclaration = (MethodDeclarationSyntax)node;
-
-                            ParameterListSyntax parameterList = methodDeclaration.ParameterList ?? ParameterList();
-
                             MethodDeclarationSyntax newNode = methodDeclaration
-                                .WithParameterList(parameterList.AppendToTrailingTrivia(methodDeclaration.SemicolonToken.GetLeadingAndTrailingTrivia()))
+                                .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetLeadingAndTrailingTrivia()))
                                 .WithSemicolonToken(default(SyntaxToken))
                                 .WithBody(Block())
                                 .WithFormatterAnnotation();
@@ -86,14 +102,22 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 case SyntaxKind.ConstructorDeclaration:
                     {
+                        var constructorDeclaration = (ConstructorDeclarationSyntax)node;
+
+                        SyntaxToken semicolonToken = constructorDeclaration.SemicolonToken;
+
+                        if (semicolonToken.Kind() == SyntaxKind.None)
+                            break;
+
+                        ParameterListSyntax parameterList = constructorDeclaration.ParameterList;
+
+                        if (parameterList == null)
+                            break;
+
                         return cancellationToken =>
                         {
-                            var constructorDeclaration = (ConstructorDeclarationSyntax)node;
-
-                            ParameterListSyntax parameterList = constructorDeclaration.ParameterList ?? ParameterList();
-
                             ConstructorDeclarationSyntax newNode = constructorDeclaration
-                                .WithParameterList(parameterList.AppendToTrailingTrivia(constructorDeclaration.SemicolonToken.GetLeadingAndTrailingTrivia()))
+                                .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetLeadingAndTrailingTrivia()))
                                 .WithSemicolonToken(default(SyntaxToken))
                                 .WithBody(Block())
                                 .WithFormatterAnnotation();
@@ -103,14 +127,22 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 case SyntaxKind.DestructorDeclaration:
                     {
+                        var destructorDeclaration = (DestructorDeclarationSyntax)node;
+
+                        SyntaxToken semicolonToken = destructorDeclaration.SemicolonToken;
+
+                        if (semicolonToken.Kind() == SyntaxKind.None)
+                            break;
+
+                        ParameterListSyntax parameterList = destructorDeclaration.ParameterList;
+
+                        if (parameterList == null)
+                            break;
+
                         return cancellationToken =>
                         {
-                            var destructorDeclaration = (DestructorDeclarationSyntax)node;
-
-                            ParameterListSyntax parameterList = destructorDeclaration.ParameterList ?? ParameterList();
-
                             DestructorDeclarationSyntax newNode = destructorDeclaration
-                                .WithParameterList(parameterList.AppendToTrailingTrivia(destructorDeclaration.SemicolonToken.GetLeadingAndTrailingTrivia()))
+                                .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetLeadingAndTrailingTrivia()))
                                 .WithSemicolonToken(default(SyntaxToken))
                                 .WithBody(Block())
                                 .WithFormatterAnnotation();
@@ -120,14 +152,22 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 case SyntaxKind.OperatorDeclaration:
                     {
+                        var operatorDeclaration = (OperatorDeclarationSyntax)node;
+
+                        SyntaxToken semicolonToken = operatorDeclaration.SemicolonToken;
+
+                        if (semicolonToken.Kind() == SyntaxKind.None)
+                            break;
+
+                        ParameterListSyntax parameterList = operatorDeclaration.ParameterList;
+
+                        if (parameterList == null)
+                            break;
+
                         return cancellationToken =>
                         {
-                            var operatorDeclaration = (OperatorDeclarationSyntax)node;
-
-                            ParameterListSyntax parameterList = operatorDeclaration.ParameterList ?? ParameterList();
-
                             OperatorDeclarationSyntax newNode = operatorDeclaration
-                                .WithParameterList(parameterList.AppendToTrailingTrivia(operatorDeclaration.SemicolonToken.GetLeadingAndTrailingTrivia()))
+                                .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetLeadingAndTrailingTrivia()))
                                 .WithSemicolonToken(default(SyntaxToken))
                                 .WithBody(Block())
                                 .WithFormatterAnnotation();
@@ -137,14 +177,22 @@ namespace Roslynator.CSharp.CodeFixes
                     }
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
+                        var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
+
+                        SyntaxToken semicolonToken = conversionOperatorDeclaration.SemicolonToken;
+
+                        if (semicolonToken.Kind() == SyntaxKind.None)
+                            break;
+
+                        ParameterListSyntax parameterList = conversionOperatorDeclaration.ParameterList;
+
+                        if (parameterList == null)
+                            break;
+
                         return cancellationToken =>
                         {
-                            var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
-
-                            ParameterListSyntax parameterList = conversionOperatorDeclaration.ParameterList ?? ParameterList();
-
                             ConversionOperatorDeclarationSyntax newNode = conversionOperatorDeclaration
-                                .WithParameterList(parameterList.AppendToTrailingTrivia(conversionOperatorDeclaration.SemicolonToken.GetLeadingAndTrailingTrivia()))
+                                .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetLeadingAndTrailingTrivia()))
                                 .WithSemicolonToken(default(SyntaxToken))
                                 .WithBody(Block())
                                 .WithFormatterAnnotation();
@@ -155,21 +203,51 @@ namespace Roslynator.CSharp.CodeFixes
                 case SyntaxKind.GetAccessorDeclaration:
                 case SyntaxKind.SetAccessorDeclaration:
                     {
+                        var accessorDeclaration = (AccessorDeclarationSyntax)node;
+
+                        SyntaxToken semicolonToken = accessorDeclaration.SemicolonToken;
+
+                        if (semicolonToken.Kind() == SyntaxKind.None)
+                            break;
+
                         return cancellationToken =>
                         {
-                            var accessorDeclaration = (AccessorDeclarationSyntax)node;
-
                             AccessorDeclarationSyntax newNode = accessorDeclaration
                                 .WithSemicolonToken(default(SyntaxToken))
                                 .WithBody(Block(
                                     Token(default(SyntaxTriviaList), SyntaxKind.OpenBraceToken, TriviaList(ElasticSpace)),
                                     default(SyntaxList<StatementSyntax>),
-                                    Token(default(SyntaxTriviaList), SyntaxKind.CloseBraceToken, accessorDeclaration.SemicolonToken.GetLeadingAndTrailingTrivia())));
+                                    Token(default(SyntaxTriviaList), SyntaxKind.CloseBraceToken, semicolonToken.GetLeadingAndTrailingTrivia())));
 
                             SyntaxToken keyword = newNode.Keyword;
 
                             if (!keyword.HasTrailingTrivia)
                                 newNode = newNode.WithKeyword(keyword.WithTrailingTrivia(ElasticSpace));
+
+                            return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
+                        };
+                    }
+                case SyntaxKind.LocalFunctionStatement:
+                    {
+                        var localFunction = (LocalFunctionStatementSyntax)node;
+
+                        SyntaxToken semicolonToken = localFunction.SemicolonToken;
+
+                        if (semicolonToken.Kind() == SyntaxKind.None)
+                            break;
+
+                        ParameterListSyntax parameterList = localFunction.ParameterList;
+
+                        if (parameterList == null)
+                            break;
+
+                        return cancellationToken =>
+                        {
+                            LocalFunctionStatementSyntax newNode = localFunction
+                                .WithParameterList(parameterList.AppendToTrailingTrivia(semicolonToken.GetLeadingAndTrailingTrivia()))
+                                .WithSemicolonToken(default(SyntaxToken))
+                                .WithBody(Block())
+                                .WithFormatterAnnotation();
 
                             return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
                         };

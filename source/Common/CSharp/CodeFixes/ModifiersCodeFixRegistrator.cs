@@ -25,6 +25,19 @@ namespace Roslynator.CSharp.CodeFixes
         {
             Document document = context.Document;
 
+            AddModifier(context, document, diagnostic, node, kind, title, additionalKey, comparer);
+        }
+
+        public static void AddModifier(
+            CodeFixContext context,
+            Document document,
+            Diagnostic diagnostic,
+            SyntaxNode node,
+            SyntaxKind kind,
+            string title = null,
+            string additionalKey = null,
+            IModifierComparer comparer = null)
+        {
             CodeAction codeAction = CodeAction.Create(
                 title ?? GetAddModifierTitle(kind),
                 cancellationToken => AddModifierAsync(document, node, kind, comparer, cancellationToken),

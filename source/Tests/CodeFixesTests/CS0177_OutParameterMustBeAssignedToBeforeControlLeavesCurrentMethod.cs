@@ -74,6 +74,15 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 
                 object Bar6(object p1, out object p2, out object p3, out object p4) => p1 = p2 = null;
             }
+
+            // n
+
+            public void BarWithLocalFunction2()
+            {
+                void LocalFunctionWithoutBody(object p1, out object p2, out object p3)
+            }
+
+            void BarWithoutBody(object p1, out object p2, out object p3)
         }
     }
 }

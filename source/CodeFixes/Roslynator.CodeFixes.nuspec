@@ -2,17 +2,18 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Roslynator.CodeFixes</id>
-    <version>1.4.0</version>
+    <version>1.6.0-rc</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
     <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
     <iconUrl>http://pihrt.net/images/Roslynator.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>A collection of code fixes for C# compiler diagnostics (like CS0001), powered by Roslyn.
+    <description>A collection of code fixes for C# compiler diagnostics (CS....), powered by Roslyn.
 
+  - This package cannot be used with Visual Studio 2015.
   - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 2.0.0.</description>
-    <summary>A collection of code fixes for C# compiler diagnostics (like CS0001), powered by Roslyn.</summary>
+    <summary>A collection of code fixes for C# compiler diagnostics (CS....), powered by Roslyn.</summary>
     <copyright>Copyright (c) 2016-2017 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>

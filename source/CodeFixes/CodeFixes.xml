@@ -133,6 +133,7 @@
     <FixableDiagnosticIds>
       <Id>CS0501</Id>
       <Id>CS0756</Id>
+      <Id>CS8112</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0027" Identifier="RemoveRefModifier" Title="Remove 'ref' modifier">
@@ -474,6 +475,11 @@
   <CodeFix Id="RCF0085" Identifier="ChangeArrayType" Title="Change array type">
     <FixableDiagnosticIds>
       <Id>CS0246</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0086" Identifier="AddMissingType" Title="Add missing type">
+    <FixableDiagnosticIds>
+      <Id>CS1031</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

@@ -96,6 +96,7 @@
   <Diagnostic Id="CS1002" Identifier="SemicolonExpected" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1002" />
   <Diagnostic Id="CS1004" Identifier="DuplicateModifier" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1004" />
   <Diagnostic Id="CS1023" Identifier="EmbeddedStatementCannotBeDeclarationOrLabeledStatement" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1023" />
+  <Diagnostic Id="CS1031" Identifier="TypeExpected" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1031" />
   <Diagnostic Id="CS1057" Identifier="StaticClassesCannotContainProtectedMembers" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057" />
   <Diagnostic Id="CS1061" Identifier="TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061" />
   <Diagnostic Id="CS1100" Identifier="MethodHasParameterModifierThisWhichIsNotOnFirstParameter" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100" />
@@ -124,4 +125,5 @@
   <Diagnostic Id="CS1997" Identifier="SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression" HelpUrl="" />
   <Diagnostic Id="CS1988" Identifier="AsyncMethodsCannotHaveRefOrOutParameters" HelpUrl="" />
   <Diagnostic Id="CS8070" Identifier="ControlCannotFallOutOfSwitchFromFinalCaseLabel" HelpUrl="" />
+  <Diagnostic Id="CS8112" Identifier="LocalFunctionMustAlwaysHaveBody" HelpUrl="" />
 </Diagnostics>

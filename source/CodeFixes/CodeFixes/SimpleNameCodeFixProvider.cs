@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!object.ReferenceEquals(simpleName, arrayType.ElementType))
                                 break;
 
-                            ExpressionSyntax expression = arrayCreation.Initializer.Expressions.FirstOrDefault();
+                            ExpressionSyntax expression = arrayCreation.Initializer?.Expressions.FirstOrDefault();
 
                             if (expression == null)
                                 break;

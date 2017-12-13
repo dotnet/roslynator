@@ -28,7 +28,6 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.MissingPartialModifier,
                     CompilerDiagnosticIdentifiers.PartialMethodMustBeDeclaredWithinPartialClassOrPartialStruct,
                     CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass,
-                    CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember,
                     CompilerDiagnosticIdentifiers.StaticConstructorMustBeParameterless,
                     CompilerDiagnosticIdentifiers.PartialMethodsMustHaveVoidReturnType,
                     CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct);
@@ -42,7 +41,6 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MemberTypeMustMatchOverriddenMemberType)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddPartialModifier)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingClassAbstract)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberNonStatic)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
             {
@@ -228,25 +226,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 memberDeclaration.Parent,
                                 SyntaxKind.AbstractKeyword,
                                 title: "Make containing class abstract");
-
-                            break;
-                        }
-                    case CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember:
-                        {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberNonStatic))
-                                break;
-
-                            Debug.Assert(memberDeclaration.GetModifiers().Contains(SyntaxKind.StaticKeyword), memberDeclaration.ToString());
-
-                            if (!memberDeclaration.GetModifiers().Contains(SyntaxKind.StaticKeyword))
-                                break;
-
-                            ModifiersCodeFixRegistrator.RemoveModifier(
-                                context,
-                                diagnostic,
-                                memberDeclaration,
-                                SyntaxKind.StaticKeyword,
-                                title: $"Make containing {memberDeclaration.GetTitle()} non-static");
 
                             break;
                         }

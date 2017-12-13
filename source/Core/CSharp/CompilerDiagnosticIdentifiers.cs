@@ -102,6 +102,7 @@ namespace Roslynator.CSharp
         public const string SemicolonExpected = "CS1002";
         public const string DuplicateModifier = "CS1004";
         public const string EmbeddedStatementCannotBeDeclarationOrLabeledStatement = "CS1023";
+        public const string TypeExpected = "CS1031";
         public const string StaticClassesCannotContainProtectedMembers = "CS1057";
         public const string TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound = "CS1061";
         public const string MethodHasParameterModifierThisWhichIsNotOnFirstParameter = "CS1100";
@@ -130,5 +131,6 @@ namespace Roslynator.CSharp
         public const string AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody = "CS1994";
         public const string SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression = "CS1997";
         public const string ControlCannotFallOutOfSwitchFromFinalCaseLabel = "CS8070";
+        public const string LocalFunctionMustAlwaysHaveBody = "CS8112";
     }
 }

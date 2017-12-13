@@ -42,6 +42,7 @@
     <Compile Include="AddComparisonWithBooleanLiteralRefactoring.cs" />
     <Compile Include="AddBracesToDeclarationOrLabeledStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
+    <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember2.cs" />
     <Compile Include="CS0126_ObjectOfTypeConvertibleToTypeIsRequired.cs" />
     <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddBody.cs" />
@@ -81,9 +82,11 @@
     <Compile Include="CS0759_NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod.cs" />
     <Compile Include="CS0766_PartialMethodsMustHaveVoidReturnType.cs" />
     <Compile Include="CS0766_PartialMethodsMustHaveVoidReturnType2.cs" />
+    <Compile Include="CS1031_TypeExpected.cs" />
     <Compile Include="CS1100_MethodHasParameterModifierThisWhichIsNotOnFirstParameter.cs" />
     <Compile Include="CS1105_ExtensionMethodMustBeStatic.cs" />
     <Compile Include="CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass.cs" />
+    <Compile Include="CS1503_CannotConvertArgumentType.cs" />
     <Compile Include="CS1526_NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType.cs" />
     <Compile Include="CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal.cs" />
     <Compile Include="CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression.cs" />
@@ -105,7 +108,7 @@
     <Compile Include="InitializeLocalVariableWithDefaultValue.cs" />
     <Compile Include="CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement.cs" />
     <Compile Include="MakeContainingClassAbstract.cs" />
-    <Compile Include="MakeMemberNonStatic.cs" />
+    <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember.cs" />
     <Compile Include="MarkOperatorAsPublicAndStatic.cs" />
     <Compile Include="MemberTypeMustMatchOverriddenMemberType.cs" />
     <Compile Include="MoveBaseClassBeforeAnyInterface.cs" />
