@@ -3,12 +3,13 @@
 Id | Title | Fixable Diagnostics | Enabled by Default
 --- | --- | --- |:---:
 RCF0039|Add argument list|[CS0023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023), [CS0428](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428), [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201), [CS1526](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526)|x
-RCF0026|Add body|[CS0501](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501), [CS0756](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756)|x
+RCF0026|Add body|[CS0501](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501), [CS0756](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756), CS8112|x
 RCF0009|Add braces to declaration or labeled statement|[CS1023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1023)|x
 RCF0002|Add break statement to switch section|[CS0163](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0163), CS8070|x
 RCF0063|Add cast expression|[CS0173](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0173)|x
 RCF0023|Add comparison with boolean literal|[CS0019](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019), [CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266)|x
 RCF0016|Add documentation comment|[CS1591](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591)|x
+RCF0086|Add missing type|[CS1031](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1031)|x
 RCF0007|Add 'new' modifier|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x
 RCF0004|Add 'out' modifier to argument|[CS1620](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620)|x
 RCF0006|Add 'override' modifier|[CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114)|x

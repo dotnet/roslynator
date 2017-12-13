@@ -133,7 +133,7 @@
       <Refactoring Id="RR0131" IsEnabled="true" /> <!-- ReplaceForWithWhile -->
       <Refactoring Id="RR0132" IsEnabled="true" /> <!-- ReplaceHexadecimalLiteralWithDecimalLiteral -->
       <Refactoring Id="RR0133" IsEnabled="true" /> <!-- ReplaceIfWithSwitch -->
-      <Refactoring Id="RR0134" IsEnabled="true" /> <!-- ReplaceIncrementOperatorWithDecrementOperator -->
+      <Refactoring Id="RR0134" IsEnabled="true" /> <!-- InvertPrefixOrPostfixUnaryOperator -->
       <Refactoring Id="RR0135" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithInterpolationExpression -->
       <Refactoring Id="RR0136" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithStringLiteral -->
       <Refactoring Id="RR0137" IsEnabled="true" /> <!-- ReplaceMethodGroupWithLambda -->
@@ -193,6 +193,8 @@
       <Refactoring Id="RR0192" IsEnabled="true" /> <!-- ReplaceCommentWithDocumentationComment -->
       <Refactoring Id="RR0193" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithConcatenation -->
       <Refactoring Id="RR0194" IsEnabled="true" /> <!-- SplitDeclarationAndInitialization -->
+      <Refactoring Id="RR0195" IsEnabled="true" /> <!-- AddMemberToInterface -->
+      <Refactoring Id="RR0196" IsEnabled="true" /> <!-- MergeIfWithParentIf -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -219,7 +221,7 @@
       <CodeFix Id="RCF0023" IsEnabled="true" /> <!-- AddComparisonWithBooleanLiteral (fixes CS0019, CS0266) -->
       <CodeFix Id="RCF0024" IsEnabled="true" /> <!-- RemovePropertyOrFieldInitializer (fixes CS0573) -->
       <CodeFix Id="RCF0025" IsEnabled="true" /> <!-- AddPartialModifier (fixes CS0101, CS0102, CS0260, CS0751) -->
-      <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddBody (fixes CS0501, CS0756) -->
+      <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddBody (fixes CS0501, CS0756, CS8112) -->
       <CodeFix Id="RCF0027" IsEnabled="true" /> <!-- RemoveRefModifier (fixes CS0192, CS1615, CS1988, CS1623) -->
       <CodeFix Id="RCF0028" IsEnabled="true" /> <!-- RemoveRedundantAssignment (fixes CS1717) -->
       <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0261, CS0442, CS0507, CS0628, CS1057, CS1527) -->
@@ -278,6 +280,7 @@
       <CodeFix Id="RCF0083" IsEnabled="true" /> <!-- DefineObjectEquals (fixes CS0660) -->
       <CodeFix Id="RCF0084" IsEnabled="true" /> <!-- DefineObjectGetHashCode (fixes CS0659, CS0661) -->
       <CodeFix Id="RCF0085" IsEnabled="true" /> <!-- ChangeArrayType (fixes CS0246) -->
+      <CodeFix Id="RCF0086" IsEnabled="true" /> <!-- AddMissingType (fixes CS1031) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

@@ -1,3 +1,14 @@
+### 1.6.0 (2017-12-13)
+
+#### Refactorings
+
+* Add refactoring [AddMemberToInterface](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0195.md) (RR0195).
+* Add refactoring [MergeIfWithParentIf](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0196.md) (RR0196).
+
+#### Code Fixes
+
+Add code fix for CS1031 and CS8112. 
+
 ### 1.5.14 (2017-11-29)
 
 #### Refactorings
