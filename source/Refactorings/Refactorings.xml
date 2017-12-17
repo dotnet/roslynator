@@ -891,7 +891,7 @@
       <Syntax>hexadecimal literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0133" Identifier="ReplaceIfWithSwitch" Title="Replace if statement with switch statement">
+  <Refactoring Id="RR0133" Identifier="ReplaceIfWithSwitch" Title="Replace if with switch">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1015,7 +1015,7 @@ i--;]]></After>
       <Syntax>string.Format method</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0147" Identifier="ReplaceSwitchWithIfElse" Title="Replace switch statement with if-else">
+  <Refactoring Id="RR0147" Identifier="ReplaceSwitchWithIf" Title="Replace switch with if">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>

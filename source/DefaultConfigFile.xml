@@ -145,7 +145,7 @@
       <Refactoring Id="RR0143" IsEnabled="true" /> <!-- ReplaceStatementWithIfElse -->
       <Refactoring Id="RR0144" IsEnabled="true" /> <!-- ReplaceStringContainsWithStringIndexOf -->
       <Refactoring Id="RR0145" IsEnabled="true" /> <!-- ReplaceStringFormatWithInterpolatedString -->
-      <Refactoring Id="RR0147" IsEnabled="true" /> <!-- ReplaceSwitchWithIfElse -->
+      <Refactoring Id="RR0147" IsEnabled="true" /> <!-- ReplaceSwitchWithIf -->
       <Refactoring Id="RR0148" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiteral -->
       <Refactoring Id="RR0149" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiterals -->
       <Refactoring Id="RR0150" IsEnabled="true" /> <!-- ReplaceWhileWithDo -->

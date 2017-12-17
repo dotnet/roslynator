@@ -137,7 +137,7 @@ RR0131|[Replace for statement with while statement](../../docs/refactorings/RR01
 RR0129|[Replace foreach statement with for statement](../../docs/refactorings/RR0129.md)|x
 RR0188|[Replace foreach with for and reverse loop](../../docs/refactorings/RR0188.md)|
 RR0132|[Replace hexadecimal literal with decimal literal](../../docs/refactorings/RR0132.md)|x
-RR0133|[Replace if statement with switch statement](../../docs/refactorings/RR0133.md)|x
+RR0133|[Replace if with switch](../../docs/refactorings/RR0133.md)|x
 RR0190|[Replace if\-else with if\-return](../../docs/refactorings/RR0190.md)|x
 RR0193|[Replace interpolated string with concatenation](../../docs/refactorings/RR0193.md)|x
 RR0135|[Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md)|x
@@ -151,7 +151,7 @@ RR0141|[Replace property with method](../../docs/refactorings/RR0141.md)|x
 RR0142|[Replace regular string literal with verbatim string literal](../../docs/refactorings/RR0142.md)|x
 RR0144|[Replace string\.Contains with string\.IndexOf](../../docs/refactorings/RR0144.md)|x
 RR0145|[Replace string\.Format with interpolated string](../../docs/refactorings/RR0145.md)|x
-RR0147|[Replace switch statement with if\-else](../../docs/refactorings/RR0147.md)|x
+RR0147|[Replace switch with if](../../docs/refactorings/RR0147.md)|x
 RR0148|[Replace verbatim string literal with regular string literal](../../docs/refactorings/RR0148.md)|x
 RR0149|[Replace verbatim string literal with regular string literals](../../docs/refactorings/RR0149.md)|x
 RR0150|[Replace while statement with do statement](../../docs/refactorings/RR0150.md)|x
