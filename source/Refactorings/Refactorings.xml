@@ -810,7 +810,7 @@
     </Syntaxes>
     <Span>selected true/false expression</Span>
   </Refactoring>
-  <Refactoring Id="RR0120" Identifier="UseIfElseInsteadOfConditionalExpression" Title="Use if-else instead of conditional expression">
+  <Refactoring Id="RR0120" Identifier="ReplaceConditionalExpressionWithIfElse" Title="Replace ?: with if-else">
     <Syntaxes>
       <Syntax>local declaration statement with conditional expression</Syntax>
       <Syntax>assignment with conditional expression</Syntax>

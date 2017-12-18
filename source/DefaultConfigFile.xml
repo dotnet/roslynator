@@ -120,7 +120,7 @@
       <Refactoring Id="RR0117" IsEnabled="true" /> <!-- ReplaceAsWithCast -->
       <Refactoring Id="RR0118" IsEnabled="true" /> <!-- ReplaceCastWithAs -->
       <Refactoring Id="RR0119" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithExpression -->
-      <Refactoring Id="RR0120" IsEnabled="true" /> <!-- UseIfElseInsteadOfConditionalExpression -->
+      <Refactoring Id="RR0120" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithIfElse -->
       <Refactoring Id="RR0121" IsEnabled="true" /> <!-- ReplaceConstantWithField -->
       <Refactoring Id="RR0123" IsEnabled="true" /> <!-- ReplaceDoWithWhile -->
       <Refactoring Id="RR0124" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringEquals -->

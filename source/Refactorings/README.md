@@ -121,6 +121,7 @@ RR0113|[Rename method according to type name](../../docs/refactorings/RR0113.md)
 RR0114|[Rename parameter according to its type name](../../docs/refactorings/RR0114.md)|x
 RR0115|[Rename property according to type name](../../docs/refactorings/RR0115.md)|x
 RR0143|[Replace \(yield\) return statement with if\-else](../../docs/refactorings/RR0143.md)|x
+RR0120|[Replace ?: with if\-else](../../docs/refactorings/RR0120.md)|x
 RR0116|[Replace Any with All \(or All with Any\)](../../docs/refactorings/RR0116.md)|x
 RR0117|[Replace as expression with cast expression](../../docs/refactorings/RR0117.md)|x
 RR0118|[Replace cast expression with as expression](../../docs/refactorings/RR0118.md)|x
@@ -178,7 +179,6 @@ RR0166|[Use conditional expression instead of if](../../docs/refactorings/RR0166
 RR0128|[Use constant instead of field](../../docs/refactorings/RR0128.md)|x
 RR0167|[Use element access instead of 'First/Last'ElementAt' method](../../docs/refactorings/RR0167.md)|x
 RR0169|[Use expression\-bodied member](../../docs/refactorings/RR0169.md)|x
-RR0120|[Use if\-else instead of conditional expression](../../docs/refactorings/RR0120.md)|x
 RR0170|[Use lambda expression instead of anonymous method](../../docs/refactorings/RR0170.md)|x
 RR0183|[Use List\<T\> instead of yield](../../docs/refactorings/RR0183.md)|x
 RR0171|[Use string\.Empty instead of ""](../../docs/refactorings/RR0171.md)|
