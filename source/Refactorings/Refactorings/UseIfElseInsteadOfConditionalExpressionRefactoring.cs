@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseIfElseInsteadOfConditionalExpressionRefactoring
     {
-        private const string Title = "Use if-else instead of ?:";
+        private const string Title = "Replace ?: with if-else";
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
