@@ -21,23 +21,50 @@ namespace Roslynator.CSharp.Refactorings
         {
             INamedTypeSymbol stringBuilderSymbol = context.GetTypeByMetadataName(MetadataNames.System_Text_StringBuilder);
 
-            if (stringBuilderSymbol != null)
+            if (stringBuilderSymbol == null)
+                return;
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            if (!context.SemanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, context.CancellationToken))
+                return;
+
+            if (methodInfo.IsExtensionMethod)
+                return;
+
+            if (methodInfo.ContainingType?.Equals(stringBuilderSymbol) != true)
+                return;
+
+            ImmutableArray<IParameterSymbol> parameters = methodInfo.Parameters;
+
+            int parameterCount = parameters.Length;
+
+            if (parameterCount == 0)
             {
-                InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
-
-                if (context.SemanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, context.CancellationToken)
-                    && !methodInfo.IsExtensionMethod
-                    && methodInfo.ContainingType?.Equals(stringBuilderSymbol) == true)
+                if (methodInfo.IsName("AppendLine"))
                 {
-                    ImmutableArray<IParameterSymbol> parameters = methodInfo.Parameters;
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+                    MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo(invocationInfo.Expression);
 
-                    if (parameters.Length == 1
-                        && arguments.Count == 1
-                        && methodInfo.IsName("Append", "AppendLine"))
+                    if (invocationInfo2.Success
+                        && invocationInfo2.NameText == "Append"
+                        && invocationInfo2.Arguments.Count == 1
+                        && context.SemanticModel.TryGetMethodInfo(invocationInfo2.InvocationExpression, out MethodInfo methodInfo2, context.CancellationToken)
+                        && !methodInfo2.IsStatic
+                        && methodInfo2.ContainingType?.Equals(stringBuilderSymbol) == true
+                        && methodInfo2.HasParameter(SpecialType.System_String))
                     {
-                        ArgumentSyntax argument = arguments.First();
+                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, invocationInfo.Name, methodInfo.Name);
+                    }
+                }
+            }
+            else if (parameterCount == 1)
+            {
+                if (methodInfo.IsName("Append", "AppendLine"))
+                {
+                    ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
 
+                    if (argument != null)
+                    {
                         ExpressionSyntax expression = argument.Expression;
 
                         SyntaxKind expressionKind = expression.Kind();
@@ -70,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                                     }
 
                                     if (methodInfo.IsName("Append")
-                                        && parameters.Length == 1
+                                        && parameterCount == 1
                                         && parameters[0].Type.IsObject()
                                         && context.SemanticModel.GetTypeSymbol(argument.Expression, context.CancellationToken).IsValueType)
                                     {
@@ -82,9 +109,17 @@ namespace Roslynator.CSharp.Refactorings
                                 }
                         }
                     }
-                    else if (parameters.Length > 1
-                        && methodInfo.IsName("Insert")
-                        && methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Object)
+                }
+            }
+            else if (parameterCount == 2)
+            {
+                if (methodInfo.IsName("Insert")
+                    && parameters[0].Type.SpecialType == SpecialType.System_Int32
+                    && parameters[1].Type.SpecialType == SpecialType.System_Object)
+                {
+                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+
+                    if (arguments.Count == 2
                         && context.SemanticModel
                             .GetTypeSymbol(arguments[1].Expression, context.CancellationToken)
                             .IsValueType)
@@ -99,35 +134,61 @@ namespace Roslynator.CSharp.Refactorings
         {
             MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression);
 
-            if (invocationInfo.Success
-                && semanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out MethodInfo methodInfo, cancellationToken)
-                && methodInfo.IsContainingType(SpecialType.System_String)
-                && methodInfo.IsReturnType(SpecialType.System_String))
+            if (!invocationInfo.Success)
+                return false;
+
+            if (!semanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out MethodInfo methodInfo, cancellationToken))
+                return false;
+
+            if (!methodInfo.IsContainingType(SpecialType.System_String))
+                return false;
+
+            if (!methodInfo.IsReturnType(SpecialType.System_String))
+                return false;
+
+            switch (methodInfo.Name)
             {
-                switch (methodInfo.Name)
-                {
-                    case "Substring":
-                        {
-                            if (methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Int32))
-                                return true;
-
-                            break;
-                        }
-                    case "Remove":
-                        {
-                            if (methodInfo.HasParameter(SpecialType.System_Int32))
-                                return true;
-
-                            break;
-                        }
-                    case "Format":
-                        {
+                case "Substring":
+                    {
+                        if (methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Int32))
                             return true;
-                        }
-                }
+
+                        break;
+                    }
+                case "Remove":
+                    {
+                        if (methodInfo.HasParameter(SpecialType.System_Int32))
+                            return true;
+
+                        break;
+                    }
+                case "Format":
+                    {
+                        return true;
+                    }
             }
 
             return false;
+        }
+
+        public static Task<Document> RefactorAsync(
+            Document document,
+            MemberInvocationExpressionInfo invocationInfo,
+            CancellationToken cancellationToken)
+        {
+            MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo(invocationInfo.Expression);
+
+            SyntaxTriviaList trivia = invocationInfo2.InvocationExpression
+                .GetTrailingTrivia()
+                .EmptyIfWhitespace()
+                .AddRange(invocationInfo.InvocationExpression.GetTrailingTrivia());
+
+            InvocationExpressionSyntax newNode = invocationInfo2
+                .WithName("AppendLine")
+                .InvocationExpression
+                .WithTrailingTrivia(trivia);
+
+            return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newNode, cancellationToken);
         }
 
         public static async Task<Document> RefactorAsync(

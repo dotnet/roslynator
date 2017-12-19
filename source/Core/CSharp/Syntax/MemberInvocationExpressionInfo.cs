@@ -105,6 +105,15 @@ namespace Roslynator.CSharp.Syntax
                 argumentList);
         }
 
+        internal MemberInvocationExpressionInfo WithName(string name)
+        {
+            MemberAccessExpressionSyntax newMemberAccess = MemberAccessExpression.WithName(SyntaxFactory.IdentifierName(name).WithTriviaFrom(Name));
+
+            InvocationExpressionSyntax newInvocation = InvocationExpression.WithExpression(newMemberAccess);
+
+            return new MemberInvocationExpressionInfo(newMemberAccess.Expression, newMemberAccess.Name, newInvocation.ArgumentList);
+        }
+
         public override string ToString()
         {
             return InvocationExpression?.ToString() ?? base.ToString();
