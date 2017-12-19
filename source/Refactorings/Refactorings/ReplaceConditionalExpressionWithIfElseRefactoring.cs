@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UseIfElseInsteadOfConditionalExpressionRefactoring
+    internal static class ReplaceConditionalExpressionWithIfElseRefactoring
     {
         private const string Title = "Replace ?: with if-else";
 

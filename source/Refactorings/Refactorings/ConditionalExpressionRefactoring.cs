@@ -39,8 +39,8 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseIfElseInsteadOfConditionalExpression))
-                    await UseIfElseInsteadOfConditionalExpressionRefactoring.ComputeRefactoringAsync(context, conditionalExpression).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse))
+                    await ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoringAsync(context, conditionalExpression).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)
