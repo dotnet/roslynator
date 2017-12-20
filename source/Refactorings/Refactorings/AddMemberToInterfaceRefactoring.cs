@@ -3,8 +3,6 @@
 using System;
 using System.Collections.Immutable;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -80,11 +78,21 @@ namespace Roslynator.CSharp.Refactorings
             if (memberSymbol == null)
                 return;
 
+            int count = 0;
+
             foreach (BaseTypeSyntax baseType in types)
-                ComputeRefactoring(context, memberDeclaration, baseType, explicitInterfaceSymbol, memberSymbol, semanticModel);
+            {
+                if (ComputeRefactoring(context, memberDeclaration, baseType, explicitInterfaceSymbol, memberSymbol, semanticModel))
+                {
+                    count++;
+
+                    if (count == 10)
+                        break;
+                }
+            }
         }
 
-        private static void ComputeRefactoring(
+        private static bool ComputeRefactoring(
             RefactoringContext context,
             MemberDeclarationSyntax memberDeclaration,
             BaseTypeSyntax baseType,
@@ -95,20 +103,21 @@ namespace Roslynator.CSharp.Refactorings
             TypeSyntax type = baseType.Type;
 
             if (type == null)
-                return;
+                return false;
 
             var interfaceSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken) as INamedTypeSymbol;
 
             if (interfaceSymbol?.TypeKind != TypeKind.Interface)
-                return;
+                return false;
 
-            interfaceSymbol = interfaceSymbol.OriginalDefinition;
+            if (interfaceSymbol.Language != LanguageNames.CSharp)
+                return false;
 
             if (!(interfaceSymbol.GetSyntaxOrDefault(context.CancellationToken) is InterfaceDeclarationSyntax interfaceDeclaration))
-                return;
+                return false;
 
             if (interfaceSymbol.Equals(explicitInterfaceSymbol))
-                return;
+                return false;
 
             ImmutableArray<ISymbol> members = interfaceSymbol.GetMembers();
 
@@ -120,40 +129,43 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ISymbol symbol = memberSymbol.ContainingType.FindImplementationForInterfaceMember(members[i]);
 
-                    if (memberSymbol.OriginalDefinition.Equals(symbol?.OriginalDefinition)
-                        && CheckTypeParameters(memberDeclaration, interfaceSymbol))
-                    {
-                        return;
-                    }
+                    if (memberSymbol.OriginalDefinition.Equals(symbol?.OriginalDefinition))
+                        return false;
                 }
             }
 
-            string displayName = SymbolDisplay.GetMinimalString(interfaceSymbol, semanticModel, type.SpanStart);
+            string displayName = SymbolDisplay.GetMinimalString(interfaceSymbol.OriginalDefinition, semanticModel, type.SpanStart);
 
-            context.RegisterRefactoring(
-                $"Add to interface '{displayName}'",
-                cancellationToken => RefactorAsync(context.Document, memberDeclaration, interfaceDeclaration, cancellationToken),
-                RefactoringIdentifiers.AddMemberToInterface + "." + displayName);
-        }
+            Document document = context.Document;
+            string title = $"Add to interface '{displayName}'";
+            string equivalenceKey = RefactoringIdentifiers.AddMemberToInterface + "." + displayName;
 
-        private static bool CheckTypeParameters(
-            MemberDeclarationSyntax memberDeclaration,
-            INamedTypeSymbol interfaceSymbol)
-        {
-            if (!(memberDeclaration is MethodDeclarationSyntax methodDeclaration))
-                return true;
+            if (memberDeclaration.SyntaxTree == interfaceDeclaration.SyntaxTree)
+            {
+                context.RegisterRefactoring(
+                    title,
+                    cancellationToken =>
+                    {
+                        InterfaceDeclarationSyntax newNode = CreateNewNode(memberDeclaration, interfaceDeclaration);
 
-            TypeParameterListSyntax typeParameterList = methodDeclaration.TypeParameterList;
+                        return document.ReplaceNodeAsync(interfaceDeclaration, newNode, cancellationToken);
+                    },
+                    equivalenceKey);
+            }
+            else
+            {
+                context.RegisterRefactoring(
+                    title,
+                    cancellationToken =>
+                    {
+                        InterfaceDeclarationSyntax newNode = CreateNewNode(memberDeclaration, interfaceDeclaration);
 
-            if (typeParameterList == null)
-                return true;
+                        return document.Solution().ReplaceNodeAsync(interfaceDeclaration, newNode, cancellationToken);
+                    },
+                    equivalenceKey);
+            }
 
-            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = typeParameterList.Parameters;
-
-            if (typeParameters.Count == 0)
-                return true;
-
-            return typeParameters.Count == interfaceSymbol.TypeParameters.Length;
+            return true;
         }
 
         private static bool CheckKind(ISymbol symbol, SyntaxKind kind)
@@ -175,6 +187,7 @@ namespace Roslynator.CSharp.Refactorings
                             && ((IPropertySymbol)symbol).IsIndexer;
                     }
                 case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
                     {
                         return symbol.Kind == SymbolKind.Event;
                     }
@@ -196,17 +209,11 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static Task<Document> RefactorAsync(
-            Document document,
-            MemberDeclarationSyntax memberDeclaration,
-            InterfaceDeclarationSyntax interfaceDeclaration,
-            CancellationToken cancellationToken)
+        private static InterfaceDeclarationSyntax CreateNewNode(MemberDeclarationSyntax memberDeclaration, InterfaceDeclarationSyntax interfaceDeclaration)
         {
             MemberDeclarationSyntax interfaceMember = CreateInterfaceMemberDeclaration(memberDeclaration).WithFormatterAnnotation();
 
-            InterfaceDeclarationSyntax newNode = interfaceDeclaration.InsertMember(interfaceMember, MemberDeclarationComparer.ByKind);
-
-            return document.ReplaceNodeAsync(interfaceDeclaration, newNode, cancellationToken);
+            return interfaceDeclaration.InsertMember(interfaceMember, MemberDeclarationComparer.ByKind);
         }
 
         private static MemberDeclarationSyntax CreateInterfaceMemberDeclaration(MemberDeclarationSyntax memberDeclaration)

@@ -83,6 +83,17 @@ namespace Roslynator.CSharp.Refactorings.Tests
             public void Dispose() { }
         }
 
+        private class Foo2 : Roslynator.CSharp.Tests.IFoo
+        {
+            public void Bar()
+            {
+            }
+
+            public void Bar(string s)
+            {
+            }
+        }
+
         private class BaseFoo
         {
         }

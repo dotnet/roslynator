@@ -11,6 +11,21 @@ namespace Roslynator
 {
     public static class SolutionExtensions
     {
+        public static async Task<Solution> ReplaceNodeAsync<TNode>(
+            this Solution solution,
+            TNode oldNode,
+            TNode newNode,
+            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+        {
+            Document document = solution.GetDocument(oldNode.SyntaxTree);
+
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.ReplaceNode(oldNode, newNode);
+
+            return solution.WithDocumentSyntaxRoot(document.Id, newRoot);
+        }
+
         public static async Task<Solution> ReplaceNodesAsync<TNode>(
             this Solution solution,
             IEnumerable<TNode> nodes,
