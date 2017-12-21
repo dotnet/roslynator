@@ -133,18 +133,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Markdown\Alignment.cs" />
     <Compile Include="FileHelper.cs" />
-    <Compile Include="Markdown\MarkdownHeader.cs" />
-    <Compile Include="Markdown\IAppendable.cs" />
-    <Compile Include="Markdown\MarkdownImage.cs" />
-    <Compile Include="Markdown\MarkdownLink.cs" />
-    <Compile Include="Markdown\MarkdownUtility.cs" />
-    <Compile Include="Markdown\MarkdownText.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Markdown\StringBuilderExtensions.cs" />
-    <Compile Include="Markdown\StringExtensions.cs" />
-    <Compile Include="Markdown\MarkdownTableHeader.cs" />
     <Compile Include="Utf8StringWriter.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +165,7 @@
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.2.0.0-beta2\analyzers\dotnet\cs\Microsoft.CodeAnalysis.Analyzers.dll" />
     <Analyzer Include="..\..\packages\Microsoft.CodeAnalysis.Analyzers.2.0.0-beta2\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,7 +6,8 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using Roslynator.Metadata;
-using Roslynator.Utilities.Markdown;
+using Roslynator.Markdown;
+using static Roslynator.Markdown.MarkdownFactory;
 
 namespace Roslynator.CodeGeneration.Markdown
 {
@@ -14,90 +15,52 @@ namespace Roslynator.CodeGeneration.Markdown
     {
         public static string CreateReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder();
 
-            sb.AppendLine(File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8));
+            mb.AppendLineRaw(File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8));
 
-            sb.AppendHeader3("List of Analyzers");
-            sb.AppendLine();
+            mb.AppendHeader3("List of Analyzers");
 
             foreach (AnalyzerDescriptor analyzer in analyzers.OrderBy(f => f.Id, comparer))
             {
-                sb.AppendUnorderedListItem();
-                sb.Append(analyzer.Id);
-                sb.Append(" - ");
-                sb.AppendLink(analyzer.Title.TrimEnd('.'), $"docs/analyzers/{analyzer.Id}.md");
-                sb.AppendLine();
+                mb.AppendListItem(analyzer.Id, " - ", Link(analyzer.Title.TrimEnd('.'), $"docs/analyzers/{analyzer.Id}.md"));
             }
 
-            sb.AppendLine();
-            sb.AppendHeader3("List of Refactorings");
-            sb.AppendLine();
+            mb.AppendHeader3("List of Refactorings");
 
             foreach (RefactoringDescriptor refactoring in refactorings.OrderBy(f => f.Title, comparer))
             {
-                sb.AppendUnorderedListItem();
-                sb.AppendLink(refactoring.Title.TrimEnd('.'), $"docs/refactorings/{refactoring.Id}.md");
+                mb.AppendListItem(Link(refactoring.Title.TrimEnd('.'), $"docs/refactorings/{refactoring.Id}.md"));
             }
 
-            return sb.ToString();
+            return mb.ToString();
         }
 
         public static string CreateRefactoringsMarkdown(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder();
 
-            sb.AppendHeader2("Roslynator Refactorings");
+            mb.Append(Header2("Roslynator Refactorings"));
 
-            foreach (RefactoringDescriptor refactoring in refactorings
-                .OrderBy(f => f.Title, comparer))
+            foreach (RefactoringDescriptor refactoring in refactorings.OrderBy(f => f.Title, comparer))
             {
-                sb.AppendLine();
-                sb.AppendHeader4($"{refactoring.Title} ({refactoring.Id})");
-                sb.AppendLine();
-                sb.AppendUnorderedListItem();
-                sb.AppendBold("Syntax");
-                sb.Append(": ");
-
-                bool isFirst = true;
-
-                foreach (SyntaxDescriptor syntax in refactoring.Syntaxes)
-                {
-                    if (isFirst)
-                    {
-                        isFirst = false;
-                    }
-                    else
-                    {
-                        sb.Append(", ");
-                    }
-
-                    sb.Append(syntax.Name.EscapeMarkdown());
-                }
-
-                sb.AppendLine();
+                mb.AppendHeader4($"{refactoring.Title} ({refactoring.Id})");
+                mb.AppendListItem(Bold("Syntax"), ": ", Join(", ", refactoring.Syntaxes.Select(f => f.Name)));
 
                 if (!string.IsNullOrEmpty(refactoring.Span))
-                {
-                    sb.AppendUnorderedListItem();
-                    sb.AppendBold("Span");
-                    sb.Append(": ");
-                    sb.AppendLine(refactoring.Span.EscapeMarkdown());
-                }
+                    mb.AppendListItem(Bold("Span"), ": ", refactoring.Span);
 
-                sb.AppendLine();
-
-                WriteRefactoringSamples(sb, refactoring);
+                AppendRefactoringSamples(mb, refactoring);
             }
 
-            return sb.ToString();
+            return mb.ToString();
         }
 
-        private static void WriteRefactoringSamples(StringBuilder sb, RefactoringDescriptor refactoring)
+        private static void AppendRefactoringSamples(MarkdownBuilder mb, RefactoringDescriptor refactoring)
         {
             if (refactoring.Samples.Count > 0)
             {
-                WriteSamples(sb, refactoring.Samples, new MarkdownHeader("Before", 4), new MarkdownHeader("After", 4));
+                AppendSamples(mb, refactoring.Samples, Header4("Before"), Header4("After"));
             }
             else if (refactoring.Images.Count > 0)
             {
@@ -106,19 +69,22 @@ namespace Roslynator.CodeGeneration.Markdown
                 foreach (ImageDescriptor image in refactoring.Images)
                 {
                     if (!isFirst)
-                        sb.AppendLine();
+                        mb.AppendLine();
 
-                    AppendRefactoringImage(sb, refactoring, image.Name);
+                    AppendRefactoringImage(mb, refactoring, image.Name);
                     isFirst = false;
                 }
+
+                mb.AppendLine();
             }
             else
             {
-                AppendRefactoringImage(sb, refactoring, refactoring.Identifier);
+                AppendRefactoringImage(mb, refactoring, refactoring.Identifier);
+                mb.AppendLine();
             }
         }
 
-        private static void WriteSamples(StringBuilder sb, IEnumerable<SampleDescriptor> samples, MarkdownHeader beforeHeader, MarkdownHeader afterHeader)
+        private static void AppendSamples(MarkdownBuilder mb, IEnumerable<SampleDescriptor> samples, Header beforeHeader, Header afterHeader)
         {
             bool isFirst = true;
 
@@ -126,186 +92,161 @@ namespace Roslynator.CodeGeneration.Markdown
             {
                 if (!isFirst)
                 {
-                    sb.AppendHorizonalRule();
+                    mb.AppendHorizonalRule();
                 }
                 else
                 {
                     isFirst = false;
                 }
 
-                sb.AppendHeader(beforeHeader);
-                sb.AppendLine();
-                sb.AppendCSharpCodeBlock(sample.Before);
+                mb.Append(beforeHeader);
+                mb.AppendCSharpCodeBlock(sample.Before);
 
                 if (!string.IsNullOrEmpty(sample.After))
                 {
-                    sb.AppendLine();
-                    sb.AppendHeader(afterHeader);
-                    sb.AppendLine();
-                    sb.AppendCSharpCodeBlock(sample.After);
+                    mb.Append(afterHeader);
+                    mb.AppendCSharpCodeBlock(sample.After);
                 }
             }
         }
 
         public static string CreateRefactoringMarkdown(RefactoringDescriptor refactoring)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder(new MarkdownSettings(tableFormatting: TableFormatting.All));
 
-            sb.AppendHeader2($"{refactoring.Title}");
-            sb.AppendLine();
+            mb.AppendHeader2(refactoring.Title);
 
-            sb.AppendTableHeader("Property", "Value");
-            sb.AppendTableRow("Id", refactoring.Id);
-            sb.AppendTableRow("Title", refactoring.Title);
-            sb.AppendTableRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name)));
+            Table("Property", "Value")
+                .AddRow("Id", refactoring.Id)
+                .AddRow("Title", refactoring.Title)
+                .AddRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name)))
+                .AddRowIf(!string.IsNullOrEmpty(refactoring.Span), "Span", refactoring.Span)
+                .AddRow("Enabled by Default", RawText(GetBooleanAsText(refactoring.IsEnabledByDefault)))
+                .AppendTo(mb);
 
-            if (!string.IsNullOrEmpty(refactoring.Span))
-                sb.AppendTableRow("Span", refactoring.Span);
+            mb.AppendHeader3("Usage");
 
-            sb.AppendTableRow("Enabled by Default", GetBooleanAsText(refactoring.IsEnabledByDefault));
+            AppendRefactoringSamples(mb, refactoring);
 
-            sb.AppendLine();
-            sb.AppendHeader3("Usage");
-            sb.AppendLine();
+            mb.AppendLink("full list of refactorings", "Refactorings.md");
 
-            WriteRefactoringSamples(sb, refactoring);
-
-            sb.AppendLine();
-
-            sb.AppendLink("full list of refactorings", "Refactorings.md");
-
-            return sb.ToString();
+            return mb.ToString();
         }
 
         public static string CreateAnalyzerMarkdown(AnalyzerDescriptor analyzer)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder(new MarkdownSettings(tableFormatting: TableFormatting.All));
 
-            string title = analyzer.Title.TrimEnd('.');
-            sb.AppendHeader($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {title}");
-            sb.AppendLine();
+            mb.AppendHeader1($"{((analyzer.IsObsolete) ? "[deprecated] " : "")}{analyzer.Id}: {analyzer.Title.TrimEnd('.')}");
 
-            sb.AppendTableHeader("Property", "Value");
-            sb.AppendTableRow("Id", analyzer.Id);
-            sb.AppendTableRow("Category", analyzer.Category);
-            sb.AppendTableRow("Default Severity", analyzer.DefaultSeverity);
-            sb.AppendTableRow("Enabled by Default", GetBooleanAsText(analyzer.IsEnabledByDefault));
-            sb.AppendTableRow("Supports Fade-Out", GetBooleanAsText(analyzer.SupportsFadeOut));
-            sb.AppendTableRow("Supports Fade-Out Analyzer", GetBooleanAsText(analyzer.SupportsFadeOutAnalyzer));
+            Table table = Table("Property", "Value")
+                .AddRow("Id", analyzer.Id)
+                .AddRow("Category", analyzer.Category)
+                .AddRow("Default Severity", analyzer.DefaultSeverity)
+                .AddRow("Enabled by Default", RawText(GetBooleanAsText(analyzer.IsEnabledByDefault)))
+                .AddRow("Supports Fade-Out", RawText(GetBooleanAsText(analyzer.SupportsFadeOut)))
+                .AddRow("Supports Fade-Out Analyzer", RawText(GetBooleanAsText(analyzer.SupportsFadeOutAnalyzer)));
+
+            mb.Append(table);
 
             ReadOnlyCollection<SampleDescriptor> samples = analyzer.Samples;
 
             if (samples.Count > 0)
             {
-                sb.AppendLine();
-                sb.AppendHeader2((samples.Count == 1) ? "Example" : "Examples");
-                sb.AppendLine();
+                mb.AppendHeader2((samples.Count == 1) ? "Example" : "Examples");
 
-                WriteSamples(sb, samples, new MarkdownHeader("Code with Diagnostic", 3), new MarkdownHeader("Code with Fix", 3));
+                AppendSamples(mb, samples, Header3("Code with Diagnostic"), Header3("Code with Fix"));
             }
 
-            sb.AppendLine();
-            sb.AppendHeader2("How to Suppress");
-            sb.AppendLine();
+            mb.AppendHeader2("How to Suppress");
 
-            sb.AppendHeader3("SuppressMessageAttribute");
-            sb.AppendLine();
+            mb.AppendHeader3("SuppressMessageAttribute");
 
-            sb.AppendCSharpCodeBlock($"[assembly: SuppressMessage(\"{analyzer.Category}\", \"{analyzer.Id}:{analyzer.Title}\", Justification = \"<Pending>\")]");
-            sb.AppendLine();
+            mb.AppendCSharpCodeBlock($"[assembly: SuppressMessage(\"{analyzer.Category}\", \"{analyzer.Id}:{analyzer.Title}\", Justification = \"<Pending>\")]");
 
-            sb.AppendHeader3("#pragma");
-            sb.AppendLine();
+            mb.AppendHeader3("#pragma");
 
-            sb.AppendCSharpCodeBlock($@"#pragma warning disable {analyzer.Id} // {analyzer.Title}
-#pragma warning restore {analyzer.Id} // {analyzer.Title}");
+            mb.AppendCSharpCodeBlock($"#pragma warning disable {analyzer.Id} // {analyzer.Title}\r\n#pragma warning restore {analyzer.Id} // {analyzer.Title}");
 
-            sb.AppendLine();
+            mb.AppendHeader3("Ruleset");
 
-            sb.AppendHeader3("Ruleset");
-            sb.AppendLine();
+            mb.AppendListItem(Link("How to configure rule set", "../HowToConfigureAnalyzers.md"));
 
-            sb.AppendUnorderedListItem();
-            sb.AppendLink("How to configure rule set", "../HowToConfigureAnalyzers.md");
-            sb.AppendLine();
-
-            return sb.ToString();
+            return mb.ToString();
         }
 
         public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder();
 
-            sb.AppendHeader2("Roslynator Analyzers");
-            sb.AppendLine();
+            mb.AppendHeader2("Roslynator Analyzers");
 
-            sb.AppendTableHeader("Id", "Title", "Category", new MarkdownTableHeader("Enabled by Default", Alignment.Center));
+            Table table = Table("Id", "Title", "Category", TableHeader("Enabled by Default", Alignment.Center));
 
             foreach (AnalyzerDescriptor analyzer in analyzers.OrderBy(f => f.Id, comparer))
             {
-                sb.AppendTableRow(
+                table.AddRow(
                     analyzer.Id,
-                    new MarkdownLink(analyzer.Title.TrimEnd('.'), $"../../docs/analyzers/{analyzer.Id}.md"),
+                    Link(analyzer.Title.TrimEnd('.'), $"../../docs/analyzers/{analyzer.Id}.md"),
                     analyzer.Category,
-                    (analyzer.IsEnabledByDefault) ? "x" : "");
+                    RawText((analyzer.IsEnabledByDefault) ? "&#x2713;" : ""));
             }
 
-            return sb.ToString();
+            mb.Append(table);
+
+            return mb.ToString();
         }
 
         public static string CreateRefactoringsReadMe(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder();
 
-            sb.AppendHeader2("Roslynator Refactorings");
-            sb.AppendLine();
+            mb.AppendHeader2("Roslynator Refactorings");
 
-            sb.AppendTableHeader("Id", "Title", new MarkdownTableHeader("Enabled by Default", Alignment.Center));
+            Table table = Table("Id", "Title", TableHeader("Enabled by Default", Alignment.Center));
 
             foreach (RefactoringDescriptor refactoring in refactorings.OrderBy(f => f.Title, comparer))
             {
-                sb.AppendTableRow(
+                table.AddRow(
                     refactoring.Id,
-                    new MarkdownLink(refactoring.Title.TrimEnd('.'), $"../../docs/refactorings/{refactoring.Id}.md"),
-                    (refactoring.IsEnabledByDefault) ? "x" : "");
+                    Link(refactoring.Title.TrimEnd('.'), $"../../docs/refactorings/{refactoring.Id}.md"),
+                    RawText((refactoring.IsEnabledByDefault) ? "&#x2713;" : ""));
             }
 
-            return sb.ToString();
+            mb.Append(table);
+
+            return mb.ToString();
         }
 
         public static string CreateCodeFixesReadMe(IEnumerable<CodeFixDescriptor> codeFixes, IEnumerable<CompilerDiagnosticDescriptor> diagnostics, IComparer<string> comparer)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder();
 
-            sb.AppendHeader2("Roslynator Code Fixes");
-            sb.AppendLine();
+            mb.AppendHeader2("Roslynator Code Fixes");
 
-            sb.AppendTableHeader("Id", "Title", "Fixable Diagnostics", new MarkdownTableHeader("Enabled by Default", Alignment.Center));
+            Table table = Table("Id", "Title", "Fixable Diagnostics", TableHeader("Enabled by Default", Alignment.Center));
 
             foreach (CodeFixDescriptor codeFix in codeFixes.OrderBy(f => f.Title, comparer))
             {
-                IEnumerable<MarkdownLink> links = codeFix
-                    .FixableDiagnosticIds
-                    .Join(diagnostics, f => f, f => f.Id, (f, g) => new MarkdownLink(f, g.HelpUrl));
-
-                sb.AppendTableRow(
+                table.AddRow(
                     codeFix.Id,
                     codeFix.Title.TrimEnd('.'),
-                    new MarkdownText(string.Join(", ", links), shouldEscape: false),
-                    (codeFix.IsEnabledByDefault) ? "x" : "");
+                    Join(", ", codeFix.FixableDiagnosticIds.Join(diagnostics, f => f, f => f.Id, (f, g) => (object)Link(f, g.HelpUrl))),
+                    RawText((codeFix.IsEnabledByDefault) ? "&#x2713;" : ""));
             }
 
-            return sb.ToString();
+            mb.Append(table);
+
+            return mb.ToString();
         }
 
         public static string CreateCodeFixesByDiagnosticId(IEnumerable<CodeFixDescriptor> codeFixes, IEnumerable<CompilerDiagnosticDescriptor> diagnostics)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder();
 
-            sb.AppendHeader2("Roslynator Code Fixes by Diagnostic Id");
-            sb.AppendLine();
+            mb.AppendHeader2("Roslynator Code Fixes by Diagnostic Id");
 
-            sb.AppendTableHeader("Diagnostic", "Code Fixes");
+            Table table = Table("Diagnostic", "Code Fixes");
 
             foreach (var grouping in codeFixes
                 .SelectMany(codeFix => codeFix.FixableDiagnosticIds.Select(diagnosticId => new { DiagnosticId = diagnosticId, CodeFixDescriptor = codeFix }))
@@ -315,59 +256,52 @@ namespace Roslynator.CodeGeneration.Markdown
             {
                 CompilerDiagnosticDescriptor diagnostic = diagnostics.FirstOrDefault(f => f.Id == grouping.Key);
 
-                if (!string.IsNullOrEmpty(diagnostic?.HelpUrl))
-                {
-                    sb.AppendLink(diagnostic.Id, diagnostic.HelpUrl);
-                }
-                else
-                {
-                    sb.Append(grouping.Key);
-                }
-
-                sb.Append('|');
-                sb.Append(string.Join(", ", grouping.Select(f => f.CodeFixDescriptor.Id)));
-                sb.AppendLine();
+                table.AddRow(
+                    Link(diagnostic?.Id ?? grouping.Key, diagnostic?.HelpUrl),
+                    Join(", ", grouping.Select(f => f.CodeFixDescriptor.Id)));
             }
 
-            return sb.ToString();
+            mb.Append(table);
+
+            return mb.ToString();
         }
 
         public static string CreateAnalyzersByCategoryMarkdown(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
-            var sb = new StringBuilder();
+            var mb = new MarkdownBuilder();
 
-            sb.AppendHeader2("Roslynator Analyzers by Category");
-            sb.AppendLine();
+            mb.AppendHeader2("Roslynator Analyzers by Category");
 
-            sb.AppendTableHeader("Category", "Title", "Id", new MarkdownTableHeader("Enabled by Default", Alignment.Center));
+            Table table = Table("Category", "Title", "Id", TableHeader("Enabled by Default", Alignment.Center));
 
             foreach (IGrouping<string, AnalyzerDescriptor> grouping in analyzers
-                .GroupBy(f => f.Category.EscapeMarkdown())
+                .GroupBy(f => MarkdownEscaper.Escape(f.Category, mb.Settings.ShouldBeEscaped))
                 .OrderBy(f => f.Key, comparer))
             {
                 foreach (AnalyzerDescriptor analyzer in grouping.OrderBy(f => f.Title, comparer))
                 {
-                    sb.AppendTableRow(
+                    table.AddRow(
                         grouping.Key,
-                        new MarkdownLink(analyzer.Title.TrimEnd('.'), $"../../docs/analyzers/{analyzer.Id}.md"),
+                        Link(analyzer.Title.TrimEnd('.'), $"../../docs/analyzers/{analyzer.Id}.md"),
                         analyzer.Id,
-                        (analyzer.IsEnabledByDefault) ? "x" : "");
+                        RawText((analyzer.IsEnabledByDefault) ? "&#x2713;" : ""));
                 }
             }
 
-            return sb.ToString();
+            mb.Append(table);
+
+            return mb.ToString();
         }
 
-        private static StringBuilder AppendRefactoringImage(StringBuilder sb, RefactoringDescriptor refactoring, string fileName)
+        private static void AppendRefactoringImage(MarkdownBuilder mb, RefactoringDescriptor refactoring, string fileName)
         {
-            return sb
-                .AppendImage(refactoring.Title, $"../../images/refactorings/{fileName}.png")
-                .AppendLine();
+            mb.AppendImage(refactoring.Title, $"../../images/refactorings/{fileName}.png");
+            mb.AppendLine();
         }
 
         private static string GetBooleanAsText(bool value)
         {
-            return (value) ? "yes" : "no";
+            return (value) ? "&#x2713;" : "-";
         }
     }
 }
