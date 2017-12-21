@@ -195,3 +195,4 @@
 | RCS1210 | [Return Task.FromResult instead of returning null](../../docs/analyzers/RCS1210.md) | Usage | &#x2713; |
 | RCS1211 | [Remove unnecessary else clause](../../docs/analyzers/RCS1211.md) | Redundancy | &#x2713; |
 | RCS1212 | [Remove redundant assignment](../../docs/analyzers/RCS1212.md) | Redundancy | &#x2713; |
+| RCS1213 | [Remove unused member declaration](../../docs/analyzers/RCS1213.md) | Redundancy | &#x2713; |

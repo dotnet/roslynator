@@ -1,3 +1,15 @@
+### 1.6.10 (2017-12-21)
+
+#### Analyzers
+
+* Add analyzer [UnusedMemberDeclaration](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1213.md) (RCS1213).
+* Improve analyzer [UnusedParameter](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1163.md)
+  * Report unused parameters of lambda expressions and anonymous methods.
+
+#### Code Fixes
+
+* Add code fixes for CS0030, CS1597.
+
 ### 1.6.0 (2017-12-13)
 
 #### Refactorings

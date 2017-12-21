@@ -122,6 +122,7 @@
 | Redundancy | [Remove trailing white-space](../../docs/analyzers/RCS1037.md) | RCS1037 | &#x2713; |
 | Redundancy | [Remove unnecessary case label](../../docs/analyzers/RCS1069.md) | RCS1069 | &#x2713; |
 | Redundancy | [Remove unnecessary else clause](../../docs/analyzers/RCS1211.md) | RCS1211 | &#x2713; |
+| Redundancy | [Remove unused member declaration](../../docs/analyzers/RCS1213.md) | RCS1213 | &#x2713; |
 | Redundancy | [Unused parameter](../../docs/analyzers/RCS1163.md) | RCS1163 | &#x2713; |
 | Redundancy | [Unused this parameter](../../docs/analyzers/RCS1175.md) | RCS1175 | &#x2713; |
 | Redundancy | [Unused type parameter](../../docs/analyzers/RCS1164.md) | RCS1164 | &#x2713; |

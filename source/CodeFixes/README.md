@@ -23,10 +23,13 @@
 | RCF0005 | Base base class before any interface | [CS1722](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722) | &#x2713; |
 | RCF0029 | Change accessibility | [CS0442](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0442), [CS0507](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0507), [CS0628](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628), [CS1057](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057), [CS1527](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527) | &#x2713; |
 | RCF0085 | Change array type | [CS0246](https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0246) | &#x2713; |
+| RCF0091 | Change foreach type | [CS0030](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0030) | &#x2713; |
 | RCF0080 | Change member type according to return expression | [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029), [CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201), [CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266), CS1997 | &#x2713; |
 | RCF0018 | Change method return type | [CS0508](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0508), [CS0766](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0766) | &#x2713; |
+| RCF0090 | Change type according to initializer | [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029) | &#x2713; |
 | RCF0041 | Change type of local variable | [CS0123](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123), [CS0407](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0407), [CS0815](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0815) | &#x2713; |
 | RCF0030 | Change type of 'params' parameter | [CS0225](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225) | &#x2713; |
+| RCF0092 | Change type to var | [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029), [CS0030](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0030) | &#x2713; |
 | RCF0066 | Combine constraint clauses | [CS0409](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0409) | &#x2713; |
 | RCF0003 | Create singleton array | [CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266) | &#x2713; |
 | RCF0082 | Define matching operator | [CS0216](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0216) | &#x2713; |
@@ -48,6 +51,7 @@
 | RCF0071 | Remove attribute | [CS0592](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0592), [CS1689](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1689) | &#x2713; |
 | RCF0049 | Remove 'await' keyword | [CS1061](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061) | &#x2713; |
 | RCF0075 | Remove condition that is always equal to true/false | [CS0472](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0472) | &#x2713; |
+| RCF0089 | Remove conditional access | [CS0023](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023) | &#x2713; |
 | RCF0045 | Remove 'const' modifier | [CS0133](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133) | &#x2713; |
 | RCF0065 | Remove constraint | [CS0405](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0405), [CS0450](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0450), [CS0451](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0451) | &#x2713; |
 | RCF0043 | Remove constraint clauses | [CS0080](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0080) | &#x2713; |
@@ -66,6 +70,7 @@
 | RCF0027 | Remove 'ref' modifier | [CS0192](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0192), [CS1615](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615), CS1988, [CS1623](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1623) | &#x2713; |
 | RCF0057 | Remove return expression | [CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), CS1997 |  |
 | RCF0052 | Remove 'return' keyword | [CS0127](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127), CS1997 |  |
+| RCF0088 | Remove semicolon | [CS1597](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1597) | &#x2713; |
 | RCF0060 | Remove 'this' modifier | [CS1100](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100), [CS1105](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105), [CS1106](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106) | &#x2713; |
 | RCF0061 | Remove type parameter | [CS0693](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0693) | &#x2713; |
 | RCF0014 | Remove unused label | [CS0164](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0164) | &#x2713; |
@@ -74,6 +79,7 @@
 | RCF0054 | Reorder modifiers | [CS0267](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267) | &#x2713; |
 | RCF0074 | Replace as expression with cast expression | [CS0077](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077) | &#x2713; |
 | RCF0079 | Replace 'break' with 'continue' | [CS0139](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139) | &#x2713; |
+| RCF0087 | Replace conditional expression with if\-else | [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201) | &#x2713; |
 | RCF0077 | Replace element access with invocation | [CS0021](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021) | &#x2713; |
 | RCF0058 | Replace 'null' with default value | [CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037), [CS0403](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403), CS1750 | &#x2713; |
 | RCF0022 | Replace string literal with character literal | [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029) | &#x2713; |

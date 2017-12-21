@@ -22,7 +22,6 @@
 | RR0186 | [Change accessibility](../../docs/refactorings/RR0186.md) | &#x2713; |
 | RR0018 | [Change explicit type to 'var'](../../docs/refactorings/RR0018.md) | &#x2713; |
 | RR0021 | [Change method return type to 'void'](../../docs/refactorings/RR0021.md) | &#x2713; |
-| RR0022 | [Change type according to expression](../../docs/refactorings/RR0022.md) | &#x2713; |
 | RR0023 | [Change 'var' to explicit type](../../docs/refactorings/RR0023.md) | &#x2713; |
 | RR0024 | [Check expression for null](../../docs/refactorings/RR0024.md) | &#x2713; |
 | RR0025 | [Check parameter for null](../../docs/refactorings/RR0025.md) | &#x2713; |

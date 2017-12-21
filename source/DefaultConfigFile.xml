@@ -281,6 +281,12 @@
       <CodeFix Id="RCF0084" IsEnabled="true" /> <!-- DefineObjectGetHashCode (fixes CS0659, CS0661) -->
       <CodeFix Id="RCF0085" IsEnabled="true" /> <!-- ChangeArrayType (fixes CS0246) -->
       <CodeFix Id="RCF0086" IsEnabled="true" /> <!-- AddMissingType (fixes CS1031) -->
+      <CodeFix Id="RCF0087" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithIfElse (fixes CS0201) -->
+      <CodeFix Id="RCF0088" IsEnabled="true" /> <!-- RemoveSemicolon (fixes CS1597) -->
+      <CodeFix Id="RCF0089" IsEnabled="true" /> <!-- RemoveConditionalAccess (fixes CS0023) -->
+      <CodeFix Id="RCF0090" IsEnabled="true" /> <!-- ChangeTypeAccordingToInitializer (fixes CS0029) -->
+      <CodeFix Id="RCF0091" IsEnabled="true" /> <!-- ChangeForEachType (fixes CS0030) -->
+      <CodeFix Id="RCF0092" IsEnabled="true" /> <!-- ChangeTypeToVar (fixes CS0029, CS0030) -->
     </CodeFixes>
   </Settings>
 </Roslynator>
