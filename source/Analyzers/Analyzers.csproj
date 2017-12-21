@@ -85,6 +85,12 @@
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReduceIfNestingDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderTypeParameterConstraintsDiagnosticAnalyzer.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="UnusedMember\NodeSymbolInfo.cs" />
+    <Compile Include="UnusedMember\UnusedMemberCodeFixProvider.cs" />
+    <Compile Include="UnusedMember\UnusedMemberWalker.cs" />
+    <Compile Include="UnusedMember\UnusedMemberWalkerCache.cs" />
+    <Compile Include="UnusedMember\UnusedMemberDiagnosticAnalyzer.cs" />
     <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstCodeFixProvider.cs" />
     <Compile Include="Refactorings\RemoveRedundantAssignmentRefactoring.cs" />
     <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstWalker.cs" />
@@ -93,6 +99,7 @@
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalker.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalkerCache.cs" />
     <Compile Include="Refactorings\RemoveUnnecessaryElseClauseRefactoring.cs" />
+    <Compile Include="UnusedMember\UnusedMemberRefactoring.cs" />
     <Compile Include="UnusedParameter\NodeSymbolInfo.cs" />
     <Compile Include="UnusedParameter\UnusedParameterWalker.cs" />
     <Compile Include="UnusedParameter\UnusedParameterWalkerCache.cs" />

@@ -2371,5 +2371,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveRedundantAssignment}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1213</summary>
+        public static readonly DiagnosticDescriptor RemoveUnusedMemberDeclaration = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.RemoveUnusedMemberDeclaration, 
+            title:              "Remove unused member declaration.", 
+            messageFormat:      "Remove unused {0} declaration.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveUnusedMemberDeclaration}", 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
     }
 }

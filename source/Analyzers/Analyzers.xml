@@ -4448,4 +4448,14 @@ return WhenFalse();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="RemoveUnusedMemberDeclaration">
+    <Id>RCS1213</Id>
+    <Title>Remove unused member declaration.</Title>
+    <MessageFormat>Remove unused {0} declaration.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+  </Analyzer>
 </Analyzers>
