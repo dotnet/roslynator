@@ -13,55 +13,12 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, VariableDeclarationSyntax variableDeclaration)
         {
-            if (variableDeclaration.Type?.Span.Contains(context.Span) == true)
-            {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
-                    await ChangeTypeAccordingToExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
-
-                if (context.IsAnyRefactoringEnabled(
+            if (variableDeclaration.Type?.Span.Contains(context.Span) == true
+                && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeExplicitTypeToVar,
                     RefactoringIdentifiers.ChangeVarToExplicitType))
-                {
-                    await ChangeTypeAsync(context, variableDeclaration).ConfigureAwait(false);
-                }
-            }
-        }
-
-        private static async Task ChangeTypeAccordingToExpressionAsync(
-            RefactoringContext context,
-            VariableDeclarationSyntax variableDeclaration)
-        {
-            TypeSyntax type = variableDeclaration.Type;
-
-            if (type?.IsVar == false)
             {
-                ExpressionSyntax initializerValue = variableDeclaration.Variables.SingleOrDefault(shouldthrow: false)?.Initializer?.Value;
-
-                if (initializerValue != null)
-                {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                    ITypeSymbol initializerTypeSymbol = semanticModel.GetTypeSymbol(initializerValue);
-
-                    if (initializerTypeSymbol?.IsErrorType() == false)
-                    {
-                        ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(type).ConvertedType;
-
-                        if (!initializerTypeSymbol.Equals(typeSymbol))
-                        {
-                            if (initializerTypeSymbol.SupportsExplicitDeclaration())
-                            {
-                                ChangeType(context, variableDeclaration, initializerTypeSymbol, semanticModel, context.CancellationToken);
-                            }
-                            else
-                            {
-                                context.RegisterRefactoring(
-                                    "Change type to 'var'",
-                                    cancellationToken => ChangeTypeRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken));
-                            }
-                        }
-                    }
-                }
+                await ChangeTypeAsync(context, variableDeclaration).ConfigureAwait(false);
             }
         }
 

@@ -42,7 +42,6 @@ namespace Roslynator.VisualStudio
             CallToMethod = true;
             ChangeExplicitTypeToVar = true;
             ChangeMethodReturnTypeToVoid = true;
-            ChangeTypeAccordingToExpression = true;
             ChangeVarToExplicitType = true;
             CheckExpressionForNull = true;
             CheckParameterForNull = true;
@@ -214,7 +213,6 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.CallToMethod, CallToMethod);
             SetIsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar, ChangeExplicitTypeToVar);
             SetIsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, ChangeMethodReturnTypeToVoid);
-            SetIsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression, ChangeTypeAccordingToExpression);
             SetIsEnabled(RefactoringIdentifiers.ChangeVarToExplicitType, ChangeVarToExplicitType);
             SetIsEnabled(RefactoringIdentifiers.CheckExpressionForNull, CheckExpressionForNull);
             SetIsEnabled(RefactoringIdentifiers.CheckParameterForNull, CheckParameterForNull);
@@ -396,7 +394,6 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallToMethod, "Call 'To...' method (ToString, ToArray, ToList)", IsEnabled(RefactoringIdentifiers.CallToMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeExplicitTypeToVar, "Change explicit type to 'var'", IsEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid, "Change method return type to 'void'", IsEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeTypeAccordingToExpression, "Change type according to expression", IsEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ChangeVarToExplicitType, "Change 'var' to explicit type", IsEnabled(RefactoringIdentifiers.ChangeVarToExplicitType)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CheckExpressionForNull, "Check expression for null", IsEnabled(RefactoringIdentifiers.CheckExpressionForNull)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CheckParameterForNull, "Check parameter for null", IsEnabled(RefactoringIdentifiers.CheckParameterForNull)));
@@ -716,15 +713,6 @@ namespace Roslynator.VisualStudio
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool ChangeMethodReturnTypeToVoid
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool ChangeTypeAccordingToExpression
         {
             get;
             set;

@@ -10,6 +10,7 @@ namespace Roslynator.CSharp
         public const string CannotApplyIndexingToExpression = "CS0021";
         public const string OperatorCannotBeAppliedToOperandOfType = "CS0023";
         public const string CannotImplicitlyConvertType = "CS0029";
+        public const string CannotConvertType = "CS0030";
         public const string CannotConvertNullToTypeBecauseItIsNonNullableValueType = "CS0037";
         public const string EventInInterfaceCannotHaveAddOrRemoveAccessors = "CS0069";
         public const string AsOperatorMustBeUsedWithReferenceTypeOrNullableType = "CS0077";
@@ -113,6 +114,7 @@ namespace Roslynator.CSharp
         public const string NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType = "CS1526";
         public const string ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal = "CS1527";
         public const string MissingXmlCommentForPubliclyVisibleTypeOrMember = "CS1591";
+        public const string SemicolonAfterMethodOrAccessorBlockIsNotValid = "CS1597";
         public const string ModifiersCannotBePlacedOnEventAccessorDeclarations = "CS1609";
         public const string ArgumentMayNotBePassedWithRefKeyword = "CS1615";
         public const string ArgumentMustBePassedWithOutKeyword = "CS1620";

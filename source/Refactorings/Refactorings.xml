@@ -131,7 +131,7 @@
       <Syntax>method</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression">
+  <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression" IsObsolete="true">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>

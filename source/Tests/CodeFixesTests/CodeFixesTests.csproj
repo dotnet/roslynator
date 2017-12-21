@@ -42,6 +42,9 @@
     <Compile Include="AddComparisonWithBooleanLiteralRefactoring.cs" />
     <Compile Include="AddBracesToDeclarationOrLabeledStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
+    <Compile Include="CS0029_CannotImplicitlyConvertType.cs" />
+    <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember2.cs" />
+    <Compile Include="CS0030_CannotConvertType.cs" />
     <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember2.cs" />
     <Compile Include="CS0126_ObjectOfTypeConvertibleToTypeIsRequired.cs" />
     <Compile Include="AddDocumentationComment.cs" />
@@ -89,6 +92,7 @@
     <Compile Include="CS1503_CannotConvertArgumentType.cs" />
     <Compile Include="CS1526_NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType.cs" />
     <Compile Include="CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal.cs" />
+    <Compile Include="CS1597_SemicolonAfterMethodOrAccessorBlockIsNotValid.cs" />
     <Compile Include="CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression.cs" />
     <Compile Include="CS1623_IteratorsCannotHaveRefOrOutParameters.cs" />
     <Compile Include="CS1689_AttributeIsNotValidOnThisDeclarationType.cs" />

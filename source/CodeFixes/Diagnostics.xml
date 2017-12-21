@@ -4,6 +4,7 @@
   <Diagnostic Id="CS0021" Identifier="CannotApplyIndexingToExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021" />
   <Diagnostic Id="CS0023" Identifier="OperatorCannotBeAppliedToOperandOfType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023" />
   <Diagnostic Id="CS0029" Identifier="CannotImplicitlyConvertType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029" />
+  <Diagnostic Id="CS0030" Identifier="CannotConvertType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0030" />
   <Diagnostic Id="CS0037" Identifier="CannotConvertNullToTypeBecauseItIsNonNullableValueType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037" />
   <Diagnostic Id="CS0069" Identifier="EventInInterfaceCannotHaveAddOrRemoveAccessors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0069" />
   <Diagnostic Id="CS0077" Identifier="AsOperatorMustBeUsedWithReferenceTypeOrNullableType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077" />
@@ -107,6 +108,7 @@
   <Diagnostic Id="CS1526" Identifier="NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526" />
   <Diagnostic Id="CS1527" Identifier="ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527" />
   <Diagnostic Id="CS1591" Identifier="MissingXmlCommentForPubliclyVisibleTypeOrMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591" />
+  <Diagnostic Id="CS1597" Identifier="SemicolonAfterMethodOrAccessorBlockIsNotValid" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1597" />
   <Diagnostic Id="CS1609" Identifier="ModifiersCannotBePlacedOnEventAccessorDeclarations" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609" />
   <Diagnostic Id="CS1615" Identifier="ArgumentMayNotBePassedWithRefKeyword" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615" />
   <Diagnostic Id="CS1620" Identifier="ArgumentMustBePassedWithOutKeyword" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620" />

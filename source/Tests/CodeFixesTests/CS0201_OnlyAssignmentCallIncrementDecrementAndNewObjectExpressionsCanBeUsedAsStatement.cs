@@ -18,6 +18,13 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 
                 Bar;
                 foo.Bar;
+
+                bool condition = false;
+                (condition) ? Bar() : Bar2();
+            }
+
+            public void Bar2()
+            {
             }
 
             private static void StaticBar()

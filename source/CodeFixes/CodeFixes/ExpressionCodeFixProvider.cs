@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -48,7 +49,9 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
             {
                 return;
             }
@@ -204,6 +207,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     SyntaxNode newRoot = RemoveHelper.RemoveCondition(root, expression, nullCheck.Kind == NullCheckKind.NotEqualsToNull);
 
+                                    cancellationToken.ThrowIfCancellationRequested();
+
                                     return Task.FromResult(context.Document.WithSyntaxRoot(newRoot));
                                 },
                                 GetEquivalenceKey(diagnostic));
@@ -238,6 +243,39 @@ namespace Roslynator.CSharp.CodeFixes
                                             "Add argument list",
                                             cancellationToken => context.Document.ReplaceNodeAsync(expression, invocationExpression, cancellationToken),
                                             GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddArgumentList));
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
+                                }
+
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse)
+                                    && (expression is ConditionalExpressionSyntax conditionalExpression)
+                                    && conditionalExpression.Condition != null)
+                                {
+                                    ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
+                                    ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
+
+                                    if (whenTrue != null
+                                        && whenFalse != null
+                                        && semanticModel.GetTypeSymbol(whenTrue, context.CancellationToken)?.IsVoid() == true
+                                        && semanticModel.GetTypeSymbol(whenFalse, context.CancellationToken)?.IsVoid() == true)
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Replace ?: with if-else",
+                                            cancellationToken =>
+                                            {
+                                                IfStatementSyntax newNode = IfStatement(
+                                                    conditionalExpression.Condition.WalkDownParentheses(),
+                                                    Block(ExpressionStatement(whenTrue)),
+                                                    ElseClause(Block(ExpressionStatement(whenFalse))));
+
+                                                newNode = newNode
+                                                    .WithTriviaFrom(expressionStatement)
+                                                    .WithFormatterAnnotation();
+
+                                                return context.Document.ReplaceNodeAsync(expressionStatement, newNode, cancellationToken);
+                                            },
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse));
 
                                         context.RegisterCodeFix(codeAction, diagnostic);
                                     }
@@ -291,6 +329,14 @@ namespace Roslynator.CSharp.CodeFixes
                                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                                 ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+                                break;
+                            }
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                ChangeTypeAccordingToInitializerRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
                                 break;
                             }
 

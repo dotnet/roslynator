@@ -482,4 +482,35 @@
       <Id>CS1031</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0087" Identifier="ReplaceConditionalExpressionWithIfElse" Title="Replace conditional expression with if-else">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0088" Identifier="RemoveSemicolon" Title="Remove semicolon">
+    <FixableDiagnosticIds>
+      <Id>CS1597</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0089" Identifier="RemoveConditionalAccess" Title="Remove conditional access">
+    <FixableDiagnosticIds>
+      <Id>CS0023</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0090" Identifier="ChangeTypeAccordingToInitializer" Title="Change type according to initializer">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0091" Identifier="ChangeForEachType" Title="Change foreach type">
+    <FixableDiagnosticIds>
+      <Id>CS0030</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0092" Identifier="ChangeTypeToVar" Title="Change type to var">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+      <Id>CS0030</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

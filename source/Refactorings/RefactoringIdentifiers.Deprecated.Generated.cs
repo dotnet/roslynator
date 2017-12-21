@@ -14,5 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ChangeMemberTypeAccordingToReturnExpression = Prefix + "0019";
         [Obsolete("", error: false)]
         public const string ChangeMemberTypeAccordingToYieldReturnExpression = Prefix + "0020";
+        [Obsolete("", error: false)]
+        public const string ChangeTypeAccordingToExpression = Prefix + "0022";
     }
 }

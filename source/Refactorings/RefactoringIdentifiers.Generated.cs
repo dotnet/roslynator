@@ -28,7 +28,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ChangeAccessibility = Prefix + "0186";
         public const string ChangeExplicitTypeToVar = Prefix + "0018";
         public const string ChangeMethodReturnTypeToVoid = Prefix + "0021";
-        public const string ChangeTypeAccordingToExpression = Prefix + "0022";
         public const string ChangeVarToExplicitType = Prefix + "0023";
         public const string CheckExpressionForNull = Prefix + "0024";
         public const string CheckParameterForNull = Prefix + "0025";

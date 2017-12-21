@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -33,8 +34,14 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.AwaitExpression, SyntaxKind.IdentifierName, SyntaxKind.GenericName)))
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
+                SyntaxKind.AwaitExpression,
+                SyntaxKind.IdentifierName,
+                SyntaxKind.GenericName,
+                SyntaxKind.MemberBindingExpression)))
+            {
                 return;
+            }
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
@@ -42,15 +49,14 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound:
                         {
-                            switch (node.Kind())
+                            switch (node)
                             {
-                                case SyntaxKind.IdentifierName:
-                                case SyntaxKind.GenericName:
+                                case SimpleNameSyntax simpleName:
                                     {
+                                        Debug.Assert(node.IsKind(SyntaxKind.IdentifierName, SyntaxKind.GenericName), node.Kind().ToString());
+
                                         if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.FixMemberAccessName))
                                             break;
-
-                                        var simpleName = (SimpleNameSyntax)node;
 
                                         if (!simpleName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                                             break;
@@ -64,28 +70,22 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         break;
                                     }
-                                case SyntaxKind.MemberBindingExpression:
+                                case MemberBindingExpressionSyntax memberBindingExpression:
                                     {
                                         if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.FixMemberAccessName))
                                             break;
 
-                                        var memberBindingExpression = (MemberBindingExpressionSyntax)node;
-
-                                        if (!memberBindingExpression.IsParentKind(SyntaxKind.ConditionalAccessExpression))
+                                        if (!(memberBindingExpression.Parent is ConditionalAccessExpressionSyntax conditionalAccessExpression))
                                             break;
-
-                                        var conditionalAccessExpression = (ConditionalAccessExpressionSyntax)memberBindingExpression.Parent;
 
                                         await ComputeCodeFix(context, diagnostic, conditionalAccessExpression.Expression, memberBindingExpression.Name).ConfigureAwait(false);
 
                                         break;
                                     }
-                                case SyntaxKind.AwaitExpression:
+                                case AwaitExpressionSyntax awaitExpression:
                                     {
                                         if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveAwaitKeyword))
                                             break;
-
-                                        var awaitExpression = (AwaitExpressionSyntax)node;
 
                                         CodeAction codeAction = CodeAction.Create(
                                             "Remove 'await'",
