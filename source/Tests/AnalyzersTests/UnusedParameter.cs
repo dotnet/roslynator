@@ -3,7 +3,7 @@
 using System;
 using System.ComponentModel;
 
-#pragma warning disable RCS1100, RCS1016, RCS1023, RCS1079, RCS1140, RCS1185, CS0168
+#pragma warning disable CS8321, RCS1100, RCS1016, RCS1021, RCS1023, RCS1048, RCS1079, RCS1140, RCS1185, CS0168
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -22,7 +22,15 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             public string this[int index] => "";
 
-            public void Bar5(object parameter) { }
+            public string this[int index, string value]
+            {
+                get { return value; }
+            }
+
+            public void Bar5<T>(object parameter)
+            {
+                T x;
+            }
 
             public object Bar6(object parameter1, object parameter2) => parameter2;
 
@@ -35,6 +43,33 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             public void Bar8(object parameter1, object parameter2) { Bar7(parameter1: null, parameter2: null); }
 
+            public void SimpleLambda()
+            {
+                Func<string, string> func1 = f => { return ""; };
+                Func<string, string> func2 = f => "";
+            }
+
+            public void ParenthesizedLambda()
+            {
+                Func<string, string, string> func1 = (f, f2) => { return f2; };
+                Func<string, string, string> func2 = (f, f2) => f2;
+            }
+
+            public void AnonymousMethod()
+            {
+                Func<string, string, string> func = delegate (string f, string f2) { return f2; };
+            }
+
+            public static Foo operator +(Foo left, Foo right)
+            {
+                return right;
+            }
+
+            public static explicit operator Foo(string value)
+            {
+                return null;
+            }
+
             // n
 
             public void Bar(object parameter) { }
@@ -43,13 +78,37 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             public abstract void Bar3(object parameter);
 
-            private void EventHandlerMethod(object sender, EventArgs args) { }
+            public void EventHandlerMethod(object sender, EventArgs args) { }
 
-            private void EventHandlerMethod2(object sender, ConsoleCancelEventArgs args) { }
+            public void EventHandlerMethod2(object sender, ConsoleCancelEventArgs args) { }
 
             public void Bar4(object parameter)
             {
                 Bar4(parameter);
+            }
+
+            public void SimpleLambda2()
+            {
+                Func<string, string> func1 = f => { return f; };
+                Func<string, string> func2 = f => f;
+            }
+
+            public void ParenthesizedLambda2()
+            {
+                Func<string, string, string> func1 = (f, f2) => { return f + f2; };
+                Func<string, string, string> func2 = (f, f2) => f + f2;
+            }
+
+            public void AnonymousMethod2()
+            {
+                Func<string, string, string> func = delegate (string f, string f2) { return f + f2; };
+            }
+
+            public void AnonymousEventHandler()
+            {
+                Action<object, EventArgs> func1 = (sender, e) => { return; };
+
+                Action<object, EventArgs> func2 = delegate (object sender, EventArgs e) { return; };
             }
         }
 
@@ -91,6 +150,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             /// <param name="parameter1"></param>
             /// <param name="parameter2"></param>
             public void Bar2(object parameter1, object parameter2) { throw new NotImplementedException(); }
+
+            public static Foo2 operator +(Foo2 left, Foo2 right)
+            {
+                throw new NotImplementedException();
+            }
+
+            public static explicit operator Foo2(string value)
+            {
+                throw new NotImplementedException();
+            }
         }
 
         private partial class FooPartial : Foo

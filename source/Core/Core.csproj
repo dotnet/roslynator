@@ -62,6 +62,7 @@
     <Compile Include="CSharp\Syntax\LocalDeclarationStatementInfo.cs" />
     <Compile Include="CSharp\Syntax\NullCheckExpressionInfo.cs" />
     <Compile Include="CSharp\Syntax\NullCheckKind.cs" />
+    <Compile Include="CSharp\Syntax\ParametersInfo.cs" />
     <Compile Include="CSharp\Syntax\SimpleIfElseInfo.cs" />
     <Compile Include="CSharp\Syntax\SyntaxInfo.cs" />
     <Compile Include="CSharp\Syntax\SyntaxInfoHelpers.cs" />

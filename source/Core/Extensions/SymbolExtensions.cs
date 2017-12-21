@@ -740,26 +740,6 @@ namespace Roslynator
             return methodSymbol.ReducedFrom ?? methodSymbol;
         }
 
-        internal static bool IsEventHandler(this IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            if (methodSymbol.ReturnsVoid)
-            {
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                return parameters.Length == 2
-                    && parameters[0].Type.IsObject()
-                    && parameters[1].Type.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_EventArgs));
-            }
-
-            return false;
-        }
-
         public static bool IsReducedExtensionMethod(this IMethodSymbol methodSymbol)
         {
             return methodSymbol?.MethodKind == MethodKind.ReducedExtension;

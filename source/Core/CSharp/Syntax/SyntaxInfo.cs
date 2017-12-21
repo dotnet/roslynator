@@ -239,6 +239,76 @@ namespace Roslynator.CSharp.Syntax
                 cancellationToken);
         }
 
+        internal static ParametersInfo ParametersInfo(
+            ConstructorDeclarationSyntax constructorDeclaration,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(constructorDeclaration, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            MethodDeclarationSyntax methodDeclaration,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(methodDeclaration, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            OperatorDeclarationSyntax operatorDeclaration,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(operatorDeclaration, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            ConversionOperatorDeclarationSyntax conversionOperatorDeclaration,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(conversionOperatorDeclaration, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            DelegateDeclarationSyntax delegateDeclaration,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(delegateDeclaration, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            LocalFunctionStatementSyntax localFunction,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(localFunction, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            IndexerDeclarationSyntax indexerDeclaration,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(indexerDeclaration, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            SimpleLambdaExpressionSyntax simpleLambda,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(simpleLambda, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            ParenthesizedLambdaExpressionSyntax parenthesizedLambda,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(parenthesizedLambda, allowMissing);
+        }
+
+        internal static ParametersInfo ParametersInfo(
+            AnonymousMethodExpressionSyntax anonymousMethod,
+            bool allowMissing = false)
+        {
+            return Syntax.ParametersInfo.Create(anonymousMethod, allowMissing);
+        }
+
         public static SimpleAssignmentExpressionInfo SimpleAssignmentExpressionInfo(
             SyntaxNode node,
             bool walkDownParentheses = true,
