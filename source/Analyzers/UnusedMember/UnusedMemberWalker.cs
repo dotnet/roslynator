@@ -122,6 +122,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
         public override void VisitAccessorDeclaration(AccessorDeclarationSyntax node)
         {
             VisitAttributeLists(node.AttributeLists);
+            VisitBodyOrExpressionBody(node.Body, node.ExpressionBody);
 
             //base.VisitAccessorDeclaration(node);
         }

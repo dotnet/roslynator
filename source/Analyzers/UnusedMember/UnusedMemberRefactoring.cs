@@ -106,12 +106,19 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
                         {
                             var declaration = (MethodDeclarationSyntax)member;
 
-                            if (IsPrivate(declaration, declaration.Modifiers))
-                            {
-                                if (walker == null)
-                                    walker = UnusedMemberWalkerCache.Acquire(context.SemanticModel, context.CancellationToken);
+                            SyntaxTokenList modifiers = declaration.Modifiers;
 
-                                walker.AddNode(declaration.Identifier.ValueText, declaration);
+                            if (IsPrivate(declaration, modifiers))
+                            {
+                                string methodName = declaration.Identifier.ValueText;
+
+                                if (!IsMainMethod(declaration, modifiers, methodName))
+                                {
+                                    if (walker == null)
+                                        walker = UnusedMemberWalkerCache.Acquire(context.SemanticModel, context.CancellationToken);
+
+                                    walker.AddNode(methodName, declaration);
+                                }
                             }
 
                             break;
@@ -160,6 +167,14 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
                     ReportDiagnostic(context, node, node.GetTitle());
                 }
             }
+        }
+
+        private static bool IsMainMethod(MethodDeclarationSyntax methodDeclaration, SyntaxTokenList modifiers, string methodName)
+        {
+            return string.Equals(methodName, "Main", StringComparison.Ordinal)
+                && modifiers.Contains(SyntaxKind.StaticKeyword)
+                && methodDeclaration.TypeParameterList == null
+                && methodDeclaration.ParameterList?.Parameters.Count <= 1;
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node, string declarationName)
