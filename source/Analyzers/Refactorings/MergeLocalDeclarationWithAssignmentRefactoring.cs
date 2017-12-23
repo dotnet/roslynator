@@ -20,58 +20,77 @@ namespace Roslynator.CSharp.Refactorings
         {
             var localDeclaration = (LocalDeclarationStatementSyntax)context.Node;
 
-            if (!localDeclaration.IsConst
-                && !localDeclaration.ContainsDiagnostics
-                && !localDeclaration.SpanOrTrailingTriviaContainsDirectives())
+            if (localDeclaration.ContainsDiagnostics)
+                return;
+
+            if (localDeclaration.SpanOrTrailingTriviaContainsDirectives())
+                return;
+
+            if (localDeclaration.IsConst)
+                return;
+
+            SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(localDeclaration);
+
+            if (!localInfo.Success)
+                return;
+
+            SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(localDeclaration.NextStatementOrDefault());
+
+            if (!assignmentInfo.Success)
+                return;
+
+            if (assignmentInfo.Statement.ContainsDiagnostics)
+                return;
+
+            if (assignmentInfo.Statement.SpanOrLeadingTriviaContainsDirectives())
+                return;
+
+            if (!(assignmentInfo.Left is IdentifierNameSyntax identifierName))
+                return;
+
+            string name = identifierName.Identifier.ValueText;
+
+            if (!string.Equals(localInfo.IdentifierText, name, StringComparison.Ordinal))
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            var localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
+
+            if (localSymbol == null)
+                return;
+
+            if (!localSymbol.Equals(semanticModel.GetDeclaredSymbol(localInfo.Declarator, cancellationToken)))
+                return;
+
+            EqualsValueClauseSyntax initializer = localInfo.Initializer;
+            ExpressionSyntax value = initializer?.Value;
+
+            if (value != null)
             {
-                VariableDeclarationSyntax declaration = localDeclaration.Declaration;
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken);
 
-                if (declaration != null)
-                {
-                    SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
+                if (typeSymbol == null)
+                    return;
 
-                    if (variables.Count == 1)
-                    {
-                        StatementSyntax nextStatement = localDeclaration.NextStatementOrDefault();
+                if (!semanticModel.IsDefaultValue(typeSymbol, value, cancellationToken))
+                    return;
 
-                        if (nextStatement?.ContainsDiagnostics == false
-                            && nextStatement?.SpanOrLeadingTriviaContainsDirectives() == false)
-                        {
-                            SimpleAssignmentStatement assignment;
-                            if (SimpleAssignmentStatement.TryCreate(nextStatement, out assignment)
-                                && assignment.Left.IsKind(SyntaxKind.IdentifierName))
-                            {
-                                SemanticModel semanticModel = context.SemanticModel;
-                                CancellationToken cancellationToken = context.CancellationToken;
-
-                                LocalInfo localInfo = FindInitializedVariable((IdentifierNameSyntax)assignment.Left, variables[0], semanticModel, cancellationToken);
-
-                                if (localInfo.IsValid)
-                                {
-                                    EqualsValueClauseSyntax initializer = localInfo.Declarator.Initializer;
-                                    ExpressionSyntax value = initializer?.Value;
-
-                                    if (value == null
-                                        || (IsDefaultValue(declaration.Type, value, semanticModel, cancellationToken)
-                                            && !IsReferenced(localInfo.Symbol, assignment.Right, semanticModel, cancellationToken)))
-                                    {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.MergeLocalDeclarationWithAssignment, localInfo.Declarator.Identifier);
-
-                                        if (value != null)
-                                        {
-                                            context.ReportNode(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, initializer);
-                                            context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignment.AssignmentExpression.OperatorToken);
-                                        }
-
-                                        context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, localDeclaration.SemicolonToken);
-                                        context.ReportNode(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignment.Left);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                if (IsReferenced(localSymbol, assignmentInfo.Right, semanticModel, cancellationToken))
+                    return;
             }
+
+            context.ReportDiagnostic(DiagnosticDescriptors.MergeLocalDeclarationWithAssignment, localInfo.Identifier);
+
+            if (value != null)
+            {
+                context.ReportNode(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, initializer);
+                context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignmentInfo.OperatorToken);
+            }
+
+            context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, localDeclaration.SemicolonToken);
+            context.ReportNode(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignmentInfo.Left);
         }
 
         private static bool IsReferenced(
@@ -94,59 +113,18 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static LocalInfo FindInitializedVariable(
-            IdentifierNameSyntax identifierName,
-            VariableDeclaratorSyntax variableDeclarator,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            string name = identifierName.Identifier.ValueText;
-
-            ILocalSymbol localSymbol = null;
-
-            if (string.Equals(variableDeclarator.Identifier.ValueText, name, StringComparison.Ordinal))
-            {
-                if (localSymbol == null)
-                {
-                    localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
-
-                    if (localSymbol == null)
-                        return default(LocalInfo);
-                }
-
-                if (localSymbol.Equals(semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken)))
-                    return new LocalInfo(variableDeclarator, localSymbol);
-            }
-
-            return default(LocalInfo);
-        }
-
-        private static bool IsDefaultValue(TypeSyntax type, ExpressionSyntax value, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
-
-            if (typeSymbol != null)
-            {
-                return semanticModel.IsDefaultValue(typeSymbol, value, cancellationToken);
-            }
-            else
-            {
-                return false;
-            }
-        }
-
         public static Task<Document> RefactorAsync(
             Document document,
             VariableDeclaratorSyntax declarator,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             var declaration = (VariableDeclarationSyntax)declarator.Parent;
 
             var localDeclaration = (LocalDeclarationStatementSyntax)declaration.Parent;
 
-            StatementContainer container = StatementContainer.Create(localDeclaration);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(localDeclaration);
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(localDeclaration);
 
@@ -182,36 +160,13 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxTriviaList leadingTrivia = nextStatement.GetLeadingTrivia();
 
             if (!leadingTrivia.IsEmptyOrWhitespace())
-            {
                 newLocalDeclaration = newLocalDeclaration.WithLeadingTrivia(newLocalDeclaration.GetLeadingTrivia().Concat(leadingTrivia));
-            }
 
             SyntaxList<StatementSyntax> newStatements = statements
                 .Replace(localDeclaration, newLocalDeclaration)
                 .RemoveAt(index + 1);
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
-        }
-
-        private struct LocalInfo
-        {
-            public LocalInfo(VariableDeclaratorSyntax declarator, ILocalSymbol symbol)
-            {
-                Declarator = declarator;
-                Symbol = symbol;
-            }
-
-            public bool IsValid
-            {
-                get
-                {
-                    return Declarator != null
-                        && Symbol != null;
-                }
-            }
-
-            public VariableDeclaratorSyntax Declarator { get; }
-            public ILocalSymbol Symbol { get; }
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
     }
 }

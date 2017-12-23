@@ -49,10 +49,10 @@ namespace Roslynator.CSharp.CodeFixes
                 .Select(f => f.GetModifiers().GetAccessibility())
                 .Where(f => f != Accessibility.NotApplicable))
             {
-                if (AccessibilityHelper.IsAllowedAccessibility(memberDeclaration, accessibility))
+                if (CSharpUtility.IsAllowedAccessibility(memberDeclaration, accessibility))
                 {
                     CodeAction codeAction = CodeAction.Create(
-                        $"Change accessibility to '{AccessibilityHelper.GetAccessibilityName(accessibility)}'",
+                        $"Change accessibility to '{accessibility.GetName()}'",
                         cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Solution(), memberDeclarations, accessibility, cancellationToken),
                         GetEquivalenceKey(CompilerDiagnosticIdentifiers.PartialDeclarationsHaveConfictingAccessibilityModifiers, accessibility.ToString()));
 

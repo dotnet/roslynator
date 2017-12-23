@@ -14,13 +14,8 @@ namespace Roslynator.CSharp.Refactorings
 
             if (expression != null)
             {
-                if (context.IsAnyRefactoringEnabled(
-                    RefactoringIdentifiers.ChangeMemberTypeAccordingToReturnExpression,
-                    RefactoringIdentifiers.AddCastExpression,
-                    RefactoringIdentifiers.CallToMethod))
-                {
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
                     await ReturnExpressionRefactoring.ComputeRefactoringsAsync(context, expression).ConfigureAwait(false);
-                }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfElse)
                     && (context.Span.IsEmptyAndContainedInSpan(returnStatement.ReturnKeyword)
@@ -28,10 +23,6 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     await ReplaceStatementWithIfStatementRefactoring.ReplaceReturnWithIfElse.ComputeRefactoringAsync(context, returnStatement).ConfigureAwait(false);
                 }
-            }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddDefaultValueToReturnStatement))
-            {
-                await AddDefaultValueToReturnStatementRefactoring.ComputeRefactoringsAsync(context, returnStatement).ConfigureAwait(false);
             }
         }
     }

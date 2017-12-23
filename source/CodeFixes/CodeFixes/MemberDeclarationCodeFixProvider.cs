@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Comparers;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -23,29 +22,27 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.CannotChangeAccessModifiersWhenOverridingInheritedMember,
                     CompilerDiagnosticIdentifiers.MissingXmlCommentForPubliclyVisibleTypeOrMember,
                     CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType,
                     CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType,
                     CompilerDiagnosticIdentifiers.MissingPartialModifier,
                     CompilerDiagnosticIdentifiers.PartialMethodMustBeDeclaredWithinPartialClassOrPartialStruct,
                     CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass,
-                    CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember,
                     CompilerDiagnosticIdentifiers.StaticConstructorMustBeParameterless,
-                    CompilerDiagnosticIdentifiers.PartialMethodsMustHaveVoidReturnType);
+                    CompilerDiagnosticIdentifiers.PartialMethodsMustHaveVoidReturnType,
+                    CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct);
             }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.OverridingMemberCannotChangeAccessModifiers)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDocumentationComment)
+            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDocumentationComment)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMethodReturnType)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MemberTypeMustMatchOverriddenMemberType)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddPartialModifier)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingClassAbstract)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberNonStatic)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
             {
                 return;
             }
@@ -59,27 +56,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.CannotChangeAccessModifiersWhenOverridingInheritedMember:
-                        {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.OverridingMemberCannotChangeAccessModifiers))
-                                break;
-
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            OverrideInfo overrideInfo = OverridingMemberCannotChangeAccessModifiersRefactoring.GetOverrideInfo(memberDeclaration, semanticModel, context.CancellationToken);
-
-                            Accessibility newAccessibility = overrideInfo.OverriddenSymbol.DeclaredAccessibility;
-
-                            string title = $"Change accessibility to '{AccessibilityHelper.GetAccessibilityName(newAccessibility)}'";
-
-                            CodeAction codeAction = CodeAction.Create(
-                                title,
-                                cancellationToken => OverridingMemberCannotChangeAccessModifiersRefactoring.RefactorAsync(context.Document, memberDeclaration, newAccessibility, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case CompilerDiagnosticIdentifiers.MissingXmlCommentForPubliclyVisibleTypeOrMember:
                         {
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDocumentationComment))
@@ -113,8 +89,6 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (typeSymbol?.IsErrorType() == false)
                             {
-                                TypeSyntax newType = typeSymbol.ToMinimalTypeSyntax(semanticModel, memberDeclaration.SpanStart);
-
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Change return type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, memberDeclaration.SpanStart)}'",
                                     cancellationToken => MemberTypeMustMatchOverriddenMemberTypeRefactoring.RefactorAsync(context.Document, memberDeclaration, typeSymbol, semanticModel, cancellationToken),
@@ -210,25 +184,32 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddPartialModifier))
                                 break;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add 'partial' modifier",
-                                cancellationToken =>
-                                {
-                                    if (memberDeclaration.IsKind(SyntaxKind.MethodDeclaration)
-                                        && memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
-                                    {
-                                        return context.Document.InsertModifierAsync(memberDeclaration.Parent, SyntaxKind.PartialKeyword, ModifierComparer.Instance, cancellationToken);
-                                    }
-                                    else if (memberDeclaration.IsKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration, SyntaxKind.InterfaceDeclaration))
-                                    {
-                                        return context.Document.InsertModifierAsync(memberDeclaration, SyntaxKind.PartialKeyword, ModifierComparer.Instance, cancellationToken);
-                                    }
+                            SyntaxNode node = null;
 
-                                    return Task.FromResult(context.Document);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                            switch (memberDeclaration.Kind())
+                            {
+                                case SyntaxKind.MethodDeclaration:
+                                    {
+                                        if (memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
+                                            node = memberDeclaration.Parent;
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                                        break;
+                                    }
+                                case SyntaxKind.ClassDeclaration:
+                                case SyntaxKind.StructDeclaration:
+                                case SyntaxKind.InterfaceDeclaration:
+                                    {
+                                        node = memberDeclaration;
+                                        break;
+                                    }
+                            }
+
+                            Debug.Assert(node != null, memberDeclaration.ToString());
+
+                            if (node == null)
+                                break;
+
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.PartialKeyword);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass:
@@ -239,32 +220,13 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration))
                                 break;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Make containing class abstract",
-                                cancellationToken => context.Document.InsertModifierAsync(memberDeclaration.Parent, SyntaxKind.AbstractKeyword, ModifierComparer.Instance, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+                            ModifiersCodeFixRegistrator.AddModifier(
+                                context,
+                                diagnostic,
+                                memberDeclaration.Parent,
+                                SyntaxKind.AbstractKeyword,
+                                title: "Make containing class abstract");
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case CompilerDiagnosticIdentifiers.ObjectReferenceIsRequiredForNonStaticMember:
-                        {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberNonStatic))
-                                break;
-
-                            SyntaxTokenList modifiers = memberDeclaration.GetModifiers();
-
-                            Debug.Assert(modifiers.Contains(SyntaxKind.StaticKeyword), memberDeclaration.ToString());
-
-                            if (!modifiers.Contains(SyntaxKind.StaticKeyword))
-                                break;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Make containing {memberDeclaration.GetTitle()} non-static",
-                                cancellationToken => context.Document.RemoveModifierAsync(memberDeclaration, SyntaxKind.StaticKeyword, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.StaticConstructorMustBeParameterless:
@@ -292,6 +254,14 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
+                                break;
+
+                            CodeFixRegistrator.RemoveMember(context, diagnostic, memberDeclaration);
                             break;
                         }
                 }

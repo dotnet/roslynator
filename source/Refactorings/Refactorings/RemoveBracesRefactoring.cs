@@ -130,9 +130,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsEmbeddableBlock(BlockSyntax block)
         {
-            return EmbeddedStatementHelper.CanContainEmbeddedStatement(block.Parent)
+            return block.Parent?.Kind().CanContainEmbeddedStatement() == true
                 && block
-                    .SingleStatementOrDefault()?
+                    .Statements
+                    .SingleOrDefault(shouldThrow: false)?
                     .IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement) == false;
         }
 

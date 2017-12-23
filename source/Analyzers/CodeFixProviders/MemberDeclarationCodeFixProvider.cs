@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.MakeMemberReadOnly;
@@ -60,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.RemoveRedundantOverridingMember:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                $"Remove redundant overridding {memberDeclaration.GetTitle()}",
+                                $"Remove {memberDeclaration.GetTitle()}",
                                 cancellationToken => context.Document.RemoveMemberAsync(memberDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
@@ -93,12 +94,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.RemoveRedundantSealedModifier:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove 'sealed' modifier",
-                                cancellationToken => RemoveRedundantSealedModifierRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, memberDeclaration, SyntaxKind.SealedKeyword);
                             break;
                         }
                     case DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration:
@@ -131,12 +127,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ? $"Mark '{declarators[0].Identifier.ValueText}' as read-only"
                                 : "Mark fields as read-only";
 
-                            CodeAction codeAction = CodeAction.Create(
-                                title,
-                                cancellationToken => MarkFieldAsReadOnlyRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, title: title);
                             break;
                         }
                     case DiagnosticIdentifiers.UseConstantInsteadOfField:
@@ -162,7 +153,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace comment with documentation comment",
+                                ReplaceCommentWithDocumentationCommentRefactoring.Title,
                                 cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 

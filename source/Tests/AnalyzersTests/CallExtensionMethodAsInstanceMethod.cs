@@ -5,7 +5,7 @@ using System.Linq;
 using System.Collections.Generic;
 using static Roslynator.CSharp.Analyzers.Tests.CallExtensionMethodAsInstanceMethodRefactoring;
 
-#pragma warning disable RCS1060, RCS1016, RCS1176, RCS1177
+#pragma warning disable RCS1007, RCS1032, RCS1060, RCS1016, RCS1176, RCS1177
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -14,10 +14,19 @@ namespace Roslynator.CSharp.Analyzers.Tests
         public static void Method(string parameter1, string parameter2)
         {
             CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
+            CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod((parameter1), parameter2);
+            CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod((string)parameter1, parameter2);
+
             Roslynator.CSharp.Analyzers.Tests.CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
+
+            // n
+
+            CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1 ?? "", parameter2);
+
             parameter1.ExtensionMethod(parameter2);
 
             IEnumerable<int> items = Enumerable.Select(Enumerable.Range(0, 1), f => f);
+
             string s = StringExtension("");
         }
 

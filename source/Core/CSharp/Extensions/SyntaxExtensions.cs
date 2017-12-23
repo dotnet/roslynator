@@ -11,7 +11,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Documentation;
-using Roslynator.CSharp.Helpers.ModifierHelpers;
+using Roslynator.CSharp.Helpers;
+using Roslynator.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -50,8 +51,8 @@ namespace Roslynator.CSharp
         {
             return accessorDeclaration.WithSemicolonToken(default(SyntaxToken));
         }
-
         #endregion AccessorDeclarationSyntax
+
         #region AccessorListSyntax
         public static AccessorDeclarationSyntax Getter(this AccessorListSyntax accessorList)
         {
@@ -75,16 +76,41 @@ namespace Roslynator.CSharp
         #endregion AccessorListSyntax
 
         #region BlockSyntax
-        public static StatementSyntax SingleStatementOrDefault(this BlockSyntax body)
+        internal static StatementSyntax SingleNonBlockStatementOrDefault(this BlockSyntax body, bool recursive = true)
         {
             if (body == null)
                 throw new ArgumentNullException(nameof(body));
 
-            SyntaxList<StatementSyntax> statements = body.Statements;
+            if (recursive)
+            {
+                StatementSyntax statement = null;
 
-            return (statements.Count == 1)
-                ? statements[0]
-                : null;
+                do
+                {
+                    SyntaxList<StatementSyntax> statements = body.Statements;
+
+                    statement = (statements.Count == 1) ? statements[0] : null;
+
+                    body = statement as BlockSyntax;
+                }
+                while (body != null);
+
+                return statement;
+            }
+            else
+            {
+                SyntaxList<StatementSyntax> statements = body.Statements;
+
+                if (statements.Count == 1)
+                {
+                    StatementSyntax statement = statements[0];
+
+                    if (statement.Kind() != SyntaxKind.Block)
+                        return statement;
+                }
+
+                return null;
+            }
         }
 
         public static TextSpan BracesSpan(this BlockSyntax block)
@@ -93,6 +119,15 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(block));
 
             return TextSpan.FromBounds(block.OpenBraceToken.SpanStart, block.CloseBraceToken.Span.End);
+        }
+
+        internal static BlockSyntax InsertStatement(this BlockSyntax block, StatementSyntax statement)
+        {
+            SyntaxList<StatementSyntax> statements = block.Statements;
+
+            int insertIndex = statements.Count;
+
+            return block.WithStatements(statements.Insert(insertIndex, statement));
         }
 
         internal static bool ContainsYield(this BlockSyntax block)
@@ -203,16 +238,6 @@ namespace Roslynator.CSharp
 
             return classDeclaration
                 .RemoveNode(classDeclaration.Members[index], RemoveHelper.GetRemoveOptions(newMember));
-        }
-
-        public static ClassDeclarationSyntax InsertModifier(this ClassDeclarationSyntax classDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return ClassDeclarationModifierHelper.Instance.InsertModifier(classDeclaration, modifier, comparer);
-        }
-
-        public static ClassDeclarationSyntax InsertModifier(this ClassDeclarationSyntax classDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return ClassDeclarationModifierHelper.Instance.InsertModifier(classDeclaration, modifierKind, comparer);
         }
 
         public static ClassDeclarationSyntax InsertMember(this ClassDeclarationSyntax classDeclaration, MemberDeclarationSyntax member, IMemberDeclarationComparer comparer)
@@ -362,16 +387,6 @@ namespace Roslynator.CSharp
         {
             return constructorDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
-
-        public static ConstructorDeclarationSyntax InsertModifier(this ConstructorDeclarationSyntax constructorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return ConstructorDeclarationModifierHelper.Instance.InsertModifier(constructorDeclaration, modifier, comparer);
-        }
-
-        public static ConstructorDeclarationSyntax InsertModifier(this ConstructorDeclarationSyntax constructorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return ConstructorDeclarationModifierHelper.Instance.InsertModifier(constructorDeclaration, modifierKind, comparer);
-        }
         #endregion ConstructorDeclarationSyntax
 
         #region ConversionOperatorDeclarationSyntax
@@ -396,46 +411,14 @@ namespace Roslynator.CSharp
 
             return body ?? (CSharpSyntaxNode)conversionOperatorDeclaration.ExpressionBody;
         }
-
-        public static ConversionOperatorDeclarationSyntax InsertModifier(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return ConversionOperatorDeclarationModifierHelper.Instance.InsertModifier(conversionOperatorDeclaration, modifier, comparer);
-        }
-
-        public static ConversionOperatorDeclarationSyntax InsertModifier(this ConversionOperatorDeclarationSyntax conversionOperatorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return ConversionOperatorDeclarationModifierHelper.Instance.InsertModifier(conversionOperatorDeclaration, modifierKind, comparer);
-        }
         #endregion ConversionOperatorDeclarationSyntax
 
         #region DelegateDeclarationSyntax
-        public static DelegateDeclarationSyntax InsertModifier(this DelegateDeclarationSyntax delegateDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return DelegateDeclarationModifierHelper.Instance.InsertModifier(delegateDeclaration, modifier, comparer);
-        }
-
-        public static DelegateDeclarationSyntax InsertModifier(this DelegateDeclarationSyntax delegateDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return DelegateDeclarationModifierHelper.Instance.InsertModifier(delegateDeclaration, modifierKind, comparer);
-        }
-
         public static bool ReturnsVoid(this DelegateDeclarationSyntax delegateDeclaration)
         {
             return delegateDeclaration?.ReturnType?.IsVoid() == true;
         }
         #endregion DelegateDeclarationSyntax
-
-        #region DestructorDeclarationSyntax
-        public static DestructorDeclarationSyntax InsertModifier(this DestructorDeclarationSyntax destructorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return DestructorDeclarationModifierHelper.Instance.InsertModifier(destructorDeclaration, modifier, comparer);
-        }
-
-        public static DestructorDeclarationSyntax InsertModifier(this DestructorDeclarationSyntax destructorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return DestructorDeclarationModifierHelper.Instance.InsertModifier(destructorDeclaration, modifierKind, comparer);
-        }
-        #endregion DestructorDeclarationSyntax
 
         #region DocumentationCommentTriviaSyntax
         internal static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
@@ -500,9 +483,7 @@ namespace Roslynator.CSharp
             if (elseClause == null)
                 throw new ArgumentNullException(nameof(elseClause));
 
-            var ifStatement = elseClause.Parent as IfStatementSyntax;
-
-            if (ifStatement != null)
+            if (elseClause.Parent is IfStatementSyntax ifStatement)
                 return ifStatement.GetTopmostIf();
 
             return null;
@@ -573,16 +554,6 @@ namespace Roslynator.CSharp
                 enumDeclaration.OpenBraceToken.Span.Start,
                 enumDeclaration.CloseBraceToken.Span.End);
         }
-
-        public static EnumDeclarationSyntax InsertModifier(this EnumDeclarationSyntax enumDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return EnumDeclarationModifierHelper.Instance.InsertModifier(enumDeclaration, modifier, comparer);
-        }
-
-        public static EnumDeclarationSyntax InsertModifier(this EnumDeclarationSyntax enumDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return EnumDeclarationModifierHelper.Instance.InsertModifier(enumDeclaration, modifierKind, comparer);
-        }
         #endregion EnumDeclarationSyntax
 
         #region EventDeclarationSyntax
@@ -600,32 +571,12 @@ namespace Roslynator.CSharp
         {
             return eventDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
         }
-
-        public static EventDeclarationSyntax InsertModifier(this EventDeclarationSyntax eventDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return EventDeclarationModifierHelper.Instance.InsertModifier(eventDeclaration, modifier, comparer);
-        }
-
-        public static EventDeclarationSyntax InsertModifier(this EventDeclarationSyntax eventDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return EventDeclarationModifierHelper.Instance.InsertModifier(eventDeclaration, modifierKind, comparer);
-        }
         #endregion EventDeclarationSyntax
 
         #region EventFieldDeclarationSyntax
         public static bool IsStatic(this EventFieldDeclarationSyntax eventFieldDeclaration)
         {
             return eventFieldDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
-        }
-
-        public static EventFieldDeclarationSyntax InsertModifier(this EventFieldDeclarationSyntax eventFieldDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return EventFieldDeclarationModifierHelper.Instance.InsertModifier(eventFieldDeclaration, modifier, comparer);
-        }
-
-        public static EventFieldDeclarationSyntax InsertModifier(this EventFieldDeclarationSyntax eventFieldDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return EventFieldDeclarationModifierHelper.Instance.InsertModifier(eventFieldDeclaration, modifierKind, comparer);
         }
         #endregion EventFieldDeclarationSyntax
 
@@ -654,6 +605,15 @@ namespace Roslynator.CSharp
                 .WithSimplifierAnnotationIf(simplifiable);
         }
 
+        internal static ExpressionSyntax ParenthesizeIf(
+            this ExpressionSyntax expression,
+            bool condition,
+            bool includeElasticTrivia = true,
+            bool simplifiable = true)
+        {
+            return (condition) ? Parenthesize(expression, includeElasticTrivia, simplifiable) : expression;
+        }
+
         public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
         {
             while (expression?.Parent?.Kind() == SyntaxKind.ParenthesizedExpression)
@@ -674,35 +634,6 @@ namespace Roslynator.CSharp
         {
             return (condition) ? WalkDownParentheses(expression) : expression;
         }
-
-        internal static bool IsIncrementOrDecrementExpression(this ExpressionSyntax expression)
-        {
-            return expression?.IsKind(
-                SyntaxKind.PreIncrementExpression,
-                SyntaxKind.PreDecrementExpression,
-                SyntaxKind.PostIncrementExpression,
-                SyntaxKind.PostDecrementExpression) == true;
-        }
-
-        internal static bool SupportsCompoundAssignment(this ExpressionSyntax expression)
-        {
-            switch (expression?.Kind())
-            {
-                case SyntaxKind.AddExpression:
-                case SyntaxKind.SubtractExpression:
-                case SyntaxKind.MultiplyExpression:
-                case SyntaxKind.DivideExpression:
-                case SyntaxKind.ModuloExpression:
-                case SyntaxKind.BitwiseAndExpression:
-                case SyntaxKind.ExclusiveOrExpression:
-                case SyntaxKind.BitwiseOrExpression:
-                case SyntaxKind.LeftShiftExpression:
-                case SyntaxKind.RightShiftExpression:
-                    return true;
-                default:
-                    return false;
-            }
-        }
         #endregion ExpressionSyntax
 
         #region FieldDeclarationSyntax
@@ -714,16 +645,6 @@ namespace Roslynator.CSharp
         public static bool IsStatic(this FieldDeclarationSyntax fieldDeclaration)
         {
             return fieldDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
-        }
-
-        public static FieldDeclarationSyntax InsertModifier(this FieldDeclarationSyntax fieldDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return FieldDeclarationModifierHelper.Instance.InsertModifier(fieldDeclaration, modifier, comparer);
-        }
-
-        public static FieldDeclarationSyntax InsertModifier(this FieldDeclarationSyntax fieldDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return FieldDeclarationModifierHelper.Instance.InsertModifier(fieldDeclaration, modifierKind, comparer);
         }
         #endregion FieldDeclarationSyntax
 
@@ -915,16 +836,6 @@ namespace Roslynator.CSharp
 
             return indexerDeclaration.WithSemicolonToken(default(SyntaxToken));
         }
-
-        public static IndexerDeclarationSyntax InsertModifier(this IndexerDeclarationSyntax indexerDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return IndexerDeclarationModifierHelper.Instance.InsertModifier(indexerDeclaration, modifier, comparer);
-        }
-
-        public static IndexerDeclarationSyntax InsertModifier(this IndexerDeclarationSyntax indexerDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return IndexerDeclarationModifierHelper.Instance.InsertModifier(indexerDeclaration, modifierKind, comparer);
-        }
         #endregion IndexerDeclarationSyntax
 
         #region InterfaceDeclarationSyntax
@@ -1001,16 +912,6 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
             return interfaceDeclaration.WithMembers(interfaceDeclaration.Members.InsertMember(member, comparer));
-        }
-
-        public static InterfaceDeclarationSyntax InsertModifier(this InterfaceDeclarationSyntax interfaceDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return InterfaceDeclarationModifierHelper.Instance.InsertModifier(interfaceDeclaration, modifier, comparer);
-        }
-
-        public static InterfaceDeclarationSyntax InsertModifier(this InterfaceDeclarationSyntax interfaceDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return InterfaceDeclarationModifierHelper.Instance.InsertModifier(interfaceDeclaration, modifierKind, comparer);
         }
         #endregion InterfaceDeclarationSyntax
 
@@ -1637,9 +1538,9 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        internal static MemberDeclarationSyntax WithNewSingleLineDocumentationComment(
-            this MemberDeclarationSyntax member,
-            DocumentationCommentGeneratorSettings settings = null)
+        internal static TMember WithNewSingleLineDocumentationComment<TMember>(
+            this TMember member,
+            DocumentationCommentGeneratorSettings settings = null) where TMember : MemberDeclarationSyntax
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -1657,11 +1558,11 @@ namespace Roslynator.CSharp
             return member.WithLeadingTrivia(newLeadingTrivia);
         }
 
-        internal static MemberDeclarationSyntax WithBaseOrNewSingleLineDocumentationComment(
-            this MemberDeclarationSyntax member,
+        internal static TMember WithBaseOrNewSingleLineDocumentationComment<TMember>(
+            this TMember member,
             SemanticModel semanticModel,
             DocumentationCommentGeneratorSettings settings = null,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default(CancellationToken)) where TMember : MemberDeclarationSyntax
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -1677,10 +1578,10 @@ namespace Roslynator.CSharp
             return WithNewSingleLineDocumentationComment(member, settings);
         }
 
-        public static MemberDeclarationSyntax WithDocumentationComment(
-            this MemberDeclarationSyntax member,
+        public static TMember WithDocumentationComment<TMember>(
+            this TMember member,
             SyntaxTrivia comment,
-            bool indent = false)
+            bool indent = false) where TMember : MemberDeclarationSyntax
         {
             if (member == null)
                 throw new ArgumentNullException(nameof(member));
@@ -1769,16 +1670,6 @@ namespace Roslynator.CSharp
             BlockSyntax body = methodDeclaration.Body;
 
             return body ?? (CSharpSyntaxNode)methodDeclaration.ExpressionBody;
-        }
-
-        public static MethodDeclarationSyntax InsertModifier(this MethodDeclarationSyntax methodDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return MethodDeclarationModifierHelper.Instance.InsertModifier(methodDeclaration, modifier, comparer);
-        }
-
-        public static MethodDeclarationSyntax InsertModifier(this MethodDeclarationSyntax methodDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return MethodDeclarationModifierHelper.Instance.InsertModifier(methodDeclaration, modifierKind, comparer);
         }
         #endregion MethodDeclarationSyntax
 
@@ -1880,16 +1771,6 @@ namespace Roslynator.CSharp
             return body ?? (CSharpSyntaxNode)operatorDeclaration.ExpressionBody;
         }
 
-        public static OperatorDeclarationSyntax InsertModifier(this OperatorDeclarationSyntax operatorDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return OperatorDeclarationModifierHelper.Instance.InsertModifier(operatorDeclaration, modifier, comparer);
-        }
-
-        public static OperatorDeclarationSyntax InsertModifier(this OperatorDeclarationSyntax operatorDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return OperatorDeclarationModifierHelper.Instance.InsertModifier(operatorDeclaration, modifierKind, comparer);
-        }
-
         public static bool ReturnsVoid(this OperatorDeclarationSyntax operatorDeclaration)
         {
             return operatorDeclaration?.ReturnType?.IsVoid() == true;
@@ -1961,16 +1842,6 @@ namespace Roslynator.CSharp
         public static bool IsStatic(this PropertyDeclarationSyntax propertyDeclaration)
         {
             return propertyDeclaration?.Modifiers.Contains(SyntaxKind.StaticKeyword) == true;
-        }
-
-        public static PropertyDeclarationSyntax InsertModifier(this PropertyDeclarationSyntax propertyDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return PropertyDeclarationModifierHelper.Instance.InsertModifier(propertyDeclaration, modifier, comparer);
-        }
-
-        public static PropertyDeclarationSyntax InsertModifier(this PropertyDeclarationSyntax propertyDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return PropertyDeclarationModifierHelper.Instance.InsertModifier(propertyDeclaration, modifierKind, comparer);
         }
         #endregion PropertyDeclarationSyntax
 
@@ -2115,7 +1986,7 @@ namespace Roslynator.CSharp
         {
             if (statement?.IsKind(SyntaxKind.Block) == true)
             {
-                return ((BlockSyntax)statement).SingleStatementOrDefault();
+                return ((BlockSyntax)statement).Statements.SingleOrDefault(shouldThrow: false);
             }
             else
             {
@@ -2128,8 +1999,7 @@ namespace Roslynator.CSharp
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            SyntaxList<StatementSyntax> statements;
-            if (statement.TryGetContainingList(out statements))
+            if (statement.TryGetContainingList(out SyntaxList<StatementSyntax> statements))
             {
                 int index = statements.IndexOf(statement);
 
@@ -2145,8 +2015,7 @@ namespace Roslynator.CSharp
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            SyntaxList<StatementSyntax> statements;
-            if (statement.TryGetContainingList(out statements))
+            if (statement.TryGetContainingList(out SyntaxList<StatementSyntax> statements))
             {
                 int index = statements.IndexOf(statement);
 
@@ -2182,6 +2051,16 @@ namespace Roslynator.CSharp
             }
         }
 
+        internal static StatementSyntax SingleNonBlockStatementOrDefault(this StatementSyntax statement, bool recursive = true)
+        {
+            if (statement == null)
+                throw new ArgumentNullException(nameof(statement));
+
+            return (statement.Kind() == SyntaxKind.Block)
+                ? SingleNonBlockStatementOrDefault((BlockSyntax)statement, recursive)
+                : statement;
+        }
+
         public static bool IsEmbedded(
             this StatementSyntax statement,
             bool ifInsideElse = true,
@@ -2202,7 +2081,7 @@ namespace Roslynator.CSharp
 
             SyntaxKind parentKind = parent.Kind();
 
-            return EmbeddedStatementHelper.CanContainEmbeddedStatement(parentKind)
+            return parentKind.CanContainEmbeddedStatement()
                 && (ifInsideElse
                     || kind != SyntaxKind.IfStatement
                     || parentKind != SyntaxKind.ElseClause)
@@ -2280,16 +2159,6 @@ namespace Roslynator.CSharp
                 .RemoveNode(structDeclaration.Members[index], RemoveHelper.GetRemoveOptions(newMember));
         }
 
-        public static StructDeclarationSyntax InsertModifier(this StructDeclarationSyntax structDeclaration, SyntaxToken modifier, IModifierComparer comparer)
-        {
-            return StructDeclarationModifierHelper.Instance.InsertModifier(structDeclaration, modifier, comparer);
-        }
-
-        public static StructDeclarationSyntax InsertModifier(this StructDeclarationSyntax structDeclaration, SyntaxKind modifierKind, IModifierComparer comparer)
-        {
-            return StructDeclarationModifierHelper.Instance.InsertModifier(structDeclaration, modifierKind, comparer);
-        }
-
         public static StructDeclarationSyntax InsertMember(this StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member, IMemberDeclarationComparer comparer)
         {
             if (structDeclaration == null)
@@ -2300,18 +2169,6 @@ namespace Roslynator.CSharp
         #endregion StructDeclarationSyntax
 
         #region SwitchSectionSyntax
-        public static StatementSyntax SingleStatementOrDefault(this SwitchSectionSyntax switchSection)
-        {
-            if (switchSection == null)
-                throw new ArgumentNullException(nameof(switchSection));
-
-            SyntaxList<StatementSyntax> statements = switchSection.Statements;
-
-            return (statements.Count == 1)
-                ? statements[0]
-                : null;
-        }
-
         public static bool ContainsDefaultLabel(this SwitchSectionSyntax switchSection)
         {
             return switchSection?.Labels.Any(f => f.IsKind(SyntaxKind.DefaultSwitchLabel)) == true;
@@ -2459,42 +2316,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool SupportsModifiers(this SyntaxNode node)
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            switch (node.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.ConstructorDeclaration:
-                case SyntaxKind.ConversionOperatorDeclaration:
-                case SyntaxKind.DelegateDeclaration:
-                case SyntaxKind.DestructorDeclaration:
-                case SyntaxKind.EnumDeclaration:
-                case SyntaxKind.EventDeclaration:
-                case SyntaxKind.EventFieldDeclaration:
-                case SyntaxKind.FieldDeclaration:
-                case SyntaxKind.IndexerDeclaration:
-                case SyntaxKind.InterfaceDeclaration:
-                case SyntaxKind.MethodDeclaration:
-                case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.PropertyDeclaration:
-                case SyntaxKind.StructDeclaration:
-                case SyntaxKind.IncompleteMember:
-                case SyntaxKind.GetAccessorDeclaration:
-                case SyntaxKind.SetAccessorDeclaration:
-                case SyntaxKind.AddAccessorDeclaration:
-                case SyntaxKind.RemoveAccessorDeclaration:
-                case SyntaxKind.UnknownAccessorDeclaration:
-                case SyntaxKind.LocalDeclarationStatement:
-                case SyntaxKind.Parameter:
-                    return true;
-            }
-
-            return false;
-        }
-
         internal static TNode WithModifiers<TNode>(this TNode node, SyntaxTokenList modifiers) where TNode : SyntaxNode
         {
             if (node == null)
@@ -2552,27 +2373,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool SupportsExpressionBody(this SyntaxNode node)
-        {
-            switch (node?.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                case SyntaxKind.PropertyDeclaration:
-                case SyntaxKind.IndexerDeclaration:
-                case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.ConversionOperatorDeclaration:
-                case SyntaxKind.ConstructorDeclaration:
-                case SyntaxKind.DestructorDeclaration:
-                case SyntaxKind.GetAccessorDeclaration:
-                case SyntaxKind.SetAccessorDeclaration:
-                case SyntaxKind.AddAccessorDeclaration:
-                case SyntaxKind.RemoveAccessorDeclaration:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         internal static string GetTitle(this SyntaxNode node)
         {
             switch (node.Kind())
@@ -2595,6 +2395,8 @@ namespace Roslynator.CSharp
                     return "lock statement";
                 case SyntaxKind.FixedStatement:
                     return "fixed statement";
+                case SyntaxKind.SwitchStatement:
+                    return "switch statement";
                 case SyntaxKind.BreakStatement:
                     return "break statement";
                 case SyntaxKind.ContinueStatement:
@@ -2621,7 +2423,9 @@ namespace Roslynator.CSharp
                 case SyntaxKind.EventFieldDeclaration:
                     return "event";
                 case SyntaxKind.FieldDeclaration:
-                    return "field";
+                    return (((FieldDeclarationSyntax)node).Modifiers.Contains(SyntaxKind.ConstKeyword)) ? "const" : "field";
+                case SyntaxKind.DelegateDeclaration:
+                    return "delegate";
                 case SyntaxKind.NamespaceDeclaration:
                     return "namespace";
                 case SyntaxKind.ClassDeclaration:
@@ -2656,12 +2460,11 @@ namespace Roslynator.CSharp
         {
             foreach (SyntaxTrivia trivia in node.DescendantTrivia(descendIntoTrivia: true))
             {
-                if (trivia.IsDirective && trivia.HasStructure)
+                if (trivia.IsDirective
+                    && trivia.HasStructure
+                    && (trivia.GetStructure() is DirectiveTriviaSyntax directive))
                 {
-                    var directive = trivia.GetStructure() as DirectiveTriviaSyntax;
-
-                    if (directive != null)
-                        yield return directive;
+                    yield return directive;
                 }
             }
         }
@@ -2681,11 +2484,6 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(node));
 
             return node.Ancestors(ascendOutOfTrivia).Any(f => f.IsKind(kind));
-        }
-
-        public static bool IsBooleanLiteralExpression(this SyntaxNode node)
-        {
-            return node?.IsKind(SyntaxKind.TrueLiteralExpression, SyntaxKind.FalseLiteralExpression) == true;
         }
 
         internal static bool IsNumericLiteralExpression(this SyntaxNode node, int value)
@@ -3062,12 +2860,11 @@ namespace Roslynator.CSharp
         {
             SyntaxNode parent = node.Parent;
 
-            if (parent == null && ascendOutOfTrivia)
+            if (parent == null
+                && ascendOutOfTrivia
+                && (node is IStructuredTriviaSyntax structuredTrivia))
             {
-                var structuredTrivia = node as IStructuredTriviaSyntax;
-
-                if (structuredTrivia != null)
-                    parent = structuredTrivia.ParentTrivia.Token.Parent;
+                parent = structuredTrivia.ParentTrivia.Token.Parent;
             }
 
             return parent;
@@ -3080,9 +2877,7 @@ namespace Roslynator.CSharp
         {
             foreach (SyntaxNode descendant in node.DescendantNodesAndSelf(descendIntoChildren: descendIntoChildren, descendIntoTrivia: descendIntoTrivia))
             {
-                var tnode = descendant as TNode;
-
-                if (tnode != null)
+                if (descendant is TNode tnode)
                     return tnode;
             }
 
@@ -3097,9 +2892,7 @@ namespace Roslynator.CSharp
         {
             foreach (SyntaxNode descendant in node.DescendantNodesAndSelf(span, descendIntoChildren: descendIntoChildren, descendIntoTrivia: descendIntoTrivia))
             {
-                var tnode = descendant as TNode;
-
-                if (tnode != null)
+                if (descendant is TNode tnode)
                     return tnode;
             }
 
@@ -3119,22 +2912,22 @@ namespace Roslynator.CSharp
 
         internal static TNode RemoveModifier<TNode>(this TNode node, SyntaxKind modifierKind) where TNode : SyntaxNode
         {
-            return ModifierHelper.RemoveModifier(node, modifierKind);
+            return Modifier.Remove(node, modifierKind);
         }
 
         internal static TNode RemoveModifier<TNode>(this TNode node, SyntaxToken modifier) where TNode : SyntaxNode
         {
-            return ModifierHelper.RemoveModifier(node, modifier);
+            return Modifier.Remove(node, modifier);
         }
 
         internal static TNode InsertModifier<TNode>(this TNode node, SyntaxKind modifierKind, IModifierComparer comparer = null) where TNode : SyntaxNode
         {
-            return ModifierHelper.InsertModifier(node, modifierKind, comparer);
+            return Modifier.Insert(node, modifierKind, comparer);
         }
 
         internal static TNode InsertModifier<TNode>(this TNode node, SyntaxToken modifier, IModifierComparer comparer = null) where TNode : SyntaxNode
         {
-            return ModifierHelper.InsertModifier(node, modifier, comparer);
+            return Modifier.Insert(node, modifier, comparer);
         }
 
         public static TNode RemoveComments<TNode>(this TNode node, TextSpan? span = null) where TNode : SyntaxNode
@@ -3214,6 +3007,17 @@ namespace Roslynator.CSharp
             }
 
             return false;
+        }
+
+        internal static TNode WithAccessibility<TNode>(
+            this TNode node,
+            Accessibility newAccessibility,
+            IModifierComparer comparer = null) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            return (TNode)ChangeAccessibilityHelper.ChangeAccessibility(node, newAccessibility, comparer);
         }
         #endregion SyntaxNode
 
@@ -3402,7 +3206,7 @@ namespace Roslynator.CSharp
         #endregion SyntaxToken
 
         #region SyntaxTokenList
-        internal static SyntaxTokenList InsertModifier(this SyntaxTokenList modifiers, SyntaxKind modifierKind, IModifierComparer comparer)
+        public static SyntaxTokenList InsertModifier(this SyntaxTokenList modifiers, SyntaxKind modifierKind, IModifierComparer comparer)
         {
             return InsertModifier(modifiers, Token(modifierKind), comparer);
         }
@@ -3485,6 +3289,16 @@ namespace Roslynator.CSharp
             }
 
             return default(SyntaxToken);
+        }
+
+        internal static SyntaxTokenList Replace(this SyntaxTokenList tokens, SyntaxKind kind, SyntaxToken newToken)
+        {
+            int index = tokens.IndexOf(kind);
+
+            if (index == -1)
+                return tokens;
+
+            return tokens.ReplaceAt(index, newToken.WithTriviaFrom(tokens[index]));
         }
         #endregion SyntaxTokenList
 
@@ -3701,6 +3515,19 @@ namespace Roslynator.CSharp
         }
         #endregion TypeParameterConstraintClauseSyntax
 
+        #region TypeParameterListSyntax
+        internal static TypeParameterSyntax GetTypeParameterByName(this TypeParameterListSyntax typeParameterList, string name)
+        {
+            foreach (TypeParameterSyntax typeParameter in typeParameterList.Parameters)
+            {
+                if (string.Equals(typeParameter.Identifier.ValueText, name, StringComparison.Ordinal))
+                    return typeParameter;
+            }
+
+            return null;
+        }
+        #endregion TypeParameterListSyntax
+
         #region TypeSyntax
         public static bool IsVoid(this TypeSyntax type)
         {
@@ -3720,20 +3547,6 @@ namespace Roslynator.CSharp
             return declaration ?? usingStatement.Expression;
         }
         #endregion UsingStatementSyntax
-
-        #region VariableDeclarationSyntax
-        public static VariableDeclaratorSyntax SingleVariableOrDefault(this VariableDeclarationSyntax declaration)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            SeparatedSyntaxList<VariableDeclaratorSyntax> variables = declaration.Variables;
-
-            return (variables.Count == 1)
-                ? variables.First()
-                : null;
-        }
-        #endregion VariableDeclarationSyntax
 
         #region XmlElementSyntax
         internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName)

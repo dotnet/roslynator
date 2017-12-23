@@ -42,9 +42,15 @@
     <Compile Include="AddComparisonWithBooleanLiteralRefactoring.cs" />
     <Compile Include="AddBracesToDeclarationOrLabeledStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
+    <Compile Include="CS0029_CannotImplicitlyConvertType.cs" />
+    <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember2.cs" />
+    <Compile Include="CS0030_CannotConvertType.cs" />
+    <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember2.cs" />
+    <Compile Include="CS0126_ObjectOfTypeConvertibleToTypeIsRequired.cs" />
     <Compile Include="AddDocumentationComment.cs" />
     <Compile Include="AddBody.cs" />
     <Compile Include="AddSemicolon.cs" />
+    <Compile Include="ChangeMemberTypeAccordingToReturnExpression.cs" />
     <Compile Include="CS0021_CannotApplyIndexingToExpression.cs" />
     <Compile Include="CS0023_OperatorCannotBeAppliedToOperandOfType.cs" />
     <Compile Include="CS0077_AsOperatorMustBeUsedWithReferenceTypeOrNullableType.cs" />
@@ -52,10 +58,12 @@
     <Compile Include="CS0101_NamespaceAlreadyContainsDefinition2.cs" />
     <Compile Include="CS0102_TypeAlreadyContainsDefinition.cs" />
     <Compile Include="CS0102_TypeAlreadyContainsDefinition2.cs" />
+    <Compile Include="CS0103_NameDoesNotExistInCurrentContext.cs" />
     <Compile Include="CS0115_NoSuitableMethodFoundToOverride.cs" />
     <Compile Include="CS0139_NoEnclosingLoopOutOfWhichToBreakOrContinue.cs" />
     <Compile Include="CS0173_TypeOfConditionalExpressionCannotBeDetermined.cs" />
     <Compile Include="CS0177_OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod.cs" />
+    <Compile Include="CS0216_OperatorRequiresMatchingOperatorToAlsoBeDefined.cs" />
     <Compile Include="CS0266_CannotImplicitlyConvertTypeExplicitConversionExists.cs" />
     <Compile Include="CS0401_NewConstraintMustBeLastConstraintSpecified.cs" />
     <Compile Include="CS0405_DuplicateConstraintForTypeParameter.cs" />
@@ -65,24 +73,34 @@
     <Compile Include="CS0451_NewConstraintCannotBeUsedWithStructConstraint.cs" />
     <Compile Include="CS0472_ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull.cs" />
     <Compile Include="CS0592_AttributeIsNotValidOnThisDeclarationType.cs" />
+    <Compile Include="CS0660_TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals.cs" />
+    <Compile Include="CS0661_TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode.cs" />
     <Compile Include="CS0693_TypeParameterHasSameNameAsTypeParameterFromOuterType.cs" />
     <Compile Include="CS0708_CannotDeclareInstanceMembersInStaticClass.cs" />
     <Compile Include="CS0710_StaticClassesCannotHaveInstanceConstructors.cs" />
+    <Compile Include="CS0713_StaticClassCannotDeriveFromType.cs" />
     <Compile Include="CS0718_StaticTypesCannotBeUsedAsTypeArguments.cs" />
     <Compile Include="CS0718_StaticTypesCannotBeUsedAsTypeArguments2.cs" />
     <Compile Include="CS0750_PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers.cs" />
     <Compile Include="CS0759_NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod.cs" />
     <Compile Include="CS0766_PartialMethodsMustHaveVoidReturnType.cs" />
     <Compile Include="CS0766_PartialMethodsMustHaveVoidReturnType2.cs" />
+    <Compile Include="CS1031_TypeExpected.cs" />
     <Compile Include="CS1100_MethodHasParameterModifierThisWhichIsNotOnFirstParameter.cs" />
     <Compile Include="CS1105_ExtensionMethodMustBeStatic.cs" />
     <Compile Include="CS1106_ExtensionMethodMustBeDefinedInNonGenericStaticClass.cs" />
+    <Compile Include="CS1503_CannotConvertArgumentType.cs" />
+    <Compile Include="CS1519_InvalidTokenInClassStructOrInterfaceMemberDeclaration.cs" />
+    <Compile Include="CS1526_NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType.cs" />
     <Compile Include="CS1527_ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal.cs" />
+    <Compile Include="CS1597_SemicolonAfterMethodOrAccessorBlockIsNotValid.cs" />
     <Compile Include="CS1621_YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression.cs" />
     <Compile Include="CS1623_IteratorsCannotHaveRefOrOutParameters.cs" />
     <Compile Include="CS1689_AttributeIsNotValidOnThisDeclarationType.cs" />
+    <Compile Include="CS1750_ValueCannotBeUsedAsDefaultParameter.cs" />
     <Compile Include="CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody.cs" />
     <Compile Include="CS1998_AsyncMethodsCannotHaveRefOrOutParameters.cs" />
+    <Compile Include="MakeMemberNonStatic.cs" />
     <Compile Include="MemberHidesInheritedMember.cs" />
     <Compile Include="AddPartialModifier.cs" />
     <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />
@@ -96,7 +114,7 @@
     <Compile Include="InitializeLocalVariableWithDefaultValue.cs" />
     <Compile Include="CS0201_OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement.cs" />
     <Compile Include="MakeContainingClassAbstract.cs" />
-    <Compile Include="MakeMemberNonStatic.cs" />
+    <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember.cs" />
     <Compile Include="MarkOperatorAsPublicAndStatic.cs" />
     <Compile Include="MemberTypeMustMatchOverriddenMemberType.cs" />
     <Compile Include="MoveBaseClassBeforeAnyInterface.cs" />
@@ -134,6 +152,12 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="project.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Tests\Tests.csproj">
+      <Project>{6e6106a6-d2bd-4c72-bc8a-5eb37c5a2e42}</Project>
+      <Name>Tests</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

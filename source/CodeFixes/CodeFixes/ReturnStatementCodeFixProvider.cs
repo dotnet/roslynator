@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.CodeFixes
             if (!Settings.IsAnyCodeFixEnabled(
                 CodeFixIdentifiers.UseYieldReturnInsteadOfReturn,
                 CodeFixIdentifiers.RemoveReturnKeyword,
-                CodeFixIdentifiers.RemoveReturnExpression))
+                CodeFixIdentifiers.RemoveReturnExpression,
+                CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
             {
                 return;
             }
@@ -115,10 +116,15 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression:
                     case CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression:
                         {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                            {
+                                ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, returnStatement.Expression, semanticModel);
+                            }
+
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveReturnExpression))
                             {
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
                                 ISymbol symbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
 
                                 if (symbol?.IsMethod() == true)

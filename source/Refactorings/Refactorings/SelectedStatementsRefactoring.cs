@@ -25,13 +25,13 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInElseClause);
         }
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementsSelection selectedStatements)
         {
             if (selectedStatements.Any())
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
                 {
-                    var refactoring = new WrapInUsingStatementRefactoring();
+                    var refactoring = new WrapStatements.WrapInUsingStatementRefactoring();
                     await refactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
                 }
 
@@ -51,7 +51,8 @@ namespace Roslynator.CSharp.Refactorings
                     var options = new IfAnalysisOptions(
                         useCoalesceExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf),
                         useConditionalExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf),
-                        useBooleanExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf));
+                        useBooleanExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf),
+                        useExpression: false);
 
                     foreach (IfRefactoring refactoring in IfRefactoring.Analyze(selectedStatements, options, semanticModel, context.CancellationToken))
                     {
@@ -79,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
                 {
                     context.RegisterRefactoring(
-                        "Wrap in condition",
+                        WrapInIfStatementRefactoring.Title,
                         cancellationToken =>
                         {
                             var refactoring = new WrapInIfStatementRefactoring();
@@ -90,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
                 {
                     context.RegisterRefactoring(
-                        "Wrap in try-catch",
+                        WrapInTryCatchRefactoring.Title,
                         cancellationToken =>
                         {
                             var refactoring = new WrapInTryCatchRefactoring();

@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.If
@@ -32,18 +33,22 @@ namespace Roslynator.CSharp.Refactorings.If
             return ReturnStatement(expression);
         }
 
-        public override Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
+        public override async Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = StatementContainer.Create(IfStatement);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(IfStatement);
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(IfStatement);
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionSyntax expression = IfRefactoringHelper.GetBooleanExpression(
                 IfStatement.Condition,
                 Expression1,
-                Expression2);
+                Expression2,
+                semanticModel,
+                cancellationToken);
 
             StatementSyntax newStatement = CreateStatement(expression)
                 .WithLeadingTrivia(IfStatement.GetLeadingTrivia())
@@ -54,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings.If
                 .RemoveAt(index)
                 .ReplaceAt(index, newStatement);
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+            return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyLogicalNotExpression); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.SimplifyLogicalNegation); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                SimplifyLogicalNotExpressionRefactoring.AnalyzeLogicalNotExpression,
+                SimplifyLogicalNegationRefactoring.AnalyzeLogicalNotExpression,
                 SyntaxKind.LogicalNotExpression);
         }
     }

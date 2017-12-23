@@ -63,6 +63,12 @@ namespace Roslynator.CSharp.Analyzers.Tests
             set { _property = value; }
         }
 
+        public string @string
+        {
+            get => _property2;
+            set => _property2 = value;
+        }
+
         public static string StaticProperty
         {
             get { return _staticProperty; }

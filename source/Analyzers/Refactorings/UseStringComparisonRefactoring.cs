@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -17,281 +18,262 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseStringComparisonRefactoring
     {
-        public static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            var equalsExpression = (BinaryExpressionSyntax)context.Node;
+            ExpressionSyntax expression = invocationInfo.InvocationExpression.WalkUpParentheses();
 
-            if (Analyze(equalsExpression, context.SemanticModel, context.CancellationToken))
-                ReportDiagnostic(context, equalsExpression);
-        }
+            SyntaxNode parent = expression.Parent;
 
-        public static void AnalyzeNotEqualsExpression(SyntaxNodeAnalysisContext context)
-        {
-            var notEqualsExpression = (BinaryExpressionSyntax)context.Node;
+            SyntaxKind kind = parent.Kind();
 
-            if (Analyze(notEqualsExpression, context.SemanticModel, context.CancellationToken))
-                ReportDiagnostic(context, notEqualsExpression);
-        }
-
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
-        {
-            if (!node.SpanContainsDirectives())
-                context.ReportDiagnostic(DiagnosticDescriptors.UseStringComparison, node);
-        }
-
-        private static bool Analyze(
-            BinaryExpressionSyntax binaryExpression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ExpressionSyntax left = binaryExpression.Left;
-
-            switch (left?.Kind())
+            if (kind == SyntaxKind.SimpleMemberAccessExpression)
             {
-                case SyntaxKind.StringLiteralExpression:
-                    {
-                        ExpressionSyntax right = binaryExpression.Right;
+                MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo(parent.Parent);
 
-                        string name = GetMethodName(right);
+                if (!invocationInfo2.Success)
+                    return;
 
-                        return IsToLowerOrToUpper(name)
-                            && IsPublicInstanceStringMethodThatReturnsString(right, name, semanticModel, cancellationToken);
-                    }
-                case SyntaxKind.InvocationExpression:
-                    {
-                        string name = GetMethodName((InvocationExpressionSyntax)left);
+                Analyze(context, invocationInfo, invocationInfo2);
+            }
+            else if (kind == SyntaxKind.Argument)
+            {
+                Analyze(context, invocationInfo, (ArgumentSyntax)parent);
+            }
+            else if (kind == SyntaxKind.EqualsExpression
+                || kind == SyntaxKind.NotEqualsExpression)
+            {
+                Analyze(context, invocationInfo, expression, (BinaryExpressionSyntax)parent);
+            }
+        }
 
-                        if (IsToLowerOrToUpper(name))
-                        {
-                            ExpressionSyntax right = binaryExpression.Right;
+        private static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            MemberInvocationExpressionInfo invocationInfo,
+            MemberInvocationExpressionInfo invocationInfo2)
+        {
+            if (invocationInfo2.InvocationExpression.SpanContainsDirectives())
+                return;
 
-                            switch (right?.Kind())
-                            {
-                                case SyntaxKind.StringLiteralExpression:
-                                    {
-                                        return IsPublicInstanceStringMethodThatReturnsString(left, name, semanticModel, cancellationToken);
-                                    }
-                                case SyntaxKind.InvocationExpression:
-                                    {
-                                        string name2 = GetMethodName((InvocationExpressionSyntax)right);
+            string name2 = invocationInfo2.NameText;
 
-                                        if (name == name2)
-                                        {
-                                            return IsPublicInstanceStringMethodThatReturnsString(left, name, semanticModel, cancellationToken)
-                                                && IsPublicInstanceStringMethodThatReturnsString(right, name2, semanticModel, cancellationToken);
-                                        }
-
-                                        break;
-                                    }
-                            }
-                        }
-
-                        break;
-                    }
+            if (name2 != "Equals"
+                && name2 != "StartsWith"
+                && name2 != "EndsWith"
+                && name2 != "IndexOf"
+                && name2 != "LastIndexOf"
+                && name2 != "Contains")
+            {
+                return;
             }
 
-            return false;
+            SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo2.Arguments;
+
+            if (arguments.Count != 1)
+                return;
+
+            ExpressionSyntax argumentExpression = arguments[0].Expression.WalkDownParentheses();
+
+            string name = invocationInfo.NameText;
+
+            MemberInvocationExpressionInfo invocationInfo3;
+
+            bool isStringLiteral = argumentExpression.IsKind(SyntaxKind.StringLiteralExpression);
+
+            if (!isStringLiteral)
+            {
+                invocationInfo3 = SyntaxInfo.MemberInvocationExpressionInfo(argumentExpression);
+
+                if (!invocationInfo3.Success)
+                    return;
+
+                string name3 = invocationInfo3.NameText;
+
+                if (name != name3)
+                    return;
+            }
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            if (!CheckSymbol(invocationInfo, semanticModel, cancellationToken))
+                return;
+
+            if (!(semanticModel.TryGetMethodInfo(invocationInfo2.InvocationExpression, out MethodInfo info, cancellationToken)
+                && info.IsPublicInstanceStringMethod(name2)
+                && info.ReturnType.SpecialType == ((name2.EndsWith("IndexOf", StringComparison.Ordinal)) ? SpecialType.System_Int32 : SpecialType.System_Boolean)
+                && info.HasParameter(SpecialType.System_String)))
+            {
+                return;
+            }
+
+            if (!isStringLiteral
+                && !CheckSymbol(invocationInfo3, semanticModel, cancellationToken))
+            {
+                return;
+            }
+
+            ReportDiagnostic(context, invocationInfo2);
         }
 
-        public static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
+        private static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            MemberInvocationExpressionInfo invocationInfo,
+            ArgumentSyntax argument)
         {
-            var invocation = (InvocationExpressionSyntax)context.Node;
+            if (!(argument.Parent is ArgumentListSyntax argumentList))
+                return;
 
-            ArgumentListSyntax argumentList = invocation.ArgumentList;
+            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-            if (argumentList != null)
+            if (arguments.Count != 2)
+                return;
+
+            MemberInvocationExpressionInfo equalsInvocation = SyntaxInfo.MemberInvocationExpressionInfo(argumentList.Parent);
+
+            if (!equalsInvocation.Success)
+                return;
+
+            if (equalsInvocation.NameText != "Equals")
+                return;
+
+            if (!IsFixable(context, invocationInfo, argument, arguments))
+                return;
+
+            if (!context.SemanticModel.TryGetMethodInfo(equalsInvocation.InvocationExpression, out MethodInfo info, context.CancellationToken)
+                || !info.IsPublicStaticStringMethod("Equals")
+                || !info.ReturnsBoolean
+                || !info.HasParameters(SpecialType.System_String, SpecialType.System_String))
             {
-                SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+                return;
+            }
 
-                if (arguments.Count == 2)
+            ReportDiagnostic(context, equalsInvocation);
+        }
+
+        private static bool IsFixable(
+            SyntaxNodeAnalysisContext context,
+            MemberInvocationExpressionInfo invocationInfo,
+            ArgumentSyntax argument,
+            SeparatedSyntaxList<ArgumentSyntax> arguments)
+        {
+            if (object.ReferenceEquals(argument, arguments[0]))
+            {
+                ExpressionSyntax expression = arguments[1].Expression?.WalkDownParentheses();
+
+                if (expression != null)
                 {
-                    ExpressionSyntax expression = invocation.Expression;
+                    SyntaxKind kind = expression.Kind();
 
-                    if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                    if (kind == SyntaxKind.InvocationExpression)
                     {
-                        var memberAccess = (MemberAccessExpressionSyntax)expression;
-
-                        if (memberAccess.Name?.Identifier.ValueText == "Equals")
-                        {
-                            ExpressionSyntax firstArgumentExpression = arguments[0].Expression;
-
-                            switch (firstArgumentExpression?.Kind())
-                            {
-                                case SyntaxKind.StringLiteralExpression:
-                                    {
-                                        string name = GetMethodName(arguments[1].Expression);
-
-                                        if (IsToLowerOrToUpper(name)
-                                            && IsPublicStaticStringEqualsWithTwoStringParameters(invocation, context.SemanticModel, context.CancellationToken))
-                                        {
-                                            ReportDiagnostic(context, invocation);
-                                        }
-
-                                        break;
-                                    }
-                                case SyntaxKind.InvocationExpression:
-                                    {
-                                        string name = GetMethodName((InvocationExpressionSyntax)firstArgumentExpression);
-
-                                        if (IsToLowerOrToUpper(name))
-                                        {
-                                            ExpressionSyntax secondArgumentExpression = arguments[1].Expression;
-
-                                            switch (secondArgumentExpression.Kind())
-                                            {
-                                                case SyntaxKind.StringLiteralExpression:
-                                                    {
-                                                        if (IsPublicStaticStringEqualsWithTwoStringParameters(invocation, context.SemanticModel, context.CancellationToken))
-                                                            ReportDiagnostic(context, invocation);
-
-                                                        break;
-                                                    }
-                                                case SyntaxKind.InvocationExpression:
-                                                    {
-                                                        string name2 = GetMethodName((InvocationExpressionSyntax)secondArgumentExpression);
-
-                                                        if (name == name2
-                                                            && IsPublicStaticStringEqualsWithTwoStringParameters(invocation, context.SemanticModel, context.CancellationToken))
-                                                        {
-                                                            ReportDiagnostic(context, invocation);
-                                                        }
-
-                                                        break;
-                                                    }
-                                            }
-                                        }
-
-                                        break;
-                                    }
-                            }
-                        }
+                        return TryCreateCaseChangingInvocation(expression, out MemberInvocationExpressionInfo invocationInfo2)
+                            && invocationInfo.NameText == invocationInfo2.NameText
+                            && CheckSymbol(invocationInfo, context.SemanticModel, context.CancellationToken)
+                            && CheckSymbol(invocationInfo2, context.SemanticModel, context.CancellationToken);
+                    }
+                    else if (kind == SyntaxKind.StringLiteralExpression)
+                    {
+                        return CheckSymbol(invocationInfo, context.SemanticModel, context.CancellationToken);
                     }
                 }
-                else if (arguments.Count == 1)
-                {
-                    ExpressionSyntax invocationExpression = invocation.Expression;
-
-                    if (invocationExpression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                    {
-                        var memberAccess = (MemberAccessExpressionSyntax)invocationExpression;
-
-                        if (memberAccess.Name?.Identifier.ValueText == "Equals")
-                        {
-                            string name = GetMethodName(memberAccess.Expression);
-
-                            if (IsToLowerOrToUpper(name))
-                            {
-                                ExpressionSyntax expression = arguments[0].Expression;
-
-                                switch (expression?.Kind())
-                                {
-                                    case SyntaxKind.StringLiteralExpression:
-                                        {
-                                            if (IsInstanceStringEqualsWithOneStringParameter(invocation, context.SemanticModel, context.CancellationToken))
-                                                ReportDiagnostic(context, invocation);
-
-                                            break;
-                                        }
-                                    case SyntaxKind.InvocationExpression:
-                                        {
-                                            string name2 = GetMethodName((InvocationExpressionSyntax)expression);
-
-                                            if (name == name2
-                                                && IsInstanceStringEqualsWithOneStringParameter(invocation, context.SemanticModel, context.CancellationToken))
-                                            {
-                                                ReportDiagnostic(context, invocation);
-                                            }
-
-                                            break;
-                                        }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-
-        private static bool IsToLowerOrToUpper(string name)
-        {
-            if (name != null)
-            {
-                return name == "ToUpper"
-                    || name == "ToLower";
-            }
-
-            return false;
-        }
-
-        private static string GetMethodName(ExpressionSyntax expression)
-        {
-            if (expression?.IsKind(SyntaxKind.InvocationExpression) == true)
-            {
-                return GetMethodName((InvocationExpressionSyntax)expression);
             }
             else
             {
-                return null;
+                return arguments[0].Expression?.WalkDownParentheses().Kind() == SyntaxKind.StringLiteralExpression
+                    && CheckSymbol(invocationInfo, context.SemanticModel, context.CancellationToken);
             }
+
+            return false;
         }
 
-        private static string GetMethodName(InvocationExpressionSyntax invocation)
+        private static void Analyze(
+            SyntaxNodeAnalysisContext context,
+            MemberInvocationExpressionInfo invocationInfo,
+            ExpressionSyntax leftOrRight,
+            BinaryExpressionSyntax binaryExpression)
         {
-            if (invocation.ArgumentList?.Arguments.Count == 0)
+            if (object.ReferenceEquals(leftOrRight, binaryExpression.Left))
             {
-                ExpressionSyntax invocationExpression = invocation.Expression;
+                ExpressionSyntax right = binaryExpression.Right?.WalkDownParentheses();
 
-                if (invocationExpression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
+                if (right != null)
                 {
-                    var memberAccess = (MemberAccessExpressionSyntax)invocationExpression;
+                    SyntaxKind kind = right.Kind();
 
-                    return memberAccess.Name?.Identifier.ValueText;
+                    if (kind == SyntaxKind.InvocationExpression)
+                    {
+                        if (TryCreateCaseChangingInvocation(right, out MemberInvocationExpressionInfo invocationInfo2)
+                            && invocationInfo.NameText == invocationInfo2.NameText
+                            && CheckSymbol(invocationInfo, context.SemanticModel, context.CancellationToken)
+                            && CheckSymbol(invocationInfo2, context.SemanticModel, context.CancellationToken))
+                        {
+                            ReportDiagnostic(context, binaryExpression);
+                        }
+                    }
+                    else if (kind == SyntaxKind.StringLiteralExpression)
+                    {
+                        if (CheckSymbol(invocationInfo, context.SemanticModel, context.CancellationToken))
+                        {
+                            ReportDiagnostic(context, binaryExpression);
+                        }
+                    }
                 }
             }
-
-            return null;
+            else if (binaryExpression.Left?.WalkDownParentheses().Kind() == SyntaxKind.StringLiteralExpression
+                && CheckSymbol(invocationInfo, context.SemanticModel, context.CancellationToken))
+            {
+                ReportDiagnostic(context, binaryExpression);
+            }
         }
 
-        private static bool IsPublicInstanceStringMethodThatReturnsString(
-            ExpressionSyntax expression,
-            string name,
+        private static bool TryCreateCaseChangingInvocation(ExpressionSyntax expression, out MemberInvocationExpressionInfo invocationInfo)
+        {
+            invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(expression);
+
+            if (invocationInfo.Success
+                && !invocationInfo.Arguments.Any())
+            {
+                string name = invocationInfo.NameText;
+
+                return name == "ToLower"
+                    || name == "ToLowerInvariant"
+                    || name == "ToUpper"
+                    || name == "ToUpperInvariant";
+            }
+
+            invocationInfo = default(MemberInvocationExpressionInfo);
+            return false;
+        }
+
+        private static bool CheckSymbol(
+            MemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            MethodInfo info;
-            return semanticModel.TryGetMethodInfo(expression, out info, cancellationToken)
-                && info.IsPublicInstanceStringMethod(name)
+            return semanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out MethodInfo info, cancellationToken)
+                && info.IsPublicInstanceStringMethod()
                 && info.ReturnsString
                 && !info.Parameters.Any();
         }
 
-        private static bool IsPublicStaticStringEqualsWithTwoStringParameters(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            MethodInfo info;
-            return semanticModel.TryGetMethodInfo(invocation, out info, cancellationToken)
-                && info.IsPublicStaticStringMethod("Equals")
-                && info.ReturnsBoolean
-                && info.HasParameters(SpecialType.System_String, SpecialType.System_String);
+            ReportDiagnostic(context, invocationInfo.InvocationExpression);
         }
 
-        private static bool IsInstanceStringEqualsWithOneStringParameter(InvocationExpressionSyntax invocation, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
         {
-            MethodInfo info;
-
-            return semanticModel.TryGetMethodInfo(invocation, out info, cancellationToken)
-                && info.IsPublicInstanceStringMethod("Equals")
-                && info.ReturnsBoolean
-                && info.HasParameter(SpecialType.System_String);
+            context.ReportDiagnostic(DiagnosticDescriptors.UseStringComparison, node);
         }
 
         public static Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
-            StringComparison stringComparison,
+            string comparisonName,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax left = binaryExpression.Left;
-            ExpressionSyntax right = binaryExpression.Right;
+            ExpressionSyntax left = binaryExpression.Left.WalkDownParentheses();
+            ExpressionSyntax right = binaryExpression.Right.WalkDownParentheses();
 
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
@@ -299,7 +281,7 @@ namespace Roslynator.CSharp.Refactorings
                 ArgumentList(
                     CreateArgument(left),
                     CreateArgument(right),
-                    Argument(CreateStringComparison(stringComparison))));
+                    Argument(CreateStringComparison(comparisonName))));
 
             if (binaryExpression.IsKind(SyntaxKind.NotEqualsExpression))
                 newNode = LogicalNotExpression(newNode);
@@ -311,52 +293,58 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
         }
 
-        internal static async Task<Document> RefactorAsync(
+        internal static Task<Document> RefactorAsync(
             Document document,
-            InvocationExpressionSyntax invocation,
-            StringComparison stringComparison,
+            MemberInvocationExpressionInfo invocationInfo,
+            string comparisonName,
             CancellationToken cancellationToken)
         {
-            ArgumentListSyntax argumentList = invocation.ArgumentList;
+            SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
 
-            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+            InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
 
             if (arguments.Count == 2)
             {
                 ArgumentListSyntax newArgumentList = ArgumentList(
                     CreateArgument(arguments[0]),
                     CreateArgument(arguments[1]),
-                    Argument(CreateStringComparison(stringComparison)));
+                    Argument(CreateStringComparison(comparisonName)));
 
                 InvocationExpressionSyntax newNode = invocation.WithArgumentList(newArgumentList);
 
-                return await document.ReplaceNodeAsync(invocation, newNode, cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
             }
-            else if (arguments.Count == 1)
+            else
             {
-                ArgumentListSyntax newArgumentList = ArgumentList(
-                    CreateArgument(arguments[0]),
-                    Argument(CreateStringComparison(stringComparison)));
-
                 var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
                 var invocation2 = (InvocationExpressionSyntax)memberAccess.Expression;
                 var memberAccess2 = (MemberAccessExpressionSyntax)invocation2.Expression;
 
-                InvocationExpressionSyntax newNode = invocation
-                    .ReplaceNode(invocation2, memberAccess2.Expression)
+                MemberAccessExpressionSyntax newMemberAccess = memberAccess.WithExpression(memberAccess2.Expression);
+
+                bool isContains = memberAccess.Name.Identifier.ValueText == "Contains";
+
+                if (isContains)
+                    newMemberAccess = newMemberAccess.WithName(newMemberAccess.Name.WithIdentifier(Identifier("IndexOf").WithTriviaFrom(newMemberAccess.Name.Identifier)));
+
+                ArgumentListSyntax newArgumentList = ArgumentList(
+                    CreateArgument(arguments[0]),
+                    Argument(CreateStringComparison(comparisonName)));
+
+                ExpressionSyntax newNode = invocation
+                    .WithExpression(newMemberAccess)
                     .WithArgumentList(newArgumentList);
 
-                return await document.ReplaceNodeAsync(invocation, newNode, cancellationToken).ConfigureAwait(false);
+                if (isContains)
+                    newNode = GreaterThanOrEqualExpression(newNode.Parenthesize(), NumericLiteralExpression(0)).Parenthesize();
+
+                return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
             }
-
-            Debug.Assert(false, "");
-
-            return document;
         }
 
-        private static NameSyntax CreateStringComparison(StringComparison stringComparison)
+        private static NameSyntax CreateStringComparison(string comparisonName)
         {
-            return ParseName($"System.StringComparison.{stringComparison}").WithSimplifierAnnotation();
+            return ParseName($"System.StringComparison.{comparisonName}").WithSimplifierAnnotation();
         }
 
         private static ArgumentSyntax CreateArgument(ExpressionSyntax expression)
@@ -385,7 +373,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ArgumentSyntax CreateArgument(ArgumentSyntax argument)
         {
-            ExpressionSyntax expression = argument.Expression;
+            ExpressionSyntax expression = argument.Expression.WalkDownParentheses();
 
             switch (expression.Kind())
             {

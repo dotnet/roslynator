@@ -188,9 +188,6 @@ namespace Roslynator.CSharp.Refactorings
                     value *= 2;
                 }
 
-                if (value < 0)
-                    return null;
-
                 if (Array.IndexOf(reservedValues, value) == -1)
                     i++;
             }
@@ -235,9 +232,6 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     value *= 2;
                 }
-
-                if (value < 0)
-                    return null;
 
                 if (Array.IndexOf(reservedValues, value) == -1)
                     i++;
@@ -284,9 +278,6 @@ namespace Roslynator.CSharp.Refactorings
                     value *= 2;
                 }
 
-                if (value < 0)
-                    return null;
-
                 if (Array.IndexOf(reservedValues, value) == -1)
                     i++;
             }
@@ -331,9 +322,6 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     value *= 2;
                 }
-
-                if (value < 0)
-                    return null;
 
                 if (Array.IndexOf(reservedValues, value) == -1)
                     i++;

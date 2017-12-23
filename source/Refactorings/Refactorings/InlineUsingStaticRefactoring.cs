@@ -54,18 +54,15 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (SyntaxNode descendant in node.DescendantNodes())
             {
-                if (!descendant.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+                if (!descendant.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                    && (descendant is SimpleNameSyntax name))
                 {
-                    var name = descendant as SimpleNameSyntax;
-                    if (name != null)
-                    {
-                        ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+                    ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
 
-                        if (symbol?.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property) == true
-                            && symbol.ContainingType?.Equals(classSymbol) == true)
-                        {
-                            names.Add(name);
-                        }
+                    if (symbol?.IsKind(SymbolKind.Event, SymbolKind.Field, SymbolKind.Method, SymbolKind.Property) == true
+                        && symbol.ContainingType?.Equals(classSymbol) == true)
+                    {
+                        names.Add(name);
                     }
                 }
             }

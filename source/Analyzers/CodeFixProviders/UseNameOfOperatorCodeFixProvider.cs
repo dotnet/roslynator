@@ -15,6 +15,8 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class UseNameOfOperatorCodeFixProvider : BaseCodeFixProvider
     {
+        private const string Title = "Use nameof operator";
+
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(DiagnosticIdentifiers.UseNameOfOperator); }
@@ -24,17 +26,29 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out LiteralExpressionSyntax node))
+            if (!TryFindNode(root, context.Span, out SyntaxNode node))
                 return;
 
-            string identifier = context.Diagnostics[0].Properties["Identifier"];
+            Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                "Use nameof operator",
-                cancellationToken => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, node, identifier, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.UseNameOfOperator));
+            if (diagnostic.Properties.TryGetValue("Identifier", out string identifier))
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    cancellationToken => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (LiteralExpressionSyntax)node, identifier, cancellationToken),
+                    GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics[0]);
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+            else
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    Title,
+                    cancellationToken => UseNameOfOperatorRefactoring.RefactorAsync(context.Document, (InvocationExpressionSyntax)node, cancellationToken),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
         }
     }
 }

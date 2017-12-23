@@ -30,31 +30,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool CanContainEmbeddedStatement(SyntaxNode node)
-        {
-            return node != null
-                && CanContainEmbeddedStatement(node.Kind());
-        }
-
-        public static bool CanContainEmbeddedStatement(SyntaxKind kind)
-        {
-            switch (kind)
-            {
-                case SyntaxKind.IfStatement:
-                case SyntaxKind.ElseClause:
-                case SyntaxKind.ForEachStatement:
-                case SyntaxKind.ForStatement:
-                case SyntaxKind.UsingStatement:
-                case SyntaxKind.WhileStatement:
-                case SyntaxKind.DoStatement:
-                case SyntaxKind.LockStatement:
-                case SyntaxKind.FixedStatement:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         private static StatementSyntax GetChildStatement(
             SyntaxNode node,
             bool ifInsideElse = true,
@@ -116,7 +91,7 @@ namespace Roslynator.CSharp
             if (!(GetChildStatement(node, ifInsideElse, usingInsideUsing) is BlockSyntax block))
                 return null;
 
-            StatementSyntax statement = block.SingleStatementOrDefault();
+            StatementSyntax statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
             if (statement == null)
                 return null;

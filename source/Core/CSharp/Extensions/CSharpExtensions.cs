@@ -305,14 +305,11 @@ namespace Roslynator.CSharp
         {
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
-            if (symbol?.IsMethod() == true)
+            if (symbol?.IsMethod() == true
+                && ExtensionMethodInfo.TryCreate((IMethodSymbol)symbol, semanticModel, out ExtensionMethodInfo extensionMethodInfo, kind))
             {
-                ExtensionMethodInfo extensionMethodInfo;
-                if (ExtensionMethodInfo.TryCreate((IMethodSymbol)symbol, semanticModel, out extensionMethodInfo, kind))
-                {
-                    methodInfo = extensionMethodInfo.MethodInfo;
-                    return true;
-                }
+                methodInfo = extensionMethodInfo.MethodInfo;
+                return true;
             }
 
             methodInfo = default(MethodInfo);

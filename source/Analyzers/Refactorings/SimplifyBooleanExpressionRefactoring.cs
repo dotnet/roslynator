@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
-using Roslynator.Utilities;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -85,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
                     var identifierName = (IdentifierNameSyntax)simpleName;
 
                     return string.Equals(identifierName.Identifier.ValueText, name, StringComparison.Ordinal)
-                        && SemanticUtilities.IsPropertyOfNullableOfT(expression, name, semanticModel, cancellationToken);
+                        && SyntaxUtility.IsPropertyOfNullableOfT(expression, name, semanticModel, cancellationToken);
                 }
             }
 

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeGeneration.CSharp;
 using Roslynator.Utilities;
@@ -20,11 +21,15 @@ namespace Roslynator.CodeGeneration
         {
             WriteCompilationUnit(
                 @"Refactorings\RefactoringIdentifiers.Generated.cs",
-                RefactoringIdentifiersGenerator.Generate(Refactorings, Comparer));
+                RefactoringIdentifiersGenerator.Generate(Refactorings, obsolete: false, comparer: Comparer));
+
+            WriteCompilationUnit(
+                @"Refactorings\RefactoringIdentifiers.Deprecated.Generated.cs",
+                RefactoringIdentifiersGenerator.Generate(Refactorings, obsolete: true, comparer: Comparer));
 
             WriteCompilationUnit(
                 @"VisualStudio.Core\RefactoringsOptionsPage.Generated.cs",
-                RefactoringsOptionsPageGenerator.Generate(Refactorings, Comparer));
+                RefactoringsOptionsPageGenerator.Generate(Refactorings.Where(f => !f.IsObsolete), Comparer));
 
             WriteCompilationUnit(
                 @"Analyzers\DiagnosticDescriptors.Generated.cs",

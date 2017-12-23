@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -53,13 +54,14 @@ namespace Roslynator.CSharp.CodeFixes
                                 break;
                             }
 
-                            if (StatementContainer.TryCreate(statement, out StatementContainer container))
+                            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(statement);
+                            if (statementsInfo.Success)
                             {
                                 codeAction = CodeAction.Create(
                                     Title,
                                     cancellationToken =>
                                     {
-                                        SyntaxList<StatementSyntax> statements = container.Statements;
+                                        SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
                                         int index = statements.IndexOf(statement);
 

@@ -35,12 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.LabelHasNotBeenReferenced:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove unused label",
-                                cancellationToken => context.Document.RemoveStatementAsync(labeledStatement, context.CancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                            CodeFixRegistrator.RemoveStatement(context, diagnostic, labeledStatement, title: "Remove unused label");
                             break;
                         }
                 }

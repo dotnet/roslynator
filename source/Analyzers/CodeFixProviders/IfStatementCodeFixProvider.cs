@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
@@ -7,10 +8,12 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.DiagnosticAnalyzers;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.If;
+using Roslynator.CSharp.Refactorings.ReduceIfNesting;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -24,8 +27,9 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
-                    DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf,
+                    DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement,
+                    DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
                     DiagnosticIdentifiers.ReduceIfNesting);
             }
         }
@@ -57,29 +61,15 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ReplaceIfStatementWithAssignment:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Replace if with assignment",
-                                cancellationToken =>
-                                {
-                                    return ReplaceIfStatementWithAssignmentRefactoring.RefactorAsync(
-                                        context.Document,
-                                        ifStatement,
-                                        cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf:
+                    case DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement:
+                    case DiagnosticIdentifiers.ReplaceIfStatementWithAssignment:
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                             IfRefactoring refactoring = IfRefactoring.Analyze(
                                 ifStatement,
-                                UseCoalesceExpressionInsteadOfIfDiagnosticAnalyzer.AnalysisOptions,
+                                IfStatementDiagnosticAnalyzer.AnalysisOptions,
                                 semanticModel,
                                 context.CancellationToken).First();
 
@@ -100,6 +90,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     return ReduceIfNestingRefactoring.RefactorAsync(
                                         context.Document,
                                         ifStatement,
+                                        (SyntaxKind)Enum.Parse(typeof(SyntaxKind), diagnostic.Properties["JumpKind"]),
                                         recursive: true,
                                         cancellationToken: cancellationToken);
                                 },

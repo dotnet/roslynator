@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
@@ -15,8 +14,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxTree tree = context.Tree;
 
-            SyntaxNode root;
-            if (!tree.TryGetRoot(out root))
+            if (!tree.TryGetRoot(out SyntaxNode root))
                 return;
 
             foreach (SyntaxTrivia trivia in root.DescendantTrivia(descendIntoTrivia: true))

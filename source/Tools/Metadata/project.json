@@ -1,0 +1,15 @@
+﻿{
+  "supports": {},
+  "dependencies": {
+    "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
+    "NETStandard.Library": "1.6.0",
+    "System.Collections.Immutable": "1.1.37"
+  },
+  "frameworks": {
+    "netstandard1.3": {
+      "imports": [
+        "portable-net45+win8+wp8+wpa81"
+      ]
+    }
+  }
+}

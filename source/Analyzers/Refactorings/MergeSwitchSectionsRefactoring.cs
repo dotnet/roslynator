@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -62,30 +61,56 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static bool AreEquivalent(SyntaxList<StatementSyntax> statements, SyntaxList<StatementSyntax> statements2)
+        private static bool AreEquivalent(SyntaxList<StatementSyntax> statements1, SyntaxList<StatementSyntax> statements2)
         {
-            if (statements.Count == 1)
+            int count = statements1.Count;
+
+            if (count == 1)
             {
-                if (statements2.Count == 1)
-                    return AreEquivalent(statements[0], statements2[0]);
+                return statements2.Count == 1
+                    && AreEquivalent(statements1[0], statements2[0]);
             }
-            else if (statements.Count == 2
-                && statements2.Count == 2
-                && statements[1].IsKind(SyntaxKind.BreakStatement)
-                && statements2[1].IsKind(SyntaxKind.BreakStatement))
+            else if (count == 2)
             {
-                return AreEquivalent(statements[0], statements2[0]);
+                return statements2.Count == 2
+                    && AreEquivalentJumpStatements(statements1[1], statements2[1])
+                    && AreEquivalent(statements1[0], statements2[0]);
             }
 
             return false;
         }
 
-        private static bool AreEquivalent(StatementSyntax statement, StatementSyntax statement2)
+        private static bool AreEquivalent(StatementSyntax statement1, StatementSyntax statement2)
         {
-            return statement.Kind() == statement2.Kind()
-                && SyntaxComparer.AreEquivalent(statement, statement2)
-                && statement.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
+            return statement1.Kind() == statement2.Kind()
+                && SyntaxComparer.AreEquivalent(statement1, statement2)
+                && statement1.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia())
                 && statement2.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia());
+        }
+
+        private static bool AreEquivalentJumpStatements(StatementSyntax statement1, StatementSyntax statement2)
+        {
+            switch (statement1)
+            {
+                case BreakStatementSyntax breakStatement:
+                    {
+                        return statement2.Kind() == SyntaxKind.BreakStatement;
+                    }
+                case ReturnStatementSyntax returnStatement:
+                    {
+                        return returnStatement.Expression == null
+                            && (statement2 is ReturnStatementSyntax returnStatement2)
+                            && returnStatement2.Expression == null;
+                    }
+                case ThrowStatementSyntax throwStatement:
+                    {
+                        return throwStatement.Expression == null
+                            && (statement2 is ThrowStatementSyntax throwStatement2)
+                            && throwStatement2.Expression == null;
+                    }
+            }
+
+            return false;
         }
 
         private static SyntaxList<StatementSyntax> GetStatementsOrDefault(SwitchSectionSyntax section)

@@ -54,16 +54,12 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             {
                 SyntaxTrivia firstTrivia = triviaList.First();
 
-                if (firstTrivia.HasStructure)
+                if (firstTrivia.HasStructure
+                    && (firstTrivia.GetStructure() is DocumentationCommentTriviaSyntax newComment))
                 {
-                    var newComment = firstTrivia.GetStructure() as DocumentationCommentTriviaSyntax;
+                    newComment = newComment.WithFormatterAnnotation();
 
-                    if (newComment != null)
-                    {
-                        newComment = newComment.WithFormatterAnnotation();
-
-                        return await document.ReplaceNodeAsync(comment, newComment, cancellationToken).ConfigureAwait(false);
-                    }
+                    return await document.ReplaceNodeAsync(comment, newComment, cancellationToken).ConfigureAwait(false);
                 }
             }
 
@@ -109,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                 startIndex = endIndex;
             }
 
-            sb.Append(text.Substring(startIndex));
+            sb.Append(text, startIndex, text.Length - startIndex);
 
             return sb.ToString();
         }
@@ -131,8 +127,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
                     for (int j = i - 1; j >= 0; j--)
                     {
-                        XmlElementSyntax element;
-                        if (dic.TryGetValue(GetName(nodes[j]), out element))
+                        if (dic.TryGetValue(GetName(nodes[j]), out XmlElementSyntax element))
                         {
                             insertIndex = element.FullSpan.End;
                             break;
@@ -143,8 +138,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
                     {
                         for (int j = i + 1; j < nodes.Count; j++)
                         {
-                            XmlElementSyntax element;
-                            if (dic.TryGetValue(GetName(nodes[j]), out element))
+                            if (dic.TryGetValue(GetName(nodes[j]), out XmlElementSyntax element))
                             {
                                 XmlElementSyntax previousElement = GetPreviousElement(comment, element);
 
@@ -180,7 +174,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
             return elementInfos;
         }
 
-        private XmlElementSyntax GetPreviousElement(DocumentationCommentTriviaSyntax comment, XmlElementSyntax element)
+        private static XmlElementSyntax GetPreviousElement(DocumentationCommentTriviaSyntax comment, XmlElementSyntax element)
         {
             SyntaxList<XmlNodeSyntax> content = comment.Content;
 

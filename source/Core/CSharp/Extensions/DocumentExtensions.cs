@@ -11,57 +11,13 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Documentation;
 using Roslynator.CSharp.Helpers;
-using Roslynator.CSharp.Helpers.ModifierHelpers;
 using Roslynator.CSharp.SyntaxRewriters;
 
 namespace Roslynator.CSharp
 {
     public static class DocumentExtensions
     {
-        internal static async Task<Document> InsertModifierAsync(
-            this Document document,
-            SyntaxNode node,
-            SyntaxKind modifierKind,
-            IModifierComparer comparer = null,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxTokenList modifiers = node.GetModifiers();
-
-            if (!modifiers.Contains(modifierKind))
-            {
-                SyntaxNode newNode = node.InsertModifier(modifierKind, comparer);
-
-                return await document.ReplaceNodeAsync(node, newNode, cancellationToken).ConfigureAwait(false);
-            }
-            else
-            {
-                return document;
-            }
-        }
-
-        internal static Task<Document> RemoveModifierAsync(
-            this Document document,
-            SyntaxNode node,
-            SyntaxKind modifierKind,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode newNode = ModifierHelper.RemoveModifier(node, modifierKind);
-
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
-        }
-
-        internal static Task<Document> RemoveModifierAsync(
-            this Document document,
-            SyntaxNode node,
-            SyntaxToken modifier,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode newNode = ModifierHelper.RemoveModifier(node, modifier);
-
-            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
-        }
-
-        public static async Task<Document> RemoveMemberAsync(
+        public static Task<Document> RemoveMemberAsync(
             this Document document,
             MemberDeclarationSyntax member,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -78,20 +34,15 @@ namespace Roslynator.CSharp
             {
                 var compilationUnit = (CompilationUnitSyntax)parent;
 
-                return await document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member), cancellationToken).ConfigureAwait(false);
+                return document.ReplaceNodeAsync(compilationUnit, compilationUnit.RemoveMember(member), cancellationToken);
+            }
+            else if (parent is MemberDeclarationSyntax parentMember)
+            {
+                return document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member), cancellationToken);
             }
             else
             {
-                var parentMember = parent as MemberDeclarationSyntax;
-
-                if (parentMember != null)
-                {
-                    return await document.ReplaceNodeAsync(parentMember, parentMember.RemoveMember(member), cancellationToken).ConfigureAwait(false);
-                }
-                else
-                {
-                    return await document.RemoveNodeAsync(member, RemoveHelper.DefaultRemoveOptions, cancellationToken).ConfigureAwait(false);
-                }
+                return document.RemoveNodeAsync(member, RemoveHelper.DefaultRemoveOptions, cancellationToken);
             }
         }
 

@@ -3,6 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
@@ -36,13 +37,13 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                                 }
                                 else if (kind == SyntaxKind.LogicalOrExpression)
                                 {
-                                    StatementContainer container;
-                                    if (StatementContainer.TryCreate((StatementSyntax)parent, out container))
+                                    StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo((StatementSyntax)parent);
+                                    if (statementsInfo.Success)
                                     {
                                         var refactoring = new ExtractConditionFromIfToIfRefactoring();
                                         context.RegisterRefactoring(
                                             refactoring.Title,
-                                            cancellationToken => refactoring.RefactorAsync(context.Document, container, condition, binaryExpressionSelection, cancellationToken));
+                                            cancellationToken => refactoring.RefactorAsync(context.Document, statementsInfo, condition, binaryExpressionSelection, cancellationToken));
                                     }
                                 }
 
@@ -95,13 +96,13 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                                     }
                                     else if (kind == SyntaxKind.LogicalOrExpression)
                                     {
-                                        StatementContainer container;
-                                        if (StatementContainer.TryCreate((StatementSyntax)parent, out container))
+                                        StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo((StatementSyntax)parent);
+                                        if (statementsInfo.Success)
                                         {
                                             var refactoring = new ExtractConditionFromIfToIfRefactoring();
                                             context.RegisterRefactoring(
                                                 refactoring.Title,
-                                                cancellationToken => refactoring.RefactorAsync(context.Document, container, binaryExpression, expression, cancellationToken));
+                                                cancellationToken => refactoring.RefactorAsync(context.Document, statementsInfo, binaryExpression, expression, cancellationToken));
                                         }
                                     }
 
@@ -111,8 +112,8 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                                 {
                                     if (kind == SyntaxKind.LogicalAndExpression)
                                     {
-                                        StatementContainer container;
-                                        if (StatementContainer.TryCreate((StatementSyntax)parent, out container))
+                                        StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo((StatementSyntax)parent);
+                                        if (statementsInfo.Success)
                                         {
                                             var refactoring = new ExtractConditionFromWhileToNestedIfRefactoring();
                                             context.RegisterRefactoring(

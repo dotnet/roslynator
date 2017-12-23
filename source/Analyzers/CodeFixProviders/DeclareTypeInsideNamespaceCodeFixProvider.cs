@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (TryFindToken(root, context.Span.Start, out SyntaxToken identifier))
+            if (!TryFindToken(root, context.Span.Start, out SyntaxToken identifier))
                 return;
 
             CodeAction codeAction = CodeAction.Create(

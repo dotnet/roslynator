@@ -75,7 +75,7 @@ namespace Roslynator
             return innerSpan.Contains(span) || span.IsBetweenSpans(innerSpan, token.FullSpan);
         }
 
-        public static bool IsEmptyAndContainedInSpanOrBetweenSpans(this TextSpan span, SyntaxNode node)
+        internal static bool IsEmptyAndContainedInSpanOrBetweenSpans(this TextSpan span, SyntaxNode node)
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));

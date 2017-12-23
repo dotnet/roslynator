@@ -188,13 +188,13 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             }
         }
 
-        private void AnalyzeStatement(SyntaxNodeAnalysisContext context, StatementSyntax statement, BlockSyntax block)
+        private static void AnalyzeStatement(SyntaxNodeAnalysisContext context, StatementSyntax statement, BlockSyntax block)
         {
             if (block?.IsMissing == false)
                 AnalyzeStatement(context, statement, block.OpenBraceToken, block.CloseBraceToken);
         }
 
-        private void AnalyzeStatement(SyntaxNodeAnalysisContext context, StatementSyntax statement, SyntaxToken openBrace, SyntaxToken closeBrace)
+        private static void AnalyzeStatement(SyntaxNodeAnalysisContext context, StatementSyntax statement, SyntaxToken openBrace, SyntaxToken closeBrace)
         {
             var block = (BlockSyntax)statement.Parent;
 

@@ -78,6 +78,11 @@ namespace Roslynator.CSharp
             return (ElseClauseSyntax)Node;
         }
 
+        public override string ToString()
+        {
+            return Node?.ToString() ?? base.ToString();
+        }
+
         public bool Equals(IfStatementOrElseClause other)
         {
             return Node == other.Node;

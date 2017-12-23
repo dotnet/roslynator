@@ -17,9 +17,7 @@ namespace Roslynator.CSharp.Helpers
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            var argumentList = argument.Parent as BaseArgumentListSyntax;
-
-            if (argumentList != null)
+            if (argument.Parent is BaseArgumentListSyntax argumentList)
             {
                 SyntaxNode parent = argumentList.Parent;
 
@@ -61,14 +59,10 @@ namespace Roslynator.CSharp.Helpers
 
         private static SymbolInfo GetSymbolInfo(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            var expression = node as ExpressionSyntax;
-
-            if (expression != null)
+            if (node is ExpressionSyntax expression)
                 return semanticModel.GetSymbolInfo(expression, cancellationToken);
 
-            var constructorInitializer = node as ConstructorInitializerSyntax;
-
-            if (constructorInitializer != null)
+            if (node is ConstructorInitializerSyntax constructorInitializer)
                 return semanticModel.GetSymbolInfo(constructorInitializer, cancellationToken);
 
             return default(SymbolInfo);
@@ -81,24 +75,31 @@ namespace Roslynator.CSharp.Helpers
         {
             IParameterSymbol parameterSymbol = DetermineParameterSymbol(symbol, argument, argumentList);
 
-            if (parameterSymbol != null)
-            {
-                ITypeSymbol typeSymbol = parameterSymbol.Type;
-
-                if (parameterSymbol.IsParams
-                    && typeSymbol.IsArrayType())
-                {
-                    return ((IArrayTypeSymbol)typeSymbol).ElementType;
-                }
-                else
-                {
-                    return typeSymbol;
-                }
-            }
-            else
-            {
+            if (parameterSymbol == null)
                 return null;
+
+            RefKind refKind = parameterSymbol.RefKind;
+
+            if (refKind == RefKind.Out)
+            {
+                if (argument.RefOrOutKeyword.Kind() != SyntaxKind.OutKeyword)
+                    return null;
             }
+            else if (refKind == RefKind.Ref)
+            {
+                if (argument.RefOrOutKeyword.Kind() != SyntaxKind.RefKeyword)
+                    return null;
+            }
+
+            ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+            if (parameterSymbol.IsParams
+                && typeSymbol.IsArrayType())
+            {
+                return ((IArrayTypeSymbol)typeSymbol).ElementType;
+            }
+
+            return typeSymbol;
         }
 
         private static IParameterSymbol DetermineParameterSymbol(

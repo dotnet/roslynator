@@ -18,21 +18,14 @@ namespace Roslynator.CSharp.CodeFixes
             return WellKnownFixAllProviders.BatchFixer;
         }
 
-        internal static string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey = null)
+        protected static string GetEquivalenceKey(Diagnostic diagnostic, string additionalKey = null)
         {
-            return GetEquivalenceKey(diagnostic.Id, additionalKey);
+            return EquivalenceKeyProvider.GetEquivalenceKey(diagnostic, additionalKey);
         }
 
-        internal static string GetEquivalenceKey(string key, string additionalKey = null)
+        protected static string GetEquivalenceKey(string key, string additionalKey = null)
         {
-            if (additionalKey != null)
-            {
-                return $"{EquivalenceKeyPrefix}.{key}.{additionalKey}";
-            }
-            else
-            {
-                return $"{EquivalenceKeyPrefix}.{key}";
-            }
+            return EquivalenceKeyProvider.GetEquivalenceKey(key, additionalKey);
         }
 
         protected static bool TryFindFirstAncestorOrSelf<TNode>(

@@ -24,12 +24,12 @@ namespace Roslynator.CSharp.Refactorings
             if (ifStatement.IsSimpleIf()
                 && !ifStatement.ContainsDiagnostics)
             {
-                NotEqualsToNullExpression notEqualsToNull;
-                if (NotEqualsToNullExpression.TryCreate(ifStatement.Condition, out notEqualsToNull))
+                NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, allowedKinds: NullCheckKind.NotEqualsToNull);
+                if (nullCheck.Success)
                 {
-                    MemberInvocationStatement memberInvocation;
-                    if (MemberInvocationStatement.TryCreate(ifStatement.GetSingleStatementOrDefault(), out memberInvocation)
-                        && SyntaxComparer.AreEquivalent(notEqualsToNull.Left, memberInvocation.Expression)
+                    MemberInvocationStatementInfo invocationInfo = SyntaxInfo.MemberInvocationStatementInfo(ifStatement.GetSingleStatementOrDefault());
+                    if (invocationInfo.Success
+                        && SyntaxComparer.AreEquivalent(nullCheck.Expression, invocationInfo.Expression)
                         && !ifStatement.IsInExpressionTree(expressionType, context.SemanticModel, context.CancellationToken)
                         && !ifStatement.SpanContainsDirectives())
                     {
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!logicalAndExpression.ContainsDiagnostics)
             {
-                ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAndExpression);
+                ExpressionSyntax expression = SyntaxInfo.NullCheckExpressionInfo(logicalAndExpression.Left, allowedKinds: NullCheckKind.NotEqualsToNull).Expression;
 
                 if (expression != null
                     && context.SemanticModel
@@ -68,21 +68,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-        }
-
-        private static ExpressionSyntax FindExpressionCheckedForNull(BinaryExpressionSyntax logicalAndExpression)
-        {
-            ExpressionSyntax left = logicalAndExpression.Left?.WalkDownParentheses();
-
-            if (left?.IsKind(SyntaxKind.NotEqualsExpression) == true)
-            {
-                var notEquals = (BinaryExpressionSyntax)left;
-
-                if (notEquals.Right?.IsKind(SyntaxKind.NullLiteralExpression) == true)
-                    return notEquals.Left;
-            }
-
-            return null;
         }
 
         internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression)
@@ -175,7 +160,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ExpressionSyntax CreateExpressionWithConditionalAccess(BinaryExpressionSyntax logicalAnd)
         {
-            ExpressionSyntax expression = FindExpressionCheckedForNull(logicalAnd);
+            ExpressionSyntax expression = SyntaxInfo.NullCheckExpressionInfo(logicalAnd.Left, allowedKinds: NullCheckKind.NotEqualsToNull).Expression;
 
             ExpressionSyntax right = logicalAnd.Right?.WalkDownParentheses();
 
@@ -252,9 +237,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             var statement = (ExpressionStatementSyntax)ifStatement.GetSingleStatementOrDefault();
 
-            MemberInvocationStatement memberInvocation = MemberInvocationStatement.Create(statement);
+            MemberInvocationStatementInfo invocationInfo = SyntaxInfo.MemberInvocationStatementInfo(statement);
 
-            int insertIndex = memberInvocation.Expression.Span.End - statement.FullSpan.Start;
+            int insertIndex = invocationInfo.Expression.Span.End - statement.FullSpan.Start;
             StatementSyntax newStatement = SyntaxFactory.ParseStatement(statement.ToFullString().Insert(insertIndex, "?"));
 
             IEnumerable<SyntaxTrivia> leading = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, statement.SpanStart));

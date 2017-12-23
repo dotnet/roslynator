@@ -11,8 +11,12 @@ namespace Roslynator.CSharp.Refactorings.Tests
         public static void ExtensionMethod(this string parameter1, string parameter2)
         {
             ExtensionMethod(parameter1, parameter2);
+            ExtensionMethod(parameter1 ?? "", parameter2);
             CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
             Roslynator.CSharp.Refactorings.Tests.CallExtensionMethodAsInstanceMethodRefactoring.ExtensionMethod(parameter1, parameter2);
+
+            //n
+
             parameter1.ExtensionMethod(parameter2);
 
             var items = Enumerable.Select(Enumerable.Range(0, 1), f => f);

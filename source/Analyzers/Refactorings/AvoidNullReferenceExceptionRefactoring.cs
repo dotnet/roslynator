@@ -13,27 +13,24 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AvoidNullReferenceExceptionRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            switch (memberInvocation.NameText)
+            switch (invocationInfo.NameText)
             {
                 case "ElementAtOrDefault":
                 case "FirstOrDefault":
                 case "LastOrDefault":
                     {
-                        InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
+                        InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
                         ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
 
-                        if (IsExpressionOfAccessExpression(expression))
+                        if (IsExpressionOfAccessExpression(expression)
+                            && context.SemanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, context.CancellationToken)
+                            && methodInfo.ReturnType.IsReferenceType
+                            && methodInfo.IsContainingType(MetadataNames.System_Linq_Enumerable))
                         {
-                            MethodInfo methodInfo;
-                            if (context.SemanticModel.TryGetMethodInfo(invocationExpression, out methodInfo, context.CancellationToken)
-                                && methodInfo.ReturnType.IsReferenceType
-                                && methodInfo.IsContainingType(MetadataNames.System_Linq_Enumerable))
-                            {
-                                ReportDiagnostic(context, expression);
-                            }
+                            ReportDiagnostic(context, expression);
                         }
 
                         break;

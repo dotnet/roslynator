@@ -132,6 +132,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
             bool f4, f5;
             f4 = true;
             f5 = true;
+
+            bool f6 = false;
+            f6 = f6.Equals(true);
         }
     }
 }

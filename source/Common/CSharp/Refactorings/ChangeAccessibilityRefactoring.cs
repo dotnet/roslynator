@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Comparers;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             Accessibility newAccessibility,
             CancellationToken cancellationToken)
         {
-            SyntaxNode newNode = AccessibilityHelper.ChangeAccessibility(node, newAccessibility, ModifierComparer.Instance);
+            SyntaxNode newNode = node.WithAccessibility(newAccessibility, ModifierComparer.Instance);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
@@ -34,12 +35,14 @@ namespace Roslynator.CSharp.Refactorings
                 memberDeclarations,
                 (node, rewrittenNode) =>
                 {
-                    AccessibilityInfo info = AccessibilityInfo.Create(node.GetModifiers());
+                    AccessibilityInfo info = SyntaxInfo.AccessibilityInfo(node);
 
                     if (info.Accessibility == Accessibility.NotApplicable)
                         return node;
 
-                    return AccessibilityHelper.ChangeAccessibility(node, info, newAccessibility, ModifierComparer.Instance);
+                    AccessibilityInfo newInfo = info.WithAccessibility(newAccessibility, ModifierComparer.Instance);
+
+                    return newInfo.Node;
                 },
                 cancellationToken);
         }

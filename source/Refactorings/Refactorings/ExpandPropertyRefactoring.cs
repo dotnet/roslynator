@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -54,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
 
             accessorList = accessorList
                 .RemoveWhitespaceOrEndOfLineTrivia()
-                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));
+                .WithCloseBraceToken(accessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
 
             return propertyDeclaration
                 .WithInitializer(null)
@@ -72,12 +73,22 @@ namespace Roslynator.CSharp.Refactorings
 
                     if (value != null)
                     {
-                        yield return accessor.WithBody(Block(ReturnStatement(value))).WithoutSemicolonToken();
+                        yield return accessor
+                            .WithBody(Block(ReturnStatement(value)))
+                            .WithoutSemicolonToken();
+
                         continue;
                     }
                 }
 
-                yield return accessor.WithBody(Block()).WithoutSemicolonToken();
+                BlockSyntax body = Block(
+                    OpenBraceToken(),
+                    List<StatementSyntax>(),
+                    CloseBraceToken().WithNavigationAnnotation());
+
+                yield return accessor
+                    .WithBody(body)
+                    .WithoutSemicolonToken();
             }
         }
     }

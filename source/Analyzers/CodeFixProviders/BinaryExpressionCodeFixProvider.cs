@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
-                    DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod,
+                    DiagnosticIdentifiers.CallAnyInsteadOfCount,
                     DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
@@ -59,11 +59,11 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case DiagnosticIdentifiers.UseAnyMethodInsteadOfCountMethod:
+                    case DiagnosticIdentifiers.CallAnyInsteadOfCount:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Call 'Any' instead of 'Count'",
-                                cancellationToken => UseAnyMethodInsteadOfCountMethodRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                cancellationToken => CallAnyInsteadOfCountRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

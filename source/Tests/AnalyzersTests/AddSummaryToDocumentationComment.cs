@@ -51,6 +51,14 @@ namespace Roslynator.CSharp.Analyzers.Tests
         {
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        [Obsolete]
+        private static void Foo8()
+        {
+        }
+
         private static class InheritDoc
         {
             /// <inheritdoc />

@@ -13,7 +13,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
         public string Property { get { return _property; } set { _property = value; } }
 
+        public string Property2 { get => _property2; set => _property2 = value; }
+
         public string ReadOnlyProperty { get { return _readOnlyProperty; } }
+
+        public string ReadOnlyProperty2 { get => _readOnlyProperty2; }
 
         public string ReadOnlyAutoProperty
         {

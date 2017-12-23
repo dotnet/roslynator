@@ -81,9 +81,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 foreach (SyntaxReference syntaxReference in symbol.DeclaringSyntaxReferences)
                 {
-                    var declaration2 = syntaxReference.GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
-
-                    if (declaration2 != null)
+                    if (syntaxReference.GetSyntax(context.CancellationToken) is MemberDeclarationSyntax declaration2)
                     {
                         Accessibility accessibility2 = declaration2.GetModifiers().GetAccessibility();
 
@@ -173,13 +171,13 @@ namespace Roslynator.CSharp.Refactorings
 
         public static Task<Document> RefactorAsync(
             Document document,
-            MemberDeclarationSyntax member,
+            MemberDeclarationSyntax memberDeclaration,
             Accessibility accessibility,
             CancellationToken cancellationToken)
         {
-            MemberDeclarationSyntax newNode = AccessibilityHelper.ChangeAccessibility(member, accessibility, ModifierComparer.Instance);
+            MemberDeclarationSyntax newNode = memberDeclaration.WithAccessibility(accessibility, ModifierComparer.Instance);
 
-            return document.ReplaceNodeAsync(member, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
         }
     }
 }

@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (body != null)
                 {
-                    StatementSyntax statement = body.SingleStatementOrDefault();
+                    StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
                     if (statement?.IsKind(SyntaxKind.ExpressionStatement) == true)
                     {
@@ -124,11 +124,18 @@ namespace Roslynator.CSharp.Refactorings
 
         public static IdentifierNameSyntax GetBackingFieldIdentifierName(AccessorDeclarationSyntax accessor)
         {
-            var expressionStatement = (ExpressionStatementSyntax)accessor.Body.Statements[0];
+            BlockSyntax body = accessor.Body;
 
-            var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+            if (body != null)
+            {
+                var expressionStatement = (ExpressionStatementSyntax)body.Statements[0];
 
-            return (IdentifierNameSyntax)assignment.Left;
+                var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
+
+                return (IdentifierNameSyntax)assignment.Left;
+            }
+
+            return null;
         }
     }
 }

@@ -53,8 +53,6 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
                                 break;
 
-                            var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
-
                             ExpressionSyntax value = variableDeclarator.Initializer?.Value;
 
                             if (value == null)
@@ -80,16 +78,14 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private void ComputeCodeFix(
+        private static void ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             VariableDeclaratorSyntax variableDeclarator,
             ISymbol symbol,
             SemanticModel semanticModel)
         {
-            var methodSymbol = symbol as IMethodSymbol;
-
-            if (methodSymbol != null)
+            if (symbol is IMethodSymbol methodSymbol)
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 

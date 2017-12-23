@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.DocumentationComment;
-using Roslynator.CSharp.Refactorings.UnusedSyntax;
+using Roslynator.CSharp.Analyzers.UnusedParameter;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 $"Remove unused type parameter '{typeParameter.Identifier}'",
-                                cancellationToken => UnusedTypeParameterRefactoring.RefactorAsync(context.Document, typeParameter, cancellationToken),
+                                cancellationToken => UnusedParameterRefactoring.RefactorAsync(context.Document, typeParameter, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

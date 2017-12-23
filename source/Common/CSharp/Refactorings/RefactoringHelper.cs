@@ -49,9 +49,7 @@ namespace Roslynator.CSharp
                 }
                 else
                 {
-                    var simpleName = expression as SimpleNameSyntax;
-
-                    if (simpleName != null)
+                    if (expression is SimpleNameSyntax simpleName)
                     {
                         SimpleNameSyntax newSimpleName = ChangeName(simpleName, newName);
 

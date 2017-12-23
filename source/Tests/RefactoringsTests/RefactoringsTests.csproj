@@ -35,6 +35,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AddMemberToInterface.cs" />
+    <Compile Include="DocumentationRefactoring.cs" />
+    <Compile Include="MergeIfWithParentIf.cs" />
+    <Compile Include="RemoveUnnecessaryElseClauseRefactoring.cs" />
+    <Compile Include="ReplaceCommentWithDocumentationCommentRefactoring.cs" />
     <Compile Include="ReplaceIfElseWithIfReturnRefactoring.cs" />
     <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="AddTypeParameterRefactoring.cs" />
@@ -70,7 +75,6 @@
     <Compile Include="RemoveStatementRefactoring.cs" />
     <Compile Include="DuplicateStatementRefactoring.cs" />
     <Compile Include="ExtractTypeDeclarationToNewFile\ExtractTypeDeclarationToNewFile.cs" />
-    <Compile Include="AddDefaultValueToReturnStatement.cs" />
     <Compile Include="AddUsingDirectiveRefactoring.cs" />
     <Compile Include="CollapseToInitializerRefactoring.cs" />
     <Compile Include="MergeAssignmentExpressionWithReturnStatementRefactoring.cs" />
@@ -91,6 +95,9 @@
     <Compile Include="ReplaceForWithWhileRefactoring.cs" />
     <Compile Include="ReplaceIfWithSwitchRefactoring.cs" />
     <Compile Include="GenerateEnumMemberRefactoring.cs" />
+    <Compile Include="ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
+    <Compile Include="SplitDeclarationAndInitializationRefactoring.cs" />
+    <Compile Include="Tuple.cs" />
     <Compile Include="UseCSharp6DictionaryInitializerRefactoring.cs" />
     <Compile Include="UseListInsteadOfYield.cs" />
     <Compile Include="ReplaceObjectCreationWithDefaultValue.cs" />
@@ -169,8 +176,6 @@
     <Compile Include="CheckParameterForNullRefactoring.cs" />
     <Compile Include="ChangeTypeAccordingToExpressionRefactoring.cs" />
     <Compile Include="ChangeForeachTypeAccordingToExpressionRefactoring.cs" />
-    <Compile Include="ChangeMemberTypeAccordingToReturnStatementRefactoring.cs" />
-    <Compile Include="ChangeMemberTypeAccordingToYieldReturnStatementRefactoring.cs" />
     <Compile Include="ChangeVarToExplicitTypeRefactoring.cs" />
     <Compile Include="UseIfElseInsteadOfConditionalExpressionRefactoring.cs" />
     <Compile Include="ReplaceIncrementOperatorWithDecrementOperatorRefactoring.cs" />

@@ -5,7 +5,7 @@ using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
+using static Roslynator.CSharp.Refactorings.EnumMemberShouldDeclareExplicitValueRefactoring;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -24,9 +24,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(
-                f => EnumMemberShouldDeclareExplicitValueRefactoring.AnalyzeEnumMemberDeclaration(f),
-                SyntaxKind.EnumMemberDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeEnumMemberDeclaration, SyntaxKind.EnumMemberDeclaration);
         }
     }
 }

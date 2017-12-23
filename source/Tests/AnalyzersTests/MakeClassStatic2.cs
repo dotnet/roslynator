@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
         //n
 
-        public partial class FooSealedPartial
+        public sealed partial class FooSealedPartial
         {
         }
     }

@@ -64,8 +64,7 @@ namespace Roslynator.VisualStudio
             var refactoringsOptionsPage = (RefactoringsOptionsPage)GetDialogPage(typeof(RefactoringsOptionsPage));
             var codeFixesOptionsPage = (CodeFixesOptionsPage)GetDialogPage(typeof(CodeFixesOptionsPage));
 
-            Version version;
-            if (!Version.TryParse(generalOptionsPage.ApplicationVersion, out version)
+            if (!Version.TryParse(generalOptionsPage.ApplicationVersion, out Version version)
                 || version.Major < 1
                 || version.Minor < 2
                 || version.Build < 50)
@@ -99,9 +98,7 @@ namespace Roslynator.VisualStudio
 
         private ConfigFileSettings LoadConfigFileSettings()
         {
-            var dte = GetService(typeof(DTE)) as DTE;
-
-            if (dte != null)
+            if (GetService(typeof(DTE)) is DTE dte)
             {
                 string path = dte.Solution.FullName;
 
@@ -138,9 +135,7 @@ namespace Roslynator.VisualStudio
 
         private void WatchConfigFile()
         {
-            var dte = GetService(typeof(DTE)) as DTE;
-
-            if (dte != null)
+            if (GetService(typeof(DTE)) is DTE dte)
             {
                 string path = dte.Solution.FullName;
 

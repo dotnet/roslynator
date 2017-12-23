@@ -25,75 +25,72 @@ namespace Roslynator.CSharp.Refactorings
             if (!localDeclarationStatement.ContainsDiagnostics
                 && !localDeclarationStatement.SpanOrTrailingTriviaContainsDirectives())
             {
-                SingleLocalDeclarationStatement localDeclaration;
-                if (SingleLocalDeclarationStatement.TryCreate(localDeclarationStatement, out localDeclaration))
+                SingleLocalDeclarationStatementInfo localDeclarationInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(localDeclarationStatement);
+                if (localDeclarationInfo.Success)
                 {
-                    ExpressionSyntax value = localDeclaration.Initializer?.Value;
+                    ExpressionSyntax value = localDeclarationInfo.Initializer?.Value;
 
-                    if (value != null)
+                    if (value != null
+                        && localDeclarationStatement.TryGetContainingList(out SyntaxList<StatementSyntax> statements))
                     {
-                        SyntaxList<StatementSyntax> statements;
-                        if (localDeclarationStatement.TryGetContainingList(out statements))
+                        int index = statements.IndexOf(localDeclarationStatement);
+
+                        if (index < statements.Count - 1)
                         {
-                            int index = statements.IndexOf(localDeclarationStatement);
+                            StatementSyntax nextStatement = statements[index + 1];
 
-                            if (index < statements.Count - 1)
+                            if (!nextStatement.ContainsDiagnostics)
                             {
-                                StatementSyntax nextStatement = statements[index + 1];
-
-                                if (!nextStatement.ContainsDiagnostics)
+                                switch (nextStatement.Kind())
                                 {
-                                    switch (nextStatement.Kind())
-                                    {
-                                        case SyntaxKind.ExpressionStatement:
+                                    case SyntaxKind.ExpressionStatement:
+                                        {
+                                            Analyze(context, statements, localDeclarationInfo, index, (ExpressionStatementSyntax)nextStatement);
+                                            break;
+                                        }
+                                    case SyntaxKind.LocalDeclarationStatement:
+                                        {
+                                            Analyze(context, statements, localDeclarationInfo, index, (LocalDeclarationStatementSyntax)nextStatement);
+                                            break;
+                                        }
+                                    case SyntaxKind.ReturnStatement:
+                                        {
+                                            var returnStatement = (ReturnStatementSyntax)nextStatement;
+                                            if (!returnStatement.SpanOrLeadingTriviaContainsDirectives())
                                             {
-                                                Analyze(context, statements, localDeclaration, index, (ExpressionStatementSyntax)nextStatement);
-                                                break;
-                                            }
-                                        case SyntaxKind.LocalDeclarationStatement:
-                                            {
-                                                Analyze(context, statements, localDeclaration, index, (LocalDeclarationStatementSyntax)nextStatement);
-                                                break;
-                                            }
-                                        case SyntaxKind.ReturnStatement:
-                                            {
-                                                var returnStatement = (ReturnStatementSyntax)nextStatement;
-                                                if (!returnStatement.SpanOrLeadingTriviaContainsDirectives())
+                                                ExpressionSyntax expression = returnStatement.Expression;
+                                                if (expression?.IsKind(SyntaxKind.IdentifierName) == true)
                                                 {
-                                                    ExpressionSyntax expression = returnStatement.Expression;
-                                                    if (expression?.IsKind(SyntaxKind.IdentifierName) == true)
-                                                    {
-                                                        var identifierName = (IdentifierNameSyntax)expression;
+                                                    var identifierName = (IdentifierNameSyntax)expression;
 
-                                                        if (string.Equals(localDeclaration.IdentifierText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
-                                                            ReportDiagnostic(context, localDeclaration, expression);
-                                                    }
+                                                    if (string.Equals(localDeclarationInfo.IdentifierText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+                                                        ReportDiagnostic(context, localDeclarationInfo, expression);
                                                 }
-
-                                                break;
                                             }
-                                        case SyntaxKind.ForEachStatement:
+
+                                            break;
+                                        }
+                                    case SyntaxKind.ForEachStatement:
+                                        {
+                                            if (value.IsSingleLine()
+                                                && !value.IsKind(SyntaxKind.ArrayInitializerExpression))
                                             {
-                                                if (value.IsSingleLine()
-                                                    && !value.IsKind(SyntaxKind.ArrayInitializerExpression))
-                                                {
-                                                    var forEachStatement = (ForEachStatementSyntax)nextStatement;
-                                                    Analyze(context, statements, localDeclaration, forEachStatement.Expression);
-                                                }
-
-                                                break;
+                                                var forEachStatement = (ForEachStatementSyntax)nextStatement;
+                                                Analyze(context, statements, localDeclarationInfo, forEachStatement.Expression);
                                             }
-                                        case SyntaxKind.SwitchStatement:
+
+                                            break;
+                                        }
+                                    case SyntaxKind.SwitchStatement:
+                                        {
+                                            if (value.IsSingleLine())
                                             {
-                                                if (value.IsSingleLine())
-                                                {
-                                                    var switchStatement = (SwitchStatementSyntax)nextStatement;
-                                                    Analyze(context, statements, localDeclaration, switchStatement.Expression);
-                                                }
-
-                                                break;
+                                                var switchStatement = (SwitchStatementSyntax)nextStatement;
+                                                Analyze(context, statements, localDeclarationInfo, switchStatement.Expression);
                                             }
-                                    }
+
+                                            break;
+                                        }
                                 }
                             }
                         }
@@ -105,7 +102,7 @@ namespace Roslynator.CSharp.Refactorings
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
             SyntaxList<StatementSyntax> statements,
-            SingleLocalDeclarationStatement localDeclaration,
+            SingleLocalDeclarationStatementInfo localDeclarationInfo,
             int index,
             ExpressionStatementSyntax expressionStatement)
         {
@@ -123,11 +120,11 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var identifierName = (IdentifierNameSyntax)right;
 
-                    string name = localDeclaration.IdentifierText;
+                    string name = localDeclarationInfo.IdentifierText;
 
                     if (string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal))
                     {
-                        VariableDeclaratorSyntax declarator = localDeclaration.Declarator;
+                        VariableDeclaratorSyntax declarator = localDeclarationInfo.Declarator;
 
                         ISymbol localSymbol = context.SemanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 
@@ -140,13 +137,13 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 TextSpan span = TextSpan.FromBounds(statements[index + 2].SpanStart, statements.Last().Span.End);
 
-                                isReferenced = IsLocalVariableReferenced(localSymbol, name, localDeclaration.Statement.Parent, span, context.SemanticModel, context.CancellationToken);
+                                isReferenced = IsLocalVariableReferenced(localSymbol, name, localDeclarationInfo.Statement.Parent, span, context.SemanticModel, context.CancellationToken);
                             }
 
                             if (!isReferenced
                                 && !expressionStatement.SpanOrLeadingTriviaContainsDirectives())
                             {
-                                ReportDiagnostic(context, localDeclaration, right);
+                                ReportDiagnostic(context, localDeclarationInfo, right);
                             }
                         }
                     }
@@ -157,13 +154,14 @@ namespace Roslynator.CSharp.Refactorings
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
             SyntaxList<StatementSyntax> statements,
-            SingleLocalDeclarationStatement localDeclaration,
+            SingleLocalDeclarationStatementInfo localDeclarationInfo,
             int index,
             LocalDeclarationStatementSyntax localDeclaration2)
         {
             ExpressionSyntax value2 = localDeclaration2
                 .Declaration?
-                .SingleVariableOrDefault()?
+                .Variables
+                .SingleOrDefault(shouldthrow: false)?
                 .Initializer?
                 .Value;
 
@@ -171,7 +169,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 var identifierName = (IdentifierNameSyntax)value2;
 
-                string name = localDeclaration.IdentifierText;
+                string name = localDeclarationInfo.IdentifierText;
 
                 if (string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal))
                 {
@@ -181,13 +179,13 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         TextSpan span = TextSpan.FromBounds(statements[index + 2].SpanStart, statements.Last().Span.End);
 
-                        isReferenced = IsLocalVariableReferenced(localDeclaration.Declarator, name, localDeclaration.Statement.Parent, span, context.SemanticModel, context.CancellationToken);
+                        isReferenced = IsLocalVariableReferenced(localDeclarationInfo.Declarator, name, localDeclarationInfo.Statement.Parent, span, context.SemanticModel, context.CancellationToken);
                     }
 
                     if (!isReferenced
                         && !localDeclaration2.SpanOrLeadingTriviaContainsDirectives())
                     {
-                        ReportDiagnostic(context, localDeclaration, value2);
+                        ReportDiagnostic(context, localDeclarationInfo, value2);
                     }
                 }
             }
@@ -196,25 +194,25 @@ namespace Roslynator.CSharp.Refactorings
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
             SyntaxList<StatementSyntax> statements,
-            SingleLocalDeclarationStatement localDeclaration,
+            SingleLocalDeclarationStatementInfo localDeclarationInfo,
             ExpressionSyntax expression)
         {
             if (expression?.IsKind(SyntaxKind.IdentifierName) == true)
             {
                 var identifierName = (IdentifierNameSyntax)expression;
 
-                string name = localDeclaration.IdentifierText;
+                string name = localDeclarationInfo.IdentifierText;
 
                 if (string.Equals(name, identifierName.Identifier.ValueText, StringComparison.Ordinal))
                 {
                     TextSpan span = TextSpan.FromBounds(expression.Span.End, statements.Last().Span.End);
 
-                    SyntaxNode parent = localDeclaration.Statement.Parent;
+                    SyntaxNode parent = localDeclarationInfo.Statement.Parent;
 
-                    if (!IsLocalVariableReferenced(localDeclaration.Declarator, name, parent, span, context.SemanticModel, context.CancellationToken)
-                        && !parent.ContainsDirectives(TextSpan.FromBounds(localDeclaration.Statement.SpanStart, expression.Span.End)))
+                    if (!IsLocalVariableReferenced(localDeclarationInfo.Declarator, name, parent, span, context.SemanticModel, context.CancellationToken)
+                        && !parent.ContainsDirectives(TextSpan.FromBounds(localDeclarationInfo.Statement.SpanStart, expression.Span.End)))
                     {
-                        ReportDiagnostic(context, localDeclaration, expression);
+                        ReportDiagnostic(context, localDeclarationInfo, expression);
                     }
                 }
             }
@@ -222,18 +220,18 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void ReportDiagnostic(
             SyntaxNodeAnalysisContext context,
-            SingleLocalDeclarationStatement localDeclaration,
+            SingleLocalDeclarationStatementInfo localDeclarationInfo,
             ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclaration.Statement);
+            context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclarationInfo.Statement);
 
-            foreach (SyntaxToken modifier in localDeclaration.Modifiers)
+            foreach (SyntaxToken modifier in localDeclarationInfo.Modifiers)
                 context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, modifier);
 
-            context.ReportNode(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclaration.Type);
-            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclaration.Identifier);
-            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclaration.EqualsToken);
-            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclaration.SemicolonToken);
+            context.ReportNode(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Type);
+            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Identifier);
+            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.EqualsToken);
+            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.SemicolonToken);
             context.ReportNode(DiagnosticDescriptors.InlineLocalVariableFadeOut, expression);
         }
 
@@ -281,11 +279,11 @@ namespace Roslynator.CSharp.Refactorings
             LocalDeclarationStatementSyntax localDeclaration,
             CancellationToken cancellationToken)
         {
-            StatementContainer container = StatementContainer.Create(localDeclaration);
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(localDeclaration);
 
-            int index = container.Statements.IndexOf(localDeclaration);
+            int index = statementsInfo.Statements.IndexOf(localDeclaration);
 
-            StatementSyntax nextStatement = container.Statements[index + 1];
+            StatementSyntax nextStatement = statementsInfo.Statements[index + 1];
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
@@ -295,7 +293,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxTriviaList leadingTrivia = localDeclaration.GetLeadingTrivia();
 
-            IEnumerable<SyntaxTrivia> trivia = container
+            IEnumerable<SyntaxTrivia> trivia = statementsInfo
                 .Node
                 .DescendantTrivia(TextSpan.FromBounds(localDeclaration.SpanStart, nextStatement.Span.Start));
 
@@ -308,11 +306,11 @@ namespace Roslynator.CSharp.Refactorings
                 newStatement = newStatement.WithLeadingTrivia(leadingTrivia);
             }
 
-            SyntaxList<StatementSyntax> newStatements = container.Statements
+            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements
                 .Replace(nextStatement, newStatement)
                 .RemoveAt(index);
 
-            return await document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
         }
 
         private static ExpressionSyntax GetExpressionToInline(LocalDeclarationStatementSyntax localDeclaration, SemanticModel semanticModel, CancellationToken cancellationToken)

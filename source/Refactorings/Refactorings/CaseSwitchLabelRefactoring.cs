@@ -14,23 +14,19 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ExpressionSyntax value = caseLabel.Value;
 
-                if (value?.Span.Contains(context.Span) == true)
+                if (value?.Span.Contains(context.Span) == true
+                    && (caseLabel.Parent?.Parent is SwitchStatementSyntax switchStatement))
                 {
-                    var switchStatement = caseLabel.Parent?.Parent as SwitchStatementSyntax;
+                    ExpressionSyntax expression = switchStatement.Expression;
 
-                    if (switchStatement != null)
+                    if (expression?.IsMissing == false)
                     {
-                        ExpressionSyntax expression = switchStatement.Expression;
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (expression?.IsMissing == false)
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
-                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-                            if (typeSymbol?.IsErrorType() == false)
-                                ModifyExpressionRefactoring.ComputeRefactoring(context, value, typeSymbol, semanticModel);
-                        }
+                        if (typeSymbol?.IsErrorType() == false)
+                            ModifyExpressionRefactoring.ComputeRefactoring(context, value, typeSymbol, semanticModel);
                     }
                 }
             }

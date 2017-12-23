@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                             return CallConfigureAwaitRefactoring.RefactorAsync(
                                 context.Document,
                                 awaitExpression,
-                                context.CancellationToken);
+                                cancellationToken);
                         });
                 }
             }

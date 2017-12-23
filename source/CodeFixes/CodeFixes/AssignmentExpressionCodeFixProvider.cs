@@ -39,18 +39,10 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRedundantAssignment))
                                 break;
 
-                            if (assignmentExpression.IsParentKind(SyntaxKind.ExpressionStatement))
-                            {
-                                var statement = (ExpressionStatementSyntax)assignmentExpression.Parent;
+                            if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))
+                                break;
 
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Remove assignment",
-                                    cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-
+                            CodeFixRegistrator.RemoveStatement(context, diagnostic, expressionStatement, title: "Remove assignment");
                             break;
                         }
                 }

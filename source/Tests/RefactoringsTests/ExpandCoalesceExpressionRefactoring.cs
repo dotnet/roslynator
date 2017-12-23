@@ -8,17 +8,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
         {
             string value = null;
 
-            string s = value ?? string.Empty;
+            string s = value ?? "";
 
+            object x = null;
 
-
-
-
-
-
-
-
-
+            s = (x as string) ?? "";
         }
     }
 }

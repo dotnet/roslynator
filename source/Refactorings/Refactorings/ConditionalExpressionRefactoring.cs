@@ -39,12 +39,15 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseIfElseInsteadOfConditionalExpression))
-                    await UseIfElseInsteadOfConditionalExpressionRefactoring.ComputeRefactoringAsync(context, conditionalExpression).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse))
+                    await ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoringAsync(context, conditionalExpression).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)
-                && SwapExpressionsInConditionalExpressionRefactoring.CanRefactor(context, conditionalExpression))
+                && (context.Span.IsBetweenSpans(conditionalExpression)
+                    || context.Span.IsEmptyAndContainedInSpan(conditionalExpression.QuestionToken)
+                    || context.Span.IsEmptyAndContainedInSpan(conditionalExpression.ColonToken))
+                && SwapExpressionsInConditionalExpressionRefactoring.CanRefactor(conditionalExpression))
             {
                 context.RegisterRefactoring(
                     "Swap expressions in ?:",

@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(switchStatement, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static IEnumerable<SwitchSectionSyntax> CreateSwitchSections(INamedTypeSymbol enumTypeSymbol, TypeSyntax enumType)
+        private static List<SwitchSectionSyntax> CreateSwitchSections(INamedTypeSymbol enumTypeSymbol, TypeSyntax enumType)
         {
             SyntaxList<StatementSyntax> statements = SingletonList<StatementSyntax>(BreakStatement());
 

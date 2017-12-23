@@ -18,14 +18,8 @@ namespace Roslynator.CSharp.SyntaxRewriters.SortMembers
             IComparer<MemberDeclarationSyntax> memberComparer,
             IComparer<EnumMemberDeclarationSyntax> enumMemberComparer)
         {
-            if (memberComparer == null)
-                throw new ArgumentNullException(nameof(memberComparer));
-
-            if (enumMemberComparer == null)
-                throw new ArgumentNullException(nameof(enumMemberComparer));
-
-            _memberComparer = memberComparer;
-            _enumMemberComparer = enumMemberComparer;
+            _memberComparer = memberComparer ?? throw new ArgumentNullException(nameof(memberComparer));
+            _enumMemberComparer = enumMemberComparer ?? throw new ArgumentNullException(nameof(enumMemberComparer));
         }
 
         public override SyntaxNode VisitNamespaceDeclaration(NamespaceDeclarationSyntax node)

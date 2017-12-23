@@ -22,6 +22,9 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.AddCastExpression, RefactoringIdentifiers.CallToMethod))
                 await AddCastExpressionAsync(context, variableDeclaration).ConfigureAwait(false);
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement))
+                await WrapInUsingStatementRefactoring.ComputeRefactoringAsync(context, variableDeclaration).ConfigureAwait(false);
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull))
                 await CheckExpressionForNullRefactoring.ComputeRefactoringAsync(context, variableDeclaration).ConfigureAwait(false);
 
@@ -43,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings
             if (type != null
                 && !variableDeclaration.IsParentKind(SyntaxKind.EventFieldDeclaration))
             {
-                VariableDeclaratorSyntax variable = variableDeclaration.SingleVariableOrDefault();
+                VariableDeclaratorSyntax variable = variableDeclaration.Variables.SingleOrDefault(shouldthrow: false);
 
                 if (variable != null)
                 {

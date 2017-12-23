@@ -24,18 +24,18 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
         {
         }
 
-        public Task<Document> InlineMethodAsync(InvocationExpressionSyntax invocation, ExpressionSyntax expression)
+        public Task<Document> InlineMethodAsync(InvocationExpressionSyntax invocation, ExpressionSyntax expression, CancellationToken cancellationToken = default(CancellationToken))
         {
             ExpressionSyntax newExpression = RewriteExpression(invocation, expression);
 
-            return Document.ReplaceNodeAsync(invocation, newExpression, CancellationToken);
+            return Document.ReplaceNodeAsync(invocation, newExpression, cancellationToken);
         }
 
-        public async Task<Solution> InlineAndRemoveMethodAsync(InvocationExpressionSyntax invocation, ExpressionSyntax expression)
+        public async Task<Solution> InlineAndRemoveMethodAsync(InvocationExpressionSyntax invocation, ExpressionSyntax expression, CancellationToken cancellationToken)
         {
             if (invocation.SyntaxTree == MethodDeclaration.SyntaxTree)
             {
-                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, CancellationToken).ConfigureAwait(false);
+                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
 
                 ExpressionSyntax newExpression = RewriteExpression(invocation, expression);
 
@@ -47,17 +47,17 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             }
             else
             {
-                Document newDocument = await InlineMethodAsync(invocation, expression).ConfigureAwait(false);
+                Document newDocument = await InlineMethodAsync(invocation, expression, cancellationToken).ConfigureAwait(false);
 
                 DocumentId documentId = Document.Solution().GetDocumentId(MethodDeclaration.SyntaxTree);
 
-                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(MethodDeclaration, CancellationToken).ConfigureAwait(false);
+                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(MethodDeclaration, cancellationToken).ConfigureAwait(false);
 
                 return newDocument.Solution();
             }
         }
 
-        private ExpressionSyntax RewriteExpression(InvocationExpressionSyntax invocation, ExpressionSyntax expression)
+        private ParenthesizedExpressionSyntax RewriteExpression(InvocationExpressionSyntax invocation, ExpressionSyntax expression)
         {
             return RewriteNode(expression)
                 .WithTriviaFrom(invocation)

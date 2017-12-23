@@ -3,14 +3,12 @@
 using System;
 using System.Collections.Generic;
 
-#pragma warning disable RCS1016, RCS1100, RCS1106, RCS1138, RCS1163, RCS1164, RCS1176
+#pragma warning disable RCS1007, RCS1016, RCS1100, RCS1106, RCS1138, RCS1163, RCS1164, RCS1176
 
 // x
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    /// <summary>
-    /// 
-    /// </summary>
+    // x
     public static class ReplaceCommentWithDocumentationComment
     {
         // x
@@ -117,24 +115,13 @@ namespace Roslynator.CSharp.Analyzers.Tests
             // x
             public delegate void DelegateName<T>(object parameter);
 
-            // x
-            public class BaseClass
-            {
-                /// <summary>
-                /// virtual method
-                /// </summary>
-                public virtual void VirtualMethod()
-                {
-                }
-            }
+            // n
 
-            // x
-            public class DerivedClass : BaseClass
+            /// <summary>
+            /// x
+            /// </summary>
+            public class Foo2
             {
-                // x
-                public override void VirtualMethod()
-                {
-                }
             }
         }
     }

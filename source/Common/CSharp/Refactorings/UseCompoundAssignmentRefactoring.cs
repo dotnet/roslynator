@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (left?.IsMissing == false
                     && right?.IsMissing == false
                     && !assignment.IsParentKind(SyntaxKind.ObjectInitializerExpression)
-                    && right.SupportsCompoundAssignment())
+                    && right.Kind().SupportsCompoundAssignment())
                 {
                     var binaryExpression = (BinaryExpressionSyntax)right;
                     ExpressionSyntax binaryLeft = binaryExpression.Left;

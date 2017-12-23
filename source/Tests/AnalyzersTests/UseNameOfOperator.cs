@@ -5,8 +5,9 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 
-#pragma warning disable CS0168, RCS1016, RCS1048, RCS1163, RCS1176
+#pragma warning disable CS0168, RCS1007, RCS1016, RCS1048, RCS1163, RCS1176, RCS1208
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -193,6 +194,21 @@ namespace Roslynator.CSharp.Analyzers.Tests
                         _value = value;
                     }
                 }
+            }
+        }
+
+        private static class FooEnum
+        {
+            private static void Bar(string s)
+            {
+                s = DayOfWeek.Monday.ToString();
+
+                // n
+
+                s = DayOfWeek.Monday.ToString("f");
+
+                s = StringSplitOptions.None.ToString();
+                s = StringSplitOptions.None.ToString("");
             }
         }
     }

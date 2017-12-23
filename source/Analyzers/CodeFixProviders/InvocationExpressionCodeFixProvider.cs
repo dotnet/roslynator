@@ -216,7 +216,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.CallExtensionMethodAsInstanceMethod:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Call extension method as instance method",
+                                CallExtensionMethodAsInstanceMethodRefactoring.Title,
                                 cancellationToken => CallExtensionMethodAsInstanceMethodRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
@@ -225,9 +225,9 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.CallThenByInsteadOfOrderBy:
                         {
-                            MemberInvocationExpression memberInvocation = MemberInvocationExpression.Create(invocation);
+                            MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocation);
 
-                            string oldName = memberInvocation.NameText;
+                            string oldName = invocationInfo.NameText;
 
                             string newName = (string.Equals(oldName, "OrderBy", StringComparison.Ordinal))
                                 ? "ThenBy"

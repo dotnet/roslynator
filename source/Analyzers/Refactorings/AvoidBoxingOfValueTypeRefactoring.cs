@@ -22,8 +22,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var addExpression = (BinaryExpressionSyntax)context.Node;
 
-            MethodInfo methodInfo;
-            if (context.SemanticModel.TryGetMethodInfo(addExpression, out methodInfo, context.CancellationToken)
+            if (context.SemanticModel.TryGetMethodInfo(addExpression, out MethodInfo methodInfo, context.CancellationToken)
                 && methodInfo.MethodKind == MethodKind.BuiltinOperator
                 && methodInfo.Name == WellKnownMemberNames.AdditionOperatorName
                 && methodInfo.IsContainingType(SpecialType.System_String))

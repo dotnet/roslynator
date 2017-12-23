@@ -94,6 +94,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
 
             return;
+
+            void LocalFunction()
+            {
+                return;
+
+                void LocalFunction2()
+                {
+                    return;
+                }
+            }
         }
 
         private static void Foo2()
@@ -107,13 +117,53 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 return;
             }
+
+            void LocalFunction()
+            {
+                if (f)
+                {
+                }
+                else
+                {
+                    return;
+                }
+
+                void LocalFunction2()
+                {
+                    if (f)
+                    {
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
         }
 
         private static IEnumerable<object> Foo3()
         {
             yield return null;
 
+            IEnumerable<object> LocalFunction()
+            {
+                yield return null;
+                yield break;
+            }
+
             yield break;
+
+            IEnumerable<object> LocalFunction2()
+            {
+                yield return null;
+                yield break;
+
+                IEnumerable<object> LocalFunction3()
+                {
+                    yield return null;
+                    yield break;
+                }
+            }
         }
 
         private static IEnumerable<object> Foo4()
@@ -122,12 +172,51 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             yield return null;
 
+            IEnumerable<object> LocalFunction()
+            {
+                yield return null;
+
+                if (f)
+                {
+                }
+                else
+                {
+                    yield break;
+                }
+            }
+
             if (f)
             {
             }
             else
             {
                 yield break;
+            }
+
+            IEnumerable<object> LocalFunction2()
+            {
+                yield return null;
+
+                if (f)
+                {
+                }
+                else
+                {
+                    yield break;
+                }
+
+                IEnumerable<object> LocalFunction3()
+                {
+                    yield return null;
+
+                    if (f)
+                    {
+                    }
+                    else
+                    {
+                        yield break;
+                    }
+                }
             }
         }
 
@@ -136,6 +225,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private static string Foo5()
         {
             return;
+
+            string LocalFunction()
+            {
+                return;
+
+                string LocalFunction2()
+                {
+                    return;
+                }
+            }
         }
 
         private static string Foo6()
@@ -149,15 +248,47 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 return;
             }
+
+            string LocalFunction()
+            {
+                if (f)
+                {
+                }
+                else
+                {
+                    return;
+                }
+
+                string LocalFunction2()
+                {
+                    if (f)
+                    {
+                    }
+                    else
+                    {
+                        return;
+                    }
+                }
+            }
         }
 
         private static IEnumerable<object> Foo7()
         {
             yield break;
+
+            IEnumerable<object> LocalFunction()
+            {
+                yield break;
+            }
         }
 
         private static IEnumerable<object> Foo8()
         {
+            IEnumerable<object> LocalFunction()
+            {
+                yield break;
+            }
+
             yield break;
         }
     }

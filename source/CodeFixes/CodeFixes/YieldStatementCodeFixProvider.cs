@@ -43,7 +43,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     SyntaxToken yieldKeyword = yieldStatement.YieldKeyword;
                                     SyntaxToken returnKeyword = yieldStatement.ReturnOrBreakKeyword;
-                                    ExpressionSyntax expression = yieldStatement.Expression;
 
                                     SyntaxTriviaList leadingTrivia = yieldKeyword.LeadingTrivia
                                         .AddRange(yieldKeyword.TrailingTrivia.EmptyIfWhitespace())

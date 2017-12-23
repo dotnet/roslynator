@@ -12,12 +12,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void Analyze(SyntaxTreeAnalysisContext context)
         {
-            SourceText sourceText;
-            if (!context.Tree.TryGetText(out sourceText))
+            if (!context.Tree.TryGetText(out SourceText sourceText))
                 return;
 
-            SyntaxNode root;
-            if (!context.Tree.TryGetRoot(out root))
+            if (!context.Tree.TryGetRoot(out SyntaxNode root))
                 return;
 
             foreach (TextLine textLine in sourceText.Lines)

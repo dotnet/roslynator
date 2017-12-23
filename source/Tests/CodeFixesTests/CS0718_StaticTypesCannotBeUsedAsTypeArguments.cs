@@ -4,7 +4,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     internal static partial class CS0718_StaticTypesCannotBeUsedAsTypeArguments
     {
-        private static class Foo
+        private class Foo
         {
             private class Bar<T>
             {
@@ -22,15 +22,15 @@ namespace Roslynator.CSharp.CodeFixes.Tests
             }
         }
 
-        private static class Foo<T>
+        private class Foo<T>
         {
         }
 
-        private static class Foo2<T>
+        private class Foo2<T>
         {
         }
 
-        private static partial class FooPartial
+        private partial class FooPartial
         {
         }
     }

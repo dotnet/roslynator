@@ -182,18 +182,40 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                AccessorListSyntax newAccessorList = GetNewAccessorList(accessorList)
-                    .WithFormatterAnnotation();
+                AccessorListSyntax newAccessorList = GetNewAccessorList(accessorList);
+
+                newAccessorList = AddNewLineAfterFirstAccessorIfNecessary(accessorList, newAccessorList, cancellationToken);
+
+                newAccessorList = newAccessorList.WithFormatterAnnotation();
 
                 return await document.ReplaceNodeAsync(accessorList, newAccessorList, cancellationToken).ConfigureAwait(false);
             }
+        }
+
+        private static AccessorListSyntax AddNewLineAfterFirstAccessorIfNecessary(AccessorListSyntax accessorList, AccessorListSyntax newAccessorList, CancellationToken cancellationToken)
+        {
+            SyntaxList<AccessorDeclarationSyntax> accessors = newAccessorList.Accessors;
+
+            if (accessors.Count > 1)
+            {
+                AccessorDeclarationSyntax accessor = accessors.First();
+
+                SyntaxTriviaList trailingTrivia = accessor.GetTrailingTrivia();
+
+                if (accessorList.SyntaxTree.IsSingleLineSpan(trailingTrivia.Span, cancellationToken))
+                    return newAccessorList.ReplaceNode(accessor, accessor.AppendToTrailingTrivia(NewLine()));
+            }
+
+            return newAccessorList;
         }
 
         private static AccessorListSyntax GetNewAccessorList(AccessorListSyntax accessorList)
         {
             if (accessorList.IsSingleLine(includeExteriorTrivia: false))
             {
-                SyntaxTriviaList triviaList = accessorList.CloseBraceToken.LeadingTrivia
+                SyntaxTriviaList triviaList = accessorList
+                    .CloseBraceToken
+                    .LeadingTrivia
                     .Add(NewLine());
 
                 return accessorList

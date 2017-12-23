@@ -20,24 +20,20 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax expression = binaryExpression.Left;
 
-            if (expression != null)
+            if (expression != null
+                && (binaryExpression.Right is TypeSyntax type))
             {
-                var type = binaryExpression.Right as TypeSyntax;
+                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                if (type != null)
+                if (typeSymbol?.IsErrorType() == false)
                 {
-                    ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+                    Conversion conversion = context.SemanticModel.ClassifyConversion(expression, typeSymbol);
 
-                    if (typeSymbol?.IsErrorType() == false)
+                    if (conversion.IsIdentity)
                     {
-                        Conversion conversion = context.SemanticModel.ClassifyConversion(expression, typeSymbol);
-
-                        if (conversion.IsIdentity)
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.RemoveRedundantAsOperator,
-                                Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(binaryExpression.OperatorToken.SpanStart, type.Span.End)));
-                        }
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.RemoveRedundantAsOperator,
+                            Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(binaryExpression.OperatorToken.SpanStart, type.Span.End)));
                     }
                 }
             }

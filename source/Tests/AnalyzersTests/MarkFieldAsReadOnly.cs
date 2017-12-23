@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             //n
 
-            private string _f2, _f3;
+            private string _assigned2, _assignedInConstructor;
             private static string _staticAssignedInInstanceConstructor;
             private SpinLock _spinLock;
             private string _assigned;
@@ -27,6 +27,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             private string _inParenthesizedLambda;
             private string _inAnonymousMethod;
             private string _inLocalFunction;
+            private int _tuple1;
+            private int _tuple2;
 
             static Foo()
             {
@@ -37,7 +39,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 _f = 0;
                 _options = 0;
-                _f2 = null;
+                _assignedInConstructor = null;
                 _spinLock = new SpinLock();
                 _staticAssignedInInstanceConstructor = null;
             }
@@ -45,7 +47,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             private void Bar()
             {
                 _assigned = null;
-                _f3 = null;
+                _assigned2 = null;
+                (_tuple1, _tuple2) = default((int, int));
             }
         }
 

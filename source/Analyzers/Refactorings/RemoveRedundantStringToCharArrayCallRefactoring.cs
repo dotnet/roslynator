@@ -41,26 +41,23 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var memberAccess = (MemberAccessExpressionSyntax)expression;
 
-                    if (memberAccess.Name?.Identifier.ValueText.Equals("ToCharArray", StringComparison.Ordinal) == true)
-                    {
-                        MethodInfo info;
-                        if (semanticModel.TryGetMethodInfo(invocation, out info, cancellationToken)
+                    if (memberAccess.Name?.Identifier.ValueText.Equals("ToCharArray", StringComparison.Ordinal) == true
+                        && semanticModel.TryGetMethodInfo(invocation, out MethodInfo info, cancellationToken)
                             && info.IsName("ToCharArray")
                             && info.IsPublic
                             && !info.IsStatic
                             && !info.IsGenericMethod
                             && !info.Parameters.Any()
                             && info.IsContainingType(SpecialType.System_String))
+                    {
+                        ITypeSymbol returnType = info.ReturnType;
+
+                        if (returnType?.IsArrayType() == true)
                         {
-                            ITypeSymbol returnType = info.ReturnType;
+                            var arrayType = (IArrayTypeSymbol)returnType;
 
-                            if (returnType?.IsArrayType() == true)
-                            {
-                                var arrayType = (IArrayTypeSymbol)returnType;
-
-                                if (arrayType.ElementType?.IsChar() == true)
-                                    return true;
-                            }
+                            if (arrayType.ElementType?.IsChar() == true)
+                                return true;
                         }
                     }
                 }

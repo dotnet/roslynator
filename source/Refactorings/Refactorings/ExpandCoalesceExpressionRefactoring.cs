@@ -14,19 +14,18 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            if (CanRefactor(binaryExpression))
-            {
-                context.RegisterRefactoring(
-                    "Expand ??",
-                    cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
-            }
-        }
+            if (!binaryExpression.IsKind(SyntaxKind.CoalesceExpression))
+                return;
 
-        public static bool CanRefactor(BinaryExpressionSyntax binaryExpression)
-        {
-            return binaryExpression.IsKind(SyntaxKind.CoalesceExpression)
-                && binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false;
+            if (binaryExpression.Left?.IsMissing != false)
+                return;
+
+            if (binaryExpression.Right?.IsMissing != false)
+                return;
+
+            context.RegisterRefactoring(
+                "Expand ??",
+                cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
         }
 
         public static Task<Document> RefactorAsync(
@@ -37,19 +36,38 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax left = binaryExpression.Left.WithoutTrivia();
             ExpressionSyntax right = binaryExpression.Right.WithoutTrivia();
 
-            SyntaxNode newNode = ConditionalExpression(
-                ParenthesizedExpression(
-                    NotEqualsExpression(
-                        left,
-                        NullLiteralExpression())),
-                left,
-                right);
+            ExpressionSyntax expression = left.WalkDownParentheses();
 
-            newNode = newNode
+            ExpressionSyntax condition = null;
+            ExpressionSyntax whenTrue = null;
+
+            if (expression.IsKind(SyntaxKind.AsExpression))
+            {
+                var asExpression = (BinaryExpressionSyntax)expression;
+
+                condition = IsExpression(
+                    asExpression.Left,
+                    IsKeyword().WithTriviaFrom(asExpression.OperatorToken),
+                    asExpression.Right);
+
+                whenTrue = CastExpression((TypeSyntax)asExpression.Right, asExpression.Left.Parenthesize());
+            }
+            else
+            {
+                condition = NotEqualsExpression(left, NullLiteralExpression());
+                whenTrue = left;
+            }
+
+            ConditionalExpressionSyntax conditionalExpression = ConditionalExpression(
+                condition.ParenthesizeIf(!condition.Kind().IsSingleTokenExpression(), simplifiable: false),
+                whenTrue.Parenthesize(),
+                right.Parenthesize());
+
+            conditionalExpression = conditionalExpression
                 .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(binaryExpression, conditionalExpression, cancellationToken);
         }
     }
 }

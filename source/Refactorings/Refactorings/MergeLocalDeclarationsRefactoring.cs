@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class MergeLocalDeclarationsRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementContainerSelection selectedStatements)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, StatementsSelection selectedStatements)
         {
             if (selectedStatements.Count > 1)
             {
@@ -26,7 +27,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             return RefactorAsync(
                                 context.Document,
-                                selectedStatements.Container,
+                                selectedStatements.Info,
                                 selectedStatements.Cast<LocalDeclarationStatementSyntax>().ToArray(),
                                 cancellationToken);
                         });
@@ -72,13 +73,13 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> RefactorAsync(
             Document document,
-            StatementContainer container,
+            StatementsInfo statementsInfo,
             LocalDeclarationStatementSyntax[] localDeclarations,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             LocalDeclarationStatementSyntax localDeclaration = localDeclarations[0];
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(localDeclaration);
 
@@ -100,10 +101,7 @@ namespace Roslynator.CSharp.Refactorings
             for (int i = 1; i < localDeclarations.Length; i++)
                 newStatements = newStatements.RemoveAt(index + 1);
 
-            return document.ReplaceNodeAsync(
-                container.Node,
-                container.NodeWithStatements(newStatements),
-                cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
     }
 }

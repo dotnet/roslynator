@@ -18,13 +18,22 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CannotConvertMethodGroupToNonDelegateType); }
+            get
+            {
+                return ImmutableArray.Create(
+                    CompilerDiagnosticIdentifiers.CannotConvertMethodGroupToNonDelegateType,
+                    CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList))
+            if (!Settings.IsAnyCodeFixEnabled(
+                CodeFixIdentifiers.AddArgumentList,
+                CodeFixIdentifiers.ChangeArrayType))
+            {
                 return;
+            }
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
@@ -52,6 +61,39 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     return context.Document.ReplaceNodeAsync(memberAccess, invocationExpression, cancellationToken);
                                 },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound:
+                        {
+                            if (!(simpleName.Parent is ArrayTypeSyntax arrayType))
+                                break;
+
+                            if (!(arrayType.Parent is ArrayCreationExpressionSyntax arrayCreation))
+                                break;
+
+                            if (!object.ReferenceEquals(simpleName, arrayType.ElementType))
+                                break;
+
+                            ExpressionSyntax expression = arrayCreation.Initializer?.Expressions.FirstOrDefault();
+
+                            if (expression == null)
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                            if (typeSymbol?.SupportsExplicitDeclaration() != true)
+                                break;
+
+                            TypeSyntax newType = typeSymbol.ToMinimalTypeSyntax(semanticModel, simpleName.SpanStart);
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Change element type to '{SymbolDisplay.GetMinimalString(typeSymbol, semanticModel, simpleName.SpanStart)}'",
+                                cancellationToken => context.Document.ReplaceNodeAsync(simpleName, newType.WithTriviaFrom(simpleName), cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

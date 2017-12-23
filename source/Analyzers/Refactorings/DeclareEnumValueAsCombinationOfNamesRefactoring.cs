@@ -216,7 +216,7 @@ namespace Roslynator.CSharp.Refactorings
                 return null;
             }
 
-            private List<EnumFieldInfo> Decompose(long value, ImmutableArray<EnumFieldInfo> infos)
+            private static List<EnumFieldInfo> Decompose(long value, ImmutableArray<EnumFieldInfo> infos)
             {
                 List<EnumFieldInfo> values = null;
 
@@ -248,7 +248,7 @@ namespace Roslynator.CSharp.Refactorings
                 return null;
             }
 
-            private List<EnumFieldInfo> Decompose(ulong value, ImmutableArray<EnumFieldInfo> infos)
+            private static List<EnumFieldInfo> Decompose(ulong value, ImmutableArray<EnumFieldInfo> infos)
             {
                 List<EnumFieldInfo> values = null;
 
@@ -299,19 +299,17 @@ namespace Roslynator.CSharp.Refactorings
                         return default(ImmutableArray<EnumFieldInfo>);
                 }
 
-                infos = infos.Sort(EnumFieldInfoValueComparer.Instance);
-
-                return infos;
+                return infos.Sort(EnumFieldInfoValueComparer.Instance);
             }
-        }
 
-        private class EnumFieldInfoValueComparer : IComparer<EnumFieldInfo>
-        {
-            public static EnumFieldInfoValueComparer Instance { get; } = new EnumFieldInfoValueComparer();
-
-            public int Compare(EnumFieldInfo x, EnumFieldInfo y)
+            private class EnumFieldInfoValueComparer : IComparer<EnumFieldInfo>
             {
-                return ((IComparable)x.Value).CompareTo(y.Value);
+                public static EnumFieldInfoValueComparer Instance { get; } = new EnumFieldInfoValueComparer();
+
+                public int Compare(EnumFieldInfo x, EnumFieldInfo y)
+                {
+                    return ((IComparable)x.Value).CompareTo(y.Value);
+                }
             }
         }
     }

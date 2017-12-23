@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 {
@@ -38,27 +39,22 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            ITypeSymbol exceptionSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+            var exceptionSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken) as INamedTypeSymbol;
 
-            if (exceptionSymbol.InheritsFromException(semanticModel))
+            if (exceptionSymbol?.InheritsFromException(semanticModel) == true)
             {
                 ISymbol declarationSymbol = GetDeclarationSymbol(node.SpanStart, semanticModel, cancellationToken);
 
-                if (declarationSymbol != null)
+                if (declarationSymbol?.GetSyntax(cancellationToken) is MemberDeclarationSyntax containingMember)
                 {
-                    var containingMember = declarationSymbol.GetSyntax(cancellationToken) as MemberDeclarationSyntax;
+                    DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
 
-                    if (containingMember != null)
+                    if (comment != null
+                        && CanAddExceptionToComment(comment, exceptionSymbol, semanticModel, cancellationToken))
                     {
-                        DocumentationCommentTriviaSyntax comment = containingMember.GetSingleLineDocumentationComment();
+                        ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
 
-                        if (comment != null
-                            && CanAddExceptionToComment(comment, exceptionSymbol, semanticModel, cancellationToken))
-                        {
-                            ThrowInfo throwInfo = ThrowInfo.Create(node, exceptionSymbol, declarationSymbol);
-
-                            return new AddExceptionToDocumentationCommentAnalysis(throwInfo, comment.ParentTrivia);
-                        }
+                        return new AddExceptionToDocumentationCommentAnalysis(throwInfo, comment.ParentTrivia);
                     }
                 }
             }
@@ -108,9 +104,9 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         {
             if (expression != null)
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+                var typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken) as INamedTypeSymbol;
 
-                if (typeSymbol.InheritsFromException(semanticModel))
+                if (typeSymbol?.InheritsFromException(semanticModel) == true)
                 {
                     DocumentationCommentTriviaSyntax comment = declaration.GetSingleLineDocumentationComment();
 
@@ -127,7 +123,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
         private static bool CanAddExceptionToComment(
             DocumentationCommentTriviaSyntax comment,
-            ITypeSymbol exceptionSymbol,
+            INamedTypeSymbol exceptionSymbol,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -137,8 +133,8 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
             foreach (XmlNodeSyntax node in comment.Content)
             {
-                XmlElementInfo info;
-                if (XmlElementInfo.TryCreate(node, out info))
+                XmlElementInfo info = SyntaxInfo.XmlElementInfo(node);
+                if (info.Success)
                 {
                     switch (info.ElementKind)
                     {
@@ -187,7 +183,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 && !containsException;
         }
 
-        private static bool ContainsException(XmlElementSyntax xmlElement, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool ContainsException(XmlElementSyntax xmlElement, INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             XmlElementStartTagSyntax startTag = xmlElement.StartTag;
 
@@ -199,12 +195,12 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             return false;
         }
 
-        private static bool ContainsException(XmlEmptyElementSyntax xmlEmptyElement, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool ContainsException(XmlEmptyElementSyntax xmlEmptyElement, INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             return ContainsException(xmlEmptyElement.Attributes, exceptionSymbol, semanticModel, cancellationToken);
         }
 
-        private static bool ContainsException(SyntaxList<XmlAttributeSyntax> attributes, ITypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool ContainsException(SyntaxList<XmlAttributeSyntax> attributes, INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             foreach (XmlAttributeSyntax xmlAttribute in attributes)
             {
@@ -214,12 +210,19 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
                     CrefSyntax cref = xmlCrefAttribute.Cref;
 
-                    if (cref != null)
+                    if (cref != null
+                        && (semanticModel.GetSymbol(cref, cancellationToken) is INamedTypeSymbol symbol))
                     {
-                        ISymbol symbol = semanticModel.GetSymbol(cref, cancellationToken);
-
                         if (exceptionSymbol.Equals(symbol))
                             return true;
+
+                        // http://github.com/dotnet/roslyn/issues/22923
+                        if (exceptionSymbol.IsGenericType
+                            && symbol.IsGenericType
+                            && exceptionSymbol.ConstructedFrom.Equals(symbol.ConstructedFrom))
+                        {
+                            return true;
+                        }
                     }
                 }
             }
@@ -234,22 +237,20 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
         {
             ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
 
-            if (symbol?.IsMethod() == true)
-            {
-                var methodsymbol = (IMethodSymbol)symbol;
+            return GetDeclarationSymbol(symbol);
+        }
 
-                if (methodsymbol.MethodKind == MethodKind.Ordinary)
-                {
-                    if (methodsymbol.PartialImplementationPart != null)
-                        symbol = methodsymbol.PartialImplementationPart;
-                }
-                else if (methodsymbol.AssociatedSymbol != null)
-                {
-                    symbol = methodsymbol.AssociatedSymbol;
-                }
-            }
+        private static ISymbol GetDeclarationSymbol(ISymbol symbol)
+        {
+            if (!(symbol is IMethodSymbol methodSymbol))
+                return null;
 
-            return symbol;
+            MethodKind methodKind = methodSymbol.MethodKind;
+
+            if (methodKind == MethodKind.Ordinary)
+                return methodSymbol.PartialImplementationPart ?? methodSymbol;
+
+            return methodSymbol.AssociatedSymbol;
         }
 
         public static Task<Document> RefactorAsync(

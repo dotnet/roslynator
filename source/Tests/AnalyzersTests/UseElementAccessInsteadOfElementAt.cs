@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 #pragma warning disable RCS1097, RCS1118, RCS1176
@@ -12,44 +13,51 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         public static void Foo()
         {
-            var items = new List<int>() { 0, 1, 2 };
+            object x = 0;
 
-            int element = items.ElementAt(1);
+            List<object> l = null;
+            IList<object> il = null;
+            IReadOnlyList<object> irl = null;
+            Collection<object> c = null;
+            ICollection<object> ic = null;
+            IReadOnlyCollection<object> irc = null;
+            IEnumerable<object> ie = null;
+            object[] a = null;
+            ImmutableArray<object> ia = ImmutableArray<object>.Empty;
+            string s = null;
+            var dic = new Dictionary<object, object>();
 
-            var a = new int[] { 0 };
-            element = a.ElementAt(1);
+            x = l.ElementAt(1);
 
-            ImmutableArray<int> ia = ImmutableArray.Create(1);
-            element = ia.ElementAt(1);
+            x = il.ElementAt(1);
 
-            string s = "";
-            char ch = s.ElementAt(1);
+            x = irl.ElementAt(1);
 
-            // n
+            x = c.ElementAt(1);
 
-            var dic = new Dictionary<string, string>();
-            KeyValuePair<string, string> kvp = dic.ElementAt(1);
-        }
+            x = a.ElementAt(1);
 
-        public static void Foo2()
-        {
-            var items = new List<int>() { 0, 1, 2 };
+            x = ia.ElementAt(1);
 
-            int element = items.ToList().ElementAt(1);
+            x = s.ElementAt(1);
 
-            var a = new int[] { 0 };
-            element = a.ToArray().ElementAt(1);
+            //n
 
-            ImmutableArray<int> ia = ImmutableArray.Create(1);
-            element = ia.ToImmutableArray().ElementAt(1);
+            x = ic.ElementAt(1);
 
-            string s = "";
-            char ch = s.ToString().ElementAt(1);
+            x = irc.ElementAt(1);
 
-            // n
+            x = ie.ElementAt(1);
 
-            var dic = new Dictionary<string, string>();
-            KeyValuePair<string, string> kvp = dic.ElementAt(1);
+            KeyValuePair<object, object> kvp = dic.ElementAt(1);
+
+            x = l.ToList().ElementAt(1);
+
+            x = a.ToArray().ElementAt(1);
+
+            x = ia.ToImmutableArray().ElementAt(1);
+
+            x = s.ToUpper().ElementAt(1);
         }
     }
 }

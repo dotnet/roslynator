@@ -47,10 +47,16 @@ namespace Roslynator.CSharp.Refactorings
                             isInterpolatedText: false)));
             }
 
+            int closeBracePosition = sb.Length;
+
             sb.Append('}');
             sb.Append(StringUtility.DoubleBraces(s.Substring(interpolationStartIndex + interpolationLength)));
 
             ExpressionSyntax newNode = ParseExpression(sb.ToString()).WithTriviaFrom(literalExpression);
+
+            SyntaxToken closeBrace = newNode.FindToken(closeBracePosition);
+
+            newNode = newNode.ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation());
 
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }

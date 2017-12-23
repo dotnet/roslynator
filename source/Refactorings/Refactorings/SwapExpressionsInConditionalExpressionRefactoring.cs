@@ -9,26 +9,30 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class SwapExpressionsInConditionalExpressionRefactoring
     {
-        public static bool CanRefactor(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
+        public static bool CanRefactor(ConditionalExpressionSyntax conditionalExpression)
         {
             return conditionalExpression.Condition != null
                 && conditionalExpression.WhenTrue != null
-                && conditionalExpression.WhenFalse != null
-                && context.Span.IsBetweenSpans(conditionalExpression);
+                && conditionalExpression.WhenFalse != null;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ConditionalExpressionSyntax newConditionalExpression = conditionalExpression
-                .WithCondition(Negator.LogicallyNegate(conditionalExpression.Condition))
-                .WithWhenTrue(conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue))
-                .WithWhenFalse(conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse))
-                .WithFormatterAnnotation();
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            return document.ReplaceNodeAsync(conditionalExpression, newConditionalExpression, cancellationToken);
+            ConditionalExpressionSyntax newNode = conditionalExpression.Update(
+                condition: CSharpUtility.LogicallyNegate(conditionalExpression.Condition, semanticModel, cancellationToken),
+                questionToken: conditionalExpression.QuestionToken,
+                whenTrue: conditionalExpression.WhenFalse.WithTriviaFrom(conditionalExpression.WhenTrue),
+                colonToken: conditionalExpression.ColonToken,
+                whenFalse: conditionalExpression.WhenTrue.WithTriviaFrom(conditionalExpression.WhenFalse));
+
+            newNode = newNode.WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

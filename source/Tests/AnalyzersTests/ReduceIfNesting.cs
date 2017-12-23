@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-#pragma warning disable CS0168, RCS1002, RCS1016, RCS1048, RCS1049, RCS1090, RCS1118, RCS1163, RCS1176, RCS1187
+#pragma warning disable CS0168, RCS1002, RCS1006, RCS1016, RCS1048, RCS1049, RCS1090, RCS1111, RCS1118, RCS1163, RCS1176, RCS1177, RCS1187
 
 using System;
 using System.Collections;
@@ -12,6 +12,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
     internal static class ReduceIfNesting
     {
         private static readonly bool _condition;
+        private static readonly bool _condition1;
+        private static readonly bool _condition2;
+        private static readonly bool _condition3;
 
         private static void Foo()
         {
@@ -220,11 +223,266 @@ namespace Roslynator.CSharp.Analyzers.Tests
             });
         }
 
+        // n
+
+        private static void FooFor()
+        {
+            var items = new List<string>();
+
+            for (int i = 0; i < items.Count; i++)
+            {
+                if (_condition1)
+                {
+                    Foo1();
+
+                    if (_condition2)
+                    {
+                        Foo2();
+
+                        if (_condition3)
+                        {
+                            Foo3();
+
+                            for (int j = 0; j < items.Count; j++)
+                            {
+                                if (_condition)
+                                {
+                                    Foo();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void FooForEach()
+        {
+            var items = new List<string>();
+
+            foreach (string item in items)
+            {
+                if (_condition1)
+                {
+                    Foo1();
+
+                    if (_condition2)
+                    {
+                        Foo2();
+
+                        if (_condition3)
+                        {
+                            Foo3();
+
+                            foreach (string item2 in items)
+                            {
+                                if (_condition)
+                                {
+                                    Foo();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void FooDo()
+        {
+            do
+            {
+                if (_condition1)
+                {
+                    Foo1();
+
+                    if (_condition2)
+                    {
+                        Foo2();
+
+                        if (_condition3)
+                        {
+                            Foo3();
+
+                            do
+                            {
+                                if (_condition)
+                                {
+                                    Foo();
+                                }
+
+                            } while (_condition);
+                        }
+                    }
+                }
+
+            } while (_condition);
+        }
+
+        private static void FooWhile()
+        {
+            while (_condition)
+            {
+                if (_condition1)
+                {
+                    Foo1();
+
+                    if (_condition2)
+                    {
+                        Foo2();
+
+                        if (_condition3)
+                        {
+                            Foo3();
+
+                            while (_condition)
+                            {
+                                if (_condition)
+                                {
+                                    Foo();
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        private static void FooSwitchSection()
+        {
+            switch (0)
+            {
+                case 0:
+                    if (_condition1)
+                    {
+                        Foo1();
+
+                        if (_condition2)
+                        {
+                            Foo2();
+
+                            if (_condition3)
+                            {
+                                Foo3();
+
+                                switch (0)
+                                {
+                                    case 0:
+                                        if (_condition)
+                                        {
+                                            Foo();
+                                        }
+
+                                        break;
+                                }
+                            }
+                        }
+                    }
+
+                    break;
+            }
+
+            switch (0)
+            {
+                case 0:
+                    {
+                        if (_condition1)
+                        {
+                            Foo1();
+
+                            if (_condition2)
+                            {
+                                Foo2();
+
+                                if (_condition3)
+                                {
+                                    Foo3();
+
+                                    switch (0)
+                                    {
+                                        case 0:
+                                            {
+                                                if (_condition)
+                                                {
+                                                    Foo();
+                                                }
+
+                                                break;
+                                            }
+                                    }
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+            }
+        }
+
+        private static void FooElseIf()
+        {
+            if (_condition)
+            {
+            }
+            else if (_condition)
+            {
+                if (_condition1)
+                {
+                    Foo1();
+
+                    if (_condition2)
+                    {
+                        Foo2();
+
+                        if (_condition3)
+                        {
+                            Foo3();
+                        }
+                    }
+                }
+            }
+
+            void Local()
+            {
+            }
+        }
+
+        private static void FooElse()
+        {
+            if (_condition)
+            {
+            }
+            else
+            {
+                if (_condition1)
+                {
+                    Foo1();
+
+                    if (_condition2)
+                    {
+                        Foo2();
+
+                        if (_condition3)
+                        {
+                            Foo3();
+                        }
+                    }
+                }
+            }
+
+            void Local()
+            {
+            }
+        }
+
         private static void Foo(Action action)
         {
         }
 
         private static void Foo(Action<object> action)
+        {
+        }
+
+        private static void Foo1()
         {
         }
 

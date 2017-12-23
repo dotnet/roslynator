@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -49,15 +50,18 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstraintClauses))
                                 break;
 
+                            GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);
+
+                            if (!genericInfo.Success)
+                                break;
+
                             CodeAction codeAction = CodeAction.Create(
                                 "Remove constraints",
                                 cancellationToken =>
                                 {
-                                    SyntaxNode node = constraintClause.Parent;
+                                    GenericInfo newGenericInfo = genericInfo.RemoveConstraintClauses();
 
-                                    SyntaxNode newNode = GenericSyntax.RemoveConstraintClauses(node);
-
-                                    return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(genericInfo.Declaration, newGenericInfo.Declaration, cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
@@ -69,13 +73,13 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.CombineConstraintClauses))
                                 break;
 
-                            SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = GenericSyntax.GetContainingList(constraintClause);
+                            GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);
 
-                            int index = constraintClauses.IndexOf(constraintClause);
+                            int index = genericInfo.ConstraintClauses.IndexOf(constraintClause);
 
                             string name = constraintClause.NameText();
 
-                            TypeParameterConstraintClauseSyntax constraintClause2 = constraintClauses.FirstOrDefault(f => string.Equals(name, f.NameText(), StringComparison.Ordinal));
+                            TypeParameterConstraintClauseSyntax constraintClause2 = genericInfo.FindConstraintClause(name);
 
                             if (constraintClause2 == null)
                                 break;
@@ -84,22 +88,19 @@ namespace Roslynator.CSharp.CodeFixes
                                 $"Combine constraints for '{name}'",
                                 cancellationToken =>
                                 {
-                                    SyntaxNode node = constraintClause.Parent;
-
                                     TypeParameterConstraintClauseSyntax newConstraintClause = constraintClause2.WithConstraints(constraintClause2.Constraints.AddRange(constraintClause.Constraints));
 
-                                    SyntaxList<TypeParameterConstraintClauseSyntax> newConstraintClauses = constraintClauses
+                                    SyntaxList<TypeParameterConstraintClauseSyntax> newConstraintClauses = genericInfo.ConstraintClauses
                                         .Replace(constraintClause2, newConstraintClause)
                                         .RemoveAt(index);
 
-                                    SyntaxNode newNode = GenericSyntax.WithConstraintClauses(node, newConstraintClauses);
+                                    GenericInfo newGenericInfo = genericInfo.WithConstraintClauses(newConstraintClauses);
 
-                                    return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
+                                    return context.Document.ReplaceNodeAsync(genericInfo.Declaration, newGenericInfo.Declaration, cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-
                             break;
                         }
                 }

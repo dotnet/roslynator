@@ -13,17 +13,21 @@ namespace Roslynator.Metadata
             string identifier,
             string title,
             bool isEnabledByDefault,
-            string scope,
+            bool isObsolete,
+            string span,
             IList<SyntaxDescriptor> syntaxes,
-            IList<ImageDescriptor> images)
+            IList<ImageDescriptor> images,
+            IList<SampleDescriptor> samples)
         {
             Id = id;
             Identifier = identifier;
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
-            Scope = scope;
+            IsObsolete = isObsolete;
+            Span = span;
             Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes);
             Images = new ReadOnlyCollection<ImageDescriptor>(images);
+            Samples = new ReadOnlyCollection<SampleDescriptor>(samples);
         }
 
         public string Id { get; }
@@ -32,13 +36,17 @@ namespace Roslynator.Metadata
 
         public string Title { get; }
 
-        public string Scope { get; }
+        public string Span { get; }
 
         public bool IsEnabledByDefault { get; }
+
+        public bool IsObsolete { get; }
 
         public ReadOnlyCollection<SyntaxDescriptor> Syntaxes { get; }
 
         public ReadOnlyCollection<ImageDescriptor> Images { get; }
+
+        public ReadOnlyCollection<SampleDescriptor> Samples { get; }
 
         public IEnumerable<ImageDescriptor> ImagesOrDefaultImage()
         {
@@ -58,9 +66,8 @@ namespace Roslynator.Metadata
             string s = Title.TrimEnd('.').ToLowerInvariant();
 
             s = Regex.Replace(s, @"[^a-zA-Z0-9\ \-]", "");
-            s = Regex.Replace(s, @"\ ", "-");
 
-            return s;
+            return Regex.Replace(s, @"\ ", "-");
         }
     }
 }

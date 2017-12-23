@@ -72,11 +72,6 @@
       <Id>CS0164</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0015" Identifier="OverridingMemberCannotChangeAccessModifiers" Title="Overriding member cannot change access modifiers">
-    <FixableDiagnosticIds>
-      <Id>CS0507</Id>
-    </FixableDiagnosticIds>
-  </CodeFix>
   <CodeFix Id="RCF0016" Identifier="AddDocumentationComment" Title="Add documentation comment">
     <FixableDiagnosticIds>
       <Id>CS1591</Id>
@@ -138,10 +133,12 @@
     <FixableDiagnosticIds>
       <Id>CS0501</Id>
       <Id>CS0756</Id>
+      <Id>CS8112</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0027" Identifier="RemoveRefModifier" Title="Remove 'ref' modifier">
     <FixableDiagnosticIds>
+      <Id>CS0192</Id>
       <Id>CS1615</Id>
       <Id>CS1988</Id>
       <Id>CS1623</Id>
@@ -156,6 +153,7 @@
     <FixableDiagnosticIds>
       <Id>CS0261</Id>
       <Id>CS0442</Id>
+      <Id>CS0507</Id>
       <Id>CS0628</Id>
       <Id>CS1057</Id>
       <Id>CS1527</Id>
@@ -208,8 +206,10 @@
   </CodeFix>
   <CodeFix Id="RCF0039" Identifier="AddArgumentList" Title="Add argument list">
     <FixableDiagnosticIds>
-      <Id>CS0428</Id>
       <Id>CS0023</Id>
+      <Id>CS0428</Id>
+      <Id>CS0201</Id>
+      <Id>CS1526</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0040" Identifier="InitializeLocalVariableWithDefaultValue" Title="Initialize local variable with default value">
@@ -310,6 +310,7 @@
   <CodeFix Id="RCF0056" Identifier="RemoveMemberDeclaration" Title="Remove member declaration">
     <FixableDiagnosticIds>
       <Id>CS0114</Id>
+      <Id>CS0541</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0057" Identifier="RemoveReturnExpression" Title="Remove return expression" IsEnabledByDefault="false">
@@ -321,6 +322,8 @@
   <CodeFix Id="RCF0058" Identifier="ReplaceNullLiteralExpressionWithDefaultValue" Title="Replace 'null' with default value">
     <FixableDiagnosticIds>
       <Id>CS0037</Id>
+      <Id>CS0403</Id>
+      <Id>CS1750</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0059" Identifier="ReplaceVariableDeclarationWithAssignment" Title="Replace variable declaration with assignment">
@@ -377,6 +380,7 @@
   </CodeFix>
   <CodeFix Id="RCF0068" Identifier="MakeClassNonStatic" Title="Make class non-static">
     <FixableDiagnosticIds>
+      <Id>CS0713</Id>
       <Id>CS0718</Id>
     </FixableDiagnosticIds>
   </CodeFix>
@@ -387,6 +391,7 @@
   </CodeFix>
   <CodeFix Id="RCF0070" Identifier="RemoveOutModifier" Title="Remove 'out' modifier">
     <FixableDiagnosticIds>
+      <Id>CS0192</Id>
       <Id>CS1988</Id>
       <Id>CS1623</Id>
     </FixableDiagnosticIds>
@@ -425,6 +430,87 @@
   <CodeFix Id="RCF0077" Identifier="ReplaceElementAccessWithInvocation" Title="Replace element access with invocation">
     <FixableDiagnosticIds>
       <Id>CS0021</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0078" Identifier="AddVariableType" Title="Add variable type">
+    <FixableDiagnosticIds>
+      <Id>CS0103</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0079" Identifier="ReplaceBreakWithContinue" Title="Replace 'break' with 'continue'">
+    <FixableDiagnosticIds>
+      <Id>CS0139</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0080" Identifier="ChangeMemberTypeAccordingToReturnExpression" Title="Change member type according to return expression">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+      <Id>CS0127</Id>
+      <Id>CS0201</Id>
+      <Id>CS0266</Id>
+      <Id>CS1997</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0081" Identifier="ReturnDefaultValue" Title="Return default value">
+    <FixableDiagnosticIds>
+      <Id>CS0126</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0082" Identifier="DefineMatchingOperator" Title="Define matching operator">
+    <FixableDiagnosticIds>
+      <Id>CS0216</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0083" Identifier="DefineObjectEquals" Title="Define object.Equals">
+    <FixableDiagnosticIds>
+      <Id>CS0660</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0084" Identifier="DefineObjectGetHashCode" Title="Define object.GetHashCode">
+    <FixableDiagnosticIds>
+      <Id>CS0659</Id>
+      <Id>CS0661</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0085" Identifier="ChangeArrayType" Title="Change array type">
+    <FixableDiagnosticIds>
+      <Id>CS0246</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0086" Identifier="AddMissingType" Title="Add missing type">
+    <FixableDiagnosticIds>
+      <Id>CS1031</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0087" Identifier="ReplaceConditionalExpressionWithIfElse" Title="Replace conditional expression with if-else">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0088" Identifier="RemoveSemicolon" Title="Remove semicolon">
+    <FixableDiagnosticIds>
+      <Id>CS1597</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0089" Identifier="RemoveConditionalAccess" Title="Remove conditional access">
+    <FixableDiagnosticIds>
+      <Id>CS0023</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0090" Identifier="ChangeTypeAccordingToInitializer" Title="Change type according to initializer">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0091" Identifier="ChangeForEachType" Title="Change foreach type">
+    <FixableDiagnosticIds>
+      <Id>CS0030</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0092" Identifier="ChangeTypeToVar" Title="Change type to var">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+      <Id>CS0030</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

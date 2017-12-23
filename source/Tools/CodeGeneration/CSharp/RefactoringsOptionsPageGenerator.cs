@@ -33,7 +33,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             yield return PropertyDeclaration(
                 Modifiers.ProtectedOverride(),
-                StringType(),
+                StringPredefinedType(),
                 Identifier("DisabledByDefault"),
                 AccessorList(AutoGetAccessorDeclaration()),
                 ParseExpression(
@@ -46,7 +46,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             yield return PropertyDeclaration(
                 Modifiers.ProtectedOverride(),
-                StringType(),
+                StringPredefinedType(),
                 Identifier("MaxId"),
                 AccessorList(AutoGetAccessorDeclaration()),
                 ParseExpression($"RefactoringIdentifiers.{refactorings.OrderBy(f => f.Id, comparer).Last().Identifier}"));
@@ -112,7 +112,7 @@ namespace Roslynator.CodeGeneration.CSharp
                        AttributeList(Attribute(IdentifierName("TypeConverter"), AttributeArgument(TypeOfExpression(IdentifierName("EnabledDisabledConverter")))))
                     }),
                     Modifiers.Public(),
-                    BoolType(),
+                    BoolPredefinedType(),
                     default(ExplicitInterfaceSpecifierSyntax),
                     Identifier(info.Identifier),
                     AccessorList(

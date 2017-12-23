@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchWithIfElse))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchWithIf))
             {
                 TextSpan span = context.Span;
 

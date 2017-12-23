@@ -32,8 +32,14 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.MethodDeclaration) || f is StatementSyntax))
+            if (!TryFindFirstAncestorOrSelf(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                predicate: f => f.IsKind(SyntaxKind.MethodDeclaration) || f is StatementSyntax))
+            {
                 return;
+            }
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
@@ -41,20 +47,18 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod:
                         {
-                            SyntaxNode bodyOrExpressionBody = null;
-
                             var statement = node as StatementSyntax;
 
                             if (statement != null)
                                 node = node.FirstAncestor(f => f.IsKind(SyntaxKind.MethodDeclaration));
 
-                            if (node.IsKind(SyntaxKind.MethodDeclaration)
-                                && ((MethodDeclarationSyntax)node).ContainsYield())
-                            {
+                            if (ContainsYield(node))
                                 break;
-                            }
 
-                            bodyOrExpressionBody = GetBodyOrExpressionBody(node);
+                            SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody(node);
+
+                            if (bodyOrExpressionBody == null)
+                                break;
 
                             SemanticModel semanticModel = await context.Document.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -92,18 +96,10 @@ namespace Roslynator.CSharp.CodeFixes
             SyntaxNode bodyOrExpressionBody,
             SemanticModel semanticModel)
         {
-            if (bodyOrExpressionBody.IsKind(SyntaxKind.Block))
-            {
-                var body = (BlockSyntax)bodyOrExpressionBody;
-
+            if (bodyOrExpressionBody is BlockSyntax body)
                 return semanticModel.AnalyzeDataFlow(body);
-            }
-            else
-            {
-                var arrowExpressionClause = (ArrowExpressionClauseSyntax)bodyOrExpressionBody;
 
-                return semanticModel.AnalyzeDataFlow(arrowExpressionClause.Expression);
-            }
+            return semanticModel.AnalyzeDataFlow(((ArrowExpressionClauseSyntax)bodyOrExpressionBody).Expression);
         }
 
         private static Task<Document> RefactorAsync(
@@ -123,29 +119,26 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode newNode = null;
 
-            if (bodyOrExpressionBody.IsKind(SyntaxKind.ArrowExpressionClause))
+            if ( bodyOrExpressionBody is ArrowExpressionClauseSyntax expressionBody)
             {
-                newNode = ExpandExpressionBodyRefactoring.Refactor((ArrowExpressionClauseSyntax)bodyOrExpressionBody, semanticModel, cancellationToken);
+                newNode = ExpandExpressionBodyRefactoring.Refactor(expressionBody, semanticModel, cancellationToken);
 
                 newNode = InsertStatement(newNode, expressionStatement);
             }
-            else
+            else if (statement != null)
             {
-                if (statement != null)
+                if (statement.IsEmbedded())
                 {
-                    if (statement.IsEmbedded())
-                    {
-                        newNode = node.ReplaceNode(statement, Block(expressionStatement, statement));
-                    }
-                    else
-                    {
-                        newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
-                    }
+                    newNode = node.ReplaceNode(statement, Block(expressionStatement, statement));
                 }
                 else
                 {
-                    newNode = InsertStatement(node, expressionStatement);
+                    newNode = node.InsertNodesBefore(statement, new StatementSyntax[] { expressionStatement });
                 }
+            }
+            else
+            {
+                newNode = InsertStatement(node, expressionStatement);
             }
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
@@ -173,6 +166,11 @@ namespace Roslynator.CSharp.CodeFixes
         private static SyntaxNode GetBodyOrExpressionBody(SyntaxNode node)
         {
             return ((MethodDeclarationSyntax)node).BodyOrExpressionBody();
+        }
+
+        private static bool ContainsYield(SyntaxNode node)
+        {
+            return ((MethodDeclarationSyntax)node).ContainsYield();
         }
     }
 }

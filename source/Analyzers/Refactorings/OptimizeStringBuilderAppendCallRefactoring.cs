@@ -17,27 +17,54 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class OptimizeStringBuilderAppendCallRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpression memberInvocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
             INamedTypeSymbol stringBuilderSymbol = context.GetTypeByMetadataName(MetadataNames.System_Text_StringBuilder);
 
-            if (stringBuilderSymbol != null)
+            if (stringBuilderSymbol == null)
+                return;
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            if (!context.SemanticModel.TryGetMethodInfo(invocationExpression, out MethodInfo methodInfo, context.CancellationToken))
+                return;
+
+            if (methodInfo.IsExtensionMethod)
+                return;
+
+            if (methodInfo.ContainingType?.Equals(stringBuilderSymbol) != true)
+                return;
+
+            ImmutableArray<IParameterSymbol> parameters = methodInfo.Parameters;
+
+            int parameterCount = parameters.Length;
+
+            if (parameterCount == 0)
             {
-                InvocationExpressionSyntax invocationExpression = memberInvocation.InvocationExpression;
-                MethodInfo methodInfo;
-                if (context.SemanticModel.TryGetMethodInfo(invocationExpression, out methodInfo, context.CancellationToken)
-                    && !methodInfo.IsExtensionMethod
-                    && methodInfo.ContainingType?.Equals(stringBuilderSymbol) == true)
+                if (methodInfo.IsName("AppendLine"))
                 {
-                    ImmutableArray<IParameterSymbol> parameters = methodInfo.Parameters;
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = memberInvocation.ArgumentList.Arguments;
+                    MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo(invocationInfo.Expression);
 
-                    if (parameters.Length == 1
-                        && arguments.Count == 1
-                        && methodInfo.IsName("Append", "AppendLine"))
+                    if (invocationInfo2.Success
+                        && invocationInfo2.NameText == "Append"
+                        && invocationInfo2.Arguments.Count == 1
+                        && context.SemanticModel.TryGetMethodInfo(invocationInfo2.InvocationExpression, out MethodInfo methodInfo2, context.CancellationToken)
+                        && !methodInfo2.IsStatic
+                        && methodInfo2.ContainingType?.Equals(stringBuilderSymbol) == true
+                        && methodInfo2.HasParameter(SpecialType.System_String))
                     {
-                        ArgumentSyntax argument = arguments.First();
+                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, invocationInfo.Name, methodInfo.Name);
+                    }
+                }
+            }
+            else if (parameterCount == 1)
+            {
+                if (methodInfo.IsName("Append", "AppendLine"))
+                {
+                    ArgumentSyntax argument = invocationInfo.Arguments.SingleOrDefault(shouldThrow: false);
 
+                    if (argument != null)
+                    {
                         ExpressionSyntax expression = argument.Expression;
 
                         SyntaxKind expressionKind = expression.Kind();
@@ -51,8 +78,8 @@ namespace Roslynator.CSharp.Refactorings
                                 }
                             case SyntaxKind.AddExpression:
                                 {
-                                    StringConcatenationExpression concatenation;
-                                    if (StringConcatenationExpression.TryCreate((BinaryExpressionSyntax)expression, context.SemanticModel, out concatenation))
+                                    StringConcatenationExpressionInfo concatenationInfo = SyntaxInfo.StringConcatenationExpressionInfo((BinaryExpressionSyntax)expression, context.SemanticModel, context.CancellationToken);
+                                    if (concatenationInfo.Success)
                                     {
                                         context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodInfo.Name);
                                         return;
@@ -70,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                                     }
 
                                     if (methodInfo.IsName("Append")
-                                        && parameters.Length == 1
+                                        && parameterCount == 1
                                         && parameters[0].Type.IsObject()
                                         && context.SemanticModel.GetTypeSymbol(argument.Expression, context.CancellationToken).IsValueType)
                                     {
@@ -82,9 +109,17 @@ namespace Roslynator.CSharp.Refactorings
                                 }
                         }
                     }
-                    else if (parameters.Length > 1
-                        && methodInfo.IsName("Insert")
-                        && methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Object)
+                }
+            }
+            else if (parameterCount == 2)
+            {
+                if (methodInfo.IsName("Insert")
+                    && parameters[0].Type.SpecialType == SpecialType.System_Int32
+                    && parameters[1].Type.SpecialType == SpecialType.System_Object)
+                {
+                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+
+                    if (arguments.Count == 2
                         && context.SemanticModel
                             .GetTypeSymbol(arguments[1].Expression, context.CancellationToken)
                             .IsValueType)
@@ -97,51 +132,77 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsFixable(InvocationExpressionSyntax invocationExpression, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            MemberInvocationExpression memberInvocation;
-            if (MemberInvocationExpression.TryCreate(invocationExpression, out memberInvocation))
+            MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression);
+
+            if (!invocationInfo.Success)
+                return false;
+
+            if (!semanticModel.TryGetMethodInfo(invocationInfo.InvocationExpression, out MethodInfo methodInfo, cancellationToken))
+                return false;
+
+            if (!methodInfo.IsContainingType(SpecialType.System_String))
+                return false;
+
+            if (!methodInfo.IsReturnType(SpecialType.System_String))
+                return false;
+
+            switch (methodInfo.Name)
             {
-                MethodInfo methodInfo;
-                if (semanticModel.TryGetMethodInfo(memberInvocation.InvocationExpression, out methodInfo, cancellationToken)
-                    && methodInfo.IsContainingType(SpecialType.System_String)
-                    && methodInfo.IsReturnType(SpecialType.System_String))
-                {
-                    switch (methodInfo.Name)
+                case "Substring":
                     {
-                        case "Substring":
-                            {
-                                if (methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Int32))
-                                    return true;
+                        if (methodInfo.HasParameters(SpecialType.System_Int32, SpecialType.System_Int32))
+                            return true;
 
-                                break;
-                            }
-                        case "Remove":
-                            {
-                                if (methodInfo.HasParameter(SpecialType.System_Int32))
-                                    return true;
-
-                                break;
-                            }
-                        case "Format":
-                            {
-                                return true;
-                            }
+                        break;
                     }
-                }
+                case "Remove":
+                    {
+                        if (methodInfo.HasParameter(SpecialType.System_Int32))
+                            return true;
+
+                        break;
+                    }
+                case "Format":
+                    {
+                        return true;
+                    }
             }
 
             return false;
         }
 
+        public static Task<Document> RefactorAsync(
+            Document document,
+            MemberInvocationExpressionInfo invocationInfo,
+            CancellationToken cancellationToken)
+        {
+            MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo(invocationInfo.Expression);
+
+            SyntaxTriviaList trivia = invocationInfo2.InvocationExpression
+                .GetTrailingTrivia()
+                .EmptyIfWhitespace()
+                .AddRange(invocationInfo.InvocationExpression.GetTrailingTrivia());
+
+            InvocationExpressionSyntax newNode = invocationInfo2
+                .WithName("AppendLine")
+                .InvocationExpression
+                .WithTrailingTrivia(trivia);
+
+            return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newNode, cancellationToken);
+        }
+
         public static async Task<Document> RefactorAsync(
             Document document,
             ArgumentSyntax argument,
-            MemberInvocationExpression memberInvocation,
+            MemberInvocationExpressionInfo invocationInfo,
             CancellationToken cancellationToken)
         {
-            InvocationExpressionSyntax invocation = memberInvocation.InvocationExpression;
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
             InvocationExpressionSyntax newInvocation = null;
 
-            bool isAppendLine = string.Equals(memberInvocation.NameText, "AppendLine", StringComparison.Ordinal);
+            bool isAppendLine = string.Equals(invocationInfo.NameText, "AppendLine", StringComparison.Ordinal);
 
             ExpressionSyntax expression = argument.Expression;
 
@@ -149,45 +210,50 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.InterpolatedStringExpression:
                     {
-                        newInvocation = ConvertInterpolatedStringExpressionToInvocationExpression((InterpolatedStringExpressionSyntax)argument.Expression, memberInvocation);
+                        newInvocation = ConvertInterpolatedStringExpressionToInvocationExpression((InterpolatedStringExpressionSyntax)argument.Expression, invocationInfo, semanticModel);
                         break;
                     }
                 case SyntaxKind.AddExpression:
                     {
-                        ImmutableArray<ExpressionSyntax> expressions = BinaryExpressionChain.Create((BinaryExpressionSyntax)expression).Expressions;
+                        ImmutableArray<ExpressionSyntax> expressions = SyntaxInfo.BinaryExpressionChainInfo((BinaryExpressionSyntax)expression).Expressions;
 
                         newInvocation = invocation
-                            .ReplaceNode(memberInvocation.Name, IdentifierName("Append").WithTriviaFrom(memberInvocation.Name))
+                            .ReplaceNode(invocationInfo.Name, IdentifierName("Append").WithTriviaFrom(invocationInfo.Name))
                             .WithArgumentList(invocation.ArgumentList.WithArguments(SingletonSeparatedList(Argument(expressions[0]))).WithoutTrailingTrivia());
-
-                        SemanticModel semanticModel = null;
 
                         for (int i = 1; i < expressions.Length; i++)
                         {
-                            string name = (i == expressions.Length - 1 && isAppendLine)
-                                ? "AppendLine"
-                                : "Append";
-
                             ExpressionSyntax argumentExpression = expressions[i];
 
-                            if (isAppendLine)
-                            {
-                                if (semanticModel == null)
-                                    semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                                if (semanticModel
+                            string methodName;
+                            if (i == expressions.Length - 1
+                                && isAppendLine
+                                && semanticModel
                                     .GetTypeInfo(argumentExpression, cancellationToken)
                                     .ConvertedType?
-                                    .IsString() != true)
-                                {
-                                    argumentExpression = SimpleMemberInvocationExpression(argumentExpression.Parenthesize(), IdentifierName("ToString"));
-                                }
+                                    .SpecialType == SpecialType.System_String)
+                            {
+                                methodName = "AppendLine";
+                            }
+                            else
+                            {
+                                methodName = "Append";
                             }
 
                             newInvocation = SimpleMemberInvocationExpression(
                                 newInvocation,
-                                IdentifierName(name),
+                                IdentifierName(methodName),
                                 ArgumentList(Argument(argumentExpression)));
+
+                            if (i == expressions.Length - 1
+                                && isAppendLine
+                                && !string.Equals(methodName, "AppendLine", StringComparison.Ordinal))
+                            {
+                                newInvocation = SimpleMemberInvocationExpression(
+                                    newInvocation,
+                                    IdentifierName("AppendLine"),
+                                    ArgumentList());
+                            }
                         }
 
                         break;
@@ -214,13 +280,14 @@ namespace Roslynator.CSharp.Refactorings
 
         private static InvocationExpressionSyntax ConvertInterpolatedStringExpressionToInvocationExpression(
             InterpolatedStringExpressionSyntax interpolatedString,
-            MemberInvocationExpression memberInvocation)
+            MemberInvocationExpressionInfo invocationInfo,
+            SemanticModel semanticModel)
         {
             bool isVerbatim = interpolatedString.IsVerbatim();
 
-            bool isAppendLine = string.Equals(memberInvocation.NameText, "AppendLine", StringComparison.Ordinal);
+            bool isAppendLine = string.Equals(invocationInfo.NameText, "AppendLine", StringComparison.Ordinal);
 
-            InvocationExpressionSyntax invocation = memberInvocation.InvocationExpression;
+            InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
 
             InvocationExpressionSyntax newExpression = null;
 
@@ -230,33 +297,35 @@ namespace Roslynator.CSharp.Refactorings
             {
                 InterpolatedStringContentConversion conversion = InterpolatedStringContentConversion.Create(contents[i], isVerbatim);
 
-                string name = conversion.Name;
+                string methodName = conversion.MethodName;
                 SeparatedSyntaxList<ArgumentSyntax> arguments = conversion.Arguments;
 
                 if (i == contents.Count - 1
                     && isAppendLine
-                    && !string.Equals(name, "AppendFormat", StringComparison.Ordinal))
+                    && string.Equals(methodName, "Append", StringComparison.Ordinal)
+                    && (conversion.Kind == SyntaxKind.InterpolatedStringText
+                        || semanticModel.IsImplicitConversion(((InterpolationSyntax)contents[i]).Expression, semanticModel.Compilation.GetSpecialType(SpecialType.System_String))))
                 {
-                    name = "AppendLine";
+                    methodName = "AppendLine";
                 }
 
                 if (newExpression == null)
                 {
                     newExpression = invocation
-                        .ReplaceNode(memberInvocation.Name, IdentifierName(name).WithTriviaFrom(memberInvocation.Name))
+                        .ReplaceNode(invocationInfo.Name, IdentifierName(methodName).WithTriviaFrom(invocationInfo.Name))
                         .WithArgumentList(invocation.ArgumentList.WithArguments(arguments).WithoutTrailingTrivia());
                 }
                 else
                 {
                     newExpression = SimpleMemberInvocationExpression(
                         newExpression,
-                        IdentifierName(name),
+                        IdentifierName(methodName),
                         ArgumentList(arguments));
                 }
 
                 if (i == contents.Count - 1
                     && isAppendLine
-                    && string.Equals(name, "AppendFormat", StringComparison.Ordinal))
+                    && !string.Equals(methodName, "AppendLine", StringComparison.Ordinal))
                 {
                     newExpression = SimpleMemberInvocationExpression(
                         newExpression,
@@ -272,16 +341,16 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax innerInvocationExpression,
             InvocationExpressionSyntax outerInvocationExpression)
         {
-            MemberInvocationExpression memberInvocation = MemberInvocationExpression.Create(innerInvocationExpression);
+            MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(innerInvocationExpression);
 
-            switch (memberInvocation.NameText)
+            switch (invocationInfo.NameText)
             {
                 case "Substring":
                     {
-                        SeparatedSyntaxList<ArgumentSyntax> arguments = memberInvocation.ArgumentList.Arguments;
+                        SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
 
                         ArgumentListSyntax argumentList = ArgumentList(
-                            Argument(memberInvocation.Expression),
+                            Argument(invocationInfo.Expression),
                             arguments[0],
                             arguments[1]
                         );
@@ -290,10 +359,10 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case "Remove":
                     {
-                        SeparatedSyntaxList<ArgumentSyntax> arguments = memberInvocation.ArgumentList.Arguments;
+                        SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
 
                         ArgumentListSyntax argumentList = ArgumentList(
-                            Argument(memberInvocation.Expression),
+                            Argument(invocationInfo.Expression),
                             Argument(NumericLiteralExpression(0)),
                             arguments[0]
                         );
@@ -302,7 +371,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case "Format":
                     {
-                        return CreateNewInvocationExpression(outerInvocationExpression, "AppendFormat", memberInvocation.ArgumentList);
+                        return CreateNewInvocationExpression(outerInvocationExpression, "AppendFormat", invocationInfo.ArgumentList);
                     }
             }
 

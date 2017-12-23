@@ -7,75 +7,76 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class JoinStringExpressionsRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, StringConcatenationExpression concatenation)
+        public static void ComputeRefactoring(RefactoringContext context, StringConcatenationExpressionInfo concatenationInfo)
         {
-            if (concatenation.ContainsNonLiteralExpression)
+            if (concatenationInfo.ContainsNonLiteralExpression)
             {
-                if (concatenation.ContainsLiteralExpression || concatenation.ContainsInterpolatedStringExpression)
+                if (concatenationInfo.ContainsLiteralExpression || concatenationInfo.ContainsInterpolatedStringExpression)
                 {
                     context.RegisterRefactoring(
                         "Join string expressions",
-                        cancellationToken => ToInterpolatedStringAsync(context.Document, concatenation, cancellationToken));
+                        cancellationToken => ToInterpolatedStringAsync(context.Document, concatenationInfo, cancellationToken));
                 }
             }
-            else if (concatenation.ContainsLiteralExpression)
+            else if (concatenationInfo.ContainsLiteralExpression)
             {
                 context.RegisterRefactoring(
                     "Join string literals",
-                    cancellationToken => ToStringLiteralAsync(context.Document, concatenation, multiline: false, cancellationToken: cancellationToken));
+                    cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: false, cancellationToken: cancellationToken));
 
-                if (concatenation.OriginalExpression
-                        .DescendantTrivia(concatenation.Span ?? concatenation.OriginalExpression.Span)
+                if (concatenationInfo.OriginalExpression
+                        .DescendantTrivia(concatenationInfo.Span ?? concatenationInfo.OriginalExpression.Span)
                         .Any(f => f.IsEndOfLineTrivia()))
                 {
                     context.RegisterRefactoring(
                         "Join string literals into multiline string literal",
-                        cancellationToken => ToStringLiteralAsync(context.Document, concatenation, multiline: true, cancellationToken: cancellationToken));
+                        cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: true, cancellationToken: cancellationToken));
                 }
             }
         }
 
         private static Task<Document> ToInterpolatedStringAsync(
             Document document,
-            StringConcatenationExpression concatenation,
+            StringConcatenationExpressionInfo concatenationInfo,
             CancellationToken cancellationToken)
         {
-            InterpolatedStringExpressionSyntax newExpression = concatenation.ToInterpolatedString();
+            InterpolatedStringExpressionSyntax newExpression = concatenationInfo.ToInterpolatedString();
 
-            return RefactorAsync(document, concatenation, newExpression, cancellationToken);
+            return RefactorAsync(document, concatenationInfo, newExpression, cancellationToken);
         }
 
         public static Task<Document> ToStringLiteralAsync(
             Document document,
-            StringConcatenationExpression concatenation,
+            StringConcatenationExpressionInfo concatenationInfo,
             bool multiline,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             ExpressionSyntax newExpression = (multiline)
-                ? concatenation.ToMultilineStringLiteral()
-                : concatenation.ToStringLiteral();
+                ? concatenationInfo.ToMultilineStringLiteral()
+                : concatenationInfo.ToStringLiteral();
 
-            return RefactorAsync(document, concatenation, newExpression, cancellationToken);
+            return RefactorAsync(document, concatenationInfo, newExpression, cancellationToken);
         }
 
         private static Task<Document> RefactorAsync(
             Document document,
-            StringConcatenationExpression concatenation,
+            StringConcatenationExpressionInfo concatenationInfo,
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
-            if (concatenation.Span.HasValue)
+            if (concatenationInfo.Span.HasValue)
             {
-                TextSpan span = concatenation.Span.Value;
+                TextSpan span = concatenationInfo.Span.Value;
 
-                int start = concatenation.OriginalExpression.SpanStart;
+                int start = concatenationInfo.OriginalExpression.SpanStart;
 
-                string s = concatenation.OriginalExpression.ToString();
+                string s = concatenationInfo.OriginalExpression.ToString();
 
                 s = s.Remove(span.Start - start)
                     + expression
@@ -85,10 +86,10 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             expression = expression
-                .WithTriviaFrom(concatenation.OriginalExpression)
+                .WithTriviaFrom(concatenationInfo.OriginalExpression)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(concatenation.OriginalExpression, expression, cancellationToken);
+            return document.ReplaceNodeAsync(concatenationInfo.OriginalExpression, expression, cancellationToken);
         }
     }
 }

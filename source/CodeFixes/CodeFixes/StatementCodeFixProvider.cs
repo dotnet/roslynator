@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -22,7 +21,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.EmptySwitchBlock,
-                    CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement,
                     CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue);
             }
         }
@@ -31,8 +29,8 @@ namespace Roslynator.CSharp.CodeFixes
         {
             if (!Settings.IsAnyCodeFixEnabled(
                 CodeFixIdentifiers.RemoveEmptySwitchStatement,
-                CodeFixIdentifiers.IntroduceLocalVariable,
-                CodeFixIdentifiers.RemoveJumpStatement))
+                CodeFixIdentifiers.RemoveJumpStatement,
+                CodeFixIdentifiers.ReplaceBreakWithContinue))
             {
                 return;
             }
@@ -51,78 +49,81 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveEmptySwitchStatement))
                                 break;
 
-                            if (!statement.IsKind(SyntaxKind.SwitchStatement))
+                            if (!(statement is SwitchStatementSyntax switchStatement))
                                 break;
 
-                            var switchStatement = (SwitchStatementSyntax)statement;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove switch statement",
-                                cancellationToken => context.Document.RemoveStatementAsync(switchStatement, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement:
-                        {
-                            if (Settings.IsAnyCodeFixEnabled(
-                                CodeFixIdentifiers.IntroduceLocalVariable,
-                                CodeFixIdentifiers.IntroduceField))
-                            {
-                                if (!(statement is ExpressionStatementSyntax expressionStatement))
-                                    break;
-
-                                ExpressionSyntax expression = expressionStatement.Expression;
-
-                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                                if (semanticModel.GetSymbol(expression, context.CancellationToken)?.IsErrorType() != false)
-                                    break;
-
-                                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-                                if (typeSymbol?.IsErrorType() != false)
-                                    break;
-
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceLocalVariable)
-                                    && !statement.IsEmbedded())
-                                {
-                                    bool addAwait = typeSymbol.IsConstructedFromTaskOfT(semanticModel)
-                                        && semanticModel.GetEnclosingSymbol(expressionStatement.SpanStart, context.CancellationToken).IsAsyncMethod();
-
-                                    CodeAction codeAction = CodeAction.Create(
-                                        IntroduceLocalVariableRefactoring.GetTitle(expression),
-                                        cancellationToken => IntroduceLocalVariableRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, addAwait, semanticModel, cancellationToken),
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceLocalVariable));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
-
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.IntroduceField))
-                                {
-                                    CodeAction codeAction = CodeAction.Create(
-                                        $"Introduce field for '{expression}'",
-                                        cancellationToken => IntroduceFieldRefactoring.RefactorAsync(context.Document, expressionStatement, typeSymbol, semanticModel, cancellationToken),
-                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.IntroduceField));
-
-                                    context.RegisterCodeFix(codeAction, diagnostic);
-                                }
-                            }
-
+                            CodeFixRegistrator.RemoveStatement(context, diagnostic, switchStatement);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveJumpStatement))
-                                break;
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveJumpStatement))
+                                CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
 
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Remove {statement.GetTitle()}",
-                                cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceBreakWithContinue)
+                                && statement.Kind() == SyntaxKind.BreakStatement)
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
+                                if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
+                                {
+                                    if (methodSymbol.ReturnsVoid
+                                        || (methodSymbol.IsAsync && methodSymbol.ReturnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))))
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Replace 'break' with 'return'",
+                                            cancellationToken =>
+                                            {
+                                                var breakStatement = (BreakStatementSyntax)statement;
+                                                SyntaxToken breakKeyword = breakStatement.BreakKeyword;
+
+                                                ReturnStatementSyntax newStatement = SyntaxFactory.ReturnStatement(
+                                                    SyntaxFactory.Token(breakKeyword.LeadingTrivia, SyntaxKind.ReturnKeyword, breakKeyword.TrailingTrivia),
+                                                    null,
+                                                    breakStatement.SemicolonToken);
+
+                                                return context.Document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
+                                            },
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
+                                }
+                            }
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveJumpStatement))
+                                CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceBreakWithContinue)
+                                && statement.Kind() == SyntaxKind.BreakStatement)
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
+                                {
+                                    if (methodSymbol.ReturnsVoid
+                                        || (methodSymbol.IsAsync && methodSymbol.ReturnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))))
+                                    {
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Replace 'break' with 'return'",
+                                            cancellationToken =>
+                                            {
+                                                var breakStatement = (BreakStatementSyntax)statement;
+                                                SyntaxToken breakKeyword = breakStatement.BreakKeyword;
+
+                                                ReturnStatementSyntax newStatement = SyntaxFactory.ReturnStatement(
+                                                    SyntaxFactory.Token(breakKeyword.LeadingTrivia, SyntaxKind.ReturnKeyword, breakKeyword.TrailingTrivia),
+                                                    null,
+                                                    breakStatement.SemicolonToken);
+
+                                                return context.Document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
+                                            },
+                                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceBreakWithContinue));
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                    }
+                                }
+                            }
+
                             break;
                         }
                 }

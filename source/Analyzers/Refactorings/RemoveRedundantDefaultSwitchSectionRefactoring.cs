@@ -48,14 +48,15 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool ContainsOnlyBreakStatement(SwitchSectionSyntax switchSection)
         {
-            StatementSyntax statement = switchSection.SingleStatementOrDefault();
+            StatementSyntax statement = switchSection.Statements.SingleOrDefault(shouldThrow: false);
 
             switch (statement?.Kind())
             {
                 case SyntaxKind.Block:
                     {
                         return ((BlockSyntax)statement)
-                            .SingleStatementOrDefault()?
+                            .Statements
+                            .SingleOrDefault(shouldThrow: false)?
                             .IsKind(SyntaxKind.BreakStatement) == true;
                     }
                 case SyntaxKind.BreakStatement:

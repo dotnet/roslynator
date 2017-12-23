@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private bool RegisterCodeFix(
+        private static bool RegisterCodeFix(
             CodeFixContext context,
             ExpressionSyntax expression,
             Diagnostic diagnostic,

@@ -138,7 +138,13 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
-            if (typeSymbol.IsEnum())
+            if (typeSymbol == null)
+                return false;
+
+            if (typeSymbol.Kind == SymbolKind.ErrorType)
+                return false;
+
+            if (typeSymbol.TypeKind == TypeKind.Enum)
                 return true;
 
             switch (typeSymbol.SpecialType)
@@ -257,16 +263,13 @@ namespace Roslynator.CSharp.Refactorings
                     return SingletonList<StatementSyntax>(block.AddStatements(BreakStatement()));
                 }
             }
+            else if (IsJumpStatement(statement))
+            {
+                return SingletonList(statement);
+            }
             else
             {
-                if (IsJumpStatement(statement))
-                {
-                    return SingletonList(statement);
-                }
-                else
-                {
-                    return SingletonList<StatementSyntax>(Block(statement, BreakStatement()));
-                }
+                return SingletonList<StatementSyntax>(Block(statement, BreakStatement()));
             }
         }
 

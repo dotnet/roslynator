@@ -40,7 +40,16 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out VariableDeclarationSyntax variableDeclaration))
+            if (!TryFindFirstAncestorOrSelf(
+                root,
+                context.Span,
+                out SyntaxNode node,
+                predicate: f => f.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.ForEachStatement)))
+            {
+                return;
+            }
+
+            if (!(node is VariableDeclarationSyntax variableDeclaration))
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -80,7 +89,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!(variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclaration))
                                 return;
 
-                            VariableDeclaratorSyntax variableDeclarator = variableDeclaration.SingleVariableOrDefault();
+                            VariableDeclaratorSyntax variableDeclarator = variableDeclaration.Variables.SingleOrDefault(shouldthrow: false);
 
                             if (variableDeclarator == null)
                                 break;
@@ -110,7 +119,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             .WithTriviaFrom(localDeclaration)
                                             .WithFormatterAnnotation();
 
-                                        return context.Document.ReplaceNodeAsync(localDeclaration, newNode, context.CancellationToken);
+                                        return context.Document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken);
                                     },
                                     GetEquivalenceKey(diagnostic));
                                 context.RegisterCodeFix(codeAction, diagnostic);

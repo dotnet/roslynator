@@ -66,6 +66,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="Overview.md" />
     <None Include="packages.config" />
     <None Include="Roslynator.VisualStudio.Refactorings.snk" />
     <None Include="source.extension.vsixmanifest">
@@ -73,7 +74,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="description.txt" />
     <Content Include="LICENSE.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>

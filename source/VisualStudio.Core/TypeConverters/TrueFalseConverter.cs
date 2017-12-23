@@ -25,9 +25,7 @@ namespace Roslynator.VisualStudio.TypeConverters
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value)
         {
-            var s = value as string;
-
-            if (s != null)
+            if (value is string s)
             {
                 if (string.Equals(s, TrueText, StringComparison.Ordinal))
                     return true;

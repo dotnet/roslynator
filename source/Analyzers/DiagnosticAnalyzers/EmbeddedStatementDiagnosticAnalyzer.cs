@@ -40,6 +40,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             context.RegisterSyntaxNodeAction(AnalyzeDoStatement, SyntaxKind.DoStatement);
             context.RegisterSyntaxNodeAction(AnalyzeLockStatement, SyntaxKind.LockStatement);
             context.RegisterSyntaxNodeAction(AnalyzeFixedStatement, SyntaxKind.FixedStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeFixedStatement, SyntaxKind.FixedStatement);
         }
 
         private void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)

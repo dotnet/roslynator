@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings.NodeInList
         public SyntaxToken TokenBefore { get; }
         public SyntaxToken TokenAfter { get; }
 
-        private TSyntax SetTrivia(TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
+        private static TSyntax SetTrivia(TSyntax newNode, SyntaxToken tokenBefore, SyntaxToken tokenAfter)
         {
             SyntaxTriviaList leadingTrivia = tokenBefore
                 .TrailingTrivia

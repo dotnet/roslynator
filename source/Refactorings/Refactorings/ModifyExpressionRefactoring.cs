@@ -13,15 +13,19 @@ namespace Roslynator.CSharp.Refactorings
             RefactoringContext context,
             ExpressionSyntax expression,
             ITypeSymbol destinationType,
-            SemanticModel semanticModel)
+            SemanticModel semanticModel,
+            bool addCastExpression = true)
         {
             if (semanticModel.IsExplicitConversion(expression, destinationType))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallToMethod))
                     CallToMethod(context, expression, destinationType, semanticModel);
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddCastExpression)
+                    && addCastExpression)
+                {
                     RegisterAddCastExpressionRefactoring(context, expression, destinationType, semanticModel);
+                }
             }
             else if (destinationType.IsString())
             {

@@ -32,9 +32,7 @@ namespace Roslynator.CSharp.Refactorings
                         .GetSyntaxAsync(context.CancellationToken)
                         .ConfigureAwait(false);
 
-                    var method = node as MethodDeclarationSyntax;
-
-                    if (method != null)
+                    if (node is MethodDeclarationSyntax method)
                     {
                         VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 
@@ -126,16 +124,13 @@ namespace Roslynator.CSharp.Refactorings
                         expressionStatement.WithTriviaFrom(localDeclaration));
                 }
             }
+            else if (variableCount > 1)
+            {
+                newMethod = newMethod.RemoveNode(variable, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+            }
             else
             {
-                if (variableCount > 1)
-                {
-                    newMethod = newMethod.RemoveNode(variable, SyntaxRemoveOptions.KeepUnbalancedDirectives);
-                }
-                else
-                {
-                    newMethod = newMethod.RemoveNode(localDeclaration, SyntaxRemoveOptions.KeepUnbalancedDirectives);
-                }
+                newMethod = newMethod.RemoveNode(localDeclaration, SyntaxRemoveOptions.KeepUnbalancedDirectives);
             }
 
             ParameterSyntax newParameter = Parameter(type, identifier).WithFormatterAnnotation();

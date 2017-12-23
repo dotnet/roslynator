@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, ElseClauseSyntax elseClause)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveConditionFromLastElse)
-                && elseClause.ElseKeyword.Span.Contains(context.Span))
+                && context.Span.IsEmptyAndContainedInSpan(elseClause.ElseKeyword))
             {
                 RemoveConditionFromLastElseRefactoring.ComputeRefactorings(context, elseClause);
             }

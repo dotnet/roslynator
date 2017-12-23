@@ -18,7 +18,28 @@ namespace Roslynator.CSharp.Refactorings
         {
             var parenthesizedExpression = (ParenthesizedExpressionSyntax)context.Node;
 
-            AnalyzeExpression(context, parenthesizedExpression.Expression);
+            ExpressionSyntax expression = parenthesizedExpression.Expression;
+
+            if (expression?.IsMissing != false)
+                return;
+
+            SyntaxKind kind = expression.Kind();
+
+            if (kind == SyntaxKind.ParenthesizedExpression)
+            {
+                AnalyzeParenthesizedExpression(context, (ParenthesizedExpressionSyntax)expression);
+            }
+            else if (parenthesizedExpression.IsParentKind(SyntaxKind.LogicalNotExpression)
+                && kind.Is(
+                    SyntaxKind.IdentifierName,
+                    SyntaxKind.GenericName,
+                    SyntaxKind.InvocationExpression,
+                    SyntaxKind.SimpleMemberAccessExpression,
+                    SyntaxKind.ElementAccessExpression,
+                    SyntaxKind.ConditionalAccessExpression))
+            {
+                AnalyzeParenthesizedExpression(context, parenthesizedExpression);
+            }
         }
 
         public static void AnalyzeWhileStatement(SyntaxNodeAnalysisContext context)
@@ -102,20 +123,18 @@ namespace Roslynator.CSharp.Refactorings
         {
             var awaitExpression = (AwaitExpressionSyntax)context.Node;
 
-            ExpressionSyntax expression = awaitExpression.Expression;
+            if (!(awaitExpression.Expression is ParenthesizedExpressionSyntax parenthesizedExpression))
+                return;
 
-            if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
-            {
-                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
+            ExpressionSyntax expression = parenthesizedExpression.Expression;
 
-                ExpressionSyntax innerExpression = parenthesizedExpression.Expression;
+            if (expression?.IsMissing != false)
+                return;
 
-                if (innerExpression != null
-                    && OperatorPrecedence.GetPrecedence(innerExpression.Kind()) <= OperatorPrecedence.GetPrecedence(SyntaxKind.AwaitExpression))
-                {
-                    AnalyzeParenthesizedExpression(context, parenthesizedExpression);
-                }
-            }
+            if (OperatorPrecedence.GetPrecedence(expression.Kind()) > OperatorPrecedence.GetPrecedence(SyntaxKind.AwaitExpression))
+                return;
+
+            AnalyzeParenthesizedExpression(context, parenthesizedExpression);
         }
 
         internal static void AnalyzeInitializerExpression(SyntaxNodeAnalysisContext context)
@@ -130,15 +149,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             var interpolation = (InterpolationSyntax)context.Node;
 
-            ExpressionSyntax expression = interpolation.Expression;
+            if (!(interpolation.Expression is ParenthesizedExpressionSyntax parenthesizedExpression))
+                return;
 
-            if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
-            {
-                var parenthesizedExpression = (ParenthesizedExpressionSyntax)expression;
+            if (parenthesizedExpression.Expression?.IsKind(SyntaxKind.ConditionalExpression) == true)
+                return;
 
-                if (parenthesizedExpression.Expression?.IsKind(SyntaxKind.ConditionalExpression) == false)
-                    AnalyzeParenthesizedExpression(context, parenthesizedExpression);
-            }
+            AnalyzeParenthesizedExpression(context, parenthesizedExpression);
         }
 
         internal static void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
@@ -157,29 +174,29 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void AnalyzeExpression(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
         {
-            if (expression?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
-                AnalyzeParenthesizedExpression(context, (ParenthesizedExpressionSyntax)expression);
+            if (expression is ParenthesizedExpressionSyntax parenthesizedExpression)
+                AnalyzeParenthesizedExpression(context, parenthesizedExpression);
         }
 
         private static void AnalyzeParenthesizedExpression(SyntaxNodeAnalysisContext context, ParenthesizedExpressionSyntax parenthesizedExpression)
         {
             SyntaxToken openParen = parenthesizedExpression.OpenParenToken;
 
-            if (!openParen.IsMissing)
-            {
-                SyntaxToken closeParen = parenthesizedExpression.CloseParenToken;
+            if (openParen.IsMissing)
+                return;
 
-                if (!closeParen.IsMissing)
-                {
-                    context.ReportDiagnostic(
-                       DiagnosticDescriptors.RemoveRedundantParentheses,
-                       openParen.GetLocation(),
-                       additionalLocations: ImmutableArray.Create(closeParen.GetLocation()));
+            SyntaxToken closeParen = parenthesizedExpression.CloseParenToken;
 
-                    context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
-                    context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
-                }
-            }
+            if (closeParen.IsMissing)
+                return;
+
+            context.ReportDiagnostic(
+               DiagnosticDescriptors.RemoveRedundantParentheses,
+               openParen.GetLocation(),
+               additionalLocations: ImmutableArray.Create(closeParen.GetLocation()));
+
+            context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
+            context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
         }
 
         public static Task<Document> RefactorAsync(
@@ -197,10 +214,9 @@ namespace Roslynator.CSharp.Refactorings
                 .Concat(parenthesizedExpression.CloseParenToken.LeadingTrivia)
                 .Concat(parenthesizedExpression.GetTrailingTrivia());
 
-            return document.ReplaceNodeAsync(
-                parenthesizedExpression,
-                expression.WithLeadingTrivia(leading).WithTrailingTrivia(trailing),
-                cancellationToken);
+            ExpressionSyntax newNode = expression.WithLeadingTrivia(leading).WithTrailingTrivia(trailing);
+
+            return document.ReplaceNodeAsync(parenthesizedExpression, newNode, cancellationToken);
         }
     }
 }

@@ -5,18 +5,20 @@ namespace Roslynator.CSharp.Refactorings.If
     internal class IfAnalysisOptions : AnalysisOptions
     {
         public IfAnalysisOptions()
-            : this(true, true, true)
+            : this(true, true, true, true)
         {
         }
 
         public IfAnalysisOptions(
             bool useCoalesceExpression,
             bool useConditionalExpression,
-            bool useBooleanExpression)
+            bool useBooleanExpression,
+            bool useExpression)
         {
             UseCoalesceExpression = useCoalesceExpression;
             UseConditionalExpression = useConditionalExpression;
             UseBooleanExpression = useBooleanExpression;
+            UseExpression = useExpression;
         }
 
         public bool UseCoalesceExpression { get; }
@@ -24,5 +26,7 @@ namespace Roslynator.CSharp.Refactorings.If
         public bool UseConditionalExpression { get; }
 
         public bool UseBooleanExpression { get; }
+
+        public bool UseExpression { get; }
     }
 }

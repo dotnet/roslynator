@@ -43,6 +43,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.CSharp.CodeFixes.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeFixes\AddArgumentListToObjectCreationCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBodyCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBracesToDeclarationOrLabeledStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddBreakStatementToSwitchSectionCodeFixProvider.cs" />
@@ -50,15 +51,20 @@
     <Compile Include="CodeFixes\AttributeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BinaryExpressionCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\ChangeOverridingMemberAccessibilityCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\ClassDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\CodeFixRegistrator.cs" />
     <Compile Include="CodeFixes\ConditionalExpressionClauseCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ElementAccessCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\MemberHidesInheritedMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddReturnStatementCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseListCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ModifiersCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\TypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\OperatorDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\TypeDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeDoesNotContainDefinitionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterConstraintClauseCodeFixProvider.cs" />
@@ -96,13 +102,12 @@
     <Compile Include="Refactorings\AddBreakStatementToSwitchSectionRefactoring.cs" />
     <Compile Include="Refactorings\AddComparisonWithBooleanLiteralRefactoring.cs" />
     <Compile Include="Refactorings\AddDocumentationCommentRefactoring.cs" />
+    <Compile Include="Refactorings\ChangeMemberTypeRefactoring.cs" />
+    <Compile Include="Refactorings\ChangeTypeAccordingToInitializerRefactoring.cs" />
     <Compile Include="Refactorings\CreateSingletonArrayRefactoring.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\MemberTypeMustMatchOverriddenMemberTypeRefactoring.cs" />
-    <Compile Include="Refactorings\ModifiersRefactoring.cs" />
-    <Compile Include="Refactorings\OverrideInfo.cs" />
-    <Compile Include="Refactorings\OverridingMemberCannotChangeAccessModifiersRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
     <Compile Include="Refactorings\UseYieldReturnInsteadOfReturnRefactoring.cs" />
     <Compile Include="CodeFixes\VariableDeclarationCodeFixProvider.cs" />
@@ -175,6 +180,9 @@
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
       <Output TaskParameter="Assemblies" ItemName="AnalyzerAssemblyInfo" />
     </GetAssemblyIdentity>
+    <Exec Command="&quot;$(SolutionDir)..\tools\NuGet.exe&quot; pack &quot;$(ProjectDir)\Roslynator.CodeFixes.nuspec&quot; -OutputDirectory &quot;$(ProjectDir)NuGetOutputDirectory&quot; -BasePath &quot;$(ProjectDir)$(OutDir).&quot; -Prop Configuration=Release -NoPackageAnalysis" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

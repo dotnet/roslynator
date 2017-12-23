@@ -20,22 +20,19 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SyntaxList<SwitchLabelSyntax> labels = switchSection.Labels;
 
-                if (labels.Count > 1)
+                if (labels.Count > 1
+                    && SyntaxListSelection<SwitchLabelSyntax>.TryCreate(labels, context.Span, out SyntaxListSelection<SwitchLabelSyntax> selection))
                 {
-                    SyntaxListSelection<SwitchLabelSyntax> selection;
-                    if (SyntaxListSelection<SwitchLabelSyntax>.TryCreate(labels, context.Span, out selection))
+                    if (selection.Count > 1 || (selection.First() != labels.Last()))
                     {
-                        if (selection.Count > 1 || (selection.First() != labels.Last()))
-                        {
-                            SwitchLabelSyntax[] selectedLabels = selection.ToArray();
+                        SwitchLabelSyntax[] selectedLabels = selection.ToArray();
 
-                            if (selectedLabels.Last() == labels.Last())
-                                selectedLabels = selectedLabels.Take(selectedLabels.Length - 1).ToArray();
+                        if (selectedLabels.Last() == labels.Last())
+                            selectedLabels = selectedLabels.Take(selectedLabels.Length - 1).ToArray();
 
-                            context.RegisterRefactoring(
-                                "Split labels",
-                                cancellationToken => RefactorAsync(context.Document, switchSection, selectedLabels, cancellationToken));
-                        }
+                        context.RegisterRefactoring(
+                            "Split labels",
+                            cancellationToken => RefactorAsync(context.Document, switchSection, selectedLabels, cancellationToken));
                     }
                 }
             }

@@ -34,12 +34,10 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private void AnalyzeTrailingTrivia(SyntaxTreeAnalysisContext context)
         {
-            SourceText sourceText;
-            if (!context.Tree.TryGetText(out sourceText))
+            if (!context.Tree.TryGetText(out SourceText sourceText))
                 return;
 
-            SyntaxNode root;
-            if (!context.Tree.TryGetRoot(out root))
+            if (!context.Tree.TryGetRoot(out SyntaxNode root))
                 return;
 
             var emptyLines = default(TextSpan);

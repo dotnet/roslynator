@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public abstract TStatement SetStatement(TStatement statement, StatementSyntax newStatement);
 
-        protected TStatement RemoveExpressionFromCondition(
+        protected static TStatement RemoveExpressionFromCondition(
             TStatement statement,
             BinaryExpressionSyntax condition,
             ExpressionSyntax expression)
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             }
         }
 
-        protected TStatement RemoveExpressionsFromCondition(
+        protected static TStatement RemoveExpressionsFromCondition(
             TStatement statement,
             BinaryExpressionSyntax condition,
             BinaryExpressionSelection binaryExpressionSelection)

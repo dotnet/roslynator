@@ -4,7 +4,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     internal static partial class CS0718_StaticTypesCannotBeUsedAsTypeArguments
     {
-        private static partial class FooPartial
+        private partial class FooPartial
         {
         }
     }

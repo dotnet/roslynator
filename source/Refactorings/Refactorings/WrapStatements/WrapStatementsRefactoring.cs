@@ -6,6 +6,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
@@ -15,10 +17,10 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
         public Task<Document> RefactorAsync(
             Document document,
-            StatementContainerSelection selectedStatements,
+            StatementsSelection selectedStatements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container = selectedStatements.Container;
+            StatementsInfo statementsInfo = selectedStatements.Info;
 
             StatementSyntax[] statements = selectedStatements.ToArray();
 
@@ -30,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
             statements[0] = statements[0].WithLeadingTrivia();
             statements[statements.Length - 1] = statements[statements.Length - 1].WithTrailingTrivia();
 
-            SyntaxList<StatementSyntax> newStatements = container.Statements;
+            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements;
 
             int cnt = statements.Length;
 
@@ -49,7 +51,18 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
             newStatements = newStatements.Insert(index, statement);
 
-            return document.ReplaceNodeAsync(container.Node, container.NodeWithStatements(newStatements), cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
+        }
+
+        public Task<Document> RefactorAsync(
+            Document document,
+            StatementSyntax  embeddedStatement,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            BlockSyntax newNode = Block(CreateStatement(ImmutableArray.Create(embeddedStatement)))
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(embeddedStatement, newNode, cancellationToken);
         }
     }
 }

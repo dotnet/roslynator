@@ -1,6 +1,90 @@
+### 1.6.10 (2017-12-21)
+
+#### Analyzers
+
+* Add analyzer [UnusedMemberDeclaration](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1213.md) (RCS1213).
+* Improve analyzer [UnusedParameter](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1163.md)
+  * Report unused parameters of lambda expressions and anonymous methods.
+
+#### Code Fixes
+
+* Add code fixes for CS0030, CS1597.
+
+### 1.6.0 (2017-12-13)
+
+#### Refactorings
+
+* Add refactoring [AddMemberToInterface](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0195.md) (RR0195).
+* Add refactoring [MergeIfWithParentIf](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0196.md) (RR0196).
+
+#### Code Fixes
+
+Add code fix for CS1031 and CS8112. 
+
+### 1.5.14 (2017-11-29)
+
+#### Refactorings
+
+* Add refactoring ReplaceInterpolatedStringWithConcatenation (RR0193).
+* Add refactoring SplitDeclarationAndInitialization (RR0194).
+
+#### Code Fixes
+
+* Add code fixes for CS0246.
+
+### 1.5.13 (2017-11-09)
+
+#### Analyzers
+
+* Add analyzer RemoveRedundantAssignment (RCS1212).
+
+#### Refactorings
+
+* Add refactoring ReplaceCommentWithDocumentationComment (RR0192).
+
+#### Code Fixes
+
+* Add code fixes for CS0216, CS0659, CS0660, CS0661 and CS1526.
+
+### 1.5.12 (2017-10-19)
+
+#### Analyzers
+
+* Add analyzer ReturnTaskInsteadOfNull (RCS1210).
+* Add analyzer RemoveUnnecessaryElseClause (RCS1211).
+* Remove analyzer SimplifyLambdaExpressionParameterList (RCS1022).
+
+#### Refactorings
+
+* Replace refactoring ChangeMemberTypeAccordingToReturnExpression (RR0019) with code fix.
+* Replace refactoring ChangeMemberTypeAccordingToYieldReturnExpression (RR0020) with code fix.
+* Replace refactoring AddDefaultValueToReturnStatement (RR0008) with code fix.
+
+#### Code Fixes
+
+  * Add code fix for CS0126, CS0139, CS0713 and CS1750.
+
+### 1.5.10 (2017-10-04)
+
+#### Code Fixes
+
+  * Add code fixes for CS0103, CS0192, CS0403 and CS0541.
+
 ### 1.5.0 (2017-09-22)
 
  * Bug fixes.
+
+### 1.4.58 (2017-09-16)
+
+#### Analyzers
+
+  * Remove analyzer UseCSharp6DictionaryInitializer (RCS1095)
+
+#### Refactorings
+
+##### New Refactorings
+
+  * UseCSharp6DictionaryInitializer (RR0191)
 
 ### 1.4.57 (2017-09-06)
 
@@ -21,6 +105,145 @@
 ##### New Analyzers
 
   * ReorderTypeParameterConstraints (RCS1209)
+
+### 1.4.55 (2017-08-16)
+
+#### Code Fixes
+
+  * Add code fixes for CS0077, CS0201, CS0472, CS1623.
+
+#### Analyzers
+
+##### New Analyzers
+
+  * ReduceIfNesting (RCS1208)
+
+#### Refactorings
+
+##### New Refactorings
+
+  * ReduceIfNesting (RR0189)
+
+### 1.4.54 (2017-08-08)
+
+#### Code Fixes
+
+  * Improve code fixes for CS0162, CS1061.
+
+#### Analyzers
+
+* Add code fix for analyzer ParameterNameDiffersFromBase (RCS1168)
+
+##### New Analyzers
+
+* UseAttributeUsageAttribute (RCS1203)
+* UseEventArgsEmpty (RCS1204)
+* ReorderNamedArguments (RCS1205)
+* UseConditionalAccessInsteadOfConditionalExpression (RCS1206)
+* UseMethodGroupInsteadOfAnonymousFunction (RCS1207)
+
+### 1.4.53 (2017-08-02)
+
+#### Code Fixes
+
+  * New code fixes for CS0139, CS0266, CS0592, CS1689.
+
+#### Analyzers
+
+##### New Analyzers
+
+* SimplifyBooleanExpression (RCS1199)
+* CallThenByInsteadOfOrderBy (RCS1200)
+* UseMethodChaining (RCS1201)
+* UseConditionalAccessToAvoidNullReferenceException (RCS1202)
+
+### 1.4.52 (2017-07-24)
+
+#### Code Fixes
+
+  * New code fixes for CS0115, CS1106, CS1621, CS1988.
+
+### 1.4.51 (2017-07-19)
+
+#### Refactorings
+
+  * MarkContainingClassAsAbstract (RR0073) has been replaced with code fix.
+
+##### New Refactorings
+
+  * FormatWhereConstraint (RR0187)
+  * ReplaceForEachWithForAndReverseLoop (RR0188)
+
+#### Code Fixes
+
+##### New Code Fixes
+
+Code fixes has been added for the following compiler diagnostics:
+
+  * NamespaceAlreadyContainsDefinition (CS0101)
+  * TypeAlreadyContainsDefinition (CS0102)
+  * TypeOfConditionalExpressionCannotBeDetermined (CS0173)
+  * OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod (CS0177)
+  * NewConstraintMustBeLastConstraintSpecified (CS0401)
+  * DuplicateConstraintForTypeParameter (CS0405)
+  * ConstraintClauseHasAlreadyBeenSpecified (CS0409)
+  * ClassOrStructConstraintMustComeBeforeAnyOtherConstraints (CS0449)
+  * CannotSpecifyBothConstraintClassAndClassOrStructConstraint (CS0450)
+  * NewConstraintCannotBeUsedWithStructConstraint (CS0451)
+  * TypeParameterHasSameNameAsTypeParameterFromOuterType (CS0693)
+  * StaticTypesCannotBeUsedAsTypeArguments (CS0718)
+  * PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers (CS0750)
+  * NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod (CS0759)
+  * PartialMethodsMustHaveVoidReturnType (CS0766)
+  * MethodHasParameterModifierThisWhichIsNotOnFirstParameter (CS1100)
+  * ExtensionMethodMustBeStatic (CS1105)
+  * ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal (CS1527)
+  * AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody (CS1994)
+
+### 1.4.50 (2017-07-04)
+
+* Add code fixes that fix 80+ compiler diagnostics (like 'CS0001')
+
+#### Analyzers
+
+* Following analyzers have been replaced with code fixes:
+
+  * ReplaceReturnStatementWithExpressionStatement (RCS1115)
+  * AddBreakStatementToSwitchSection (RCS1116)
+  * AddReturnStatementThatReturnsDefaultValue (RCS1117)
+  * AddMissingSemicolon (RCS1122)
+  * MarkMemberAsStatic (RCS1125)
+  * ReplaceReturnWithYieldReturn (RCS1131)
+  * AddDocumentationComment (RCS1137)
+  * MarkContainingClassAsAbstract (RCS1144)
+  * RemoveInapplicableModifier (RCS1147)
+  * RemoveUnreachableCode (RCS1148)
+  * RemoveImplementationFromAbstractMember (RCS1149)
+  * MemberTypeMustMatchOverriddenMemberType (RCS1152)
+  * OverridingMemberCannotChangeAccessModifiers (RCS1176)
+
+#### Refactorings
+
+* Following refactorings have been replaced with code fixes:
+
+  * AddBooleanComparison (RR0001)
+  * ExtractDeclarationFromUsingStatement (RR0042)
+  * MarkMemberAsStatic (RR0072)
+  * ReplaceCountWithLengthOrLengthWitCount (RR0122)
+  * ReplaceStringLiteralWithCharacterLiteral (RR0146)
+
+##### New Refactorings
+
+  * ChangeAccessibility (RR0186)
+
+### 1.4.13 (2017-06-21)
+
+#### Analyzers
+
+##### New Analyzers
+
+* OptimizeStringBuilderAppendCall (RCS1197)
+* AvoidBoxingOfValueType (RCS1198)
 
 ### 1.4.12 (2017-06-11)
 
@@ -102,12 +325,6 @@
 * FormatInitializerWithSingleExpressionOnSingleLine (RCS1183)
 * FormatConditionalExpression (RCS1184)
 * AvoidSingleLineBlock (RCS1185)
-
-### 1.3.1 (2017-04-03)
-
-#### Analyzers
-
-* Fix bug that caused RCS1033 and RCS1049 being reported in generated code. This bug affects only extension Roslynator (for VS2015) and package CSharpAnalyzers.
 
 ### 1.3.0 (2017-04-02)
 
@@ -204,7 +421,7 @@
 ##### New Analyzers
 
 * ParameterNameDiffersFromBase
-* OverridingMemberCannotChangeAccessModifiers
+* OverridingMemberCannotChnageAccessModifiers
 * ValueTypeCheckedForNull
 * UnconstrainedTypeParameterCheckedForNull
 * UnusedTypeParameter
@@ -268,7 +485,7 @@
 
 * BitwiseOperatorOnEnumWithoutFlagsAttribute
 * ReplaceReturnWithYieldReturn
-* RemoveRedundantOverridingMember
+* RemoveRedundantOverridenMember
 * RemoveRedundantDisposeOrCloseCall
 * RemoveRedundantContinueStatement
 * DeclareEnumMemberWithZeroValue
@@ -306,10 +523,6 @@
 
 * Release of package Roslynator.Analyzers 1.2.0
 * Release of package CSharpAnalyzers 1.2.0
-
-### 1.1.95 (2017-01-04)
-
-* Initial release of Roslynator 2017 and Roslynator Refactorings 2017
 
 ### 1.1.95 (2017-01-04)
 

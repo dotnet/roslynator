@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
@@ -18,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public Task<Document> RefactorAsync(
             Document document,
-            StatementContainer container,
+            StatementsInfo statementsInfo,
             BinaryExpressionSyntax condition,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -28,14 +29,14 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             IfStatementSyntax newIfStatement = RemoveExpressionFromCondition(ifStatement, condition, expression)
                 .WithFormatterAnnotation();
 
-            SyntaxNode newNode = AddNextIf(container, ifStatement, newIfStatement, expression);
+            SyntaxNode newNode = AddNextIf(statementsInfo, ifStatement, newIfStatement, expression);
 
-            return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(statementsInfo.Node, newNode, cancellationToken);
         }
 
         public Task<Document> RefactorAsync(
             Document document,
-            StatementContainer container,
+            StatementsInfo statementsInfo,
             BinaryExpressionSyntax condition,
             BinaryExpressionSelection binaryExpressionSelection,
             CancellationToken cancellationToken)
@@ -47,13 +48,13 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
             ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSelection.ToString());
 
-            SyntaxNode newNode = AddNextIf(container, ifStatement, newIfStatement, expression);
+            SyntaxNode newNode = AddNextIf(statementsInfo, ifStatement, newIfStatement, expression);
 
-            return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(statementsInfo.Node, newNode, cancellationToken);
         }
 
         private static SyntaxNode AddNextIf(
-            StatementContainer container,
+            StatementsInfo statementsInfo,
             IfStatementSyntax ifStatement,
             IfStatementSyntax newIfStatement,
             ExpressionSyntax expression)
@@ -61,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             IfStatementSyntax nextIfStatement = ifStatement.WithCondition(expression)
                 .WithFormatterAnnotation();
 
-            SyntaxList<StatementSyntax> statements = container.Statements;
+            SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 
             int index = statements.IndexOf(ifStatement);
 
@@ -69,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
                 .Replace(ifStatement, newIfStatement)
                 .Insert(index + 1, nextIfStatement);
 
-            return container.NodeWithStatements(newStatements);
+            return statementsInfo.WithStatements(newStatements).Node;
         }
     }
 }

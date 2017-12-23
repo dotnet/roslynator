@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -34,6 +35,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
             }
 
+            Diagnostic diagnostic = context.Diagnostics[0];
+
             switch (node.Kind())
             {
                 case SyntaxKind.EqualsExpression:
@@ -41,38 +44,101 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         var binaryExpression = (BinaryExpressionSyntax)node;
 
-                        context.RegisterCodeFix(CreateCodeAction(context, binaryExpression, StringComparison.CurrentCultureIgnoreCase), context.Diagnostics);
-                        context.RegisterCodeFix(CreateCodeAction(context, binaryExpression, StringComparison.OrdinalIgnoreCase), context.Diagnostics);
+                        MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(binaryExpression.Left.WalkDownParentheses());
+
+                        if (!invocationInfo.Success)
+                            invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo((InvocationExpressionSyntax)binaryExpression.Right.WalkDownParentheses());
+
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
+
+                        if (!invocationInfo.NameText.EndsWith("Invariant", StringComparison.Ordinal)
+                            || !RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "InvariantCultureIgnoreCase"))
+                        {
+                            RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "OrdinalIgnoreCase");
+                            RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "CurrentCultureIgnoreCase");
+                        }
+
                         break;
                     }
                 case SyntaxKind.InvocationExpression:
                     {
-                        var invocation = (InvocationExpressionSyntax)node;
+                        var invocationExpression = (InvocationExpressionSyntax)node;
 
-                        context.RegisterCodeFix(CreateCodeAction(context, invocation, StringComparison.CurrentCultureIgnoreCase), context.Diagnostics);
-                        context.RegisterCodeFix(CreateCodeAction(context, invocation, StringComparison.OrdinalIgnoreCase), context.Diagnostics);
+                        MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression);
+
+                        SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
+
+                        InvocationExpressionSyntax invocationExpression2;
+
+                        if (arguments.Count == 1)
+                        {
+                            invocationExpression2 = (InvocationExpressionSyntax)invocationInfo.Expression;
+                        }
+                        else
+                        {
+                            invocationExpression2 = (arguments[0].Expression.WalkDownParentheses() as InvocationExpressionSyntax)
+                                ?? (InvocationExpressionSyntax)arguments[1].Expression.WalkDownParentheses();
+                        }
+
+                        MemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.MemberInvocationExpressionInfo(invocationExpression2);
+
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                        INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
+
+                        if (!invocationInfo2.NameText.EndsWith("Invariant", StringComparison.Ordinal)
+                            || !RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "InvariantCultureIgnoreCase"))
+                        {
+                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "OrdinalIgnoreCase");
+                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "CurrentCultureIgnoreCase");
+                        }
+
                         break;
                     }
             }
         }
 
-        private static CodeAction CreateCodeAction(CodeFixContext context, BinaryExpressionSyntax binaryExpression, StringComparison stringComparison)
+        private static bool RegisterCodeFix(
+            CodeFixContext context,
+            Diagnostic diagnostic,
+            BinaryExpressionSyntax binaryExpression,
+            INamedTypeSymbol comparisonSymbol,
+            string comparisonName)
         {
-            return CodeAction.Create(
-                GetTitle(stringComparison),
-                cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, binaryExpression, stringComparison, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.UseStringComparison, stringComparison.ToString()));
+            if (!comparisonSymbol.ExistsField(comparisonName))
+                return false;
+
+            CodeAction codeAction = CodeAction.Create(
+                GetTitle(comparisonName),
+                cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, binaryExpression, comparisonName, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.UseStringComparison, comparisonName));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+            return true;
         }
 
-        private static CodeAction CreateCodeAction(CodeFixContext context, InvocationExpressionSyntax invocation, StringComparison stringComparison)
+        private static bool RegisterCodeFix(
+            CodeFixContext context,
+            Diagnostic diagnostic,
+            MemberInvocationExpressionInfo invocationInfo,
+            INamedTypeSymbol comparisonSymbol,
+            string comparisonName)
         {
-            return CodeAction.Create(
-                GetTitle(stringComparison),
-                cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, invocation, stringComparison, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.UseStringComparison, stringComparison.ToString()));
+            if (!comparisonSymbol.ExistsField(comparisonName))
+                return false;
+
+            CodeAction codeAction = CodeAction.Create(
+                GetTitle(comparisonName),
+                cancellationToken => UseStringComparisonRefactoring.RefactorAsync(context.Document, invocationInfo, comparisonName, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.UseStringComparison, comparisonName));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+            return true;
         }
 
-        private static string GetTitle(StringComparison stringComparison)
+        private static string GetTitle(string stringComparison)
         {
             return $"Use 'StringComparison.{stringComparison}'";
         }

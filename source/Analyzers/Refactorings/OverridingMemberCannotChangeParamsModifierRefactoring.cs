@@ -1,13 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -23,18 +19,15 @@ namespace Roslynator.CSharp.Refactorings
             {
                 IParameterSymbol baseParameterSymbol = baseSymbol.Parameters.LastOrDefault();
 
-                if (baseParameterSymbol != null)
+                if (baseParameterSymbol != null
+                    && symbol.TryGetSyntax(out MethodDeclarationSyntax methodDeclaration))
                 {
-                    MethodDeclarationSyntax methodDeclaration;
-                    if (symbol.TryGetSyntax(out methodDeclaration))
-                    {
-                        ParameterSyntax parameter = methodDeclaration.ParameterList?.Parameters.LastOrDefault();
+                    ParameterSyntax parameter = methodDeclaration.ParameterList?.Parameters.LastOrDefault();
 
-                        if (parameter != null
-                            && parameter.IsParams() != baseParameterSymbol.IsParams)
-                        {
-                            context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
-                        }
+                    if (parameter != null
+                        && parameter.IsParams() != baseParameterSymbol.IsParams)
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
                     }
                 }
             }
@@ -52,43 +45,19 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     IParameterSymbol baseParameterSymbol = baseSymbol.Parameters.LastOrDefault();
 
-                    if (baseParameterSymbol != null)
+                    if (baseParameterSymbol != null
+                        && symbol.TryGetSyntax(out IndexerDeclarationSyntax indexerDeclaration))
                     {
-                        IndexerDeclarationSyntax indexerDeclaration;
-                        if (symbol.TryGetSyntax(out indexerDeclaration))
-                        {
-                            ParameterSyntax parameter = indexerDeclaration.ParameterList?.Parameters.LastOrDefault();
+                        ParameterSyntax parameter = indexerDeclaration.ParameterList?.Parameters.LastOrDefault();
 
-                            if (parameter != null
-                                && parameter.IsParams() != baseParameterSymbol.IsParams)
-                            {
-                                context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
-                            }
+                        if (parameter != null
+                            && parameter.IsParams() != baseParameterSymbol.IsParams)
+                        {
+                            context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, parameter);
                         }
                     }
                 }
             }
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ParameterSyntax parameter,
-            CancellationToken cancellationToken)
-        {
-            ParameterSyntax newNode;
-
-            if (parameter.IsParams())
-            {
-                newNode = parameter.RemoveModifier(SyntaxKind.ParamsKeyword);
-            }
-            else
-            {
-                newNode = parameter.InsertModifier(SyntaxKind.ParamsKeyword, ModifierComparer.Instance);
-            }
-
-            newNode = newNode.WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(parameter, newNode, cancellationToken);
         }
     }
 }

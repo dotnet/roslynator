@@ -4,11 +4,13 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Utilities;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -17,164 +19,223 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
-            invocation = await FindOutermostFormatMethodAsync(context, invocation).ConfigureAwait(false);
+            SemanticModel semanticModel = null;
 
-            if (invocation != null)
-            {
-                context.RegisterRefactoring(
-                    $"Replace '{invocation.Expression}' with interpolated string",
-                    cancellationToken => CreateInterpolatedStringAsync(context.Document, invocation, cancellationToken));
-            }
-        }
-
-        private static async Task<InvocationExpressionSyntax> FindOutermostFormatMethodAsync(
-            RefactoringContext context,
-            InvocationExpressionSyntax invocation)
-        {
-            ImmutableArray<ISymbol>? formatMethods = null;
+            ImmutableArray<ISymbol> formatMethods;
 
             while (invocation != null)
             {
-                if (invocation.ArgumentList != null)
+                ArgumentListSyntax argumentList = invocation.ArgumentList;
+
+                if (argumentList != null)
                 {
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = invocation.ArgumentList.Arguments;
+                    SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-                    if (arguments.Count >= 2)
+                    if (arguments.Count >= 2
+                        && (arguments[0].Expression?.Kind() == SyntaxKind.StringLiteralExpression))
                     {
-                        var firstArgument = arguments[0]?.Expression as LiteralExpressionSyntax;
+                        if (semanticModel == null)
+                            semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        if (firstArgument?.Token.IsKind(SyntaxKind.StringLiteralToken) == true)
+                        ISymbol invocationSymbol = semanticModel.GetSymbol(invocation, context.CancellationToken);
+
+                        if (formatMethods.IsDefault)
                         {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                            formatMethods = GetFormatMethods(semanticModel);
 
-                            ISymbol invocationSymbol = semanticModel.GetSymbol(invocation, context.CancellationToken);
-
-                            if (formatMethods == null)
-                            {
-                                formatMethods = GetFormatMethods(semanticModel);
-
-                                if (formatMethods.Value.Length == 0)
-                                    return null;
-                            }
-
-                            if (formatMethods.Value.Contains(invocationSymbol))
-                                break;
+                            if (!formatMethods.Any())
+                                return;
                         }
+
+                        if (formatMethods.Contains(invocationSymbol))
+                            break;
                     }
                 }
 
                 invocation = invocation.FirstAncestor<InvocationExpressionSyntax>();
             }
 
-            return invocation;
+            if (invocation == null)
+                return;
+
+            context.RegisterRefactoring(
+                $"Replace {invocation.Expression} with interpolated string",
+                cancellationToken => RefactorAsync(context.Document, invocation, semanticModel, cancellationToken));
         }
 
         private static ImmutableArray<ISymbol> GetFormatMethods(SemanticModel semanticModel)
         {
-            INamedTypeSymbol stringType = semanticModel.GetTypeByMetadataName(MetadataNames.System_String);
+            INamedTypeSymbol stringType = semanticModel.Compilation.GetSpecialType(SpecialType.System_String);
 
-            if (stringType != null)
-            {
-                return stringType
-                    .GetMembers("Format")
-                    .RemoveAll(symbol => !IsValidFormatMethod(symbol));
-            }
+            if (stringType == null)
+                return ImmutableArray<ISymbol>.Empty;
 
-            return ImmutableArray<ISymbol>.Empty;
+            return stringType
+                .GetMembers("Format")
+                .RemoveAll(symbol =>
+                {
+                    return !symbol.IsStatic
+                        || symbol.Kind != SymbolKind.Method
+                        || ((IMethodSymbol)symbol)
+                            .Parameters
+                            .FirstOrDefault()?
+                            .Name != "format";
+                });
         }
 
-        private static async Task<Document> CreateInterpolatedStringAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             InvocationExpressionSyntax invocation,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SeparatedSyntaxList<ArgumentSyntax> arguments = invocation.ArgumentList.Arguments;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            var formatExpression = (LiteralExpressionSyntax)arguments[0].Expression;
 
-            ImmutableArray<ExpressionSyntax> expandedArguments = ImmutableArray.CreateRange(GetExpandedArguments(arguments, semanticModel, cancellationToken));
+            string formatText = formatExpression.Token.Text;
 
-            string formatText = ((LiteralExpressionSyntax)arguments[0].Expression).Token.ToString();
+            bool isVerbatim = formatText.StartsWith("@", StringComparison.Ordinal);
 
-            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression("$" + formatText);
+            string text = "$" + formatText;
 
-            var rewriter = new InterpolatedStringSyntaxRewriter(expandedArguments);
+            var interpolatedString = (InterpolatedStringExpressionSyntax)ParseExpression(text);
 
-            var newInterpolatedString = (InterpolatedStringExpressionSyntax)rewriter.Visit(interpolatedString);
+            if (CanReplaceInterpolationWithStringLiteralInnerText(arguments, isVerbatim))
+                interpolatedString = ReplaceInterpolationWithStringLiteralInnerText(arguments, interpolatedString, text);
 
-            return await document.ReplaceNodeAsync(invocation, newInterpolatedString, cancellationToken).ConfigureAwait(false);
+            IEnumerable<ExpressionSyntax> interpolationExpressions = GetInterpolationExpressions(arguments, semanticModel, cancellationToken);
+
+            var rewriter = new InterpolatedStringSyntaxRewriter(interpolationExpressions);
+
+            var newNode = (InterpolatedStringExpressionSyntax)rewriter.Visit(interpolatedString);
+
+            return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
         }
 
-        private static IEnumerable<ExpressionSyntax> GetExpandedArguments(SeparatedSyntaxList<ArgumentSyntax> arguments, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool CanReplaceInterpolationWithStringLiteralInnerText(SeparatedSyntaxList<ArgumentSyntax> arguments, bool isVerbatim)
+        {
+            bool result = false;
+
+            for (int i = 1; i < arguments.Count; i++)
+            {
+                ExpressionSyntax expression = arguments[i].Expression;
+
+                if (expression.Kind() == SyntaxKind.StringLiteralExpression)
+                {
+                    var literalExpression = (LiteralExpressionSyntax)expression;
+
+                    if (isVerbatim == literalExpression.Token.Text.StartsWith("@", StringComparison.Ordinal)
+                        && literalExpression.GetLeadingTrivia().IsEmptyOrWhitespace()
+                        && literalExpression.GetTrailingTrivia().IsEmptyOrWhitespace())
+                    {
+                        result = true;
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        private static InterpolatedStringExpressionSyntax ReplaceInterpolationWithStringLiteralInnerText(
+            SeparatedSyntaxList<ArgumentSyntax> arguments,
+            InterpolatedStringExpressionSyntax interpolatedString,
+            string text)
+        {
+            var sb = new StringBuilder();
+
+            int pos = 0;
+
+            SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
+
+            for (int i = 0; i < contents.Count; i++)
+            {
+                if (contents[i].Kind() != SyntaxKind.Interpolation)
+                    continue;
+
+                var interpolation = (InterpolationSyntax)contents[i];
+
+                ExpressionSyntax expression = interpolation.Expression;
+
+                if (expression?.Kind() != SyntaxKind.NumericLiteralExpression)
+                    continue;
+
+                var index = (int)((LiteralExpressionSyntax)expression).Token.Value;
+
+                if (index < 0)
+                    continue;
+
+                if (index >= arguments.Count)
+                    continue;
+
+                ExpressionSyntax argumentExpression = arguments[index + 1].Expression;
+
+                if (argumentExpression.Kind() != SyntaxKind.StringLiteralExpression)
+                    continue;
+
+                var literalExpression = (LiteralExpressionSyntax)argumentExpression;
+
+                sb.Append(text, pos, interpolation.SpanStart - pos);
+
+                sb.Append(StringUtility.DoubleBraces(literalExpression.GetStringLiteralInnerText()));
+
+                pos = interpolation.Span.End;
+            }
+
+            sb.Append(text, pos, text.Length - pos);
+
+            return (InterpolatedStringExpressionSyntax)ParseExpression(sb.ToString());
+        }
+
+        private static IEnumerable<ExpressionSyntax> GetInterpolationExpressions(
+            SeparatedSyntaxList<ArgumentSyntax> arguments,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             for (int i = 1; i < arguments.Count; i++)
             {
-                ITypeSymbol targetType = semanticModel.GetTypeInfo(arguments[i].Expression, cancellationToken).ConvertedType;
+                ExpressionSyntax expression = arguments[i].Expression;
 
-                ExpressionSyntax expression = Cast(arguments[i].Expression, targetType);
+                ITypeSymbol targetType = semanticModel.GetTypeInfo(expression, cancellationToken).ConvertedType;
 
-                yield return Parenthesize(expression);
+                if (targetType != null)
+                {
+                    TypeSyntax type = targetType.ToMinimalTypeSyntax(semanticModel, expression.SpanStart);
+
+                    expression = CastExpression(type, expression.WithoutTrivia().Parenthesize())
+                        .WithTriviaFrom(expression)
+                        .WithSimplifierAnnotation();
+                }
+
+                yield return expression.Parenthesize();
             }
-        }
-
-        private static ExpressionSyntax Parenthesize(ExpressionSyntax expression)
-        {
-            if (expression.IsKind(SyntaxKind.ParenthesizedExpression))
-                return expression;
-
-            return ParenthesizedExpression(expression)
-                .WithSimplifierAnnotation();
-        }
-
-        private static ExpressionSyntax Cast(ExpressionSyntax expression, ITypeSymbol targetType)
-        {
-            if (targetType == null)
-                return expression;
-
-            TypeSyntax type = ParseTypeName(targetType.ToDisplayString());
-
-            return CastExpression(type, Parenthesize(expression))
-                .WithSimplifierAnnotation();
-        }
-
-        private static bool IsValidFormatMethod(ISymbol symbol)
-        {
-            if (symbol.IsStatic
-                && symbol.IsMethod())
-            {
-                var methodSymbol = (IMethodSymbol)symbol;
-
-                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
-
-                return parameters.Any()
-                    && parameters[0].Name == "format";
-            }
-
-            return true;
         }
 
         private class InterpolatedStringSyntaxRewriter : CSharpSyntaxRewriter
         {
-            private readonly ImmutableArray<ExpressionSyntax> _expandedArguments;
+            private readonly ImmutableArray<ExpressionSyntax> _interpolationExpressions;
 
-            public InterpolatedStringSyntaxRewriter(ImmutableArray<ExpressionSyntax> expandedArguments)
+            public InterpolatedStringSyntaxRewriter(IEnumerable<ExpressionSyntax> interpolationExpressions)
             {
-                _expandedArguments = expandedArguments;
+                _interpolationExpressions = interpolationExpressions.ToImmutableArray();
             }
 
             public override SyntaxNode VisitInterpolation(InterpolationSyntax node)
             {
-                if (node == null)
-                    throw new ArgumentNullException(nameof(node));
+                ExpressionSyntax expression = node.Expression;
 
-                var literalExpression = node.Expression as LiteralExpressionSyntax;
-
-                if (literalExpression?.IsKind(SyntaxKind.NumericLiteralExpression) == true)
+                if (expression?.Kind() == SyntaxKind.NumericLiteralExpression)
                 {
+                    var literalExpression = (LiteralExpressionSyntax)expression;
+
                     var index = (int)literalExpression.Token.Value;
 
-                    if (index >= 0 && index < _expandedArguments.Length)
-                        return node.WithExpression(_expandedArguments[index]);
+                    if (index >= 0 && index < _interpolationExpressions.Length)
+                        return node.WithExpression(_interpolationExpressions[index]);
                 }
 
                 return base.VisitInterpolation(node);

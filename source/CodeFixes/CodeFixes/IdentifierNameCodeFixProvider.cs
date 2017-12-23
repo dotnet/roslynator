@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -8,7 +9,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Helpers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -19,7 +22,11 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable); }
+            get
+            {
+                return ImmutableArray.Create(
+                    CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -63,9 +70,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 ITypeSymbol typeSymbol = localSymbol.Type;
 
-                var variableDeclarator = localSymbol.GetSyntax(cancellationToken) as VariableDeclaratorSyntax;
-
-                if (variableDeclarator != null)
+                if (localSymbol.GetSyntax(cancellationToken) is VariableDeclaratorSyntax variableDeclarator)
                 {
                     SyntaxToken identifier = variableDeclarator.Identifier;
 

@@ -34,7 +34,7 @@ namespace Roslynator.CodeGeneration
 
             generator.FindFilesToDelete();
 
-            generator.FindMissingImages();
+            generator.FindMissingSamples();
         }
 
         public static void SortRefactoringsAndAddMissingIds(string filePath, IComparer<string> comparer)

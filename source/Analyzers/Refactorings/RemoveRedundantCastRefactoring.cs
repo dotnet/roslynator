@@ -1,7 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,169 +20,209 @@ namespace Roslynator.CSharp.Refactorings
         {
             var castExpression = (CastExpressionSyntax)context.Node;
 
-            SyntaxNode parent = castExpression.Parent;
+            if (castExpression.ContainsDiagnostics)
+                return;
 
-            if (parent?.IsKind(SyntaxKind.ParenthesizedExpression) == true)
+            if (!(castExpression.Parent is ParenthesizedExpressionSyntax parenthesizedExpression))
+                return;
+
+            ExpressionSyntax accessedExpression = GetAccessedExpression(parenthesizedExpression.Parent);
+
+            if (accessedExpression == null)
+                return;
+
+            TypeSyntax type = castExpression.Type;
+
+            if (type == null)
+                return;
+
+            ExpressionSyntax expression = castExpression.Expression;
+
+            if (expression == null)
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+
+            if (typeSymbol?.IsErrorType() != false)
+                return;
+
+            ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+            if (expressionTypeSymbol?.IsErrorType() != false)
+                return;
+
+            if (expressionTypeSymbol.TypeKind == TypeKind.Interface)
+                return;
+
+            if (typeSymbol.TypeKind != TypeKind.Interface
+                && !typeSymbol.EqualsOrInheritsFrom(expressionTypeSymbol, includeInterfaces: true))
             {
-                var parenthesizedExpression = (ParenthesizedExpressionSyntax)parent;
-
-                parent = parenthesizedExpression.Parent;
-
-                if (parent != null)
-                {
-                    ExpressionSyntax accessedExpression = GetAccessedExpression(parent);
-
-                    if (accessedExpression != null)
-                    {
-                        TypeSyntax type = castExpression.Type;
-
-                        if (type != null)
-                        {
-                            ExpressionSyntax expression = castExpression.Expression;
-
-                            if (expression != null
-                                && CanRefactor(type, expression, accessedExpression, context.SemanticModel, context.CancellationToken)
-                                && !parenthesizedExpression.SpanContainsDirectives())
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.RemoveRedundantCast,
-                                    Location.Create(castExpression.SyntaxTree, castExpression.ParenthesesSpan()));
-                            }
-                        }
-                    }
-                }
+                return;
             }
+
+            ISymbol accessedSymbol = semanticModel.GetSymbol(accessedExpression, cancellationToken);
+
+            INamedTypeSymbol containingType = accessedSymbol?.ContainingType;
+
+            if (containingType == null)
+                return;
+
+            if (typeSymbol.TypeKind == TypeKind.Interface)
+            {
+                if (!CheckExplicitImplementation(expressionTypeSymbol, accessedSymbol))
+                    return;
+            }
+            else
+            {
+                if (!CheckAccessibility(expressionTypeSymbol.OriginalDefinition, accessedSymbol, expression.SpanStart, semanticModel, cancellationToken))
+                    return;
+
+                if (!expressionTypeSymbol.EqualsOrInheritsFrom(containingType, includeInterfaces: true))
+                    return;
+            }
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantCast,
+                Location.Create(castExpression.SyntaxTree, castExpression.ParenthesesSpan()));
         }
 
-        private static bool CanRefactor(
-            TypeSyntax type,
-            ExpressionSyntax expression,
-            ExpressionSyntax accessedExpression,
+        private static bool CheckExplicitImplementation(ITypeSymbol typeSymbol, ISymbol symbol)
+        {
+            ISymbol implementation = typeSymbol.FindImplementationForInterfaceMember(symbol);
+
+            if (implementation == null)
+                return false;
+
+            switch (implementation.Kind)
+            {
+                case SymbolKind.Property:
+                    {
+                        foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)implementation).ExplicitInterfaceImplementations)
+                        {
+                            if (propertySymbol.Equals(symbol))
+                                return false;
+                        }
+
+                        break;
+                    }
+                case SymbolKind.Method:
+                    {
+                        foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)implementation).ExplicitInterfaceImplementations)
+                        {
+                            if (methodSymbol.Equals(symbol))
+                                return false;
+                        }
+
+                        break;
+                    }
+                default:
+                    {
+                        Debug.Assert(false, implementation.Kind.ToString());
+                        return false;
+                    }
+            }
+
+            return true;
+        }
+
+        private static bool CheckAccessibility(
+            ITypeSymbol expressionTypeSymbol,
+            ISymbol accessedSymbol,
+            int position,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
+            Accessibility accessibility = accessedSymbol.DeclaredAccessibility;
 
-            if (typeSymbol?.IsErrorType() == false)
+            if (accessibility == Accessibility.Protected)
             {
-                ITypeSymbol expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+                INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 
-                if (expressionTypeSymbol?.IsErrorType() == false
-                    && !expressionTypeSymbol.IsInterface())
+                while (containingType != null)
                 {
-                    bool isInterface = typeSymbol.IsInterface();
+                    if (containingType.Equals(expressionTypeSymbol))
+                        return true;
 
-                    if (isInterface
-                        || typeSymbol.EqualsOrInheritsFrom(expressionTypeSymbol, includeInterfaces: true))
-                    {
-                        ISymbol accessedSymbol = semanticModel.GetSymbol(accessedExpression, cancellationToken);
-
-                        INamedTypeSymbol containingType = accessedSymbol?.ContainingType;
-
-                        if (containingType != null)
-                        {
-                            if (isInterface)
-                            {
-                                ISymbol implementation = expressionTypeSymbol.FindImplementationForInterfaceMember(accessedSymbol);
-
-                                switch (implementation?.Kind)
-                                {
-                                    case SymbolKind.Property:
-                                        return !((IPropertySymbol)implementation).ExplicitInterfaceImplementations.Any(f => f.Equals(accessedSymbol));
-                                    case SymbolKind.Method:
-                                        return !((IMethodSymbol)implementation).ExplicitInterfaceImplementations.Any(f => f.Equals(accessedSymbol));
-                                }
-                            }
-                            else
-                            {
-                                return expressionTypeSymbol.EqualsOrInheritsFrom(containingType, includeInterfaces: true);
-                            }
-                        }
-                    }
+                    containingType = containingType.ContainingType;
                 }
+
+                return false;
+            }
+            else if (accessibility == Accessibility.ProtectedOrInternal)
+            {
+                INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
+
+                if (containingType?.ContainingAssembly?.Equals(expressionTypeSymbol.ContainingAssembly) == true)
+                    return true;
+
+                while (containingType != null)
+                {
+                    if (containingType.Equals(expressionTypeSymbol))
+                        return true;
+
+                    containingType = containingType.ContainingType;
+                }
+
+                return false;
             }
 
-            return false;
+            return true;
         }
 
-        private static ExpressionSyntax GetAccessedExpression(SyntaxNode parent)
+        private static ExpressionSyntax GetAccessedExpression(SyntaxNode node)
         {
-            switch (parent.Kind())
+            switch (node?.Kind())
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
                 case SyntaxKind.ElementAccessExpression:
-                    return (ExpressionSyntax)parent;
+                    return (ExpressionSyntax)node;
                 case SyntaxKind.ConditionalAccessExpression:
-                    return ((ConditionalAccessExpressionSyntax)parent).WhenNotNull;
+                    return ((ConditionalAccessExpressionSyntax)node).WhenNotNull;
                 default:
                     return null;
             }
         }
 
-        internal static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
+        public static void Analyze(SyntaxNodeAnalysisContext context, MemberInvocationExpressionInfo invocationInfo)
         {
-            var invocation = (InvocationExpressionSyntax)context.Node;
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-            ExpressionSyntax expression = invocation.Expression;
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
 
-            if (expression?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-            {
-                var memberAccess = (MemberAccessExpressionSyntax)expression;
+            var methodSymbol = semanticModel.GetSymbol(invocationExpression, cancellationToken) as IMethodSymbol;
 
-                ArgumentListSyntax argumentList = invocation.ArgumentList;
+            if (methodSymbol == null)
+                return;
 
-                if (argumentList?.IsMissing == false)
-                {
-                    SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+            if (!ExtensionMethodInfo.TryCreate(methodSymbol, semanticModel, out ExtensionMethodInfo extensionMethodInfo, ExtensionMethodKind.Reduced))
+                return;
 
-                    if (arguments.Count == 0)
-                    {
-                        SimpleNameSyntax name = memberAccess.Name;
+            if (!extensionMethodInfo.MethodInfo.IsLinqCast())
+                return;
 
-                        if (name != null)
-                        {
-                            string methodName = name.Identifier.ValueText;
+            ITypeSymbol typeArgument = extensionMethodInfo.ReducedSymbol.TypeArguments.SingleOrDefault(shouldThrow: false);
 
-                            if (methodName == "Cast")
-                            {
-                                SemanticModel semanticModel = context.SemanticModel;
-                                CancellationToken cancellationToken = context.CancellationToken;
+            if (typeArgument == null)
+                return;
 
-                                ISymbol symbol = semanticModel.GetSymbol(invocation, cancellationToken);
+            var memberAccessExpressionType = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken) as INamedTypeSymbol;
 
-                                if (symbol?.IsMethod() == true)
-                                {
-                                    ExtensionMethodInfo extensionMethodInfo;
-                                    if (ExtensionMethodInfo.TryCreate((IMethodSymbol)symbol, semanticModel, out extensionMethodInfo, ExtensionMethodKind.Reduced)
-                                        && extensionMethodInfo.MethodInfo.IsLinqCast())
-                                    {
-                                        ImmutableArray<ITypeSymbol> typeArguments = extensionMethodInfo.ReducedSymbol.TypeArguments;
+            if (memberAccessExpressionType?.IsConstructedFromIEnumerableOfT() != true)
+                return;
 
-                                        if (typeArguments.Length == 1)
-                                        {
-                                            ExpressionSyntax memberAccessExpression = memberAccess.Expression;
+            if (!typeArgument.Equals(memberAccessExpressionType.TypeArguments[0]))
+                return;
 
-                                            if (memberAccessExpression != null)
-                                            {
-                                                var memberAccessExpressionType = semanticModel.GetTypeSymbol(memberAccessExpression, cancellationToken) as INamedTypeSymbol;
+            if (invocationExpression.ContainsDirectives(TextSpan.FromBounds(invocationInfo.Expression.Span.End, invocationExpression.Span.End)))
+                return;
 
-                                                if (memberAccessExpressionType?.IsConstructedFromIEnumerableOfT() == true
-                                                    && typeArguments[0].Equals(memberAccessExpressionType.TypeArguments[0])
-                                                    && !invocation.ContainsDirectives(TextSpan.FromBounds(memberAccessExpression.Span.End, invocation.Span.End)))
-                                                {
-                                                    context.ReportDiagnostic(
-                                                        DiagnosticDescriptors.RemoveRedundantCast,
-                                                        Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(name.SpanStart, argumentList.Span.End)));
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantCast,
+                Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
         }
 
         public static Task<Document> RefactorAsync(
@@ -204,23 +245,17 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax invocation,
             CancellationToken cancellationToken)
         {
-            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
+            var memberAccessExpression = (MemberAccessExpressionSyntax)invocation.Expression;
 
-            ExpressionSyntax expression = memberAccess.Expression;
+            ExpressionSyntax expression = memberAccessExpression.Expression;
 
-            IEnumerable<SyntaxTrivia> trailing = invocation.DescendantTrivia(TextSpan.FromBounds(expression.SpanStart, invocation.Span.End));
-
-            if (trailing.All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
-                trailing = invocation.GetTrailingTrivia();
-            }
-            else
-            {
-                trailing = trailing.Concat(invocation.GetTrailingTrivia());
-            }
+            IEnumerable<SyntaxTrivia> trailingTrivia = invocation
+                .DescendantTrivia(TextSpan.FromBounds(expression.SpanStart, invocation.Span.End))
+                .Where(f => !f.IsWhitespaceOrEndOfLineTrivia())
+                .Concat(invocation.GetTrailingTrivia());
 
             ExpressionSyntax newNode = expression
-                .WithTrailingTrivia(trailing)
+                .WithTrailingTrivia(trailingTrivia)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);

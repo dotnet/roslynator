@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
+
     public static class RemoveRedundantEmptyLine
     {
 
@@ -32,27 +33,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 case RegexOptions.CultureInvariant:
                     {
+
                         break;
-                    }
-                case RegexOptions.ECMAScript:
-                    {
-                        break;
+
                     }
 
-                case RegexOptions.ExplicitCapture:
+
+                case RegexOptions.ECMAScript:
+
                     break;
-                case RegexOptions.IgnoreCase:
-                    break;
-                case RegexOptions.IgnorePatternWhitespace:
-                    break;
-                case RegexOptions.Multiline:
-                    break;
-                case RegexOptions.None:
-                    break;
-                case RegexOptions.RightToLeft:
-                    break;
-                case RegexOptions.Singleline:
-                    break;
+
                 default:
                     break;
 
@@ -64,7 +54,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             catch (ArgumentNullException)
             {
+
                 throw;
+
             }
 
             catch (ArgumentException)
@@ -74,7 +66,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             finally
             {
+
                 Foo();
+
             }
 
             bool f = false;
@@ -123,9 +117,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             unsafe
             {
-                fixed ()
+
+                fixed (char* p = "")
 
                     Foo();
+
             }
 
         }

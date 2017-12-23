@@ -2,13 +2,11 @@
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    internal static class CS0021_CannotApplyIndexingToExpression
+    internal static class CS0246_TypeOrNamespaceNameCouldNotBeFound
     {
         private static void Foo()
         {
-            int i = 0;
-
-            string s = i.ToString["f"];
+            var items = new T[] { "" };
         }
     }
 }

@@ -1,9 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -21,20 +22,21 @@ namespace Roslynator.CSharp.Refactorings
             if (!optional.HasValue)
                 return;
 
-            ExpressionSyntax newExpression = CSharpFactory.LiteralExpression(optional.Value);
+            SyntaxNode oldNode = expression;
+
+            if (oldNode.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)oldNode.Parent;
+
+                if (memberAccessExpression.Name == expression)
+                    oldNode = memberAccessExpression;
+            }
+
+            ExpressionSyntax newNode = LiteralExpression(optional.Value);
 
             context.RegisterRefactoring(
-                $"Replace expression with '{newExpression}'",
-                cancellationToken => RefactorAsync(context.Document, expression, newExpression, cancellationToken));
-        }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            ExpressionSyntax expression,
-            ExpressionSyntax newExpression,
-            CancellationToken cancellationToken)
-        {
-            return document.ReplaceNodeAsync(expression, newExpression.WithTriviaFrom(expression), cancellationToken);
+                $"Replace expression with '{newNode}'",
+                cancellationToken => context.Document.ReplaceNodeAsync(oldNode, newNode.WithTriviaFrom(expression).Parenthesize(), cancellationToken));
         }
     }
 }

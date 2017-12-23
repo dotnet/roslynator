@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         BaseListSyntax newBaseList = baseList.WithTypes(newTypes);
 
-                                        return context.Document.ReplaceNodeAsync(baseList, newBaseList, context.CancellationToken);
+                                        return context.Document.ReplaceNodeAsync(baseList, newBaseList, cancellationToken);
                                     },
                                     GetEquivalenceKey(diagnostic));
 

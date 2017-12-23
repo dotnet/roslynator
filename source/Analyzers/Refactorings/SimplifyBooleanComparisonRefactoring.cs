@@ -86,12 +86,12 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = await CreateNewNodeAsync(document, binaryExpression, cancellationToken).ConfigureAwait(false);
+            ExpressionSyntax newNode = await CreateNewNode(document, binaryExpression, cancellationToken).ConfigureAwait(false);
 
             return await document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<ExpressionSyntax> CreateNewNodeAsync(
+        private static async Task<ExpressionSyntax> CreateNewNode(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
@@ -105,7 +105,9 @@ namespace Roslynator.CSharp.Refactorings
 
             bool isWhiteSpaceOrEndOfLine = trivia.All(f => f.IsWhitespaceOrEndOfLineTrivia());
 
-            if (left.IsBooleanLiteralExpression())
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            if (left.Kind().IsBooleanLiteralExpression())
             {
                 SyntaxTriviaList leadingTrivia = binaryExpression.GetLeadingTrivia();
 
@@ -118,20 +120,18 @@ namespace Roslynator.CSharp.Refactorings
 
                     ExpressionSyntax operand = logicalNot.Operand;
 
-                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
                     if (semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType.IsNullableOf(SpecialType.System_Boolean))
                     {
                         return binaryExpression
-                            .WithLeft(Negator.LogicallyNegate(left))
+                            .WithLeft(CSharpUtility.LogicallyNegate(left, semanticModel, cancellationToken))
                             .WithRight(operand.WithTriviaFrom(right));
                     }
                 }
 
-                return Negator.LogicallyNegate(right)
+                return CSharpUtility.LogicallyNegate(right, semanticModel, cancellationToken)
                     .WithLeadingTrivia(leadingTrivia);
             }
-            else if (right.IsBooleanLiteralExpression())
+            else if (right.Kind().IsBooleanLiteralExpression())
             {
                 SyntaxTriviaList trailingTrivia = binaryExpression.GetTrailingTrivia();
 
@@ -144,17 +144,15 @@ namespace Roslynator.CSharp.Refactorings
 
                     ExpressionSyntax operand = logicalNot.Operand;
 
-                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
                     if (semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType.IsNullableOf(SpecialType.System_Boolean))
                     {
                         return binaryExpression
                             .WithLeft(operand.WithTriviaFrom(left))
-                            .WithRight(Negator.LogicallyNegate(right));
+                            .WithRight(CSharpUtility.LogicallyNegate(right, semanticModel, cancellationToken));
                     }
                 }
 
-                return Negator.LogicallyNegate(left)
+                return CSharpUtility.LogicallyNegate(left, semanticModel, cancellationToken)
                     .WithTrailingTrivia(trailingTrivia);
             }
 

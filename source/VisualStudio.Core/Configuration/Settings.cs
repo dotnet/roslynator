@@ -11,9 +11,9 @@ namespace Roslynator.Configuration
     {
         public bool PrefixFieldIdentifierWithUnderscore { get; set; } = true;
 
-        public Dictionary<string, bool> Refactorings { get; set; } = new Dictionary<string, bool>(StringComparer.Ordinal);
+        public Dictionary<string, bool> Refactorings { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
-        public Dictionary<string, bool> CodeFixes { get; set; } = new Dictionary<string, bool>(StringComparer.Ordinal);
+        public Dictionary<string, bool> CodeFixes { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
         public virtual void Update(Settings settings)
         {

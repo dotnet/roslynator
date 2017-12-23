@@ -47,9 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             foreach (ISymbol symbol in symbolInfo.CandidateSymbols)
                             {
-                                var namedTypeSymbol = symbol as INamedTypeSymbol;
-
-                                if (namedTypeSymbol != null)
+                                if (symbol is INamedTypeSymbol namedTypeSymbol)
                                 {
                                     ImmutableArray<ITypeParameterSymbol> typeParameters = namedTypeSymbol.TypeParameters;
 
@@ -65,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                                 GenericNameSyntax newNode = SyntaxFactory.GenericName(identifierName.Identifier, SyntaxFactory.TypeArgumentList(typeArguments));
 
-                                                return context.Document.ReplaceNodeAsync(type, newNode, context.CancellationToken);
+                                                return context.Document.ReplaceNodeAsync(type, newNode, cancellationToken);
                                             },
                                             GetEquivalenceKey(diagnostic, SymbolDisplay.GetString(namedTypeSymbol)));
 
@@ -103,9 +101,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             foreach (ITypeParameterSymbol typeParameter in typeParameters)
             {
-                string name = typeParameter.Name;
-
-                name = NameGenerator.Default.EnsureUniqueName(
+                string name = NameGenerator.Default.EnsureUniqueName(
                     typeParameter.Name,
                     symbols);
 

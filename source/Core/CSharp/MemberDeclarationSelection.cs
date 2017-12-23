@@ -9,12 +9,6 @@ namespace Roslynator.CSharp
 {
     public class MemberDeclarationSelection : SyntaxListSelection<MemberDeclarationSyntax>
     {
-        private MemberDeclarationSelection(MemberDeclarationSyntax containingMember, SyntaxList<MemberDeclarationSyntax> members, TextSpan span)
-             : base(members, span)
-        {
-            ContainingMember = containingMember;
-        }
-
         private MemberDeclarationSelection(MemberDeclarationSyntax containingMember, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, int startIndex, int endIndex)
              : base(members, span, startIndex, endIndex)
         {
@@ -28,7 +22,7 @@ namespace Roslynator.CSharp
             if (namespaceDeclaration == null)
                 throw new ArgumentNullException(nameof(namespaceDeclaration));
 
-            return new MemberDeclarationSelection(namespaceDeclaration, namespaceDeclaration.Members, span);
+            return Create(namespaceDeclaration, namespaceDeclaration.Members, span);
         }
 
         public static MemberDeclarationSelection Create(ClassDeclarationSyntax classDeclaration, TextSpan span)
@@ -36,7 +30,7 @@ namespace Roslynator.CSharp
             if (classDeclaration == null)
                 throw new ArgumentNullException(nameof(classDeclaration));
 
-            return new MemberDeclarationSelection(classDeclaration, classDeclaration.Members, span);
+            return Create(classDeclaration, classDeclaration.Members, span);
         }
 
         public static MemberDeclarationSelection Create(StructDeclarationSyntax structDeclaration, TextSpan span)
@@ -44,7 +38,7 @@ namespace Roslynator.CSharp
             if (structDeclaration == null)
                 throw new ArgumentNullException(nameof(structDeclaration));
 
-            return new MemberDeclarationSelection(structDeclaration, structDeclaration.Members, span);
+            return Create(structDeclaration, structDeclaration.Members, span);
         }
 
         public static MemberDeclarationSelection Create(InterfaceDeclarationSyntax interfaceDeclaration, TextSpan span)
@@ -52,7 +46,14 @@ namespace Roslynator.CSharp
             if (interfaceDeclaration == null)
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
-            return new MemberDeclarationSelection(interfaceDeclaration, interfaceDeclaration.Members, span);
+            return Create(interfaceDeclaration, interfaceDeclaration.Members, span);
+        }
+
+        private static MemberDeclarationSelection Create(MemberDeclarationSyntax memberDeclaration, SyntaxList<MemberDeclarationSyntax> members, TextSpan span)
+        {
+            IndexPair indexes = GetIndexes(members, span);
+
+            return new MemberDeclarationSelection(memberDeclaration, members, span, indexes.StartIndex, indexes.EndIndex);
         }
 
         public static bool TryCreate(NamespaceDeclarationSyntax namespaceDeclaration, TextSpan span, out MemberDeclarationSelection selectedMembers)
@@ -107,21 +108,23 @@ namespace Roslynator.CSharp
             }
         }
 
-        public static bool TryCreate(MemberDeclarationSyntax containingMember, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, out MemberDeclarationSelection selectedMembers)
+        private static bool TryCreate(MemberDeclarationSyntax containingMember, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, out MemberDeclarationSelection selectedMembers)
         {
-            if (members.Any())
-            {
-                IndexPair indexes = GetIndexes(members, span);
-
-                if (indexes.StartIndex != -1)
-                {
-                    selectedMembers = new MemberDeclarationSelection(containingMember, members, span, indexes.StartIndex, indexes.EndIndex);
-                    return true;
-                }
-            }
-
             selectedMembers = null;
-            return false;
+
+            if (!members.Any())
+                return false;
+
+            if (span.IsEmpty)
+                return false;
+
+            IndexPair indexes = GetIndexes(members, span);
+
+            if (indexes.StartIndex == -1)
+                return false;
+
+            selectedMembers = new MemberDeclarationSelection(containingMember, members, span, indexes.StartIndex, indexes.EndIndex);
+            return true;
         }
     }
 }

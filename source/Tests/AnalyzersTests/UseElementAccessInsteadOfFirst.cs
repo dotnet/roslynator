@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
 using System.Linq;
 
 #pragma warning disable RCS1097, RCS1118, RCS1176
@@ -12,37 +13,51 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         public static void Foo()
         {
-            var items = new List<int>() { 0, 1, 2 };
+            object x = 0;
 
-            int first = items.First();
+            List<object> l = null;
+            IList<object> il = null;
+            IReadOnlyList<object> irl = null;
+            Collection<object> c = null;
+            ICollection<object> ic = null;
+            IReadOnlyCollection<object> irc = null;
+            IEnumerable<object> ie = null;
+            object[] a = null;
+            ImmutableArray<object> ia = ImmutableArray<object>.Empty;
+            string s = null;
+            var dic = new Dictionary<object, object>();
 
-            var a = new int[] { 0 };
-            first = a.First();
+            x = l.First();
 
-            ImmutableArray<int> ia = ImmutableArray.Create(1);
-            first = ia.First();
+            x = il.First();
 
-            string s = "";
-            char ch = s.First();
-        }
+            x = irl.First();
 
-        public static void Foo2()
-        {
-            var items = new List<int>() { 0, 1, 2 };
+            x = c.First();
 
-            int first = items.ToList().First();
+            x = a.First();
 
-            var a = new int[] { 0 };
-            first = a.ToArray().First();
+            x = ia.First();
 
-            ImmutableArray<int> ia = ImmutableArray.Create(1);
-            first = ia.ToImmutableArray().First();
+            x = s.First();
 
-            string s = "";
-            char ch = s.ToString().First();
+            //n
 
-            var dic = new Dictionary<string, string>();
-            KeyValuePair<string, string> kvp = dic.First();
+            x = ic.First();
+
+            x = irc.First();
+
+            x = ie.First();
+
+            KeyValuePair<object, object> kvp = dic.First();
+
+            x = l.ToList().First();
+
+            x = a.ToArray().First();
+
+            x = ia.ToImmutableArray().First();
+
+            x = s.ToUpper().First();
         }
     }
 }

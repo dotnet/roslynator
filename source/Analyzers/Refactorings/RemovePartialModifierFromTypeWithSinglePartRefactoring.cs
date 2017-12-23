@@ -3,8 +3,6 @@
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -21,22 +19,18 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ImmutableArray<SyntaxReference> syntaxReferences = symbol.DeclaringSyntaxReferences;
 
-                if (syntaxReferences.Length == 1)
+                if (syntaxReferences.Length == 1
+                    && (syntaxReferences[0].GetSyntax(context.CancellationToken) is MemberDeclarationSyntax memberDeclaration))
                 {
-                    var memberDeclaration = syntaxReferences[0].GetSyntax(context.CancellationToken) as MemberDeclarationSyntax;
+                    SyntaxToken partialKeyword = memberDeclaration.GetModifiers()
+                        .FirstOrDefault(f => f.IsKind(SyntaxKind.PartialKeyword));
 
-                    if (memberDeclaration != null)
+                    if (partialKeyword.IsKind(SyntaxKind.PartialKeyword)
+                        && !ContainsPartialMethod(memberDeclaration))
                     {
-                        SyntaxToken partialKeyword = memberDeclaration.GetModifiers()
-                            .FirstOrDefault(f => f.IsKind(SyntaxKind.PartialKeyword));
-
-                        if (partialKeyword.IsKind(SyntaxKind.PartialKeyword)
-                            && !ContainsPartialMethod(memberDeclaration))
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
-                                partialKeyword);
-                        }
+                        context.ReportDiagnostic(
+                            DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart,
+                            partialKeyword);
                     }
                 }
             }
@@ -70,14 +64,6 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return false;
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            TypeDeclarationSyntax typeDeclaration,
-            CancellationToken cancellationToken)
-        {
-            return document.RemoveModifierAsync(typeDeclaration, SyntaxKind.PartialKeyword, cancellationToken);
         }
     }
 }

@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private void ComputeCodeFix(
+        private static void ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             TypeSyntax type,
@@ -126,7 +126,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private void ComputeCodeFix(
+        private static void ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             ITypeSymbol typeSymbol,
@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             ReturnStatementSyntax returnStatement = SyntaxFactory.ReturnStatement(returnExpression);
 
-            BlockSyntax newBody = body.AddStatements(returnStatement);
+            BlockSyntax newBody = body.InsertStatement(returnStatement);
 
             return document.ReplaceNodeAsync(body, newBody, cancellationToken);
         }

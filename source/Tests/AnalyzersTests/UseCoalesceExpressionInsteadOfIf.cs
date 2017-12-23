@@ -3,18 +3,14 @@
 using System.Collections;
 using System.Collections.Generic;
 
-#pragma warning disable RCS1002, RCS1004, RCS1007, RCS1033, RCS1049, RCS1098, RCS1118, RCS1126, RCS1176, CS0162
+#pragma warning disable RCS1002, RCS1004, RCS1007, RCS1033, RCS1049, RCS1073, RCS1098, RCS1103, RCS1118, RCS1126, RCS1176, CS0162
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     public static class UseCoalesceExpressionInsteadOfIf
     {
-        public static void IfElseToAssignment()
+        private static void IfElseToAssignment(Derived x, Derived2 y, Base z)
         {
-            Derived x = null;
-            Derived2 y = null;
-            Base z = null;
-
             if (x != null)
             {
                 z = x;
@@ -44,12 +40,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 z = x;
         }
 
-        private static void IfElseToAssignmentNullable()
+        private static void IfElseToAssignmentNullable(int? x, int y, int z)
         {
-            int? x = null;
-            int y = 0;
-            int z = 0;
-
             if (x != null)
             {
                 z = x.Value;
@@ -123,11 +115,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        private static Base IfElseToReturn()
+        private static Base IfElseToReturn(Derived x, Derived2 y)
         {
-            Derived x = null;
-            Derived2 y = null;
-
             if (x != null)
             {
                 return x;
@@ -175,11 +164,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 return x;
         }
 
-        private static int IfElseToReturnNullable()
+        private static int IfElseToReturnNullable(int? x, int y)
         {
-            int? x = null;
-            int y = 0;
-
             if (x != null)
             {
                 return x.Value;
@@ -253,11 +239,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        private static Base IfReturnToReturn()
+        private static Base IfReturnToReturn(Derived x, Derived2 y)
         {
-            Derived x = null;
-            Derived2 y = null;
-
             if (x != null)
             {
                 return x;
@@ -283,11 +266,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             return x;
         }
 
-        private static int IfReturnToReturnNullable()
+        private static int IfReturnToReturnNullable(int? x, int y)
         {
-            int? x = null;
-            int y = 0;
-
             if (x != null)
             {
                 return x.Value;
@@ -345,11 +325,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             return x.Value;
         }
 
-        private static IEnumerable<Base> IfElseToYieldReturn()
+        private static IEnumerable<Base> IfElseToYieldReturn(Derived x, Derived2 y)
         {
-            Derived x = null;
-            Derived2 y = null;
-
             if (x != null)
             {
                 yield return x;
@@ -379,11 +356,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 yield return x;
         }
 
-        private static IEnumerable<int> IfElseToYieldReturnNullable()
+        private static IEnumerable<int> IfElseToYieldReturnNullable(int? x, int y)
         {
-            int? x = null;
-            int y = 0;
-
             if (x != null)
             {
                 yield return x.Value;
@@ -457,11 +431,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        private static IEnumerable IfElseToYieldReturn2()
+        private static IEnumerable IfElseToYieldReturn2(Derived x, Derived2 y)
         {
-            Derived x = null;
-            Derived2 y = null;
-
             if (x != null)
             {
                 yield return x;

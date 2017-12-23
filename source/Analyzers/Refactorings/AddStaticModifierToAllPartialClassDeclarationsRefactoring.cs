@@ -3,8 +3,6 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -64,18 +62,6 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-        }
-
-        public static Task<Document> RefactorAsync(
-            Document document,
-            ClassDeclarationSyntax classDeclaration,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return document.InsertModifierAsync(
-                classDeclaration,
-                SyntaxKind.StaticKeyword,
-                ModifierComparer.Instance,
-                cancellationToken);
         }
     }
 }

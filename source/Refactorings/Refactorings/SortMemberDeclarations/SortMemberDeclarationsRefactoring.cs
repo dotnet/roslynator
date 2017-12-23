@@ -17,29 +17,25 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
     {
         public static void ComputeRefactoring(RefactoringContext context, NamespaceDeclarationSyntax namespaceDeclaration)
         {
-            MemberDeclarationSelection selectedMembers;
-            if (MemberDeclarationSelection.TryCreate(namespaceDeclaration, context.Span, out selectedMembers))
+            if (MemberDeclarationSelection.TryCreate(namespaceDeclaration, context.Span, out MemberDeclarationSelection selectedMembers))
                 ComputeRefactoring(context, selectedMembers);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
-            MemberDeclarationSelection selectedMembers;
-            if (MemberDeclarationSelection.TryCreate(classDeclaration, context.Span, out selectedMembers))
+            if (MemberDeclarationSelection.TryCreate(classDeclaration, context.Span, out MemberDeclarationSelection selectedMembers))
                 ComputeRefactoring(context, selectedMembers);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
-            MemberDeclarationSelection selectedMembers;
-            if (MemberDeclarationSelection.TryCreate(structDeclaration, context.Span, out selectedMembers))
+            if (MemberDeclarationSelection.TryCreate(structDeclaration, context.Span, out MemberDeclarationSelection selectedMembers))
                 ComputeRefactoring(context, selectedMembers);
         }
 
         public static void ComputeRefactoring(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
         {
-            MemberDeclarationSelection selectedMembers;
-            if (MemberDeclarationSelection.TryCreate(interfaceDeclaration, context.Span, out selectedMembers))
+            if (MemberDeclarationSelection.TryCreate(interfaceDeclaration, context.Span, out MemberDeclarationSelection selectedMembers))
                 ComputeRefactoring(context, selectedMembers);
         }
 
@@ -47,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
         {
             if (selectedMembers.Count > 1)
             {
-                ImmutableArray<MemberDeclarationSyntax> members = selectedMembers.Nodes;
+                ImmutableArray<MemberDeclarationSyntax> members = selectedMembers.SelectedItems;
 
                 SyntaxKind kind = GetSingleKindOrDefault(members);
 

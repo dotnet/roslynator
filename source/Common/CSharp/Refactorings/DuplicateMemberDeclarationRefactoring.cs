@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                         SyntaxList<MemberDeclarationSyntax> members = parent.Members;
                         int index = members.IndexOf(member);
 
-                        return parent.WithMembers(members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
                     }
                 case SyntaxKind.NamespaceDeclaration:
                     {
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                             member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
-                        return parent.WithMembers(members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
                             member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
-                        return parent.WithMembers(members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
                     }
                 case SyntaxKind.StructDeclaration:
                     {
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
                             member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
-                        return parent.WithMembers(members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Refactorings
                             member = member.WithLeadingTrivia(member.GetLeadingTrivia().Insert(0, NewLine()));
                         }
 
-                        return parent.WithMembers(members.Insert(index + 1, member));
+                        return parent.WithMembers(members.Insert(index + 1, member.WithNavigationAnnotation()));
                     }
             }
 

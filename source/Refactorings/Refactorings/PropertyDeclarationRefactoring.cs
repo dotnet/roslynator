@@ -7,6 +7,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
+using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
+using Roslynator.CSharp.Refactorings.MakeMemberVirtual;
 using Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod;
 using Roslynator.Utilities;
 
@@ -20,16 +22,6 @@ namespace Roslynator.CSharp.Refactorings
                 && propertyDeclaration.HeaderSpan().Contains(context.Span))
             {
                 ReplacePropertyWithMethodRefactoring.ComputeRefactoring(context, propertyDeclaration);
-            }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && propertyDeclaration.AccessorList?.Span.Contains(context.Span) == true
-                && context.SupportsCSharp6
-                && UseExpressionBodiedMemberRefactoring.CanRefactor(propertyDeclaration))
-            {
-                context.RegisterRefactoring(
-                    "Use expression-bodied member",
-                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemovePropertyInitializer)
@@ -77,12 +69,15 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
-                && propertyDeclaration.HeaderSpan().Contains(context.Span)
-                && MakeMemberAbstractRefactoring.CanRefactor(propertyDeclaration))
+                && propertyDeclaration.HeaderSpan().Contains(context.Span))
             {
-                context.RegisterRefactoring(
-                    "Make property abstract",
-                    cancellationToken => MakeMemberAbstractRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+                MakePropertyAbstractRefactoring.ComputeRefactoring(context, propertyDeclaration);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberVirtual)
+                && propertyDeclaration.HeaderSpan().Contains(context.Span))
+            {
+                MakePropertyVirtualRefactoring.ComputeRefactoring(context, propertyDeclaration);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
@@ -134,6 +129,14 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     }
                 }
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(propertyDeclaration.Identifier))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                AddMemberToInterfaceRefactoring.ComputeRefactoring(context, propertyDeclaration, semanticModel);
             }
         }
     }

@@ -18,9 +18,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddConstructorArgumentList,
+                    DiagnosticDescriptors.AddArgumentListToObjectCreation,
                     DiagnosticDescriptors.RemoveEmptyInitializer,
-                    DiagnosticDescriptors.RemoveEmptyArgumentList);
+                    DiagnosticDescriptors.RemoveArgumentListFromObjectCreation);
             }
         }
 
@@ -40,9 +40,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             RemoveEmptyInitializerRefactoring.Analyze(context, objectCreationExpression);
 
-            AddConstructorArgumentListRefactoring.Analyze(context, objectCreationExpression);
+            AddArgumentListToObjectCreationRefactoring.Analyze(context, objectCreationExpression);
 
-            RemoveEmptyArgumentListRefactoring.Analyze(context, objectCreationExpression);
+            RemoveArgumentListFromObjectCreationRefactoring.Analyze(context, objectCreationExpression);
         }
     }
 }

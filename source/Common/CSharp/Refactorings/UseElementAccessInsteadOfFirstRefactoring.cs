@@ -15,56 +15,20 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseElementAccessInsteadOfFirstRefactoring
     {
-        public static bool CanRefactor(MemberInvocationExpression memberInvocation, SemanticModel semanticModel, CancellationToken cancellationToken)
+        public static bool CanRefactor(MemberInvocationExpressionInfo invocationInfo, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            if (memberInvocation.Expression?.IsMissing == false)
-            {
-                MethodInfo methodInfo;
-                if (semanticModel.TryGetExtensionMethodInfo(memberInvocation.InvocationExpression, out methodInfo, ExtensionMethodKind.Reduced, cancellationToken)
-                    && methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
-                {
-                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(memberInvocation.Expression, cancellationToken);
+            if (invocationInfo.Expression?.IsMissing != false)
+                return false;
 
-                    if (typeSymbol?.IsErrorType() == false
-                        && (typeSymbol.IsArrayType() || ExistsApplicableIndexer(memberInvocation.InvocationExpression, typeSymbol, semanticModel)))
-                    {
-                        return true;
-                    }
-                }
-            }
+            if (!semanticModel.TryGetExtensionMethodInfo(invocationInfo.InvocationExpression, out MethodInfo methodInfo, ExtensionMethodKind.Reduced, cancellationToken))
+                return false;
 
-            return false;
-        }
+            if (!methodInfo.IsLinqExtensionOfIEnumerableOfTWithoutParameters("First", allowImmutableArrayExtension: true))
+                return false;
 
-        private static bool ExistsApplicableIndexer(
-            ExpressionSyntax expression,
-            ITypeSymbol containingType,
-            SemanticModel semanticModel)
-        {
-            foreach (ISymbol member in containingType.GetMembers("this[]"))
-            {
-                var propertySymbol = (IPropertySymbol)member;
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(invocationInfo.Expression, cancellationToken);
 
-                if (!propertySymbol.IsWriteOnly
-                    && semanticModel.IsAccessible(expression.SpanStart, propertySymbol.GetMethod)
-                    && semanticModel.IsImplicitConversion(expression, propertySymbol.Type))
-                {
-                    switch (propertySymbol.SingleParameterOrDefault()?.Type.SpecialType)
-                    {
-                        case SpecialType.System_SByte:
-                        case SpecialType.System_Byte:
-                        case SpecialType.System_Int16:
-                        case SpecialType.System_UInt16:
-                        case SpecialType.System_Int32:
-                        case SpecialType.System_UInt32:
-                        case SpecialType.System_Int64:
-                        case SpecialType.System_UInt64:
-                            return true;
-                    }
-                }
-            }
-
-            return false;
+            return SymbolUtility.HasAccessibleIndexer(typeSymbol, semanticModel, invocationInfo.InvocationExpression.SpanStart);
         }
 
         public static Task<Document> RefactorAsync(

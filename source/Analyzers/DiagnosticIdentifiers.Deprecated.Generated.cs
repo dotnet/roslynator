@@ -9,6 +9,8 @@ namespace Roslynator.CSharp
     public static partial class DiagnosticIdentifiers
     {
         [Obsolete("", error: true)]
+        public const string SimplifyLambdaExpressionParameterList = "RCS1022";
+        [Obsolete("", error: true)]
         public const string RemoveRedundantBraces = "RCS1031";
         [Obsolete("", error: true)]
         public const string ReplaceForEachWithFor = "RCS1053";

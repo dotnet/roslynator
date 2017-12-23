@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveEmptyArgumentList); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -28,9 +28,9 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Remove empty argument list",
-                cancellationToken => RemoveEmptyArgumentListRefactoring.RefactorAsync(context.Document, argumentList, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.RemoveEmptyArgumentList));
+                "Remove parentheses",
+                cancellationToken => RemoveArgumentListFromObjectCreationRefactoring.RefactorAsync(context.Document, argumentList, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.RemoveArgumentListFromObjectCreation));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

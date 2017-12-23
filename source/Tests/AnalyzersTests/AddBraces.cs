@@ -56,6 +56,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
                     x,
                     y);
 
+            foreach ((string, string) item in Tuple.Values)
+                Foo(
+                    x,
+                    y);
+
             for (int i = 0; i < items.Count; i++)
                 Foo(
                     x,

@@ -8,14 +8,26 @@ namespace Roslynator.CSharp.CodeFixes.Tests
     {
         private class Foo
         {
-            private void Method()
+            private void Bar()
             {
                 DateTime _dateTime = DateTime.Now;
 
                 DateTime.Now;
+
+                var foo = new Foo();
+
+                Bar;
+                foo.Bar;
+
+                bool condition = false;
+                (condition) ? Bar() : Bar2();
             }
 
-            private static void StaticMethod()
+            public void Bar2()
+            {
+            }
+
+            private static void StaticBar()
             {
                 DateTime _dateTime = DateTime.Now;
 

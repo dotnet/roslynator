@@ -7,13 +7,13 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-#pragma warning disable RCS1079
+#pragma warning disable RCS1008, RCS1016, RCS1079, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     public static class RemoveRedundantCast
     {
-        public static class Foo
+        private class Foo : BaseFoo
         {
             public static void Bar(SyntaxNode node, Dictionary<int, string> dic)
             {
@@ -21,28 +21,68 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 parent = ((BlockSyntax)node)?.Parent;
 
-                string x = ((IDictionary<int, string>)dic)[0];
+                string s = ((IDictionary<int, string>)dic)[0];
 
-                x = ((IDictionary<int, string>)dic)?[0];
+                s = ((IDictionary<int, string>)dic)?[0];
 
-                IEnumerable<string> q = Enumerable.Empty<string>()
+                IEnumerable<string> items = Enumerable.Empty<string>()
                     .AsEnumerable()
                     .Cast<string>();
 
-                ((IDisposable)default(FooDisposable)).Dispose();
+                ((IDisposable)new FooDisposable()).Dispose();
 
-                //n
+                ((Foo)new BaseFoo()).ProtectedInternal();
+            }
+        }
 
+        private class BaseFoo
+        {
+            private void Bar(BaseFoo baseFoo)
+            {
+                ((DerivedFoo)baseFoo).Protected();
+
+                ((DerivedFoo)baseFoo).ProtectedInternal();
+            }
+
+            private class DerivedFoo : BaseFoo
+            {
+                private void Bar2(BaseFoo baseFoo)
+                {
+                    ((DerivedFoo)baseFoo).Protected();
+
+                    ((DerivedFoo)baseFoo).ProtectedInternal();
+                }
+            }
+
+            protected void Protected() { }
+
+            protected internal void ProtectedInternal() { }
+        }
+
+        //n
+
+        private class Foo2 : BaseFoo
+        {
+            public static void Bar(SyntaxNode node)
+            {
                 SyntaxToken openBrace = ((BlockSyntax)node).OpenBraceToken;
                 Location location = ((BlockSyntax)node).GetLocation();
 
                 var q2 = ((IEnumerable<string>)new EnumerableOfString()).GetEnumerator();
-                var q3 = ((IEnumerable<string>)new EnumerableOfString2()).GetEnumerator();
+                var q3 = ((IEnumerable<string>)new DerivedEnumerableOfString()).GetEnumerator();
 
                 IEnumerableOfString i = null;
                 var q4 = ((IEnumerable<string>)i).GetEnumerator();
 
                 ((IDisposable)default(FooExplicitDisposable)).Dispose();
+            }
+        }
+
+        private class Foo3 : BaseFoo
+        {
+            private void Bar(BaseFoo baseFoo)
+            {
+                ((Foo3)baseFoo).Protected();
             }
         }
 
@@ -63,7 +103,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
         }
 
-        private class EnumerableOfString2 : EnumerableOfString
+        private class DerivedEnumerableOfString : EnumerableOfString
         {
         }
 

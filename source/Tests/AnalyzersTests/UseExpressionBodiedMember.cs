@@ -11,6 +11,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         private class Foo
         {
+            public Foo()
+            {
+                FooMethod();
+            }
+
+            ~Foo()
+            {
+                FooMethod();
+            }
+
             public string FooMethod()
             {
                 return null;
@@ -21,14 +31,44 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 FooMethod();
             }
 
+            public void MethodWithLocalFunction()
+            {
+                object LocalFunction()
+                {
+                    return null;
+                }
+            }
+
+            public void MethodWithVoidLocalFunction()
+            {
+                void LocalFunction()
+                {
+                    LocalFunction();
+                }
+            }
+
             public string FooProperty
             {
                 get { return ""; }
             }
 
+            private string _fooProperty2;
+
+            public string FooProperty2
+            {
+                get { return _fooProperty2; }
+                set { _fooProperty2 = value; }
+            }
+
             public string this[int index]
             {
                 get { return null; }
+            }
+
+            public string this[string index]
+            {
+                get { return _fooProperty2; }
+                set { _fooProperty2 = value; }
             }
 
             public static explicit operator Foo(string value)

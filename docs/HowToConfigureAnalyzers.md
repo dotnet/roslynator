@@ -63,6 +63,18 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ![Code Analysis Settings](/images/CodeAnalysisSettings.png)
 
+## How to Enable Rule Set in .NET Core project
+
+To enable ruleset file in .NET Core project it is necessary to manually edit csproj file by adding relative or absolute path to rule set file:
+
+```xml
+<PropertyGroup>
+	...
+  <CodeAnalysisRuleSet>my.ruleset</CodeAnalysisRuleSet>
+	...
+</PropertyGroup>
+```
+
 ## MSDN Links
 
 * [How to: Create a Custom Rule Set](https://msdn.microsoft.com/en-us/library/dd264974.aspx)

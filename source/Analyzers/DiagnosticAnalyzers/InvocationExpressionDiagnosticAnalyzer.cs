@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.SimplifyLinqMethodChain,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
-                    DiagnosticDescriptors.UseAnyMethodInsteadOfCountMethod,
+                    DiagnosticDescriptors.CallAnyInsteadOfCount,
                     DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag,
                     DiagnosticDescriptors.RemoveRedundantToStringCall,
                     DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
@@ -41,7 +41,11 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                     DiagnosticDescriptors.AvoidBoxingOfValueType,
                     DiagnosticDescriptors.CallThenByInsteadOfOrderBy,
                     DiagnosticDescriptors.UseMethodChaining,
-                    DiagnosticDescriptors.AvoidNullReferenceException);
+                    DiagnosticDescriptors.AvoidNullReferenceException,
+                    DiagnosticDescriptors.UseStringComparison,
+                    DiagnosticDescriptors.UseNameOfOperator,
+                    DiagnosticDescriptors.RemoveRedundantCast,
+                    DiagnosticDescriptors.SimplifyLogicalNegation);
            }
         }
 
@@ -80,7 +84,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             case "Any":
                                 {
                                     SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                    UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.Analyze(context, invocation, memberAccess);
                                     break;
                                 }
                             case "Cast":
@@ -89,11 +92,6 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     break;
                                 }
                             case "Count":
-                                {
-                                    SimplifyLinqMethodChainRefactoring.Analyze(context, invocation, memberAccess, methodName);
-                                    UseInsteadOfCountMethodRefactoring.Analyze(context, invocation, memberAccess);
-                                    break;
-                                }
                             case "First":
                             case "FirstOrDefault":
                             case "Last":
@@ -140,29 +138,29 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             {
                 if (!invocation.SpanContainsDirectives())
                 {
-                    CallExtensionMethodAsInstanceMethodRefactoring.AnalysisResult result =
-                        CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocation, context.SemanticModel, context.CancellationToken);
+                    CallExtensionMethodAsInstanceMethodAnalysis analysis = CallExtensionMethodAsInstanceMethodRefactoring.Analyze(invocation, context.SemanticModel, allowAnyExpression: false, cancellationToken: context.CancellationToken);
 
-                    if (result.Success
+                    if (analysis.Success
                         && context.SemanticModel
-                            .GetEnclosingNamedType(result.InvocationExpression.SpanStart, context.CancellationToken)?
-                            .Equals(result.MethodSymbol.ContainingType) == false)
+                            .GetEnclosingNamedType(analysis.InvocationExpression.SpanStart, context.CancellationToken)?
+                            .Equals(analysis.MethodSymbol.ContainingType) == false)
                     {
                         context.ReportDiagnostic(DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod, invocation);
                     }
                 }
 
-                MemberInvocationExpression memberInvocation;
-                if (MemberInvocationExpression.TryCreate(invocation, out memberInvocation))
+                MemberInvocationExpressionInfo invocationInfo = SyntaxInfo.MemberInvocationExpressionInfo(invocation);
+
+                if (invocationInfo.Success)
                 {
                     if (!invocation.SpanContainsDirectives())
-                        UseRegexInstanceInsteadOfStaticMethodRefactoring.Analyze(context, memberInvocation);
+                        UseRegexInstanceInsteadOfStaticMethodRefactoring.Analyze(context, invocationInfo);
 
-                    string methodName = memberInvocation.NameText;
+                    string methodName = invocationInfo.NameText;
 
-                    AvoidNullReferenceExceptionRefactoring.Analyze(context, memberInvocation);
+                    AvoidNullReferenceExceptionRefactoring.Analyze(context, invocationInfo);
 
-                    int argumentCount = memberInvocation.ArgumentList.Arguments.Count;
+                    int argumentCount = invocationInfo.Arguments.Count;
 
                     switch (argumentCount)
                     {
@@ -170,19 +168,43 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             {
                                 switch (methodName)
                                 {
+                                    case "Any":
+                                        {
+                                            UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.Analyze(context, invocationInfo);
+                                            break;
+                                        }
+                                    case "Cast":
+                                        {
+                                            RemoveRedundantCastRefactoring.Analyze(context, invocationInfo);
+                                            break;
+                                        }
+                                    case "Count":
+                                        {
+                                            UseInsteadOfCountMethodRefactoring.Analyze(context, invocationInfo);
+                                            break;
+                                        }
                                     case "First":
                                         {
-                                            if (!memberInvocation.Expression.IsKind(SyntaxKind.InvocationExpression)
-                                                && UseElementAccessInsteadOfFirstRefactoring.CanRefactor(memberInvocation, context.SemanticModel, context.CancellationToken))
+                                            if (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
+                                                && UseElementAccessInsteadOfFirstRefactoring.CanRefactor(invocationInfo, context.SemanticModel, context.CancellationToken))
                                             {
-                                                context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, memberInvocation.Name);
+                                                context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, invocationInfo.Name);
                                             }
 
                                             break;
                                         }
                                     case "ToString":
                                         {
-                                            RemoveRedundantToStringCallRefactoring.Analyze(context, memberInvocation);
+                                            RemoveRedundantToStringCallRefactoring.Analyze(context, invocationInfo);
+                                            UseNameOfOperatorRefactoring.Analyze(context, invocationInfo);
+                                            break;
+                                        }
+                                    case "ToLower":
+                                    case "ToLowerInvariant":
+                                    case "ToUpper":
+                                    case "ToUpperInvariant":
+                                        {
+                                            UseStringComparisonRefactoring.Analyze(context, invocationInfo);
                                             break;
                                         }
                                 }
@@ -193,12 +215,18 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                             {
                                 switch (methodName)
                                 {
+                                    case "All":
+                                    case "Any":
+                                        {
+                                            SimplifyLogicalNegationRefactoring.Analyze(context, invocationInfo);
+                                            break;
+                                        }
                                     case "ElementAt":
                                         {
-                                            if (!memberInvocation.Expression.IsKind(SyntaxKind.InvocationExpression)
-                                                && UseElementAccessInsteadOfElementAtRefactoring.CanRefactor(memberInvocation, context.SemanticModel, context.CancellationToken))
+                                            if (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
+                                                && UseElementAccessInsteadOfElementAtRefactoring.CanRefactor(invocationInfo, context.SemanticModel, context.CancellationToken))
                                             {
-                                                context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfElementAt, memberInvocation.Name);
+                                                context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfElementAt, invocationInfo.Name);
                                             }
 
                                             break;
@@ -216,7 +244,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                         case "AppendFormat":
                         case "Insert":
                             {
-                                OptimizeStringBuilderAppendCallRefactoring.Analyze(context, memberInvocation);
+                                OptimizeStringBuilderAppendCallRefactoring.Analyze(context, invocationInfo);
                                 break;
                             }
                         case "Select":
@@ -224,7 +252,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                 if (argumentCount == 1
                                     || argumentCount == 2)
                                 {
-                                    CallCastInsteadOfSelectRefactoring.Analyze(context, memberInvocation);
+                                    CallCastInsteadOfSelectRefactoring.Analyze(context, invocationInfo);
                                 }
 
                                 break;
@@ -236,15 +264,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
                                     || argumentCount == 2
                                     || argumentCount == 3)
                                 {
-                                    CallThenByInsteadOfOrderByRefactoring.Analyze(context, memberInvocation);
+                                    CallThenByInsteadOfOrderByRefactoring.Analyze(context, invocationInfo);
                                 }
 
                                 break;
                             }
                     }
 
-                    if (UseMethodChainingRefactoring.IsFixable(memberInvocation, context.SemanticModel, context.CancellationToken))
-                        context.ReportDiagnostic(DiagnosticDescriptors.UseMethodChaining, memberInvocation.InvocationExpression);
+                    if (UseMethodChainingRefactoring.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseMethodChaining, invocationInfo.InvocationExpression);
                 }
             }
         }

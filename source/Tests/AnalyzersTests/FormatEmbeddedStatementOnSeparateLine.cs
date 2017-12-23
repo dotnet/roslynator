@@ -22,6 +22,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             foreach (object item in items) Foo();
 
+            foreach (object item in Tuple.Values) Foo();
+
             for (int i = 0; i < items.Count; i++) Foo();
 
             using ((IDisposable)null) Foo();

@@ -1,10 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -180,27 +182,27 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementContainer container;
-            if (StatementContainer.TryCreate(statement, out container))
+            StatementsInfo statementsInfo = SyntaxInfo.StatementsInfo(statement);
+            if (statementsInfo.Success)
             {
-                int index = container.Statements.IndexOf(statement);
+                int index = statementsInfo.Statements.IndexOf(statement);
 
                 if (index == 0
-                    && container.IsBlock
-                    && container.Block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
+                    && statementsInfo.IsInBlock
+                    && statementsInfo.Block.OpenBraceToken.GetFullSpanEndLine() == statement.GetFullSpanStartLine())
                 {
                     statement = statement.PrependToLeadingTrivia(CSharpFactory.NewLine());
                 }
 
-                SyntaxList<StatementSyntax> newStatements = container.Statements.Insert(index + 1, statement);
+                SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.Insert(index + 1, statement.WithNavigationAnnotation());
 
-                SyntaxNode newNode = container.NodeWithStatements(newStatements);
+                StatementsInfo newInfo = statementsInfo.WithStatements(newStatements);
 
-                return document.ReplaceNodeAsync(container.Node, newNode, cancellationToken);
+                return document.ReplaceNodeAsync(statementsInfo.Node, newInfo.Node, cancellationToken);
             }
             else
             {
-                SyntaxList<StatementSyntax> statements = SyntaxFactory.List(new StatementSyntax[] { statement, statement });
+                SyntaxList<StatementSyntax> statements = SyntaxFactory.List(new StatementSyntax[] { statement, statement.WithNavigationAnnotation() });
 
                 BlockSyntax block = SyntaxFactory.Block(statements);
 

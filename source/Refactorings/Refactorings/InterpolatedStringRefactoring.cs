@@ -53,6 +53,12 @@ namespace Roslynator.CSharp.Refactorings
                             cancellationToken);
                     });
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(interpolatedString))
+            {
+                ReplaceInterpolatedStringWithConcatenationRefactoring.ComputeRefactoring(context, interpolatedString);
+            }
         }
     }
 }

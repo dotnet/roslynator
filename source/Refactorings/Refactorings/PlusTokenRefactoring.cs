@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,14 +25,14 @@ namespace Roslynator.CSharp.Refactorings
 
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                StringConcatenationExpression concatenation;
-                if (StringConcatenationExpression.TryCreate(addExpresion, semanticModel, out concatenation, context.CancellationToken))
+                StringConcatenationExpressionInfo concatenationInfo = SyntaxInfo.StringConcatenationExpressionInfo(addExpresion, semanticModel, context.CancellationToken);
+                if (concatenationInfo.Success)
                 {
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.JoinStringExpressions))
-                        JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenation);
+                        JoinStringExpressionsRefactoring.ComputeRefactoring(context, concatenationInfo);
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseStringBuilderInsteadOfConcatenation))
-                        UseStringBuilderInsteadOfConcatenationRefactoring.ComputeRefactoring(context, concatenation);
+                        UseStringBuilderInsteadOfConcatenationRefactoring.ComputeRefactoring(context, concatenationInfo);
                 }
             }
         }

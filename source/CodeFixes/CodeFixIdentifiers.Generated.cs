@@ -20,7 +20,6 @@ namespace Roslynator.CSharp.CodeFixes
         public const string RemoveDuplicateAttribute = Prefix + "0012";
         public const string RemoveNewModifier = Prefix + "0013";
         public const string RemoveUnusedLabel = Prefix + "0014";
-        public const string OverridingMemberCannotChangeAccessModifiers = Prefix + "0015";
         public const string AddDocumentationComment = Prefix + "0016";
         public const string RemoveUnreachableCode = Prefix + "0017";
         public const string ChangeMethodReturnType = Prefix + "0018";
@@ -82,5 +81,20 @@ namespace Roslynator.CSharp.CodeFixes
         public const string RemoveConditionThatIsAlwaysEqualToTrueOrFalse = Prefix + "0075";
         public const string IntroduceField = Prefix + "0076";
         public const string ReplaceElementAccessWithInvocation = Prefix + "0077";
+        public const string AddVariableType = Prefix + "0078";
+        public const string ReplaceBreakWithContinue = Prefix + "0079";
+        public const string ChangeMemberTypeAccordingToReturnExpression = Prefix + "0080";
+        public const string ReturnDefaultValue = Prefix + "0081";
+        public const string DefineMatchingOperator = Prefix + "0082";
+        public const string DefineObjectEquals = Prefix + "0083";
+        public const string DefineObjectGetHashCode = Prefix + "0084";
+        public const string ChangeArrayType = Prefix + "0085";
+        public const string AddMissingType = Prefix + "0086";
+        public const string ReplaceConditionalExpressionWithIfElse = Prefix + "0087";
+        public const string RemoveSemicolon = Prefix + "0088";
+        public const string RemoveConditionalAccess = Prefix + "0089";
+        public const string ChangeTypeAccordingToInitializer = Prefix + "0090";
+        public const string ChangeForEachType = Prefix + "0091";
+        public const string ChangeTypeToVar = Prefix + "0092";
     }
 }

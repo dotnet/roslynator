@@ -53,10 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
                 }
             }
 
-            var tcs = new TaskCompletionSource<object>();
-            tcs.SetResult(null);
-
-            return tcs.Task;
+            return Task.FromResult(default(object));
         }
     }
 }

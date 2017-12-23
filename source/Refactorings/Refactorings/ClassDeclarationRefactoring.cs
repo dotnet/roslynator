@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ClassDeclarationRefactoring
     {
-        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
+        public static async Task ComputeRefactorings(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
                 AddTypeParameterRefactoring.ComputeRefactoring(context, classDeclaration);
@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         (constructors.Count == 1) ? "Generate base constructor" : "Generate base constructors",
-                        cancellationToken => GenerateBaseConstructorsRefactoring.RefactorAsync(context.Document, classDeclaration, constructors.ToArray(), semanticModel, context.CancellationToken));
+                        cancellationToken => GenerateBaseConstructorsRefactoring.RefactorAsync(context.Document, classDeclaration, constructors.ToArray(), semanticModel, cancellationToken));
                 }
             }
 

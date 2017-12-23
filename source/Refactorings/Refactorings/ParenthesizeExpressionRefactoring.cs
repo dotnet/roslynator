@@ -46,6 +46,8 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.AttributeArgument:
                 case SyntaxKind.PredefinedType:
                     return false;
+                case SyntaxKind.QualifiedName:
+                    return !(node.Parent is NamespaceDeclarationSyntax);
             }
 
             SyntaxNode parent = node.Parent;
