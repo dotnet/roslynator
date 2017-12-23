@@ -99,5 +99,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
             }
         }
+
+        private static class Program
+        {
+            private static void Main(string[] args)
+            {
+            }
+
+            private static void Main()
+            {
+            }
+        }
     }
 }
