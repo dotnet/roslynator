@@ -67,6 +67,7 @@
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidNullReferenceExceptionCodeFixProvider.cs" />
+    <Compile Include="CodeFixProviders\UseExplicitTypeInsteadOfVarCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseRegexInstanceInsteadOfStaticMethodCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseRegularStringLiteralInsteadOfVerbatimStringLiteralCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseReturnInsteadOfAssignmentCodeFixProvider.cs" />

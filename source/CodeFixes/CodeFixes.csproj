@@ -119,6 +119,8 @@
     <None Include="README.md" />
     <None Include="Roslynator.CodeFixes.nuspec" />
     <None Include="Roslynator.CSharp.CodeFixes.snk" />
+    <None Include="tools\install.ps1" />
+    <None Include="tools\uninstall.ps1" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj">
