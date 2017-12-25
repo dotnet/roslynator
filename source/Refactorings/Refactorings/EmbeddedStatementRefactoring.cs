@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            if (!statement.IsEmbedded())
+            if (!statement.IsEmbedded(ifInsideElse: false, usingInsideUsing: false))
                 return;
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
