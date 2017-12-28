@@ -22,5 +22,31 @@ namespace Roslynator
                 return (list.Count == 1) ? list[0] : default(T);
             }
         }
+
+        public static T SingleOrDefault<T>(this IReadOnlyList<T> list, Func<T, bool> predicate, bool shouldThrow)
+        {
+            if (list == null)
+                throw new ArgumentNullException(nameof(list));
+
+            if (shouldThrow)
+                return list.SingleOrDefault(predicate);
+
+            int count = list.Count;
+            for (int i = 0; i < count; i++)
+            {
+                if (predicate(list[i]))
+                {
+                    for (int j = i + 1; j < count; i++)
+                    {
+                        if (predicate(list[j]))
+                            return default(T);
+                    }
+
+                    return list[i];
+                }
+            }
+
+            return default(T);
+        }
     }
 }

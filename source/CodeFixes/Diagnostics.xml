@@ -122,6 +122,7 @@
   <Diagnostic Id="CS1717" Identifier="AssignmentMadeToSameVariable" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1717" />
   <Diagnostic Id="CS1722" Identifier="BaseClassMustComeBeforeAnyInterface" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722" />
   <Diagnostic Id="CS1750" Identifier="ValueCannotBeUsedAsDefaultParameter" HelpUrl="" />
+  <Diagnostic Id="CS1751" Identifier="CannotSpecifyDefaultValueForParameterArray" HelpUrl="" />
   <Diagnostic Id="CS1955" Identifier="NonInvocableMemberCannotBeUsedLikeMethod" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955" />
   <Diagnostic Id="CS1994" Identifier="AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody" HelpUrl="" />
   <Diagnostic Id="CS1997" Identifier="SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression" HelpUrl="" />

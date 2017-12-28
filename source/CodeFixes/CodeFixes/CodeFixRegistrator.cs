@@ -123,7 +123,21 @@ namespace Roslynator.CSharp.CodeFixes
         {
             ITypeSymbol typeSymbol = semanticModel.GetTypeInfo(expression, context.CancellationToken).ConvertedType;
 
-            if (typeSymbol?.SupportsExplicitDeclaration() != true)
+            if (typeSymbol == null)
+                return;
+
+            ReplaceNullWithDefaultValue(context, diagnostic, expression, typeSymbol, semanticModel, additionalKey);
+        }
+
+        public static void ReplaceNullWithDefaultValue(
+            CodeFixContext context,
+            Diagnostic diagnostic,
+            ExpressionSyntax expression,
+            ITypeSymbol typeSymbol,
+            SemanticModel semanticModel,
+            string additionalKey = null)
+        {
+            if (!typeSymbol.SupportsExplicitDeclaration())
                 return;
 
             Document document = context.Document;
