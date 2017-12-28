@@ -117,6 +117,7 @@
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\SelectedMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring`1.cs" />
     <Compile Include="Refactorings\PromoteLocalToParameterRefactoring.cs" />

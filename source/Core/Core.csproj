@@ -41,6 +41,7 @@
     <AssemblyOriginatorKeyFile>Roslynator.Core.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="AccessibilityFlags.cs" />
     <Compile Include="CSharp\CSharpSyntaxParts.cs" />
     <Compile Include="CSharp\Helpers\AllowedAccessibilityHelper.cs" />
     <Compile Include="CSharp\Helpers\ChangeAccessibilityHelper.cs" />

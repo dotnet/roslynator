@@ -11,14 +11,6 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AccessModifierRefactoring
     {
-        private static readonly Accessibility[] _accessibilities = new Accessibility[]
-        {
-            Accessibility.Public,
-            Accessibility.Internal,
-            Accessibility.Protected,
-            Accessibility.Private
-        };
-
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken modifier)
         {
             SyntaxNode node = modifier.Parent;
@@ -44,13 +36,13 @@ namespace Roslynator.CSharp.Refactorings
                             syntaxReferences,
                             f => (MemberDeclarationSyntax)f.GetSyntax(context.CancellationToken));
 
-                        foreach (Accessibility accessibility in _accessibilities)
+                        foreach (Accessibility accessibility in ChangeAccessibilityRefactoring.Accessibilities)
                         {
                             if (accessibility != info.Accessibility
                                 && CSharpUtility.IsAllowedAccessibility(node, accessibility))
                             {
                                 context.RegisterRefactoring(
-                                    GetTitle(accessibility),
+                                    ChangeAccessibilityRefactoring.GetTitle(accessibility),
                                     cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Solution, memberDeclarations, accessibility, cancellationToken));
                             }
                         }
@@ -59,22 +51,17 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                foreach (Accessibility accessibility in _accessibilities)
+                foreach (Accessibility accessibility in ChangeAccessibilityRefactoring.Accessibilities)
                 {
                     if (accessibility != info.Accessibility
                         && CSharpUtility.IsAllowedAccessibility(node, accessibility))
                     {
                         context.RegisterRefactoring(
-                            GetTitle(accessibility),
+                            ChangeAccessibilityRefactoring.GetTitle(accessibility),
                             cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, node, accessibility, cancellationToken));
                     }
                 }
             }
-        }
-
-        private static string GetTitle(Accessibility accessibility)
-        {
-            return $"Change accessibility to '{accessibility.GetName()}'";
         }
     }
 }

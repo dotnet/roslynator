@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -51,6 +52,32 @@ namespace Roslynator
         {
             return accessibility.Is(Accessibility.Protected, Accessibility.ProtectedAndInternal, Accessibility.ProtectedOrInternal);
         }
+
+        internal static AccessibilityFlags GetAccessibilityFlag(this Accessibility accessibility)
+        {
+            switch (accessibility)
+            {
+                case Accessibility.NotApplicable:
+                    return AccessibilityFlags.None;
+                case Accessibility.Private:
+                    return AccessibilityFlags.Private;
+                case Accessibility.ProtectedAndInternal:
+                    return AccessibilityFlags.ProtectedAndInternal;
+                case Accessibility.Protected:
+                    return AccessibilityFlags.Protected;
+                case Accessibility.Internal:
+                    return AccessibilityFlags.Internal;
+                case Accessibility.ProtectedOrInternal:
+                    return AccessibilityFlags.ProtectedOrInternal;
+                case Accessibility.Public:
+                    return AccessibilityFlags.Public;
+            }
+
+            Debug.Fail(accessibility.ToString());
+
+            return AccessibilityFlags.None;
+        }
+
 
         internal static bool IsMoreRestrictiveThan(this Accessibility accessibility, Accessibility value)
         {
