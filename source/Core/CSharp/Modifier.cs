@@ -1054,5 +1054,13 @@ namespace Roslynator.CSharp
                     }
             }
         }
+
+        public static string GetTitle(SyntaxKind modifierKind)
+        {
+            if (modifierKind == SyntaxKind.ReadOnlyKeyword)
+                return "read-only";
+
+            return GetName(modifierKind);
+        }
     }
 }

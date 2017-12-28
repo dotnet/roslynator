@@ -18,14 +18,14 @@ namespace Roslynator.CSharp.CodeFixes
             CodeFixContext context,
             Diagnostic diagnostic,
             SyntaxNode node,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             string title = null,
             string additionalKey = null,
             IModifierComparer comparer = null)
         {
             Document document = context.Document;
 
-            AddModifier(context, document, diagnostic, node, kind, title, additionalKey, comparer);
+            AddModifier(context, document, diagnostic, node, modifierKind, title, additionalKey, comparer);
         }
 
         public static void AddModifier(
@@ -33,14 +33,14 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             Diagnostic diagnostic,
             SyntaxNode node,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             string title = null,
             string additionalKey = null,
             IModifierComparer comparer = null)
         {
             CodeAction codeAction = CodeAction.Create(
-                title ?? GetAddModifierTitle(kind),
-                cancellationToken => AddModifierAsync(document, node, kind, comparer, cancellationToken),
+                title ?? GetAddModifierTitle(modifierKind, node),
+                cancellationToken => AddModifierAsync(document, node, modifierKind, comparer, cancellationToken),
                 GetEquivalenceKey(diagnostic, additionalKey));
 
             context.RegisterCodeFix(codeAction, diagnostic);
@@ -49,21 +49,21 @@ namespace Roslynator.CSharp.CodeFixes
         private static Task<Document> AddModifierAsync<TNode>(
             Document document,
             TNode node,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             IModifierComparer comparer = null,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            TNode newNode = AddModifier(node, kind, comparer);
+            TNode newNode = AddModifier(node, modifierKind, comparer);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
         private static TNode AddModifier<TNode>(
             TNode node,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             IModifierComparer comparer = null) where TNode : SyntaxNode
         {
-            switch (kind)
+            switch (modifierKind)
             {
                 case SyntaxKind.AbstractKeyword:
                     {
@@ -100,14 +100,14 @@ namespace Roslynator.CSharp.CodeFixes
                     }
             }
 
-            return node.InsertModifier(kind, comparer);
+            return node.InsertModifier(modifierKind, comparer);
         }
 
         public static void AddModifier<TNode>(
             CodeFixContext context,
             Diagnostic diagnostic,
             IEnumerable<TNode> nodes,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             string title = null,
             string additionalKey = null,
             IModifierComparer comparer = null) where TNode : SyntaxNode
@@ -119,18 +119,18 @@ namespace Roslynator.CSharp.CodeFixes
 
                 if (list.Count == 1)
                 {
-                    AddModifier(context, diagnostic, list[0], kind, title, additionalKey, comparer);
+                    AddModifier(context, diagnostic, list[0], modifierKind, title, additionalKey, comparer);
                     return;
                 }
             }
 
             CodeAction codeAction = CodeAction.Create(
-                title ?? GetAddModifierTitle(kind),
+                title ?? GetAddModifierTitle(modifierKind),
                 cancellationToken =>
                 {
                     return context.Solution().ReplaceNodesAsync(
                         nodes,
-                        (f, g) => AddModifier(f, kind, comparer),
+                        (f, g) => AddModifier(f, modifierKind, comparer),
                         cancellationToken);
                 },
                 GetEquivalenceKey(diagnostic, additionalKey));
@@ -142,15 +142,15 @@ namespace Roslynator.CSharp.CodeFixes
             CodeFixContext context,
             Diagnostic diagnostic,
             SyntaxNode node,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             string title = null,
             string additionalKey = null)
         {
             Document document = context.Document;
 
             CodeAction codeAction = CodeAction.Create(
-                title ?? GetRemoveModifierTitle(kind),
-                cancellationToken => RemoveModifierAsync(document, node, kind, cancellationToken),
+                title ?? GetRemoveModifierTitle(modifierKind),
+                cancellationToken => RemoveModifierAsync(document, node, modifierKind, cancellationToken),
                 GetEquivalenceKey(diagnostic, additionalKey));
 
             context.RegisterCodeFix(codeAction, diagnostic);
@@ -179,10 +179,10 @@ namespace Roslynator.CSharp.CodeFixes
         private static Task<Document> RemoveModifierAsync<TNode>(
             Document document,
             TNode node,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            SyntaxNode newNode = Modifier.Remove(node, kind);
+            SyntaxNode newNode = Modifier.Remove(node, modifierKind);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
@@ -202,7 +202,7 @@ namespace Roslynator.CSharp.CodeFixes
             CodeFixContext context,
             Diagnostic diagnostic,
             IEnumerable<TNode> nodes,
-            SyntaxKind kind,
+            SyntaxKind modifierKind,
             string title = null,
             string additionalKey = null) where TNode : SyntaxNode
         {
@@ -213,18 +213,18 @@ namespace Roslynator.CSharp.CodeFixes
 
                 if (list.Count == 1)
                 {
-                    RemoveModifier(context, diagnostic, list[0], kind, title, additionalKey);
+                    RemoveModifier(context, diagnostic, list[0], modifierKind, title, additionalKey);
                     return;
                 }
             }
 
             CodeAction codeAction = CodeAction.Create(
-                title ?? GetRemoveModifierTitle(kind),
+                title ?? GetRemoveModifierTitle(modifierKind),
                 cancellationToken =>
                 {
                     return context.Solution().ReplaceNodesAsync(
                         nodes,
-                        (f, g) => Modifier.Remove(f, kind),
+                        (f, g) => Modifier.Remove(f, modifierKind),
                         cancellationToken);
                 },
                 GetEquivalenceKey(diagnostic, additionalKey));
@@ -418,14 +418,29 @@ namespace Roslynator.CSharp.CodeFixes
             return EquivalenceKeyProvider.GetEquivalenceKey(diagnostic, additionalKey);
         }
 
-        private static string GetAddModifierTitle(SyntaxKind kind)
+        private static string GetAddModifierTitle(SyntaxKind modifierKind)
         {
-            return $"Add '{Modifier.GetName(kind)}' modifier";
+            return $"Add modifier '{Modifier.GetName(modifierKind)}'";
         }
 
-        private static string GetRemoveModifierTitle(SyntaxKind kind)
+        private static string GetAddModifierTitle(SyntaxKind modifierKind, SyntaxNode node)
         {
-            return $"Remove '{Modifier.GetName(kind)}' modifier";
+            switch (modifierKind)
+            {
+                case SyntaxKind.StaticKeyword:
+                case SyntaxKind.VirtualKeyword:
+                case SyntaxKind.AbstractKeyword:
+                case SyntaxKind.ReadOnlyKeyword:
+                case SyntaxKind.AsyncKeyword:
+                    return $"Make {node.GetTitle()} {Modifier.GetTitle(modifierKind)}";
+            }
+
+            return GetAddModifierTitle(modifierKind);
+        }
+
+        private static string GetRemoveModifierTitle(SyntaxKind modifierKind)
+        {
+            return $"Remove modifier '{Modifier.GetName(modifierKind)}'";
         }
     }
 }

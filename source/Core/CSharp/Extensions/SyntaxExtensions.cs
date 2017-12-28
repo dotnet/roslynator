@@ -2533,6 +2533,8 @@ namespace Roslynator.CSharp
                     return "conversion method";
                 case SyntaxKind.ConstructorDeclaration:
                     return "constructor";
+                case SyntaxKind.DestructorDeclaration:
+                    return "destructor";
                 case SyntaxKind.PropertyDeclaration:
                     return "property";
                 case SyntaxKind.IndexerDeclaration:
@@ -2554,6 +2556,20 @@ namespace Roslynator.CSharp
                     return "interface";
                 case SyntaxKind.EnumDeclaration:
                     return "enum";
+                case SyntaxKind.IncompleteMember:
+                    return "member";
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return "accessor";
+                case SyntaxKind.LocalDeclarationStatement:
+                    return "local declaration";
+                case SyntaxKind.LocalFunctionStatement:
+                    return "local function";
+                case SyntaxKind.Parameter:
+                    return "parameter";
                 default:
                     {
                         Debug.Fail(node.Kind().ToString());
@@ -2564,7 +2580,7 @@ namespace Roslynator.CSharp
                         if (node is MemberDeclarationSyntax)
                             return "member";
 
-                        return "";
+                        throw new ArgumentException("", nameof(node));
                     }
             }
         }
