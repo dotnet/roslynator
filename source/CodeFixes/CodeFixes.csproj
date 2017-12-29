@@ -182,9 +182,6 @@
     <GetAssemblyIdentity AssemblyFiles="$(OutDir)\$(AssemblyName).dll">
       <Output TaskParameter="Assemblies" ItemName="AnalyzerAssemblyInfo" />
     </GetAssemblyIdentity>
-    <Exec Command="&quot;$(SolutionDir)..\tools\NuGet.exe&quot; pack &quot;$(ProjectDir)\Roslynator.CodeFixes.nuspec&quot; -OutputDirectory &quot;$(ProjectDir)NuGetOutputDirectory&quot; -BasePath &quot;$(ProjectDir)$(OutDir).&quot; -Prop Configuration=Release -NoPackageAnalysis" LogStandardErrorAsError="true" ConsoleToMSBuild="true">
-      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
-    </Exec>
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
