@@ -344,8 +344,6 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             {
                 case SyntaxKind.Block:
                     return ContainsOnlyThrowNewException((BlockSyntax)node, semanticModel, cancellationToken);
-                case SyntaxKind.ArrowExpressionClause:
-                    return ContainsOnlyThrowNewException((ArrowExpressionClauseSyntax)node, semanticModel, cancellationToken);
                 case SyntaxKind.AccessorList:
                     {
                         return ((AccessorListSyntax)node)
