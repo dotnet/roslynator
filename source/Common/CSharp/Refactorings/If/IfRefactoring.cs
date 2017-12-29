@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings.If
 
         public abstract string Title { get; }
 
-        public abstract Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken);
+        public abstract Task<Document> RefactorAsync(Document document, CancellationToken cancellationToken = default(CancellationToken));
 
         public IfStatementSyntax IfStatement { get; }
 

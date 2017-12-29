@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ClassDeclarationRefactoring
     {
-        public static async Task ComputeRefactorings(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
+        public static async Task ComputeRefactoringsAsync(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
                 AddTypeParameterRefactoring.ComputeRefactoring(context, classDeclaration);

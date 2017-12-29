@@ -55,20 +55,24 @@ namespace Roslynator.CSharp.CodeFixes
                             additionalKey: CodeFixIdentifiers.MakeMemberNonStatic);
                         }
 
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
                         if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier))
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
                             AddStaticModifier(context, diagnostic, node, semanticModel);
+                        }
                     }
 
                     return;
                 }
                 else if (parent is ConstructorInitializerSyntax)
                 {
-                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
                     if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier))
+                    {
+                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
                         AddStaticModifier(context, diagnostic, node, semanticModel);
+                    }
 
                     return;
                 }

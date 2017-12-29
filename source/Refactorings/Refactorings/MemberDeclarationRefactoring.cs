@@ -88,7 +88,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ClassDeclaration:
                     {
                         var classDeclaration = (ClassDeclarationSyntax)member;
-                        await ClassDeclarationRefactoring.ComputeRefactorings(context, classDeclaration).ConfigureAwait(false);
+                        await ClassDeclarationRefactoring.ComputeRefactoringsAsync(context, classDeclaration).ConfigureAwait(false);
                         SelectedMemberDeclarationsRefactoring.ComputeRefactoring(context, classDeclaration);
                         break;
                     }

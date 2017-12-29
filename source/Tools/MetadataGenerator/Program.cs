@@ -64,7 +64,7 @@ namespace Roslynator.CodeGeneration
                     }
                     else
                     {
-                        string id = $"{RefactoringIdentifiers.Prefix}{idNumber.ToString().PadLeft(4, '0')}";
+                        string id = RefactoringIdentifiers.Prefix + idNumber.ToString().PadLeft(4, '0');
                         f.ReplaceAttributes(new XAttribute("Id", id), f.Attributes());
                         idNumber++;
                         return f;

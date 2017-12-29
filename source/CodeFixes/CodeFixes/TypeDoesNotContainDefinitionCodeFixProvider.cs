@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         if (memberAccess.IsParentKind(SyntaxKind.InvocationExpression))
                                             break;
 
-                                        await ComputeCodeFix(context, diagnostic, memberAccess.Expression, simpleName).ConfigureAwait(false);
+                                        await ComputeCodeFixAsync(context, diagnostic, memberAccess.Expression, simpleName).ConfigureAwait(false);
 
                                         break;
                                     }
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         if (!(memberBindingExpression.Parent is ConditionalAccessExpressionSyntax conditionalAccessExpression))
                                             break;
 
-                                        await ComputeCodeFix(context, diagnostic, conditionalAccessExpression.Expression, memberBindingExpression.Name).ConfigureAwait(false);
+                                        await ComputeCodeFixAsync(context, diagnostic, conditionalAccessExpression.Expression, memberBindingExpression.Name).ConfigureAwait(false);
 
                                         break;
                                     }
@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private static async Task ComputeCodeFix(CodeFixContext context, Diagnostic diagnostic, ExpressionSyntax expression, SimpleNameSyntax simpleName)
+        private static async Task ComputeCodeFixAsync(CodeFixContext context, Diagnostic diagnostic, ExpressionSyntax expression, SimpleNameSyntax simpleName)
         {
             switch (simpleName.Identifier.ValueText)
             {

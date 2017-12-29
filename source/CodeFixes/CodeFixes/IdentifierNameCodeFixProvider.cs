@@ -110,28 +110,24 @@ namespace Roslynator.CSharp.CodeFixes
 
             var localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
 
-            if (localSymbol?.Type?.IsErrorType() == false)
+            if (localSymbol?.Type?.IsErrorType() == false
+                && localSymbol.GetSyntax(cancellationToken) is VariableDeclaratorSyntax variableDeclarator)
             {
-                ITypeSymbol typeSymbol = localSymbol.Type;
+                SyntaxToken identifier = variableDeclarator.Identifier;
 
-                if (localSymbol.GetSyntax(cancellationToken) is VariableDeclaratorSyntax variableDeclarator)
-                {
-                    SyntaxToken identifier = variableDeclarator.Identifier;
+                var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
 
-                    var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
+                ExpressionSyntax value = localSymbol.Type.ToDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
 
-                    ExpressionSyntax value = typeSymbol.ToDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
+                EqualsValueClauseSyntax newEqualsValue = EqualsValueClause(value)
+                    .WithLeadingTrivia(TriviaList(Space))
+                    .WithTrailingTrivia(identifier.TrailingTrivia);
 
-                    EqualsValueClauseSyntax newEqualsValue = EqualsValueClause(value)
-                        .WithLeadingTrivia(TriviaList(Space))
-                        .WithTrailingTrivia(identifier.TrailingTrivia);
+                VariableDeclaratorSyntax newNode = variableDeclarator
+                    .WithInitializer(newEqualsValue)
+                    .WithIdentifier(identifier.WithoutTrailingTrivia());
 
-                    VariableDeclaratorSyntax newNode = variableDeclarator
-                        .WithInitializer(newEqualsValue)
-                        .WithIdentifier(identifier.WithoutTrailingTrivia());
-
-                    return await document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken).ConfigureAwait(false);
-                }
+                return await document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken).ConfigureAwait(false);
             }
 
             Debug.Fail(identifierName.ToString());
