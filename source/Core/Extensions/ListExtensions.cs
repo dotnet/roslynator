@@ -36,7 +36,7 @@ namespace Roslynator
             {
                 if (predicate(list[i]))
                 {
-                    for (int j = i + 1; j < count; i++)
+                    for (int j = i + 1; j < count; j++)
                     {
                         if (predicate(list[j]))
                             return default(T);

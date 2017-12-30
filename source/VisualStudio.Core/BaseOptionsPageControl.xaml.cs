@@ -82,10 +82,12 @@ namespace Roslynator.VisualStudio
 
         private bool FilterRefactorings(object item)
         {
-            string s = tbxFilter.Text?.Trim();
+            string s = tbxFilter.Text;
 
-            if (!string.IsNullOrEmpty(s))
+            if (!string.IsNullOrWhiteSpace(s))
             {
+                s = s.Trim();
+
                 var refactoring = (BaseModel)item;
 
                 return refactoring.Id.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1

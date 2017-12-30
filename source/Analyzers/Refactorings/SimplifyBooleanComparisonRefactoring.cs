@@ -86,12 +86,12 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = await CreateNewNode(document, binaryExpression, cancellationToken).ConfigureAwait(false);
+            ExpressionSyntax newNode = await CreateNewNodeAsync(document, binaryExpression, cancellationToken).ConfigureAwait(false);
 
             return await document.ReplaceNodeAsync(binaryExpression, newNode.WithFormatterAnnotation(), cancellationToken).ConfigureAwait(false);
         }
 
-        private static async Task<ExpressionSyntax> CreateNewNode(
+        private static async Task<ExpressionSyntax> CreateNewNodeAsync(
             Document document,
             BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)

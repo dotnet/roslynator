@@ -58,7 +58,7 @@ namespace Cleaner
 
         private static void DeleteDirectory(string path)
         {
-            Console.WriteLine($"{path}");
+            Console.WriteLine(path);
 
             try
             {

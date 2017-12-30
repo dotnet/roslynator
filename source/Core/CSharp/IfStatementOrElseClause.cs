@@ -28,20 +28,14 @@ namespace Roslynator.CSharp
 
         internal IfStatementOrElseClause(IfStatementSyntax ifStatement)
         {
-            if (ifStatement == null)
-                throw new ArgumentNullException(nameof(ifStatement));
-
+            Node = ifStatement ?? throw new ArgumentNullException(nameof(ifStatement));
             Kind = SyntaxKind.IfStatement;
-            Node = ifStatement;
         }
 
         internal IfStatementOrElseClause(ElseClauseSyntax elseClause)
         {
-            if (elseClause == null)
-                throw new ArgumentNullException(nameof(elseClause));
-
+            Node = elseClause ?? throw new ArgumentNullException(nameof(elseClause));
             Kind = SyntaxKind.ElseClause;
-            Node = elseClause;
         }
 
         internal SyntaxNode Node { get; }

@@ -13,14 +13,8 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax newInvocationExpression,
             IMethodSymbol methodSymbol)
         {
-            if (invocationExpression == null)
-                throw new ArgumentNullException(nameof(invocationExpression));
-
-            if (newInvocationExpression == null)
-                throw new ArgumentNullException(nameof(newInvocationExpression));
-
-            InvocationExpression = invocationExpression;
-            NewInvocationExpression = newInvocationExpression;
+            InvocationExpression = invocationExpression ?? throw new ArgumentNullException(nameof(invocationExpression));
+            NewInvocationExpression = newInvocationExpression ?? throw new ArgumentNullException(nameof(newInvocationExpression));
             MethodSymbol = methodSymbol;
         }
 

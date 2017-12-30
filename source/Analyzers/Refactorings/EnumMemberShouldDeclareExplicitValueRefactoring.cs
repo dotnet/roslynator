@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static object GetUniquePowerOfTwo(sbyte value, int count, sbyte[] reservedValues)
+        private static sbyte? GetUniquePowerOfTwo(sbyte value, int count, sbyte[] reservedValues)
         {
             int i = 0;
             while (i < count)
@@ -174,7 +174,7 @@ namespace Roslynator.CSharp.Refactorings
             return value;
         }
 
-        private static object GetUniquePowerOfTwo(byte value, int count, byte[] reservedValues)
+        private static byte GetUniquePowerOfTwo(byte value, int count, byte[] reservedValues)
         {
             int i = 0;
             while (i < count)
@@ -195,52 +195,7 @@ namespace Roslynator.CSharp.Refactorings
             return value;
         }
 
-        private static object GetUniquePowerOfTwo(short value, int count, short[] reservedValues)
-        {
-            int i = 0;
-            while (i < count)
-            {
-                if (value == 0)
-                {
-                    value = 1;
-                }
-                else
-                {
-                    value *= 2;
-                }
-
-                if (value < 0)
-                    return null;
-
-                if (Array.IndexOf(reservedValues, value) == -1)
-                    i++;
-            }
-
-            return value;
-        }
-
-        private static object GetUniquePowerOfTwo(ushort value, int count, ushort[] reservedValues)
-        {
-            int i = 0;
-            while (i < count)
-            {
-                if (value == 0)
-                {
-                    value = 1;
-                }
-                else
-                {
-                    value *= 2;
-                }
-
-                if (Array.IndexOf(reservedValues, value) == -1)
-                    i++;
-            }
-
-            return value;
-        }
-
-        private static object GetUniquePowerOfTwo(int value, int count, int[] reservedValues)
+        private static short? GetUniquePowerOfTwo(short value, int count, short[] reservedValues)
         {
             int i = 0;
             while (i < count)
@@ -264,7 +219,7 @@ namespace Roslynator.CSharp.Refactorings
             return value;
         }
 
-        private static object GetUniquePowerOfTwo(uint value, int count, uint[] reservedValues)
+        private static ushort GetUniquePowerOfTwo(ushort value, int count, ushort[] reservedValues)
         {
             int i = 0;
             while (i < count)
@@ -285,7 +240,7 @@ namespace Roslynator.CSharp.Refactorings
             return value;
         }
 
-        private static object GetUniquePowerOfTwo(long value, int count, long[] reservedValues)
+        private static int? GetUniquePowerOfTwo(int value, int count, int[] reservedValues)
         {
             int i = 0;
             while (i < count)
@@ -309,7 +264,52 @@ namespace Roslynator.CSharp.Refactorings
             return value;
         }
 
-        private static object GetUniquePowerOfTwo(ulong value, int count, ulong[] reservedValues)
+        private static uint GetUniquePowerOfTwo(uint value, int count, uint[] reservedValues)
+        {
+            int i = 0;
+            while (i < count)
+            {
+                if (value == 0)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value *= 2;
+                }
+
+                if (Array.IndexOf(reservedValues, value) == -1)
+                    i++;
+            }
+
+            return value;
+        }
+
+        private static long? GetUniquePowerOfTwo(long value, int count, long[] reservedValues)
+        {
+            int i = 0;
+            while (i < count)
+            {
+                if (value == 0)
+                {
+                    value = 1;
+                }
+                else
+                {
+                    value *= 2;
+                }
+
+                if (value < 0)
+                    return null;
+
+                if (Array.IndexOf(reservedValues, value) == -1)
+                    i++;
+            }
+
+            return value;
+        }
+
+        private static ulong GetUniquePowerOfTwo(ulong value, int count, ulong[] reservedValues)
         {
             int i = 0;
             while (i < count)

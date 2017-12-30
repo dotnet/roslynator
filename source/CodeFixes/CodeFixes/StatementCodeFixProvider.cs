@@ -90,6 +90,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 }
                             }
+
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveJumpStatement))
                                 CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
 

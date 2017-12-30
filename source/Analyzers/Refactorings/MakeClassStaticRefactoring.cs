@@ -26,10 +26,12 @@ namespace Roslynator.CSharp.Refactorings
 
             var syntaxReferences = default(ImmutableArray<SyntaxReference>);
 
-            if (symbol.IsSealed
-                && (syntaxReferences = symbol.DeclaringSyntaxReferences).Length != 1)
+            if (symbol.IsSealed)
             {
-                return;
+                syntaxReferences = symbol.DeclaringSyntaxReferences;
+
+                if (syntaxReferences.Length != 1)
+                    return;
             }
 
             if (!AnalyzeMembers(symbol))

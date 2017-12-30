@@ -18,14 +18,8 @@ namespace Roslynator.Text
 
         public SyntaxNodeTextBuilder(SyntaxNode node, StringBuilder stringBuilder)
         {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            if (stringBuilder == null)
-                throw new ArgumentNullException(nameof(stringBuilder));
-
-            Node = node;
-            StringBuilder = stringBuilder;
+            Node = node ?? throw new ArgumentNullException(nameof(node));
+            StringBuilder = stringBuilder ?? throw new ArgumentNullException(nameof(stringBuilder));
 
             FullSpan = Node.FullSpan;
             _text = node.ToFullString();

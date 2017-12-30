@@ -17,10 +17,7 @@ namespace Roslynator.CSharp.Comparers
 
         public EnumMemberDeclarationValueComparer(SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            _semanticModel = semanticModel;
+            _semanticModel = semanticModel ?? throw new ArgumentNullException(nameof(semanticModel));
             _cancellationToken = cancellationToken;
         }
 

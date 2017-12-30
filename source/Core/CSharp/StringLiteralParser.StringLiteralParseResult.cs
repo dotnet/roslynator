@@ -19,9 +19,8 @@ namespace Roslynator.CSharp
             }
 
             public string Text { get; }
-            public bool Success { get; }
 
-            internal static StringLiteralParseResult Fail { get; } = new StringLiteralParseResult(null, false);
+            public bool Success { get; }
         }
     }
 }

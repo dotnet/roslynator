@@ -676,11 +676,8 @@ namespace Roslynator.CSharp.Documentation
             public DocumentationCommentTriviaRewriter(int position, SemanticModel semanticModel)
                 : base(visitIntoStructuredTrivia: true)
             {
-                if (semanticModel == null)
-                    throw new ArgumentNullException(nameof(semanticModel));
-
+                _semanticModel = semanticModel ?? throw new ArgumentNullException(nameof(semanticModel));
                 _position = position;
-                _semanticModel = semanticModel;
             }
 
             public override SyntaxNode VisitXmlTextAttribute(XmlTextAttributeSyntax node)

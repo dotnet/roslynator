@@ -653,7 +653,7 @@ namespace Roslynator.Utilities
 
             for (int i = 0; i < maxValue; i++)
             {
-                var x = 1L << i;
+                long x = 1L << i;
 
                 if (x > value)
                     yield break;
@@ -675,7 +675,7 @@ namespace Roslynator.Utilities
 
             for (int i = 0; i < maxValue; i++)
             {
-                var x = 1UL << i;
+                ulong x = 1UL << i;
 
                 if (x > value)
                     yield break;

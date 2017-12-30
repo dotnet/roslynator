@@ -14,15 +14,11 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
     {
         public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var classDeclaration = (ClassDeclarationSyntax)context.Node;
-
             AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
         }
 
         public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var structDeclaration = (StructDeclarationSyntax)context.Node;
-
             AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
         }
 
