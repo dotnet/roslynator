@@ -50,6 +50,7 @@
     <Compile Include="AddEmptyLineBetweenDeclarations.cs" />
     <Compile Include="AvoidBoxingOfValueType.cs" />
     <Compile Include="AvoidEmptyCatchClauseThatCatchesSystemException.cs" />
+    <Compile Include="AvoidInterpolatedStringWithNoInterpolatedText.cs" />
     <Compile Include="AvoidMultilineExpressionBody.cs" />
     <Compile Include="AvoidSemicolonAtEndOfDeclaration.cs" />
     <Compile Include="CallAnyInsteadOfCount.cs" />

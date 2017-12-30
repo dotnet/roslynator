@@ -2383,5 +2383,19 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveUnusedMemberDeclaration}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
+        /// <summary>RCS1214</summary>
+        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolatedText = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText, 
+            title:              "Avoid interpolated string with no interpolated text.", 
+            messageFormat:      "Avoid interpolated string with no interpolated text.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText}", 
+            customTags:         Array.Empty<string>());
+
+        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolatedTextFadeOut = AvoidInterpolatedStringWithNoInterpolatedText.CreateFadeOut();
+
     }
 }

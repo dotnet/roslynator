@@ -4458,4 +4458,24 @@ return WhenFalse();]]></After>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolatedText">
+    <Id>RCS1214</Id>
+    <Title>Avoid interpolated string with no interpolated text.</Title>
+    <MessageFormat>Avoid interpolated string with no interpolated text.</MessageFormat>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[string x = null;
+// ...
+
+string y = $"{x}";]]></Before>
+        <After><![CDATA[string y = x;]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
