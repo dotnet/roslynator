@@ -1,6 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -42,9 +42,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            List<IMethodSymbol> constructors = GenerateBaseConstructorsRefactoring.GetMissingBaseConstructors(classDeclaration, semanticModel, cancellationToken);
+            ImmutableArray<IMethodSymbol> constructors = GenerateBaseConstructorsRefactoring.GetMissingBaseConstructors(classDeclaration, semanticModel, cancellationToken);
 
-            return await GenerateBaseConstructorsRefactoring.RefactorAsync(document, classDeclaration, constructors.ToArray(), semanticModel, cancellationToken).ConfigureAwait(false);
+            return await GenerateBaseConstructorsRefactoring.RefactorAsync(document, classDeclaration, constructors, semanticModel, cancellationToken).ConfigureAwait(false);
         }
     }
 }

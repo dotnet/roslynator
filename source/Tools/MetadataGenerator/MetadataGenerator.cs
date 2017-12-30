@@ -73,7 +73,7 @@ namespace Roslynator.CodeGeneration
 
             Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
 
-            FileHelper.WriteAllText(path, content, _utf8NoBom, onlyIfChanges, fileMustExists);
+            FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
         }
 
         public void FindFilesToDelete()

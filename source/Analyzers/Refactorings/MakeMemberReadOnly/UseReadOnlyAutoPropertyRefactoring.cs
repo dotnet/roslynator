@@ -60,12 +60,15 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberReadOnly
 
         public override void ReportFixableSymbols(SymbolAnalysisContext context, INamedTypeSymbol containingType, HashSet<ISymbol> symbols)
         {
-            foreach (PropertyDeclarationSyntax node in symbols.Select(f => f.GetSyntax(context.CancellationToken)))
+            foreach (var symbol in symbols.Select(f => f.GetSyntax(context.CancellationToken)))
             {
-                AccessorDeclarationSyntax setter = node.Setter();
+                if (symbol is PropertyDeclarationSyntax node)
+                {
+                    AccessorDeclarationSyntax setter = node.Setter();
 
-                if (!setter.SpanContainsDirectives())
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseReadOnlyAutoProperty, setter);
+                    if (!setter.SpanContainsDirectives())
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseReadOnlyAutoProperty, setter);
+                }
             }
         }
 
