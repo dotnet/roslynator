@@ -118,7 +118,7 @@ namespace Roslynator.CSharp.Refactorings
                 INamedTypeSymbol constructedFrom = ((INamedTypeSymbol)expressionType).ConstructedFrom;
 
                 if (constructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T
-                    || constructedFrom.Implements(SpecialType.System_Collections_Generic_IEnumerable_T))
+                    || constructedFrom.Implements(SpecialType.System_Collections_Generic_IEnumerable_T, allInterfaces: true))
                 {
                     INamedTypeSymbol enumerable = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable);
 

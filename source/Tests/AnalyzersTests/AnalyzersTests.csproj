@@ -59,6 +59,7 @@
     <Compile Include="DeclareEnumValueAsCombinationOfNames.cs" />
     <Compile Include="CallExtensionMethodAsInstanceMethod.cs" />
     <Compile Include="DefaultLabelShouldBeLastLabelInSwitchSection.cs" />
+    <Compile Include="ExpressionIsAlwaysEqualToTrueOrFalse.cs" />
     <Compile Include="FormatBinaryOperatorOnNextLine.cs" />
     <Compile Include="FormatEachEnumMemberOnSeparateLine.cs" />
     <Compile Include="MakeClassStatic2.cs" />

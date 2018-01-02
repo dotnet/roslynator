@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="AccessibilityFlags.cs" />
     <Compile Include="CSharp\CSharpSyntaxParts.cs" />
+    <Compile Include="CSharp\Extensions\SpecialTypeExtensions.cs" />
     <Compile Include="CSharp\Helpers\AllowedAccessibilityHelper.cs" />
     <Compile Include="CSharp\Helpers\ChangeAccessibilityHelper.cs" />
     <Compile Include="CSharp\SyntaxWalkers\AssignedExpressionWalker.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\RefKindExtensions.cs" />
     <Compile Include="Extensions\MethodKindExtensions.cs" />
+    <Compile Include="Extensions\SpecialTypeExtensions.cs" />
     <Compile Include="SyntaxAnnotations.cs" />
     <Compile Include="Selection`1.cs" />
     <Compile Include="SeparatedSyntaxListSelection`1.cs" />

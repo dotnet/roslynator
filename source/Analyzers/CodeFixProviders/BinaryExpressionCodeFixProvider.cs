@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.UseInsteadOfCountMethod;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -33,7 +35,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.UseIsOperatorInsteadOfAsOperator,
                     DiagnosticIdentifiers.JoinStringExpressions,
                     DiagnosticIdentifiers.UseExclusiveOrOperator,
-                    DiagnosticIdentifiers.SimplifyBooleanExpression);
+                    DiagnosticIdentifiers.SimplifyBooleanExpression,
+                    DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse);
             }
         }
 
@@ -204,6 +207,18 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify boolean expression",
                                 cancellationToken => SimplifyBooleanExpressionRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse:
+                        {
+                            LiteralExpressionSyntax newNode = BooleanLiteralExpression(binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression));
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Replace expression with '{newNode}'",
+                                cancellationToken => context.Document.ReplaceNodeAsync(binaryExpression, newNode.WithTriviaFrom(binaryExpression), cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

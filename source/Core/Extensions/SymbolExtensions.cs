@@ -22,9 +22,7 @@ namespace Roslynator
 
             if (containingType != null)
             {
-                ImmutableArray<INamedTypeSymbol> interfaces = (allInterfaces)
-                    ? containingType.AllInterfaces
-                    : containingType.Interfaces;
+                ImmutableArray<INamedTypeSymbol> interfaces = containingType.GetInterfaces(allInterfaces);
 
                 for (int i = 0; i < interfaces.Length; i++)
                 {
@@ -55,9 +53,7 @@ namespace Roslynator
 
             if (containingType != null)
             {
-                ImmutableArray<INamedTypeSymbol> interfaces = (allInterfaces)
-                    ? containingType.AllInterfaces
-                    : containingType.Interfaces;
+                ImmutableArray<INamedTypeSymbol> interfaces = containingType.GetInterfaces(allInterfaces);
 
                 for (int i = 0; i < interfaces.Length; i++)
                 {
@@ -1124,66 +1120,66 @@ namespace Roslynator
             }
         }
 
-        public static bool Implements(this ITypeSymbol typeSymbol, SpecialType specialType)
+        public static bool Implements(this ITypeSymbol typeSymbol, SpecialType specialType, bool allInterfaces = false)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+            ImmutableArray<INamedTypeSymbol> interfaces = typeSymbol.GetInterfaces(allInterfaces);
 
-            for (int i = 0; i < allInterfaces.Length; i++)
+            for (int i = 0; i < interfaces.Length; i++)
             {
-                if (allInterfaces[i].ConstructedFrom.SpecialType == specialType)
+                if (interfaces[i].ConstructedFrom.SpecialType == specialType)
                     return true;
             }
 
             return false;
         }
 
-        public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType specialType1, SpecialType specialType2)
+        public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType specialType1, SpecialType specialType2, bool allInterfaces = false)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+            ImmutableArray<INamedTypeSymbol> interfaces = typeSymbol.GetInterfaces(allInterfaces);
 
-            for (int i = 0; i < allInterfaces.Length; i++)
+            for (int i = 0; i < interfaces.Length; i++)
             {
-                if (allInterfaces[i].ConstructedFrom.IsSpecialType(specialType1, specialType2))
+                if (interfaces[i].ConstructedFrom.IsSpecialType(specialType1, specialType2))
                     return true;
             }
 
             return false;
         }
 
-        public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3)
+        public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3, bool allInterfaces = false)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+            ImmutableArray<INamedTypeSymbol> interfaces = typeSymbol.GetInterfaces(allInterfaces);
 
-            for (int i = 0; i < allInterfaces.Length; i++)
+            for (int i = 0; i < interfaces.Length; i++)
             {
-                if (allInterfaces[i].ConstructedFrom.IsSpecialType(specialType1, specialType2, specialType3))
+                if (interfaces[i].ConstructedFrom.IsSpecialType(specialType1, specialType2, specialType3))
                     return true;
             }
 
             return false;
         }
 
-        public static bool Implements(this ITypeSymbol typeSymbol, ITypeSymbol interfaceSymbol)
+        public static bool Implements(this ITypeSymbol typeSymbol, ITypeSymbol interfaceSymbol, bool allInterfaces = false)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             if (interfaceSymbol != null)
             {
-                ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
+                ImmutableArray<INamedTypeSymbol> interfaces = typeSymbol.GetInterfaces(allInterfaces);
 
-                for (int i = 0; i < allInterfaces.Length; i++)
+                for (int i = 0; i < interfaces.Length; i++)
                 {
-                    if (allInterfaces[i].Equals(interfaceSymbol))
+                    if (interfaces[i].Equals(interfaceSymbol))
                         return true;
                 }
             }
@@ -1433,6 +1429,48 @@ namespace Roslynator
             return specialType == specialType1
                 || specialType == specialType2
                 || specialType == specialType3;
+        }
+
+        public static bool IsSpecialType(this ITypeSymbol typeSymbol, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3, SpecialType specialType4)
+        {
+            if (typeSymbol == null)
+                return false;
+
+            SpecialType specialType = typeSymbol.SpecialType;
+
+            return specialType == specialType1
+                || specialType == specialType2
+                || specialType == specialType3
+                || specialType == specialType4;
+        }
+
+        public static bool IsSpecialType(this ITypeSymbol typeSymbol, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3, SpecialType specialType4, SpecialType specialType5)
+        {
+            if (typeSymbol == null)
+                return false;
+
+            SpecialType specialType = typeSymbol.SpecialType;
+
+            return specialType == specialType1
+                || specialType == specialType2
+                || specialType == specialType3
+                || specialType == specialType4
+                || specialType == specialType5;
+        }
+
+        public static bool IsSpecialType(this ITypeSymbol typeSymbol, SpecialType specialType1, SpecialType specialType2, SpecialType specialType3, SpecialType specialType4, SpecialType specialType5, SpecialType specialType6)
+        {
+            if (typeSymbol == null)
+                return false;
+
+            SpecialType specialType = typeSymbol.SpecialType;
+
+            return specialType == specialType1
+                || specialType == specialType2
+                || specialType == specialType3
+                || specialType == specialType4
+                || specialType == specialType5
+                || specialType == specialType6;
         }
 
         public static ISymbol FindMember(this ITypeSymbol typeSymbol, string name)
@@ -1757,6 +1795,11 @@ namespace Roslynator
         {
             return typeSymbol?.IsReferenceType == true
                 || IsConstructedFrom(typeSymbol, SpecialType.System_Nullable_T);
+        }
+
+        internal static ImmutableArray<INamedTypeSymbol> GetInterfaces(this ITypeSymbol typeSymbol, bool allInterfaces)
+        {
+            return (allInterfaces) ? typeSymbol.AllInterfaces : typeSymbol.Interfaces;
         }
         #endregion ITypeSymbol
     }

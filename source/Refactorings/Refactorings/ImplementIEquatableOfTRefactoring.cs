@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             equatableSymbol = equatableSymbol.Construct(classSymbol);
 
-                            if (!classSymbol.Implements(equatableSymbol))
+                            if (!classSymbol.Implements(equatableSymbol, allInterfaces: true))
                             {
                                 context.RegisterRefactoring(
                                     GetTitle(equatableSymbol, semanticModel, classDeclaration.SpanStart),
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             equatableSymbol = equatableSymbol.Construct(typeSymbol);
 
-                            if (!typeSymbol.Implements(equatableSymbol))
+                            if (!typeSymbol.Implements(equatableSymbol, allInterfaces: true))
                             {
                                 context.RegisterRefactoring(
                                     GetTitle(equatableSymbol, semanticModel, structDeclaration.SpanStart),

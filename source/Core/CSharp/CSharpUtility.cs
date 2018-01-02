@@ -60,7 +60,8 @@ namespace Roslynator.CSharp
 
             if (typeSymbol.ImplementsAny(
                 SpecialType.System_Collections_Generic_ICollection_T,
-                SpecialType.System_Collections_Generic_IReadOnlyCollection_T))
+                SpecialType.System_Collections_Generic_IReadOnlyCollection_T,
+                allInterfaces: true))
             {
                 if (typeSymbol.TypeKind == TypeKind.Interface)
                     return "Count";

@@ -4478,4 +4478,36 @@ string y = $"{x}";]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="ExpressionIsAlwaysEqualToTrueOrFalse">
+    <Id>RCS1215</Id>
+    <Title>Expression is always equal to true/false.</Title>
+    <MessageFormat>Expression is always equal to '{0}'.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[uint i = 0;
+
+// ...
+
+if (i >= 0) // RCS1213
+{
+}]]></Before>
+      </Sample>
+      <Sample>
+        <Before>
+          <![CDATA[var items = new List<object>();
+
+// ...
+
+
+if (items.Count < 0) // RCS1213
+{
+}]]></Before>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
