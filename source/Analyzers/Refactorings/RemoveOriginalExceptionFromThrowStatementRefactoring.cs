@@ -11,55 +11,60 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class RemoveOriginalExceptionFromThrowStatementRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, CatchClauseSyntax catchClause)
+        public static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
         {
+            var catchClause = (CatchClauseSyntax)context.Node;
+
+            BlockSyntax block = catchClause.Block;
+
+            if (block == null)
+                return;
+
             CatchDeclarationSyntax declaration = catchClause.Declaration;
 
-            if (declaration != null)
+            if (declaration == null)
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            ILocalSymbol symbol = semanticModel.GetDeclaredSymbol(declaration, cancellationToken);
+
+            if (symbol?.IsErrorType() != false)
+                return;
+
+            //TODO: SyntaxWalker
+            foreach (SyntaxNode node in block.DescendantNodes(descendIntoChildren: f => f.Kind() != SyntaxKind.CatchClause))
             {
-                BlockSyntax block = catchClause.Block;
+                if (node.Kind() != SyntaxKind.ThrowStatement)
+                    continue;
 
-                if (block != null)
-                {
-                    ILocalSymbol symbol = context
-                        .SemanticModel
-                        .GetDeclaredSymbol(catchClause.Declaration, context.CancellationToken);
+                var throwStatement = (ThrowStatementSyntax)node;
+                ExpressionSyntax expression = throwStatement.Expression;
 
-                    if (symbol != null)
-                    {
-                        foreach (SyntaxNode node in block.DescendantNodes(f => !f.IsKind(SyntaxKind.CatchClause)))
-                        {
-                            if (node.IsKind(SyntaxKind.ThrowStatement))
-                            {
-                                var throwStatement = (ThrowStatementSyntax)node;
-                                if (throwStatement.Expression != null)
-                                {
-                                    ISymbol expressionSymbol = context
-                                        .SemanticModel
-                                        .GetSymbol(throwStatement.Expression, context.CancellationToken);
+                if (expression == null)
+                    continue;
 
-                                    if (expressionSymbol != null
-                                        && symbol.Equals(expressionSymbol))
-                                    {
-                                        context.ReportDiagnostic(
-                                            DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
-                                            throwStatement.Expression);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
+                ISymbol expressionSymbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+                if (!symbol.Equals(expressionSymbol))
+                    continue;
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
+                    expression);
             }
         }
 
         public static Task<Document> RefactorAsync(
             Document document,
             ThrowStatementSyntax throwStatement,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
+            ExpressionSyntax expression = throwStatement.Expression;
+
             ThrowStatementSyntax newThrowStatement = throwStatement
-                .RemoveNode(throwStatement.Expression, SyntaxRemoveOptions.KeepExteriorTrivia)
+                .RemoveNode(expression, RemoveHelper.GetRemoveOptions(expression))
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(throwStatement, newThrowStatement, cancellationToken);

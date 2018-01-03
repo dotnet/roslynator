@@ -2,6 +2,8 @@
 
 using System;
 
+#pragma warning disable CS0168
+
 namespace Roslynator.CSharp.Analyzers.Tests
 {
     internal static class AvoidEmptyCatchClauseThatCatchesSystemException
@@ -15,6 +17,56 @@ namespace Roslynator.CSharp.Analyzers.Tests
             catch (Exception ex)
             {
             }
+
+            //n
+
+            try
+            {
+                Foo();
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            try
+            {
+                Foo();
+            }
+            catch (FormatException ex)
+            {
+                throw;
+            }
+
+            try
+            {
+                Foo();
+            }
+            catch (Exception ex) when (LogException(ex))
+            {
+            }
+
+            try
+            {
+                Foo();
+            }
+            catch (object ex)
+            {
+            }
+
+            try
+            {
+                Foo();
+            }
+            catch (Exception2 ex)
+            {
+            }
+        }
+
+        private static bool LogException(Exception ex)
+        {
+            Console.WriteLine(ex);
+            return false;
         }
     }
 }

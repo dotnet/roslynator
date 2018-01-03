@@ -74,6 +74,7 @@
     <Compile Include="CodeFixProviders\UseStringComparisonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidEmptyCatchClauseThatCatchesSystemExceptionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ExpressionIsAlwaysEqualToTrueOrFalseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeIfStatementWithNestedIfStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAssignmentDiagnosticAnalyzer.cs" />
@@ -436,7 +437,7 @@
     <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArrowExpressionClauseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\CatchClauseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveOriginalExceptionFromThrowStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ElseClauseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BaseDiagnosticAnalyzer.cs" />
