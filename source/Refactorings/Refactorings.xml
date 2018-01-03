@@ -1475,4 +1475,51 @@ else
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0197" Identifier="InitializeFieldFromConstructor" Title="Initialize field from constructor">
+    <Syntaxes>
+      <Syntax>field declaration</Syntax>
+    </Syntaxes>
+    <Span>idenifier</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public class Foo
+{
+    private string _bar;
+
+    public Foo()
+    {
+    }
+
+    public Foo(object parameter)
+    {
+    }
+
+    public Foo(object parameter1, object parameter2)
+        : this(parameter1)
+    {
+    }
+}]]></Before>
+        <After><![CDATA[public class Foo
+{
+    private string _bar;
+
+    public Foo(string bar)
+    {
+        _bar = bar;
+    }
+
+    public Foo(object parameter, string bar)
+    {
+        _bar = bar;
+    }
+
+    public Foo(object parameter1, object parameter2, string bar)
+        : this(parameter1, bar)
+    {
+        _bar = bar;
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

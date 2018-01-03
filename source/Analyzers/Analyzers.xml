@@ -4458,4 +4458,56 @@ return WhenFalse();]]></After>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
+  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolatedText">
+    <Id>RCS1214</Id>
+    <Title>Avoid interpolated string with no interpolated text.</Title>
+    <MessageFormat>Avoid interpolated string with no interpolated text.</MessageFormat>
+    <Category>Simplification</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[string x = null;
+// ...
+
+string y = $"{x}";]]></Before>
+        <After><![CDATA[string y = x;]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="ExpressionIsAlwaysEqualToTrueOrFalse">
+    <Id>RCS1215</Id>
+    <Title>Expression is always equal to true/false.</Title>
+    <MessageFormat>Expression is always equal to '{0}'.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Warning</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[uint i = 0;
+
+// ...
+
+if (i >= 0) // RCS1213
+{
+}]]></Before>
+      </Sample>
+      <Sample>
+        <Before>
+          <![CDATA[var items = new List<object>();
+
+// ...
+
+
+if (items.Count < 0) // RCS1213
+{
+}]]></Before>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

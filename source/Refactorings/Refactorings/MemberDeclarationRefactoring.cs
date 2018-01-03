@@ -80,17 +80,23 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.NamespaceDeclaration:
                     {
-                        NamespaceDeclarationRefactoring.ComputeRefactorings(context, (NamespaceDeclarationSyntax)member);
+                        var namespaceDeclaration = (NamespaceDeclarationSyntax)member;
+                        NamespaceDeclarationRefactoring.ComputeRefactorings(context, namespaceDeclaration);
+                        SelectedMemberDeclarationsRefactoring.ComputeRefactoring(context, namespaceDeclaration);
                         break;
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
-                        await ClassDeclarationRefactoring.ComputeRefactorings(context, (ClassDeclarationSyntax)member).ConfigureAwait(false);
+                        var classDeclaration = (ClassDeclarationSyntax)member;
+                        await ClassDeclarationRefactoring.ComputeRefactoringsAsync(context, classDeclaration).ConfigureAwait(false);
+                        SelectedMemberDeclarationsRefactoring.ComputeRefactoring(context, classDeclaration);
                         break;
                     }
                 case SyntaxKind.StructDeclaration:
                     {
-                        await StructDeclarationRefactoring.ComputeRefactoringsAsync(context, (StructDeclarationSyntax)member).ConfigureAwait(false);
+                        var structDeclaration = (StructDeclarationSyntax)member;
+                        await StructDeclarationRefactoring.ComputeRefactoringsAsync(context, structDeclaration).ConfigureAwait(false);
+                        SelectedMemberDeclarationsRefactoring.ComputeRefactoring(context, structDeclaration);
                         break;
                     }
                 case SyntaxKind.InterfaceDeclaration:

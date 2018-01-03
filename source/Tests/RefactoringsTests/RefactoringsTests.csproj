@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="AddMemberToInterface.cs" />
     <Compile Include="DocumentationRefactoring.cs" />
+    <Compile Include="InitializeFieldFromConstructorRefactoring.cs" />
     <Compile Include="MergeIfWithParentIf.cs" />
     <Compile Include="RemoveUnnecessaryElseClauseRefactoring.cs" />
     <Compile Include="ReplaceCommentWithDocumentationCommentRefactoring.cs" />

@@ -1,12 +1,15 @@
-﻿Change configuration to 'Release'
+﻿Change configuration to 'ReleaseTools'
+Run clean.cmd
+Build
 Run tools.cmd
-Update ChangeLog.md
 Change number of refactorings and/or analyzers
+Update ChangeLog.md
 Change version
+Change configuration to 'Release'
 Build
 Publish package Roslynator.Analyzers
 Publish package Roslynator.Codefixes
 Publish extension Roslynator
 Publish extension Roslynator Refactorings
 Push to GitHub
-Add GitHub release
+Add release to GitHub

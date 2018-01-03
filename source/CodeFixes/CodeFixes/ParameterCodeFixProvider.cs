@@ -17,13 +17,22 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray); }
+            get
+            {
+                return ImmutableArray.Create(
+                    CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray,
+                    CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeOfParamsParameter))
+            if (!Settings.IsAnyCodeFixEnabled(
+                CodeFixIdentifiers.ChangeTypeOfParamsParameter,
+                CodeFixIdentifiers.RemoveDefaultValueFromParameter))
+            {
                 return;
+            }
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
@@ -59,6 +68,25 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray:
+                        {
+                            EqualsValueClauseSyntax defaultValue = parameter.Default;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove default value from parameter",
+                                cancellationToken =>
+                                {
+                                    ParameterSyntax newParameter = parameter
+                                        .RemoveNode(defaultValue, RemoveHelper.GetRemoveOptions(defaultValue))
+                                        .WithFormatterAnnotation();
+
+                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

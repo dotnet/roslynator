@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.MergeIfWithParentIf;
+        = RefactoringIdentifiers.InitializeFieldFromConstructor;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -563,6 +563,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitDeclarationAndInitialization, "Split declaration and initialization", IsEnabled(RefactoringIdentifiers.SplitDeclarationAndInitialization)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddMemberToInterface, "Add member to interface", IsEnabled(RefactoringIdentifiers.AddMemberToInterface)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfWithParentIf, "Merge if with parent if", IsEnabled(RefactoringIdentifiers.MergeIfWithParentIf)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InitializeFieldFromConstructor, "Initialize field from constructor", IsEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)));
         }
 
         [Browsable(false)]

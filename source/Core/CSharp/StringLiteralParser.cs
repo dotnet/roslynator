@@ -508,7 +508,7 @@ namespace Roslynator.CSharp
         {
             return (throwOnError)
                 ? throw new ArgumentException(message)
-                : StringLiteralParseResult.Fail;
+                : default(StringLiteralParseResult);
         }
     }
 }

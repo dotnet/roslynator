@@ -8,35 +8,32 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class AvoidEmptyCatchClauseThatCatchesSystemExceptionRefactoring
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, CatchClauseSyntax catchClause)
+        public static void AnalyzeCatchClause(SyntaxNodeAnalysisContext context, ITypeSymbol exceptionSymbol)
         {
-            CatchDeclarationSyntax declaration = catchClause.Declaration;
+            if (context.Node.ContainsDiagnostics)
+                return;
 
-            if (declaration != null)
-            {
-                BlockSyntax block = catchClause.Block;
+            var catchClause = (CatchClauseSyntax)context.Node;
 
-                if (block != null
-                    && declaration.Type != null
-                    && !block.Statements.Any())
-                {
-                    ITypeSymbol typeSymbol = context
-                        .SemanticModel
-                        .GetTypeSymbol(declaration.Type, context.CancellationToken);
+            if (catchClause.Filter != null)
+                return;
 
-                    if (typeSymbol?.IsErrorType() == false)
-                    {
-                        INamedTypeSymbol exceptionTypeSymbol = context.GetTypeByMetadataName(MetadataNames.System_Exception);
+            if (catchClause.Block?.Statements.Any() != false)
+                return;
 
-                        if (typeSymbol.Equals(exceptionTypeSymbol))
-                        {
-                            context.ReportDiagnostic(
-                                DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException,
-                                catchClause.CatchKeyword);
-                        }
-                    }
-                }
-            }
+            TypeSyntax type = catchClause.Declaration?.Type;
+
+            if (type == null)
+                return;
+
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(type, context.CancellationToken);
+
+            if (typeSymbol?.Equals(exceptionSymbol) != true)
+                return;
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException,
+                catchClause.CatchKeyword);
         }
     }
 }

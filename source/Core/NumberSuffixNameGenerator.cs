@@ -23,7 +23,7 @@ namespace Roslynator
             return name;
         }
 
-        public override string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive)
+        public override string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
         {
             int suffix = 1;
 

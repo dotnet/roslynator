@@ -51,6 +51,7 @@
     <Compile Include="Refactorings\AddOrRemoveParameterName\RemoveParameterNameRewriter.cs" />
     <Compile Include="Refactorings\EmbeddedStatementRefactoring.cs" />
     <Compile Include="Refactorings\FormatConstraintClausesRefactoring.cs" />
+    <Compile Include="Refactorings\InitializeFieldFromConstructorRefactoring.cs" />
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\InlineMethod\InlineMethodExpressionRefactoring.cs" />
@@ -112,6 +113,7 @@
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceReturnStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceStatementWithIfStatementRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStatementWithIf\ReplaceYieldStatementWithIfStatementRefactoring.cs" />
+    <Compile Include="Refactorings\SelectedMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\SelectedStatementsRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionRefactoring`1.cs" />
     <Compile Include="Refactorings\PromoteLocalToParameterRefactoring.cs" />
@@ -135,6 +137,7 @@
     <Compile Include="Refactorings\UseCSharp6DictionaryInitializerRefactoring.cs" />
     <Compile Include="Refactorings\UseStringBuilderInsteadOfConcatenationRefactoring.cs" />
     <Compile Include="Refactorings\UseListInsteadOfYieldRefactoring.cs" />
+    <Compile Include="Refactorings\VariableDeclaratorRefactoring.cs" />
     <Compile Include="Refactorings\WrapInUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\WrapSelectedLines\WrapInIfDirectiveRefactoring.cs" />
     <Compile Include="Refactorings\AddUsingDirectiveRefactoring.cs" />

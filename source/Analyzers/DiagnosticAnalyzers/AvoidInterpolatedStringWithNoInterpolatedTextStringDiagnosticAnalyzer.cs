@@ -4,22 +4,21 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class CatchClauseDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class AvoidInterpolatedStringWithNoInterpolatedTextStringDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
-                    DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException);
+                    DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedText,
+                    DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedTextFadeOut);
             }
         }
 
@@ -30,16 +29,9 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeCatchClause, SyntaxKind.CatchClause);
-        }
-
-        private void AnalyzeCatchClause(SyntaxNodeAnalysisContext context)
-        {
-            var catchClause = (CatchClauseSyntax)context.Node;
-
-            RemoveOriginalExceptionFromThrowStatementRefactoring.Analyze(context, catchClause);
-
-            AvoidEmptyCatchClauseThatCatchesSystemExceptionRefactoring.Analyze(context, catchClause);
+            context.RegisterSyntaxNodeAction(
+                AvoidInterpolatedStringWithNoInterpolatedTextRefactoring.AnalyzeInterpolatedStringExpression,
+                SyntaxKind.InterpolatedStringExpression);
         }
     }
 }

@@ -79,6 +79,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.SimpleMemberAccessExpression:
                     return ((MemberAccessExpressionSyntax)expression).Name;
                 case SyntaxKind.MemberBindingExpression:
+                case SyntaxKind.ElementAccessExpression:
                     return null;
             }
 

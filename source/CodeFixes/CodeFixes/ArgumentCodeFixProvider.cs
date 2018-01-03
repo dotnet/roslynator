@@ -2,13 +2,14 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Helpers;
-using Microsoft.CodeAnalysis.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -34,7 +35,8 @@ namespace Roslynator.CSharp.CodeFixes
                 CodeFixIdentifiers.AddOutModifierToArgument,
                 CodeFixIdentifiers.RemoveRefModifier,
                 CodeFixIdentifiers.CreateSingletonArray,
-                CodeFixIdentifiers.AddArgumentList))
+                CodeFixIdentifiers.AddArgumentList,
+                CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
             {
                 return;
             }
@@ -92,6 +94,39 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CannotConvertArgumentType:
                         {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                            {
+                                ExpressionSyntax expression = argument.Expression;
+
+                                if (expression.Kind() == SyntaxKind.NullLiteralExpression
+                                    && argument.Parent is ArgumentListSyntax argumentList)
+                                {
+                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                                    ImmutableArray<IParameterSymbol> parameterSymbols = FindParameters(argumentList, semanticModel, context.CancellationToken);
+
+                                    if (!parameterSymbols.IsDefault)
+                                    {
+                                        int index = argumentList.Arguments.IndexOf(argument);
+
+                                        IParameterSymbol parameterSymbol = parameterSymbols[index];
+
+                                        ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+                                        if (typeSymbol.IsValueType)
+                                        {
+                                            CodeFixRegistrator.ReplaceNullWithDefaultValue(
+                                                context,
+                                                diagnostic,
+                                                expression,
+                                                typeSymbol,
+                                                semanticModel,
+                                                CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue);
+                                        }
+                                    }
+                                }
+                            }
+
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList))
                             {
                                 ExpressionSyntax expression = argument.Expression;
@@ -164,6 +199,38 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static ImmutableArray<IParameterSymbol> FindParameters(
+            ArgumentListSyntax argumentList,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(argumentList.Parent, cancellationToken);
+
+            ImmutableArray<ISymbol> candidateSymbols = symbolInfo.CandidateSymbols;
+
+            if (candidateSymbols.IsEmpty)
+                return default(ImmutableArray<IParameterSymbol>);
+
+            int argumentCount = argumentList.Arguments.Count;
+
+            var parameters = default(ImmutableArray<IParameterSymbol>);
+
+            foreach (ISymbol symbol in candidateSymbols)
+            {
+                ImmutableArray<IParameterSymbol> parameters2 = symbol.GetParameters();
+
+                if (parameters2.Length == argumentCount)
+                {
+                    if (!parameters.IsDefault)
+                        return default(ImmutableArray<IParameterSymbol>);
+
+                    parameters = parameters2;
+                }
+            }
+
+            return parameters;
         }
     }
 }

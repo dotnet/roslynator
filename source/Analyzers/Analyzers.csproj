@@ -74,8 +74,11 @@
     <Compile Include="CodeFixProviders\UseStringComparisonCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\VariableDeclaratorCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AbstractTypeShouldNotHavePublicConstructorsDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidEmptyCatchClauseThatCatchesSystemExceptionDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\ExpressionIsAlwaysEqualToTrueOrFalseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeIfStatementWithNestedIfStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAssignmentDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AvoidInterpolatedStringWithNoInterpolatedTextStringDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderNamedArgumentsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AsExpressionDiagnosticAnalyzer.cs" />
@@ -94,6 +97,7 @@
     <Compile Include="UnusedMember\UnusedMemberWalkerCache.cs" />
     <Compile Include="UnusedMember\UnusedMemberDiagnosticAnalyzer.cs" />
     <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstCodeFixProvider.cs" />
+    <Compile Include="Refactorings\ExpressionIsAlwaysEqualToTrueOrFalseRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantAssignmentRefactoring.cs" />
     <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstWalker.cs" />
     <Compile Include="MarkLocalVariableAsConst\MarkLocalVariableAsConstWalkerCache.cs" />
@@ -101,6 +105,7 @@
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalker.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalkerCache.cs" />
     <Compile Include="Refactorings\RemoveUnnecessaryElseClauseRefactoring.cs" />
+    <Compile Include="Refactorings\AvoidInterpolatedStringWithNoInterpolatedTextRefactoring.cs" />
     <Compile Include="UnusedMember\UnusedMemberRefactoring.cs" />
     <Compile Include="UnusedParameter\NodeSymbolInfo.cs" />
     <Compile Include="UnusedParameter\UnusedParameterWalker.cs" />
@@ -429,7 +434,7 @@
     <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArrowExpressionClauseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\CatchClauseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\RemoveOriginalExceptionFromThrowStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ElseClauseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\BaseDiagnosticAnalyzer.cs" />

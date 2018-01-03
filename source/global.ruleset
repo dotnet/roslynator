@@ -1,5 +1,28 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Global Ruleset" ToolsVersion="15.0">
+  <Rules AnalyzerId="CodeCracker.CSharp" RuleNamespace="CodeCracker.CSharp">
+    <Rule Id="CC0001" Action="None" />
+    <Rule Id="CC0004" Action="None" />
+    <Rule Id="CC0006" Action="None" />
+    <Rule Id="CC0007" Action="None" />
+    <Rule Id="CC0013" Action="None" />
+    <Rule Id="CC0014" Action="None" />
+    <Rule Id="CC0015" Action="None" />
+    <Rule Id="CC0019" Action="None" />
+    <Rule Id="CC0021" Action="None" />
+    <Rule Id="CC0022" Action="None" />
+    <Rule Id="CC0026" Action="None" />
+    <Rule Id="CC0031" Action="None" />
+    <Rule Id="CC0037" Action="None" />
+    <Rule Id="CC0039" Action="None" />
+    <Rule Id="CC0042" Action="None" />
+    <Rule Id="CC0057" Action="None" />
+    <Rule Id="CC0065" Action="None" />
+    <Rule Id="CC0068" Action="None" />
+    <Rule Id="CC0075" Action="None" />
+    <Rule Id="CC0091" Action="None" />
+    <Rule Id="CC0105" Action="None" />
+  </Rules>
   <Rules AnalyzerId="Microsoft.Analyzers.ManagedCodeAnalysis" RuleNamespace="Microsoft.Rules.Managed">
     <Rule Id="CA1001" Action="Warning" />
     <Rule Id="CA1002" Action="Warning" />
@@ -42,7 +65,6 @@
     <Rule Id="CA1051" Action="Warning" />
     <Rule Id="CA1052" Action="Warning" />
     <Rule Id="CA1053" Action="Warning" />
-    <Rule Id="CA1055" Action="Warning" />
     <Rule Id="CA1057" Action="Warning" />
     <Rule Id="CA1058" Action="Warning" />
     <Rule Id="CA1059" Action="Warning" />
@@ -100,7 +122,6 @@
     <Rule Id="CA1809" Action="Warning" />
     <Rule Id="CA1810" Action="Warning" />
     <Rule Id="CA1811" Action="Warning" />
-    <Rule Id="CA1812" Action="Warning" />
     <Rule Id="CA1813" Action="Warning" />
     <Rule Id="CA1814" Action="Warning" />
     <Rule Id="CA1816" Action="Warning" />
@@ -230,12 +251,17 @@
     <Rule Id="CA1815" Action="None" />
   </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
+    <Rule Id="RECS0001" Action="None" />
+    <Rule Id="RECS0002" Action="None" />
+    <Rule Id="RECS0004" Action="None" />
     <Rule Id="RECS0008" Action="None" />
     <Rule Id="RECS0012" Action="None" />
     <Rule Id="RECS0014" Action="None" />
     <Rule Id="RECS0015" Action="None" />
     <Rule Id="RECS0018" Action="None" />
     <Rule Id="RECS0033" Action="None" />
+    <Rule Id="RECS0061" Action="None" />
+    <Rule Id="RECS0063" Action="None" />
     <Rule Id="RECS0070" Action="None" />
     <Rule Id="RECS0083" Action="None" />
     <Rule Id="RECS0085" Action="None" />
@@ -245,6 +271,7 @@
     <Rule Id="RECS0129" Action="None" />
     <Rule Id="RECS0145" Action="None" />
     <Rule Id="RECS0147" Action="None" />
+    <Rule Id="RECS0154" Action="None" />
   </Rules>
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <Rule Id="RCS1002" Action="Hidden" />
@@ -316,5 +343,51 @@
     <Rule Id="RCS1185" Action="Info" />
     <Rule Id="RCS1188" Action="Info" />
     <Rule Id="RCS1189" Action="Info" />
+  </Rules>
+  <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
+    <Rule Id="S101" Action="None" />
+    <Rule Id="S1066" Action="None" />
+    <Rule Id="S1075" Action="None" />
+    <Rule Id="S108" Action="None" />
+    <Rule Id="S1123" Action="None" />
+    <Rule Id="S1144" Action="None" />
+    <Rule Id="S1168" Action="None" />
+    <Rule Id="S1186" Action="None" />
+    <Rule Id="S125" Action="None" />
+    <Rule Id="S1643" Action="None" />
+    <Rule Id="S2234" Action="None" />
+    <Rule Id="S2259" Action="None" />
+    <Rule Id="S2342" Action="None" />
+    <Rule Id="S2344" Action="None" />
+    <Rule Id="S2583" Action="None" />
+    <Rule Id="S2589" Action="None" />
+    <Rule Id="S3246" Action="None" />
+    <Rule Id="S3442" Action="None" />
+    <Rule Id="S3459" Action="None" />
+    <Rule Id="S4144" Action="None" />
+    <Rule Id="S4158" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="SonarAnalyzer.VisualBasic" RuleNamespace="SonarAnalyzer.VisualBasic">
+    <Rule Id="S1075" Action="None" />
+    <Rule Id="S1643" Action="None" />
+    <Rule Id="S2342" Action="None" />
+    <Rule Id="S2344" Action="None" />
+    <Rule Id="S4144" Action="None" />
+  </Rules>
+  <Rules AnalyzerId="U2UConsult.CodeAnalyzers" RuleNamespace="U2UConsult.CodeAnalyzers">
+    <Rule Id="U2U1002" Action="None" />
+    <Rule Id="U2U1003" Action="None" />
+    <Rule Id="U2U1004" Action="None" />
+    <Rule Id="U2U1009" Action="None" />
+    <Rule Id="U2U1010" Action="None" />
+    <Rule Id="U2U1012" Action="None" />
+    <Rule Id="U2U1016" Action="None" />
+    <Rule Id="U2U1017" Action="None" />
+    <Rule Id="U2U1103" Action="None" />
+    <Rule Id="U2U1105" Action="None" />
+    <Rule Id="U2U1107" Action="None" />
+    <Rule Id="U2U1108" Action="None" />
+    <Rule Id="U2U1200" Action="None" />
+    <Rule Id="U2U1201" Action="None" />
   </Rules>
 </RuleSet>

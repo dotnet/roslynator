@@ -85,7 +85,7 @@ namespace Roslynator.Helpers
                         ImmutableArray<ITypeSymbol> typeArguments = namedTypeSymbol.TypeArguments;
 
                         if (typeArguments.Length == 1
-                            && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable))
+                            && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable, allInterfaces: true))
                         {
                             return typeArguments[0];
                         }

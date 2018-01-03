@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Syntax
 {
     public struct IfStatementInfo
     {
-        private ImmutableArray<IfStatementOrElseClause> _nodes;
+        private readonly ImmutableArray<IfStatementOrElseClause> _nodes;
 
         private IfStatementInfo(IfStatementSyntax ifStatement)
         {

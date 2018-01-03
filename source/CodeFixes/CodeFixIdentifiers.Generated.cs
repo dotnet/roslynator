@@ -96,5 +96,6 @@ namespace Roslynator.CSharp.CodeFixes
         public const string ChangeTypeAccordingToInitializer = Prefix + "0090";
         public const string ChangeForEachType = Prefix + "0091";
         public const string ChangeTypeToVar = Prefix + "0092";
+        public const string RemoveDefaultValueFromParameter = Prefix + "0093";
     }
 }

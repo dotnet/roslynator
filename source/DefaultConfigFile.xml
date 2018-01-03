@@ -195,6 +195,7 @@
       <Refactoring Id="RR0194" IsEnabled="true" /> <!-- SplitDeclarationAndInitialization -->
       <Refactoring Id="RR0195" IsEnabled="true" /> <!-- AddMemberToInterface -->
       <Refactoring Id="RR0196" IsEnabled="true" /> <!-- MergeIfWithParentIf -->
+      <Refactoring Id="RR0197" IsEnabled="true" /> <!-- InitializeFieldFromConstructor -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -252,7 +253,7 @@
       <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0115, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994) -->
       <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114, CS0541) -->
       <CodeFix Id="RCF0057" IsEnabled="false" /> <!-- RemoveReturnExpression (fixes CS0127, CS1997) -->
-      <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037, CS0403, CS1750) -->
+      <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037, CS0403, CS1503, CS1750) -->
       <CodeFix Id="RCF0059" IsEnabled="true" /> <!-- ReplaceVariableDeclarationWithAssignment (fixes CS0128, CS0136) -->
       <CodeFix Id="RCF0060" IsEnabled="true" /> <!-- RemoveThisModifier (fixes CS1100, CS1105, CS1106) -->
       <CodeFix Id="RCF0061" IsEnabled="true" /> <!-- RemoveTypeParameter (fixes CS0693) -->
@@ -287,6 +288,7 @@
       <CodeFix Id="RCF0090" IsEnabled="true" /> <!-- ChangeTypeAccordingToInitializer (fixes CS0029) -->
       <CodeFix Id="RCF0091" IsEnabled="true" /> <!-- ChangeForEachType (fixes CS0030) -->
       <CodeFix Id="RCF0092" IsEnabled="true" /> <!-- ChangeTypeToVar (fixes CS0029, CS0030) -->
+      <CodeFix Id="RCF0093" IsEnabled="true" /> <!-- RemoveDefaultValueFromParameter (fixes CS1751) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

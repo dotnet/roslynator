@@ -17,7 +17,12 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation); }
+            get
+            {
+                return ImmutableArray.Create(
+                    DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation,
+                    DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -27,12 +32,36 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out InterpolatedStringExpressionSyntax interpolatedString))
                 return;
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove $",
-                cancellationToken => ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation));
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                switch (diagnostic.Id)
+                {
+                    case DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Remove $",
+                                cancellationToken => ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
+                                GetEquivalenceKey(diagnostic.Id));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText:
+                        {
+                            string title = (interpolatedString.Contents.Count == 1)
+                                ? "Extract expression from interpolated string"
+                                : "Extract expressions from interpolated string";
+
+                            CodeAction codeAction = CodeAction.Create(
+                                title,
+                                cancellationToken => AvoidInterpolatedStringWithNoInterpolatedTextRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
+                                GetEquivalenceKey(diagnostic.Id));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
         }
     }
 }

@@ -87,6 +87,7 @@
 | Readability | [Use regular string literal instead of verbatim string literal](../../docs/analyzers/RCS1192.md) | RCS1192 | &#x2713; |
 | Redundancy | [Avoid interpolated string with no interpolation](../../docs/analyzers/RCS1062.md) | RCS1062 | &#x2713; |
 | Redundancy | [Avoid semicolon at the end of declaration](../../docs/analyzers/RCS1055.md) | RCS1055 | &#x2713; |
+| Redundancy | [Expression is always equal to true/false](../../docs/analyzers/RCS1215.md) | RCS1215 | &#x2713; |
 | Redundancy | [Remove argument list from attribute](../../docs/analyzers/RCS1039.md) | RCS1039 | &#x2713; |
 | Redundancy | [Remove empty destructor](../../docs/analyzers/RCS1106.md) | RCS1106 | &#x2713; |
 | Redundancy | [Remove empty else clause](../../docs/analyzers/RCS1040.md) | RCS1040 |  |
@@ -126,6 +127,7 @@
 | Redundancy | [Unused parameter](../../docs/analyzers/RCS1163.md) | RCS1163 | &#x2713; |
 | Redundancy | [Unused this parameter](../../docs/analyzers/RCS1175.md) | RCS1175 | &#x2713; |
 | Redundancy | [Unused type parameter](../../docs/analyzers/RCS1164.md) | RCS1164 | &#x2713; |
+| Simplification | [Avoid interpolated string with no interpolated text](../../docs/analyzers/RCS1214.md) | RCS1214 | &#x2713; |
 | Simplification | [Call 'Enumerable.Cast' instead of 'Enumerable.Select'](../../docs/analyzers/RCS1109.md) | RCS1109 | &#x2713; |
 | Simplification | [Call string.Concat instead of string.Join](../../docs/analyzers/RCS1150.md) | RCS1150 | &#x2713; |
 | Simplification | [Combine 'Enumerable.Where' method chain](../../docs/analyzers/RCS1112.md) | RCS1112 | &#x2713; |

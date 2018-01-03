@@ -309,6 +309,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fParameterList = false;
             bool fSwitchSection = false;
             bool fVariableDeclaration = false;
+            bool fVariableDeclarator = false;
             bool fInterpolatedStringText = false;
             bool fElseClause = false;
             bool fCaseSwitchLabel = false;
@@ -435,6 +436,14 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         await VariableDeclarationRefactoring.ComputeRefactoringsAsync(this, (VariableDeclarationSyntax)node).ConfigureAwait(false);
                         fVariableDeclaration = true;
+                        continue;
+                    }
+
+                    if (!fVariableDeclarator
+                        && kind == SyntaxKind.VariableDeclarator)
+                    {
+                        VariableDeclaratorRefactoring.ComputeRefactorings(this, (VariableDeclaratorSyntax)node);
+                        fVariableDeclarator = true;
                         continue;
                     }
 

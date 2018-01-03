@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var typeSymbol = semanticModel.GetTypeSymbol(localInfo.Type, context.CancellationToken) as INamedTypeSymbol;
 
-            if (typeSymbol?.Implements(SpecialType.System_IDisposable) != true)
+            if (typeSymbol?.Implements(SpecialType.System_IDisposable, allInterfaces: true) != true)
                 return;
 
             context.RegisterRefactoring(
