@@ -1,3 +1,18 @@
+### 1.6.20 (2018-01-03)
+
+#### Analyzers
+
+* Add analyzer [AvoidInterpolatedStringWithNoInterpolatedText](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1214.md) (RCS1214).
+* Add analyzer [ExpressionIsAlwaysEqualToTrueOrFalse](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1215.md) (RCS1215).
+
+#### Refactorings
+
+* Add refactoring [InitializeFieldFromConstructor](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0197.md) (RR0197).
+
+#### Code Fixes
+
+* Add code fixes for CS1503, CS1751.
+
 ### 1.6.10 (2017-12-21)
 
 #### Analyzers

@@ -55,6 +55,7 @@
 | RCF0045 | Remove 'const' modifier | [CS0133](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133) | &#x2713; |
 | RCF0065 | Remove constraint | [CS0405](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0405), [CS0450](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0450), [CS0451](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0451) | &#x2713; |
 | RCF0043 | Remove constraint clauses | [CS0080](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0080) | &#x2713; |
+| RCF0093 | Remove default value from parameter | CS1751 | &#x2713; |
 | RCF0012 | Remove duplicate attribute | [CS0579](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0579) | &#x2713; |
 | RCF0011 | Remove duplicate modifier | [CS1004](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1004) | &#x2713; |
 | RCF0046 | Remove empty switch statement | [CS1522](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522) | &#x2713; |
@@ -81,7 +82,7 @@
 | RCF0079 | Replace 'break' with 'continue' | [CS0139](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139) | &#x2713; |
 | RCF0087 | Replace conditional expression with if\-else | [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201) | &#x2713; |
 | RCF0077 | Replace element access with invocation | [CS0021](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021) | &#x2713; |
-| RCF0058 | Replace 'null' with default value | [CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037), [CS0403](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403), CS1750 | &#x2713; |
+| RCF0058 | Replace 'null' with default value | [CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037), [CS0403](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403), [CS1503](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1503), CS1750 | &#x2713; |
 | RCF0022 | Replace string literal with character literal | [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029) | &#x2713; |
 | RCF0059 | Replace variable declaration with assignment | [CS0128](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128), [CS0136](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136) | &#x2713; |
 | RCF0081 | Return default value | [CS0126](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0126) | &#x2713; |

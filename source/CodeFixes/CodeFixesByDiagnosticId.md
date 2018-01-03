@@ -102,6 +102,7 @@
 | [CS1100](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100) | RCF0060 |
 | [CS1105](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105) | RCF0033, RCF0060 |
 | [CS1106](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106) | RCF0033, RCF0060 |
+| [CS1503](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1503) | RCF0058 |
 | [CS1522](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522) | RCF0046 |
 | [CS1526](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526) | RCF0039 |
 | [CS1527](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527) | RCF0029 |
@@ -120,6 +121,7 @@
 | [CS1717](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1717) | RCF0028 |
 | [CS1722](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722) | RCF0005 |
 | CS1750 | RCF0058 |
+| CS1751 | RCF0093 |
 | [CS1955](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955) | RCF0037 |
 | CS1988 | RCF0027, RCF0070 |
 | CS1994 | RCF0055 |

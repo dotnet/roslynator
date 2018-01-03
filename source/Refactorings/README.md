@@ -60,6 +60,7 @@
 | RR0058 | [Generate event invoking method](../../docs/refactorings/RR0058.md) | &#x2713; |
 | RR0059 | [Generate switch sections](../../docs/refactorings/RR0059.md) | &#x2713; |
 | RR0179 | [Implement IEquatable<T>](../../docs/refactorings/RR0179.md) | &#x2713; |
+| RR0197 | [Initialize field from constructor](../../docs/refactorings/RR0197.md) | &#x2713; |
 | RR0060 | [Initialize local with default value](../../docs/refactorings/RR0060.md) | &#x2713; |
 | RR0061 | [Inline alias expression](../../docs/refactorings/RR0061.md) | &#x2713; |
 | RR0181 | [Inline constant](../../docs/refactorings/RR0181.md) | &#x2713; |
