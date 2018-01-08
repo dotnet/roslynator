@@ -146,6 +146,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
     <None Include="Roslynator.VisualStudio.Core.snk" />
   </ItemGroup>
