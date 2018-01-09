@@ -52,7 +52,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConstantWithField)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach))
             {
                 return;
             }
@@ -348,6 +349,14 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType:
                         {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)
+                                && expression.IsParentKind(SyntaxKind.YieldReturnStatement))
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                ReplaceYieldReturnWithForEachRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+                                break;
+                            }
+
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
                                 && expression.IsParentKind(SyntaxKind.ReturnStatement, SyntaxKind.YieldReturnStatement))
                             {
@@ -357,7 +366,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 break;
                             }
 
-                            //TODO: xxx
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
                             {
                                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

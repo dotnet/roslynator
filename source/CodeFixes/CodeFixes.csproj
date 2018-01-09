@@ -112,6 +112,7 @@
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\MemberTypeMustMatchOverriddenMemberTypeRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceYieldReturnWithForEachRefactoring.cs" />
     <Compile Include="Refactorings\UseYieldReturnInsteadOfReturnRefactoring.cs" />
     <Compile Include="CodeFixes\VariableDeclarationCodeFixProvider.cs" />
   </ItemGroup>

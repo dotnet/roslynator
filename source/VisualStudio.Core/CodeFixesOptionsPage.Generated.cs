@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.ReplaceStructWithClass;
+        = CodeFixIdentifiers.ReplaceYieldReturnWithForEach;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -117,6 +117,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveDefaultValueFromParameter, "Remove default value from parameter (fixes CS1751)", IsEnabled(CodeFixIdentifiers.RemoveDefaultValueFromParameter)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceConstantWithField, "Replace constant with field (fixes CS0133)", IsEnabled(CodeFixIdentifiers.ReplaceConstantWithField)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceStructWithClass, "Replace struct with class (fixes CS0527)", IsEnabled(CodeFixIdentifiers.ReplaceStructWithClass)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceYieldReturnWithForEach, "Replace yield return with foreach (fixes CS0029)", IsEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)));
         }
     }
 }

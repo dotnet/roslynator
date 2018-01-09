@@ -529,4 +529,9 @@
       <Id>CS0527</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0096" Identifier="ReplaceYieldReturnWithForEach" Title="Replace yield return with foreach">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>
