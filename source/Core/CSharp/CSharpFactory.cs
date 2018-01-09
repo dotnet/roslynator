@@ -1354,6 +1354,48 @@ namespace Roslynator.CSharp
                 members);
         }
 
+        public static ClassDeclarationSyntax ClassDeclaration(StructDeclarationSyntax structDeclaration)
+        {
+            if (structDeclaration == null)
+                throw new ArgumentNullException(nameof(structDeclaration));
+
+            SyntaxToken keyword = structDeclaration.Keyword;
+
+            return SyntaxFactory.ClassDeclaration(
+                structDeclaration.AttributeLists,
+                structDeclaration.Modifiers,
+                SyntaxFactory.Token(keyword.LeadingTrivia, SyntaxKind.ClassKeyword, keyword.TrailingTrivia),
+                structDeclaration.Identifier,
+                structDeclaration.TypeParameterList,
+                structDeclaration.BaseList,
+                structDeclaration.ConstraintClauses,
+                structDeclaration.OpenBraceToken,
+                structDeclaration.Members,
+                structDeclaration.CloseBraceToken,
+                structDeclaration.SemicolonToken);
+        }
+
+        public static StructDeclarationSyntax StructDeclaration(ClassDeclarationSyntax classDeclaration)
+        {
+            if (classDeclaration == null)
+                throw new ArgumentNullException(nameof(classDeclaration));
+
+            SyntaxToken keyword = classDeclaration.Keyword;
+
+            return SyntaxFactory.StructDeclaration(
+                classDeclaration.AttributeLists,
+                classDeclaration.Modifiers,
+                SyntaxFactory.Token(keyword.LeadingTrivia, SyntaxKind.StructKeyword, keyword.TrailingTrivia),
+                classDeclaration.Identifier,
+                classDeclaration.TypeParameterList,
+                classDeclaration.BaseList,
+                classDeclaration.ConstraintClauses,
+                classDeclaration.OpenBraceToken,
+                classDeclaration.Members,
+                classDeclaration.CloseBraceToken,
+                classDeclaration.SemicolonToken);
+        }
+
         public static ConstructorDeclarationSyntax ConstructorDeclaration(SyntaxTokenList modifiers, string identifier, ParameterListSyntax parameterList, BlockSyntax body)
         {
             return ConstructorDeclaration(

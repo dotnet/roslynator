@@ -68,6 +68,7 @@
   <Diagnostic Id="CS0508" Identifier="MethodReturnTypeMustMatchOverriddenMethodReturnType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0508" />
   <Diagnostic Id="CS0513" Identifier="MemberIsAbstractButItIsContainedInNonAbstractClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0513" />
   <Diagnostic Id="CS0515" Identifier="AccessModifiersAreNotAllowedOnStaticConstructors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0515" />
+  <Diagnostic Id="CS0527" Identifier="TypeInInterfaceListIsNotInterface" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0527" />
   <Diagnostic Id="CS0531" Identifier="InterfaceMembersCannotHaveDefinition" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0531" />
   <Diagnostic Id="CS0541" Identifier="ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0541" />
   <Diagnostic Id="CS0558" Identifier="UserDefinedOperatorMustBeDeclaredStaticAndPublic" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0558" />

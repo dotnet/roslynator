@@ -524,4 +524,9 @@
       <Id>CS0133</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0095" Identifier="ReplaceStructWithClass" Title="Replace struct with class">
+    <FixableDiagnosticIds>
+      <Id>CS0527</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

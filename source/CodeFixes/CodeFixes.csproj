@@ -61,11 +61,12 @@
     <Compile Include="CodeFixes\ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\MemberHidesInheritedMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddReturnStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\BaseTypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\TypeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseListCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ModifiersCodeFixProvider.cs" />
     <Compile Include="CodeFixes\OperatorDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\BaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeDoesNotContainDefinitionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterCodeFixProvider.cs" />
