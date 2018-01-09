@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
-                    Modifiers.FromAccessibility(parameterSymbol.DeclaredAccessibility),
+                    Modifiers.FromParameterSymbol(parameterSymbol),
                     parameterSymbol.Type.ToMinimalTypeSyntax(semanticModel, position),
                     Identifier(parameterSymbol.Name),
                     @default));
