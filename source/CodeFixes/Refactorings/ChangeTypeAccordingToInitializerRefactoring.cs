@@ -32,6 +32,13 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
+                    if ((variableDeclaration.Parent is FieldDeclarationSyntax fieldDeclaration)
+                        && fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword)
+                        && typeSymbol?.SupportsConstantValue() != true)
+                    {
+                        return;
+                    }
+
                     if (typeSymbol?.SupportsExplicitDeclaration() == true)
                     {
                         CodeFixRegistrator.ChangeType(context, diagnostic, type, typeSymbol, semanticModel, CodeFixIdentifiers.ChangeTypeAccordingToInitializer);

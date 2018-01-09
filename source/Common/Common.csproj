@@ -60,6 +60,7 @@
     <Compile Include="CSharp\Refactorings\CallExtensionMethodAsInstanceMethodRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceCommentWithDocumentationCommentRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseConstantInsteadOfFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />

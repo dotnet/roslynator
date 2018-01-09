@@ -193,7 +193,6 @@
     <Compile Include="Refactorings\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactorings\RemovePropertyInitializerRefactoring.cs" />
     <Compile Include="Refactorings\AddOrRemoveParameterName\AddOrRemoveParameterNameRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromParenthesesRefactoring.cs" />

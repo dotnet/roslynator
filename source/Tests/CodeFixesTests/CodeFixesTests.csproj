@@ -43,6 +43,7 @@
     <Compile Include="AddComparisonWithBooleanLiteralRefactoring.cs" />
     <Compile Include="AddBracesToDeclarationOrLabeledStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
+    <Compile Include="CS0133_ExpressionBeingAssignedMustBeConstant.cs" />
     <Compile Include="CS1751_CannotSpecifyDefaultValueForParameterArray.cs" />
     <Compile Include="CS0029_CannotImplicitlyConvertType.cs" />
     <Compile Include="CS0120_ObjectReferenceIsRequiredForNonStaticMember2.cs" />
@@ -123,7 +124,6 @@
     <Compile Include="AddOutModifierToArgument.cs" />
     <Compile Include="RemoveArgumentList.cs" />
     <Compile Include="RemoveAwaitKeyword.cs" />
-    <Compile Include="RemoveConstModifier.cs" />
     <Compile Include="RemoveConstraintClause.cs" />
     <Compile Include="RemoveDuplicateAttribute.cs" />
     <Compile Include="RemoveImplementationFromAbstractMember.cs" />

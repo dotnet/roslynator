@@ -519,4 +519,9 @@
       <Id>CS1751</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0094" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
+    <FixableDiagnosticIds>
+      <Id>CS0133</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>
