@@ -292,8 +292,6 @@ namespace Roslynator.CSharp
                     return Ref();
                 case RefKind.Out:
                     return Out();
-                case RefKind.In:
-                    return In();
             }
 
             Debug.Fail(parameterSymbol.RefKind.ToString());
