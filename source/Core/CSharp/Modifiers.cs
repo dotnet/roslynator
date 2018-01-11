@@ -40,6 +40,11 @@ namespace Roslynator.CSharp
             return TokenList(PrivateKeyword());
         }
 
+        public static SyntaxTokenList PrivateProtected()
+        {
+            return TokenList(PrivateKeyword(), ProtectedKeyword());
+        }
+
         public static SyntaxTokenList Virtual()
         {
             return TokenList(VirtualKeyword());
@@ -242,7 +247,7 @@ namespace Roslynator.CSharp
                 case Accessibility.NotApplicable:
                     return default(SyntaxTokenList);
                 case Accessibility.ProtectedAndInternal:
-                    throw new NotSupportedException($"Value '{accessibility}' is not supported.)");
+                    return PrivateProtected();
                 default:
                     {
                         Debug.Fail(accessibility.ToString());

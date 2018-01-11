@@ -63,11 +63,11 @@ namespace Roslynator.CSharp.Comparers
                     return 0;
                 case SyntaxKind.PublicKeyword:
                     return 1;
-                case SyntaxKind.ProtectedKeyword:
-                    return 2;
-                case SyntaxKind.InternalKeyword:
-                    return 3;
                 case SyntaxKind.PrivateKeyword:
+                    return 2;
+                case SyntaxKind.ProtectedKeyword:
+                    return 3;
+                case SyntaxKind.InternalKeyword:
                     return 4;
                 case SyntaxKind.ConstKeyword:
                     return 5;

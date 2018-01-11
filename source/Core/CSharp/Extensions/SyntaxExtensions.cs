@@ -3390,28 +3390,48 @@ namespace Roslynator.CSharp
                 switch (tokenList[i].Kind())
                 {
                     case SyntaxKind.PublicKeyword:
-                        return Accessibility.Public;
+                        {
+                            return Accessibility.Public;
+                        }
                     case SyntaxKind.PrivateKeyword:
-                        return Accessibility.Private;
+                        {
+                            for (int j = i + 1; j < count; j++)
+                            {
+                                if (tokenList[j].Kind() == SyntaxKind.ProtectedKeyword)
+                                    return Accessibility.ProtectedAndInternal;
+                            }
+
+                            return Accessibility.Private;
+                        }
                     case SyntaxKind.InternalKeyword:
-                        return GetAccessModifier(tokenList, i + 1, count, SyntaxKind.ProtectedKeyword, Accessibility.Internal);
+                        {
+                            for (int j = i + 1; j < count; j++)
+                            {
+                                if (tokenList[j].Kind() == SyntaxKind.ProtectedKeyword)
+                                    return Accessibility.ProtectedOrInternal;
+                            }
+
+                            return Accessibility.Internal;
+                        }
                     case SyntaxKind.ProtectedKeyword:
-                        return GetAccessModifier(tokenList, i + 1, count, SyntaxKind.InternalKeyword, Accessibility.Protected);
+                        {
+                            for (int j = i + 1; j < count; j++)
+                            {
+                                switch (tokenList[j].Kind())
+                                {
+                                    case SyntaxKind.InternalKeyword:
+                                        return Accessibility.ProtectedOrInternal;
+                                    case SyntaxKind.PrivateKeyword:
+                                        return Accessibility.ProtectedAndInternal;
+                                }
+                            }
+
+                            return Accessibility.Protected;
+                        }
                 }
             }
 
             return Accessibility.NotApplicable;
-        }
-
-        private static Accessibility GetAccessModifier(SyntaxTokenList tokenList, int startIndex, int count, SyntaxKind kind, Accessibility accessModifier)
-        {
-            for (int i = startIndex; i < count; i++)
-            {
-                if (tokenList[i].Kind() == kind)
-                    return Accessibility.ProtectedOrInternal;
-            }
-
-            return accessModifier;
         }
 
         public static SyntaxToken Find(this SyntaxTokenList tokenList, SyntaxKind kind)

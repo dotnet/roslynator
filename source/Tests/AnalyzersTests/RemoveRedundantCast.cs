@@ -7,7 +7,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-#pragma warning disable RCS1008, RCS1016, RCS1079, RCS1176
+#pragma warning disable RCS1008, RCS1016, RCS1019, RCS1079, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -41,6 +41,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 ((DerivedFoo)baseFoo).Protected();
 
+                ((DerivedFoo)baseFoo).PrivateProtected();
+
                 ((DerivedFoo)baseFoo).ProtectedInternal();
             }
 
@@ -50,11 +52,15 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 {
                     ((DerivedFoo)baseFoo).Protected();
 
+                    ((DerivedFoo)baseFoo).PrivateProtected();
+
                     ((DerivedFoo)baseFoo).ProtectedInternal();
                 }
             }
 
             protected void Protected() { }
+
+            private protected void PrivateProtected() { }
 
             protected internal void ProtectedInternal() { }
         }
@@ -83,6 +89,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
             private void Bar(BaseFoo baseFoo)
             {
                 ((Foo3)baseFoo).Protected();
+
+                ((Foo3)baseFoo).PrivateProtected();
             }
         }
 

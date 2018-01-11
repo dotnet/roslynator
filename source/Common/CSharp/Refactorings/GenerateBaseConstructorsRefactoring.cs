@@ -162,7 +162,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     accessibility = Accessibility.Internal;
                 }
-                else if (accessibility == Accessibility.Protected)
+                else if (accessibility == Accessibility.Protected
+                    || accessibility == Accessibility.ProtectedAndInternal)
                 {
                     accessibility = Accessibility.Private;
                 }

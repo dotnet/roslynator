@@ -79,27 +79,31 @@ namespace Roslynator
         }
 
 
-        internal static bool IsMoreRestrictiveThan(this Accessibility accessibility, Accessibility value)
+        internal static bool IsMoreRestrictiveThan(this Accessibility accessibility, Accessibility other)
         {
-            switch (value)
+            switch (other)
             {
                 case Accessibility.Public:
                     {
                         return accessibility == Accessibility.Internal
                             || accessibility == Accessibility.ProtectedOrInternal
+                            || accessibility == Accessibility.ProtectedAndInternal
                             || accessibility == Accessibility.Protected
                             || accessibility == Accessibility.Private;
                     }
                 case Accessibility.Internal:
                     {
-                        return accessibility == Accessibility.Private;
+                        return accessibility == Accessibility.ProtectedAndInternal
+                            || accessibility == Accessibility.Private;
                     }
                 case Accessibility.ProtectedOrInternal:
                     {
                         return accessibility == Accessibility.Internal
                             || accessibility == Accessibility.Protected
+                            || accessibility == Accessibility.ProtectedAndInternal
                             || accessibility == Accessibility.Private;
                     }
+                case Accessibility.ProtectedAndInternal:
                 case Accessibility.Protected:
                     {
                         return accessibility == Accessibility.Private;
@@ -121,6 +125,8 @@ namespace Roslynator
                     return "private";
                 case Accessibility.Protected:
                     return "protected";
+                case Accessibility.ProtectedAndInternal:
+                    return "private protected";
                 case Accessibility.Internal:
                     return "internal";
                 case Accessibility.ProtectedOrInternal:
