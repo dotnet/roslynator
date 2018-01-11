@@ -53,7 +53,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConstantWithField)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment))
             {
                 return;
             }
@@ -261,7 +262,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         SyntaxKind.IdentifierName,
                                         SyntaxKind.SimpleMemberAccessExpression))
                                 {
-                                    SyntaxNode invocationExpression = SyntaxFactory.InvocationExpression(expression);
+                                    SyntaxNode invocationExpression = InvocationExpression(expression);
 
                                     if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) != null)
                                     {
@@ -272,6 +273,34 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         context.RegisterCodeFix(codeAction, diagnostic);
                                     }
+                                }
+
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment)
+                                    && expression.IsKind(SyntaxKind.EqualsExpression))
+                                {
+                                    BinaryExpressionInfo info = SyntaxInfo.BinaryExpressionInfo(expression);
+
+                                    if (!info.Success)
+                                        break;
+
+                                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(info.Left, context.CancellationToken);
+
+                                    if (typeSymbol?.IsErrorType() != false)
+                                        break;
+
+                                    if (!semanticModel.IsImplicitConversion(info.Right, typeSymbol))
+                                        break;
+
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Replace comparison with assignment",
+                                        cancellationToken =>
+                                        {
+                                            AssignmentExpressionSyntax simpleAssignment = SimpleAssignmentExpression(info.Left, info.Right).WithTriviaFrom(expression);
+                                            return context.Document.ReplaceNodeAsync(expression, simpleAssignment, cancellationToken);
+                                        },
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceComparisonWithAssignment));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
                                 }
 
                                 if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse)

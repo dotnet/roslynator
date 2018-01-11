@@ -534,4 +534,9 @@
       <Id>CS0029</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0097" Identifier="ReplaceComparisonWithAssignment" Title="Replace comparison with assignment">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

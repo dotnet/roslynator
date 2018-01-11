@@ -34,5 +34,15 @@ namespace Roslynator.CSharp.CodeFixes.Tests
                 DateTime.Now;
             }
         }
+
+        private class ReplaceComparisonWithAssignment
+        {
+            public void Bar(string value)
+            {
+                value == null;
+
+                value == "";
+            }
+        }
     }
 }
