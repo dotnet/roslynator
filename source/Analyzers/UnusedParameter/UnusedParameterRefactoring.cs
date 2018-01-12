@@ -1,9 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Immutable;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,7 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
-using System.Collections.Generic;
+using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Analyzers.UnusedParameter
 {
@@ -252,15 +251,22 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
         {
             UnusedParameterWalker walker = UnusedParameterWalkerCache.Acquire(context.SemanticModel, context.CancellationToken, isIndexer);
 
-            if (parametersInfo.Parameter != null)
+            if (parametersInfo.Parameter != null
+                && !StringUtility.IsOneOrManyUnderscores(parametersInfo.Parameter.Identifier.ValueText))
             {
                 walker.AddParameter(parametersInfo.Parameter);
             }
             else
             {
                 foreach (ParameterSyntax parameter in parametersInfo.Parameters)
-                    walker.AddParameter(parameter);
+                {
+                    if (!StringUtility.IsOneOrManyUnderscores(parameter.Identifier.ValueText))
+                        walker.AddParameter(parameter);
+                }
             }
+
+            if (walker.Nodes.Count == 0)
+                return walker.Nodes;
 
             foreach (TypeParameterSyntax typeParameter in parametersInfo.TypeParameters)
             {

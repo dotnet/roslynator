@@ -342,5 +342,24 @@ namespace Roslynator.Utilities
                 return false;
             }
         }
+
+        public static bool IsOneOrManyUnderscores(string value)
+        {
+            if (value == null)
+                return false;
+
+            int length = value.Length;
+
+            if (length == 0)
+                return false;
+
+            for (int i = 0; i < length; i++)
+            {
+                if (value[i] != '_')
+                    return false;
+            }
+
+            return true;
+        }
     }
 }
