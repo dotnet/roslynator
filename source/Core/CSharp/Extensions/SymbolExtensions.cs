@@ -84,40 +84,44 @@ namespace Roslynator.CSharp
         #endregion INamespaceSymbol
 
         #region IParameterSymbol
-        internal static ExpressionSyntax GetDefaultValueSyntax(this IParameterSymbol parameterSymbol)
+        internal static ExpressionSyntax GetDefaultValueMinimalSyntax(this IParameterSymbol parameterSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
             if (parameterSymbol == null)
                 throw new ArgumentNullException(nameof(parameterSymbol));
 
-            if (parameterSymbol.HasExplicitDefaultValue)
+            if (!parameterSymbol.HasExplicitDefaultValue)
+                throw new ArgumentException("Parameter must specify default value.", nameof(parameterSymbol));
+
+            object value = parameterSymbol.ExplicitDefaultValue;
+
+            ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+            if (typeSymbol.IsEnum())
             {
-                object value = parameterSymbol.ExplicitDefaultValue;
+                if (value == null)
+                    return NullLiteralExpression();
 
-                ITypeSymbol type = parameterSymbol.Type;
+                IFieldSymbol fieldSymbol = typeSymbol.FindField(f => f.HasConstantValue && value.Equals(f.ConstantValue));
 
-                if (type.IsEnum())
+                TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format);
+
+                if (fieldSymbol != null)
                 {
-                    if (value != null)
-                    {
-                        IFieldSymbol fieldSymbol = type.FindField(f => f.HasConstantValue && value.Equals(f.ConstantValue));
-
-                        if (fieldSymbol != null)
-                        {
-                            return SimpleMemberAccessExpression(type.ToTypeSyntax(), IdentifierName(fieldSymbol.Name));
-                        }
-                        else
-                        {
-                            return CastExpression(type.ToTypeSyntax().WithSimplifierAnnotation(), LiteralExpression(value));
-                        }
-                    }
+                    return SimpleMemberAccessExpression(type, IdentifierName(fieldSymbol.Name));
                 }
                 else
                 {
-                    return LiteralExpression(value);
+                    return CastExpression(type, LiteralExpression(value));
                 }
             }
 
-            return null;
+            if (value == null
+                && !typeSymbol.IsReferenceTypeOrNullableType())
+            {
+                return DefaultExpression(typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format));
+            }
+
+            return LiteralExpression(value);
         }
         #endregion IParameterSymbol
 
@@ -155,10 +159,13 @@ namespace Roslynator.CSharp
                 throw new ArgumentException($"Type '{typeSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(typeSymbol));
         }
 
-        public static ExpressionSyntax ToDefaultValueSyntax(this ITypeSymbol typeSymbol, TypeSyntax type = null)
+        public static ExpressionSyntax ToDefaultValueSyntax(this ITypeSymbol typeSymbol, TypeSyntax type)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
+
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
 
             return ToDefaultValueSyntax(typeSymbol, type, default(SemanticModel), -1, default(SymbolDisplayFormat));
         }
@@ -208,9 +215,7 @@ namespace Roslynator.CSharp
 
                 if (fieldSymbol != null)
                 {
-                    type = type ?? ((semanticModel != null)
-                            ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
-                            : typeSymbol.ToTypeSyntax(format).WithSimplifierAnnotation());
+                    type = type ?? (typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format));
 
                     Debug.Assert(type != null);
 
@@ -225,9 +230,7 @@ namespace Roslynator.CSharp
             if (typeSymbol.IsReferenceType)
                 return NullLiteralExpression();
 
-            type = type ?? ((semanticModel != null)
-                ? typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format)
-                : typeSymbol.ToTypeSyntax(format).WithSimplifierAnnotation());
+            type = type ?? (typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format));
 
             Debug.Assert(type != null);
 

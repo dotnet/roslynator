@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings.If
             {
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                expression = CSharpUtility.LogicallyNegate(expression, semanticModel, cancellationToken);
+                expression = LogicalNegationHelper.LogicallyNegate(expression, semanticModel, cancellationToken);
             }
 
             StatementSyntax statement = CreateStatement(expression);

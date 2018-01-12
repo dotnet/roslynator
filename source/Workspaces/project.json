@@ -2,7 +2,7 @@
   "supports": {},
   "dependencies": {
     "Microsoft.CodeAnalysis.Analyzers": "2.0.0-beta2",
-    "Microsoft.CodeAnalysis.CSharp": "2.0.0",
+    "Microsoft.CodeAnalysis.CSharp.Workspaces": "2.0.0",
     "Microsoft.NETCore.Portable.Compatibility": "1.0.1",
     "NETStandard.Library": "2.0.1"
   },

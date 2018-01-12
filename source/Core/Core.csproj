@@ -42,19 +42,17 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AccessibilityFlags.cs" />
-    <Compile Include="CSharp\CSharpSyntaxParts.cs" />
+    <Compile Include="AsyncMethodNameGenerator.cs" />
     <Compile Include="CSharp\Extensions\SpecialTypeExtensions.cs" />
     <Compile Include="CSharp\Helpers\AllowedAccessibilityHelper.cs" />
     <Compile Include="CSharp\Helpers\ChangeAccessibilityHelper.cs" />
     <Compile Include="CSharp\SyntaxWalkers\AssignedExpressionWalker.cs" />
     <Compile Include="CSharp\Syntax\AccessibilityInfo.cs" />
     <Compile Include="CSharp\Analysis\BracesAnalysisResult.cs" />
-    <Compile Include="CSharp\CodeFixes\AbstractCodeFixProvider.cs" />
     <Compile Include="CSharp\CodeFixes\EquivalenceKeyProvider.cs" />
     <Compile Include="CSharp\Extensions\SyntaxKindExtensions.cs" />
     <Compile Include="CSharp\Helpers\DetermineParameterTypeHelper.cs" />
     <Compile Include="CSharp\Syntax\AsExpressionInfo.cs" />
-    <Compile Include="CSharp\Helpers\LogicalNegationHelper.cs" />
     <Compile Include="CSharp\Syntax\OverrideInfo.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringIdentifierSet.cs" />
     <Compile Include="CSharp\Refactorings\RefactoringSettings.cs" />
@@ -69,17 +67,14 @@
     <Compile Include="CSharp\Syntax\SyntaxInfo.cs" />
     <Compile Include="CSharp\Syntax\SyntaxInfoHelpers.cs" />
     <Compile Include="CSharp\Syntax\TypeParameterConstraintInfo.cs" />
-    <Compile Include="DocumentReferenceInfo.cs" />
     <Compile Include="Diagnostics\Assert.cs" />
     <Compile Include="Extensions\ListExtensions.cs" />
     <Compile Include="Extensions\RefKindExtensions.cs" />
     <Compile Include="Extensions\MethodKindExtensions.cs" />
     <Compile Include="Extensions\SpecialTypeExtensions.cs" />
-    <Compile Include="SyntaxAnnotations.cs" />
     <Compile Include="Selection`1.cs" />
     <Compile Include="SeparatedSyntaxListSelection`1.cs" />
     <Compile Include="SyntaxComparer.cs" />
-    <Compile Include="SyntaxFinder.cs" />
     <Compile Include="CSharp\Syntax\TypeParameterInfo.cs" />
     <Compile Include="CSharp\InterpolatedStringContentConversion.cs" />
     <Compile Include="CSharp\OperatorPrecedence.cs" />
@@ -120,12 +115,10 @@
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentData.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentInserter.cs" />
     <Compile Include="CSharp\Documentation\BaseDocumentationCommentOrigin.cs" />
-    <Compile Include="CSharp\Extensions\DocumentExtensions.cs" />
     <Compile Include="CSharp\SyntaxRewriters\WhitespaceOrEndOfLineTriviaRewriter.cs" />
     <Compile Include="CSharp\Syntax\StatementsInfo.cs" />
     <Compile Include="CSharp\Syntax\SingleLocalDeclarationStatementInfo.cs" />
     <Compile Include="DirectiveRemoveOptions.cs" />
-    <Compile Include="CSharp\CSharpFormatter.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentGenerator.cs" />
     <Compile Include="CSharp\Documentation\DocumentationCommentGeneratorSettings.cs" />
     <Compile Include="CSharp\EmbeddedStatementHelper.cs" />
@@ -144,7 +137,6 @@
     <Compile Include="CSharp\Syntax\MemberInvocationStatementInfo.cs" />
     <Compile Include="CSharp\Syntax\SimpleAssignmentExpressionInfo.cs" />
     <Compile Include="CSharp\Syntax\SingleParameterLambdaExpressionInfo.cs" />
-    <Compile Include="CSharp\Helpers\RemoveCommentHelper.cs" />
     <Compile Include="CSharp\BinaryExpressionSelection.cs" />
     <Compile Include="CSharp\MemberDeclarationSelection.cs" />
     <Compile Include="CSharp\Syntax\SimpleAssignmentStatementInfo.cs" />
@@ -159,8 +151,6 @@
     <Compile Include="CSharp\Syntax\MemberInvocationExpressionInfo.cs" />
     <Compile Include="ExtensionMethodInfo.cs" />
     <Compile Include="ExtensionMethodKind.cs" />
-    <Compile Include="Extensions\CodeFixContextExtensions.cs" />
-    <Compile Include="Extensions\SolutionExtensions.cs" />
     <Compile Include="Utilities\FlagsUtility.cs" />
     <Compile Include="Utilities\Deferred`1.cs" />
     <Compile Include="MethodInfo.cs" />
@@ -171,11 +161,9 @@
     <Compile Include="CSharp\Analysis\TypeAnalysisFlags.cs" />
     <Compile Include="CSharp\RemoveHelper.cs" />
     <Compile Include="CSharp\Comparers\MemberDeclarationComparer.cs" />
-    <Compile Include="AsyncMethodNameGenerator.cs" />
     <Compile Include="NumberSuffixNameGenerator.cs" />
     <Compile Include="UnderscoreSuffixNameGenerator.cs" />
     <Compile Include="Extensions\AnalysisContextExtensions.cs" />
-    <Compile Include="Extensions\DocumentExtensions.cs" />
     <Compile Include="Extensions\FileLinePositionSpanExtensions.cs" />
     <Compile Include="Extensions\SymbolExtensions.cs" />
     <Compile Include="Extensions\SemanticModelExtensions.cs" />

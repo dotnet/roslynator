@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Format braces on separate lines",
-                                cancellationToken => CSharpFormatter.ToMultiLineAsync(context.Document, accessor, cancellationToken));
+                                cancellationToken => DocumentFormatter.ToMultiLineAsync(context.Document, accessor, cancellationToken));
                         }
                     }
                     else
@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Format braces on a single line",
-                                cancellationToken => CSharpFormatter.ToSingleLineAsync(context.Document, accessor, cancellationToken));
+                                cancellationToken => DocumentFormatter.ToSingleLineAsync(context.Document, accessor, cancellationToken));
                         }
                     }
                 }

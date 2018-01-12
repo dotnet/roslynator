@@ -30,6 +30,42 @@ namespace Roslynator.CSharp
             }
         }
 
+        internal static SyntaxTriviaList IncreaseIndentation(SyntaxTrivia trivia)
+        {
+            return TriviaList(trivia, SingleIndentation(trivia));
+        }
+
+        internal static SyntaxTrivia SingleIndentation(SyntaxTrivia trivia)
+        {
+            if (trivia.IsWhitespaceTrivia())
+            {
+                string s = trivia.ToString();
+
+                int length = s.Length;
+
+                if (length > 0)
+                {
+                    if (s.All(f => f == '\t'))
+                    {
+                        return Tab;
+                    }
+                    else if (s.All(f => f == ' '))
+                    {
+                        if (length % 4 == 0)
+                            return Whitespace("    ");
+
+                        if (length % 3 == 0)
+                            return Whitespace("   ");
+
+                        if (length % 2 == 0)
+                            return Whitespace("  ");
+                    }
+                }
+            }
+
+            return DefaultIndentation;
+        }
+
         internal static SyntaxTrivia DefaultIndentation { get; } = Whitespace("    ");
         #endregion Trivia
 
@@ -1041,81 +1077,6 @@ namespace Roslynator.CSharp
         #endregion Token
 
         #region Type
-        internal static TypeSyntax BoolType()
-        {
-            return ParseTypeName("global::System.Boolean").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax ByteType()
-        {
-            return ParseTypeName("global::System.Byte").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax SByteType()
-        {
-            return ParseTypeName("global::System.SByte").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax IntType()
-        {
-            return ParseTypeName("global::System.Int32").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax UIntType()
-        {
-            return ParseTypeName("global::System.UInt32").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax ShortType()
-        {
-            return ParseTypeName("global::System.Int16").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax UShortType()
-        {
-            return ParseTypeName("global::System.UInt16").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax LongType()
-        {
-            return ParseTypeName("global::System.Int64").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax ULongType()
-        {
-            return ParseTypeName("global::System.UInt64").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax FloatType()
-        {
-            return ParseTypeName("global::System.Single").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax DoubleType()
-        {
-            return ParseTypeName("global::System.Double").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax DecimalType()
-        {
-            return ParseTypeName("global::System.Decimal").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax StringType()
-        {
-            return ParseTypeName("global::System.String").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax CharType()
-        {
-            return ParseTypeName("global::System.Char").WithSimplifierAnnotation();
-        }
-
-        internal static TypeSyntax ObjectType()
-        {
-            return ParseTypeName("global::System.Object").WithSimplifierAnnotation();
-        }
-
         public static PredefinedTypeSyntax BoolPredefinedType()
         {
             return PredefinedType(SyntaxKind.BoolKeyword);

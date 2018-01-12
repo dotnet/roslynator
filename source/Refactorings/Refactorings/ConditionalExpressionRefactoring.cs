@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Format ?: on separate lines",
                             cancellationToken =>
                             {
-                                return CSharpFormatter.ToMultiLineAsync(
+                                return DocumentFormatter.ToMultiLineAsync(
                                     context.Document,
                                     conditionalExpression,
                                     cancellationToken);
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Format ?: on a single line",
                             cancellationToken =>
                             {
-                                return CSharpFormatter.ToSingleLineAsync(
+                                return DocumentFormatter.ToSingleLineAsync(
                                     context.Document,
                                     conditionalExpression,
                                     cancellationToken);

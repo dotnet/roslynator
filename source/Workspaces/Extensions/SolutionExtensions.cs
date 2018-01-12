@@ -17,6 +17,15 @@ namespace Roslynator
             TNode newNode,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
+            if (solution == null)
+                throw new ArgumentNullException(nameof(solution));
+
+            if (oldNode == null)
+                throw new ArgumentNullException(nameof(oldNode));
+
+            if (newNode == null)
+                throw new ArgumentNullException(nameof(newNode));
+
             Document document = solution.GetDocument(oldNode.SyntaxTree);
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);

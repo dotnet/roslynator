@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -226,17 +225,11 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
             foreach (IParameterSymbol parameterSymbol in parameters)
             {
                 if (parameterInfos == null
-                    || parameterInfos.FindIndex(f =>
-                    {
-                        Debug.WriteLine(f.ParameterSymbol == parameterSymbol);
-                        Debug.WriteLine(f.ParameterSymbol.Equals(parameterSymbol));
-                        Debug.WriteLine(f.ParameterSymbol.Name == parameterSymbol.Name);
-                        return f.ParameterSymbol.Equals(parameterSymbol);
-                    }) == -1)
+                    || parameterInfos.FindIndex(f => f.ParameterSymbol.Equals(parameterSymbol)) == -1)
                 {
                     if (parameterSymbol.HasExplicitDefaultValue)
                     {
-                        var parameterInfo = new ParameterInfo(parameterSymbol, parameterSymbol.GetDefaultValueSyntax());
+                        var parameterInfo = new ParameterInfo(parameterSymbol, null);
 
                         (parameterInfos ?? (parameterInfos = new List<ParameterInfo>())).Add(parameterInfo);
                     }

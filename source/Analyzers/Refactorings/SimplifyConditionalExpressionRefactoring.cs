@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = (conditionalExpression.WhenTrue.WalkDownParentheses().IsKind(SyntaxKind.TrueLiteralExpression))
                 ? condition
-                : CSharpUtility.LogicallyNegate(condition, semanticModel, cancellationToken);
+                : LogicalNegationHelper.LogicallyNegate(condition, semanticModel, cancellationToken);
 
             SyntaxTriviaList trailingTrivia = conditionalExpression
                 .DescendantTrivia(TextSpan.FromBounds(condition.Span.End, conditionalExpression.Span.End))

@@ -660,39 +660,6 @@ namespace Roslynator.CSharp
         #endregion EventFieldDeclarationSyntax
 
         #region ExpressionSyntax
-        public static ParenthesizedExpressionSyntax Parenthesize(
-            this ExpressionSyntax expression,
-            bool includeElasticTrivia = true,
-            bool simplifiable = true)
-        {
-            ParenthesizedExpressionSyntax parenthesizedExpression = null;
-
-            if (includeElasticTrivia)
-            {
-                parenthesizedExpression = ParenthesizedExpression(expression.WithoutTrivia());
-            }
-            else
-            {
-                parenthesizedExpression = ParenthesizedExpression(
-                    Token(SyntaxTriviaList.Empty, SyntaxKind.OpenParenToken, SyntaxTriviaList.Empty),
-                    expression.WithoutTrivia(),
-                    Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, SyntaxTriviaList.Empty));
-            }
-
-            return parenthesizedExpression
-                .WithTriviaFrom(expression)
-                .WithSimplifierAnnotationIf(simplifiable);
-        }
-
-        internal static ExpressionSyntax ParenthesizeIf(
-            this ExpressionSyntax expression,
-            bool condition,
-            bool includeElasticTrivia = true,
-            bool simplifiable = true)
-        {
-            return (condition) ? Parenthesize(expression, includeElasticTrivia, simplifiable) : expression;
-        }
-
         public static ExpressionSyntax WalkUpParentheses(this ExpressionSyntax expression)
         {
             while (expression?.Parent?.Kind() == SyntaxKind.ParenthesizedExpression)
@@ -2068,13 +2035,6 @@ namespace Roslynator.CSharp
         }
         #endregion SeparatedSyntaxList<T>
 
-        #region SimpleNameSyntax
-        public static MemberAccessExpressionSyntax QualifyWithThis(this SimpleNameSyntax simpleName, bool simplifiable = true)
-        {
-            return SimpleMemberAccessExpression(ThisExpression(), simpleName).WithSimplifierAnnotationIf(simplifiable);
-        }
-        #endregion SimpleNameSyntax
-
         #region StatementSyntax
         private static StatementSyntax GetSingleStatementOrDefault(StatementSyntax statement)
         {
@@ -3152,6 +3112,46 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(node));
 
             return (TNode)ChangeAccessibilityHelper.ChangeAccessibility(node, newAccessibility, comparer);
+        }
+
+        internal static SyntaxTrivia GetIndentation(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxTree tree = node.SyntaxTree;
+
+            if (tree != null)
+            {
+                TextSpan span = node.Span;
+
+                int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
+
+                while (!node.FullSpan.Contains(lineStartIndex))
+                    node = node.Parent;
+
+                SyntaxToken token = node.FindToken(lineStartIndex);
+
+                if (!token.IsKind(SyntaxKind.None))
+                {
+                    SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
+
+                    if (leadingTrivia.Any()
+                        && leadingTrivia.FullSpan.Contains(lineStartIndex))
+                    {
+                        SyntaxTrivia trivia = leadingTrivia.Last();
+
+                        if (trivia.IsWhitespaceTrivia())
+                            return trivia;
+                    }
+                }
+            }
+
+            return EmptyWhitespace();
+        }
+
+        internal static SyntaxTriviaList GetIncreasedIndentation(this SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxTrivia trivia = GetIndentation(node, cancellationToken);
+
+            return IncreaseIndentation(trivia);
         }
         #endregion SyntaxNode
 

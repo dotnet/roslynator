@@ -5,10 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
-using static Roslynator.SyntaxAnnotations;
 
 namespace Roslynator
 {
@@ -380,48 +377,6 @@ namespace Roslynator
             return node.Parent?.FirstAncestorOrSelf(predicate, ascendOutOfTrivia);
         }
 
-        public static TNode WithFormatterAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.WithAdditionalAnnotations(FormatterAnnotationArray);
-        }
-
-        public static TNode WithSimplifierAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.WithAdditionalAnnotations(SimplifierAnnotationArray);
-        }
-
-        internal static TNode WithNavigationAnnotation<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            SyntaxToken token = node.GetFirstToken();
-
-            if (token.Kind() == SyntaxKind.None)
-                return node;
-
-            return node.ReplaceToken(token, token.WithNavigationAnnotation());
-        }
-
-        internal static TNode WithSimplifierAnnotationIf<TNode>(this TNode node, bool condition) where TNode : SyntaxNode
-        {
-            return (condition) ? node.WithAdditionalAnnotations(SimplifierAnnotationArray) : node;
-        }
-
-        internal static TNode WithFormatterAndSimplifierAnnotations<TNode>(this TNode node) where TNode : SyntaxNode
-        {
-            if (node == null)
-                throw new ArgumentNullException(nameof(node));
-
-            return node.WithAdditionalAnnotations(FormatterAndSimplifierAnnotations);
-        }
-
         internal static string ToString(this SyntaxNode node, TextSpan span)
         {
             return GetSubstring(node, node.ToString(), span);
@@ -451,6 +406,11 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(node));
 
             return TextSpan.FromBounds(node.Span.End, node.FullSpan.End);
+        }
+
+        internal static TNode WithAdditionalAnnotationsIf<TNode>(this TNode node, bool condition, params SyntaxAnnotation[] annotations) where TNode : SyntaxNode
+        {
+            return (condition) ? node.WithAdditionalAnnotations(annotations) : node;
         }
         #endregion SyntaxNode
 
@@ -594,31 +554,6 @@ namespace Roslynator
         public static SyntaxToken WithoutTrailingTrivia(this SyntaxToken token)
         {
             return token.WithTrailingTrivia(default(SyntaxTriviaList));
-        }
-
-        public static SyntaxToken WithFormatterAnnotation(this SyntaxToken token)
-        {
-            return token.WithAdditionalAnnotations(FormatterAnnotationArray);
-        }
-
-        public static SyntaxToken WithSimplifierAnnotation(this SyntaxToken token)
-        {
-            return token.WithAdditionalAnnotations(SimplifierAnnotationArray);
-        }
-
-        public static SyntaxToken WithNavigationAnnotation(this SyntaxToken token)
-        {
-            return token.WithAdditionalAnnotations(NavigationAnnotationArray);
-        }
-
-        internal static SyntaxToken WithFormatterAndSimplifierAnnotations(this SyntaxToken token)
-        {
-            return token.WithAdditionalAnnotations(FormatterAndSimplifierAnnotations);
-        }
-
-        public static SyntaxToken WithRenameAnnotation(this SyntaxToken token)
-        {
-            return token.WithAdditionalAnnotations(RenameAnnotation.Create());
         }
 
         public static SyntaxToken WithTriviaFrom(this SyntaxToken token, SyntaxNode node)

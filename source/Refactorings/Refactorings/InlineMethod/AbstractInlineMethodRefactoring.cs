@@ -86,7 +86,15 @@ namespace Roslynator.CSharp.Refactorings.InlineMethod
                             {
                                 if (parameterInfo.ParameterSymbol.OriginalDefinition.Equals(symbol))
                                 {
-                                    replacementMap.Add(identifierName, parameterInfo.Expression);
+                                    ExpressionSyntax expression = parameterInfo.Expression;
+
+                                    if (expression == null
+                                        && parameterInfo.ParameterSymbol.HasExplicitDefaultValue)
+                                    {
+                                        expression = parameterInfo.ParameterSymbol.GetDefaultValueMinimalSyntax(InvocationSemanticModel, InvocationExpression.SpanStart);
+                                    }
+
+                                    replacementMap.Add(identifierName, expression);
                                     break;
                                 }
                             }

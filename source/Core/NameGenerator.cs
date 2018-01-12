@@ -3,12 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.FindSymbols;
 using Roslynator.Helpers;
 using Roslynator.Utilities;
 
@@ -16,8 +12,8 @@ namespace Roslynator
 {
     public abstract class NameGenerator
     {
-        private static StringComparer OrdinalComparer { get; } = StringComparer.Ordinal;
-        private static StringComparer OrdinalIgnoreCaseComparer { get; } = StringComparer.OrdinalIgnoreCase;
+        internal static StringComparer OrdinalComparer { get; } = StringComparer.Ordinal;
+        internal static StringComparer OrdinalIgnoreCaseComparer { get; } = StringComparer.OrdinalIgnoreCase;
 
         public abstract string EnsureUniqueName(string baseName, HashSet<string> reservedNames);
         public abstract string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true);
@@ -106,24 +102,6 @@ namespace Roslynator
             return EnsureUniqueName(baseName, symbols, isCaseSensitive);
         }
 
-        internal virtual async Task<string> EnsureUniqueMemberNameAsync(
-            string baseName,
-            ISymbol memberSymbol,
-            Solution solution,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (memberSymbol == null)
-                throw new ArgumentNullException(nameof(memberSymbol));
-
-            if (solution == null)
-                throw new ArgumentNullException(nameof(solution));
-
-            HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
-
-            return EnsureUniqueName(baseName, reservedNames);
-        }
-
         public string EnsureUniqueEnumMemberName(
             string baseName,
             INamedTypeSymbol enumSymbol,
@@ -159,74 +137,6 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(containingType));
 
             return IsUniqueName(name, containingType.GetMembers(), isCaseSensitive);
-        }
-
-        internal static async Task<bool> IsUniqueMemberNameAsync(
-            string name,
-            ISymbol memberSymbol,
-            Solution solution,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (memberSymbol == null)
-                throw new ArgumentNullException(nameof(memberSymbol));
-
-            if (solution == null)
-                throw new ArgumentNullException(nameof(solution));
-
-            HashSet<string> reservedNames = await GetReservedNamesAsync(memberSymbol, solution, isCaseSensitive, cancellationToken).ConfigureAwait(false);
-
-            return IsUniqueName(name, reservedNames);
-        }
-
-        internal static async Task<HashSet<string>> GetReservedNamesAsync(
-            ISymbol memberSymbol,
-            Solution solution,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            HashSet<string> reservedNames = GetMemberNames(memberSymbol, isCaseSensitive);
-
-            foreach (ReferencedSymbol referencedSymbol in await SymbolFinder.FindReferencesAsync(memberSymbol, solution, cancellationToken).ConfigureAwait(false))
-            {
-                foreach (ReferenceLocation referenceLocation in referencedSymbol.Locations)
-                {
-                    if (!referenceLocation.IsImplicit
-                        && !referenceLocation.IsCandidateLocation)
-                    {
-                        SemanticModel semanticModel = await referenceLocation.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                        foreach (ISymbol symbol in semanticModel.LookupSymbols(referenceLocation.Location.SourceSpan.Start))
-                        {
-                            if (!memberSymbol.Equals(symbol))
-                                reservedNames.Add(symbol.Name);
-                        }
-                    }
-                }
-            }
-
-            return reservedNames;
-        }
-
-        private static HashSet<string> GetMemberNames(ISymbol memberSymbol, bool isCaseSensitive = true)
-        {
-            INamedTypeSymbol containingType = memberSymbol.ContainingType;
-
-            Debug.Assert(containingType != null);
-
-            if (containingType != null)
-            {
-                IEnumerable<string> memberNames = containingType
-                    .GetMembers()
-                    .Where(f => !memberSymbol.Equals(f))
-                    .Select(f => f.Name);
-
-                return CreateHashSet(memberNames, isCaseSensitive);
-            }
-            else
-            {
-                return CreateHashSet(isCaseSensitive);
-            }
         }
 
         internal static bool IsUniqueName(string name, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true)
@@ -352,30 +262,6 @@ namespace Roslynator
             else
             {
                 return StringComparison.OrdinalIgnoreCase;
-            }
-        }
-
-        private static HashSet<string> CreateHashSet(IEnumerable<string> names, bool isCaseSensitive = true)
-        {
-            if (isCaseSensitive)
-            {
-                return new HashSet<string>(names, OrdinalComparer);
-            }
-            else
-            {
-                return new HashSet<string>(names, OrdinalIgnoreCaseComparer);
-            }
-        }
-
-        private static HashSet<string> CreateHashSet(bool isCaseSensitive = true)
-        {
-            if (isCaseSensitive)
-            {
-                return new HashSet<string>(OrdinalComparer);
-            }
-            else
-            {
-                return new HashSet<string>(OrdinalIgnoreCaseComparer);
             }
         }
     }
