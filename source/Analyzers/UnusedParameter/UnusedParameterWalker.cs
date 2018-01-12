@@ -524,11 +524,10 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
         //    base.VisitForStatement(node);
         //}
 
-        public override void VisitFromClause(FromClauseSyntax node)
-        {
-            VisitType(node.Type);
-            //base.VisitFromClause(node);
-        }
+        //public override void VisitFromClause(FromClauseSyntax node)
+        //{
+        //    base.VisitFromClause(node);
+        //}
 
         //public override void VisitGenericName(GenericNameSyntax node)
         //{
@@ -689,11 +688,10 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
         //    base.VisitIsPatternExpression(node);
         //}
 
-        public override void VisitJoinClause(JoinClauseSyntax node)
-        {
-            VisitType(node.Type);
-            //base.VisitJoinClause(node);
-        }
+        //public override void VisitJoinClause(JoinClauseSyntax node)
+        //{
+        //    base.VisitJoinClause(node);
+        //}
 
         //public override void VisitJoinIntoClause(JoinIntoClauseSyntax node)
         //{
