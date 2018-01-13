@@ -146,10 +146,15 @@ namespace Roslynator.CSharp.Comparers
 
         public bool IsListSorted(SyntaxTokenList modifiers)
         {
-            for (int i = 0; i < modifiers.Count - 1; i++)
+            int count = modifiers.Count;
+
+            if (count > 1)
             {
-                if (Compare(modifiers[i], modifiers[i + 1]) > 0)
-                    return false;
+                for (int i = 0; i < count - 1; i++)
+                {
+                    if (Compare(modifiers[i], modifiers[i + 1]) > 0)
+                        return false;
+                }
             }
 
             return true;

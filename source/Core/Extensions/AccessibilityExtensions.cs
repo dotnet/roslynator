@@ -78,7 +78,6 @@ namespace Roslynator
             return AccessibilityFlags.None;
         }
 
-
         internal static bool IsMoreRestrictiveThan(this Accessibility accessibility, Accessibility other)
         {
             switch (other)

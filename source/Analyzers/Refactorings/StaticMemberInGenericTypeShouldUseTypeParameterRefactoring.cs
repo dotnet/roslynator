@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Refactorings
                     return ContainsAnyTypeParameter(typeParameters, (INamedTypeSymbol)typeSymbol);
             }
 
-            Debug.Assert(typeSymbol.Kind != SymbolKind.ErrorType, typeSymbol.Kind.ToString());
+            Debug.Assert(typeSymbol.Kind == SymbolKind.ErrorType, typeSymbol.Kind.ToString());
 
             return true;
         }

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    internal static class CS1998_AsyncMethodsCannotHaveRefOrOutParameters
+    internal static class CS1988_AsyncMethodsCannotHaveRefOrOutParameters
     {
         private class Foo
         {

@@ -101,7 +101,7 @@
     <Compile Include="CS1689_AttributeIsNotValidOnThisDeclarationType.cs" />
     <Compile Include="CS1750_ValueCannotBeUsedAsDefaultParameter.cs" />
     <Compile Include="CS1994_AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody.cs" />
-    <Compile Include="CS1998_AsyncMethodsCannotHaveRefOrOutParameters.cs" />
+    <Compile Include="CS1988_AsyncMethodsCannotHaveRefOrOutParameters.cs" />
     <Compile Include="MemberHidesInheritedMember.cs" />
     <Compile Include="AddPartialModifier.cs" />
     <Compile Include="AddReturnStatementThatReturnsDefaultValue.cs" />
