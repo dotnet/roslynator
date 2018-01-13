@@ -5,13 +5,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.InlineMethod
+namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
-    internal class InlineMethodRewriter : CSharpSyntaxRewriter
+    internal class InlineRewriter : CSharpSyntaxRewriter
     {
         private readonly Dictionary<SyntaxNode, object> _replacementMap;
 
-        public InlineMethodRewriter(Dictionary<SyntaxNode, object> replacementMap)
+        public InlineRewriter(Dictionary<SyntaxNode, object> replacementMap)
         {
             _replacementMap = replacementMap;
         }

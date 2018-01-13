@@ -449,7 +449,7 @@
   </Refactoring>
   <Refactoring Id="RR0062" Identifier="InlineMethod" Title="Inline method">
     <Syntaxes>
-      <Syntax>static/extension method invocation</Syntax>
+      <Syntax>method invocation</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0063" Identifier="InsertStringInterpolation" Title="Insert string interpolation">
@@ -1521,5 +1521,10 @@ else
 }]]></After>
       </Sample>
     </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0198" Identifier="InlineProperty" Title="Inline property">
+    <Syntaxes>
+      <Syntax>property access</Syntax>
+    </Syntaxes>
   </Refactoring>
 </Refactorings>

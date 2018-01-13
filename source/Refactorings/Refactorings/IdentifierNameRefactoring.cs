@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
+using Roslynator.CSharp.Refactorings.InlineDefinition;
 using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
@@ -23,6 +24,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 await AddUsingDirectiveRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineProperty))
+                await InlinePropertyRefactoring.ComputeRefactoringsAsync(context, identifierName).ConfigureAwait(false);
         }
 
         private static async Task RenameFieldAccordingToPropertyNameAsync(

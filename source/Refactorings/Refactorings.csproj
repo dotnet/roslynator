@@ -55,10 +55,14 @@
     <Compile Include="Refactorings\FormatConstraintClausesRefactoring.cs" />
     <Compile Include="Refactorings\InitializeFieldFromConstructorRefactoring.cs" />
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodRewriter.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodStatementsRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlinePropertyAnalyzer.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlinePropertyRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineMethodRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineAnalyzer.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineRewriter.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineMethodAnalyzer.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\ParameterInfo.cs" />
     <Compile Include="Refactorings\InlineUsingStaticRefactoring.cs" />
     <Compile Include="Refactorings\AddTypeParameterRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.cs" />
@@ -97,7 +101,6 @@
     <Compile Include="Refactorings\GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="Refactorings\CallToMethodRefactoring.cs" />
     <Compile Include="Refactorings\EventDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\ParameterInfo.cs" />
     <Compile Include="Refactorings\InterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AttributeListRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.Generated.cs" />
@@ -158,7 +161,6 @@
     <Compile Include="Refactorings\DirectiveTriviaRefactoring.cs" />
     <Compile Include="Refactorings\MergeIfStatementsRefactoring.cs" />
     <Compile Include="Refactorings\RemoveStatementsFromSwitchSectionsRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReturnExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />

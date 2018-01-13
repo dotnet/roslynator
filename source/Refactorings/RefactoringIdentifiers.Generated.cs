@@ -71,6 +71,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string InlineAliasExpression = Prefix + "0061";
         public const string InlineConstant = Prefix + "0181";
         public const string InlineMethod = Prefix + "0062";
+        public const string InlineProperty = Prefix + "0198";
         public const string InlineUsingStatic = Prefix + "0180";
         public const string InsertStringInterpolation = Prefix + "0063";
         public const string IntroduceAndInitializeField = Prefix + "0064";

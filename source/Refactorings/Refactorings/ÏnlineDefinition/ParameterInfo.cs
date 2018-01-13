@@ -3,7 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.InlineMethod
+namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
     internal struct ParameterInfo
     {
