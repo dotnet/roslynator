@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Utilities;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp
@@ -45,11 +46,11 @@ namespace Roslynator.CSharp
 
                 if (length > 0)
                 {
-                    if (s.All(f => f == '\t'))
+                    if (StringUtility.All(s, '\t'))
                     {
                         return Tab;
                     }
-                    else if (s.All(f => f == ' '))
+                    else if (StringUtility.All(s, ' '))
                     {
                         if (length % 4 == 0)
                             return Whitespace("    ");

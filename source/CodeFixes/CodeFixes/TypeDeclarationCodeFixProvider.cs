@@ -114,12 +114,8 @@ namespace Roslynator.CSharp.CodeFixes
                 Identifier("Equals"),
                 ParameterList(Parameter(ObjectType(), parameterName)),
                 Block(
-                    IfNotReturnFalse(
-                        IsPatternExpression(
-                            IdentifierName(parameterName),
-                            DeclarationPattern(
-                                type,
-                                SingleVariableDesignation(Identifier(localName))))),
+                    LocalDeclarationStatement(VarType(), Identifier(localName), AsExpression(IdentifierName(parameterName), type)),
+                    IfNullReturnFalse(IdentifierName(localName)),
                     ThrowNewNotImplementedExceptionStatement()));
         }
 

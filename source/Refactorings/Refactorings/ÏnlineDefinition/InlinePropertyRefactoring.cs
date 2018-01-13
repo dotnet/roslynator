@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
         public override SyntaxNode BodyOrExpressionBody
         {
-            get { return Declaration.ExpressionBody ?? Declaration.AccessorList.Accessors[0].BodyOrExpressionBody(); }
+            get { return Declaration.ExpressionBody ?? (CSharpSyntaxNode)Declaration.AccessorList.Accessors[0].Body; }
         }
 
         public override ImmutableArray<ITypeSymbol> TypeArguments

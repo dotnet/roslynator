@@ -167,30 +167,30 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 : ImmutableArray<ParameterInfo>.Empty;
         }
 
-        protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(MethodDeclarationSyntax declaration)
+        protected override ExpressionOrStatements GetExpressionOrStatements(MethodDeclarationSyntax declaration)
         {
             BlockSyntax body = declaration.Body;
 
             if (body == null)
-                return (declaration.ExpressionBody?.Expression, default(SyntaxList<StatementSyntax>));
+                return new ExpressionOrStatements(declaration.ExpressionBody?.Expression);
 
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             if (!statements.Any())
-                return (null, default(SyntaxList<StatementSyntax>));
+                return default(ExpressionOrStatements);
 
             switch (statements.SingleOrDefault(shouldThrow: false))
             {
                 case ReturnStatementSyntax returnStatement:
-                    return (returnStatement.Expression, default(SyntaxList<StatementSyntax>));
+                    return new ExpressionOrStatements(returnStatement.Expression);
                 case ExpressionStatementSyntax expressionStatement:
-                    return (expressionStatement.Expression, default(SyntaxList<StatementSyntax>));
+                    return new ExpressionOrStatements(expressionStatement.Expression);
             }
 
             if (!declaration.ReturnsVoid())
-                return (null, default(SyntaxList<StatementSyntax>));
+                return default(ExpressionOrStatements);
 
-            return (null, statements);
+            return new ExpressionOrStatements(statements);
         }
 
         protected override InlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol> CreateRefactoring(

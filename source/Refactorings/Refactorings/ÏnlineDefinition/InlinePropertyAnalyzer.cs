@@ -87,32 +87,27 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             return ImmutableArray<ParameterInfo>.Empty;
         }
 
-        protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(PropertyDeclarationSyntax declaration)
+        protected override ExpressionOrStatements GetExpressionOrStatements(PropertyDeclarationSyntax declaration)
         {
             ArrowExpressionClauseSyntax expressionBody = declaration.ExpressionBody;
 
             if (expressionBody != null)
-                return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
+                return new ExpressionOrStatements(expressionBody.Expression);
 
             AccessorDeclarationSyntax accessor = declaration.AccessorList?.Accessors.SingleOrDefault(shouldThrow: false);
 
             if (accessor?.IsKind(SyntaxKind.GetAccessorDeclaration) != true)
-                return (null, default(SyntaxList<StatementSyntax>));
-
-            expressionBody = accessor.ExpressionBody;
-
-            if (expressionBody != null)
-                return (expressionBody.Expression, default(SyntaxList<StatementSyntax>));
+                return default(ExpressionOrStatements);
 
             switch (accessor.Body?.Statements.SingleOrDefault(shouldThrow: false))
             {
                 case ReturnStatementSyntax returnStatement:
-                    return (returnStatement.Expression, default(SyntaxList<StatementSyntax>));
+                    return new ExpressionOrStatements(returnStatement.Expression);
                 case ExpressionStatementSyntax expressionStatement:
-                    return (expressionStatement.Expression, default(SyntaxList<StatementSyntax>));
+                    return new ExpressionOrStatements(expressionStatement.Expression);
             }
 
-            return (null, default(SyntaxList<StatementSyntax>));
+            return default(ExpressionOrStatements);
         }
 
         protected override InlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol> CreateRefactoring(

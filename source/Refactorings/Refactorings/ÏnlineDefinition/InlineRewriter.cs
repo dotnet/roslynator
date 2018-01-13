@@ -75,6 +75,10 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             }
         }
 
+        public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
+        {
+            var newNode = (ForEachStatementSyntax)base.VisitForEachStatement(node);
+
             if (_replacementMap.TryGetValue(node, out object newValue))
             {
                 return newNode.WithIdentifier(SyntaxFactory.Identifier(newValue.ToString()));
@@ -84,9 +88,5 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 return newNode;
             }
         }
-
-        public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
-        {
-            var newNode = (ForEachStatementSyntax)base.VisitForEachStatement(node);
     }
 }

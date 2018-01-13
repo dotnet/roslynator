@@ -177,7 +177,7 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     default:
                         {
-                            Debug.Fail(expression.Kind().ToString());
+                            Debug.Assert(false, expression.Kind().ToString());
                             return null;
                         }
                 }

@@ -299,7 +299,7 @@ namespace Roslynator.CSharp
                     return Out();
             }
 
-            Debug.Fail(parameterSymbol.RefKind.ToString());
+            Debug.Assert(false, parameterSymbol.RefKind.ToString());
             return default(SyntaxTokenList);
         }
     }

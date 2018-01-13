@@ -271,15 +271,13 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 {
                     if (kind.Is(
                         SyntaxKind.VariableDeclarator,
-                        SyntaxKind.SingleVariableDesignation,
                         SyntaxKind.Parameter,
                         SyntaxKind.TypeParameter,
-                        SyntaxKind.ForEachStatement,
-                        SyntaxKind.ForEachVariableStatement))
+                        SyntaxKind.ForEachStatement))
                     {
                         ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, CancellationToken);
 
-                        Debug.Assert(symbol != null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
+                        Debug.Assert(symbol != null, kind.ToString());
 
                         if (symbol != null
                             && symbolMap.TryGetValue(symbol, out string name))

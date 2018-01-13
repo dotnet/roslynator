@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Syntax
                         }
                 }
 
-                Debug.Fail(Modifiers.ToString());
+                Debug.Assert(false, Modifiers.ToString());
 
                 return Accessibility.NotApplicable;
             }

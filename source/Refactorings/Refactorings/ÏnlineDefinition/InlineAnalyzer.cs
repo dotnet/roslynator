@@ -39,7 +39,10 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     return;
             }
 
-            (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) = GetExpressionOrStatements(declaration);
+            ExpressionOrStatements expressionOrStatements = GetExpressionOrStatements(declaration);
+
+            var expression = expressionOrStatements.Expression;
+            var statements = expressionOrStatements.Statements;
 
             if (expression != null
                 || (statements.Any() && node.IsParentKind(SyntaxKind.ExpressionStatement)))
@@ -84,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
         protected abstract ImmutableArray<ParameterInfo> GetParameterInfos(TNode node, TSymbol symbol);
 
-        protected abstract (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(TDeclaration declaration);
+        protected abstract ExpressionOrStatements GetExpressionOrStatements(TDeclaration declaration);
 
         protected abstract InlineRefactoring<TNode, TDeclaration, TSymbol> CreateRefactoring(
             Document document,
