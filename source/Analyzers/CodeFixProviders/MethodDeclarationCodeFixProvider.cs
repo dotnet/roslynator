@@ -53,10 +53,11 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 string oldName = methodDeclaration.Identifier.ValueText;
 
-                                string newName = await NameGenerators.AsyncMethod.EnsureUniqueMemberNameAsync(
+                                string newName = await WorkspaceNameGenerator.EnsureUniqueMemberNameAsync(
                                     oldName,
                                     methodSymbol,
                                     context.Solution(),
+                                    NameGenerators.AsyncMethod,
                                     cancellationToken: context.CancellationToken).ConfigureAwait(false);
 
                                 CodeAction codeAction = CodeAction.Create(
@@ -72,10 +73,11 @@ namespace Roslynator.CSharp.CodeFixes
                                 string name = methodDeclaration.Identifier.ValueText;
                                 string newName = name.Remove(name.Length - AsyncSuffix.Length);
 
-                                newName = await NameGenerator.Default.EnsureUniqueMemberNameAsync(
+                                newName = await WorkspaceNameGenerator.EnsureUniqueMemberNameAsync(
                                     newName,
                                     methodSymbol,
                                     context.Solution(),
+                                    NameGenerator.Default,
                                     cancellationToken: context.CancellationToken).ConfigureAwait(false);
 
                                 CodeAction codeAction = CodeAction.Create(

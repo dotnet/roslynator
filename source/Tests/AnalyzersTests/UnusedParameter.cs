@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
-#pragma warning disable CS8321, RCS1100, RCS1016, RCS1021, RCS1023, RCS1048, RCS1079, RCS1140, RCS1185, CS0168
+#pragma warning disable CS0168, CS8321, RCS1100, RCS1016, RCS1021, RCS1023, RCS1048, RCS1079, RCS1140, RCS1176, RCS1185
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -185,6 +187,25 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private interface IFoo
         {
             void Bar(object parameter);
+        }
+
+        private class ParameterNameConsistsOfUnderscore
+        {
+            public void Bar()
+            {
+                IEnumerable<string> items1 = new List<string>().OrderBy(_ => 0);
+
+                IEnumerable<string> items2 = new List<string>().Select((_, __) => "");
+            }
+
+            public void Bar(string _)
+            {
+
+            }
+
+            public void Bar(string _, object __)
+            {
+            }
         }
     }
 }

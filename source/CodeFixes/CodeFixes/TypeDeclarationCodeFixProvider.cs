@@ -6,9 +6,13 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Comparers;
-using static Roslynator.CSharp.CSharpSyntaxParts;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
+using static Roslynator.CSharp.CSharpSyntax;
+using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -97,6 +101,36 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static MethodDeclarationSyntax ObjectEqualsMethodDeclaration(
+            TypeSyntax type,
+            string parameterName = "obj",
+            string localName = "other")
+        {
+            return MethodDeclaration(
+                Modifiers.PublicOverride(),
+                BoolType(),
+                Identifier("Equals"),
+                ParameterList(Parameter(ObjectType(), parameterName)),
+                Block(
+                    IfNotReturnFalse(
+                        IsPatternExpression(
+                            IdentifierName(parameterName),
+                            DeclarationPattern(
+                                type,
+                                SingleVariableDesignation(Identifier(localName))))),
+                    ThrowNewNotImplementedExceptionStatement()));
+        }
+
+        private static MethodDeclarationSyntax ObjectGetHashCodeMethodDeclaration()
+        {
+            return MethodDeclaration(
+                Modifiers.PublicOverride(),
+                IntType(),
+                "GetHashCode",
+                ParameterList(),
+                Block(ThrowNewNotImplementedExceptionStatement()));
         }
     }
 }

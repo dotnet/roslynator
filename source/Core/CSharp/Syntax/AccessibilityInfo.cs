@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp.Helpers;
@@ -48,22 +49,44 @@ namespace Roslynator.CSharp.Syntax
                 if (TokenIndex == -1)
                     return Accessibility.NotApplicable;
 
-                if (SecondTokenIndex == -1)
+                switch (Token.Kind())
                 {
-                    switch (Token.Kind())
-                    {
-                        case SyntaxKind.PublicKeyword:
+                    case SyntaxKind.PublicKeyword:
+                        {
                             return Accessibility.Public;
-                        case SyntaxKind.PrivateKeyword:
-                            return Accessibility.Private;
-                        case SyntaxKind.InternalKeyword:
-                            return Accessibility.Internal;
-                        case SyntaxKind.ProtectedKeyword:
-                            return Accessibility.Protected;
-                    }
+                        }
+                    case SyntaxKind.PrivateKeyword:
+                        {
+                            return (SecondTokenIndex == -1)
+                                ? Accessibility.Private
+                                : Accessibility.ProtectedAndInternal;
+                        }
+                    case SyntaxKind.InternalKeyword:
+                        {
+                            return (SecondTokenIndex == -1)
+                                ? Accessibility.Internal
+                                : Accessibility.ProtectedOrInternal;
+                        }
+                    case SyntaxKind.ProtectedKeyword:
+                        {
+                            if (SecondTokenIndex == -1)
+                                return Accessibility.Protected;
+
+                            switch (SecondToken.Kind())
+                            {
+                                case SyntaxKind.PrivateKeyword:
+                                    return Accessibility.ProtectedAndInternal;
+                                case SyntaxKind.InternalKeyword:
+                                    return Accessibility.ProtectedOrInternal;
+                            }
+
+                            break;
+                        }
                 }
 
-                return Accessibility.ProtectedOrInternal;
+                Debug.Fail(Modifiers.ToString());
+
+                return Accessibility.NotApplicable;
             }
         }
 
@@ -92,27 +115,34 @@ namespace Roslynator.CSharp.Syntax
                 switch (modifiers[i].Kind())
                 {
                     case SyntaxKind.PublicKeyword:
+                        {
+                            return new AccessibilityInfo(node, modifiers, i);
+                        }
                     case SyntaxKind.PrivateKeyword:
-                        return new AccessibilityInfo(node, modifiers, i);
                     case SyntaxKind.InternalKeyword:
-                        return Create(node, modifiers, count, i, SyntaxKind.ProtectedKeyword);
+                        {
+                            for (int j = i + 1; j < count; j++)
+                            {
+                                if (modifiers[j].IsKind(SyntaxKind.ProtectedKeyword))
+                                    return new AccessibilityInfo(node, modifiers, i, j);
+                            }
+
+                            return new AccessibilityInfo(node, modifiers, i);
+                        }
                     case SyntaxKind.ProtectedKeyword:
-                        return Create(node, modifiers, count, i, SyntaxKind.InternalKeyword);
+                        {
+                            for (int j = i + 1; j < count; j++)
+                            {
+                                if (modifiers[j].IsKind(SyntaxKind.InternalKeyword, SyntaxKind.PrivateKeyword))
+                                    return new AccessibilityInfo(node, modifiers, i, j);
+                            }
+
+                            return new AccessibilityInfo(node, modifiers, i);
+                        }
                 }
             }
 
             return new AccessibilityInfo(node, modifiers, -1);
-        }
-
-        private static AccessibilityInfo Create(SyntaxNode node, SyntaxTokenList modifiers, int count, int i, SyntaxKind kind)
-        {
-            for (int j = i + 1; j < count; j++)
-            {
-                if (modifiers[j].Kind() == kind)
-                    return new AccessibilityInfo(node, modifiers, i, j);
-            }
-
-            return new AccessibilityInfo(node, modifiers, i);
         }
 
         public AccessibilityInfo WithModifiers(SyntaxTokenList newModifiers)

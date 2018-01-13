@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings.InlineMethod;
+using Roslynator.CSharp.Refactorings.InlineDefinition;
 
 namespace Roslynator.CSharp.Refactorings
 {

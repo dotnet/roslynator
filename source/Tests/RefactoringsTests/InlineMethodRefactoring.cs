@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static System.Math;
 
-#pragma warning disable RCS1138, RCS1141
+#pragma warning disable CS0219, RCS1118, RCS1138, RCS1141, RCS1163, RCS1196, RCS1213
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
@@ -19,6 +19,12 @@ namespace Roslynator.CSharp.Refactorings.Tests
             Entity x2 = null;
             Entity y = null;
             Entity z = null;
+            Entity item = null;
+            Entity item2 = null;
+            Entity tx = null;
+            Entity ty = null;
+            Entity tx2 = null;
+            Entity ty2 = null;
 
             Entity.VoidMethod(x, y);
 
@@ -103,6 +109,24 @@ namespace Roslynator.CSharp.Refactorings.Tests
                     var x2 = x;
                     var y2 = y;
                 };
+
+                var items = new List<string>();
+                foreach (var item in items)
+                {
+                    var item2 = item;
+                }
+
+                var items2 = new List<(int, int)>();
+                foreach ((var tx, var ty) in items2)
+                {
+                    var tx2 = tx;
+                    var ty2 = ty;
+                }
+
+                (int tx, int ty) GetTuple()
+                {
+                    return (0, 0);
+                }
             }
 #endif
             public static Entity MethodWithExpressionBody(Entity p1, Entity p2) => p1 + p2 + p2;

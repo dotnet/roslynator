@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
                 .FindToken(node.SpanStart)
                 .LeadingTrivia;
 
-            SyntaxTriviaList trivia = CSharpFormatter.IncreaseIndentation(leadingTrivia.LastOrDefault());
+            SyntaxTriviaList trivia = IncreaseIndentation(leadingTrivia.LastOrDefault());
 
             int count = constraintClauses.Count;
 

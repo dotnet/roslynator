@@ -51,7 +51,10 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConstantWithField)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment))
             {
                 return;
             }
@@ -161,20 +164,44 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.ExpressionBeingAssignedMustBeConstant:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstModifier))
+                            SyntaxNode parent = expression.Parent;
+
+                            if (parent?.IsKind(SyntaxKind.EqualsValueClause) != true)
                                 break;
 
-                            LocalDeclarationStatementSyntax localDeclarationStatement = GetLocalDeclarationStatement(expression);
+                            parent = parent.Parent;
 
-                            if (localDeclarationStatement == null)
+                            if (parent?.IsKind(SyntaxKind.VariableDeclarator) != true)
                                 break;
 
-                            SyntaxTokenList modifiers = localDeclarationStatement.Modifiers;
+                            parent = parent.Parent;
 
-                            if (!modifiers.Contains(SyntaxKind.ConstKeyword))
+                            if (!(parent is VariableDeclarationSyntax variableDeclaration))
                                 break;
 
-                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, localDeclarationStatement, SyntaxKind.ConstKeyword);
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstModifier)
+                                && variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclarationStatement)
+                            {
+                                SyntaxTokenList modifiers = localDeclarationStatement.Modifiers;
+
+                                if (!modifiers.Contains(SyntaxKind.ConstKeyword))
+                                    break;
+
+                                ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, localDeclarationStatement, SyntaxKind.ConstKeyword);
+                            }
+                            else if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConstantWithField)
+                                && variableDeclaration.Variables.Count == 1
+                                && (variableDeclaration.Parent is FieldDeclarationSyntax fieldDeclaration)
+                                && fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    ReplaceConstantWithFieldRefactoring.Title,
+                                    cancellationToken => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                                break;
+                            }
 
                             break;
                         }
@@ -235,7 +262,7 @@ namespace Roslynator.CSharp.CodeFixes
                                         SyntaxKind.IdentifierName,
                                         SyntaxKind.SimpleMemberAccessExpression))
                                 {
-                                    SyntaxNode invocationExpression = SyntaxFactory.InvocationExpression(expression);
+                                    SyntaxNode invocationExpression = InvocationExpression(expression);
 
                                     if (semanticModel.GetSpeculativeMethodSymbol(expression.SpanStart, invocationExpression) != null)
                                     {
@@ -246,6 +273,34 @@ namespace Roslynator.CSharp.CodeFixes
 
                                         context.RegisterCodeFix(codeAction, diagnostic);
                                     }
+                                }
+
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment)
+                                    && expression.IsKind(SyntaxKind.EqualsExpression))
+                                {
+                                    BinaryExpressionInfo info = SyntaxInfo.BinaryExpressionInfo(expression);
+
+                                    if (!info.Success)
+                                        break;
+
+                                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(info.Left, context.CancellationToken);
+
+                                    if (typeSymbol?.IsErrorType() != false)
+                                        break;
+
+                                    if (!semanticModel.IsImplicitConversion(info.Right, typeSymbol))
+                                        break;
+
+                                    CodeAction codeAction = CodeAction.Create(
+                                        "Replace comparison with assignment",
+                                        cancellationToken =>
+                                        {
+                                            AssignmentExpressionSyntax simpleAssignment = SimpleAssignmentExpression(info.Left, info.Right).WithTriviaFrom(expression);
+                                            return context.Document.ReplaceNodeAsync(expression, simpleAssignment, cancellationToken);
+                                        },
+                                        GetEquivalenceKey(diagnostic, CodeFixIdentifiers.ReplaceComparisonWithAssignment));
+
+                                    context.RegisterCodeFix(codeAction, diagnostic);
                                 }
 
                                 if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConditionalExpressionWithIfElse)
@@ -323,6 +378,14 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType:
                         {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)
+                                && expression.IsParentKind(SyntaxKind.YieldReturnStatement))
+                            {
+                                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                ReplaceYieldReturnWithForEachRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+                                break;
+                            }
+
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression)
                                 && expression.IsParentKind(SyntaxKind.ReturnStatement, SyntaxKind.YieldReturnStatement))
                             {
@@ -386,33 +449,6 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
-        }
-
-        private static LocalDeclarationStatementSyntax GetLocalDeclarationStatement(ExpressionSyntax expression)
-        {
-            SyntaxNode parent = expression.Parent;
-
-            if (parent?.IsKind(SyntaxKind.EqualsValueClause) == true)
-            {
-                parent = parent.Parent;
-
-                if (parent?.IsKind(SyntaxKind.VariableDeclarator) == true)
-                {
-                    parent = parent.Parent;
-
-                    if (parent?.IsKind(SyntaxKind.VariableDeclaration) == true)
-                    {
-                        parent = parent.Parent;
-
-                        if (parent?.IsKind(SyntaxKind.LocalDeclarationStatement) == true)
-                        {
-                            return (LocalDeclarationStatementSyntax)parent;
-                        }
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

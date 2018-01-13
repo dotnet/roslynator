@@ -11,8 +11,6 @@ namespace Roslynator.CSharp.CodeFixes
 {
     public abstract class AbstractCodeFixProvider : CodeFixProvider
     {
-        public const string EquivalenceKeyPrefix = "Roslynator.CSharp.CodeFixes";
-
         public override FixAllProvider GetFixAllProvider()
         {
             return WellKnownFixAllProviders.BatchFixer;

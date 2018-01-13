@@ -7,12 +7,19 @@ namespace Roslynator.CSharp.CodeFixes.Tests
         private class Foo
         {
             private string _property;
+            private string _property2;
 
             public string Property
             {
                 get { return _property; }; // CS1597
                 set { _property = value; }; // CS1597
             }
+
+            public string Property2
+            {
+                get { return _property2; }
+                set { _property2 = value; }
+            }; // CS1597
 
             public void Method()
             {

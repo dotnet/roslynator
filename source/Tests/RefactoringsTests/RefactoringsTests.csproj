@@ -25,6 +25,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\RefactoringsTests.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -37,6 +38,7 @@
   <ItemGroup>
     <Compile Include="AddMemberToInterface.cs" />
     <Compile Include="DocumentationRefactoring.cs" />
+    <Compile Include="InlinePropertyRefactoring.cs" />
     <Compile Include="InitializeFieldFromConstructorRefactoring.cs" />
     <Compile Include="MergeIfWithParentIf.cs" />
     <Compile Include="RemoveUnnecessaryElseClauseRefactoring.cs" />

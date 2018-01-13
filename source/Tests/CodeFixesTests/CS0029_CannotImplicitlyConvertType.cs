@@ -44,5 +44,12 @@ namespace Roslynator.CSharp.CodeFixes.Tests
             {
             }
         }
+
+        // n
+
+        private class Foo2
+        {
+            public const string Bar = new Bar();
+        }
     }
 }

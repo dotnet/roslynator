@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -64,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken = default(CancellationToken))
         {
             IfStatementSyntax newIfStatement = IfStatement(
-                CreateCondition(ifStatements),
+                BinaryExpression(SyntaxKind.LogicalOrExpression, ifStatements.Select(f => f.Condition)),
                 Block(CreateStatements(ifStatements)));
 
             SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
@@ -83,24 +84,31 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
 
-        private static BinaryExpressionSyntax CreateCondition(ImmutableArray<IfStatementSyntax> ifStatements)
+        private static BinaryExpressionSyntax BinaryExpression(SyntaxKind kind, IEnumerable<ExpressionSyntax> expressions)
         {
-            BinaryExpressionSyntax condition = LogicalOrExpression(
-                AddParenthesesIfNecessary(ifStatements[0].Condition),
-                AddParenthesesIfNecessary(ifStatements[1].Condition));
+            if (expressions == null)
+                throw new ArgumentNullException(nameof(expressions));
 
-            for (int i = 2; i < ifStatements.Length; i++)
-                condition = LogicalOrExpression(condition, AddParenthesesIfNecessary(ifStatements[i].Condition));
+            using (IEnumerator<ExpressionSyntax> en = expressions.GetEnumerator())
+            {
+                if (!en.MoveNext())
+                    throw new ArgumentException("Sequence cannot be empty.", nameof(expressions));
 
-            return condition;
-        }
+                ExpressionSyntax first = en.Current;
 
-        private static ExpressionSyntax AddParenthesesIfNecessary(ExpressionSyntax expression)
-        {
-            if (expression.IsKind(SyntaxKind.ConditionalExpression))
-                return ParenthesizedExpression(expression);
+                if (!en.MoveNext())
+                    throw new ArgumentException("Sequence must contain at least two elements.", nameof(expressions));
 
-            return expression;
+                BinaryExpressionSyntax binaryExpression = SyntaxFactory.BinaryExpression(
+                    kind,
+                    first.Parenthesize(),
+                    en.Current.Parenthesize());
+
+                while (en.MoveNext())
+                    binaryExpression = SyntaxFactory.BinaryExpression(kind, binaryExpression.Parenthesize(), en.Current.Parenthesize());
+
+                return binaryExpression;
+            }
         }
 
         private static List<StatementSyntax> CreateStatements(ImmutableArray<IfStatementSyntax> ifStatements)

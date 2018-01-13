@@ -76,10 +76,15 @@ namespace Roslynator.CSharp.Comparers
             if (values == null)
                 throw new ArgumentNullException(nameof(values));
 
-            for (int i = 0; i < values.Count - 1; i++)
+            int count = values.Count;
+
+            if (count > 1)
             {
-                if (Instance.Compare(values[i], values[i + 1]) > 0)
-                    return false;
+                for (int i = 0; i < count - 1; i++)
+                {
+                    if (Instance.Compare(values[i], values[i + 1]) > 0)
+                        return false;
+                }
             }
 
             return true;

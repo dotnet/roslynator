@@ -54,6 +54,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     case Accessibility.Private:
                     case Accessibility.Protected:
+                    case Accessibility.ProtectedAndInternal:
                     case Accessibility.ProtectedOrInternal:
                     case Accessibility.Internal:
                     case Accessibility.Public:

@@ -137,7 +137,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             Accessibility accessibility = accessedSymbol.DeclaredAccessibility;
 
-            if (accessibility == Accessibility.Protected)
+            if (accessibility == Accessibility.Protected
+                || accessibility == Accessibility.ProtectedAndInternal)
             {
                 INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
 

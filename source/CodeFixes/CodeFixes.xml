@@ -519,4 +519,24 @@
       <Id>CS1751</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0094" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
+    <FixableDiagnosticIds>
+      <Id>CS0133</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0095" Identifier="ReplaceStructWithClass" Title="Replace struct with class">
+    <FixableDiagnosticIds>
+      <Id>CS0527</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0096" Identifier="ReplaceYieldReturnWithForEach" Title="Replace yield return with foreach">
+    <FixableDiagnosticIds>
+      <Id>CS0029</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0097" Identifier="ReplaceComparisonWithAssignment" Title="Replace comparison with assignment">
+    <FixableDiagnosticIds>
+      <Id>CS0201</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

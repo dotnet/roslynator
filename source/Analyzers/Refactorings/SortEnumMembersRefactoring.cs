@@ -30,7 +30,9 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (members.Any())
+            int count = members.Count;
+
+            if (count > 1)
             {
                 IFieldSymbol firstField = semanticModel.GetDeclaredSymbol(members.First(), cancellationToken);
 
@@ -38,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     object previousValue = firstField.ConstantValue;
 
-                    for (int i = 1; i < members.Count - 1; i++)
+                    for (int i = 1; i < count - 1; i++)
                     {
                         IFieldSymbol field = semanticModel.GetDeclaredSymbol(members[i], cancellationToken);
 
@@ -51,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             i++;
 
-                            while (i < members.Count)
+                            while (i < count)
                             {
                                 if (semanticModel.GetDeclaredSymbol(members[i], cancellationToken)?.HasConstantValue != true)
                                     return false;

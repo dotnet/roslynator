@@ -59,11 +59,12 @@
     <Compile Include="CodeFixes\ObjectReferenceIsRequiredForNonStaticMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\MemberHidesInheritedMemberCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AddReturnStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixes\BaseTypeCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\TypeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\AssignmentExpressionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\BaseListCodeFixProvider.cs" />
     <Compile Include="CodeFixes\ModifiersCodeFixProvider.cs" />
     <Compile Include="CodeFixes\OperatorDeclarationCodeFixProvider.cs" />
+    <Compile Include="CodeFixes\BaseTypeCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeDoesNotContainDefinitionCodeFixProvider.cs" />
     <Compile Include="CodeFixes\TypeParameterCodeFixProvider.cs" />
@@ -109,6 +110,7 @@
     <Compile Include="Refactorings\ExtractDeclarationFromUsingStatementRefactoring.cs" />
     <Compile Include="Refactorings\MemberTypeMustMatchOverriddenMemberTypeRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceStringLiteralWithCharacterLiteralRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceYieldReturnWithForEachRefactoring.cs" />
     <Compile Include="Refactorings\UseYieldReturnInsteadOfReturnRefactoring.cs" />
     <Compile Include="CodeFixes\VariableDeclarationCodeFixProvider.cs" />
   </ItemGroup>
@@ -130,6 +132,10 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspaces\Workspaces.csproj">
+      <Project>{56da29a3-c179-471c-9941-42426eeb84d0}</Project>
+      <Name>Workspaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

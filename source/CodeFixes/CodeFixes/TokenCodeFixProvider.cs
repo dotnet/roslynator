@@ -301,6 +301,34 @@ namespace Roslynator.CSharp.CodeFixes
                                         context.RegisterCodeFix(codeAction, diagnostic);
                                         break;
                                     }
+                                case PropertyDeclarationSyntax propertyDeclaration:
+                                    {
+                                        AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
+
+                                        if (accessorList == null)
+                                            break;
+
+                                        CodeAction codeAction = CodeAction.Create(
+                                            "Remove semicolon",
+                                            cancellationToken =>
+                                            {
+                                                SyntaxTriviaList trivia = accessorList
+                                                    .GetTrailingTrivia()
+                                                    .EmptyIfWhitespace()
+                                                    .AddRange(token.LeadingTrivia.EmptyIfWhitespace())
+                                                    .AddRange(token.TrailingTrivia);
+
+                                                PropertyDeclarationSyntax newNode = propertyDeclaration
+                                                    .WithAccessorList(accessorList.WithTrailingTrivia(trivia))
+                                                    .WithSemicolonToken(default(SyntaxToken));
+
+                                                return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
+                                            },
+                                            GetEquivalenceKey(diagnostic));
+
+                                        context.RegisterCodeFix(codeAction, diagnostic);
+                                        break;
+                                    }
                                 case AccessorDeclarationSyntax accessorDeclaration:
                                     {
                                         BlockSyntax body = accessorDeclaration.Body;

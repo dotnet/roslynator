@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Format expression chain on multiple lines",
                             cancellationToken =>
                             {
-                                return CSharpFormatter.ToMultiLineAsync(
+                                return DocumentFormatter.ToMultiLineAsync(
                                     context.Document,
                                     expressions.ToArray(),
                                     cancellationToken);
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Format expression chain on a single line",
                             cancellationToken =>
                             {
-                                return CSharpFormatter.ToSingleLineAsync(
+                                return DocumentFormatter.ToSingleLineAsync(
                                     context.Document,
                                     expressions[0],
                                     cancellationToken);

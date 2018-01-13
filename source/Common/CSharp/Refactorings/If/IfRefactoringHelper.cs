@@ -58,11 +58,11 @@ namespace Roslynator.CSharp.Refactorings.If
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return CSharpUtility.LogicallyNegate(condition, semanticModel, cancellationToken);
+                                return LogicalNegationHelper.LogicallyNegate(condition, semanticModel, cancellationToken);
                             case SyntaxKind.FalseLiteralExpression:
                                 return expression2;
                             default:
-                                return LogicalAndExpression(CSharpUtility.LogicallyNegate(condition, semanticModel, cancellationToken), expression2);
+                                return LogicalAndExpression(LogicalNegationHelper.LogicallyNegate(condition, semanticModel, cancellationToken), expression2);
                         }
                     }
                 default:
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.If
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return LogicalOrExpression(CSharpUtility.LogicallyNegate(condition, semanticModel, cancellationToken), expression1);
+                                return LogicalOrExpression(LogicalNegationHelper.LogicallyNegate(condition, semanticModel, cancellationToken), expression1);
                             case SyntaxKind.FalseLiteralExpression:
                                 return LogicalAndExpression(condition, expression1);
                             default:

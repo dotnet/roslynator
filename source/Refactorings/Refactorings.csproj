@@ -53,10 +53,14 @@
     <Compile Include="Refactorings\FormatConstraintClausesRefactoring.cs" />
     <Compile Include="Refactorings\InitializeFieldFromConstructorRefactoring.cs" />
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\AbstractInlineMethodRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodRewriter.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodStatementsRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlinePropertyAnalyzer.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlinePropertyRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineMethodRefactoring.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineAnalyzer.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineRewriter.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\InlineMethodAnalyzer.cs" />
+    <Compile Include="Refactorings\ÏnlineDefinition\ParameterInfo.cs" />
     <Compile Include="Refactorings\InlineUsingStaticRefactoring.cs" />
     <Compile Include="Refactorings\AddTypeParameterRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.cs" />
@@ -91,7 +95,6 @@
     <Compile Include="Refactorings\GenerateOnEventMethodRefactoring.cs" />
     <Compile Include="Refactorings\CallToMethodRefactoring.cs" />
     <Compile Include="Refactorings\EventDeclarationRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\ParameterInfo.cs" />
     <Compile Include="Refactorings\InterpolationRefactoring.cs" />
     <Compile Include="Refactorings\AttributeListRefactoring.cs" />
     <Compile Include="RefactoringIdentifiers.Generated.cs" />
@@ -152,7 +155,6 @@
     <Compile Include="Refactorings\DirectiveTriviaRefactoring.cs" />
     <Compile Include="Refactorings\MergeIfStatementsRefactoring.cs" />
     <Compile Include="Refactorings\RemoveStatementsFromSwitchSectionsRefactoring.cs" />
-    <Compile Include="Refactorings\InlineMethod\InlineMethodRefactoring.cs" />
     <Compile Include="Refactorings\ReturnExpressionRefactoring.cs" />
     <Compile Include="Refactorings\ExtractCondition\ExtractConditionFromIfRefactoring.cs" />
     <Compile Include="Refactorings\WrapStatements\WrapStatementsRefactoring.cs" />
@@ -187,7 +189,6 @@
     <Compile Include="Refactorings\ReplaceStringLiteralRefactoring.cs" />
     <Compile Include="Refactorings\RemovePropertyInitializerRefactoring.cs" />
     <Compile Include="Refactorings\AddOrRemoveParameterName\AddOrRemoveParameterNameRefactoring.cs" />
-    <Compile Include="Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="Refactorings\ReplaceMethodWithProperty\ReplaceMethodWithPropertyRefactoring.cs" />
     <Compile Include="Refactorings\ReplacePropertyWithMethod\ReplacePropertyWithMethodRefactoring.cs" />
     <Compile Include="Refactorings\ExtractExpressionFromParenthesesRefactoring.cs" />
@@ -310,6 +311,10 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspaces\Workspaces.csproj">
+      <Project>{56da29a3-c179-471c-9941-42426eeb84d0}</Project>
+      <Name>Workspaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

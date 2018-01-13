@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.Refactorings.UseMethodChaining
 
             int index = statements.IndexOf(expressionStatement);
 
-            string indentation = CSharpFormatter.GetIncreasedIndentation(expressionStatement, cancellationToken).ToString();
+            string indentation = expressionStatement.GetIncreasedIndentation(cancellationToken).ToString();
 
             var sb = new StringBuilder(invocationExpression.ToString());
 

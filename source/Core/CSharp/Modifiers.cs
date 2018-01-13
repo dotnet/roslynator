@@ -40,6 +40,11 @@ namespace Roslynator.CSharp
             return TokenList(PrivateKeyword());
         }
 
+        public static SyntaxTokenList PrivateProtected()
+        {
+            return TokenList(PrivateKeyword(), ProtectedKeyword());
+        }
+
         public static SyntaxTokenList Virtual()
         {
             return TokenList(VirtualKeyword());
@@ -225,16 +230,6 @@ namespace Roslynator.CSharp
             return TokenList(PrivateKeyword(), StaticKeyword(), PartialKeyword());
         }
 
-        public static SyntaxTokenList Out()
-        {
-            return TokenList(OutKeyword());
-        }
-
-        public static SyntaxTokenList Ref()
-        {
-            return TokenList(RefKeyword());
-        }
-
         public static SyntaxTokenList FromAccessibility(Accessibility accessibility)
         {
             switch (accessibility)
@@ -252,13 +247,60 @@ namespace Roslynator.CSharp
                 case Accessibility.NotApplicable:
                     return default(SyntaxTokenList);
                 case Accessibility.ProtectedAndInternal:
-                    throw new NotSupportedException($"Value '{accessibility}' is not supported.)");
+                    return PrivateProtected();
                 default:
                     {
                         Debug.Assert(false, accessibility.ToString());
                         return default(SyntaxTokenList);
                     }
             }
+        }
+
+        public static SyntaxTokenList In()
+        {
+            return TokenList(InKeyword());
+        }
+
+        public static SyntaxTokenList Out()
+        {
+            return TokenList(OutKeyword());
+        }
+
+        public static SyntaxTokenList Ref()
+        {
+            return TokenList(RefKeyword());
+        }
+
+        public static SyntaxTokenList RefReadOnly()
+        {
+            return TokenList(RefKeyword(), ReadOnlyKeyword());
+        }
+
+        public static SyntaxTokenList Params()
+        {
+            return TokenList(ParamsKeyword());
+        }
+
+        internal static SyntaxTokenList FromParameterSymbol(IParameterSymbol parameterSymbol)
+        {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (parameterSymbol.IsParams)
+                return Params();
+
+            switch (parameterSymbol.RefKind)
+            {
+                case RefKind.None:
+                    return default(SyntaxTokenList);
+                case RefKind.Ref:
+                    return Ref();
+                case RefKind.Out:
+                    return Out();
+            }
+
+            Debug.Fail(parameterSymbol.RefKind.ToString());
+            return default(SyntaxTokenList);
         }
     }
 }

@@ -15,14 +15,6 @@ namespace Roslynator.CSharp
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
 
-        public static ExpressionSyntax LogicallyNegate(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return LogicalNegationHelper.LogicallyNegate(expression, semanticModel, cancellationToken);
-        }
-
         public static string GetCountOrLengthPropertyName(
             ExpressionSyntax expression,
             SemanticModel semanticModel,

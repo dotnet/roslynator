@@ -12,6 +12,8 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceConstantWithFieldRefactoring
     {
+        public const string Title = "Replace constant with field";
+
         public static async Task<Document> RefactorAsync(
             Document document,
             FieldDeclarationSyntax field,

@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.RemoveDefaultValueFromParameter;
+        = CodeFixIdentifiers.ReplaceComparisonWithAssignment;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -115,6 +115,10 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeForEachType, "Change foreach type (fixes CS0030)", IsEnabled(CodeFixIdentifiers.ChangeForEachType)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeTypeToVar, "Change type to var (fixes CS0029, CS0030)", IsEnabled(CodeFixIdentifiers.ChangeTypeToVar)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveDefaultValueFromParameter, "Remove default value from parameter (fixes CS1751)", IsEnabled(CodeFixIdentifiers.RemoveDefaultValueFromParameter)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceConstantWithField, "Replace constant with field (fixes CS0133)", IsEnabled(CodeFixIdentifiers.ReplaceConstantWithField)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceStructWithClass, "Replace struct with class (fixes CS0527)", IsEnabled(CodeFixIdentifiers.ReplaceStructWithClass)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceYieldReturnWithForEach, "Replace yield return with foreach (fixes CS0029)", IsEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceComparisonWithAssignment, "Replace comparison with assignment (fixes CS0201)", IsEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment)));
         }
     }
 }

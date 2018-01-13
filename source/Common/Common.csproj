@@ -59,6 +59,7 @@
     <Compile Include="CSharp\Refactorings\CallExtensionMethodAsInstanceMethodRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceAsWithCastRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\ReplaceCommentWithDocumentationCommentRefactoring.cs" />
+    <Compile Include="CSharp\Refactorings\ReplaceConstantWithFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseConstantInsteadOfFieldRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfElementAtRefactoring.cs" />
     <Compile Include="CSharp\Refactorings\UseElementAccessInsteadOfFirstRefactoring.cs" />
@@ -124,6 +125,10 @@
     <ProjectReference Include="..\Core\Core.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspaces\Workspaces.csproj">
+      <Project>{56da29a3-c179-471c-9941-42426eeb84d0}</Project>
+      <Name>Workspaces</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

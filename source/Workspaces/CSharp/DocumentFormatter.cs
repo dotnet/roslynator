@@ -15,7 +15,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    internal static class CSharpFormatter
+    internal static class DocumentFormatter
     {
         public static Task<Document> ToSingleLineAsync<TNode>(
             Document document,
@@ -27,7 +27,7 @@ namespace Roslynator.CSharp
             return document.ReplaceNodeAsync(condition, newNode, cancellationToken);
         }
 
-        public static TNode ToSingleLine<TNode>(TNode node) where TNode : SyntaxNode
+        private static TNode ToSingleLine<TNode>(TNode node) where TNode : SyntaxNode
         {
             return node
                 .RemoveWhitespaceOrEndOfLineTrivia(node.Span)
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp
 
         public static ConditionalExpressionSyntax ToMultiLine(ConditionalExpressionSyntax conditionalExpression, CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(conditionalExpression, cancellationToken);
+            SyntaxTriviaList leadingTrivia = conditionalExpression.GetIncreasedIndentation(cancellationToken);
 
             leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
@@ -135,7 +135,7 @@ namespace Roslynator.CSharp
 
         public static ParameterListSyntax ToMultiLine(ParameterListSyntax parameterList, CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(parameterList, cancellationToken);
+            SyntaxTriviaList leadingTrivia = parameterList.GetIncreasedIndentation(cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -184,10 +184,10 @@ namespace Roslynator.CSharp
             }
             else
             {
-                SyntaxTrivia trivia = GetIndentation(initializer, cancellationToken);
+                SyntaxTrivia trivia = initializer.GetIndentation(cancellationToken);
 
                 SyntaxTriviaList braceTrivia = TriviaList(NewLine(), trivia);
-                SyntaxTriviaList expressionTrivia = TriviaList(NewLine(), trivia, ComputeIndentation(trivia));
+                SyntaxTriviaList expressionTrivia = TriviaList(NewLine(), trivia, SingleIndentation(trivia));
 
                 return initializer
                     .WithExpressions(
@@ -210,7 +210,7 @@ namespace Roslynator.CSharp
 
         public static ArgumentListSyntax ToMultiLine(ArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(argumentList, cancellationToken);
+            SyntaxTriviaList leadingTrivia = argumentList.GetIncreasedIndentation(cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -245,7 +245,7 @@ namespace Roslynator.CSharp
         {
             MemberAccessExpressionSyntax expression = expressions[0];
 
-            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(expression, cancellationToken);
+            SyntaxTriviaList leadingTrivia = expression.GetIncreasedIndentation(cancellationToken);
 
             leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
@@ -280,7 +280,7 @@ namespace Roslynator.CSharp
 
         private static AttributeArgumentListSyntax ToMultiLine(AttributeArgumentListSyntax argumentList, CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(argumentList, cancellationToken);
+            SyntaxTriviaList leadingTrivia = argumentList.GetIncreasedIndentation(cancellationToken);
 
             var nodesAndTokens = new List<SyntaxNodeOrToken>();
 
@@ -313,7 +313,7 @@ namespace Roslynator.CSharp
             BinaryExpressionSyntax condition,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxTriviaList leadingTrivia = GetIncreasedIndentation(condition, cancellationToken);
+            SyntaxTriviaList leadingTrivia = condition.GetIncreasedIndentation(cancellationToken);
 
             leadingTrivia = leadingTrivia.Insert(0, NewLine());
 
@@ -355,82 +355,6 @@ namespace Roslynator.CSharp
             }
 
             return accessor;
-        }
-
-        private static SyntaxTrivia GetIndentation(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxTree tree = node.SyntaxTree;
-
-            if (tree != null)
-            {
-                TextSpan span = node.Span;
-
-                int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
-
-                while (!node.FullSpan.Contains(lineStartIndex))
-                    node = node.Parent;
-
-                SyntaxToken token = node.FindToken(lineStartIndex);
-
-                if (!token.IsKind(SyntaxKind.None))
-                {
-                    SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
-
-                    if (leadingTrivia.Any()
-                        && leadingTrivia.FullSpan.Contains(lineStartIndex))
-                    {
-                        SyntaxTrivia trivia = leadingTrivia.Last();
-
-                        if (trivia.IsWhitespaceTrivia())
-                            return trivia;
-                    }
-                }
-            }
-
-            return EmptyWhitespace();
-        }
-
-        internal static SyntaxTriviaList GetIncreasedIndentation(SyntaxNode node, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxTrivia trivia = GetIndentation(node, cancellationToken);
-
-            return IncreaseIndentation(trivia);
-        }
-
-        internal static SyntaxTriviaList IncreaseIndentation(SyntaxTrivia trivia)
-        {
-            return TriviaList(trivia, ComputeIndentation(trivia));
-        }
-
-        private static SyntaxTrivia ComputeIndentation(SyntaxTrivia trivia)
-        {
-            if (trivia.IsWhitespaceTrivia())
-            {
-                string s = trivia.ToString();
-
-                int length = s.Length;
-
-                if (length > 0)
-                {
-                    if (StringUtility.All(s, '\t'))
-                    {
-                        return Tab;
-                    }
-                    else if (StringUtility.All(s, ' '))
-                    {
-                        if (length % 4 == 0)
-                            return Whitespace("    ");
-
-                        if (length % 3 == 0)
-                            return Whitespace("   ");
-
-                        if (length % 2 == 0)
-                            return Whitespace("  ");
-                    }
-                }
-            }
-
-            return DefaultIndentation;
         }
     }
 }
