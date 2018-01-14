@@ -14,6 +14,8 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ReplaceMethodGroupWithLambdaRefactoring
     {
+        private const string Title = "Replace method group with lambda";
+
         public static async Task ComputeRefactoringAsync(RefactoringContext context, AssignmentExpressionSyntax assignment)
         {
             await ComputeRefactoringAsync(context, assignment.Right).ConfigureAwait(false);
@@ -26,80 +28,105 @@ namespace Roslynator.CSharp.Refactorings
 
         private static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (expression?.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression) == true
-                && context.Span.IsContainedInSpanOrBetweenSpans(expression))
+            if (expression == null)
+                return;
+
+            if (!expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))
+                return;
+
+            if (!context.Span.IsContainedInSpanOrBetweenSpans(expression))
+                return;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            var methodSymbol = semanticModel.GetSymbol(expression, context.CancellationToken) as IMethodSymbol;
+
+            if (methodSymbol == null)
+                return;
+
+            if (methodSymbol.IsImplicitlyDeclared)
+                return;
+
+            if (methodSymbol.PartialDefinitionPart != null)
+                return;
+
+            Debug.Assert(methodSymbol.DeclaringSyntaxReferences.Any());
+
+            SyntaxReference syntaxReference = methodSymbol.DeclaringSyntaxReferences.FirstOrDefault();
+
+            if (syntaxReference == null)
+                return;
+
+            SyntaxNode node = await syntaxReference.GetSyntaxAsync(context.CancellationToken).ConfigureAwait(false);
+
+            switch (node)
             {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                var methodSymbol = semanticModel.GetSymbol(expression, context.CancellationToken) as IMethodSymbol;
-
-                if (methodSymbol?.IsImplicitlyDeclared == false
-                    && methodSymbol.PartialDefinitionPart == null)
-                {
-                    Debug.Assert(methodSymbol.DeclaringSyntaxReferences.Any(), "");
-
-                    SyntaxReference syntaxReference = methodSymbol.DeclaringSyntaxReferences.FirstOrDefault();
-
-                    if (syntaxReference != null)
+                case MethodDeclarationSyntax methodDeclaration:
                     {
-                        SyntaxNode node = await syntaxReference.GetSyntaxAsync(context.CancellationToken).ConfigureAwait(false);
+                        if (methodDeclaration.ContainsYield())
+                            break;
 
-                        Debug.Assert(node.IsKind(SyntaxKind.MethodDeclaration), node.Kind().ToString());
+                        context.RegisterRefactoring(
+                            Title,
+                            cancellationToken => RefactorAsync(
+                                context.Document,
+                                expression,
+                                methodDeclaration.Modifiers,
+                                methodDeclaration.ParameterList,
+                                methodDeclaration.BodyOrExpressionBody(),
+                                cancellationToken));
 
-                        if (node.IsKind(SyntaxKind.MethodDeclaration))
-                        {
-                            var methodDeclaration = (MethodDeclarationSyntax)node;
-
-                            if (!methodDeclaration.ContainsYield())
-                            {
-                                context.RegisterRefactoring(
-                               $"Replace '{expression}' with lambda",
-                               cancellationToken => RefactorAsync(context.Document, expression, methodDeclaration, cancellationToken));
-                            }
-                        }
+                        break;
                     }
-                }
+                case LocalFunctionStatementSyntax localFunction:
+                    {
+                        if (localFunction.ContainsYield())
+                            break;
+
+                        context.RegisterRefactoring(
+                            Title,
+                            cancellationToken => RefactorAsync(
+                                context.Document,
+                                expression,
+                                localFunction.Modifiers,
+                                localFunction.ParameterList,
+                                localFunction.BodyOrExpressionBody(),
+                                cancellationToken));
+
+                        break;
+                    }
+                default:
+                    {
+                        Debug.Fail(node.Kind().ToString());
+                        break;
+                    }
             }
         }
 
         private static Task<Document> RefactorAsync(
             Document document,
             ExpressionSyntax expression,
-            MethodDeclarationSyntax methodDeclaration,
+            SyntaxTokenList modifiers,
+            ParameterListSyntax parameterList,
+            CSharpSyntaxNode bodyOrExpressionBody,
             CancellationToken cancellationToken)
         {
-            ParenthesizedLambdaExpressionSyntax lambda = CreateLambdaExpression(methodDeclaration)
+            ParenthesizedLambdaExpressionSyntax lambda = ParenthesizedLambdaExpression(
+                (modifiers.Contains(SyntaxKind.AsyncKeyword)) ? AsyncKeyword() : default(SyntaxToken),
+                parameterList,
+                EqualsGreaterThanToken(),
+                GetLambdaBody(bodyOrExpressionBody));
+
+            lambda = lambda
                 .WithTriviaFrom(expression)
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(expression, lambda, cancellationToken);
         }
 
-        private static ParenthesizedLambdaExpressionSyntax CreateLambdaExpression(MethodDeclarationSyntax methodDeclaration)
+        private static CSharpSyntaxNode GetLambdaBody(CSharpSyntaxNode bodyOrExpressionBody)
         {
-            CSharpSyntaxNode body = GetLambdaBody(methodDeclaration);
-
-            if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword))
-            {
-                return ParenthesizedLambdaExpression(
-                    AsyncKeyword(),
-                    methodDeclaration.ParameterList,
-                    EqualsGreaterThanToken(),
-                    body);
-            }
-            else
-            {
-                return ParenthesizedLambdaExpression(
-                    methodDeclaration.ParameterList,
-                    body);
-            }
-        }
-
-        private static CSharpSyntaxNode GetLambdaBody(MethodDeclarationSyntax methodDeclaration)
-        {
-            BlockSyntax body = methodDeclaration.Body;
-
-            if (body != null)
+            if (bodyOrExpressionBody is BlockSyntax body)
             {
                 StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
 
@@ -113,15 +140,13 @@ namespace Roslynator.CSharp.Refactorings
 
                 return body;
             }
-            else
+            else if (bodyOrExpressionBody is ArrowExpressionClauseSyntax expressionBody)
             {
-                ExpressionSyntax expression = methodDeclaration.ExpressionBody?.Expression;
+                ExpressionSyntax expression = expressionBody?.Expression;
 
                 if (expression?.IsMissing == false)
                     return expression;
             }
-
-            Debug.Fail(methodDeclaration.ToString());
 
             return Block();
         }
