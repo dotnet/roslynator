@@ -35,6 +35,13 @@ namespace Roslynator.CSharp.Refactorings.Tests
             Foo(f => f.ToLower());
 
             Changed += OnChanged;
+
+            Foo(LocalFunction);
+
+            string LocalFunction(string value)
+            {
+                return value.ToLower();
+            }
         }
 
         private void OnChanged(object sender, EventArgs e)

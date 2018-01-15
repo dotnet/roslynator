@@ -20,14 +20,16 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Comment out {member.GetTitle()}",
-                cancellationToken =>
-                {
-                    return RefactorAsync(
-                        context.Document,
-                        fileSpan.StartLine(),
-                        fileSpan.EndLine(),
-                        cancellationToken);
-                });
+                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken));
+        }
+
+        public static void RegisterRefactoring(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement)
+        {
+            FileLinePositionSpan fileSpan = GetFileLinePositionSpan(localFunctionStatement, context.CancellationToken);
+
+            context.RegisterRefactoring(
+                $"Comment out {localFunctionStatement.GetTitle()}",
+                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken));
         }
 
         public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
@@ -122,9 +124,9 @@ namespace Roslynator.CSharp.Refactorings
             return sb.ToString();
         }
 
-        private static FileLinePositionSpan GetFileLinePositionSpan(MemberDeclarationSyntax member, CancellationToken cancellationToken)
+        private static FileLinePositionSpan GetFileLinePositionSpan(SyntaxNode node, CancellationToken cancellationToken)
         {
-            SyntaxTrivia trivia = member
+            SyntaxTrivia trivia = node
                 .GetLeadingTrivia()
                 .Reverse()
                 .SkipWhile(f => f.IsWhitespaceOrEndOfLineTrivia())
@@ -132,13 +134,13 @@ namespace Roslynator.CSharp.Refactorings
 
             if (trivia.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
             {
-                TextSpan span = TextSpan.FromBounds(trivia.Span.Start, member.Span.End);
+                TextSpan span = TextSpan.FromBounds(trivia.Span.Start, node.Span.End);
 
-                return member.SyntaxTree.GetLineSpan(span, cancellationToken);
+                return node.SyntaxTree.GetLineSpan(span, cancellationToken);
             }
             else
             {
-                return member.SyntaxTree.GetLineSpan(member.Span, cancellationToken);
+                return node.SyntaxTree.GetLineSpan(node.Span, cancellationToken);
             }
         }
 
