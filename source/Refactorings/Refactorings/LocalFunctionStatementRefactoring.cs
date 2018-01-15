@@ -2,6 +2,7 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -10,6 +11,35 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement)
         {
+            if (localFunctionStatement.IsParentKind(SyntaxKind.Block))
+            {
+                BlockSyntax body = localFunctionStatement.Body;
+
+                if (body != null)
+                {
+                    if (body.OpenBraceToken.Span.Contains(context.Span)
+                        || body.CloseBraceToken.Span.Contains(context.Span))
+                    {
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
+                        {
+                            context.RegisterRefactoring(
+                                "Remove local function",
+                                cancellationToken => context.Document.RemoveStatementAsync(localFunctionStatement, cancellationToken));
+                        }
+
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
+                        {
+                            context.RegisterRefactoring(
+                                "Duplicate local function",
+                                cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken));
+                        }
+
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMember))
+                            CommentOutRefactoring.RegisterRefactoring(context, localFunctionStatement);
+                    }
+                }
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
                 AddTypeParameterRefactoring.ComputeRefactoring(context, localFunctionStatement);
 

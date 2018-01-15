@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -24,6 +25,33 @@ namespace Roslynator.CSharp.Refactorings
                 throw new ArgumentNullException(nameof(member));
 
             return document.ReplaceNodeAsync(member.Parent, Refactor(member), cancellationToken);
+        }
+
+        public static Task<Document> RefactorAsync(
+            Document document,
+            LocalFunctionStatementSyntax localFunction,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            if (document == null)
+                throw new ArgumentNullException(nameof(document));
+
+            if (localFunction == null)
+                throw new ArgumentNullException(nameof(localFunction));
+
+            StatementsInfo statementsInfos = SyntaxInfo.StatementsInfo(localFunction);
+
+            SyntaxList<StatementSyntax> statements = statementsInfos.Statements;
+            int index = statements.IndexOf(localFunction);
+
+            if (index == 0
+                && statementsInfos.Block.OpenBraceToken.GetFullSpanEndLine() == localFunction.GetFullSpanStartLine())
+            {
+                localFunction = localFunction.WithLeadingTrivia(localFunction.GetLeadingTrivia().Insert(0, NewLine()));
+            }
+
+            SyntaxList<StatementSyntax> newStatements = statements.Insert(index + 1, localFunction.WithNavigationAnnotation());
+
+            return document.ReplaceStatementsAsync(statementsInfos, newStatements, cancellationToken);
         }
 
         private static SyntaxNode Refactor(MemberDeclarationSyntax member)
