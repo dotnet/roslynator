@@ -1527,4 +1527,25 @@ else
       <Syntax>property access</Syntax>
     </Syntaxes>
   </Refactoring>
+  <Refactoring Id="RR0199" Identifier="RemoveEnumMemberValue" Title="Remove enum member value(s)">
+    <Syntaxes>
+      <Syntax>selected enum member(s)</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public enum Foo
+{
+    One = 1,
+    Two = 2,
+    Three = 3
+}]]></Before>
+        <After><![CDATA[public enum Foo
+{
+    One,
+    Two,
+    Three
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>
