@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Add body",
                                 createChangedDocument,
-                                GetEquivalenceKey(diagnostic));
+                                GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddBody));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
