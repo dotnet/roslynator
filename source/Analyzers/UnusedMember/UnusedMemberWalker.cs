@@ -169,6 +169,9 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
         public override void VisitArrayType(ArrayTypeSyntax node)
         {
+            foreach (ArrayRankSpecifierSyntax rankSpecifier in node.RankSpecifiers)
+                Visit(rankSpecifier);
+
             //base.VisitArrayType(node);
         }
 
