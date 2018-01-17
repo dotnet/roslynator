@@ -36,24 +36,24 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeAccessibility))
             {
-                AccessibilityFlags accessibilityFlags = ChangeAccessibilityRefactoring.GetAccessibilityFlags(selectedMembers);
+                AccessibilityFlags accessibilityFlags = ChangeAccessibilityRefactoring.GetAllowedAccessibilityFlags(selectedMembers, allowOverride: true);
 
                 if (accessibilityFlags != AccessibilityFlags.None)
                 {
-                    bool isAnyPartial = IsAnyPartial();
+                    bool canHaveMultipleDeclarations = CanHaveMultipleDeclarations();
 
-                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Public, isAnyPartial);
-                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Internal, isAnyPartial);
-                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Protected, isAnyPartial);
-                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Private, isAnyPartial);
+                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Public, canHaveMultipleDeclarations);
+                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Internal, canHaveMultipleDeclarations);
+                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Protected, canHaveMultipleDeclarations);
+                    TryRegisterRefactoring(accessibilityFlags, Accessibility.Private, canHaveMultipleDeclarations);
                 }
             }
 
-            void TryRegisterRefactoring(AccessibilityFlags accessibilityFlags, Accessibility accessibility, bool isAnyPartial)
+            void TryRegisterRefactoring(AccessibilityFlags accessibilityFlags, Accessibility accessibility, bool canHaveMultipleDeclarations)
             {
                 if ((accessibilityFlags & accessibility.GetAccessibilityFlag()) != 0)
                 {
-                    if (isAnyPartial)
+                    if (canHaveMultipleDeclarations)
                     {
                         context.RegisterRefactoring(
                             ChangeAccessibilityRefactoring.GetTitle(accessibility),
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            bool IsAnyPartial()
+            bool CanHaveMultipleDeclarations()
             {
                 foreach (MemberDeclarationSyntax member in selectedMembers)
                 {
@@ -101,7 +101,35 @@ namespace Roslynator.CSharp.Refactorings
                             }
                         case SyntaxKind.MethodDeclaration:
                             {
-                                if (((MethodDeclarationSyntax)member).Modifiers.Contains(SyntaxKind.PartialKeyword))
+                                if (((MethodDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.PartialKeyword, SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                                    return true;
+
+                                break;
+                            }
+                        case SyntaxKind.PropertyDeclaration:
+                            {
+                                if (((PropertyDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                                    return true;
+
+                                break;
+                            }
+                        case SyntaxKind.IndexerDeclaration:
+                            {
+                                if (((IndexerDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                                    return true;
+
+                                break;
+                            }
+                        case SyntaxKind.EventDeclaration:
+                            {
+                                if (((EventDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+                                    return true;
+
+                                break;
+                            }
+                        case SyntaxKind.EventFieldDeclaration:
+                            {
+                                if (((EventFieldDeclarationSyntax)member).Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
                                     return true;
 
                                 break;

@@ -4,12 +4,13 @@ using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Helpers
 {
     internal static class AllowedAccessibilityHelper
     {
-        public static bool IsAllowedAccessibility(SyntaxNode node, Accessibility accessibility)
+        public static bool IsAllowedAccessibility(SyntaxNode node, Accessibility accessibility, bool allowOverride = false)
         {
             switch (node.Parent?.Kind())
             {
@@ -40,61 +41,61 @@ namespace Roslynator.CSharp.Helpers
                     {
                         var eventDeclaration = (EventDeclarationSyntax)node;
 
-                        SyntaxTokenList modifiers = eventDeclaration.Modifiers;
+                        ModifiersInfo info = SyntaxInfo.ModifiersInfo(eventDeclaration);
 
-                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
-                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
-                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
+                        return (allowOverride || !info.HasOverride)
+                            && (!accessibility.IsPrivate() || !info.HasAbstractOrVirtualOrOverride)
+                            && CheckProtectedInStaticOrSealedClass(node, accessibility)
                             && CheckAccessorAccessibility(eventDeclaration.AccessorList, accessibility);
                     }
                 case SyntaxKind.IndexerDeclaration:
                     {
                         var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
-                        SyntaxTokenList modifiers = indexerDeclaration.Modifiers;
+                        ModifiersInfo info = SyntaxInfo.ModifiersInfo(indexerDeclaration);
 
-                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
-                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
-                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
+                        return (allowOverride || !info.HasOverride)
+                            && (!accessibility.IsPrivate() || !info.HasAbstractOrVirtualOrOverride)
+                            && CheckProtectedInStaticOrSealedClass(node, accessibility)
                             && CheckAccessorAccessibility(indexerDeclaration.AccessorList, accessibility);
                     }
                 case SyntaxKind.PropertyDeclaration:
                     {
                         var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
-                        SyntaxTokenList modifiers = propertyDeclaration.Modifiers;
+                        ModifiersInfo info = SyntaxInfo.ModifiersInfo(propertyDeclaration);
 
-                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
-                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
-                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility)
+                        return (allowOverride || !info.HasOverride)
+                            && (!accessibility.IsPrivate() || !info.HasAbstractOrVirtualOrOverride)
+                            && CheckProtectedInStaticOrSealedClass(node, accessibility)
                             && CheckAccessorAccessibility(propertyDeclaration.AccessorList, accessibility);
                     }
                 case SyntaxKind.MethodDeclaration:
                     {
                         var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                        SyntaxTokenList modifiers = methodDeclaration.Modifiers;
+                        ModifiersInfo info = SyntaxInfo.ModifiersInfo(methodDeclaration);
 
-                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
-                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
-                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
+                        return (allowOverride || !info.HasOverride)
+                            && (!accessibility.IsPrivate() || !info.HasAbstractOrVirtualOrOverride)
+                            && CheckProtectedInStaticOrSealedClass(node, accessibility);
                     }
                 case SyntaxKind.EventFieldDeclaration:
                     {
                         var eventFieldDeclaration = (EventFieldDeclarationSyntax)node;
 
-                        SyntaxTokenList modifiers = eventFieldDeclaration.Modifiers;
+                        ModifiersInfo info = SyntaxInfo.ModifiersInfo(eventFieldDeclaration);
 
-                        return !modifiers.Contains(SyntaxKind.OverrideKeyword)
-                            && CheckPrivateForAbstractOrVirtualMember(accessibility, modifiers)
-                            && CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
+                        return (allowOverride || !info.HasOverride)
+                            && (!accessibility.IsPrivate() || !info.HasAbstractOrVirtualOrOverride)
+                            && CheckProtectedInStaticOrSealedClass(node, accessibility);
                     }
                 case SyntaxKind.ConstructorDeclaration:
                 case SyntaxKind.DelegateDeclaration:
                 case SyntaxKind.FieldDeclaration:
                 case SyntaxKind.IncompleteMember:
                     {
-                        return CheckProtectedOrProtectedInternalInStaticOrSealedClass(node, accessibility);
+                        return CheckProtectedInStaticOrSealedClass(node, accessibility);
                     }
                 case SyntaxKind.OperatorDeclaration:
                 case SyntaxKind.ConversionOperatorDeclaration:
@@ -113,7 +114,7 @@ namespace Roslynator.CSharp.Helpers
 
                         if (memberDeclaration != null)
                         {
-                            if (!CheckProtectedOrProtectedInternalInStaticOrSealedClass(memberDeclaration, accessibility))
+                            if (!CheckProtectedInStaticOrSealedClass(memberDeclaration, accessibility))
                                 return false;
 
                             Accessibility declarationAccessibility = memberDeclaration.GetModifiers().GetAccessibility();
@@ -138,13 +139,7 @@ namespace Roslynator.CSharp.Helpers
             }
         }
 
-        private static bool CheckPrivateForAbstractOrVirtualMember(Accessibility accessibility, SyntaxTokenList modifiers)
-        {
-            return accessibility != Accessibility.Private
-                || !modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword);
-        }
-
-        private static bool CheckProtectedOrProtectedInternalInStaticOrSealedClass(SyntaxNode node, Accessibility accessibility)
+        private static bool CheckProtectedInStaticOrSealedClass(SyntaxNode node, Accessibility accessibility)
         {
             return !accessibility.ContainsProtected()
                 || (node.Parent as ClassDeclarationSyntax)?

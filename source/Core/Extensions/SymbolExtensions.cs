@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -355,12 +356,27 @@ namespace Roslynator
                 .GetSyntax(cancellationToken);
         }
 
+        internal static Task<SyntaxNode> GetSyntaxAsync(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return symbol
+                .DeclaringSyntaxReferences[0]
+                .GetSyntaxAsync(cancellationToken);
+        }
+
         internal static SyntaxNode GetSyntaxOrDefault(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
         {
             return symbol
                 .DeclaringSyntaxReferences
                 .FirstOrDefault()?
                 .GetSyntax(cancellationToken);
+        }
+
+        internal static Task<SyntaxNode> GetSyntaxOrDefaultAsync(this ISymbol symbol, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return symbol
+                .DeclaringSyntaxReferences
+                .FirstOrDefault()?
+                .GetSyntaxAsync(cancellationToken);
         }
 
         internal static bool TryGetSyntax<TNode>(this ISymbol symbol, out TNode node) where TNode : SyntaxNode
@@ -467,9 +483,61 @@ namespace Roslynator
                     return ImmutableArray<IParameterSymbol>.Empty;
             }
         }
+
+        public static ISymbol OverriddenSymbol(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            switch (symbol.Kind)
+            {
+                case SymbolKind.Method:
+                    return ((IMethodSymbol)symbol).OverriddenMethod;
+                case SymbolKind.Property:
+                    return ((IPropertySymbol)symbol).OverriddenProperty;
+                case SymbolKind.Event:
+                    return ((IEventSymbol)symbol).OverriddenEvent;
+            }
+
+            return null;
+        }
+
+        internal static ISymbol BaseOverriddenSymbol(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            switch (symbol.Kind)
+            {
+                case SymbolKind.Method:
+                    return ((IMethodSymbol)symbol).BaseOverriddenMethod();
+                case SymbolKind.Property:
+                    return ((IPropertySymbol)symbol).BaseOverriddenProperty();
+                case SymbolKind.Event:
+                    return ((IEventSymbol)symbol).BaseOverriddenEvent();
+            }
+
+            return null;
+        }
         #endregion ISymbol
 
         #region IEventSymbol
+        internal static IEventSymbol BaseOverriddenEvent(this IEventSymbol eventSymbol)
+        {
+            if (eventSymbol == null)
+                throw new ArgumentNullException(nameof(eventSymbol));
+
+            while (true)
+            {
+                IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
+
+                if (overriddenEvent == null)
+                    return eventSymbol;
+
+                eventSymbol = overriddenEvent;
+            }
+        }
+
         public static IEnumerable<IEventSymbol> OverriddenEvents(this IEventSymbol eventSymbol)
         {
             if (eventSymbol == null)
@@ -713,6 +781,22 @@ namespace Roslynator
         #endregion IFieldSymbol
 
         #region IMethodSymbol
+        internal static IMethodSymbol BaseOverriddenMethod(this IMethodSymbol methodSymbol)
+        {
+            if (methodSymbol == null)
+                throw new ArgumentNullException(nameof(methodSymbol));
+
+            while (true)
+            {
+                IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+
+                if (overriddenMethod == null)
+                    return methodSymbol;
+
+                methodSymbol = overriddenMethod;
+            }
+        }
+
         public static IEnumerable<IMethodSymbol> OverriddenMethods(this IMethodSymbol methodSymbol)
         {
             if (methodSymbol == null)
@@ -817,6 +901,22 @@ namespace Roslynator
         #endregion IParameterSymbol
 
         #region IPropertySymbol
+        internal static IPropertySymbol BaseOverriddenProperty(this IPropertySymbol propertySymbol)
+        {
+            if (propertySymbol == null)
+                throw new ArgumentNullException(nameof(propertySymbol));
+
+            while (true)
+            {
+                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+
+                if (overriddenProperty == null)
+                    return propertySymbol;
+
+                propertySymbol = overriddenProperty;
+            }
+        }
+
         public static IEnumerable<IPropertySymbol> OverriddenProperties(this IPropertySymbol propertySymbol)
         {
             if (propertySymbol == null)

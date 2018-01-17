@@ -517,9 +517,9 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        public static bool IsAllowedAccessibility(SyntaxNode node, Accessibility accessibility)
+        public static bool IsAllowedAccessibility(SyntaxNode node, Accessibility accessibility, bool allowOverride = false)
         {
-            return AllowedAccessibilityHelper.IsAllowedAccessibility(node, accessibility);
+            return AllowedAccessibilityHelper.IsAllowedAccessibility(node, accessibility, allowOverride: allowOverride);
         }
     }
 }

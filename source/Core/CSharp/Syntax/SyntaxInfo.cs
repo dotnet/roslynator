@@ -222,6 +222,36 @@ namespace Roslynator.CSharp.Syntax
                 allowMissing);
         }
 
+        internal static ModifiersInfo ModifiersInfo(SyntaxNode node)
+        {
+            return Syntax.ModifiersInfo.Create(node);
+        }
+
+        internal static ModifiersInfo ModifiersInfo(MethodDeclarationSyntax methodDeclaration)
+        {
+            return Syntax.ModifiersInfo.Create(methodDeclaration);
+        }
+
+        internal static ModifiersInfo ModifiersInfo(PropertyDeclarationSyntax propertyDeclaration)
+        {
+            return Syntax.ModifiersInfo.Create(propertyDeclaration);
+        }
+
+        internal static ModifiersInfo ModifiersInfo(IndexerDeclarationSyntax indexerDeclaration)
+        {
+            return Syntax.ModifiersInfo.Create(indexerDeclaration);
+        }
+
+        internal static ModifiersInfo ModifiersInfo(EventDeclarationSyntax eventDeclaration)
+        {
+            return Syntax.ModifiersInfo.Create(eventDeclaration);
+        }
+
+        internal static ModifiersInfo ModifiersInfo(EventFieldDeclarationSyntax eventFieldDeclaration)
+        {
+            return Syntax.ModifiersInfo.Create(eventFieldDeclaration);
+        }
+
         public static NullCheckExpressionInfo NullCheckExpressionInfo(
             SyntaxNode node,
             NullCheckKind allowedKinds = NullCheckKind.All,
