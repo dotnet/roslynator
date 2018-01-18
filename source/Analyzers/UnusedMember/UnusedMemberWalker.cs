@@ -826,11 +826,10 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
             base.VisitObjectCreationExpression(node);
         }
 
-        public override void VisitOmittedArraySizeExpression(OmittedArraySizeExpressionSyntax node)
-        {
-            Debug.Fail(node.ToString());
-            base.VisitOmittedArraySizeExpression(node);
-        }
+        //public override void VisitOmittedArraySizeExpression(OmittedArraySizeExpressionSyntax node)
+        //{
+        //    base.VisitOmittedArraySizeExpression(node);
+        //}
 
         public override void VisitOmittedTypeArgument(OmittedTypeArgumentSyntax node)
         {
