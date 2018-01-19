@@ -11,9 +11,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         private static void Foo()
         {
+            Debug.Assert(false);
             Debug.Assert(false, "message");
             Debug.Assert(false, "message", "detailMessage");
 
+            Assert(false);
             Assert(false, "message");
             Assert(false, "message", "detailMessage");
 
