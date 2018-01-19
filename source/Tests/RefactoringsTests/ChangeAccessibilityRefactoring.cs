@@ -2,6 +2,8 @@
 
 #pragma warning disable RCS1170
 
+using System;
+
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     public partial class ChangeAccessibilityRefactoring
@@ -29,5 +31,49 @@ namespace Roslynator.CSharp.Refactorings.Tests
 
         protected internal partial class Foo3 { }
         protected internal partial class Foo3 { }
+
+        private abstract class FooAbstract
+        {
+            public abstract void Method();
+
+            public abstract string Property { get; }
+
+            public abstract string this[int index] { get; }
+
+            public abstract event EventHandler Event;
+
+            public abstract event EventHandler Event2;
+
+            public override string ToString()
+            {
+                return null;
+            }
+        }
+
+        // abstract, virtual, override
+        private class FooDerived : FooAbstract
+        {
+            public override string this[int index] => throw new NotImplementedException();
+
+            public override string Property => throw new NotImplementedException();
+
+            public override void Method()
+            {
+                throw new NotImplementedException();
+            }
+
+            public override event EventHandler Event;
+
+            public override event EventHandler Event2
+            {
+                add { }
+                remove { }
+            }
+
+            public override string ToString()
+            {
+                return null;
+            }
+        }
     }
 }

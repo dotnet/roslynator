@@ -101,5 +101,6 @@ namespace Roslynator.CSharp.CodeFixes
         public const string ReplaceStructWithClass = Prefix + "0095";
         public const string ReplaceYieldReturnWithForEach = Prefix + "0096";
         public const string ReplaceComparisonWithAssignment = Prefix + "0097";
+        public const string AddModifierAbstract = Prefix + "0098";
     }
 }

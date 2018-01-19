@@ -539,4 +539,9 @@
       <Id>CS0201</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0098" Identifier="AddModifierAbstract" Title="Add modifier 'abstract'">
+    <FixableDiagnosticIds>
+      <Id>CS0501</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

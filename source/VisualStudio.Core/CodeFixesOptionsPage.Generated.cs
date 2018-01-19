@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.ReplaceComparisonWithAssignment;
+        = CodeFixIdentifiers.AddModifierAbstract;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -119,6 +119,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceStructWithClass, "Replace struct with class (fixes CS0527)", IsEnabled(CodeFixIdentifiers.ReplaceStructWithClass)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceYieldReturnWithForEach, "Replace yield return with foreach (fixes CS0029)", IsEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceComparisonWithAssignment, "Replace comparison with assignment (fixes CS0201)", IsEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddModifierAbstract, "Add modifier 'abstract' (fixes CS0501)", IsEnabled(CodeFixIdentifiers.AddModifierAbstract)));
         }
     }
 }

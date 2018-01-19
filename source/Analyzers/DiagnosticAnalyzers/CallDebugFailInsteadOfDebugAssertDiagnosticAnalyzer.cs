@@ -24,7 +24,15 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeInvocationExpression, SyntaxKind.InvocationExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                INamedTypeSymbol debugSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Diagnostics_Debug);
+
+                if (debugSymbol == null)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocationExpression(nodeContext, debugSymbol), SyntaxKind.InvocationExpression);
+            });
         }
     }
 }

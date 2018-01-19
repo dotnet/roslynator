@@ -1,3 +1,22 @@
+### 1.6.30 (2018-01-19)
+
+* Add support for 'private protected' accessibility.
+
+#### Analyzers
+
+* Do not report unused parameter (RCS1163) when parameter name consists of underscore(s).
+
+#### Refactorings
+
+* Add refactoring [InlineProperty](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0198.md) (RR0198).
+* Add refactoring [RemoveEnumMemberValue](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0199.md) (RR0199).
+* Remove, duplicate or comment out local function.
+* Change accessibility for selected members.
+
+#### Code Fixes
+
+* Add code fixes for CS0029, CS0133, CS0201, CS0501, CS0527.
+
 ### 1.6.20 (2018-01-03)
 
 #### Analyzers

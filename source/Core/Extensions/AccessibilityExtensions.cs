@@ -48,6 +48,36 @@ namespace Roslynator
                 || accessibility == accessibility6;
         }
 
+        public static bool IsPublic(this Accessibility accessibility)
+        {
+            return accessibility == Accessibility.Public;
+        }
+
+        public static bool IsInternal(this Accessibility accessibility)
+        {
+            return accessibility == Accessibility.Internal;
+        }
+
+        public static bool IsProtectedInternal(this Accessibility accessibility)
+        {
+            return accessibility == Accessibility.ProtectedOrInternal;
+        }
+
+        public static bool IsProtected(this Accessibility accessibility)
+        {
+            return accessibility == Accessibility.Protected;
+        }
+
+        public static bool IsPrivateProtected(this Accessibility accessibility)
+        {
+            return accessibility == Accessibility.ProtectedAndInternal;
+        }
+
+        public static bool IsPrivate(this Accessibility accessibility)
+        {
+            return accessibility == Accessibility.Private;
+        }
+
         internal static bool ContainsProtected(this Accessibility accessibility)
         {
             return accessibility.Is(Accessibility.Protected, Accessibility.ProtectedAndInternal, Accessibility.ProtectedOrInternal);

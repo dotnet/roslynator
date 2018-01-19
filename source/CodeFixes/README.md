@@ -10,6 +10,7 @@
 | RCF0023 | Add comparison with boolean literal | [CS0019](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019), [CS0266](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266) | &#x2713; |
 | RCF0016 | Add documentation comment | [CS1591](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591) | &#x2713; |
 | RCF0086 | Add missing type | [CS1031](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1031) | &#x2713; |
+| RCF0098 | Add modifier 'abstract' | [CS0501](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501) | &#x2713; |
 | RCF0007 | Add 'new' modifier | [CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114) | &#x2713; |
 | RCF0004 | Add 'out' modifier to argument | [CS1620](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620) | &#x2713; |
 | RCF0006 | Add 'override' modifier | [CS0114](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114) | &#x2713; |
@@ -80,11 +81,15 @@
 | RCF0054 | Reorder modifiers | [CS0267](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267) | &#x2713; |
 | RCF0074 | Replace as expression with cast expression | [CS0077](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077) | &#x2713; |
 | RCF0079 | Replace 'break' with 'continue' | [CS0139](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139) | &#x2713; |
+| RCF0097 | Replace comparison with assignment | [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201) | &#x2713; |
 | RCF0087 | Replace conditional expression with if\-else | [CS0201](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201) | &#x2713; |
+| RCF0094 | Replace constant with field | [CS0133](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133) | &#x2713; |
 | RCF0077 | Replace element access with invocation | [CS0021](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021) | &#x2713; |
 | RCF0058 | Replace 'null' with default value | [CS0037](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037), [CS0403](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403), [CS1503](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1503), CS1750 | &#x2713; |
 | RCF0022 | Replace string literal with character literal | [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029) | &#x2713; |
+| RCF0095 | Replace struct with class | [CS0527](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0527) | &#x2713; |
 | RCF0059 | Replace variable declaration with assignment | [CS0128](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128), [CS0136](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136) | &#x2713; |
+| RCF0096 | Replace yield return with foreach | [CS0029](http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029) | &#x2713; |
 | RCF0081 | Return default value | [CS0126](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0126) | &#x2713; |
 | RCF0036 | SynchronizeAccessibility | [CS0262](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0262) | &#x2713; |
 | RCF0017 | Unreachable code detected | [CS0162](http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0162) | &#x2713; |

@@ -44,6 +44,7 @@
     <Compile Include="AddBracesToDeclarationOrLabeledStatement.cs" />
     <Compile Include="AddBreakStatementToSwitchSection.cs" />
     <Compile Include="CS0133_ExpressionBeingAssignedMustBeConstant.cs" />
+    <Compile Include="CS0501_MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial.cs" />
     <Compile Include="CS0527_TypeInInterfaceListIsNotInterface.cs" />
     <Compile Include="CS1751_CannotSpecifyDefaultValueForParameterArray.cs" />
     <Compile Include="CS0029_CannotImplicitlyConvertType.cs" />
