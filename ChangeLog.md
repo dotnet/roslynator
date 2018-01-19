@@ -15,7 +15,7 @@
 
 #### Code Fixes
 
-* Add code fix for CS0029, CS0133, CS0201, CS0501, CS0527.
+* Add code fixes for CS0029, CS0133, CS0201, CS0501, CS0527.
 
 ### 1.6.20 (2018-01-03)
 
