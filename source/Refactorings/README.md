@@ -65,6 +65,7 @@
 | RR0061 | [Inline alias expression](../../docs/refactorings/RR0061.md) | &#x2713; |
 | RR0181 | [Inline constant](../../docs/refactorings/RR0181.md) | &#x2713; |
 | RR0062 | [Inline method](../../docs/refactorings/RR0062.md) | &#x2713; |
+| RR0198 | [Inline property](../../docs/refactorings/RR0198.md) | &#x2713; |
 | RR0180 | [Inline using static](../../docs/refactorings/RR0180.md) | &#x2713; |
 | RR0063 | [Insert string interpolation](../../docs/refactorings/RR0063.md) | &#x2713; |
 | RR0064 | [Introduce and initialize field](../../docs/refactorings/RR0064.md) | &#x2713; |
@@ -106,6 +107,7 @@
 | RR0099 | [Remove condition from last else clause](../../docs/refactorings/RR0099.md) | &#x2713; |
 | RR0100 | [Remove directive and related directives](../../docs/refactorings/RR0100.md) | &#x2713; |
 | RR0101 | [Remove empty lines](../../docs/refactorings/RR0101.md) | &#x2713; |
+| RR0199 | [Remove enum member value(s)](../../docs/refactorings/RR0199.md) | &#x2713; |
 | RR0102 | [Remove interpolation](../../docs/refactorings/RR0102.md) | &#x2713; |
 | RR0103 | [Remove member](../../docs/refactorings/RR0103.md) | &#x2713; |
 | RR0104 | [Remove member declarations above/below](../../docs/refactorings/RR0104.md) | &#x2713; |
