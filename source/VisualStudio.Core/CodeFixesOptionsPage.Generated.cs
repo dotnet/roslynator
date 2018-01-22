@@ -72,7 +72,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.UseExplicitTypeInsteadOfVar, "Use explicit type instead of 'var' (fixes CS0819, CS0822)", IsEnabled(CodeFixIdentifiers.UseExplicitTypeInsteadOfVar)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveAwaitKeyword, "Remove 'await' keyword (fixes CS1061)", IsEnabled(CodeFixIdentifiers.RemoveAwaitKeyword)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.WrapInUnsafeStatement, "Wrap in unsafe statement (fixes CS0214)", IsEnabled(CodeFixIdentifiers.WrapInUnsafeStatement)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddUnsafeModifier, "Add 'unsafe' modifier (fixes CS0214)", IsEnabled(CodeFixIdentifiers.AddUnsafeModifier)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeContainingDeclarationUnsafe, "Make containing declaration unsafe (fixes CS0214)", IsEnabled(CodeFixIdentifiers.MakeContainingDeclarationUnsafe)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveReturnKeyword, "Remove 'return' keyword (fixes CS0127, CS1997)", IsEnabled(CodeFixIdentifiers.RemoveReturnKeyword)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveParametersFromStaticConstructor, "Remove parameters from static constructor (fixes CS0132)", IsEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReorderModifiers, "Reorder modifiers (fixes CS0267)", IsEnabled(CodeFixIdentifiers.ReorderModifiers)));

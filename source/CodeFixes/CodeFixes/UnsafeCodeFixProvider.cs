@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             if (!Settings.IsAnyCodeFixEnabled(
                 CodeFixIdentifiers.WrapInUnsafeStatement,
-                CodeFixIdentifiers.AddUnsafeModifier))
+                CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
             {
                 return;
             }
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fMemberDeclaration = true;
 
-                                    if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddUnsafeModifier))
+                                    if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
                                         continue;
 
                                     if (!ancestor.Kind().SupportsModifiers())
@@ -104,8 +104,8 @@ namespace Roslynator.CSharp.CodeFixes
                                         diagnostic,
                                         ancestor,
                                         SyntaxKind.UnsafeKeyword,
-                                        title: "Add 'unsafe' modifier to containing declaration",
-                                        additionalKey: CodeFixIdentifiers.AddUnsafeModifier);
+                                        title: "Make containing declaration unsafe",
+                                        additionalKey: CodeFixIdentifiers.MakeContainingDeclarationUnsafe);
                                 }
                             }
 
