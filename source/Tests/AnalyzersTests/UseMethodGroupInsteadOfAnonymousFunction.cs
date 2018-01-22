@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-#pragma warning disable CS0219, RCS1016, RCS1021, RCS1048, RCS1118, RCS1163, RCS1175, RCS1176, RCS1196
+#pragma warning disable CS0219, RCS1016, RCS1021, RCS1048, RCS1118, RCS1127, RCS1163, RCS1175, RCS1176, RCS1196, RCS1213
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -153,24 +153,40 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 {
                     f.Do();
                 });
+
+                Func<string> func = null;
+
+                func = () => Foo.StaticGetString();
+                func = delegate () { return Foo.StaticGetString(); };
+
+                //n
+
+                Foo foo = null;
+
+                func = () => foo.GetString();
+                func = delegate () { return foo.GetString(); };
             }
 
-            //n
+            private string GetString()
+            {
+                return null;
+            }
+
+            private static string StaticGetString()
+            {
+                return null;
+            }
 
             private void FunctionToAction()
             {
-                string s = "";
-
-                Action action = () => s.GetHashCode();
+                Action action = () => GetHashCode();
             }
 
             private void FunctionToAction(Action action)
             {
                 action();
 
-                string s = "";
-
-                FunctionToAction(() => s.GetHashCode());
+                FunctionToAction(() => GetHashCode());
             }
         }
 

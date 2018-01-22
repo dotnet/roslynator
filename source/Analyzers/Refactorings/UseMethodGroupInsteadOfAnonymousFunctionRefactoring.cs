@@ -35,10 +35,15 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            var methodSymbol = semanticModel.GetSymbol(invocationExpression, cancellationToken) as IMethodSymbol;
-
-            if (methodSymbol == null)
+            if (!(semanticModel.GetSymbol(invocationExpression, cancellationToken) is IMethodSymbol methodSymbol))
                 return;
+
+            if (!methodSymbol.IsStatic
+                && expression.Kind() != SyntaxKind.IdentifierName
+                && !ExpressionIsParameter(expression, lambda.Parameter))
+            {
+                return;
+            }
 
             bool isReduced = methodSymbol.MethodKind == MethodKind.ReducedExtension;
 
@@ -105,10 +110,15 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            var methodSymbol = semanticModel.GetSymbol(invocationExpression, cancellationToken) as IMethodSymbol;
-
-            if (methodSymbol == null)
+            if (!(semanticModel.GetSymbol(invocationExpression, cancellationToken) is IMethodSymbol methodSymbol))
                 return;
+
+            if (!methodSymbol.IsStatic
+                && expression.Kind() != SyntaxKind.IdentifierName
+                && !ExpressionIsParameter(expression, lambda.ParameterList))
+            {
+                return;
+            }
 
             ImmutableArray<IParameterSymbol> parameterSymbols = methodSymbol.Parameters;
 
@@ -185,10 +195,15 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            var methodSymbol = semanticModel.GetSymbol(invocationExpression, cancellationToken) as IMethodSymbol;
-
-            if (methodSymbol == null)
+            if (!(semanticModel.GetSymbol(invocationExpression, cancellationToken) is IMethodSymbol methodSymbol))
                 return;
+
+            if (!methodSymbol.IsStatic
+                && expression.Kind() != SyntaxKind.IdentifierName
+                && !ExpressionIsParameter(expression, anonymousMethod.ParameterList))
+            {
+                return;
+            }
 
             ImmutableArray<IParameterSymbol> parameterSymbols = methodSymbol.Parameters;
 
@@ -246,6 +261,38 @@ namespace Roslynator.CSharp.Refactorings
             context.ReportDiagnostic(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, anonymousMethod);
 
             FadeOut(context, null, parameterList, anonymousMethod.Block, argumentList, anonymousMethod.DelegateKeyword, memberAccessExpression);
+        }
+
+        private static bool ExpressionIsParameter(
+            ExpressionSyntax expression,
+            ParameterSyntax parameter)
+        {
+            return expression.Kind() == SyntaxKind.SimpleMemberAccessExpression
+                && ((MemberAccessExpressionSyntax)expression).Expression is IdentifierNameSyntax identifierName
+                && identifierName.Identifier.ValueText == parameter.Identifier.ValueText;
+        }
+
+        private static bool ExpressionIsParameter(
+            ExpressionSyntax expression,
+            ParameterListSyntax parameterList)
+        {
+            if (expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+            {
+                var memberAccessExpfression = (MemberAccessExpressionSyntax)expression;
+
+                if (memberAccessExpfression.Expression is IdentifierNameSyntax identifierName)
+                {
+                    string name = identifierName.Identifier.ValueText;
+
+                    foreach (ParameterSyntax parameter in parameterList.Parameters)
+                    {
+                        if (name == parameter.Identifier.ValueText)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private static bool CheckInvokeMethod(
