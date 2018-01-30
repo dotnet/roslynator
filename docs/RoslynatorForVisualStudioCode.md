@@ -26,16 +26,16 @@
 
 6. Create file at **%USERPROFILE%/.omnisharp/omnisharp.json** with following content:
 
-```json
-{
-    "RoslynExtensionsOptions": {
-        "LocationPaths": [
-            "C:/lib/roslynator"
-        ]
-    }
-}
-```
+   ```json
+   {
+     "RoslynExtensionsOptions": {
+       "LocationPaths": [
+         "C:/lib/roslynator"
+       ]
+     }
+   }
+   ```
 
-See [OmniSharp Wiki](http://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options) for detail information about configuration options.
+   See [OmniSharp Wiki](http://github.com/OmniSharp/omnisharp-roslyn/wiki/Configuration-Options) for detail information about configuration options.
 
 7. Restart VS Code.
