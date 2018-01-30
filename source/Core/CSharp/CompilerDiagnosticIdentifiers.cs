@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
     {
         public const string OperatorCannotBeAppliedToOperands = "CS0019";
         public const string CannotApplyIndexingToExpression = "CS0021";
-        public const string OperatorCannotBeAppliedToOperandOfType = "CS0023";
+        public const string OperatorCannotBeAppliedToOperand = "CS0023";
         public const string CannotImplicitlyConvertType = "CS0029";
         public const string CannotConvertType = "CS0030";
         public const string CannotConvertNullToTypeBecauseItIsNonNullableValueType = "CS0037";
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp
         public const string VariableIsDeclaredButNeverUsed = "CS0168";
         public const string TypeOfConditionalExpressionCannotBeDetermined = "CS0173";
         public const string OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod = "CS0177";
-        public const string ReadOnlyFieldCannotBeUsedAsRefOrOutValue = "CS0192";
+        public const string ReadOnlyFieldCannotBePassedAsRefOrOutValue = "CS0192";
         public const string OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement = "CS0201";
         public const string PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext = "CS0214";
         public const string OperatorRequiresMatchingOperatorToAlsoBeDefined = "CS0216";
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp
         public const string CannotImplicitlyConvertTypeExplicitConversionExists = "CS0266";
         public const string PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid = "CS0267";
         public const string AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface = "CS0275";
-        public const string UsingGenericTypeRequiresTypeArguments = "CS0305";
+        public const string UsingGenericTypeRequiresNumberOfTypeArguments = "CS0305";
         public const string NewConstraintMustBeLastConstraintSpecified = "CS0401";
         public const string CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType = "CS0403";
         public const string DuplicateConstraintForTypeParameter = "CS0405";
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp
         public const string StaticClassCannotDeriveFromType = "CS0713";
         public const string StaticTypesCannotBeUsedAsTypeArguments = "CS0718";
         public const string PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers = "CS0750";
-        public const string PartialMethodMustBeDeclaredWithinPartialClassOrPartialStruct = "CS0751";
+        public const string PartialMethodMustBeDeclaredInPartialClassOrPartialStruct = "CS0751";
         public const string OnlyMethodsClassesStructsOrInterfacesMayBePartial = "CS0753";
         public const string PartialMethodMayNotHaveMultipleDefiningDeclarations = "CS0756";
         public const string NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod = "CS0759";
@@ -117,8 +117,8 @@ namespace Roslynator.CSharp
         public const string MissingXmlCommentForPubliclyVisibleTypeOrMember = "CS1591";
         public const string SemicolonAfterMethodOrAccessorBlockIsNotValid = "CS1597";
         public const string ModifiersCannotBePlacedOnEventAccessorDeclarations = "CS1609";
-        public const string ArgumentMayNotBePassedWithRefKeyword = "CS1615";
-        public const string ArgumentMustBePassedWithOutKeyword = "CS1620";
+        public const string ArgumentShouldNotBePassedWithRefOrOutKeyword = "CS1615";
+        public const string ArgumentMustBePassedWithRefOrOutKeyword = "CS1620";
         public const string YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression = "CS1621";
         public const string CannotReturnValueFromIterator = "CS1622";
         public const string IteratorsCannotHaveRefOrOutParameters = "CS1623";

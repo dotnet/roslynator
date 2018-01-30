@@ -172,6 +172,23 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
+        public static string CreateCompilerDiagnosticMarkdown(CompilerDiagnosticDescriptor diagnostic, IEnumerable<CodeFixDescriptor> codeFixes, IComparer<string> comparer)
+        {
+            MDocument document = Document(
+                Heading1(diagnostic.Id),
+                Table(
+                    TableRow("Id", diagnostic.Id),
+                    TableRow("Title", diagnostic.Title),
+                    TableRow("Severity", diagnostic.Severity),
+                    (!string.IsNullOrEmpty(diagnostic.HelpUrl)) ? TableRow("Official Documentation", Link("link", diagnostic.HelpUrl)) : null),
+                Heading2("Code Fixes"),
+                BulletList(codeFixes
+                    .Where(f => f.FixableDiagnosticIds.Any(diagnosticId => diagnosticId == diagnostic.Id))
+                    .Select(f => f.Title)
+                    .OrderBy(f => f, comparer)));
+            return document.ToString(MarkdownFormat.Default.WithTableOptions(MarkdownFormat.Default.TableOptions | TableOptions.FormatContent));
+        }
+
         public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
             MDocument document = Document(
@@ -207,47 +224,24 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString();
         }
 
-        public static string CreateCodeFixesReadMe(IEnumerable<CodeFixDescriptor> codeFixes, IEnumerable<CompilerDiagnosticDescriptor> diagnostics, IComparer<string> comparer)
+        public static string CreateCodeFixesReadMe(IEnumerable<CompilerDiagnosticDescriptor> diagnostics, IComparer<string> comparer)
         {
             MDocument document = Document(
-                Heading2("Roslynator Code Fixes"),
+                Heading2("Compiler Diagnostics Fixable with Roslynator"),
                 Table(
-                    TableRow("Id", "Title", "Fixable Diagnostics", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
-                    codeFixes.OrderBy(f => f.Title, comparer).Select(f =>
-                    {
-                        return TableRow(
-                            f.Id,
-                            f.Title.TrimEnd('.'),
-                            Join(new MText(", "), f.FixableDiagnosticIds.Join(diagnostics, x => x, y => y.Id, (x, y) => LinkOrText(x, y.HelpUrl))),
-                            CheckboxOrHyphen(f.IsEnabledByDefault));
-                    })));
-
-            return document.ToString();
-        }
-
-        public static string CreateCodeFixesByDiagnosticId(IEnumerable<CodeFixDescriptor> codeFixes, IEnumerable<CompilerDiagnosticDescriptor> diagnostics)
-        {
-            MDocument document = Document(
-                Heading2("Roslynator Code Fixes by Diagnostic Id"),
-                Table(
-                    TableRow("Diagnostic", "Code Fixes"),
+                    TableRow("Id", "Title"),
                     GetRows()));
 
             return document.ToString();
 
             IEnumerable<MTableRow> GetRows()
             {
-                foreach (var grouping in codeFixes
-                    .SelectMany(codeFix => codeFix.FixableDiagnosticIds.Select(diagnosticId => new { DiagnosticId = diagnosticId, CodeFixDescriptor = codeFix }))
-                    .OrderBy(f => f.DiagnosticId)
-                    .ThenBy(f => f.CodeFixDescriptor.Id)
-                    .GroupBy(f => f.DiagnosticId))
+                foreach (CompilerDiagnosticDescriptor diagnostic in diagnostics
+                    .OrderBy(f => f.Id, comparer))
                 {
-                    CompilerDiagnosticDescriptor diagnostic = diagnostics.FirstOrDefault(f => f.Id == grouping.Key);
-
                     yield return TableRow(
-                        LinkOrText(diagnostic?.Id ?? grouping.Key, diagnostic?.HelpUrl),
-                        string.Join(", ", grouping.Select(f => f.CodeFixDescriptor.Id)));
+                        Link(diagnostic.Id, $"../../docs/cs/{diagnostic.Id}.md"),
+                        diagnostic.Title);
                 }
             }
         }

@@ -1,133 +1,913 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Diagnostics>
-  <Diagnostic Id="CS0019" Identifier="OperatorCannotBeAppliedToOperands" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019" />
-  <Diagnostic Id="CS0021" Identifier="CannotApplyIndexingToExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021" />
-  <Diagnostic Id="CS0023" Identifier="OperatorCannotBeAppliedToOperandOfType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023" />
-  <Diagnostic Id="CS0029" Identifier="CannotImplicitlyConvertType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029" />
-  <Diagnostic Id="CS0030" Identifier="CannotConvertType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0030" />
-  <Diagnostic Id="CS0037" Identifier="CannotConvertNullToTypeBecauseItIsNonNullableValueType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0037" />
-  <Diagnostic Id="CS0069" Identifier="EventInInterfaceCannotHaveAddOrRemoveAccessors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0069" />
-  <Diagnostic Id="CS0077" Identifier="AsOperatorMustBeUsedWithReferenceTypeOrNullableType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077" />
-  <Diagnostic Id="CS0080" Identifier="ConstraintsAreNotAllowedOnNonGenericDeclarations" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0080" />
-  <Diagnostic Id="CS0101" Identifier="NamespaceAlreadyContainsDefinition" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0101" />
-  <Diagnostic Id="CS0102" Identifier="TypeAlreadyContainsDefinition" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0102" />
-  <Diagnostic Id="CS0103" Identifier="NameDoesNotExistInCurrentContext" HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0103" />
-  <Diagnostic Id="CS0106" Identifier="ModifierIsNotValidForThisItem" HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0106" />
-  <Diagnostic Id="CS0107" Identifier="MoreThanOneProtectionModifier" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0107" />
-  <Diagnostic Id="CS0108" Identifier="MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0108" />
-  <Diagnostic Id="CS0109" Identifier="MemberDoesNotHideAccessibleMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0109" />
-  <Diagnostic Id="CS0112" Identifier="StaticMemberCannotBeMarkedOverrideVirtualOrAbstract" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0112" />
-  <Diagnostic Id="CS0114" Identifier="MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114" />
-  <Diagnostic Id="CS0115" Identifier="NoSuitableMethodFoundToOverride" HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0115" />
-  <Diagnostic Id="CS0120" Identifier="ObjectReferenceIsRequiredForNonStaticMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0120" />
-  <Diagnostic Id="CS0123" Identifier="NoOverloadMatchesDelegate" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123" />
-  <Diagnostic Id="CS0126" Identifier="ObjectOfTypeConvertibleToTypeIsRequired" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0126" />
-  <Diagnostic Id="CS0127" Identifier="SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127" />
-  <Diagnostic Id="CS0128" Identifier="LocalVariableOrFunctionIsAlreadyDefinedInThisScope" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128" />
-  <Diagnostic Id="CS0132" Identifier="StaticConstructorMustBeParameterless" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0132" />
-  <Diagnostic Id="CS0133" Identifier="ExpressionBeingAssignedMustBeConstant" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133" />
-  <Diagnostic Id="CS0136" Identifier="LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136" />
-  <Diagnostic Id="CS0139" Identifier="NoEnclosingLoopOutOfWhichToBreakOrContinue" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139" />
-  <Diagnostic Id="CS0161" Identifier="NotAllCodePathsReturnValue" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0161" />
-  <Diagnostic Id="CS0162" Identifier="UnreachableCodeDetected" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0162" />
-  <Diagnostic Id="CS0163" Identifier="ControlCannotFallThroughFromOneCaseLabelToAnother" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0163" />
-  <Diagnostic Id="CS0164" Identifier="LabelHasNotBeenReferenced" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0164" />
-  <Diagnostic Id="CS0165" Identifier="UseOfUnassignedLocalVariable" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0165" />
-  <Diagnostic Id="CS0168" Identifier="VariableIsDeclaredButNeverUsed" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0168" />
-  <Diagnostic Id="CS0173" Identifier="TypeOfConditionalExpressionCannotBeDetermined" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0173" />
-  <Diagnostic Id="CS0177" Identifier="OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0177" />
-  <Diagnostic Id="CS0192" Identifier="ReadOnlyFieldCannotBeUsedAsRefOrOutValue" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0192" />
-  <Diagnostic Id="CS0201" Identifier="OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201" />
-  <Diagnostic Id="CS0214" Identifier="PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0214" />
-  <Diagnostic Id="CS0216" Identifier="OperatorRequiresMatchingOperatorToAlsoBeDefined" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0216" />
-  <Diagnostic Id="CS0219" Identifier="VariableIsAssignedButItsValueIsNeverUsed" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0219" />
-  <Diagnostic Id="CS0221" Identifier="ConstantValueCannotBeConverted" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0221" />
-  <Diagnostic Id="CS0225" Identifier="ParamsParameterMustBeSingleDimensionalArray" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225" />
-  <Diagnostic Id="CS0246" Identifier="TypeOrNamespaceNameCouldNotBeFound" HelpUrl="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0246" />
-  <Diagnostic Id="CS0262" Identifier="PartialDeclarationsHaveConfictingAccessibilityModifiers" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0262" />
-  <Diagnostic Id="CS0260" Identifier="MissingPartialModifier" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0260" />
-  <Diagnostic Id="CS0266" Identifier="CannotImplicitlyConvertTypeExplicitConversionExists" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266" />
-  <Diagnostic Id="CS0267" Identifier="PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267" />
-  <Diagnostic Id="CS0275" Identifier="AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0275" />
-  <Diagnostic Id="CS0305" Identifier="UsingGenericTypeRequiresTypeArguments" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0305" />
-  <Diagnostic Id="CS0401" Identifier="NewConstraintMustBeLastConstraintSpecified" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0401" />
-  <Diagnostic Id="CS0403" Identifier="CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403" />
-  <Diagnostic Id="CS0405" Identifier="DuplicateConstraintForTypeParameter" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0405" />
-  <Diagnostic Id="CS0407" Identifier="MethodHasWrongReturnType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0407" />
-  <Diagnostic Id="CS0409" Identifier="ConstraintClauseHasAlreadyBeenSpecified" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0409" />
-  <Diagnostic Id="CS0428" Identifier="CannotConvertMethodGroupToNonDelegateType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428" />
-  <Diagnostic Id="CS0441" Identifier="ClassCannotBeBothStaticAndSealed" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0441" />
-  <Diagnostic Id="CS0442" Identifier="AbstractPropertiesCannotHavePrivateAccessors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0442" />
-  <Diagnostic Id="CS0449" Identifier="ClassOrStructConstraintMustComeBeforeAnyOtherConstraints" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0449" />
-  <Diagnostic Id="CS0450" Identifier="CannotSpecifyBothConstraintClassAndClassOrStructConstraint" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0450" />
-  <Diagnostic Id="CS0451" Identifier="NewConstraintCannotBeUsedWithStructConstraint" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0451" />
-  <Diagnostic Id="CS0472" Identifier="ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0472" />
-  <Diagnostic Id="CS0500" Identifier="MemberCannotDeclareBodyBecauseItIsMarkedAbstract" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0500" />
-  <Diagnostic Id="CS0501" Identifier="MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501" />
-  <Diagnostic Id="CS0507" Identifier="CannotChangeAccessModifiersWhenOverridingInheritedMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0507" />
-  <Diagnostic Id="CS0508" Identifier="MethodReturnTypeMustMatchOverriddenMethodReturnType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0508" />
-  <Diagnostic Id="CS0513" Identifier="MemberIsAbstractButItIsContainedInNonAbstractClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0513" />
-  <Diagnostic Id="CS0515" Identifier="AccessModifiersAreNotAllowedOnStaticConstructors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0515" />
-  <Diagnostic Id="CS0527" Identifier="TypeInInterfaceListIsNotInterface" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0527" />
-  <Diagnostic Id="CS0531" Identifier="InterfaceMembersCannotHaveDefinition" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0531" />
-  <Diagnostic Id="CS0541" Identifier="ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0541" />
-  <Diagnostic Id="CS0558" Identifier="UserDefinedOperatorMustBeDeclaredStaticAndPublic" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0558" />
-  <Diagnostic Id="CS0573" Identifier="CannotHaveInstancePropertyOrFieldInitializersInStruct" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0573" />
-  <Diagnostic Id="CS0579" Identifier="DuplicateAttribute" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0579" />
-  <Diagnostic Id="CS0592" Identifier="AttributeIsNotValidOnThisDeclarationType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0592" />
-  <Diagnostic Id="CS0621" Identifier="VirtualOrAbstractmembersCannotBePrivate " HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0621" />
-  <Diagnostic Id="CS0628" Identifier="NewProtectedMemberDeclaredInSealedClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628" />
-  <Diagnostic Id="CS0659" Identifier="TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0659" />
-  <Diagnostic Id="CS0660" Identifier="TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0660" />
-  <Diagnostic Id="CS0661" Identifier="TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0661" />
-  <Diagnostic Id="CS0678" Identifier="FieldCanNotBeBothVolatileAndReadOnly" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0678" />
-  <Diagnostic Id="CS0693" Identifier="TypeParameterHasSameNameAsTypeParameterFromOuterType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0693" />
-  <Diagnostic Id="CS0708" Identifier="CannotDeclareInstanceMembersInStaticClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0708" />
-  <Diagnostic Id="CS0710" Identifier="StaticClassesCannotHaveInstanceConstructors" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0710" />
-  <Diagnostic Id="CS0713" Identifier="StaticClassCannotDeriveFromType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0713" />
-  <Diagnostic Id="CS0718" Identifier="StaticTypesCannotBeUsedAsTypeArguments" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0718" />
-  <Diagnostic Id="CS0750" Identifier="PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0750" />
-  <Diagnostic Id="CS0751" Identifier="PartialMethodMustBeDeclaredWithinPartialClassOrPartialStruct" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0751" />
-  <Diagnostic Id="CS0753" Identifier="OnlyMethodsClassesStructsOrInterfacesMayBePartial" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0753" />
-  <Diagnostic Id="CS0756" Identifier="PartialMethodMayNotHaveMultipleDefiningDeclarations" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756" />
-  <Diagnostic Id="CS0759" Identifier="NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0759" />
-  <Diagnostic Id="CS0766" Identifier="PartialMethodsMustHaveVoidReturnType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0766" />
-  <Diagnostic Id="CS0815" Identifier="CannotAssignMethodGroupToImplicitlyTypedVariable" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0815" />
-  <Diagnostic Id="CS0819" Identifier="ImplicitlyTypedVariablesCannotHaveMultipleDeclarators" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0819" />
-  <Diagnostic Id="CS0822" Identifier="ImplicitlyTypedVariablesCannotBeConstant" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0822" />
-  <Diagnostic Id="CS1002" Identifier="SemicolonExpected" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1002" />
-  <Diagnostic Id="CS1004" Identifier="DuplicateModifier" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1004" />
-  <Diagnostic Id="CS1023" Identifier="EmbeddedStatementCannotBeDeclarationOrLabeledStatement" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1023" />
-  <Diagnostic Id="CS1031" Identifier="TypeExpected" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1031" />
-  <Diagnostic Id="CS1057" Identifier="StaticClassesCannotContainProtectedMembers" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057" />
-  <Diagnostic Id="CS1061" Identifier="TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061" />
-  <Diagnostic Id="CS1100" Identifier="MethodHasParameterModifierThisWhichIsNotOnFirstParameter" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100" />
-  <Diagnostic Id="CS1105" Identifier="ExtensionMethodMustBeStatic" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105" />
-  <Diagnostic Id="CS1106" Identifier="ExtensionMethodMustBeDefinedInNonGenericStaticClass" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106" />
-  <Diagnostic Id="CS1503" Identifier="CannotConvertArgumentType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1503" />
-  <Diagnostic Id="CS1522" Identifier="EmptySwitchBlock" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522" />
-  <Diagnostic Id="CS1526" Identifier="NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526" />
-  <Diagnostic Id="CS1527" Identifier="ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527" />
-  <Diagnostic Id="CS1591" Identifier="MissingXmlCommentForPubliclyVisibleTypeOrMember" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591" />
-  <Diagnostic Id="CS1597" Identifier="SemicolonAfterMethodOrAccessorBlockIsNotValid" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1597" />
-  <Diagnostic Id="CS1609" Identifier="ModifiersCannotBePlacedOnEventAccessorDeclarations" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609" />
-  <Diagnostic Id="CS1615" Identifier="ArgumentMayNotBePassedWithRefKeyword" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615" />
-  <Diagnostic Id="CS1620" Identifier="ArgumentMustBePassedWithOutKeyword" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620" />
-  <Diagnostic Id="CS1621" Identifier="YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1621" />
-  <Diagnostic Id="CS1622" Identifier="CannotReturnValueFromIterator" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1622" />
-  <Diagnostic Id="CS1623" Identifier="IteratorsCannotHaveRefOrOutParameters" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1623" />
-  <Diagnostic Id="CS1643" Identifier="NotAllCodePathsReturnValueInAnonymousFunction" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1643" />
-  <Diagnostic Id="CS1674" Identifier="TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1674" />
-  <Diagnostic Id="CS1689" Identifier="AttributeIsOnlyValidOnMethodsOrAttributeClasses" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1689" />
-  <Diagnostic Id="CS1715" Identifier="MemberTypeMustMatchOverriddenMemberType" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1715" />
-  <Diagnostic Id="CS1717" Identifier="AssignmentMadeToSameVariable" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1717" />
-  <Diagnostic Id="CS1722" Identifier="BaseClassMustComeBeforeAnyInterface" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722" />
-  <Diagnostic Id="CS1750" Identifier="ValueCannotBeUsedAsDefaultParameter" HelpUrl="" />
-  <Diagnostic Id="CS1751" Identifier="CannotSpecifyDefaultValueForParameterArray" HelpUrl="" />
-  <Diagnostic Id="CS1955" Identifier="NonInvocableMemberCannotBeUsedLikeMethod" HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955" />
-  <Diagnostic Id="CS1994" Identifier="AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody" HelpUrl="" />
-  <Diagnostic Id="CS1997" Identifier="SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression" HelpUrl="" />
-  <Diagnostic Id="CS1988" Identifier="AsyncMethodsCannotHaveRefOrOutParameters" HelpUrl="" />
-  <Diagnostic Id="CS8070" Identifier="ControlCannotFallOutOfSwitchFromFinalCaseLabel" HelpUrl="" />
-  <Diagnostic Id="CS8112" Identifier="LocalFunctionMustAlwaysHaveBody" HelpUrl="" />
+  <Diagnostic
+    Id="CS0019"
+    Identifier="OperatorCannotBeAppliedToOperands"
+    Severity="Error"
+    Title="Operator 'operator' cannot be applied to operands of type 'type' and 'type'."
+    Message="Operator '{0}' cannot be applied to operands of type '{1}' and '{2}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0019" />
+  <Diagnostic
+    Id="CS0021"
+    Identifier="CannotApplyIndexingToExpression"
+    Severity="Error"
+    Title="Cannot apply indexing with [] to an expression of type 'type'."
+    Message="Cannot apply indexing with [] to an expression of type '{0}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0021" />
+  <Diagnostic
+    Id="CS0023"
+    Identifier="OperatorCannotBeAppliedToOperand"
+    Severity="Error"
+    Title="Operator 'operator' cannot be applied to operand of type 'type'."
+    Message="Operator '{0}' cannot be applied to operand of type '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0023" />
+  <Diagnostic
+    Id="CS0029"
+    Identifier="CannotImplicitlyConvertType"
+    Severity="Error"
+    Title="Cannot implicitly convert type 'type' to 'type'."
+    Message="Cannot implicitly convert type '{0}' to '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0029" />
+  <Diagnostic
+    Id="CS0030"
+    Identifier="CannotConvertType"
+    Severity="Error"
+    Title="Cannot convert type 'type' to 'type'."
+    Message="Cannot convert type '{0}' to '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0030" />
+  <Diagnostic
+    Id="CS0037"
+    Identifier="CannotConvertNullToTypeBecauseItIsNonNullableValueType"
+    Severity="Error"
+    Title="Cannot convert null to 'type' because it is a non-nullable value type."
+    Message="Cannot convert null to '{0}' because it is a non-nullable value type"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0037" />
+  <Diagnostic
+    Id="CS0069"
+    Identifier="EventInInterfaceCannotHaveAddOrRemoveAccessors"
+    Severity="Error"
+    Title="An event in an interface cannot have add or remove accessors."
+    Message="An event in an interface cannot have add or remove accessors"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0069" />
+  <Diagnostic
+    Id="CS0077"
+    Identifier="AsOperatorMustBeUsedWithReferenceTypeOrNullableType"
+    Severity="Error"
+    Title="The as operator must be used with a reference type or nullable type ('type' is a non-nullable value type)."
+    Message="The as operator must be used with a reference type or nullable type ('{0}' is a non-nullable value type)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0077" />
+  <Diagnostic
+    Id="CS0080"
+    Identifier="ConstraintsAreNotAllowedOnNonGenericDeclarations"
+    Severity="Error"
+    Title="Constraints are not allowed on non-generic declarations."
+    Message="Constraints are not allowed on non-generic declarations"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0080" />
+  <Diagnostic
+    Id="CS0101"
+    Identifier="NamespaceAlreadyContainsDefinition"
+    Severity="Error"
+    Title="The namespace 'namespace' already contains a definition for 'type'."
+    Message="The namespace '{1}' already contains a definition for '{0}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0101" />
+  <Diagnostic
+    Id="CS0102"
+    Identifier="TypeAlreadyContainsDefinition"
+    Severity="Error"
+    Title="The type 'type name' already contains a definition for 'identifier'."
+    Message="The type '{0}' already contains a definition for '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0102" />
+  <Diagnostic
+    Id="CS0103"
+    Identifier="NameDoesNotExistInCurrentContext"
+    Severity="Error"
+    Title="The name 'identifier' does not exist in the current context."
+    Message="The name '{0}' does not exist in the current context"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0103" />
+  <Diagnostic
+    Id="CS0106"
+    Identifier="ModifierIsNotValidForThisItem"
+    Severity="Error"
+    Title="The modifier 'modifier' is not valid for this item."
+    Message="The modifier '{0}' is not valid for this item"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0106" />
+  <Diagnostic
+    Id="CS0107"
+    Identifier="MoreThanOneProtectionModifier"
+    Severity="Error"
+    Title="More than one protection modifier."
+    Message="More than one protection modifier"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0107" />
+  <Diagnostic
+    Id="CS0108"
+    Identifier="MemberHidesInheritedMemberUseNewKeywordIfHidingWasIntended"
+    Severity="Warning"
+    Title="'member1' hides inherited member 'member2'. Use the new keyword if hiding was intended."
+    Message="'{0}' hides inherited member '{1}'. Use the new keyword if hiding was intended."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0108" />
+  <Diagnostic
+    Id="CS0109"
+    Identifier="MemberDoesNotHideAccessibleMember"
+    Severity="Warning"
+    Title="The member 'member' does not hide an inherited member. The new keyword is not required."
+    Message="The member '{0}' does not hide an accessible member. The new keyword is not required."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0109" />
+  <Diagnostic
+    Id="CS0112"
+    Identifier="StaticMemberCannotBeMarkedOverrideVirtualOrAbstract"
+    Severity="Error"
+    Title="A static member 'function' cannot be marked as override, virtual or abstract."
+    Message="A static member '{0}' cannot be marked as override, virtual, or abstract"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0112" />
+  <Diagnostic
+    Id="CS0114"
+    Identifier="MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword"
+    Severity="Warning"
+    Title="'function1' hides inherited member 'function2'. To make the current method override that implementation, add the override keyword. Otherwise add the new keyword."
+    Message="'{0}' hides inherited member '{1}'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0114" />
+  <Diagnostic
+    Id="CS0115"
+    Identifier="NoSuitableMethodFoundToOverride"
+    Severity="Error"
+    Title="'function': no suitable method found to override."
+    Message="'{0}': no suitable method found to override"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0115" />
+  <Diagnostic
+    Id="CS0120"
+    Identifier="ObjectReferenceIsRequiredForNonStaticMember"
+    Severity="Error"
+    Title="An object reference is required for the nonstatic field, method, or property 'member'."
+    Message="An object reference is required for the non-static field, method, or property '{0}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0120" />
+  <Diagnostic
+    Id="CS0123"
+    Identifier="NoOverloadMatchesDelegate"
+    Severity="Error"
+    Title="No overload for 'method' matches delegate 'delegate'."
+    Message="No overload for '{0}' matches delegate '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0123" />
+  <Diagnostic
+    Id="CS0126"
+    Identifier="ObjectOfTypeConvertibleToTypeIsRequired"
+    Severity="Error"
+    Title="An object of a type convertible to 'type' is required."
+    Message="An object of a type convertible to '{0}' is required"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0126" />
+  <Diagnostic
+    Id="CS0127"
+    Identifier="SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression"
+    Severity="Error"
+    Title="Since 'function' returns void, a return keyword must not be followed by an object expression."
+    Message="Since '{0}' returns void, a return keyword must not be followed by an object expression"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0127" />
+  <Diagnostic
+    Id="CS0128"
+    Identifier="LocalVariableOrFunctionIsAlreadyDefinedInThisScope"
+    Severity="Error"
+    Title="A local variable named 'variable' is already defined in this scope."
+    Message="A local variable or function named '{0}' is already defined in this scope"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128" />
+  <Diagnostic
+    Id="CS0132"
+    Identifier="StaticConstructorMustBeParameterless"
+    Severity="Error"
+    Title="'constructor': a static constructor must be parameterless."
+    Message="'{0}': a static constructor must be parameterless"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0132" />
+  <Diagnostic
+    Id="CS0133"
+    Identifier="ExpressionBeingAssignedMustBeConstant"
+    Severity="Error"
+    Title="The expression being assigned to 'variable' must be constant."
+    Message="The expression being assigned to '{0}' must be constant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0133" />
+  <Diagnostic
+    Id="CS0136"
+    Identifier="LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter"
+    Severity="Error"
+    Title="A local variable named 'var' cannot be declared in this scope because it would give a different meaning to 'var', which is already used in a 'parent or current/child' scope to denote something else."
+    Message="A local or parameter named '{0}' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0136" />
+  <Diagnostic
+    Id="CS0139"
+    Identifier="NoEnclosingLoopOutOfWhichToBreakOrContinue"
+    Severity="Error"
+    Title="No enclosing loop out of which to break or continue."
+    Message="No enclosing loop out of which to break or continue"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0139" />
+  <Diagnostic
+    Id="CS0161"
+    Identifier="NotAllCodePathsReturnValue"
+    Severity="Error"
+    Title="'method': not all code paths return a value."
+    Message="'{0}': not all code paths return a value"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0161" />
+  <Diagnostic
+    Id="CS0162"
+    Identifier="UnreachableCodeDetected"
+    Severity="Warning"
+    Title="Unreachable code detected."
+    Message="Unreachable code detected"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0162" />
+  <Diagnostic
+    Id="CS0163"
+    Identifier="ControlCannotFallThroughFromOneCaseLabelToAnother"
+    Severity="Error"
+    Title="Control cannot fall through from one case label ('label') to another."
+    Message="Control cannot fall through from one case label ('{0}') to another"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0163" />
+  <Diagnostic
+    Id="CS0164"
+    Identifier="LabelHasNotBeenReferenced"
+    Severity="Warning"
+    Title="This label has not been referenced."
+    Message="This label has not been referenced"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0164" />
+  <Diagnostic
+    Id="CS0165"
+    Identifier="UseOfUnassignedLocalVariable"
+    Severity="Error"
+    Title="Use of unassigned local variable 'name'."
+    Message="Use of unassigned local variable '{0}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0165" />
+  <Diagnostic
+    Id="CS0168"
+    Identifier="VariableIsDeclaredButNeverUsed"
+    Severity="Warning"
+    Title="The variable 'var' is declared but never used."
+    Message="The variable '{0}' is declared but never used"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0168" />
+  <Diagnostic
+    Id="CS0173"
+    Identifier="TypeOfConditionalExpressionCannotBeDetermined"
+    Severity="Error"
+    Title="Type of conditional expression cannot be determined because there is no implicit conversion between 'class1' and 'class2'."
+    Message="Type of conditional expression cannot be determined because there is no implicit conversion between '{0}' and '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0173" />
+  <Diagnostic
+    Id="CS0177"
+    Identifier="OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod"
+    Severity="Error"
+    Title="The out parameter 'parameter' must be assigned to before control leaves the current method."
+    Message="The out parameter '{0}' must be assigned to before control leaves the current method"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0177" />
+  <Diagnostic
+    Id="CS0192"
+    Identifier="ReadOnlyFieldCannotBePassedAsRefOrOutValue"
+    Severity="Error"
+    Title="Readonly field 'name' cannot be used as ref or out value (except in a constructor)."
+    Message="A readonly field cannot be used as a ref or out value (except in a constructor)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0192" />
+  <Diagnostic
+    Id="CS0201"
+    Identifier="OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement"
+    Severity="Error"
+    Title="Only assignment, call, increment, decrement, and new object expressions can be used as a statement."
+    Message="Only assignment, call, increment, decrement, and new object expressions can be used as a statement"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0201" />
+  <Diagnostic
+    Id="CS0214"
+    Identifier="PointersAndFixedSizeBuffersMayOnlyBeUsedInUnsafeContext"
+    Severity="Error"
+    Title="Pointers and fixed size buffers may only be used in an unsafe context."
+    Message="Pointers and fixed size buffers may only be used in an unsafe context"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0214" />
+  <Diagnostic
+    Id="CS0216"
+    Identifier="OperatorRequiresMatchingOperatorToAlsoBeDefined"
+    Severity="Error"
+    Title="The operator 'operator' requires a matching operator 'missing_operator' to also be defined."
+    Message="The operator '{0}' requires a matching operator '{1}' to also be defined"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0216" />
+  <Diagnostic
+    Id="CS0219"
+    Identifier="VariableIsAssignedButItsValueIsNeverUsed"
+    Severity="Warning"
+    Title="The variable 'variable' is assigned but its value is never used."
+    Message="The variable '{0}' is assigned but its value is never used"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0219" />
+  <Diagnostic
+    Id="CS0221"
+    Identifier="ConstantValueCannotBeConverted"
+    Severity="Error"
+    Title="Constant value 'value' cannot be converted to a 'type' (use 'unchecked' syntax to override)."
+    Message="Constant value '{0}' cannot be converted to a '{1}' (use 'unchecked' syntax to override)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0221" />
+  <Diagnostic
+    Id="CS0225"
+    Identifier="ParamsParameterMustBeSingleDimensionalArray"
+    Severity="Error"
+    Title="The params parameter must be a single dimensional array."
+    Message="The params parameter must be a single dimensional array"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0225" />
+  <Diagnostic
+    Id="CS0246"
+    Identifier="TypeOrNamespaceNameCouldNotBeFound"
+    Severity="Error"
+    Title="The type or namespace name 'type/namespace' could not be found (are you missing a using directive or an assembly reference?)."
+    Message="The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0246" />
+  <Diagnostic
+    Id="CS0262"
+    Identifier="PartialDeclarationsHaveConfictingAccessibilityModifiers"
+    Severity="Error"
+    Title="Partial declarations of 'type' have conflicting accessibility modifiers."
+    Message="Partial declarations of '{0}' have conflicting accessibility modifiers"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0262" />
+  <Diagnostic
+    Id="CS0260"
+    Identifier="MissingPartialModifier"
+    Severity="Error"
+    Title="Missing partial modifier on declaration of type 'type'; another partial declaration of this type exists."
+    Message="Missing partial modifier on declaration of type '{0}'; another partial declaration of this type exists"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0260" />
+  <Diagnostic
+    Id="CS0266"
+    Identifier="CannotImplicitlyConvertTypeExplicitConversionExists"
+    Severity="Error"
+    Title="Cannot implicitly convert type 'type1' to 'type2'. An explicit conversion exists (are you missing a cast?)."
+    Message="Cannot implicitly convert type '{0}' to '{1}'. An explicit conversion exists (are you missing a cast?)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0266" />
+  <Diagnostic
+    Id="CS0267"
+    Identifier="PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid"
+    Severity="Error"
+    Title="The partial modifier can only appear immediately before 'class', 'struct', or 'interface'."
+    Message="The 'partial' modifier can only appear immediately before 'class', 'struct', 'interface', or 'void'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0267" />
+  <Diagnostic
+    Id="CS0275"
+    Identifier="AccessibilityModifiersMayNotBeUsedOnAccessorsInInterface"
+    Severity="Error"
+    Title="'accessor': accessibility modifiers may not be used on accessors in an interface."
+    Message="'{0}': accessibility modifiers may not be used on accessors in an interface"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0275" />
+  <Diagnostic
+    Id="CS0305"
+    Identifier="UsingGenericTypeRequiresNumberOfTypeArguments"
+    Severity="Error"
+    Title="Using the generic type 'generic type' requires 'number' type arguments."
+    Message="Using the generic {1} '{0}' requires {2} type arguments"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0305" />
+  <Diagnostic
+    Id="CS0401"
+    Identifier="NewConstraintMustBeLastConstraintSpecified"
+    Severity="Error"
+    Title="The new() constraint must be the last constraint specified."
+    Message="The new() constraint must be the last constraint specified"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0401" />
+  <Diagnostic
+    Id="CS0403"
+    Identifier="CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType"
+    Severity="Error"
+    Title="Cannot convert null to type parameter 'name' because it could be a non-nullable value type. Consider using default('T') instead."
+    Message="Cannot convert null to type parameter '{0}' because it could be a non-nullable value type. Consider using 'default({0})' instead."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0403" />
+  <Diagnostic
+    Id="CS0405"
+    Identifier="DuplicateConstraintForTypeParameter"
+    Severity="Error"
+    Title="Duplicate constraint 'constraint' for type parameter 'type parameter'."
+    Message="Duplicate constraint '{0}' for type parameter '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0405" />
+  <Diagnostic
+    Id="CS0407"
+    Identifier="MethodHasWrongReturnType"
+    Severity="Error"
+    Title="'return-type method' has the wrong return type."
+    Message="'{1} {0}' has the wrong return type"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0407" />
+  <Diagnostic
+    Id="CS0409"
+    Identifier="ConstraintClauseHasAlreadyBeenSpecified"
+    Severity="Error"
+    Title="A constraint clause has already been specified for type parameter 'type parameter'. All of the constraints for a type parameter must be specified in a single where clause."
+    Message="A constraint clause has already been specified for type parameter '{0}'. All of the constraints for a type parameter must be specified in a single where clause."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0409" />
+  <Diagnostic
+    Id="CS0428"
+    Identifier="CannotConvertMethodGroupToNonDelegateType"
+    Severity="Error"
+    Title="Cannot convert method group 'identifier' to non-delegate type 'type'. Did you intend to invoke the method?"
+    Message="Cannot convert method group '{0}' to non-delegate type '{1}'. Did you intend to invoke the method?"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0428" />
+  <Diagnostic
+    Id="CS0441"
+    Identifier="ClassCannotBeBothStaticAndSealed"
+    Severity="Error"
+    Title="'class': a class cannot be both static and sealed."
+    Message="'{0}': a class cannot be both static and sealed"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0441" />
+  <Diagnostic
+    Id="CS0442"
+    Identifier="AbstractPropertiesCannotHavePrivateAccessors"
+    Severity="Error"
+    Title="'property': abstract properties cannot have private accessors."
+    Message="'{0}': abstract properties cannot have private accessors"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0442" />
+  <Diagnostic
+    Id="CS0449"
+    Identifier="ClassOrStructConstraintMustComeBeforeAnyOtherConstraints"
+    Severity="Error"
+    Title="The 'class' or 'struct' constraint must come before any other constraints."
+    Message="The 'class' or 'struct' constraint must come before any other constraints"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0449" />
+  <Diagnostic
+    Id="CS0450"
+    Identifier="CannotSpecifyBothConstraintClassAndClassOrStructConstraint"
+    Severity="Error"
+    Title="'type parameter name': cannot specify both a constraint class and the 'class' or 'struct' constraint."
+    Message="'{0}': cannot specify both a constraint class and the 'class' or 'struct' constraint"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0450" />
+  <Diagnostic
+    Id="CS0451"
+    Identifier="NewConstraintCannotBeUsedWithStructConstraint"
+    Severity="Error"
+    Title="The 'new()' constraint cannot be used with the 'struct' constraint."
+    Message="The 'new()' constraint cannot be used with the 'struct' constraint"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0451" />
+  <Diagnostic
+    Id="CS0472"
+    Identifier="ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull"
+    Severity="Warning"
+    Title="The result of the expression is always 'value1' since a value of type 'value2' is never equal to 'null' of type 'value3'."
+    Message="The result of the expression is always '{0}' since a value of type '{1}' is never equal to 'null' of type '{2}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0472" />
+  <Diagnostic
+    Id="CS0500"
+    Identifier="MemberCannotDeclareBodyBecauseItIsMarkedAbstract"
+    Severity="Error"
+    Title="'class member' cannot declare a body because it is marked abstract."
+    Message="'{0}' cannot declare a body because it is marked abstract"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0500" />
+  <Diagnostic
+    Id="CS0501"
+    Identifier="MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial"
+    Severity="Error"
+    Title="'member function' must declare a body because it is not marked abstract, extern, or partial."
+    Message="'{0}' must declare a body because it is not marked abstract, extern, or partial"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0501" />
+  <Diagnostic
+    Id="CS0507"
+    Identifier="CannotChangeAccessModifiersWhenOverridingInheritedMember"
+    Severity="Error"
+    Title="'function1': cannot change access modifiers when overriding 'access' inherited member 'function2'."
+    Message="'{0}': cannot change access modifiers when overriding '{1}' inherited member '{2}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0507" />
+  <Diagnostic
+    Id="CS0508"
+    Identifier="MethodReturnTypeMustMatchOverriddenMethodReturnType"
+    Severity="Error"
+    Title="'type1': return type must be 'type2' to match overridden member 'member name'."
+    Message="'{0}': return type must be '{2}' to match overridden member '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0508" />
+  <Diagnostic
+    Id="CS0513"
+    Identifier="MemberIsAbstractButItIsContainedInNonAbstractClass"
+    Severity="Error"
+    Title="'function' is abstract but it is contained in nonabstract class 'class'."
+    Message="'{0}' is abstract but it is contained in non-abstract class '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0513" />
+  <Diagnostic
+    Id="CS0515"
+    Identifier="AccessModifiersAreNotAllowedOnStaticConstructors"
+    Severity="Error"
+    Title="'function': access modifiers are not allowed on static constructors."
+    Message="'{0}': access modifiers are not allowed on static constructors"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0515" />
+  <Diagnostic
+    Id="CS0527"
+    Identifier="TypeInInterfaceListIsNotInterface"
+    Severity="Error"
+    Title="Type 'type' in interface list is not an interface."
+    Message="Type '{0}' in interface list is not an interface"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0527" />
+  <Diagnostic
+    Id="CS0531"
+    Identifier="InterfaceMembersCannotHaveDefinition"
+    Severity="Error"
+    Title="'member': interface members cannot have a definition."
+    Message="'{0}': interface members cannot have a definition"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0531" />
+  <Diagnostic
+    Id="CS0541"
+    Identifier="ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct"
+    Severity="Error"
+    Title="'declaration': explicit interface declaration can only be declared in a class or struct."
+    Message="'{0}': explicit interface declaration can only be declared in a class or struct"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0541" />
+  <Diagnostic
+    Id="CS0558"
+    Identifier="UserDefinedOperatorMustBeDeclaredStaticAndPublic"
+    Severity="Error"
+    Title="User-defined operator 'operator' must be declared static and public."
+    Message="User-defined operator '{0}' must be declared static and public"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0558" />
+  <Diagnostic
+    Id="CS0573"
+    Identifier="CannotHaveInstancePropertyOrFieldInitializersInStruct"
+    Severity="Error"
+    Title="'field declaration': cannot have instance field initializers in structs."
+    Message="'{0}': cannot have instance property or field initializers in structs"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0573" />
+  <Diagnostic
+    Id="CS0579"
+    Identifier="DuplicateAttribute"
+    Severity="Error"
+    Title="Duplicate 'attribute' attribute."
+    Message="Duplicate '{0}' attribute"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0579" />
+  <Diagnostic
+    Id="CS0592"
+    Identifier="AttributeIsNotValidOnThisDeclarationType"
+    Severity="Error"
+    Title="Attribute 'attribute' is not valid on this declaration type. It is valid on 'type' declarations only."
+    Message="Attribute '{0}' is not valid on this declaration type. It is only valid on '{1}' declarations."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0592" />
+  <Diagnostic
+    Id="CS0621"
+    Identifier="VirtualOrAbstractmembersCannotBePrivate "
+    Severity="Error"
+    Title="'member': virtual or abstract members cannot be private."
+    Message="'{0}': virtual or abstract members cannot be private"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0621" />
+  <Diagnostic
+    Id="CS0628"
+    Identifier="NewProtectedMemberDeclaredInSealedClass"
+    Severity="Warning"
+    Title="member' : new protected member declared in sealed class."
+    Message="'{0}': new protected member declared in sealed class"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0628" />
+  <Diagnostic
+    Id="CS0659"
+    Identifier="TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode"
+    Severity="Warning"
+    Title="'class' overrides Object.Equals(object o) but does not override Object.GetHashCode()."
+    Message="'{0}' overrides Object.Equals(object o) but does not override Object.GetHashCode()"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0659" />
+  <Diagnostic
+    Id="CS0660"
+    Identifier="TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals"
+    Severity="Warning"
+    Title="'class' defines operator == or operator != but does not override Object.Equals(object o)."
+    Message="'{0}' defines operator == or operator != but does not override Object.Equals(object o)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0660" />
+  <Diagnostic
+    Id="CS0661"
+    Identifier="TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode"
+    Severity="Warning"
+    Title="'class' defines operator == or operator != but does not override Object.GetHashCode()."
+    Message="'{0}' defines operator == or operator != but does not override Object.GetHashCode()"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0661" />
+  <Diagnostic
+    Id="CS0678"
+    Identifier="FieldCanNotBeBothVolatileAndReadOnly"
+    Severity="Error"
+    Title="'variable': a field can not be both volatile and readonly."
+    Message="'{0}': a field cannot be both volatile and readonly"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0678" />
+  <Diagnostic
+    Id="CS0693"
+    Identifier="TypeParameterHasSameNameAsTypeParameterFromOuterType"
+    Severity="Warning"
+    Title="Type parameter 'type parameter' has the same name as the type parameter from outer type 'type'."
+    Message="Type parameter '{0}' has the same name as the type parameter from outer type '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0693" />
+  <Diagnostic
+    Id="CS0708"
+    Identifier="CannotDeclareInstanceMembersInStaticClass"
+    Severity="Error"
+    Title="'field': cannot declare instance members in a static class."
+    Message="'{0}': cannot declare instance members in a static class"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0708" />
+  <Diagnostic
+    Id="CS0710"
+    Identifier="StaticClassesCannotHaveInstanceConstructors"
+    Severity="Error"
+    Title="Static classes cannot have instance constructors"
+    Message="Static classes cannot have instance constructors"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0710" />
+  <Diagnostic
+    Id="CS0713"
+    Identifier="StaticClassCannotDeriveFromType"
+    Severity="Error"
+    Title="Static class 'static type' cannot derive from type 'type'. Static classes must derive from object."
+    Message="Static class '{0}' cannot derive from type '{1}'. Static classes must derive from object."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0713" />
+  <Diagnostic
+    Id="CS0718"
+    Identifier="StaticTypesCannotBeUsedAsTypeArguments"
+    Severity="Error"
+    Title="'type': static types cannot be used as type arguments."
+    Message="'{0}': static types cannot be used as type arguments"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0718" />
+  <Diagnostic
+    Id="CS0750"
+    Identifier="PartialMethodCannotHaveAccessModifiersOrVirtualAbstractOverrideNewSealedOrExternModifiers"
+    Severity="Error"
+    Title="A partial method cannot have access modifiers or the virtual, abstract, override, new, sealed, or extern modifiers."
+    Message="A partial method cannot have access modifiers or the virtual, abstract, override, new, sealed, or extern modifiers"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0750" />
+  <Diagnostic
+    Id="CS0751"
+    Identifier="PartialMethodMustBeDeclaredInPartialClassOrPartialStruct"
+    Severity="Error"
+    Title="A partial method must be declared in a partial class or partial struct."
+    Message="A partial method must be declared within a partial class or partial struct"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0751" />
+  <Diagnostic
+    Id="CS0753"
+    Identifier="OnlyMethodsClassesStructsOrInterfacesMayBePartial"
+    Severity="Error"
+    Title="Only methods, classes, structs, or interfaces may be partial."
+    Message="Only methods, classes, structs, or interfaces may be partial"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0753" />
+  <Diagnostic
+    Id="CS0756"
+    Identifier="PartialMethodMayNotHaveMultipleDefiningDeclarations"
+    Severity="Error"
+    Title="A partial method may not have multiple defining declarations."
+    Message="A partial method may not have multiple defining declarations"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0756" />
+  <Diagnostic
+    Id="CS0759"
+    Identifier="NoDefiningDeclarationFoundForImplementingDeclarationOfPartialMethod"
+    Severity="Error"
+    Title="No defining declaration found for implementing declaration of partial method 'method'."
+    Message="No defining declaration found for implementing declaration of partial method '{0}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0759" />
+  <Diagnostic
+    Id="CS0766"
+    Identifier="PartialMethodsMustHaveVoidReturnType"
+    Severity="Error"
+    Title="Partial methods must have a void return type."
+    Message="Partial methods must have a void return type"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0766" />
+  <Diagnostic
+    Id="CS0815"
+    Identifier="CannotAssignMethodGroupToImplicitlyTypedVariable"
+    Severity="Error"
+    Title="Cannot assign 'expression' to an implicitly typed local."
+    Message="Cannot assign {0} to an implicitly-typed variable"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0815" />
+  <Diagnostic
+    Id="CS0819"
+    Identifier="ImplicitlyTypedVariablesCannotHaveMultipleDeclarators"
+    Severity="Error"
+    Title="Implicitly typed locals cannot have multiple declarators."
+    Message="Implicitly-typed variables cannot have multiple declarators"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0819" />
+  <Diagnostic
+    Id="CS0822"
+    Identifier="ImplicitlyTypedVariablesCannotBeConstant"
+    Severity="Error"
+    Title="Implicitly typed locals cannot be const."
+    Message="Implicitly-typed variables cannot be constant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0822" />
+  <Diagnostic
+    Id="CS1002"
+    Identifier="SemicolonExpected"
+    Severity="Error"
+    Title="; expected."
+    Message="; expected"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1002" />
+  <Diagnostic
+    Id="CS1004"
+    Identifier="DuplicateModifier"
+    Severity="Error"
+    Title="Duplicate 'modifier' modifier."
+    Message="Duplicate '{0}' modifier"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1004" />
+  <Diagnostic
+    Id="CS1023"
+    Identifier="EmbeddedStatementCannotBeDeclarationOrLabeledStatement"
+    Severity="Error"
+    Title="Embedded statement cannot be a declaration or labeled statement."
+    Message="Embedded statement cannot be a declaration or labeled statement"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1023" />
+  <Diagnostic
+    Id="CS1031"
+    Identifier="TypeExpected"
+    Severity="Error"
+    Title="Type expected."
+    Message="Type expected"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1031" />
+  <Diagnostic
+    Id="CS1057"
+    Identifier="StaticClassesCannotContainProtectedMembers"
+    Severity="Error"
+    Title="'member': static classes cannot contain protected members."
+    Message="'{0}': static classes cannot contain protected members"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1057" />
+  <Diagnostic
+    Id="CS1061"
+    Identifier="TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound"
+    Severity="Error"
+    Title="'type' does not contain a definition for 'member' and no extension method 'name' accepting a first argument of type 'type' could be found (are you missing a using directive or an assembly reference?)."
+    Message="'{0}' does not contain a definition for '{1}' and no extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1061" />
+  <Diagnostic
+    Id="CS1100"
+    Identifier="MethodHasParameterModifierThisWhichIsNotOnFirstParameter"
+    Severity="Error"
+    Title="Method 'name' has a parameter modifier 'this' which is not on the first parameter."
+    Message="Method '{0}' has a parameter modifier 'this' which is not on the first parameter"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1100" />
+  <Diagnostic
+    Id="CS1105"
+    Identifier="ExtensionMethodMustBeStatic"
+    Severity="Error"
+    Title="Extension methods must be static."
+    Message="Extension method must be static"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1105" />
+  <Diagnostic
+    Id="CS1106"
+    Identifier="ExtensionMethodMustBeDefinedInNonGenericStaticClass"
+    Severity="Error"
+    Title="Extension methods must be defined in a non-generic static class."
+    Message="Extension method must be defined in a non-generic static class"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1106" />
+  <Diagnostic
+    Id="CS1503"
+    Identifier="CannotConvertArgumentType"
+    Severity="Error"
+    Title="Argument 'number' cannot convert from 'type1' to 'type2'."
+    Message="Argument {0}: cannot convert from '{1}' to '{2}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1503" />
+  <Diagnostic
+    Id="CS1522"
+    Identifier="EmptySwitchBlock"
+    Severity="Warning"
+    Title="Empty switch block."
+    Message="Empty switch block"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1522" />
+  <Diagnostic
+    Id="CS1526"
+    Identifier="NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType"
+    Severity="Error"
+    Title="A new expression requires (), [], or {} after type."
+    Message="A new expression requires (), [], or {} after type"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1526" />
+  <Diagnostic
+    Id="CS1527"
+    Identifier="ElementsDefinedInNamespaceCannotBeExplicitlyDeclaredAsPrivateProtectedOrProtectedInternal"
+    Severity="Error"
+    Title="Elements defined in a namespace cannot be explicitly declared as private, protected, protected internal or private protected."
+    Message="Elements defined in a namespace cannot be explicitly declared as private, protected, or protected internal"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1527" />
+  <Diagnostic
+    Id="CS1591"
+    Identifier="MissingXmlCommentForPubliclyVisibleTypeOrMember"
+    Severity="Warning"
+    Title="Missing XML comment for publicly visible type or member 'name'."
+    Message="Missing XML comment for publicly visible type or member '{0}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1591" />
+  <Diagnostic
+    Id="CS1597"
+    Identifier="SemicolonAfterMethodOrAccessorBlockIsNotValid"
+    Severity="Error"
+    Title="Semicolon after method or accessor block is not valid."
+    Message="Semicolon after method or accessor block is not valid"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1597" />
+  <Diagnostic
+    Id="CS1609"
+    Identifier="ModifiersCannotBePlacedOnEventAccessorDeclarations"
+    Severity="Error"
+    Title="Modifiers cannot be placed on event accessor declarations."
+    Message="Modifiers cannot be placed on event accessor declarations"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1609" />
+  <Diagnostic
+    Id="CS1615"
+    Identifier="ArgumentShouldNotBePassedWithRefOrOutKeyword"
+    Severity="Error"
+    Title="Argument 'number' should not be passed with the 'keyword' keyword."
+    Message="Argument {0} may not be passed with the '{1}' keyword"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1615" />
+  <Diagnostic
+    Id="CS1620"
+    Identifier="ArgumentMustBePassedWithRefOrOutKeyword"
+    Severity="Error"
+    Title="Argument 'number' must be passed with the 'keyword' keyword."
+    Message="Argument {0} must be passed with the '{1}' keyword"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1620" />
+  <Diagnostic
+    Id="CS1621"
+    Identifier="YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression"
+    Severity="Error"
+    Title="The yield statement cannot be used inside an anonymous method or lambda expression."
+    Message="The yield statement cannot be used inside an anonymous method or lambda expression"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1621" />
+  <Diagnostic
+    Id="CS1622"
+    Identifier="CannotReturnValueFromIterator"
+    Severity="Error"
+    Title="Cannot return a value from an iterator. Use the yield return statement to return a value, or yield break to end the iteration."
+    Message="Cannot return a value from an iterator. Use the yield return statement to return a value, or yield break to end the iteration."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1622" />
+  <Diagnostic
+    Id="CS1623"
+    Identifier="IteratorsCannotHaveRefOrOutParameters"
+    Severity="Error"
+    Title="Iterators cannot have ref or out parameters."
+    Message="Iterators cannot have ref or out parameters"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1623" />
+  <Diagnostic
+    Id="CS1643"
+    Identifier="NotAllCodePathsReturnValueInAnonymousFunction"
+    Severity="Error"
+    Title="Not all code paths return a value in method of type 'type'."
+    Message="Not all code paths return a value in {0} of type '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1643" />
+  <Diagnostic
+    Id="CS1674"
+    Identifier="TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable"
+    Severity="Error"
+    Title="'T': type used in a using statement must be implicitly convertible to 'System.IDisposable'."
+    Message="'{0}': type used in a using statement must be implicitly convertible to 'System.IDisposable'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs1674" />
+  <Diagnostic
+    Id="CS1689"
+    Identifier="AttributeIsOnlyValidOnMethodsOrAttributeClasses"
+    Severity="Error"
+    Title="Attribute 'attribute' is only valid on methods or attribute classes."
+    Message="Attribute '{0}' is only valid on methods or attribute classes"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1689" />
+  <Diagnostic
+    Id="CS1715"
+    Identifier="MemberTypeMustMatchOverriddenMemberType"
+    Severity="Error"
+    Title="'type1': type must be 'type2' to match overridden member 'member'."
+    Message="'{0}': type must be '{2}' to match overridden member '{1}'"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1715" />
+  <Diagnostic
+    Id="CS1717"
+    Identifier="AssignmentMadeToSameVariable"
+    Severity="Warning"
+    Title="Assignment made to same variable; did you mean to assign something else?"
+    Message="Assignment made to same variable; did you mean to assign something else?"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1717" />
+  <Diagnostic
+    Id="CS1722"
+    Identifier="BaseClassMustComeBeforeAnyInterface"
+    Severity="Error"
+    Title="Base class 'class' must come before any interfaces."
+    Message="Base class '{0}' must come before any interfaces"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1722" />
+  <Diagnostic
+    Id="CS1750"
+    Identifier="ValueCannotBeUsedAsDefaultParameter"
+    Severity="Error"
+    Title="A value of type 'type1' cannot be used as a default parameter because there are no standard conversions to type 'type2."
+    Message="A value of type '{0}' cannot be used as a default parameter because there are no standard conversions to type '{1}'"
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS1751"
+    Identifier="CannotSpecifyDefaultValueForParameterArray"
+    Severity="Error"
+    Title="Cannot specify a default value for a parameter array."
+    Message="Cannot specify a default value for a parameter array"
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS1955"
+    Identifier="NonInvocableMemberCannotBeUsedLikeMethod"
+    Severity="Error"
+    Title="Non-invocable member 'name' cannot be used like a method."
+    Message="Non-invocable member '{0}' cannot be used like a method."
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955" />
+  <Diagnostic
+    Id="CS1994"
+    Identifier="AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody"
+    Severity="Error"
+    Title="The 'async' modifier can only be used in methods that have a body."
+    Message="The 'async' modifier can only be used in methods that have a body."
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS1997"
+    Identifier="SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression"
+    Severity="Error"
+    Title="Since 'RemoveReturnKeywordOrReturnExpression.FooAsync()' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task&lt;T&gt;&gt;'?"
+    Message="Since '{0}' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task&lt;T&gt;'?"
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS1988"
+    Identifier="AsyncMethodsCannotHaveRefOrOutParameters"
+    Severity="Error"
+    Title="Async methods cannot have ref or out parameters."
+    Message="Async methods cannot have ref or out parameters"
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS8070"
+    Identifier="ControlCannotFallOutOfSwitchFromFinalCaseLabel"
+    Severity="Error"
+    Title="Control cannot fall out of switch from final case label ('default')."
+    Message="Control cannot fall out of switch from final case label ('{0}')"
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS8112"
+    Identifier="LocalFunctionMustAlwaysHaveBody"
+    Severity="Error"
+    Title="'function' is a local function and must therefore always have a body."
+    Message="'{0}' is a local function and must therefore always have a body."
+    HelpUrl="" />
 </Diagnostics>

@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperandOfType,
+                    CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperand,
                     CompilerDiagnosticIdentifiers.PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid,
                     CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter,
                     CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired,
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperandOfType:
+                    case CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperand:
                         {
                             if (kind == SyntaxKind.QuestionToken
                                 && token.Parent is ConditionalAccessExpressionSyntax conditionalAccess)

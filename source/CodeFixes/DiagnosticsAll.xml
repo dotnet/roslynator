@@ -1,0 +1,1236 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Diagnostics>
+  <Diagnostic Id="CS0006" Severity="Error" Message="Metadata file '{0}' could not be found" />
+  <Diagnostic Id="CS0009" Severity="Fatal" Message="Metadata file '{0}' could not be opened -- {1}" />
+  <Diagnostic Id="CS0012" Severity="Error" Message="The type '{0}' is defined in an assembly that is not referenced. You must add a reference to assembly '{1}'." />
+  <Diagnostic Id="CS0016" Severity="Error" Message="Could not write to output file '{0}' -- '{1}'" />
+  <Diagnostic Id="CS0017" Severity="Error" Message="Program has more than one entry point defined. Compile with /main to specify the type that contains the entry point." />
+  <Diagnostic Id="CS0019" Severity="Error" Message="Operator '{0}' cannot be applied to operands of type '{1}' and '{2}'" />
+  <Diagnostic Id="CS0020" Severity="Error" Message="Division by constant zero" />
+  <Diagnostic Id="CS0021" Severity="Error" Message="Cannot apply indexing with [] to an expression of type '{0}'" />
+  <Diagnostic Id="CS0022" Severity="Error" Message="Wrong number of indices inside []; expected {0}" />
+  <Diagnostic Id="CS0023" Severity="Error" Message="Operator '{0}' cannot be applied to operand of type '{1}'" />
+  <Diagnostic Id="CS0026" Severity="Error" Message="Keyword 'this' is not valid in a static property, static method, or static field initializer" />
+  <Diagnostic Id="CS0027" Severity="Error" Message="Keyword 'this' is not available in the current context" />
+  <Diagnostic Id="CS0028" Severity="Warning" Message="'{0}' has the wrong signature to be an entry point" />
+  <Diagnostic Id="CS0029" Severity="Error" Message="Cannot implicitly convert type '{0}' to '{1}'" />
+  <Diagnostic Id="CS0030" Severity="Error" Message="Cannot convert type '{0}' to '{1}'" />
+  <Diagnostic Id="CS0031" Severity="Error" Message="Constant value '{0}' cannot be converted to a '{1}'" />
+  <Diagnostic Id="CS0034" Severity="Error" Message="Operator '{0}' is ambiguous on operands of type '{1}' and '{2}'" />
+  <Diagnostic Id="CS0035" Severity="Error" Message="Operator '{0}' is ambiguous on an operand of type '{1}'" />
+  <Diagnostic Id="CS0036" Severity="Error" Message="An out parameter cannot have the In attribute" />
+  <Diagnostic Id="CS0037" Severity="Error" Message="Cannot convert null to '{0}' because it is a non-nullable value type" />
+  <Diagnostic Id="CS0039" Severity="Error" Message="Cannot convert type '{0}' to '{1}' via a reference conversion, boxing conversion, unboxing conversion, wrapping conversion, or null type conversion" />
+  <Diagnostic Id="CS0041" Severity="Fatal" Message="Unexpected error writing debug information -- '{0}'" />
+  <Diagnostic Id="CS0050" Severity="Error" Message="Inconsistent accessibility: return type '{1}' is less accessible than method '{0}'" />
+  <Diagnostic Id="CS0051" Severity="Error" Message="Inconsistent accessibility: parameter type '{1}' is less accessible than method '{0}'" />
+  <Diagnostic Id="CS0052" Severity="Error" Message="Inconsistent accessibility: field type '{1}' is less accessible than field '{0}'" />
+  <Diagnostic Id="CS0053" Severity="Error" Message="Inconsistent accessibility: property type '{1}' is less accessible than property '{0}'" />
+  <Diagnostic Id="CS0054" Severity="Error" Message="Inconsistent accessibility: indexer return type '{1}' is less accessible than indexer '{0}'" />
+  <Diagnostic Id="CS0055" Severity="Error" Message="Inconsistent accessibility: parameter type '{1}' is less accessible than indexer '{0}'" />
+  <Diagnostic Id="CS0056" Severity="Error" Message="Inconsistent accessibility: return type '{1}' is less accessible than operator '{0}'" />
+  <Diagnostic Id="CS0057" Severity="Error" Message="Inconsistent accessibility: parameter type '{1}' is less accessible than operator '{0}'" />
+  <Diagnostic Id="CS0058" Severity="Error" Message="Inconsistent accessibility: return type '{1}' is less accessible than delegate '{0}'" />
+  <Diagnostic Id="CS0059" Severity="Error" Message="Inconsistent accessibility: parameter type '{1}' is less accessible than delegate '{0}'" />
+  <Diagnostic Id="CS0060" Severity="Error" Message="Inconsistent accessibility: base class '{1}' is less accessible than class '{0}'" />
+  <Diagnostic Id="CS0061" Severity="Error" Message="Inconsistent accessibility: base interface '{1}' is less accessible than interface '{0}'" />
+  <Diagnostic Id="CS0065" Severity="Error" Message="'{0}': event property must have both add and remove accessors" />
+  <Diagnostic Id="CS0066" Severity="Error" Message="'{0}': event must be of a delegate type" />
+  <Diagnostic Id="CS0067" Severity="Warning" Message="The event '{0}' is never used" />
+  <Diagnostic Id="CS0068" Severity="Error" Message="'{0}': event in interface cannot have initializer" />
+  <Diagnostic Id="CS0069" Severity="Error" Message="An event in an interface cannot have add or remove accessors" />
+  <Diagnostic Id="CS0070" Severity="Error" Message="The event '{0}' can only appear on the left hand side of += or -= (except when used from within the type '{1}')" />
+  <Diagnostic Id="CS0071" Severity="Error" Message="An explicit interface implementation of an event must use event accessor syntax" />
+  <Diagnostic Id="CS0072" Severity="Error" Message="'{0}': cannot override; '{1}' is not an event" />
+  <Diagnostic Id="CS0073" Severity="Error" Message="An add or remove accessor must have a body" />
+  <Diagnostic Id="CS0074" Severity="Error" Message="'{0}': abstract event cannot have initializer" />
+  <Diagnostic Id="CS0075" Severity="Error" Message="To cast a negative value, you must enclose the value in parentheses." />
+  <Diagnostic Id="CS0076" Severity="Error" Message="The enumerator name '{0}' is reserved and cannot be used" />
+  <Diagnostic Id="CS0077" Severity="Error" Message="The as operator must be used with a reference type or nullable type ('{0}' is a non-nullable value type)" />
+  <Diagnostic Id="CS0078" Severity="Warning" Message="The 'l' suffix is easily confused with the digit '1' -- use 'L' for clarity" />
+  <Diagnostic Id="CS0079" Severity="Error" Message="The event '{0}' can only appear on the left hand side of += or -=" />
+  <Diagnostic Id="CS0080" Severity="Error" Message="Constraints are not allowed on non-generic declarations" />
+  <Diagnostic Id="CS0081" Severity="Error" Message="Type parameter declaration must be an identifier not a type" />
+  <Diagnostic Id="CS0082" Severity="Error" Message="Type '{1}' already reserves a member called '{0}' with the same parameter types" />
+  <Diagnostic Id="CS0100" Severity="Error" Message="The parameter name '{0}' is a duplicate" />
+  <Diagnostic Id="CS0101" Severity="Error" Message="The namespace '{1}' already contains a definition for '{0}'" />
+  <Diagnostic Id="CS0102" Severity="Error" Message="The type '{0}' already contains a definition for '{1}'" />
+  <Diagnostic Id="CS0103" Severity="Error" Message="The name '{0}' does not exist in the current context" />
+  <Diagnostic Id="CS0104" Severity="Error" Message="'{0}' is an ambiguous reference between '{1}' and '{2}'" />
+  <Diagnostic Id="CS0105" Severity="Warning" Message="The using directive for '{0}' appeared previously in this namespace" />
+  <Diagnostic Id="CS0106" Severity="Error" Message="The modifier '{0}' is not valid for this item" />
+  <Diagnostic Id="CS0107" Severity="Error" Message="More than one protection modifier" />
+  <Diagnostic Id="CS0108" Severity="Warning" Message="'{0}' hides inherited member '{1}'. Use the new keyword if hiding was intended." />
+  <Diagnostic Id="CS0109" Severity="Warning" Message="The member '{0}' does not hide an accessible member. The new keyword is not required." />
+  <Diagnostic Id="CS0110" Severity="Error" Message="The evaluation of the constant value for '{0}' involves a circular definition" />
+  <Diagnostic Id="CS0111" Severity="Error" Message="Type '{1}' already defines a member called '{0}' with the same parameter types" />
+  <Diagnostic Id="CS0112" Severity="Error" Message="A static member '{0}' cannot be marked as override, virtual, or abstract" />
+  <Diagnostic Id="CS0113" Severity="Error" Message="A member '{0}' marked as override cannot be marked as new or virtual" />
+  <Diagnostic Id="CS0114" Severity="Warning" Message="'{0}' hides inherited member '{1}'. To make the current member override that implementation, add the override keyword. Otherwise add the new keyword." />
+  <Diagnostic Id="CS0115" Severity="Error" Message="'{0}': no suitable method found to override" />
+  <Diagnostic Id="CS0116" Severity="Error" Message="A namespace cannot directly contain members such as fields or methods" />
+  <Diagnostic Id="CS0117" Severity="Error" Message="'{0}' does not contain a definition for '{1}'" />
+  <Diagnostic Id="CS0118" Severity="Error" Message="'{0}' is a {1} but is used like a {2}" />
+  <Diagnostic Id="CS0119" Severity="Error" Message="'{0}' is a {1}, which is not valid in the given context" />
+  <Diagnostic Id="CS0120" Severity="Error" Message="An object reference is required for the non-static field, method, or property '{0}'" />
+  <Diagnostic Id="CS0121" Severity="Error" Message="The call is ambiguous between the following methods or properties: '{0}' and '{1}'" />
+  <Diagnostic Id="CS0122" Severity="Error" Message="'{0}' is inaccessible due to its protection level" />
+  <Diagnostic Id="CS0123" Severity="Error" Message="No overload for '{0}' matches delegate '{1}'" />
+  <Diagnostic Id="CS0126" Severity="Error" Message="An object of a type convertible to '{0}' is required" />
+  <Diagnostic Id="CS0127" Severity="Error" Message="Since '{0}' returns void, a return keyword must not be followed by an object expression" />
+  <Diagnostic Id="CS0128" Severity="Error" Message="A local variable or function named '{0}' is already defined in this scope" />
+  <Diagnostic Id="CS0131" Severity="Error" Message="The left-hand side of an assignment must be a variable, property or indexer" />
+  <Diagnostic Id="CS0132" Severity="Error" Message="'{0}': a static constructor must be parameterless" />
+  <Diagnostic Id="CS0133" Severity="Error" Message="The expression being assigned to '{0}' must be constant" />
+  <Diagnostic Id="CS0134" Severity="Error" Message="'{0}' is of type '{1}'. A const field of a reference type other than string can only be initialized with null." />
+  <Diagnostic Id="CS0136" Severity="Error" Message="A local or parameter named '{0}' cannot be declared in this scope because that name is used in an enclosing local scope to define a local or parameter" />
+  <Diagnostic Id="CS0138" Severity="Error" Message="A 'using namespace' directive can only be applied to namespaces; '{0}' is a type not a namespace. Consider a 'using static' directive instead" />
+  <Diagnostic Id="CS0139" Severity="Error" Message="No enclosing loop out of which to break or continue" />
+  <Diagnostic Id="CS0140" Severity="Error" Message="The label '{0}' is a duplicate" />
+  <Diagnostic Id="CS0143" Severity="Error" Message="The type '{0}' has no constructors defined" />
+  <Diagnostic Id="CS0144" Severity="Error" Message="Cannot create an instance of the abstract class or interface '{0}'" />
+  <Diagnostic Id="CS0145" Severity="Error" Message="A const field requires a value to be provided" />
+  <Diagnostic Id="CS0146" Severity="Error" Message="Circular base class dependency involving '{0}' and '{1}'" />
+  <Diagnostic Id="CS0148" Severity="Error" Message="The delegate '{0}' does not have a valid constructor" />
+  <Diagnostic Id="CS0149" Severity="Error" Message="Method name expected" />
+  <Diagnostic Id="CS0150" Severity="Error" Message="A constant value is expected" />
+  <Diagnostic Id="CS0151" Severity="Error" Message="A switch expression or case label must be a bool, char, string, integral, enum, or corresponding nullable type in C# 6 and earlier." />
+  <Diagnostic Id="CS0152" Severity="Error" Message="The switch statement contains multiple cases with the label value '{0}'" />
+  <Diagnostic Id="CS0153" Severity="Error" Message="A goto case is only valid inside a switch statement" />
+  <Diagnostic Id="CS0154" Severity="Error" Message="The property or indexer '{0}' cannot be used in this context because it lacks the get accessor" />
+  <Diagnostic Id="CS0155" Severity="Error" Message="The type caught or thrown must be derived from System.Exception" />
+  <Diagnostic Id="CS0156" Severity="Error" Message="A throw statement with no arguments is not allowed outside of a catch clause" />
+  <Diagnostic Id="CS0157" Severity="Error" Message="Control cannot leave the body of a finally clause" />
+  <Diagnostic Id="CS0158" Severity="Error" Message="The label '{0}' shadows another label by the same name in a contained scope" />
+  <Diagnostic Id="CS0159" Severity="Error" Message="No such label '{0}' within the scope of the goto statement" />
+  <Diagnostic Id="CS0160" Severity="Error" Message="A previous catch clause already catches all exceptions of this or of a super type ('{0}')" />
+  <Diagnostic Id="CS0161" Severity="Error" Message="'{0}': not all code paths return a value" />
+  <Diagnostic Id="CS0162" Severity="Warning" Message="Unreachable code detected" />
+  <Diagnostic Id="CS0163" Severity="Error" Message="Control cannot fall through from one case label ('{0}') to another" />
+  <Diagnostic Id="CS0164" Severity="Warning" Message="This label has not been referenced" />
+  <Diagnostic Id="CS0165" Severity="Error" Message="Use of unassigned local variable '{0}'" />
+  <Diagnostic Id="CS0168" Severity="Warning" Message="The variable '{0}' is declared but never used" />
+  <Diagnostic Id="CS0169" Severity="Warning" Message="The field '{0}' is never used" />
+  <Diagnostic Id="CS0170" Severity="Error" Message="Use of possibly unassigned field '{0}'" />
+  <Diagnostic Id="CS0171" Severity="Error" Message="Field '{0}' must be fully assigned before control is returned to the caller" />
+  <Diagnostic Id="CS0172" Severity="Error" Message="Type of conditional expression cannot be determined because '{0}' and '{1}' implicitly convert to one another" />
+  <Diagnostic Id="CS0173" Severity="Error" Message="Type of conditional expression cannot be determined because there is no implicit conversion between '{0}' and '{1}'" />
+  <Diagnostic Id="CS0174" Severity="Error" Message="A base class is required for a 'base' reference" />
+  <Diagnostic Id="CS0175" Severity="Error" Message="Use of keyword 'base' is not valid in this context" />
+  <Diagnostic Id="CS0176" Severity="Error" Message="Member '{0}' cannot be accessed with an instance reference; qualify it with a type name instead" />
+  <Diagnostic Id="CS0177" Severity="Error" Message="The out parameter '{0}' must be assigned to before control leaves the current method" />
+  <Diagnostic Id="CS0178" Severity="Error" Message="Invalid rank specifier: expected ',' or ']'" />
+  <Diagnostic Id="CS0179" Severity="Error" Message="'{0}' cannot be extern and declare a body" />
+  <Diagnostic Id="CS0180" Severity="Error" Message="'{0}' cannot be both extern and abstract" />
+  <Diagnostic Id="CS0181" Severity="Error" Message="Attribute constructor parameter '{0}' has type '{1}', which is not a valid attribute parameter type" />
+  <Diagnostic Id="CS0182" Severity="Error" Message="An attribute argument must be a constant expression, typeof expression or array creation expression of an attribute parameter type" />
+  <Diagnostic Id="CS0183" Severity="Warning" Message="The given expression is always of the provided ('{0}') type" />
+  <Diagnostic Id="CS0184" Severity="Warning" Message="The given expression is never of the provided ('{0}') type" />
+  <Diagnostic Id="CS0185" Severity="Error" Message="'{0}' is not a reference type as required by the lock statement" />
+  <Diagnostic Id="CS0186" Severity="Error" Message="Use of null is not valid in this context" />
+  <Diagnostic Id="CS0188" Severity="Error" Message="The 'this' object cannot be used before all of its fields are assigned to" />
+  <Diagnostic Id="CS0190" Severity="Error" Message="The __arglist construct is valid only within a variable argument method" />
+  <Diagnostic Id="CS0191" Severity="Error" Message="A readonly field cannot be assigned to (except in a constructor or a variable initializer)" />
+  <Diagnostic Id="CS0192" Severity="Error" Message="A readonly field cannot be used as a ref or out value (except in a constructor)" />
+  <Diagnostic Id="CS0193" Severity="Error" Message="The * or -&gt; operator must be applied to a pointer" />
+  <Diagnostic Id="CS0196" Severity="Error" Message="A pointer must be indexed by only one value" />
+  <Diagnostic Id="CS0197" Severity="Warning" Message="Using '{0}' as a ref or out value or taking its address may cause a runtime exception because it is a field of a marshal-by-reference class" />
+  <Diagnostic Id="CS0198" Severity="Error" Message="A static readonly field cannot be assigned to (except in a static constructor or a variable initializer)" />
+  <Diagnostic Id="CS0199" Severity="Error" Message="A static readonly field cannot be used as a ref or out value (except in a static constructor)" />
+  <Diagnostic Id="CS0200" Severity="Error" Message="Property or indexer '{0}' cannot be assigned to -- it is read only" />
+  <Diagnostic Id="CS0201" Severity="Error" Message="Only assignment, call, increment, decrement, and new object expressions can be used as a statement" />
+  <Diagnostic Id="CS0202" Severity="Error" Message="foreach requires that the return type '{0}' of '{1}' must have a suitable public MoveNext method and public Current property" />
+  <Diagnostic Id="CS0204" Severity="Error" Message="Only 65534 locals, including those generated by the compiler, are allowed" />
+  <Diagnostic Id="CS0205" Severity="Error" Message="Cannot call an abstract base member: '{0}'" />
+  <Diagnostic Id="CS0206" Severity="Error" Message="A property or indexer may not be passed as an out or ref parameter" />
+  <Diagnostic Id="CS0208" Severity="Error" Message="Cannot take the address of, get the size of, or declare a pointer to a managed type ('{0}')" />
+  <Diagnostic Id="CS0209" Severity="Error" Message="The type of a local declared in a fixed statement must be a pointer type" />
+  <Diagnostic Id="CS0210" Severity="Error" Message="You must provide an initializer in a fixed or using statement declaration" />
+  <Diagnostic Id="CS0211" Severity="Error" Message="Cannot take the address of the given expression" />
+  <Diagnostic Id="CS0212" Severity="Error" Message="You can only take the address of an unfixed expression inside of a fixed statement initializer" />
+  <Diagnostic Id="CS0213" Severity="Error" Message="You cannot use the fixed statement to take the address of an already fixed expression" />
+  <Diagnostic Id="CS0214" Severity="Error" Message="Pointers and fixed size buffers may only be used in an unsafe context" />
+  <Diagnostic Id="CS0215" Severity="Error" Message="The return type of operator True or False must be bool" />
+  <Diagnostic Id="CS0216" Severity="Error" Message="The operator '{0}' requires a matching operator '{1}' to also be defined" />
+  <Diagnostic Id="CS0217" Severity="Error" Message="In order to be applicable as a short circuit operator a user-defined logical operator ('{0}') must have the same return type and parameter types" />
+  <Diagnostic Id="CS0218" Severity="Error" Message="In order for '{0}' to be applicable as a short circuit operator, its declaring type '{1}' must define operator true and operator false" />
+  <Diagnostic Id="CS0219" Severity="Warning" Message="The variable '{0}' is assigned but its value is never used" />
+  <Diagnostic Id="CS0220" Severity="Error" Message="The operation overflows at compile time in checked mode" />
+  <Diagnostic Id="CS0221" Severity="Error" Message="Constant value '{0}' cannot be converted to a '{1}' (use 'unchecked' syntax to override)" />
+  <Diagnostic Id="CS0224" Severity="Error" Message="A method with vararg cannot be generic, be in a generic type, or have a params parameter" />
+  <Diagnostic Id="CS0225" Severity="Error" Message="The params parameter must be a single dimensional array" />
+  <Diagnostic Id="CS0226" Severity="Error" Message="An __arglist expression may only appear inside of a call or new expression" />
+  <Diagnostic Id="CS0227" Severity="Error" Message="Unsafe code may only appear if compiling with /unsafe" />
+  <Diagnostic Id="CS0229" Severity="Error" Message="Ambiguity between '{0}' and '{1}'" />
+  <Diagnostic Id="CS0230" Severity="Error" Message="Type and identifier are both required in a foreach statement" />
+  <Diagnostic Id="CS0231" Severity="Error" Message="A params parameter must be the last parameter in a formal parameter list" />
+  <Diagnostic Id="CS0233" Severity="Error" Message="'{0}' does not have a predefined size, therefore sizeof can only be used in an unsafe context (consider using System.Runtime.InteropServices.Marshal.SizeOf)" />
+  <Diagnostic Id="CS0234" Severity="Error" Message="The type or namespace name '{0}' does not exist in the namespace '{1}' (are you missing an assembly reference?)" />
+  <Diagnostic Id="CS0236" Severity="Error" Message="A field initializer cannot reference the non-static field, method, or property '{0}'" />
+  <Diagnostic Id="CS0238" Severity="Error" Message="'{0}' cannot be sealed because it is not an override" />
+  <Diagnostic Id="CS0239" Severity="Error" Message="'{0}': cannot override inherited member '{1}' because it is sealed" />
+  <Diagnostic Id="CS0242" Severity="Error" Message="The operation in question is undefined on void pointers" />
+  <Diagnostic Id="CS0243" Severity="Error" Message="The Conditional attribute is not valid on '{0}' because it is an override method" />
+  <Diagnostic Id="CS0244" Severity="Error" Message="Neither 'is' nor 'as' is valid on pointer types" />
+  <Diagnostic Id="CS0245" Severity="Error" Message="Destructors and object.Finalize cannot be called directly. Consider calling IDisposable.Dispose if available." />
+  <Diagnostic Id="CS0246" Severity="Error" Message="The type or namespace name '{0}' could not be found (are you missing a using directive or an assembly reference?)" />
+  <Diagnostic Id="CS0247" Severity="Error" Message="Cannot use a negative size with stackalloc" />
+  <Diagnostic Id="CS0248" Severity="Error" Message="Cannot create an array with a negative size" />
+  <Diagnostic Id="CS0249" Severity="Error" Message="Do not override object.Finalize. Instead, provide a destructor." />
+  <Diagnostic Id="CS0250" Severity="Error" Message="Do not directly call your base class Finalize method. It is called automatically from your destructor." />
+  <Diagnostic Id="CS0251" Severity="Warning" Message="Indexing an array with a negative index (array indices always start at zero)" />
+  <Diagnostic Id="CS0252" Severity="Warning" Message="Possible unintended reference comparison; to get a value comparison, cast the left hand side to type '{0}'" />
+  <Diagnostic Id="CS0253" Severity="Warning" Message="Possible unintended reference comparison; to get a value comparison, cast the right hand side to type '{0}'" />
+  <Diagnostic Id="CS0254" Severity="Error" Message="The right hand side of a fixed statement assignment may not be a cast expression" />
+  <Diagnostic Id="CS0255" Severity="Error" Message="stackalloc may not be used in a catch or finally block" />
+  <Diagnostic Id="CS0257" Severity="Error" Message="An __arglist parameter must be the last parameter in a formal parameter list" />
+  <Diagnostic Id="CS0260" Severity="Error" Message="Missing partial modifier on declaration of type '{0}'; another partial declaration of this type exists" />
+  <Diagnostic Id="CS0261" Severity="Error" Message="Partial declarations of '{0}' must be all classes, all structs, or all interfaces" />
+  <Diagnostic Id="CS0262" Severity="Error" Message="Partial declarations of '{0}' have conflicting accessibility modifiers" />
+  <Diagnostic Id="CS0263" Severity="Error" Message="Partial declarations of '{0}' must not specify different base classes" />
+  <Diagnostic Id="CS0264" Severity="Error" Message="Partial declarations of '{0}' must have the same type parameter names in the same order" />
+  <Diagnostic Id="CS0265" Severity="Error" Message="Partial declarations of '{0}' have inconsistent constraints for type parameter '{1}'" />
+  <Diagnostic Id="CS0266" Severity="Error" Message="Cannot implicitly convert type '{0}' to '{1}'. An explicit conversion exists (are you missing a cast?)" />
+  <Diagnostic Id="CS0267" Severity="Error" Message="The 'partial' modifier can only appear immediately before 'class', 'struct', 'interface', or 'void'" />
+  <Diagnostic Id="CS0268" Severity="Error" Message="Imported type '{0}' is invalid. It contains a circular base class dependency." />
+  <Diagnostic Id="CS0269" Severity="Error" Message="Use of unassigned out parameter '{0}'" />
+  <Diagnostic Id="CS0270" Severity="Error" Message="Array size cannot be specified in a variable declaration (try initializing with a 'new' expression)" />
+  <Diagnostic Id="CS0271" Severity="Error" Message="The property or indexer '{0}' cannot be used in this context because the get accessor is inaccessible" />
+  <Diagnostic Id="CS0272" Severity="Error" Message="The property or indexer '{0}' cannot be used in this context because the set accessor is inaccessible" />
+  <Diagnostic Id="CS0273" Severity="Error" Message="The accessibility modifier of the '{0}' accessor must be more restrictive than the property or indexer '{1}'" />
+  <Diagnostic Id="CS0274" Severity="Error" Message="Cannot specify accessibility modifiers for both accessors of the property or indexer '{0}'" />
+  <Diagnostic Id="CS0275" Severity="Error" Message="'{0}': accessibility modifiers may not be used on accessors in an interface" />
+  <Diagnostic Id="CS0276" Severity="Error" Message="'{0}': accessibility modifiers on accessors may only be used if the property or indexer has both a get and a set accessor" />
+  <Diagnostic Id="CS0277" Severity="Error" Message="'{0}' does not implement interface member '{1}'. '{2}' is not public." />
+  <Diagnostic Id="CS0278" Severity="Warning" Message="'{0}' does not implement the '{1}' pattern. '{2}' is ambiguous with '{3}'." />
+  <Diagnostic Id="CS0279" Severity="Warning" Message="'{0}' does not implement the '{1}' pattern. '{2}' is either static or not public." />
+  <Diagnostic Id="CS0280" Severity="Warning" Message="'{0}' does not implement the '{1}' pattern. '{2}' has the wrong signature." />
+  <Diagnostic Id="CS0281" Severity="Error" Message="Friend access was granted by '{0}', but the public key of the output assembly does not match that specified by the attribute in the granting assembly." />
+  <Diagnostic Id="CS0282" Severity="Warning" Message="There is no defined ordering between fields in multiple declarations of partial struct '{0}'. To specify an ordering, all instance fields must be in the same declaration." />
+  <Diagnostic Id="CS0283" Severity="Error" Message="The type '{0}' cannot be declared const" />
+  <Diagnostic Id="CS0304" Severity="Error" Message="Cannot create an instance of the variable type '{0}' because it does not have the new() constraint" />
+  <Diagnostic Id="CS0305" Severity="Error" Message="Using the generic {1} '{0}' requires {2} type arguments" />
+  <Diagnostic Id="CS0306" Severity="Error" Message="The type '{0}' may not be used as a type argument" />
+  <Diagnostic Id="CS0307" Severity="Error" Message="The {1} '{0}' cannot be used with type arguments" />
+  <Diagnostic Id="CS0308" Severity="Error" Message="The non-generic {1} '{0}' cannot be used with type arguments" />
+  <Diagnostic Id="CS0310" Severity="Error" Message="'{2}' must be a non-abstract type with a public parameterless constructor in order to use it as parameter '{1}' in the generic type or method '{0}'" />
+  <Diagnostic Id="CS0311" Severity="Error" Message="The type '{3}' cannot be used as type parameter '{2}' in the generic type or method '{0}'. There is no implicit reference conversion from '{3}' to '{1}'." />
+  <Diagnostic Id="CS0312" Severity="Error" Message="The type '{3}' cannot be used as type parameter '{2}' in the generic type or method '{0}'. The nullable type '{3}' does not satisfy the constraint of '{1}'." />
+  <Diagnostic Id="CS0313" Severity="Error" Message="The type '{3}' cannot be used as type parameter '{2}' in the generic type or method '{0}'. The nullable type '{3}' does not satisfy the constraint of '{1}'. Nullable types can not satisfy any interface constraints." />
+  <Diagnostic Id="CS0314" Severity="Error" Message="The type '{3}' cannot be used as type parameter '{2}' in the generic type or method '{0}'. There is no boxing conversion or type parameter conversion from '{3}' to '{1}'." />
+  <Diagnostic Id="CS0315" Severity="Error" Message="The type '{3}' cannot be used as type parameter '{2}' in the generic type or method '{0}'. There is no boxing conversion from '{3}' to '{1}'." />
+  <Diagnostic Id="CS0316" Severity="Error" Message="The parameter name '{0}' conflicts with an automatically-generated parameter name" />
+  <Diagnostic Id="CS0400" Severity="Error" Message="The type or namespace name '{0}' could not be found in the global namespace (are you missing an assembly reference?)" />
+  <Diagnostic Id="CS0401" Severity="Error" Message="The new() constraint must be the last constraint specified" />
+  <Diagnostic Id="CS0402" Severity="Warning" Message="'{0}': an entry point cannot be generic or in a generic type" />
+  <Diagnostic Id="CS0403" Severity="Error" Message="Cannot convert null to type parameter '{0}' because it could be a non-nullable value type. Consider using 'default({0})' instead." />
+  <Diagnostic Id="CS0404" Severity="Error" Message="Cannot apply attribute class '{0}' because it is generic" />
+  <Diagnostic Id="CS0405" Severity="Error" Message="Duplicate constraint '{0}' for type parameter '{1}'" />
+  <Diagnostic Id="CS0406" Severity="Error" Message="The class type constraint '{0}' must come before any other constraints" />
+  <Diagnostic Id="CS0407" Severity="Error" Message="'{1} {0}' has the wrong return type" />
+  <Diagnostic Id="CS0409" Severity="Error" Message="A constraint clause has already been specified for type parameter '{0}'. All of the constraints for a type parameter must be specified in a single where clause." />
+  <Diagnostic Id="CS0411" Severity="Error" Message="The type arguments for method '{0}' cannot be inferred from the usage. Try specifying the type arguments explicitly." />
+  <Diagnostic Id="CS0412" Severity="Error" Message="'{0}': a parameter, local variable, or local function cannot have the same name as a method type parameter" />
+  <Diagnostic Id="CS0413" Severity="Error" Message="The type parameter '{0}' cannot be used with the 'as' operator because it does not have a class type constraint nor a 'class' constraint" />
+  <Diagnostic Id="CS0414" Severity="Warning" Message="The field '{0}' is assigned but its value is never used" />
+  <Diagnostic Id="CS0415" Severity="Error" Message="The '{0}' attribute is valid only on an indexer that is not an explicit interface member declaration" />
+  <Diagnostic Id="CS0416" Severity="Error" Message="'{0}': an attribute argument cannot use type parameters" />
+  <Diagnostic Id="CS0417" Severity="Error" Message="'{0}': cannot provide arguments when creating an instance of a variable type" />
+  <Diagnostic Id="CS0418" Severity="Error" Message="'{0}': an abstract class cannot be sealed or static" />
+  <Diagnostic Id="CS0419" Severity="Warning" Message="Ambiguous reference in cref attribute: '{0}'. Assuming '{1}', but could have also matched other overloads including '{2}'." />
+  <Diagnostic Id="CS0420" Severity="Warning" Message="'{0}': a reference to a volatile field will not be treated as volatile" />
+  <Diagnostic Id="CS0423" Severity="Error" Message="Since '{1}' has the ComImport attribute, '{0}' must be extern or abstract" />
+  <Diagnostic Id="CS0424" Severity="Error" Message="'{0}': a class with the ComImport attribute cannot specify a base class" />
+  <Diagnostic Id="CS0425" Severity="Error" Message="The constraints for type parameter '{0}' of method '{1}' must match the constraints for type parameter '{2}' of interface method '{3}'. Consider using an explicit interface implementation instead." />
+  <Diagnostic Id="CS0426" Severity="Error" Message="The type name '{0}' does not exist in the type '{1}'" />
+  <Diagnostic Id="CS0428" Severity="Error" Message="Cannot convert method group '{0}' to non-delegate type '{1}'. Did you intend to invoke the method?" />
+  <Diagnostic Id="CS0430" Severity="Error" Message="The extern alias '{0}' was not specified in a /reference option" />
+  <Diagnostic Id="CS0431" Severity="Error" Message="Cannot use alias '{0}' with '::' since the alias references a type. Use '.' instead." />
+  <Diagnostic Id="CS0432" Severity="Error" Message="Alias '{0}' not found" />
+  <Diagnostic Id="CS0433" Severity="Error" Message="The type '{1}' exists in both '{0}' and '{2}'" />
+  <Diagnostic Id="CS0434" Severity="Error" Message="The namespace '{1}' in '{0}' conflicts with the type '{3}' in '{2}'" />
+  <Diagnostic Id="CS0435" Severity="Warning" Message="The namespace '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the namespace defined in '{0}'." />
+  <Diagnostic Id="CS0436" Severity="Warning" Message="The type '{1}' in '{0}' conflicts with the imported type '{3}' in '{2}'. Using the type defined in '{0}'." />
+  <Diagnostic Id="CS0437" Severity="Warning" Message="The type '{1}' in '{0}' conflicts with the imported namespace '{3}' in '{2}'. Using the type defined in '{0}'." />
+  <Diagnostic Id="CS0438" Severity="Error" Message="The type '{1}' in '{0}' conflicts with the namespace '{3}' in '{2}'" />
+  <Diagnostic Id="CS0439" Severity="Error" Message="An extern alias declaration must precede all other elements defined in the namespace" />
+  <Diagnostic Id="CS0440" Severity="Warning" Message="Defining an alias named 'global' is ill-advised since 'global::' always references the global namespace and not an alias" />
+  <Diagnostic Id="CS0441" Severity="Error" Message="'{0}': a class cannot be both static and sealed" />
+  <Diagnostic Id="CS0442" Severity="Error" Message="'{0}': abstract properties cannot have private accessors" />
+  <Diagnostic Id="CS0443" Severity="Error" Message="Syntax error; value expected" />
+  <Diagnostic Id="CS0445" Severity="Error" Message="Cannot modify the result of an unboxing conversion" />
+  <Diagnostic Id="CS0446" Severity="Error" Message="Foreach cannot operate on a '{0}'. Did you intend to invoke the '{0}'?" />
+  <Diagnostic Id="CS0448" Severity="Error" Message="The return type for ++ or -- operator must match the parameter type or be derived from the parameter type" />
+  <Diagnostic Id="CS0449" Severity="Error" Message="The 'class' or 'struct' constraint must come before any other constraints" />
+  <Diagnostic Id="CS0450" Severity="Error" Message="'{0}': cannot specify both a constraint class and the 'class' or 'struct' constraint" />
+  <Diagnostic Id="CS0451" Severity="Error" Message="The 'new()' constraint cannot be used with the 'struct' constraint" />
+  <Diagnostic Id="CS0452" Severity="Error" Message="The type '{2}' must be a reference type in order to use it as parameter '{1}' in the generic type or method '{0}'" />
+  <Diagnostic Id="CS0453" Severity="Error" Message="The type '{2}' must be a non-nullable value type in order to use it as parameter '{1}' in the generic type or method '{0}'" />
+  <Diagnostic Id="CS0454" Severity="Error" Message="Circular constraint dependency involving '{0}' and '{1}'" />
+  <Diagnostic Id="CS0455" Severity="Error" Message="Type parameter '{0}' inherits conflicting constraints '{1}' and '{2}'" />
+  <Diagnostic Id="CS0456" Severity="Error" Message="Type parameter '{1}' has the 'struct' constraint so '{1}' cannot be used as a constraint for '{0}'" />
+  <Diagnostic Id="CS0457" Severity="Error" Message="Ambiguous user defined conversions '{0}' and '{1}' when converting from '{2}' to '{3}'" />
+  <Diagnostic Id="CS0458" Severity="Warning" Message="The result of the expression is always 'null' of type '{0}'" />
+  <Diagnostic Id="CS0459" Severity="Error" Message="Cannot take the address of a read-only local variable" />
+  <Diagnostic Id="CS0460" Severity="Error" Message="Constraints for override and explicit interface implementation methods are inherited from the base method, so they cannot be specified directly" />
+  <Diagnostic Id="CS0462" Severity="Error" Message="The inherited members '{0}' and '{1}' have the same signature in type '{2}', so they cannot be overridden" />
+  <Diagnostic Id="CS0463" Severity="Error" Message="Evaluation of the decimal constant expression failed" />
+  <Diagnostic Id="CS0464" Severity="Warning" Message="Comparing with null of type '{0}' always produces 'false'" />
+  <Diagnostic Id="CS0465" Severity="Warning" Message="Introducing a 'Finalize' method can interfere with destructor invocation. Did you intend to declare a destructor?" />
+  <Diagnostic Id="CS0466" Severity="Error" Message="'{0}' should not have a params parameter since '{1}' does not" />
+  <Diagnostic Id="CS0469" Severity="Warning" Message="The 'goto case' value is not implicitly convertible to type '{0}'" />
+  <Diagnostic Id="CS0470" Severity="Error" Message="Method '{0}' cannot implement interface accessor '{1}' for type '{2}'. Use an explicit interface implementation." />
+  <Diagnostic Id="CS0472" Severity="Warning" Message="The result of the expression is always '{0}' since a value of type '{1}' is never equal to 'null' of type '{2}'" />
+  <Diagnostic Id="CS0473" Severity="Warning" Message="Explicit interface implementation '{0}' matches more than one interface member. Which interface member is actually chosen is implementation-dependent. Consider using a non-explicit implementation instead." />
+  <Diagnostic Id="CS0500" Severity="Error" Message="'{0}' cannot declare a body because it is marked abstract" />
+  <Diagnostic Id="CS0501" Severity="Error" Message="'{0}' must declare a body because it is not marked abstract, extern, or partial" />
+  <Diagnostic Id="CS0502" Severity="Error" Message="'{0}' cannot be both abstract and sealed" />
+  <Diagnostic Id="CS0503" Severity="Error" Message="The abstract method '{0}' cannot be marked virtual" />
+  <Diagnostic Id="CS0504" Severity="Error" Message="The constant '{0}' cannot be marked static" />
+  <Diagnostic Id="CS0505" Severity="Error" Message="'{0}': cannot override because '{1}' is not a function" />
+  <Diagnostic Id="CS0506" Severity="Error" Message="'{0}': cannot override inherited member '{1}' because it is not marked virtual, abstract, or override" />
+  <Diagnostic Id="CS0507" Severity="Error" Message="'{0}': cannot change access modifiers when overriding '{1}' inherited member '{2}'" />
+  <Diagnostic Id="CS0508" Severity="Error" Message="'{0}': return type must be '{2}' to match overridden member '{1}'" />
+  <Diagnostic Id="CS0509" Severity="Error" Message="'{0}': cannot derive from sealed type '{1}'" />
+  <Diagnostic Id="CS0513" Severity="Error" Message="'{0}' is abstract but it is contained in non-abstract class '{1}'" />
+  <Diagnostic Id="CS0514" Severity="Error" Message="'{0}': static constructor cannot have an explicit 'this' or 'base' constructor call" />
+  <Diagnostic Id="CS0515" Severity="Error" Message="'{0}': access modifiers are not allowed on static constructors" />
+  <Diagnostic Id="CS0516" Severity="Error" Message="Constructor '{0}' cannot call itself" />
+  <Diagnostic Id="CS0517" Severity="Error" Message="'{0}' has no base class and cannot call a base constructor" />
+  <Diagnostic Id="CS0518" Severity="Error" Message="Predefined type '{0}' is not defined or imported" />
+  <Diagnostic Id="CS0522" Severity="Error" Message="'{0}': structs cannot call base class constructors" />
+  <Diagnostic Id="CS0523" Severity="Error" Message="Struct member '{0}' of type '{1}' causes a cycle in the struct layout" />
+  <Diagnostic Id="CS0524" Severity="Error" Message="'{0}': interfaces cannot declare types" />
+  <Diagnostic Id="CS0525" Severity="Error" Message="Interfaces cannot contain fields" />
+  <Diagnostic Id="CS0526" Severity="Error" Message="Interfaces cannot contain constructors" />
+  <Diagnostic Id="CS0527" Severity="Error" Message="Type '{0}' in interface list is not an interface" />
+  <Diagnostic Id="CS0528" Severity="Error" Message="'{0}' is already listed in interface list" />
+  <Diagnostic Id="CS0529" Severity="Error" Message="Inherited interface '{1}' causes a cycle in the interface hierarchy of '{0}'" />
+  <Diagnostic Id="CS0531" Severity="Error" Message="'{0}': interface members cannot have a definition" />
+  <Diagnostic Id="CS0533" Severity="Error" Message="'{0}' hides inherited abstract member '{1}'" />
+  <Diagnostic Id="CS0534" Severity="Error" Message="'{0}' does not implement inherited abstract member '{1}'" />
+  <Diagnostic Id="CS0535" Severity="Error" Message="'{0}' does not implement interface member '{1}'" />
+  <Diagnostic Id="CS0537" Severity="Error" Message="The class System.Object cannot have a base class or implement an interface" />
+  <Diagnostic Id="CS0538" Severity="Error" Message="'{0}' in explicit interface declaration is not an interface" />
+  <Diagnostic Id="CS0539" Severity="Error" Message="'{0}' in explicit interface declaration is not a member of interface" />
+  <Diagnostic Id="CS0540" Severity="Error" Message="'{0}': containing type does not implement interface '{1}'" />
+  <Diagnostic Id="CS0541" Severity="Error" Message="'{0}': explicit interface declaration can only be declared in a class or struct" />
+  <Diagnostic Id="CS0542" Severity="Error" Message="'{0}': member names cannot be the same as their enclosing type" />
+  <Diagnostic Id="CS0543" Severity="Error" Message="'{0}': the enumerator value is too large to fit in its type" />
+  <Diagnostic Id="CS0544" Severity="Error" Message="'{0}': cannot override because '{1}' is not a property" />
+  <Diagnostic Id="CS0545" Severity="Error" Message="'{0}': cannot override because '{1}' does not have an overridable get accessor" />
+  <Diagnostic Id="CS0546" Severity="Error" Message="'{0}': cannot override because '{1}' does not have an overridable set accessor" />
+  <Diagnostic Id="CS0547" Severity="Error" Message="'{0}': property or indexer cannot have void type" />
+  <Diagnostic Id="CS0548" Severity="Error" Message="'{0}': property or indexer must have at least one accessor" />
+  <Diagnostic Id="CS0549" Severity="Error" Message="'{0}' is a new virtual member in sealed class '{1}'" />
+  <Diagnostic Id="CS0550" Severity="Error" Message="'{0}' adds an accessor not found in interface member '{1}'" />
+  <Diagnostic Id="CS0551" Severity="Error" Message="Explicit interface implementation '{0}' is missing accessor '{1}'" />
+  <Diagnostic Id="CS0552" Severity="Error" Message="'{0}': user-defined conversions to or from an interface are not allowed" />
+  <Diagnostic Id="CS0553" Severity="Error" Message="'{0}': user-defined conversions to or from a base class are not allowed" />
+  <Diagnostic Id="CS0554" Severity="Error" Message="'{0}': user-defined conversions to or from a derived class are not allowed" />
+  <Diagnostic Id="CS0555" Severity="Error" Message="User-defined operator cannot take an object of the enclosing type and convert to an object of the enclosing type" />
+  <Diagnostic Id="CS0556" Severity="Error" Message="User-defined conversion must convert to or from the enclosing type" />
+  <Diagnostic Id="CS0557" Severity="Error" Message="Duplicate user-defined conversion in type '{0}'" />
+  <Diagnostic Id="CS0558" Severity="Error" Message="User-defined operator '{0}' must be declared static and public" />
+  <Diagnostic Id="CS0559" Severity="Error" Message="The parameter type for ++ or -- operator must be the containing type" />
+  <Diagnostic Id="CS0562" Severity="Error" Message="The parameter of a unary operator must be the containing type" />
+  <Diagnostic Id="CS0563" Severity="Error" Message="One of the parameters of a binary operator must be the containing type" />
+  <Diagnostic Id="CS0564" Severity="Error" Message="The first operand of an overloaded shift operator must have the same type as the containing type, and the type of the second operand must be int" />
+  <Diagnostic Id="CS0567" Severity="Error" Message="Interfaces cannot contain operators" />
+  <Diagnostic Id="CS0568" Severity="Error" Message="Structs cannot contain explicit parameterless constructors" />
+  <Diagnostic Id="CS0569" Severity="Error" Message="'{0}': cannot override '{1}' because it is not supported by the language" />
+  <Diagnostic Id="CS0570" Severity="Error" Message="'{0}' is not supported by the language" />
+  <Diagnostic Id="CS0571" Severity="Error" Message="'{0}': cannot explicitly call operator or accessor" />
+  <Diagnostic Id="CS0572" Severity="Error" Message="'{0}': cannot reference a type through an expression; try '{1}' instead" />
+  <Diagnostic Id="CS0573" Severity="Error" Message="'{0}': cannot have instance property or field initializers in structs" />
+  <Diagnostic Id="CS0574" Severity="Error" Message="Name of destructor must match name of class" />
+  <Diagnostic Id="CS0575" Severity="Error" Message="Only class types can contain destructors" />
+  <Diagnostic Id="CS0576" Severity="Error" Message="Namespace '{1}' contains a definition conflicting with alias '{0}'" />
+  <Diagnostic Id="CS0577" Severity="Error" Message="The Conditional attribute is not valid on '{0}' because it is a constructor, destructor, operator, or explicit interface implementation" />
+  <Diagnostic Id="CS0578" Severity="Error" Message="The Conditional attribute is not valid on '{0}' because its return type is not void" />
+  <Diagnostic Id="CS0579" Severity="Error" Message="Duplicate '{0}' attribute" />
+  <Diagnostic Id="CS0582" Severity="Error" Message="The Conditional attribute is not valid on interface members" />
+  <Diagnostic Id="CS0590" Severity="Error" Message="User-defined operators cannot return void" />
+  <Diagnostic Id="CS0591" Severity="Error" Message="Invalid value for argument to '{0}' attribute" />
+  <Diagnostic Id="CS0592" Severity="Error" Message="Attribute '{0}' is not valid on this declaration type. It is only valid on '{1}' declarations." />
+  <Diagnostic Id="CS0594" Severity="Error" Message="Floating-point constant is outside the range of type '{0}'" />
+  <Diagnostic Id="CS0595" Severity="Error" Message="Invalid real literal." />
+  <Diagnostic Id="CS0596" Severity="Error" Message="The Guid attribute must be specified with the ComImport attribute" />
+  <Diagnostic Id="CS0599" Severity="Error" Message="Invalid value for named attribute argument '{0}'" />
+  <Diagnostic Id="CS0601" Severity="Error" Message="The DllImport attribute must be specified on a method marked 'static' and 'extern'" />
+  <Diagnostic Id="CS0610" Severity="Error" Message="Field or property cannot be of type '{0}'" />
+  <Diagnostic Id="CS0611" Severity="Error" Message="Array elements cannot be of type '{0}'" />
+  <Diagnostic Id="CS0612" Severity="Warning" Message="'{0}' is obsolete" />
+  <Diagnostic Id="CS0616" Severity="Error" Message="'{0}' is not an attribute class" />
+  <Diagnostic Id="CS0617" Severity="Error" Message="'{0}' is not a valid named attribute argument. Named attribute arguments must be fields which are not readonly, static, or const, or read-write properties which are public and not static." />
+  <Diagnostic Id="CS0618" Severity="Warning" Message="'{0}' is obsolete: '{1}'" />
+  <Diagnostic Id="CS0619" Severity="Error" Message="'{0}' is obsolete: '{1}'" />
+  <Diagnostic Id="CS0620" Severity="Error" Message="Indexers cannot have void type" />
+  <Diagnostic Id="CS0621" Severity="Error" Message="'{0}': virtual or abstract members cannot be private" />
+  <Diagnostic Id="CS0622" Severity="Error" Message="Can only use array initializer expressions to assign to array types. Try using a new expression instead." />
+  <Diagnostic Id="CS0623" Severity="Error" Message="Array initializers can only be used in a variable or field initializer. Try using a new expression instead." />
+  <Diagnostic Id="CS0625" Severity="Error" Message="'{0}': instance field types marked with StructLayout(LayoutKind.Explicit) must have a FieldOffset attribute" />
+  <Diagnostic Id="CS0626" Severity="Warning" Message="Method, operator, or accessor '{0}' is marked external and has no attributes on it. Consider adding a DllImport attribute to specify the external implementation." />
+  <Diagnostic Id="CS0628" Severity="Warning" Message="'{0}': new protected member declared in sealed class" />
+  <Diagnostic Id="CS0629" Severity="Error" Message="Conditional member '{0}' cannot implement interface member '{1}' in type '{2}'" />
+  <Diagnostic Id="CS0631" Severity="Error" Message="ref and out are not valid in this context" />
+  <Diagnostic Id="CS0633" Severity="Error" Message="The argument to the '{0}' attribute must be a valid identifier" />
+  <Diagnostic Id="CS0636" Severity="Error" Message="The FieldOffset attribute can only be placed on members of types marked with the StructLayout(LayoutKind.Explicit)" />
+  <Diagnostic Id="CS0637" Severity="Error" Message="The FieldOffset attribute is not allowed on static or const fields" />
+  <Diagnostic Id="CS0641" Severity="Error" Message="Attribute '{0}' is only valid on classes derived from System.Attribute" />
+  <Diagnostic Id="CS0642" Severity="Warning" Message="Possible mistaken empty statement" />
+  <Diagnostic Id="CS0643" Severity="Error" Message="'{0}' duplicate named attribute argument" />
+  <Diagnostic Id="CS0644" Severity="Error" Message="'{0}' cannot derive from special class '{1}'" />
+  <Diagnostic Id="CS0646" Severity="Error" Message="Cannot specify the DefaultMember attribute on a type containing an indexer" />
+  <Diagnostic Id="CS0648" Severity="Error" Message="'{0}' is a type not supported by the language" />
+  <Diagnostic Id="CS0649" Severity="Warning" Message="Field '{0}' is never assigned to, and will always have its default value {1}" />
+  <Diagnostic Id="CS0650" Severity="Error" Message="Bad array declarator: To declare a managed array the rank specifier precedes the variable's identifier. To declare a fixed size buffer field, use the fixed keyword before the field type." />
+  <Diagnostic Id="CS0652" Severity="Warning" Message="Comparison to integral constant is useless; the constant is outside the range of type '{0}'" />
+  <Diagnostic Id="CS0653" Severity="Error" Message="Cannot apply attribute class '{0}' because it is abstract" />
+  <Diagnostic Id="CS0655" Severity="Error" Message="'{0}' is not a valid named attribute argument because it is not a valid attribute parameter type" />
+  <Diagnostic Id="CS0656" Severity="Error" Message="Missing compiler required member '{0}.{1}'" />
+  <Diagnostic Id="CS0657" Severity="Warning" Message="'{0}' is not a valid attribute location for this declaration. Valid attribute locations for this declaration are '{1}'. All attributes in this block will be ignored." />
+  <Diagnostic Id="CS0658" Severity="Warning" Message="'{0}' is not a recognized attribute location. Valid attribute locations for this declaration are '{1}'. All attributes in this block will be ignored." />
+  <Diagnostic Id="CS0659" Severity="Warning" Message="'{0}' overrides Object.Equals(object o) but does not override Object.GetHashCode()" />
+  <Diagnostic Id="CS0660" Severity="Warning" Message="'{0}' defines operator == or operator != but does not override Object.Equals(object o)" />
+  <Diagnostic Id="CS0661" Severity="Warning" Message="'{0}' defines operator == or operator != but does not override Object.GetHashCode()" />
+  <Diagnostic Id="CS0662" Severity="Error" Message="Cannot specify only Out attribute on a ref parameter. Use both In and Out attributes, or neither." />
+  <Diagnostic Id="CS0663" Severity="Error" Message="'{0}' cannot define overloaded methods that differ only on ref and out" />
+  <Diagnostic Id="CS0664" Severity="Error" Message="Literal of type double cannot be implicitly converted to type '{1}'; use an '{0}' suffix to create a literal of this type" />
+  <Diagnostic Id="CS0665" Severity="Warning" Message="Assignment in conditional expression is always constant; did you mean to use == instead of = ?" />
+  <Diagnostic Id="CS0666" Severity="Error" Message="'{0}': new protected member declared in struct" />
+  <Diagnostic Id="CS0668" Severity="Error" Message="Two indexers have different names; the IndexerName attribute must be used with the same name on every indexer within a type" />
+  <Diagnostic Id="CS0669" Severity="Error" Message="A class with the ComImport attribute cannot have a user-defined constructor" />
+  <Diagnostic Id="CS0670" Severity="Error" Message="Field cannot have void type" />
+  <Diagnostic Id="CS0672" Severity="Warning" Message="Member '{0}' overrides obsolete member '{1}'. Add the Obsolete attribute to '{0}'." />
+  <Diagnostic Id="CS0673" Severity="Error" Message="System.Void cannot be used from C# -- use typeof(void) to get the void type object" />
+  <Diagnostic Id="CS0674" Severity="Error" Message="Do not use 'System.ParamArrayAttribute'. Use the 'params' keyword instead." />
+  <Diagnostic Id="CS0675" Severity="Warning" Message="Bitwise-or operator used on a sign-extended operand; consider casting to a smaller unsigned type first" />
+  <Diagnostic Id="CS0677" Severity="Error" Message="'{0}': a volatile field cannot be of the type '{1}'" />
+  <Diagnostic Id="CS0678" Severity="Error" Message="'{0}': a field cannot be both volatile and readonly" />
+  <Diagnostic Id="CS0681" Severity="Error" Message="The modifier 'abstract' is not valid on fields. Try using a property instead." />
+  <Diagnostic Id="CS0682" Severity="Error" Message="'{0}' cannot implement '{1}' because it is not supported by the language" />
+  <Diagnostic Id="CS0683" Severity="Error" Message="'{0}' explicit method implementation cannot implement '{1}' because it is an accessor" />
+  <Diagnostic Id="CS0684" Severity="Warning" Message="'{0}' interface marked with 'CoClassAttribute' not marked with 'ComImportAttribute'" />
+  <Diagnostic Id="CS0685" Severity="Error" Message="Conditional member '{0}' cannot have an out parameter" />
+  <Diagnostic Id="CS0686" Severity="Error" Message="Accessor '{0}' cannot implement interface member '{1}' for type '{2}'. Use an explicit interface implementation." />
+  <Diagnostic Id="CS0687" Severity="Error" Message="The namespace alias qualifier '::' always resolves to a type or namespace so is illegal here. Consider using '.' instead." />
+  <Diagnostic Id="CS0689" Severity="Error" Message="Cannot derive from '{0}' because it is a type parameter" />
+  <Diagnostic Id="CS0692" Severity="Error" Message="Duplicate type parameter '{0}'" />
+  <Diagnostic Id="CS0693" Severity="Warning" Message="Type parameter '{0}' has the same name as the type parameter from outer type '{1}'" />
+  <Diagnostic Id="CS0694" Severity="Error" Message="Type parameter '{0}' has the same name as the containing type, or method" />
+  <Diagnostic Id="CS0695" Severity="Error" Message="'{0}' cannot implement both '{1}' and '{2}' because they may unify for some type parameter substitutions" />
+  <Diagnostic Id="CS0698" Severity="Error" Message="A generic type cannot derive from '{0}' because it is an attribute class" />
+  <Diagnostic Id="CS0699" Severity="Error" Message="'{1}' does not define type parameter '{0}'" />
+  <Diagnostic Id="CS0701" Severity="Error" Message="'{0}' is not a valid constraint. A type used as a constraint must be an interface, a non-sealed class or a type parameter." />
+  <Diagnostic Id="CS0702" Severity="Error" Message="Constraint cannot be special class '{0}'" />
+  <Diagnostic Id="CS0703" Severity="Error" Message="Inconsistent accessibility: constraint type '{1}' is less accessible than '{0}'" />
+  <Diagnostic Id="CS0704" Severity="Error" Message="Cannot do member lookup in '{0}' because it is a type parameter" />
+  <Diagnostic Id="CS0706" Severity="Error" Message="Invalid constraint type. A type used as a constraint must be an interface, a non-sealed class or a type parameter." />
+  <Diagnostic Id="CS0708" Severity="Error" Message="'{0}': cannot declare instance members in a static class" />
+  <Diagnostic Id="CS0709" Severity="Error" Message="'{1}': cannot derive from static class '{0}'" />
+  <Diagnostic Id="CS0710" Severity="Error" Message="Static classes cannot have instance constructors" />
+  <Diagnostic Id="CS0711" Severity="Error" Message="Static classes cannot contain destructors" />
+  <Diagnostic Id="CS0712" Severity="Error" Message="Cannot create an instance of the static class '{0}'" />
+  <Diagnostic Id="CS0713" Severity="Error" Message="Static class '{0}' cannot derive from type '{1}'. Static classes must derive from object." />
+  <Diagnostic Id="CS0714" Severity="Error" Message="'{0}': static classes cannot implement interfaces" />
+  <Diagnostic Id="CS0715" Severity="Error" Message="'{0}': static classes cannot contain user-defined operators" />
+  <Diagnostic Id="CS0716" Severity="Error" Message="Cannot convert to static type '{0}'" />
+  <Diagnostic Id="CS0717" Severity="Error" Message="'{0}': static classes cannot be used as constraints" />
+  <Diagnostic Id="CS0718" Severity="Error" Message="'{0}': static types cannot be used as type arguments" />
+  <Diagnostic Id="CS0719" Severity="Error" Message="'{0}': array elements cannot be of static type" />
+  <Diagnostic Id="CS0720" Severity="Error" Message="'{0}': cannot declare indexers in a static class" />
+  <Diagnostic Id="CS0721" Severity="Error" Message="'{0}': static types cannot be used as parameters" />
+  <Diagnostic Id="CS0722" Severity="Error" Message="'{0}': static types cannot be used as return types" />
+  <Diagnostic Id="CS0723" Severity="Error" Message="Cannot declare a variable of static type '{0}'" />
+  <Diagnostic Id="CS0724" Severity="Error" Message="A throw statement with no arguments is not allowed in a finally clause that is nested inside the nearest enclosing catch clause" />
+  <Diagnostic Id="CS0726" Severity="Error" Message="'{0}' is not a valid format specifier" />
+  <Diagnostic Id="CS0728" Severity="Warning" Message="Possibly incorrect assignment to local '{0}' which is the argument to a using or lock statement. The Dispose call or unlocking will happen on the original value of the local." />
+  <Diagnostic Id="CS0729" Severity="Error" Message="Type '{0}' is defined in this assembly, but a type forwarder is specified for it" />
+  <Diagnostic Id="CS0730" Severity="Error" Message="Cannot forward type '{0}' because it is a nested type of '{1}'" />
+  <Diagnostic Id="CS0731" Severity="Error" Message="The type forwarder for type '{0}' in assembly '{1}' causes a cycle" />
+  <Diagnostic Id="CS0734" Severity="Error" Message="The /moduleassemblyname option may only be specified when building a target type of 'module'" />
+  <Diagnostic Id="CS0735" Severity="Error" Message="Invalid type specified as an argument for TypeForwardedTo attribute" />
+  <Diagnostic Id="CS0736" Severity="Error" Message="'{0}' does not implement interface member '{1}'. '{2}' cannot implement an interface member because it is static." />
+  <Diagnostic Id="CS0737" Severity="Error" Message="'{0}' does not implement interface member '{1}'. '{2}' cannot implement an interface member because it is not public." />
+  <Diagnostic Id="CS0738" Severity="Error" Message="'{0}' does not implement interface member '{1}'. '{2}' cannot implement '{1}' because it does not have the matching return type of '{3}'." />
+  <Diagnostic Id="CS0739" Severity="Error" Message="'{0}' duplicate TypeForwardedToAttribute" />
+  <Diagnostic Id="CS0742" Severity="Error" Message="A query body must end with a select clause or a group clause" />
+  <Diagnostic Id="CS0743" Severity="Error" Message="Expected contextual keyword 'on'" />
+  <Diagnostic Id="CS0744" Severity="Error" Message="Expected contextual keyword 'equals'" />
+  <Diagnostic Id="CS0745" Severity="Error" Message="Expected contextual keyword 'by'" />
+  <Diagnostic Id="CS0746" Severity="Error" Message="Invalid anonymous type member declarator. Anonymous type members must be declared with a member assignment, simple name or member access." />
+  <Diagnostic Id="CS0747" Severity="Error" Message="Invalid initializer member declarator" />
+  <Diagnostic Id="CS0748" Severity="Error" Message="Inconsistent lambda parameter usage; parameter types must be all explicit or all implicit" />
+  <Diagnostic Id="CS0750" Severity="Error" Message="A partial method cannot have access modifiers or the virtual, abstract, override, new, sealed, or extern modifiers" />
+  <Diagnostic Id="CS0751" Severity="Error" Message="A partial method must be declared within a partial class or partial struct" />
+  <Diagnostic Id="CS0752" Severity="Error" Message="A partial method cannot have out parameters" />
+  <Diagnostic Id="CS0753" Severity="Error" Message="Only methods, classes, structs, or interfaces may be partial" />
+  <Diagnostic Id="CS0754" Severity="Error" Message="A partial method may not explicitly implement an interface method" />
+  <Diagnostic Id="CS0755" Severity="Error" Message="Both partial method declarations must be extension methods or neither may be an extension method" />
+  <Diagnostic Id="CS0756" Severity="Error" Message="A partial method may not have multiple defining declarations" />
+  <Diagnostic Id="CS0757" Severity="Error" Message="A partial method may not have multiple implementing declarations" />
+  <Diagnostic Id="CS0758" Severity="Error" Message="Both partial method declarations must use a params parameter or neither may use a params parameter" />
+  <Diagnostic Id="CS0759" Severity="Error" Message="No defining declaration found for implementing declaration of partial method '{0}'" />
+  <Diagnostic Id="CS0761" Severity="Error" Message="Partial method declarations of '{0}' have inconsistent type parameter constraints" />
+  <Diagnostic Id="CS0762" Severity="Error" Message="Cannot create delegate from method '{0}' because it is a partial method without an implementing declaration" />
+  <Diagnostic Id="CS0763" Severity="Error" Message="Both partial method declarations must be static or neither may be static" />
+  <Diagnostic Id="CS0764" Severity="Error" Message="Both partial method declarations must be unsafe or neither may be unsafe" />
+  <Diagnostic Id="CS0765" Severity="Error" Message="Partial methods with only a defining declaration or removed conditional methods cannot be used in expression trees" />
+  <Diagnostic Id="CS0766" Severity="Error" Message="Partial methods must have a void return type" />
+  <Diagnostic Id="CS0767" Severity="Error" Message="Cannot inherit interface '{0}' with the specified type parameters because it causes method '{1}' to contain overloads which differ only on ref and out" />
+  <Diagnostic Id="CS0768" Severity="Error" Message="Constructor '{0}' cannot call itself through another constructor" />
+  <Diagnostic Id="CS0809" Severity="Warning" Message="Obsolete member '{0}' overrides non-obsolete member '{1}'" />
+  <Diagnostic Id="CS0811" Severity="Warning" Message="The fully qualified name for '{0}' is too long for debug information. Compile without '/debug' option." />
+  <Diagnostic Id="CS0815" Severity="Error" Message="Cannot assign {0} to an implicitly-typed variable" />
+  <Diagnostic Id="CS0818" Severity="Error" Message="Implicitly-typed variables must be initialized" />
+  <Diagnostic Id="CS0819" Severity="Error" Message="Implicitly-typed variables cannot have multiple declarators" />
+  <Diagnostic Id="CS0820" Severity="Error" Message="Cannot initialize an implicitly-typed variable with an array initializer" />
+  <Diagnostic Id="CS0821" Severity="Error" Message="Implicitly-typed local variables cannot be fixed" />
+  <Diagnostic Id="CS0822" Severity="Error" Message="Implicitly-typed variables cannot be constant" />
+  <Diagnostic Id="CS0824" Severity="Warning" Message="Constructor '{0}' is marked external" />
+  <Diagnostic Id="CS0825" Severity="Error" Message="The contextual keyword 'var' may only appear within a local variable declaration or in script code" />
+  <Diagnostic Id="CS0826" Severity="Error" Message="No best type found for implicitly-typed array" />
+  <Diagnostic Id="CS0828" Severity="Error" Message="Cannot assign '{0}' to anonymous type property" />
+  <Diagnostic Id="CS0831" Severity="Error" Message="An expression tree may not contain a base access" />
+  <Diagnostic Id="CS0832" Severity="Error" Message="An expression tree may not contain an assignment operator" />
+  <Diagnostic Id="CS0833" Severity="Error" Message="An anonymous type cannot have multiple properties with the same name" />
+  <Diagnostic Id="CS0834" Severity="Error" Message="A lambda expression with a statement body cannot be converted to an expression tree" />
+  <Diagnostic Id="CS0835" Severity="Error" Message="Cannot convert lambda to an expression tree whose type argument '{0}' is not a delegate type" />
+  <Diagnostic Id="CS0836" Severity="Error" Message="Cannot use anonymous type in a constant expression" />
+  <Diagnostic Id="CS0837" Severity="Error" Message="The first operand of an 'is' or 'as' operator may not be a lambda expression, anonymous method, or method group." />
+  <Diagnostic Id="CS0838" Severity="Error" Message="An expression tree may not contain a multidimensional array initializer" />
+  <Diagnostic Id="CS0839" Severity="Error" Message="Argument missing" />
+  <Diagnostic Id="CS0841" Severity="Error" Message="Cannot use local variable '{0}' before it is declared" />
+  <Diagnostic Id="CS0842" Severity="Error" Message="'{0}': Auto-implemented properties cannot be used inside a type marked with StructLayout(LayoutKind.Explicit)" />
+  <Diagnostic Id="CS0843" Severity="Error" Message="Auto-implemented property '{0}' must be fully assigned before control is returned to the caller." />
+  <Diagnostic Id="CS0844" Severity="Error" Message="Cannot use local variable '{0}' before it is declared. The declaration of the local variable hides the field '{1}'." />
+  <Diagnostic Id="CS0845" Severity="Error" Message="An expression tree lambda may not contain a coalescing operator with a null or default literal left-hand side" />
+  <Diagnostic Id="CS0846" Severity="Error" Message="A nested array initializer is expected" />
+  <Diagnostic Id="CS0847" Severity="Error" Message="An array initializer of length '{0}' is expected" />
+  <Diagnostic Id="CS0851" Severity="Error" Message="Cannot define overloaded constructor '{0}' because it differs from another constructor only on ref and out" />
+  <Diagnostic Id="CS0853" Severity="Error" Message="An expression tree may not contain a named argument specification" />
+  <Diagnostic Id="CS0854" Severity="Error" Message="An expression tree may not contain a call or invocation that uses optional arguments" />
+  <Diagnostic Id="CS0855" Severity="Error" Message="An expression tree may not contain an indexed property" />
+  <Diagnostic Id="CS0856" Severity="Error" Message="Indexed property '{0}' has non-optional arguments which must be provided" />
+  <Diagnostic Id="CS0857" Severity="Error" Message="Indexed property '{0}' must have all arguments optional" />
+  <Diagnostic Id="CS1001" Severity="Error" Message="Identifier expected" />
+  <Diagnostic Id="CS1002" Severity="Error" Message="; expected" />
+  <Diagnostic Id="CS1003" Severity="Error" Message="Syntax error, '{0}' expected" />
+  <Diagnostic Id="CS1004" Severity="Error" Message="Duplicate '{0}' modifier" />
+  <Diagnostic Id="CS1007" Severity="Error" Message="Property accessor already defined" />
+  <Diagnostic Id="CS1008" Severity="Error" Message="Type byte, sbyte, short, ushort, int, uint, long, or ulong expected" />
+  <Diagnostic Id="CS1009" Severity="Error" Message="Unrecognized escape sequence" />
+  <Diagnostic Id="CS1010" Severity="Error" Message="Newline in constant" />
+  <Diagnostic Id="CS1011" Severity="Error" Message="Empty character literal" />
+  <Diagnostic Id="CS1012" Severity="Error" Message="Too many characters in character literal" />
+  <Diagnostic Id="CS1013" Severity="Error" Message="Invalid number" />
+  <Diagnostic Id="CS1014" Severity="Error" Message="A get or set accessor expected" />
+  <Diagnostic Id="CS1015" Severity="Error" Message="An object, string, or class type expected" />
+  <Diagnostic Id="CS1016" Severity="Error" Message="Named attribute argument expected" />
+  <Diagnostic Id="CS1017" Severity="Error" Message="Catch clauses cannot follow the general catch clause of a try statement" />
+  <Diagnostic Id="CS1018" Severity="Error" Message="Keyword 'this' or 'base' expected" />
+  <Diagnostic Id="CS1019" Severity="Error" Message="Overloadable unary operator expected" />
+  <Diagnostic Id="CS1020" Severity="Error" Message="Overloadable binary operator expected" />
+  <Diagnostic Id="CS1021" Severity="Error" Message="Integral constant is too large" />
+  <Diagnostic Id="CS1022" Severity="Error" Message="Type or namespace definition, or end-of-file expected" />
+  <Diagnostic Id="CS1023" Severity="Error" Message="Embedded statement cannot be a declaration or labeled statement" />
+  <Diagnostic Id="CS1024" Severity="Error" Message="Preprocessor directive expected" />
+  <Diagnostic Id="CS1025" Severity="Error" Message="Single-line comment or end-of-line expected" />
+  <Diagnostic Id="CS1026" Severity="Error" Message=") expected" />
+  <Diagnostic Id="CS1027" Severity="Error" Message="#endif directive expected" />
+  <Diagnostic Id="CS1028" Severity="Error" Message="Unexpected preprocessor directive" />
+  <Diagnostic Id="CS1029" Severity="Error" Message="#error: '{0}'" />
+  <Diagnostic Id="CS1030" Severity="Warning" Message="#warning: '{0}'" />
+  <Diagnostic Id="CS1031" Severity="Error" Message="Type expected" />
+  <Diagnostic Id="CS1032" Severity="Error" Message="Cannot define/undefine preprocessor symbols after first token in file" />
+  <Diagnostic Id="CS1035" Severity="Error" Message="End-of-file found, '*/' expected" />
+  <Diagnostic Id="CS1037" Severity="Error" Message="Overloadable operator expected" />
+  <Diagnostic Id="CS1038" Severity="Error" Message="#endregion directive expected" />
+  <Diagnostic Id="CS1039" Severity="Error" Message="Unterminated string literal" />
+  <Diagnostic Id="CS1040" Severity="Error" Message="Preprocessor directives must appear as the first non-whitespace character on a line" />
+  <Diagnostic Id="CS1041" Severity="Error" Message="Identifier expected; '{1}' is a keyword" />
+  <Diagnostic Id="CS1043" Severity="Error" Message="{ or ; expected" />
+  <Diagnostic Id="CS1044" Severity="Error" Message="Cannot use more than one type in a for, using, fixed, or declaration statement" />
+  <Diagnostic Id="CS1055" Severity="Error" Message="An add or remove accessor expected" />
+  <Diagnostic Id="CS1056" Severity="Error" Message="Unexpected character '{0}'" />
+  <Diagnostic Id="CS1057" Severity="Error" Message="'{0}': static classes cannot contain protected members" />
+  <Diagnostic Id="CS1058" Severity="Warning" Message="A previous catch clause already catches all exceptions. All non-exceptions thrown will be wrapped in a System.Runtime.CompilerServices.RuntimeWrappedException." />
+  <Diagnostic Id="CS1059" Severity="Error" Message="The operand of an increment or decrement operator must be a variable, property or indexer" />
+  <Diagnostic Id="CS1061" Severity="Error" Message="'{0}' does not contain a definition for '{1}' and no extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive or an assembly reference?)" />
+  <Diagnostic Id="CS1062" Severity="Warning" Message="The best overloaded Add method '{0}' for the collection initializer element is obsolete. {1}" />
+  <Diagnostic Id="CS1063" Severity="Error" Message="The best overloaded Add method '{0}' for the collection initializer element is obsolete. {1}" />
+  <Diagnostic Id="CS1064" Severity="Warning" Message="The best overloaded Add method '{0}' for the collection initializer element is obsolete." />
+  <Diagnostic Id="CS1065" Severity="Error" Message="Default values are not valid in this context." />
+  <Diagnostic Id="CS1066" Severity="Warning" Message="The default value specified for parameter '{0}' will have no effect because it applies to a member that is used in contexts that do not allow optional arguments" />
+  <Diagnostic Id="CS1067" Severity="Error" Message="Partial declarations of '{0}' must have the same type parameter names and variance modifiers in the same order" />
+  <Diagnostic Id="CS1068" Severity="Error" Message="The type name '{0}' could not be found in the global namespace. This type has been forwarded to assembly '{1}' Consider adding a reference to that assembly." />
+  <Diagnostic Id="CS1069" Severity="Error" Message="The type name '{0}' could not be found in the namespace '{1}'. This type has been forwarded to assembly '{2}' Consider adding a reference to that assembly." />
+  <Diagnostic Id="CS1070" Severity="Error" Message="The type name '{0}' could not be found. This type has been forwarded to assembly '{1}'. Consider adding a reference to that assembly." />
+  <Diagnostic Id="CS1072" Severity="Warning" Message="Expected identifier or numeric literal." />
+  <Diagnostic Id="CS1073" Severity="Error" Message="Unexpected token '{0}'" />
+  <Diagnostic Id="CS1100" Severity="Error" Message="Method '{0}' has a parameter modifier 'this' which is not on the first parameter" />
+  <Diagnostic Id="CS1101" Severity="Error" Message=" The parameter modifier 'ref' cannot be used with 'this' " />
+  <Diagnostic Id="CS1102" Severity="Error" Message=" The parameter modifier 'out' cannot be used with 'this' " />
+  <Diagnostic Id="CS1103" Severity="Error" Message="The first parameter of an extension method cannot be of type '{0}'" />
+  <Diagnostic Id="CS1104" Severity="Error" Message="A parameter array cannot be used with 'this' modifier on an extension method" />
+  <Diagnostic Id="CS1105" Severity="Error" Message="Extension method must be static" />
+  <Diagnostic Id="CS1106" Severity="Error" Message="Extension method must be defined in a non-generic static class" />
+  <Diagnostic Id="CS1107" Severity="Error" Message="A parameter can only have one '{0}' modifier" />
+  <Diagnostic Id="CS1108" Severity="Error" Message="A parameter cannot have all the specified modifiers; there are too many modifiers on the parameter" />
+  <Diagnostic Id="CS1109" Severity="Error" Message="Extension methods must be defined in a top level static class; {0} is a nested class" />
+  <Diagnostic Id="CS1110" Severity="Error" Message="Cannot define a new extension method because the compiler required type '{0}' cannot be found. Are you missing a reference to System.Core.dll?" />
+  <Diagnostic Id="CS1112" Severity="Error" Message="Do not use 'System.Runtime.CompilerServices.ExtensionAttribute'. Use the 'this' keyword instead." />
+  <Diagnostic Id="CS1113" Severity="Error" Message="Extension method '{0}' defined on value type '{1}' cannot be used to create delegates" />
+  <Diagnostic Id="CS1501" Severity="Error" Message="No overload for method '{0}' takes {1} arguments" />
+  <Diagnostic Id="CS1503" Severity="Error" Message="Argument {0}: cannot convert from '{1}' to '{2}'" />
+  <Diagnostic Id="CS1504" Severity="Error" Message="Source file '{0}' could not be opened -- {1}" />
+  <Diagnostic Id="CS1507" Severity="Error" Message="Cannot link resource files when building a module" />
+  <Diagnostic Id="CS1508" Severity="Error" Message="Resource identifier '{0}' has already been used in this assembly" />
+  <Diagnostic Id="CS1509" Severity="Error" Message="The referenced file '{0}' is not an assembly" />
+  <Diagnostic Id="CS1510" Severity="Error" Message="A ref or out value must be an assignable variable" />
+  <Diagnostic Id="CS1511" Severity="Error" Message="Keyword 'base' is not available in a static method" />
+  <Diagnostic Id="CS1512" Severity="Error" Message="Keyword 'base' is not available in the current context" />
+  <Diagnostic Id="CS1513" Severity="Error" Message="} expected" />
+  <Diagnostic Id="CS1514" Severity="Error" Message="{ expected" />
+  <Diagnostic Id="CS1515" Severity="Error" Message="'in' expected" />
+  <Diagnostic Id="CS1517" Severity="Error" Message="Invalid preprocessor expression" />
+  <Diagnostic Id="CS1519" Severity="Error" Message="Invalid token '{0}' in class, struct, or interface member declaration" />
+  <Diagnostic Id="CS1520" Severity="Error" Message="Method must have a return type" />
+  <Diagnostic Id="CS1521" Severity="Error" Message="Invalid base type" />
+  <Diagnostic Id="CS1522" Severity="Warning" Message="Empty switch block" />
+  <Diagnostic Id="CS1524" Severity="Error" Message="Expected catch or finally" />
+  <Diagnostic Id="CS1525" Severity="Error" Message="Invalid expression term '{0}'" />
+  <Diagnostic Id="CS1526" Severity="Error" Message="A new expression requires (), [], or {} after type" />
+  <Diagnostic Id="CS1527" Severity="Error" Message="Elements defined in a namespace cannot be explicitly declared as private, protected, or protected internal" />
+  <Diagnostic Id="CS1528" Severity="Error" Message="Expected ; or = (cannot specify constructor arguments in declaration)" />
+  <Diagnostic Id="CS1529" Severity="Error" Message="A using clause must precede all other elements defined in the namespace except extern alias declarations" />
+  <Diagnostic Id="CS1534" Severity="Error" Message="Overloaded binary operator '{0}' takes two parameters" />
+  <Diagnostic Id="CS1535" Severity="Error" Message="Overloaded unary operator '{0}' takes one parameter" />
+  <Diagnostic Id="CS1536" Severity="Error" Message="Invalid parameter type 'void'" />
+  <Diagnostic Id="CS1537" Severity="Error" Message="The using alias '{0}' appeared previously in this namespace" />
+  <Diagnostic Id="CS1540" Severity="Error" Message="Cannot access protected member '{0}' via a qualifier of type '{1}'; the qualifier must be of type '{2}' (or derived from it)" />
+  <Diagnostic Id="CS1542" Severity="Error" Message="'{0}' cannot be added to this assembly because it already is an assembly" />
+  <Diagnostic Id="CS1545" Severity="Error" Message="Property, indexer, or event '{0}' is not supported by the language; try directly calling accessor methods '{1}' or '{2}'" />
+  <Diagnostic Id="CS1546" Severity="Error" Message="Property, indexer, or event '{0}' is not supported by the language; try directly calling accessor method '{1}'" />
+  <Diagnostic Id="CS1547" Severity="Error" Message="Keyword 'void' cannot be used in this context" />
+  <Diagnostic Id="CS1551" Severity="Error" Message="Indexers must have at least one parameter" />
+  <Diagnostic Id="CS1552" Severity="Error" Message="Array type specifier, [], must appear before parameter name" />
+  <Diagnostic Id="CS1553" Severity="Error" Message="Declaration is not valid; use '{0} operator &lt;dest-type&gt; (...' instead" />
+  <Diagnostic Id="CS1555" Severity="Error" Message="Could not find '{0}' specified for Main method" />
+  <Diagnostic Id="CS1556" Severity="Error" Message="'{0}' specified for Main method must be a valid non-generic class or struct" />
+  <Diagnostic Id="CS1558" Severity="Error" Message="'{0}' does not have a suitable static Main method" />
+  <Diagnostic Id="CS1562" Severity="Error" Message="Outputs without source must have the /out option specified" />
+  <Diagnostic Id="CS1564" Severity="Error" Message="Conflicting options specified: Win32 resource file; Win32 manifest" />
+  <Diagnostic Id="CS1565" Severity="Error" Message="Conflicting options specified: Win32 resource file; Win32 icon" />
+  <Diagnostic Id="CS1566" Severity="Error" Message="Error reading resource '{0}' -- '{1}'" />
+  <Diagnostic Id="CS1569" Severity="Error" Message="Error writing to XML documentation file: {0}" />
+  <Diagnostic Id="CS1570" Severity="Warning" Message="XML comment has badly formed XML -- '{0}'" />
+  <Diagnostic Id="CS1571" Severity="Warning" Message="XML comment has a duplicate param tag for '{0}'" />
+  <Diagnostic Id="CS1572" Severity="Warning" Message="XML comment has a param tag for '{0}', but there is no parameter by that name" />
+  <Diagnostic Id="CS1573" Severity="Warning" Message="Parameter '{0}' has no matching param tag in the XML comment for '{1}' (but other parameters do)" />
+  <Diagnostic Id="CS1574" Severity="Warning" Message="XML comment has cref attribute '{0}' that could not be resolved" />
+  <Diagnostic Id="CS1575" Severity="Error" Message="A stackalloc expression requires [] after type" />
+  <Diagnostic Id="CS1576" Severity="Error" Message="The line number specified for #line directive is missing or invalid" />
+  <Diagnostic Id="CS1578" Severity="Error" Message="Quoted file name, single-line comment or end-of-line expected" />
+  <Diagnostic Id="CS1579" Severity="Error" Message="foreach statement cannot operate on variables of type '{0}' because '{0}' does not contain a public definition for '{1}'" />
+  <Diagnostic Id="CS1580" Severity="Warning" Message="Invalid type for parameter {0} in XML comment cref attribute: '{1}'" />
+  <Diagnostic Id="CS1581" Severity="Warning" Message="Invalid return type in XML comment cref attribute" />
+  <Diagnostic Id="CS1583" Severity="Error" Message="Error reading Win32 resources -- {0}" />
+  <Diagnostic Id="CS1584" Severity="Warning" Message="XML comment has syntactically incorrect cref attribute '{0}'" />
+  <Diagnostic Id="CS1585" Severity="Error" Message="Member modifier '{0}' must precede the member type and name" />
+  <Diagnostic Id="CS1586" Severity="Error" Message="Array creation must have array size or array initializer" />
+  <Diagnostic Id="CS1587" Severity="Warning" Message="XML comment is not placed on a valid language element" />
+  <Diagnostic Id="CS1589" Severity="Warning" Message="Unable to include XML fragment '{1}' of file '{0}' -- {2}" />
+  <Diagnostic Id="CS1590" Severity="Warning" Message="Invalid XML include element -- {0}" />
+  <Diagnostic Id="CS1591" Severity="Warning" Message="Missing XML comment for publicly visible type or member '{0}'" />
+  <Diagnostic Id="CS1592" Severity="Warning" Message="Badly formed XML in included comments file -- '{0}'" />
+  <Diagnostic Id="CS1593" Severity="Error" Message="Delegate '{0}' does not take {1} arguments" />
+  <Diagnostic Id="CS1597" Severity="Error" Message="Semicolon after method or accessor block is not valid" />
+  <Diagnostic Id="CS1599" Severity="Error" Message="Method or delegate cannot return type '{0}'" />
+  <Diagnostic Id="CS1600" Severity="Error" Message="Compilation cancelled by user" />
+  <Diagnostic Id="CS1601" Severity="Error" Message="Cannot make reference to variable of type '{0}'" />
+  <Diagnostic Id="CS1604" Severity="Error" Message="Cannot assign to '{0}' because it is read-only" />
+  <Diagnostic Id="CS1605" Severity="Error" Message="Cannot use '{0}' as a ref or out value because it is read-only" />
+  <Diagnostic Id="CS1607" Severity="Warning" Message="" />
+  <Diagnostic Id="CS1608" Severity="Error" Message="The RequiredAttribute attribute is not permitted on C# types" />
+  <Diagnostic Id="CS1609" Severity="Error" Message="Modifiers cannot be placed on event accessor declarations" />
+  <Diagnostic Id="CS1611" Severity="Error" Message="The params parameter cannot be declared as ref or out" />
+  <Diagnostic Id="CS1612" Severity="Error" Message="Cannot modify the return value of '{0}' because it is not a variable" />
+  <Diagnostic Id="CS1613" Severity="Error" Message="The managed coclass wrapper class '{0}' for interface '{1}' cannot be found (are you missing an assembly reference?)" />
+  <Diagnostic Id="CS1614" Severity="Error" Message="'{0}' is ambiguous between '{1}' and '{2}'; use either '@{0}' or '{0}Attribute'" />
+  <Diagnostic Id="CS1615" Severity="Error" Message="Argument {0} may not be passed with the '{1}' keyword" />
+  <Diagnostic Id="CS1616" Severity="Warning" Message="Option '{0}' overrides attribute '{1}' given in a source file or added module" />
+  <Diagnostic Id="CS1617" Severity="Error" Message="Invalid option '{0}' for /langversion; must be ISO-1, ISO-2, Default, Latest or a valid version in range 1 to 7.1." />
+  <Diagnostic Id="CS1618" Severity="Error" Message="Cannot create delegate with '{0}' because it or a method it overrides has a Conditional attribute" />
+  <Diagnostic Id="CS1619" Severity="Error" Message="Cannot create temporary file -- {0}" />
+  <Diagnostic Id="CS1620" Severity="Error" Message="Argument {0} must be passed with the '{1}' keyword" />
+  <Diagnostic Id="CS1621" Severity="Error" Message="The yield statement cannot be used inside an anonymous method or lambda expression" />
+  <Diagnostic Id="CS1622" Severity="Error" Message="Cannot return a value from an iterator. Use the yield return statement to return a value, or yield break to end the iteration." />
+  <Diagnostic Id="CS1623" Severity="Error" Message="Iterators cannot have ref or out parameters" />
+  <Diagnostic Id="CS1624" Severity="Error" Message="The body of '{0}' cannot be an iterator block because '{1}' is not an iterator interface type" />
+  <Diagnostic Id="CS1625" Severity="Error" Message="Cannot yield in the body of a finally clause" />
+  <Diagnostic Id="CS1626" Severity="Error" Message="Cannot yield a value in the body of a try block with a catch clause" />
+  <Diagnostic Id="CS1627" Severity="Error" Message="Expression expected after yield return" />
+  <Diagnostic Id="CS1628" Severity="Error" Message="Cannot use ref or out parameter '{0}' inside an anonymous method, lambda expression, or query expression" />
+  <Diagnostic Id="CS1629" Severity="Error" Message="Unsafe code may not appear in iterators" />
+  <Diagnostic Id="CS1631" Severity="Error" Message="Cannot yield a value in the body of a catch clause" />
+  <Diagnostic Id="CS1632" Severity="Error" Message="Control cannot leave the body of an anonymous method or lambda expression" />
+  <Diagnostic Id="CS1633" Severity="Warning" Message="Unrecognized #pragma directive" />
+  <Diagnostic Id="CS1634" Severity="Warning" Message="Expected disable or restore" />
+  <Diagnostic Id="CS1635" Severity="Warning" Message="Cannot restore warning 'CS{0}' because it was disabled globally" />
+  <Diagnostic Id="CS1636" Severity="Error" Message="__arglist is not allowed in the parameter list of iterators" />
+  <Diagnostic Id="CS1637" Severity="Error" Message="Iterators cannot have unsafe parameters or yield types" />
+  <Diagnostic Id="CS1639" Severity="Error" Message="The managed coclass wrapper class signature '{0}' for interface '{1}' is not a valid class name signature" />
+  <Diagnostic Id="CS1640" Severity="Error" Message="foreach statement cannot operate on variables of type '{0}' because it implements multiple instantiations of '{1}'; try casting to a specific interface instantiation" />
+  <Diagnostic Id="CS1641" Severity="Error" Message="A fixed size buffer field must have the array size specifier after the field name" />
+  <Diagnostic Id="CS1642" Severity="Error" Message="Fixed size buffer fields may only be members of structs" />
+  <Diagnostic Id="CS1643" Severity="Error" Message="Not all code paths return a value in {0} of type '{1}'" />
+  <Diagnostic Id="CS1645" Severity="Warning" Message="Feature '{0}' is not part of the standardized ISO C# language specification, and may not be accepted by other compilers" />
+  <Diagnostic Id="CS1646" Severity="Error" Message="Keyword, identifier, or string expected after verbatim specifier: @" />
+  <Diagnostic Id="CS1648" Severity="Error" Message="Members of readonly field '{0}' cannot be modified (except in a constructor or a variable initializer)" />
+  <Diagnostic Id="CS1649" Severity="Error" Message="Members of readonly field '{0}' cannot be used as a ref or out value (except in a constructor)" />
+  <Diagnostic Id="CS1650" Severity="Error" Message="Fields of static readonly field '{0}' cannot be assigned to (except in a static constructor or a variable initializer)" />
+  <Diagnostic Id="CS1651" Severity="Error" Message="Fields of static readonly field '{0}' cannot be used as a ref or out value (except in a static constructor)" />
+  <Diagnostic Id="CS1654" Severity="Error" Message="Cannot modify members of '{0}' because it is a '{1}'" />
+  <Diagnostic Id="CS1655" Severity="Error" Message="Cannot use fields of '{0}' as a ref or out value because it is a '{1}'" />
+  <Diagnostic Id="CS1656" Severity="Error" Message="Cannot assign to '{0}' because it is a '{1}'" />
+  <Diagnostic Id="CS1657" Severity="Error" Message="Cannot use '{0}' as a ref or out value because it is a '{1}'" />
+  <Diagnostic Id="CS1658" Severity="Warning" Message="{0}. See also error CS{1}." />
+  <Diagnostic Id="CS1660" Severity="Error" Message="Cannot convert {0} to type '{1}' because it is not a delegate type" />
+  <Diagnostic Id="CS1661" Severity="Error" Message="Cannot convert {0} to delegate type '{1}' because the parameter types do not match the delegate parameter types" />
+  <Diagnostic Id="CS1662" Severity="Error" Message="Cannot convert {0} to intended delegate type because some of the return types in the block are not implicitly convertible to the delegate return type" />
+  <Diagnostic Id="CS1663" Severity="Error" Message="Fixed size buffer type must be one of the following: bool, byte, short, int, long, char, sbyte, ushort, uint, ulong, float or double" />
+  <Diagnostic Id="CS1664" Severity="Error" Message="Fixed size buffer of length {0} and type '{1}' is too big" />
+  <Diagnostic Id="CS1665" Severity="Error" Message="Fixed size buffers must have a length greater than zero" />
+  <Diagnostic Id="CS1666" Severity="Error" Message="You cannot use fixed size buffers contained in unfixed expressions. Try using the fixed statement." />
+  <Diagnostic Id="CS1667" Severity="Error" Message="Attribute '{0}' is not valid on property or event accessors. It is only valid on '{1}' declarations." />
+  <Diagnostic Id="CS1668" Severity="Warning" Message="Invalid search path '{0}' specified in '{1}' -- '{2}'" />
+  <Diagnostic Id="CS1669" Severity="Error" Message="__arglist is not valid in this context" />
+  <Diagnostic Id="CS1670" Severity="Error" Message="params is not valid in this context" />
+  <Diagnostic Id="CS1671" Severity="Error" Message="A namespace declaration cannot have modifiers or attributes" />
+  <Diagnostic Id="CS1672" Severity="Error" Message="Invalid option '{0}' for /platform; must be anycpu, x86, Itanium or x64" />
+  <Diagnostic Id="CS1673" Severity="Error" Message="Anonymous methods, lambda expressions, and query expressions inside structs cannot access instance members of 'this'. Consider copying 'this' to a local variable outside the anonymous method, lambda expression or query expression and using the local instead." />
+  <Diagnostic Id="CS1674" Severity="Error" Message="'{0}': type used in a using statement must be implicitly convertible to 'System.IDisposable'" />
+  <Diagnostic Id="CS1676" Severity="Error" Message="Parameter {0} must be declared with the '{1}' keyword" />
+  <Diagnostic Id="CS1677" Severity="Error" Message="Parameter {0} should not be declared with the '{1}' keyword" />
+  <Diagnostic Id="CS1678" Severity="Error" Message="Parameter {0} is declared as type '{1}{2}' but should be '{3}{4}'" />
+  <Diagnostic Id="CS1679" Severity="Error" Message="Invalid extern alias for '/reference'; '{0}' is not a valid identifier" />
+  <Diagnostic Id="CS1680" Severity="Error" Message="Invalid reference alias option: '{0}=' -- missing filename" />
+  <Diagnostic Id="CS1681" Severity="Error" Message="You cannot redefine the global extern alias" />
+  <Diagnostic Id="CS1685" Severity="Warning" Message="The predefined type '{0}' is defined in multiple assemblies in the global alias; using definition from '{1}'" />
+  <Diagnostic Id="CS1686" Severity="Error" Message="Local '{0}' or its members cannot have their address taken and be used inside an anonymous method or lambda expression" />
+  <Diagnostic Id="CS1687" Severity="Warning" Message="Source file has exceeded the limit of 16,707,565 lines representable in the PDB; debug information will be incorrect" />
+  <Diagnostic Id="CS1688" Severity="Error" Message="Cannot convert anonymous method block without a parameter list to delegate type '{0}' because it has one or more out parameters" />
+  <Diagnostic Id="CS1689" Severity="Error" Message="Attribute '{0}' is only valid on methods or attribute classes" />
+  <Diagnostic Id="CS1690" Severity="Warning" Message="Accessing a member on '{0}' may cause a runtime exception because it is a field of a marshal-by-reference class" />
+  <Diagnostic Id="CS1692" Severity="Warning" Message="Invalid number" />
+  <Diagnostic Id="CS1695" Severity="Warning" Message="Invalid #pragma checksum syntax; should be #pragma checksum &quot;filename&quot; &quot;{XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX}&quot; &quot;XXXX...&quot;" />
+  <Diagnostic Id="CS1696" Severity="Warning" Message="Single-line comment or end-of-line expected" />
+  <Diagnostic Id="CS1697" Severity="Warning" Message="Different checksum values given for '{0}'" />
+  <Diagnostic Id="CS1700" Severity="Warning" Message="Assembly reference '{0}' is invalid and cannot be resolved" />
+  <Diagnostic Id="CS1701" Severity="Warning" Message="Assuming assembly reference '{0}' used by '{1}' matches identity '{2}' of '{3}', you may need to supply runtime policy" />
+  <Diagnostic Id="CS1702" Severity="Warning" Message="Assuming assembly reference '{0}' used by '{1}' matches identity '{2}' of '{3}', you may need to supply runtime policy" />
+  <Diagnostic Id="CS1703" Severity="Error" Message="Multiple assemblies with equivalent identity have been imported: '{0}' and '{1}'. Remove one of the duplicate references." />
+  <Diagnostic Id="CS1704" Severity="Error" Message="An assembly with the same simple name '{0}' has already been imported. Try removing one of the references (e.g. '{1}') or sign them to enable side-by-side." />
+  <Diagnostic Id="CS1705" Severity="Error" Message="Assembly '{0}' with identity '{1}' uses '{2}' which has a higher version than referenced assembly '{3}' with identity '{4}'" />
+  <Diagnostic Id="CS1708" Severity="Error" Message="Fixed size buffers can only be accessed through locals or fields" />
+  <Diagnostic Id="CS1710" Severity="Warning" Message="XML comment has a duplicate typeparam tag for '{0}'" />
+  <Diagnostic Id="CS1711" Severity="Warning" Message="XML comment has a typeparam tag for '{0}', but there is no type parameter by that name" />
+  <Diagnostic Id="CS1712" Severity="Warning" Message="Type parameter '{0}' has no matching typeparam tag in the XML comment on '{1}' (but other type parameters do)" />
+  <Diagnostic Id="CS1715" Severity="Error" Message="'{0}': type must be '{2}' to match overridden member '{1}'" />
+  <Diagnostic Id="CS1716" Severity="Error" Message="Do not use 'System.Runtime.CompilerServices.FixedBuffer' attribute. Use the 'fixed' field modifier instead." />
+  <Diagnostic Id="CS1717" Severity="Warning" Message="Assignment made to same variable; did you mean to assign something else?" />
+  <Diagnostic Id="CS1718" Severity="Warning" Message="Comparison made to same variable; did you mean to compare something else?" />
+  <Diagnostic Id="CS1719" Severity="Error" Message="Error opening Win32 resource file '{0}' -- '{1}'" />
+  <Diagnostic Id="CS1720" Severity="Warning" Message="Expression will always cause a System.NullReferenceException because the default value of '{0}' is null" />
+  <Diagnostic Id="CS1721" Severity="Error" Message="Class '{0}' cannot have multiple base classes: '{1}' and '{2}'" />
+  <Diagnostic Id="CS1722" Severity="Error" Message="Base class '{0}' must come before any interfaces" />
+  <Diagnostic Id="CS1723" Severity="Warning" Message="XML comment has cref attribute '{0}' that refers to a type parameter" />
+  <Diagnostic Id="CS1725" Severity="Error" Message="Friend assembly reference '{0}' is invalid. InternalsVisibleTo declarations cannot have a version, culture, public key token, or processor architecture specified." />
+  <Diagnostic Id="CS1726" Severity="Error" Message="Friend assembly reference '{0}' is invalid. Strong-name signed assemblies must specify a public key in their InternalsVisibleTo declarations." />
+  <Diagnostic Id="CS1728" Severity="Error" Message="Cannot bind delegate to '{0}' because it is a member of 'System.Nullable&lt;T&gt;'" />
+  <Diagnostic Id="CS1729" Severity="Error" Message="'{0}' does not contain a constructor that takes {1} arguments" />
+  <Diagnostic Id="CS1730" Severity="Error" Message="Assembly and module attributes must precede all other elements defined in a file except using clauses and extern alias declarations" />
+  <Diagnostic Id="CS1733" Severity="Error" Message="Expected expression" />
+  <Diagnostic Id="CS1734" Severity="Warning" Message="XML comment on '{1}' has a paramref tag for '{0}', but there is no parameter by that name" />
+  <Diagnostic Id="CS1735" Severity="Warning" Message="XML comment on '{1}' has a typeparamref tag for '{0}', but there is no type parameter by that name" />
+  <Diagnostic Id="CS1736" Severity="Error" Message="Default parameter value for '{0}' must be a compile-time constant" />
+  <Diagnostic Id="CS1737" Severity="Error" Message="Optional parameters must appear after all required parameters" />
+  <Diagnostic Id="CS1738" Severity="Error" Message="Named argument specifications must appear after all fixed arguments have been specified" />
+  <Diagnostic Id="CS1739" Severity="Error" Message="The best overload for '{0}' does not have a parameter named '{1}'" />
+  <Diagnostic Id="CS1740" Severity="Error" Message="Named argument '{0}' cannot be specified multiple times" />
+  <Diagnostic Id="CS1741" Severity="Error" Message="A ref or out parameter cannot have a default value" />
+  <Diagnostic Id="CS1742" Severity="Error" Message="An array access may not have a named argument specifier" />
+  <Diagnostic Id="CS1743" Severity="Error" Message="Cannot specify a default value for the 'this' parameter" />
+  <Diagnostic Id="CS1744" Severity="Error" Message="Named argument '{0}' specifies a parameter for which a positional argument has already been given" />
+  <Diagnostic Id="CS1745" Severity="Error" Message="Cannot specify default parameter value in conjunction with DefaultParameterAttribute or OptionalAttribute" />
+  <Diagnostic Id="CS1746" Severity="Error" Message="The delegate '{0}' does not have a parameter named '{1}'" />
+  <Diagnostic Id="CS1747" Severity="Error" Message="Cannot embed interop types from assembly '{0}' because it is missing the '{1}' attribute." />
+  <Diagnostic Id="CS1748" Severity="Error" Message="Cannot find the interop type that matches the embedded interop type '{0}'. Are you missing an assembly reference?" />
+  <Diagnostic Id="CS1750" Severity="Error" Message="A value of type '{0}' cannot be used as a default parameter because there are no standard conversions to type '{1}'" />
+  <Diagnostic Id="CS1751" Severity="Error" Message="Cannot specify a default value for a parameter array" />
+  <Diagnostic Id="CS1752" Severity="Error" Message="Interop type '{0}' cannot be embedded. Use the applicable interface instead." />
+  <Diagnostic Id="CS1754" Severity="Error" Message="Type '{0}' cannot be embedded because it is a nested type. Consider setting the 'Embed Interop Types' property to false." />
+  <Diagnostic Id="CS1756" Severity="Error" Message="Interop type '{0}' cannot be embedded because it is missing the required '{1}' attribute." />
+  <Diagnostic Id="CS1757" Severity="Error" Message="Embedded interop struct '{0}' can contain only public instance fields." />
+  <Diagnostic Id="CS1758" Severity="Error" Message="Cannot embed interop type '{0}' found in both assembly '{1}' and '{2}'. Consider setting the 'Embed Interop Types' property to false." />
+  <Diagnostic Id="CS1759" Severity="Error" Message="Cannot embed interop types from assembly '{0}' because it is missing either the '{1}' attribute or the '{2}' attribute." />
+  <Diagnostic Id="CS1760" Severity="Error" Message="Assemblies '{0}' and '{1}' refer to the same metadata but only one is a linked reference (specified using /link option); consider removing one of the references." />
+  <Diagnostic Id="CS1761" Severity="Error" Message="Embedding the interop type '{0}' from assembly '{1}' causes a name clash in the current assembly. Consider setting the 'Embed Interop Types' property to false." />
+  <Diagnostic Id="CS1762" Severity="Warning" Message="A reference was created to embedded interop assembly '{0}' because of an indirect reference to that assembly created by assembly '{1}'. Consider changing the 'Embed Interop Types' property on either assembly." />
+  <Diagnostic Id="CS1763" Severity="Error" Message="'{0}' is of type '{1}'. A default parameter value of a reference type other than string can only be initialized with null" />
+  <Diagnostic Id="CS1764" Severity="Error" Message="Cannot use fixed local '{0}' inside an anonymous method, lambda expression, or query expression" />
+  <Diagnostic Id="CS1766" Severity="Error" Message="Source interface '{0}' is missing method '{1}' which is required to embed event '{2}'." />
+  <Diagnostic Id="CS1767" Severity="Error" Message="Interface '{0}' has an invalid source interface which is required to embed event '{1}'." />
+  <Diagnostic Id="CS1768" Severity="Error" Message="Type '{0}' cannot be embedded because it has a generic argument. Consider setting the 'Embed Interop Types' property to false." />
+  <Diagnostic Id="CS1769" Severity="Error" Message="Type '{0}' from assembly '{1}' cannot be used across assembly boundaries because it has a generic type argument that is an embedded interop type." />
+  <Diagnostic Id="CS1770" Severity="Error" Message="A value of type '{0}' cannot be used as default parameter for nullable parameter '{1}' because '{0}' is not a simple type" />
+  <Diagnostic Id="CS1773" Severity="Error" Message="Invalid version {0} for /subsystemversion. The version must be 6.02 or greater for ARM or AppContainerExe, and 4.00 or greater otherwise" />
+  <Diagnostic Id="CS1774" Severity="Error" Message="Embedded interop method '{0}' contains a body." />
+  <Diagnostic Id="CS1900" Severity="Error" Message="Warning level must be in the range 0-4" />
+  <Diagnostic Id="CS1902" Severity="Error" Message="Invalid option '{0}' for /debug; must be 'portable', 'embedded', 'full' or 'pdbonly'" />
+  <Diagnostic Id="CS1906" Severity="Error" Message="Invalid option '{0}'; Resource visibility must be either 'public' or 'private'" />
+  <Diagnostic Id="CS1908" Severity="Error" Message="The type of the argument to the DefaultParameterValue attribute must match the parameter type" />
+  <Diagnostic Id="CS1910" Severity="Error" Message="Argument of type '{0}' is not applicable for the DefaultParameterValue attribute" />
+  <Diagnostic Id="CS1912" Severity="Error" Message="Duplicate initialization of member '{0}'" />
+  <Diagnostic Id="CS1913" Severity="Error" Message="Member '{0}' cannot be initialized. It is not a field or property." />
+  <Diagnostic Id="CS1914" Severity="Error" Message="Static field or property '{0}' cannot be assigned in an object initializer" />
+  <Diagnostic Id="CS1917" Severity="Error" Message="Members of readonly field '{0}' of type '{1}' cannot be assigned with an object initializer because it is of a value type" />
+  <Diagnostic Id="CS1918" Severity="Error" Message="Members of property '{0}' of type '{1}' cannot be assigned with an object initializer because it is of a value type" />
+  <Diagnostic Id="CS1919" Severity="Error" Message="Unsafe type '{0}' cannot be used in object creation" />
+  <Diagnostic Id="CS1920" Severity="Error" Message="Element initializer cannot be empty" />
+  <Diagnostic Id="CS1921" Severity="Error" Message="The best overloaded method match for '{0}' has wrong signature for the initializer element. The initializable Add must be an accessible instance method." />
+  <Diagnostic Id="CS1922" Severity="Error" Message="Cannot initialize type '{0}' with a collection initializer because it does not implement 'System.Collections.IEnumerable'" />
+  <Diagnostic Id="CS1926" Severity="Error" Message="Error opening Win32 manifest file {0} -- {1}" />
+  <Diagnostic Id="CS1927" Severity="Warning" Message="Ignoring /win32manifest for module because it only applies to assemblies" />
+  <Diagnostic Id="CS1928" Severity="Error" Message="'{0}' does not contain a definition for '{1}' and the best extension method overload '{2}' has some invalid arguments" />
+  <Diagnostic Id="CS1929" Severity="Error" Message="'{0}' does not contain a definition for '{1}' and the best extension method overload '{2}' requires a receiver of type '{3}'" />
+  <Diagnostic Id="CS1930" Severity="Error" Message="The range variable '{0}' has already been declared" />
+  <Diagnostic Id="CS1931" Severity="Error" Message="The range variable '{0}' conflicts with a previous declaration of '{0}'" />
+  <Diagnostic Id="CS1932" Severity="Error" Message="Cannot assign {0} to a range variable" />
+  <Diagnostic Id="CS1934" Severity="Error" Message="Could not find an implementation of the query pattern for source type '{0}'.  '{1}' not found.  Consider explicitly specifying the type of the range variable '{2}'." />
+  <Diagnostic Id="CS1935" Severity="Error" Message="Could not find an implementation of the query pattern for source type '{0}'.  '{1}' not found.  Are you missing a reference to 'System.Core.dll' or a using directive for 'System.Linq'?" />
+  <Diagnostic Id="CS1936" Severity="Error" Message="Could not find an implementation of the query pattern for source type '{0}'.  '{1}' not found." />
+  <Diagnostic Id="CS1937" Severity="Error" Message="The name '{0}' is not in scope on the left side of 'equals'.  Consider swapping the expressions on either side of 'equals'." />
+  <Diagnostic Id="CS1938" Severity="Error" Message="The name '{0}' is not in scope on the right side of 'equals'.  Consider swapping the expressions on either side of 'equals'." />
+  <Diagnostic Id="CS1939" Severity="Error" Message="Cannot pass the range variable '{0}' as an out or ref parameter" />
+  <Diagnostic Id="CS1940" Severity="Error" Message="Multiple implementations of the query pattern were found for source type '{0}'.  Ambiguous call to '{1}'." />
+  <Diagnostic Id="CS1941" Severity="Error" Message="The type of one of the expressions in the {0} clause is incorrect.  Type inference failed in the call to '{1}'." />
+  <Diagnostic Id="CS1942" Severity="Error" Message="The type of the expression in the {0} clause is incorrect.  Type inference failed in the call to '{1}'." />
+  <Diagnostic Id="CS1943" Severity="Error" Message="An expression of type '{0}' is not allowed in a subsequent from clause in a query expression with source type '{1}'.  Type inference failed in the call to '{2}'." />
+  <Diagnostic Id="CS1944" Severity="Error" Message="An expression tree may not contain an unsafe pointer operation" />
+  <Diagnostic Id="CS1945" Severity="Error" Message="An expression tree may not contain an anonymous method expression" />
+  <Diagnostic Id="CS1946" Severity="Error" Message="An anonymous method expression cannot be converted to an expression tree" />
+  <Diagnostic Id="CS1947" Severity="Error" Message="Range variable '{0}' cannot be assigned to -- it is read only" />
+  <Diagnostic Id="CS1948" Severity="Error" Message="The range variable '{0}' cannot have the same name as a method type parameter" />
+  <Diagnostic Id="CS1949" Severity="Error" Message="The contextual keyword 'var' cannot be used in a range variable declaration" />
+  <Diagnostic Id="CS1950" Severity="Error" Message="The best overloaded Add method '{0}' for the collection initializer has some invalid arguments" />
+  <Diagnostic Id="CS1951" Severity="Error" Message="An expression tree lambda may not contain an out or ref parameter" />
+  <Diagnostic Id="CS1952" Severity="Error" Message="An expression tree lambda may not contain a method with variable arguments" />
+  <Diagnostic Id="CS1954" Severity="Error" Message="The best overloaded method match '{0}' for the collection initializer element cannot be used. Collection initializer 'Add' methods cannot have ref or out parameters." />
+  <Diagnostic Id="CS1955" Severity="Error" Message="Non-invocable member '{0}' cannot be used like a method." />
+  <Diagnostic Id="CS1956" Severity="Warning" Message="Member '{0}' implements interface member '{1}' in type '{2}'. There are multiple matches for the interface member at run-time. It is implementation dependent which method will be called." />
+  <Diagnostic Id="CS1957" Severity="Warning" Message="Member '{1}' overrides '{0}'. There are multiple override candidates at run-time. It is implementation dependent which method will be called." />
+  <Diagnostic Id="CS1958" Severity="Error" Message="Object and collection initializer expressions may not be applied to a delegate creation expression" />
+  <Diagnostic Id="CS1959" Severity="Error" Message="'{0}' is of type '{1}'. The type specified in a constant declaration must be sbyte, byte, short, ushort, int, uint, long, ulong, char, float, double, decimal, bool, string, an enum-type, or a reference-type." />
+  <Diagnostic Id="CS1960" Severity="Error" Message="Invalid variance modifier. Only interface and delegate type parameters can be specified as variant." />
+  <Diagnostic Id="CS1961" Severity="Error" Message="Invalid variance: The type parameter '{1}' must be {3} valid on '{0}'. '{1}' is {2}." />
+  <Diagnostic Id="CS1962" Severity="Error" Message="The typeof operator cannot be used on the dynamic type" />
+  <Diagnostic Id="CS1963" Severity="Error" Message="An expression tree may not contain a dynamic operation" />
+  <Diagnostic Id="CS1964" Severity="Error" Message="'{0}': user-defined conversions to or from the dynamic type are not allowed" />
+  <Diagnostic Id="CS1965" Severity="Error" Message="'{0}': cannot derive from the dynamic type" />
+  <Diagnostic Id="CS1966" Severity="Error" Message="'{0}': cannot implement a dynamic interface '{1}'" />
+  <Diagnostic Id="CS1967" Severity="Error" Message="Constraint cannot be the dynamic type" />
+  <Diagnostic Id="CS1968" Severity="Error" Message="Constraint cannot be a dynamic type '{0}'" />
+  <Diagnostic Id="CS1969" Severity="Error" Message="One or more types required to compile a dynamic expression cannot be found. Are you missing a reference?" />
+  <Diagnostic Id="CS1970" Severity="Error" Message="Do not use 'System.Runtime.CompilerServices.DynamicAttribute'. Use the 'dynamic' keyword instead." />
+  <Diagnostic Id="CS1971" Severity="Error" Message="The call to method '{0}' needs to be dynamically dispatched, but cannot be because it is part of a base access expression. Consider casting the dynamic arguments or eliminating the base access." />
+  <Diagnostic Id="CS1972" Severity="Error" Message="The indexer access needs to be dynamically dispatched, but cannot be because it is part of a base access expression. Consider casting the dynamic arguments or eliminating the base access." />
+  <Diagnostic Id="CS1973" Severity="Error" Message="'{0}' has no applicable method named '{1}' but appears to have an extension method by that name. Extension methods cannot be dynamically dispatched. Consider casting the dynamic arguments or calling the extension method without the extension method syntax." />
+  <Diagnostic Id="CS1974" Severity="Warning" Message="The dynamically dispatched call to method '{0}' may fail at runtime because one or more applicable overloads are conditional methods." />
+  <Diagnostic Id="CS1975" Severity="Error" Message="The constructor call needs to be dynamically dispatched, but cannot be because it is part of a constructor initializer. Consider casting the dynamic arguments." />
+  <Diagnostic Id="CS1976" Severity="Error" Message="Cannot use a method group as an argument to a dynamically dispatched operation. Did you intend to invoke the method?" />
+  <Diagnostic Id="CS1977" Severity="Error" Message="Cannot use a lambda expression as an argument to a dynamically dispatched operation without first casting it to a delegate or expression tree type." />
+  <Diagnostic Id="CS1978" Severity="Error" Message="Cannot use an expression of type '{0}' as an argument to a dynamically dispatched operation." />
+  <Diagnostic Id="CS1979" Severity="Error" Message="Query expressions over source type 'dynamic' or with a join sequence of type 'dynamic' are not allowed" />
+  <Diagnostic Id="CS1980" Severity="Error" Message="Cannot define a class or member that utilizes 'dynamic' because the compiler required type '{0}' cannot be found. Are you missing a reference?" />
+  <Diagnostic Id="CS1981" Severity="Warning" Message="Using '{0}' to test compatibility with '{1}' is essentially identical to testing compatibility with '{2}' and will succeed for all non-null values" />
+  <Diagnostic Id="CS1983" Severity="Error" Message="The return type of an async method must be void, Task or Task&lt;T&gt;" />
+  <Diagnostic Id="CS1984" Severity="Error" Message="Cannot await in the body of a finally clause" />
+  <Diagnostic Id="CS1985" Severity="Error" Message="Cannot await in a catch clause" />
+  <Diagnostic Id="CS1986" Severity="Error" Message="'await' requires that the type {0} have a suitable GetAwaiter method" />
+  <Diagnostic Id="CS1988" Severity="Error" Message="Async methods cannot have ref or out parameters" />
+  <Diagnostic Id="CS1989" Severity="Error" Message="Async lambda expressions cannot be converted to expression trees" />
+  <Diagnostic Id="CS1991" Severity="Error" Message="'{0}' cannot implement '{1}' because '{2}' is a Windows Runtime event and '{3}' is a regular .NET event." />
+  <Diagnostic Id="CS1992" Severity="Error" Message="The 'await' operator can only be used when contained within a method or lambda expression marked with the 'async' modifier" />
+  <Diagnostic Id="CS1994" Severity="Error" Message="The 'async' modifier can only be used in methods that have a body." />
+  <Diagnostic Id="CS1995" Severity="Error" Message="The 'await' operator may only be used in a query expression within the first collection expression of the initial 'from' clause or within the collection expression of a 'join' clause" />
+  <Diagnostic Id="CS1996" Severity="Error" Message="Cannot await in the body of a lock statement" />
+  <Diagnostic Id="CS1997" Severity="Error" Message="Since '{0}' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task&lt;T&gt;'?" />
+  <Diagnostic Id="CS1998" Severity="Warning" Message="This async method lacks 'await' operators and will run synchronously. Consider using the 'await' operator to await non-blocking API calls, or 'await Task.Run(...)' to do CPU-bound work on a background thread." />
+  <Diagnostic Id="CS2001" Severity="Error" Message="Source file '{0}' could not be found." />
+  <Diagnostic Id="CS2002" Severity="Warning" Message="Source file '{0}' specified multiple times" />
+  <Diagnostic Id="CS2005" Severity="Error" Message="Missing file specification for '{0}' option" />
+  <Diagnostic Id="CS2006" Severity="Error" Message="Command-line syntax error: Missing '{0}' for '{1}' option" />
+  <Diagnostic Id="CS2007" Severity="Error" Message="Unrecognized option: '{0}'" />
+  <Diagnostic Id="CS2008" Severity="Warning" Message="No source files specified." />
+  <Diagnostic Id="CS2011" Severity="Error" Message="Error opening response file '{0}'" />
+  <Diagnostic Id="CS2012" Severity="Error" Message="Cannot open '{0}' for writing -- '{1}'" />
+  <Diagnostic Id="CS2013" Severity="Error" Message="Invalid image base number '{0}'" />
+  <Diagnostic Id="CS2015" Severity="Error" Message="'{0}' is a binary file instead of a text file" />
+  <Diagnostic Id="CS2016" Severity="Fatal" Message="Code page '{0}' is invalid or not installed" />
+  <Diagnostic Id="CS2017" Severity="Error" Message="Cannot specify /main if building a module or library" />
+  <Diagnostic Id="CS2019" Severity="Fatal" Message="Invalid target type for /target: must specify 'exe', 'winexe', 'library', or 'module'" />
+  <Diagnostic Id="CS2021" Severity="Fatal" Message="File name '{0}' is empty, contains invalid characters, has a drive specification without an absolute path, or is too long" />
+  <Diagnostic Id="CS2023" Severity="Warning" Message="Ignoring /noconfig option because it was specified in a response file" />
+  <Diagnostic Id="CS2024" Severity="Error" Message="Invalid file section alignment '{0}'" />
+  <Diagnostic Id="CS2029" Severity="Warning" Message="Invalid name for a preprocessing symbol; '{0}' is not a valid identifier" />
+  <Diagnostic Id="CS2033" Severity="Fatal" Message="Cannot create short filename '{0}' when a long filename with the same short filename already exists" />
+  <Diagnostic Id="CS2034" Severity="Error" Message="A /reference option that declares an extern alias can only have one filename. To specify multiple aliases or filenames, use multiple /reference options." />
+  <Diagnostic Id="CS2035" Severity="Error" Message="Command-line syntax error: Missing ':&lt;number&gt;' for '{0}' option" />
+  <Diagnostic Id="CS2036" Severity="Error" Message="The /pdb option requires that the /debug option also be used" />
+  <Diagnostic Id="CS2037" Severity="Error" Message="An expression tree lambda may not contain a COM call with ref omitted on arguments" />
+  <Diagnostic Id="CS2038" Severity="Warning" Message="The language name '{0}' is invalid." />
+  <Diagnostic Id="CS2039" Severity="Error" Message="Command-line syntax error: Invalid Guid format '{0}' for option '{1}'" />
+  <Diagnostic Id="CS2040" Severity="Error" Message="Command-line syntax error: Missing Guid for option '{1}'" />
+  <Diagnostic Id="CS2041" Severity="Error" Message="Invalid output name: {0}" />
+  <Diagnostic Id="CS2042" Severity="Error" Message="Invalid debug information format: {0}" />
+  <Diagnostic Id="CS2043" Severity="Error" Message="'id#' syntax is no longer supported. Use '$id' instead." />
+  <Diagnostic Id="CS2044" Severity="Error" Message="/sourcelink switch is only supported when emitting PDB." />
+  <Diagnostic Id="CS2045" Severity="Error" Message="/embed switch is only supported when emitting Portable PDB (/debug:portable or /debug:embedded)." />
+  <Diagnostic Id="CS3000" Severity="Warning" Message="Methods with variable arguments are not CLS-compliant" />
+  <Diagnostic Id="CS3001" Severity="Warning" Message="Argument type '{0}' is not CLS-compliant" />
+  <Diagnostic Id="CS3002" Severity="Warning" Message="Return type of '{0}' is not CLS-compliant" />
+  <Diagnostic Id="CS3003" Severity="Warning" Message="Type of '{0}' is not CLS-compliant" />
+  <Diagnostic Id="CS3005" Severity="Warning" Message="Identifier '{0}' differing only in case is not CLS-compliant" />
+  <Diagnostic Id="CS3006" Severity="Warning" Message="Overloaded method '{0}' differing only in ref or out, or in array rank, is not CLS-compliant" />
+  <Diagnostic Id="CS3007" Severity="Warning" Message="Overloaded method '{0}' differing only by unnamed array types is not CLS-compliant" />
+  <Diagnostic Id="CS3008" Severity="Warning" Message="Identifier '{0}' is not CLS-compliant" />
+  <Diagnostic Id="CS3009" Severity="Warning" Message="'{0}': base type '{1}' is not CLS-compliant" />
+  <Diagnostic Id="CS3010" Severity="Warning" Message="'{0}': CLS-compliant interfaces must have only CLS-compliant members" />
+  <Diagnostic Id="CS3011" Severity="Warning" Message="'{0}': only CLS-compliant members can be abstract" />
+  <Diagnostic Id="CS3012" Severity="Warning" Message="You must specify the CLSCompliant attribute on the assembly, not the module, to enable CLS compliance checking" />
+  <Diagnostic Id="CS3013" Severity="Warning" Message="Added modules must be marked with the CLSCompliant attribute to match the assembly" />
+  <Diagnostic Id="CS3014" Severity="Warning" Message="'{0}' cannot be marked as CLS-compliant because the assembly does not have a CLSCompliant attribute" />
+  <Diagnostic Id="CS3015" Severity="Warning" Message="'{0}' has no accessible constructors which use only CLS-compliant types" />
+  <Diagnostic Id="CS3016" Severity="Warning" Message="Arrays as attribute arguments is not CLS-compliant" />
+  <Diagnostic Id="CS3017" Severity="Warning" Message="You cannot specify the CLSCompliant attribute on a module that differs from the CLSCompliant attribute on the assembly" />
+  <Diagnostic Id="CS3018" Severity="Warning" Message="'{0}' cannot be marked as CLS-compliant because it is a member of non-CLS-compliant type '{1}'" />
+  <Diagnostic Id="CS3019" Severity="Warning" Message="CLS compliance checking will not be performed on '{0}' because it is not visible from outside this assembly" />
+  <Diagnostic Id="CS3021" Severity="Warning" Message="'{0}' does not need a CLSCompliant attribute because the assembly does not have a CLSCompliant attribute" />
+  <Diagnostic Id="CS3022" Severity="Warning" Message="CLSCompliant attribute has no meaning when applied to parameters. Try putting it on the method instead." />
+  <Diagnostic Id="CS3023" Severity="Warning" Message="CLSCompliant attribute has no meaning when applied to return types. Try putting it on the method instead." />
+  <Diagnostic Id="CS3024" Severity="Warning" Message="Constraint type '{0}' is not CLS-compliant" />
+  <Diagnostic Id="CS3026" Severity="Warning" Message="CLS-compliant field '{0}' cannot be volatile" />
+  <Diagnostic Id="CS3027" Severity="Warning" Message="'{0}' is not CLS-compliant because base interface '{1}' is not CLS-compliant" />
+  <Diagnostic Id="CS3028" Severity="Fatal" Message="Algorithm '{0}' is not supported" />
+  <Diagnostic Id="CS4001" Severity="Error" Message="Cannot await '{0}'" />
+  <Diagnostic Id="CS4003" Severity="Error" Message="'await' cannot be used as an identifier within an async method or lambda expression" />
+  <Diagnostic Id="CS4004" Severity="Error" Message="Cannot await in an unsafe context" />
+  <Diagnostic Id="CS4005" Severity="Error" Message="Async methods cannot have unsafe parameters or return types" />
+  <Diagnostic Id="CS4006" Severity="Error" Message="__arglist is not allowed in the parameter list of async methods" />
+  <Diagnostic Id="CS4007" Severity="Error" Message="'await' cannot be used in an expression containing the type '{0}'" />
+  <Diagnostic Id="CS4008" Severity="Error" Message="Cannot await 'void'" />
+  <Diagnostic Id="CS4009" Severity="Error" Message="'{0}': an entry point cannot be marked with the 'async' modifier" />
+  <Diagnostic Id="CS4010" Severity="Error" Message="Cannot convert async {0} to delegate type '{1}'. An async {0} may return void, Task or Task&lt;T&gt;, none of which are convertible to '{1}'." />
+  <Diagnostic Id="CS4011" Severity="Error" Message="'await' requires that the return type '{0}' of '{1}.GetAwaiter()' have suitable IsCompleted, OnCompleted, and GetResult members, and implement INotifyCompletion or ICriticalNotifyCompletion" />
+  <Diagnostic Id="CS4012" Severity="Error" Message="Parameters or locals of type '{0}' cannot be declared in async methods or lambda expressions." />
+  <Diagnostic Id="CS4013" Severity="Error" Message="Instance of type '{0}' cannot be used inside an anonymous function, query expression, iterator block or async method" />
+  <Diagnostic Id="CS4014" Severity="Warning" Message="Because this call is not awaited, execution of the current method continues before the call is completed. Consider applying the 'await' operator to the result of the call." />
+  <Diagnostic Id="CS4015" Severity="Error" Message="'MethodImplOptions.Synchronized' cannot be applied to an async method" />
+  <Diagnostic Id="CS4016" Severity="Error" Message="Since this is an async method, the return expression must be of type '{0}' rather than 'Task&lt;{0}&gt;'" />
+  <Diagnostic Id="CS4017" Severity="Error" Message="CallerLineNumberAttribute cannot be applied because there are no standard conversions from type '{0}' to type '{1}'" />
+  <Diagnostic Id="CS4018" Severity="Error" Message="CallerFilePathAttribute cannot be applied because there are no standard conversions from type '{0}' to type '{1}'" />
+  <Diagnostic Id="CS4019" Severity="Error" Message="CallerMemberNameAttribute cannot be applied because there are no standard conversions from type '{0}' to type '{1}'" />
+  <Diagnostic Id="CS4020" Severity="Error" Message="The CallerLineNumberAttribute may only be applied to parameters with default values" />
+  <Diagnostic Id="CS4021" Severity="Error" Message="The CallerFilePathAttribute may only be applied to parameters with default values" />
+  <Diagnostic Id="CS4022" Severity="Error" Message="The CallerMemberNameAttribute may only be applied to parameters with default values" />
+  <Diagnostic Id="CS4023" Severity="Error" Message="/platform:anycpu32bitpreferred can only be used with /t:exe, /t:winexe and /t:appcontainerexe" />
+  <Diagnostic Id="CS4024" Severity="Warning" Message="The CallerLineNumberAttribute applied to parameter '{0}' will have no effect because it applies to a member that is used in contexts that do not allow optional arguments" />
+  <Diagnostic Id="CS4025" Severity="Warning" Message="The CallerFilePathAttribute applied to parameter '{0}' will have no effect because it applies to a member that is used in contexts that do not allow optional arguments" />
+  <Diagnostic Id="CS4026" Severity="Warning" Message="The CallerMemberNameAttribute applied to parameter '{0}' will have no effect because it applies to a member that is used in contexts that do not allow optional arguments" />
+  <Diagnostic Id="CS4027" Severity="Error" Message="'{0}' does not implement '{1}'" />
+  <Diagnostic Id="CS4028" Severity="Error" Message="'await' requires that the type '{0}' have a suitable GetAwaiter method. Are you missing a using directive for 'System'?" />
+  <Diagnostic Id="CS4029" Severity="Error" Message="Cannot return an expression of type 'void'" />
+  <Diagnostic Id="CS4030" Severity="Error" Message="Security attribute '{0}' cannot be applied to an Async method." />
+  <Diagnostic Id="CS4031" Severity="Error" Message="Async methods are not allowed in an Interface, Class, or Structure which has the 'SecurityCritical' or 'SecuritySafeCritical' attribute." />
+  <Diagnostic Id="CS4032" Severity="Error" Message="The 'await' operator can only be used within an async method. Consider marking this method with the 'async' modifier and changing its return type to 'Task&lt;{0}&gt;'." />
+  <Diagnostic Id="CS4033" Severity="Error" Message="The 'await' operator can only be used within an async method. Consider marking this method with the 'async' modifier and changing its return type to 'Task'." />
+  <Diagnostic Id="CS4034" Severity="Error" Message="The 'await' operator can only be used within an async {0}. Consider marking this {0} with the 'async' modifier." />
+  <Diagnostic Id="CS4036" Severity="Error" Message="'{0}' does not contain a definition for '{1}' and no extension method '{1}' accepting a first argument of type '{0}' could be found (are you missing a using directive for '{2}'?)" />
+  <Diagnostic Id="CS5001" Severity="Error" Message="Program does not contain a static 'Main' method suitable for an entry point" />
+  <Diagnostic Id="CS7000" Severity="Error" Message="Unexpected use of an aliased name" />
+  <Diagnostic Id="CS7002" Severity="Error" Message="Unexpected use of a generic name" />
+  <Diagnostic Id="CS7003" Severity="Error" Message="Unexpected use of an unbound generic name" />
+  <Diagnostic Id="CS7006" Severity="Error" Message="Expressions and statements can only occur in a method body" />
+  <Diagnostic Id="CS7007" Severity="Error" Message="A 'using static' directive can only be applied to types; '{0}' is a namespace not a type. Consider a 'using namespace' directive instead" />
+  <Diagnostic Id="CS7008" Severity="Error" Message="The assembly name '{0}' is reserved and cannot be used as a reference in an interactive session" />
+  <Diagnostic Id="CS7009" Severity="Error" Message="Cannot use #r after first token in file" />
+  <Diagnostic Id="CS7010" Severity="Error" Message="Quoted file name expected" />
+  <Diagnostic Id="CS7011" Severity="Error" Message="#r is only allowed in scripts" />
+  <Diagnostic Id="CS7012" Severity="Error" Message="The name '{0}' does not exist in the current context (are you missing a reference to assembly '{1}'?)" />
+  <Diagnostic Id="CS7013" Severity="Error" Message="Name '{0}' exceeds the maximum length allowed in metadata." />
+  <Diagnostic Id="CS7014" Severity="Error" Message="Attributes are not valid in this context." />
+  <Diagnostic Id="CS7015" Severity="Error" Message="'extern alias' is not valid in this context" />
+  <Diagnostic Id="CS7016" Severity="Error" Message="Alias '{0}' conflicts with {1} definition" />
+  <Diagnostic Id="CS7017" Severity="Error" Message="Member definition, statement, or end-of-file expected" />
+  <Diagnostic Id="CS7018" Severity="Error" Message="Expected a script (.csx file) but none specified" />
+  <Diagnostic Id="CS7019" Severity="Error" Message="Type of '{0}' cannot be inferred since its initializer directly or indirectly refers to the definition." />
+  <Diagnostic Id="CS7020" Severity="Error" Message="Cannot use 'yield' in top-level script code" />
+  <Diagnostic Id="CS7021" Severity="Error" Message="Cannot declare namespace in script code" />
+  <Diagnostic Id="CS7022" Severity="Warning" Message="The entry point of the program is global script code; ignoring '{0}' entry point." />
+  <Diagnostic Id="CS7023" Severity="Error" Message="The second operand of an 'is' or 'as' operator may not be static type '{0}'" />
+  <Diagnostic Id="CS7024" Severity="Error" Message="Delegate '{0}' has no invoke method or an invoke method with a return type or parameter types that are not supported." />
+  <Diagnostic Id="CS7025" Severity="Error" Message="Inconsistent accessibility: event type '{1}' is less accessible than event '{0}'" />
+  <Diagnostic Id="CS7026" Severity="Error" Message="Assembly and module attributes are not allowed in this context" />
+  <Diagnostic Id="CS7027" Severity="Error" Message="Error signing output with public key from file '{0}' -- {1}" />
+  <Diagnostic Id="CS7028" Severity="Error" Message="Error signing output with public key from container '{0}' -- {1}" />
+  <Diagnostic Id="CS7029" Severity="Error" Message="Friend access was granted by '{0}', but the strong name signing state of the output assembly does not match that of the granting assembly." />
+  <Diagnostic Id="CS7030" Severity="Error" Message="Cannot pass null for friend assembly name" />
+  <Diagnostic Id="CS7032" Severity="Error" Message="Key file '{0}' is missing the private key needed for signing" />
+  <Diagnostic Id="CS7033" Severity="Warning" Message="Delay signing was specified and requires a public key, but no public key was specified" />
+  <Diagnostic Id="CS7034" Severity="Error" Message="The specified version string does not conform to the required format - major[.minor[.build[.revision]]]" />
+  <Diagnostic Id="CS7035" Severity="Warning" Message="The specified version string does not conform to the recommended format - major.minor.build.revision" />
+  <Diagnostic Id="CS7036" Severity="Error" Message="There is no argument given that corresponds to the required formal parameter '{0}' of '{1}'" />
+  <Diagnostic Id="CS7038" Severity="Error" Message="Failed to emit module '{0}'." />
+  <Diagnostic Id="CS7041" Severity="Error" Message="Each linked resource and module must have a unique filename. Filename '{0}' is specified more than once in this assembly" />
+  <Diagnostic Id="CS7042" Severity="Error" Message="The DllImport attribute cannot be applied to a method that is generic or contained in a generic type." />
+  <Diagnostic Id="CS7043" Severity="Error" Message="Cannot update '{0}'; attribute '{1}' is missing." />
+  <Diagnostic Id="CS7045" Severity="Error" Message="Parameter not valid for the specified unmanaged type." />
+  <Diagnostic Id="CS7046" Severity="Error" Message="Attribute parameter '{0}' must be specified." />
+  <Diagnostic Id="CS7047" Severity="Error" Message="Attribute parameter '{0}' or '{1}' must be specified." />
+  <Diagnostic Id="CS7048" Severity="Error" Message="First argument to a security attribute must be a valid SecurityAction" />
+  <Diagnostic Id="CS7049" Severity="Error" Message="Security attribute '{0}' has an invalid SecurityAction value '{1}'" />
+  <Diagnostic Id="CS7050" Severity="Error" Message="SecurityAction value '{0}' is invalid for security attributes applied to an assembly" />
+  <Diagnostic Id="CS7051" Severity="Error" Message="SecurityAction value '{0}' is invalid for security attributes applied to a type or a method" />
+  <Diagnostic Id="CS7052" Severity="Error" Message="SecurityAction value '{0}' is invalid for PrincipalPermission attribute" />
+  <Diagnostic Id="CS7053" Severity="Error" Message="An expression tree may not contain '{0}'" />
+  <Diagnostic Id="CS7054" Severity="Error" Message="Unmanaged type '{0}' not valid for fields." />
+  <Diagnostic Id="CS7055" Severity="Error" Message="Unmanaged type '{0}' is only valid for fields." />
+  <Diagnostic Id="CS7056" Severity="Error" Message="Unable to resolve file path '{0}' specified for the named argument '{1}' for PermissionSet attribute" />
+  <Diagnostic Id="CS7057" Severity="Error" Message="Error reading file '{0}' specified for the named argument '{1}' for PermissionSet attribute: '{2}'" />
+  <Diagnostic Id="CS7058" Severity="Error" Message="The specified version string does not conform to the required format - major.minor.build.revision" />
+  <Diagnostic Id="CS7059" Severity="Error" Message="Executables cannot be satellite assemblies; culture should always be empty" />
+  <Diagnostic Id="CS7061" Severity="Error" Message="Duplicate '{0}' attribute in '{1}'" />
+  <Diagnostic Id="CS7064" Severity="Error" Message="Error opening icon file {0} -- {1}" />
+  <Diagnostic Id="CS7065" Severity="Error" Message="Error building Win32 resources -- {0}" />
+  <Diagnostic Id="CS7066" Severity="Error" Message="Yield statements may not appear at the top level in interactive code." />
+  <Diagnostic Id="CS7067" Severity="Error" Message="Attribute constructor parameter '{0}' is optional, but no default parameter value was specified." />
+  <Diagnostic Id="CS7068" Severity="Error" Message="Reference to type '{0}' claims it is defined in this assembly, but it is not defined in source or any added modules" />
+  <Diagnostic Id="CS7069" Severity="Error" Message="Reference to type '{0}' claims it is defined in '{1}', but it could not be found" />
+  <Diagnostic Id="CS7070" Severity="Error" Message="Security attribute '{0}' is not valid on this declaration type. Security attributes are only valid on assembly, type and method declarations." />
+  <Diagnostic Id="CS7071" Severity="Error" Message="Assembly reference '{0}' is invalid and cannot be resolved" />
+  <Diagnostic Id="CS7079" Severity="Error" Message="The type '{0}' is defined in a module that has not been added. You must add the module '{1}'." />
+  <Diagnostic Id="CS7080" Severity="Warning" Message="The CallerMemberNameAttribute applied to parameter '{0}' will have no effect. It is overridden by the CallerFilePathAttribute." />
+  <Diagnostic Id="CS7081" Severity="Warning" Message="The CallerMemberNameAttribute applied to parameter '{0}' will have no effect. It is overridden by the CallerLineNumberAttribute." />
+  <Diagnostic Id="CS7082" Severity="Warning" Message="The CallerFilePathAttribute applied to parameter '{0}' will have no effect. It is overridden by the CallerLineNumberAttribute." />
+  <Diagnostic Id="CS7083" Severity="Error" Message="Expression must be implicitly convertible to Boolean or its type '{0}' must define operator '{1}'." />
+  <Diagnostic Id="CS7084" Severity="Error" Message="A Windows Runtime event may not be passed as an out or ref parameter." />
+  <Diagnostic Id="CS7085" Severity="Error" Message="By-reference return type 'ref {0}' is not supported." />
+  <Diagnostic Id="CS7086" Severity="Error" Message="Module name '{0}' stored in '{1}' must match its filename." />
+  <Diagnostic Id="CS7087" Severity="Error" Message="Invalid module name: {0}" />
+  <Diagnostic Id="CS7088" Severity="Error" Message="Invalid '{0}' value: '{1}'." />
+  <Diagnostic Id="CS7089" Severity="Error" Message="AppConfigPath must be absolute." />
+  <Diagnostic Id="CS7090" Severity="Warning" Message="Attribute '{0}' from module '{1}' will be ignored in favor of the instance appearing in source" />
+  <Diagnostic Id="CS7091" Severity="Error" Message="Attribute '{0}' given in a source file conflicts with option '{1}'." />
+  <Diagnostic Id="CS7092" Severity="Error" Message="A fixed buffer may only have one dimension." />
+  <Diagnostic Id="CS7093" Severity="Error" Message="Cannot read config file '{0}' -- '{1}'" />
+  <Diagnostic Id="CS7094" Severity="Error" Message="Cannot await in the filter expression of a catch clause" />
+  <Diagnostic Id="CS7095" Severity="Warning" Message="Filter expression is a constant, consider removing the filter" />
+  <Diagnostic Id="CS7096" Severity="Error" Message="Cannot continue since the edit includes a reference to an embedded type: '{0}'." />
+  <Diagnostic Id="CS7098" Severity="Error" Message="Linked netmodule metadata must provide a full PE image: '{0}'." />
+  <Diagnostic Id="CS7099" Severity="Error" Message="Metadata references are not supported." />
+  <Diagnostic Id="CS7100" Severity="Error" Message="Assembly culture strings may not contain embedded NUL characters." />
+  <Diagnostic Id="CS7101" Severity="Error" Message="Member '{0}' added during the current debug session can only be accessed from within its declaring assembly '{1}'." />
+  <Diagnostic Id="CS7102" Severity="Error" Message="Compilation options '{0}' and '{1}' can't both be specified at the same time." />
+  <Diagnostic Id="CS8001" Severity="Warning" Message="The command line switch '{0}' is not yet implemented and was ignored." />
+  <Diagnostic Id="CS8002" Severity="Warning" Message="Referenced assembly '{0}' does not have a strong name." />
+  <Diagnostic Id="CS8003" Severity="Error" Message="Invalid signature public key specified in AssemblySignatureKeyAttribute." />
+  <Diagnostic Id="CS8004" Severity="Error" Message="Type '{0}' exported from module '{1}' conflicts with type declared in primary module of this assembly." />
+  <Diagnostic Id="CS8005" Severity="Error" Message="Type '{0}' exported from module '{1}' conflicts with type '{2}' exported from module '{3}'." />
+  <Diagnostic Id="CS8006" Severity="Error" Message="Forwarded type '{0}' conflicts with type declared in primary module of this assembly." />
+  <Diagnostic Id="CS8007" Severity="Error" Message="Type '{0}' forwarded to assembly '{1}' conflicts with type '{2}' forwarded to assembly '{3}'." />
+  <Diagnostic Id="CS8008" Severity="Error" Message="Type '{0}' forwarded to assembly '{1}' conflicts with type '{2}' exported from module '{3}'." />
+  <Diagnostic Id="CS8009" Severity="Warning" Message="Referenced assembly '{0}' has different culture setting of '{1}'." />
+  <Diagnostic Id="CS8010" Severity="Error" Message="Agnostic assembly cannot have a processor specific module '{0}'." />
+  <Diagnostic Id="CS8011" Severity="Error" Message="Assembly and module '{0}' cannot target different processors." />
+  <Diagnostic Id="CS8012" Severity="Warning" Message="Referenced assembly '{0}' targets a different processor." />
+  <Diagnostic Id="CS8013" Severity="Error" Message="Cryptographic failure while creating hashes." />
+  <Diagnostic Id="CS8014" Severity="Error" Message="Reference to '{0}' netmodule missing." />
+  <Diagnostic Id="CS8015" Severity="Error" Message="Module '{0}' is already defined in this assembly. Each module must have a unique filename." />
+  <Diagnostic Id="CS8016" Severity="Error" Message="Transparent identifier member access failed for field '{0}' of '{1}'.  Does the data being queried implement the query pattern?" />
+  <Diagnostic Id="CS8017" Severity="Error" Message="The parameter has multiple distinct default values." />
+  <Diagnostic Id="CS8018" Severity="Warning" Message="Within cref attributes, nested types of generic types should be qualified." />
+  <Diagnostic Id="CS8019" Severity="Hidden" Message="Unnecessary using directive." />
+  <Diagnostic Id="CS8020" Severity="Hidden" Message="Unused extern alias." />
+  <Diagnostic Id="CS8021" Severity="Warning" Message="No value for RuntimeMetadataVersion found. No assembly containing System.Object was found nor was a value for RuntimeMetadataVersion specified through options." />
+  <Diagnostic Id="CS8022" Severity="Error" Message="Feature '{0}' is not available in C# 1. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8023" Severity="Error" Message="Feature '{0}' is not available in C# 2. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8024" Severity="Error" Message="Feature '{0}' is not available in C# 3. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8025" Severity="Error" Message="Feature '{0}' is not available in C# 4. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8026" Severity="Error" Message="Feature '{0}' is not available in C# 5. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8027" Severity="Error" Message="The field has multiple distinct constant values." />
+  <Diagnostic Id="CS8028" Severity="Error" Message="'{0}': a class with the ComImport attribute cannot specify field initializers." />
+  <Diagnostic Id="CS8029" Severity="Warning" Message="Local name '{0}' is too long for PDB.  Consider shortening or compiling without /debug." />
+  <Diagnostic Id="CS8030" Severity="Error" Message="Anonymous function converted to a void returning delegate cannot return a value" />
+  <Diagnostic Id="CS8031" Severity="Error" Message="Async lambda expression converted to a 'Task' returning delegate cannot return a value. Did you intend to return 'Task&lt;T&gt;'?" />
+  <Diagnostic Id="CS8032" Severity="Warning" Message="An instance of analyzer {0} cannot be created from {1} : {2}." />
+  <Diagnostic Id="CS8033" Severity="Warning" Message="The assembly {0} does not contain any analyzers." />
+  <Diagnostic Id="CS8034" Severity="Warning" Message="Unable to load Analyzer assembly {0} : {1}" />
+  <Diagnostic Id="CS8035" Severity="Error" Message="Error reading ruleset file {0} - {1}" />
+  <Diagnostic Id="CS8036" Severity="Error" Message="Error reading debug information for '{0}'" />
+  <Diagnostic Id="CS8040" Severity="Info" Message="Skipping some types in analyzer assembly {0} due to a ReflectionTypeLoadException : {1}." />
+  <Diagnostic Id="CS8050" Severity="Error" Message="Only auto-implemented properties can have initializers." />
+  <Diagnostic Id="CS8051" Severity="Error" Message="Auto-implemented properties must have get accessors." />
+  <Diagnostic Id="CS8052" Severity="Error" Message="Auto-implemented properties inside interfaces cannot have initializers." />
+  <Diagnostic Id="CS8054" Severity="Error" Message="Enums cannot contain explicit parameterless constructors" />
+  <Diagnostic Id="CS8055" Severity="Error" Message="Cannot emit debug information for a source text without encoding." />
+  <Diagnostic Id="CS8057" Severity="Error" Message="Block bodies and expression bodies cannot both be provided." />
+  <Diagnostic Id="CS8058" Severity="Error" Message="Feature '{0}' is experimental and unsupported; use '/features:{1}' to enable." />
+  <Diagnostic Id="CS8059" Severity="Error" Message="Feature '{0}' is not available in C# 6. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8070" Severity="Error" Message="Control cannot fall out of switch from final case label ('{0}')" />
+  <Diagnostic Id="CS8072" Severity="Error" Message="An expression tree lambda may not contain a null propagating operator." />
+  <Diagnostic Id="CS8073" Severity="Warning" Message="The result of the expression is always '{0}' since a value of type '{1}' is never equal to 'null' of type '{2}'" />
+  <Diagnostic Id="CS8074" Severity="Error" Message="An expression tree lambda may not contain a dictionary initializer." />
+  <Diagnostic Id="CS8075" Severity="Error" Message="An extension Add method is not supported for a collection initializer in an expression lambda." />
+  <Diagnostic Id="CS8076" Severity="Error" Message="Missing close delimiter '}' for interpolated expression started with '{'." />
+  <Diagnostic Id="CS8077" Severity="Error" Message="A single-line comment may not be used in an interpolated string." />
+  <Diagnostic Id="CS8078" Severity="Error" Message="An expression is too long or complex to compile" />
+  <Diagnostic Id="CS8079" Severity="Error" Message="Use of possibly unassigned auto-implemented property '{0}'" />
+  <Diagnostic Id="CS8080" Severity="Error" Message="Auto-implemented properties must override all accessors of the overridden property." />
+  <Diagnostic Id="CS8081" Severity="Error" Message="Expression does not have a name." />
+  <Diagnostic Id="CS8082" Severity="Error" Message="Sub-expression cannot be used in an argument to nameof." />
+  <Diagnostic Id="CS8083" Severity="Error" Message="An alias-qualified name is not an expression." />
+  <Diagnostic Id="CS8084" Severity="Error" Message="Type parameters are not allowed on a method group as an argument to 'nameof'." />
+  <Diagnostic Id="CS8085" Severity="Error" Message="A 'using static' directive cannot be used to declare an alias" />
+  <Diagnostic Id="CS8086" Severity="Error" Message="A '{0}' character must be escaped (by doubling) in an interpolated string." />
+  <Diagnostic Id="CS8087" Severity="Error" Message="A '{0}' character may only be escaped by doubling '{0}{0}' in an interpolated string." />
+  <Diagnostic Id="CS8088" Severity="Error" Message="A format specifier may not contain trailing whitespace." />
+  <Diagnostic Id="CS8089" Severity="Error" Message="Empty format specifier." />
+  <Diagnostic Id="CS8090" Severity="Error" Message="There is an error in a referenced assembly '{0}'." />
+  <Diagnostic Id="CS8091" Severity="Error" Message="'{0}' cannot be extern and have a constructor initializer" />
+  <Diagnostic Id="CS8092" Severity="Error" Message="Expression or declaration statement expected." />
+  <Diagnostic Id="CS8093" Severity="Error" Message="Extension method groups are not allowed as an argument to 'nameof'." />
+  <Diagnostic Id="CS8094" Severity="Warning" Message="Alignment value {0} has a magnitude greater than {1} and may result in a large formatted string." />
+  <Diagnostic Id="CS8095" Severity="Error" Message="Length of String constant exceeds current memory limit.  Try splitting the string into multiple constants." />
+  <Diagnostic Id="CS8096" Severity="Error" Message="Debug entry point must be a definition of a method declared in the current compilation." />
+  <Diagnostic Id="CS8097" Severity="Error" Message="#load is only allowed in scripts" />
+  <Diagnostic Id="CS8098" Severity="Error" Message="Cannot use #load after first token in file" />
+  <Diagnostic Id="CS8099" Severity="Error" Message="Source file references are not supported." />
+  <Diagnostic Id="CS8100" Severity="Error" Message="The 'await' operator cannot be used in a static script variable initializer." />
+  <Diagnostic Id="CS8101" Severity="Error" Message="The pathmap option was incorrectly formatted." />
+  <Diagnostic Id="CS8102" Severity="Error" Message="Public signing was specified and requires a public key, but no public key was specified." />
+  <Diagnostic Id="CS8103" Severity="Error" Message="Combined length of user strings used by the program exceeds allowed limit. Try to decrease use of string literals." />
+  <Diagnostic Id="CS8104" Severity="Error" Message="An error occurred while writing the output file: {0}." />
+  <Diagnostic Id="CS8105" Severity="Warning" Message="Attribute '{0}' is ignored when public signing is specified." />
+  <Diagnostic Id="CS8106" Severity="Error" Message="Option '{0}' must be an absolute path." />
+  <Diagnostic Id="CS8107" Severity="Error" Message="Feature '{0}' is not available in C# 7. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8108" Severity="Error" Message="Cannot pass argument with dynamic type to params parameter '{0}' of local function '{1}'." />
+  <Diagnostic Id="CS8110" Severity="Error" Message="An expression tree may not contain a reference to a local function" />
+  <Diagnostic Id="CS8111" Severity="Error" Message="Invalid instrumentation kind: {0}" />
+  <Diagnostic Id="CS8115" Severity="Error" Message="A throw expression is not allowed in this context." />
+  <Diagnostic Id="CS8116" Severity="Error" Message="It is not legal to use nullable type '{0}' in a pattern; use the underlying type '{1}' instead." />
+  <Diagnostic Id="CS8117" Severity="Error" Message="Invalid operand for pattern match; value required, but found '{0}'." />
+  <Diagnostic Id="CS8119" Severity="Error" Message="The switch expression must be a value; found '{0}'." />
+  <Diagnostic Id="CS8120" Severity="Error" Message="The switch case has already been handled by a previous case." />
+  <Diagnostic Id="CS8121" Severity="Error" Message="An expression of type '{0}' cannot be handled by a pattern of type '{1}'." />
+  <Diagnostic Id="CS8122" Severity="Error" Message="An expression tree may not contain an 'is' pattern-matching operator." />
+  <Diagnostic Id="CS8123" Severity="Warning" Message="The tuple element name '{0}' is ignored because a different name or no name is specified by the target type '{1}'." />
+  <Diagnostic Id="CS8124" Severity="Error" Message="Tuple must contain at least two elements." />
+  <Diagnostic Id="CS8125" Severity="Error" Message="Tuple element name '{0}' is only allowed at position {1}." />
+  <Diagnostic Id="CS8126" Severity="Error" Message="Tuple element name '{0}' is disallowed at any position." />
+  <Diagnostic Id="CS8127" Severity="Error" Message="Tuple element names must be unique." />
+  <Diagnostic Id="CS8128" Severity="Error" Message="Member '{0}' was not found on type '{1}' from assembly '{2}'." />
+  <Diagnostic Id="CS8129" Severity="Error" Message="No Deconstruct instance or extension method was found for type '{0}', with {1} out parameters and a void return type." />
+  <Diagnostic Id="CS8130" Severity="Error" Message="Cannot infer the type of implicitly-typed deconstruction variable '{0}'." />
+  <Diagnostic Id="CS8131" Severity="Error" Message="Deconstruct assignment requires an expression with a type on the right-hand-side." />
+  <Diagnostic Id="CS8132" Severity="Error" Message="Cannot deconstruct a tuple of '{0}' elements into '{1}' variables." />
+  <Diagnostic Id="CS8133" Severity="Error" Message="Cannot deconstruct dynamic objects." />
+  <Diagnostic Id="CS8134" Severity="Error" Message="Deconstruction must contain at least two variables." />
+  <Diagnostic Id="CS8135" Severity="Error" Message="Tuple with {0} elements cannot be converted to type '{1}'." />
+  <Diagnostic Id="CS8136" Severity="Error" Message="Deconstruction 'var (...)' form disallows a specific type for 'var'." />
+  <Diagnostic Id="CS8137" Severity="Error" Message="Cannot define a class or member that utilizes tuples because the compiler required type '{0}' cannot be found. Are you missing a reference?" />
+  <Diagnostic Id="CS8138" Severity="Error" Message="Cannot reference 'System.Runtime.CompilerServices.TupleElementNamesAttribute' explicitly. Use the tuple syntax to define tuple names." />
+  <Diagnostic Id="CS8139" Severity="Error" Message="'{0}': cannot change tuple element names when overriding inherited member '{1}'" />
+  <Diagnostic Id="CS8140" Severity="Error" Message="'{0}' is already listed in the interface list on type '{2}' with different tuple element names, as '{1}'." />
+  <Diagnostic Id="CS8141" Severity="Error" Message="The tuple element names in the signature of method '{0}' must match the tuple element names of interface method '{1}' (including on the return type)." />
+  <Diagnostic Id="CS8142" Severity="Error" Message="Both partial method declarations, '{0}' and '{1}', must use the same tuple element names." />
+  <Diagnostic Id="CS8143" Severity="Error" Message="An expression tree may not contain a tuple literal." />
+  <Diagnostic Id="CS8144" Severity="Error" Message="An expression tree may not contain a tuple conversion." />
+  <Diagnostic Id="CS8145" Severity="Error" Message="Auto-implemented properties cannot return by reference" />
+  <Diagnostic Id="CS8146" Severity="Error" Message="Properties which return by reference must have a get accessor" />
+  <Diagnostic Id="CS8147" Severity="Error" Message="Properties which return by reference cannot have set accessors" />
+  <Diagnostic Id="CS8148" Severity="Error" Message="'{0}' must {2}return by reference to match overridden member '{1}'" />
+  <Diagnostic Id="CS8149" Severity="Error" Message="By-reference returns may only be used in methods that return by reference" />
+  <Diagnostic Id="CS8150" Severity="Error" Message="By-value returns may only be used in methods that return by value" />
+  <Diagnostic Id="CS8151" Severity="Error" Message="The return expression must be of type '{0}' because this method returns by reference" />
+  <Diagnostic Id="CS8152" Severity="Error" Message="'{0}' does not implement interface member '{1}'. '{2}' cannot implement '{1}' because it does not return by {3}" />
+  <Diagnostic Id="CS8153" Severity="Error" Message="An expression tree lambda may not contain a call to a method, property, or indexer that returns by reference" />
+  <Diagnostic Id="CS8154" Severity="Error" Message="The body of '{0}' cannot be an iterator block because '{0}' returns by reference" />
+  <Diagnostic Id="CS8155" Severity="Error" Message="Lambda expressions that return by reference cannot be converted to expression trees" />
+  <Diagnostic Id="CS8156" Severity="Error" Message="An expression cannot be used in this context because it may not be returned by reference" />
+  <Diagnostic Id="CS8157" Severity="Error" Message="Cannot return '{0}' by reference because it was initialized to a value that cannot be returned by reference" />
+  <Diagnostic Id="CS8158" Severity="Error" Message="Cannot return by reference a member of '{0}' because it was initialized to a value that cannot be returned by reference" />
+  <Diagnostic Id="CS8159" Severity="Error" Message="Cannot return the range variable '{0}' by reference" />
+  <Diagnostic Id="CS8160" Severity="Error" Message="A readonly field cannot be returned by reference" />
+  <Diagnostic Id="CS8161" Severity="Error" Message="A static readonly field cannot be returned by reference" />
+  <Diagnostic Id="CS8162" Severity="Error" Message="Members of readonly field '{0}' cannot be returned by reference" />
+  <Diagnostic Id="CS8163" Severity="Error" Message="Fields of static readonly field '{0}' cannot be returned by reference" />
+  <Diagnostic Id="CS8164" Severity="Error" Message="Cannot return by reference a result of '{0}' because the argument passed to parameter '{1}' cannot be returned by reference" />
+  <Diagnostic Id="CS8165" Severity="Error" Message="Cannot return by reference a member of result of '{0}' because the argument passed to parameter '{1}' cannot be returned by reference" />
+  <Diagnostic Id="CS8166" Severity="Error" Message="Cannot return a parameter by reference '{0}' because it is not a ref or out parameter" />
+  <Diagnostic Id="CS8167" Severity="Error" Message="Cannot return or a member of parameter '{0}' by reference because it is not a ref or out parameter" />
+  <Diagnostic Id="CS8168" Severity="Error" Message="Cannot return local '{0}' by reference because it is not a ref local" />
+  <Diagnostic Id="CS8169" Severity="Error" Message="Cannot return a member of local '{0}' by reference because it is not a ref local" />
+  <Diagnostic Id="CS8170" Severity="Error" Message="Struct members cannot return 'this' or other instance members by reference" />
+  <Diagnostic Id="CS8171" Severity="Error" Message="Cannot initialize a by-value variable with a reference" />
+  <Diagnostic Id="CS8172" Severity="Error" Message="Cannot initialize a by-reference variable with a value" />
+  <Diagnostic Id="CS8173" Severity="Error" Message="The expression must be of type '{0}' because it is being assigned by reference" />
+  <Diagnostic Id="CS8174" Severity="Error" Message="A declaration of a by-reference variable must have an initializer" />
+  <Diagnostic Id="CS8175" Severity="Error" Message="Cannot use ref local '{0}' inside an anonymous method, lambda expression, or query expression" />
+  <Diagnostic Id="CS8176" Severity="Error" Message="Iterators cannot have by reference locals" />
+  <Diagnostic Id="CS8177" Severity="Error" Message="Async methods cannot have by reference locals" />
+  <Diagnostic Id="CS8178" Severity="Error" Message="'await' cannot be used in an expression containing a call to '{0}' because it returns by reference" />
+  <Diagnostic Id="CS8179" Severity="Error" Message="Predefined type '{0}' is not defined or imported" />
+  <Diagnostic Id="CS8180" Severity="Error" Message="{ or ; or =&gt; expected" />
+  <Diagnostic Id="CS8181" Severity="Error" Message="'new' cannot be used with tuple type. Use a tuple literal expression instead." />
+  <Diagnostic Id="CS8182" Severity="Error" Message="Predefined type '{0}' must be a struct." />
+  <Diagnostic Id="CS8183" Severity="Error" Message="Cannot infer the type of implicitly-typed discard." />
+  <Diagnostic Id="CS8184" Severity="Error" Message="A deconstruction cannot mix declarations and expressions on the left-hand-side." />
+  <Diagnostic Id="CS8185" Severity="Error" Message="A declaration is not allowed in this context." />
+  <Diagnostic Id="CS8186" Severity="Error" Message="A foreach loop must declare its iteration variables." />
+  <Diagnostic Id="CS8187" Severity="Error" Message="Tuple element names are not permitted on the left of a deconstruction." />
+  <Diagnostic Id="CS8188" Severity="Error" Message="An expression tree may not contain a throw-expression." />
+  <Diagnostic Id="CS8189" Severity="Error" Message="Ref mismatch between '{0}' and delegate '{1}'" />
+  <Diagnostic Id="CS8190" Severity="Error" Message="Provided source code kind is unsupported or invalid: '{0}'" />
+  <Diagnostic Id="CS8191" Severity="Error" Message="Provided documentation mode is unsupported or invalid: '{0}'." />
+  <Diagnostic Id="CS8192" Severity="Error" Message="Provided language version is unsupported or invalid: '{0}'." />
+  <Diagnostic Id="CS8196" Severity="Error" Message="Reference to an implicitly-typed out variable '{0}' is not permitted in the same argument list." />
+  <Diagnostic Id="CS8197" Severity="Error" Message="Cannot infer the type of implicitly-typed out variable '{0}'." />
+  <Diagnostic Id="CS8198" Severity="Error" Message="An expression tree may not contain an out argument variable declaration." />
+  <Diagnostic Id="CS8199" Severity="Error" Message="The syntax 'var (...)' as an lvalue is reserved." />
+  <Diagnostic Id="CS8200" Severity="Error" Message="Out variable and pattern variable declarations are not allowed within constructor initializers, field initializers, or property initializers." />
+  <Diagnostic Id="CS8201" Severity="Error" Message="Out variable and pattern variable declarations are not allowed within a query clause." />
+  <Diagnostic Id="CS8202" Severity="Error" Message="Public signing is not supported for netmodules." />
+  <Diagnostic Id="CS8203" Severity="Error" Message="Invalid assembly name: {0}" />
+  <Diagnostic Id="CS8204" Severity="Error" Message="For type '{0}' to be used as an AsyncMethodBuilder for type '{1}', its Task property should return type '{1}' instead of type '{2}'." />
+  <Diagnostic Id="CS8205" Severity="Error" Message="Attributes are not allowed on local function parameters or type parameters" />
+  <Diagnostic Id="CS8206" Severity="Error" Message="Module '{0}' in assembly '{1}' is forwarding the type '{2}' to multiple assemblies: '{3}' and '{4}'." />
+  <Diagnostic Id="CS8207" Severity="Error" Message="An expression tree may not contain a discard." />
+  <Diagnostic Id="CS8208" Severity="Error" Message="It is not legal to use the type 'dynamic' in a pattern." />
+  <Diagnostic Id="CS8209" Severity="Error" Message="A value of type 'void' may not be assigned." />
+  <Diagnostic Id="CS8210" Severity="Error" Message="A tuple may not contain a value of type 'void'." />
+  <Diagnostic Id="CS8300" Severity="Error" Message="Merge conflict marker encountered" />
+  <Diagnostic Id="CS8301" Severity="Error" Message="Invalid name for a preprocessing symbol; '{0}' is not a valid identifier" />
+  <Diagnostic Id="CS8302" Severity="Error" Message="Feature '{0}' is not available in C# 7.1. Please use language version {1} or greater." />
+  <Diagnostic Id="CS8303" Severity="Error" Message="Specified language version '{0}' cannot have leading zeroes" />
+  <Diagnostic Id="CS8304" Severity="Error" Message="Compiler version: '{0}'. Language version: {1}." />
+  <Diagnostic Id="CS8305" Severity="Warning" Message="'{0}' is for evaluation purposes only and is subject to change or removal in future updates." />
+  <Diagnostic Id="CS8306" Severity="Error" Message="Tuple element name '{0}' is inferred. Please use language version {1} or greater to access an element by its inferred name." />
+  <Diagnostic Id="CS8307" Severity="Error" Message="The first operand of an 'as' operator may not be a tuple literal without a natural type." />
+  <Diagnostic Id="CS9000" Severity="Error" Message="Cannot use a default literal as an argument to a dynamically dispatched operation." />
+  <Diagnostic Id="CS9001" Severity="Error" Message="Use of default literal is not valid in this context" />
+  <Diagnostic Id="CS9002" Severity="Warning" Message="Did you mean to use the default switch label (`default:`) rather than `case default:`? If you really mean to use the default literal, consider `case (default):` or another literal (`case 0:` or `case null:`) as appropriate." />
+  <Diagnostic Id="CS9003" Severity="Error" Message="An expression of type '{0}' cannot be handled by a pattern of type '{1}' in C# {2}. Please use language version {3} or greater." />
+</Diagnostics>
