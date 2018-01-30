@@ -1,6 +1,6 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27130.2020
+VisualStudioVersion = 15.0.27130.2024
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tools", "Tools", "{CC69BDBB-35E9-43A9-9397-4B2832270BB8}"
 EndProject
@@ -55,8 +55,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MetadataGenerator", "Tools\MetadataGenerator\MetadataGenerator.csproj", "{DD303EB5-1C57-4588-980C-C55A401DB125}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeGeneration", "Tools\CodeGeneration\CodeGeneration.csproj", "{06884E7F-9DE1-4A42-9D45-42C19714F0B2}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Markdown", "Tools\Markdown\Markdown.csproj", "{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Workspaces", "Workspaces\Workspaces.csproj", "{56DA29A3-C179-471C-9941-42426EEB84D0}"
 EndProject
@@ -171,14 +169,6 @@ Global
 		{06884E7F-9DE1-4A42-9D45-42C19714F0B2}.Release|Any CPU.Build.0 = Release|Any CPU
 		{06884E7F-9DE1-4A42-9D45-42C19714F0B2}.ReleaseTools|Any CPU.ActiveCfg = Release|Any CPU
 		{06884E7F-9DE1-4A42-9D45-42C19714F0B2}.ReleaseTools|Any CPU.Build.0 = Release|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.DebugRoslynator|Any CPU.ActiveCfg = Debug|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.DebugRoslynator|Any CPU.Build.0 = Debug|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.ReleaseTools|Any CPU.ActiveCfg = Release|Any CPU
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3}.ReleaseTools|Any CPU.Build.0 = Release|Any CPU
 		{56DA29A3-C179-471C-9941-42426EEB84D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{56DA29A3-C179-471C-9941-42426EEB84D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{56DA29A3-C179-471C-9941-42426EEB84D0}.DebugRoslynator|Any CPU.ActiveCfg = Debug|Any CPU
@@ -203,7 +193,6 @@ Global
 		{62ABFF60-67FC-4D33-91BD-ED1CD7DB5007} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{DD303EB5-1C57-4588-980C-C55A401DB125} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{06884E7F-9DE1-4A42-9D45-42C19714F0B2} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
-		{CABD560D-70AA-4569-9ED4-014B5FAE1ED3} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1943010-8F47-4798-9A3D-97BC24CF1AC4}

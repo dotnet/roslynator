@@ -69,7 +69,6 @@
     <Rule Id="CA1058" Action="Warning" />
     <Rule Id="CA1059" Action="Warning" />
     <Rule Id="CA1060" Action="Warning" />
-    <Rule Id="CA1061" Action="Warning" />
     <Rule Id="CA1063" Action="Warning" />
     <Rule Id="CA1064" Action="Warning" />
     <Rule Id="CA1065" Action="Warning" />
@@ -104,7 +103,6 @@
     <Rule Id="CA1700" Action="Warning" />
     <Rule Id="CA1701" Action="Warning" />
     <Rule Id="CA1703" Action="Warning" />
-    <Rule Id="CA1708" Action="Warning" />
     <Rule Id="CA1711" Action="Warning" />
     <Rule Id="CA1712" Action="Warning" />
     <Rule Id="CA1713" Action="Warning" />
@@ -124,6 +122,7 @@
     <Rule Id="CA1811" Action="Warning" />
     <Rule Id="CA1813" Action="Warning" />
     <Rule Id="CA1814" Action="Warning" />
+    <Rule Id="CA1815" Action="Warning" />
     <Rule Id="CA1816" Action="Warning" />
     <Rule Id="CA1819" Action="Warning" />
     <Rule Id="CA1820" Action="Warning" />
@@ -248,7 +247,8 @@
     <Rule Id="IDE0033" Action="Info" />
   </Rules>
   <Rules AnalyzerId="Microsoft.CodeQuality.Analyzers" RuleNamespace="Microsoft.CodeQuality.Analyzers">
-    <Rule Id="CA1815" Action="None" />
+    <Rule Id="CA1061" Action="None" />
+    <Rule Id="CA1815" Action="Warning" />
   </Rules>
   <Rules AnalyzerId="RefactoringEssentials" RuleNamespace="RefactoringEssentials">
     <Rule Id="RECS0001" Action="None" />

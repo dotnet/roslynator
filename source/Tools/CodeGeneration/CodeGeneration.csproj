@@ -47,6 +47,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DotMarkdown, Version=0.1.0.0, Culture=neutral, PublicKeyToken=117de6512634d621, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\DotMarkdown.0.1.0-beta\lib\net45\DotMarkdown.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.CodeAnalysis, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.CodeAnalysis.Common.2.0.0\lib\netstandard1.3\Microsoft.CodeAnalysis.dll</HintPath>
     </Reference>
@@ -142,7 +145,6 @@
     <Compile Include="Html\HtmlGenerator.cs" />
     <Compile Include="Markdown\MarkdownGenerator.cs" />
     <Compile Include="Generator.cs" />
-    <Compile Include="Markdown\MarkdownBuilderExtensions.cs" />
     <Compile Include="Xml\XmlGenerator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -167,10 +169,6 @@
     <ProjectReference Include="..\..\Refactorings\Refactorings.csproj">
       <Project>{3AD7B124-7B99-440D-84A1-858BE5AE268B}</Project>
       <Name>Refactorings</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Markdown\Markdown.csproj">
-      <Project>{cabd560d-70aa-4569-9ed4-014b5fae1ed3}</Project>
-      <Name>Markdown</Name>
     </ProjectReference>
     <ProjectReference Include="..\Metadata\Metadata.csproj">
       <Project>{7f6f6533-e406-4225-a435-dee22c717f48}</Project>

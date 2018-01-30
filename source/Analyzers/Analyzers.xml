@@ -14,8 +14,7 @@
         <Before><![CDATA[if (condition)
     Foo( // RCS1001
         x,
-        y);
-]]></Before>
+        y);]]></Before>
         <After><![CDATA[if (condition)
 {
     Foo(
@@ -64,8 +63,7 @@
 else
     WhenFalse(
         x,
-        y);
-]]></Before>
+        y);]]></Before>
         <After><![CDATA[if (condition)
 {
     WhenTrue(
@@ -176,8 +174,7 @@ else if (condition2)
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-    Foo(); // RCS1007
-]]></Before>
+    Foo(); // RCS1007]]></Before>
         <After><![CDATA[if (condition)
 {
     Foo();
@@ -446,8 +443,7 @@ protected internal class Foo
         <Before><![CDATA[var x = items.Select(f =>
 { // RCS1021
     return f.ToString();
-});
-]]></Before>
+});]]></Before>
         <After><![CDATA[var x = items.Select(f => f.ToString());]]></After>
       </Sample>
     </Samples>
@@ -574,8 +570,7 @@ Foo(s);]]></After>
 {
     case "a": return Foo(); // RCS1028
     case "b": return Bar();
-}
-]]></Before>
+}]]></Before>
         <After><![CDATA[switch (s)
 {
     case "a":
@@ -626,8 +621,7 @@ Foo(s);]]></After>
         <Before><![CDATA[if (x)
     Foo(); // RCS1030
 if (y)
-    Bar();
-]]></Before>
+    Bar();]]></Before>
         <After><![CDATA[if (x)
     Foo();
 
@@ -718,8 +712,7 @@ if (f)
         <After><![CDATA[public override string ToString()
 {
     return "";
-}
-]]></After>
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -809,8 +802,7 @@ if (f)
 }]]></Before>
         <After><![CDATA[public void Foo()
 {
-}
-]]></After>
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -1332,8 +1324,7 @@ public class Bar
 {
     // ...
 }
-while (true);
-]]></Before>
+while (true);]]></Before>
         <After><![CDATA[while (true)
 {
     // ...
@@ -1374,8 +1365,7 @@ while (true);
       <Sample>
         <Before><![CDATA[while (true) // RCS1065
 {
-}
-]]></Before>
+}]]></Before>
         <After><![CDATA[do
 {
 }
@@ -1929,8 +1919,7 @@ public string Foo // RCS1085
         <Before><![CDATA[do
 {
     Foo(); // RCS1092
-} while (condition);
-]]></Before>
+} while (condition);]]></Before>
         <After><![CDATA[do
 {
     Foo();
@@ -2845,8 +2834,7 @@ public void Foo()
         <Before><![CDATA[/// <param name="parameter"></param> // RCS1139
 public void Foo(object parameter)
 {
-}
-]]></Before>
+}]]></Before>
         <After><![CDATA[/// <summary>
 /// 
 /// </summary>
@@ -3890,8 +3878,7 @@ private void Bar()
 public static void Foo()
 {
 }
-#endregion // RCS1189
-]]></Before>
+#endregion // RCS1189]]></Before>
         <After><![CDATA[#region Methods
 public static void Foo()
 {
@@ -4156,14 +4143,12 @@ if (x.HasValue && x.Value) // RCS1199
 
 sb.Append("a"); // RCS1201
 sb.Append("b");
-sb.Append("c");
-]]></Before>
+sb.Append("c");]]></Before>
         <After><![CDATA[sb = new StringBuilder();
 
 sb.Append("a")
     .Append("b")
-    .Append("c");
-]]></After>
+    .Append("c");]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -4382,13 +4367,11 @@ Foo3();]]></After>
         <Before><![CDATA[Task<object> FooAsync()
 {
     return null; // RCS1210
-}
-]]></Before>
+}]]></Before>
         <After><![CDATA[Task<object> FooAsync()
 {
     return Task.FromResult<object>(null);
-}
-]]></After>
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -4410,8 +4393,7 @@ Foo3();]]></After>
 else // RCS1211
 {
     return WhenFalse();
-}
-]]></Before>
+}]]></Before>
         <After><![CDATA[if (condition)
 {
     return WhenTrue();
