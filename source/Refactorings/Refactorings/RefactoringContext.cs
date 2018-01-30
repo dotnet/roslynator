@@ -270,11 +270,11 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.SingleLineCommentTrivia:
                     {
-                        if (IsRefactoringEnabled(RefactoringIdentifiers.Uncomment))
+                        if (IsRefactoringEnabled(RefactoringIdentifiers.UncommentSingleLineComment))
                         {
                             RegisterRefactoring(
                                 "Uncomment",
-                                cancellationToken => UncommentRefactoring.RefactorAsync(Document, trivia, cancellationToken));
+                                cancellationToken => UncommentSingleLineCommentRefactoring.RefactorAsync(Document, trivia, cancellationToken));
                         }
 
                         if (IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment)
@@ -284,6 +284,13 @@ namespace Roslynator.CSharp.Refactorings
                                 ReplaceCommentWithDocumentationCommentRefactoring.Title,
                                 cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, cancellationToken));
                         }
+
+                        break;
+                    }
+                case SyntaxKind.MultiLineCommentTrivia:
+                    {
+                        if (IsRefactoringEnabled(RefactoringIdentifiers.UncommentMultiLineComment))
+                            UncommentMultiLineCommentRefactoring.ComputeRefactoring(this, trivia);
 
                         break;
                     }

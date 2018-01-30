@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.RemoveEnumMemberValue;
+        = RefactoringIdentifiers.UncommentMultiLineComment;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -177,7 +177,7 @@ namespace Roslynator.VisualStudio
             SwapExpressionsInConditionalExpression = true;
             SwapMemberDeclarations = true;
             SwapStatementsInIfElse = true;
-            Uncomment = true;
+            UncommentSingleLineComment = true;
             UseBitwiseOperationInsteadOfCallingHasFlag = true;
             UseCoalesceExpressionInsteadOfIf = true;
             UseConditionalExpressionInsteadOfIf = true;
@@ -348,7 +348,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, SwapExpressionsInConditionalExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapMemberDeclarations, SwapMemberDeclarations);
             SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
-            SetIsEnabled(RefactoringIdentifiers.Uncomment, Uncomment);
+            SetIsEnabled(RefactoringIdentifiers.UncommentSingleLineComment, UncommentSingleLineComment);
             SetIsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, UseBitwiseOperationInsteadOfCallingHasFlag);
             SetIsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, UseCoalesceExpressionInsteadOfIf);
             SetIsEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf, UseConditionalExpressionInsteadOfIf);
@@ -529,7 +529,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, "Swap expressions in conditional expression", IsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapMemberDeclarations, "Swap member declarations", IsEnabled(RefactoringIdentifiers.SwapMemberDeclarations)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapStatementsInIfElse, "Swap statements in if-else", IsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.Uncomment, "Uncomment", IsEnabled(RefactoringIdentifiers.Uncomment)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentSingleLineComment, "UncommentSingleLineComment", IsEnabled(RefactoringIdentifiers.UncommentSingleLineComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, "Use bitwise operation instead of calling 'HasFlag'", IsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, "Use coalesce expression instead of if", IsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf, "Use conditional expression instead of if", IsEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)));
@@ -566,6 +566,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InitializeFieldFromConstructor, "Initialize field from constructor", IsEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineProperty, "Inline property", IsEnabled(RefactoringIdentifiers.InlineProperty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveEnumMemberValue, "Remove enum member value(s)", IsEnabled(RefactoringIdentifiers.RemoveEnumMemberValue)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentMultiLineComment, "Uncomment multi-line comment", IsEnabled(RefactoringIdentifiers.UncommentMultiLineComment)));
         }
 
         [Browsable(false)]
@@ -1930,7 +1931,7 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool Uncomment
+        public bool UncommentSingleLineComment
         {
             get;
             set;

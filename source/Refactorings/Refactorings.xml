@@ -1129,7 +1129,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0163" Identifier="Uncomment" Title="Uncomment">
+  <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="UncommentSingleLineComment">
     <Syntaxes>
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>
@@ -1545,6 +1545,17 @@ else
     Two,
     Three
 }]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0200" Identifier="UncommentMultiLineComment" Title="Uncomment multi-line comment">
+    <Syntaxes>
+      <Syntax>multi-line comment</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[/*string s = null;*/]]></Before>
+        <After><![CDATA[string s = null;]]></After>
       </Sample>
     </Samples>
   </Refactoring>

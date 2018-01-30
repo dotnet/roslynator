@@ -57,6 +57,7 @@
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEnumMemberValueRefactoring.cs" />
     <Compile Include="Refactorings\SelectedEnumMemberDeclarationsRefactoring.cs" />
+    <Compile Include="Refactorings\UncommentMultiLineCommentRefactoring.cs" />
     <Compile Include="Refactorings\ÏnlineDefinition\InlinePropertyAnalyzer.cs" />
     <Compile Include="Refactorings\ÏnlineDefinition\InlinePropertyRefactoring.cs" />
     <Compile Include="Refactorings\ÏnlineDefinition\InlineRefactoring.cs" />
@@ -238,7 +239,7 @@
     <Compile Include="Refactorings\ExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SwapExpressionsInConditionalExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SwapStatementInIfElseRefactoring.cs" />
-    <Compile Include="Refactorings\UncommentRefactoring.cs" />
+    <Compile Include="Refactorings\UncommentSingleLineCommentRefactoring.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
     <Compile Include="Refactorings\CheckParameterForNullRefactoring.cs" />
     <Compile Include="Refactorings\ArgumentRefactoring.cs" />
