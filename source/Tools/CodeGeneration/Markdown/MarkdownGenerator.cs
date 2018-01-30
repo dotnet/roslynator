@@ -177,6 +177,7 @@ namespace Roslynator.CodeGeneration.Markdown
             MDocument document = Document(
                 Heading1(diagnostic.Id),
                 Table(
+                    TableRow("Property", "Value"),
                     TableRow("Id", diagnostic.Id),
                     TableRow("Title", diagnostic.Title),
                     TableRow("Severity", diagnostic.Severity),
