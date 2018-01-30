@@ -248,7 +248,7 @@
       <CodeFix Id="RCF0048" IsEnabled="true" /> <!-- UseExplicitTypeInsteadOfVar (fixes CS0819, CS0822) -->
       <CodeFix Id="RCF0049" IsEnabled="true" /> <!-- RemoveAwaitKeyword (fixes CS1061) -->
       <CodeFix Id="RCF0050" IsEnabled="true" /> <!-- WrapInUnsafeStatement (fixes CS0214) -->
-      <CodeFix Id="RCF0051" IsEnabled="true" /> <!-- AddUnsafeModifier (fixes CS0214) -->
+      <CodeFix Id="RCF0051" IsEnabled="true" /> <!-- MakeContainingDeclarationUnsafe (fixes CS0214) -->
       <CodeFix Id="RCF0052" IsEnabled="false" /> <!-- RemoveReturnKeyword (fixes CS0127, CS1997) -->
       <CodeFix Id="RCF0053" IsEnabled="true" /> <!-- RemoveParametersFromStaticConstructor (fixes CS0132) -->
       <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- ReorderModifiers (fixes CS0267) -->

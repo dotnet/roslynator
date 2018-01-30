@@ -116,7 +116,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <None Include="CodeFixesByDiagnosticId.md" />
     <None Include="packages.config" />
     <None Include="README.md" />
     <None Include="Roslynator.CodeFixes.nuspec" />

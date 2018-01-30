@@ -270,7 +270,7 @@
       <Id>CS0214</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0051" Identifier="AddUnsafeModifier" Title="Add 'unsafe' modifier">
+  <CodeFix Id="RCF0051" Identifier="MakeContainingDeclarationUnsafe" Title="Make containing declaration unsafe">
     <FixableDiagnosticIds>
       <Id>CS0214</Id>
     </FixableDiagnosticIds>

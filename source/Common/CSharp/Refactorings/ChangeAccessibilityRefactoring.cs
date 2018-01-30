@@ -269,7 +269,7 @@ namespace Roslynator.CSharp.Refactorings
                         }
                     default:
                         {
-                            Debug.Fail(syntaxReference.GetSyntax(cancellationToken).Kind().ToString());
+                            Debug.Assert(false, syntaxReference.GetSyntax(cancellationToken).Kind().ToString());
                             break;
                         }
                 }

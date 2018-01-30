@@ -2,7 +2,10 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -115,7 +118,36 @@ namespace Roslynator.Metadata
                 yield return new CompilerDiagnosticDescriptor(
                     element.Attribute("Id").Value,
                     element.Attribute("Identifier").Value,
+                    element.Attribute("Title").Value,
+                    element.Attribute("Message").Value,
+                    element.Attribute("Severity").Value,
                     element.Attribute("HelpUrl").Value);
+            }
+        }
+
+        public static void SaveCompilerDiagnostics(IEnumerable<CompilerDiagnosticDescriptor> diagnostics, string path)
+        {
+            var doc = new XDocument(
+                new XElement("Diagnostics",
+                    diagnostics.Select(f =>
+                    {
+                        Debug.WriteLine(f.Id);
+
+                        return new XElement(
+                            "Diagnostic",
+                            new XAttribute("Id", f.Id),
+                            new XAttribute("Identifier", f.Identifier),
+                            new XAttribute("Severity", f.Severity ?? ""),
+                            new XAttribute("Title", f.Title),
+                            new XAttribute("Message", f.Message ?? ""),
+                            new XAttribute("HelpUrl", f.HelpUrl ?? "")
+                            );
+                    })));
+
+            using (var fs = new FileStream(path, FileMode.Create))
+            using (XmlWriter xw = XmlWriter.Create(fs, new XmlWriterSettings() { Indent = true, NewLineOnAttributes = true }))
+            {
+                doc.Save(xw);
             }
         }
     }

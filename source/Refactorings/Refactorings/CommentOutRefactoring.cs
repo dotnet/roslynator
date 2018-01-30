@@ -23,15 +23,6 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken));
         }
 
-        public static void RegisterRefactoring(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement)
-        {
-            FileLinePositionSpan fileSpan = GetFileLinePositionSpan(localFunctionStatement, context.CancellationToken);
-
-            context.RegisterRefactoring(
-                $"Comment out {localFunctionStatement.GetTitle()}",
-                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken));
-        }
-
         public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
         {
             FileLinePositionSpan fileSpan = statement.SyntaxTree.GetLineSpan(statement.Span, context.CancellationToken);

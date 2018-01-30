@@ -78,26 +78,9 @@ namespace Roslynator.CSharp.Refactorings
 
                         break;
                     }
-                case LocalFunctionStatementSyntax localFunction:
-                    {
-                        if (localFunction.ContainsYield())
-                            break;
-
-                        context.RegisterRefactoring(
-                            Title,
-                            cancellationToken => RefactorAsync(
-                                context.Document,
-                                expression,
-                                localFunction.Modifiers,
-                                localFunction.ParameterList,
-                                localFunction.BodyOrExpressionBody(),
-                                cancellationToken));
-
-                        break;
-                    }
                 default:
                     {
-                        Debug.Fail(node.Kind().ToString());
+                        Debug.Assert(false, node.Kind().ToString());
                         break;
                     }
             }

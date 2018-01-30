@@ -59,7 +59,7 @@
 | RR0057 | [Generate enum values](../../docs/refactorings/RR0057.md) | &#x2713; |
 | RR0058 | [Generate event invoking method](../../docs/refactorings/RR0058.md) | &#x2713; |
 | RR0059 | [Generate switch sections](../../docs/refactorings/RR0059.md) | &#x2713; |
-| RR0179 | [Implement IEquatable<T>](../../docs/refactorings/RR0179.md) | &#x2713; |
+| RR0179 | [Implement IEquatable\<T>](../../docs/refactorings/RR0179.md) | &#x2713; |
 | RR0197 | [Initialize field from constructor](../../docs/refactorings/RR0197.md) | &#x2713; |
 | RR0060 | [Initialize local with default value](../../docs/refactorings/RR0060.md) | &#x2713; |
 | RR0061 | [Inline alias expression](../../docs/refactorings/RR0061.md) | &#x2713; |
@@ -70,7 +70,7 @@
 | RR0063 | [Insert string interpolation](../../docs/refactorings/RR0063.md) | &#x2713; |
 | RR0064 | [Introduce and initialize field](../../docs/refactorings/RR0064.md) | &#x2713; |
 | RR0065 | [Introduce and initialize property](../../docs/refactorings/RR0065.md) | &#x2713; |
-| RR0066 | [Introduce constructor](../../docs/refactorings/RR0066.md) |  |
+| RR0066 | [Introduce constructor](../../docs/refactorings/RR0066.md) | \- |
 | RR0067 | [Introduce field to lock on](../../docs/refactorings/RR0067.md) | &#x2713; |
 | RR0068 | [Introduce local variable](../../docs/refactorings/RR0068.md) | &#x2713; |
 | RR0134 | [Invert prefix/postfix unary operator](../../docs/refactorings/RR0134.md) | &#x2713; |
@@ -93,7 +93,7 @@
 | RR0189 | [Reduce if nesting](../../docs/refactorings/RR0189.md) | &#x2713; |
 | RR0086 | [Remove all comments](../../docs/refactorings/RR0086.md) | &#x2713; |
 | RR0087 | [Remove all comments (except documentation comments)](../../docs/refactorings/RR0087.md) | &#x2713; |
-| RR0088 | [Remove all documentation comments](../../docs/refactorings/RR0088.md) |  |
+| RR0088 | [Remove all documentation comments](../../docs/refactorings/RR0088.md) | \- |
 | RR0089 | [Remove all member declarations](../../docs/refactorings/RR0089.md) | &#x2713; |
 | RR0090 | [Remove all preprocessor directives](../../docs/refactorings/RR0090.md) | &#x2713; |
 | RR0091 | [Remove all region directives](../../docs/refactorings/RR0091.md) | &#x2713; |
@@ -138,7 +138,7 @@
 | RR0130 | [Replace for statement with foreach statement](../../docs/refactorings/RR0130.md) | &#x2713; |
 | RR0131 | [Replace for statement with while statement](../../docs/refactorings/RR0131.md) | &#x2713; |
 | RR0129 | [Replace foreach statement with for statement](../../docs/refactorings/RR0129.md) | &#x2713; |
-| RR0188 | [Replace foreach with for and reverse loop](../../docs/refactorings/RR0188.md) |  |
+| RR0188 | [Replace foreach with for and reverse loop](../../docs/refactorings/RR0188.md) | \- |
 | RR0132 | [Replace hexadecimal literal with decimal literal](../../docs/refactorings/RR0132.md) | &#x2713; |
 | RR0133 | [Replace if with switch](../../docs/refactorings/RR0133.md) | &#x2713; |
 | RR0190 | [Replace if-else with if-return](../../docs/refactorings/RR0190.md) | &#x2713; |
@@ -146,7 +146,7 @@
 | RR0135 | [Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md) | &#x2713; |
 | RR0136 | [Replace interpolated string with string literal](../../docs/refactorings/RR0136.md) | &#x2713; |
 | RR0137 | [Replace method group with lambda](../../docs/refactorings/RR0137.md) | &#x2713; |
-| RR0138 | [Replace method with property](../../docs/refactorings/RR0138.md) |  |
+| RR0138 | [Replace method with property](../../docs/refactorings/RR0138.md) | \- |
 | RR0139 | [Replace null literal expression with default expression](../../docs/refactorings/RR0139.md) | &#x2713; |
 | RR0185 | [Replace object creation with default value](../../docs/refactorings/RR0185.md) | &#x2713; |
 | RR0140 | [Replace prefix operator to postfix operator](../../docs/refactorings/RR0140.md) | &#x2713; |
@@ -182,8 +182,8 @@
 | RR0167 | [Use element access instead of 'First/Last'ElementAt' method](../../docs/refactorings/RR0167.md) | &#x2713; |
 | RR0169 | [Use expression-bodied member](../../docs/refactorings/RR0169.md) | &#x2713; |
 | RR0170 | [Use lambda expression instead of anonymous method](../../docs/refactorings/RR0170.md) | &#x2713; |
-| RR0183 | [Use List<T> instead of yield](../../docs/refactorings/RR0183.md) | &#x2713; |
-| RR0171 | [Use string.Empty instead of ""](../../docs/refactorings/RR0171.md) |  |
+| RR0183 | [Use List\<T> instead of yield](../../docs/refactorings/RR0183.md) | &#x2713; |
+| RR0171 | [Use string.Empty instead of ""](../../docs/refactorings/RR0171.md) | \- |
 | RR0182 | [Use StringBuilder instead of concatenation](../../docs/refactorings/RR0182.md) | &#x2713; |
 | RR0174 | [Wrap in #if directive](../../docs/refactorings/RR0174.md) | &#x2713; |
 | RR0172 | [Wrap in condition](../../docs/refactorings/RR0172.md) | &#x2713; |
@@ -191,3 +191,4 @@
 | RR0175 | [Wrap in region](../../docs/refactorings/RR0175.md) | &#x2713; |
 | RR0176 | [Wrap in try-catch](../../docs/refactorings/RR0176.md) | &#x2713; |
 | RR0177 | [Wrap in using statement](../../docs/refactorings/RR0177.md) | &#x2713; |
+

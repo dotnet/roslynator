@@ -56,11 +56,15 @@ namespace Roslynator.CodeGeneration
 
             WriteAllText(
                 @"CodeFixes\README.md",
-                MarkdownGenerator.CreateCodeFixesReadMe(CodeFixes, CompilerDiagnostics, Comparer));
+                MarkdownGenerator.CreateCodeFixesReadMe(CompilerDiagnostics, Comparer));
 
-            WriteAllText(
-                @"CodeFixes\CodeFixesByDiagnosticId.md",
-                MarkdownGenerator.CreateCodeFixesByDiagnosticId(CodeFixes, CompilerDiagnostics));
+            foreach (CompilerDiagnosticDescriptor diagnostic in CompilerDiagnostics)
+            {
+                WriteAllText(
+                    $@"..\docs\cs\{diagnostic.Id}.md",
+                    MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, CodeFixes, Comparer),
+                    fileMustExists: false);
+            }
 
             WriteAllText(
                 "DefaultConfigFile.xml",

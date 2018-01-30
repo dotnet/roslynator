@@ -263,7 +263,7 @@ namespace Roslynator.CSharp.Syntax
                         }
                     default:
                         {
-                            Debug.Fail(modifiers[i].Kind().ToString());
+                            Debug.Assert(false, modifiers[i].Kind().ToString());
                             break;
                         }
                 }
