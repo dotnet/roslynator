@@ -1,3 +1,8 @@
+### 1.7 (2018-01-30)
+* Forked to lzl1918/Roslynator
+* Add additional rules for RCS1047 for interfaces in WindowsRuntime
+* Disable RCS1010 by default, and enable RCS1012
+
 ### 1.6.30 (2018-01-19)
 
 * Add support for 'private protected' accessibility.
