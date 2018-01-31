@@ -8,13 +8,13 @@ namespace Roslynator.CSharp
 {
     public static partial class DiagnosticIdentifiers
     {
-        public const string AddBraces = "RCS1001";
+        public const string AddBracesWhenExpressionSpansOverMultipleLines = "RCS1001";
         public const string RemoveBraces = "RCS1002";
-        public const string AddBracesToIfElse = "RCS1003";
+        public const string AddBracesToIfElseWhenExpressionSpansOverMultipleLines = "RCS1003";
         public const string RemoveBracesFromIfElse = "RCS1004";
         public const string SimplifyNestedUsingStatement = "RCS1005";
         public const string MergeElseClauseWithNestedIfStatement = "RCS1006";
-        public const string AvoidEmbeddedStatement = "RCS1007";
+        public const string AddBraces = "RCS1007";
         public const string UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious = "RCS1008";
         public const string UseExplicitTypeInsteadOfVarInForEach = "RCS1009";
         public const string UseVarInsteadOfExplicitTypeWhenTypeIsObvious = "RCS1010";
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp
         public const string UseElementAccessInsteadOfFirst = "RCS1121";
         public const string AddParenthesesAccordingToOperatorPrecedence = "RCS1123";
         public const string InlineLocalVariable = "RCS1124";
-        public const string AvoidEmbeddedStatementInIfElse = "RCS1126";
+        public const string AddBracesToIfElse = "RCS1126";
         public const string MergeLocalDeclarationWithAssignment = "RCS1127";
         public const string UseCoalesceExpression = "RCS1128";
         public const string RemoveRedundantFieldInitialization = "RCS1129";

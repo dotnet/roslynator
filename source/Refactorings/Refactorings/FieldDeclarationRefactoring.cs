@@ -49,6 +49,9 @@ namespace Roslynator.CSharp.Refactorings
                         cancellationToken => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
                 }
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor))
+                InitializeFieldFromConstructorRefactoring.ComputeRefactoring(context, fieldDeclaration);
         }
     }
 }

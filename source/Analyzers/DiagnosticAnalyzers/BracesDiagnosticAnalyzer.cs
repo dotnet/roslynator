@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddBracesToIfElse,
+                    DiagnosticDescriptors.AddBracesToIfElseWhenExpressionSpansOverMultipleLines,
                     DiagnosticDescriptors.RemoveBracesFromIfElse,
                     DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut);
             }
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
                 if ((result & BracesAnalysisResult.AddBraces) != 0)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, ifStatement);
+                    context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, ifStatement);
                 }
 
                 if ((result & BracesAnalysisResult.RemoveBraces) != 0)

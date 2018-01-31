@@ -238,7 +238,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         IfStatementSyntax newIfStatement = ifStatement.ReplaceNodes(
                             expressionStatements,
-                            (f, g) =>
+                            (f, _) =>
                             {
                                 var assignment = (AssignmentExpressionSyntax)f.Expression;
 
@@ -252,9 +252,9 @@ namespace Roslynator.CSharp.Refactorings
                             newIfStatement,
                             index,
                             ifStatementInfo.Nodes.Length,
+                            ifStatementInfo.EndsWithElse,
                             semanticModel,
-                            cancellationToken,
-                            ifStatementInfo.EndsWithElse).ConfigureAwait(false);
+                            cancellationToken).ConfigureAwait(false);
 
                         return await document.ReplaceNodeAsync(statementsInfo.Node, newStatementsInfo.Node, cancellationToken).ConfigureAwait(false);
                     }
@@ -276,9 +276,9 @@ namespace Roslynator.CSharp.Refactorings
                             newSwitchStatement,
                             index,
                             switchStatement.Sections.Count,
+                            switchStatement.Sections.Any(f => f.ContainsDefaultLabel()),
                             semanticModel,
-                            cancellationToken,
-                            switchStatement.Sections.Any(f => f.ContainsDefaultLabel())).ConfigureAwait(false);
+                            cancellationToken).ConfigureAwait(false);
 
                         return await document.ReplaceNodeAsync(statementsInfo.Node, newStatementsInfo.Node, cancellationToken).ConfigureAwait(false);
                     }
@@ -307,9 +307,9 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax newStatement,
             int index,
             int count,
+            bool removeReturnStatement,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken,
-            bool removeReturnStatement)
+            CancellationToken cancellationToken)
         {
             ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, index);
 

@@ -61,14 +61,14 @@ namespace Roslynator.CSharp.Refactorings
                 ExpressionSyntax expression1 = GetExpression((InterpolatedStringTextSyntax)content1, isVerbatim);
                 ExpressionSyntax expression2 = ((InterpolationSyntax)content2).Expression;
 
-                newNode = CreateAddExpression(expression1, expression2, position, semanticModel, cancellationToken, isLeft: false);
+                newNode = CreateAddExpression(expression1, expression2, position, isLeft: false, semanticModel: semanticModel, cancellationToken: cancellationToken);
             }
             else if (content2.Kind() == SyntaxKind.InterpolatedStringText)
             {
                 ExpressionSyntax expression1 = ((InterpolationSyntax)content1).Expression;
                 ExpressionSyntax expression2 = GetExpression((InterpolatedStringTextSyntax)content2, isVerbatim);
 
-                newNode = CreateAddExpression(expression1, expression2, position, semanticModel, cancellationToken, isLeft: true);
+                newNode = CreateAddExpression(expression1, expression2, position, isLeft: true, semanticModel: semanticModel, cancellationToken: cancellationToken);
             }
             else
             {
@@ -77,9 +77,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 bool isLiteral = expression1 is LiteralExpressionSyntax;
 
-                BinaryExpressionSyntax addExpression = CreateAddExpression(expression1, expression2, position, semanticModel, cancellationToken, isLeft: !isLiteral);
+                BinaryExpressionSyntax addExpression = CreateAddExpression(expression1, expression2, position, isLeft: !isLiteral, semanticModel: semanticModel, cancellationToken: cancellationToken);
 
-                newNode = CreateAddExpression(addExpression.Left, addExpression.Right, position, semanticModel, cancellationToken, isLeft: isLiteral);
+                newNode = CreateAddExpression(addExpression.Left, addExpression.Right, position, isLeft: isLiteral, semanticModel: semanticModel, cancellationToken: cancellationToken);
             }
 
             for (int i = 2; i < contents.Count; i++)
@@ -90,7 +90,7 @@ namespace Roslynator.CSharp.Refactorings
                     ? GetExpression((InterpolatedStringTextSyntax)content, isVerbatim)
                     : ((InterpolationSyntax)content).Expression;
 
-                newNode = CreateAddExpression(newNode, expression, position, semanticModel, cancellationToken, isLeft: false);
+                newNode = CreateAddExpression(newNode, expression, position, isLeft: false, semanticModel: semanticModel, cancellationToken: cancellationToken);
             }
 
             newNode = newNode.Parenthesize().WithFormatterAnnotation();
@@ -102,9 +102,9 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax left,
             ExpressionSyntax right,
             int position,
+            bool isLeft,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken,
-            bool isLeft)
+            CancellationToken cancellationToken)
         {
             BinaryExpressionSyntax addExpression = AddExpression(left, right);
 

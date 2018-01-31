@@ -20,9 +20,9 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
+                    DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines,
                     DiagnosticIdentifiers.AddBraces,
-                    DiagnosticIdentifiers.AvoidEmbeddedStatement,
-                    DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse);
+                    DiagnosticIdentifiers.AddBracesToIfElse);
             }
         }
 

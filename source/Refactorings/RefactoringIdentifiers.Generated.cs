@@ -178,7 +178,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string SwapExpressionsInConditionalExpression = Prefix + "0160";
         public const string SwapMemberDeclarations = Prefix + "0161";
         public const string SwapStatementsInIfElse = Prefix + "0162";
-        public const string Uncomment = Prefix + "0163";
+        public const string UncommentMultiLineComment = Prefix + "0200";
+        public const string UncommentSingleLineComment = Prefix + "0163";
         public const string UseBitwiseOperationInsteadOfCallingHasFlag = Prefix + "0164";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "0165";
         public const string UseConditionalExpressionInsteadOfIf = Prefix + "0166";

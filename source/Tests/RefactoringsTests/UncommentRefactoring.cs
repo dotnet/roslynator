@@ -9,5 +9,9 @@ namespace Roslynator.CSharp.Refactorings.Tests
         //    public string Name { get; set; }
         //    public int Value { get; set; }
         //}
+
+        /*private void Bar()
+        {
+        }*/
     }
 }
