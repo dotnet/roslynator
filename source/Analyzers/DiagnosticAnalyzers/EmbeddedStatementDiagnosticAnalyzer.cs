@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AddBraces,
+                    DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines,
                     DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine,
                     DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement);
             }

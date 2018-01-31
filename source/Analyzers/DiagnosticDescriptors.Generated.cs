@@ -10,15 +10,15 @@ namespace Roslynator.CSharp
     public static partial class DiagnosticDescriptors
     {
         /// <summary>RCS1001</summary>
-        public static readonly DiagnosticDescriptor AddBraces = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AddBraces, 
-            title:              "Add braces.", 
-            messageFormat:      "Add braces to {0}.", 
+        public static readonly DiagnosticDescriptor AddBracesWhenExpressionSpansOverMultipleLines = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines, 
+            title:              "Add braces (when expression spans over multiple lines).", 
+            messageFormat:      "Add braces to {0} (when expression spans over multiple lines).", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBraces}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1002</summary>
@@ -36,15 +36,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveBracesFadeOut = RemoveBraces.CreateFadeOut();
 
         /// <summary>RCS1003</summary>
-        public static readonly DiagnosticDescriptor AddBracesToIfElse = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AddBracesToIfElse, 
-            title:              "Add braces to if-else.", 
-            messageFormat:      "Add braces to if-else.", 
+        public static readonly DiagnosticDescriptor AddBracesToIfElseWhenExpressionSpansOverMultipleLines = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, 
+            title:              "Add braces to if-else (when expression spans over multiple lines).", 
+            messageFormat:      "Add braces to if-else (when expression spans over multiple lines).", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesToIfElse}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1004</summary>
@@ -90,15 +90,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor MergeElseClauseWithNestedIfStatementFadeOut = MergeElseClauseWithNestedIfStatement.CreateFadeOut();
 
         /// <summary>RCS1007</summary>
-        public static readonly DiagnosticDescriptor AvoidEmbeddedStatement = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AvoidEmbeddedStatement, 
-            title:              "Avoid embedded statement.", 
+        public static readonly DiagnosticDescriptor AddBraces = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBraces, 
+            title:              "Add braces.", 
             messageFormat:      "Add braces to {0}.", 
             category:           DiagnosticCategories.Style, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidEmbeddedStatement}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBraces}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1008</summary>
@@ -1418,15 +1418,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor InlineLocalVariableFadeOut = InlineLocalVariable.CreateFadeOut();
 
         /// <summary>RCS1126</summary>
-        public static readonly DiagnosticDescriptor AvoidEmbeddedStatementInIfElse = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse, 
-            title:              "Avoid embedded statement in if-else.", 
+        public static readonly DiagnosticDescriptor AddBracesToIfElse = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBracesToIfElse, 
+            title:              "Add braces to if-else.", 
             messageFormat:      "Add braces to {0}.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesToIfElse}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1127</summary>

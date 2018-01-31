@@ -10,11 +10,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AvoidEmbeddedStatementInIfElseDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class AddBracesToIfElseDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidEmbeddedStatementInIfElse); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddBracesToIfElse); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             if (statement != null)
             {
                 context.ReportDiagnostic(
-                    DiagnosticDescriptors.AvoidEmbeddedStatementInIfElse,
+                    DiagnosticDescriptors.AddBracesToIfElse,
                     statement,
                     node.GetTitle());
             }
