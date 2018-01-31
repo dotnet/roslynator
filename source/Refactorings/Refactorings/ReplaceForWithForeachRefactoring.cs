@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax newStatement = statement.ReplaceNodes(
                 nodes.Select(f => f.Parent.Parent.Parent),
-                (f, g) => identifierName.WithTriviaFrom(f));
+                (f, _) => identifierName.WithTriviaFrom(f));
 
             ForEachStatementSyntax forEachStatement = ForEachStatement(
                 VarType(),

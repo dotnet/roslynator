@@ -254,7 +254,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         IfStatementSyntax newIfStatement = ifStatement.ReplaceNodes(
                             expressionStatements,
-                            (f, g) =>
+                            (f, _) =>
                             {
                                 var assignment = (AssignmentExpressionSyntax)f.Expression;
 

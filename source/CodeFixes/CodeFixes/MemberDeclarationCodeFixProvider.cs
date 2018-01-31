@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     return context.Document.Solution().ReplaceNodesAsync(
                                         new MethodDeclarationSyntax[] { methodDeclaration, otherPart },
-                                        (node, rewrittenNode) => node.WithReturnType(CSharpFactory.VoidType().WithTriviaFrom(node.ReturnType)),
+                                        (node, _) => node.WithReturnType(CSharpFactory.VoidType().WithTriviaFrom(node.ReturnType)),
                                         cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));

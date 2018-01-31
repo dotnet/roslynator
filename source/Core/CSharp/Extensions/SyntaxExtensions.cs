@@ -3401,7 +3401,7 @@ namespace Roslynator.CSharp
 
         internal static bool ContainsAccessModifier(this SyntaxTokenList tokenList)
         {
-            return tokenList.Any(token => token.IsAccessModifier());
+            return tokenList.Any(IsAccessModifier);
         }
 
         internal static Accessibility GetAccessibility(this SyntaxTokenList tokenList)
