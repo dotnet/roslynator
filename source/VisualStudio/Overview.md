@@ -1,6 +1,6 @@
 ### Introduction
 
-A collection of 190+ analyzers and 180+ refactorings for C#, powered by Roslyn.
+A collection of 190+ analyzers and 190+ refactorings for C#, powered by Roslyn.
 
 ### Links
 
