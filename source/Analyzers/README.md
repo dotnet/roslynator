@@ -2,13 +2,13 @@
 
 | Id  | Title | Category | Enabled by Default |
 | --- | ----- | -------- |:------------------:|
-| RCS1001 | [Add braces](../../docs/analyzers/RCS1001.md) | Style | &#x2713; |
+| RCS1001 | [Add braces (when expression spans over multiple lines)](../../docs/analyzers/RCS1001.md) | Style | &#x2713; |
 | RCS1002 | [Remove braces](../../docs/analyzers/RCS1002.md) | Style | \- |
-| RCS1003 | [Add braces to if-else](../../docs/analyzers/RCS1003.md) | Style | &#x2713; |
+| RCS1003 | [Add braces to if-else (when expression spans over multiple lines)](../../docs/analyzers/RCS1003.md) | Style | &#x2713; |
 | RCS1004 | [Remove braces from if-else](../../docs/analyzers/RCS1004.md) | Style | \- |
 | RCS1005 | [Simplify nested using statement](../../docs/analyzers/RCS1005.md) | Simplification | &#x2713; |
 | RCS1006 | [Merge else clause with nested if statement](../../docs/analyzers/RCS1006.md) | Simplification | &#x2713; |
-| RCS1007 | [Avoid embedded statement](../../docs/analyzers/RCS1007.md) | Style | \- |
+| RCS1007 | [Add braces](../../docs/analyzers/RCS1007.md) | Style | \- |
 | RCS1008 | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | Readability | &#x2713; |
 | RCS1009 | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | Readability | &#x2713; |
 | RCS1010 | [Use 'var' instead of explicit type (when the type is obvious)](../../docs/analyzers/RCS1010.md) | Simplification | &#x2713; |
@@ -116,7 +116,7 @@
 | RCS1121 | [Use \[\] instead of calling 'First'](../../docs/analyzers/RCS1121.md) | Performance | &#x2713; |
 | RCS1123 | [Add parentheses according to operator precedence](../../docs/analyzers/RCS1123.md) | Readability | &#x2713; |
 | RCS1124 | [Inline local variable](../../docs/analyzers/RCS1124.md) | Simplification | &#x2713; |
-| RCS1126 | [Avoid embedded statement in if-else](../../docs/analyzers/RCS1126.md) | Style | \- |
+| RCS1126 | [Add braces to if-else](../../docs/analyzers/RCS1126.md) | Style | \- |
 | RCS1127 | [Merge local declaration with assignment](../../docs/analyzers/RCS1127.md) | Simplification | &#x2713; |
 | RCS1128 | [Use coalesce expression](../../docs/analyzers/RCS1128.md) | Simplification | &#x2713; |
 | RCS1129 | [Remove redundant field initalization](../../docs/analyzers/RCS1129.md) | Redundancy | &#x2713; |

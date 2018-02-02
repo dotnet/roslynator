@@ -1,3 +1,16 @@
+### 1.7.0 (2018-02-02)
+
+#### Analyzers
+
+* Rename analyzer AddBraces to AddBracesWhenExpressionSpansOverMultipleLines (RCS1001).
+* Rename analyzer AddBracesToIfElse to AddBracesToIfElseWhenExpressionSpansOverMultipleLines (RCS1003).
+* Rename analyzer AvoidEmbeddedStatement to AddBraces (RCS1007).
+* Rename analyzer AvoidEmbeddedStatementInIfElse to AddBracesToIfElse (RCS1126).
+
+#### Refactorings
+
+* Add refactoring [UncommentMultilineComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0200.md) (RR0200).
+
 ### 1.6.30 (2018-01-19)
 
 * Add support for 'private protected' accessibility.

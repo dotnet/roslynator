@@ -166,11 +166,11 @@
 | Simplification | [Use 'var' instead of explicit type (when the type is not obvious)](../../docs/analyzers/RCS1176.md) | RCS1176 | \- |
 | Simplification | [Use 'var' instead of explicit type (when the type is obvious)](../../docs/analyzers/RCS1010.md) | RCS1010 | &#x2713; |
 | Style | [Add argument list to object creation expression](../../docs/analyzers/RCS1050.md) | RCS1050 | \- |
-| Style | [Add braces to if-else](../../docs/analyzers/RCS1003.md) | RCS1003 | &#x2713; |
+| Style | [Add braces (when expression spans over multiple lines)](../../docs/analyzers/RCS1001.md) | RCS1001 | &#x2713; |
+| Style | [Add braces to if-else (when expression spans over multiple lines)](../../docs/analyzers/RCS1003.md) | RCS1003 | &#x2713; |
+| Style | [Add braces to if-else](../../docs/analyzers/RCS1126.md) | RCS1126 | \- |
 | Style | [Add braces to switch section with multiple statements](../../docs/analyzers/RCS1111.md) | RCS1111 | \- |
-| Style | [Add braces](../../docs/analyzers/RCS1001.md) | RCS1001 | &#x2713; |
-| Style | [Avoid embedded statement in if-else](../../docs/analyzers/RCS1126.md) | RCS1126 | \- |
-| Style | [Avoid embedded statement](../../docs/analyzers/RCS1007.md) | RCS1007 | \- |
+| Style | [Add braces](../../docs/analyzers/RCS1007.md) | RCS1007 | \- |
 | Style | [Avoid multiline expression body](../../docs/analyzers/RCS1017.md) | RCS1017 | \- |
 | Style | [Avoid usage of do statement to create an infinite loop](../../docs/analyzers/RCS1063.md) | RCS1063 | &#x2713; |
 | Style | [Avoid usage of for statement to create an infinite loop](../../docs/analyzers/RCS1064.md) | RCS1064 | \- |

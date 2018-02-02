@@ -161,7 +161,7 @@
       <Refactoring Id="RR0160" IsEnabled="true" /> <!-- SwapExpressionsInConditionalExpression -->
       <Refactoring Id="RR0161" IsEnabled="true" /> <!-- SwapMemberDeclarations -->
       <Refactoring Id="RR0162" IsEnabled="true" /> <!-- SwapStatementsInIfElse -->
-      <Refactoring Id="RR0163" IsEnabled="true" /> <!-- Uncomment -->
+      <Refactoring Id="RR0163" IsEnabled="true" /> <!-- UncommentSingleLineComment -->
       <Refactoring Id="RR0164" IsEnabled="true" /> <!-- UseBitwiseOperationInsteadOfCallingHasFlag -->
       <Refactoring Id="RR0165" IsEnabled="true" /> <!-- UseCoalesceExpressionInsteadOfIf -->
       <Refactoring Id="RR0166" IsEnabled="true" /> <!-- UseConditionalExpressionInsteadOfIf -->
@@ -198,6 +198,7 @@
       <Refactoring Id="RR0197" IsEnabled="true" /> <!-- InitializeFieldFromConstructor -->
       <Refactoring Id="RR0198" IsEnabled="true" /> <!-- InlineProperty -->
       <Refactoring Id="RR0199" IsEnabled="true" /> <!-- RemoveEnumMemberValue -->
+      <Refactoring Id="RR0200" IsEnabled="true" /> <!-- UncommentMultiLineComment -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->

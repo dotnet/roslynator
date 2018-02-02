@@ -131,5 +131,4 @@
 | [CS1994](../../docs/cs/CS1994.md) | The 'async' modifier can only be used in methods that have a body\. |
 | [CS1997](../../docs/cs/CS1997.md) | Since 'RemoveReturnKeywordOrReturnExpression\.FooAsync\(\)' is an async method that returns 'Task', a return keyword must not be followed by an object expression\. Did you intend to return 'Task\<T>>'? |
 | [CS8070](../../docs/cs/CS8070.md) | Control cannot fall out of switch from final case label \('default'\)\. |
-| [CS8112](../../docs/cs/CS8112.md) | 'function' is a local function and must therefore always have a body\. |
 

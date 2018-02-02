@@ -903,11 +903,4 @@
     Title="Control cannot fall out of switch from final case label ('default')."
     Message="Control cannot fall out of switch from final case label ('{0}')"
     HelpUrl="" />
-  <Diagnostic
-    Id="CS8112"
-    Identifier="LocalFunctionMustAlwaysHaveBody"
-    Severity="Error"
-    Title="'function' is a local function and must therefore always have a body."
-    Message="'{0}' is a local function and must therefore always have a body."
-    HelpUrl="" />
 </Diagnostics>

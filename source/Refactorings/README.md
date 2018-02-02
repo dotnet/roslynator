@@ -172,7 +172,8 @@
 | RR0160 | [Swap expressions in conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
 | RR0161 | [Swap member declarations](../../docs/refactorings/RR0161.md) | &#x2713; |
 | RR0162 | [Swap statements in if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
-| RR0163 | [Uncomment](../../docs/refactorings/RR0163.md) | &#x2713; |
+| RR0200 | [Uncomment multi-line comment](../../docs/refactorings/RR0200.md) | &#x2713; |
+| RR0163 | [UncommentSingleLineComment](../../docs/refactorings/RR0163.md) | &#x2713; |
 | RR0168 | [Use "" instead of string.Empty](../../docs/refactorings/RR0168.md) | &#x2713; |
 | RR0164 | [Use bitwise operation instead of calling 'HasFlag'](../../docs/refactorings/RR0164.md) | &#x2713; |
 | RR0191 | [Use C# 6.0 dictionary initializer](../../docs/refactorings/RR0191.md) | &#x2713; |
