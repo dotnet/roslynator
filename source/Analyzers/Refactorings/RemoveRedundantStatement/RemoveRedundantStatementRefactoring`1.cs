@@ -32,6 +32,9 @@ namespace Roslynator.CSharp.Refactorings.RemoveRedundantStatement
             if (parent == null)
                 return false;
 
+            if (!block.Statements.IsLastStatement(statement, skipLocalFunction: true))
+                return false;
+
             SyntaxKind kind = parent.Kind();
 
             if (kind == SyntaxKind.ElseClause)
@@ -54,6 +57,41 @@ namespace Roslynator.CSharp.Refactorings.RemoveRedundantStatement
                     return false;
 
                 return IsFixable(ifStatement, block, parent.Kind());
+            }
+            else if (kind == SyntaxKind.TryStatement)
+            {
+                var tryStatement = (TryStatementSyntax)parent;
+
+                block = tryStatement.Parent as BlockSyntax;
+
+                if (block == null)
+                    return false;
+
+                parent = block.Parent;
+
+                if (parent == null)
+                    return false;
+
+                return IsFixable(tryStatement, block, parent.Kind());
+            }
+            else if (kind == SyntaxKind.CatchClause)
+            {
+                var catchClause = (CatchClauseSyntax)parent;
+
+                if (!(catchClause.Parent is TryStatementSyntax tryStatement))
+                    return false;
+
+                block = tryStatement.Parent as BlockSyntax;
+
+                if (block == null)
+                    return false;
+
+                parent = block.Parent;
+
+                if (parent == null)
+                    return false;
+
+                return IsFixable(tryStatement, block, parent.Kind());
             }
 
             return IsFixable(statement, block, kind);

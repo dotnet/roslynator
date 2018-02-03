@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-#pragma warning disable CS0168, RCS1002, RCS1118, RCS1176, RCS1177
+#pragma warning disable CS0168, CS8321, RCS1002, RCS1118, RCS1176, RCS1177, RCS1213
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -215,6 +215,184 @@ namespace Roslynator.CSharp.Analyzers.Tests
                     else
                     {
                         yield break;
+                    }
+                }
+            }
+        }
+
+        private static class TryCatch
+        {
+            private static void Foo()
+            {
+                bool f = false;
+
+                do
+                {
+                    Foo();
+
+                    try
+                    {
+                        Foo();
+                        continue;
+                    }
+                    catch
+                    {
+                        Foo();
+                        continue;
+                    }
+
+                } while (f);
+
+                while (f)
+                {
+                    Foo();
+
+                    try
+                    {
+                        Foo();
+                        continue;
+                    }
+                    catch
+                    {
+                        Foo();
+                        continue;
+                    }
+                }
+
+                var items = new List<string>();
+
+                for (int i = 0; i < items.Count; i++)
+                {
+                    Foo();
+
+                    try
+                    {
+                        Foo();
+                        continue;
+                    }
+                    catch
+                    {
+                        Foo();
+                        continue;
+                    }
+                }
+
+                foreach (string item in items)
+                {
+                    Foo();
+
+                    try
+                    {
+                        Foo();
+                        continue;
+                    }
+                    catch
+                    {
+                        Foo();
+                        continue;
+                    }
+                }
+
+                try
+                {
+                    Foo();
+                    return;
+                }
+                catch
+                {
+                    Foo();
+                    return;
+                }
+
+                void LocalFunction()
+                {
+                    try
+                    {
+                        Foo();
+                        return;
+                    }
+                    catch
+                    {
+                        Foo();
+                        return;
+                    }
+
+                    void LocalFunction2()
+                    {
+                        try
+                        {
+                            Foo();
+                            return;
+                        }
+                        catch
+                        {
+                            Foo();
+                            return;
+                        }
+                    }
+                }
+            }
+
+            private static IEnumerable<object> Foo3()
+            {
+                yield return null;
+
+                IEnumerable<object> LocalFunction()
+                {
+                    yield return null;
+
+                    try
+                    {
+                        Foo();
+                        yield break;
+                    }
+                    catch
+                    {
+                        Foo();
+                        yield break;
+                    }
+                }
+
+                try
+                {
+                    Foo();
+                    yield break;
+                }
+                catch
+                {
+                    Foo();
+                    yield break;
+                }
+
+                IEnumerable<object> LocalFunction2()
+                {
+                    yield return null;
+
+                    try
+                    {
+                        Foo();
+                        yield break;
+                    }
+                    catch
+                    {
+                        Foo();
+                        yield break;
+                    }
+
+                    IEnumerable<object> LocalFunction3()
+                    {
+                        yield return null;
+
+                        try
+                        {
+                            Foo();
+                            yield break;
+                        }
+                        catch
+                        {
+                            Foo();
+                            yield break;
+                        }
                     }
                 }
             }
