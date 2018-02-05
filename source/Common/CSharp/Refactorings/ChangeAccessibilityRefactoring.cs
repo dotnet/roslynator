@@ -45,9 +45,12 @@ namespace Roslynator.CSharp.Refactorings
                 Accessibility accessibility = SyntaxInfo.AccessibilityInfo(member).Accessibility;
 
                 if (accessibility == Accessibility.NotApplicable)
+                {
                     accessibility = member.GetDefaultExplicitAccessibility();
 
-                Debug.Assert(accessibility != Accessibility.NotApplicable, member.Kind().ToString());
+                    if (accessibility == Accessibility.NotApplicable)
+                        return AccessibilityFlags.None;
+                }
 
                 AccessibilityFlags flag = accessibility.GetAccessibilityFlag();
 
