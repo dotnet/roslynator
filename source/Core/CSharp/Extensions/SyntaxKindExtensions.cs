@@ -197,6 +197,20 @@ namespace Roslynator.CSharp
             }
         }
 
+        internal static bool IsYieldStatement(this SyntaxKind kind)
+        {
+            return kind.Is(SyntaxKind.YieldReturnStatement, SyntaxKind.YieldBreakStatement);
+        }
+
+        internal static bool CanContainContinueStatement(this SyntaxKind kind)
+        {
+            return kind.Is(
+                SyntaxKind.WhileStatement,
+                SyntaxKind.DoStatement,
+                SyntaxKind.ForStatement,
+                SyntaxKind.ForEachStatement);
+        }
+
         public static bool Is(this SyntaxKind kind, SyntaxKind kind1, SyntaxKind kind2)
         {
             return kind == kind1

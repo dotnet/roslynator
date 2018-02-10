@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-#pragma warning disable CS0168, CS8321, RCS1002, RCS1118, RCS1176, RCS1177, RCS1213
+#pragma warning disable CS0168, CS8321, RCS1002, RCS1004, RCS1118, RCS1176, RCS1177, RCS1208, RCS1213
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -46,6 +46,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 if (f)
                 {
+                    continue;
                 }
                 else
                 {
@@ -60,6 +61,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 if (f)
                 {
+                    continue;
                 }
                 else
                 {
@@ -73,6 +75,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 if (f)
                 {
+                    continue;
                 }
                 else
                 {
@@ -86,6 +89,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 if (f)
                 {
+                    continue;
                 }
                 else
                 {
@@ -112,6 +116,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             if (f)
             {
+                return;
             }
             else
             {
@@ -122,6 +127,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
                 if (f)
                 {
+                    return;
                 }
                 else
                 {
@@ -132,6 +138,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 {
                     if (f)
                     {
+                        return;
                     }
                     else
                     {
@@ -178,6 +185,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 if (f)
                 {
+                    yield break;
                 }
                 else
                 {
@@ -199,6 +207,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                 if (f)
                 {
+                    yield break;
                 }
                 else
                 {
@@ -211,10 +220,40 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
                     if (f)
                     {
+                        yield break;
                     }
                     else
                     {
                         yield break;
+                    }
+                }
+            }
+        }
+
+        private static void FooNested()
+        {
+            bool f = false;
+
+            if (f)
+            {
+                if (f)
+                {
+                }
+                else
+                {
+                    try
+                    {
+                        try
+                        {
+
+                        }
+                        catch
+                        {
+                            return;
+                        }
+                    }
+                    catch
+                    {
                     }
                 }
             }

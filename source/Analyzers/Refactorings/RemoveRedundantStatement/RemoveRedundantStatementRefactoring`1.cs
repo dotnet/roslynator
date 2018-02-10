@@ -27,84 +27,70 @@ namespace Roslynator.CSharp.Refactorings.RemoveRedundantStatement
             if (!(statement.Parent is BlockSyntax block))
                 return false;
 
-            SyntaxNode parent = block.Parent;
-
-            if (parent == null)
-                return false;
-
             if (!block.Statements.IsLastStatement(statement, skipLocalFunction: true))
                 return false;
 
-            SyntaxKind kind = parent.Kind();
+            SyntaxNode parent = block.Parent;
 
-            if (kind == SyntaxKind.ElseClause)
+            StatementSyntax containingStatement = statement;
+
+            while (true)
             {
-                var elseClause = (ElseClauseSyntax)parent;
-
-                if (elseClause.ContinuesWithIf())
-                    return false;
-
-                IfStatementSyntax ifStatement = elseClause.GetTopmostIf();
-
-                block = ifStatement.Parent as BlockSyntax;
-
-                if (block == null)
-                    return false;
-
-                parent = block.Parent;
-
                 if (parent == null)
                     return false;
 
-                return IsFixable(ifStatement, block, parent.Kind());
+                SyntaxKind kind = parent.Kind();
+
+                switch (kind)
+                {
+                    case SyntaxKind.IfStatement:
+                        {
+                            containingStatement = (StatementSyntax)parent;
+
+                            block = containingStatement.Parent as BlockSyntax;
+
+                            if (block == null)
+                                return false;
+
+                            if (!block.Statements.IsLastStatement(containingStatement, skipLocalFunction: true))
+                                return false;
+
+                            parent = block.Parent;
+                            break;
+                        }
+                    case SyntaxKind.ElseClause:
+                        {
+                            parent = ((ElseClauseSyntax)parent).GetTopmostIf();
+                            break;
+                        }
+                    case SyntaxKind.TryStatement:
+                        {
+                            containingStatement = (TryStatementSyntax)parent;
+
+                            block = containingStatement.Parent as BlockSyntax;
+
+                            if (block == null)
+                                return false;
+
+                            if (!block.Statements.IsLastStatement(containingStatement, skipLocalFunction: true))
+                                return false;
+
+                            parent = block.Parent;
+                            break;
+                        }
+                    case SyntaxKind.CatchClause:
+                        {
+                            parent = parent.Parent as TryStatementSyntax;
+                            break;
+                        }
+                    default:
+                        {
+                            return IsFixable(containingStatement, block, kind);
+                        }
+                }
             }
-            else if (kind == SyntaxKind.TryStatement)
-            {
-                var tryStatement = (TryStatementSyntax)parent;
-
-                block = tryStatement.Parent as BlockSyntax;
-
-                if (block == null)
-                    return false;
-
-                parent = block.Parent;
-
-                if (parent == null)
-                    return false;
-
-                return IsFixable(tryStatement, block, parent.Kind());
-            }
-            else if (kind == SyntaxKind.CatchClause)
-            {
-                var catchClause = (CatchClauseSyntax)parent;
-
-                if (!(catchClause.Parent is TryStatementSyntax tryStatement))
-                    return false;
-
-                block = tryStatement.Parent as BlockSyntax;
-
-                if (block == null)
-                    return false;
-
-                parent = block.Parent;
-
-                if (parent == null)
-                    return false;
-
-                return IsFixable(tryStatement, block, parent.Kind());
-            }
-
-            return IsFixable(statement, block, kind);
         }
 
-        protected virtual bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
-        {
-            bool skipLocalFunction = parentKind == SyntaxKind.ConstructorDeclaration
-                || parentKind == SyntaxKind.DestructorDeclaration
-                || parentKind == SyntaxKind.MethodDeclaration
-                || parentKind == SyntaxKind.LocalFunctionStatement;
-
-            return block.Statements.IsLastStatement(statement, skipLocalFunction: skipLocalFunction);
-        }
+        protected abstract bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind);
     }
 }

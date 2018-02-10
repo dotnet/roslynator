@@ -15,17 +15,15 @@ namespace Roslynator.CSharp.Refactorings.RemoveRedundantStatement
 
         protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
         {
-            if (parentKind != SyntaxKind.ConstructorDeclaration
-                && parentKind != SyntaxKind.DestructorDeclaration
-                && parentKind != SyntaxKind.MethodDeclaration
-                && parentKind != SyntaxKind.SetAccessorDeclaration
-                && parentKind != SyntaxKind.LocalFunctionStatement)
+            if (!parentKind.Is(
+                SyntaxKind.ConstructorDeclaration,
+                SyntaxKind.DestructorDeclaration,
+                SyntaxKind.MethodDeclaration,
+                SyntaxKind.SetAccessorDeclaration,
+                SyntaxKind.LocalFunctionStatement))
             {
                 return false;
             }
-
-            if (!base.IsFixable(statement, block, parentKind))
-                return false;
 
             if (parentKind == SyntaxKind.MethodDeclaration)
                 return ((MethodDeclarationSyntax)block.Parent).ReturnType?.IsVoid() == true;
