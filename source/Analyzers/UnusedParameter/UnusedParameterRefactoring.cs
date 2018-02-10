@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             if (!parametersInfo.Success)
                 return;
 
-            if (ContainsOnlyThrowNewException(parametersInfo.Body, context.SemanticModel, context.CancellationToken))
+            if (ContainsOnlyThrowNewExpression(parametersInfo.Body))
                 return;
 
             Analyze(context, parametersInfo);
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             if (!parametersInfo.Success)
                 return;
 
-            if (ContainsOnlyThrowNewException(parametersInfo.Body, context.SemanticModel, context.CancellationToken))
+            if (ContainsOnlyThrowNewExpression(parametersInfo.Body))
                 return;
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             if (!parametersInfo.Success)
                 return;
 
-            if (ContainsOnlyThrowNewException(parametersInfo.Body, context.SemanticModel, context.CancellationToken))
+            if (ContainsOnlyThrowNewExpression(parametersInfo.Body))
                 return;
 
             Analyze(context, parametersInfo);
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             if (!parametersInfo.Success)
                 return;
 
-            if (ContainsOnlyThrowNewException(parametersInfo.Body, context.SemanticModel, context.CancellationToken))
+            if (ContainsOnlyThrowNewExpression(parametersInfo.Body))
                 return;
 
             Analyze(context, parametersInfo);
@@ -135,7 +135,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             if (!parametersInfo.Success)
                 return;
 
-            if (ContainsOnlyThrowNewException(parametersInfo.Body, context.SemanticModel, context.CancellationToken))
+            if (ContainsOnlyThrowNewExpression(parametersInfo.Body))
                 return;
 
             IPropertySymbol propertySymbol = context.SemanticModel.GetDeclaredSymbol(indexerDeclaration, context.CancellationToken);
@@ -242,14 +242,14 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
                 }
             }
 
-            if (walker.Nodes.Count == 0)
-                return walker.Nodes;
-
             foreach (TypeParameterSyntax typeParameter in parametersInfo.TypeParameters)
             {
                 walker.AddTypeParameter(typeParameter);
                 walker.IsAnyTypeParameter = true;
             }
+
+            if (walker.Nodes.Count == 0)
+                return walker.Nodes;
 
             walker.Visit(parametersInfo.Node);
 
@@ -341,30 +341,24 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             return false;
         }
 
-        private static bool ContainsOnlyThrowNewException(
-            CSharpSyntaxNode node,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static bool ContainsOnlyThrowNewExpression(CSharpSyntaxNode node)
         {
             switch (node?.Kind())
             {
                 case SyntaxKind.Block:
-                    return ContainsOnlyThrowNewException((BlockSyntax)node, semanticModel, cancellationToken);
+                    return ContainsOnlyThrowNewExpression((BlockSyntax)node);
                 case SyntaxKind.AccessorList:
                     {
                         return ((AccessorListSyntax)node)
                             .Accessors
-                            .All(f => ContainsOnlyThrowNewException(f.Body, semanticModel, cancellationToken));
+                            .All(f => ContainsOnlyThrowNewExpression(f.Body));
                     }
             }
 
             return false;
         }
 
-        private static bool ContainsOnlyThrowNewException(
-            BlockSyntax body,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static bool ContainsOnlyThrowNewExpression(BlockSyntax body)
         {
             StatementSyntax statement = body?.Statements.SingleOrDefault(shouldThrow: false);
 
@@ -372,28 +366,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             {
                 var throwStatement = (ThrowStatementSyntax)statement;
 
-                return IsThrowNewException(throwStatement.Expression, semanticModel, cancellationToken);
-            }
-
-            return false;
-        }
-
-        private static bool IsThrowNewException(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            if (expression?.IsKind(SyntaxKind.ObjectCreationExpression) == true)
-            {
-                var objectCreation = (ObjectCreationExpressionSyntax)expression;
-
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, cancellationToken);
-
-                if (typeSymbol != null)
-                {
-                    if (typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_NotImplementedException))
-                        || typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_NotSupportedException)))
-                    {
-                        return true;
-                    }
-                }
+                return throwStatement.Expression?.IsKind(SyntaxKind.ObjectCreationExpression) == true;
             }
 
             return false;

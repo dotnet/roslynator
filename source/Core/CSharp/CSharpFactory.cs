@@ -2420,6 +2420,11 @@ namespace Roslynator.CSharp
             return SyntaxFactory.SwitchSection(SingletonList(switchLabel), statements);
         }
 
+        public static SwitchSectionSyntax SwitchSection(SyntaxList<SwitchLabelSyntax> switchLabels, StatementSyntax statement)
+        {
+            return SyntaxFactory.SwitchSection(switchLabels, SingletonList(statement));
+        }
+
         public static SwitchSectionSyntax DefaultSwitchSection(StatementSyntax statement)
         {
             return DefaultSwitchSection(SingletonList(statement));

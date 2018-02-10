@@ -15,14 +15,12 @@ namespace Roslynator.CSharp.Refactorings.RemoveRedundantStatement
             if (parentKind != SyntaxKind.MethodDeclaration)
                 return false;
 
-            if (!base.IsFixable(statement, block, parentKind))
-                return false;
-
             TextSpan span = TextSpan.FromBounds(block.SpanStart, statement.FullSpan.Start);
 
+            //XTODO: Walker
             return block
                 .DescendantNodes(span, f => !f.IsNestedMethod())
-                .Any(f => f.IsKind(SyntaxKind.YieldBreakStatement, SyntaxKind.YieldReturnStatement));
+                .Any(f => f.Kind().IsYieldStatement());
         }
     }
 }

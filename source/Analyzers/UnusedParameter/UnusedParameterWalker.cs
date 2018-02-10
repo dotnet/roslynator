@@ -74,6 +74,18 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
                 Visit(type);
         }
 
+        private void VisitList<TNode>(SyntaxList<TNode> nodes) where TNode : SyntaxNode
+        {
+            foreach (TNode node in nodes)
+                Visit(node);
+        }
+
+        private void VisitConstraintClauses(SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses)
+        {
+            if (IsAnyTypeParameter)
+                VisitList(constraintClauses);
+        }
+
         public override void Visit(SyntaxNode node)
         {
             if (!_isEmpty)
@@ -268,8 +280,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
 
         public override void VisitClassOrStructConstraint(ClassOrStructConstraintSyntax node)
         {
-            Debug.Assert(false, node.ToString());
-            base.VisitClassOrStructConstraint(node);
+            //base.VisitClassOrStructConstraint(node);
         }
 
         //public override void VisitCompilationUnit(CompilationUnitSyntax node)
@@ -294,8 +305,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
 
         public override void VisitConstructorConstraint(ConstructorConstraintSyntax node)
         {
-            Debug.Assert(false, node.ToString());
-            base.VisitConstructorConstraint(node);
+            //base.VisitConstructorConstraint(node);
         }
 
         public override void VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
@@ -563,7 +573,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             //base.VisitIdentifierName(node);
         }
 
-        private ISymbol GetIndexerParameterSymbol(IdentifierNameSyntax identifierName, ISymbol symbol)
+        private static ISymbol GetIndexerParameterSymbol(IdentifierNameSyntax identifierName, ISymbol symbol)
         {
             if (!(symbol?.ContainingSymbol is IMethodSymbol methodSymbol))
                 return null;
@@ -734,8 +744,9 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
 
         public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
-            Visit(node.ParameterList);
             VisitType(node.ReturnType);
+            Visit(node.ParameterList);
+            VisitConstraintClauses(node.ConstraintClauses);
             VisitBodyOrExpressionBody(node.Body, node.ExpressionBody);
             //base.VisitMethodDeclaration(node);
         }
@@ -1023,8 +1034,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
 
         public override void VisitTypeConstraint(TypeConstraintSyntax node)
         {
-            Debug.Assert(false, node.ToString());
-            base.VisitTypeConstraint(node);
+            VisitType(node.Type);
         }
 
         public override void VisitTypeCref(TypeCrefSyntax node)
@@ -1044,11 +1054,10 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
             //base.VisitTypeParameter(node);
         }
 
-        public override void VisitTypeParameterConstraintClause(TypeParameterConstraintClauseSyntax node)
-        {
-            Debug.Assert(false, node.ToString());
-            base.VisitTypeParameterConstraintClause(node);
-        }
+        //public override void VisitTypeParameterConstraintClause(TypeParameterConstraintClauseSyntax node)
+        //{
+        //    base.VisitTypeParameterConstraintClause(node);
+        //}
 
         public override void VisitTypeParameterList(TypeParameterListSyntax node)
         {

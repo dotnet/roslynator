@@ -182,6 +182,11 @@ namespace Roslynator.CSharp.Refactorings
 
             var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
 
+            ParameterListSyntax parameterList = anonymousMethod.ParameterList;
+
+            if (parameterList == null)
+                return;
+
             InvocationExpressionSyntax invocationExpression = GetInvocationExpression(anonymousMethod.Body);
 
             if (invocationExpression == null)
@@ -200,7 +205,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!methodSymbol.IsStatic
                 && expression.Kind() != SyntaxKind.IdentifierName
-                && !ExpressionIsParameter(expression, anonymousMethod.ParameterList))
+                && !ExpressionIsParameter(expression, parameterList))
             {
                 return;
             }
@@ -212,11 +217,6 @@ namespace Roslynator.CSharp.Refactorings
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
             if (arguments.Count != parameterSymbols.Length)
-                return;
-
-            ParameterListSyntax parameterList = anonymousMethod.ParameterList;
-
-            if (parameterList == null)
                 return;
 
             SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
