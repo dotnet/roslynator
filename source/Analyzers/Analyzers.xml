@@ -3716,16 +3716,23 @@ items.Add(x);]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[// comment // RCS1181
+        <Before><![CDATA[// Represents foo. // RCS1181
 public class Foo
 {
 }]]></Before>
         <After><![CDATA[/// <summary>
-/// comment
+/// Represents foo.
 /// </summary>
 public class Foo
 {
 }]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[public string Value { get; } // Gets a value. // RCS1181]]></Before>
+        <After><![CDATA[/// <summary>
+/// Gets a value.
+/// </summary>
+public string Value { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
