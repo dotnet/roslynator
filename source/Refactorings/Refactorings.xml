@@ -1123,11 +1123,11 @@ i--;]]></After>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0162" Identifier="SwapStatementsInIfElse" Title="Swap statements in if-else">
+  <Refactoring Id="RR0162" Identifier="SwapIfElse" Title="Swap if-else">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
-    <Span>top if keyword or selected if statement</Span>
+    <Span>if keyword or selected if statement</Span>
   </Refactoring>
   <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="UncommentSingleLineComment">
     <Syntaxes>

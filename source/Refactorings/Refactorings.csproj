@@ -238,7 +238,7 @@
     <Compile Include="Refactorings\RegionDirectiveTriviaRefactoring.cs" />
     <Compile Include="Refactorings\ExpressionRefactoring.cs" />
     <Compile Include="Refactorings\SwapExpressionsInConditionalExpressionRefactoring.cs" />
-    <Compile Include="Refactorings\SwapStatementInIfElseRefactoring.cs" />
+    <Compile Include="Refactorings\SwapIfElseRefactoring.cs" />
     <Compile Include="Refactorings\UncommentSingleLineCommentRefactoring.cs" />
     <Compile Include="Refactorings\AddBracesRefactoring.cs" />
     <Compile Include="Refactorings\CheckParameterForNullRefactoring.cs" />
