@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
         [ThreadStatic]
         private static UnusedMemberWalker _cachedInstance;
 
-        public static UnusedMemberWalker Acquire(SemanticModel semanticModel, CancellationToken cancellationToken, bool isConst = false)
+        public static UnusedMemberWalker Acquire(SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             UnusedMemberWalker walker = _cachedInstance;
 
@@ -28,7 +28,6 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
             walker.SemanticModel = semanticModel;
             walker.CancellationToken = cancellationToken;
-            walker.IsConst = isConst;
 
             return walker;
         }

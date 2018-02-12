@@ -91,9 +91,9 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
                             if (IsPrivate(declaration, modifiers))
                             {
                                 if (walker == null)
-                                    walker = UnusedMemberWalkerCache.Acquire(context.SemanticModel, context.CancellationToken, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
+                                    walker = UnusedMemberWalkerCache.Acquire(context.SemanticModel, context.CancellationToken);
 
-                                walker.AddNodes(declaration.Declaration);
+                                walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
                             }
 
                             break;
