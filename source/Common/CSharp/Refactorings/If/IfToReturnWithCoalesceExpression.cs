@@ -117,7 +117,15 @@ namespace Roslynator.CSharp.Refactorings.If
 
                 if (!returnType.IsErrorType())
                 {
-                    if (!IsYield)
+                    if (methodSymbol.IsAsync)
+                    {
+                        if (returnType is INamedTypeSymbol namedTypeSymbol
+                            && namedTypeSymbol.ConstructedFrom.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T)))
+                        {
+                            return namedTypeSymbol.TypeArguments[0];
+                        }
+                    }
+                    else if (!IsYield)
                     {
                         return returnType;
                     }
