@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapIfElse))
                     SwapIfElseRefactoring.ComputeRefactoring(context, ifStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch))
