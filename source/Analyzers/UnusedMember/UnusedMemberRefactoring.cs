@@ -104,7 +104,8 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
                             SyntaxTokenList modifiers = declaration.Modifiers;
 
-                            if (IsPrivate(declaration, modifiers))
+                            if (!declaration.AttributeLists.Any()
+                                && IsPrivate(declaration, modifiers))
                             {
                                 string methodName = declaration.Identifier.ValueText;
 
