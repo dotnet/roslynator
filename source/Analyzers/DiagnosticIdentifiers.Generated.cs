@@ -204,5 +204,6 @@ namespace Roslynator.CSharp
         public const string RemoveUnusedMemberDeclaration = "RCS1213";
         public const string AvoidInterpolatedStringWithNoInterpolatedText = "RCS1214";
         public const string ExpressionIsAlwaysEqualToTrueOrFalse = "RCS1215";
+        public const string UnnecessaryUnsafeContext = "RCS1216";
     }
 }

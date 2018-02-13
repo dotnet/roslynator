@@ -2409,5 +2409,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1216</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryUnsafeContext = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryUnsafeContext, 
+            title:              "Unnecessary unsafe context.", 
+            messageFormat:      "Unnecessary unsafe context.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryUnsafeContext}", 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
     }
 }

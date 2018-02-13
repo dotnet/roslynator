@@ -66,6 +66,7 @@
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidNullReferenceExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseRegexInstanceInsteadOfStaticMethodCodeFixProvider.cs" />
@@ -88,7 +89,11 @@
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReduceIfNestingDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderTypeParameterConstraintsDiagnosticAnalyzer.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextDiagnosticAnalyzer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextRefactoring.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextWalker.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextWalkerCache.cs" />
     <Compile Include="UnusedMember\NodeSymbolInfo.cs" />
     <Compile Include="UnusedMember\UnusedMemberCodeFixProvider.cs" />
     <Compile Include="UnusedMember\UnusedMemberWalker.cs" />

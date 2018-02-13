@@ -88,6 +88,7 @@
     <Compile Include="RemoveRedundantEmptyStatement.cs" />
     <Compile Include="RemoveUnnecessaryCaseLabel.cs" />
     <Compile Include="RemoveUnnecessaryElseClause.cs" />
+    <Compile Include="UnnecessaryUnsafeContext.cs" />
     <Compile Include="UnusedMemberDeclaration.cs" />
     <Compile Include="ReorderNamedArguments.cs" />
     <Compile Include="ReorderTypeParameterConstraints.cs" />

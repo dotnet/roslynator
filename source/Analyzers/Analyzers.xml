@@ -4499,4 +4499,43 @@ if (items.Count < 0) // RCS1213
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="UnnecessaryUnsafeContext">
+    <Id>RCS1216</Id>
+    <Title>Unnecessary unsafe context.</Title>
+    <MessageFormat>Unnecessary unsafe context.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public unsafe class Foo // RCS1216
+{
+    public Foo()
+    {
+        unsafe // RCS1216
+        {
+            Bar();
+        }
+    }
+
+    private unsafe void Bar() // RCS1216
+    {
+    }
+}]]></Before>
+        <After><![CDATA[public class Foo
+{
+    public Foo()
+    {
+        Bar();
+    }
+
+    private void Bar()
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
