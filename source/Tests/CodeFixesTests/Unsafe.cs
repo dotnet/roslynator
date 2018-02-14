@@ -2,26 +2,34 @@
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    internal static class Unsafe
+    internal unsafe struct Unsafe
     {
-        private static void Foo(char* p)
+        public static void Foo()
         {
-            fixed (char* value = "")
+            // pointer type
+            char* pCh = null;
+
+            // fixed statement
+            fixed (char* pStart = "")
             {
             }
 
-            p = default(char*);
+            // pointer indirection expression
+            char ch = *pCh;
 
-            while (*p != '\0')
-            {
-            }
+            // addressof expression
+            pCh = &ch;
 
-            char ch = '\0';
-            Foo(&ch);
+            // stackalloc array creation
+            char* pStart2 = stackalloc char[100];
 
-            var block = stackalloc int[100];
+            var x = default(Unsafe);
+            var px = &x;
+
+            // pointer member access expression
+            px->Value = 25;
         }
 
-        delegate int FooDelegate(void* a, int b);
+        public int Value { get; set; }
     }
 }

@@ -164,24 +164,25 @@ namespace Roslynator.Utilities
 
             string prefix = (prefixWithUnderscore) ? "_" : "";
 
-            if (value.Length > 0)
-            {
-                return ToCamelCase(value, prefix);
-            }
-            else
-            {
-                return prefix;
-            }
-        }
+            int length = value.Length;
 
-        private static string ToCamelCase(string value, string prefix)
-        {
-            var sb = new StringBuilder(prefix, value.Length + prefix.Length);
+            if (length == 0)
+                return prefix;
 
             int i = 0;
 
-            while (i < value.Length && value[i] == '_')
+            while (i < length
+                && value[i] == '_')
+            {
                 i++;
+            }
+
+            if (i == length)
+                return "_";
+
+            var sb = new StringBuilder(length + prefix.Length);
+
+            sb.Append(prefix);
 
             if (char.IsUpper(value[i]))
             {
@@ -194,7 +195,7 @@ namespace Roslynator.Utilities
 
             i++;
 
-            sb.Append(value, i, value.Length - i);
+            sb.Append(value, i, length - i);
 
             return sb.ToString();
         }

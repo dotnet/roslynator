@@ -1,3 +1,10 @@
+### 1.7.1 (2018-02-14)
+
+#### Analyzers
+
+* Add analyzer [UnneccesaryUnsafeContext](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1216.md) (RCS1216).
+* Improve analyzer ReplaceCommentWithDocumentationComment (RCS1181) - support trailing comment.
+
 ### 1.7.0 (2018-02-02)
 
 #### Analyzers

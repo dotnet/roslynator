@@ -3330,6 +3330,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary>Parameter is not reported when its name consists of underscore(s).</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[public bool Bar(object parameter) // RCS1163
@@ -3716,16 +3717,23 @@ items.Add(x);]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[// comment // RCS1181
+        <Before><![CDATA[// Represents foo. // RCS1181
 public class Foo
 {
 }]]></Before>
         <After><![CDATA[/// <summary>
-/// comment
+/// Represents foo.
 /// </summary>
 public class Foo
 {
 }]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[public string Value { get; } // Gets a value. // RCS1181]]></Before>
+        <After><![CDATA[/// <summary>
+/// Gets a value.
+/// </summary>
+public string Value { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -4489,6 +4497,45 @@ if (i >= 0) // RCS1213
 if (items.Count < 0) // RCS1213
 {
 }]]></Before>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UnnecessaryUnsafeContext">
+    <Id>RCS1216</Id>
+    <Title>Unnecessary unsafe context.</Title>
+    <MessageFormat>Unnecessary unsafe context.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public unsafe class Foo // RCS1216
+{
+    public Foo()
+    {
+        unsafe // RCS1216
+        {
+            Bar();
+        }
+    }
+
+    private unsafe void Bar() // RCS1216
+    {
+    }
+}]]></Before>
+        <After><![CDATA[public class Foo
+{
+    public Foo()
+    {
+        Bar();
+    }
+
+    private void Bar()
+    {
+    }
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>

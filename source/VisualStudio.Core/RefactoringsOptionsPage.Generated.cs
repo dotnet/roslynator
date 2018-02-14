@@ -176,7 +176,7 @@ namespace Roslynator.VisualStudio
             SwapExpressionsInBinaryExpression = true;
             SwapExpressionsInConditionalExpression = true;
             SwapMemberDeclarations = true;
-            SwapStatementsInIfElse = true;
+            SwapIfElse = true;
             UncommentSingleLineComment = true;
             UseBitwiseOperationInsteadOfCallingHasFlag = true;
             UseCoalesceExpressionInsteadOfIf = true;
@@ -347,7 +347,7 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression, SwapExpressionsInBinaryExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, SwapExpressionsInConditionalExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapMemberDeclarations, SwapMemberDeclarations);
-            SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
+            SetIsEnabled(RefactoringIdentifiers.SwapIfElse, SwapIfElse);
             SetIsEnabled(RefactoringIdentifiers.UncommentSingleLineComment, UncommentSingleLineComment);
             SetIsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, UseBitwiseOperationInsteadOfCallingHasFlag);
             SetIsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, UseCoalesceExpressionInsteadOfIf);
@@ -528,7 +528,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapExpressionsInBinaryExpression, "Swap expressions in binary expression", IsEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, "Swap expressions in conditional expression", IsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapMemberDeclarations, "Swap member declarations", IsEnabled(RefactoringIdentifiers.SwapMemberDeclarations)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapStatementsInIfElse, "Swap statements in if-else", IsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapIfElse, "Swap if-else", IsEnabled(RefactoringIdentifiers.SwapIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentSingleLineComment, "UncommentSingleLineComment", IsEnabled(RefactoringIdentifiers.UncommentSingleLineComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, "Use bitwise operation instead of calling 'HasFlag'", IsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, "Use coalesce expression instead of if", IsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)));
@@ -1913,7 +1913,7 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool SwapMemberDeclarations
+        public bool SwapIfElse
         {
             get;
             set;
@@ -1922,7 +1922,7 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool SwapStatementsInIfElse
+        public bool SwapMemberDeclarations
         {
             get;
             set;

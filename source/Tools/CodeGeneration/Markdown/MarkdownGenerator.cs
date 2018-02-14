@@ -126,6 +126,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name))),
                     (!string.IsNullOrEmpty(refactoring.Span)) ? TableRow("Span", refactoring.Span) : null,
                     TableRow("Enabled by Default", CheckboxOrHyphen(refactoring.IsEnabledByDefault))),
+                (!string.IsNullOrEmpty(refactoring.Summary)) ? Raw(refactoring.Summary) : null,
                 Heading3("Usage"),
                 GetRefactoringSamples(refactoring),
                 Link("full list of refactorings", "Refactorings.md"));
@@ -147,6 +148,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Enabled by Default", CheckboxOrHyphen(analyzer.IsEnabledByDefault)),
                     TableRow("Supports Fade-Out", CheckboxOrHyphen(analyzer.SupportsFadeOut)),
                     TableRow("Supports Fade-Out Analyzer", CheckboxOrHyphen(analyzer.SupportsFadeOutAnalyzer))),
+                (!string.IsNullOrEmpty(analyzer.Summary)) ? Raw(analyzer.Summary) : null,
                 Samples(),
                 Heading2("How to Suppress"),
                 Heading3("SuppressMessageAttribute"),

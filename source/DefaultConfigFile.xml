@@ -160,7 +160,7 @@
       <Refactoring Id="RR0159" IsEnabled="true" /> <!-- SwapExpressionsInBinaryExpression -->
       <Refactoring Id="RR0160" IsEnabled="true" /> <!-- SwapExpressionsInConditionalExpression -->
       <Refactoring Id="RR0161" IsEnabled="true" /> <!-- SwapMemberDeclarations -->
-      <Refactoring Id="RR0162" IsEnabled="true" /> <!-- SwapStatementsInIfElse -->
+      <Refactoring Id="RR0162" IsEnabled="true" /> <!-- SwapIfElse -->
       <Refactoring Id="RR0163" IsEnabled="true" /> <!-- UncommentSingleLineComment -->
       <Refactoring Id="RR0164" IsEnabled="true" /> <!-- UseBitwiseOperationInsteadOfCallingHasFlag -->
       <Refactoring Id="RR0165" IsEnabled="true" /> <!-- UseCoalesceExpressionInsteadOfIf -->

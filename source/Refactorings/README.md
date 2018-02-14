@@ -170,8 +170,8 @@
 | RR0158 | [Split variable declaration](../../docs/refactorings/RR0158.md) | &#x2713; |
 | RR0159 | [Swap expressions in binary expression](../../docs/refactorings/RR0159.md) | &#x2713; |
 | RR0160 | [Swap expressions in conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
+| RR0162 | [Swap if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0161 | [Swap member declarations](../../docs/refactorings/RR0161.md) | &#x2713; |
-| RR0162 | [Swap statements in if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0200 | [Uncomment multi-line comment](../../docs/refactorings/RR0200.md) | &#x2713; |
 | RR0163 | [UncommentSingleLineComment](../../docs/refactorings/RR0163.md) | &#x2713; |
 | RR0168 | [Use "" instead of string.Empty](../../docs/refactorings/RR0168.md) | &#x2713; |

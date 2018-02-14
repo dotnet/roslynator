@@ -120,7 +120,10 @@ namespace Roslynator
         {
             SyntaxNode node = GetEnclosingSymbolSyntax(semanticModel, position, cancellationToken);
 
-            return GetDeclaredSymbols(semanticModel, node, excludeAnonymousTypeProperty, cancellationToken);
+            if (node != null)
+                return GetDeclaredSymbols(semanticModel, node, excludeAnonymousTypeProperty, cancellationToken);
+
+            return ImmutableArray<ISymbol>.Empty;
         }
 
         internal static SyntaxNode GetEnclosingSymbolSyntax(this SemanticModel semanticModel, int position, CancellationToken cancellationToken)

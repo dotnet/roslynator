@@ -277,12 +277,16 @@ namespace Roslynator.CSharp.Refactorings
                                 cancellationToken => UncommentSingleLineCommentRefactoring.RefactorAsync(Document, trivia, cancellationToken));
                         }
 
-                        if (IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment)
-                            && ReplaceCommentWithDocumentationCommentRefactoring.IsFixable(trivia))
+                        if (IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment))
                         {
-                            RegisterRefactoring(
-                                ReplaceCommentWithDocumentationCommentRefactoring.Title,
-                                cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, cancellationToken));
+                            TextSpan fixableSpan = ReplaceCommentWithDocumentationCommentRefactoring.GetFixableSpan(trivia);
+
+                            if (!fixableSpan.IsEmpty)
+                            {
+                                RegisterRefactoring(
+                                    ReplaceCommentWithDocumentationCommentRefactoring.Title,
+                                    cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, cancellationToken));
+                            }
                         }
 
                         break;

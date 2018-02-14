@@ -87,6 +87,7 @@
     <Compile Include="RemoveUnnecessaryCaseLabel.cs" />
     <Compile Include="RemoveUnnecessaryElseClause.cs" />
     <Compile Include="ReplaceLambdaExpressionWithMethodGroup.cs" />
+    <Compile Include="UnnecessaryUnsafeContext.cs" />
     <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="SimplifyLazilyInitializedProperty.cs" />
     <Compile Include="UnusedMemberDeclaration.cs" />
