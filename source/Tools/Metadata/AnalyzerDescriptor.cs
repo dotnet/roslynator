@@ -18,6 +18,7 @@ namespace Roslynator.Metadata
             bool isObsolete,
             bool supportsFadeOut,
             bool supportsFadeOutAnalyzer,
+            string summary,
             IList<SampleDescriptor> samples)
         {
             Id = id;
@@ -30,6 +31,7 @@ namespace Roslynator.Metadata
             IsObsolete = isObsolete;
             SupportsFadeOut = supportsFadeOut;
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
+            Summary = summary;
             Samples = new ReadOnlyCollection<SampleDescriptor>(samples);
         }
 
@@ -52,6 +54,8 @@ namespace Roslynator.Metadata
         public bool SupportsFadeOut { get; }
 
         public bool SupportsFadeOutAnalyzer { get; }
+
+        public string Summary { get; }
 
         public ReadOnlyCollection<SampleDescriptor> Samples { get; }
     }
