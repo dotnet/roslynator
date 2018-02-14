@@ -3330,6 +3330,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary>Parameter is not reported when its name consists of underscore(s).</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[public bool Bar(object parameter) // RCS1163

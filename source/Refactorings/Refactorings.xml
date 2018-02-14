@@ -304,6 +304,31 @@
       <Syntax>while statement</Syntax>
     </Syntaxes>
     <Span>condition</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x && y) // Select 'y'
+{
+}]]></Before>
+        <After><![CDATA[if(x)
+{
+    if (y)
+    {
+    }
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (x || y) // Select 'y'
+{
+}]]></Before>
+        <After><![CDATA[if(x)
+{
+}
+
+if (y)
+{
+}]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0044" Identifier="ExtractGenericType" Title="Extract generic type">
     <Syntaxes>
