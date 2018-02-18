@@ -196,6 +196,7 @@ namespace Roslynator.CodeGeneration.Markdown
         {
             MDocument document = Document(
                 Heading2("Roslynator Analyzers"),
+                Link("Search Analyzers", "http://pihrt.net/Roslynator/Analyzers"),
                 Table(
                     TableRow("Id", "Title", "Category", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
                     analyzers.OrderBy(f => f.Id, comparer).Select(f =>
@@ -214,6 +215,7 @@ namespace Roslynator.CodeGeneration.Markdown
         {
             MDocument document = Document(
                 Heading2("Roslynator Refactorings"),
+                Link("Search Refactorings", "http://pihrt.net/Roslynator/Refactorings"),
                 Table(
                     TableRow("Id", "Title", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
                     refactorings.OrderBy(f => f.Title, comparer).Select(f =>
