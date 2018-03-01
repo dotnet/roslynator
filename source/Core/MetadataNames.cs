@@ -52,6 +52,7 @@ namespace Roslynator
         public const string System_Threading_SpinLock = "System.Threading.SpinLock";
         public const string System_Threading_Tasks_Task = "System.Threading.Tasks.Task";
         public const string System_Threading_Tasks_Task_T = "System.Threading.Tasks.Task`1";
+        public const string System_Threading_Tasks_ValueTask_T = "System.Threading.Tasks.ValueTask`1";
         public const string System_TimeSpan = "System.TimeSpan";
     }
 }
