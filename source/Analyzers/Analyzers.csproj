@@ -66,6 +66,8 @@
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\ReplaceInterpolatedStringWithConcatenationDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
     <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidNullReferenceExceptionCodeFixProvider.cs" />
@@ -79,7 +81,7 @@
     <Compile Include="DiagnosticAnalyzers\ExpressionIsAlwaysEqualToTrueOrFalseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeIfStatementWithNestedIfStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAssignmentDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\AvoidInterpolatedStringWithNoInterpolatedTextStringDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UnnecessaryInterpolatedStringDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderNamedArgumentsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AsExpressionDiagnosticAnalyzer.cs" />
@@ -108,7 +110,7 @@
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalker.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalkerCache.cs" />
     <Compile Include="Refactorings\RemoveUnnecessaryElseClauseRefactoring.cs" />
-    <Compile Include="Refactorings\AvoidInterpolatedStringWithNoInterpolatedTextRefactoring.cs" />
+    <Compile Include="Refactorings\UnnecessaryInterpolatedStringRefactoring.cs" />
     <Compile Include="UnusedMember\UnusedMemberRefactoring.cs" />
     <Compile Include="UnusedParameter\NodeSymbolInfo.cs" />
     <Compile Include="UnusedParameter\UnusedParameterWalker.cs" />

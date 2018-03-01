@@ -10,15 +10,15 @@ using Roslynator.CSharp.Refactorings;
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AvoidInterpolatedStringWithNoInterpolatedTextStringDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class UnnecessaryInterpolatedStringDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedText,
-                    DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedTextFadeOut);
+                    DiagnosticDescriptors.UnnecessaryInterpolatedString,
+                    DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
             base.Initialize(context);
 
             context.RegisterSyntaxNodeAction(
-                AvoidInterpolatedStringWithNoInterpolatedTextRefactoring.AnalyzeInterpolatedStringExpression,
+                UnnecessaryInterpolatedStringRefactoring.AnalyzeInterpolatedStringExpression,
                 SyntaxKind.InterpolatedStringExpression);
         }
     }

@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,7 +12,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class AvoidInterpolatedStringWithNoInterpolatedTextRefactoring
+    internal static class ReplaceInterpolatedStringWithConcatenationRefactoring
     {
         public static void AnalyzeInterpolatedStringExpression(SyntaxNodeAnalysisContext context)
         {
@@ -25,22 +26,11 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
-            if (!contents.Any())
+            if (contents.Count <= 1)
                 return;
 
-            foreach (InterpolatedStringContentSyntax content in contents)
-            {
-                SyntaxKind kind = content.Kind();
-
-                if (kind == SyntaxKind.Interpolation)
-                    continue;
-
-                if (kind == SyntaxKind.InterpolatedStringText)
-                    return;
-
-                Debug.Fail(content.Kind().ToString());
+            if (contents.Any(f => f.Kind() != SyntaxKind.Interpolation))
                 return;
-            }
 
             foreach (InterpolatedStringContentSyntax content in contents)
             {
@@ -63,19 +53,19 @@ namespace Roslynator.CSharp.Refactorings
                     return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedText, interpolatedString);
+            context.ReportDiagnostic(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenation, interpolatedString);
 
-            context.ReportToken(DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedTextFadeOut, interpolatedString.StringStartToken);
+            context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringStartToken);
 
             foreach (InterpolatedStringContentSyntax content in contents)
             {
                 var interpolation = (InterpolationSyntax)content;
 
-                context.ReportToken(DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedTextFadeOut, interpolation.OpenBraceToken);
-                context.ReportToken(DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedTextFadeOut, interpolation.CloseBraceToken);
+                context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.OpenBraceToken);
+                context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.CloseBraceToken);
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AvoidInterpolatedStringWithNoInterpolatedTextFadeOut, interpolatedString.StringEndToken);
+            context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringEndToken);
         }
 
         public static Task<Document> RefactorAsync(
@@ -83,26 +73,17 @@ namespace Roslynator.CSharp.Refactorings
             InterpolatedStringExpressionSyntax interpolatedString,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = null;
-
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
-            if (contents.Count == 1)
-            {
-                newNode = ((InterpolationSyntax)contents[0]).Expression;
-            }
-            else
+            ExpressionSyntax newNode = AddExpression(
+                ((InterpolationSyntax)contents[0]).Expression.Parenthesize(),
+                ((InterpolationSyntax)contents[1]).Expression.Parenthesize());
+
+            for (int i = 2; i < contents.Count; i++)
             {
                 newNode = AddExpression(
-                    ((InterpolationSyntax)contents[0]).Expression.Parenthesize(),
-                    ((InterpolationSyntax)contents[1]).Expression.Parenthesize());
-
-                for (int i = 2; i < contents.Count; i++)
-                {
-                    newNode = AddExpression(
-                        newNode,
-                        ((InterpolationSyntax)contents[i]).Expression.Parenthesize());
-                }
+                    newNode,
+                    ((InterpolationSyntax)contents[i]).Expression.Parenthesize());
             }
 
             newNode = newNode

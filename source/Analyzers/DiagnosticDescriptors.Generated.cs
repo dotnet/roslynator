@@ -2384,18 +2384,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1214</summary>
-        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolatedText = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText, 
-            title:              "Avoid interpolated string with no interpolated text.", 
-            messageFormat:      "Avoid interpolated string with no interpolated text.", 
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolatedString = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryInterpolatedString, 
+            title:              "Unnecessary interpolated string.", 
+            messageFormat:      "Unnecessary interpolated string.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryInterpolatedString}", 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolatedTextFadeOut = AvoidInterpolatedStringWithNoInterpolatedText.CreateFadeOut();
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolatedStringFadeOut = UnnecessaryInterpolatedString.CreateFadeOut();
 
         /// <summary>RCS1215</summary>
         public static readonly DiagnosticDescriptor ExpressionIsAlwaysEqualToTrueOrFalse = new DiagnosticDescriptor(
@@ -2420,6 +2420,20 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryUnsafeContext}", 
             customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1217</summary>
+        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation, 
+            title:              "Replace interpolated string with concatenation.", 
+            messageFormat:      "Replace interpolated string with concatenation.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation}", 
+            customTags:         Array.Empty<string>());
+
+        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenationFadeOut = ReplaceInterpolatedStringWithConcatenation.CreateFadeOut();
 
     }
 }

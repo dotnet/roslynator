@@ -4448,10 +4448,10 @@ return WhenFalse();]]></After>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolatedText">
+  <Analyzer Identifier="UnnecessaryInterpolatedString">
     <Id>RCS1214</Id>
-    <Title>Avoid interpolated string with no interpolated text.</Title>
-    <MessageFormat>Avoid interpolated string with no interpolated text.</MessageFormat>
+    <Title>Unnecessary interpolated string.</Title>
+    <MessageFormat>Unnecessary interpolated string.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -4536,6 +4536,26 @@ if (items.Count < 0) // RCS1213
     {
     }
 }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="ReplaceInterpolatedStringWithConcatenation">
+    <Id>RCS1217</Id>
+    <Title>Replace interpolated string with concatenation.</Title>
+    <MessageFormat>Replace interpolated string with concatenation.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[string x = null;
+// ...
+
+string y = $"{x}{x}{x}";]]></Before>
+        <After><![CDATA[string y = x + x + x;]]></After>
       </Sample>
     </Samples>
   </Analyzer>
