@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -62,68 +63,57 @@ namespace Roslynator.CSharp.Refactorings
                 .Variables
                 .SingleOrDefault(shouldthrow: false);
 
-            if (variableDeclarator != null)
-            {
-                ExpressionSyntax value = variableDeclarator.Initializer?.Value;
+            if (variableDeclarator == null)
+                return false;
 
-                if (value?.IsNumericLiteralExpression("0") == true)
-                {
-                    ExpressionSyntax condition = forStatement.Condition;
+            if (variableDeclarator.Initializer?.Value?.IsNumericLiteralExpression("0") != true)
+                return false;
 
-                    if (condition?.IsKind(SyntaxKind.LessThanExpression) == true)
-                    {
-                        ExpressionSyntax right = ((BinaryExpressionSyntax)condition).Right;
+            ExpressionSyntax condition = forStatement.Condition;
 
-                        if (right?.IsKind(SyntaxKind.SimpleMemberAccessExpression) == true)
-                        {
-                            var memberAccess = (MemberAccessExpressionSyntax)right;
+            if (condition?.IsKind(SyntaxKind.LessThanExpression) != true)
+                return false;
 
-                            string memberName = memberAccess.Name?.Identifier.ValueText;
+            ExpressionSyntax right = ((BinaryExpressionSyntax)condition).Right;
 
-                            if (memberName == "Count" || memberName == "Length")
-                            {
-                                ExpressionSyntax expression = memberAccess.Expression;
+            if (right?.IsKind(SyntaxKind.SimpleMemberAccessExpression) != true)
+                return false;
 
-                                if (expression != null)
-                                {
-                                    SeparatedSyntaxList<ExpressionSyntax> incrementors = forStatement.Incrementors;
+            var memberAccessExpression = (MemberAccessExpressionSyntax)right;
 
-                                    if (incrementors.Count == 1
-                                        && incrementors.First().IsKind(SyntaxKind.PostIncrementExpression))
-                                    {
-                                        return await IsElementAccessAsync(context, forStatement, variableDeclarator, expression).ConfigureAwait(false);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            string memberName = memberAccessExpression.Name?.Identifier.ValueText;
 
-            return false;
-        }
+            if (memberName != "Count" && memberName != "Length")
+                return false;
 
-        private static async Task<bool> IsElementAccessAsync(
-            RefactoringContext context,
-            ForStatementSyntax forStatement,
-            VariableDeclaratorSyntax variableDeclarator,
-            ExpressionSyntax memberAccessExpression)
-        {
+            ExpressionSyntax expression = memberAccessExpression.Expression;
+
+            if (expression == null)
+                return false;
+
+            if (forStatement.Incrementors.SingleOrDefault(shouldThrow: false)?.IsKind(SyntaxKind.PostIncrementExpression) != true)
+                return false;
+
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            ISymbol symbol = semanticModel.GetSymbol(memberAccessExpression, context.CancellationToken);
+            ISymbol symbol = semanticModel.GetSymbol(expression, context.CancellationToken);
 
-            if (symbol != null)
+            if (symbol == null)
+                return false;
+
+            ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
+
+            ImmutableArray<SyntaxNode> nodes = await SyntaxFinder.FindReferencesAsync(variableSymbol, context.Document, cancellationToken: context.CancellationToken).ConfigureAwait(false);
+
+            TextSpan span = forStatement.Statement.Span;
+
+            foreach (SyntaxNode node in nodes)
             {
-                ISymbol variableSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, context.CancellationToken);
-
-                ImmutableArray<SyntaxNode> nodes = await SyntaxFinder.FindReferencesAsync(variableSymbol, context.Document, cancellationToken: context.CancellationToken).ConfigureAwait(false);
-
-                StatementSyntax statement = forStatement.Statement;
-
-                return nodes
-                    .Where(f => statement.Span.Contains(f.Span))
-                    .All(node => IsElementAccess(node, symbol, semanticModel, context.CancellationToken));
+                if (span.Contains(node.Span)
+                    && !IsElementAccess(node, symbol, semanticModel, context.CancellationToken))
+                {
+                    return false;
+                }
             }
 
             return true;
@@ -135,36 +125,34 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            if (node.IsKind(SyntaxKind.IdentifierName))
-            {
-                SyntaxNode parent = node.Parent;
+            if (!node.IsKind(SyntaxKind.IdentifierName))
+                return false;
 
-                if (parent?.IsKind(SyntaxKind.Argument) == true)
-                {
-                    parent = parent.Parent;
+            SyntaxNode parent = node.Parent;
 
-                    if (parent?.IsKind(SyntaxKind.BracketedArgumentList) == true)
-                    {
-                        parent = parent.Parent;
+            if (parent?.IsKind(SyntaxKind.Argument) != true)
+                return false;
 
-                        if (parent?.IsKind(SyntaxKind.ElementAccessExpression) == true)
-                        {
-                            var elementAccess = (ElementAccessExpressionSyntax)parent;
+            parent = parent.Parent;
 
-                            ExpressionSyntax expression = elementAccess.Expression;
+            if (parent?.IsKind(SyntaxKind.BracketedArgumentList) != true)
+                return false;
 
-                            if (expression != null)
-                            {
-                                ISymbol expressionSymbol = semanticModel.GetSymbol(expression, cancellationToken);
+            parent = parent.Parent;
 
-                                return symbol.Equals(expressionSymbol);
-                            }
-                        }
-                    }
-                }
-            }
+            if (parent?.IsKind(SyntaxKind.ElementAccessExpression) != true)
+                return false;
 
-            return false;
+            var elementAccess = (ElementAccessExpressionSyntax)parent;
+
+            ExpressionSyntax expression = elementAccess.Expression;
+
+            if (expression == null)
+                return false;
+
+            ISymbol expressionSymbol = semanticModel.GetSymbol(expression, cancellationToken);
+
+            return symbol.Equals(expressionSymbol);
         }
     }
 }

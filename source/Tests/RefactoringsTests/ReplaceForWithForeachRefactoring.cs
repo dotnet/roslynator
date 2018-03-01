@@ -34,6 +34,11 @@ namespace Roslynator.CSharp.Refactorings.Tests
             {
                 string value = items[i + 1];
             }
+
+            for (int i = 0; i < items2.Count; i++)
+            {
+                var x = items2[i + 1];
+            }
         }
     }
 }

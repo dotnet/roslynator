@@ -1584,4 +1584,15 @@ else
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0201" Identifier="ReplaceInterpolatedStringWithStringFormat" Title="Replace interpolated string with string.Format">
+    <Syntaxes>
+      <Syntax>interpolated string</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[$"name: {name,0:f}, value: {value}"]]></Before>
+        <After><![CDATA[string.Format("name: {0,0:f} value: {1}", name, value)]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

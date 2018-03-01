@@ -48,568 +48,542 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
         private static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(namespaceDeclaration.Name);
+            TrailingTriviaAnalysis trailingAnalysis = AnalyzeTrailingTrivia(namespaceDeclaration.Name);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!trailingAnalysis.Span.IsEmpty)
+                ReportDiagnostic(context, trailingAnalysis.Span);
         }
 
         private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var classDeclaration = (ClassDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(classDeclaration.Identifier);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(classDeclaration.Identifier);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(classDeclaration.TypeParameterList);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(classDeclaration.TypeParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(classDeclaration.BaseList);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(classDeclaration.BaseList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(classDeclaration.ConstraintClauses);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(classDeclaration.ConstraintClauses);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var structDeclaration = (StructDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(structDeclaration.Identifier);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(structDeclaration.Identifier);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(structDeclaration.TypeParameterList);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(structDeclaration.TypeParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(structDeclaration.BaseList);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(structDeclaration.BaseList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(structDeclaration.ConstraintClauses);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(structDeclaration.ConstraintClauses);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(interfaceDeclaration.Identifier);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(interfaceDeclaration.Identifier);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(interfaceDeclaration.TypeParameterList);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(interfaceDeclaration.TypeParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(interfaceDeclaration.BaseList);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(interfaceDeclaration.BaseList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(interfaceDeclaration.ConstraintClauses);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(interfaceDeclaration.ConstraintClauses);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var enumDeclaration = (EnumDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(enumDeclaration.Identifier);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(enumDeclaration.Identifier);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeEnumMemberDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var enumMemberDeclaration = (EnumMemberDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(enumMemberDeclaration);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(enumMemberDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(delegateDeclaration);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(delegateDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(methodDeclaration.ParameterList);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(methodDeclaration.ParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
+            if (tta.Span.IsEmpty)
             {
-                result = AnalyzeTrailingTrivia(methodDeclaration.ConstraintClauses);
+                tta = AnalyzeTrailingTrivia(methodDeclaration.ConstraintClauses);
 
-                if (result.containsEndOfLine)
+                if (tta.ContainsEndOfLine)
                     return;
 
-                if (result.span.IsEmpty)
+                if (tta.Span.IsEmpty)
                 {
                     ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
                     if (expressionBody != null)
                     {
-                        result = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
+                        tta = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
 
-                        if (result.containsEndOfLine)
+                        if (tta.ContainsEndOfLine)
                             return;
                     }
                 }
             }
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(methodDeclaration);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(methodDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(constructorDeclaration.ParameterList);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(constructorDeclaration.ParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
+            if (tta.Span.IsEmpty)
             {
-                result = AnalyzeTrailingTrivia(constructorDeclaration.Initializer);
+                tta = AnalyzeTrailingTrivia(constructorDeclaration.Initializer);
 
-                if (result.containsEndOfLine)
+                if (tta.ContainsEndOfLine)
                     return;
-
-                if (result.span.IsEmpty)
-                {
-                    ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
-
-                    if (expressionBody != null)
-                    {
-                        result = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                        if (result.containsEndOfLine)
-                            return;
-                    }
-                }
             }
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(constructorDeclaration);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(constructorDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(destructorDeclaration.ParameterList);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(destructorDeclaration.ParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-            {
-                ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(destructorDeclaration);
 
-                if (expressionBody != null)
-                {
-                    result = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                    if (result.containsEndOfLine)
-                        return;
-                }
-            }
-
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(destructorDeclaration);
-
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(operatorDeclaration.ParameterList);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(operatorDeclaration.ParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
+            if (tta.Span.IsEmpty)
             {
                 ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
 
                 if (expressionBody != null)
                 {
-                    result = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
+                    tta = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
 
-                    if (result.containsEndOfLine)
+                    if (tta.ContainsEndOfLine)
                         return;
                 }
             }
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(operatorDeclaration);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(operatorDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(conversionOperatorDeclaration.ParameterList);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(conversionOperatorDeclaration.ParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
+            if (tta.Span.IsEmpty)
             {
                 ArrowExpressionClauseSyntax expressionBody = conversionOperatorDeclaration.ExpressionBody;
 
                 if (expressionBody != null)
                 {
-                    result = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
+                    tta = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
 
-                    if (result.containsEndOfLine)
+                    if (tta.ContainsEndOfLine)
                         return;
                 }
             }
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(conversionOperatorDeclaration);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(conversionOperatorDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(propertyDeclaration.Identifier);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(propertyDeclaration.Identifier);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
+            if (tta.Span.IsEmpty)
             {
                 ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
                 if (expressionBody != null)
                 {
-                    result = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
+                    tta = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
 
-                    if (result.containsEndOfLine)
+                    if (tta.ContainsEndOfLine)
                         return;
                 }
             }
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(propertyDeclaration);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(propertyDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(indexerDeclaration.ParameterList);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(indexerDeclaration.ParameterList);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
+            if (tta.Span.IsEmpty)
             {
                 ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
 
                 if (expressionBody != null)
                 {
-                    result = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
+                    tta = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
 
-                    if (result.containsEndOfLine)
+                    if (tta.ContainsEndOfLine)
                         return;
                 }
             }
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(indexerDeclaration);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(indexerDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(fieldDeclaration);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(fieldDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(eventFieldDeclaration);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(eventFieldDeclaration);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
-            (TextSpan span, bool containsDocumentationComment) = AnalyzeLeadingTrivia(context.Node);
+            LeadingTriviaAnalysis lta = AnalyzeLeadingTrivia(context.Node);
 
-            if (!span.IsEmpty)
+            if (!lta.Span.IsEmpty)
             {
-                ReportDiagnostic(context, span);
+                ReportDiagnostic(context, lta.Span);
                 return;
             }
 
-            if (containsDocumentationComment)
+            if (lta.HasDocumentationComment)
                 return;
 
             var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
-            (TextSpan span, bool containsEndOfLine) result = AnalyzeTrailingTrivia(eventDeclaration.Identifier);
+            TrailingTriviaAnalysis tta = AnalyzeTrailingTrivia(eventDeclaration.Identifier);
 
-            if (result.containsEndOfLine)
+            if (tta.ContainsEndOfLine)
                 return;
 
-            if (result.span.IsEmpty)
-                result = AnalyzeTrailingTrivia(eventDeclaration.AccessorList);
+            if (tta.Span.IsEmpty)
+                tta = AnalyzeTrailingTrivia(eventDeclaration.AccessorList);
 
-            if (!result.span.IsEmpty)
-                ReportDiagnostic(context, result.span);
+            if (!tta.Span.IsEmpty)
+                ReportDiagnostic(context, tta.Span);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TextSpan span)

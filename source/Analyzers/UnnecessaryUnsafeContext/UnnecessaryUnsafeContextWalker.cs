@@ -67,19 +67,6 @@ namespace Roslynator.CSharp.Analyzers.UnnecessaryUnsafeContext
         {
         }
 
-        public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
-        {
-            if (_isBeforeFirstVisit)
-            {
-                _isBeforeFirstVisit = false;
-                base.VisitLocalFunctionStatement(node);
-            }
-            else if (!node.Modifiers.Contains(SyntaxKind.UnsafeKeyword))
-            {
-                base.VisitLocalFunctionStatement(node);
-            }
-        }
-
         public override void VisitClassDeclaration(ClassDeclarationSyntax node)
         {
             if (_isBeforeFirstVisit)

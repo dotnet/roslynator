@@ -33,16 +33,16 @@ namespace Roslynator.CSharp.Refactorings
             if (memberDeclaration.LeadingTriviaSpan().Contains(span)
                 || memberDeclaration.TrailingTriviaSpan().Contains(span))
             {
-                (TextSpan fixableSpan, bool hasDocumentationComment) = AnalyzeLeadingTrivia(memberDeclaration);
+                LeadingTriviaAnalysis analysis = AnalyzeLeadingTrivia(memberDeclaration);
 
-                if (fixableSpan.Contains(span))
-                    return fixableSpan;
+                if (analysis.Span.Contains(span))
+                    return analysis.Span;
             }
 
             return default(TextSpan);
         }
 
-        public static (TextSpan span, bool hasDocumentationComment) AnalyzeLeadingTrivia(SyntaxNode declaration)
+        public static LeadingTriviaAnalysis AnalyzeLeadingTrivia(SyntaxNode declaration)
         {
             SyntaxTriviaList leadingTrivia = declaration.GetLeadingTrivia();
 
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                     do
                     {
                         if (SyntaxFacts.IsDocumentationCommentTrivia(en.Current.Kind()))
-                            return (default(TextSpan), true);
+                            return new LeadingTriviaAnalysis(default(TextSpan), true);
 
                     } while (en.MoveNext());
 
@@ -83,33 +83,33 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            return (span, false);
+            return new LeadingTriviaAnalysis(span, false);
         }
 
-        public static (TextSpan span, bool containsEndOfLine) AnalyzeTrailingTrivia(SyntaxNode declaration)
+        public static TrailingTriviaAnalysis AnalyzeTrailingTrivia(SyntaxNode declaration)
         {
             if (declaration == null)
-                return (default(TextSpan), false);
+                return default(TrailingTriviaAnalysis);
 
             return AnalyzeTrailingTrivia(declaration.GetTrailingTrivia());
         }
 
-        public static (TextSpan span, bool containsEndOfLine) AnalyzeTrailingTrivia<TNode>(SyntaxList<TNode> nodes) where TNode : SyntaxNode
+        public static TrailingTriviaAnalysis AnalyzeTrailingTrivia<TNode>(SyntaxList<TNode> nodes) where TNode : SyntaxNode
         {
             TNode node = nodes.FirstOrDefault();
 
             if (node == null)
-                return (default(TextSpan), false);
+                return default(TrailingTriviaAnalysis);
 
             return AnalyzeTrailingTrivia(node.GetTrailingTrivia());
         }
 
-        public static (TextSpan span, bool containsEndOfLine) AnalyzeTrailingTrivia(SyntaxToken token)
+        public static TrailingTriviaAnalysis AnalyzeTrailingTrivia(SyntaxToken token)
         {
             return AnalyzeTrailingTrivia(token.TrailingTrivia);
         }
 
-        public static (TextSpan span, bool containsEndOfLine) AnalyzeTrailingTrivia(SyntaxTriviaList trailingTrivia)
+        public static TrailingTriviaAnalysis AnalyzeTrailingTrivia(SyntaxTriviaList trailingTrivia)
         {
             SyntaxTriviaList.Enumerator en = trailingTrivia.GetEnumerator();
 
@@ -123,37 +123,37 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (en.Current.Kind() == SyntaxKind.SingleLineCommentTrivia)
                         {
-                            return (en.Current.Span, false);
+                            return new TrailingTriviaAnalysis(en.Current.Span, false);
                         }
                         else
                         {
                             while (en.MoveNext())
                             {
                                 if (en.Current.IsEndOfLineTrivia())
-                                    return (default(TextSpan), true);
+                                    return new TrailingTriviaAnalysis(default(TextSpan), true);
                             }
                         }
                     }
                 }
                 else if (kind == SyntaxKind.EndOfLineTrivia)
                 {
-                    return (default(TextSpan), true);
+                    return new TrailingTriviaAnalysis(default(TextSpan), true);
                 }
                 else if (kind == SyntaxKind.SingleLineCommentTrivia)
                 {
-                    return (en.Current.Span, false);
+                    return new TrailingTriviaAnalysis(en.Current.Span, false);
                 }
                 else
                 {
                     while (en.MoveNext())
                     {
                         if (en.Current.IsEndOfLineTrivia())
-                            return (default(TextSpan), true);
+                            return new TrailingTriviaAnalysis(default(TextSpan), true);
                     }
                 }
             }
 
-            return (default(TextSpan), false);
+            return default(TrailingTriviaAnalysis);
         }
 
         public static Task<Document> RefactorAsync(
@@ -210,6 +210,32 @@ namespace Roslynator.CSharp.Refactorings
             newDeclaration = newDeclaration.WithNewSingleLineDocumentationComment(settings);
 
             return document.ReplaceNodeAsync(declaration, newDeclaration, cancellationToken);
+        }
+
+        public struct LeadingTriviaAnalysis
+        {
+            public LeadingTriviaAnalysis(TextSpan span, bool hasDocumentationComment)
+            {
+                Span = span;
+                HasDocumentationComment = hasDocumentationComment;
+            }
+
+            public TextSpan Span { get; }
+
+            public bool HasDocumentationComment { get; }
+        }
+
+        public struct TrailingTriviaAnalysis
+        {
+            public TrailingTriviaAnalysis(TextSpan span, bool containsEndOfLine)
+            {
+                Span = span;
+                ContainsEndOfLine = containsEndOfLine;
+            }
+
+            public TextSpan Span { get; }
+
+            public bool ContainsEndOfLine { get; }
         }
     }
 }

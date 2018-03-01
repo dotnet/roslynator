@@ -375,5 +375,6 @@
     <Rule Id="RCS1201" Action="Info" />
     <Rule Id="RCS1207" Action="Info" />
     <Rule Id="RCS1208" Action="Info" />
+    <Rule Id="RCS1217" Action="Info" />
   </Rules>
 </RuleSet>

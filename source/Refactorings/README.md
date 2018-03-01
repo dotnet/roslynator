@@ -1,5 +1,7 @@
 ## Roslynator Refactorings
 
+[Search Refactorings](http://pihrt.net/Roslynator/Refactorings)
+
 | Id  | Title | Enabled by Default |
 | --- | ----- |:------------------:|
 | RR0002 | [Add braces](../../docs/refactorings/RR0002.md) | &#x2713; |

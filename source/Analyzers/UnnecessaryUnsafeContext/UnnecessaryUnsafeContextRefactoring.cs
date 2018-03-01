@@ -96,23 +96,6 @@ namespace Roslynator.CSharp.Analyzers.UnnecessaryUnsafeContext
             context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
         }
 
-        public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
-        {
-            var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
-
-            SyntaxTokenList modifiers = localFunctionStatement.Modifiers;
-
-            int index = modifiers.IndexOf(SyntaxKind.UnsafeKeyword);
-
-            if (index == -1)
-                return;
-
-            if (ContainsUnsafeSyntax(localFunctionStatement))
-                return;
-
-            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
-        }
-
         public static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;

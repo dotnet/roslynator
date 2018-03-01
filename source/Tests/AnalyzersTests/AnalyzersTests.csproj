@@ -47,7 +47,7 @@
     <Compile Include="AddEmptyLineBetweenDeclarations.cs" />
     <Compile Include="AvoidBoxingOfValueType.cs" />
     <Compile Include="AvoidEmptyCatchClauseThatCatchesSystemException.cs" />
-    <Compile Include="AvoidInterpolatedStringWithNoInterpolatedText.cs" />
+    <Compile Include="UnnecessaryInterpolatedString.cs" />
     <Compile Include="AvoidMultilineExpressionBody.cs" />
     <Compile Include="AvoidMultilineExpressionBodyRefactoring.cs" />
     <Compile Include="AvoidSemicolonAtEndOfDeclaration.cs" />
@@ -87,6 +87,7 @@
     <Compile Include="RemoveUnnecessaryCaseLabel.cs" />
     <Compile Include="RemoveUnnecessaryElseClause.cs" />
     <Compile Include="ReplaceLambdaExpressionWithMethodGroup.cs" />
+    <Compile Include="ReplaceInterpolatedStringWithConcatenation.cs" />
     <Compile Include="UnnecessaryUnsafeContext.cs" />
     <Compile Include="SimplifyLambdaExpressionRefactoring.cs" />
     <Compile Include="SimplifyLazilyInitializedProperty.cs" />

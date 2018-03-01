@@ -101,29 +101,33 @@ namespace Roslynator.Utilities
             return true;
         }
 
-        public static string GetIndent(string value)
+        public static string GetLeadingWhiteSpaceExceptNewLine(string value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            if (value.Length == 0)
+            int length = value.Length;
+
+            if (length == 0)
                 return "";
 
-            var sb = new StringBuilder();
-
-            foreach (char ch in value)
+            int i = 0;
+            do
             {
-                if (ch == '\n'
-                    || ch == '\r'
+                char ch = value[i];
+
+                if (ch == '\r'
+                    || ch == '\n'
                     || !char.IsWhiteSpace(ch))
                 {
                     break;
                 }
 
-                sb.Append(ch);
-            }
+                i++;
 
-            return sb.ToString();
+            } while (i < length);
+
+            return value.Remove(i);
         }
 
         public static string DoubleBraces(string value)

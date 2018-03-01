@@ -1,5 +1,7 @@
 ## Roslynator Analyzers
 
+[Search Analyzers](http://pihrt.net/Roslynator/Analyzers)
+
 | Id  | Title | Category | Enabled by Default |
 | --- | ----- | -------- |:------------------:|
 | RCS1001 | [Add braces (when expression spans over multiple lines)](../../docs/analyzers/RCS1001.md) | Style | &#x2713; |
