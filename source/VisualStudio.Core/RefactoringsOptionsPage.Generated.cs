@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.UncommentMultiLineComment;
+        = RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -567,6 +567,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineProperty, "Inline property", IsEnabled(RefactoringIdentifiers.InlineProperty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveEnumMemberValue, "Remove enum member value(s)", IsEnabled(RefactoringIdentifiers.RemoveEnumMemberValue)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentMultiLineComment, "Uncomment multi-line comment", IsEnabled(RefactoringIdentifiers.UncommentMultiLineComment)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat, "Replace interpolated string with string.Format", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat)));
         }
 
         [Browsable(false)]

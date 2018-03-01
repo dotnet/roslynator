@@ -56,6 +56,7 @@
     <Compile Include="Refactorings\InitializeFieldFromConstructorRefactoring.cs" />
     <Compile Include="Refactorings\InlineConstantRefactoring.cs" />
     <Compile Include="Refactorings\RemoveEnumMemberValueRefactoring.cs" />
+    <Compile Include="Refactorings\ReplaceInterpolatedStringWithStringFormatRefactoring.cs" />
     <Compile Include="Refactorings\SelectedEnumMemberDeclarationsRefactoring.cs" />
     <Compile Include="Refactorings\UncommentMultiLineCommentRefactoring.cs" />
     <Compile Include="Refactorings\ÏnlineDefinition\InlinePropertyAnalyzer.cs" />
