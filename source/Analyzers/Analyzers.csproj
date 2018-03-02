@@ -96,8 +96,6 @@
     <Compile Include="Refactorings\UseCountOrLengthPropertyInsteadOfAnyMethodRefactoring.cs" />
     <Compile Include="Refactorings\UseInsteadOfCountMethod\UseCountOrLengthPropertyInsteadOfCountMethodRefactoring.cs" />
     <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextRefactoring.cs" />
-    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextWalker.cs" />
-    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextWalkerCache.cs" />
     <Compile Include="UnusedMember\NodeSymbolInfo.cs" />
     <Compile Include="UnusedMember\UnusedMemberCodeFixProvider.cs" />
     <Compile Include="UnusedMember\UnusedMemberWalker.cs" />

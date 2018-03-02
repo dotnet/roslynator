@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.Serialization;
 
 #pragma warning disable CS0168, CS8321, RCS1100, RCS1016, RCS1021, RCS1023, RCS1048, RCS1079, RCS1140, RCS1176, RCS1185
 
@@ -205,6 +206,18 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             public void Bar(string _, object __)
             {
+            }
+        }
+
+        private class FooSerializable : ISerializable
+        {
+            protected FooSerializable(SerializationInfo info, StreamingContext context)
+            {
+            }
+
+            public void GetObjectData(SerializationInfo info, StreamingContext context)
+            {
+                throw new NotImplementedException();
             }
         }
     }

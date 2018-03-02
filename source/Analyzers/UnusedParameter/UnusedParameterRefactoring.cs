@@ -2,7 +2,9 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -16,7 +18,10 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
 {
     internal static class UnusedParameterRefactoring
     {
-        public static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeConstructorDeclaration(
+            SyntaxNodeAnalysisContext context,
+            INamedTypeSymbol serializationInfoSymbol,
+            INamedTypeSymbol streamingContextSymbol)
         {
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
@@ -30,6 +35,25 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
 
             if (ContainsOnlyThrowNewExpression(parametersInfo.Body))
                 return;
+
+            // Skip a constructor that is required by ISerializable interface
+            if (serializationInfoSymbol != null
+                && parametersInfo.Parameters.Count == 2)
+            {
+                IMethodSymbol symbol = context.SemanticModel.GetDeclaredSymbol(constructorDeclaration, context.CancellationToken);
+
+                if (symbol != null)
+                {
+                    ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
+
+                    if (parameters.Length == 2
+                        && parameters[0].Type.Equals(serializationInfoSymbol)
+                        && parameters[1].Type.Equals(streamingContextSymbol))
+                    {
+                        return;
+                    }
+                }
+            }
 
             Analyze(context, parametersInfo);
         }

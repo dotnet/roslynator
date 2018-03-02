@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-#pragma warning disable RCS1176
+#pragma warning disable RCS1032, RCS1163, RCS1176, RCS1187, RCS1190, RCS1213
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -12,69 +12,188 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         private class Foo
         {
-            private const string _const = "";
+            protected Regex _regex;
+            private static readonly string _input = "";
+            private const string _pattern = "";
+            private static readonly string _replacement = "";
 
-            private void Bar()
+            protected readonly Match _match = Regex.Match("input", "pattern");
+
+            private class Foo1
             {
-                Regex _regex = null;
-
-                bool isMatch = Regex.IsMatch("input", "pattern");
-                bool isMatch2 = Regex.IsMatch("input", "pattern", RegexOptions.None);
-                bool isMatch3 = Regex.IsMatch("input", "pattern", RegexOptions.None, TimeSpan.Zero);
-            }
-        }
-
-        private static class Foo2
-        {
-            private const string _const = "";
-
-            private static string Bar
-            {
-                get
+                public void Bar1()
                 {
-                    Match match = Regex.Match("input", "pattern");
-                    Match match2 = Regex.Match("input", "pattern", RegexOptions.None);
-                    Match match3 = Regex.Match("input", "pattern", RegexOptions.None, TimeSpan.Zero);
+                    bool isMatch1 = Regex.IsMatch(_input, ("pattern"));
+                }
+            }
 
-                    return "";
+            private class Foo2
+            {
+                public void Bar2()
+                {
+                    bool isMatch2 = Regex.IsMatch(_input, _pattern);
+                }
+            }
+
+            private class Foo3
+            {
+                public void Bar3()
+                {
+                    bool isMatch3 = Regex.IsMatch(_input, "pattern", RegexOptions.Singleline);
+                }
+            }
+
+            private class Foo4
+            {
+                public void Bar4()
+                {
+                    bool isMatch4 = Regex.IsMatch(_input, "pattern", RegexOptions.Singleline | RegexOptions.Multiline);
+                }
+            }
+
+            private class Foo5
+            {
+                public void Bar5()
+                {
+                    Match match1 = Regex.Match(_input, "pattern");
+                }
+            }
+
+            private class Foo6
+            {
+                public void Bar6()
+                {
+                    Match match2 = Regex.Match(_input, "pattern", RegexOptions.None);
+                }
+            }
+
+            private class Foo7
+            {
+                public void Bar7()
+                {
+                    MatchCollection matches1 = Regex.Matches(_input, "pattern");
+                }
+            }
+
+            private class Foo8
+            {
+                public void Bar8()
+                {
+                    MatchCollection matches2 = Regex.Matches(_input, "pattern", RegexOptions.None);
+                }
+            }
+
+            private class Foo9
+            {
+                public void Bar9()
+                {
+                    string[] values1 = Regex.Split(_input, "pattern");
+                }
+            }
+
+            private class Foo10
+            {
+                public void Bar10()
+                {
+                    string[] values2 = Regex.Split(_input, "pattern", RegexOptions.None);
+                }
+            }
+
+            private class Foo11
+            {
+                public void Bar11()
+                {
+                    string value1 = Regex.Replace(_input, "pattern", _replacement);
+                }
+            }
+
+            private class Foo12
+            {
+                public void Bar12()
+                {
+                    string value2 = Regex.Replace(_input, "pattern", _replacement, RegexOptions.None);
+                }
+            }
+
+            private class Foo13
+            {
+                public void Bar13()
+                {
+                    string value3 = Regex.Replace(_input, "pattern", default(MatchEvaluator));
+                }
+            }
+
+            private class Foo14
+            {
+                public void Bar14()
+                {
+                    string value4 = Regex.Replace(_input, "pattern", default(MatchEvaluator), RegexOptions.None);
+                }
+            }
+
+            private class Foo15
+            {
+                public void Bar15()
+                {
+                    Action<object> action = f => { Match match3 = Regex.Match(_input, "pattern"); };
+                }
+            }
+
+            private class Foo16
+            {
+                public string Property
+                {
+                    get
+                    {
+                        Match match = Regex.Match(_input, _pattern);
+                        return null;
+                    }
                 }
             }
         }
 
-        private class Foo3
+        // n
+
+        private class Foo2
         {
-            private const string _const = "";
+            private readonly string _pattern;
 
-            private readonly MatchCollection _matches = Regex.Matches("input", "pattern");
-            private readonly MatchCollection _matches2 = Regex.Matches("input", "pattern", RegexOptions.None);
-            private readonly MatchCollection _matches3 = Regex.Matches("input", "pattern", RegexOptions.None, TimeSpan.Zero);
-        }
-
-        private class Foo4
-        {
-            private const string _const = "";
-
-            private void Bar()
+            public void Bar()
             {
-                string[] values = Regex.Split("input", "pattern");
-                string[] values2 = Regex.Split("input", "pattern", RegexOptions.None);
-                string[] values3 = Regex.Split("input", "pattern", RegexOptions.None, TimeSpan.Zero);
+                const RegexOptions options = RegexOptions.None;
+
+                const string pattern = "";
+
+                bool isMatch1 = Regex.IsMatch("input", _pattern);
+                bool isMatch2 = Regex.IsMatch("input", pattern);
+                bool isMatch3 = Regex.IsMatch("input", "pattern", options);
+                bool isMatch4 = Regex.IsMatch("input", "pattern", RegexOptions.None, TimeSpan.Zero);
+
+                Match match = Regex.Match("input", "pattern", RegexOptions.None, TimeSpan.Zero);
+
+                MatchCollection matches = Regex.Matches("input", "pattern", RegexOptions.None, TimeSpan.Zero);
+
+                string[] values = Regex.Split("input", "pattern", RegexOptions.None, TimeSpan.Zero);
+
+                string value3 = Regex.Replace("input", "pattern", default(MatchEvaluator), RegexOptions.None, TimeSpan.Zero);
+                string value4 = Regex.Replace("input", "pattern", "replacement", RegexOptions.None, TimeSpan.Zero);
             }
-        }
 
-        private class Foo5
-        {
-            private void Bar()
+            public void BarInstance()
             {
-                Action<object> action = f =>
-                {
-                    string value = Regex.Replace("input", "pattern", default(MatchEvaluator));
-                    string value2 = Regex.Replace("input", "pattern", "replacement");
-                    string value3 = Regex.Replace("input", "pattern", default(MatchEvaluator), RegexOptions.None);
-                    string value4 = Regex.Replace("input", "pattern", "replacement", RegexOptions.None);
-                    string value5 = Regex.Replace("input", "pattern", default(MatchEvaluator), RegexOptions.None, TimeSpan.Zero);
-                    string value6 = Regex.Replace("input", "pattern", "replacement", RegexOptions.None, TimeSpan.Zero);
-                };
+                Regex _regex = null;
+
+                bool isMatch1 = _regex.IsMatch("pattern");
+
+                Match match1 = _regex.Match("pattern");
+
+                MatchCollection matches1 = _regex.Matches("pattern");
+
+                string[] values1 = _regex.Split("pattern");
+
+                string value1 = _regex.Replace("pattern", "replacement");
+
+                Action<object> action = f => { Match match3 = _regex.Match("pattern"); };
             }
         }
     }
