@@ -22,7 +22,11 @@ namespace Roslynator.CSharp.CodeFixes
 
         public override FixAllProvider GetFixAllProvider()
         {
+#if DEBUG
+            return WellKnownFixAllProviders.BatchFixer;
+#else
             return null;
+#endif
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
