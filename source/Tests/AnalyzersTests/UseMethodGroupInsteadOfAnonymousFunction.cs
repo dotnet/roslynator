@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 #pragma warning disable CS0219, RCS1016, RCS1021, RCS1048, RCS1118, RCS1127, RCS1163, RCS1175, RCS1176, RCS1196, RCS1213
 
@@ -12,7 +13,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         private class Foo
         {
-            private void Bar()
+            public void Bar()
             {
                 IEnumerable<object> x = null;
                 Func<string, object> project = null;
@@ -164,7 +165,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 Foo foo = null;
 
                 func = () => foo.GetString();
+
                 func = delegate () { return foo.GetString(); };
+
+                Task task = Task.Run(() => Action());
             }
 
             private string GetString()
@@ -177,7 +181,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 return null;
             }
 
-            private void FunctionToAction()
+            public void FunctionToAction()
             {
                 Action action = () => GetHashCode();
             }
@@ -187,6 +191,10 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 action();
 
                 FunctionToAction(() => GetHashCode());
+            }
+
+            private void Action()
+            {
             }
         }
 

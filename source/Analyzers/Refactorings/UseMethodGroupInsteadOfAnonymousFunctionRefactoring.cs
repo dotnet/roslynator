@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -80,7 +79,8 @@ namespace Roslynator.CSharp.Refactorings
                 lambda,
                 (isReduced) ? memberAccessExpression.Name.WithoutTrivia() : expression,
                 methodSymbol,
-                semanticModel))
+                semanticModel,
+                cancellationToken))
             {
                 return;
             }
@@ -165,7 +165,8 @@ namespace Roslynator.CSharp.Refactorings
                 lambda,
                 (isReduced) ? memberAccessExpression.Name.WithoutTrivia() : expression,
                 methodSymbol,
-                semanticModel))
+                semanticModel,
+                cancellationToken))
             {
                 return;
             }
@@ -253,7 +254,8 @@ namespace Roslynator.CSharp.Refactorings
                 anonymousMethod,
                 (isReduced) ? memberAccessExpression.Name.WithoutTrivia() : expression,
                 methodSymbol,
-                semanticModel))
+                semanticModel,
+                cancellationToken))
             {
                 return;
             }
@@ -361,35 +363,41 @@ namespace Roslynator.CSharp.Refactorings
             AnonymousFunctionExpressionSyntax anonymousFunction,
             ExpressionSyntax expression,
             IMethodSymbol methodSymbol,
-            SemanticModel semanticModel)
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(anonymousFunction.SpanStart, expression, SpeculativeBindingOption.BindAsExpression);
+            SyntaxNode argumentExpression = anonymousFunction.WalkUpParentheses();
 
-            ISymbol symbol = symbolInfo.Symbol;
-
-            if (symbol?.Equals(methodSymbol) == true)
-                return true;
-
-            ImmutableArray<ISymbol> candidateSymbols = symbolInfo.CandidateSymbols;
-
-            if (candidateSymbols.Any())
+            if (argumentExpression.Parent is ArgumentSyntax argument)
             {
-                if (candidateSymbols.Length == 1)
+                if (argument.Parent is BaseArgumentListSyntax)
                 {
-                    if (candidateSymbols[0].Equals(methodSymbol))
-                        return true;
+                    SyntaxNode node = argument.Parent.Parent;
+
+                    SyntaxNode newNode = node.ReplaceNode(argument.Expression, expression);
+
+                    SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(node.SpanStart, newNode, SpeculativeBindingOption.BindAsExpression);
+
+                    methodSymbol = semanticModel.GetSymbol(node, cancellationToken) as IMethodSymbol;
+
+                    return methodSymbol != null
+                        && CheckSpeculativeSymbol(symbolInfo);
                 }
-                else if (!anonymousFunction.WalkUpParentheses().IsParentKind(SyntaxKind.Argument, SyntaxKind.AttributeArgument))
-                {
-                    foreach (ISymbol candidateSymbol in candidateSymbols)
-                    {
-                        if (candidateSymbol.Equals(methodSymbol))
-                            return true;
-                    }
-                }
+            }
+            else
+            {
+                SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(anonymousFunction.SpanStart, expression, SpeculativeBindingOption.BindAsExpression);
+
+                return CheckSpeculativeSymbol(symbolInfo);
             }
 
             return false;
+
+            bool CheckSpeculativeSymbol(SymbolInfo symbolInfo)
+            {
+                return symbolInfo.Symbol?.Equals(methodSymbol) == true
+                    || symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false)?.Equals(methodSymbol) == true;
+            }
         }
 
         private static bool IsSimpleInvocation(ExpressionSyntax expression)
