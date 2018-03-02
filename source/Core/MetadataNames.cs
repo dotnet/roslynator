@@ -43,6 +43,8 @@ namespace Roslynator
         public const string System_Runtime_InteropServices_LayoutKind = "System.Runtime.InteropServices.LayoutKind";
         public const string System_Runtime_InteropServices_StructLayoutAttribute = "System.Runtime.InteropServices.StructLayoutAttribute";
         public const string System_Runtime_Serialization_DataMemberAttribute = "System.Runtime.Serialization.DataMemberAttribute";
+        public const string System_Runtime_Serialization_SerializationInfo = "System.Runtime.Serialization.SerializationInfo";
+        public const string System_Runtime_Serialization_StreamingContext = "System.Runtime.Serialization.StreamingContext";
         public const string System_String = "System.String";
         public const string System_StringComparison = "System.StringComparison";
         public const string System_Text_RegularExpressions = "System.Text.RegularExpressions";

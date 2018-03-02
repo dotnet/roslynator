@@ -33,12 +33,20 @@ namespace Roslynator.CSharp.Analyzers.UnusedParameter
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                startContext.RegisterSyntaxNodeAction(AnalyzeConstructorDeclaration, SyntaxKind.ConstructorDeclaration);
+                Compilation compilation = startContext.Compilation;
+
+                INamedTypeSymbol serializationInfoSymbol = compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_Serialization_SerializationInfo);
+                INamedTypeSymbol streamingContextSymbol = null;
+
+                if (serializationInfoSymbol != null)
+                    streamingContextSymbol = compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_Serialization_StreamingContext);
+
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f, serializationInfoSymbol, streamingContextSymbol), SyntaxKind.ConstructorDeclaration);
                 startContext.RegisterSyntaxNodeAction(AnalyzeOperatorDeclaration, SyntaxKind.OperatorDeclaration);
                 startContext.RegisterSyntaxNodeAction(AnalyzeConversionOperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
                 startContext.RegisterSyntaxNodeAction(AnalyzeIndexerDeclaration, SyntaxKind.IndexerDeclaration);
 
-                INamedTypeSymbol eventArgsSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
+                INamedTypeSymbol eventArgsSymbol = compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
 
                 if (eventArgsSymbol != null)
                 {
