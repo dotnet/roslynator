@@ -15,6 +15,11 @@ namespace Roslynator.CodeGeneration.Markdown
 {
     public static class MarkdownGenerator
     {
+        private static void AddFootnote(this MDocument document)
+        {
+            document.Add(Environment.NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
+        }
+
         public static string CreateReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
             MDocument document = Document(
@@ -27,6 +32,8 @@ namespace Roslynator.CodeGeneration.Markdown
                     .OrderBy(f => f.Title, comparer)
                     .Select(refactoring => BulletItem(Link(refactoring.Title.TrimEnd('.'), $"docs/refactorings/{refactoring.Id}.md"))));
 
+            document.AddFootnote();
+
             return File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8)
                 + Environment.NewLine
                 + document;
@@ -37,6 +44,8 @@ namespace Roslynator.CodeGeneration.Markdown
             MDocument document = Document(
                 Heading2("Roslynator Refactorings"),
                 GetRefactorings());
+
+            document.AddFootnote();
 
             return document.ToString();
 
@@ -131,6 +140,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 GetRefactoringSamples(refactoring),
                 Link("full list of refactorings", "Refactorings.md"));
 
+            document.AddFootnote();
+
             return document.ToString(format);
         }
 
@@ -157,6 +168,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 FencedCodeBlock($"#pragma warning disable {analyzer.Id} // {analyzer.Title}\r\n#pragma warning restore {analyzer.Id} // {analyzer.Title}", LanguageIdentifiers.CSharp),
                 Heading3("Ruleset"),
                 BulletItem(Link("How to configure rule set", "../HowToConfigureAnalyzers.md")));
+
+            document.AddFootnote();
 
             return document.ToString(format);
 
@@ -189,6 +202,9 @@ namespace Roslynator.CodeGeneration.Markdown
                     .Where(f => f.FixableDiagnosticIds.Any(diagnosticId => diagnosticId == diagnostic.Id))
                     .Select(f => f.Title)
                     .OrderBy(f => f, comparer)));
+
+            document.AddFootnote();
+
             return document.ToString(MarkdownFormat.Default.WithTableOptions(MarkdownFormat.Default.TableOptions | TableOptions.FormatContent));
         }
 
@@ -208,6 +224,8 @@ namespace Roslynator.CodeGeneration.Markdown
                             CheckboxOrHyphen(f.IsEnabledByDefault));
                     })));
 
+            document.AddFootnote();
+
             return document.ToString();
         }
 
@@ -226,6 +244,8 @@ namespace Roslynator.CodeGeneration.Markdown
                         CheckboxOrHyphen(f.IsEnabledByDefault));
                     })));
 
+            document.AddFootnote();
+
             return document.ToString();
         }
 
@@ -236,6 +256,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 Table(
                     TableRow("Id", "Title"),
                     GetRows()));
+
+            document.AddFootnote();
 
             return document.ToString();
 
@@ -258,6 +280,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 Table(
                     TableRow("Category", "Title", "Id", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
                     GetRows()));
+
+            document.AddFootnote();
 
             return document.ToString();
 
