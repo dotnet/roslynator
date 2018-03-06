@@ -1,3 +1,13 @@
+### 1.7.2 (2018-03-06)
+
+#### Analyzers
+
+* Add analyzer [ReplaceInterpolatedStringWithStringConcatenation](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1217.md) (RCS1217).
+
+#### Refactorings
+
+* Add refactoring [ReplaceInterpolatedStringWithStringFormat](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0201.md) (RR0201).
+
 ### 1.7.1 (2018-02-14)
 
 #### Analyzers

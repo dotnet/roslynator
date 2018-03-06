@@ -133,3 +133,5 @@
 | [CS8070](../../docs/cs/CS8070.md) | Control cannot fall out of switch from final case label \('default'\)\. |
 | [CS8112](../../docs/cs/CS8112.md) | 'function' is a local function and must therefore always have a body\. |
 
+
+*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

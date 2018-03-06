@@ -79,6 +79,7 @@
 | Readability | [Reorder modifiers](../../docs/analyzers/RCS1019.md) | RCS1019 | \- |
 | Readability | [Reorder named arguments according to the order of parameters](../../docs/analyzers/RCS1205.md) | RCS1205 | &#x2713; |
 | Readability | [Reorder type parameter constraints](../../docs/analyzers/RCS1209.md) | RCS1209 | &#x2713; |
+| Readability | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | RCS1217 | &#x2713; |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | &#x2713; |
 | Readability | [Split variable declaration](../../docs/analyzers/RCS1081.md) | RCS1081 | \- |
 | Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | &#x2713; |
@@ -128,7 +129,6 @@
 | Redundancy | [Unused parameter](../../docs/analyzers/RCS1163.md) | RCS1163 | &#x2713; |
 | Redundancy | [Unused this parameter](../../docs/analyzers/RCS1175.md) | RCS1175 | &#x2713; |
 | Redundancy | [Unused type parameter](../../docs/analyzers/RCS1164.md) | RCS1164 | &#x2713; |
-| Simplification | [Avoid interpolated string with no interpolated text](../../docs/analyzers/RCS1214.md) | RCS1214 | &#x2713; |
 | Simplification | [Call 'Enumerable.Cast' instead of 'Enumerable.Select'](../../docs/analyzers/RCS1109.md) | RCS1109 | &#x2713; |
 | Simplification | [Call string.Concat instead of string.Join](../../docs/analyzers/RCS1150.md) | RCS1150 | &#x2713; |
 | Simplification | [Combine 'Enumerable.Where' method chain](../../docs/analyzers/RCS1112.md) | RCS1112 | &#x2713; |
@@ -152,6 +152,7 @@
 | Simplification | [Simplify logical negation](../../docs/analyzers/RCS1068.md) | RCS1068 | &#x2713; |
 | Simplification | [Simplify nested using statement](../../docs/analyzers/RCS1005.md) | RCS1005 | &#x2713; |
 | Simplification | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | RCS1020 | &#x2713; |
+| Simplification | [Unnecessary interpolated string](../../docs/analyzers/RCS1214.md) | RCS1214 | &#x2713; |
 | Simplification | [Use --/++ operator instead of assignment](../../docs/analyzers/RCS1089.md) | RCS1089 | &#x2713; |
 | Simplification | [Use ^ operator](../../docs/analyzers/RCS1195.md) | RCS1195 | &#x2713; |
 | Simplification | [Use auto-implemented property](../../docs/analyzers/RCS1085.md) | RCS1085 | &#x2713; |
@@ -200,3 +201,5 @@
 | Usage | [Use StringComparison when comparing strings](../../docs/analyzers/RCS1155.md) | RCS1155 | &#x2713; |
 | Usage | [Value type object is never equal to null](../../docs/analyzers/RCS1166.md) | RCS1166 | &#x2713; |
 
+
+*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
