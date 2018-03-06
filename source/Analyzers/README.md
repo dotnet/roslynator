@@ -198,7 +198,10 @@
 | RCS1211 | [Remove unnecessary else clause](../../docs/analyzers/RCS1211.md) | Redundancy | &#x2713; |
 | RCS1212 | [Remove redundant assignment](../../docs/analyzers/RCS1212.md) | Redundancy | &#x2713; |
 | RCS1213 | [Remove unused member declaration](../../docs/analyzers/RCS1213.md) | Redundancy | &#x2713; |
-| RCS1214 | [Avoid interpolated string with no interpolated text](../../docs/analyzers/RCS1214.md) | Simplification | &#x2713; |
+| RCS1214 | [Unnecessary interpolated string](../../docs/analyzers/RCS1214.md) | Simplification | &#x2713; |
 | RCS1215 | [Expression is always equal to true/false](../../docs/analyzers/RCS1215.md) | Redundancy | &#x2713; |
 | RCS1216 | [Unnecessary unsafe context](../../docs/analyzers/RCS1216.md) | Redundancy | &#x2713; |
+| RCS1217 | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | Readability | &#x2713; |
 
+
+*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

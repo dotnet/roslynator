@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CSharp.Comparers;
@@ -29,40 +28,62 @@ namespace Roslynator.CSharp.Helpers.ModifierHelpers
 
             SyntaxTokenList modifiers = GetModifiers(node);
 
-            Debug.Assert(modifiers.Any() || modifiers == default(SyntaxTokenList), node.ToString());
+            int insertIndex = (comparer ?? ModifierComparer.Instance).GetInsertIndex(modifiers, modifier);
 
-            if (!modifiers.Any())
+            var token = default(SyntaxToken);
+
+            if (!modifiers.Any()
+                || insertIndex == modifiers.Count)
             {
                 SyntaxNodeOrToken nodeOrToken = FindNodeOrTokenAfterModifiers(node);
 
-                if (!nodeOrToken.IsKind(SyntaxKind.None))
+                if (nodeOrToken.IsToken)
                 {
-                    SyntaxTriviaList trivia = nodeOrToken.GetLeadingTrivia();
-
-                    if (trivia.Any())
-                    {
-                        SyntaxTriviaList leadingTrivia = modifier.LeadingTrivia;
-
-                        if (!leadingTrivia.IsSingleElasticMarker())
-                            trivia = trivia.AddRange(leadingTrivia);
-
-                        if (nodeOrToken.IsNode)
-                        {
-                            SyntaxNode node2 = nodeOrToken.AsNode();
-                            node = node.ReplaceNode(node2, node2.WithoutLeadingTrivia());
-                        }
-                        else
-                        {
-                            SyntaxToken token = nodeOrToken.AsToken();
-                            node = node.ReplaceToken(token, token.WithoutLeadingTrivia());
-                        }
-
-                        return WithModifiers(node, TokenList(modifier.WithLeadingTrivia(trivia)));
-                    }
+                    token = nodeOrToken.AsToken();
+                }
+                else if (nodeOrToken.IsNode)
+                {
+                    token = nodeOrToken.AsNode().GetFirstToken();
                 }
             }
+            else
+            {
+                token = modifiers[insertIndex];
+            }
 
-            return WithModifiers(node, modifiers.InsertModifier(modifier, comparer ?? ModifierComparer.Instance));
+            if (token != default(SyntaxToken))
+            {
+                SyntaxTriviaList newLeadingTrivia = token.LeadingTrivia;
+
+                if (newLeadingTrivia.Any())
+                {
+                    SyntaxTriviaList leadingTrivia = modifier.LeadingTrivia;
+
+                    if (!leadingTrivia.IsSingleElasticMarker())
+                        newLeadingTrivia = newLeadingTrivia.AddRange(leadingTrivia);
+
+                    modifier = modifier.WithLeadingTrivia(newLeadingTrivia);
+
+                    SyntaxToken newToken = token.WithoutLeadingTrivia();
+
+                    if (!modifiers.Any()
+                        || insertIndex == modifiers.Count)
+                    {
+                        node = node.ReplaceToken(token, newToken);
+                    }
+                    else
+                    {
+                        modifiers = modifiers.ReplaceAt(insertIndex, newToken);
+                    }
+                }
+
+                if (modifier.TrailingTrivia.IsSingleElasticMarker())
+                    modifier = modifier.WithTrailingTrivia(TriviaList(Space));
+            }
+
+            modifiers = modifiers.Insert(insertIndex, modifier);
+
+            return WithModifiers(node, modifiers);
         }
 
         public TNode RemoveModifier(TNode node, SyntaxKind modifierKind)

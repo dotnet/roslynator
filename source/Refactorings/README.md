@@ -147,6 +147,7 @@
 | RR0193 | [Replace interpolated string with concatenation](../../docs/refactorings/RR0193.md) | &#x2713; |
 | RR0135 | [Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md) | &#x2713; |
 | RR0136 | [Replace interpolated string with string literal](../../docs/refactorings/RR0136.md) | &#x2713; |
+| RR0201 | [Replace interpolated string with string.Format](../../docs/refactorings/RR0201.md) | &#x2713; |
 | RR0137 | [Replace method group with lambda](../../docs/refactorings/RR0137.md) | &#x2713; |
 | RR0138 | [Replace method with property](../../docs/refactorings/RR0138.md) | \- |
 | RR0139 | [Replace null literal expression with default expression](../../docs/refactorings/RR0139.md) | &#x2713; |
@@ -195,3 +196,5 @@
 | RR0176 | [Wrap in try-catch](../../docs/refactorings/RR0176.md) | &#x2713; |
 | RR0177 | [Wrap in using statement](../../docs/refactorings/RR0177.md) | &#x2713; |
 
+
+*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

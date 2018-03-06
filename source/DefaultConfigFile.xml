@@ -199,6 +199,7 @@
       <Refactoring Id="RR0198" IsEnabled="true" /> <!-- InlineProperty -->
       <Refactoring Id="RR0199" IsEnabled="true" /> <!-- RemoveEnumMemberValue -->
       <Refactoring Id="RR0200" IsEnabled="true" /> <!-- UncommentMultiLineComment -->
+      <Refactoring Id="RR0201" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithStringFormat -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
