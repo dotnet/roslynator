@@ -44,7 +44,7 @@
     <Compile Include="RemoveEnumMemberValueRefactoring.cs" />
     <Compile Include="RemoveUnnecessaryElseClauseRefactoring.cs" />
     <Compile Include="ReplaceCommentWithDocumentationCommentRefactoring.cs" />
-    <Compile Include="ReplaceIfElseWithIfReturnRefactoring.cs" />
+    <Compile Include="SplitIfElseRefactoring.cs" />
     <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="AddTypeParameterRefactoring.cs" />
     <Compile Include="CallConfigureAwaitRefactoring.cs" />

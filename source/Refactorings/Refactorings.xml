@@ -1381,11 +1381,36 @@ Foo3();]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0190" Identifier="ReplaceIfElseWithIfReturn" Title="Replace if-else with if-return">
+  <Refactoring Id="RR0190" Identifier="SplitIfElse" Title="Split if-else">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
-    <Span>selected if statement or if keyword</Span>
+    <Span>selected if statement or topmost if keyword</Span>
+    <Samples>
+      <Sample><Before><![CDATA[if (condition1)
+{
+    return Foo1();
+{
+else if (condition2)
+{
+    return Foo2();
+}
+else
+{
+    return false;
+}]]></Before><After><![CDATA[if (condition1)
+{
+    return Foo1();
+{
+
+if (condition2)
+{
+    return Foo2();
+}
+
+return false;]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0191" Identifier="UseCSharp6DictionaryInitializer" Title="Use C# 6.0 dictionary initializer">
     <Syntaxes>

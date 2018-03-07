@@ -82,10 +82,10 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithIfReturn)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfElse)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(ifStatement.IfKeyword))
             {
-                ReplaceIfElseWithIfReturnRefactoring.ComputeRefactoring(context, ifStatement);
+                SplitIfElseRefactoring.ComputeRefactoring(context, ifStatement);
             }
         }
     }
