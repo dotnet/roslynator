@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnnecessaryInterpolation); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -27,14 +27,14 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out InterpolationSyntax interpolation))
                 return;
 
-            string innerText = ((LiteralExpressionSyntax)interpolation.Expression).GetStringLiteralInnerText();
+            Diagnostic diagnostic = context.Diagnostics[0];
 
             CodeAction codeAction = CodeAction.Create(
-                $"Merge '{innerText}' into interpolated string",
-                cancellationToken => MergeInterpolationIntoInterpolatedStringRefactoring.RefactorAsync(context.Document, interpolation, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString));
+                "Make string literal part of interpolated string",
+                cancellationToken => UnnecessaryInterpolationRefactoring.RefactorAsync(context.Document, interpolation, cancellationToken),
+                GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

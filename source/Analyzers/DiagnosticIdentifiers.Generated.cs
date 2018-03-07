@@ -106,7 +106,7 @@ namespace Roslynator.CSharp
         public const string MakeClassStatic = "RCS1102";
         public const string ReplaceIfStatementWithAssignment = "RCS1103";
         public const string SimplifyConditionalExpression = "RCS1104";
-        public const string MergeInterpolationIntoInterpolatedString = "RCS1105";
+        public const string UnnecessaryInterpolation = "RCS1105";
         public const string RemoveEmptyDestructor = "RCS1106";
         public const string RemoveRedundantStringToCharArrayCall = "RCS1107";
         public const string AddStaticModifierToAllPartialClassDeclarations = "RCS1108";

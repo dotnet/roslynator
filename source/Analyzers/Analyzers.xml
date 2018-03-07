@@ -2187,10 +2187,10 @@ else
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="MergeInterpolationIntoInterpolatedString">
+  <Analyzer Identifier="UnnecessaryInterpolation">
     <Id>RCS1105</Id>
-    <Title>Merge interpolation into interpolated string.</Title>
-    <MessageFormat>Merge interpolation into interpolated string.</MessageFormat>
+    <Title>Unncessary interpolation.</Title>
+    <MessageFormat>Unncessary interpolation.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

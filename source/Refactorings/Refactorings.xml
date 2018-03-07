@@ -543,7 +543,7 @@ if (y)
       <Syntax>selected if statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0076" Identifier="MergeInterpolationIntoInterpolatedString" Title="Merge interpolation into interpolated string">
+  <Refactoring Id="RR0076" Identifier="MergeInterpolationIntoInterpolatedString" Title="Merge interpolation into interpolated string" IsObsolete="true">
     <Syntaxes>
       <Syntax>interpolation</Syntax>
     </Syntaxes>

@@ -1220,15 +1220,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1105</summary>
-        public static readonly DiagnosticDescriptor MergeInterpolationIntoInterpolatedString = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString, 
-            title:              "Merge interpolation into interpolated string.", 
-            messageFormat:      "Merge interpolation into interpolated string.", 
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryInterpolation, 
+            title:              "Unncessary interpolation.", 
+            messageFormat:      "Unncessary interpolation.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryInterpolation}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1106</summary>
