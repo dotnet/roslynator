@@ -42,7 +42,7 @@ When it is requested IDE will suggest a list of refactorings that are applicable
 
 #### Refactorings in the IDE
 
-Hotkey Ctrl+. will display available refactorings. Refactorings have lower precedence so they are displayed below analyzers. There is no identifier and no description in the fly-out menu.
+Hotkey Ctrl+. will display available refactorings. Refactorings have lower precedence so they are displayed below diagnostics. There is no identifier and no description in the fly-out menu.
 
 ![Refactoring in Context Menu](/images/RefactoringInContextMenu.png)
 
