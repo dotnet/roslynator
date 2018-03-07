@@ -11,14 +11,14 @@ Unfortunately, some developers do not distiguish between these two concepts whic
 
 Term | Description
 --- | ---
-Analyzer | Represents a general rule (code style) that should be be followed.
+Analyzer | Represents a general rule (code style) that should be followed.
 Diagnostic | Represents a specific issue reported by the analyzer.
 Code Fix | Represents an operation that will fix reported issue.
 Refactoring | Represents a single operation that is provided on demand for a given span of text.
 
 ## Analyzers
 
-> Analyzer represents a general rule (code style) that should be be followed.
+> Analyzer represents a general rule (code style) that should be followed.
 
 Analyzer runs in background and analyzes the source code. When it finds a code that is not in compliance with a rule it will report a **diagnostic**. The diagnostic is then displayed in the IDE (Error List, squiggles) and can be fixed if there is a **code fix**. Code fix may provide 'Fix all occurrences in ...' option which enables to apply multiple fixes at once.
 
