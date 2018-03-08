@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -9,6 +8,7 @@ using System.Text;
 using DotMarkdown;
 using DotMarkdown.Linq;
 using Roslynator.Metadata;
+using static System.Environment;
 using static DotMarkdown.Linq.MFactory;
 
 namespace Roslynator.CodeGeneration.Markdown
@@ -17,7 +17,7 @@ namespace Roslynator.CodeGeneration.Markdown
     {
         private static void AddFootnote(this MDocument document)
         {
-            document.Add(Environment.NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
+            document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
         }
 
         public static string CreateReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
@@ -35,7 +35,7 @@ namespace Roslynator.CodeGeneration.Markdown
             document.AddFootnote();
 
             return File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8)
-                + Environment.NewLine
+                + NewLine
                 + document;
         }
 
@@ -79,21 +79,21 @@ namespace Roslynator.CodeGeneration.Markdown
                 foreach (ImageDescriptor image in refactoring.Images)
                 {
                     if (!isFirst)
-                        yield return Environment.NewLine;
+                        yield return NewLine;
 
                     yield return RefactoringImage(refactoring, image.Name);
-                    yield return Environment.NewLine;
+                    yield return NewLine;
 
                     isFirst = false;
                 }
 
-                yield return Environment.NewLine;
+                yield return NewLine;
             }
             else
             {
                 yield return RefactoringImage(refactoring, refactoring.Identifier);
-                yield return Environment.NewLine;
-                yield return Environment.NewLine;
+                yield return NewLine;
+                yield return NewLine;
             }
         }
 
@@ -138,7 +138,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 (!string.IsNullOrEmpty(refactoring.Summary)) ? Raw(refactoring.Summary) : null,
                 Heading3("Usage"),
                 GetRefactoringSamples(refactoring),
-                Link("full list of refactorings", "Refactorings.md"));
+                Link("full list of refactorings", "Refactorings.md"),
+                NewLine);
 
             document.AddFootnote();
 
