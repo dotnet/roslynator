@@ -148,7 +148,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         var nodes = new SyntaxNode[] { type, expression };
 
-                        newNode = node.ReplaceNodes(nodes, (f, g) =>
+                        newNode = node.ReplaceNodes(nodes, (f, _) =>
                         {
                             if (f == type)
                             {

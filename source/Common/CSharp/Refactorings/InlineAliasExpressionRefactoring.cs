@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 
             ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
 
-            SyntaxNode newNode = parent.ReplaceNodes(names, (f, g) =>
+            SyntaxNode newNode = parent.ReplaceNodes(names, (f, _) =>
             {
                 if (symbol != null
                     && semanticModel

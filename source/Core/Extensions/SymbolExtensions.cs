@@ -1615,7 +1615,7 @@ namespace Roslynator
 
         public static IEventSymbol FindEvent(this ITypeSymbol typeSymbol, string name)
         {
-            return (IEventSymbol)FindMember(typeSymbol, name, f => f.IsEvent());
+            return (IEventSymbol)FindMember(typeSymbol, name, IsEvent);
         }
 
         public static IEventSymbol FindEvent(this ITypeSymbol typeSymbol, Func<IEventSymbol, bool> predicate)
@@ -1630,7 +1630,7 @@ namespace Roslynator
 
         public static IFieldSymbol FindField(this ITypeSymbol typeSymbol, string name)
         {
-            return (IFieldSymbol)FindMember(typeSymbol, name, f => f.IsField());
+            return (IFieldSymbol)FindMember(typeSymbol, name, IsField);
         }
 
         public static IFieldSymbol FindField(this ITypeSymbol typeSymbol, Func<IFieldSymbol, bool> predicate)
@@ -1645,7 +1645,7 @@ namespace Roslynator
 
         public static IMethodSymbol FindMethod(this ITypeSymbol typeSymbol, string name)
         {
-            return (IMethodSymbol)FindMember(typeSymbol, name, f => f.IsMethod());
+            return (IMethodSymbol)FindMember(typeSymbol, name, IsMethod);
         }
 
         public static IMethodSymbol FindMethod(this ITypeSymbol typeSymbol, Func<IMethodSymbol, bool> predicate)
@@ -1660,7 +1660,7 @@ namespace Roslynator
 
         public static IPropertySymbol FindProperty(this ITypeSymbol typeSymbol, string name)
         {
-            return (IPropertySymbol)FindMember(typeSymbol, name, f => f.IsProperty());
+            return (IPropertySymbol)FindMember(typeSymbol, name, IsProperty);
         }
 
         public static IPropertySymbol FindProperty(this ITypeSymbol typeSymbol, Func<IPropertySymbol, bool> predicate)
@@ -1717,56 +1717,56 @@ namespace Roslynator
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, f => f.IsEvent() && predicate((IEventSymbol)f))
-                : ExistsMember(typeSymbol, f => f.IsEvent());
+                : ExistsMember(typeSymbol, IsEvent);
         }
 
         public static bool ExistsEvent(this ITypeSymbol typeSymbol, string name, Func<IEventSymbol, bool> predicate = null)
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, name, f => f.IsEvent() && predicate((IEventSymbol)f))
-                : ExistsMember(typeSymbol, name, f => f.IsEvent());
+                : ExistsMember(typeSymbol, name, IsEvent);
         }
 
         public static bool ExistsField(this ITypeSymbol typeSymbol, Func<IFieldSymbol, bool> predicate = null)
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, f => f.IsField() && predicate((IFieldSymbol)f))
-                : ExistsMember(typeSymbol, f => f.IsField());
+                : ExistsMember(typeSymbol, IsField);
         }
 
         public static bool ExistsField(this ITypeSymbol typeSymbol, string name, Func<IFieldSymbol, bool> predicate = null)
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, name, f => f.IsField() && predicate((IFieldSymbol)f))
-                : ExistsMember(typeSymbol, name, f => f.IsField());
+                : ExistsMember(typeSymbol, name, IsField);
         }
 
         public static bool ExistsMethod(this ITypeSymbol typeSymbol, Func<IMethodSymbol, bool> predicate = null)
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, f => f.IsMethod() && predicate((IMethodSymbol)f))
-                : ExistsMember(typeSymbol, f => f.IsMethod());
+                : ExistsMember(typeSymbol, IsMethod);
         }
 
         public static bool ExistsMethod(this ITypeSymbol typeSymbol, string name, Func<IMethodSymbol, bool> predicate = null)
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, name, f => f.IsMethod() && predicate((IMethodSymbol)f))
-                : ExistsMember(typeSymbol, name, f => f.IsMethod());
+                : ExistsMember(typeSymbol, name, IsMethod);
         }
 
         public static bool ExistsProperty(this ITypeSymbol typeSymbol, Func<IPropertySymbol, bool> predicate = null)
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, f => f.IsProperty() && predicate((IPropertySymbol)f))
-                : ExistsMember(typeSymbol, f => f.IsProperty());
+                : ExistsMember(typeSymbol, IsProperty);
         }
 
         public static bool ExistsProperty(this ITypeSymbol typeSymbol, string name, Func<IPropertySymbol, bool> predicate = null)
         {
             return (predicate != null)
                 ? ExistsMember(typeSymbol, name, f => f.IsProperty() && predicate((IPropertySymbol)f))
-                : ExistsMember(typeSymbol, name, f => f.IsProperty());
+                : ExistsMember(typeSymbol, name, IsProperty);
         }
 
         internal static IFieldSymbol FindFieldWithConstantValue(this ITypeSymbol typeSymbol, int value)

@@ -89,9 +89,9 @@ namespace Roslynator.CSharp.Refactorings.If
                                         condition,
                                         (ExpressionStatementSyntax)statement1,
                                         (ExpressionStatementSyntax)statement2,
+                                        options,
                                         semanticModel,
-                                        cancellationToken,
-                                        options);
+                                        cancellationToken);
                                 }
                             case SyntaxKind.ReturnStatement:
                                 {
@@ -100,10 +100,10 @@ namespace Roslynator.CSharp.Refactorings.If
                                         condition,
                                         ((ReturnStatementSyntax)statement1).Expression?.WalkDownParentheses(),
                                         ((ReturnStatementSyntax)statement2).Expression?.WalkDownParentheses(),
-                                        semanticModel,
-                                        cancellationToken,
                                         options,
-                                        isYield: false);
+                                        isYield: false,
+                                        semanticModel: semanticModel,
+                                        cancellationToken: cancellationToken);
                                 }
                             case SyntaxKind.YieldReturnStatement:
                                 {
@@ -112,10 +112,10 @@ namespace Roslynator.CSharp.Refactorings.If
                                         condition,
                                         ((YieldStatementSyntax)statement1).Expression?.WalkDownParentheses(),
                                         ((YieldStatementSyntax)statement2).Expression?.WalkDownParentheses(),
-                                        semanticModel,
-                                        cancellationToken,
                                         options,
-                                        isYield: true);
+                                        isYield: true,
+                                        semanticModel: semanticModel,
+                                        cancellationToken: cancellationToken);
                                 }
                         }
                     }
@@ -134,10 +134,10 @@ namespace Roslynator.CSharp.Refactorings.If
             ExpressionSyntax condition,
             ExpressionSyntax expression1,
             ExpressionSyntax expression2,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken,
             IfAnalysisOptions options,
-            bool isYield)
+            bool isYield,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             if (expression1?.IsMissing != false)
                 return Empty;
@@ -263,9 +263,9 @@ namespace Roslynator.CSharp.Refactorings.If
             ExpressionSyntax condition,
             ExpressionStatementSyntax expressionStatement1,
             ExpressionStatementSyntax expressionStatement2,
+            IfAnalysisOptions options,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken,
-            IfAnalysisOptions options)
+            CancellationToken cancellationToken)
         {
             SimpleAssignmentStatementInfo assignment1 = SyntaxInfo.SimpleAssignmentStatementInfo(expressionStatement1);
 
@@ -538,10 +538,10 @@ namespace Roslynator.CSharp.Refactorings.If
                 condition,
                 ((ReturnStatementSyntax)statement).Expression?.WalkDownParentheses(),
                 returnStatement.Expression?.WalkDownParentheses(),
-                semanticModel,
-                cancellationToken,
                 options,
-                isYield: false);
+                isYield: false,
+                semanticModel: semanticModel,
+                cancellationToken: cancellationToken);
         }
 
         private ImmutableArray<IfRefactoring> ToImmutableArray()

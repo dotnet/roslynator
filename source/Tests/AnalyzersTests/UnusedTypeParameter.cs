@@ -2,7 +2,7 @@
 
 using System;
 
-#pragma warning disable CS0168, CS8321, RCS1100, RCS1016, RCS1079, RCS1140, RCS1163, RCS1176
+#pragma warning disable CS0168, CS0219, CS8321, RCS1100, RCS1016, RCS1079, RCS1140, RCS1163, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -12,14 +12,13 @@ namespace Roslynator.CSharp.Analyzers.Tests
         {
             public void Bar<T>()
             {
-                //void LocalFunction<T2>()
-                //{
-                //}
+                void LocalFunction<T2>()
+                {
+                }
             }
 
-            public T2 Bar<T1, T2>(T2 value)
+            public void Bar<T1, T2>(T2 value)
             {
-                return value;
             }
 
             /// <summary>
@@ -31,10 +30,6 @@ namespace Roslynator.CSharp.Analyzers.Tests
             /// <returns></returns>
             public void Bar<T1, T2>()
             {
-                //T3 LocalFunction<T3>()
-                //{
-                //    return default(T3);
-                //}
             }
 
             // n
@@ -51,6 +46,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             public void Bar<T>(T x)
             {
+                x = default(T);
             }
 
             public void Bar2<T>(object x)
@@ -160,6 +156,24 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private interface IFoo
         {
             void InterfaceMethod<T>();
+        }
+
+        internal interface IFoo<T>
+        {
+        }
+
+        internal class FooConstraint<T1, T2> where T1 : IFoo<T2>
+        {
+            internal void Bar<T3, T4>() where T3 : IFoo<T4>
+            {
+                var t1 = default(T1);
+                var t3 = default(T3);
+
+                void LocalFunction<T5, T6>() where T5 : IFoo<T6>
+                {
+                    var t5 = default(T5);
+                }
+            }
         }
     }
 }

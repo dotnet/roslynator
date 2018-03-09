@@ -9,18 +9,18 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class UncommentRefactoring
+    internal static class UncommentSingleLineCommentRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,
-            SyntaxTrivia comment,
+            SyntaxTrivia singleLineComment,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxToken token = comment.Token;
+            SyntaxToken token = singleLineComment.Token;
 
             SyntaxTriviaList triviaList;
 
-            int index = token.LeadingTrivia.IndexOf(comment);
+            int index = token.LeadingTrivia.IndexOf(singleLineComment);
 
             if (index != -1)
             {
@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                index = token.TrailingTrivia.IndexOf(comment);
+                index = token.TrailingTrivia.IndexOf(singleLineComment);
                 triviaList = token.TrailingTrivia;
             }
 

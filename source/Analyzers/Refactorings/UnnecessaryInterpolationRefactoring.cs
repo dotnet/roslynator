@@ -6,29 +6,31 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.Utilities;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class MergeInterpolationIntoInterpolatedStringRefactoring
+    internal static class UnnecessaryInterpolationRefactoring
     {
-        public static bool CanRefactor(InterpolationSyntax interpolation)
+        public static void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
         {
-            if (interpolation == null)
-                throw new ArgumentNullException(nameof(interpolation));
+            var interpolation = (InterpolationSyntax)context.Node;
 
             ExpressionSyntax expression = interpolation.Expression;
 
-            if (expression?.IsKind(SyntaxKind.StringLiteralExpression) == true
-                && (interpolation.Parent is InterpolatedStringExpressionSyntax interpolatedString))
-            {
-                var literalExpression = (LiteralExpressionSyntax)expression;
+            if (expression?.IsKind(SyntaxKind.StringLiteralExpression) != true)
+                return;
 
-                if (interpolatedString.IsVerbatim() == literalExpression.Token.IsVerbatimStringLiteral())
-                    return true;
-            }
+            if (!(interpolation.Parent is InterpolatedStringExpressionSyntax interpolatedString))
+                return;
 
-            return false;
+            var literalExpression = (LiteralExpressionSyntax)expression;
+
+            if (interpolatedString.IsVerbatim() != literalExpression.Token.IsVerbatimStringLiteral())
+                return;
+
+            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryInterpolation, interpolation);
         }
 
         public static Task<Document> RefactorAsync(

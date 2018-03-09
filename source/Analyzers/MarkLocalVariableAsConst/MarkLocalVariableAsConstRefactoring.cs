@@ -58,35 +58,35 @@ namespace Roslynator.CSharp.Analyzers.MarkLocalVariableAsConst
                     return;
             }
 
-            if (IsAnyVariableAssigned(localInfo.Variables, statements, index + 1))
+            if (!CanBeMarkedAsConst(localInfo.Variables, statements, index + 1))
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.MarkLocalVariableAsConst, localInfo.Type);
         }
 
-        private static bool IsAnyVariableAssigned(SeparatedSyntaxList<VariableDeclaratorSyntax> variables, SyntaxList<StatementSyntax> statements, int startIndex)
+        private static bool CanBeMarkedAsConst(
+            SeparatedSyntaxList<VariableDeclaratorSyntax> variables,
+            SyntaxList<StatementSyntax> statements,
+            int startIndex)
         {
+            MarkLocalVariableAsConstWalker walker = MarkLocalVariableAsConstWalkerCache.GetInstance();
+
+            foreach (VariableDeclaratorSyntax variable in variables)
+                walker.Identifiers.Add(variable.Identifier.ValueText);
+
             for (int i = startIndex; i < statements.Count; i++)
             {
-                MarkLocalVariableAsConstWalker walker = MarkLocalVariableAsConstWalkerCache.Acquire();
-
                 walker.Visit(statements[i]);
 
-                HashSet<string> assigned = MarkLocalVariableAsConstWalkerCache.GetAssignedAndRelease(walker);
-
-                if (assigned != null)
+                if (walker.IsMatch)
                 {
-                    foreach (VariableDeclaratorSyntax variable in variables)
-                    {
-                        if (assigned.Contains(variable.Identifier.ValueText))
-                            return true;
-                    }
-
-                    walker.Clear();
+                    MarkLocalVariableAsConstWalkerCache.Free(walker);
+                    return false;
                 }
             }
 
-            return false;
+            MarkLocalVariableAsConstWalkerCache.Free(walker);
+            return true;
         }
 
         private static bool HasConstantValue(

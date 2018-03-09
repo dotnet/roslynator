@@ -9,15 +9,7 @@ namespace Roslynator.CSharp.Refactorings.RemoveRedundantStatement
     {
         protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
         {
-            if (parentKind != SyntaxKind.DoStatement
-                && parentKind != SyntaxKind.WhileStatement
-                && parentKind != SyntaxKind.ForStatement
-                && parentKind != SyntaxKind.ForEachStatement)
-            {
-                return false;
-            }
-
-            return base.IsFixable(statement, block, parentKind);
+            return parentKind.CanContainContinueStatement();
         }
     }
 }

@@ -19,12 +19,12 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
         public CancellationToken CancellationToken { get; set; }
 
-        public bool IsConst { get; set; }
+        public bool IsAnyNodeConst { get; private set; }
 
         public void Reset()
         {
             Nodes.Clear();
-            IsConst = false;
+            IsAnyNodeConst = false;
             _isEmpty = false;
         }
 
@@ -72,10 +72,13 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
             Nodes.Add(new NodeSymbolInfo(name, node));
         }
 
-        public void AddNodes(VariableDeclarationSyntax declaration)
+        public void AddNodes(VariableDeclarationSyntax declaration, bool isConst = false)
         {
             foreach (VariableDeclaratorSyntax declarator in declaration.Variables)
                 AddNode(declarator.Identifier.ValueText, declarator);
+
+            if (isConst)
+                IsAnyNodeConst = true;
         }
 
         private void RemoveNodeAt(int index)
@@ -106,7 +109,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
         private void VisitAttributeLists(SyntaxList<AttributeListSyntax> attributeLists)
         {
-            if (!IsConst)
+            if (!IsAnyNodeConst)
                 return;
 
             foreach (AttributeListSyntax attributeList in attributeLists)
@@ -250,7 +253,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
         public override void VisitBracketedParameterList(BracketedParameterListSyntax node)
         {
-            if (IsConst)
+            if (IsAnyNodeConst)
                 base.VisitBracketedParameterList(node);
         }
 
@@ -499,7 +502,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
         {
             VisitAttributeLists(node.AttributeLists);
 
-            if (IsConst)
+            if (IsAnyNodeConst)
             {
                 foreach (EnumMemberDeclarationSyntax member in node.Members)
                     Visit(member);
@@ -871,7 +874,7 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
         public override void VisitParameterList(ParameterListSyntax node)
         {
-            if (IsConst)
+            if (IsAnyNodeConst)
                 base.VisitParameterList(node);
 
             //base.VisitParameterList(node);

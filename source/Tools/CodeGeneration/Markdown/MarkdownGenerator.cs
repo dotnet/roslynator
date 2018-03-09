@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
@@ -9,12 +8,18 @@ using System.Text;
 using DotMarkdown;
 using DotMarkdown.Linq;
 using Roslynator.Metadata;
+using static System.Environment;
 using static DotMarkdown.Linq.MFactory;
 
 namespace Roslynator.CodeGeneration.Markdown
 {
     public static class MarkdownGenerator
     {
+        private static void AddFootnote(this MDocument document)
+        {
+            document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
+        }
+
         public static string CreateReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
             MDocument document = Document(
@@ -27,8 +32,10 @@ namespace Roslynator.CodeGeneration.Markdown
                     .OrderBy(f => f.Title, comparer)
                     .Select(refactoring => BulletItem(Link(refactoring.Title.TrimEnd('.'), $"docs/refactorings/{refactoring.Id}.md"))));
 
+            document.AddFootnote();
+
             return File.ReadAllText(@"..\text\ReadMe.txt", Encoding.UTF8)
-                + Environment.NewLine
+                + NewLine
                 + document;
         }
 
@@ -37,6 +44,8 @@ namespace Roslynator.CodeGeneration.Markdown
             MDocument document = Document(
                 Heading2("Roslynator Refactorings"),
                 GetRefactorings());
+
+            document.AddFootnote();
 
             return document.ToString();
 
@@ -70,21 +79,21 @@ namespace Roslynator.CodeGeneration.Markdown
                 foreach (ImageDescriptor image in refactoring.Images)
                 {
                     if (!isFirst)
-                        yield return Environment.NewLine;
+                        yield return NewLine;
 
                     yield return RefactoringImage(refactoring, image.Name);
-                    yield return Environment.NewLine;
+                    yield return NewLine;
 
                     isFirst = false;
                 }
 
-                yield return Environment.NewLine;
+                yield return NewLine;
             }
             else
             {
                 yield return RefactoringImage(refactoring, refactoring.Identifier);
-                yield return Environment.NewLine;
-                yield return Environment.NewLine;
+                yield return NewLine;
+                yield return NewLine;
             }
         }
 
@@ -126,9 +135,13 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name))),
                     (!string.IsNullOrEmpty(refactoring.Span)) ? TableRow("Span", refactoring.Span) : null,
                     TableRow("Enabled by Default", CheckboxOrHyphen(refactoring.IsEnabledByDefault))),
+                (!string.IsNullOrEmpty(refactoring.Summary)) ? Raw(refactoring.Summary) : null,
                 Heading3("Usage"),
                 GetRefactoringSamples(refactoring),
-                Link("full list of refactorings", "Refactorings.md"));
+                Link("full list of refactorings", "Refactorings.md"),
+                NewLine);
+
+            document.AddFootnote();
 
             return document.ToString(format);
         }
@@ -147,6 +160,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Enabled by Default", CheckboxOrHyphen(analyzer.IsEnabledByDefault)),
                     TableRow("Supports Fade-Out", CheckboxOrHyphen(analyzer.SupportsFadeOut)),
                     TableRow("Supports Fade-Out Analyzer", CheckboxOrHyphen(analyzer.SupportsFadeOutAnalyzer))),
+                (!string.IsNullOrEmpty(analyzer.Summary)) ? Raw(analyzer.Summary) : null,
                 Samples(),
                 Heading2("How to Suppress"),
                 Heading3("SuppressMessageAttribute"),
@@ -155,6 +169,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 FencedCodeBlock($"#pragma warning disable {analyzer.Id} // {analyzer.Title}\r\n#pragma warning restore {analyzer.Id} // {analyzer.Title}", LanguageIdentifiers.CSharp),
                 Heading3("Ruleset"),
                 BulletItem(Link("How to configure rule set", "../HowToConfigureAnalyzers.md")));
+
+            document.AddFootnote();
 
             return document.ToString(format);
 
@@ -187,6 +203,9 @@ namespace Roslynator.CodeGeneration.Markdown
                     .Where(f => f.FixableDiagnosticIds.Any(diagnosticId => diagnosticId == diagnostic.Id))
                     .Select(f => f.Title)
                     .OrderBy(f => f, comparer)));
+
+            document.AddFootnote();
+
             return document.ToString(MarkdownFormat.Default.WithTableOptions(MarkdownFormat.Default.TableOptions | TableOptions.FormatContent));
         }
 
@@ -194,6 +213,7 @@ namespace Roslynator.CodeGeneration.Markdown
         {
             MDocument document = Document(
                 Heading2("Roslynator Analyzers"),
+                Link("Search Analyzers", "http://pihrt.net/Roslynator/Analyzers"),
                 Table(
                     TableRow("Id", "Title", "Category", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
                     analyzers.OrderBy(f => f.Id, comparer).Select(f =>
@@ -205,6 +225,8 @@ namespace Roslynator.CodeGeneration.Markdown
                             CheckboxOrHyphen(f.IsEnabledByDefault));
                     })));
 
+            document.AddFootnote();
+
             return document.ToString();
         }
 
@@ -212,6 +234,7 @@ namespace Roslynator.CodeGeneration.Markdown
         {
             MDocument document = Document(
                 Heading2("Roslynator Refactorings"),
+                Link("Search Refactorings", "http://pihrt.net/Roslynator/Refactorings"),
                 Table(
                     TableRow("Id", "Title", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
                     refactorings.OrderBy(f => f.Title, comparer).Select(f =>
@@ -221,6 +244,8 @@ namespace Roslynator.CodeGeneration.Markdown
                         Link(f.Title.TrimEnd('.'), $"../../docs/refactorings/{f.Id}.md"),
                         CheckboxOrHyphen(f.IsEnabledByDefault));
                     })));
+
+            document.AddFootnote();
 
             return document.ToString();
         }
@@ -232,6 +257,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 Table(
                     TableRow("Id", "Title"),
                     GetRows()));
+
+            document.AddFootnote();
 
             return document.ToString();
 
@@ -254,6 +281,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 Table(
                     TableRow("Category", "Title", "Id", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
                     GetRows()));
+
+            document.AddFootnote();
 
             return document.ToString();
 

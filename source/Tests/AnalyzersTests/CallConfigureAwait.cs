@@ -11,6 +11,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
             await GetValueAsync();
             object result = await GetValueAsync2();
 
+            await GetValueTaskAsync();
+            result = await GetValueTaskAsync();
+
+            // n
+
             await GetValue();
             await GetValueAsync().ConfigureAwait(false);
             result = await GetValueAsync2().ConfigureAwait(false);
@@ -20,6 +25,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private static Task<object> GetValueAsync2()
         {
             return Task.FromResult(new object());
+        }
+
+        private static ValueTask<object> GetValueTaskAsync()
+        {
+            return new ValueTask<object>(null);
         }
 
         public static object GetValue()

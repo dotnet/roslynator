@@ -10,15 +10,15 @@ namespace Roslynator.CSharp
     public static partial class DiagnosticDescriptors
     {
         /// <summary>RCS1001</summary>
-        public static readonly DiagnosticDescriptor AddBraces = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AddBraces, 
-            title:              "Add braces.", 
-            messageFormat:      "Add braces to {0}.", 
+        public static readonly DiagnosticDescriptor AddBracesWhenExpressionSpansOverMultipleLines = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines, 
+            title:              "Add braces (when expression spans over multiple lines).", 
+            messageFormat:      "Add braces to {0} (when expression spans over multiple lines).", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBraces}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1002</summary>
@@ -36,15 +36,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor RemoveBracesFadeOut = RemoveBraces.CreateFadeOut();
 
         /// <summary>RCS1003</summary>
-        public static readonly DiagnosticDescriptor AddBracesToIfElse = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AddBracesToIfElse, 
-            title:              "Add braces to if-else.", 
-            messageFormat:      "Add braces to if-else.", 
+        public static readonly DiagnosticDescriptor AddBracesToIfElseWhenExpressionSpansOverMultipleLines = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, 
+            title:              "Add braces to if-else (when expression spans over multiple lines).", 
+            messageFormat:      "Add braces to if-else (when expression spans over multiple lines).", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesToIfElse}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1004</summary>
@@ -90,15 +90,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor MergeElseClauseWithNestedIfStatementFadeOut = MergeElseClauseWithNestedIfStatement.CreateFadeOut();
 
         /// <summary>RCS1007</summary>
-        public static readonly DiagnosticDescriptor AvoidEmbeddedStatement = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AvoidEmbeddedStatement, 
-            title:              "Avoid embedded statement.", 
+        public static readonly DiagnosticDescriptor AddBraces = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBraces, 
+            title:              "Add braces.", 
             messageFormat:      "Add braces to {0}.", 
             category:           DiagnosticCategories.Style, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidEmbeddedStatement}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBraces}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1008</summary>
@@ -1220,15 +1220,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1105</summary>
-        public static readonly DiagnosticDescriptor MergeInterpolationIntoInterpolatedString = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString, 
-            title:              "Merge interpolation into interpolated string.", 
-            messageFormat:      "Merge interpolation into interpolated string.", 
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryInterpolation, 
+            title:              "Unncessary interpolation.", 
+            messageFormat:      "Unncessary interpolation.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MergeInterpolationIntoInterpolatedString}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryInterpolation}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1106</summary>
@@ -1418,15 +1418,15 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor InlineLocalVariableFadeOut = InlineLocalVariable.CreateFadeOut();
 
         /// <summary>RCS1126</summary>
-        public static readonly DiagnosticDescriptor AvoidEmbeddedStatementInIfElse = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse, 
-            title:              "Avoid embedded statement in if-else.", 
+        public static readonly DiagnosticDescriptor AddBracesToIfElse = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddBracesToIfElse, 
+            title:              "Add braces to if-else.", 
             messageFormat:      "Add braces to {0}.", 
             category:           DiagnosticCategories.Style, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidEmbeddedStatementInIfElse}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddBracesToIfElse}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1127</summary>
@@ -2384,18 +2384,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1214</summary>
-        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolatedText = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText, 
-            title:              "Avoid interpolated string with no interpolated text.", 
-            messageFormat:      "Avoid interpolated string with no interpolated text.", 
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolatedString = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryInterpolatedString, 
+            title:              "Unnecessary interpolated string.", 
+            messageFormat:      "Unnecessary interpolated string.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolatedText}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryInterpolatedString}", 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor AvoidInterpolatedStringWithNoInterpolatedTextFadeOut = AvoidInterpolatedStringWithNoInterpolatedText.CreateFadeOut();
+        public static readonly DiagnosticDescriptor UnnecessaryInterpolatedStringFadeOut = UnnecessaryInterpolatedString.CreateFadeOut();
 
         /// <summary>RCS1215</summary>
         public static readonly DiagnosticDescriptor ExpressionIsAlwaysEqualToTrueOrFalse = new DiagnosticDescriptor(
@@ -2408,6 +2408,32 @@ namespace Roslynator.CSharp
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse}", 
             customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1216</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryUnsafeContext = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryUnsafeContext, 
+            title:              "Unnecessary unsafe context.", 
+            messageFormat:      "Unnecessary unsafe context.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryUnsafeContext}", 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        /// <summary>RCS1217</summary>
+        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation, 
+            title:              "Replace interpolated string with concatenation.", 
+            messageFormat:      "Replace interpolated string with concatenation.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation}", 
+            customTags:         Array.Empty<string>());
+
+        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenationFadeOut = ReplaceInterpolatedStringWithConcatenation.CreateFadeOut();
 
     }
 }

@@ -1,5 +1,7 @@
 ## Roslynator Refactorings
 
+[Search Refactorings](http://pihrt.net/Roslynator/Refactorings)
+
 | Id  | Title | Enabled by Default |
 | --- | ----- |:------------------:|
 | RR0002 | [Add braces](../../docs/refactorings/RR0002.md) | &#x2713; |
@@ -145,6 +147,7 @@
 | RR0193 | [Replace interpolated string with concatenation](../../docs/refactorings/RR0193.md) | &#x2713; |
 | RR0135 | [Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md) | &#x2713; |
 | RR0136 | [Replace interpolated string with string literal](../../docs/refactorings/RR0136.md) | &#x2713; |
+| RR0201 | [Replace interpolated string with string.Format](../../docs/refactorings/RR0201.md) | &#x2713; |
 | RR0137 | [Replace method group with lambda](../../docs/refactorings/RR0137.md) | &#x2713; |
 | RR0138 | [Replace method with property](../../docs/refactorings/RR0138.md) | \- |
 | RR0139 | [Replace null literal expression with default expression](../../docs/refactorings/RR0139.md) | &#x2713; |
@@ -170,9 +173,10 @@
 | RR0158 | [Split variable declaration](../../docs/refactorings/RR0158.md) | &#x2713; |
 | RR0159 | [Swap expressions in binary expression](../../docs/refactorings/RR0159.md) | &#x2713; |
 | RR0160 | [Swap expressions in conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
+| RR0162 | [Swap if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0161 | [Swap member declarations](../../docs/refactorings/RR0161.md) | &#x2713; |
-| RR0162 | [Swap statements in if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
-| RR0163 | [Uncomment](../../docs/refactorings/RR0163.md) | &#x2713; |
+| RR0200 | [Uncomment multi-line comment](../../docs/refactorings/RR0200.md) | &#x2713; |
+| RR0163 | [UncommentSingleLineComment](../../docs/refactorings/RR0163.md) | &#x2713; |
 | RR0168 | [Use "" instead of string.Empty](../../docs/refactorings/RR0168.md) | &#x2713; |
 | RR0164 | [Use bitwise operation instead of calling 'HasFlag'](../../docs/refactorings/RR0164.md) | &#x2713; |
 | RR0191 | [Use C# 6.0 dictionary initializer](../../docs/refactorings/RR0191.md) | &#x2713; |
@@ -192,3 +196,5 @@
 | RR0176 | [Wrap in try-catch](../../docs/refactorings/RR0176.md) | &#x2713; |
 | RR0177 | [Wrap in using statement](../../docs/refactorings/RR0177.md) | &#x2713; |
 
+
+*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

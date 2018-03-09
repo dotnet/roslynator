@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxNode newRoot = root.ReplaceNodes(
                     GetNodesToReplace(grouping.AsEnumerable(), root, fieldDeclaration, variableDeclarator),
-                    (f, g) =>
+                    (f, _) =>
                     {
                         if (f.IsKind(SyntaxKind.FieldDeclaration, SyntaxKind.VariableDeclarator))
                             return f.WithAdditionalAnnotations(_removeAnnotation);

@@ -479,7 +479,7 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                SyntaxNode newRoot = info.Root.ReplaceNodes(nodes, (node, rewrittenNode) =>
+                SyntaxNode newRoot = info.Root.ReplaceNodes(nodes, (node, _) =>
                 {
                     switch (node.Kind())
                     {

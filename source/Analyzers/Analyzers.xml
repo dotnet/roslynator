@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="AddBraces">
+  <Analyzer Identifier="AddBracesWhenExpressionSpansOverMultipleLines">
     <Id>RCS1001</Id>
-    <Title>Add braces.</Title>
-    <MessageFormat>Add braces to {0}.</MessageFormat>
+    <Title>Add braces (when expression spans over multiple lines).</Title>
+    <MessageFormat>Add braces to {0} (when expression spans over multiple lines).</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -45,10 +45,10 @@
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddBracesToIfElse">
+  <Analyzer Identifier="AddBracesToIfElseWhenExpressionSpansOverMultipleLines">
     <Id>RCS1003</Id>
-    <Title>Add braces to if-else.</Title>
-    <MessageFormat>Add braces to if-else.</MessageFormat>
+    <Title>Add braces to if-else (when expression spans over multiple lines).</Title>
+    <MessageFormat>Add braces to if-else (when expression spans over multiple lines).</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -162,12 +162,12 @@ else if (condition2)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AvoidEmbeddedStatement">
+  <Analyzer Identifier="AddBraces">
     <Id>RCS1007</Id>
-    <Title>Avoid embedded statement.</Title>
+    <Title>Add braces.</Title>
     <MessageFormat>Add braces to {0}.</MessageFormat>
     <Category>Style</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -2187,10 +2187,10 @@ else
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="MergeInterpolationIntoInterpolatedString">
+  <Analyzer Identifier="UnnecessaryInterpolation">
     <Id>RCS1105</Id>
-    <Title>Merge interpolation into interpolated string.</Title>
-    <MessageFormat>Merge interpolation into interpolated string.</MessageFormat>
+    <Title>Unncessary interpolation.</Title>
+    <MessageFormat>Unncessary interpolation.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2550,9 +2550,9 @@ foreach (object item in items)
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidEmbeddedStatementInIfElse">
+  <Analyzer Identifier="AddBracesToIfElse">
     <Id>RCS1126</Id>
-    <Title>Avoid embedded statement in if-else.</Title>
+    <Title>Add braces to if-else.</Title>
     <MessageFormat>Add braces to {0}.</MessageFormat>
     <Category>Style</Category>
     <DefaultSeverity>Info</DefaultSeverity>
@@ -3330,6 +3330,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary>Parameter is not reported when its name consists of underscore(s).</Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[public bool Bar(object parameter) // RCS1163
@@ -3716,16 +3717,23 @@ items.Add(x);]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[// comment // RCS1181
+        <Before><![CDATA[// Represents foo. // RCS1181
 public class Foo
 {
 }]]></Before>
         <After><![CDATA[/// <summary>
-/// comment
+/// Represents foo.
 /// </summary>
 public class Foo
 {
 }]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[public string Value { get; } // Gets a value. // RCS1181]]></Before>
+        <After><![CDATA[/// <summary>
+/// Gets a value.
+/// </summary>
+public string Value { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -4440,10 +4448,10 @@ return WhenFalse();]]></After>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="AvoidInterpolatedStringWithNoInterpolatedText">
+  <Analyzer Identifier="UnnecessaryInterpolatedString">
     <Id>RCS1214</Id>
-    <Title>Avoid interpolated string with no interpolated text.</Title>
-    <MessageFormat>Avoid interpolated string with no interpolated text.</MessageFormat>
+    <Title>Unnecessary interpolated string.</Title>
+    <MessageFormat>Unnecessary interpolated string.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -4489,6 +4497,65 @@ if (i >= 0) // RCS1213
 if (items.Count < 0) // RCS1213
 {
 }]]></Before>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UnnecessaryUnsafeContext">
+    <Id>RCS1216</Id>
+    <Title>Unnecessary unsafe context.</Title>
+    <MessageFormat>Unnecessary unsafe context.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>true</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public unsafe class Foo // RCS1216
+{
+    public Foo()
+    {
+        unsafe // RCS1216
+        {
+            Bar();
+        }
+    }
+
+    private unsafe void Bar() // RCS1216
+    {
+    }
+}]]></Before>
+        <After><![CDATA[public class Foo
+{
+    public Foo()
+    {
+        Bar();
+    }
+
+    private void Bar()
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="ReplaceInterpolatedStringWithConcatenation">
+    <Id>RCS1217</Id>
+    <Title>Replace interpolated string with concatenation.</Title>
+    <MessageFormat>Replace interpolated string with concatenation.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[string x = null;
+// ...
+
+string y = $"{x}{x}{x}";]]></Before>
+        <After><![CDATA[string y = x + x + x;]]></After>
       </Sample>
     </Samples>
   </Analyzer>

@@ -79,6 +79,7 @@
 | Readability | [Reorder modifiers](../../docs/analyzers/RCS1019.md) | RCS1019 | \- |
 | Readability | [Reorder named arguments according to the order of parameters](../../docs/analyzers/RCS1205.md) | RCS1205 | &#x2713; |
 | Readability | [Reorder type parameter constraints](../../docs/analyzers/RCS1209.md) | RCS1209 | &#x2713; |
+| Readability | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | RCS1217 | &#x2713; |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | &#x2713; |
 | Readability | [Split variable declaration](../../docs/analyzers/RCS1081.md) | RCS1081 | \- |
 | Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | &#x2713; |
@@ -124,10 +125,10 @@
 | Redundancy | [Remove unnecessary case label](../../docs/analyzers/RCS1069.md) | RCS1069 | &#x2713; |
 | Redundancy | [Remove unnecessary else clause](../../docs/analyzers/RCS1211.md) | RCS1211 | &#x2713; |
 | Redundancy | [Remove unused member declaration](../../docs/analyzers/RCS1213.md) | RCS1213 | &#x2713; |
+| Redundancy | [Unnecessary unsafe context](../../docs/analyzers/RCS1216.md) | RCS1216 | &#x2713; |
 | Redundancy | [Unused parameter](../../docs/analyzers/RCS1163.md) | RCS1163 | &#x2713; |
 | Redundancy | [Unused this parameter](../../docs/analyzers/RCS1175.md) | RCS1175 | &#x2713; |
 | Redundancy | [Unused type parameter](../../docs/analyzers/RCS1164.md) | RCS1164 | &#x2713; |
-| Simplification | [Avoid interpolated string with no interpolated text](../../docs/analyzers/RCS1214.md) | RCS1214 | &#x2713; |
 | Simplification | [Call 'Enumerable.Cast' instead of 'Enumerable.Select'](../../docs/analyzers/RCS1109.md) | RCS1109 | &#x2713; |
 | Simplification | [Call string.Concat instead of string.Join](../../docs/analyzers/RCS1150.md) | RCS1150 | &#x2713; |
 | Simplification | [Combine 'Enumerable.Where' method chain](../../docs/analyzers/RCS1112.md) | RCS1112 | &#x2713; |
@@ -151,6 +152,7 @@
 | Simplification | [Simplify logical negation](../../docs/analyzers/RCS1068.md) | RCS1068 | &#x2713; |
 | Simplification | [Simplify nested using statement](../../docs/analyzers/RCS1005.md) | RCS1005 | &#x2713; |
 | Simplification | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | RCS1020 | &#x2713; |
+| Simplification | [Unnecessary interpolated string](../../docs/analyzers/RCS1214.md) | RCS1214 | &#x2713; |
 | Simplification | [Use --/++ operator instead of assignment](../../docs/analyzers/RCS1089.md) | RCS1089 | &#x2713; |
 | Simplification | [Use ^ operator](../../docs/analyzers/RCS1195.md) | RCS1195 | &#x2713; |
 | Simplification | [Use auto-implemented property](../../docs/analyzers/RCS1085.md) | RCS1085 | &#x2713; |
@@ -166,11 +168,11 @@
 | Simplification | [Use 'var' instead of explicit type (when the type is not obvious)](../../docs/analyzers/RCS1176.md) | RCS1176 | \- |
 | Simplification | [Use 'var' instead of explicit type (when the type is obvious)](../../docs/analyzers/RCS1010.md) | RCS1010 | &#x2713; |
 | Style | [Add argument list to object creation expression](../../docs/analyzers/RCS1050.md) | RCS1050 | \- |
-| Style | [Add braces to if-else](../../docs/analyzers/RCS1003.md) | RCS1003 | &#x2713; |
+| Style | [Add braces (when expression spans over multiple lines)](../../docs/analyzers/RCS1001.md) | RCS1001 | &#x2713; |
+| Style | [Add braces to if-else (when expression spans over multiple lines)](../../docs/analyzers/RCS1003.md) | RCS1003 | &#x2713; |
+| Style | [Add braces to if-else](../../docs/analyzers/RCS1126.md) | RCS1126 | \- |
 | Style | [Add braces to switch section with multiple statements](../../docs/analyzers/RCS1111.md) | RCS1111 | \- |
-| Style | [Add braces](../../docs/analyzers/RCS1001.md) | RCS1001 | &#x2713; |
-| Style | [Avoid embedded statement in if-else](../../docs/analyzers/RCS1126.md) | RCS1126 | \- |
-| Style | [Avoid embedded statement](../../docs/analyzers/RCS1007.md) | RCS1007 | \- |
+| Style | [Add braces](../../docs/analyzers/RCS1007.md) | RCS1007 | \- |
 | Style | [Avoid multiline expression body](../../docs/analyzers/RCS1017.md) | RCS1017 | \- |
 | Style | [Avoid usage of do statement to create an infinite loop](../../docs/analyzers/RCS1063.md) | RCS1063 | &#x2713; |
 | Style | [Avoid usage of for statement to create an infinite loop](../../docs/analyzers/RCS1064.md) | RCS1064 | \- |
@@ -199,3 +201,5 @@
 | Usage | [Use StringComparison when comparing strings](../../docs/analyzers/RCS1155.md) | RCS1155 | &#x2713; |
 | Usage | [Value type object is never equal to null](../../docs/analyzers/RCS1166.md) | RCS1166 | &#x2713; |
 
+
+*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

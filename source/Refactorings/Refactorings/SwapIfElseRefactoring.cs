@@ -8,14 +8,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class SwapStatementInIfElseRefactoring
+    internal static class SwapIfElseRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, IfStatementSyntax ifStatement)
         {
             if (CanRefactor(ifStatement))
             {
                 context.RegisterRefactoring(
-                    "Swap statements in if-else",
+                    "Swap if-else",
                     cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
             }
         }
@@ -39,16 +39,21 @@ namespace Roslynator.CSharp.Refactorings
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            StatementSyntax trueStatement = ifStatement.Statement;
-
-            StatementSyntax falseStatement = ifStatement.Else.Statement;
+            ElseClauseSyntax elseClause = ifStatement.Else;
+            StatementSyntax whenTrue = ifStatement.Statement;
+            StatementSyntax whenFalse = elseClause.Statement;
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
+            ElseClauseSyntax newElseClause = null;
+
+            if ((whenFalse as BlockSyntax)?.Statements.Any() != false)
+                newElseClause = elseClause.WithStatement(whenTrue.WithTriviaFrom(whenFalse));
+
             IfStatementSyntax newIfStatement = ifStatement
                 .WithCondition(LogicalNegationHelper.LogicallyNegate(ifStatement.Condition, semanticModel, cancellationToken))
-                .WithStatement(falseStatement.WithTriviaFrom(trueStatement))
-                .WithElse(ifStatement.Else.WithStatement(trueStatement.WithTriviaFrom(falseStatement)))
+                .WithStatement(whenFalse.WithTriviaFrom(whenTrue))
+                .WithElse(newElseClause)
                 .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);

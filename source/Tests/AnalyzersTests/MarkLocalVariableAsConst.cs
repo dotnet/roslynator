@@ -2,7 +2,7 @@
 
 using System;
 
-#pragma warning disable CS0219, RCS1008, RCS1078, RCS1081, RCS1124, RCS1176
+#pragma warning disable CA1806, CS0219, RCS1008, RCS1078, RCS1081, RCS1124, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -100,6 +100,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             int i16 = 0;
             int.TryParse("", out a[--i16]);
+        }
+
+        private static class AddressOfExpression
+        {
+            public static unsafe void Foo()
+            {
+                char ch = '\0';
+
+                char* pCh = &ch;
+            }
         }
     }
 }

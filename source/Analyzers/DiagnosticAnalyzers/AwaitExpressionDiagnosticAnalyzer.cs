@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
@@ -25,18 +24,43 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeAwaitExpression, SyntaxKind.AwaitExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                INamedTypeSymbol taskSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+
+                if (taskSymbol == null)
+                    return;
+
+                INamedTypeSymbol valueTaskOfTSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T);
+
+                if (startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) == null)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeAwaitExpression(nodeContext, taskSymbol, valueTaskOfTSymbol), SyntaxKind.AwaitExpression);
+            });
         }
 
-        private void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskSymbol, INamedTypeSymbol valueTaskOfTSymbol)
         {
             var awaitExpression = (AwaitExpressionSyntax)context.Node;
 
-            if (CallConfigureAwaitRefactoring.CanRefactor(awaitExpression, context.SemanticModel, context.CancellationToken))
+            ExpressionSyntax expression = awaitExpression.Expression;
+
+            if (expression?.IsKind(SyntaxKind.InvocationExpression) != true)
+                return;
+
+            if (!(context.SemanticModel.GetSymbol(expression, context.CancellationToken) is IMethodSymbol methodSymbol))
+                return;
+
+            if (!(methodSymbol.ReturnType is INamedTypeSymbol returnType))
+                return;
+
+            INamedTypeSymbol constructedFrom = returnType.ConstructedFrom;
+
+            if (constructedFrom.Equals(valueTaskOfTSymbol)
+                || constructedFrom.EqualsOrInheritsFrom(taskSymbol))
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.CallConfigureAwait,
-                    awaitExpression.Expression);
+                context.ReportDiagnostic(DiagnosticDescriptors.CallConfigureAwait, expression);
             }
         }
     }

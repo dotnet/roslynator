@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (embeddedStatement != null)
                 {
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.AddBraces,
+                        DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines,
                         embeddedStatement,
                         statement.GetTitle());
                 }

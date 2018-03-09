@@ -12,20 +12,19 @@ namespace Roslynator.CSharp.Refactorings.RemoveRedundantStatement
     {
         protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
         {
-            if (parentKind != SyntaxKind.MethodDeclaration
-                && parentKind != SyntaxKind.LocalFunctionStatement)
+            if (!parentKind.Is(
+                SyntaxKind.MethodDeclaration,
+                SyntaxKind.LocalFunctionStatement))
             {
                 return false;
             }
 
-            if (!base.IsFixable(statement, block, parentKind))
-                return false;
-
             TextSpan span = TextSpan.FromBounds(block.SpanStart, statement.FullSpan.Start);
 
+            //XTODO: Walker
             return block
                 .DescendantNodes(span, f => !f.IsNestedMethod())
-                .Any(f => f.IsKind(SyntaxKind.YieldBreakStatement, SyntaxKind.YieldReturnStatement));
+                .Any(f => f.Kind().IsYieldStatement());
         }
     }
 }
