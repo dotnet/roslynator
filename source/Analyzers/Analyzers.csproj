@@ -66,6 +66,10 @@
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\ReplaceInterpolatedStringWithConcatenationDiagnosticAnalyzer.cs" />
+    <Compile Include="Refactorings\ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
+    <Compile Include="Refactorings\UnnecessaryInterpolationRefactoring.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidNullReferenceExceptionCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseRegexInstanceInsteadOfStaticMethodCodeFixProvider.cs" />
@@ -78,7 +82,7 @@
     <Compile Include="DiagnosticAnalyzers\ExpressionIsAlwaysEqualToTrueOrFalseDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\MergeIfStatementWithNestedIfStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveRedundantAssignmentDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\AvoidInterpolatedStringWithNoInterpolatedTextStringDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UnnecessaryInterpolatedStringDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderNamedArgumentsDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddOrRemoveRegionNameDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AsExpressionDiagnosticAnalyzer.cs" />
@@ -88,7 +92,9 @@
     <Compile Include="DiagnosticAnalyzers\AvoidSingleLineBlockDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReduceIfNestingDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReorderTypeParameterConstraintsDiagnosticAnalyzer.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextDiagnosticAnalyzer.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextRefactoring.cs" />
     <Compile Include="UnusedMember\NodeSymbolInfo.cs" />
     <Compile Include="UnusedMember\UnusedMemberCodeFixProvider.cs" />
     <Compile Include="UnusedMember\UnusedMemberWalker.cs" />
@@ -103,7 +109,7 @@
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalker.cs" />
     <Compile Include="Refactorings\MakeMemberReadOnly\MakeMemberReadOnlyWalkerCache.cs" />
     <Compile Include="Refactorings\RemoveUnnecessaryElseClauseRefactoring.cs" />
-    <Compile Include="Refactorings\AvoidInterpolatedStringWithNoInterpolatedTextRefactoring.cs" />
+    <Compile Include="Refactorings\UnnecessaryInterpolatedStringRefactoring.cs" />
     <Compile Include="UnusedMember\UnusedMemberRefactoring.cs" />
     <Compile Include="UnusedParameter\NodeSymbolInfo.cs" />
     <Compile Include="UnusedParameter\UnusedParameterWalker.cs" />
@@ -122,7 +128,7 @@
     <Compile Include="DiagnosticAnalyzers\AddSummaryToDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AddTypeParameterToDocumentationCommentDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidChainOfAssignmentsDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementInIfElseDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AddBracesToIfElseDiagnosticAnalyzer.cs" />
     <Compile Include="CodeFixProviders\LocalDeclarationStatementCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\AddParenthesesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\CompositeEnumValueContainsUndefinedFlagDiagnosticAnalyzer.cs" />
@@ -310,7 +316,7 @@
     <Compile Include="Refactorings\RemoveRedundantStringToCharArrayCallRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantToStringCallRefactoring.cs" />
     <Compile Include="CodeFixProviders\InterpolationCodeFixProvider.cs" />
-    <Compile Include="DiagnosticAnalyzers\InterpolationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UnnecessaryInterpolationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnMultipleLinesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnSingleLineDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\FormatSummary\FormatSummaryOnMultipleLinesRefactoring.cs" />
@@ -436,7 +442,7 @@
     <Compile Include="DiagnosticAnalyzers\AccessorListDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AnonymousMethodDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ArrowExpressionClauseDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\AvoidEmbeddedStatementDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AddBracesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RemoveOriginalExceptionFromThrowStatementDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ConditionalExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ElseClauseDiagnosticAnalyzer.cs" />

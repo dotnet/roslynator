@@ -91,9 +91,9 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
                             if (IsPrivate(declaration, modifiers))
                             {
                                 if (walker == null)
-                                    walker = UnusedMemberWalkerCache.Acquire(context.SemanticModel, context.CancellationToken, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
+                                    walker = UnusedMemberWalkerCache.Acquire(context.SemanticModel, context.CancellationToken);
 
-                                walker.AddNodes(declaration.Declaration);
+                                walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
                             }
 
                             break;
@@ -104,7 +104,8 @@ namespace Roslynator.CSharp.Analyzers.UnusedMember
 
                             SyntaxTokenList modifiers = declaration.Modifiers;
 
-                            if (IsPrivate(declaration, modifiers))
+                            if (!declaration.AttributeLists.Any()
+                                && IsPrivate(declaration, modifiers))
                             {
                                 string methodName = declaration.Identifier.ValueText;
 

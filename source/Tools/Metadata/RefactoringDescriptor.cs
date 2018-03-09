@@ -15,6 +15,7 @@ namespace Roslynator.Metadata
             bool isEnabledByDefault,
             bool isObsolete,
             string span,
+            string summary,
             IList<SyntaxDescriptor> syntaxes,
             IList<ImageDescriptor> images,
             IList<SampleDescriptor> samples)
@@ -25,6 +26,7 @@ namespace Roslynator.Metadata
             IsEnabledByDefault = isEnabledByDefault;
             IsObsolete = isObsolete;
             Span = span;
+            Summary = summary;
             Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes);
             Images = new ReadOnlyCollection<ImageDescriptor>(images);
             Samples = new ReadOnlyCollection<SampleDescriptor>(samples);
@@ -37,6 +39,8 @@ namespace Roslynator.Metadata
         public string Title { get; }
 
         public string Span { get; }
+
+        public string Summary { get; }
 
         public bool IsEnabledByDefault { get; }
 

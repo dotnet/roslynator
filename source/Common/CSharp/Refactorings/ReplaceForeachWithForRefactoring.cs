@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax statement = forEachStatement.Statement.ReplaceNodes(
                 GetVariableReferences(forEachStatement, semanticModel, cancellationToken),
-                (node, rewrittenNode) =>
+                (node, _) =>
                 {
                     return ElementAccessExpression(
                         forEachExpression.WithoutTrivia(),

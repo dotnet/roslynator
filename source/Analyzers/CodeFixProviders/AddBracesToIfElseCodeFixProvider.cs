@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBracesToIfElse); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
             CodeAction codeAction = CodeAction.Create(
                 "Add braces to if-else",
                 cancellationToken => AddBracesToIfElseRefactoring.RefactorAsync(context.Document, ifStatement, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.AddBracesToIfElse));
+                GetEquivalenceKey(DiagnosticIdentifiers.AddBracesToIfElseWhenExpressionSpansOverMultipleLines));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

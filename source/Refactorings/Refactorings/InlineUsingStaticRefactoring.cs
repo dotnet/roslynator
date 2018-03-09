@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
             List<SimpleNameSyntax> names = CollectNames(parent, classSymbol, semanticModel, cancellationToken);
 
-            SyntaxNode newNode = parent.ReplaceNodes(names, (node, modifiedNode) =>
+            SyntaxNode newNode = parent.ReplaceNodes(names, (node, _) =>
             {
                 TypeSyntax type = classSymbol.ToMinimalTypeSyntax(semanticModel, node.SpanStart);
 

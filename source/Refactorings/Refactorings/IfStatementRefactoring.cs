@@ -36,8 +36,8 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapStatementsInIfElse))
-                    SwapStatementInIfElseRefactoring.ComputeRefactoring(context, ifStatement);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapIfElse))
+                    SwapIfElseRefactoring.ComputeRefactoring(context, ifStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch))
                     await ReplaceIfWithSwitchRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
@@ -82,10 +82,10 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfElseWithIfReturn)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfElse)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(ifStatement.IfKeyword))
             {
-                ReplaceIfElseWithIfReturnRefactoring.ComputeRefactoring(context, ifStatement);
+                SplitIfElseRefactoring.ComputeRefactoring(context, ifStatement);
             }
         }
     }

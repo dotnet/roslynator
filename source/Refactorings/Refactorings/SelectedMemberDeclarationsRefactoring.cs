@@ -49,6 +49,9 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor))
+                InitializeFieldFromConstructorRefactoring.ComputeRefactoring(context, selectedMembers);
+
             void TryRegisterRefactoring(AccessibilityFlags accessibilityFlags, Accessibility accessibility, bool canHaveMultipleDeclarations)
             {
                 if ((accessibilityFlags & accessibility.GetAccessibilityFlag()) != 0)

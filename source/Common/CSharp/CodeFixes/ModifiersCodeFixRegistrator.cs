@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     return context.Solution().ReplaceNodesAsync(
                         nodes,
-                        (f, g) => AddModifier(f, modifierKind, comparer),
+                        (f, _) => AddModifier(f, modifierKind, comparer),
                         cancellationToken);
                 },
                 GetEquivalenceKey(diagnostic, additionalKey));
@@ -224,7 +224,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     return context.Solution().ReplaceNodesAsync(
                         nodes,
-                        (f, g) => Modifier.Remove(f, modifierKind),
+                        (f, _) => Modifier.Remove(f, modifierKind),
                         cancellationToken);
                 },
                 GetEquivalenceKey(diagnostic, additionalKey));

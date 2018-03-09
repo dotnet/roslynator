@@ -48,9 +48,15 @@ namespace Roslynator.CSharp.Refactorings
             if (!(statements[1] is ReturnStatementSyntax returnStatement))
                 return;
 
-            TextSpan span = TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End);
+            ExpressionSyntax returnExpression = returnStatement.Expression;
 
-            if (body.ContainsDirectives(span))
+            if (returnExpression?.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression) != true)
+                return;
+
+            if (ifStatement.SpanOrTrailingTriviaContainsDirectives())
+                return;
+
+            if (returnStatement.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
             SimpleIfStatementInfo simpleIf = SyntaxInfo.SimpleIfStatementInfo(ifStatement);
@@ -63,6 +69,14 @@ namespace Roslynator.CSharp.Refactorings
             if (statement == null)
                 return;
 
+            SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
+
+            if (!assignmentInfo.Success)
+                return;
+
+            if (!assignmentInfo.Left.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))
+                return;
+
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
@@ -71,113 +85,63 @@ namespace Roslynator.CSharp.Refactorings
             if (!nullCheck.Success)
                 return;
 
-            IdentifierNameSyntax identifierName = GetIdentifierName(nullCheck.Expression);
+            ExpressionSyntax expression = nullCheck.Expression;
 
-            if (identifierName == null)
+            if (!expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))
                 return;
 
-            if (!(semanticModel.GetSymbol(identifierName, cancellationToken) is IFieldSymbol fieldSymbol))
+            if (!(semanticModel.GetSymbol(expression, cancellationToken) is IFieldSymbol fieldSymbol))
                 return;
 
-            SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
-
-            if (!assignmentInfo.Success)
+            if (!ExpressionEquals(expression, assignmentInfo.Left))
                 return;
 
-            string name = identifierName.Identifier.ValueText;
+            if (fieldSymbol.Type.IsConstructedFrom(SpecialType.System_Nullable_T)
+                && returnExpression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)returnExpression;
 
-            IdentifierNameSyntax identifierName2 = GetIdentifierName(assignmentInfo.Left);
+                if (memberAccessExpression.Name is IdentifierNameSyntax identifierName
+                    && string.Equals(identifierName.Identifier.ValueText, "Value", StringComparison.Ordinal))
+                {
+                    returnExpression = memberAccessExpression.Expression;
+                }
+            }
 
-            if (!IsBackingField(identifierName2, name, fieldSymbol, semanticModel, cancellationToken))
-                return;
-
-            IdentifierNameSyntax identifierName3 = GetIdentifierName(returnStatement.Expression, semanticModel, cancellationToken);
-
-            if (!IsBackingField(identifierName3, name, fieldSymbol, semanticModel, cancellationToken))
+            if (!ExpressionEquals(expression, returnExpression))
                 return;
 
             context.ReportDiagnostic(
                 DiagnosticDescriptors.SimplifyLazyInitialization,
-                Location.Create(node.SyntaxTree, span));
+                Location.Create(node.SyntaxTree, TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)));
         }
 
-        private static bool IsBackingField(
-            IdentifierNameSyntax identifierName,
-            string name,
-            IFieldSymbol fieldSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static bool ExpressionEquals(ExpressionSyntax expression1, ExpressionSyntax expression2)
         {
-            return identifierName != null
-                && string.Equals(identifierName.Identifier.ValueText, name, StringComparison.Ordinal)
-                && semanticModel.GetSymbol(identifierName, cancellationToken)?.Equals(fieldSymbol) == true;
-        }
+            SyntaxKind kind = expression1.Kind();
 
-        private static IdentifierNameSyntax GetIdentifierName(ExpressionSyntax expression)
-        {
-            if (expression == null)
-                return null;
-
-            if (expression is IdentifierNameSyntax identifierName)
-                return identifierName;
-
-            if (expression.Kind() == SyntaxKind.SimpleMemberAccessExpression)
+            if (kind == expression2.Kind())
             {
-                var memberAccess = (MemberAccessExpressionSyntax)expression;
+                if (kind == SyntaxKind.IdentifierName)
+                {
+                    return IdentifierNameEquals((IdentifierNameSyntax)expression1, (IdentifierNameSyntax)expression2);
+                }
+                else if (kind == SyntaxKind.SimpleMemberAccessExpression)
+                {
+                    var memberAccessExpression1 = (MemberAccessExpressionSyntax)expression1;
+                    var memberAccessExpression2 = (MemberAccessExpressionSyntax)expression2;
 
-                if (memberAccess.Expression?.Kind() == SyntaxKind.ThisExpression)
-                    return memberAccess.Name as IdentifierNameSyntax;
+                    return IdentifierNameEquals(memberAccessExpression1.Name as IdentifierNameSyntax, memberAccessExpression2.Name as IdentifierNameSyntax)
+                        && IdentifierNameEquals(memberAccessExpression1.Expression as IdentifierNameSyntax, memberAccessExpression2.Expression as IdentifierNameSyntax);
+                }
             }
 
-            return null;
+            return false;
         }
 
-        private static IdentifierNameSyntax GetIdentifierName(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+        private static bool IdentifierNameEquals(IdentifierNameSyntax identifierName1, IdentifierNameSyntax identifierName2)
         {
-            if (expression == null)
-                return null;
-
-            if (expression is IdentifierNameSyntax identifierName)
-                return identifierName;
-
-            if (expression.Kind() != SyntaxKind.SimpleMemberAccessExpression)
-                return null;
-
-            var memberAccess = (MemberAccessExpressionSyntax)expression;
-
-            ExpressionSyntax expression2 = memberAccess.Expression;
-
-            switch (expression2?.Kind())
-            {
-                case SyntaxKind.SimpleMemberAccessExpression:
-                    {
-                        var memberAccess2 = (MemberAccessExpressionSyntax)expression2;
-
-                        if (memberAccess2.Expression?.Kind() != SyntaxKind.ThisExpression)
-                            return null;
-
-                        if (!SyntaxUtility.IsPropertyOfNullableOfT(memberAccess.Name as IdentifierNameSyntax, "Value", semanticModel, cancellationToken))
-                            return null;
-
-                        return memberAccess2.Name as IdentifierNameSyntax;
-                    }
-                case SyntaxKind.ThisExpression:
-                    {
-                        return memberAccess.Name as IdentifierNameSyntax;
-                    }
-                case SyntaxKind.IdentifierName:
-                    {
-                        if (!SyntaxUtility.IsPropertyOfNullableOfT(memberAccess.Name as IdentifierNameSyntax, "Value", semanticModel, cancellationToken))
-                            return null;
-
-                        return (IdentifierNameSyntax)expression2;
-                    }
-            }
-
-            return null;
+            return string.Equals(identifierName1?.Identifier.ValueText, identifierName2?.Identifier.ValueText, StringComparison.Ordinal);
         }
 
         public static Task<Document> RefactorAsync(

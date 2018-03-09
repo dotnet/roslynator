@@ -11,6 +11,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private class Foo
         {
             private object _value;
+            private readonly Foo _foo;
 
             public object FooMethod()
             {
@@ -48,6 +49,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 }
 
                 return this._value;
+            }
+
+            public object FooMethod44()
+            {
+                if (_foo._value == null)
+                {
+                    _foo._value = Initialize();
+                }
+
+                return _foo._value;
             }
 
             public object FooMethod5()
@@ -150,6 +161,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
         private class FooNullable2
         {
             private int? _value;
+            private readonly FooNullable2 _foo;
 
             public int FooMethod()
             {
@@ -169,6 +181,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 }
 
                 return this._value.Value;
+            }
+
+            public int FooMethod22()
+            {
+                if (_foo._value == null)
+                {
+                    _foo._value = Initialize();
+                }
+
+                return _foo._value.Value;
             }
 
             public int? FooProperty

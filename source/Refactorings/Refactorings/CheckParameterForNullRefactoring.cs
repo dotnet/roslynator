@@ -269,7 +269,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             return parameter.Type != null
                 && !parameter.Identifier.IsMissing
-                && parameter.IsParentKind(SyntaxKind.ParameterList);
+                && parameter.IsParentKind(SyntaxKind.ParameterList)
+                && parameter.Default?.Value?.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultExpression) != true;
         }
     }
 }

@@ -10,6 +10,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
         {
             private string _bar;
 
+            private string _bar2, _bar3;
+
             public Foo()
             {
             }
@@ -33,6 +35,8 @@ namespace Roslynator.CSharp.Refactorings.Tests
         private class Foo2
         {
             private string bar;
+
+            private string _bar2, _bar3;
 
             public Foo2()
             {

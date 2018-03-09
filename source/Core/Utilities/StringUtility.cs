@@ -101,29 +101,33 @@ namespace Roslynator.Utilities
             return true;
         }
 
-        public static string GetIndent(string value)
+        public static string GetLeadingWhiteSpaceExceptNewLine(string value)
         {
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            if (value.Length == 0)
+            int length = value.Length;
+
+            if (length == 0)
                 return "";
 
-            var sb = new StringBuilder();
-
-            foreach (char ch in value)
+            int i = 0;
+            do
             {
-                if (ch == '\n'
-                    || ch == '\r'
+                char ch = value[i];
+
+                if (ch == '\r'
+                    || ch == '\n'
                     || !char.IsWhiteSpace(ch))
                 {
                     break;
                 }
 
-                sb.Append(ch);
-            }
+                i++;
 
-            return sb.ToString();
+            } while (i < length);
+
+            return value.Remove(i);
         }
 
         public static string DoubleBraces(string value)
@@ -164,24 +168,25 @@ namespace Roslynator.Utilities
 
             string prefix = (prefixWithUnderscore) ? "_" : "";
 
-            if (value.Length > 0)
-            {
-                return ToCamelCase(value, prefix);
-            }
-            else
-            {
-                return prefix;
-            }
-        }
+            int length = value.Length;
 
-        private static string ToCamelCase(string value, string prefix)
-        {
-            var sb = new StringBuilder(prefix, value.Length + prefix.Length);
+            if (length == 0)
+                return prefix;
 
             int i = 0;
 
-            while (i < value.Length && value[i] == '_')
+            while (i < length
+                && value[i] == '_')
+            {
                 i++;
+            }
+
+            if (i == length)
+                return "_";
+
+            var sb = new StringBuilder(length + prefix.Length);
+
+            sb.Append(prefix);
 
             if (char.IsUpper(value[i]))
             {
@@ -194,7 +199,7 @@ namespace Roslynator.Utilities
 
             i++;
 
-            sb.Append(value, i, value.Length - i);
+            sb.Append(value, i, length - i);
 
             return sb.ToString();
         }

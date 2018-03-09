@@ -22,7 +22,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.RemoveEnumMemberValue;
+        = RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat;
         public RefactoringsOptionsPage()
         {
             AddBraces = true;
@@ -92,7 +92,6 @@ namespace Roslynator.VisualStudio
             MergeAssignmentExpressionWithReturnStatement = true;
             MergeAttributes = true;
             MergeIfStatements = true;
-            MergeInterpolationIntoInterpolatedString = true;
             MergeLocalDeclarations = true;
             JoinStringExpressions = true;
             NegateBinaryExpression = true;
@@ -176,8 +175,8 @@ namespace Roslynator.VisualStudio
             SwapExpressionsInBinaryExpression = true;
             SwapExpressionsInConditionalExpression = true;
             SwapMemberDeclarations = true;
-            SwapStatementsInIfElse = true;
-            Uncomment = true;
+            SwapIfElse = true;
+            UncommentSingleLineComment = true;
             UseBitwiseOperationInsteadOfCallingHasFlag = true;
             UseCoalesceExpressionInsteadOfIf = true;
             UseConditionalExpressionInsteadOfIf = true;
@@ -263,7 +262,6 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, MergeAssignmentExpressionWithReturnStatement);
             SetIsEnabled(RefactoringIdentifiers.MergeAttributes, MergeAttributes);
             SetIsEnabled(RefactoringIdentifiers.MergeIfStatements, MergeIfStatements);
-            SetIsEnabled(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString, MergeInterpolationIntoInterpolatedString);
             SetIsEnabled(RefactoringIdentifiers.MergeLocalDeclarations, MergeLocalDeclarations);
             SetIsEnabled(RefactoringIdentifiers.JoinStringExpressions, JoinStringExpressions);
             SetIsEnabled(RefactoringIdentifiers.NegateBinaryExpression, NegateBinaryExpression);
@@ -347,8 +345,8 @@ namespace Roslynator.VisualStudio
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression, SwapExpressionsInBinaryExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, SwapExpressionsInConditionalExpression);
             SetIsEnabled(RefactoringIdentifiers.SwapMemberDeclarations, SwapMemberDeclarations);
-            SetIsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse, SwapStatementsInIfElse);
-            SetIsEnabled(RefactoringIdentifiers.Uncomment, Uncomment);
+            SetIsEnabled(RefactoringIdentifiers.SwapIfElse, SwapIfElse);
+            SetIsEnabled(RefactoringIdentifiers.UncommentSingleLineComment, UncommentSingleLineComment);
             SetIsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, UseBitwiseOperationInsteadOfCallingHasFlag);
             SetIsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, UseCoalesceExpressionInsteadOfIf);
             SetIsEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf, UseConditionalExpressionInsteadOfIf);
@@ -444,7 +442,6 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement, "Merge assignment expression with return statement", IsEnabled(RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeAttributes, "Merge attributes", IsEnabled(RefactoringIdentifiers.MergeAttributes)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfStatements, "Merge if statements", IsEnabled(RefactoringIdentifiers.MergeIfStatements)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString, "Merge interpolation into interpolated string", IsEnabled(RefactoringIdentifiers.MergeInterpolationIntoInterpolatedString)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeLocalDeclarations, "Merge local declarations", IsEnabled(RefactoringIdentifiers.MergeLocalDeclarations)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.JoinStringExpressions, "Join string expressions", IsEnabled(RefactoringIdentifiers.JoinStringExpressions)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.NegateBinaryExpression, "Negate binary expression", IsEnabled(RefactoringIdentifiers.NegateBinaryExpression)));
@@ -528,8 +525,8 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapExpressionsInBinaryExpression, "Swap expressions in binary expression", IsEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, "Swap expressions in conditional expression", IsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapMemberDeclarations, "Swap member declarations", IsEnabled(RefactoringIdentifiers.SwapMemberDeclarations)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapStatementsInIfElse, "Swap statements in if-else", IsEnabled(RefactoringIdentifiers.SwapStatementsInIfElse)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.Uncomment, "Uncomment", IsEnabled(RefactoringIdentifiers.Uncomment)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapIfElse, "Swap if-else", IsEnabled(RefactoringIdentifiers.SwapIfElse)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentSingleLineComment, "UncommentSingleLineComment", IsEnabled(RefactoringIdentifiers.UncommentSingleLineComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, "Use bitwise operation instead of calling 'HasFlag'", IsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, "Use coalesce expression instead of if", IsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf, "Use conditional expression instead of if", IsEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)));
@@ -556,7 +553,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatConstraintClauses, "Format constraint clauses", IsEnabled(RefactoringIdentifiers.FormatConstraintClauses)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop, "Replace foreach with for and reverse loop", IsEnabled(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReduceIfNesting, "Reduce if nesting", IsEnabled(RefactoringIdentifiers.ReduceIfNesting)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceIfElseWithIfReturn, "Replace if-else with if-return", IsEnabled(RefactoringIdentifiers.ReplaceIfElseWithIfReturn)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitIfElse, "Split if-else", IsEnabled(RefactoringIdentifiers.SplitIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCSharp6DictionaryInitializer, "Use C# 6.0 dictionary initializer", IsEnabled(RefactoringIdentifiers.UseCSharp6DictionaryInitializer)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment, "Replace comment with documentation comment", IsEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation, "Replace interpolated string with concatenation", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)));
@@ -566,6 +563,8 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InitializeFieldFromConstructor, "Initialize field from constructor", IsEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InlineProperty, "Inline property", IsEnabled(RefactoringIdentifiers.InlineProperty)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveEnumMemberValue, "Remove enum member value(s)", IsEnabled(RefactoringIdentifiers.RemoveEnumMemberValue)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentMultiLineComment, "Uncomment multi-line comment", IsEnabled(RefactoringIdentifiers.UncommentMultiLineComment)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat, "Replace interpolated string with string.Format", IsEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat)));
         }
 
         [Browsable(false)]
@@ -1184,15 +1183,6 @@ namespace Roslynator.VisualStudio
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool MergeIfStatements
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool MergeInterpolationIntoInterpolatedString
         {
             get;
             set;
@@ -1912,6 +1902,15 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
+        public bool SwapIfElse
+        {
+            get;
+            set;
+        }
+
+        [Browsable(false)]
+        [Category(RefactoringCategory)]
+        [TypeConverter(typeof (EnabledDisabledConverter))]
         public bool SwapMemberDeclarations
         {
             get;
@@ -1921,16 +1920,7 @@ namespace Roslynator.VisualStudio
         [Browsable(false)]
         [Category(RefactoringCategory)]
         [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool SwapStatementsInIfElse
-        {
-            get;
-            set;
-        }
-
-        [Browsable(false)]
-        [Category(RefactoringCategory)]
-        [TypeConverter(typeof (EnabledDisabledConverter))]
-        public bool Uncomment
+        public bool UncommentSingleLineComment
         {
             get;
             set;

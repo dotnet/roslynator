@@ -44,7 +44,7 @@
     <Compile Include="RemoveEnumMemberValueRefactoring.cs" />
     <Compile Include="RemoveUnnecessaryElseClauseRefactoring.cs" />
     <Compile Include="ReplaceCommentWithDocumentationCommentRefactoring.cs" />
-    <Compile Include="ReplaceIfElseWithIfReturnRefactoring.cs" />
+    <Compile Include="SplitIfElseRefactoring.cs" />
     <Compile Include="AddExceptionToDocumentationCommentRefactoring.cs" />
     <Compile Include="AddTypeParameterRefactoring.cs" />
     <Compile Include="CallConfigureAwaitRefactoring.cs" />
@@ -100,6 +100,7 @@
     <Compile Include="ReplaceIfWithSwitchRefactoring.cs" />
     <Compile Include="GenerateEnumMemberRefactoring.cs" />
     <Compile Include="ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
+    <Compile Include="ReplaceInterpolatedStringWithStringFormatRefactoring.cs" />
     <Compile Include="SplitDeclarationAndInitializationRefactoring.cs" />
     <Compile Include="UseCSharp6DictionaryInitializerRefactoring.cs" />
     <Compile Include="UseListInsteadOfYield.cs" />

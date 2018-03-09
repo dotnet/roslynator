@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Roslynator.Analyzers</id>
-    <version>1.7.0-rc</version>
+    <version>1.7.0</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
