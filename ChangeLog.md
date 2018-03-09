@@ -1,9 +1,3 @@
-<<<<<<< HEAD
-### 1.7 (2018-01-30)
-* Forked to lzl1918/Roslynator
-* Add additional rules for RCS1047 for interfaces in WindowsRuntime
-* Disable RCS1010 by default, and enable RCS1012
-=======
 ### 1.7.2 (2018-03-06)
 
 #### Analyzers
@@ -33,7 +27,6 @@
 #### Refactorings
 
 * Add refactoring [UncommentMultilineComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0200.md) (RR0200).
->>>>>>> 08412ff6809a80a3e85b807fc4aea658ed974f78
 
 ### 1.6.30 (2018-01-19)
 
