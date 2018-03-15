@@ -252,11 +252,18 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                         {
                             INamedTypeSymbol containingType = symbol.ContainingType;
 
-                            if (!NodeEnclosingType
-                                .BaseTypesAndSelf()
-                                .Any(f => f.Equals(containingType)))
+                            if (containingType != null)
                             {
-                                replacementMap.Add(identifierName, CSharpFactory.SimpleMemberAccessExpression(containingType.ToTypeSyntax().WithSimplifierAnnotation(), identifierName));
+                                if (!NodeEnclosingType
+                                    .BaseTypesAndSelf()
+                                    .Any(f => f.Equals(containingType)))
+                                {
+                                    replacementMap.Add(identifierName, CSharpFactory.SimpleMemberAccessExpression(containingType.ToTypeSyntax().WithSimplifierAnnotation(), identifierName));
+                                }
+                            }
+                            else if (symbol is ITypeSymbol typeSymbol)
+                            {
+                                replacementMap.Add(identifierName, typeSymbol.ToMinimalTypeSyntax(InvocationSemanticModel, Node.SpanStart, SymbolDisplayFormats.FullyQualifiedTypeName));
                             }
                         }
 

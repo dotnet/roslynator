@@ -76,6 +76,7 @@
     <Compile Include="Extensions\SpecialTypeExtensions.cs" />
     <Compile Include="Selection`1.cs" />
     <Compile Include="SeparatedSyntaxListSelection`1.cs" />
+    <Compile Include="SymbolDisplayFormats.cs" />
     <Compile Include="SyntaxComparer.cs" />
     <Compile Include="CSharp\Syntax\TypeParameterInfo.cs" />
     <Compile Include="CSharp\InterpolatedStringContentConversion.cs" />

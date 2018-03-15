@@ -67,6 +67,7 @@
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceInterpolatedStringWithConcatenationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
+    <Compile Include="Refactorings\UnnecessaryInterpolationRefactoring.cs" />
     <Compile Include="UnnecessaryUnsafeContext\UnnecessaryUnsafeContextCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\UseConditionalAccessCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AvoidNullReferenceExceptionCodeFixProvider.cs" />
@@ -315,7 +316,7 @@
     <Compile Include="Refactorings\RemoveRedundantStringToCharArrayCallRefactoring.cs" />
     <Compile Include="Refactorings\RemoveRedundantToStringCallRefactoring.cs" />
     <Compile Include="CodeFixProviders\InterpolationCodeFixProvider.cs" />
-    <Compile Include="DiagnosticAnalyzers\InterpolationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\UnnecessaryInterpolationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnMultipleLinesDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\FormatSummaryOnSingleLineDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\FormatSummary\FormatSummaryOnMultipleLinesRefactoring.cs" />

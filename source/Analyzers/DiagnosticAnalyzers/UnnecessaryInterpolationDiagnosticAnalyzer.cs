@@ -4,18 +4,17 @@ using System;
 using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.DiagnosticAnalyzers
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class InterpolationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
+    public class UnnecessaryInterpolationDiagnosticAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MergeInterpolationIntoInterpolatedString); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.UnnecessaryInterpolation); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -25,15 +24,7 @@ namespace Roslynator.CSharp.DiagnosticAnalyzers
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeInterpolation, SyntaxKind.Interpolation);
-        }
-
-        private void AnalyzeInterpolation(SyntaxNodeAnalysisContext context)
-        {
-            var interpolation = (InterpolationSyntax)context.Node;
-
-            if (MergeInterpolationIntoInterpolatedStringRefactoring.CanRefactor(interpolation))
-                context.ReportDiagnostic(DiagnosticDescriptors.MergeInterpolationIntoInterpolatedString, interpolation);
+            context.RegisterSyntaxNodeAction(UnnecessaryInterpolationRefactoring.AnalyzeInterpolation, SyntaxKind.Interpolation);
         }
     }
 }
