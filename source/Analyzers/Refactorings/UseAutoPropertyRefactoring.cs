@@ -97,6 +97,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
             }
 
+            if (BackingFieldHasNonSerializedAttribute(fieldSymbol, context.Compilation))
+                return;
+
             if (HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType, context.Compilation))
                 return;
 
@@ -120,6 +123,24 @@ namespace Roslynator.CSharp.Refactorings
                 if (setter != null)
                     FadeOutBodyOrExpressionBody(context, setter);
             }
+        }
+
+        private static bool BackingFieldHasNonSerializedAttribute(IFieldSymbol fieldSymbol, Compilation compilation)
+        {
+            ImmutableArray<AttributeData> attributes = fieldSymbol.GetAttributes();
+
+            for (int i = 0; i < attributes.Length; i++)
+            {
+                INamedTypeSymbol attributeSymbol = attributes[i].AttributeClass;
+
+                if (attributeSymbol.MetadataName == "NonSerializedAttribute"
+                    && attributeSymbol.Equals(compilation.GetTypeByMetadataName(MetadataNames.System_NonSerializedAttribute)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         private static bool IsBackingFieldUsedInRefOrOutArgument(

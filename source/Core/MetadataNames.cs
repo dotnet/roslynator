@@ -36,6 +36,7 @@ namespace Roslynator
         public const string System_Linq_Expressions_Expression_1 = "System.Linq.Expressions.Expression`1";
         public const string System_Linq_ImmutableArrayExtensions = "System.Linq.ImmutableArrayExtensions";
         public const string System_Linq_IOrderedEnumerable_T = "System.Linq.IOrderedEnumerable`1";
+        public const string System_NonSerializedAttribute = "System.NonSerializedAttribute";
         public const string System_NotImplementedException = "System.NotImplementedException";
         public const string System_NotSupportedException = "System.NotSupportedException";
         public const string System_Runtime_CompilerServices_ConfiguredTaskAwaitable = "System.Runtime.CompilerServices.ConfiguredTaskAwaitable";
