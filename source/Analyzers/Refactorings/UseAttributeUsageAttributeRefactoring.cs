@@ -1,9 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -18,14 +18,36 @@ namespace Roslynator.CSharp.Refactorings
             INamedTypeSymbol attributeSymbol,
             INamedTypeSymbol attributeUsageAttributeSymbol)
         {
-            var symbol = (INamedTypeSymbol)context.Symbol;
+            var typeSymbol = (INamedTypeSymbol)context.Symbol;
 
-            if (symbol.InheritsFrom(attributeSymbol)
-                && !symbol.HasAttribute(attributeUsageAttributeSymbol))
+            if (typeSymbol.IsImplicitlyDeclared)
+                return;
+
+            if (typeSymbol.TypeKind != TypeKind.Class)
+                return;
+
+            if (!typeSymbol.Name.EndsWith("Attribute", StringComparison.Ordinal))
+                return;
+
+            if (typeSymbol.HasAttribute(attributeUsageAttributeSymbol))
+                return;
+
+            INamedTypeSymbol baseType = typeSymbol.BaseType;
+
+            while (baseType?.SpecialType == SpecialType.None)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.UseAttributeUsageAttribute,
-                    ((ClassDeclarationSyntax)symbol.GetSyntax()).Identifier);
+                if (baseType.Equals(attributeSymbol))
+                {
+                    var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
+
+                    context.ReportDiagnostic(DiagnosticDescriptors.UseAttributeUsageAttribute, classDeclaration.Identifier);
+                    return;
+                }
+
+                if (baseType.HasAttribute(attributeUsageAttributeSymbol))
+                    return;
+
+                baseType = baseType.BaseType;
             }
         }
 
