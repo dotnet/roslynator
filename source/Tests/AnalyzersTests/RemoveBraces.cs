@@ -3,7 +3,7 @@
 using System;
 using System.Collections.Generic;
 
-#pragma warning disable RCS1001, RCS1003, RCS1007, RCS1118, RCS1126, RCS1176, RCS1177
+#pragma warning disable RCS1001, RCS1003, RCS1004, RCS1007, RCS1027, RCS1118, RCS1126, RCS1176, RCS1177, RCS1185
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -19,36 +19,8 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 Foo();
             }
 
-            if (f)
-            {
-                Foo();
-            }
-            else
-            {
-                Foo();
-            }
-
-            if (f)
-            {
-                Foo();
-            }
-            else if (f)
-            {
-                Foo();
-            }
-
-            if (f)
-            {
-                Foo();
-            }
-            else if (f)
-            {
-                Foo();
-            }
-            else
-            {
-                Foo();
-            }
+            if (f) { Foo(); }
+            Foo();
 
             foreach (object item in items)
             {
@@ -92,6 +64,39 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 {
                     Foo();
                 }
+            }
+
+            //n
+
+            if (f)
+            {
+                Foo();
+            }
+            else
+            {
+                Foo();
+            }
+
+            if (f)
+            {
+                Foo();
+            }
+            else if (f)
+            {
+                Foo();
+            }
+
+            if (f)
+            {
+                Foo();
+            }
+            else if (f)
+            {
+                Foo();
+            }
+            else
+            {
+                Foo();
             }
         }
     }
