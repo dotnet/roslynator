@@ -83,7 +83,6 @@
 | RR0074 | [Merge attributes](../../docs/refactorings/RR0074.md) | &#x2713; |
 | RR0075 | [Merge if statements](../../docs/refactorings/RR0075.md) | &#x2713; |
 | RR0196 | [Merge if with parent if](../../docs/refactorings/RR0196.md) | &#x2713; |
-| RR0076 | [Merge interpolation into interpolated string](../../docs/refactorings/RR0076.md) | &#x2713; |
 | RR0077 | [Merge local declarations](../../docs/refactorings/RR0077.md) | &#x2713; |
 | RR0079 | [Negate binary expression](../../docs/refactorings/RR0079.md) | &#x2713; |
 | RR0080 | [Negate boolean literal](../../docs/refactorings/RR0080.md) | &#x2713; |
@@ -143,7 +142,6 @@
 | RR0188 | [Replace foreach with for and reverse loop](../../docs/refactorings/RR0188.md) | \- |
 | RR0132 | [Replace hexadecimal literal with decimal literal](../../docs/refactorings/RR0132.md) | &#x2713; |
 | RR0133 | [Replace if with switch](../../docs/refactorings/RR0133.md) | &#x2713; |
-| RR0190 | [Replace if-else with if-return](../../docs/refactorings/RR0190.md) | &#x2713; |
 | RR0193 | [Replace interpolated string with concatenation](../../docs/refactorings/RR0193.md) | &#x2713; |
 | RR0135 | [Replace interpolated string with interpolation expression](../../docs/refactorings/RR0135.md) | &#x2713; |
 | RR0136 | [Replace interpolated string with string literal](../../docs/refactorings/RR0136.md) | &#x2713; |
@@ -169,6 +167,7 @@
 | RR0156 | [Split attributes](../../docs/refactorings/RR0156.md) | &#x2713; |
 | RR0194 | [Split declaration and initialization](../../docs/refactorings/RR0194.md) | &#x2713; |
 | RR0184 | [Split if statement](../../docs/refactorings/RR0184.md) | &#x2713; |
+| RR0190 | [Split if-else](../../docs/refactorings/RR0190.md) | &#x2713; |
 | RR0157 | [Split switch labels](../../docs/refactorings/RR0157.md) | &#x2713; |
 | RR0158 | [Split variable declaration](../../docs/refactorings/RR0158.md) | &#x2713; |
 | RR0159 | [Swap expressions in binary expression](../../docs/refactorings/RR0159.md) | &#x2713; |

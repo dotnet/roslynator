@@ -188,7 +188,7 @@
       <Refactoring Id="RR0187" IsEnabled="true" /> <!-- FormatConstraintClauses -->
       <Refactoring Id="RR0188" IsEnabled="false" /> <!-- ReplaceForEachWithForAndReverseLoop -->
       <Refactoring Id="RR0189" IsEnabled="true" /> <!-- ReduceIfNesting -->
-      <Refactoring Id="RR0190" IsEnabled="true" /> <!-- ReplaceIfElseWithIfReturn -->
+      <Refactoring Id="RR0190" IsEnabled="true" /> <!-- SplitIfElse -->
       <Refactoring Id="RR0191" IsEnabled="true" /> <!-- UseCSharp6DictionaryInitializer -->
       <Refactoring Id="RR0192" IsEnabled="true" /> <!-- ReplaceCommentWithDocumentationComment -->
       <Refactoring Id="RR0193" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithConcatenation -->

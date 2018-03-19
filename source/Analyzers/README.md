@@ -102,7 +102,7 @@
 | RCS1102 | [Make class static](../../docs/analyzers/RCS1102.md) | Design | &#x2713; |
 | RCS1103 | [Replace if statement with assignment](../../docs/analyzers/RCS1103.md) | Simplification | &#x2713; |
 | RCS1104 | [Simplify conditional expression](../../docs/analyzers/RCS1104.md) | Simplification | &#x2713; |
-| RCS1105 | [Merge interpolation into interpolated string](../../docs/analyzers/RCS1105.md) | Simplification | &#x2713; |
+| RCS1105 | [Unncessary interpolation](../../docs/analyzers/RCS1105.md) | Simplification | &#x2713; |
 | RCS1106 | [Remove empty destructor](../../docs/analyzers/RCS1106.md) | Redundancy | &#x2713; |
 | RCS1107 | [Remove redundant 'ToCharArray' call](../../docs/analyzers/RCS1107.md) | Redundancy | &#x2713; |
 | RCS1108 | [Add 'static' modifier to all partial class declarations](../../docs/analyzers/RCS1108.md) | Readability | &#x2713; |

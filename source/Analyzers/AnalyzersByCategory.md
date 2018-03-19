@@ -137,7 +137,6 @@
 | Simplification | [Join string expressions](../../docs/analyzers/RCS1190.md) | RCS1190 | &#x2713; |
 | Simplification | [Merge else clause with nested if statement](../../docs/analyzers/RCS1006.md) | RCS1006 | &#x2713; |
 | Simplification | [Merge if statement with nested if statement](../../docs/analyzers/RCS1061.md) | RCS1061 | &#x2713; |
-| Simplification | [Merge interpolation into interpolated string](../../docs/analyzers/RCS1105.md) | RCS1105 | &#x2713; |
 | Simplification | [Merge local declaration with assignment](../../docs/analyzers/RCS1127.md) | RCS1127 | &#x2713; |
 | Simplification | [Merge switch sections with equivalent content](../../docs/analyzers/RCS1136.md) | RCS1136 | &#x2713; |
 | Simplification | [Replace if statement with assignment](../../docs/analyzers/RCS1103.md) | RCS1103 | &#x2713; |
@@ -152,6 +151,7 @@
 | Simplification | [Simplify logical negation](../../docs/analyzers/RCS1068.md) | RCS1068 | &#x2713; |
 | Simplification | [Simplify nested using statement](../../docs/analyzers/RCS1005.md) | RCS1005 | &#x2713; |
 | Simplification | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | RCS1020 | &#x2713; |
+| Simplification | [Unncessary interpolation](../../docs/analyzers/RCS1105.md) | RCS1105 | &#x2713; |
 | Simplification | [Unnecessary interpolated string](../../docs/analyzers/RCS1214.md) | RCS1214 | &#x2713; |
 | Simplification | [Use --/++ operator instead of assignment](../../docs/analyzers/RCS1089.md) | RCS1089 | &#x2713; |
 | Simplification | [Use ^ operator](../../docs/analyzers/RCS1195.md) | RCS1195 | &#x2713; |
