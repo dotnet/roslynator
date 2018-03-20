@@ -51,7 +51,9 @@ namespace Roslynator.CSharp.Refactorings
         {
             StatementSyntax statement = block
                 .Statements[0]
-                .TrimLeadingTrivia()
+                .TrimTrivia()
+                .PrependToLeadingTrivia(block.GetLeadingTrivia())
+                .AppendToTrailingTrivia(block.GetTrailingTrivia())
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(block, statement, cancellationToken);

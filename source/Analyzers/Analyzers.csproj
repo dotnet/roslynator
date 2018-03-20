@@ -65,6 +65,7 @@
     <Compile Include="CodeFixProviders\DeclareEnumMemberWithZeroValueCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\DocumentationCommentCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\AddExceptionToDocumentationCommentCodeFixProvider.cs" />
+    <Compile Include="DiagnosticAnalyzers\NonAsynchronousMethodNameShouldNotEndWithAsyncDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\ReplaceInterpolatedStringWithConcatenationDiagnosticAnalyzer.cs" />
     <Compile Include="Refactorings\ReplaceInterpolatedStringWithConcatenationRefactoring.cs" />
     <Compile Include="Refactorings\UnnecessaryInterpolationRefactoring.cs" />
@@ -380,7 +381,6 @@
     <Compile Include="CodeFixProviders\FormatCaseLabelStatementOnSeparateLineCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\InterpolatedStringCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\LockStatementCodeFixProvider.cs" />
-    <Compile Include="CodeFixProviders\MethodDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\NamespaceDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\PropertyDeclarationCodeFixProvider.cs" />
     <Compile Include="CodeFixProviders\SimplifyNestedUsingStatementCodeFixProvider.cs" />
@@ -424,7 +424,7 @@
     <Compile Include="DiagnosticAnalyzers\InterpolatedStringDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\InvocationExpressionDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\LockStatementDiagnosticAnalyzer.cs" />
-    <Compile Include="DiagnosticAnalyzers\MethodDeclarationDiagnosticAnalyzer.cs" />
+    <Compile Include="DiagnosticAnalyzers\AsynchronousMethodNameShouldEndWithAsyncDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\NamespaceDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\AvoidSemicolonAtEndOfDeclarationDiagnosticAnalyzer.cs" />
     <Compile Include="DiagnosticAnalyzers\RedundantEmptyLineDiagnosticAnalyzer.cs" />

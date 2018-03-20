@@ -12,8 +12,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         private const string AsyncSuffix = "Async";
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
+        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
+
             IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
             if (methodSymbol?.IsAsync == true
