@@ -1,7 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using static Roslynator.CSharp.Analyzers.Tests.NonAsynchronousMethodNameShouldNotEndWithAsync;
+
+#pragma warning disable RCS1016, RCS1090, RCS1174
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -11,18 +12,92 @@ namespace Roslynator.CSharp.Analyzers.Tests
         {
         }
 
-        public static async Task<object> Foo2Async()
+        public static (string s1, string s2) Foo2Async()
         {
-            return Foo2Async();
+            return default((string, string));
         }
-    }
 
-    internal static class NonAsynchronousMethodNameShouldNotEndWithAsync2
-    {
-        public static void Foo()
+        public static string Foo3Async()
         {
-            FooAsync();
-            Foo2Async();
+            return null;
+        }
+
+        public static string[] Foo4Async()
+        {
+            return null;
+        }
+
+        //public static IAsyncAction AsyncActionAsync()
+        //{
+        //    return null;
+        //}
+
+        //public static IAsyncActionWithProgress<object> ActionWithProgressAsync()
+        //{
+        //    return null;
+        //}
+
+        //public static IAsyncOperation<object> OperationAsync()
+        //{
+        //    return null;
+        //}
+
+        //public static IAsyncOperationWithProgress<object, object> OperationWithProgressAsync()
+        //{
+        //    return null;
+        //}
+
+        //public static class Foo<T, T2>
+        //{
+        //    public static IAsyncActionWithProgress<T> ActionWithProgressAsync()
+        //    {
+        //        return null;
+        //    }
+
+        //    public static IAsyncOperation<T> OperationAsync()
+        //    {
+        //        return null;
+        //    }
+
+        //    public static IAsyncOperationWithProgress<T, T2> OperationWithProgressAsync()
+        //    {
+        //        return null;
+        //    }
+        //}
+
+        //n
+
+        public static async Task<object> GetAsync()
+        {
+            return await Task.FromResult<object>(null);
+        }
+
+        public static Task<object> TaskOfTAsync()
+        {
+            return Task.FromResult<object>(null);
+        }
+
+        public static Task TaskAsync()
+        {
+            return default(Task);
+        }
+
+        public static ValueTask<object> ValueTaskOfTAsync()
+        {
+            return default(ValueTask<object>);
+        }
+
+        public static class Foo<T>
+        {
+            public static Task<T> TaskOfTAsync()
+            {
+                return Task.FromResult(default(T));
+            }
+
+            public static ValueTask<T> ValueTaskOfTAsync()
+            {
+                return default(ValueTask<T>);
+            }
         }
     }
 }
