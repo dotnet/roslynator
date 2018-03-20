@@ -188,7 +188,7 @@ else if (condition2)
     <MessageFormat>Use explicit type instead of 'var'.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
@@ -204,7 +204,7 @@ else if (condition2)
     <MessageFormat>Use explicit type instead of 'var'.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
@@ -228,7 +228,7 @@ foreach (var item in items) // RCS1009
     <MessageFormat>Use 'var' instead of explicit type.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
@@ -339,7 +339,7 @@ foreach (var item in items) // RCS1009
     <Title>Avoid multiline expression body.</Title>
     <MessageFormat>Expand expression body with multiline expression.</MessageFormat>
     <Category>Style</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -524,7 +524,7 @@ protected internal class Foo
     <Title>Format each statement on a separate line.</Title>
     <MessageFormat>Format each statement on a separate line.</MessageFormat>
     <Category>Formatting</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -541,7 +541,7 @@ Foo(s);]]></After>
     <Title>Format embedded statement on a separate line.</Title>
     <MessageFormat>Format embedded statement on a separate line.</MessageFormat>
     <Category>Formatting</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -560,7 +560,7 @@ Foo(s);]]></After>
     <Title>Format switch section's statement on a separate line.</Title>
     <MessageFormat>Format switch section's statement on a separate line.</MessageFormat>
     <Category>Formatting</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -612,7 +612,7 @@ Foo(s);]]></After>
     <Title>Add empty line after embedded statement.</Title>
     <MessageFormat>Add empty line after embedded statement.</MessageFormat>
     <Category>Formatting</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -722,7 +722,7 @@ if (f)
     <MessageFormat>Remove redundant comma in initializer.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
@@ -834,7 +834,7 @@ public void Foo()
     <MessageFormat>Remove empty else clause.</MessageFormat>
     <Category>Redundancy</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
@@ -914,7 +914,7 @@ else // RCS1040
     <Title>Remove original exception from throw statement.</Title>
     <MessageFormat>Remove original exception from throw statement.</MessageFormat>
     <Category>Maintainability</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Warning</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -944,7 +944,7 @@ catch (Exception ex)
     <Title>Rename private field according to camel case with underscore.</Title>
     <MessageFormat>Rename private field to camel case with underscore.</MessageFormat>
     <Category>Naming</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1133,7 +1133,7 @@ public void Foo()
     <Title>Avoid semicolon at the end of declaration.</Title>
     <MessageFormat>Remove semicolon from the end of declaration.</MessageFormat>
     <Category>Redundancy</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1153,7 +1153,7 @@ public void Foo()
     <Title>Avoid usage of using alias directive.</Title>
     <MessageFormat>Avoid usage of using alias directive.</MessageFormat>
     <Category>Readability</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1551,8 +1551,8 @@ catch (Exception ex)
     <Title>Replace if statement with return statement.</Title>
     <MessageFormat>Replace if statement with return statement.</MessageFormat>
     <Category>Simplification</Category>
-    <DefaultSeverity>Hidden</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
@@ -1629,7 +1629,7 @@ catch (Exception ex) // RCS1075
     <Title>Format declaration braces.</Title>
     <MessageFormat>Format declaration braces.</MessageFormat>
     <Category>Formatting</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1729,7 +1729,7 @@ catch (Exception ex) // RCS1075
     <Title>Split variable declaration.</Title>
     <MessageFormat>Split variable declaration.</MessageFormat>
     <Category>Readability</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1824,7 +1824,7 @@ public string Foo // RCS1085
     <Title>Use linefeed as newline.</Title>
     <MessageFormat>Use linefeed as newline.</MessageFormat>
     <Category>General</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1834,7 +1834,7 @@ public string Foo // RCS1085
     <Title>Use carriage return + linefeed as newline.</Title>
     <MessageFormat>Use carriage return + linefeed as newline.</MessageFormat>
     <Category>General</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1844,7 +1844,7 @@ public string Foo // RCS1085
     <Title>Use space(s) instead of tab.</Title>
     <MessageFormat>Use space(s) instead of tab.</MessageFormat>
     <Category>General</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -1943,7 +1943,7 @@ public string Foo // RCS1085
     <Title>Declare using directive on top level.</Title>
     <MessageFormat>Declare using directive on top level.</MessageFormat>
     <Category>Readability</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -2295,7 +2295,7 @@ public static partial class Foo
     <Title>Declare type inside namespace.</Title>
     <MessageFormat>Declare '{0}' inside namespace.</MessageFormat>
     <Category>Design</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -3742,7 +3742,7 @@ public string Value { get; }]]></After>
     <Title>Remove redundant base interface.</Title>
     <MessageFormat>Interface '{0}' is already implemented by '{1}'.</MessageFormat>
     <Category>Redundancy</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

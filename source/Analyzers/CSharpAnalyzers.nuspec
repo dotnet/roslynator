@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of 190+ analyzers for C#, powered by Roslyn.</description>
     <summary>A collection of 190+ analyzers for C#, powered by Roslyn.</summary>
-    <copyright>Copyright (c) 2016-2017 Josef Pihrt</copyright>
+    <copyright>Copyright (c) 2016-2018 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
     <frameworkAssemblies>

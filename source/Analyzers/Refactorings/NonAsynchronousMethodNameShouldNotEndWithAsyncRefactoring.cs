@@ -48,9 +48,6 @@ namespace Roslynator.CSharp.Refactorings
 
             bool CanHaveAsyncSuffix()
             {
-                if (typeSymbol.IsTupleType)
-                    return false;
-
                 if (typeSymbol.SpecialType != SpecialType.None)
                     return false;
 

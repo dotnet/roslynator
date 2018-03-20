@@ -11,9 +11,9 @@
 | RCS1005 | [Simplify nested using statement](../../docs/analyzers/RCS1005.md) | Simplification | &#x2713; |
 | RCS1006 | [Merge else clause with nested if statement](../../docs/analyzers/RCS1006.md) | Simplification | &#x2713; |
 | RCS1007 | [Add braces](../../docs/analyzers/RCS1007.md) | Style | \- |
-| RCS1008 | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | Readability | &#x2713; |
-| RCS1009 | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | Readability | &#x2713; |
-| RCS1010 | [Use 'var' instead of explicit type (when the type is obvious)](../../docs/analyzers/RCS1010.md) | Simplification | &#x2713; |
+| RCS1008 | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | Readability | \- |
+| RCS1009 | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | Readability | \- |
+| RCS1010 | [Use 'var' instead of explicit type (when the type is obvious)](../../docs/analyzers/RCS1010.md) | Simplification | \- |
 | RCS1012 | [Use explicit type instead of 'var' (when the type is obvious)](../../docs/analyzers/RCS1012.md) | Readability | \- |
 | RCS1013 | [Use predefined type](../../docs/analyzers/RCS1013.md) | Usage | \- |
 | RCS1014 | [Avoid implicitly-typed array](../../docs/analyzers/RCS1014.md) | Readability | \- |
@@ -35,12 +35,12 @@
 | RCS1032 | [Remove redundant parentheses](../../docs/analyzers/RCS1032.md) | Redundancy | &#x2713; |
 | RCS1033 | [Remove redundant boolean literal](../../docs/analyzers/RCS1033.md) | Redundancy | &#x2713; |
 | RCS1034 | [Remove redundant 'sealed' modifier](../../docs/analyzers/RCS1034.md) | Redundancy | &#x2713; |
-| RCS1035 | [Remove redundant comma in initializer](../../docs/analyzers/RCS1035.md) | Redundancy | &#x2713; |
+| RCS1035 | [Remove redundant comma in initializer](../../docs/analyzers/RCS1035.md) | Redundancy | \- |
 | RCS1036 | [Remove redundant empty line](../../docs/analyzers/RCS1036.md) | Redundancy | &#x2713; |
 | RCS1037 | [Remove trailing white-space](../../docs/analyzers/RCS1037.md) | Redundancy | &#x2713; |
 | RCS1038 | [Remove empty statement](../../docs/analyzers/RCS1038.md) | Redundancy | &#x2713; |
 | RCS1039 | [Remove argument list from attribute](../../docs/analyzers/RCS1039.md) | Redundancy | &#x2713; |
-| RCS1040 | [Remove empty else clause](../../docs/analyzers/RCS1040.md) | Redundancy | \- |
+| RCS1040 | [Remove empty else clause](../../docs/analyzers/RCS1040.md) | Redundancy | &#x2713; |
 | RCS1041 | [Remove empty initializer](../../docs/analyzers/RCS1041.md) | Redundancy | &#x2713; |
 | RCS1042 | [Remove enum default underlying type](../../docs/analyzers/RCS1042.md) | Redundancy | &#x2713; |
 | RCS1043 | [Remove 'partial' modifier from type with a single part](../../docs/analyzers/RCS1043.md) | Redundancy | &#x2713; |
@@ -71,7 +71,7 @@
 | RCS1070 | [Remove redundant default switch section](../../docs/analyzers/RCS1070.md) | Redundancy | &#x2713; |
 | RCS1071 | [Remove redundant base constructor call](../../docs/analyzers/RCS1071.md) | Redundancy | &#x2713; |
 | RCS1072 | [Remove empty namespace declaration](../../docs/analyzers/RCS1072.md) | Redundancy | &#x2713; |
-| RCS1073 | [Replace if statement with return statement](../../docs/analyzers/RCS1073.md) | Simplification | \- |
+| RCS1073 | [Replace if statement with return statement](../../docs/analyzers/RCS1073.md) | Simplification | &#x2713; |
 | RCS1074 | [Remove redundant constructor](../../docs/analyzers/RCS1074.md) | Redundancy | &#x2713; |
 | RCS1075 | [Avoid empty catch clause that catches System.Exception](../../docs/analyzers/RCS1075.md) | Design | &#x2713; |
 | RCS1076 | [Format declaration braces](../../docs/analyzers/RCS1076.md) | Formatting | &#x2713; |
@@ -102,7 +102,7 @@
 | RCS1102 | [Make class static](../../docs/analyzers/RCS1102.md) | Design | &#x2713; |
 | RCS1103 | [Replace if statement with assignment](../../docs/analyzers/RCS1103.md) | Simplification | &#x2713; |
 | RCS1104 | [Simplify conditional expression](../../docs/analyzers/RCS1104.md) | Simplification | &#x2713; |
-| RCS1105 | [Merge interpolation into interpolated string](../../docs/analyzers/RCS1105.md) | Simplification | &#x2713; |
+| RCS1105 | [Unncessary interpolation](../../docs/analyzers/RCS1105.md) | Simplification | &#x2713; |
 | RCS1106 | [Remove empty destructor](../../docs/analyzers/RCS1106.md) | Redundancy | &#x2713; |
 | RCS1107 | [Remove redundant 'ToCharArray' call](../../docs/analyzers/RCS1107.md) | Redundancy | &#x2713; |
 | RCS1108 | [Add 'static' modifier to all partial class declarations](../../docs/analyzers/RCS1108.md) | Readability | &#x2713; |

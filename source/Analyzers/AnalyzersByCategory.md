@@ -82,8 +82,8 @@
 | Readability | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | RCS1217 | &#x2713; |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | &#x2713; |
 | Readability | [Split variable declaration](../../docs/analyzers/RCS1081.md) | RCS1081 | \- |
-| Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | &#x2713; |
-| Readability | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | RCS1008 | &#x2713; |
+| Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | \- |
+| Readability | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | RCS1008 | \- |
 | Readability | [Use explicit type instead of 'var' (when the type is obvious)](../../docs/analyzers/RCS1012.md) | RCS1012 | \- |
 | Readability | [Use regular string literal instead of verbatim string literal](../../docs/analyzers/RCS1192.md) | RCS1192 | &#x2713; |
 | Redundancy | [Avoid interpolated string with no interpolation](../../docs/analyzers/RCS1062.md) | RCS1062 | &#x2713; |
@@ -91,7 +91,7 @@
 | Redundancy | [Expression is always equal to true/false](../../docs/analyzers/RCS1215.md) | RCS1215 | &#x2713; |
 | Redundancy | [Remove argument list from attribute](../../docs/analyzers/RCS1039.md) | RCS1039 | &#x2713; |
 | Redundancy | [Remove empty destructor](../../docs/analyzers/RCS1106.md) | RCS1106 | &#x2713; |
-| Redundancy | [Remove empty else clause](../../docs/analyzers/RCS1040.md) | RCS1040 | \- |
+| Redundancy | [Remove empty else clause](../../docs/analyzers/RCS1040.md) | RCS1040 | &#x2713; |
 | Redundancy | [Remove empty finally clause](../../docs/analyzers/RCS1066.md) | RCS1066 | &#x2713; |
 | Redundancy | [Remove empty initializer](../../docs/analyzers/RCS1041.md) | RCS1041 | &#x2713; |
 | Redundancy | [Remove empty namespace declaration](../../docs/analyzers/RCS1072.md) | RCS1072 | &#x2713; |
@@ -108,7 +108,7 @@
 | Redundancy | [Remove redundant base interface](../../docs/analyzers/RCS1182.md) | RCS1182 | &#x2713; |
 | Redundancy | [Remove redundant boolean literal](../../docs/analyzers/RCS1033.md) | RCS1033 | &#x2713; |
 | Redundancy | [Remove redundant cast](../../docs/analyzers/RCS1151.md) | RCS1151 | &#x2713; |
-| Redundancy | [Remove redundant comma in initializer](../../docs/analyzers/RCS1035.md) | RCS1035 | &#x2713; |
+| Redundancy | [Remove redundant comma in initializer](../../docs/analyzers/RCS1035.md) | RCS1035 | \- |
 | Redundancy | [Remove redundant constructor](../../docs/analyzers/RCS1074.md) | RCS1074 | &#x2713; |
 | Redundancy | [Remove redundant default switch section](../../docs/analyzers/RCS1070.md) | RCS1070 | &#x2713; |
 | Redundancy | [Remove redundant delegate creation](../../docs/analyzers/RCS1114.md) | RCS1114 | &#x2713; |
@@ -137,11 +137,10 @@
 | Simplification | [Join string expressions](../../docs/analyzers/RCS1190.md) | RCS1190 | &#x2713; |
 | Simplification | [Merge else clause with nested if statement](../../docs/analyzers/RCS1006.md) | RCS1006 | &#x2713; |
 | Simplification | [Merge if statement with nested if statement](../../docs/analyzers/RCS1061.md) | RCS1061 | &#x2713; |
-| Simplification | [Merge interpolation into interpolated string](../../docs/analyzers/RCS1105.md) | RCS1105 | &#x2713; |
 | Simplification | [Merge local declaration with assignment](../../docs/analyzers/RCS1127.md) | RCS1127 | &#x2713; |
 | Simplification | [Merge switch sections with equivalent content](../../docs/analyzers/RCS1136.md) | RCS1136 | &#x2713; |
 | Simplification | [Replace if statement with assignment](../../docs/analyzers/RCS1103.md) | RCS1103 | &#x2713; |
-| Simplification | [Replace if statement with return statement](../../docs/analyzers/RCS1073.md) | RCS1073 | \- |
+| Simplification | [Replace if statement with return statement](../../docs/analyzers/RCS1073.md) | RCS1073 | &#x2713; |
 | Simplification | [Simplify boolean comparison](../../docs/analyzers/RCS1049.md) | RCS1049 | &#x2713; |
 | Simplification | [Simplify boolean expression](../../docs/analyzers/RCS1199.md) | RCS1199 | &#x2713; |
 | Simplification | [Simplify coalesce expression](../../docs/analyzers/RCS1143.md) | RCS1143 | &#x2713; |
@@ -152,6 +151,7 @@
 | Simplification | [Simplify logical negation](../../docs/analyzers/RCS1068.md) | RCS1068 | &#x2713; |
 | Simplification | [Simplify nested using statement](../../docs/analyzers/RCS1005.md) | RCS1005 | &#x2713; |
 | Simplification | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | RCS1020 | &#x2713; |
+| Simplification | [Unncessary interpolation](../../docs/analyzers/RCS1105.md) | RCS1105 | &#x2713; |
 | Simplification | [Unnecessary interpolated string](../../docs/analyzers/RCS1214.md) | RCS1214 | &#x2713; |
 | Simplification | [Use --/++ operator instead of assignment](../../docs/analyzers/RCS1089.md) | RCS1089 | &#x2713; |
 | Simplification | [Use ^ operator](../../docs/analyzers/RCS1195.md) | RCS1195 | &#x2713; |
@@ -166,7 +166,7 @@
 | Simplification | [Use return instead of assignment](../../docs/analyzers/RCS1179.md) | RCS1179 | &#x2713; |
 | Simplification | [Use 'var' instead of explicit type (in foreach)](../../docs/analyzers/RCS1177.md) | RCS1177 | \- |
 | Simplification | [Use 'var' instead of explicit type (when the type is not obvious)](../../docs/analyzers/RCS1176.md) | RCS1176 | \- |
-| Simplification | [Use 'var' instead of explicit type (when the type is obvious)](../../docs/analyzers/RCS1010.md) | RCS1010 | &#x2713; |
+| Simplification | [Use 'var' instead of explicit type (when the type is obvious)](../../docs/analyzers/RCS1010.md) | RCS1010 | \- |
 | Style | [Add argument list to object creation expression](../../docs/analyzers/RCS1050.md) | RCS1050 | \- |
 | Style | [Add braces (when expression spans over multiple lines)](../../docs/analyzers/RCS1001.md) | RCS1001 | &#x2713; |
 | Style | [Add braces to if-else (when expression spans over multiple lines)](../../docs/analyzers/RCS1003.md) | RCS1003 | &#x2713; |
