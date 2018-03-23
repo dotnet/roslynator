@@ -54,7 +54,8 @@ namespace Roslynator.CSharp.CodeFixes
                                         {
                                             var localDeclarationStatement = (LocalDeclarationStatementSyntax)variableDeclaration.Parent;
 
-                                            if (!localDeclarationStatement.SpanContainsDirectives())
+                                            if (!localDeclarationStatement.IsEmbedded()
+                                                && !localDeclarationStatement.SpanContainsDirectives())
                                             {
                                                 CodeAction codeAction = CodeAction.Create(
                                                     "Remove unused variable",
