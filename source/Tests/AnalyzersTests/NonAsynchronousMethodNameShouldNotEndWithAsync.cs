@@ -27,6 +27,11 @@ namespace Roslynator.CSharp.Analyzers.Tests
             return null;
         }
 
+        public static T Foo5Async<T>()
+        {
+            return default(T);
+        }
+
         //public static IAsyncAction AsyncActionAsync()
         //{
         //    return null;
@@ -77,9 +82,19 @@ namespace Roslynator.CSharp.Analyzers.Tests
             return Task.FromResult<object>(null);
         }
 
+        public static T TaskOfTAsync<T>() where T : Task<object>
+        {
+            return default(T);
+        }
+
         public static Task TaskAsync()
         {
             return default(Task);
+        }
+
+        public static T TaskAsync<T>() where T : Task
+        {
+            return default(T);
         }
 
         public static ValueTask<object> ValueTaskOfTAsync()
