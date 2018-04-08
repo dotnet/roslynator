@@ -22,7 +22,9 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 
             if (expression?.WalkDownParentheses().IsKind(
                 SyntaxKind.NullLiteralExpression,
-                SyntaxKind.DefaultExpression) == true)
+                SyntaxKind.DefaultExpression,
+                SyntaxKind.DefaultLiteralExpression,
+                SyntaxKind.ConditionalAccessExpression) == true)
             {
                 (Expressions ?? (Expressions = new List<ExpressionSyntax>())).Add(expression);
             }

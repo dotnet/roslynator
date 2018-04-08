@@ -4372,13 +4372,31 @@ Foo3();]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[Task<object> FooAsync()
+        <Before><![CDATA[Task<object> GetAsync()
 {
     return null; // RCS1210
 }]]></Before>
-        <After><![CDATA[Task<object> FooAsync()
+        <After><![CDATA[Task<object> GetAsync()
 {
     return Task.FromResult<object>(null);
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[Task<object> GetAsync()
+{
+    return _foo?.GetAsync(); // RCS1210
+}]]></Before>
+        <After><![CDATA[Task<object> GetAsync()
+{
+    Foo x = _foo;
+    if (x != null)
+    {
+        return _foo.GetAsync();
+    }
+    else
+    {
+        return Task.FromResult<object>(null);
+    }
 }]]></After>
       </Sample>
     </Samples>

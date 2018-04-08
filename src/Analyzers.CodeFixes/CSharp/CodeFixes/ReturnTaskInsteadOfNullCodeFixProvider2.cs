@@ -6,20 +6,24 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReturnTaskInsteadOfNullCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(ReturnTaskInsteadOfNullCodeFixProvider2))]
     [Shared]
-    public class ReturnTaskInsteadOfNullCodeFixProvider : BaseCodeFixProvider
+    public class ReturnTaskInsteadOfNullCodeFixProvider2 : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(DiagnosticIdentifiers.ReturnTaskInsteadOfNull); }
+        }
+
+        public override FixAllProvider GetFixAllProvider()
+        {
+            return null;
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -29,16 +33,14 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindNode(root, context.Span, out ExpressionSyntax expression))
                 return;
 
-            if (expression.IsKind(SyntaxKind.ConditionalAccessExpression))
+            if (!(expression.WalkUpParentheses() is ConditionalAccessExpressionSyntax conditionalAccess))
                 return;
-
-            expression = expression.WalkUpParentheses();
 
             Diagnostic diagnostic = context.Diagnostics[0];
 
             CodeAction codeAction = CodeAction.Create(
                 "Use Task.FromResult",
-                cancellationToken => ReturnTaskInsteadOfReturningNullRefactoring.RefactorAsync(context.Document, expression, cancellationToken),
+                cancellationToken => ReturnTaskInsteadOfReturningNullRefactoring.RefactorAsync(context.Document, conditionalAccess, cancellationToken),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
