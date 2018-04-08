@@ -60,6 +60,9 @@ namespace Roslynator.CSharp.Refactorings
 
                 UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, localFunctionStatement, semanticModel);
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration))
+                MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, localFunctionStatement);
         }
     }
 }

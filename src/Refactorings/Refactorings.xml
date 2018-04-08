@@ -1620,4 +1620,26 @@ else
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0202" Identifier="MoveUnsafeContextToContainingDeclaration" Title="Move unsafe context to containing declaration">
+    <Syntaxes>
+      <Syntax>unsafe declaration</Syntax>
+    </Syntaxes>
+    <Span>unsafe modifier</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public class Foo
+{
+  public unsafe void Bar()
+  {
+  }
+}]]></Before>
+        <After><![CDATA[public unsafe class Foo
+{
+  public void Bar()
+  {
+  }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

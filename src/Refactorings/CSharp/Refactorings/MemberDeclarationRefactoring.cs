@@ -173,6 +173,9 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     }
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration))
+                MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, member);
         }
 
         private static void ComputeRefactorings(RefactoringContext context, OperatorDeclarationSyntax operatorDeclaration)

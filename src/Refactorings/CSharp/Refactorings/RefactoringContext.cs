@@ -371,6 +371,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fStatementRefactoring = false;
             bool fThrowStatement = false;
             bool fLocalFunctionStatement = false;
+            bool fUnsafeStatement = false;
 
             SyntaxNode firstNode = node;
 
@@ -796,6 +797,13 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             await LocalFunctionStatementRefactoring.ComputeRefactoringsAsync(this, (LocalFunctionStatementSyntax)node).ConfigureAwait(false);
                             fLocalFunctionStatement = true;
+                        }
+
+                        if (!fUnsafeStatement
+                            && kind == SyntaxKind.UnsafeStatement)
+                        {
+                            UnsafeStatementRefactoring.ComputeRefactorings(this, (UnsafeStatementSyntax)node);
+                            fUnsafeStatement = true;
                         }
 
                         if (!fStatement)

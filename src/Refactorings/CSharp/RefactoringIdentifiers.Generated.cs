@@ -88,6 +88,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeIfStatements = Prefix + "0075";
         public const string MergeIfWithParentIf = Prefix + "0196";
         public const string MergeLocalDeclarations = Prefix + "0077";
+        public const string MoveUnsafeContextToContainingDeclaration = Prefix + "0202";
         public const string NegateBinaryExpression = Prefix + "0079";
         public const string NegateBooleanLiteral = Prefix + "0080";
         public const string NegateIsExpression = Prefix + "0081";
