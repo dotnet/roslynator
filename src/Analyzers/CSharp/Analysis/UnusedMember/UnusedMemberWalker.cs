@@ -13,6 +13,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
     {
         private bool _isEmpty;
 
+        private IMethodSymbol _containingMethodSymbol;
+
         public Collection<NodeSymbolInfo> Nodes { get; } = new Collection<NodeSymbolInfo>();
 
         public SemanticModel SemanticModel { get; set; }
@@ -26,6 +28,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             Nodes.Clear();
             IsAnyNodeConst = false;
             _isEmpty = false;
+            _containingMethodSymbol = null;
         }
 
         private void CheckName(string name, SimpleNameSyntax node)
@@ -61,8 +64,11 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                     if (symbol is IMethodSymbol methodSymbol)
                         symbol = methodSymbol.ReducedFrom ?? methodSymbol;
 
-                    if (info.Symbol.Equals(symbol.OriginalDefinition))
+                    if (info.Symbol.Equals(symbol.OriginalDefinition)
+                        && _containingMethodSymbol?.Equals(symbol.OriginalDefinition) != true)
+                    {
                         RemoveNodeAt(i);
+                    }
                 }
             }
         }
@@ -789,10 +795,16 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         public override void VisitMethodDeclaration(MethodDeclarationSyntax node)
         {
+            Debug.Assert(_containingMethodSymbol == null);
+
+            _containingMethodSymbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
+
             VisitAttributeLists(node.AttributeLists);
             Visit(node.ParameterList);
             VisitBodyOrExpressionBody(node.Body, node.ExpressionBody);
             //base.VisitMethodDeclaration(node);
+
+            _containingMethodSymbol = null;
         }
 
         public override void VisitNameColon(NameColonSyntax node)
