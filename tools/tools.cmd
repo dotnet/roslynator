@@ -1,8 +1,8 @@
 @echo off
-"..\source\Tools\AddCodeFileHeader\bin\Release\AddCodeFileHeader" "..\source"
+dotnet "..\src\Tools\AddCodeFileHeader\bin\Release\netcoreapp2.0\AddCodeFileHeader.dll" "..\src"
 echo AddCodeFileHeader DONE
-"..\source\Tools\MetadataGenerator\bin\Release\MetadataGenerator" "..\source"
+dotnet "..\src\Tools\MetadataGenerator\bin\Release\netcoreapp2.0\MetadataGenerator.dll" "..\src"
 echo MetadataGenerator DONE
-"..\source\Tools\CodeGenerator\bin\Release\CodeGenerator" "..\source"
+dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
 echo CodeGenerator DONE
 pause

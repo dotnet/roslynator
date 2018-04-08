@@ -44,4 +44,4 @@ By default, any setting in config file **overrides** setting from IDE options. T
 
 ### Default Config File
 
-Refactorings are distinguished by their identifiers which is not very descriptive. To make config file more descriptive, you can use [Default Config File](../source/DefaultConfigFile.xml) which contains comment for each refactoring.
+Refactorings are distinguished by their identifiers which is not very descriptive. To make config file more descriptive, you can use [Default Config File](../src/DefaultConfigFile.xml) which contains comment for each refactoring.

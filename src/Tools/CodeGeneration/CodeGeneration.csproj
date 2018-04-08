@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.5</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0.0</Version>
+    <AssemblyName>Roslynator.CodeGeneration</AssemblyName>
+    <RootNamespace>Roslynator.CodeGeneration</RootNamespace>
+    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>CodeGeneration.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <Authors>Josef Pihrt</Authors>
+    <Company></Company>
+    <Description></Description>
+    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.0" />
+    <PackageReference Include="DotMarkdown" Version="0.1.0-rc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Analyzers\Analyzers.csproj" />
+    <ProjectReference Include="..\..\CodeFixes\CodeFixes.csproj" />
+    <ProjectReference Include="..\..\CSharp\CSharp.csproj" />
+    <ProjectReference Include="..\..\Refactorings\Refactorings.csproj" />
+    <ProjectReference Include="..\Metadata\Metadata.csproj" />
+    <ProjectReference Include="..\Utilities\Utilities.csproj" />
+  </ItemGroup>
+
+</Project>

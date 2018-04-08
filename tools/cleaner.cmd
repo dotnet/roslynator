@@ -1,3 +1,3 @@
 @echo off
-"Cleaner.exe" "..\source"
-"Cleaner.exe" "..\source\tools"
+dotnet "cleaner\Cleaner.dll" "..\src"
+dotnet "cleaner\Cleaner.dll" "..\src\tools"

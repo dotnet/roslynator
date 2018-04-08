@@ -1,0 +1,37 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.8.0.1</Version>
+    <AssemblyName>Roslynator.CSharp.CodeFixes</AssemblyName>
+    <RootNamespace>Roslynator.CSharp.CodeFixes</RootNamespace>
+    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>CodeFixes.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>7.2</LangVersion>
+    <NuspecFile>Roslynator.CodeFixes.nuspec</NuspecFile> 
+    <NuspecProperties>configuration=$(Configuration)</NuspecProperties> 
+    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="tools\install.ps1" />
+    <None Remove="tools\uninstall.ps1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.0.0-beta2" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Common.Workspaces\Common.Workspaces.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\CSharp\CSharp.csproj" />
+    <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
+  </ItemGroup>
+
+</Project>

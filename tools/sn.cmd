@@ -1,3 +1,3 @@
 @echo off
-rem sn -Tp ""
+sn -Tp ""
 pause

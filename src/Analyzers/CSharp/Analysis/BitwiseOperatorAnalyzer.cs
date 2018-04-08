@@ -1,0 +1,85 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System;
+using System.Collections.Immutable;
+using System.Threading;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Diagnostics;
+
+namespace Roslynator.CSharp.Analysis
+{
+    [DiagnosticAnalyzer(LanguageNames.CSharp)]
+    public class BitwiseOperatorAnalyzer : BaseDiagnosticAnalyzer
+    {
+        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        {
+            get { return ImmutableArray.Create(DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute); }
+        }
+
+        public override void Initialize(AnalysisContext context)
+        {
+            if (context == null)
+                throw new ArgumentNullException(nameof(context));
+
+            base.Initialize(context);
+            context.EnableConcurrentExecution();
+
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                INamedTypeSymbol flagsAttribute = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute);
+
+                if (flagsAttribute == null)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBinaryExpression(nodeContext, flagsAttribute), SyntaxKind.BitwiseAndExpression);
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBinaryExpression(nodeContext, flagsAttribute), SyntaxKind.BitwiseOrExpression);
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBinaryExpression(nodeContext, flagsAttribute), SyntaxKind.ExclusiveOrExpression);
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBitwiseNotExpression(nodeContext, flagsAttribute), SyntaxKind.BitwiseNotExpression);
+            });
+        }
+
+        private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol flagsAttribute)
+        {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+            if (IsEnumWithoutFlags(binaryExpression.Left, flagsAttribute, context.SemanticModel, context.CancellationToken)
+                || IsEnumWithoutFlags(binaryExpression.Right, flagsAttribute, context.SemanticModel, context.CancellationToken))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute,
+                    binaryExpression);
+            }
+        }
+
+        private static void AnalyzeBitwiseNotExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol flagsAttribute)
+        {
+            var prefixUnaryExpression = (PrefixUnaryExpressionSyntax)context.Node;
+
+            if (IsEnumWithoutFlags(prefixUnaryExpression.Operand, flagsAttribute, context.SemanticModel, context.CancellationToken))
+            {
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute,
+                    prefixUnaryExpression);
+            }
+        }
+
+        private static bool IsEnumWithoutFlags(
+            ExpressionSyntax expression,
+            INamedTypeSymbol flagsAttribute,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            if (expression?.IsMissing == false)
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+
+                return typeSymbol?.TypeKind == TypeKind.Enum
+                    && !typeSymbol.HasAttribute(flagsAttribute);
+            }
+
+            return false;
+        }
+    }
+}

@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0.0</Version>
+    <AssemblyName>Roslynator.CSharp.Workspaces</AssemblyName>
+    <RootNamespace>Roslynator</RootNamespace>
+    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>CSharp.Workspaces.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.3\Roslynator.CSharp.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Roslynator.CSharp.Workspaces</PackageId>
+    <PackageVersion>1.0.0-beta</PackageVersion>
+    <Authors>Josef Pihrt</Authors>
+    <Company></Company>
+    <Description>This library extends functionality provided by Microsoft.CodeAnalysis.CSharp.Workspaces
+
+Commonly Used Types:
+Roslynator.CSharp.CSharpFactory
+Roslynator.CSharp.CSharpFacts
+Roslynator.CSharp.SyntaxInfo
+Roslynator.NameGenerator</Description>
+    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>http://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>Roslyn;Analyzer;Refactoring;Productivity;CodeAnalysis;C#;CSharp</PackageTags>
+    <RepositoryUrl>http://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.0.0-beta2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSharp\CSharp.csproj" />
+  </ItemGroup>
+
+</Project>
