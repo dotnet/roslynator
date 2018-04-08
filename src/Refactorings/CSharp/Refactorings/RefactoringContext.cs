@@ -602,7 +602,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (!fLambdaExpression
                             && (node is LambdaExpressionSyntax lambdaExpression))
                         {
-                            LambdaExpressionRefactoring.ComputeRefactorings(this, lambdaExpression);
+                            await LambdaExpressionRefactoring.ComputeRefactoringsAsync(this, lambdaExpression).ConfigureAwait(false);
                             fLambdaExpression = true;
                         }
 

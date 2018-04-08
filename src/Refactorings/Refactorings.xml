@@ -1642,4 +1642,26 @@ else
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0203" Identifier="ExtractEventHandlerMethod" Title="Extract event handler method">
+    <Syntaxes>
+      <Syntax>lambda expression</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[void Foo()
+{
+  x.Changed += (s, e) => Bar();
+}]]></Before>
+        <After><![CDATA[void Foo()
+{
+  x.Changed += Changed;
+}
+
+void OnChanged(object sender, EventArgs e)
+{
+  Bar();
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>
