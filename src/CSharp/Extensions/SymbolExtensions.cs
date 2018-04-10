@@ -341,28 +341,39 @@ namespace Roslynator
         }
 
         /// <summary>
-        /// Get a value indicating whether the symbol has specified attribute.
+        /// Returns the attribute for the symbol that matches the specified attribute class, or null if the symbol does not have the specified attribute.
         /// </summary>
         /// <param name="symbol"></param>
-        /// <param name="attributeSymbol"></param>
+        /// <param name="attributeClass"></param>
         /// <returns></returns>
-        public static bool HasAttribute(this ISymbol symbol, INamedTypeSymbol attributeSymbol)
+        public static AttributeData GetAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
 
-            if (attributeSymbol != null)
+            if (attributeClass != null)
             {
                 ImmutableArray<AttributeData> attributes = symbol.GetAttributes();
 
                 for (int i = 0; i < attributes.Length; i++)
                 {
-                    if (attributes[i].AttributeClass.Equals(attributeSymbol))
-                        return true;
+                    if (attributes[i].AttributeClass.Equals(attributeClass))
+                        return attributes[i];
                 }
             }
 
-            return false;
+            return null;
+        }
+
+        /// <summary>
+        /// Returns true if the symbol has the specified attribute.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="attributeClass"></param>
+        /// <returns></returns>
+        public static bool HasAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
+        {
+            return GetAttribute(symbol, attributeClass) != null;
         }
 
         internal static AttributeData GetAttributeByMetadataName(this INamedTypeSymbol typeSymbol, string fullyQualifiedMetadataName, Compilation compilation)
