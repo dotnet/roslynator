@@ -23,7 +23,7 @@
     <PackageVersion>1.0.0-beta</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
-    <Description>This library extends functionality provided by Microsoft.CodeAnalysis.CSharp
+    <Description>This library extends functionality of Microsoft.CodeAnalysis.CSharp
 
 Commonly Used Types:
 Roslynator.CSharp.CSharpFactory

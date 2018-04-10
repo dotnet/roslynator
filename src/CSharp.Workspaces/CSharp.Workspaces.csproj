@@ -15,7 +15,7 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-    <DocumentationFile>bin\Release\netstandard1.3\Roslynator.CSharp.xml</DocumentationFile>
+    <DocumentationFile>bin\Release\netstandard1.3\Roslynator.CSharp.Workspaces.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -23,7 +23,7 @@
     <PackageVersion>1.0.0-beta</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
-    <Description>This library extends functionality provided by Microsoft.CodeAnalysis.CSharp.Workspaces
+    <Description>This library extends functionality of Microsoft.CodeAnalysis.CSharp.Workspaces
 
 Commonly Used Types:
 Roslynator.CSharp.CSharpFactory
