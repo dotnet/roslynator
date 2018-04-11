@@ -2,6 +2,8 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Collections.ObjectModel;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,21 +27,26 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeStructDeclaration, SyntaxKind.StructDeclaration);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                INamedTypeSymbol debuggerDisplayAttribute = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute);
+
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeClassDeclaration(nodeContext, debuggerDisplayAttribute), SyntaxKind.ClassDeclaration);
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeStructDeclaration(nodeContext, debuggerDisplayAttribute), SyntaxKind.StructDeclaration);
+            });
         }
 
-        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol debuggerDisplayAttribute)
         {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
+            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node, debuggerDisplayAttribute);
         }
 
-        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
+        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol debuggerDisplayAttribute)
         {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
+            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node, debuggerDisplayAttribute);
         }
 
-        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration)
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration, INamedTypeSymbol debuggerDisplayAttribute)
         {
             if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                 return;
@@ -160,6 +167,24 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             if (walker == null)
                 return;
 
+            if (debuggerDisplayAttribute != null
+                && ShouldAnalyzeDebuggerDisplayAttribute())
+            {
+                string value = context.SemanticModel
+                    .GetDeclaredSymbol(typeDeclaration, context.CancellationToken)
+                    .GetAttribute(debuggerDisplayAttribute)?
+                    .ConstructorArguments
+                    .SingleOrDefault(shouldThrow: false)
+                    .Value?
+                    .ToString();
+
+                if (value != null)
+                    RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(walker.Nodes, value);
+
+                if (walker.Nodes.Count == 0)
+                    return;
+            }
+
             walker.Visit(typeDeclaration);
 
             foreach (NodeSymbolInfo info in UnusedMemberWalkerCache.GetNodesAndFree(walker))
@@ -184,6 +209,23 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                     ReportDiagnostic(context, node, CSharpFacts.GetTitle(node));
                 }
             }
+
+            bool ShouldAnalyzeDebuggerDisplayAttribute()
+            {
+                if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
+                    return true;
+
+                foreach (AttributeListSyntax attributeList in typeDeclaration.AttributeLists)
+                {
+                    foreach (AttributeSyntax attribute in attributeList.Attributes)
+                    {
+                        if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals == null) == 1)
+                            return true;
+                    }
+                }
+
+                return false;
+            }
         }
 
         private static bool IsMainMethod(MethodDeclarationSyntax methodDeclaration, SyntaxTokenList modifiers, string methodName)
@@ -192,6 +234,84 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                 && modifiers.Contains(SyntaxKind.StaticKeyword)
                 && methodDeclaration.TypeParameterList == null
                 && methodDeclaration.ParameterList?.Parameters.Count <= 1;
+        }
+
+        private static void RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(
+            Collection<NodeSymbolInfo> nodes,
+            string value)
+        {
+            int length = value.Length;
+
+            if (length == 0)
+                return;
+
+            for (int i = 0; i < length; i++)
+            {
+                switch (value[i])
+                {
+                    case '{':
+                        {
+                            i++;
+
+                            int startIndex = i;
+
+                            while (i < length)
+                            {
+                                char ch = value[i];
+
+                                if (ch == '}'
+                                    || ch == ','
+                                    || ch == '(')
+                                {
+                                    int nameLength = i - startIndex;
+
+                                    if (nameLength > 0)
+                                    {
+                                        for (int j = nodes.Count - 1; j >= 0; j--)
+                                        {
+                                            NodeSymbolInfo nodeSymbolInfo = nodes[j];
+
+                                            if (nodeSymbolInfo.CanBeInDebuggerDisplayAttribute
+                                                && string.CompareOrdinal(nodeSymbolInfo.Name, 0, value, startIndex, nameLength) == 0)
+                                            {
+                                                nodes.RemoveAt(j);
+
+                                                if (nodes.Count == 0)
+                                                    return;
+                                            }
+                                        }
+                                    }
+
+                                    if (ch != '}')
+                                    {
+                                        i++;
+
+                                        while (i < length
+                                            && value[i] != '}')
+                                        {
+                                            i++;
+                                        }
+                                    }
+
+                                    break;
+                                }
+
+                                i++;
+                            }
+
+                            break;
+                        }
+                    case '}':
+                        {
+                            return;
+                        }
+                    case '\\':
+                        {
+                            i++;
+                            break;
+                        }
+                }
+            }
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node, string declarationName)

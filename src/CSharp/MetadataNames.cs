@@ -22,6 +22,7 @@ namespace Roslynator
         public const string System_ComponentModel_INotifyPropertyChanged = "System.ComponentModel.INotifyPropertyChanged";
         public const string System_Diagnostics = "System.Diagnostics";
         public const string System_Diagnostics_Debug = "System.Diagnostics.Debug";
+        public const string System_Diagnostics_DebuggerDisplayAttribute = "System.Diagnostics.DebuggerDisplayAttribute";
         public const string System_EventArgs = "System.EventArgs";
         public const string System_EventHandler = "System.EventHandler";
         public const string System_EventHandler_T = "System.EventHandler`1";

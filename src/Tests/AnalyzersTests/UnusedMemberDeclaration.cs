@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 
-#pragma warning disable RCS1016, RCS1081, RCS1163, RCS1164, RCS1175, RCS1176
+#pragma warning disable RCS1016, RCS1039, RCS1081, RCS1163, RCS1164, RCS1175, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -107,6 +108,40 @@ namespace Roslynator.CSharp.Analyzers.Tests
             }
 
             private static void Main()
+            {
+            }
+        }
+
+        [DebuggerDisplay(@"\\ \{ \} {GetDebuggerDisplay()} \\ \{ \} {DebuggerDisplay}")]
+        private class FooDebuggerDisplay
+        {
+            private string GetDebuggerDisplay()
+            {
+                return "";
+            }
+
+            private string DebuggerDisplay
+            {
+                get { return ""; }
+            }
+
+            [DebuggerDisplay]
+            private class FooDebuggerDisplay2
+            {
+            }
+
+            [DebuggerDisplay()]
+            private class FooDebuggerDisplay3
+            {
+            }
+
+            [DebuggerDisplay("")]
+            private class FooDebuggerDisplay4
+            {
+            }
+
+            [DebuggerDisplay("}")]
+            private class FooDebuggerDisplay5
             {
             }
         }
