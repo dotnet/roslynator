@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Roslynator.Metadata
 {
@@ -19,7 +21,8 @@ namespace Roslynator.Metadata
             bool supportsFadeOut,
             bool supportsFadeOutAnalyzer,
             string summary,
-            IList<SampleDescriptor> samples)
+            IEnumerable<SampleDescriptor> samples,
+            IEnumerable<LinkDescriptor> links)
         {
             Id = id;
             Identifier = identifier;
@@ -32,7 +35,8 @@ namespace Roslynator.Metadata
             SupportsFadeOut = supportsFadeOut;
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
             Summary = summary;
-            Samples = new ReadOnlyCollection<SampleDescriptor>(samples);
+            Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
+            Links = new ReadOnlyCollection<LinkDescriptor>(links?.ToArray() ?? Array.Empty<LinkDescriptor>());
         }
 
         public string Id { get; }
@@ -57,6 +61,8 @@ namespace Roslynator.Metadata
 
         public string Summary { get; }
 
-        public ReadOnlyCollection<SampleDescriptor> Samples { get; }
+        public IReadOnlyList<SampleDescriptor> Samples { get; }
+
+        public IReadOnlyList<LinkDescriptor> Links { get; }
     }
 }

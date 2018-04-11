@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Roslynator.Metadata
@@ -16,9 +18,10 @@ namespace Roslynator.Metadata
             bool isObsolete,
             string span,
             string summary,
-            IList<SyntaxDescriptor> syntaxes,
-            IList<ImageDescriptor> images,
-            IList<SampleDescriptor> samples)
+            IEnumerable<SyntaxDescriptor> syntaxes,
+            IEnumerable<ImageDescriptor> images,
+            IEnumerable<SampleDescriptor> samples,
+            IEnumerable<LinkDescriptor> links)
         {
             Id = id;
             Identifier = identifier;
@@ -27,9 +30,10 @@ namespace Roslynator.Metadata
             IsObsolete = isObsolete;
             Span = span;
             Summary = summary;
-            Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes);
-            Images = new ReadOnlyCollection<ImageDescriptor>(images);
-            Samples = new ReadOnlyCollection<SampleDescriptor>(samples);
+            Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes?.ToArray() ?? Array.Empty<SyntaxDescriptor>());
+            Images = new ReadOnlyCollection<ImageDescriptor>(images?.ToArray() ?? Array.Empty<ImageDescriptor>());
+            Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
+            Links = new ReadOnlyCollection<LinkDescriptor>(links?.ToArray() ?? Array.Empty<LinkDescriptor>());
         }
 
         public string Id { get; }
@@ -46,11 +50,13 @@ namespace Roslynator.Metadata
 
         public bool IsObsolete { get; }
 
-        public ReadOnlyCollection<SyntaxDescriptor> Syntaxes { get; }
+        public IReadOnlyList<SyntaxDescriptor> Syntaxes { get; }
 
-        public ReadOnlyCollection<ImageDescriptor> Images { get; }
+        public IReadOnlyList<ImageDescriptor> Images { get; }
 
-        public ReadOnlyCollection<SampleDescriptor> Samples { get; }
+        public IReadOnlyList<SampleDescriptor> Samples { get; }
+
+        public IReadOnlyList<LinkDescriptor> Links { get; }
 
         public IEnumerable<ImageDescriptor> ImagesOrDefaultImage()
         {

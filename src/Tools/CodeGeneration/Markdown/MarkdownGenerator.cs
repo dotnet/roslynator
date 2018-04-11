@@ -159,6 +159,27 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
+        private static IEnumerable<MElement> GetLinks(IEnumerable<LinkDescriptor> links)
+        {
+            if (links.Any())
+            {
+                yield return Heading2("Related Links");
+                yield return BulletList(links.Select(GetContent));
+            }
+
+            MElement GetContent(LinkDescriptor link)
+            {
+                if (string.IsNullOrEmpty(link.Text))
+                {
+                    return new MAutolink(link.Url);
+                }
+                else
+                {
+                    return Link(link.Text, link.Url, link.Title);
+                }
+            }
+        }
+
         public static string CreateRefactoringMarkdown(RefactoringDescriptor refactoring)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
@@ -174,6 +195,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 (!string.IsNullOrEmpty(refactoring.Summary)) ? Raw(refactoring.Summary) : null,
                 Heading3("Usage"),
                 GetRefactoringSamples(refactoring),
+                GetLinks(refactoring.Links),
                 Link("full list of refactorings", "Refactorings.md"),
                 NewLine);
 
@@ -198,6 +220,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Supports Fade-Out Analyzer", CheckboxOrHyphen(analyzer.SupportsFadeOutAnalyzer))),
                 (!string.IsNullOrEmpty(analyzer.Summary)) ? Raw(analyzer.Summary) : null,
                 Samples(),
+                GetLinks(analyzer.Links),
                 Heading2("How to Suppress"),
                 Heading3("SuppressMessageAttribute"),
                 FencedCodeBlock($"[assembly: SuppressMessage(\"{analyzer.Category}\", \"{analyzer.Id}:{analyzer.Title}\", Justification = \"<Pending>\")]", LanguageIdentifiers.CSharp),
@@ -212,7 +235,7 @@ namespace Roslynator.CodeGeneration.Markdown
 
             IEnumerable<MElement> Samples()
             {
-                ReadOnlyCollection<SampleDescriptor> samples = analyzer.Samples;
+                IReadOnlyList<SampleDescriptor> samples = analyzer.Samples;
 
                 if (samples.Count > 0)
                 {

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
@@ -35,12 +36,8 @@ namespace Roslynator.Metadata
                     bool.Parse(element.Element("SupportsFadeOut").Value),
                     bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value),
                     element.Element("Summary")?.Value,
-                    (element.Element("Samples") != null)
-                        ? element.Element("Samples")?
-                            .Elements("Sample")
-                            .Select(f => new SampleDescriptor(f.Element("Before").Value, f.Element("After")?.Value))
-                            .ToList()
-                        : new List<SampleDescriptor>());
+                    LoadSamples(element),
+                    LoadLinks(element));
             }
         }
 
@@ -65,21 +62,35 @@ namespace Roslynator.Metadata
                     element.Element("Summary")?.Value,
                     element.Element("Syntaxes")
                         .Elements("Syntax")
-                        .Select(f => new SyntaxDescriptor(f.Value))
-                        .ToList(),
-                    (element.Element("Images") != null)
-                        ? element.Element("Images")?
-                            .Elements("Image")
-                            .Select(f => new ImageDescriptor(f.Value))
-                            .ToList()
-                        : new List<ImageDescriptor>(),
-                    (element.Element("Samples") != null)
-                        ? element.Element("Samples")?
-                            .Elements("Sample")
-                            .Select(f => new SampleDescriptor(f.Element("Before").Value, f.Element("After").Value))
-                            .ToList()
-                        : new List<SampleDescriptor>());
+                        .Select(f => new SyntaxDescriptor(f.Value)),
+                    LoadImages(element),
+                    LoadSamples(element),
+                    LoadLinks(element));
             }
+        }
+
+        private static IEnumerable<ImageDescriptor> LoadImages(XElement element)
+        {
+            return element
+                .Element("Images")?
+                .Elements("Image")
+                .Select(f => new ImageDescriptor(f.Value));
+        }
+
+        private static IEnumerable<SampleDescriptor> LoadSamples(XElement element)
+        {
+            return element
+                .Element("Samples")?
+                .Elements("Sample")
+                .Select(f => new SampleDescriptor(f.Element("Before").Value, f.Element("After")?.Value));
+        }
+
+        private static IEnumerable<LinkDescriptor> LoadLinks(XElement element)
+        {
+            return element
+                .Element("Links")?
+               .Elements("Link")
+               .Select(f => new LinkDescriptor(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
         }
 
         public static ImmutableArray<CodeFixDescriptor> ReadAllCodeFixes(string filePath)
@@ -100,8 +111,7 @@ namespace Roslynator.Metadata
                     element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
                     element.Element("FixableDiagnosticIds")
                         .Elements("Id")
-                        .Select(f => f.Value)
-                        .ToList());
+                        .Select(f => f.Value));
             }
         }
 
@@ -147,9 +157,7 @@ namespace Roslynator.Metadata
 
             using (var fs = new FileStream(path, FileMode.Create))
             using (XmlWriter xw = XmlWriter.Create(fs, new XmlWriterSettings() { Indent = true, NewLineOnAttributes = true }))
-            {
                 doc.Save(xw);
-            }
         }
     }
 }

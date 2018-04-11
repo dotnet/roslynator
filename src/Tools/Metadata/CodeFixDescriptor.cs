@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 namespace Roslynator.Metadata
 {
@@ -12,13 +14,13 @@ namespace Roslynator.Metadata
             string identifier,
             string title,
             bool isEnabledByDefault,
-            IList<string> fixableDiagnosticIds)
+            IEnumerable<string> fixableDiagnosticIds)
         {
             Id = id;
             Identifier = identifier;
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
-            FixableDiagnosticIds = new ReadOnlyCollection<string>(fixableDiagnosticIds);
+            FixableDiagnosticIds = new ReadOnlyCollection<string>(fixableDiagnosticIds?.ToArray() ?? Array.Empty<string>());
         }
 
         public string Id { get; }
@@ -29,6 +31,6 @@ namespace Roslynator.Metadata
 
         public bool IsEnabledByDefault { get; }
 
-        public ReadOnlyCollection<string> FixableDiagnosticIds { get; }
+        public IReadOnlyList<string> FixableDiagnosticIds { get; }
     }
 }
