@@ -28,7 +28,7 @@ namespace Roslynator.CodeGeneration
                 RefactoringIdentifiersGenerator.Generate(Refactorings, obsolete: true, comparer: Comparer));
 
             WriteCompilationUnit(
-                @"VisualStudio.Core\RefactoringsOptionsPage.Generated.cs",
+                @"VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
                 RefactoringsOptionsPageGenerator.Generate(Refactorings.Where(f => !f.IsObsolete), Comparer));
 
             WriteCompilationUnit(
@@ -52,11 +52,11 @@ namespace Roslynator.CodeGeneration
                 CodeFixIdentifiersGenerator.Generate(CodeFixes, Comparer));
 
             WriteCompilationUnit(
-                @"VisualStudio.Core\CodeFixesOptionsPage.Generated.cs",
+                @"VisualStudio.Common\CodeFixesOptionsPage.Generated.cs",
                 CodeFixesOptionsPageGenerator.Generate(CodeFixes, Comparer));
 
             WriteCompilationUnit(
-                @"Core\CSharp\CompilerDiagnosticIdentifiers.cs",
+                @"CSharp\CSharp\CompilerDiagnosticIdentifiers.cs",
                 CompilerDiagnosticIdentifiersGenerator.Generate(CompilerDiagnostics, Comparer));
         }
 
