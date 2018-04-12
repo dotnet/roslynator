@@ -38,80 +38,80 @@ namespace Roslynator.Text
 
         public void AppendSpan()
         {
-            Append(Node.Span);
+            AppendImpl(Node.Span);
         }
 
         public void AppendSpan(SyntaxNode node)
         {
             ThrowIfInvalid(node);
 
-            Append(node.Span);
+            AppendImpl(node.Span);
         }
 
         public void AppendSpan(SyntaxToken token)
         {
             ThrowIfInvalid(token);
 
-            Append(token.Span);
+            AppendImpl(token.Span);
         }
 
         public void AppendSpan(SyntaxTrivia trivia)
         {
             ThrowIfInvalid(trivia);
 
-            Append(trivia.Span);
+            AppendImpl(trivia.Span);
         }
 
         public void AppendFullSpan()
         {
-            Append(Node.FullSpan);
+            AppendImpl(Node.FullSpan);
         }
 
         public void AppendFullSpan(SyntaxNode node)
         {
             ThrowIfInvalid(node);
 
-            Append(node.FullSpan);
+            AppendImpl(node.FullSpan);
         }
 
         public void AppendFullSpan(SyntaxToken token)
         {
             ThrowIfInvalid(token);
 
-            Append(token.FullSpan);
+            AppendImpl(token.FullSpan);
         }
 
         public void AppendFullSpan(SyntaxTrivia trivia)
         {
             ThrowIfInvalid(trivia);
 
-            Append(trivia.FullSpan);
+            AppendImpl(trivia.FullSpan);
         }
 
         public void AppendLeadingTrivia()
         {
-            Append(Node.LeadingTriviaSpan());
+            AppendImpl(Node.LeadingTriviaSpan());
         }
 
         public void AppendLeadingTrivia(SyntaxNode node)
         {
             ThrowIfInvalid(node);
 
-            Append(node.LeadingTriviaSpan());
+            AppendImpl(node.LeadingTriviaSpan());
         }
 
         public void AppendLeadingTrivia(SyntaxToken token)
         {
             ThrowIfInvalid(token);
 
-            Append(token.LeadingTriviaSpan());
+            AppendImpl(token.LeadingTriviaSpan());
         }
 
         public void AppendLeadingTrivia(SyntaxTrivia trivia)
         {
             ThrowIfInvalid(trivia);
 
-            Append(trivia.LeadingTriviaSpan());
+            AppendImpl(trivia.LeadingTriviaSpan());
         }
 
         public void AppendLeadingTriviaAndSpan()
@@ -124,50 +124,50 @@ namespace Roslynator.Text
         {
             ThrowIfInvalid(node);
 
-            Append(node.LeadingTriviaSpan());
-            Append(node.Span);
+            AppendImpl(node.LeadingTriviaSpan());
+            AppendImpl(node.Span);
         }
 
         public void AppendLeadingTriviaAndSpan(SyntaxToken token)
         {
             ThrowIfInvalid(token);
 
-            Append(token.LeadingTriviaSpan());
-            Append(token.Span);
+            AppendImpl(token.LeadingTriviaSpan());
+            AppendImpl(token.Span);
         }
 
         public void AppendLeadingTriviaAndSpan(SyntaxTrivia trivia)
         {
             ThrowIfInvalid(trivia);
 
-            Append(trivia.LeadingTriviaSpan());
-            Append(trivia.Span);
+            AppendImpl(trivia.LeadingTriviaSpan());
+            AppendImpl(trivia.Span);
         }
 
         public void AppendTrailingTrivia()
         {
-            Append(Node.TrailingTriviaSpan());
+            AppendImpl(Node.TrailingTriviaSpan());
         }
 
         public void AppendTrailingTrivia(SyntaxNode node)
         {
             ThrowIfInvalid(node);
 
-            Append(node.TrailingTriviaSpan());
+            AppendImpl(node.TrailingTriviaSpan());
         }
 
         public void AppendTrailingTrivia(SyntaxToken token)
         {
             ThrowIfInvalid(token);
 
-            Append(token.TrailingTriviaSpan());
+            AppendImpl(token.TrailingTriviaSpan());
         }
 
         public void AppendTrailingTrivia(SyntaxTrivia trivia)
         {
             ThrowIfInvalid(trivia);
 
-            Append(trivia.TrailingTriviaSpan());
+            AppendImpl(trivia.TrailingTriviaSpan());
         }
 
         public void AppendSpanAndTrailingTrivia()
@@ -180,24 +180,24 @@ namespace Roslynator.Text
         {
             ThrowIfInvalid(node);
 
-            Append(node.Span);
-            Append(node.TrailingTriviaSpan());
+            AppendImpl(node.Span);
+            AppendImpl(node.TrailingTriviaSpan());
         }
 
         public void AppendSpanAndTrailingTrivia(SyntaxToken token)
         {
             ThrowIfInvalid(token);
 
-            Append(token.Span);
-            Append(token.TrailingTriviaSpan());
+            AppendImpl(token.Span);
+            AppendImpl(token.TrailingTriviaSpan());
         }
 
         public void AppendSpanAndTrailingTrivia(SyntaxTrivia trivia)
         {
             ThrowIfInvalid(trivia);
 
-            Append(trivia.Span);
-            Append(trivia.TrailingTriviaSpan());
+            AppendImpl(trivia.Span);
+            AppendImpl(trivia.TrailingTriviaSpan());
         }
 
         public void Append(string value)
@@ -215,7 +215,13 @@ namespace Roslynator.Text
             StringBuilder.AppendLine(value);
         }
 
-        private void Append(TextSpan span)
+        public void Append(TextSpan span)
+        {
+            ThrowIfInvalid(span);
+            AppendImpl(span);
+        }
+
+        private void AppendImpl(TextSpan span)
         {
             StringBuilder.Append(_text, span.Start - FullSpan.Start, span.Length);
         }
@@ -236,6 +242,12 @@ namespace Roslynator.Text
         {
             if (!FullSpan.Contains(trivia.FullSpan))
                 throw new ArgumentException("", nameof(trivia));
+        }
+
+        private void ThrowIfInvalid(TextSpan span)
+        {
+            if (!FullSpan.Contains(span))
+                throw new ArgumentException("", nameof(span));
         }
     }
 }

@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -12,68 +11,70 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Syntax;
+using Roslynator.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseConditionalAccessRefactoring
     {
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             BinaryExpressionSyntax logicalAnd,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = CreateExpressionWithConditionalAccess(logicalAnd)
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(logicalAnd.Left, allowedStyles: NullCheckStyles.NotEqualsToNull);
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            bool isNullable = semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken).IsNullableType();
+
+            ExpressionSyntax newNode = CreateExpressionWithConditionalAccess(logicalAnd, nullCheck.Expression, isNullable: isNullable)
                 .WithLeadingTrivia(logicalAnd.GetLeadingTrivia())
                 .WithFormatterAnnotation()
                 .Parenthesize();
 
-            return document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken);
+            return await document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken).ConfigureAwait(false);
         }
 
-        private static ExpressionSyntax CreateExpressionWithConditionalAccess(BinaryExpressionSyntax logicalAnd)
+        private static ExpressionSyntax CreateExpressionWithConditionalAccess(
+            BinaryExpressionSyntax logicalAnd,
+            ExpressionSyntax expression,
+            bool isNullable)
         {
-            ExpressionSyntax expression = SyntaxInfo.NullCheckExpressionInfo(logicalAnd.Left, allowedStyles: NullCheckStyles.NotEqualsToNull).Expression;
-
-            ExpressionSyntax right = logicalAnd.Right?.WalkDownParentheses();
+            ExpressionSyntax right = logicalAnd.Right.WalkDownParentheses();
 
             ExpressionSyntax expression2 = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(
                 expression,
-                right);
+                right,
+                isNullable: isNullable);
 
-            SyntaxKind kind = right.Kind();
-
-            if (kind == SyntaxKind.LogicalNotExpression)
+            if (right.IsKind(SyntaxKind.LogicalNotExpression))
             {
                 var logicalNot = (PrefixUnaryExpressionSyntax)right;
+
                 ExpressionSyntax operand = logicalNot.Operand;
 
-                string s = operand.ToFullString();
+                var builder = new SyntaxNodeTextBuilder(operand, StringBuilderCache.GetInstance(operand.FullSpan.Length));
 
-                int length = expression2.Span.End - operand.FullSpan.Start;
-                int trailingLength = operand.GetTrailingTrivia().Span.Length;
+                builder.AppendLeadingTrivia();
+                builder.AppendFullSpan((isNullable) ? ((MemberAccessExpressionSyntax)expression2).Expression : expression2);
+                builder.Append("?");
+                builder.Append(TextSpan.FromBounds(expression2.Span.End, operand.Span.End));
+                builder.Append(" == false");
+                builder.AppendTrailingTrivia();
 
-                var sb = new StringBuilder();
-                sb.Append(s, 0, length);
-                sb.Append("?");
-                sb.Append(s, length, s.Length - length - trailingLength);
-                sb.Append(" == false");
-                sb.Append(s, s.Length - trailingLength, trailingLength);
-
-                return SyntaxFactory.ParseExpression(sb.ToString());
+                return SyntaxFactory.ParseExpression(StringBuilderCache.GetStringAndFree(builder.StringBuilder));
             }
             else
             {
-                string s = right.ToFullString();
+                var builder = new SyntaxNodeTextBuilder(right, StringBuilderCache.GetInstance(right.FullSpan.Length));
 
-                int length = expression2.Span.End - right.FullSpan.Start;
-                int trailingLength = right.GetTrailingTrivia().Span.Length;
+                builder.AppendLeadingTrivia();
+                builder.AppendFullSpan((isNullable) ? ((MemberAccessExpressionSyntax)expression2).Expression : expression2);
+                builder.Append("?");
+                builder.Append(TextSpan.FromBounds(expression2.Span.End, right.Span.End));
 
-                var sb = new StringBuilder();
-                sb.Append(s, 0, length);
-                sb.Append("?");
-                sb.Append(s, length, s.Length - length - trailingLength);
-
-                switch (kind)
+                switch (right.Kind())
                 {
                     case SyntaxKind.LogicalOrExpression:
                     case SyntaxKind.LogicalAndExpression:
@@ -92,28 +93,46 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     default:
                         {
-                            sb.Append(" == true");
+                            builder.Append(" == true");
                             break;
                         }
                 }
 
-                sb.Append(s, s.Length - trailingLength, trailingLength);
+                builder.AppendTrailingTrivia();
 
-                return SyntaxFactory.ParseExpression(sb.ToString());
+                return SyntaxFactory.ParseExpression(StringBuilderCache.GetStringAndFree(builder.StringBuilder));
             }
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
         {
             var statement = (ExpressionStatementSyntax)ifStatement.SingleNonBlockStatementOrDefault();
 
+            StatementSyntax newStatement = statement;
+
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.NotEqualsToNull);
+
             SimpleMemberInvocationStatementInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationStatementInfo(statement);
 
-            int insertIndex = invocationInfo.Expression.Span.End - statement.FullSpan.Start;
-            StatementSyntax newStatement = SyntaxFactory.ParseStatement(statement.ToFullString().Insert(insertIndex, "?"));
+            ExpressionSyntax expression = invocationInfo.Expression;
+
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            if (semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken).IsNullableType())
+            {
+                var memberAccess = (MemberAccessExpressionSyntax)invocationInfo.Expression;
+
+                newStatement = statement.ReplaceNode(memberAccess, memberAccess.Expression.WithTrailingTrivia(memberAccess.GetTrailingTrivia()));
+
+                expression = memberAccess.Expression;
+            }
+
+            int insertIndex = expression.Span.End - statement.FullSpan.Start;
+
+            newStatement = SyntaxFactory.ParseStatement(newStatement.ToFullString().Insert(insertIndex, "?"));
 
             IEnumerable<SyntaxTrivia> leading = ifStatement.DescendantTrivia(TextSpan.FromBounds(ifStatement.SpanStart, statement.SpanStart));
 
@@ -127,7 +146,7 @@ namespace Roslynator.CSharp.Refactorings
                 ? newStatement.WithTrailingTrivia(ifStatement.GetTrailingTrivia())
                 : newStatement.WithTrailingTrivia(trailing.Concat(ifStatement.GetTrailingTrivia()));
 
-            return document.ReplaceNodeAsync(ifStatement, newStatement, cancellationToken);
+            return await document.ReplaceNodeAsync(ifStatement, newStatement, cancellationToken).ConfigureAwait(false);
         }
     }
 }
