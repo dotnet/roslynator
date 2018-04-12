@@ -12,11 +12,42 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
     internal static class RefactoringUtility
     {
+        public static IEnumerable<AttributeListSyntax> SplitAttributes(AttributeListSyntax attributeList)
+        {
+            SeparatedSyntaxList<AttributeSyntax> attributes = attributeList.Attributes;
+
+            for (int i = 0; i < attributes.Count; i++)
+            {
+                AttributeListSyntax list = AttributeList(attributes[i]);
+
+                if (i == 0)
+                    list = list.WithLeadingTrivia(attributeList.GetLeadingTrivia());
+
+                if (i == attributes.Count - 1)
+                    list = list.WithTrailingTrivia(attributeList.GetTrailingTrivia());
+
+                yield return list;
+            }
+        }
+
+        public static AttributeListSyntax MergeAttributes(IList<AttributeListSyntax> lists)
+        {
+            AttributeListSyntax list = lists[0];
+
+            for (int i = 1; i < lists.Count; i++)
+                list = list.AddAttributes(lists[i].Attributes.ToArray());
+
+            return list
+                .WithLeadingTrivia(lists[0].GetLeadingTrivia())
+                .WithTrailingTrivia(lists.Last().GetTrailingTrivia());
+        }
+
         public static InvocationExpressionSyntax ChangeInvokedMethodName(InvocationExpressionSyntax invocation, string newName)
         {
             ExpressionSyntax expression = invocation.Expression;

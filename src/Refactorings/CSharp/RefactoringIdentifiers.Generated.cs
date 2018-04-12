@@ -65,6 +65,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string GenerateEnumMember = Prefix + "0056";
         public const string GenerateEnumValues = Prefix + "0057";
         public const string GenerateEventInvokingMethod = Prefix + "0058";
+        public const string GeneratePropertyForDebuggerDisplayAttribute = Prefix + "0204";
         public const string GenerateSwitchSections = Prefix + "0059";
         public const string ImplementIEquatableOfT = Prefix + "0179";
         public const string InitializeFieldFromConstructor = Prefix + "0197";
