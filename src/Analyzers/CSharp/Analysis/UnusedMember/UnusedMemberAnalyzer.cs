@@ -168,6 +168,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                 return;
 
             if (debuggerDisplayAttribute != null
+                && walker.Nodes.Any(f => f.CanBeInDebuggerDisplayAttribute)
                 && ShouldAnalyzeDebuggerDisplayAttribute())
             {
                 string value = context.SemanticModel
