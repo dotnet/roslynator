@@ -65,11 +65,13 @@ namespace Roslynator.CSharp.Refactorings
             sb.Replace("{", "{{", length);
             sb.Replace("}", "}}", length);
 
-            ExpressionSyntax newNode = ParseExpression(StringBuilderCache.GetStringAndFree(sb)).WithTriviaFrom(literalExpression);
+            ExpressionSyntax newNode = ParseExpression(StringBuilderCache.GetStringAndFree(sb));
 
             SyntaxToken closeBrace = newNode.FindToken(closeBracePosition);
 
-            newNode = newNode.ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation());
+            newNode = newNode
+                .ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation())
+                .WithTriviaFrom(literalExpression);
 
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
