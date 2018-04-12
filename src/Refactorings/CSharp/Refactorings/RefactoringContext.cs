@@ -328,6 +328,7 @@ namespace Roslynator.CSharp.Refactorings
             bool fUsingDirective = false;
             bool fDeclarationPattern = false;
             bool fTypeParameterConstraintClause = false;
+            bool fAttribute = false;
 
             bool fExpression = false;
             bool fAnonymousMethod = false;
@@ -518,6 +519,14 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         TypeParameterConstraintClauseRefactoring.ComputeRefactoring(this, (TypeParameterConstraintClauseSyntax)node);
                         fTypeParameterConstraintClause = true;
+                        continue;
+                    }
+
+                    if (!fAttribute
+                        && kind == SyntaxKind.Attribute)
+                    {
+                        await AttributeRefactoring.ComputeRefactoringAsync(this, (AttributeSyntax)node).ConfigureAwait(false);
+                        fAttribute = true;
                         continue;
                     }
 

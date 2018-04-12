@@ -145,5 +145,16 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
             }
         }
+
+        private static class FooDelegateAsParameterType
+        {
+            private delegate void FooDelegate();
+
+#pragma warning disable RCS1213
+            private static void Foo(FooDelegate callback)
+#pragma warning restore RCS1213
+            {
+            }
+        }
     }
 }

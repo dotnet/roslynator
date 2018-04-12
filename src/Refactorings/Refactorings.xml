@@ -1664,4 +1664,45 @@ void OnChanged(object sender, EventArgs e)
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0204" Identifier="GeneratePropertyForDebuggerDisplayAttribute" Title="Generate property for DebuggerDisplay attribute">
+    <Syntaxes>
+      <Syntax>DebuggerDisplay attribute</Syntax>
+    </Syntaxes>
+    <Links>
+      <Link>
+        <Url>https://docs.microsoft.com/en-us/visualstudio/debugger/using-the-debuggerdisplay-attribute#using-expressions-in-debuggerdisplay</Url>
+        <Text>Using Expressions in DebuggerDisplay</Text>
+      </Link>
+      <Link>
+        <Url>https://blogs.msdn.microsoft.com/jaredpar/2011/03/18/debuggerdisplay-attribute-best-practices/</Url>
+        <Text>DebuggerDisplay attribute best practices</Text>
+      </Link>
+    </Links>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[[DebuggerDisplay("A: {A} B: {B}")]
+public class Foo
+{
+    public string A { get; }
+    public string B { get; }
+}]]>
+        </Before>
+        <After>
+          <![CDATA[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class Foo
+{
+    public string A { get; }
+    public string B { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return $"A: {A} B: {B}"; }
+    }
+}]]>
+        </After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>
