@@ -4651,4 +4651,24 @@ else
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="CallSkipAndAnyInsteadOfCount">
+    <Id>RCS1219</Id>
+    <Title>Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.</Title>
+    <MessageFormat>Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.</MessageFormat>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (enumerable.Count() > x) // RCS1219
+{
+}]]></Before>
+        <After><![CDATA[if (enumerable.Skip(x).Any())
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

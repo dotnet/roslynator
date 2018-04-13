@@ -2447,5 +2447,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyCodeBranching}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1219</summary>
+        public static readonly DiagnosticDescriptor CallSkipAndAnyInsteadOfCount = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount, 
+            title:              "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
+            messageFormat:      "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

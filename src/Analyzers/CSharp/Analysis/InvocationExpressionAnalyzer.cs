@@ -24,6 +24,7 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod,
                     DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfCountMethod,
                     DiagnosticDescriptors.CallAnyInsteadOfCount,
+                    DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount,
                     DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag,
                     DiagnosticDescriptors.RemoveRedundantToStringCall,
                     DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
