@@ -4572,8 +4572,82 @@ if (items.Count < 0) // RCS1213
           <![CDATA[string x = null;
 // ...
 
-string y = $"{x}{x}{x}";]]></Before>
+string y = $"{x}{x}{x}"; // RCS1217]]></Before>
         <After><![CDATA[string y = x + x + x;]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="SimplifyCodeBranching">
+    <Id>RCS1218</Id>
+    <Title>Simplify code branching.</Title>
+    <MessageFormat>Simplify code branching.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x) // RCS1218
+{
+}
+else
+{
+  Foo();
+}]]></Before><After><![CDATA[if (!x)
+{
+  Foo();
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[while (true)
+{
+  if (x)  // RCS1218
+  {
+    Foo();
+  }
+  else
+  {
+    break;
+  }
+}]]></Before>
+        <After><![CDATA[while (x)
+{
+  Foo();
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[while (true)
+{
+  if (x)  // RCS1218
+  {
+    break;
+  }
+
+  Foo();
+}]]></Before>
+        <After><![CDATA[while (!x)
+{
+  Foo();
+      
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[do
+{
+  Foo();
+
+  if (x)  // RCS1218
+  {
+    break;
+  }
+  
+} while (true)]]></Before>
+        <After><![CDATA[do
+{
+  Foo();
+
+} while (!x)]]></After>
       </Sample>
     </Samples>
   </Analyzer>
