@@ -79,7 +79,8 @@ namespace Roslynator.CSharp.Refactorings
         public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)
         {
             return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
-                && literalExpression.Token.ValueText.Length == 0;
+                && literalExpression.Token.ValueText.Length == 0
+                && !CSharpUtility.IsPartOfExpressionThatMustBeConstant(literalExpression);
         }
 
         public static Task<Document> ReplaceWithStringEmptyAsync(

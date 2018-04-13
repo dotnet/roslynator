@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InsertStringInterpolation)
                 && context.SupportsCSharp6
-                && context.Span.End < literalExpression.Span.End)
+                && context.Span.End < literalExpression.Span.End
+                && !CSharpUtility.IsPartOfExpressionThatMustBeConstant(literalExpression))
             {
                 int startIndex = GetStartIndex(info, context.Span);
 
