@@ -2,13 +2,13 @@
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    internal static class CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct
+    internal static class CS0549_NewVirtualMemberInSealedClass
     {
-        private struct Foo
+        private sealed class Foo
         {
-            private string _fieldName = "";
-
-            public string PropertyName { get; set; } = "";
+            public virtual void Bar()
+            {
+            }
         }
     }
 }

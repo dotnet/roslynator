@@ -2,13 +2,13 @@
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    internal static class CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct
+    internal static class CS0574_NameOfDestructorMustMatchNameOfClass
     {
-        private struct Foo
+        private class Foo
         {
-            private string _fieldName = "";
-
-            public string PropertyName { get; set; } = "";
+            ~Foo2()
+            {
+            }
         }
     }
 }

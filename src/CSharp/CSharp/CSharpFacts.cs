@@ -64,9 +64,9 @@ namespace Roslynator.CSharp
                 case SyntaxKind.MethodDeclaration:
                     return "method";
                 case SyntaxKind.OperatorDeclaration:
-                    return "operator method";
+                    return "operator";
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    return "conversion method";
+                    return "conversion operator";
                 case SyntaxKind.ConstructorDeclaration:
                     return "constructor";
                 case SyntaxKind.DestructorDeclaration:

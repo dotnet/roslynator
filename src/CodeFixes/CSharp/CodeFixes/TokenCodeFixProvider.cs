@@ -31,7 +31,8 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired,
                     CompilerDiagnosticIdentifiers.TypeExpected,
                     CompilerDiagnosticIdentifiers.SemicolonAfterMethodOrAccessorBlockIsNotValid,
-                    CompilerDiagnosticIdentifiers.CannotConvertType);
+                    CompilerDiagnosticIdentifiers.CannotConvertType,
+                    CompilerDiagnosticIdentifiers.OptionalParametersMustAppearAfterAllRequiredParameters);
             }
         }
 
@@ -44,7 +45,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMissingType)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveSemicolon)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionalAccess)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeForEachType))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeForEachType)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDefaultValueToParameter))
             {
                 return;
             }
@@ -383,6 +385,59 @@ namespace Roslynator.CSharp.CodeFixes
                                 CodeFixRegistrator.ChangeType(context, diagnostic, forEachStatement.Type, typeSymbol, semanticModel, CodeFixIdentifiers.ChangeForEachType);
 
                             CodeFixRegistrator.ChangeTypeToVar(context, diagnostic, forEachStatement.Type, CodeFixIdentifiers.ChangeTypeToVar);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.OptionalParametersMustAppearAfterAllRequiredParameters:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDefaultValueToParameter))
+                                break;
+
+                            if (!(token.Parent is BaseParameterListSyntax parameterList))
+                                break;
+
+                            SeparatedSyntaxList<ParameterSyntax> parameters = parameterList.Parameters;
+
+                            ParameterSyntax parameter = null;
+
+                            for (int i = 0; i < parameters.Count; i++)
+                            {
+                                ParameterSyntax p = parameters[i];
+
+                                if (p.FullSpan.End <= token.SpanStart)
+                                {
+                                    parameter = p;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+
+                            ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+                            if (typeSymbol.Kind == SymbolKind.ErrorType)
+                                break;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add default value",
+                                cancellationToken =>
+                                {
+                                    ExpressionSyntax defaultValue = typeSymbol.GetDefaultValueSyntax(semanticModel, parameter.SpanStart);
+
+                                    ParameterSyntax newParameter = parameter
+                                        .WithDefault(EqualsValueClause(defaultValue).WithTrailingTrivia(parameter.GetTrailingTrivia()))
+                                        .WithoutTrailingTrivia()
+                                        .WithFormatterAnnotation();
+
+                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
                 }

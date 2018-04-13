@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray,
-                    CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray);
+                    CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray,
+                    CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForThisParameter);
             }
         }
 
@@ -46,6 +47,9 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray:
                         {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeOfParamsParameter))
+                                break;
+
                             TypeSyntax type = parameter.Type;
 
                             if (type?.IsMissing == false)
@@ -56,9 +60,9 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 if (typeSymbol?.Kind == SymbolKind.NamedType)
                                 {
-                                    ArrayTypeSyntax newType = SyntaxFactory.ArrayType(
+                                    ArrayTypeSyntax newType = ArrayType(
                                         typeSymbol.ToMinimalTypeSyntax(semanticModel, parameter.SpanStart),
-                                        SyntaxFactory.SingletonList(SyntaxFactory.ArrayRankSpecifier()));
+                                        SingletonList(ArrayRankSpecifier()));
 
                                     CodeAction codeAction = CodeAction.Create(
                                         $"Change parameter type to '{newType}'",
@@ -72,7 +76,11 @@ namespace Roslynator.CSharp.CodeFixes
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray:
+                    case CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForThisParameter:
                         {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveDefaultValueFromParameter))
+                                break;
+
                             EqualsValueClauseSyntax defaultValue = parameter.Default;
 
                             CodeAction codeAction = CodeAction.Create(

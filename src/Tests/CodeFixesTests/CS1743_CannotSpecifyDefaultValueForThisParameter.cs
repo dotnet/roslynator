@@ -1,14 +1,13 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+#pragma warning disable RCS1213
+
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    internal static class CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct
+    internal static class CS1743_CannotSpecifyDefaultValueForThisParameter
     {
-        private struct Foo
+        private static void Foo(this object value = null)
         {
-            private string _fieldName = "";
-
-            public string PropertyName { get; set; } = "";
         }
     }
 }

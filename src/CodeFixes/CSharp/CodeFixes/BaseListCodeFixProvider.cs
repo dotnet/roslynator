@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
@@ -18,13 +19,24 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.BaseClassMustComeBeforeAnyInterface); }
+            get
+            {
+                return ImmutableArray.Create(
+                    CompilerDiagnosticIdentifiers.BaseClassMustComeBeforeAnyInterface,
+                    CompilerDiagnosticIdentifiers.StaticClassCannotDeriveFromType,
+                    CompilerDiagnosticIdentifiers.StaticClassCannotImplementInterfaces);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface))
+            if (!Settings.IsAnyCodeFixEnabled(
+                CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface,
+                CodeFixIdentifiers.MakeClassNonStatic,
+                CodeFixIdentifiers.RemoveBaseList))
+            {
                 return;
+            }
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
@@ -61,6 +73,33 @@ namespace Roslynator.CSharp.CodeFixes
                                         return context.Document.ReplaceNodeAsync(baseList, newBaseList, cancellationToken);
                                     },
                                     GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.StaticClassCannotDeriveFromType:
+                    case CompilerDiagnosticIdentifiers.StaticClassCannotImplementInterfaces:
+                        {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeClassNonStatic)
+                                && baseList.Parent is ClassDeclarationSyntax classDeclaration)
+                            {
+                                ModifiersCodeFixRegistrator.RemoveModifier(
+                                    context,
+                                    diagnostic,
+                                    classDeclaration,
+                                    SyntaxKind.StaticKeyword,
+                                    title: "Make class non-static",
+                                    additionalKey: CodeFixIdentifiers.MakeClassNonStatic);
+                            }
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveBaseList))
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Remove base list",
+                                    cancellationToken => context.Document.RemoveNodeAsync(baseList, cancellationToken),
+                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                             }
