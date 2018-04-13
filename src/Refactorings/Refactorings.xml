@@ -1680,16 +1680,13 @@ void OnChanged(object sender, EventArgs e)
     </Links>
     <Samples>
       <Sample>
-        <Before>
-          <![CDATA[[DebuggerDisplay("A: {A} B: {B}")]
+        <Before><![CDATA[[DebuggerDisplay("A: {A} B: {B}")]
 public class Foo
 {
     public string A { get; }
     public string B { get; }
-}]]>
-        </Before>
-        <After>
-          <![CDATA[DebuggerDisplay("{DebuggerDisplay,nq}")]
+}]]></Before>
+        <After><![CDATA[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class Foo
 {
     public string A { get; }
@@ -1700,8 +1697,24 @@ public class Foo
     {
         get { return $"A: {A} B: {B}"; }
     }
-}]]>
-        </After>
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0205" Identifier="AddEmptyLineBetweenDeclarations" Title="Add empty line between declarations">
+    <Syntaxes>
+      <Syntax>selected declarations</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[private object x;
+private object y;
+private object z;]]></Before>
+        <After><![CDATA[private object x;
+
+private object y;
+
+private object z;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
