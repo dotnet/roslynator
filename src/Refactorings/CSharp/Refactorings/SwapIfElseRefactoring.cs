@@ -33,16 +33,15 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ElseClauseSyntax newElseClause = null;
+            IfStatementSyntax newIfStatement = ifStatement.Update(
+                ifKeyword: ifStatement.IfKeyword,
+                openParenToken: ifStatement.OpenParenToken,
+                condition: Negator.LogicallyNegate(ifStatement.Condition, semanticModel, cancellationToken),
+                closeParenToken: ifStatement.CloseParenToken,
+                statement: whenFalse.WithTriviaFrom(whenTrue),
+                @else: elseClause.WithStatement(whenTrue.WithTriviaFrom(whenFalse)));
 
-            if ((whenFalse as BlockSyntax)?.Statements.Any() != false)
-                newElseClause = elseClause.WithStatement(whenTrue.WithTriviaFrom(whenFalse));
-
-            IfStatementSyntax newIfStatement = ifStatement
-                .WithCondition(Negator.LogicallyNegate(ifStatement.Condition, semanticModel, cancellationToken))
-                .WithStatement(whenFalse.WithTriviaFrom(whenTrue))
-                .WithElse(newElseClause)
-                .WithFormatterAnnotation();
+            newIfStatement = newIfStatement.WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken).ConfigureAwait(false);
         }
