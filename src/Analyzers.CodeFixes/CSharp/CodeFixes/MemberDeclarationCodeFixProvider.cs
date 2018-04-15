@@ -26,7 +26,6 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.FormatDeclarationBraces,
                     DiagnosticIdentifiers.RemoveRedundantOverridingMember,
                     DiagnosticIdentifiers.AddDefaultAccessModifier,
-                    DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations,
                     DiagnosticIdentifiers.RemoveRedundantSealedModifier,
                     DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
                     DiagnosticIdentifiers.ReorderModifiers,
@@ -77,16 +76,6 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Add default access modifier",
                                 cancellationToken => AddDefaultAccessModifierRefactoring.RefactorAsync(context.Document, memberDeclaration, accessibility, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.AddEmptyLineBetweenDeclarations:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add empty line",
-                                cancellationToken => AddEmptyLineBetweenDeclarationsRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -2435,5 +2435,29 @@ namespace Roslynator.CSharp
 
         public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenationFadeOut = ReplaceInterpolatedStringWithConcatenation.CreateFadeOut();
 
+        /// <summary>RCS1218</summary>
+        public static readonly DiagnosticDescriptor SimplifyCodeBranching = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.SimplifyCodeBranching, 
+            title:              "Simplify code branching.", 
+            messageFormat:      "Simplify code branching.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyCodeBranching}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1219</summary>
+        public static readonly DiagnosticDescriptor CallSkipAndAnyInsteadOfCount = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount, 
+            title:              "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
+            messageFormat:      "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

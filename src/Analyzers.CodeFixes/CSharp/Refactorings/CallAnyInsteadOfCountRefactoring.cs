@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 using static Roslynator.CSharp.RefactoringUtility;
 
@@ -29,78 +28,59 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = null;
 
-            SyntaxKind kind = binaryExpression.Kind();
+            switch (binaryExpression.Kind())
+            {
+                case SyntaxKind.EqualsExpression:
+                    {
+                        // Count() == 0 >>> !Any()
+                        newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                        newNode = LogicalNotExpression(newNode.Parenthesize());
+                        break;
+                    }
+                case SyntaxKind.NotEqualsExpression:
+                    {
+                        // Count() != 0 >>> Any()
+                        newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                        break;
+                    }
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                    {
+                        if (invocationExpression == left)
+                        {
+                            // Count() < 1 >>> !Any()
+                            // Count() <= 0 >>> !Any()
+                            newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                            newNode = LogicalNotExpression(newNode.Parenthesize());
+                        }
+                        else
+                        {
+                            // 0 < Count() >>> Any()
+                            // 1 <= Count() >>> Any()
+                            newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                        }
 
-            if (kind == SyntaxKind.EqualsExpression)
-            {
-                // Count() == 0 >>> !Any()
-                newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-                newNode = LogicalNotExpression(newNode.Parenthesize());
-            }
-            else if (kind == SyntaxKind.NotEqualsExpression)
-            {
-                // Count() != 0 >>> Any()
-                newNode = ChangeInvokedMethodName(invocationExpression, "Any");
-            }
-            else if (kind == SyntaxKind.LessThanExpression)
-            {
-                if (invocationExpression == left)
-                {
-                    // Count() < 1 >>> !Any()
-                    // Count() < i >>> !Skip(i - 1).Any()
-                    newNode = CreateNewExpression(invocationExpression, right, "1", subtract: true, negate: true);
-                }
-                else
-                {
-                    // 0 < Count() >>> Any()
-                    // i < Count() >>> Skip(i).Any()
-                    newNode = CreateNewExpression(invocationExpression, left, "0");
-                }
-            }
-            else if (kind == SyntaxKind.LessThanOrEqualExpression)
-            {
-                if (invocationExpression == left)
-                {
-                    // Count() <= 0 >>> !Any()
-                    // Count() <= i >>> !Skip(i).Any()
-                    newNode = CreateNewExpression(invocationExpression, right, "0", negate: true);
-                }
-                else
-                {
-                    // 1 <= Count() >>> Any()
-                    // i <= Count() >>> Skip(i - 1).Any()
-                    newNode = CreateNewExpression(invocationExpression, left, "1", subtract: true);
-                }
-            }
-            else if (kind == SyntaxKind.GreaterThanExpression)
-            {
-                if (invocationExpression == left)
-                {
-                    // Count() > 0 >>> Any()
-                    // Count() > i >>> Skip(i).Any()
-                    newNode = CreateNewExpression(invocationExpression, right, "0");
-                }
-                else
-                {
-                    // 1 > Count() >>> !Any()
-                    // i > Count() >>> !Skip(i - 1).Any()
-                    newNode = CreateNewExpression(invocationExpression, left, "1", subtract: true, negate: true);
-                }
-            }
-            else if (kind == SyntaxKind.GreaterThanOrEqualExpression)
-            {
-                if (invocationExpression == left)
-                {
-                    // Count() >= 1 >>> Any()
-                    // Count() >= i >>> Skip(i - 1).Any()
-                    newNode = CreateNewExpression(invocationExpression, right, "1", subtract: true);
-                }
-                else
-                {
-                    // 0 >= Count() >>> !Any()
-                    // i >= Count() >>> !Skip(i).Any()
-                    newNode = CreateNewExpression(invocationExpression, left, "0", negate: true);
-                }
+                        break;
+                    }
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                    {
+                        if (invocationExpression == left)
+                        {
+                            // Count() > 0 >>> Any()
+                            // Count() >= 1 >>> Any()
+                            newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                        }
+                        else
+                        {
+                            // 1 > Count() >>> !Any()
+                            // 0 >= Count() >>> !Any()
+                            newNode = ChangeInvokedMethodName(invocationExpression, "Any");
+                            newNode = LogicalNotExpression(newNode.Parenthesize());
+                        }
+
+                        break;
+                    }
             }
 
             newNode = newNode
@@ -108,36 +88,6 @@ namespace Roslynator.CSharp.Refactorings
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
-        }
-
-        private static ExpressionSyntax CreateNewExpression(
-            InvocationExpressionSyntax invocationExpression,
-            ExpressionSyntax expression,
-            string numericValue,
-            bool subtract = false,
-            bool negate = false)
-        {
-            ExpressionSyntax newExpression;
-
-            if (expression.IsNumericLiteralExpression(numericValue))
-            {
-                newExpression = ChangeInvokedMethodName(invocationExpression, "Any");
-            }
-            else
-            {
-                if (subtract)
-                    expression = SubtractExpression(expression, NumericLiteralExpression(1));
-
-                newExpression = ChangeInvokedMethodName(invocationExpression, "Skip")
-                    .AddArgumentListArguments(Argument(expression));
-
-                newExpression = SimpleMemberInvocationExpression(newExpression, IdentifierName("Any"));
-            }
-
-            if (negate)
-                newExpression = LogicalNotExpression(newExpression.Parenthesize());
-
-            return newExpression;
         }
     }
 }

@@ -2,13 +2,14 @@
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    internal static class CS0573_CannotHaveInstancePropertyOrFieldInitializersInStruct
+    internal static class CS0714_StaticClassCannotImplementInterfaces
     {
-        private struct Foo
+        private static class Foo : IFoo
         {
-            private string _fieldName = "";
+        }
 
-            public string PropertyName { get; set; } = "";
+        private interface IFoo
+        {
         }
     }
 }

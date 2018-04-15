@@ -83,11 +83,13 @@ namespace Roslynator.CSharp.Refactorings
             startIndex += span.Length;
             sb.Append(s, startIndex, s.Length - startIndex);
 
-            ExpressionSyntax newNode = ParseExpression(sb.ToString()).WithTriviaFrom(interpolatedString);
+            ExpressionSyntax newNode = ParseExpression(sb.ToString());
 
             SyntaxToken closeBrace = newNode.FindToken(closeBracePosition);
 
-            newNode = newNode.ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation());
+            newNode = newNode
+                .ReplaceToken(closeBrace, closeBrace.WithNavigationAnnotation())
+                .WithTriviaFrom(interpolatedString);
 
             return document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken);
         }

@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.AddModifierAbstract;
+        = CodeFixIdentifiers.AddDefaultValueToParameter;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -77,7 +77,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveParametersFromStaticConstructor, "Remove parameters from static constructor (fixes CS0132)", IsEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReorderModifiers, "Reorder modifiers (fixes CS0267)", IsEnabled(CodeFixIdentifiers.ReorderModifiers)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveInvalidModifier, "Remove invalid modifier (fixes CS0107, CS0112, CS0115, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994)", IsEnabled(CodeFixIdentifiers.RemoveInvalidModifier)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveMemberDeclaration, "Remove member declaration (fixes CS0114, CS0541)", IsEnabled(CodeFixIdentifiers.RemoveMemberDeclaration)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveMemberDeclaration, "Remove member declaration (fixes CS0114, CS0541, CS0525, CS0567, CS0568, CS0575)", IsEnabled(CodeFixIdentifiers.RemoveMemberDeclaration)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveReturnExpression, "Remove return expression (fixes CS0127, CS1997)", IsEnabled(CodeFixIdentifiers.RemoveReturnExpression)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, "Replace 'null' with default value (fixes CS0037, CS0403, CS1503, CS1750)", IsEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment, "Replace variable declaration with assignment (fixes CS0128, CS0136)", IsEnabled(CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment)));
@@ -86,10 +86,10 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeContainingClassNonStatic, "Make containing class non-static (fixes CS0708, CS0710)", IsEnabled(CodeFixIdentifiers.MakeContainingClassNonStatic)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddCastExpression, "Add cast expression (fixes CS0173)", IsEnabled(CodeFixIdentifiers.AddCastExpression)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.MoveConstraint, "Move constraint (fixes CS0401, CS0449)", IsEnabled(CodeFixIdentifiers.MoveConstraint)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveConstraint, "Remove constraint (fixes CS0405, CS0450, CS0451)", IsEnabled(CodeFixIdentifiers.RemoveConstraint)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveConstraint, "Remove constraint (fixes CS0405, CS0450, CS0451, CS0714)", IsEnabled(CodeFixIdentifiers.RemoveConstraint)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.CombineConstraintClauses, "Combine constraint clauses (fixes CS0409)", IsEnabled(CodeFixIdentifiers.CombineConstraintClauses)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AssignDefaultValueToOutParameter, "Assign default value to 'out' parameter (fixes CS0177)", IsEnabled(CodeFixIdentifiers.AssignDefaultValueToOutParameter)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeClassNonStatic, "Make class non-static (fixes CS0713, CS0718)", IsEnabled(CodeFixIdentifiers.MakeClassNonStatic)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeClassNonStatic, "Make class non-static (fixes CS0713, CS0714, CS0718)", IsEnabled(CodeFixIdentifiers.MakeClassNonStatic)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveYieldKeyword, "Remove 'yield' keyword (fixes CS1621)", IsEnabled(CodeFixIdentifiers.RemoveYieldKeyword)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveOutModifier, "Remove 'out' modifier (fixes CS0192, CS1988, CS1623)", IsEnabled(CodeFixIdentifiers.RemoveOutModifier)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveAttribute, "Remove attribute (fixes CS0592, CS1689)", IsEnabled(CodeFixIdentifiers.RemoveAttribute)));
@@ -114,12 +114,20 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeTypeAccordingToInitializer, "Change type according to initializer (fixes CS0029)", IsEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeForEachType, "Change foreach type (fixes CS0030)", IsEnabled(CodeFixIdentifiers.ChangeForEachType)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeTypeToVar, "Change type to var (fixes CS0029, CS0030)", IsEnabled(CodeFixIdentifiers.ChangeTypeToVar)));
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveDefaultValueFromParameter, "Remove default value from parameter (fixes CS1751)", IsEnabled(CodeFixIdentifiers.RemoveDefaultValueFromParameter)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveDefaultValueFromParameter, "Remove default value from parameter (fixes CS1751, CS1743)", IsEnabled(CodeFixIdentifiers.RemoveDefaultValueFromParameter)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceConstantWithField, "Replace constant with field (fixes CS0133)", IsEnabled(CodeFixIdentifiers.ReplaceConstantWithField)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceStructWithClass, "Replace struct with class (fixes CS0527)", IsEnabled(CodeFixIdentifiers.ReplaceStructWithClass)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceYieldReturnWithForEach, "Replace yield return with foreach (fixes CS0029)", IsEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceComparisonWithAssignment, "Replace comparison with assignment (fixes CS0201)", IsEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddModifierAbstract, "Add modifier 'abstract' (fixes CS0501)", IsEnabled(CodeFixIdentifiers.AddModifierAbstract)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeMemberReadOnly, "Make member read-only' (fixes CS8340)", IsEnabled(CodeFixIdentifiers.MakeMemberReadOnly)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveSealedModifier, "Remove 'sealed' modifier (fixes CS0238)", IsEnabled(CodeFixIdentifiers.RemoveSealedModifier)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveVirtualModifier, "Remove 'virtual' modifier (fixes CS0549)", IsEnabled(CodeFixIdentifiers.RemoveVirtualModifier)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeContainingClassUnsealed, "Make containing class unsealed (fixes CS0549)", IsEnabled(CodeFixIdentifiers.MakeContainingClassUnsealed)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveSwitchLabel, "RemoveSwitchLabel (fixes CS0152)", IsEnabled(CodeFixIdentifiers.RemoveSwitchLabel)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RenameDestructorToMatchClassName, "Rename destructor to match class name (fixes CS0574)", IsEnabled(CodeFixIdentifiers.RenameDestructorToMatchClassName)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveBaseList, "Remove base list (fixes CS0713, CS0714)", IsEnabled(CodeFixIdentifiers.RemoveBaseList)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddDefaultValueToParameter, "Add default value to parameter (fixes CS1737)", IsEnabled(CodeFixIdentifiers.AddDefaultValueToParameter)));
         }
     }
 }

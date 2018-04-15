@@ -25,6 +25,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyBooleanComparison,
                     DiagnosticIdentifiers.CallAnyInsteadOfCount,
+                    DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount,
                     DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
                     DiagnosticIdentifiers.UseStringIsNullOrEmptyMethod,
                     DiagnosticIdentifiers.SimplifyCoalesceExpression,
@@ -66,6 +67,16 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Call 'Any' instead of 'Count'",
                                 cancellationToken => CallAnyInsteadOfCountRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Call 'Skip' and 'Any' instead of 'Count'",
+                                cancellationToken => CallSkipAndAnyInsteadOfCountRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

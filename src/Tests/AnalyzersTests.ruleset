@@ -118,7 +118,7 @@
     <Rule Id="RCS1054" Action="Info" />
     <Rule Id="RCS1055" Action="Warning" />
     <Rule Id="RCS1056" Action="Warning" />
-    <Rule Id="RCS1057" Action="Warning" />
+    <Rule Id="RCS1057" Action="Info" />
     <Rule Id="RCS1060" Action="Warning" />
     <Rule Id="RCS1061" Action="Warning" />
     <Rule Id="RCS1062" Action="Info" />
@@ -182,5 +182,6 @@
     <Rule Id="RCS1208" Action="Info" />
     <Rule Id="RCS1211" Action="Info" />
     <Rule Id="RCS1217" Action="Info" />
+    <Rule Id="RCS1219" Action="Info" />
   </Rules>
 </RuleSet>

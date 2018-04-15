@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -27,208 +27,157 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeConstructorDeclaration, SyntaxKind.ConstructorDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeDestructorDeclaration, SyntaxKind.DestructorDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeEventDeclaration, SyntaxKind.EventDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzePropertyDeclaration, SyntaxKind.PropertyDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeIndexerDeclaration, SyntaxKind.IndexerDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeConversionOperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeOperatorDeclaration, SyntaxKind.OperatorDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeEnumDeclaration, SyntaxKind.EnumDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeInterfaceDeclaration, SyntaxKind.InterfaceDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeStructDeclaration, SyntaxKind.StructDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeCompilationUnit, SyntaxKind.CompilationUnit);
             context.RegisterSyntaxNodeAction(AnalyzeNamespaceDeclaration, SyntaxKind.NamespaceDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeStructDeclaration, SyntaxKind.StructDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeInterfaceDeclaration, SyntaxKind.InterfaceDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeEnumDeclaration, SyntaxKind.EnumDeclaration);
         }
 
-        public static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCompilationUnit(SyntaxNodeAnalysisContext context)
         {
-            var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
+            var compilationUnit = (CompilationUnitSyntax)context.Node;
 
-            BlockSyntax body = constructorDeclaration.Body;
-
-            if (body == null)
-                return;
-
-            Analyze(context, constructorDeclaration, body.OpenBraceToken, body.CloseBraceToken);
-        }
-
-        public static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
-
-            BlockSyntax body = destructorDeclaration.Body;
-
-            if (body == null)
-                return;
-
-            Analyze(context, destructorDeclaration, body.OpenBraceToken, body.CloseBraceToken);
-        }
-
-        public static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var eventDeclaration = (EventDeclarationSyntax)context.Node;
-
-            AccessorListSyntax accessorList = eventDeclaration.AccessorList;
-
-            if (accessorList == null)
-                return;
-
-            Analyze(context, eventDeclaration, accessorList.OpenBraceToken, accessorList.CloseBraceToken);
-        }
-
-        public static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
-
-            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
-
-            if (accessorList == null)
-                return;
-
-            Analyze(context, propertyDeclaration, accessorList.OpenBraceToken, accessorList.CloseBraceToken);
-        }
-
-        public static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
-
-            AccessorListSyntax accessorList = indexerDeclaration.AccessorList;
-
-            if (accessorList == null)
-                return;
-
-            Analyze(context, indexerDeclaration, accessorList.OpenBraceToken, accessorList.CloseBraceToken);
-        }
-
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-
-            BlockSyntax body = methodDeclaration.Body;
-
-            if (body == null)
-                return;
-
-            Analyze(context, methodDeclaration, body.OpenBraceToken, body.CloseBraceToken);
-        }
-
-        public static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
-
-            BlockSyntax body = conversionOperatorDeclaration.Body;
-
-            if (body == null)
-                return;
-
-            Analyze(context, conversionOperatorDeclaration, body.OpenBraceToken, body.CloseBraceToken);
-        }
-
-        public static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
-
-            BlockSyntax body = operatorDeclaration.Body;
-
-            if (body == null)
-                return;
-
-            Analyze(context, operatorDeclaration, body.OpenBraceToken, body.CloseBraceToken);
-        }
-
-        public static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
-
-            Analyze(context, enumDeclaration, enumDeclaration.OpenBraceToken, enumDeclaration.CloseBraceToken);
-        }
-
-        public static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
-
-            Analyze(context, interfaceDeclaration, interfaceDeclaration.OpenBraceToken, interfaceDeclaration.CloseBraceToken);
-        }
-
-        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var structDeclaration = (StructDeclarationSyntax)context.Node;
-
-            Analyze(context, structDeclaration, structDeclaration.OpenBraceToken, structDeclaration.CloseBraceToken);
-        }
-
-        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var classDeclaration = (ClassDeclarationSyntax)context.Node;
-
-            Analyze(context, classDeclaration, classDeclaration.OpenBraceToken, classDeclaration.CloseBraceToken);
+            Analyze(context, compilationUnit.Members);
         }
 
         public static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
             var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
 
-            Analyze(context, namespaceDeclaration, namespaceDeclaration.OpenBraceToken, namespaceDeclaration.CloseBraceToken);
+            Analyze(context, namespaceDeclaration.Members);
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, MemberDeclarationSyntax declaration, SyntaxToken openToken, SyntaxToken closeToken)
+        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            if (declaration.IsParentKind(SyntaxKind.CompilationUnit))
+            var classDeclaration = (ClassDeclarationSyntax)context.Node;
+
+            Analyze(context, classDeclaration.Members);
+        }
+
+        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var structDeclaration = (StructDeclarationSyntax)context.Node;
+
+            Analyze(context, structDeclaration.Members);
+        }
+
+        public static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
+
+            Analyze(context, interfaceDeclaration.Members);
+        }
+
+        public static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
+        {
+            var enumDeclaration = (EnumDeclarationSyntax)context.Node;
+
+            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+
+            int count = members.Count;
+
+            if (count <= 1)
                 return;
 
-            if (openToken.IsMissing)
-                return;
+            SyntaxToken commaToken = members.GetSeparator(0);
 
-            if (closeToken.IsMissing)
-                return;
+            SyntaxTree tree = commaToken.SyntaxTree;
 
-            int closeTokenLine = closeToken.GetSpanEndLine();
-
-            if (openToken.GetSpanEndLine() == closeTokenLine)
-                return;
-
-            MemberDeclarationSyntax nextDeclaration = GetNextDeclaration(declaration);
-
-            if (nextDeclaration == null)
-                return;
-
-            int diff = nextDeclaration.GetSpanStartLine() - closeTokenLine;
-
-            if (diff >= 2)
-                return;
-
-            SyntaxTrivia trivia = declaration.GetTrailingTrivia().LastOrDefault();
-
-            if (trivia.IsEndOfLineTrivia())
+            for (int i = 1; i < count; i++)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AddEmptyLineBetweenDeclarations, trivia);
-            }
-            else
-            {
-                context.ReportDiagnostic(DiagnosticDescriptors.AddEmptyLineBetweenDeclarations, closeToken);
+                EnumMemberDeclarationSyntax member = members[i];
+
+                SyntaxTriviaList trailingTrivia = members.GetSeparator(i - 1).TrailingTrivia;
+
+                SyntaxTrivia lastTrailingTrivia = trailingTrivia.LastOrDefault();
+
+                if (!lastTrailingTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                    break;
+
+                SyntaxTrivia documentationCommentTrivia = member.GetDocumentationCommentTrivia();
+
+                bool hasDocumentationComment = !documentationCommentTrivia.IsKind(SyntaxKind.None);
+
+                if (!hasDocumentationComment
+                    && tree.IsSingleLineSpan(member.Span, context.CancellationToken))
+                {
+                    continue;
+                }
+
+                if (member
+                    .GetLeadingTrivia()
+                    .FirstOrDefault()
+                    .IsKind(SyntaxKind.EndOfLineTrivia))
+                {
+                    continue;
+                }
+
+                int end = (hasDocumentationComment) ? documentationCommentTrivia.SpanStart : member.SpanStart;
+
+                if (tree.GetLineCount(TextSpan.FromBounds(commaToken.Span.End, end), context.CancellationToken) == 2)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
+                        lastTrailingTrivia);
+                }
+
+                commaToken = members.GetSeparator(i);
             }
         }
 
-        private static MemberDeclarationSyntax GetNextDeclaration(MemberDeclarationSyntax declaration)
+        private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxList<MemberDeclarationSyntax> members)
         {
-            MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(declaration.Parent);
+            int count = members.Count;
 
-            if (!info.Success)
-                return null;
+            if (count <= 1)
+                return;
 
-            SyntaxList<MemberDeclarationSyntax> members = info.Members;
+            MemberDeclarationSyntax prevMember = members[0];
 
-            if (members.Count <= 1)
-                return null;
+            SyntaxTree tree = prevMember.SyntaxTree;
 
-            int index = members.IndexOf(declaration);
+            for (int i = 1; i < count; i++)
+            {
+                MemberDeclarationSyntax member = members[i];
 
-            if (index == members.Count - 1)
-                return null;
+                SyntaxTriviaList trailingTrivia = prevMember.GetTrailingTrivia();
 
-            return members[index + 1];
+                SyntaxTrivia lastTrailingTrivia = trailingTrivia.LastOrDefault();
+
+                if (!lastTrailingTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
+                    break;
+
+                SyntaxTrivia documentationCommentTrivia = member.GetDocumentationCommentTrivia();
+
+                bool hasDocumentationComment = !documentationCommentTrivia.IsKind(SyntaxKind.None);
+
+                if (!hasDocumentationComment
+                    && tree.IsSingleLineSpan(member.Span, context.CancellationToken))
+                {
+                    continue;
+                }
+
+                if (member
+                    .GetLeadingTrivia()
+                    .FirstOrDefault()
+                    .IsKind(SyntaxKind.EndOfLineTrivia))
+                {
+                    continue;
+                }
+
+                int end = (hasDocumentationComment) ? documentationCommentTrivia.SpanStart : member.SpanStart;
+
+                if (tree.GetLineCount(TextSpan.FromBounds(prevMember.Span.End, end), context.CancellationToken) == 2)
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
+                        lastTrailingTrivia);
+                }
+
+                prevMember = member;
+            }
         }
     }
 }

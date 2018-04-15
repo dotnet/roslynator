@@ -14,6 +14,13 @@ namespace Roslynator.CSharp.Refactorings.Tests
             s = string.Format("name: {0:f}, value: {1} \" {2}", "{\"name\"}", "{\"value\"}", (true) ? "" : "");
 
             s = string.Format(@"name: {0:f}, value: {1} "" {2}", @"{""name""}", @"{""value""}", (true) ? "" : "");
+
+            s = 
+                string.Format(
+                " {0} {1} {2} ",
+                s,
+                s,
+                s);
         }
     }
 }

@@ -3,7 +3,7 @@
 using System;
 using System.Diagnostics;
 
-#pragma warning disable RCS1016, RCS1039, RCS1081, RCS1163, RCS1164, RCS1175, RCS1176
+#pragma warning disable RCS1016, RCS1039, RCS1081, RCS1100, RCS1163, RCS1164, RCS1175, RCS1176
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
@@ -14,6 +14,9 @@ namespace Roslynator.CSharp.Analyzers.Tests
             private const string _f = "";
             private static readonly string _f2, _f3;
 
+            /// <summary>
+            /// ...
+            /// </summary>
             private static void FooMethod()
             {
                 string s = _f2;
@@ -89,7 +92,7 @@ namespace Roslynator.CSharp.Analyzers.Tests
 
             public enum FooEnum
             {
-                None = D
+                None = D,
             }
         }
 

@@ -21,6 +21,12 @@ namespace Roslynator.CSharp.Refactorings
                 ComputeRefactoring(context, selectedMembers);
         }
 
+        public static void ComputeRefactoring(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
+        {
+            if (MemberDeclarationListSelection.TryCreate(interfaceDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
+                ComputeRefactoring(context, selectedMembers);
+        }
+
         public static void ComputeRefactoring(RefactoringContext context, StructDeclarationSyntax structDeclaration)
         {
             if (MemberDeclarationListSelection.TryCreate(structDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
@@ -29,7 +35,8 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeAccessibility))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeAccessibility)
+                && !selectedMembers.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
             {
                 Accessibilities validAccessibilities = ChangeAccessibilityAnalysis.GetValidAccessibilities(selectedMembers, allowOverride: true);
 
@@ -44,8 +51,16 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)
+                && !selectedMembers.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
+            {
                 InitializeFieldFromConstructorRefactoring.ComputeRefactoring(context, selectedMembers);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddEmptyLineBetweenDeclarations))
+            {
+                AddEmptyLineBetweenDeclarationsRefactoring.ComputeRefactoring(context, selectedMembers);
+            }
 
             void TryRegisterRefactoring(Accessibilities accessibilities, Accessibility accessibility, bool canHaveMultipleDeclarations)
             {

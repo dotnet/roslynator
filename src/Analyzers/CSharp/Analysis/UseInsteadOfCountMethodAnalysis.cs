@@ -41,39 +41,132 @@ namespace Roslynator.CSharp.Analysis
             }
             else
             {
-                bool isFixable = false;
-
                 SyntaxNode parent = invocationExpression.Parent;
 
-                SyntaxKind kind = parent.Kind();
-
-                if (kind.Is(
-                    SyntaxKind.EqualsExpression,
-                    SyntaxKind.NotEqualsExpression))
+                switch (parent.Kind())
                 {
-                    var equalsExpression = (BinaryExpressionSyntax)parent;
+                    case SyntaxKind.EqualsExpression:
+                    case SyntaxKind.NotEqualsExpression:
+                        {
+                            var equalsExpression = (BinaryExpressionSyntax)parent;
 
-                    if (equalsExpression.Left == invocationExpression)
-                    {
-                        if (equalsExpression.Right.IsNumericLiteralExpression("0"))
-                            isFixable = true;
-                    }
-                    else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
-                    {
-                        isFixable = true;
-                    }
-                }
-                else if (kind.Is(
-                    SyntaxKind.GreaterThanExpression,
-                    SyntaxKind.GreaterThanOrEqualExpression,
-                    SyntaxKind.LessThanExpression,
-                    SyntaxKind.LessThanOrEqualExpression))
-                {
-                    isFixable = true;
-                }
+                            if (equalsExpression.Left == invocationExpression)
+                            {
+                                if (equalsExpression.Right.IsNumericLiteralExpression("0"))
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                            }
+                            else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                            }
 
-                if (isFixable)
-                    context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                            break;
+                        }
+                    case SyntaxKind.GreaterThanExpression:
+                        {
+                            var equalsExpression = (BinaryExpressionSyntax)parent;
+
+                            if (equalsExpression.Left == invocationExpression)
+                            {
+                                if (equalsExpression.Right.IsNumericLiteralExpression("0"))
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                                }
+                                else
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                                }
+                            }
+                            else if (equalsExpression.Left.IsNumericLiteralExpression("1"))
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                            }
+                            else
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.GreaterThanOrEqualExpression:
+                        {
+                            var equalsExpression = (BinaryExpressionSyntax)parent;
+
+                            if (equalsExpression.Left == invocationExpression)
+                            {
+                                if (equalsExpression.Right.IsNumericLiteralExpression("1"))
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                                }
+                                else
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                                }
+                            }
+                            else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                            }
+                            else
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.LessThanExpression:
+                        {
+                            var equalsExpression = (BinaryExpressionSyntax)parent;
+
+                            if (equalsExpression.Left == invocationExpression)
+                            {
+                                if (equalsExpression.Right.IsNumericLiteralExpression("1"))
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                                }
+                                else
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                                }
+                            }
+                            else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                            }
+                            else
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                            }
+
+                            break;
+                        }
+                    case SyntaxKind.LessThanOrEqualExpression:
+                        {
+                            var equalsExpression = (BinaryExpressionSyntax)parent;
+
+                            if (equalsExpression.Left == invocationExpression)
+                            {
+                                if (equalsExpression.Right.IsNumericLiteralExpression("0"))
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                                }
+                                else
+                                {
+                                    context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                                }
+                            }
+                            else if (equalsExpression.Left.IsNumericLiteralExpression("1"))
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallAnyInsteadOfCount, parent);
+                            }
+                            else
+                            {
+                                context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, parent);
+                            }
+
+                            break;
+                        }
+                }
             }
         }
     }

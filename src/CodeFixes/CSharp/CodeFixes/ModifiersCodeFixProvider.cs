@@ -72,7 +72,10 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.IteratorsCannotHaveRefOrOutParameters,
                     CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct,
                     CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBePassedAsRefOrOutValue,
-                    CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial);
+                    CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial,
+                    CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass,
+                    CompilerDiagnosticIdentifiers.InstanceFieldsOfReadOnlyStructsMustBeReadOnly,
+                    CompilerDiagnosticIdentifiers.MemberCannotBeSealedBecauseItIsNotOverride);
             }
         }
 
@@ -86,7 +89,11 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddPartialModifier)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveOutModifier)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRefModifier)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddModifierAbstract))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveVirtualModifier)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingClassUnsealed)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddModifierAbstract)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberReadOnly)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveSealedModifier))
             {
                 return;
             }
@@ -440,6 +447,58 @@ namespace Roslynator.CSharp.CodeFixes
                                 ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.AbstractKeyword);
                             }
 
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass:
+                        {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveVirtualModifier))
+                            {
+                                ModifiersCodeFixRegistrator.RemoveModifier(
+                                    context,
+                                    diagnostic,
+                                    node,
+                                    SyntaxKind.VirtualKeyword,
+                                    additionalKey: CodeFixIdentifiers.RemoveVirtualModifier);
+                            }
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingClassUnsealed)
+                                && node.Parent is ClassDeclarationSyntax classDeclaration)
+                            {
+                                ModifiersCodeFixRegistrator.RemoveModifier(
+                                    context,
+                                    diagnostic,
+                                    classDeclaration,
+                                    SyntaxKind.SealedKeyword,
+                                    title: "Make containing class unsealed",
+                                    additionalKey: CodeFixIdentifiers.MakeContainingClassUnsealed);
+                            }
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.InstanceFieldsOfReadOnlyStructsMustBeReadOnly:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberReadOnly))
+                                break;
+
+                            ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, node, SyntaxKind.ReadOnlyKeyword);
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.MemberCannotBeSealedBecauseItIsNotOverride:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveSealedModifier))
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (semanticModel.GetDiagnostic(
+                                CompilerDiagnosticIdentifiers.MemberHidesInheritedMemberToMakeCurrentMethodOverrideThatImplementationAddOverrideKeyword,
+                                CSharpUtility.GetIdentifier(node).Span,
+                                context.CancellationToken) != null)
+                            {
+                                break;
+                            }
+
+                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.SealedKeyword);
                             break;
                         }
                 }

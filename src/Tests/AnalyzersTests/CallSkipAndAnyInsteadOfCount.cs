@@ -3,35 +3,25 @@
 using System.Collections.Generic;
 using System.Linq;
 
+#pragma warning disable RCS1023
+
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    internal static class UseAnyMethodInsteadOfCountMethod
+    internal static class CallSkipAndAnyInsteadOfCount
     {
-        private static void Foo()
+        public static void Foo(int i)
         {
-            int i = 0;
-
             IEnumerable<object> x = null;
 
-            if (x.Count() != 0) { }
-            if (x.Count() > 0) { }
-            if (x.Count() >= 1) { }
-            if (0 != x.Count()) { }
-            if (0 < x.Count()) { }
-            if (1 <= x.Count()) { }
             if (x.Count() > i) { }
             if (i < x.Count()) { }
+
             if (x.Count() >= i) { }
             if (i <= x.Count()) { }
 
-            if (x.Count() == 0) { }
-            if (x.Count() < 1) { }
-            if (x.Count() <= 0) { }
-            if (0 == x.Count()) { }
-            if (1 > x.Count()) { }
-            if (0 >= x.Count()) { }
             if (x.Count() <= i) { }
             if (i >= x.Count()) { }
+
             if (x.Count() < i) { }
             if (i > x.Count()) { }
 

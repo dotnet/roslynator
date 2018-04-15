@@ -111,6 +111,10 @@ namespace Roslynator.CSharp.Refactorings
 
             var newNode = (InterpolatedStringExpressionSyntax)rewriter.Visit(interpolatedString);
 
+            newNode = newNode
+                .WithTriviaFrom(invocation)
+                .WithFormatterAnnotation();
+
             return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
         }
 
@@ -215,7 +219,9 @@ namespace Roslynator.CSharp.Refactorings
                         .WithSimplifierAnnotation();
                 }
 
-                yield return expression.Parenthesize();
+                yield return expression
+                    .TrimTrivia()
+                    .Parenthesize();
             }
         }
 

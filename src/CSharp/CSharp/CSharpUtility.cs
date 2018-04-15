@@ -476,5 +476,77 @@ namespace Roslynator.CSharp
 
             return default(SyntaxToken);
         }
+
+        public static bool IsPartOfExpressionThatMustBeConstant(LiteralExpressionSyntax literalExpression)
+        {
+            for (SyntaxNode parent = literalExpression.Parent; parent != null; parent = parent.Parent)
+            {
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.AttributeArgument:
+                    case SyntaxKind.Parameter:
+                    case SyntaxKind.CaseSwitchLabel:
+                        return true;
+                    case SyntaxKind.FieldDeclaration:
+                        return ((FieldDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.ConstKeyword);
+                    case SyntaxKind.LocalDeclarationStatement:
+                        return ((LocalDeclarationStatementSyntax)parent).Modifiers.Contains(SyntaxKind.ConstKeyword);
+                    case SyntaxKind.Block:
+                    case SyntaxKind.ExpressionStatement:
+                    case SyntaxKind.EmptyStatement:
+                    case SyntaxKind.LabeledStatement:
+                    case SyntaxKind.GotoStatement:
+                    case SyntaxKind.GotoCaseStatement:
+                    case SyntaxKind.GotoDefaultStatement:
+                    case SyntaxKind.BreakStatement:
+                    case SyntaxKind.ContinueStatement:
+                    case SyntaxKind.ReturnStatement:
+                    case SyntaxKind.YieldReturnStatement:
+                    case SyntaxKind.YieldBreakStatement:
+                    case SyntaxKind.ThrowStatement:
+                    case SyntaxKind.WhileStatement:
+                    case SyntaxKind.DoStatement:
+                    case SyntaxKind.ForStatement:
+                    case SyntaxKind.ForEachStatement:
+                    case SyntaxKind.ForEachVariableStatement:
+                    case SyntaxKind.UsingStatement:
+                    case SyntaxKind.FixedStatement:
+                    case SyntaxKind.CheckedStatement:
+                    case SyntaxKind.UncheckedStatement:
+                    case SyntaxKind.UnsafeStatement:
+                    case SyntaxKind.LockStatement:
+                    case SyntaxKind.IfStatement:
+                    case SyntaxKind.SwitchStatement:
+                    case SyntaxKind.TryStatement:
+                    case SyntaxKind.LocalFunctionStatement:
+                    case SyntaxKind.GlobalStatement:
+                    case SyntaxKind.NamespaceDeclaration:
+                    case SyntaxKind.ClassDeclaration:
+                    case SyntaxKind.StructDeclaration:
+                    case SyntaxKind.InterfaceDeclaration:
+                    case SyntaxKind.EnumDeclaration:
+                    case SyntaxKind.DelegateDeclaration:
+                    case SyntaxKind.EnumMemberDeclaration:
+                    case SyntaxKind.EventFieldDeclaration:
+                    case SyntaxKind.MethodDeclaration:
+                    case SyntaxKind.OperatorDeclaration:
+                    case SyntaxKind.ConversionOperatorDeclaration:
+                    case SyntaxKind.ConstructorDeclaration:
+                    case SyntaxKind.DestructorDeclaration:
+                    case SyntaxKind.PropertyDeclaration:
+                    case SyntaxKind.EventDeclaration:
+                    case SyntaxKind.IndexerDeclaration:
+                    case SyntaxKind.GetAccessorDeclaration:
+                    case SyntaxKind.SetAccessorDeclaration:
+                    case SyntaxKind.AddAccessorDeclaration:
+                    case SyntaxKind.RemoveAccessorDeclaration:
+                    case SyntaxKind.UnknownAccessorDeclaration:
+                    case SyntaxKind.IncompleteMember:
+                        return false;
+                }
+            }
+
+            return false;
+        }
     }
 }
