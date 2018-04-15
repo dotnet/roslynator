@@ -82,8 +82,10 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.StaticClassCannotDeriveFromType:
                     case CompilerDiagnosticIdentifiers.StaticClassCannotImplementInterfaces:
                         {
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeClassNonStatic)
-                                && baseList.Parent is ClassDeclarationSyntax classDeclaration)
+                            if (!(baseList.Parent is ClassDeclarationSyntax classDeclaration))
+                                break;
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeClassNonStatic))
                             {
                                 ModifiersCodeFixRegistrator.RemoveModifier(
                                     context,
@@ -98,8 +100,21 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Remove base list",
-                                    cancellationToken => context.Document.RemoveNodeAsync(baseList, cancellationToken),
-                                    GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
+                                    cancellationToken =>
+                                    {
+                                        SyntaxToken token = baseList.GetFirstToken().GetPreviousToken();
+
+                                        SyntaxTriviaList trivia = token.TrailingTrivia.EmptyIfWhitespace()
+                                            .AddRange(baseList.GetLeadingTrivia().EmptyIfWhitespace())
+                                            .AddRange(baseList.GetTrailingTrivia());
+
+                                        ClassDeclarationSyntax newNode = classDeclaration
+                                            .ReplaceToken(token, token.WithTrailingTrivia(trivia))
+                                            .WithBaseList(null);
+
+                                        return context.Document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
+                                    },
+                                    base.GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemoveBaseList));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                             }
