@@ -4,7 +4,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class FormatAccessorBraces
     {
-        private class FormatAccessorBracesOnMultipleLinesRefactoring
+        private class Foo
         {
             private string _value;
 
@@ -12,15 +12,20 @@ namespace Roslynator.CSharp.Refactorings.Tests
             {
                 get { return _value; }
             }
-        }
 
-        internal class FormatAccessorBracesOnSingleLineRefactoring
-        {
-            private string _value;
-
-            public string Value
+            public string Value2
             {
                 get
+                {
+                    return _value;
+                }
+            }
+
+            // n
+
+            public string Value3
+            {
+                get //x
                 {
                     return _value;
                 }

@@ -35,7 +35,8 @@ namespace Roslynator.CSharp.Refactorings
                         });
                 }
             }
-            else
+            else if (constraintClause.DescendantTrivia(constraintClause.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
+                && constraintClauses.First().GetFirstToken().GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
             {
                 context.RegisterRefactoring(
                     "Format constraints on a single line",

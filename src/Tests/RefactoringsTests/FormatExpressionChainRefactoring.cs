@@ -7,24 +7,32 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class FormatExpressionChainRefactoring
     {
-        private class FormatExpressionChainOnMultipleLinesRefactoring
+        private class Foo
         {
-            public void SomeMethod()
+            public void Bar()
             {
                 var value = new List<string>();
 
                 var items = value.Where(f => f.Length > 0).Select(f => f[0]);
             }
-        }
 
-        private class FormatExpressionChainOnSingleLineRefactoring
-        {
-            public void SomeMethod()
+            public void Bar2()
             {
                 var value = new List<string>();
 
                 var items = value
                     .Where(f => f.Length > 0)
+                    .Select(f => f[0]);
+            }
+
+            // n
+
+            public void Bar3()
+            {
+                var value = new List<string>();
+
+                var items = value
+                    .Where(f => f.Length > 0) //x
                     .Select(f => f[0]);
             }
         }

@@ -13,5 +13,27 @@ namespace Roslynator.CSharp.Refactorings.Tests
             {
             }
         }
+
+        [My2Attribute(
+            null,
+            null,
+            null)]
+        private class My2Attribute : Attribute
+        {
+            public My2Attribute(object parameter1, object parameter2, object parameter3)
+            {
+            }
+        }
+
+        [My3Attribute(
+            null, //x
+            null,
+            null)]
+        private class My3Attribute : Attribute
+        {
+            public My3Attribute(object parameter1, object parameter2, object parameter3)
+            {
+            }
+        }
     }
 }

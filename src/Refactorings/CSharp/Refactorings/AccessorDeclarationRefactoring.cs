@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -32,7 +33,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SyntaxList<StatementSyntax> statements = body.Statements;
 
-                        if (body.Statements.SingleOrDefault(shouldThrow: false)?.IsSingleLine() == true)
+                        if (body.Statements.SingleOrDefault(shouldThrow: false)?.IsSingleLine() == true
+                            && accessor.DescendantTrivia(accessor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                         {
                             context.RegisterRefactoring(
                                 "Format braces on a single line",

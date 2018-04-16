@@ -382,6 +382,37 @@ namespace Roslynator
                 .ReplaceAt(0, list[0].WithLeadingTrivia(node.GetLeadingTrivia()))
                 .ReplaceAt(1, list[1].WithTrailingTrivia(node.GetTrailingTrivia()));
         }
+
+        //TODO: make public
+        internal static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
+            this SyntaxList<TNode> list,
+            Func<SyntaxNode, bool> descendIntoChildren = null,
+            bool descendIntoTrivia = false) where TNode : SyntaxNode
+        {
+            foreach (TNode node in list)
+            {
+                foreach (SyntaxTrivia trivia in node.DescendantTrivia(descendIntoChildren, descendIntoTrivia))
+                {
+                    yield return trivia;
+                }
+            }
+        }
+
+        //TODO: make public
+        internal static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
+            this SyntaxList<TNode> list,
+            TextSpan span,
+            Func<SyntaxNode, bool> descendIntoChildren = null,
+            bool descendIntoTrivia = false) where TNode : SyntaxNode
+        {
+            foreach (TNode node in list)
+            {
+                foreach (SyntaxTrivia trivia in node.DescendantTrivia(span, descendIntoChildren, descendIntoTrivia))
+                {
+                    yield return trivia;
+                }
+            }
+        }
         #endregion SyntaxList<T>
 
         #region SyntaxNode

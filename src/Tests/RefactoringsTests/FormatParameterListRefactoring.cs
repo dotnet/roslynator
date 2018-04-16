@@ -4,21 +4,23 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class FormatParameterListRefactoring
     {
-        private class FormatAllParametersOnSingleLineRefactoring
+        private class Foo
         {
-            public void SomeMethod(
+            public void Bar(
                 string value,
                 string value2,
                 string value3)
             {
             }
-        }
-    }
 
-    internal class FormatEachParameterOnSeparateLineRefactoring
-    {
-        public void SomeMethod(string value, string value2, string value3)
-        {
+            //n
+
+            public void Bar2(
+                string value, //x
+                string value2,
+                string value3)
+            {
+            }
         }
     }
 }

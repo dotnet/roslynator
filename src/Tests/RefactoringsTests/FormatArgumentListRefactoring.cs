@@ -4,38 +4,23 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class FormatArgumentListRefactoring
     {
-        private class FormatAllArgumentsOnSingleLineRefactoring
+        private class Foo
         {
-            public void SomeMethod2()
+            public void Bar(string value, string value2, string value3)
             {
-                string value = null;
-                string value2 = null;
-                string value3 = null;
+                Bar(value, value2, value3);
 
-                SomeMethod(
+                Bar(
                     value,
                     value2,
                     value3);
-            }
 
-            public void SomeMethod(string value, string value2, string value3)
-            {
-            }
-        }
+                // n
 
-        private class FormatEachArgumentOnSeparateLineRefactoring
-        {
-            public void SomeMethod2()
-            {
-                string value = null;
-                string value2 = null;
-                string value3 = null;
-
-                SomeMethod(value, value2, value3);
-            }
-
-            public void SomeMethod(string value, string value2, string value3)
-            {
+                Bar(
+                    value, //x
+                    value2,
+                    value3);
             }
         }
     }

@@ -4,24 +4,32 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class FormatConditionalExpression
     {
-        private class FormatConditionalExpressionOnMultipleLinesRefactoring
+        private class Foo
         {
-            public void SomeMethod()
+            public void Bar()
             {
                 bool condition = false;
 
                 var s = (condition) ? true : false;
             }
-        }
 
-        private class FormatConditionalExpressionToSingleLineRefactoring
-        {
-            public void SomeMethod()
+            public void Bar2()
             {
                 bool condition = false;
 
                 var s = (condition)
                     ? true
+                    : false;
+            }
+
+            // n
+
+            public void Bar3()
+            {
+                bool condition = false;
+
+                var s = (condition)
+                    ? true //x
                     : false;
             }
         }

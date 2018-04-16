@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -38,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
                     "Format expression chain on multiple lines",
                     ct => SyntaxFormatter.ToMultiLineAsync(context.Document, expressions.ToArray(), ct));
             }
-            else
+            else if (expressions[0].DescendantTrivia(expressions[0].Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.RegisterRefactoring(
                     "Format expression chain on a single line",

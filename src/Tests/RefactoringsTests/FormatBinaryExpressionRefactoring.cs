@@ -4,14 +4,31 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class FormatBinaryExpressionRefactoring
     {
-        public void SomeMethod()
+        private class Foo
         {
-            bool expression = false;
-            bool expression2 = false;
-            bool expression3 = false;
-
-            if (expression && expression2 && expression3)
+            public void Bar()
             {
+                bool expression = false;
+                bool expression2 = false;
+                bool expression3 = false;
+
+                if (expression && expression2 && expression3)
+                {
+                }
+
+                if (expression
+                    && expression2
+                    && expression3)
+                {
+                }
+
+                // n
+
+                if (expression
+                    && expression2 //x
+                    && expression3)
+                {
+                }
             }
         }
     }

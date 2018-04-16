@@ -4,36 +4,34 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class FormatInitializerRefactoring
     {
-        private class FormatInitializerOnMultipleLinesRefactoring
+        private class Foo
         {
-            public void SomeMethod()
-            {
-                var entity = new Entity() { Name = "Name", Value = 0 };
-            }
-
             private class Entity
             {
                 public string Name { get; set; }
                 public int Value { get; set; }
             }
-        }
 
-        private class FormatInitializerOnSingleLineRefactoring
-        {
-            public void SomeMethod()
+            public void Bar()
             {
+                var entity = new Entity() { Name = "Name", Value = 0 };
 
-                var entity = new Entity()
+                var entity2 = new Entity()
                 {
                     Name = "Name",
                     Value = 0
                 };
             }
 
-            private class Entity
+            // n
+
+            public void Bar2()
             {
-                public string Name { get; set; }
-                public int Value { get; set; }
+                var entity = new Entity()
+                {
+                    Name = "Name", //x
+                    Value = 0
+                };
             }
         }
     }

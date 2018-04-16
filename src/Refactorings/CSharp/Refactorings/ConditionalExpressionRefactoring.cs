@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -19,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                             "Format ?: on separate lines",
                             ct => SyntaxFormatter.ToMultiLineAsync(context.Document, conditionalExpression, ct));
                     }
-                    else
+                    else if (conditionalExpression.DescendantTrivia(conditionalExpression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.RegisterRefactoring(
                             "Format ?: on a single line",
