@@ -81,29 +81,51 @@ namespace Roslynator.CSharp.Analysis
             if (count <= 1)
                 return;
 
-            SyntaxToken commaToken = members.GetSeparator(0);
+            SyntaxTree tree = context.Node.SyntaxTree;
 
-            SyntaxTree tree = commaToken.SyntaxTree;
+            bool? isPrevSingleLine = null;
 
             for (int i = 1; i < count; i++)
             {
-                EnumMemberDeclarationSyntax member = members[i];
+                SyntaxToken commaToken = members.GetSeparator(i - 1);
 
-                SyntaxTriviaList trailingTrivia = members.GetSeparator(i - 1).TrailingTrivia;
+                SyntaxTriviaList trailingTrivia = commaToken.TrailingTrivia;
 
                 SyntaxTrivia lastTrailingTrivia = trailingTrivia.LastOrDefault();
 
                 if (!lastTrailingTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                    break;
+                {
+                    isPrevSingleLine = false;
+                    continue;
+                }
+
+                EnumMemberDeclarationSyntax member = members[i];
 
                 SyntaxTrivia documentationCommentTrivia = member.GetDocumentationCommentTrivia();
 
                 bool hasDocumentationComment = !documentationCommentTrivia.IsKind(SyntaxKind.None);
 
-                if (!hasDocumentationComment
-                    && tree.IsSingleLineSpan(member.Span, context.CancellationToken))
+                if (!hasDocumentationComment)
                 {
-                    continue;
+                    bool isSingleLine = tree.IsSingleLineSpan(member.Span, context.CancellationToken);
+
+                    if (isSingleLine)
+                    {
+                        if (isPrevSingleLine == null)
+                            isPrevSingleLine = tree.IsSingleLineSpan(TextSpan.FromBounds(members[i - 1].SpanStart, commaToken.Span.End), context.CancellationToken);
+
+                        if (isPrevSingleLine == true)
+                        {
+                            isPrevSingleLine = isSingleLine;
+                            continue;
+                        }
+                    }
+
+                    isPrevSingleLine = isSingleLine;
+                }
+                else
+                {
+                    isPrevSingleLine = null;
                 }
 
                 if (member
@@ -122,8 +144,6 @@ namespace Roslynator.CSharp.Analysis
                         DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
                         lastTrailingTrivia);
                 }
-
-                commaToken = members.GetSeparator(i);
             }
         }
 
@@ -134,29 +154,51 @@ namespace Roslynator.CSharp.Analysis
             if (count <= 1)
                 return;
 
-            MemberDeclarationSyntax prevMember = members[0];
+            SyntaxTree tree = context.Node.SyntaxTree;
 
-            SyntaxTree tree = prevMember.SyntaxTree;
+            bool? isPrevSingleLine = null;
 
             for (int i = 1; i < count; i++)
             {
-                MemberDeclarationSyntax member = members[i];
+                MemberDeclarationSyntax prevMember = members[i - 1];
 
                 SyntaxTriviaList trailingTrivia = prevMember.GetTrailingTrivia();
 
                 SyntaxTrivia lastTrailingTrivia = trailingTrivia.LastOrDefault();
 
                 if (!lastTrailingTrivia.IsKind(SyntaxKind.EndOfLineTrivia))
-                    break;
+                {
+                    isPrevSingleLine = false;
+                    continue;
+                }
+
+                MemberDeclarationSyntax member = members[i];
 
                 SyntaxTrivia documentationCommentTrivia = member.GetDocumentationCommentTrivia();
 
                 bool hasDocumentationComment = !documentationCommentTrivia.IsKind(SyntaxKind.None);
 
-                if (!hasDocumentationComment
-                    && tree.IsSingleLineSpan(member.Span, context.CancellationToken))
+                if (!hasDocumentationComment)
                 {
-                    continue;
+                    bool isSingleLine = tree.IsSingleLineSpan(member.Span, context.CancellationToken);
+
+                    if (isSingleLine)
+                    {
+                        if (isPrevSingleLine == null)
+                            isPrevSingleLine = tree.IsSingleLineSpan(prevMember.Span, context.CancellationToken);
+
+                        if (isPrevSingleLine == true)
+                        {
+                            isPrevSingleLine = isSingleLine;
+                            continue;
+                        }
+                    }
+
+                    isPrevSingleLine = isSingleLine;
+                }
+                else
+                {
+                    isPrevSingleLine = null;
                 }
 
                 if (member
@@ -175,8 +217,6 @@ namespace Roslynator.CSharp.Analysis
                         DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
                         lastTrailingTrivia);
                 }
-
-                prevMember = member;
             }
         }
     }
