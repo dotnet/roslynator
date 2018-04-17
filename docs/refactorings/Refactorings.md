@@ -46,6 +46,28 @@
 * **Syntax**: return statement without expression
 ![Add default value to return statement](../../images/refactorings/AddDefaultValueToReturnStatement.png)
 
+#### Add empty line between declarations \(RR0205\)
+
+* **Syntax**: selected declarations
+
+#### Before
+
+```csharp
+private object x;
+private object y;
+private object z;
+```
+
+#### After
+
+```csharp
+private object x;
+
+private object y;
+
+private object z;
+```
+
 #### Add exception to documentation comment \(RR0009\)
 
 * **Syntax**: throw statement
@@ -233,17 +255,17 @@ public interface IFoo
 * **Span**: opening or closing brace
 ![Duplicate statement](../../images/refactorings/DuplicateStatement.png)
 
-#### Expand assignment expression \(RR0034\)
-
-* **Syntax**: assignment expression
-* **Span**: operator
-![Expand assignment expression](../../images/refactorings/ExpandAssignmentExpression.png)
-
 #### Expand coalesce expression \(RR0035\)
 
 * **Syntax**: coalesce expression
 * **Span**: ?? operator
 ![Expand coalesce expression](../../images/refactorings/ExpandCoalesceExpression.png)
+
+#### Expand compound assignment operator \(RR0034\)
+
+* **Syntax**: compound assignment expression
+* **Span**: operator
+![Expand compound assignment operator](../../images/refactorings/ExpandCompoundAssignmentOperator.png)
 
 #### Expand event \(RR0036\)
 
@@ -275,6 +297,33 @@ public interface IFoo
 
 * **Syntax**: auto\-property
 ![Expand property and add backing field](../../images/refactorings/ExpandPropertyAndAddBackingField.png)
+
+#### Extract event handler method \(RR0203\)
+
+* **Syntax**: lambda expression
+
+#### Before
+
+```csharp
+void Foo()
+{
+  x.Changed += (s, e) => Bar();
+}
+```
+
+#### After
+
+```csharp
+void Foo()
+{
+  x.Changed += Changed;
+}
+
+void OnChanged(object sender, EventArgs e)
+{
+  Bar();
+}
+```
 
 #### Extract expression from condition \(RR0043\)
 
@@ -436,6 +485,38 @@ private void Foo<T1, T2, T3>()
 * **Syntax**: event
 * **Span**: identifier
 ![Generate event invoking method](../../images/refactorings/GenerateEventInvokingMethod.png)
+
+#### Generate property for DebuggerDisplay attribute \(RR0204\)
+
+* **Syntax**: DebuggerDisplay attribute
+
+#### Before
+
+```csharp
+[DebuggerDisplay("A: {A} B: {B}")]
+public class Foo
+{
+    public string A { get; }
+    public string B { get; }
+}
+```
+
+#### After
+
+```csharp
+DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class Foo
+{
+    public string A { get; }
+    public string B { get; }
+
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return $"A: {A} B: {B}"; }
+    }
+}
+```
 
 #### Generate switch sections \(RR0059\)
 
@@ -678,6 +759,33 @@ else
 
 * **Syntax**: local declarations with same type
 ![Merge local declarations](../../images/refactorings/MergeLocalDeclarations.png)
+
+#### Move unsafe context to containing declaration \(RR0202\)
+
+* **Syntax**: unsafe declaration
+* **Span**: unsafe modifier
+
+#### Before
+
+```csharp
+public class Foo
+{
+  public unsafe void Bar()
+  {
+  }
+}
+```
+
+#### After
+
+```csharp
+public unsafe class Foo
+{
+  public void Bar()
+  {
+  }
+}
+```
 
 #### Negate binary expression \(RR0079\)
 

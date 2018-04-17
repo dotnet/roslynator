@@ -246,5 +246,7 @@
     <Rule Id="RCS1216" Action="Info" /> <!-- Unnecessary unsafe context. -->
     <Rule Id="RCS1217" Action="Hidden" /> <!-- Replace interpolated string with concatenation. -->
     <Rule Id="RCS1217FadeOut" Action="Hidden" />
+    <Rule Id="RCS1218" Action="Info" /> <!-- Simplify code branching. -->
+    <Rule Id="RCS1219" Action="None" /> <!-- Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'. -->
   </Rules>
 </RuleSet>

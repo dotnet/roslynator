@@ -30,6 +30,7 @@
 | [CS0133](../../docs/cs/CS0133.md) | The expression being assigned to 'variable' must be constant\. |
 | [CS0136](../../docs/cs/CS0136.md) | A local variable named 'var' cannot be declared in this scope because it would give a different meaning to 'var', which is already used in a 'parent or current/child' scope to denote something else\. |
 | [CS0139](../../docs/cs/CS0139.md) | No enclosing loop out of which to break or continue\. |
+| [CS0152](../../docs/cs/CS0152.md) | The switch statement contains multiple cases with same label value\. |
 | [CS0161](../../docs/cs/CS0161.md) | 'method': not all code paths return a value\. |
 | [CS0162](../../docs/cs/CS0162.md) | Unreachable code detected\. |
 | [CS0163](../../docs/cs/CS0163.md) | Control cannot fall through from one case label \('label'\) to another\. |
@@ -45,6 +46,7 @@
 | [CS0219](../../docs/cs/CS0219.md) | The variable 'variable' is assigned but its value is never used\. |
 | [CS0221](../../docs/cs/CS0221.md) | Constant value 'value' cannot be converted to a 'type' \(use 'unchecked' syntax to override\)\. |
 | [CS0225](../../docs/cs/CS0225.md) | The params parameter must be a single dimensional array\. |
+| [CS0238](../../docs/cs/CS0238.md) | 'identifier' cannot be sealed because it is not an override\. |
 | [CS0246](../../docs/cs/CS0246.md) | The type or namespace name 'type/namespace' could not be found \(are you missing a using directive or an assembly reference?\)\. |
 | [CS0260](../../docs/cs/CS0260.md) | Missing partial modifier on declaration of type 'type'; another partial declaration of this type exists\. |
 | [CS0262](../../docs/cs/CS0262.md) | Partial declarations of 'type' have conflicting accessibility modifiers\. |
@@ -70,11 +72,18 @@
 | [CS0508](../../docs/cs/CS0508.md) | 'type1': return type must be 'type2' to match overridden member 'member name'\. |
 | [CS0513](../../docs/cs/CS0513.md) | 'function' is abstract but it is contained in nonabstract class 'class'\. |
 | [CS0515](../../docs/cs/CS0515.md) | 'function': access modifiers are not allowed on static constructors\. |
+| [CS0524](../../docs/cs/CS0524.md) | 'identifier': interfaces cannot declare types\. |
+| [CS0525](../../docs/cs/CS0525.md) | Interfaces cannot contain fields\. |
 | [CS0527](../../docs/cs/CS0527.md) | Type 'type' in interface list is not an interface\. |
 | [CS0531](../../docs/cs/CS0531.md) | 'member': interface members cannot have a definition\. |
 | [CS0541](../../docs/cs/CS0541.md) | 'declaration': explicit interface declaration can only be declared in a class or struct\. |
+| [CS0549](../../docs/cs/CS0549.md) | New virtual member in sealed class\. |
 | [CS0558](../../docs/cs/CS0558.md) | User\-defined operator 'operator' must be declared static and public\. |
+| [CS0567](../../docs/cs/CS0567.md) | Interfaces cannot contain operators\. |
+| [CS0568](../../docs/cs/CS0568.md) | Structs cannot contain explicit parameterless constructors\. |
 | [CS0573](../../docs/cs/CS0573.md) | 'field declaration': cannot have instance field initializers in structs\. |
+| [CS0574](../../docs/cs/CS0574.md) | Name of destructor must match name of class\. |
+| [CS0575](../../docs/cs/CS0575.md) | Only class types can contain destructors\. |
 | [CS0579](../../docs/cs/CS0579.md) | Duplicate 'attribute' attribute\. |
 | [CS0592](../../docs/cs/CS0592.md) | Attribute 'attribute' is not valid on this declaration type\. It is valid on 'type' declarations only\. |
 | [CS0621](../../docs/cs/CS0621.md) | 'member': virtual or abstract members cannot be private\. |
@@ -87,6 +96,7 @@
 | [CS0708](../../docs/cs/CS0708.md) | 'field': cannot declare instance members in a static class\. |
 | [CS0710](../../docs/cs/CS0710.md) | Static classes cannot have instance constructors |
 | [CS0713](../../docs/cs/CS0713.md) | Static class 'static type' cannot derive from type 'type'\. Static classes must derive from object\. |
+| [CS0714](../../docs/cs/CS0714.md) | Static class cannot implement interfaces\. |
 | [CS0718](../../docs/cs/CS0718.md) | 'type': static types cannot be used as type arguments\. |
 | [CS0750](../../docs/cs/CS0750.md) | A partial method cannot have access modifiers or the virtual, abstract, override, new, sealed, or extern modifiers\. |
 | [CS0751](../../docs/cs/CS0751.md) | A partial method must be declared in a partial class or partial struct\. |
@@ -124,6 +134,8 @@
 | [CS1715](../../docs/cs/CS1715.md) | 'type1': type must be 'type2' to match overridden member 'member'\. |
 | [CS1717](../../docs/cs/CS1717.md) | Assignment made to same variable; did you mean to assign something else? |
 | [CS1722](../../docs/cs/CS1722.md) | Base class 'class' must come before any interfaces\. |
+| [CS1737](../../docs/cs/CS1737.md) | Optional parameters must appear after all required parameters\. |
+| [CS1743](../../docs/cs/CS1743.md) | Cannot specify a default value for the 'this' parameter\. |
 | [CS1750](../../docs/cs/CS1750.md) | A value of type 'type1' cannot be used as a default parameter because there are no standard conversions to type 'type2\. |
 | [CS1751](../../docs/cs/CS1751.md) | Cannot specify a default value for a parameter array\. |
 | [CS1955](../../docs/cs/CS1955.md) | Non\-invocable member 'name' cannot be used like a method\. |
@@ -132,6 +144,7 @@
 | [CS1997](../../docs/cs/CS1997.md) | Since 'RemoveReturnKeywordOrReturnExpression\.FooAsync\(\)' is an async method that returns 'Task', a return keyword must not be followed by an object expression\. Did you intend to return 'Task\<T>>'? |
 | [CS8070](../../docs/cs/CS8070.md) | Control cannot fall out of switch from final case label \('default'\)\. |
 | [CS8112](../../docs/cs/CS8112.md) | 'function' is a local function and must therefore always have a body\. |
+| [CS8340](../../docs/cs/CS8340.md) | Instance fields of read\-only structs must be read\-only\. |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

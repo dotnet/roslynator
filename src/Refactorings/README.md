@@ -10,6 +10,7 @@
 | RR0005 | [Add braces to switch sections](../../docs/refactorings/RR0005.md) | &#x2713; |
 | RR0006 | [Add cast expression](../../docs/refactorings/RR0006.md) | &#x2713; |
 | RR0007 | [Add default value to parameter](../../docs/refactorings/RR0007.md) | &#x2713; |
+| RR0205 | [Add empty line between declarations](../../docs/refactorings/RR0205.md) | &#x2713; |
 | RR0009 | [Add exception to documentation comment](../../docs/refactorings/RR0009.md) | &#x2713; |
 | RR0010 | [Add identifier to variable declaration](../../docs/refactorings/RR0010.md) | &#x2713; |
 | RR0195 | [Add member to interface](../../docs/refactorings/RR0195.md) | &#x2713; |
@@ -35,14 +36,15 @@
 | RR0031 | [Duplicate member](../../docs/refactorings/RR0031.md) | &#x2713; |
 | RR0032 | [Duplicate parameter](../../docs/refactorings/RR0032.md) | &#x2713; |
 | RR0033 | [Duplicate statement](../../docs/refactorings/RR0033.md) | &#x2713; |
-| RR0034 | [Expand assignment expression](../../docs/refactorings/RR0034.md) | &#x2713; |
 | RR0035 | [Expand coalesce expression](../../docs/refactorings/RR0035.md) | &#x2713; |
+| RR0034 | [Expand compound assignment operator](../../docs/refactorings/RR0034.md) | &#x2713; |
 | RR0036 | [Expand event](../../docs/refactorings/RR0036.md) | &#x2713; |
 | RR0037 | [Expand expression body](../../docs/refactorings/RR0037.md) | &#x2713; |
 | RR0038 | [Expand initializer](../../docs/refactorings/RR0038.md) | &#x2713; |
 | RR0039 | [Expand lambda expression body](../../docs/refactorings/RR0039.md) | &#x2713; |
 | RR0040 | [Expand property](../../docs/refactorings/RR0040.md) | &#x2713; |
 | RR0041 | [Expand property and add backing field](../../docs/refactorings/RR0041.md) | &#x2713; |
+| RR0203 | [Extract event handler method](../../docs/refactorings/RR0203.md) | &#x2713; |
 | RR0043 | [Extract expression from condition](../../docs/refactorings/RR0043.md) | &#x2713; |
 | RR0044 | [Extract generic type](../../docs/refactorings/RR0044.md) | &#x2713; |
 | RR0045 | [Extract statement(s)](../../docs/refactorings/RR0045.md) | &#x2713; |
@@ -60,6 +62,7 @@
 | RR0056 | [Generate enum member](../../docs/refactorings/RR0056.md) | &#x2713; |
 | RR0057 | [Generate enum values](../../docs/refactorings/RR0057.md) | &#x2713; |
 | RR0058 | [Generate event invoking method](../../docs/refactorings/RR0058.md) | &#x2713; |
+| RR0204 | [Generate property for DebuggerDisplay attribute](../../docs/refactorings/RR0204.md) | &#x2713; |
 | RR0059 | [Generate switch sections](../../docs/refactorings/RR0059.md) | &#x2713; |
 | RR0179 | [Implement IEquatable\<T>](../../docs/refactorings/RR0179.md) | &#x2713; |
 | RR0197 | [Initialize field from constructor](../../docs/refactorings/RR0197.md) | &#x2713; |
@@ -84,6 +87,7 @@
 | RR0075 | [Merge if statements](../../docs/refactorings/RR0075.md) | &#x2713; |
 | RR0196 | [Merge if with parent if](../../docs/refactorings/RR0196.md) | &#x2713; |
 | RR0077 | [Merge local declarations](../../docs/refactorings/RR0077.md) | &#x2713; |
+| RR0202 | [Move unsafe context to containing declaration](../../docs/refactorings/RR0202.md) | &#x2713; |
 | RR0079 | [Negate binary expression](../../docs/refactorings/RR0079.md) | &#x2713; |
 | RR0080 | [Negate boolean literal](../../docs/refactorings/RR0080.md) | &#x2713; |
 | RR0081 | [Negate is expression](../../docs/refactorings/RR0081.md) | &#x2713; |

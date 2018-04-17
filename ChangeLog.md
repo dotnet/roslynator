@@ -1,3 +1,21 @@
+### 1.8.1 (2018-04-17)
+
+#### Analyzers
+
+* Add analyzer [SimplifyCodeBranching](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1218.md)  (RCS1218)
+* Add analyzer [CallSkipAndAnyInsteadOfCount](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1219.md) (RCS1219) (split from RCS1083)
+
+#### Refactorings
+
+* Add refactoring [MoveUnsafeContextToContainingDeclaration](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0202.md)  (RR0202)
+* Add refactoring [ExtractEventHandlerMethod](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0203.md)  (RR0203)
+* Add refactoring [GeneratePropertyForDebuggerDisplayAttribute](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0204.md) (RR0204)
+* Add refactoring [AddEmptyLineBetweenDeclarations](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0205.md)  (RR0205)
+
+#### Code Fixes
+
+* Add code fixes for CS0152, CS0238, CS0524, CS0525, CS0549, CS0567, CS0568, CS0574, CS0575, CS0714, CS1737, CS1743, CS8340.
+
 ### 1.8.0 (2018-03-20)
 
 #### Analyzers

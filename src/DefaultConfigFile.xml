@@ -37,7 +37,7 @@
       <Refactoring Id="RR0031" IsEnabled="true" /> <!-- DuplicateMember -->
       <Refactoring Id="RR0032" IsEnabled="true" /> <!-- DuplicateParameter -->
       <Refactoring Id="RR0033" IsEnabled="true" /> <!-- DuplicateStatement -->
-      <Refactoring Id="RR0034" IsEnabled="true" /> <!-- ExpandAssignmentExpression -->
+      <Refactoring Id="RR0034" IsEnabled="true" /> <!-- ExpandCompoundAssignmentOperator -->
       <Refactoring Id="RR0035" IsEnabled="true" /> <!-- ExpandCoalesceExpression -->
       <Refactoring Id="RR0036" IsEnabled="true" /> <!-- ExpandEvent -->
       <Refactoring Id="RR0037" IsEnabled="true" /> <!-- ExpandExpressionBody -->
@@ -200,6 +200,10 @@
       <Refactoring Id="RR0199" IsEnabled="true" /> <!-- RemoveEnumMemberValue -->
       <Refactoring Id="RR0200" IsEnabled="true" /> <!-- UncommentMultiLineComment -->
       <Refactoring Id="RR0201" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithStringFormat -->
+      <Refactoring Id="RR0202" IsEnabled="true" /> <!-- MoveUnsafeContextToContainingDeclaration -->
+      <Refactoring Id="RR0203" IsEnabled="true" /> <!-- ExtractEventHandlerMethod -->
+      <Refactoring Id="RR0204" IsEnabled="true" /> <!-- GeneratePropertyForDebuggerDisplayAttribute -->
+      <Refactoring Id="RR0205" IsEnabled="true" /> <!-- AddEmptyLineBetweenDeclarations -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -255,7 +259,7 @@
       <CodeFix Id="RCF0053" IsEnabled="true" /> <!-- RemoveParametersFromStaticConstructor (fixes CS0132) -->
       <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- ReorderModifiers (fixes CS0267) -->
       <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0115, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994) -->
-      <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114, CS0541) -->
+      <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114, CS0541, CS0525, CS0567, CS0568, CS0575) -->
       <CodeFix Id="RCF0057" IsEnabled="false" /> <!-- RemoveReturnExpression (fixes CS0127, CS1997) -->
       <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037, CS0403, CS1503, CS1750) -->
       <CodeFix Id="RCF0059" IsEnabled="true" /> <!-- ReplaceVariableDeclarationWithAssignment (fixes CS0128, CS0136) -->
@@ -264,10 +268,10 @@
       <CodeFix Id="RCF0062" IsEnabled="true" /> <!-- MakeContainingClassNonStatic (fixes CS0708, CS0710) -->
       <CodeFix Id="RCF0063" IsEnabled="true" /> <!-- AddCastExpression (fixes CS0173) -->
       <CodeFix Id="RCF0064" IsEnabled="true" /> <!-- MoveConstraint (fixes CS0401, CS0449) -->
-      <CodeFix Id="RCF0065" IsEnabled="true" /> <!-- RemoveConstraint (fixes CS0405, CS0450, CS0451) -->
+      <CodeFix Id="RCF0065" IsEnabled="true" /> <!-- RemoveConstraint (fixes CS0405, CS0450, CS0451, CS0714) -->
       <CodeFix Id="RCF0066" IsEnabled="true" /> <!-- CombineConstraintClauses (fixes CS0409) -->
       <CodeFix Id="RCF0067" IsEnabled="true" /> <!-- AssignDefaultValueToOutParameter (fixes CS0177) -->
-      <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- MakeClassNonStatic (fixes CS0713, CS0718) -->
+      <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- MakeClassNonStatic (fixes CS0713, CS0714, CS0718) -->
       <CodeFix Id="RCF0069" IsEnabled="true" /> <!-- RemoveYieldKeyword (fixes CS1621) -->
       <CodeFix Id="RCF0070" IsEnabled="true" /> <!-- RemoveOutModifier (fixes CS0192, CS1988, CS1623) -->
       <CodeFix Id="RCF0071" IsEnabled="true" /> <!-- RemoveAttribute (fixes CS0592, CS1689) -->
@@ -292,12 +296,20 @@
       <CodeFix Id="RCF0090" IsEnabled="true" /> <!-- ChangeTypeAccordingToInitializer (fixes CS0029) -->
       <CodeFix Id="RCF0091" IsEnabled="true" /> <!-- ChangeForEachType (fixes CS0030) -->
       <CodeFix Id="RCF0092" IsEnabled="true" /> <!-- ChangeTypeToVar (fixes CS0029, CS0030) -->
-      <CodeFix Id="RCF0093" IsEnabled="true" /> <!-- RemoveDefaultValueFromParameter (fixes CS1751) -->
+      <CodeFix Id="RCF0093" IsEnabled="true" /> <!-- RemoveDefaultValueFromParameter (fixes CS1751, CS1743) -->
       <CodeFix Id="RCF0094" IsEnabled="true" /> <!-- ReplaceConstantWithField (fixes CS0133) -->
       <CodeFix Id="RCF0095" IsEnabled="true" /> <!-- ReplaceStructWithClass (fixes CS0527) -->
       <CodeFix Id="RCF0096" IsEnabled="true" /> <!-- ReplaceYieldReturnWithForEach (fixes CS0029) -->
       <CodeFix Id="RCF0097" IsEnabled="true" /> <!-- ReplaceComparisonWithAssignment (fixes CS0201) -->
       <CodeFix Id="RCF0098" IsEnabled="true" /> <!-- AddModifierAbstract (fixes CS0501) -->
+      <CodeFix Id="RCF0099" IsEnabled="true" /> <!-- MakeMemberReadOnly (fixes CS8340) -->
+      <CodeFix Id="RCF0100" IsEnabled="true" /> <!-- RemoveSealedModifier (fixes CS0238) -->
+      <CodeFix Id="RCF0101" IsEnabled="true" /> <!-- RemoveVirtualModifier (fixes CS0549) -->
+      <CodeFix Id="RCF0102" IsEnabled="true" /> <!-- MakeContainingClassUnsealed (fixes CS0549) -->
+      <CodeFix Id="RCF0103" IsEnabled="true" /> <!-- RemoveSwitchLabel (fixes CS0152) -->
+      <CodeFix Id="RCF0104" IsEnabled="true" /> <!-- RenameDestructorToMatchClassName (fixes CS0574) -->
+      <CodeFix Id="RCF0105" IsEnabled="true" /> <!-- RemoveBaseList (fixes CS0713, CS0714) -->
+      <CodeFix Id="RCF0106" IsEnabled="true" /> <!-- AddDefaultValueToParameter (fixes CS1737) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

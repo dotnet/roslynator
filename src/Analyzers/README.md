@@ -96,7 +96,7 @@
 | RCS1096 | [Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md) | Performance | &#x2713; |
 | RCS1097 | [Remove redundant 'ToString' call](../../docs/analyzers/RCS1097.md) | Redundancy | &#x2713; |
 | RCS1098 | [Avoid 'null' on the left side of a binary expression](../../docs/analyzers/RCS1098.md) | Readability | &#x2713; |
-| RCS1099 | [Default label should be last label in switch section](../../docs/analyzers/RCS1099.md) | Readability | &#x2713; |
+| RCS1099 | [Default label should be the last label in a switch section](../../docs/analyzers/RCS1099.md) | Readability | &#x2713; |
 | RCS1100 | [Format documentation summary on a single line](../../docs/analyzers/RCS1100.md) | Formatting | \- |
 | RCS1101 | [Format documentation summary on multiple lines](../../docs/analyzers/RCS1101.md) | Formatting | \- |
 | RCS1102 | [Make class static](../../docs/analyzers/RCS1102.md) | Design | &#x2713; |
@@ -156,7 +156,7 @@
 | RCS1169 | [Mark field as read-only](../../docs/analyzers/RCS1169.md) | Design | &#x2713; |
 | RCS1170 | [Use read-only auto-implemented property](../../docs/analyzers/RCS1170.md) | Design | &#x2713; |
 | RCS1171 | [Simplify lazy initialization](../../docs/analyzers/RCS1171.md) | Simplification | &#x2713; |
-| RCS1172 | [Use is operator instead of as operator](../../docs/analyzers/RCS1172.md) | Simplification | &#x2713; |
+| RCS1172 | [Use 'is' operator instead of 'as' operator](../../docs/analyzers/RCS1172.md) | Simplification | &#x2713; |
 | RCS1173 | [Use coalesce expression instead of if](../../docs/analyzers/RCS1173.md) | Simplification | &#x2713; |
 | RCS1174 | [Remove redundant async/await](../../docs/analyzers/RCS1174.md) | Redundancy | &#x2713; |
 | RCS1175 | [Unused this parameter](../../docs/analyzers/RCS1175.md) | Redundancy | &#x2713; |
@@ -202,6 +202,8 @@
 | RCS1215 | [Expression is always equal to true/false](../../docs/analyzers/RCS1215.md) | Redundancy | &#x2713; |
 | RCS1216 | [Unnecessary unsafe context](../../docs/analyzers/RCS1216.md) | Redundancy | &#x2713; |
 | RCS1217 | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | Readability | &#x2713; |
+| RCS1218 | [Simplify code branching](../../docs/analyzers/RCS1218.md) | Readability | &#x2713; |
+| RCS1219 | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | Performance | \- |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

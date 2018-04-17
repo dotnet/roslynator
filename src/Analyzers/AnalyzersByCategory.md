@@ -56,6 +56,7 @@
 | Naming | [Rename private field according to camel case with underscore](../../docs/analyzers/RCS1045.md) | RCS1045 | \- |
 | Performance | [Avoid unnecessary boxing of value type](../../docs/analyzers/RCS1198.md) | RCS1198 | \- |
 | Performance | [Call 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1083.md) | RCS1083 | &#x2713; |
+| Performance | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | RCS1219 | \- |
 | Performance | [Call 'Find' instead of 'FirstOrDefault'](../../docs/analyzers/RCS1119.md) | RCS1119 | &#x2713; |
 | Performance | [Optimize StringBuilder.Append/AppendLine call](../../docs/analyzers/RCS1197.md) | RCS1197 | &#x2713; |
 | Performance | [Use \[\] instead of calling 'ElementAt'](../../docs/analyzers/RCS1120.md) | RCS1120 | &#x2713; |
@@ -74,12 +75,13 @@
 | Readability | [Declare each attribute separately](../../docs/analyzers/RCS1052.md) | RCS1052 | \- |
 | Readability | [Declare enum value as combination of names](../../docs/analyzers/RCS1191.md) | RCS1191 | &#x2713; |
 | Readability | [Declare using directive on top level](../../docs/analyzers/RCS1094.md) | RCS1094 | \- |
-| Readability | [Default label should be last label in switch section](../../docs/analyzers/RCS1099.md) | RCS1099 | &#x2713; |
+| Readability | [Default label should be the last label in a switch section](../../docs/analyzers/RCS1099.md) | RCS1099 | &#x2713; |
 | Readability | [Enum member should declare explicit value](../../docs/analyzers/RCS1161.md) | RCS1161 | &#x2713; |
 | Readability | [Reorder modifiers](../../docs/analyzers/RCS1019.md) | RCS1019 | \- |
 | Readability | [Reorder named arguments according to the order of parameters](../../docs/analyzers/RCS1205.md) | RCS1205 | &#x2713; |
 | Readability | [Reorder type parameter constraints](../../docs/analyzers/RCS1209.md) | RCS1209 | &#x2713; |
 | Readability | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | RCS1217 | &#x2713; |
+| Readability | [Simplify code branching](../../docs/analyzers/RCS1218.md) | RCS1218 | &#x2713; |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | &#x2713; |
 | Readability | [Split variable declaration](../../docs/analyzers/RCS1081.md) | RCS1081 | \- |
 | Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | \- |
@@ -160,7 +162,7 @@
 | Simplification | [Use coalesce expression instead of if](../../docs/analyzers/RCS1173.md) | RCS1173 | &#x2713; |
 | Simplification | [Use coalesce expression](../../docs/analyzers/RCS1128.md) | RCS1128 | &#x2713; |
 | Simplification | [Use compound assignment](../../docs/analyzers/RCS1058.md) | RCS1058 | &#x2713; |
-| Simplification | [Use is operator instead of as operator](../../docs/analyzers/RCS1172.md) | RCS1172 | &#x2713; |
+| Simplification | [Use 'is' operator instead of 'as' operator](../../docs/analyzers/RCS1172.md) | RCS1172 | &#x2713; |
 | Simplification | [Use method chaining](../../docs/analyzers/RCS1201.md) | RCS1201 | &#x2713; |
 | Simplification | [Use method group instead of anonymous function](../../docs/analyzers/RCS1207.md) | RCS1207 | &#x2713; |
 | Simplification | [Use return instead of assignment](../../docs/analyzers/RCS1179.md) | RCS1179 | &#x2713; |
