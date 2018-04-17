@@ -4,264 +4,275 @@ using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 
-#pragma warning disable CS0472, RCS1002, RCS1007, RCS1016, RCS1023, RCS1029, RCS1098, RCS1118, RCS1163, RCS1166, RCS1176
+#pragma warning disable CS0472, RCS1002, RCS1007, RCS1016, RCS1023, RCS1029, RCS1097, RCS1098, RCS1118, RCS1163, RCS1166, RCS1176, RCS1208
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    public static class UseConditionalAccess
+    namespace IfStatement
     {
-        private class Foo
+        public class C
+        {
+            public void M()
+            {
+                C x = null;
+
+                if (x != null)
+                    x.M();
+
+                if (x != null)
+                {
+                    x.M();
+                }
+            }
+        }
+
+        public struct S
+        {
+            public void M()
+            {
+                S? x = null;
+
+                if (x != null)
+                    x.Value.M();
+
+                if (x != null)
+                {
+                    x.Value.M();
+                }
+            }
+        }
+    }
+
+    namespace Diagnostic_ReferenceType
+    {
+        public class Foo
         {
             private const string NonNullConst = "x";
 
             public string Value { get; }
 
-            public bool IsFoo { get; }
-
-            public void Method()
+            public void M()
             {
-                string s = null;
-
-                if (s != null &&
-                    s.StartsWith("a")) { }
-
-                if (null != s &&
-                    s.StartsWith("a")) { }
-
-                if (s != null
-                    && s.StartsWith("a") //
-                    && s.StartsWith("a")) { }
-
-                if (s != null &&
-                    s.Length > 1) { }
-
-                if (s != null &&
-                    !s.StartsWith("a")) { }
-
-                if (s != null
-                    && !s.StartsWith("a") //
-                    && !s.StartsWith("a")) { }
-
-                if (s != null &&
-                    (!s.StartsWith("a"))) { }
-
-                Dictionary<int, string> dic = null;
-
-                if (dic != null && dic[0].StartsWith("a")) { }
-
-                if (dic != null && dic[0].Length > 1) { }
-
-                if (dic != null && !dic[0].StartsWith("a")) { }
+                bool f = false;
 
                 Foo x = null;
 
-                if (x != null)
-                    x.Method();
+                if (x != null && x.Equals(x)) { }
 
-                if (x != null)
-                {
-                    x.Method();
-                }
+                if (null != x && x.Equals(x)) { }
 
-                //y
+                if (x != null && (x.Equals(x))) { }
 
-                if (x != null && x.Value == "x" && x.IsFoo) { }
+                if (x != null && x.Equals(x) && f) { }
 
-                if (x != null && x.Value == NonNullConst && x.IsFoo) { }
+                if (f && x != null && x.Equals(x)) { }
 
-                if (x != null && x.Value != null && x.IsFoo) { }
+                if (x != null && x.Value.Length > 1) { }
 
-                if (x != null && !x.IsFoo && x.IsFoo) { }
+                if (x != null && !x.Equals(x)) { }
+
+                if (x != null && (!x.Equals(x))) { }
+
+                if (x != null && x.Value == "x") { }
+
+                if (x != null && x.Value == NonNullConst) { }
+
+                if (x != null && x.Value != null) { }
 
                 if (x != null && x.Value is object) { }
 
-                if (x != null && x.Value is object y) { }
+                if (x != null && x.Value is object _) { }
 
-                if ((x != null) && (x.Value == ("x")) && x.IsFoo) { }
+                if (x != null && x.ToString() != null && x.ToString().ToString() != null) { }
 
-                if ((x != null) && (x.Value == (NonNullConst)) && x.IsFoo) { }
+                if (f &&
+        /*leading*/ x != null &&
+                    x.Equals("x") /*trailing*/
+                    && f) { }
 
-                if ((x != null) && (x.Value != (null)) && x.IsFoo) { }
+                Dictionary<int, string> dic = null;
+
+                if (dic != null && dic[0].Equals("x")) { }
+
+                if (dic != null && dic[0].Length > 1) { }
+
+                if (dic != null && !dic[0].Equals("x")) { }
             }
         }
+    }
 
-        private struct FooNullable
+    namespace Diagnostic_NullableType
+    {
+        public struct Foo
         {
             private const string NonNullConst = "x";
 
-            public bool IsFoo { get; }
+            public string V { get; }
 
-            public string Value2 { get; }
-
-            public bool BoolMethod()
+            public void M()
             {
-                return false;
-            }
+                Foo? x = null;
 
-            public void VoidMethod()
-            {
-                FooNullable? x = null;
+                if (x != null && x.Value.Equals(x)) { }
 
-                if (x != null &&
-                    x.Value.BoolMethod()) { }
+                if (x != null && x.Value.V.Length > 1) { }
 
-                if (null != x &&
-                    x.Value.BoolMethod()) { }
+                if (x != null && !x.Value.Equals(x)) { }
 
-                if (x != null
-                    && x.Value.BoolMethod() //
-                    && x.Value.BoolMethod()) { }
+                if (x != null && x.Value.V == "x") { }
 
-                if (x != null &&
-                    x.Value.Value2.Length > 1) { }
+                if (x != null && x.Value.V == NonNullConst) { }
 
-                if (x != null &&
-                    !x.Value.BoolMethod()) { }
+                if (x != null && x.Value.V != null) { }
 
-                if (x != null
-                    && !x.Value.BoolMethod() //
-                    && !x.Value.BoolMethod()) { }
+                if (x != null && x.Value.V is object) { }
 
-                if (x != null &&
-                    (!x.Value.BoolMethod())) { }
+                if (x != null && x.Value.V is object _) { }
 
-                if (x != null)
-                    x.Value.VoidMethod();
-
-                if (x != null)
-                {
-                    x.Value.VoidMethod();
-                }
-
-                if (x != null && x.Value.Value2 == "x" && x.Value.IsFoo) { }
-
-                if (x != null && x.Value.Value2 == NonNullConst && x.Value.IsFoo) { }
-
-                if (x != null && x.Value.Value2 != null && x.Value.IsFoo) { }
-
-                if (x != null && x.Value.Value2 is object) { }
-
-                if (x != null && x.Value.Value2 is object y) { }
-
-                if ((x != null) && (x.Value.Value2 == ("x")) && x.Value.IsFoo) { }
-
-                if ((x != null) && (x.Value.Value2 == (NonNullConst)) && x.Value.IsFoo) { }
-
-                if ((x != null) && (x.Value.Value2 != (null)) && x.Value.IsFoo) { }
-
-                if (x != null && !x.Value.IsFoo && x.Value.IsFoo) { }
+                if (x != null && x.Value.ToString() != null && x.Value.ToString().ToString() != null) { }
             }
         }
+    }
 
-        //n
+    //n
 
-        private class Foo2
+    namespace NoDiagnostic_ReferenceType
+    {
+        public class Foo
         {
             private const string NullConst = null;
             private const string NonNullConst = "x";
 
             public string Value { get; }
 
-            public bool IsFoo { get; }
+            public bool Is { get; }
 
-            public void Method()
+            public void M()
             {
+                bool f = false;
+
+                string s = null;
+
                 Foo x = null;
 
-                if (x != null && (x.Value == null) is object y2) { }
+                if (x != null && x.Value == null && f) { }
 
-                if (x != null && x.Value == null && x.IsFoo) { }
+                if (x != null && x.Value == NullConst && f) { }
 
-                if (x != null && x.Value == NullConst && x.IsFoo) { }
+                if (x != null && x.Value == s && f) { }
 
-                if (x != null && x.Value == Value && x.IsFoo) { }
+                if (x != null && x.Value != "x" && f) { }
 
-                if (x != null && x.Value != "x" && x.IsFoo) { }
+                if (x != null && x.Value != NonNullConst && f) { }
 
-                if (x != null && x.Value != NonNullConst && x.IsFoo) { }
+                if (x != null && x.Value != s && f) { }
 
-                if (x != null && x.Value != Value && x.IsFoo) { }
+                if (x != null && (x.Value != null) is object _) { }
+            }
+        }
+    }
 
-                int? x2 = null;
+    namespace NoDiagnostic_ValueType
+    {
+        public struct S
+        {
+            public int Value { get; }
 
-                if (x2 != null && x2.HasValue) { }
-
-                Dictionary<int, string> dic = null;
-                string value;
-                string result = (dic != null && dic.TryGetValue(0, out value)) ? value : null;
-
+            public void M()
+            {
                 int i = 0;
-                if (i != null && i.ToString() == "0") { }
+                if (i != null && i.ToString() == "x") { }
 
                 DateTime dt = DateTime.MinValue;
                 if (dt != null && dt.Ticks == 0) { }
+
+                var x = new S();
+
+                if (x != null && x.Value > 0) { }
             }
 
-            private struct FooNullable
+            public static bool operator ==(S left, S right) => left.Equals(right);
+
+            public static bool operator !=(S left, S right) => !(left == right);
+        }
+    }
+
+    namespace NoDiagnostic_NullableType
+    {
+        public struct Foo
+        {
+            public bool B { get; }
+
+            public void M()
             {
-                public bool IsFoo { get; }
+                bool? b = null;
 
-                public void Method()
+                if (b != null && b.Value) { }
+
+                if (b != null && b.Value && b.Value) { }
+
+                if (b != null && (b.Value)) { }
+
+                if (b != null && !b.Value) { }
+
+                if (b != null && !b.Value && !b.Value) { }
+
+                if (b != null && (!b.Value)) { }
+
+                Foo? f = null;
+
+                Foo value = default;
+
+                if (f != null && f.Value == null && f.Value.B) { }
+
+                if (f != null && f.Value == value && f.Value.B) { }
+
+                if (f != null && f.Value != null && f.Value.B) { }
+
+                if (f != null && f.Value != null && f.Value.B) { }
+
+                if (f != null && f.Value != value && f.Value.B) { }
+
+                if (f != null && f.HasValue.Equals(true)) { }
+
+                if (f != null && (f.Value == null) is object _) { }
+            }
+
+            public static bool operator ==(Foo left, Foo right) => left.Equals(right);
+
+            public static bool operator !=(Foo left, Foo right) => !(left == right);
+        }
+    }
+
+    namespace NoDiagnostic_OutParameter
+    {
+        public class C
+        {
+            public void M()
+            {
+                Dictionary<int, string> dic = null;
+
+                string value;
+                if (dic != null && dic.TryGetValue(0, out value))
                 {
-                    bool? x = null;
-
-                    if (x != null && x.Value) { }
-
-                    if (null != x && x.Value) { }
-
-                    if (x != null && x.Value && x.Value) { }
-
-                    if (x != null && !x.Value) { }
-
-                    if (x != null && !x.Value && !x.Value) { }
-
-                    if (x != null && (!x.Value)) { }
-
-                    FooNullable? f = null;
-
-                    FooNullable value = default;
-
-                    if (f != null && (f.Value == null) is object y2) { }
-
-                    if (f != null && f.Value == null && f.Value.IsFoo) { }
-
-                    if (f != null && f.Value == value && f.Value.IsFoo) { }
-
-                    if (f != null && f.Value != null && f.Value.IsFoo) { }
-
-                    if (f != null && f.Value != null && f.Value.IsFoo) { }
-
-                    if (f != null && f.Value != value && f.Value.IsFoo) { }
                 }
 
-                public static bool operator ==(FooNullable left, FooNullable right) => false;
-
-                public static bool operator !=(FooNullable left, FooNullable right) => !(left == right);
-
-                public override bool Equals(object obj) => false;
-
-                public override int GetHashCode() => 0;
-            }
-
-            private struct CustomStruct
-            {
-                public int Value { get; }
-
-                public void Foo()
+                if (dic != null && dic.TryGetValue(0, out string value2))
                 {
-                    var x = new CustomStruct();
-
-                    if (x != null && x.Value > 0) { }
                 }
             }
+        }
+    }
 
-            public static void A(object obj)
+    namespace NoDiagnostic_ExpressionTree
+    {
+        public class C
+        {
+            public void M<T>(Expression<Func<T>> expression)
             {
-                B(() => obj != null && obj.GetHashCode() == 0);
-            }
+                string s = null;
 
-            public static void B<T>(Expression<Func<T>> expression)
-            {
+                M(() => s != null && s.GetHashCode() == 0);
             }
         }
     }

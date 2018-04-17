@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 
@@ -96,46 +97,79 @@ namespace Roslynator.CSharp.Analysis
 
         public static void AnalyzeLogicalAndExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol expressionOfTSymbol)
         {
-            var logicalAndExpression = (BinaryExpressionSyntax)context.Node;
+            var logicalAnd = (BinaryExpressionSyntax)context.Node;
 
-            if (logicalAndExpression.ContainsDiagnostics)
+            if (logicalAnd.ContainsDiagnostics)
                 return;
 
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(logicalAndExpression.Left, allowedStyles: NullCheckStyles.NotEqualsToNull);
+            if (logicalAnd.IsParentKind(SyntaxKind.LogicalAndExpression))
+                return;
+
+            if (logicalAnd.IsInExpressionTree(expressionOfTSymbol, context.SemanticModel, context.CancellationToken))
+                return;
+
+            while (true)
+            {
+                ExpressionSyntax left = logicalAnd.Left;
+                ExpressionSyntax right = logicalAnd.Right?.WalkDownParentheses();
+
+                if (!left.IsKind(SyntaxKind.LogicalAndExpression))
+                {
+                    if (IsFixable(left, right, context.SemanticModel, context.CancellationToken))
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAnd);
+                    }
+
+                    return;
+                }
+
+                var leftLogicalAnd = (BinaryExpressionSyntax)left;
+
+                left = leftLogicalAnd.Right;
+
+                if (IsFixable(left, right, context.SemanticModel, context.CancellationToken))
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, Location.Create(logicalAnd.SyntaxTree, TextSpan.FromBounds(left.SpanStart, right.Span.End)));
+                    return;
+                }
+
+                logicalAnd = leftLogicalAnd;
+            }
+        }
+
+        private static bool IsFixable(
+            ExpressionSyntax left,
+            ExpressionSyntax right,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, allowedStyles: NullCheckStyles.NotEqualsToNull);
 
             ExpressionSyntax expression = nullCheck.Expression;
 
             if (expression == null)
-                return;
+                return false;
 
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
 
             if (typeSymbol == null)
-                return;
+                return false;
 
             if (!typeSymbol.IsReferenceTypeOrNullableType())
-                return;
-
-            ExpressionSyntax right = logicalAndExpression.Right?.WalkDownParentheses();
+                return false;
 
             if (right == null)
-                return;
+                return false;
 
-            if (!ValidateRightExpression(right, context.SemanticModel, context.CancellationToken))
-                return;
+            if (!ValidateRightExpression(right, semanticModel, cancellationToken))
+                return false;
 
-            if (RefactoringUtility.ContainsOutArgumentWithLocal(right, context.SemanticModel, context.CancellationToken))
-                return;
+            if (RefactoringUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
+                return false;
 
             ExpressionSyntax expression2 = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType);
 
-            if (expression2?.SpanContainsDirectives() != false)
-                return;
-
-            if (logicalAndExpression.IsInExpressionTree(expressionOfTSymbol, context.SemanticModel, context.CancellationToken))
-                return;
-
-            context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, logicalAndExpression);
+            return expression2?.SpanContainsDirectives() == false;
         }
 
         internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression, bool isNullable = false)

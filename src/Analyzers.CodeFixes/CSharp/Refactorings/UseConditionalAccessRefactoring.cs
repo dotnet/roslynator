@@ -22,86 +22,72 @@ namespace Roslynator.CSharp.Refactorings
             BinaryExpressionSyntax logicalAnd,
             CancellationToken cancellationToken)
         {
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(logicalAnd.Left, allowedStyles: NullCheckStyles.NotEqualsToNull);
+            ExpressionSyntax left = logicalAnd.Left;
+            ExpressionSyntax right = logicalAnd.Right.WalkDownParentheses();
+
+            if (logicalAnd.Left.IsKind(SyntaxKind.LogicalAndExpression))
+                left = ((BinaryExpressionSyntax)logicalAnd.Left).Right;
+
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, allowedStyles: NullCheckStyles.NotEqualsToNull);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            bool isNullable = semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken).IsNullableType();
+            ExpressionSyntax expression = nullCheck.Expression;
 
-            ExpressionSyntax newNode = CreateExpressionWithConditionalAccess(logicalAnd, nullCheck.Expression, isNullable: isNullable)
-                .WithLeadingTrivia(logicalAnd.GetLeadingTrivia())
-                .WithFormatterAnnotation()
-                .Parenthesize();
-
-            return await document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static ExpressionSyntax CreateExpressionWithConditionalAccess(
-            BinaryExpressionSyntax logicalAnd,
-            ExpressionSyntax expression,
-            bool isNullable)
-        {
-            ExpressionSyntax right = logicalAnd.Right.WalkDownParentheses();
+            bool isNullable = semanticModel.GetTypeSymbol(expression, cancellationToken).IsNullableType();
 
             ExpressionSyntax expression2 = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(
                 expression,
                 right,
                 isNullable: isNullable);
 
-            if (right.IsKind(SyntaxKind.LogicalNotExpression))
+            var builder = new SyntaxNodeTextBuilder(logicalAnd, StringBuilderCache.GetInstance(logicalAnd.FullSpan.Length));
+
+            builder.Append(TextSpan.FromBounds(logicalAnd.FullSpan.Start, left.Span.Start));
+            builder.AppendSpan(expression);
+            builder.Append("?");
+            builder.Append(TextSpan.FromBounds(expression2.Span.End, right.Span.End));
+
+            switch (right.Kind())
             {
-                var logicalNot = (PrefixUnaryExpressionSyntax)right;
-
-                ExpressionSyntax operand = logicalNot.Operand;
-
-                var builder = new SyntaxNodeTextBuilder(operand, StringBuilderCache.GetInstance(operand.FullSpan.Length));
-
-                builder.AppendLeadingTrivia();
-                builder.AppendFullSpan((isNullable) ? ((MemberAccessExpressionSyntax)expression2).Expression : expression2);
-                builder.Append("?");
-                builder.Append(TextSpan.FromBounds(expression2.Span.End, operand.Span.End));
-                builder.Append(" == false");
-                builder.AppendTrailingTrivia();
-
-                return SyntaxFactory.ParseExpression(StringBuilderCache.GetStringAndFree(builder.StringBuilder));
-            }
-            else
-            {
-                var builder = new SyntaxNodeTextBuilder(right, StringBuilderCache.GetInstance(right.FullSpan.Length));
-
-                builder.AppendLeadingTrivia();
-                builder.AppendFullSpan((isNullable) ? ((MemberAccessExpressionSyntax)expression2).Expression : expression2);
-                builder.Append("?");
-                builder.Append(TextSpan.FromBounds(expression2.Span.End, right.Span.End));
-
-                switch (right.Kind())
-                {
-                    case SyntaxKind.LogicalOrExpression:
-                    case SyntaxKind.LogicalAndExpression:
-                    case SyntaxKind.BitwiseOrExpression:
-                    case SyntaxKind.BitwiseAndExpression:
-                    case SyntaxKind.ExclusiveOrExpression:
-                    case SyntaxKind.EqualsExpression:
-                    case SyntaxKind.NotEqualsExpression:
-                    case SyntaxKind.LessThanExpression:
-                    case SyntaxKind.LessThanOrEqualExpression:
-                    case SyntaxKind.GreaterThanExpression:
-                    case SyntaxKind.GreaterThanOrEqualExpression:
-                    case SyntaxKind.IsExpression:
-                    case SyntaxKind.AsExpression:
-                    case SyntaxKind.IsPatternExpression:
+                case SyntaxKind.LogicalOrExpression:
+                case SyntaxKind.LogicalAndExpression:
+                case SyntaxKind.BitwiseOrExpression:
+                case SyntaxKind.BitwiseAndExpression:
+                case SyntaxKind.ExclusiveOrExpression:
+                case SyntaxKind.EqualsExpression:
+                case SyntaxKind.NotEqualsExpression:
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                case SyntaxKind.IsExpression:
+                case SyntaxKind.AsExpression:
+                case SyntaxKind.IsPatternExpression:
+                    {
                         break;
-                    default:
-                        {
-                            builder.Append(" == true");
-                            break;
-                        }
-                }
-
-                builder.AppendTrailingTrivia();
-
-                return SyntaxFactory.ParseExpression(StringBuilderCache.GetStringAndFree(builder.StringBuilder));
+                    }
+                case SyntaxKind.LogicalNotExpression:
+                    {
+                        builder.Append(" == false");
+                        break;
+                    }
+                default:
+                    {
+                        builder.Append(" == true");
+                        break;
+                    }
             }
+
+            builder.AppendTrailingTrivia();
+
+            string text = StringBuilderCache.GetStringAndFree(builder.StringBuilder);
+
+            ParenthesizedExpressionSyntax newNode = SyntaxFactory.ParseExpression(text)
+                .WithFormatterAnnotation()
+                .Parenthesize();
+
+            return await document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static async Task<Document> RefactorAsync(
