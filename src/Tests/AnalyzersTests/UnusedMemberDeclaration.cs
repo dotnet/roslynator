@@ -159,5 +159,19 @@ namespace Roslynator.CSharp.Analyzers.Tests
             {
             }
         }
+
+        public class FooNameOf
+        {
+            public static string Bar1 { get; }
+
+            public static string Bar2 { get; }
+
+            public static string Bar3 { get; }
+
+            [Obsolete(nameof(Bar1))]
+            public void Test(string s = nameof(Bar2)) => Test(s);
+
+            public string this[string s = nameof(Bar3)] => s;
+        }
     }
 }
