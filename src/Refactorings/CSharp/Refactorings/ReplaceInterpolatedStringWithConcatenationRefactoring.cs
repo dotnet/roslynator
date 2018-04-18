@@ -93,7 +93,10 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = CreateAddExpression(newNode, expression, position, isLeft: false, semanticModel: semanticModel, cancellationToken: cancellationToken);
             }
 
-            newNode = newNode.Parenthesize().WithFormatterAnnotation();
+            newNode = newNode
+                .WithTriviaFrom(interpolatedString)
+                .Parenthesize()
+                .WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(interpolatedString, newNode, cancellationToken).ConfigureAwait(false);
         }
