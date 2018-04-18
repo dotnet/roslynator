@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (!methodSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
                 return;
 
-            if (methodSymbol.ImplementsInterfaceMember())
+            if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                 return;
 
             Dictionary<string, NodeSymbolInfo> unusedNodes = FindUnusedNodes(context, parameterInfo);
@@ -210,7 +210,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (propertySymbol?.ExplicitInterfaceImplementations.IsDefaultOrEmpty != true)
                 return;
 
-            if (propertySymbol.ImplementsInterfaceMember())
+            if (propertySymbol.ImplementsInterfaceMember(allInterfaces: true))
                 return;
 
             Analyze(context, parameterInfo, isIndexer: true);

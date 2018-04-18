@@ -220,5 +220,26 @@ namespace Roslynator.CSharp.Analyzers.Tests
                 throw new NotImplementedException();
             }
         }
+
+        private static class FooInheritedInterfaceImplementation
+        {
+            private interface IFoo
+            {
+                string this[int index] { get; }
+
+                bool Bar(string value);
+            }
+
+            private interface IFoo2 : IFoo
+            {
+            }
+
+            private class Foo2 : IFoo2
+            {
+                public string this[int index] => null;
+
+                public bool Bar(string value) => true;
+            }
+        }
     }
 }
