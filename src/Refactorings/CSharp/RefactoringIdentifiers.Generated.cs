@@ -25,6 +25,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddUsingStaticDirective = Prefix + "0014";
         public const string CallConfigureAwait = Prefix + "0015";
         public const string CallExtensionMethodAsInstanceMethod = Prefix + "0016";
+        public const string CallIndexOfInsteadOfContains = Prefix + "0144";
         public const string CallToMethod = Prefix + "0017";
         public const string ChangeAccessibility = Prefix + "0186";
         public const string ChangeExplicitTypeToVar = Prefix + "0018";
@@ -161,7 +162,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplacePropertyWithMethod = Prefix + "0141";
         public const string ReplaceRegularStringLiteralWithVerbatimStringLiteral = Prefix + "0142";
         public const string ReplaceStatementWithIfElse = Prefix + "0143";
-        public const string ReplaceStringContainsWithStringIndexOf = Prefix + "0144";
         public const string ReplaceStringFormatWithInterpolatedString = Prefix + "0145";
         public const string ReplaceSwitchWithIf = Prefix + "0147";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = Prefix + "0148";

@@ -1029,7 +1029,7 @@ i--;]]></After>
       <Image>ReplaceReturnStatementWithIfElse</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="RR0144" Identifier="ReplaceStringContainsWithStringIndexOf" Title="Replace string.Contains with string.IndexOf">
+  <Refactoring Id="RR0144" Identifier="CallIndexOfInsteadOfContains" Title="Call string.IndexOf instead of string.Contains">
     <Syntaxes>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
