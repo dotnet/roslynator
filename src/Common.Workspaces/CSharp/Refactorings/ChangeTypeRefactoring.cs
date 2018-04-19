@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -16,9 +17,23 @@ namespace Roslynator.CSharp.Refactorings
            ITypeSymbol typeSymbol,
            CancellationToken cancellationToken = default(CancellationToken))
         {
-            TypeSyntax newType = typeSymbol.ToTypeSyntax()
-                .WithTriviaFrom(type)
-                .WithSimplifierAnnotation();
+            TypeSyntax newType = typeSymbol
+                .ToTypeSyntax()
+                .WithTriviaFrom(type);
+
+            if (newType is TupleTypeSyntax tupleType)
+            {
+                SeparatedSyntaxList<TupleElementSyntax> newElements = tupleType
+                    .Elements
+                    .Select(tupleElement => tupleElement.WithType(tupleElement.Type.WithSimplifierAnnotation()))
+                    .ToSeparatedSyntaxList();
+
+                newType = tupleType.WithElements(newElements);
+            }
+            else
+            {
+                newType = newType.WithSimplifierAnnotation();
+            }
 
             return document.ReplaceNodeAsync(type, newType, cancellationToken);
         }
