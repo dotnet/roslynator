@@ -47,7 +47,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Wrap in else clause",
-                cancellationToken => RefactorAsync(context.Document, ifStatement, selectedStatements, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, ifStatement, selectedStatements, cancellationToken),
+                RefactoringIdentifiers.WrapInElseClause);
         }
 
         private static bool IsLastStatementReturnStatement(IfStatementSyntax ifStatement)

@@ -37,7 +37,8 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
             {
                 context.RegisterRefactoring(
                     GetTitle(statement),
-                    cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken));
+                    cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken),
+                    RefactoringIdentifiers.ReplaceStatementWithIfElse);
             }
         }
 

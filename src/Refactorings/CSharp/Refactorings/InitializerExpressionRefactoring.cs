@@ -39,7 +39,8 @@ namespace Roslynator.CSharp.Refactorings
                             cancellationToken => SyntaxFormatter.ToMultiLineAsync(
                                 context.Document,
                                 initializer,
-                                cancellationToken));
+                                cancellationToken),
+                            RefactoringIdentifiers.FormatInitializer);
                     }
                     else if (expressions.All(expression => expression.IsSingleLine())
                         && initializer.DescendantTrivia(initializer.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
@@ -49,7 +50,8 @@ namespace Roslynator.CSharp.Refactorings
                             cancellationToken => SyntaxFormatter.ToSingleLineAsync(
                                 context.Document,
                                 initializer,
-                                cancellationToken));
+                                cancellationToken),
+                            RefactoringIdentifiers.FormatInitializer);
                     }
                 }
 

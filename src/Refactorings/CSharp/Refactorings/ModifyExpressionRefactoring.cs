@@ -161,7 +161,8 @@ namespace Roslynator.CSharp.Refactorings
                         destinationType,
                         semanticModel,
                         cancellationToken);
-                });
+                },
+                RefactoringIdentifiers.AddCastExpression);
         }
     }
 }

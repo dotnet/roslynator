@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     Title,
-                    cancellationToken => RefactorAsync(context.Document, whileStatement, cancellationToken));
+                    cancellationToken => RefactorAsync(context.Document, whileStatement, cancellationToken),
+                    RefactoringIdentifiers.ReplaceWhileWithFor);
             }
             else
             {
@@ -44,7 +45,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         context.RegisterRefactoring(
                             Title,
-                            cancellationToken => RefactorAsync(context.Document, whileStatement, localDeclarations, cancellationToken));
+                            cancellationToken => RefactorAsync(context.Document, whileStatement, localDeclarations, cancellationToken),
+                            RefactoringIdentifiers.ReplaceWhileWithFor);
                     }
                 }
                 else if (kind == SyntaxKind.ExpressionStatement)
@@ -58,7 +60,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         context.RegisterRefactoring(
                             Title,
-                            cancellationToken => RefactorAsync(context.Document, whileStatement, expressionStatements, cancellationToken));
+                            cancellationToken => RefactorAsync(context.Document, whileStatement, expressionStatements, cancellationToken),
+                            RefactoringIdentifiers.ReplaceWhileWithFor);
                     }
                 }
             }

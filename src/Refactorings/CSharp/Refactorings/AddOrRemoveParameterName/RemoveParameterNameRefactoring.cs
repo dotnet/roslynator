@@ -20,7 +20,8 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
 
             context.RegisterRefactoring(
                 "Remove parameter name",
-                cancellationToken => RefactorAsync(context.Document, argumentList, selection, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, argumentList, selection, cancellationToken),
+                RefactoringIdentifiers.RemoveParameterNameFromArgument);
         }
 
         private static bool CanRefactor(SeparatedSyntaxListSelection<ArgumentSyntax> selection)

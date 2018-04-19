@@ -50,7 +50,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace '{preIncrement}' with '{postIncrement}'",
-                cancellationToken => ChangePreIncrementToPostIncrementAsync(context.Document, preIncrement, postIncrement, cancellationToken));
+                cancellationToken => ChangePreIncrementToPostIncrementAsync(context.Document, preIncrement, postIncrement, cancellationToken),
+                RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator);
         }
 
         private static void InvertPreIncrement(RefactoringContext context, PrefixUnaryExpressionSyntax preIncrement)
@@ -65,7 +66,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Invert {preIncrement.OperatorToken}",
-                cancellationToken => ChangePreIncrementToPreDecrementAsync(context.Document, preIncrement, preDecrement, cancellationToken));
+                cancellationToken => ChangePreIncrementToPreDecrementAsync(context.Document, preIncrement, preDecrement, cancellationToken),
+                RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator);
         }
 
         private static void ReplacePreDecrementWithPostDecrement(RefactoringContext context, PrefixUnaryExpressionSyntax preDecrement)
@@ -84,7 +86,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace '{preDecrement}' with '{postDecrement}'",
-                cancellationToken => ChangePreDecrementToPostDecrementAsync(context.Document, preDecrement, postDecrement, cancellationToken));
+                cancellationToken => ChangePreDecrementToPostDecrementAsync(context.Document, preDecrement, postDecrement, cancellationToken),
+                RefactoringIdentifiers.ReplacePrefixOperatorWithPostfixOperator);
         }
 
         private static void InvertPreDecrement(RefactoringContext context, PrefixUnaryExpressionSyntax preDecrement)
@@ -99,7 +102,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Invert {preDecrement.OperatorToken}",
-                cancellationToken => ChangePreDecrementToPreIncrementAsync(context.Document, preDecrement, preIncrement, cancellationToken));
+                cancellationToken => ChangePreDecrementToPreIncrementAsync(context.Document, preDecrement, preIncrement, cancellationToken),
+                RefactoringIdentifiers.InvertPrefixOrPostfixUnaryOperator);
         }
 
         private static Task<Document> ChangePreIncrementToPostIncrementAsync(

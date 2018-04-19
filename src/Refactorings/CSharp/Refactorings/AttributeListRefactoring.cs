@@ -27,7 +27,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Split attributes",
-                        ct => SplitAsync(context.Document, member, selectedAttributeLists.ToArray(), ct));
+                        ct => SplitAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
+                        RefactoringIdentifiers.SplitAttributes);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeAttributes)
@@ -35,7 +36,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Merge attributes",
-                        ct => MergeAsync(context.Document, member, selectedAttributeLists.ToArray(), ct));
+                        ct => MergeAsync(context.Document, member, selectedAttributeLists.ToArray(), ct),
+                        RefactoringIdentifiers.MergeAttributes);
                 }
             }
         }

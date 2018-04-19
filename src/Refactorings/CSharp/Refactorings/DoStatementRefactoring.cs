@@ -13,7 +13,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Replace do with while",
-                    ct => ReplaceDoWithWhileRefactoring.RefactorAsync(context.Document, doStatement, ct));
+                    ct => ReplaceDoWithWhileRefactoring.RefactorAsync(context.Document, doStatement, ct),
+                    RefactoringIdentifiers.ReplaceDoWithWhile);
             }
         }
     }

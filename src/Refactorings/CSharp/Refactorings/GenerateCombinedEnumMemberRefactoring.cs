@@ -50,7 +50,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Generate enum member '{name}'",
-                cancellationToken => RefactorAsync(context.Document, enumDeclaration, newEnumMember, insertIndex, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, enumDeclaration, newEnumMember, insertIndex, cancellationToken),
+                RefactoringIdentifiers.GenerateEnumMember);
         }
 
         private static object GetCombinedValue(IEnumerable<object> constantValues, INamedTypeSymbol enumSymbol)

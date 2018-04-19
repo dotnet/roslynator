@@ -42,7 +42,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Split if-else",
-                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken),
+                RefactoringIdentifiers.SplitIfElse);
         }
 
         private static Task<Document> RefactorAsync(

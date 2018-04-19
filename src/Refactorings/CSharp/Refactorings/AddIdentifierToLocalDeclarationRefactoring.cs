@@ -60,7 +60,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Add identifier '{name}'",
-                c => RefactorAsync(context.Document, type, name, c));
+                c => RefactorAsync(context.Document, type, name, c),
+                RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
         }
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, ExpressionStatementSyntax expressionStatement)
@@ -88,7 +89,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Add identifier '{name}'",
-                c => RefactorAsync(context.Document, expressionStatement, name, c));
+                c => RefactorAsync(context.Document, expressionStatement, name, c),
+                RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
         }
 
         private static Task<Document> RefactorAsync(

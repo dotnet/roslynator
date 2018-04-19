@@ -18,13 +18,15 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Format ?: on separate lines",
-                            ct => SyntaxFormatter.ToMultiLineAsync(context.Document, conditionalExpression, ct));
+                            ct => SyntaxFormatter.ToMultiLineAsync(context.Document, conditionalExpression, ct),
+                            RefactoringIdentifiers.FormatConditionalExpression);
                     }
                     else if (conditionalExpression.DescendantTrivia(conditionalExpression.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.RegisterRefactoring(
                             "Format ?: on a single line",
-                            ct => SyntaxFormatter.ToSingleLineAsync(context.Document, conditionalExpression, ct));
+                            ct => SyntaxFormatter.ToSingleLineAsync(context.Document, conditionalExpression, ct),
+                            RefactoringIdentifiers.FormatConditionalExpression);
                     }
                 }
 
@@ -39,7 +41,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Swap expressions in ?:",
-                    ct => SwapExpressionsInConditionalExpressionRefactoring.RefactorAsync(context.Document, conditionalExpression, ct));
+                    ct => SwapExpressionsInConditionalExpressionRefactoring.RefactorAsync(context.Document, conditionalExpression, ct),
+                RefactoringIdentifiers.SwapExpressionsInConditionalExpression);
             }
         }
     }

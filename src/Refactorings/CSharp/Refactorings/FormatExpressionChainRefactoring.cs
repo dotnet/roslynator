@@ -37,13 +37,15 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Format expression chain on multiple lines",
-                    ct => SyntaxFormatter.ToMultiLineAsync(context.Document, expressions.ToArray(), ct));
+                    ct => SyntaxFormatter.ToMultiLineAsync(context.Document, expressions.ToArray(), ct),
+                    RefactoringIdentifiers.FormatExpressionChain);
             }
             else if (expressions[0].DescendantTrivia(expressions[0].Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 context.RegisterRefactoring(
                     "Format expression chain on a single line",
-                    ct => SyntaxFormatter.ToSingleLineAsync(context.Document, expressions[0], ct));
+                    ct => SyntaxFormatter.ToSingleLineAsync(context.Document, expressions[0], ct),
+                    RefactoringIdentifiers.FormatExpressionChain);
             }
         }
 

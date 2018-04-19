@@ -44,7 +44,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Use List<T> instead of yield",
-                cancellationToken => RefactorAsync(context.Document, type, body, body.Statements, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, type, body, body.Statements, cancellationToken),
+                RefactoringIdentifiers.UseListInsteadOfYield);
         }
 
         private static ITypeSymbol GetElementType(ITypeSymbol returnType, SemanticModel semanticModel)

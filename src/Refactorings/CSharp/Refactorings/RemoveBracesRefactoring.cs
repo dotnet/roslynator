@@ -39,7 +39,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove braces",
-                        cancellationToken => RefactorAsync(context.Document, block, cancellationToken));
+                        cancellationToken => RefactorAsync(context.Document, block, cancellationToken),
+                        RefactoringIdentifiers.RemoveBraces);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromIfElse))
@@ -57,7 +58,8 @@ namespace Roslynator.CSharp.Refactorings
                                     context.Document,
                                     topmostIf,
                                     cancellationToken);
-                            });
+                            },
+                            RefactoringIdentifiers.RemoveBracesFromIfElse);
                     }
                 }
             }

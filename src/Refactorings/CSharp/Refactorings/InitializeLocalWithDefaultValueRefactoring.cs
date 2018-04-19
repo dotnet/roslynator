@@ -43,7 +43,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Initialize '{declarator.Identifier.ValueText}' with default value",
-                cancellationToken => RefactorAsync(context.Document, localDeclaration, declarator, typeSymbol, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, localDeclaration, declarator, typeSymbol, cancellationToken),
+                RefactoringIdentifiers.InitializeLocalWithDefaultValue);
         }
 
         public static Task<Document> RefactorAsync(

@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.Refactorings
                             GenericInfo newInfo = ToMultiLine(genericInfo);
 
                             return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.FormatConstraintClauses);
                 }
             }
             else if (constraintClause.DescendantTrivia(constraintClause.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
@@ -45,7 +46,8 @@ namespace Roslynator.CSharp.Refactorings
                         GenericInfo newInfo = ToSingleLine(genericInfo);
 
                         return context.Document.ReplaceNodeAsync(genericInfo.Node, newInfo.Node, cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.FormatConstraintClauses);
             }
         }
 

@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.Refactorings
                             lambda,
                             (ExpressionSyntax)lambda.Body,
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.ExpandLambdaExpressionBody);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyLambdaExpression)
@@ -36,7 +37,8 @@ namespace Roslynator.CSharp.Refactorings
                             context.Document,
                             lambda,
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.SimplifyLambdaExpression);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExtractEventHandlerMethod)

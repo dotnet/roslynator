@@ -57,7 +57,8 @@ namespace Roslynator.CSharp.Refactorings
                                             analysis.InvocationExpression,
                                             analysis.NewInvocationExpression,
                                             cancellationToken);
-                                    });
+                                    },
+                                    RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod);
                             }
                         }
                     }
@@ -84,7 +85,8 @@ namespace Roslynator.CSharp.Refactorings
                                 context.Document,
                                 invocationExpression,
                                 cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag);
                 }
             }
 

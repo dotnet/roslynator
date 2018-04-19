@@ -57,7 +57,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Use C# 6.0 dictionary initializer",
-                cancellationToken => RefactorAsync(context.Document, initializer, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, initializer, cancellationToken),
+                RefactoringIdentifiers.UseCSharp6DictionaryInitializer);
         }
 
         private static bool CanRefactor(

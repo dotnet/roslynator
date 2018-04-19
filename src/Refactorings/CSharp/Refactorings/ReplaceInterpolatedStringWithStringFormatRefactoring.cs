@@ -31,7 +31,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Replace interpolated string with string.Format",
-                ct => RefactorAsync(context.Document, interpolatedString, ct));
+                ct => RefactorAsync(context.Document, interpolatedString, ct),
+                RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat);
 
             void Analyze()
             {

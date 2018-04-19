@@ -20,7 +20,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Replace constant with field",
-                        cancellationToken => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
+                        cancellationToken => ReplaceConstantWithFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken),
+                        RefactoringIdentifiers.ReplaceConstantWithField);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.InlineConstant)
@@ -35,7 +36,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Inline constant",
-                            cancellationToken => InlineConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, variableDeclarator, cancellationToken));
+                            cancellationToken => InlineConstantRefactoring.RefactorAsync(context.Document, fieldDeclaration, variableDeclarator, cancellationToken),
+                            RefactoringIdentifiers.InlineConstant);
                     }
                 }
             }
@@ -48,7 +50,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Use constant instead of field",
-                        cancellationToken => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken));
+                        cancellationToken => UseConstantInsteadOfFieldRefactoring.RefactorAsync(context.Document, fieldDeclaration, cancellationToken),
+                        RefactoringIdentifiers.UseConstantInsteadOfField);
                 }
             }
 

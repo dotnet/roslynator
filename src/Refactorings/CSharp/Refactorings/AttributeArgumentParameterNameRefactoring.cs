@@ -51,7 +51,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Add parameter name",
-                    ct => AddParameterNameToArgumentsAsync(context.Document, argumentList, arguments, ct));
+                    ct => AddParameterNameToArgumentsAsync(context.Document, argumentList, arguments, ct),
+                    RefactoringIdentifiers.AddParameterNameToArgument);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveParameterNameFromArgument)
@@ -59,7 +60,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove parameter name",
-                    ct => RemoveParameterNameFromArgumentsAsync(context.Document, argumentList, arguments, ct));
+                    ct => RemoveParameterNameFromArgumentsAsync(context.Document, argumentList, arguments, ct),
+                    RefactoringIdentifiers.RemoveParameterNameFromArgument);
             }
         }
 

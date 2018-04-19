@@ -42,7 +42,8 @@ namespace Roslynator.CSharp.Refactorings
                                 context.Document,
                                 variableDeclaration.Type,
                                 cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.ChangeExplicitTypeToVar);
                 }
             }
             else if (analysis.SupportsExplicit
@@ -74,13 +75,15 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeArgument, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)}' and insert 'await'",
-                        c => ChangeTypeAndAddAwaitAsync(context.Document, variableDeclaration, typeArgument, c));
+                        c => ChangeTypeAndAddAwaitAsync(context.Document, variableDeclaration, typeArgument, c),
+                        RefactoringIdentifiers.ChangeVarToExplicitType);
                 }
             }
 
             context.RegisterRefactoring(
                 $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)}'",
-                c => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, c));
+                c => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, c),
+                RefactoringIdentifiers.ChangeVarToExplicitType);
         }
 
         private static async Task<Document> ChangeTypeAndAddAwaitAsync(

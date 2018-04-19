@@ -14,6 +14,8 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
 {
     internal abstract class ReplaceEqualsExpressionRefactoring
     {
+        public abstract string GetEquivalenceKey();
+
         public abstract string MethodName { get; }
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
@@ -48,7 +50,8 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
 
             context.RegisterRefactoring(
                 title,
-                cancellationToken => RefactorAsync(context.Document, nullCheck, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, nullCheck, cancellationToken),
+                GetEquivalenceKey());
         }
 
         private Task<Document> RefactorAsync(

@@ -16,14 +16,16 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     WrapInIfStatementRefactoring.Title,
-                    ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, statement, ct));
+                    ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
+                    RefactoringIdentifiers.WrapInCondition);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
             {
                 context.RegisterRefactoring(
                     WrapInTryCatchRefactoring.Title,
-                    ct => WrapInTryCatchRefactoring.Instance.RefactorAsync(context.Document, statement, ct));
+                    ct => WrapInTryCatchRefactoring.Instance.RefactorAsync(context.Document, statement, ct),
+                    RefactoringIdentifiers.WrapInTryCatch);
             }
         }
     }

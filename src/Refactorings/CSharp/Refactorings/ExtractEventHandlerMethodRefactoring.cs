@@ -51,7 +51,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Extract event handler method",
-                ct => RefactorAsync(context.Document, parenthesizedLambda, memberDeclaration, typeDeclaration, eventSymbol.Name, semanticModel, ct));
+                ct => RefactorAsync(context.Document, parenthesizedLambda, memberDeclaration, typeDeclaration, eventSymbol.Name, semanticModel, ct),
+                RefactoringIdentifiers.ExtractEventHandlerMethod);
         }
 
         public static Task<Document> RefactorAsync(

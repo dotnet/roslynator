@@ -61,7 +61,8 @@ namespace Roslynator.CSharp.Refactorings
                                 switchStatement,
                                 addBraces.ToArray(),
                                 cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.AddBracesToSwitchSections);
                 }
 
                 if (fRemoveBraces
@@ -81,7 +82,8 @@ namespace Roslynator.CSharp.Refactorings
                                 switchStatement,
                                 removeBraces.ToArray(),
                                 cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.RemoveBracesFromSwitchSections);
                 }
             }
 
@@ -101,7 +103,8 @@ namespace Roslynator.CSharp.Refactorings
                             switchStatement,
                             selectedSections.ToImmutableArray(),
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.RemoveStatementsFromSwitchSections);
             }
         }
     }

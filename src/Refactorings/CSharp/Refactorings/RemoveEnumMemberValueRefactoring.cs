@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 (count == 1) ? "Remove enum value" : "Remove enum values",
-                cancellationToken => RefactorAsync(context.Document, enumDeclaration, selection, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, enumDeclaration, selection, cancellationToken),
+                RefactoringIdentifiers.RemoveEnumMemberValue);
         }
 
         private static Task<Document> RefactorAsync(

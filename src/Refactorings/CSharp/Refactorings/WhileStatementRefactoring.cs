@@ -13,7 +13,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Replace while with do",
-                    cancellationToken => ReplaceWhileWithDoRefactoring.RefactorAsync(context.Document, whileStatement, cancellationToken));
+                    cancellationToken => ReplaceWhileWithDoRefactoring.RefactorAsync(context.Document, whileStatement, cancellationToken),
+                    RefactoringIdentifiers.ReplaceWhileWithDo);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor)
@@ -21,7 +22,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     ReplaceWhileWithForRefactoring.Title,
-                    cancellationToken => ReplaceWhileWithForRefactoring.RefactorAsync(context.Document, whileStatement, cancellationToken));
+                    cancellationToken => ReplaceWhileWithForRefactoring.RefactorAsync(context.Document, whileStatement, cancellationToken),
+                    RefactoringIdentifiers.ReplaceWhileWithFor);
             }
         }
     }

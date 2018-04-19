@@ -178,11 +178,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 "Add type parameter",
-                ct => RefactorAsync(context.Document, node, ConstraintKind.None, ct));
+                ct => RefactorAsync(context.Document, node, ConstraintKind.None, ct),
+                RefactoringIdentifiers.AddTypeParameter);
 
             context.RegisterRefactoring(
                 "Add type parameter with type constraint",
-                ct => RefactorAsync(context.Document, node, ConstraintKind.Type, ct));
+                ct => RefactorAsync(context.Document, node, ConstraintKind.Type, ct),
+                RefactoringIdentifiers.AddTypeParameter);
         }
 
         private static async Task<Document> RefactorAsync(

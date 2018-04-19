@@ -28,7 +28,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove property initializer",
-                    cancellationToken => RemovePropertyInitializerRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+                    cancellationToken => RemovePropertyInitializerRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken),
+                    RefactoringIdentifiers.RemovePropertyInitializer);
             }
 
             if (context.IsAnyRefactoringEnabled(
@@ -41,14 +42,16 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Expand property",
-                        cancellationToken => ExpandPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+                        cancellationToken => ExpandPropertyRefactoring.RefactorAsync(context.Document, propertyDeclaration, cancellationToken),
+                        RefactoringIdentifiers.ExpandProperty);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandPropertyAndAddBackingField))
                 {
                     context.RegisterRefactoring(
                         "Expand property and add backing field",
-                        cancellationToken => ExpandPropertyAndAddBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, cancellationToken));
+                        cancellationToken => ExpandPropertyAndAddBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, cancellationToken),
+                        RefactoringIdentifiers.ExpandPropertyAndAddBackingField);
                 }
             }
 
@@ -64,7 +67,8 @@ namespace Roslynator.CSharp.Refactorings
                             propertyDeclaration,
                             context.SupportsCSharp6,
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.NotifyPropertyChanged);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MakeMemberAbstract)
@@ -141,7 +145,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Rename '{oldName}' to '{newName}'",
-                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), cancellationToken));
+                cancellationToken => Renamer.RenameSymbolAsync(context.Solution, symbol, newName, default(OptionSet), cancellationToken),
+                RefactoringIdentifiers.RenamePropertyAccordingToTypeName);
         }
     }
 }

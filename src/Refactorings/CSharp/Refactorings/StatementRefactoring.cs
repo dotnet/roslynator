@@ -37,7 +37,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Remove all sections",
-                        cancellationToken => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, cancellationToken));
+                        cancellationToken => RemoveAllSwitchSectionsAsync(context.Document, switchStatement, cancellationToken),
+                        RefactoringIdentifiers.RemoveAllSwitchSections);
                 }
             }
         }
@@ -51,14 +52,16 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove statement",
-                    cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken));
+                    cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken),
+                    RefactoringIdentifiers.RemoveStatement);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateStatement))
             {
                 context.RegisterRefactoring(
                     "Duplicate statement",
-                    cancellationToken => DuplicateStatementAsync(context.Document, statement, cancellationToken));
+                    cancellationToken => DuplicateStatementAsync(context.Document, statement, cancellationToken),
+                    RefactoringIdentifiers.DuplicateStatement);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutStatement)

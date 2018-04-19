@@ -40,7 +40,8 @@ namespace Roslynator.CSharp.Refactorings
                                 context.Document,
                                 memberAccess,
                                 cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.UseEmptyStringLiteralInsteadOfStringEmpty);
 
                     break;
                 }

@@ -40,6 +40,8 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         protected abstract string GetTitle();
 
+        protected abstract string GetEquivalenceKey();
+
         public static void ComputeRefactoring(RefactoringContext context, ParameterSyntax parameter)
         {
             if (!parameter.Identifier.Span.Contains(context.Span))
@@ -98,7 +100,8 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
         {
             context.RegisterRefactoring(
                 GetTitle(),
-                cancellationToken => RefactorAsync(context.Document, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, cancellationToken),
+                GetEquivalenceKey());
         }
 
         protected string GetNames()

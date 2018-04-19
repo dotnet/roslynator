@@ -74,7 +74,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Collapse to initializer",
-                ct => RefactorAsync(context.Document, objectCreation, selectedStatements, ct));
+                ct => RefactorAsync(context.Document, objectCreation, selectedStatements, ct),
+                RefactoringIdentifiers.CollapseToInitializer);
         }
 
         public static bool IsValidAssignmentStatement(

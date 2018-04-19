@@ -162,14 +162,16 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 GetTitle(expression),
-                cancellationToken => RefactorAsync(context.Document, expression, statement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, expression, statement, cancellationToken),
+                RefactoringIdentifiers.CheckExpressionForNull);
         }
 
         private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression, StatementSyntax statement, int statementCount)
         {
             context.RegisterRefactoring(
                 GetTitle(expression),
-                cancellationToken => RefactorAsync(context.Document, expression, statement, statementCount, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, expression, statement, statementCount, cancellationToken),
+                RefactoringIdentifiers.CheckExpressionForNull);
         }
 
         private static string GetTitle(ExpressionSyntax expression)

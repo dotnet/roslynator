@@ -70,7 +70,8 @@ namespace Roslynator.CSharp.Refactorings
                                 methodDeclaration.Modifiers,
                                 methodDeclaration.ParameterList,
                                 methodDeclaration.BodyOrExpressionBody(),
-                                cancellationToken));
+                                cancellationToken),
+                            RefactoringIdentifiers.ReplaceMethodGroupWithLambda);
 
                         break;
                     }
@@ -87,7 +88,8 @@ namespace Roslynator.CSharp.Refactorings
                                 localFunction.Modifiers,
                                 localFunction.ParameterList,
                                 localFunction.BodyOrExpressionBody(),
-                                cancellationToken));
+                                cancellationToken),
+                            RefactoringIdentifiers.ReplaceMethodGroupWithLambda);
 
                         break;
                     }

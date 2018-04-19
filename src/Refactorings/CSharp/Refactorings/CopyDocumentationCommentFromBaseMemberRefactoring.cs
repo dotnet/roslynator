@@ -105,7 +105,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             context.RegisterRefactoring(
                 GetTitle(memberDeclaration, data.Origin),
-                cancellationToken => RefactorAsync(context.Document, memberDeclaration, data.Comment, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, memberDeclaration, data.Comment, cancellationToken),
+                RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember);
         }
 
         private static string GetTitle(MemberDeclarationSyntax memberDeclaration, DocumentationCommentOrigin origin)

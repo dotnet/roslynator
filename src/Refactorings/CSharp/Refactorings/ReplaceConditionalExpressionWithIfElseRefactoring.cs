@@ -26,7 +26,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     Title,
-                    cancellationToken => RefactorAsync(context.Document, (StatementSyntax)parent, conditionalExpression, cancellationToken));
+                    cancellationToken => RefactorAsync(context.Document, (StatementSyntax)parent, conditionalExpression, cancellationToken),
+                    RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse);
             }
             else if (parent is AssignmentExpressionSyntax assignment)
             {
@@ -34,7 +35,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         Title,
-                        cancellationToken => RefactorAsync(context.Document, expressionStatement, conditionalExpression, cancellationToken));
+                        cancellationToken => RefactorAsync(context.Document, expressionStatement, conditionalExpression, cancellationToken),
+                        RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse);
                 }
             }
             else
@@ -52,7 +54,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             Title,
-                            cancellationToken => RefactorAsync(context.Document, localDeclarationInfo.Statement, conditionalExpression, semanticModel, cancellationToken));
+                            cancellationToken => RefactorAsync(context.Document, localDeclarationInfo.Statement, conditionalExpression, semanticModel, cancellationToken),
+                            RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse);
                     }
                 }
             }

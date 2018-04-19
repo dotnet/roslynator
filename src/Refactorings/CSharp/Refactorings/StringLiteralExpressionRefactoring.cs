@@ -42,7 +42,8 @@ namespace Roslynator.CSharp.Refactorings
                                 context.Span.Length,
                                 addNameOf: false,
                                 cancellationToken: cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.InsertStringInterpolation);
 
                     if (!context.Span.IsEmpty)
                     {
@@ -65,7 +66,8 @@ namespace Roslynator.CSharp.Refactorings
                                             context.Span.Length,
                                             addNameOf: true,
                                             cancellationToken: cancellationToken);
-                                    });
+                                    },
+                                    RefactoringIdentifiers.InsertStringInterpolation);
 
                                 break;
                             }
@@ -84,7 +86,8 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Replace verbatim string literal with regular string literal",
-                                ct => ReplaceWithRegularStringLiteralAsync(context.Document, literalExpression, ct));
+                                ct => ReplaceWithRegularStringLiteralAsync(context.Document, literalExpression, ct),
+                                RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral);
                         }
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)
@@ -92,7 +95,8 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Replace verbatim string literal with regular string literals",
-                                ct => ReplaceWithRegularStringLiteralsAsync(context.Document, literalExpression, ct));
+                                ct => ReplaceWithRegularStringLiteralsAsync(context.Document, literalExpression, ct),
+                                RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals);
                         }
                     }
                 }
@@ -101,7 +105,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Replace regular string literal with verbatim string literal",
-                        ct => ReplaceWithVerbatimStringLiteralAsync(context.Document, literalExpression, ct));
+                        ct => ReplaceWithVerbatimStringLiteralAsync(context.Document, literalExpression, ct),
+                        RefactoringIdentifiers.ReplaceRegularStringLiteralWithVerbatimStringLiteral);
                 }
             }
 
@@ -110,7 +115,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Replace \"\" with 'string.Empty'",
-                    ct => ReplaceWithStringEmptyAsync(context.Document, literalExpression, ct));
+                    ct => ReplaceWithStringEmptyAsync(context.Document, literalExpression, ct),
+                RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral);
             }
         }
 

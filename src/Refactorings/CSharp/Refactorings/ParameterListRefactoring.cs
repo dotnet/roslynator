@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateParameter))
                 {
                     var refactoring = new DuplicateParameterRefactoring(parameterList);
-                    refactoring.ComputeRefactoring(context);
+                    refactoring.ComputeRefactoring(context, RefactoringIdentifiers.DuplicateParameter);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
@@ -42,14 +42,16 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Format parameters on separate lines",
-                                cancellationToken => SyntaxFormatter.ToMultiLineAsync(context.Document, parameterList, cancellationToken));
+                                cancellationToken => SyntaxFormatter.ToMultiLineAsync(context.Document, parameterList, cancellationToken),
+                                RefactoringIdentifiers.FormatParameterList);
                         }
                     }
                     else if (parameterList.DescendantTrivia(parameterList.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
                         context.RegisterRefactoring(
                             "Format parameters on a single line",
-                            cancellationToken => SyntaxFormatter.ToSingleLineAsync(context.Document, parameterList, cancellationToken));
+                            cancellationToken => SyntaxFormatter.ToSingleLineAsync(context.Document, parameterList, cancellationToken),
+                            RefactoringIdentifiers.FormatParameterList);
                     }
                 }
             }

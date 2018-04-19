@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
             {
                 context.RegisterRefactoring(
                     $"Replace '{propertyDeclaration.Identifier.ValueText}' with method",
-                    cancellationToken => RefactorAsync(context.Document, propertyDeclaration, cancellationToken));
+                    cancellationToken => RefactorAsync(context.Document, propertyDeclaration, cancellationToken),
+                    RefactoringIdentifiers.ReplacePropertyWithMethod);
             }
         }
 

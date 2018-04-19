@@ -74,13 +74,15 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
                                 return await ChangeAccessibilityRefactoring.RefactorAsync(context.Document.Solution(), selectedMembers, accessibility, semanticModel, cancellationToken).ConfigureAwait(false);
-                            });
+                            },
+                            RefactoringIdentifiers.ChangeAccessibility);
                     }
                     else
                     {
                         context.RegisterRefactoring(
                             ChangeAccessibilityRefactoring.GetTitle(accessibility),
-                            cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, selectedMembers, accessibility, cancellationToken));
+                            cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Document, selectedMembers, accessibility, cancellationToken),
+                            RefactoringIdentifiers.ChangeAccessibility);
                     }
                 }
             }

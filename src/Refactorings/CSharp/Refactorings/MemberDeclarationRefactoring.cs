@@ -46,14 +46,16 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     context.RegisterRefactoring(
                                         "Remove " + CSharpFacts.GetTitle(member),
-                                        cancellationToken => context.Document.RemoveMemberAsync(member, cancellationToken));
+                                        cancellationToken => context.Document.RemoveMemberAsync(member, cancellationToken),
+                                        RefactoringIdentifiers.RemoveMember);
                                 }
 
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
                                 {
                                     context.RegisterRefactoring(
                                         "Duplicate " + CSharpFacts.GetTitle(member),
-                                        cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken));
+                                        cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken),
+                                        RefactoringIdentifiers.DuplicateMember);
                                 }
                             }
 
@@ -187,7 +189,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Use expression-bodied member",
-                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken));
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken),
+                    RefactoringIdentifiers.UseExpressionBodiedMember);
             }
         }
 
@@ -200,7 +203,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Use expression-bodied member",
-                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken));
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken),
+                    RefactoringIdentifiers.UseExpressionBodiedMember);
             }
         }
 

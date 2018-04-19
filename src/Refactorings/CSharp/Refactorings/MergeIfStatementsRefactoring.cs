@@ -33,7 +33,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Merge if statements",
-                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken),
+                RefactoringIdentifiers.MergeIfStatements);
         }
 
         public static Task<Document> RefactorAsync(

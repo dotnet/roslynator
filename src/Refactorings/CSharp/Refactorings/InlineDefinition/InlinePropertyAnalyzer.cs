@@ -132,5 +132,10 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
         {
             return new InlinePropertyRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
         }
+
+        protected override string GetEquivalenceKey()
+        {
+            return RefactoringIdentifiers.InlineProperty;
+        }
     }
 }

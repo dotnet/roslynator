@@ -39,7 +39,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Add empty line between declarations",
-                ct => RefactorAsync(context.Document, selectedMembers, ct));
+                ct => RefactorAsync(context.Document, selectedMembers, ct),
+                RefactoringIdentifiers.AddEmptyLineBetweenDeclarations);
         }
 
         private static Task<Document> RefactorAsync(

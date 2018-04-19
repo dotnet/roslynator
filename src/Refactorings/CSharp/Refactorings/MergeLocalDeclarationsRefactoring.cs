@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Merge local declarations",
-                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken),
+                RefactoringIdentifiers.MergeLocalDeclarations);
         }
 
         private static bool AreLocalDeclarations(

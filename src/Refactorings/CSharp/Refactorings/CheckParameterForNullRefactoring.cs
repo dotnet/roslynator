@@ -68,7 +68,8 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken => RefactorAsync(
                     context.Document,
                     parameters,
-                    cancellationToken));
+                    cancellationToken),
+                RefactoringIdentifiers.CheckParameterForNull);
         }
 
         public static bool CanRefactor(

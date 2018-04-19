@@ -27,14 +27,16 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Format arguments on separate lines",
-                            ct => SyntaxFormatter.ToMultiLineAsync(context.Document, argumentList, ct));
+                            ct => SyntaxFormatter.ToMultiLineAsync(context.Document, argumentList, ct),
+                            RefactoringIdentifiers.FormatArgumentList);
                     }
                 }
                 else if (argumentList.DescendantTrivia(argumentList.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     context.RegisterRefactoring(
                         "Format arguments on a single line",
-                        ct => SyntaxFormatter.ToSingleLineAsync(context.Document, argumentList, ct));
+                        ct => SyntaxFormatter.ToSingleLineAsync(context.Document, argumentList, ct),
+                        RefactoringIdentifiers.FormatArgumentList);
                 }
             }
         }

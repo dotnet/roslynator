@@ -49,7 +49,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Using '{localInfo.IdentifierText}'",
-                cancellationToken => RefactorAsync(context.Document, localInfo, semanticModel, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, localInfo, semanticModel, cancellationToken),
+                RefactoringIdentifiers.WrapInUsingStatement);
         }
 
         private static Task<Document> RefactorAsync(

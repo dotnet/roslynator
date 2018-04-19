@@ -23,15 +23,17 @@ namespace Roslynator.CSharp.Refactorings
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInRegion))
                     {
                         context.RegisterRefactoring(
-                           "Wrap in region",
-                           ct => WrapInRegionRefactoring.Instance.RefactorAsync(context.Document, selectedLines, ct));
+                            "Wrap in region",
+                            ct => WrapInRegionRefactoring.Instance.RefactorAsync(context.Document, selectedLines, ct),
+                            RefactoringIdentifiers.WrapInRegion);
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInIfDirective))
                     {
                         context.RegisterRefactoring(
-                           "Wrap in #if",
-                           ct => WrapInIfDirectiveRefactoring.Instance.RefactorAsync(context.Document, selectedLines, ct));
+                            "Wrap in #if",
+                            ct => WrapInIfDirectiveRefactoring.Instance.RefactorAsync(context.Document, selectedLines, ct),
+                            RefactoringIdentifiers.WrapInIfDirective);
                     }
                 }
             }
@@ -40,8 +42,9 @@ namespace Roslynator.CSharp.Refactorings
                 && await RemoveEmptyLinesRefactoring.CanRefactorAsync(context, node).ConfigureAwait(false))
             {
                 context.RegisterRefactoring(
-                   "Remove empty lines",
-                   ct => RemoveEmptyLinesRefactoring.RefactorAsync(context.Document, context.Span, ct));
+                    "Remove empty lines",
+                    ct => RemoveEmptyLinesRefactoring.RefactorAsync(context.Document, context.Span, ct),
+                    RefactoringIdentifiers.RemoveEmptyLines);
             }
         }
     }

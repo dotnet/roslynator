@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.Refactorings
                             context.Span,
                             addNameOf: false,
                             cancellationToken: cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.InsertStringInterpolation);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)
@@ -35,7 +36,8 @@ namespace Roslynator.CSharp.Refactorings
                             context.Document,
                             interpolatedString,
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression)
@@ -52,7 +54,8 @@ namespace Roslynator.CSharp.Refactorings
                             context.Document,
                             interpolatedString,
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)

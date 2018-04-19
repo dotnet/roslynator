@@ -19,7 +19,8 @@ namespace Roslynator.CSharp.Refactorings
                             context.Document,
                             parenthesizedExpression,
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.RemoveParentheses);
             }
         }
     }

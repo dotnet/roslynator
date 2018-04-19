@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Introduce field to lock on",
-                                cancellationToken => IntroduceFieldToLockOnRefactoring.RefactorAsync(context.Document, lockStatement, cancellationToken));
+                                cancellationToken => IntroduceFieldToLockOnRefactoring.RefactorAsync(context.Document, lockStatement, cancellationToken),
+                                RefactoringIdentifiers.IntroduceFieldToLockOn);
                         }
                     }
                 }

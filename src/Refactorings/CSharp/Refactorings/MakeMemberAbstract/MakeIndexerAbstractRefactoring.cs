@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
 
             context.RegisterRefactoring(
                 "Make indexer abstract",
-                cancellationToken => RefactorAsync(context.Document, indexerDeclaration, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, indexerDeclaration, cancellationToken),
+                RefactoringIdentifiers.MakeMemberAbstract);
         }
 
         public static Task<Document> RefactorAsync(

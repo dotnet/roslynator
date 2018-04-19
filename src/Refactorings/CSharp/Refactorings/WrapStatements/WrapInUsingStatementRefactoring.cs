@@ -41,7 +41,8 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
             context.RegisterRefactoring(
                 $"Using '{localInfo.IdentifierText}'",
-                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken),
+                RefactoringIdentifiers.WrapInUsingStatement);
         }
 
         public override UsingStatementSyntax CreateStatement(ImmutableArray<StatementSyntax> statements)

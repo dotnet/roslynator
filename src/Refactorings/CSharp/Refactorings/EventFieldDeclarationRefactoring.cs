@@ -19,7 +19,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Expand event",
-                    ct => ExpandEventRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, ct));
+                    ct => ExpandEventRefactoring.RefactorAsync(context.Document, eventFieldDeclaration, ct),
+                    RefactoringIdentifiers.ExpandEvent);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)

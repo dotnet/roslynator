@@ -15,7 +15,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Replace for with foreach",
-                    cancellationToken => ReplaceForWithForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                    cancellationToken => ReplaceForWithForEachRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                    RefactoringIdentifiers.ReplaceForWithForEach);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForWithWhile)
@@ -23,7 +24,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Replace for with while",
-                    cancellationToken => ReplaceForWithWhileRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                    cancellationToken => ReplaceForWithWhileRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                    RefactoringIdentifiers.ReplaceForWithWhile);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReverseForLoop)
@@ -33,13 +35,15 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Reverse for loop",
-                        cancellationToken => ReverseForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                        cancellationToken => ReverseForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                        RefactoringIdentifiers.ReverseForLoop);
                 }
                 else if (ReverseReversedForLoopRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
                         "Reverse for loop",
-                        cancellationToken => ReverseReversedForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken));
+                        cancellationToken => ReverseReversedForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
+                        RefactoringIdentifiers.ReverseForLoop);
                 }
             }
         }

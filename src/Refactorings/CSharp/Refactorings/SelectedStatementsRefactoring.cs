@@ -46,17 +46,19 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                var options = new IfAnalysisOptions(
-                    useCoalesceExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf),
-                    useConditionalExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf),
-                    useBooleanExpression: context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf),
-                    useExpression: false);
+                IfAnalysisOptions options = IfStatementRefactoring.GetIfAnalysisOptions(context);
 
                 foreach (IfAnalysis analysis in IfAnalysis.Analyze(selectedStatements, options, semanticModel, context.CancellationToken))
                 {
-                    context.RegisterRefactoring(
-                        analysis.Title,
-                        cancellationToken => IfRefactoring.RefactorAsync(context.Document, analysis, cancellationToken));
+                    string refactoringId = IfStatementRefactoring.GetRefactoringIdentifier(analysis);
+
+                    if (context.IsRefactoringEnabled(refactoringId))
+                    {
+                        context.RegisterRefactoring(
+                            analysis.Title,
+                            cancellationToken => IfRefactoring.RefactorAsync(context.Document, analysis, cancellationToken),
+                            equivalenceKey: refactoringId);
+                    }
                 }
             }
 
@@ -79,14 +81,16 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     WrapInIfStatementRefactoring.Title,
-                    ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct));
+                    ct => WrapInIfStatementRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
+                    RefactoringIdentifiers.WrapInCondition);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch))
             {
                 context.RegisterRefactoring(
                     WrapInTryCatchRefactoring.Title,
-                    ct => WrapInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct));
+                    ct => WrapInTryCatchRefactoring.Instance.RefactorAsync(context.Document, selectedStatements, ct),
+                    RefactoringIdentifiers.WrapInTryCatch);
             }
         }
     }

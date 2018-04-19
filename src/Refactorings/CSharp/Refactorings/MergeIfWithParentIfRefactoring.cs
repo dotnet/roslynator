@@ -42,7 +42,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Merge if with parent if",
-                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken),
+                RefactoringIdentifiers.MergeIfWithParentIf);
         }
 
         private static Task<Document> RefactorAsync(

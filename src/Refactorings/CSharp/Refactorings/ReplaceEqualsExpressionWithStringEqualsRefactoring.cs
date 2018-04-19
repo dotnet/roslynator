@@ -52,7 +52,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 title,
-                cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals);
         }
 
         private static async Task<Document> RefactorAsync(

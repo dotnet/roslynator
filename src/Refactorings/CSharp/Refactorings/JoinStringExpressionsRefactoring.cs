@@ -23,14 +23,16 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Join string expressions",
-                        cancellationToken => ToInterpolatedStringAsync(context.Document, concatenationInfo, cancellationToken));
+                        cancellationToken => ToInterpolatedStringAsync(context.Document, concatenationInfo, cancellationToken),
+                        RefactoringIdentifiers.JoinStringExpressions);
                 }
             }
             else if (analysis.ContainsStringLiteral)
             {
                 context.RegisterRefactoring(
                     "Join string literals",
-                    cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: false, cancellationToken: cancellationToken));
+                    cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: false, cancellationToken: cancellationToken),
+                    RefactoringIdentifiers.JoinStringExpressions);
 
                 if (concatenationInfo.BinaryExpression
                     .DescendantTrivia(concatenationInfo.Span ?? concatenationInfo.BinaryExpression.Span)
@@ -38,7 +40,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Join string literals into multiline string literal",
-                        cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: true, cancellationToken: cancellationToken));
+                        cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: true, cancellationToken: cancellationToken),
+                        RefactoringIdentifiers.JoinStringExpressions);
                 }
             }
         }

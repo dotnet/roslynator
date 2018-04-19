@@ -20,7 +20,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Comment out {CSharpFacts.GetTitle(member)}",
-                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken),
+                RefactoringIdentifiers.CommentOutMember);
         }
 
         public static void RegisterRefactoring(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement)
@@ -29,7 +30,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Comment out {CSharpFacts.GetTitle(localFunctionStatement)}",
-                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), cancellationToken),
+                RefactoringIdentifiers.CommentOutMember);
         }
 
         public static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
@@ -38,7 +40,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Comment out statement",
-                ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct));
+                ct => RefactorAsync(context.Document, fileSpan.StartLine(), fileSpan.EndLine(), ct),
+                RefactoringIdentifiers.CommentOutStatement);
         }
 
         private static async Task<Document> RefactorAsync(

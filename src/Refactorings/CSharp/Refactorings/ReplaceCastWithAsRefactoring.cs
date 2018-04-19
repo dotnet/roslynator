@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Replace cast with as",
-                cancellationToken => RefactorAsync(context.Document, castExpression, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, castExpression, cancellationToken),
+                RefactoringIdentifiers.ReplaceCastWithAs);
         }
 
         private static Task<Document> RefactorAsync(

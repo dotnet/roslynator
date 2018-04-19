@@ -40,7 +40,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace '{fromMethodName}' with '{toMethodName}'",
-                ct => RefactorAsync(context.Document, invocation, toMethodName, expression, ct));
+                ct => RefactorAsync(context.Document, invocation, toMethodName, expression, ct),
+                RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny);
 
             return true;
         }

@@ -58,7 +58,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 GetTitle(equatableSymbol, semanticModel, classDeclaration.SpanStart),
-                f => RefactorAsync(context.Document, classDeclaration, classSymbol, equatableSymbol, semanticModel, f));
+                f => RefactorAsync(context.Document, classDeclaration, classSymbol, equatableSymbol, semanticModel, f),
+                RefactoringIdentifiers.ImplementIEquatableOfT);
         }
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StructDeclarationSyntax structDeclaration)
@@ -102,7 +103,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 GetTitle(equatableSymbol, semanticModel, structDeclaration.SpanStart),
-                f => RefactorAsync(context.Document, structDeclaration, typeSymbol, equatableSymbol, semanticModel, f));
+                f => RefactorAsync(context.Document, structDeclaration, typeSymbol, equatableSymbol, semanticModel, f),
+                RefactoringIdentifiers.ImplementIEquatableOfT);
         }
 
         private static string GetTitle(INamedTypeSymbol equatableSymbol, SemanticModel semanticModel, int position)

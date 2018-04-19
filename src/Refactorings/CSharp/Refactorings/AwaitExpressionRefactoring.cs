@@ -18,7 +18,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Call 'ConfigureAwait(false)'",
-                        ct => CallConfigureAwaitRefactoring.RefactorAsync(context.Document, awaitExpression, ct));
+                        ct => CallConfigureAwaitRefactoring.RefactorAsync(context.Document, awaitExpression, ct),
+                        RefactoringIdentifiers.CallConfigureAwait);
                 }
             }
         }

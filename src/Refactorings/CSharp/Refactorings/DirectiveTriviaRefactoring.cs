@@ -36,7 +36,8 @@ namespace Roslynator.CSharp.Refactorings
                             return context.Document.RemovePreprocessorDirectivesAsync(
                                 directives.ToImmutableArray(),
                                 cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.RemoveDirectiveAndRelatedDirectives);
                 }
             }
         }

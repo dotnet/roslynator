@@ -25,7 +25,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(
                         "Add exception to documentation comment",
-                        cancellationToken => AddExceptionToDocumentationCommentRefactoring.RefactorAsync(context.Document, analysis, cancellationToken));
+                        cancellationToken => AddExceptionToDocumentationCommentRefactoring.RefactorAsync(context.Document, analysis, cancellationToken),
+                        RefactoringIdentifiers.AddExceptionToDocumentationComment);
                 }
             }
         }

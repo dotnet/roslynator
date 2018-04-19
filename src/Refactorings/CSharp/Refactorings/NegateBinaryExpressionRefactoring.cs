@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Negate binary expression",
-                cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                RefactoringIdentifiers.NegateBinaryExpression);
         }
 
         private static bool CanRefactor(SyntaxNode node)

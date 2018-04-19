@@ -17,7 +17,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Swap expressions",
-                    cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken));
+                    cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                    RefactoringIdentifiers.SwapExpressionsInBinaryExpression);
             }
         }
 

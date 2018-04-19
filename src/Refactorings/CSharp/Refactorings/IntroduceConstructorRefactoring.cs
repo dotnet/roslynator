@@ -61,7 +61,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Introduce constructor",
-                ct => RefactorAsync(context.Document, declaration, members, ct));
+                ct => RefactorAsync(context.Document, declaration, members, ct),
+                RefactoringIdentifiers.IntroduceConstructor);
         }
 
         private static bool CanBeAssignedFromConstructor(

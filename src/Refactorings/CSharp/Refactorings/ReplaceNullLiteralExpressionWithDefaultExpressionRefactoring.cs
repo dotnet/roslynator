@@ -28,7 +28,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace 'null' with 'default({SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, expression.SpanStart, SymbolDisplayFormats.Default)})'",
-                cancellationToken => RefactorAsync(context.Document, expression, typeSymbol, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, expression, typeSymbol, cancellationToken),
+                RefactoringIdentifiers.ReplaceNullLiteralExpressionWithDefaultExpression);
         }
 
         public static async Task<Document> RefactorAsync(

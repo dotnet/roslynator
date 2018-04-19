@@ -29,6 +29,11 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             return index + 1;
         }
 
+        protected override string GetEquivalenceKey()
+        {
+            return RefactoringIdentifiers.IntroduceAndInitializeProperty;
+        }
+
         protected override string GetTitle()
         {
             if (Infos.Length > 1)

@@ -63,20 +63,22 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
                 if (expression != null)
                 {
-                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, cancellationToken));
+                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, cancellationToken), GetEquivalenceKey());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, cancellationToken));
+                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, cancellationToken), GetEquivalenceKey());
                 }
                 else
                 {
                     var expressionStatement = (ExpressionStatementSyntax)nodeIncludingConditionalAccess.Parent;
 
-                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(expressionStatement, statements, cancellationToken));
+                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(expressionStatement, statements, cancellationToken), GetEquivalenceKey());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(expressionStatement, statements, cancellationToken));
+                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(expressionStatement, statements, cancellationToken), GetEquivalenceKey());
                 }
             }
         }
+
+        protected abstract string GetEquivalenceKey();
 
         protected abstract bool ValidateNode(TNode node, TextSpan span);
 

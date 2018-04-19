@@ -39,7 +39,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace expression with '{newNode}'",
-                cancellationToken => context.Document.ReplaceNodeAsync(oldNode, newNode.WithTriviaFrom(expression).Parenthesize(), cancellationToken));
+                cancellationToken => context.Document.ReplaceNodeAsync(oldNode, newNode.WithTriviaFrom(expression).Parenthesize(), cancellationToken),
+                RefactoringIdentifiers.ReplaceExpressionWithConstantValue);
         }
     }
 }

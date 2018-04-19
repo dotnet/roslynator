@@ -73,7 +73,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     title,
-                    cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken));
+                    cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken),
+                    RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue);
             }
         }
 

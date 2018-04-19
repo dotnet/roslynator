@@ -37,7 +37,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Generate enum values",
-                cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, startFromHighestExistingValue: false, cancellationToken: cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, startFromHighestExistingValue: false, cancellationToken: cancellationToken),
+                RefactoringIdentifiers.GenerateEnumValues);
 
             if (!members.Any(f => f.EqualsValue != null))
                 return;
@@ -52,7 +53,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Generate enum values (starting from {optional2.Value})",
-                cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, startFromHighestExistingValue: true, cancellationToken: cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, enumDeclaration, enumSymbol, startFromHighestExistingValue: true, cancellationToken: cancellationToken),
+                RefactoringIdentifiers.GenerateEnumValues);
         }
 
         private static async Task<Document> RefactorAsync(

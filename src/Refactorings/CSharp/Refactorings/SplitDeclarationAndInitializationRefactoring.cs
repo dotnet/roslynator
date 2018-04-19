@@ -57,7 +57,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Split declaration and initialization",
-                ct => RefactorAsync(context.Document, localInfo, type, statementsInfo, ct));
+                ct => RefactorAsync(context.Document, localInfo, type, statementsInfo, ct),
+                RefactoringIdentifiers.SplitDeclarationAndInitialization);
         }
 
         private static Task<Document> RefactorAsync(

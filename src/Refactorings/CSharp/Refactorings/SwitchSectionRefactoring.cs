@@ -39,7 +39,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             AddBracesToSwitchSectionRefactoring.Title,
-                            cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
+                            cancellationToken => AddBracesToSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                            RefactoringIdentifiers.AddBracesToSwitchSection);
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddBracesToSwitchSections)
@@ -47,7 +48,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             AddBracesToSwitchSectionsRefactoring.Title,
-                            cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken));
+                            cancellationToken => AddBracesToSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken),
+                            RefactoringIdentifiers.AddBracesToSwitchSections);
                     }
                 }
                 else if (analysis.RemoveBraces)
@@ -56,7 +58,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             RemoveBracesFromSwitchSectionRefactoring.Title,
-                            cancellationToken => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken));
+                            cancellationToken => RemoveBracesFromSwitchSectionRefactoring.RefactorAsync(context.Document, switchSection, cancellationToken),
+                            RefactoringIdentifiers.RemoveBracesFromSwitchSection);
                     }
 
                     if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveBracesFromSwitchSections)
@@ -64,7 +67,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             RemoveBracesFromSwitchSectionsRefactoring.Title,
-                            cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken));
+                            cancellationToken => RemoveBracesFromSwitchSectionsRefactoring.RefactorAsync(context.Document, switchStatement, null, cancellationToken),
+                            RefactoringIdentifiers.RemoveBracesFromSwitchSections);
                     }
                 }
             }

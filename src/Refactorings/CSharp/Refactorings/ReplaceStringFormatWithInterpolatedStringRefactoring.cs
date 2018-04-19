@@ -61,7 +61,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace {invocation.Expression} with interpolated string",
-                cancellationToken => RefactorAsync(context.Document, invocation, semanticModel, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, invocation, semanticModel, cancellationToken),
+                RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString);
         }
 
         private static ImmutableArray<ISymbol> GetFormatMethods(SemanticModel semanticModel)

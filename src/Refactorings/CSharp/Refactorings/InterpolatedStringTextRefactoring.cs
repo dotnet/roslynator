@@ -37,7 +37,8 @@ namespace Roslynator.CSharp.Refactorings
                                 span,
                                 addNameOf: false,
                                 cancellationToken: cancellationToken);
-                        });
+                        },
+                        RefactoringIdentifiers.InsertStringInterpolation);
 
                     if (!span.IsEmpty)
                     {
@@ -64,7 +65,8 @@ namespace Roslynator.CSharp.Refactorings
                                             span,
                                             addNameOf: true,
                                             cancellationToken: cancellationToken);
-                                    });
+                                    },
+                                    RefactoringIdentifiers.InsertStringInterpolation);
 
                                 break;
                             }

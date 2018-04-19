@@ -74,7 +74,8 @@ namespace Roslynator.CSharp.Refactorings
                             eventArgsSymbol,
                             context.SupportsCSharp6,
                             cancellationToken);
-                    });
+                    },
+                    RefactoringIdentifiers.GenerateEventInvokingMethod);
             }
         }
 

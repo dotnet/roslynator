@@ -35,7 +35,8 @@ namespace Roslynator.CSharp.Refactorings
                                     context.Document,
                                     declarationExpression.Type,
                                     cancellationToken);
-                            });
+                            },
+                            RefactoringIdentifiers.ChangeExplicitTypeToVar);
                     }
                 }
                 else if (analysis.SupportsExplicit
@@ -49,7 +50,8 @@ namespace Roslynator.CSharp.Refactorings
 
                     context.RegisterRefactoring(
                         $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)}'",
-                        cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken));
+                        cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
+                        RefactoringIdentifiers.ChangeVarToExplicitType);
                 }
             }
         }

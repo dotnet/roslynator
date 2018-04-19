@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
         public void RegisterRefactoring(
             string title,
             Func<CancellationToken, Task<Document>> createChangedDocument,
-            string equivalenceKey = null)
+            string equivalenceKey)
         {
             RegisterRefactoring(
                 CodeAction.Create(title, createChangedDocument, equivalenceKey));
@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Refactorings
         public void RegisterRefactoring(
             string title,
             Func<CancellationToken, Task<Solution>> createChangedSolution,
-            string equivalenceKey = null)
+            string equivalenceKey)
         {
             RegisterRefactoring(
                 CodeAction.Create(title, createChangedSolution, equivalenceKey));
@@ -275,7 +275,8 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             RegisterRefactoring(
                                 "Uncomment",
-                                cancellationToken => UncommentSingleLineCommentRefactoring.RefactorAsync(Document, trivia, cancellationToken));
+                                cancellationToken => UncommentSingleLineCommentRefactoring.RefactorAsync(Document, trivia, cancellationToken),
+                                RefactoringIdentifiers.UncommentSingleLineComment);
                         }
 
                         if (IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment))
@@ -286,7 +287,8 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 RegisterRefactoring(
                                     ReplaceCommentWithDocumentationCommentRefactoring.Title,
-                                    cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, cancellationToken));
+                                    cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, cancellationToken),
+                                    RefactoringIdentifiers.ReplaceCommentWithDocumentationComment);
                             }
                         }
 

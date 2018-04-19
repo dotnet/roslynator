@@ -41,7 +41,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"using static {typeSymbol};",
-                ct => RefactorAsync(context.Document, typeSymbol.ToString(), memberAccess, ct));
+                ct => RefactorAsync(context.Document, typeSymbol.ToString(), memberAccess, ct),
+                RefactoringIdentifiers.AddUsingStaticDirective);
         }
 
         private static async Task<Document> RefactorAsync(

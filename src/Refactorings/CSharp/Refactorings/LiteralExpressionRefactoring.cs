@@ -20,7 +20,8 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Negate boolean literal",
-                                cancellationToken => NegateBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, cancellationToken));
+                                cancellationToken => NegateBooleanLiteralRefactoring.RefactorAsync(context.Document, literalExpression, cancellationToken),
+                                RefactoringIdentifiers.NegateBooleanLiteral);
                         }
 
                         break;

@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberAbstract
 
             context.RegisterRefactoring(
                 "Make method abstract",
-                cancellationToken => RefactorAsync(context.Document, methodDeclaration, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, methodDeclaration, cancellationToken),
+                RefactoringIdentifiers.MakeMemberAbstract);
         }
 
         public static Task<Document> RefactorAsync(

@@ -82,7 +82,8 @@ namespace Roslynator.CSharp.Refactorings
                     statement,
                     initializer,
                     expression.WithoutTrivia(),
-                    cancellationToken));
+                    cancellationToken),
+                RefactoringIdentifiers.ExpandInitializer);
         }
 
         private static bool CanExpand(

@@ -47,18 +47,21 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove members above",
-                    ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct));
+                    ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct),
+                    RefactoringIdentifiers.RemoveMemberDeclarations);
 
                 context.RegisterRefactoring(
                     "Remove members below",
-                    ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct));
+                    ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct),
+                    RefactoringIdentifiers.RemoveMemberDeclarations);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapMemberDeclarations))
             {
                 context.RegisterRefactoring(
                     "Swap members",
-                    ct => SwapMembersAsync(context.Document, info, index, ct));
+                    ct => SwapMembersAsync(context.Document, info, index, ct),
+                    RefactoringIdentifiers.SwapMemberDeclarations);
             }
         }
 

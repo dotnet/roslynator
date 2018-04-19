@@ -30,7 +30,8 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     var textChange = new TextChange(multiLineComment.Span, s.Substring(2, s.Length - 4));
                     return context.Document.WithTextChangeAsync(textChange, cancellationToken);
-                });
+                },
+                RefactoringIdentifiers.UncommentMultiLineComment);
         }
     }
 }

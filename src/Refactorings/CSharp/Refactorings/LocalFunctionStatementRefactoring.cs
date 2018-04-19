@@ -25,14 +25,16 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Remove local function",
-                                cancellationToken => context.Document.RemoveStatementAsync(localFunctionStatement, cancellationToken));
+                                cancellationToken => context.Document.RemoveStatementAsync(localFunctionStatement, cancellationToken),
+                                RefactoringIdentifiers.RemoveMember);
                         }
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
                         {
                             context.RegisterRefactoring(
                                 "Duplicate local function",
-                                cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken));
+                                cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken),
+                                RefactoringIdentifiers.DuplicateMember);
                         }
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.CommentOutMember))
@@ -50,7 +52,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Use expression-bodied member",
-                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken));
+                    cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken),
+                    RefactoringIdentifiers.UseExpressionBodiedMember);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield)

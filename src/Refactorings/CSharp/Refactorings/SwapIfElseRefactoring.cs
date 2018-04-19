@@ -19,7 +19,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Swap if-else",
-                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken),
+                RefactoringIdentifiers.SwapIfElse);
         }
 
         public static async Task<Document> RefactorAsync(

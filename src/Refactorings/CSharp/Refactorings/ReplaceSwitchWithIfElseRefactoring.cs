@@ -68,7 +68,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 (sections.Count == 1) ? "Replace switch with if" : "Replace switch with if-else",
-                cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken),
+                RefactoringIdentifiers.ReplaceSwitchWithIf);
         }
 
         public static async Task<Document> RefactorAsync(

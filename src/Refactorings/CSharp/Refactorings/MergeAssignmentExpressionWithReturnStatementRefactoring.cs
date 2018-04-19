@@ -31,7 +31,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Merge statements",
-                ct => RefactorAsync(context.Document, simpleAssignment.Statement, returnStatement, ct));
+                ct => RefactorAsync(context.Document, simpleAssignment.Statement, returnStatement, ct),
+                RefactoringIdentifiers.MergeAssignmentExpressionWithReturnStatement);
         }
 
         public static Task<Document> RefactorAsync(

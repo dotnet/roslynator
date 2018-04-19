@@ -24,7 +24,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         context.RegisterRefactoring(
                             "Inline alias expression",
-                            ct => InlineAliasExpressionRefactoring.RefactorAsync(context.Document, usingDirective, ct));
+                            ct => InlineAliasExpressionRefactoring.RefactorAsync(context.Document, usingDirective, ct),
+                            RefactoringIdentifiers.InlineAliasExpression);
                     }
                 }
             }
@@ -35,7 +36,8 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Inline using static",
-                    ct => InlineUsingStaticRefactoring.RefactorAsync(context.Document, usingDirective, ct));
+                    ct => InlineUsingStaticRefactoring.RefactorAsync(context.Document, usingDirective, ct),
+                    RefactoringIdentifiers.InlineUsingStatic);
             }
         }
     }

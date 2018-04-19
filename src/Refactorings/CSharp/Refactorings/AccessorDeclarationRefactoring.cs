@@ -26,7 +26,8 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Format braces on separate lines",
-                                ct => SyntaxFormatter.ToMultiLineAsync(context.Document, accessor, ct));
+                                ct => SyntaxFormatter.ToMultiLineAsync(context.Document, accessor, ct),
+                                RefactoringIdentifiers.FormatAccessorBraces);
                         }
                     }
                     else
@@ -38,7 +39,8 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 "Format braces on a single line",
-                                ct => SyntaxFormatter.ToSingleLineAsync(context.Document, accessor, ct));
+                                ct => SyntaxFormatter.ToSingleLineAsync(context.Document, accessor, ct),
+                                RefactoringIdentifiers.FormatAccessorBraces);
                         }
                     }
                 }
@@ -60,7 +62,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 context.RegisterRefactoring(
                     "Use expression-bodied member",
-                    ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, node, ct));
+                    ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, node, ct),
+                    RefactoringIdentifiers.UseExpressionBodiedMember);
             }
         }
     }

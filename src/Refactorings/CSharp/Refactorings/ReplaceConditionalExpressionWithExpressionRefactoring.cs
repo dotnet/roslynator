@@ -30,7 +30,8 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 $"Replace ?: with '{expression}'",
-                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken));
+                cancellationToken => RefactorAsync(context.Document, expression, cancellationToken),
+                RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression);
         }
 
         private static Task<Document> RefactorAsync(
