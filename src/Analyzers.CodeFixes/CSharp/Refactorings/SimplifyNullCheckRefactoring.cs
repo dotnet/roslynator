@@ -37,6 +37,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (CSharpFactory.AreEquivalent(nullCheck.Expression, whenNotNull))
             {
+                //RCS1084 UseCoalesceExpressionInsteadOfConditionalExpression
                 newNode = nullCheck.Expression;
                 coalesce = true;
             }
@@ -53,6 +54,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (memberAccessExpression == whenNotNull)
                         {
+                            //RCS1084 UseCoalesceExpressionInsteadOfConditionalExpression
                             newNode = nullCheck.Expression;
                             coalesce = true;
                         }
@@ -67,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
             if (newNode == null)
                 newNode = ParseExpression(whenNotNull.ToString().Insert(expression.Span.End - whenNotNull.SpanStart, "?"));
 
-            if (coalesce || !semanticModel.GetTypeSymbol(whenNotNull, cancellationToken).IsReferenceType)
+            if (coalesce || !semanticModel.GetTypeSymbol(whenNotNull, cancellationToken).IsReferenceTypeOrNullableType())
                 newNode = CoalesceExpression(newNode.Parenthesize(), whenNull.Parenthesize());
 
             newNode = newNode
