@@ -9,7 +9,9 @@ namespace Roslynator
         public const string EventHandlerVariable = "handler";
         public const string ForEachVariable = "item";
         public const string ForVariable = "i";
+        public const string LambdaParameter = "f";
         public const string Namespace = "Namespace";
+        public const string SecondLambdaParameter = "g";
         public const string StringBuilderVariable = "sb";
         public const string TypeParameter = "T";
         public const string Variable = "x";

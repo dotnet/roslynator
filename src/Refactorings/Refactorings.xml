@@ -991,6 +991,12 @@ i--;]]></After>
     <Syntaxes>
       <Syntax>method group</Syntax>
     </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[Func<object, object, object> func = Foo;]]></Before>
+        <After><![CDATA[Func<object, object, object> func = (f, g) => Foo(f, g)]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0138" Identifier="ReplaceMethodWithProperty" Title="Replace method with property" IsEnabledByDefault="false">
     <Syntaxes>

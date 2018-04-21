@@ -6,81 +6,61 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     internal class ReplaceMethodGroupWithLambdaRefactoring
     {
-        public void Foo(Func<string, string> action)
+        public class C
         {
-        }
-
-        public void Foo2(Action<string> action)
-        {
-        }
-
-        public void Foo()
-        {
-            Function("");
-
-            Foo(Function);
-
-            Foo(FunctionWithExpressionBody);
-
-            Foo(FunctionWithMultipleStatements);
-
-            Foo2(Action);
-
-            Foo2(ActionWithMultipleStatements);
-
-            Foo(this.Function);
-
-            Foo(FooStatic.Action);
-
-            Foo(f => f.ToLower());
-
-            Changed += OnChanged;
-
-            Foo(LocalFunction);
-
-            string LocalFunction(string value)
+            public void VM()
             {
-                return value.ToLower();
+                Action func1 = VM;
+                Action<string> func2 = VM;
+                Action<string, string> func3 = VM;
+
+                func1 = VM;
+                func2 = VM;
+                func3 = VM;
             }
-        }
 
-        private void OnChanged(object sender, EventArgs e)
-        {
-            throw new NotImplementedException();
-        }
-
-        public event EventHandler Changed;
-
-        public string Function(string value)
-        {
-            return value.ToLower();
-        }
-
-        public string FunctionWithMultipleStatements(string value)
-        {
-            value = value.ToLower();
-            return value.ToLower();
-        }
-
-        public string FunctionWithExpressionBody(string value) => value.ToLower();
-
-        public void Action(string value)
-        {
-            value.ToLower();
-        }
-
-        public void ActionWithMultipleStatements(string value)
-        {
-            value.ToLower();
-            value.ToLower();
-        }
-
-        private static class FooStatic
-        {
-            public static string Action(string value)
+            public string M()
             {
-                return value.ToLower();
+                Func<string> func1 = M;
+                Func<string, string> func2 = M;
+                Func<string, string, string> func3 = M;
+
+                func1 = M;
+                func2 = M;
+                func3 = M;
+
+                return null;
             }
+
+            public void M2(
+                Func<string> func1,
+                Func<string, string> func2,
+                Func<string, string, string> func3)
+            {
+                M2(
+                    M,
+                    M,
+                    M);
+            }
+
+            public void M3(
+                Action func1,
+                Action<string> func2,
+                Action<string, string> func3)
+            {
+                M3(
+                    VM,
+                    VM,
+                    VM);
+            }
+
+            public void VM(string s) { }
+
+            public void VM(string s1, string s2) { }
+
+            public string M(string s) => null;
+
+            public string M(string s1, string s2) => null;
         }
     }
 }

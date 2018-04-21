@@ -463,7 +463,7 @@ namespace Roslynator.CSharp.Refactorings
                     if (!fVariableDeclarator
                         && kind == SyntaxKind.VariableDeclarator)
                     {
-                        VariableDeclaratorRefactoring.ComputeRefactorings(this, (VariableDeclaratorSyntax)node);
+                        await VariableDeclaratorRefactoring.ComputeRefactoringsAsync(this, (VariableDeclaratorSyntax)node).ConfigureAwait(false);
                         fVariableDeclarator = true;
                         continue;
                     }
