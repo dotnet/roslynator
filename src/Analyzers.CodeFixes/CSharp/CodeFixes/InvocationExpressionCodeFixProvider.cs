@@ -23,7 +23,6 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.SimplifyLinqMethodChain,
                     DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfAnyMethod,
                     DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod,
                     DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag,
@@ -52,43 +51,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.SimplifyLinqMethodChain:
-                        {
-                            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
-
-                            string name = memberAccess.Name.Identifier.ValueText;
-
-                            if (name == "Cast")
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Simplify method chain",
-                                    cancellationToken => CallOfTypeInsteadOfWhereAndCastRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-                            else if (name == "Any"
-                                && invocation.ArgumentList.Arguments.Count == 1)
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Simplify method chain",
-                                    cancellationToken => CombineEnumerableWhereAndAnyRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-                            else
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Simplify method chain",
-                                    cancellationToken => SimplifyLinqMethodChainRefactoring.RefactorAsync(context.Document, invocation, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-
-                            break;
-                        }
                     case DiagnosticIdentifiers.CombineEnumerableWhereMethodChain:
                         {
                             CodeAction codeAction = CodeAction.Create(

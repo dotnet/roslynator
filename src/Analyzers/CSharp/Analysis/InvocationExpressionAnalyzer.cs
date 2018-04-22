@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
 
             RemoveRedundantStringToCharArrayCallAnalysis.Analyze(context, invocation);
 
-            CombineEnumerableWhereAndAnyAnalysis.AnalyzeInvocationExpression(context);
+            SimplifyLinqMethodChainAnalysis.AnalyzeWhereAndAny(context);
 
             if (!invocation.ContainsDiagnostics)
             {
@@ -113,19 +113,19 @@ namespace Roslynator.CSharp.Analysis
                                         {
                                             UseCountOrLengthPropertyInsteadOfAnyMethodAnalysis.Analyze(context, invocationInfo);
 
-                                            SimplifyLinqMethodChainAnalysis.Analyze(context, invocationInfo);
+                                            SimplifyLinqMethodChainAnalysis.AnalyzeWhere(context, invocationInfo);
                                             break;
                                         }
                                     case "Cast":
                                         {
-                                            CallOfTypeInsteadOfWhereAndCastAnalysis.Analyze(context, invocationInfo);
+                                            SimplifyLinqMethodChainAnalysis.AnalyzeWhereAndCast(context, invocationInfo);
                                             RemoveRedundantCastAnalyzer.Analyze(context, invocationInfo);
                                             break;
                                         }
                                     case "Count":
                                         {
                                             UseInsteadOfCountMethodAnalysis.Analyze(context, invocationInfo);
-                                            SimplifyLinqMethodChainAnalysis.Analyze(context, invocationInfo);
+                                            SimplifyLinqMethodChainAnalysis.AnalyzeWhere(context, invocationInfo);
                                             break;
                                         }
                                     case "First":
@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Analysis
                                                 context.ReportDiagnostic(DiagnosticDescriptors.UseElementAccessInsteadOfFirst, invocationInfo.Name);
                                             }
 
-                                            SimplifyLinqMethodChainAnalysis.Analyze(context, invocationInfo);
+                                            SimplifyLinqMethodChainAnalysis.AnalyzeWhere(context, invocationInfo);
                                             break;
                                         }
                                     case "ToString":
@@ -160,7 +160,7 @@ namespace Roslynator.CSharp.Analysis
                                     case "Single":
                                     case "SingleOrDefault":
                                         {
-                                            SimplifyLinqMethodChainAnalysis.Analyze(context, invocationInfo);
+                                            SimplifyLinqMethodChainAnalysis.AnalyzeWhere(context, invocationInfo);
                                             break;
                                         }
                                 }
@@ -189,6 +189,7 @@ namespace Roslynator.CSharp.Analysis
                                         }
                                     case "FirstOrDefault":
                                         {
+                                            SimplifyLinqMethodChainAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
                                             CallFindInsteadOfFirstOrDefaultAnalysis.Analyze(context, invocationInfo);
                                             break;
                                         }
