@@ -1588,6 +1588,49 @@ namespace Roslynator.CSharp
                     yield return en.Current;
             }
         }
+
+        //TODO: make public
+        internal static SeparatedSyntaxList<TNode> RemoveRange<TNode>(
+            this SeparatedSyntaxList<TNode> list,
+            int startIndex,
+            int count) where TNode : SyntaxNode
+        {
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
+
+            if (count < 0
+                || startIndex + count > list.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), count, "");
+            }
+
+            return SeparatedList(RemoveRange());
+
+            IEnumerable<TNode> RemoveRange()
+            {
+                SeparatedSyntaxList<TNode>.Enumerator en = list.GetEnumerator();
+
+                int i = 0;
+
+                while (i < startIndex
+                    && en.MoveNext())
+                {
+                    yield return en.Current;
+                    i++;
+                }
+
+                int endIndex = startIndex + count;
+
+                while (i < endIndex
+                    && en.MoveNext())
+                {
+                    i++;
+                }
+
+                while (en.MoveNext())
+                    yield return en.Current;
+            }
+        }
         #endregion SeparatedSyntaxList<T>
 
         #region StatementSyntax
@@ -1989,6 +2032,49 @@ namespace Roslynator.CSharp
 
                 foreach (TNode newNode in newNodes)
                     yield return newNode;
+
+                while (en.MoveNext())
+                    yield return en.Current;
+            }
+        }
+
+        //TODO: make public
+        internal static SyntaxList<TNode> RemoveRange<TNode>(
+            this SyntaxList<TNode> list,
+            int startIndex,
+            int count) where TNode : SyntaxNode
+        {
+            if (startIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
+
+            if (count < 0
+                || startIndex + count > list.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), count, "");
+            }
+
+            return List(RemoveRange());
+
+            IEnumerable<TNode> RemoveRange()
+            {
+                SyntaxList<TNode>.Enumerator en = list.GetEnumerator();
+
+                int i = 0;
+
+                while (i < startIndex
+                    && en.MoveNext())
+                {
+                    yield return en.Current;
+                    i++;
+                }
+
+                int endIndex = startIndex + count;
+
+                while (i < endIndex
+                    && en.MoveNext())
+                {
+                    i++;
+                }
 
                 while (en.MoveNext())
                     yield return en.Current;
