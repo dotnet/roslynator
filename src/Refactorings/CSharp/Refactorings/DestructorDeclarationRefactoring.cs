@@ -10,8 +10,9 @@ namespace Roslynator.CSharp.Refactorings
         public static void ComputeRefactorings(RefactoringContext context, DestructorDeclarationSyntax destructorDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && destructorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
+                && destructorDeclaration.Body != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(destructorDeclaration.Body)
                 && UseExpressionBodiedMemberAnalysis.IsFixable(destructorDeclaration))
             {
                 context.RegisterRefactoring(

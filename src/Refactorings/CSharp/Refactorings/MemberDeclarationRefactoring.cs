@@ -183,8 +183,9 @@ namespace Roslynator.CSharp.Refactorings
         private static void ComputeRefactorings(RefactoringContext context, OperatorDeclarationSyntax operatorDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && operatorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
+                && operatorDeclaration.Body != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body)
                 && UseExpressionBodiedMemberAnalysis.IsFixable(operatorDeclaration))
             {
                 context.RegisterRefactoring(
@@ -197,8 +198,9 @@ namespace Roslynator.CSharp.Refactorings
         private static void ComputeRefactorings(RefactoringContext context, ConversionOperatorDeclarationSyntax operatorDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && operatorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
+                && operatorDeclaration.Body != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body)
                 && UseExpressionBodiedMemberAnalysis.IsFixable(operatorDeclaration))
             {
                 context.RegisterRefactoring(

@@ -39,8 +39,9 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && methodDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
+                && methodDeclaration.Body != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(methodDeclaration.Body)
                 && UseExpressionBodiedMemberAnalysis.IsFixable(methodDeclaration))
             {
                 context.RegisterRefactoring(

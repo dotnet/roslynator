@@ -11,8 +11,9 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ConstructorDeclarationSyntax constructorDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && constructorDeclaration.Body?.Span.Contains(context.Span) == true
                 && context.SupportsCSharp6
+                && constructorDeclaration.Body != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(constructorDeclaration.Body)
                 && UseExpressionBodiedMemberAnalysis.IsFixable(constructorDeclaration))
             {
                 context.RegisterRefactoring(

@@ -47,7 +47,8 @@ namespace Roslynator.CSharp.Refactorings
                 AddTypeParameterRefactoring.ComputeRefactoring(context, localFunctionStatement);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && localFunctionStatement.Body?.Span.Contains(context.Span) == true
+                && localFunctionStatement.Body != null
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(localFunctionStatement.Body)
                 && UseExpressionBodiedMemberAnalysis.IsFixable(localFunctionStatement))
             {
                 context.RegisterRefactoring(
