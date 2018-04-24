@@ -163,16 +163,12 @@ namespace Roslynator.CSharp.Refactorings
 
                 reservedNames?.Clear();
 
-                ConstructorInitializerSyntax initializer = null;
-                ArgumentListSyntax argumentList = null;
-                var arguments = default(SeparatedSyntaxList<ArgumentSyntax>);
+                ConstructorInitializerSyntax initializer = constructorDeclaration.Initializer;
+                ArgumentListSyntax argumentList = initializer?.ArgumentList;
+                SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList?.Arguments ?? default;
 
-                if (constructorDeclaration.Initializer?.Kind() == SyntaxKind.ThisConstructorInitializer)
-                {
-                    initializer = constructorDeclaration.Initializer;
-                    argumentList = initializer.ArgumentList;
-                    arguments = argumentList.Arguments;
-                }
+                bool addToInitializer = initializer?.Kind() == SyntaxKind.ThisConstructorInitializer
+                    && argumentList != null;
 
                 SyntaxList<StatementSyntax> statements = body.Statements;
 
@@ -182,7 +178,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     parameters = parameters.Add(Parameter(fieldInfo.Type.WithoutTrivia(), parameterName));
 
-                    if (initializer != null)
+                    if (addToInitializer)
                         arguments = arguments.Add(Argument(IdentifierName(parameterName)));
 
                     statements = statements.Add(
@@ -193,7 +189,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 parameterList = parameterList.WithParameters(parameters).WithFormatterAnnotation();
 
-                if (initializer != null)
+                if (addToInitializer)
                 {
                     initializer = initializer
                         .WithArgumentList(argumentList.WithArguments(arguments))
