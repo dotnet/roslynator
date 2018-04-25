@@ -74,6 +74,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string InitializeLocalWithDefaultValue = Prefix + "0060";
         public const string InlineAliasExpression = Prefix + "0061";
         public const string InlineConstant = Prefix + "0181";
+        public const string InlineConstantValue = Prefix + "0127";
         public const string InlineMethod = Prefix + "0062";
         public const string InlineProperty = Prefix + "0198";
         public const string InlineUsingStatic = Prefix + "0180";
@@ -143,7 +144,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceEqualsExpressionWithStringEquals = Prefix + "0124";
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = Prefix + "0125";
         public const string ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = Prefix + "0126";
-        public const string ReplaceExpressionWithConstantValue = Prefix + "0127";
         public const string ReplaceForEachWithFor = Prefix + "0129";
         public const string ReplaceForEachWithForAndReverseLoop = Prefix + "0188";
         public const string ReplaceForWithForEach = Prefix + "0130";

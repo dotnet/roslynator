@@ -885,7 +885,7 @@ if (y)
     </Syntaxes>
     <Span>operator</Span>
   </Refactoring>
-  <Refactoring Id="RR0127" Identifier="ReplaceExpressionWithConstantValue" Title="Replace expression with constant value">
+  <Refactoring Id="RR0127" Identifier="InlineConstantValue" Title="Inline constant value">
     <Syntaxes>
       <Syntax>expression that has constant value</Syntax>
     </Syntaxes>
