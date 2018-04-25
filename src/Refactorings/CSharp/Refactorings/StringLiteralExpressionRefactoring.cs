@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
                                             addNameOf: true,
                                             cancellationToken: cancellationToken);
                                     },
-                                    RefactoringIdentifiers.InsertStringInterpolation);
+                                    EquivalenceKey.Join(RefactoringIdentifiers.InsertStringInterpolation, "WithNameOf"));
 
                                 break;
                             }

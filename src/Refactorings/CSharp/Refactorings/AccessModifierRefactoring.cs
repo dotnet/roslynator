@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
                             context.RegisterRefactoring(
                                 GetTitle(accessibility),
                                 cancellationToken => RefactorAsync(context.Solution, memberDeclarations, accessibility, cancellationToken),
-                                RefactoringIdentifiers.ChangeAccessibility);
+                                EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
                         }
                     }
 
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             GetTitle(accessibility),
                             cancellationToken => RefactorAsync(context.Solution, symbol, accessibility, cancellationToken),
-                                RefactoringIdentifiers.ChangeAccessibility);
+                            EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
                     }
                 }
                 else if (SyntaxAccessibility.IsValidAccessibility(node, accessibility))
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         GetTitle(accessibility),
                         cancellationToken => RefactorAsync(context.Document, node, accessibility, cancellationToken),
-                                RefactoringIdentifiers.ChangeAccessibility);
+                        EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
                 }
             }
 

@@ -40,5 +40,28 @@ namespace Roslynator
                 return Prefix + key;
             }
         }
+
+        internal static string Join(string value1, string value2)
+        {
+            if (value1 != null)
+            {
+                if (value2 != null)
+                {
+                    return value1 + Separator + value2;
+                }
+                else
+                {
+                    return value1;
+                }
+            }
+            else if (value2 != null)
+            {
+                return value2;
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }

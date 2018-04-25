@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 {
                     context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, cancellationToken), GetEquivalenceKey());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, cancellationToken), GetEquivalenceKey());
+                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, cancellationToken), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
                 }
                 else
                 {
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
                     context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(expressionStatement, statements, cancellationToken), GetEquivalenceKey());
 
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(expressionStatement, statements, cancellationToken), GetEquivalenceKey());
+                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(expressionStatement, statements, cancellationToken), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
                 }
             }
         }

@@ -48,12 +48,12 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     "Remove members above",
                     ct => ReplaceMembersAsync(context.Document, info, members.Skip(index + 1), ct),
-                    RefactoringIdentifiers.RemoveMemberDeclarations);
+                    EquivalenceKey.Join(RefactoringIdentifiers.RemoveMemberDeclarations, "Above"));
 
                 context.RegisterRefactoring(
                     "Remove members below",
                     ct => ReplaceMembersAsync(context.Document, info, members.Take(index + 1), ct),
-                    RefactoringIdentifiers.RemoveMemberDeclarations);
+                    EquivalenceKey.Join(RefactoringIdentifiers.RemoveMemberDeclarations, "Below"));
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapMemberDeclarations))

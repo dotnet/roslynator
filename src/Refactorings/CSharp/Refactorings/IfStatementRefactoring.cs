@@ -139,7 +139,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             "Reduce if nesting (recursively)",
                             cancellationToken => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, analysis.JumpKind, true, cancellationToken),
-                            RefactoringIdentifiers.ReduceIfNesting);
+                            EquivalenceKey.Join(RefactoringIdentifiers.ReduceIfNesting, "Recursive"));
                     }
                 }
             }

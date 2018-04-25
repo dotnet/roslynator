@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(
                         "Join string literals into multiline string literal",
                         cancellationToken => ToStringLiteralAsync(context.Document, concatenationInfo, multiline: true, cancellationToken: cancellationToken),
-                        RefactoringIdentifiers.JoinStringExpressions);
+                        EquivalenceKey.Join(RefactoringIdentifiers.JoinStringExpressions, "Multiline"));
                 }
             }
         }
