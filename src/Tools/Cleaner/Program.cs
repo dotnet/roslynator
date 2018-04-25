@@ -52,22 +52,10 @@ namespace Cleaner
             if (!Directory.Exists(directory))
                 return;
 
-            if (!Directory.EnumerateFileSystemEntries(directory).Any())
+            if (!Directory.EnumerateDirectories(directory).Any())
                 return;
 
             Console.WriteLine(directory);
-
-            foreach (string path in Directory.EnumerateFiles(directory, "*", SearchOption.TopDirectoryOnly))
-            {
-                try
-                {
-                    File.Delete(path);
-                }
-                catch (IOException ex)
-                {
-                    Console.WriteLine(ex.GetBaseException().Message);
-                }
-            }
 
             foreach (string path in Directory.EnumerateDirectories(directory, "*", SearchOption.TopDirectoryOnly))
             {
@@ -76,6 +64,10 @@ namespace Cleaner
                     Directory.Delete(path, recursive: true);
                 }
                 catch (IOException ex)
+                {
+                    Console.WriteLine(ex.GetBaseException().Message);
+                }
+                catch (UnauthorizedAccessException ex)
                 {
                     Console.WriteLine(ex.GetBaseException().Message);
                 }

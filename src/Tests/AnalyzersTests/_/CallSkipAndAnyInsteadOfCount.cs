@@ -13,17 +13,17 @@ namespace Roslynator.CSharp.Analyzers.Tests
         {
             IEnumerable<object> x = null;
 
-            if (x.Count() > i) { }
-            if (i < x.Count()) { }
+            if (x.Skip(i).Any()) { }
+            if (x.Skip(i).Any()) { }
 
-            if (x.Count() >= i) { }
-            if (i <= x.Count()) { }
+            if (x.Skip(i - 1).Any()) { }
+            if (x.Skip(i - 1).Any()) { }
 
-            if (x.Count() <= i) { }
-            if (i >= x.Count()) { }
+            if (!x.Skip(i).Any()) { }
+            if (!x.Skip(i).Any()) { }
 
-            if (x.Count() < i) { }
-            if (i > x.Count()) { }
+            if (!x.Skip(i - 1).Any()) { }
+            if (!x.Skip(i - 1).Any()) { }
 
             //n
 
