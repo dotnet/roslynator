@@ -34,22 +34,17 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol eventHandler = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler);
+                INamedTypeSymbol eventArgsSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
 
-                if (eventHandler == null)
+                if (eventArgsSymbol == null)
                     return;
 
-                INamedTypeSymbol eventHandlerOfT = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler_T);
-
-                if (eventHandlerOfT == null)
-                    return;
-
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f, eventHandler, eventHandlerOfT), SyntaxKind.AddAssignmentExpression);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f, eventHandler, eventHandlerOfT), SyntaxKind.SubtractAssignmentExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f, eventArgsSymbol), SyntaxKind.AddAssignmentExpression);
+                startContext.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f, eventArgsSymbol), SyntaxKind.SubtractAssignmentExpression);
             });
         }
 
-        public static void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventHandler, INamedTypeSymbol eventHandlerOfT)
+        public static void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
         {
             var assignmentExpression = (AssignmentExpressionSyntax)context.Node;
 
@@ -58,44 +53,53 @@ namespace Roslynator.CSharp.Analysis
             if (!info.Success)
                 return;
 
-            if (info.Right.Kind() != SyntaxKind.ObjectCreationExpression)
+            ExpressionSyntax right = info.Right;
+
+            if (right.Kind() != SyntaxKind.ObjectCreationExpression)
                 return;
 
-            var objectCreation = (ObjectCreationExpressionSyntax)info.Right;
-
-            if (objectCreation.SpanContainsDirectives())
+            if (right.SpanContainsDirectives())
                 return;
 
-            SemanticModel semanticModel = context.SemanticModel;
-            CancellationToken cancellationToken = context.CancellationToken;
+            ExpressionSyntax left = info.Left;
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, cancellationToken);
-
-            if (typeSymbol == null)
+            if (!left.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))
                 return;
 
-            if (!typeSymbol.Equals(eventHandler)
-                && !typeSymbol.OriginalDefinition.Equals(eventHandlerOfT))
-            {
-                return;
-            }
+            var objectCreation = (ObjectCreationExpressionSyntax)right;
 
             ExpressionSyntax expression = objectCreation
                 .ArgumentList?
                 .Arguments
                 .SingleOrDefault(shouldThrow: false)?
-                .Expression;
+                .Expression
+                .WalkDownParentheses();
 
             if (expression == null)
                 return;
 
-            if (!(semanticModel.GetSymbol(expression, cancellationToken) is IMethodSymbol))
+            if (!expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.SimpleMemberAccessExpression))
                 return;
 
-            if (semanticModel.GetSymbol(info.Left, cancellationToken)?.Kind != SymbolKind.Event)
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            if (!(semanticModel.GetSymbol(assignmentExpression, cancellationToken) is IMethodSymbol methodSymbol))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, info.Right);
+            if (!methodSymbol.MethodKind.Is(MethodKind.EventAdd, MethodKind.EventRemove))
+                return;
+
+            if (!(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type is INamedTypeSymbol typeSymbol))
+                return;
+
+            if (!SymbolUtility.IsEventHandlerMethod(typeSymbol.DelegateInvokeMethod, eventArgsSymbol))
+                return;
+
+            if (semanticModel.GetSymbol(expression, cancellationToken)?.Kind != SymbolKind.Method)
+                return;
+
+            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right);
 
             context.ReportToken(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
             context.ReportNode(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);

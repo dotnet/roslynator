@@ -48,17 +48,23 @@ namespace Roslynator
 
         public static bool IsEventHandlerMethod(IMethodSymbol methodSymbol, INamedTypeSymbol eventArgsSymbol)
         {
-            if (methodSymbol == null)
-                return false;
+            if (methodSymbol?.ReturnsVoid == true)
+            {
+                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
-            if (!methodSymbol.ReturnsVoid)
-                return false;
+                if (parameters.Length == 2
+                    && parameters[0].Type.SpecialType == SpecialType.System_Object)
+                {
+                    ITypeSymbol type = parameters[1].Type;
 
-            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+                    if (type.Kind == SymbolKind.TypeParameter)
+                        return type.Name.EndsWith("EventArgs", StringComparison.Ordinal);
 
-            return parameters.Length == 2
-                && parameters[0].Type.IsObject()
-                && parameters[1].Type.EqualsOrInheritsFrom(eventArgsSymbol);
+                    return type.EqualsOrInheritsFrom(eventArgsSymbol);
+                }
+            }
+
+            return false;
         }
 
         public static bool HasAccessibleIndexer(
