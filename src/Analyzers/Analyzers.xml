@@ -2233,8 +2233,16 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool x = condition ? true : false; // RCS1104]]></Before>
-        <After><![CDATA[bool x = condition;]]></After>
+        <Before><![CDATA[bool x = y ? true : false; // RCS1104]]></Before>
+        <After><![CDATA[bool x = y;]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[bool x = y ? z : false; // RCS1104]]></Before>
+        <After><![CDATA[bool x = y && z;]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[bool x = y ? true : z; // RCS1104]]></Before>
+        <After><![CDATA[bool x = y || z;]]></After>
       </Sample>
     </Samples>
   </Analyzer>

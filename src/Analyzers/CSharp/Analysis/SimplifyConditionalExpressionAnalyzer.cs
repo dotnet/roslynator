@@ -43,22 +43,25 @@ namespace Roslynator.CSharp.Analysis
             if (!info.Success)
                 return;
 
-            switch (info.WhenTrue.Kind())
+            SyntaxKind trueKind = info.WhenTrue.Kind();
+
+            if (trueKind == SyntaxKind.TrueLiteralExpression)
             {
-                case SyntaxKind.TrueLiteralExpression:
-                    {
-                        if (info.WhenFalse.Kind() == SyntaxKind.FalseLiteralExpression)
-                            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+            }
+            else
+            {
+                SyntaxKind falseKind = info.WhenFalse.Kind();
 
-                        break;
-                    }
-                case SyntaxKind.FalseLiteralExpression:
-                    {
-                        if (info.WhenFalse.Kind() == SyntaxKind.TrueLiteralExpression)
-                            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
-
-                        break;
-                    }
+                if (falseKind == SyntaxKind.FalseLiteralExpression)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                }
+                else if (trueKind == SyntaxKind.FalseLiteralExpression
+                    && falseKind == SyntaxKind.TrueLiteralExpression)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                }
             }
         }
     }

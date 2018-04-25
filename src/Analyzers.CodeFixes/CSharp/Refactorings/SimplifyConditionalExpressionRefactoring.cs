@@ -6,7 +6,9 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
+using Roslynator.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -17,25 +19,78 @@ namespace Roslynator.CSharp.Refactorings
             ConditionalExpressionSyntax conditionalExpression,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            ConditionalExpressionInfo info = SyntaxInfo.ConditionalExpressionInfo(conditionalExpression);
 
-            ExpressionSyntax condition = conditionalExpression.Condition;
+            ExpressionSyntax condition = info.Condition;
+            ExpressionSyntax whenTrue = info.WhenTrue;
+            ExpressionSyntax whenFalse = info.WhenFalse;
 
-            ExpressionSyntax newNode = (conditionalExpression.WhenTrue.WalkDownParentheses().IsKind(SyntaxKind.TrueLiteralExpression))
-                ? condition
-                : Negator.LogicallyNegate(condition, semanticModel, cancellationToken);
+            SyntaxKind trueKind = whenTrue.Kind();
+            SyntaxKind falseKind = whenFalse.Kind();
 
+            ExpressionSyntax newNode = null;
+
+            if (trueKind == SyntaxKind.TrueLiteralExpression)
+            {
+                if (falseKind == SyntaxKind.FalseLiteralExpression)
+                {
+                    newNode = CreateNewNode(conditionalExpression, condition);
+                }
+                else
+                {
+                    SyntaxTriviaList trailingTrivia = info
+                        .QuestionToken
+                        .LeadingTrivia
+                        .AddRange(info.QuestionToken.TrailingTrivia)
+                        .AddRange(whenTrue.GetLeadingTrivia())
+                        .EmptyIfWhitespace();
+
+                    newNode = LogicalOrExpression(
+                        condition.Parenthesize().AppendToTrailingTrivia(trailingTrivia),
+                        Token(info.ColonToken.LeadingTrivia, SyntaxKind.BarBarToken, info.ColonToken.TrailingTrivia),
+                        whenFalse);
+                }
+            }
+            else if (falseKind == SyntaxKind.FalseLiteralExpression)
+            {
+                SyntaxTriviaList trailingTrivia = whenTrue
+                    .GetTrailingTrivia()
+                    .AddRange(info.ColonToken.LeadingTrivia)
+                    .AddRange(info.ColonToken.TrailingTrivia)
+                    .AddRange(whenFalse.GetLeadingTrivia())
+                    .EmptyIfWhitespace()
+                    .AddRange(whenFalse.GetTrailingTrivia());
+
+                newNode = LogicalAndExpression(
+                    condition.Parenthesize(),
+                    Token(info.QuestionToken.LeadingTrivia, SyntaxKind.AmpersandAmpersandToken, info.QuestionToken.TrailingTrivia),
+                    whenTrue.WithTrailingTrivia(trailingTrivia));
+            }
+            else if (trueKind == SyntaxKind.FalseLiteralExpression
+                && falseKind == SyntaxKind.TrueLiteralExpression)
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                newNode = CreateNewNode(conditionalExpression, Negator.LogicallyNegate(condition, semanticModel, cancellationToken));
+            }
+
+            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static ExpressionSyntax CreateNewNode(
+            ConditionalExpressionSyntax conditionalExpression,
+            ExpressionSyntax newNode)
+        {
             SyntaxTriviaList trailingTrivia = conditionalExpression
-                .DescendantTrivia(TextSpan.FromBounds(condition.Span.End, conditionalExpression.Span.End))
+                .DescendantTrivia(TextSpan.FromBounds(conditionalExpression.Condition.Span.End, conditionalExpression.Span.End))
                 .ToSyntaxTriviaList()
                 .EmptyIfWhitespace()
                 .AddRange(conditionalExpression.GetTrailingTrivia());
 
-            newNode = newNode
+            return newNode
+                .WithSimplifierAnnotation()
                 .WithLeadingTrivia(conditionalExpression.GetLeadingTrivia())
                 .WithTrailingTrivia(trailingTrivia);
-
-            return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }
