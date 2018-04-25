@@ -28,6 +28,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 
         public static void Free(ReturnTaskInsteadOfNullWalker walker)
         {
+            walker.Clear();
             _cachedInstance = walker;
         }
 

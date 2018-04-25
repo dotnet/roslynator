@@ -64,6 +64,8 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                                 }
                             }
                         }
+
+                        assigned.Clear();
                     }
                 }
             }

@@ -17,21 +17,29 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         public Collection<NodeSymbolInfo> Nodes { get; } = new Collection<NodeSymbolInfo>();
 
-        public SemanticModel SemanticModel { get; set; }
+        public SemanticModel SemanticModel { get; private set; }
 
-        public CancellationToken CancellationToken { get; set; }
+        public CancellationToken CancellationToken { get; private set; }
 
         public bool IsAnyNodeConst { get; private set; }
 
         public bool IsAnyNodeDelegate { get; private set; }
 
-        public void Reset()
+        public void SetValues(SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            Nodes.Clear();
-            IsAnyNodeConst = false;
-            IsAnyNodeDelegate = false;
             _isEmpty = false;
             _containingMethodSymbol = null;
+
+            Nodes.Clear();
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+            IsAnyNodeConst = false;
+            IsAnyNodeDelegate = false;
+        }
+
+        public void Clear()
+        {
+            SetValues(default(SemanticModel), default(CancellationToken));
         }
 
         private void CheckName(string name, SimpleNameSyntax node)
@@ -264,10 +272,10 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         //    base.VisitBracketedArgumentList(node);
         //}
 
-        public override void VisitBracketedParameterList(BracketedParameterListSyntax node)
-        {
-            base.VisitBracketedParameterList(node);
-        }
+        //public override void VisitBracketedParameterList(BracketedParameterListSyntax node)
+        //{
+        //    base.VisitBracketedParameterList(node);
+        //}
 
         public override void VisitBreakStatement(BreakStatementSyntax node)
         {

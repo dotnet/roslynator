@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
 
         public bool IsMatch { get; private set; }
 
-        public void Reset()
+        public void Clear()
         {
             Identifiers.Clear();
             IsMatch = false;

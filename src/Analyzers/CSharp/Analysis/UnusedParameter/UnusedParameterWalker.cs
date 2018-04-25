@@ -26,11 +26,20 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         public bool IsAnyTypeParameter { get; set; }
 
-        public void Reset()
+        public void SetValues(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
         {
-            Nodes.Clear();
-            IsAnyTypeParameter = false;
             _isEmpty = false;
+
+            Nodes.Clear();
+            SemanticModel = semanticModel;
+            CancellationToken = cancellationToken;
+            IsIndexer = isIndexer;
+            IsAnyTypeParameter = false;
+        }
+
+        public void Clear()
+        {
+            SetValues(default(SemanticModel), default(CancellationToken));
         }
 
         public void AddParameter(ParameterSyntax parameter)

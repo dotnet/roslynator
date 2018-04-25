@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             if (walker != null)
             {
                 _cachedInstance = null;
-                walker.Reset();
+                walker.Clear();
                 return walker;
             }
 
@@ -25,6 +25,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
 
         public static void Free(MarkLocalVariableAsConstWalker walker)
         {
+            walker.Clear();
             _cachedInstance = walker;
         }
     }

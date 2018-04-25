@@ -19,16 +19,14 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (walker != null)
             {
                 _cachedInstance = null;
-                walker.Reset();
+                walker.Clear();
             }
             else
             {
                 walker = new UnusedParameterWalker();
             }
 
-            walker.SemanticModel = semanticModel;
-            walker.CancellationToken = cancellationToken;
-            walker.IsIndexer = isIndexer;
+            walker.SetValues(semanticModel, cancellationToken, isIndexer);
 
             return walker;
         }

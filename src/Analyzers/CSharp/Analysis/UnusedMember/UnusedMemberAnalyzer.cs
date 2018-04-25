@@ -188,7 +188,9 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             walker.Visit(typeDeclaration);
 
-            foreach (NodeSymbolInfo info in UnusedMemberWalkerCache.GetNodesAndFree(walker))
+            Collection<NodeSymbolInfo> unusedMembers = UnusedMemberWalkerCache.GetNodesAndFree(walker);
+
+            foreach (NodeSymbolInfo info in unusedMembers)
             {
                 SyntaxNode node = info.Node;
 
@@ -210,6 +212,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                     ReportDiagnostic(context, node, CSharpFacts.GetTitle(node));
                 }
             }
+
+            unusedMembers.Clear();
 
             bool ShouldAnalyzeDebuggerDisplayAttribute()
             {

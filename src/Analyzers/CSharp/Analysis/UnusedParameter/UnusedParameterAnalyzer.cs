@@ -146,6 +146,8 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             foreach (KeyValuePair<string, NodeSymbolInfo> kvp in unusedNodes)
                 ReportDiagnostic(context, kvp.Value.Node);
+
+            unusedNodes.Clear();
         }
 
         public static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
@@ -310,8 +312,12 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         private static void Analyze(SyntaxNodeAnalysisContext context, ParameterInfo parameterInfo, bool isIndexer = false)
         {
-            foreach (KeyValuePair<string, NodeSymbolInfo> kvp in FindUnusedNodes(context, parameterInfo, isIndexer))
+            Dictionary<string, NodeSymbolInfo> unusedNodes = FindUnusedNodes(context, parameterInfo, isIndexer);
+
+            foreach (KeyValuePair<string, NodeSymbolInfo> kvp in unusedNodes)
                 ReportDiagnostic(context, kvp.Value.Node);
+
+            unusedNodes.Clear();
         }
 
         private static Dictionary<string, NodeSymbolInfo> FindUnusedNodes(SyntaxNodeAnalysisContext context, ParameterInfo parameterInfo, bool isIndexer = false)
