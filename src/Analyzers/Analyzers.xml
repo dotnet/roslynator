@@ -4730,4 +4730,48 @@ else
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="UsePatternMatchingInsteadOfIsAndCast">
+    <Id>RCS1220</Id>
+    <Title>Use pattern matching instead of combination of 'is' operator and cast operator.</Title>
+    <MessageFormat>Use pattern matching instead of combination of 'is' operator and cast operator.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x is T && Foo((T)x)) // RCS1220
+{
+}]]></Before>
+        <After><![CDATA[if (x is T y && Foo(y))
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UsePatternMatchingInsteadOfAsAndNullCheck">
+    <Id>RCS1221</Id>
+    <Title>Use pattern matching instead of combination of 'as' operator and null check.</Title>
+    <MessageFormat>Use pattern matching instead of combination of 'as' operator and null check.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var y = x as Foo; // RCS1221
+
+if (y == null)
+{
+    return;
+}]]></Before>
+        <After><![CDATA[if (!(x is Foo y))
+{
+    return;
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

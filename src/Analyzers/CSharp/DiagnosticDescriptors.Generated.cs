@@ -2459,5 +2459,29 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1220</summary>
+        public static readonly DiagnosticDescriptor UsePatternMatchingInsteadOfIsAndCast = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast, 
+            title:              "Use pattern matching instead of combination of 'is' operator and cast operator.", 
+            messageFormat:      "Use pattern matching instead of combination of 'is' operator and cast operator.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1221</summary>
+        public static readonly DiagnosticDescriptor UsePatternMatchingInsteadOfAsAndNullCheck = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck, 
+            title:              "Use pattern matching instead of combination of 'as' operator and null check.", 
+            messageFormat:      "Use pattern matching instead of combination of 'as' operator and null check.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck}", 
+            customTags:         Array.Empty<string>());
+
     }
 }
