@@ -200,6 +200,15 @@ namespace Roslynator
                 }
             }
         }
+
+        //TODO: make public
+        internal static bool HasTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        {
+            int count = list.Count;
+
+            return count > 0
+                && count == list.SeparatorCount;
+        }
         #endregion SeparatedSyntaxList<T>
 
         #region SyntaxList<T>
@@ -1210,6 +1219,15 @@ namespace Roslynator
 
             triviaList = default(SyntaxTriviaList);
             return false;
+        }
+
+        //TODO: make public
+        internal static SyntaxTriviaList GetContainingList(this SyntaxTrivia trivia)
+        {
+            if (!TryGetContainingList(trivia, out SyntaxTriviaList list))
+                throw new ArgumentException("Trivia is not contained in a list.", nameof(trivia));
+
+            return list;
         }
 
         internal static int GetSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))

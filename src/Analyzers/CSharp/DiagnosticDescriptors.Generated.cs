@@ -2483,5 +2483,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UsePatternMatchingInsteadOfAsAndNullCheck}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1222</summary>
+        public static readonly DiagnosticDescriptor MergePreprocessorDirectives = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.MergePreprocessorDirectives, 
+            title:              "Merge preprocessor directives.", 
+            messageFormat:      "Merge preprocessor directives.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MergePreprocessorDirectives}", 
+            customTags:         Array.Empty<string>());
+
     }
 }
