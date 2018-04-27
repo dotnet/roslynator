@@ -14,10 +14,9 @@ namespace Roslynator.Refactorings.Tests
         private static CodeRefactoringProvider CodeRefactoringProvider { get; } = new RoslynatorCodeRefactoringProvider();
 
         //[Fact]
-        public static void TestCodeRefactoring()
+        public static void TestRefactoring()
         {
-            VerifyRefactoring(
-@"
+            VerifyRefactoring(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +33,7 @@ class C
 
         //[Theory]
         //[InlineData("", "")]
-        public static void TestCodeRefactoring2(string fixableCode, string fixedCode)
+        public static void TestRefactoring2(string fixableCode, string fixedCode)
         {
             VerifyRefactoring(@"
 using System;
@@ -51,10 +50,9 @@ class C
         }
 
         //[Fact]
-        public static void TestNoCodeRefactoring()
+        public static void TestNoRefactoring()
         {
-            VerifyNoRefactoring(
-@"
+            VerifyNoRefactoring(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;

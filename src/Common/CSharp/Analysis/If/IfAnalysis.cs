@@ -206,7 +206,9 @@ namespace Roslynator.CSharp.Analysis.If
             IfToReturnWithConditionalExpressionAnalysis ifToReturnWithConditionalExpression = null;
 
             if (options.UseConditionalExpression
-                && (!IsBooleanLiteralExpression(expression1.Kind()) || !IsBooleanLiteralExpression(expression2.Kind())))
+                && (!IsBooleanLiteralExpression(expression1.Kind()) || !IsBooleanLiteralExpression(expression2.Kind()))
+                && !IsNullLiteralConvertedToNullableOfT(expression1, semanticModel, cancellationToken)
+                && !IsNullLiteralConvertedToNullableOfT(expression2, semanticModel, cancellationToken))
             {
                 ifToReturnWithConditionalExpression = IfToReturnWithConditionalExpressionAnalysis.Create(ifStatement, expression1, expression2, semanticModel, isYield);
             }
@@ -316,8 +318,12 @@ namespace Roslynator.CSharp.Analysis.If
                 }
             }
 
-            if (options.UseConditionalExpression)
+            if (options.UseConditionalExpression
+                && !IsNullLiteralConvertedToNullableOfT(right1, semanticModel, cancellationToken)
+                && !IsNullLiteralConvertedToNullableOfT(right2, semanticModel, cancellationToken))
+            {
                 return new IfElseToAssignmentWithConditionalExpressionAnalysis(ifStatement, left1, right1, right2, semanticModel).ToImmutableArray();
+            }
 
             return Empty;
         }
@@ -408,12 +414,12 @@ namespace Roslynator.CSharp.Analysis.If
                 if (kind1 == SyntaxKind.LocalDeclarationStatement)
                 {
                     if (kind2 == SyntaxKind.IfStatement)
-                        return Analyze((LocalDeclarationStatementSyntax)statement1, (IfStatementSyntax)statement2, options, semanticModel);
+                        return Analyze((LocalDeclarationStatementSyntax)statement1, (IfStatementSyntax)statement2, options, semanticModel, cancellationToken);
                 }
                 else if (kind1 == SyntaxKind.ExpressionStatement
                     && kind2 == SyntaxKind.IfStatement)
                 {
-                    return Analyze((ExpressionStatementSyntax)statement1, (IfStatementSyntax)statement2, options, semanticModel);
+                    return Analyze((ExpressionStatementSyntax)statement1, (IfStatementSyntax)statement2, options, semanticModel, cancellationToken);
                 }
             }
 
@@ -424,7 +430,8 @@ namespace Roslynator.CSharp.Analysis.If
             LocalDeclarationStatementSyntax localDeclarationStatement,
             IfStatementSyntax ifStatement,
             IfAnalysisOptions options,
-            SemanticModel semanticModel)
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             VariableDeclaratorSyntax declarator = localDeclarationStatement
                 .Declaration?
@@ -467,6 +474,12 @@ namespace Roslynator.CSharp.Analysis.If
             if (!options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(localDeclarationStatement.SpanStart, ifStatement.Span.End)))
                 return Empty;
 
+            if (IsNullLiteralConvertedToNullableOfT(assignment1.Right, semanticModel, cancellationToken)
+                || IsNullLiteralConvertedToNullableOfT(assignment2.Right, semanticModel, cancellationToken))
+            {
+                return Empty;
+            }
+
             return new LocalDeclarationAndIfElseToAssignmentWithConditionalExpressionAnalysis(localDeclarationStatement, ifStatement, assignment1.Right, assignment2.Right, semanticModel).ToImmutableArray();
         }
 
@@ -474,7 +487,8 @@ namespace Roslynator.CSharp.Analysis.If
             ExpressionStatementSyntax expressionStatement,
             IfStatementSyntax ifStatement,
             IfAnalysisOptions options,
-            SemanticModel semanticModel)
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             SimpleAssignmentStatementInfo assignment = SyntaxInfo.SimpleAssignmentStatementInfo(expressionStatement);
 
@@ -501,6 +515,12 @@ namespace Roslynator.CSharp.Analysis.If
 
             if (!options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))
                 return Empty;
+
+            if (IsNullLiteralConvertedToNullableOfT(assignment1.Right, semanticModel, cancellationToken)
+                || IsNullLiteralConvertedToNullableOfT(assignment2.Right, semanticModel, cancellationToken))
+            {
+                return Empty;
+            }
 
             return new AssignmentAndIfElseToAssignmentWithConditionalExpressionAnalysis(expressionStatement, assignment.Right, ifStatement, assignment1.Right, assignment2.Right, semanticModel).ToImmutableArray();
         }
@@ -582,6 +602,16 @@ namespace Roslynator.CSharp.Analysis.If
                 return null;
 
             return memberAccessExpression.Expression;
+        }
+
+        private static bool IsNullLiteralConvertedToNullableOfT(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            return expression.IsKind(SyntaxKind.NullLiteralExpression)
+                && semanticModel
+                    .GetTypeInfo(expression, cancellationToken)
+                    .ConvertedType?
+                    .OriginalDefinition
+                    .SpecialType == SpecialType.System_Nullable_T;
         }
     }
 }
