@@ -58,8 +58,7 @@ class C
         //[Fact]
         public static void TestNoDiagnostic()
         {
-            VerifyNoDiagnostic(
-@"
+            VerifyNoDiagnostic(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
