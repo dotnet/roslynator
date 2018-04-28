@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
@@ -14,7 +15,19 @@ namespace Roslynator
 
         public static Document CreateDocument(string source, string language)
         {
-            return CreateProject(source, language).Documents.First();
+            return CreateDocument(source, Array.Empty<string>(), language);
+        }
+
+        public static Document CreateDocument(string source, string[] additionalSources, string language)
+        {
+            Project project = CreateProject(source, language);
+
+            Document document = project.Documents.First();
+
+            if (additionalSources.Length > 0)
+                project = AddDocuments(project, additionalSources, language, fileNumberingBase: 1);
+
+            return project.GetDocument(document.Id);
         }
 
         public static IEnumerable<Document> CreateDocuments(IEnumerable<string> sources, string language)
@@ -42,9 +55,14 @@ namespace Roslynator
         {
             Project project = (language == LanguageNames.CSharp) ? EmptyCSharpProject : CreateProject(language);
 
+            return AddDocuments(project, sources, language);
+        }
+
+        private static Project AddDocuments(Project project, IEnumerable<string> sources, string language, int fileNumberingBase = FileUtility.FileNumberingBase)
+        {
             Solution solution = project.Solution;
 
-            int count = FileUtility.FileNumberingBase;
+            int count = fileNumberingBase;
             foreach (string source in sources)
             {
                 string newFileName = FileUtility.CreateFileName(suffix: count, language: language);

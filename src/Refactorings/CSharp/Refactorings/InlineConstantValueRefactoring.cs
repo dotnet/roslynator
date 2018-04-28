@@ -21,13 +21,9 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            LiteralExpressionSyntax literalExpression = null;
-
             var optional = default(Optional<object>);
 
-            CancellationToken cancellationToken = context.CancellationToken;
-
-            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+            ISymbol symbol = semanticModel.GetSymbol(expression, context.CancellationToken);
 
             if (symbol?.IsErrorType() != false)
                 return;
@@ -39,76 +35,92 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (fieldSymbol.ContainingType?.TypeKind == TypeKind.Enum)
                     return;
+            }
+            else if (symbol is ILocalSymbol localSymbol)
+            {
+                if (!localSymbol.HasConstantValue)
+                    return;
+            }
+            else
+            {
+                optional = semanticModel.GetConstantValue(expression, context.CancellationToken);
 
-                optional = new Optional<object>(fieldSymbol.ConstantValue);
+                if (!optional.HasValue)
+                    return;
+            }
 
+            context.RegisterRefactoring(
+                "Inline constant value",
+                ct => RefactorAsync(context.Document, expression, symbol, optional, semanticModel, ct),
+                RefactoringIdentifiers.InlineConstantValue);
+        }
+
+        private static Task<Document> RefactorAsync(
+            Document document,
+            ExpressionSyntax expression,
+            ISymbol symbol,
+            Optional<object> optional,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            LiteralExpressionSyntax literalExpression = (optional.HasValue)
+                ? LiteralExpression(optional.Value)
+                : GetLiteralExpression(symbol, semanticModel, cancellationToken);
+
+            SyntaxNode oldNode = expression;
+
+            if (oldNode.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+            {
+                var memberAccessExpression = (MemberAccessExpressionSyntax)oldNode.Parent;
+
+                if (memberAccessExpression.Name == expression)
+                    oldNode = memberAccessExpression;
+            }
+
+            return document.ReplaceNodeAsync(oldNode, literalExpression.WithTriviaFrom(expression).Parenthesize(), cancellationToken);
+        }
+
+        private static LiteralExpressionSyntax GetLiteralExpression(ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (symbol is IFieldSymbol fieldSymbol)
+            {
                 while (fieldSymbol.GetSyntaxOrDefault(cancellationToken) is VariableDeclaratorSyntax variableDeclarator)
                 {
                     ExpressionSyntax value = variableDeclarator.Initializer.Value;
 
-                    literalExpression = value.WalkDownParentheses() as LiteralExpressionSyntax;
+                    if (value.WalkDownParentheses() is LiteralExpressionSyntax literalExpression)
+                        return literalExpression;
 
-                    if (literalExpression != null)
-                        break;
+                    if (semanticModel.SyntaxTree != value.SyntaxTree)
+                        semanticModel = semanticModel.Compilation.GetSemanticModel(value.SyntaxTree);
 
                     fieldSymbol = semanticModel.GetSymbol(value, cancellationToken) as IFieldSymbol;
 
                     if (fieldSymbol == null)
                         break;
                 }
-            }
-            else if (symbol is ILocalSymbol localSymbol)
-            {
-                if (!localSymbol.HasConstantValue)
-                    return;
 
-                optional = new Optional<object>(localSymbol.ConstantValue);
+                return LiteralExpression(fieldSymbol.ConstantValue);
+            }
+            else
+            {
+                var localSymbol = (ILocalSymbol)symbol;
 
                 while (localSymbol.GetSyntaxOrDefault(cancellationToken) is VariableDeclaratorSyntax variableDeclarator)
                 {
                     ExpressionSyntax value = variableDeclarator.Initializer.Value;
 
-                    literalExpression = value.WalkDownParentheses() as LiteralExpressionSyntax;
-
-                    if (literalExpression != null)
-                        break;
+                    if (value.WalkDownParentheses() is LiteralExpressionSyntax literalExpression)
+                        return literalExpression;
 
                     localSymbol = semanticModel.GetSymbol(value, cancellationToken) as ILocalSymbol;
 
                     if (localSymbol == null)
                         break;
                 }
+
+                return LiteralExpression(localSymbol.ConstantValue);
             }
-            else
-            {
-                optional = semanticModel.GetConstantValue(expression, cancellationToken);
-            }
-
-            if (literalExpression == null)
-            {
-                if (!optional.HasValue)
-                    return;
-
-                literalExpression = LiteralExpression(optional.Value);
-            }
-
-            context.RegisterRefactoring(
-                "Inline constant value",
-                ct =>
-                {
-                    SyntaxNode oldNode = expression;
-
-                    if (oldNode.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-                    {
-                        var memberAccessExpression = (MemberAccessExpressionSyntax)oldNode.Parent;
-
-                        if (memberAccessExpression.Name == expression)
-                            oldNode = memberAccessExpression;
-                    }
-
-                    return context.Document.ReplaceNodeAsync(oldNode, literalExpression.WithTriviaFrom(expression).Parenthesize(), ct);
-                },
-                RefactoringIdentifiers.InlineConstantValue);
         }
     }
 }

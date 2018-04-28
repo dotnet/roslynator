@@ -24,7 +24,28 @@ namespace Roslynator.Tests
             string equivalenceKey = null,
             bool allowNewCompilerDiagnostics = false)
         {
-            Document document = WorkspaceFactory.CreateDocument(source, language);
+            VerifyRefactoring(
+                source,
+                Array.Empty<string>(),
+                newSource,
+                spans,
+                refactoringProvider,
+                language,
+                equivalenceKey,
+                allowNewCompilerDiagnostics);
+        }
+
+        public static void VerifyRefactoring(
+            string source,
+            string[] additionalSources,
+            string newSource,
+            IEnumerable<TextSpan> spans,
+            CodeRefactoringProvider refactoringProvider,
+            string language,
+            string equivalenceKey = null,
+            bool allowNewCompilerDiagnostics = false)
+        {
+            Document document = WorkspaceFactory.CreateDocument(source, additionalSources, language);
 
             foreach (TextSpan span in spans.OrderByDescending(f => f.Start))
             {
