@@ -1,25 +1,30 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Roslynator.CSharp;
+using Roslynator.Tests;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpCompilerCodeFixVerifier;
 
-namespace Roslynator.CodeFixes.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public static class CSTests
+    public class CSTests : AbstractCSharpCompilerCodeFixVerifier
     {
-        private const string DiagnosticId = CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands;
+        public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands;
 
-        private static CodeFixProvider CodeFixProvider { get; }
+        public override CodeFixProvider FixProvider { get; }
+
+        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default;
 
         //[Fact]
-        public static void TestCodeFix()
+        public async Task Test()
         {
-            VerifyFix(@"
+            await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 class C
 {
@@ -28,17 +33,18 @@ class C
     }
 }
 ", @"
-", DiagnosticId, CodeFixProvider, EquivalenceKey.Create(DiagnosticId));
+", EquivalenceKey.Create(DiagnosticId));
         }
 
         //[Theory]
         //[InlineData("", "")]
-        public static void TestCodeFix2(string fixableCode, string fixedCode)
+        public async Task Test(string fromData, string toData)
         {
-            const string sourceTemplate = @"
+            await VerifyFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 class C
 {
@@ -46,19 +52,17 @@ class C
     {
     }
 }
-";
-
-            VerifyFix(sourceTemplate, fixableCode, fixedCode, DiagnosticId, CodeFixProvider, EquivalenceKey.Create(DiagnosticId));
+", fromData, toData, EquivalenceKey.Create(DiagnosticId));
         }
 
         //[Fact]
-        public static void TestNoCodeFix()
+        public async Task TestNoFix()
         {
-            VerifyNoFix(
-@"
+            await VerifyNoFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 class C
 {
@@ -66,7 +70,7 @@ class C
     {
     }
 }
-", CodeFixProvider, EquivalenceKey.Create(DiagnosticId));
+", EquivalenceKey.Create(DiagnosticId));
         }
     }
 }

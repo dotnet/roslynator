@@ -1,23 +1,20 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.CSharp.Refactorings;
+using System.Threading.Tasks;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpCodeRefactoringVerifier;
 
-namespace Roslynator.Refactorings.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public static class RR0173WrapInElseClauseTests
+    public class RR0173WrapInElseClauseTests : AbstractCSharpCodeRefactoringVerifier
     {
-        private const string RefactoringId = RefactoringIdentifiers.WrapInElseClause;
-
-        private static CodeRefactoringProvider CodeRefactoringProvider { get; } = new RoslynatorCodeRefactoringProvider();
+        public override string RefactoringId { get; } = RefactoringIdentifiers.WrapInElseClause;
 
         [Fact]
-        public static void TestCodeRefactoring()
+        public async Task Test_IfWithBlock()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     public string M(bool f)
@@ -27,7 +24,7 @@ class C
             return null;
         }
 
-<<<        return null;>>>
+[|        return null;|]
     }
 }
 ", @"
@@ -45,13 +42,13 @@ class C
         }
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring2()
+        public async Task Test_If_WithEmbeddedStatement()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     public string M(bool f)
@@ -59,7 +56,7 @@ class C
         if (f)
             return null;
 
-<<<        return null;>>>
+[|        return null;|]
     }
 }
 ", @"
@@ -73,13 +70,13 @@ class C
             return null;
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring3()
+        public async Task Test_IfWithBlock_MultipleStatements()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     public string M(bool f)
@@ -90,8 +87,8 @@ class C
             return null;
         }
 
-<<<        M(f);
-        return null;>>>
+[|        M(f);
+        return null;|]
     }
 }
 ", @"
@@ -111,13 +108,13 @@ class C
         }
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring4()
+        public async Task Test_IfElseIf()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 using System;
 
 class C
@@ -145,7 +142,7 @@ class C
                 throw new InvalidOperationException();
             }
 
-<<<            return null;>>>
+[|            return null;|]
         }
 
         return null;
@@ -187,13 +184,13 @@ class C
         return null;
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestNoCodeRefactoring()
+        public async Task TestNoRefactoring_IfWithoutJumpStatement()
         {
-            VerifyNoRefactoring(@"
+            await VerifyNoRefactoringAsync(@"
 class C
 {
     public string M(bool f)
@@ -203,9 +200,18 @@ class C
             M(f);
         }
 
-<<<        return null;>>>
+[|        return null;|]
     }
+}
+", RefactoringId);
+        }
 
+        [Fact]
+        public async Task TestNoRefactoring_IfElse()
+        {
+            await VerifyNoRefactoringAsync(@"
+class C
+{
     public string M2(bool f)
     {
         if (f)
@@ -216,10 +222,10 @@ class C
         {
         }
 
-<<<        return null;>>>
+[|        return null;|]
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
     }
 }

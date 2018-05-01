@@ -1,42 +1,60 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS1008UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousTests
+    public class RCS1008UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new UseExplicitTypeInsteadOfVarCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UseExplicitTypeInsteadOfVarCodeFixProvider();
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix()
+        public async Task Test_LocalVariable()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        [|var|] a = ""a"";
+        [|var|] s = a;
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string a = ""a"";
+        string s = a;
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_DeclarationExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class C
 {
-    public void B()
+    void M()
     {
-        <<<var>>> a = ""a"";
-
-        <<<var>>> s = a;
-
         string value = null;
-        if (DateTime.TryParse(s, out <<<var>>> result))
-        {
-        }
+        if (DateTime.TryParse(value, out [|var|] result)) { }
     }
 }
 ", @"
@@ -44,33 +62,27 @@ using System;
 
 class C
 {
-    public void B()
+    void M()
     {
-        string a = ""a"";
-
-        string s = a;
-
         string value = null;
-        if (DateTime.TryParse(s, out DateTime result))
-        {
-        }
+        if (DateTime.TryParse(value, out DateTime result)) { }
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_Tuple()
+        public async Task Test_Tuple()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
 class C
 {
-    public (IEnumerable<DateTime> e1, string e2) M()
+    (IEnumerable<DateTime> e1, string e2) M()
     {
-        <<<var>>> x = M();
+        [|var|] x = M();
 
         return default((IEnumerable<DateTime>, string));
     }
@@ -81,25 +93,25 @@ using System.Collections.Generic;
 
 class C
 {
-    public (IEnumerable<DateTime> e1, string e2) M()
+    (IEnumerable<DateTime> e1, string e2) M()
     {
         (IEnumerable<DateTime> e1, string e2) x = M();
 
         return default((IEnumerable<DateTime>, string));
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        internal static void TestNoDiagnostic()
+        internal async Task TestNoDiagnostic()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 using System;
 
 class C
 {
-    public void B()
+    void M()
     {
         string a = ""a"";
 
@@ -111,7 +123,7 @@ class C
         }
     }
 }
-", Descriptor, Analyzer);
+");
         }
     }
 }

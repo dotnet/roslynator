@@ -1,23 +1,23 @@
 // Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS1219CallSkipAndAnyInsteadOfCountTests
+    public class RCS1219CallSkipAndAnyInsteadOfCountTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new InvocationExpressionAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new InvocationExpressionAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new BinaryExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 
         [Theory]
         [InlineData("items.Count() > i", "items.Skip(i).Any()")]
@@ -28,9 +28,9 @@ namespace Roslynator.Analyzers.Tests
         [InlineData("i >= items.Count()", "!items.Skip(i).Any()")]
         [InlineData("items.Count() < i", "!items.Skip(i - 1).Any()")]
         [InlineData("i > items.Count()", "!items.Skip(i - 1).Any()")]
-        public static void TestDiagnosticWithCodeFix(string fixableCode, string fixedCode)
+        public async Task TestDiagnostic(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -41,18 +41,18 @@ class C
         int i = 0;
         IEnumerable<object> items = null;
 
-        if (<<<>>>)
+        if ([||])
         {
         }
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Fact]
-        public static void TestNoDiagnostic()
+        public async Task TestNoDiagnostic()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -85,7 +85,7 @@ class C
         if (0 >= items.Count()) { }
     }
 }
-", Descriptor, Analyzer);
+");
         }
     }
 }

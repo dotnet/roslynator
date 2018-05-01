@@ -4,189 +4,316 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Formatting;
 using Microsoft.CodeAnalysis.Text;
 using Xunit;
 
 namespace Roslynator.Tests
 {
-    public static class DiagnosticVerifier
+    public abstract class DiagnosticVerifier : CodeVerifier
     {
-        public static void VerifyDiagnostic(
+        public abstract DiagnosticDescriptor Descriptor { get; }
+
+        public abstract DiagnosticAnalyzer Analyzer { get; }
+
+        public async Task VerifyDiagnosticAsync(
             string source,
-            DiagnosticAnalyzer analyzer,
-            string language,
-            params Diagnostic[] expectedDiagnostics)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            VerifyDiagnostic(new string[] { source }, analyzer, language, expectedDiagnostics);
+            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source);
+
+            await VerifyDiagnosticAsync(
+                analysis.Source,
+                analysis.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan)),
+                cancellationToken).ConfigureAwait(false);
         }
 
-        public static void VerifyDiagnostic(
-            IEnumerable<string> sources,
-            DiagnosticAnalyzer analyzer,
-            string language,
-            params Diagnostic[] expectedDiagnostics)
+        public async Task VerifyDiagnosticAsync(
+            string theory,
+            string fromData,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            foreach (Diagnostic diagnostic in expectedDiagnostics)
-            {
-                Assert.True(analyzer.Supports(diagnostic.Descriptor),
-                    $"Diagnostic \"{diagnostic.Descriptor.Id}\" is not supported by analyzer \"{analyzer.GetType().Name}\".");
-            }
+            (string source, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData);
 
-            Diagnostic[] diagnostics = DiagnosticUtility.GetSortedDiagnostics(sources, analyzer, language);
+            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source);
+
+            if (analysis.Spans.Any())
+            {
+                await VerifyDiagnosticAsync(analysis.Source, analysis.Spans.Select(f => f.Span), cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                await VerifyDiagnosticAsync(source, span, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        public async Task VerifyDiagnosticAsync(
+            string source,
+            TextSpan span,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            await VerifyDiagnosticAsync(
+                source,
+                CreateDiagnostic(source, span),
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task VerifyDiagnosticAsync(
+            string source,
+            IEnumerable<TextSpan> spans,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            await VerifyDiagnosticAsync(
+                source,
+                spans.Select(span => CreateDiagnostic(source, span)),
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task VerifyDiagnosticAsync(
+            string source,
+            Diagnostic diagnostic,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            await VerifyDiagnosticAsync(
+                new string[] { source },
+                new Diagnostic[] { diagnostic },
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task VerifyDiagnosticAsync(
+            string source,
+            IEnumerable<Diagnostic> expectedDiagnostics,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            await VerifyDiagnosticAsync(
+                new string[] { source },
+                expectedDiagnostics,
+                cancellationToken).ConfigureAwait(false);
+        }
+
+        public async Task VerifyDiagnosticAsync(
+            IEnumerable<string> sources,
+            IEnumerable<Diagnostic> expectedDiagnostics,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Project project = WorkspaceFactory.Project(Language, sources);
+
+            Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
+
+            VerifyCompilerDiagnostics(compilerDiagnostics);
+
+            if (Options.EnableDiagnosticsDisabledByDefault)
+                compilation = compilation.EnableDiagnosticsDisabledByDefault(Analyzer);
+
+            ImmutableArray<Diagnostic> diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzer, DiagnosticComparer.SpanStart, cancellationToken).ConfigureAwait(false);
 
             if (diagnostics.Length > 0
-                && analyzer.SupportedDiagnostics.Length > 1)
+                && Analyzer.SupportedDiagnostics.Length > 1)
             {
-                diagnostics = diagnostics
-                    .Where(diagnostic => expectedDiagnostics.Any(expectedDiagnostic => DiagnosticComparer.Id.Equals(diagnostic, expectedDiagnostic)))
-                    .ToArray();
+                VerifyDiagnostics(FilterDiagnostics(), expectedDiagnostics);
+            }
+            else
+            {
+                VerifyDiagnostics(diagnostics, expectedDiagnostics);
             }
 
-            VerifyDiagnostics(diagnostics, expectedDiagnostics);
+            IEnumerable<Diagnostic> FilterDiagnostics()
+            {
+                foreach (Diagnostic diagnostic in diagnostics)
+                {
+                    bool success = false;
+                    foreach (Diagnostic expectedDiagnostic in expectedDiagnostics)
+                    {
+                        if (DiagnosticComparer.Id.Equals(diagnostic, expectedDiagnostic))
+                        {
+                            success = true;
+                            break;
+                        }
+                    }
+
+                    if (success)
+                        yield return diagnostic;
+                }
+            }
         }
 
-        private static void VerifyDiagnostics(
-            Diagnostic[] actual,
-            Diagnostic[] expected)
+        public async Task VerifyNoDiagnosticAsync(
+            string theory,
+            string fromData,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            int expectedCount = expected.Length;
-            int actualCount = actual.Length;
+            (string source, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData);
 
-            Assert.True(expectedCount == actualCount,
-                $"Mismatch between number of diagnostics returned, expected: {expectedCount} actual: {actualCount}{actual.ToDebugString()}");
-
-            for (int i = 0; i < expectedCount; i++)
-                VerifyDiagnostic(actual[i], expected[i]);
+            await VerifyNoDiagnosticAsync(source, cancellationToken).ConfigureAwait(false);
         }
 
-        private static void VerifyDiagnostic(Diagnostic actual, Diagnostic expected)
-        {
-            Assert.True(actual.Id == expected.Descriptor.Id,
-                $"Expected diagnostic id to be \"{expected.Descriptor.Id}\" was \"{actual.Id}\"\r\n\r\nDiagnostic:\r\n{actual}\r\n");
-
-            VerifyLocation(actual, actual.Location, expected.Location);
-
-            //VerifyAdditionalLocations(actual, actual.AdditionalLocations, expected.AdditionalLocations);
-        }
-
-        private static void VerifyAdditionalLocations(
-            Diagnostic diagnostic,
-            IReadOnlyList<Location> actual,
-            IReadOnlyList<Location> expected)
-        {
-            int actualCount = actual.Count;
-            int expectedCount = expected.Count;
-
-            Assert.True(actualCount == expectedCount,
-                $"Expected {expectedCount} additional locations, actual: {actualCount}\r\n\r\nDiagnostic:\r\n{diagnostic}\r\n");
-
-            for (int j = 0; j < actualCount; j++)
-                VerifyLocation(diagnostic, actual[j], expected[j]);
-        }
-
-        private static void VerifyLocation(
-            Diagnostic diagnostic,
-            Location actual,
-            Location expected)
-        {
-            VerifyFileLinePositionSpan(diagnostic, actual.GetLineSpan(), expected.GetLineSpan());
-        }
-
-        private static void VerifyFileLinePositionSpan(
-            Diagnostic diagnostic,
-            FileLinePositionSpan actual,
-            FileLinePositionSpan expected)
-        {
-            Assert.True(actual.Path == expected.Path,
-                $"Expected diagnostic to be in file \"{expected.Path}\", actual: \"{actual.Path}\"\r\n\r\nDiagnostic:\r\n{diagnostic}\r\n");
-
-            VerifyLinePosition(diagnostic, actual.StartLinePosition, expected.StartLinePosition, "start");
-
-            VerifyLinePosition(diagnostic, actual.EndLinePosition, expected.EndLinePosition, "end");
-        }
-
-        private static void VerifyLinePosition(
-            Diagnostic diagnostic,
-            LinePosition actual,
-            LinePosition expected,
-            string name)
-        {
-            int actualLine = actual.Line;
-            int expectedLine = expected.Line;
-
-            Assert.True(actualLine == expectedLine,
-                $"Expected diagnostic to {name} on line {expectedLine}, actual: {actualLine}\r\n\r\nDiagnostic:\r\n{diagnostic}\r\n");
-
-            int actualCharacter = actual.Character;
-            int expectedCharacter = expected.Character;
-
-            Assert.True(actualCharacter == expectedCharacter,
-                $"Expected diagnostic to {name} at column {expectedCharacter}, actual: {actualCharacter}\r\n\r\nDiagnostic:\r\n{diagnostic}\r\n");
-        }
-
-        public static void VerifyNoDiagnostic(
+        public async Task VerifyNoDiagnosticAsync(
             string source,
-            DiagnosticDescriptor descriptor,
-            DiagnosticAnalyzer analyzer,
-            string language)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            VerifyNoDiagnostic(new string[] { source }, descriptor, analyzer, language);
+            await VerifyNoDiagnosticAsync(
+                new string[] { source },
+                cancellationToken).ConfigureAwait(false);
         }
 
-        public static void VerifyNoDiagnostic(
+        public async Task VerifyNoDiagnosticAsync(
             IEnumerable<string> sources,
-            DiagnosticDescriptor descriptor,
-            DiagnosticAnalyzer analyzer,
-            string language)
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            Assert.True(analyzer.Supports(descriptor),
-                $"Diagnostic \"{descriptor.Id}\" is not supported by analyzer \"{analyzer.GetType().Name}\".");
+            if (!Analyzer.Supports(Descriptor))
+                Assert.True(false, $"Diagnostic \"{Descriptor.Id}\" is not supported by analyzer \"{Analyzer.GetType().Name}\".");
 
-            IEnumerable<Document> documents = WorkspaceFactory.CreateDocuments(sources, language);
+            Project project = WorkspaceFactory.Project(Language, sources);
 
-            VerifyNoCompilerError(documents);
+            Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
-            Diagnostic[] diagnostics = DiagnosticUtility.GetSortedDiagnostics(documents, analyzer);
+            ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
-            Assert.True(diagnostics.Length == 0 || diagnostics.All(f => !string.Equals(f.Id, descriptor.Id, StringComparison.Ordinal)),
-                    $"No diagnostic expected{diagnostics.Where(f => string.Equals(f.Id, descriptor.Id, StringComparison.Ordinal)).ToDebugString()}");
+            VerifyCompilerDiagnostics(compilerDiagnostics);
+
+            if (Options.EnableDiagnosticsDisabledByDefault)
+                compilation = compilation.EnableDiagnosticsDisabledByDefault(Analyzer);
+
+            ImmutableArray<Diagnostic> analyzerDiagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzer, DiagnosticComparer.SpanStart, cancellationToken).ConfigureAwait(false);
+
+            if (analyzerDiagnostics.Any(f => string.Equals(f.Id, Descriptor.Id, StringComparison.Ordinal)))
+                Assert.True(false, $"No diagnostic expected{analyzerDiagnostics.Where(f => string.Equals(f.Id, Descriptor.Id, StringComparison.Ordinal)).ToDebugString()}");
         }
 
-        public static void VerifyNoCompilerError(Document document)
+        private void VerifyDiagnostics(
+            IEnumerable<Diagnostic> actual,
+            IEnumerable<Diagnostic> expected,
+            bool checkAdditionalLocations = false)
         {
-            ImmutableArray<Diagnostic> compilerDiagnostics = document.GetCompilerDiagnostics();
+            int expectedCount = 0;
+            int actualCount = 0;
 
-            VerifyNoCompilerError(compilerDiagnostics);
+            using (IEnumerator<Diagnostic> expectedEnumerator = expected.GetEnumerator())
+            using (IEnumerator<Diagnostic> actualEnumerator = actual.GetEnumerator())
+            {
+                while (expectedEnumerator.MoveNext())
+                {
+                    expectedCount++;
+
+                    Diagnostic expectedDiagnostic = expectedEnumerator.Current;
+
+                    if (!Analyzer.Supports(expectedDiagnostic.Descriptor))
+                        Assert.True(false, $"Diagnostic \"{expectedDiagnostic.Id}\" is not supported by analyzer \"{Analyzer.GetType().Name}\".");
+
+                    if (actualEnumerator.MoveNext())
+                    {
+                        actualCount++;
+
+                        VerifyDiagnostic(actualEnumerator.Current, expectedDiagnostic, checkAdditionalLocations: checkAdditionalLocations);
+                    }
+                    else
+                    {
+                        while (expectedEnumerator.MoveNext())
+                            expectedCount++;
+
+                        Assert.True(false, $"Mismatch between number of diagnostics returned, expected: {expectedCount} actual: {actualCount}{actual.ToDebugString()}");
+                    }
+                }
+
+                if (actualEnumerator.MoveNext())
+                {
+                    actualCount++;
+
+                    while (actualEnumerator.MoveNext())
+                        actualCount++;
+
+                    Assert.True(false, $"Mismatch between number of diagnostics returned, expected: {expectedCount} actual: {actualCount}{actual.ToDebugString()}");
+                }
+            }
         }
 
-        public static void VerifyNoCompilerError(ImmutableArray<Diagnostic> compilerDiagnostics)
+        private static void VerifyDiagnostic(
+            Diagnostic actualDiagnostic,
+            Diagnostic expectedDiagnostic,
+            bool checkAdditionalLocations = false)
         {
-            Assert.False(compilerDiagnostics.Any(f => f.Severity == DiagnosticSeverity.Error),
-                $"No compiler error expected{compilerDiagnostics.Where(f => f.Severity == DiagnosticSeverity.Error).ToDebugString()}");
+            if (actualDiagnostic.Id != expectedDiagnostic.Descriptor.Id)
+                Assert.True(false, $"Expected diagnostic id to be \"{expectedDiagnostic.Descriptor.Id}\" was \"{actualDiagnostic.Id}\"{GetMessage()}");
+
+            VerifyLocation(actualDiagnostic.Location, expectedDiagnostic.Location);
+
+            if (checkAdditionalLocations)
+                VerifyAdditionalLocations(actualDiagnostic.AdditionalLocations, expectedDiagnostic.AdditionalLocations);
+
+            void VerifyLocation(
+                Location actualLocation,
+                Location expectedLocation)
+            {
+                VerifyFileLinePositionSpan(actualLocation.GetLineSpan(), expectedLocation.GetLineSpan());
+            }
+
+            void VerifyAdditionalLocations(
+                IReadOnlyList<Location> actual,
+                IReadOnlyList<Location> expected)
+            {
+                int actualCount = actual.Count;
+                int expectedCount = expected.Count;
+
+                if (actualCount != expectedCount)
+                    Assert.True(false, $"Expected {expectedCount} additional location(s), actual: {actualCount}{GetMessage()}");
+
+                for (int j = 0; j < actualCount; j++)
+                    VerifyLocation(actual[j], expected[j]);
+            }
+
+            void VerifyFileLinePositionSpan(
+                FileLinePositionSpan actual,
+                FileLinePositionSpan expected)
+            {
+                if (actual.Path != expected.Path)
+                    Assert.True(false, $"Expected diagnostic to be in file \"{expected.Path}\", actual: \"{actual.Path}\"{GetMessage()}");
+
+                VerifyLinePosition(actual.StartLinePosition, expected.StartLinePosition, "start");
+
+                VerifyLinePosition(actual.EndLinePosition, expected.EndLinePosition, "end");
+            }
+
+            void VerifyLinePosition(
+                LinePosition actual,
+                LinePosition expected,
+                string startOrEnd)
+            {
+                int actualLine = actual.Line;
+                int expectedLine = expected.Line;
+
+                if (actualLine != expectedLine)
+                    Assert.True(false, $"Expected diagnostic to {startOrEnd} on line {expectedLine}, actual: {actualLine}{GetMessage()}");
+
+                int actualCharacter = actual.Character;
+                int expectedCharacter = expected.Character;
+
+                if (actualCharacter != expectedCharacter)
+                    Assert.True(false, $"Expected diagnostic to {startOrEnd} at column {expectedCharacter}, actual: {actualCharacter}{GetMessage()}");
+            }
+
+            string GetMessage()
+            {
+                return $"\r\n\r\nExpected diagnostic:\r\n{expectedDiagnostic}\r\n\r\nActual diagnostic:\r\n{actualDiagnostic}\r\n";
+            }
         }
 
-        public static void VerifyNoCompilerError(IEnumerable<Document> documents)
+        private protected Diagnostic CreateDiagnostic(string source, TextSpan span)
         {
-            foreach (Document document in documents)
-                VerifyNoCompilerError(document);
+            LinePositionSpan lineSpan = span.ToLinePositionSpan(source);
+
+            return CreateDiagnostic(span, lineSpan);
         }
 
-        public static void VerifyNoNewCompilerDiagnostics(Document document, ImmutableArray<Diagnostic> compilerDiagnostics)
+        private protected Diagnostic CreateDiagnostic(TextSpan span, LinePositionSpan lineSpan)
         {
-            IEnumerable<Diagnostic> newCompilerDiagnostics = DiagnosticUtility.GetNewDiagnostics(compilerDiagnostics, document.GetCompilerDiagnostics());
+            Location location = Location.Create(FileUtility.DefaultCSharpFileName, span, lineSpan);
 
-            if (!newCompilerDiagnostics.Any())
-                return;
-
-            document = document.WithSyntaxRoot(Formatter.Format(document.GetSyntaxRootAsync().Result, Formatter.Annotation, document.Project.Solution.Workspace));
-
-            newCompilerDiagnostics = DiagnosticUtility.GetNewDiagnostics(compilerDiagnostics, document.GetCompilerDiagnostics());
-
-            Assert.True(false,
-                $"Code fix introduced new compiler diagnostics{newCompilerDiagnostics.ToDebugString()}");
+            return Diagnostic.Create(Descriptor, location);
         }
     }
 }

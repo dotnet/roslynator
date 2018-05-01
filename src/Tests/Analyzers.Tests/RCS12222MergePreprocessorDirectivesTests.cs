@@ -1,33 +1,33 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS12222MergePreprocessorDirectivesTests
+    public class RCS12222MergePreprocessorDirectivesTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MergePreprocessorDirectives;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MergePreprocessorDirectives;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new MergePreprocessorDirectivesAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new MergePreprocessorDirectivesAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new DirectiveTriviaCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new DirectiveTriviaCodeFixProvider();
 
         [Fact]
-        public static void TestDiagnosticWithFix_Disable()
+        public async Task Test_PragmaWarningDisable()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
     {
-<<<#pragma warning disable RCS0>>>
+[|#pragma warning disable RCS0|]
 #pragma warning disable RCS1, RCS2,
     
 #pragma warning disable RCS3, RCS4, RCS5
@@ -43,18 +43,18 @@ class C
 #pragma warning restore RCS0
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithFix_Restore()
+        public async Task Test_PragmaWarningRestore()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
     {
-<<<#pragma warning restore RCS0>>>
+[|#pragma warning restore RCS0|]
 #pragma warning restore RCS1, RCS2,
     
 #pragma warning restore RCS3, RCS4, RCS5
@@ -70,14 +70,13 @@ class C
 #pragma warning disable RCS0
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestNoDiagnostic()
+        public async Task TestNoDiagnostic()
         {
-            VerifyNoDiagnostic(
-@"
+            await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -87,7 +86,7 @@ class C
 #pragma warning disable RCS0
 #pragma warning restore RCS0
 }
-", Descriptor, Analyzer);
+");
         }
     }
 }

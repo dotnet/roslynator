@@ -1,95 +1,151 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.Text;
 using Xunit;
 
 namespace Roslynator.Tests
 {
-    public static class CompilerCodeFixVerifier
+    public abstract class CompilerCodeFixVerifier : CodeVerifier
     {
-        public static void VerifyFix(
-            string source,
-            string newSource,
-            string diagnosticId,
-            CodeFixProvider fixProvider,
-            string language,
-            string equivalenceKey = null)
+        public abstract string DiagnosticId { get; }
+
+        public abstract CodeFixProvider FixProvider { get; }
+
+        public async Task VerifyFixAsync(
+            string theory,
+            string fromData,
+            string toData,
+            string equivalenceKey)
         {
-            Assert.True(fixProvider.FixableDiagnosticIds.Contains(diagnosticId), $"Code fix provider '{fixProvider.GetType().Name}' cannot fix diagnostic '{diagnosticId}'.");
+            (string source, string expected, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData, toData);
 
-            Document document = WorkspaceFactory.CreateDocument(source, language);
+            await VerifyFixAsync(
+                source: source,
+                expected: expected,
+                equivalenceKey: equivalenceKey).ConfigureAwait(false);
+        }
 
-            ImmutableArray<Diagnostic> compilerDiagnostics = document.GetCompilerDiagnostics();
+        public async Task VerifyFixAsync(
+            string source,
+            string expected,
+            string equivalenceKey,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Assert.True(FixProvider.FixableDiagnosticIds.Contains(DiagnosticId), $"Code fix provider '{FixProvider.GetType().Name}' cannot fix diagnostic '{DiagnosticId}'.");
 
-            while (compilerDiagnostics.Length > 0)
+            Document document = WorkspaceFactory.Document(Language, source);
+
+            Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<Diagnostic> diagnostics = compilation.GetDiagnostics(cancellationToken: cancellationToken);
+
+            diagnostics = diagnostics.Sort((x, y) => -DiagnosticComparer.SpanStart.Compare(x, y));
+
+            while (diagnostics.Length > 0)
             {
-                Diagnostic diagnostic = null;
-
-                foreach (Diagnostic compilerDiagnostic in compilerDiagnostics)
-                {
-                    if (string.Equals(compilerDiagnostic.Id, diagnosticId, StringComparison.Ordinal))
-                    {
-                        diagnostic = compilerDiagnostic;
-                        break;
-                    }
-                }
+                Diagnostic diagnostic = FindDiagnostic();
 
                 if (diagnostic == null)
                     break;
 
-                List<CodeAction> actions = null;
+                CodeAction action = null;
 
                 var context = new CodeFixContext(
                     document,
                     diagnostic,
-                    (a, _) =>
+                    (a, d) =>
                     {
-                        if (equivalenceKey == null
-                            || string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal))
+                        if (action != null)
+                            return;
+
+                        if (!d.Contains(diagnostic))
+                            return;
+
+                        if (equivalenceKey != null
+                            && !string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal))
                         {
-                            (actions ?? (actions = new List<CodeAction>())).Add(a);
+                            return;
                         }
+
+                        action = a;
                     },
                     CancellationToken.None);
 
-                fixProvider.RegisterCodeFixesAsync(context).Wait();
+                await FixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
 
-                if (actions == null)
+                if (action == null)
                     break;
 
-                document = document.ApplyCodeAction(actions[0]);
+                document = await document.ApplyCodeActionAsync(action).ConfigureAwait(false);
 
-                compilerDiagnostics = document.GetCompilerDiagnostics();
+                compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+
+                ImmutableArray<Diagnostic> newDiagnostics = compilation.GetDiagnostics(cancellationToken: cancellationToken);
+
+                if (!Options.AllowNewCompilerDiagnostics)
+                    VerifyNoNewCompilerDiagnostics(diagnostics, newDiagnostics);
+
+                diagnostics = newDiagnostics;
             }
 
-            string actual = document.ToSimplifiedAndFormattedFullString();
+            string actual = await document.ToFullStringAsync(simplify: true, format: true).ConfigureAwait(false);
 
-            Assert.Equal(newSource, actual);
+            Assert.Equal(expected, actual);
+
+            Diagnostic FindDiagnostic()
+            {
+                foreach (Diagnostic diagnostic in diagnostics)
+                {
+                    if (string.Equals(diagnostic.Id, DiagnosticId, StringComparison.Ordinal))
+                        return diagnostic;
+                }
+
+                return null;
+            }
         }
 
-        public static void VerifyNoFix(
+        public async Task VerifyNoFixAsync(
             string source,
-            CodeFixProvider fixProvider,
-            string language,
-            string equivalenceKey = null)
+            string equivalenceKey,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            Document document = WorkspaceFactory.CreateDocument(source, language);
+            Document document = WorkspaceFactory.Document(Language, source);
 
-            foreach (Diagnostic compilerDiagnostic in document.GetCompilerDiagnostics())
+            Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<string> fixableDiagnosticIds = FixProvider.FixableDiagnosticIds;
+
+            foreach (Diagnostic diagnostic in compilation.GetDiagnostics(cancellationToken: cancellationToken))
             {
+                if (!fixableDiagnosticIds.Contains(diagnostic.Id))
+                    continue;
+
                 var context = new CodeFixContext(
                     document,
-                    compilerDiagnostic,
-                    (a, _) => Assert.True(equivalenceKey != null && !string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal), "Expected no code fix."),
+                    diagnostic,
+                    (a, d) =>
+                    {
+                        if (!d.Contains(diagnostic))
+                            return;
+
+                        if (equivalenceKey != null
+                            && !string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal))
+                        {
+                            return;
+                        }
+
+                        Assert.True(false, "Expected no code fix.");
+                    },
                     CancellationToken.None);
 
-                fixProvider.RegisterCodeFixesAsync(context).Wait();
+                await FixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
             }
         }
     }

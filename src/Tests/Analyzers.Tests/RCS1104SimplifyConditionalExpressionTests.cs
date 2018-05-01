@@ -1,23 +1,23 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS1104SimplifyConditionalExpressionTests
+    public class RCS1104SimplifyConditionalExpressionTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyConditionalExpression;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyConditionalExpression;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new SimplifyConditionalExpressionAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new SimplifyConditionalExpressionAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new ConditionalExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ConditionalExpressionCodeFixProvider();
 
         [Theory]
         [InlineData("f ? true : false", "f")]
@@ -31,66 +31,66 @@ namespace Roslynator.Analyzers.Tests
             ? true
             : false", "f")]
 
-        [InlineData(@"<<<f //a
+        [InlineData(@"[|f //a
               /*b*/ ? /*c*/ true //d
-                                 /*e*/ : /*f*/ false>>> /*g*/", @"f //a
+                                 /*e*/ : /*f*/ false|] /*g*/", @"f //a
               /*b*/  /*c*/  //d
                                  /*e*/  /*f*/  /*g*/")]
-        public static void TestDiagnosticWithCodeFix(string fixableCode, string fixedCode)
+        public async Task Test_TrueFalse(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool g)
     {
-        if (<<<>>>) { }
+        if ([||]) { }
 }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Theory]
         [InlineData("f ? g : false", "f && g")]
-        [InlineData(@"<<<f
+        [InlineData(@"[|f
             ? g
-            : false>>> /**/", @"f
+            : false|] /**/", @"f
             && g /**/")]
-        public static void TestDiagnosticWithCodeFix_LogicalAnd(string fixableCode, string fixedCode)
+        public async Task Test_LogicalAnd(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool g)
     {
-        if (<<<>>>) { }
+        if ([||]) { }
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Theory]
         [InlineData("f ? true : g", "f || g")]
-        [InlineData(@"<<<f
+        [InlineData(@"[|f
             ? true
-            : g>>> /**/", @"f
+            : g|] /**/", @"f
             || g /**/")]
-        public static void TestDiagnosticWithCodeFix_LogicalOr(string fixableCode, string fixedCode)
+        public async Task Test_LogicalOr(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(bool f, bool g)
     {
-        if (<<<>>>) { }
+        if ([||]) { }
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Fact]
-        public static void TestNoDiagnostic()
+        public async Task TestNoDiagnostic()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M(bool f, bool g, bool h)
@@ -109,7 +109,7 @@ class C
 #endif
     }
 }
-", Descriptor, Analyzer);
+");
         }
     }
 }

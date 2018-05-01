@@ -1,31 +1,32 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCSTests
+    public class RCSTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines;
 
-        private static DiagnosticAnalyzer Analyzer { get; }
+        public override DiagnosticAnalyzer Analyzer { get; }
 
-        private static CodeFixProvider CodeFixProvider { get; }
+        public override CodeFixProvider FixProvider { get; }
 
         //[Fact]
-        public static void TestDiagnosticWithCodeFix()
+        public async Task Test()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 class C
 {
@@ -34,17 +35,18 @@ class C
     }
 }
 ", @"
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         //[Theory]
         //[InlineData("", "")]
-        public static void TestDiagnosticWithCodeFix2(string fixableCode, string fixedCode)
+        public async Task Test2(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 class C
 {
@@ -52,16 +54,17 @@ class C
     {
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         //[Fact]
-        public static void TestNoDiagnostic()
+        public async Task TestNoDiagnostic()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 class C
 {
@@ -69,17 +72,18 @@ class C
     {
     }
 }
-", Descriptor, Analyzer);
+");
         }
 
         //[Theory]
         //[InlineData("")]
-        public static void TestNoDiagnostic2(string fixableCode)
+        public async Task TestNoDiagnostic2(string fromData)
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 class C
 {
@@ -87,7 +91,7 @@ class C
     {
     }
 }
-", fixableCode: fixableCode, Descriptor, Analyzer);
+", fromData);
         }
     }
 }

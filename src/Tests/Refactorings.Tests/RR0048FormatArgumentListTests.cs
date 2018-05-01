@@ -1,27 +1,25 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.CSharp.Refactorings;
+using System.Threading.Tasks;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpCodeRefactoringVerifier;
 
-namespace Roslynator.Refactorings.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public static class RR0048FormatArgumentListTests
+    public class RR0048FormatArgumentListTests : AbstractCSharpCodeRefactoringVerifier
     {
-        private const string RefactoringId = RefactoringIdentifiers.FormatArgumentList;
-
-        private static CodeRefactoringProvider CodeRefactoringProvider { get; } = new RoslynatorCodeRefactoringProvider();
+        public override string RefactoringId { get; } = RefactoringIdentifiers.FormatArgumentList;
 
         [Fact]
-        public static void TestFormatArgumentListToMultiLine()
+        public async Task Test_ToMultiLine()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
     {
-        M(p1<<<>>>, p2, p3);
+        M(p1[||], p2, p3);
     }
 }
 ", @"
@@ -35,18 +33,18 @@ class C
             p3);
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestFormatArgumentListToMultiLine2()
+        public async Task Test_ToMultiLine2()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
     {
-        M<<<(p1, p2, p3)>>>;
+        M[|(p1, p2, p3)|];
     }
 }
 ", @"
@@ -60,19 +58,19 @@ class C
             p3);
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestFormatArgumentListToSingleLine()
+        public async Task Test_ToSingleLine()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
     {
         M(
-            p1<<<>>>,
+            p1[||],
             p2,
             p3);
     }
@@ -85,21 +83,21 @@ class C
         M(p1, p2, p3);
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestFormatArgumentListToSingleLine2()
+        public async Task Test_ToSingleLine2()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
     {
-        M<<<(
+        M[|(
             p1,
             p2,
-            p3)>>>;
+            p3)|];
     }
 }
 ", @"
@@ -110,25 +108,24 @@ class C
         M(p1, p2, p3);
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestNoRefactoring()
+        public async Task TestNoRefactoring()
         {
-            VerifyNoRefactoring(
-@"
+            await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(string p1, string p2, string p3)
     {
         M(
-            <<<p1,
+            [|p1,
             p2, //x
-            p3>>>);
+            p3|]);
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
     }
 }

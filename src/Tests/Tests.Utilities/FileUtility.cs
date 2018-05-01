@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -16,18 +17,29 @@ namespace Roslynator
 
         public static string CreateDefaultFileName(string language)
         {
-            return (language == LanguageNames.CSharp)
-                ? DefaultCSharpFileName
-                : DefaultVisualBasicFileName;
+            if (language == LanguageNames.CSharp)
+                return DefaultCSharpFileName;
+
+            if (language == LanguageNames.VisualBasic)
+                return DefaultVisualBasicFileName;
+
+            throw new NotSupportedException();
         }
 
-        public static string CreateFileName(string fileName = TestFileName, int suffix = FileNumberingBase, string language = LanguageNames.CSharp)
+        public static string CreateFileName(string language, string fileName = TestFileName, int suffix = FileNumberingBase)
         {
-            string extension = ((language == LanguageNames.CSharp)
-                ? CSharpFileExtension
-                : VisualBasicFileExtension);
+            return $"{fileName}{suffix}.{GetExtension(language)}";
+        }
 
-            return $"{fileName}{suffix}.{extension}";
+        private static string GetExtension(string language)
+        {
+            if (language == LanguageNames.CSharp)
+                return CSharpFileExtension;
+
+            if (language == LanguageNames.VisualBasic)
+                return VisualBasicFileExtension;
+
+            throw new NotSupportedException();
         }
     }
 }

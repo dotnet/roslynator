@@ -1,101 +1,177 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Xunit;
 
 namespace Roslynator.Tests
 {
-    public static class CodeFixVerifier
+    public abstract class CodeFixVerifier : DiagnosticVerifier
     {
-        public static void VerifyFix(
+        public abstract CodeFixProvider FixProvider { get; }
+
+        public async Task VerifyDiagnosticAndFixAsync(
             string source,
-            string newSource,
-            DiagnosticAnalyzer analyzer,
-            CodeFixProvider fixProvider,
-            string language,
-            bool allowNewCompilerDiagnostics = false)
+            string expected,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
-            Assert.True(fixProvider.CanFixAny(analyzer.SupportedDiagnostics), $"Code fix provider '{fixProvider.GetType().Name}' cannot fix any diagnostic supported by analyzer '{analyzer}'.");
+            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source);
 
-            Document document = WorkspaceFactory.CreateDocument(source, language);
+            IEnumerable<Diagnostic> diagnostics = analysis.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan));
 
-            ImmutableArray<Diagnostic> compilerDiagnostics = document.GetCompilerDiagnostics();
+            await VerifyDiagnosticAsync(analysis.Source, diagnostics, cancellationToken).ConfigureAwait(false);
 
-            DiagnosticVerifier.VerifyNoCompilerError(compilerDiagnostics);
+            await VerifyFixAsync(analysis.Source, expected, cancellationToken).ConfigureAwait(false);
+        }
 
-            Diagnostic[] analyzerDiagnostics = DiagnosticUtility.GetSortedDiagnostics(document, analyzer);
+        public async Task VerifyDiagnosticAndFixAsync(
+            string theory,
+            string fromData,
+            string toData,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            (string source, string expected, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData, toData);
 
-            while (analyzerDiagnostics.Length > 0)
+            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source);
+
+            if (analysis.Spans.Any())
             {
-                Diagnostic diagnostic = null;
+                IEnumerable<Diagnostic> diagnostics = analysis.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan));
 
-                foreach (Diagnostic analyzerDiagnostic in analyzerDiagnostics)
-                {
-                    if (fixProvider.FixableDiagnosticIds.Contains(analyzerDiagnostic.Id))
-                    {
-                        diagnostic = analyzerDiagnostic;
-                        break;
-                    }
-                }
+                await VerifyDiagnosticAsync(analysis.Source, diagnostics, cancellationToken).ConfigureAwait(false);
+
+                await VerifyFixAsync(analysis.Source, expected, cancellationToken).ConfigureAwait(false);
+            }
+            else
+            {
+                await VerifyDiagnosticAsync(source, span, cancellationToken).ConfigureAwait(false);
+
+                await VerifyFixAsync(source, expected, cancellationToken).ConfigureAwait(false);
+            }
+        }
+
+        public async Task VerifyFixAsync(
+            string source,
+            string expected,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            Assert.True(FixProvider.CanFixAny(Analyzer.SupportedDiagnostics), $"Code fix provider '{FixProvider.GetType().Name}' cannot fix any diagnostic supported by analyzer '{Analyzer}'.");
+
+            Document document = WorkspaceFactory.Document(Language, source);
+
+            Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
+
+            VerifyCompilerDiagnostics(compilerDiagnostics);
+
+            if (Options.EnableDiagnosticsDisabledByDefault)
+                compilation = compilation.EnableDiagnosticsDisabledByDefault(Analyzer);
+
+            ImmutableArray<Diagnostic> diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzer, DiagnosticComparer.SpanStart, cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<string> fixableDiagnosticIds = FixProvider.FixableDiagnosticIds;
+
+            while (diagnostics.Length > 0)
+            {
+                Diagnostic diagnostic = FindFirstFixableDiagnostic();
 
                 if (diagnostic == null)
                     break;
 
-                List<CodeAction> actions = null;
+                CodeAction action = null;
 
                 var context = new CodeFixContext(
                     document,
                     diagnostic,
-                    (a, _) => (actions ?? (actions = new List<CodeAction>())).Add(a),
+                    (a, d) =>
+                    {
+                        if (d.Contains(diagnostic)
+                            && action == null)
+                        {
+                            action = a;
+                        }
+                    },
                     CancellationToken.None);
 
-                fixProvider.RegisterCodeFixesAsync(context).Wait();
+                await FixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
 
-                if (actions == null)
+                if (action == null)
                     break;
 
-                document = document.ApplyCodeAction(actions[0]);
+                document = await document.ApplyCodeActionAsync(action).ConfigureAwait(false);
 
-                if (!allowNewCompilerDiagnostics)
-                    DiagnosticVerifier.VerifyNoNewCompilerDiagnostics(document, compilerDiagnostics);
+                compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
-                analyzerDiagnostics = DiagnosticUtility.GetSortedDiagnostics(document, analyzer);
+                ImmutableArray<Diagnostic> newCompilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
+
+                VerifyCompilerDiagnostics(newCompilerDiagnostics);
+
+                if (!Options.AllowNewCompilerDiagnostics)
+                    VerifyNoNewCompilerDiagnostics(compilerDiagnostics, newCompilerDiagnostics);
+
+                if (Options.EnableDiagnosticsDisabledByDefault)
+                    compilation = compilation.EnableDiagnosticsDisabledByDefault(Analyzer);
+
+                diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzer, DiagnosticComparer.SpanStart, cancellationToken).ConfigureAwait(false);
             }
 
-            string actual = document.ToSimplifiedAndFormattedFullString();
+            string actual = await document.ToFullStringAsync(simplify: true, format: true).ConfigureAwait(false);
 
-            Assert.Equal(newSource, actual);
+            Assert.Equal(expected, actual);
+
+            Diagnostic FindFirstFixableDiagnostic()
+            {
+                foreach (Diagnostic diagnostic in diagnostics)
+                {
+                    if (fixableDiagnosticIds.Contains(diagnostic.Id))
+                        return diagnostic;
+                }
+
+                return null;
+            }
         }
 
-        public static void VerifyNoFix(
-            string source,
-            DiagnosticAnalyzer analyzer,
-            CodeFixProvider fixProvider,
-            string language)
+        public async Task VerifyNoFixAsync(string source, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Document document = WorkspaceFactory.CreateDocument(source, language);
+            Document document = WorkspaceFactory.Document(Language, source);
 
-            DiagnosticVerifier.VerifyNoCompilerError(document);
+            Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
-            foreach (Diagnostic diagnostic in DiagnosticUtility.GetSortedDiagnostics(document, analyzer))
+            ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
+
+            VerifyCompilerDiagnostics(compilerDiagnostics);
+
+            if (Options.EnableDiagnosticsDisabledByDefault)
+                compilation = compilation.EnableDiagnosticsDisabledByDefault(Analyzer);
+
+            ImmutableArray<Diagnostic> diagnostics = await compilation.GetAnalyzerDiagnosticsAsync(Analyzer, DiagnosticComparer.SpanStart, cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<string> fixableDiagnosticIds = FixProvider.FixableDiagnosticIds;
+
+            foreach (Diagnostic diagnostic in diagnostics)
             {
-                List<CodeAction> actions = null;
+                if (!string.Equals(diagnostic.Id, Descriptor.Id, StringComparison.Ordinal))
+                    continue;
+
+                if (!fixableDiagnosticIds.Contains(diagnostic.Id))
+                    continue;
 
                 var context = new CodeFixContext(
                     document,
                     diagnostic,
-                    (a, _) => (actions ?? (actions = new List<CodeAction>())).Add(a),
+                    (_, d) => Assert.True(!d.Contains(diagnostic), "Expected no code fix."),
                     CancellationToken.None);
 
-                fixProvider.RegisterCodeFixesAsync(context).Wait();
-
-                Assert.True(actions == null, $"Expected no code fix, actual: {actions.Count}.");
+                await FixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);
             }
         }
     }

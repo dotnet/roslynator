@@ -1,36 +1,36 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS1114RemoveRedundantDelegateCreationTests
+    public class RCS1114RemoveRedundantDelegateCreationTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantDelegateCreation;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantDelegateCreation;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantDelegateCreationAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantDelegateCreationAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new AssignmentExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new AssignmentExpressionCodeFixProvider();
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_EventHandler()
+        public async Task Test_EventHandler()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo
 {
     void M()
     {
-        Changed += <<<new EventHandler(Foo_Changed)>>>;
-        Changed -= <<<new EventHandler(Foo_Changed)>>>;
+        Changed += [|new EventHandler(Foo_Changed)|];
+        Changed -= [|new EventHandler(Foo_Changed)|];
     }
 
     protected virtual void Foo_Changed(object sender, EventArgs e) { }
@@ -52,21 +52,21 @@ class Foo
 
     public event EventHandler Changed;
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_EventHandlerOfT()
+        public async Task Test_EventHandlerOfT()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo
 {
     void M()
     {
-        Changed += <<<new EventHandler<FooEventArgs>(Foo_Changed)>>>;
-        Changed -= <<<new EventHandler<FooEventArgs>(Foo_Changed)>>>;
+        Changed += [|new EventHandler<FooEventArgs>(Foo_Changed)|];
+        Changed -= [|new EventHandler<FooEventArgs>(Foo_Changed)|];
     }
 
     protected virtual void Foo_Changed(object sender, FooEventArgs e) { }
@@ -96,21 +96,21 @@ class Foo
     {
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_CustomEventHandler()
+        public async Task Test_CustomEventHandler()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo
 {
     void M()
     {
-        Changed += <<<new FooEventHandler(Foo_Changed)>>>;
-        Changed -= <<<new FooEventHandler(Foo_Changed)>>>;
+        Changed += [|new FooEventHandler(Foo_Changed)|];
+        Changed -= [|new FooEventHandler(Foo_Changed)|];
     }
 
     protected virtual void Foo_Changed(object sender, FooEventArgs e) { }
@@ -144,21 +144,21 @@ class Foo
     {
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_TEventArgs()
+        public async Task Test_TEventArgs()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 
 class Foo<TEventArgs>
 {
     void M()
     {
-        Changed += <<<new EventHandler<TEventArgs>(Foo_Changed)>>>;
-        Changed -= <<<new EventHandler<TEventArgs>(Foo_Changed)>>>;
+        Changed += [|new EventHandler<TEventArgs>(Foo_Changed)|];
+        Changed -= [|new EventHandler<TEventArgs>(Foo_Changed)|];
     }
 
     protected virtual void Foo_Changed(object sender, TEventArgs e) { }
@@ -180,7 +180,7 @@ class Foo<TEventArgs>
 
     public event EventHandler<TEventArgs> Changed;
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
     }
 }

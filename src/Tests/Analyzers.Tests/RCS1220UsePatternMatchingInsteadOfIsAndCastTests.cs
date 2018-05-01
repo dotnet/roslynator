@@ -1,32 +1,32 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
 using Roslynator.CSharp.Analysis.UsePatternMatching;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS1220UsePatternMatchingInsteadOfIsAndCastTests
+    public class RCS1220UsePatternMatchingInsteadOfIsAndCastTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new UsePatternMatchingInsteadOfIsAndCastAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new UsePatternMatchingInsteadOfIsAndCastAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new UsePatternMatchingInsteadOfIsAndCastCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UsePatternMatchingInsteadOfIsAndCastCodeFixProvider();
 
         [Fact]
-        public static void TestDiagnosticWithFix_LogicalAndExpression()
+        public async Task Test_LogicalAndExpression()
         {
-            VerifyDiagnosticAndFix(
-@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    private readonly object _f;
+    private readonly object _f = false;
 
     public void M()
     {
@@ -34,26 +34,25 @@ class C
 
         object x = null;
 
-        if (<<<x is string && ((string)x) == s>>>) { }
+        if ([|x is string && ((string)x) == s|]) { }
 
-        if (<<<x is string && ((string)x).Equals((string)x)>>>) { }
+        if ([|x is string && ((string)x).Equals((string)x)|]) { }
 
-        if (<<<_f is string && (string)(_f) == s>>>) { }
+        if ([|_f is string && (string)(_f) == s|]) { }
 
-        if (<<<this._f is string && (string)this._f == s>>>) { }
+        if ([|this._f is string && (string)this._f == s|]) { }
 
-        if (<<<_f is string && (string)(this._f) == s>>>) { }
+        if ([|_f is string && (string)(this._f) == s|]) { }
 
-        if (<<<this._f is string && (string)_f == s>>>) { }
+        if ([|this._f is string && (string)_f == s|]) { }
 
-        if (<<<this._f is string && ((string)_f).Equals((string)this._f)>>>) { }
+        if ([|this._f is string && ((string)_f).Equals((string)this._f)|]) { }
     }
 }
-",
-@"
+", @"
 class C
 {
-    private readonly object _f;
+    private readonly object _f = false;
 
     public void M()
     {
@@ -76,20 +75,16 @@ class C
         if (this._f is string x8 && (x8).Equals(x8)) { }
     }
 }
-",
-                descriptor: Descriptor,
-                analyzer: Analyzer,
-                fixProvider: CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithFix_IfStatement()
+        public async Task Test_IfStatement()
         {
-            VerifyDiagnosticAndFix(
-@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    private readonly object _f;
+    private readonly object _f = false;
 
     public void M()
     {
@@ -97,47 +92,46 @@ class C
 
         object x = null;
 
-        if (<<<x is string>>>)
+        if ([|x is string|])
         {
             if (((string)x) == s) { }
         }
 
-        if (<<<x is string>>>)
+        if ([|x is string|])
         {
             if (((string)x).Equals((string)x)) { }
         }
 
-        if (<<<_f is string>>>)
+        if ([|_f is string|])
         {
             if ((string)_f == s) { }
         }
 
-        if (<<<this._f is string>>>)
+        if ([|this._f is string|])
         {
             if ((string)this._f == s) { }
         }
 
-        if (<<<_f is string>>>)
+        if ([|_f is string|])
         {
             if ((string)this._f == s) { }
         }
 
-        if (<<<this._f is string>>>)
+        if ([|this._f is string|])
         {
             if ((string)_f == s) { }
         }
 
-        if (<<<this._f is string>>>)
+        if ([|this._f is string|])
         {
             if (((string)_f).Equals((string)this._f)) { }
         }
     }
 }
-",
-@"
+", @"
 class C
 {
-    private readonly object _f;
+    private readonly object _f = false;
 
     public void M()
     {
@@ -181,20 +175,16 @@ class C
         }
     }
 }
-",
-                descriptor: Descriptor,
-                analyzer: Analyzer,
-                fixProvider: CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestNoDiagnostic_LogicalAndExpression()
+        public async Task TestNoDiagnostic_LogicalAndExpression()
         {
-            VerifyNoDiagnostic(
-@"
+            await VerifyNoDiagnosticAsync(@"
 class C
 {
-    private readonly object _f;
+    private readonly object _f = false;
 
     public void M()
     {
@@ -202,26 +192,23 @@ class C
         object x = null;
         object x2 = null;
 
-        if (x is string && ((string)x) == x) { }
+        if (x is string && ReferenceEquals(((string)x), x)) { }
 
-        if (x is string && ((string)x2) == s) { }
+        if (x is string && ReferenceEquals(((string)x2), s)) { }
 
-        if (x is string && x == s) { }
+        if (x is string && ReferenceEquals(x, s)) { }
     }
 }
-",
-                descriptor: Descriptor,
-                analyzer: Analyzer);
+");
         }
 
         [Fact]
-        public static void TestNoDiagnostic_IfStatement()
+        public async Task TestNoDiagnostic_IfStatement()
         {
-            VerifyNoDiagnostic(
-@"
+            await VerifyNoDiagnosticAsync(@"
 class C
 {
-    private readonly object _f;
+    private readonly object _f = false;
 
     public void M()
     {
@@ -231,7 +218,7 @@ class C
 
         if (x is string)
         {
-            if (((string)x) == x) { }
+            if (ReferenceEquals(((string)x), x)) { }
         }
 
         if (x is string)
@@ -241,13 +228,11 @@ class C
 
         if (x is string)
         {
-            if (x == s) { }
+            if (ReferenceEquals(x, s)) { }
         }
     }
 }
-",
-                descriptor: Descriptor,
-                analyzer: Analyzer);
+");
         }
     }
 }

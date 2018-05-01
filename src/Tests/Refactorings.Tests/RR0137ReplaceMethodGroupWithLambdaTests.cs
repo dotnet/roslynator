@@ -1,38 +1,36 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.CSharp.Refactorings;
+using System.Threading.Tasks;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpCodeRefactoringVerifier;
 
-namespace Roslynator.Refactorings.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public static class RR0137ReplaceMethodGroupWithLambdaTests
+    public class RR0137ReplaceMethodGroupWithLambdaTests : AbstractCSharpCodeRefactoringVerifier
     {
-        private const string RefactoringId = RefactoringIdentifiers.ReplaceMethodGroupWithLambda;
-
-        private static CodeRefactoringProvider CodeRefactoringProvider { get; } = new RoslynatorCodeRefactoringProvider();
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceMethodGroupWithLambda;
 
         [Fact]
-        public static void TestCodeRefactoring_VariableDeclaration()
+        public async Task Test_VariableDeclaration()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 using System;
 
 public class C
 {
     public void Foo()
     {
-        Action action1 = <<<>>>VM;
-        Action<string> action2 = <<<>>>VM1;
-        Action<string, string> action3 = <<<>>>VM2;
+        Action action1 = [||]VM;
+        Action<string> action2 = [||]VM1;
+        Action<string, string> action3 = [||]VM2;
     }
 
     public void Foo2()
     {
-        Func<string> func1 = <<<>>>M;
-        Func<string, string> func2 = <<<>>>M1;
-        Func<string, string, string> func3 = <<<>>>M2;
+        Func<string> func1 = [||]M;
+        Func<string, string> func2 = [||]M1;
+        Func<string, string, string> func3 = [||]M2;
     }
 
     public void VM() { }
@@ -68,13 +66,13 @@ public class C
     public string M1(string s) => null;
     public string M2(string s1, string s2) => null;
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring_SimpleAssignment()
+        public async Task Test_SimpleAssignment()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 using System;
 
 public class C
@@ -85,9 +83,9 @@ public class C
         Action<string> action2 = null;
         Action<string, string> action3 = null;
 
-        action1 = <<<>>>VM;
-        action2 = <<<>>>VM1;
-        action3 = <<<>>>VM2;
+        action1 = [||]VM;
+        action2 = [||]VM1;
+        action3 = [||]VM2;
     }
 
     public void Foo2()
@@ -96,9 +94,9 @@ public class C
         Func<string, string> func2 = null;
         Func<string, string, string> func3 = null;
 
-        func1 = <<<>>>M;
-        func2 = <<<>>>M1;
-        func3 = <<<>>>M2;
+        func1 = [||]M;
+        func2 = [||]M1;
+        func3 = [||]M2;
     }
 
     public void VM() { }
@@ -142,13 +140,13 @@ public class C
     public string M1(string s) => null;
     public string M2(string s1, string s2) => null;
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring_Argument()
+        public async Task Test_Argument()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 using System;
 
 public class C
@@ -159,9 +157,9 @@ public class C
         Func<string, string, string> func3)
     {
         M(
-            <<<>>>M,
-            <<<>>>M1,
-            <<<>>>M2);
+            [||]M,
+            [||]M1,
+            [||]M2);
     }
 
     public void MM(
@@ -170,9 +168,9 @@ public class C
         Action<string, string> action3)
     {
         MM(
-            <<<>>>VM,
-            <<<>>>VM1,
-            <<<>>>VM2);
+            [||]VM,
+            [||]VM1,
+            [||]VM2);
     }
 
     public void VM() { }
@@ -216,7 +214,7 @@ public class C
     public string M1(string s) => null;
     public string M2(string s1, string s2) => null;
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
     }
 }

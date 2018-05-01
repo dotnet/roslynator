@@ -13,41 +13,28 @@ namespace Roslynator
 {
     public static class DocumentExtensions
     {
-        public static string ToSimplifiedAndFormattedFullString(this Document document)
+        public static async Task<string> ToFullStringAsync(this Document document, bool simplify = false, bool format = false)
         {
-            return ToSimplifiedAndFormattedFullStringAsync(document).Result;
-        }
-
-        public static async Task<string> ToSimplifiedAndFormattedFullStringAsync(this Document document)
-        {
-            document = await Simplifier.ReduceAsync(document, Simplifier.Annotation).ConfigureAwait(false);
+            if (simplify)
+                document = await Simplifier.ReduceAsync(document, Simplifier.Annotation).ConfigureAwait(false);
 
             SyntaxNode root = await document.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace);
+            if (format)
+                root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace);
 
             return root.ToFullString();
         }
 
-        public static Document ApplyCodeAction(this Document document, CodeAction codeAction)
+        public static async Task<Document> ApplyCodeActionAsync(this Document document, CodeAction codeAction)
         {
-            return codeAction
-                .GetOperationsAsync(CancellationToken.None)
-                .Result
+            ImmutableArray<CodeActionOperation> operations = await codeAction.GetOperationsAsync(CancellationToken.None).ConfigureAwait(false);
+
+            return operations
                 .OfType<ApplyChangesOperation>()
                 .Single()
                 .ChangedSolution
                 .GetDocument(document.Id);
-        }
-
-        public static ImmutableArray<Diagnostic> GetCompilerDiagnostics(this Document document, CancellationToken cancellation = default(CancellationToken))
-        {
-            return document.GetSemanticModelAsync(cancellation).Result.GetDiagnostics();
-        }
-
-        public static string ToFullString(this Document document)
-        {
-            return document.GetSyntaxRootAsync().Result.ToFullString();
         }
     }
 }

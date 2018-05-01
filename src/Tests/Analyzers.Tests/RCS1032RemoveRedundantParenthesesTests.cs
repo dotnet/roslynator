@@ -3,31 +3,31 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
+using System.Threading.Tasks;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS1032RemoveRedundantParenthesesTests
+    public class RCS1032RemoveRedundantParenthesesTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantParentheses;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantParentheses;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantParenthesesAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantParenthesesAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new RemoveRedundantParenthesesCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new RemoveRedundantParenthesesCodeFixProvider();
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_Argument()
+        public async Task Test_Argument()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M(object x)
     {
-        M(<<<(>>>x));
+        M([|(|]x));
     }
 }
 ", @"
@@ -38,16 +38,16 @@ class C
         M(x);
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_AttributeArgument()
+        public async Task Test_AttributeArgument()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 
-[Obsolete(<<<(>>>""""))]
+[Obsolete([|(|]""""))]
 class C
 {
 }
@@ -58,18 +58,18 @@ using System;
 class C
 {
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_ReturnExpression()
+        public async Task Test_ReturnExpression()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     object M()
     {
-        return <<<(>>>null);
+        return [|(|]null);
     }
 }
 ", @"
@@ -80,20 +80,20 @@ class C
         return null;
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_YieldReturnExpression()
+        public async Task Test_YieldReturnExpression()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System.Collections.Generic;
 
 class C
 {
     IEnumerable<object> M()
     {
-        yield return <<<(>>>null);
+        yield return [|(|]null);
     }
 }
 ", @"
@@ -106,37 +106,37 @@ class C
         yield return null;
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_ExpressionBody()
+        public async Task Test_ExpressionBody()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    object M() => <<<(>>>null);
+    object M() => [|(|]null);
 }
 ", @"
 class C
 {
     object M() => null;
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Fact]
-        public static void TestDiagnosticWithCodeFix_AwaitExpression()
+        public async Task Test_AwaitExpression()
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System.Threading.Tasks;
 
 class C
 {
     async Task FooAsync()
     {
-        await <<<(>>>FooAsync().ConfigureAwait(false));
-        await <<<(>>>(Task)FooAsync());
+        await [|(|]FooAsync());
+        await [|(|](Task)FooAsync());
     }
 }
 ", @"
@@ -146,38 +146,38 @@ class C
 {
     async Task FooAsync()
     {
-        await FooAsync().ConfigureAwait(false);
+        await FooAsync();
         await (Task)FooAsync();
     }
 }
-", Descriptor, Analyzer, CodeFixProvider);
+");
         }
 
         [Theory]
-        [InlineData("while (<<<(>>>true)) { }", "while (true) { }")]
-        [InlineData("do { } while (<<<(>>>true));", "do { } while (true);")]
-        [InlineData("using (<<<(>>>(IDisposable)null)) { }", "using ((IDisposable)null) { }")]
-        [InlineData("lock (<<<(>>>s)) { }", "lock (s) { }")]
-        [InlineData("if (<<<(>>>true)) { }", "if (true) { }")]
-        [InlineData("switch (<<<(>>>true)) { }", "switch (true) { }")]
-        [InlineData(@"M(<<<(>>>""""));", @"M("""");")]
-        [InlineData("var arr = new string[] { <<<(>>>null) };", "var arr = new string[] { null };")]
-        [InlineData("var items = new List<string>() { <<<(>>>null) };", "var items = new List<string>() { null };")]
-        [InlineData(@"s = $""{<<<(>>>"""")}"";", @"s = $""{""""}"";")]
-        [InlineData("<<<(>>>i) = (0);", "i = (0);")]
-        [InlineData("<<<(>>>i) += (0);", "i += (0);")]
-        [InlineData("<<<(>>>i) -= (0);", "i -= (0);")]
-        [InlineData("<<<(>>>i) *= (0);", "i *= (0);")]
-        [InlineData("<<<(>>>i) /= (0);", "i /= (0);")]
-        [InlineData("<<<(>>>i) %= (0);", "i %= (0);")]
-        [InlineData("<<<(>>>i) &= (0);", "i &= (0);")]
-        [InlineData("<<<(>>>i) ^= (0);", "i ^= (0);")]
-        [InlineData("<<<(>>>i) |= (0);", "i |= (0);")]
-        [InlineData("<<<(>>>i) <<= (0);", "i <<= (0);")]
-        [InlineData("<<<(>>>i) >>= (0);", "i >>= (0);")]
-        public static void TestDiagnosticWithCodeFix_Statement(string fixableCode, string fixedCode)
+        [InlineData("while ([|(|]true)) { }", "while (true) { }")]
+        [InlineData("do { } while ([|(|]true));", "do { } while (true);")]
+        [InlineData("using ([|(|](IDisposable)null)) { }", "using ((IDisposable)null) { }")]
+        [InlineData("lock ([|(|]s)) { }", "lock (s) { }")]
+        [InlineData("if ([|(|]true)) { }", "if (true) { }")]
+        [InlineData("switch ([|(|]true)) { default: break; }", "switch (true) { default: break; }")]
+        [InlineData(@"M([|(|]""""));", @"M("""");")]
+        [InlineData("var arr = new string[] { [|(|]null) };", "var arr = new string[] { null };")]
+        [InlineData("var items = new List<string>() { [|(|]null) };", "var items = new List<string>() { null };")]
+        [InlineData(@"s = $""{[|(|]"""")}"";", @"s = $""{""""}"";")]
+        [InlineData("[|(|]i) = (0);", "i = (0);")]
+        [InlineData("[|(|]i) += (0);", "i += (0);")]
+        [InlineData("[|(|]i) -= (0);", "i -= (0);")]
+        [InlineData("[|(|]i) *= (0);", "i *= (0);")]
+        [InlineData("[|(|]i) /= (0);", "i /= (0);")]
+        [InlineData("[|(|]i) %= (0);", "i %= (0);")]
+        [InlineData("[|(|]i) &= (0);", "i &= (0);")]
+        [InlineData("[|(|]i) ^= (0);", "i ^= (0);")]
+        [InlineData("[|(|]i) |= (0);", "i |= (0);")]
+        [InlineData("[|(|]i) <<= (0);", "i <<= (0);")]
+        [InlineData("[|(|]i) >>= (0);", "i >>= (0);")]
+        public async Task Test_Statement(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 using System;
 using System.Collections.Generic;
 
@@ -187,20 +187,20 @@ class C
     {
         int i = 0;
 
-        <<<>>>
+        [||]
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Theory]
-        [InlineData("f = !<<<(>>>f);", "f = !f;")]
-        [InlineData(@"f = !<<<(>>>s.StartsWith(""""));", @"f = !s.StartsWith("""");")]
-        [InlineData("f = !<<<(>>>foo.Value);", "f = !foo.Value;")]
-        [InlineData("f = !<<<(>>>foo[0]);", "f = !foo[0];")]
-        public static void TestDiagnosticWithCodeFix_LogicalNot(string fixableCode, string fixedCode)
+        [InlineData("f = ![|(|]f);", "f = !f;")]
+        [InlineData(@"f = ![|(|]s.StartsWith(""""));", @"f = !s.StartsWith("""");")]
+        [InlineData("f = ![|(|]foo.Value);", "f = !foo.Value;")]
+        [InlineData("f = ![|(|]foo[0]);", "f = !foo[0];")]
+        public async Task Test_LogicalNot(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class Foo
 {
     void M()
@@ -209,7 +209,7 @@ class Foo
         string s = null;
         var foo = new Foo();
 
-        <<<>>>
+        [||]
     }
 
     public bool Value { get; }
@@ -219,13 +219,13 @@ class Foo
         get { return i == 0; }
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Fact]
-        public static void TestNoDiagnostic_AssignmentInInitializer()
+        public async Task TestNoDiagnostic_AssignmentInInitializer()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 
 class C
@@ -236,13 +236,13 @@ class C
         var items = new List<string>() { (x = ""x"") };    
     }
 }
-", Descriptor, Analyzer);
+");
         }
 
         [Fact]
-        public static void TestNoDiagnostic_ConditionalExpressionInInterpolatedString()
+        public async Task TestNoDiagnostic_ConditionalExpressionInInterpolatedString()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 class C
 {
     void M()
@@ -250,13 +250,13 @@ class C
             string s = $""{ ((true) ? ""a"" : ""b"")}"";
     }
 }
-", Descriptor, Analyzer);
+");
         }
 
         [Fact]
-        public static void TestNoDiagnostic_AssignmentInAwaitExpression()
+        public async Task TestNoDiagnostic_AssignmentInAwaitExpression()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 using System;
 using System.Threading.Tasks;
 
@@ -264,13 +264,13 @@ class C
 {
     async Task FooAsync(Task task) => await (task = Task.Run(default(Action)));
 }
-", Descriptor, Analyzer);
+");
         }
 
         [Fact]
-        public static void TestNoDiagnostic_ForEach()
+        public async Task TestNoDiagnostic_ForEach()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 using System.Collections.Generic;
 using System.Linq;
 
@@ -287,7 +287,7 @@ class C
         }
     }
 }
-", Descriptor, Analyzer);
+");
         }
     }
 }

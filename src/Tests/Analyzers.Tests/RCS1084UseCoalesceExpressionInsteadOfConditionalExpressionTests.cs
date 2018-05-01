@@ -1,23 +1,23 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpDiagnosticVerifier;
 
-namespace Roslynator.Analyzers.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
 {
-    public static class RCS1084UseCoalesceExpressionInsteadOfConditionalExpressionTests
+    public class RCS1084UseCoalesceExpressionInsteadOfConditionalExpressionTests : AbstractCSharpCodeFixVerifier
     {
-        private static DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression;
 
-        private static DiagnosticAnalyzer Analyzer { get; } = new SimplifyNullCheckAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new SimplifyNullCheckAnalyzer();
 
-        private static CodeFixProvider CodeFixProvider { get; } = new ConditionalExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ConditionalExpressionCodeFixProvider();
 
         [Theory]
         [InlineData("s != null ? s : \"\"", "s ?? \"\"")]
@@ -25,19 +25,19 @@ namespace Roslynator.Analyzers.Tests
 
         [InlineData("(s != null) ? (s) : (\"\")", "s ?? \"\"")]
         [InlineData("(s == null) ? (\"\") : (s)", "s ?? \"\"")]
-        public static void TestDiagnosticWithCodeFix_ReferenceType(string fixableCode, string fixedCode)
+        public async Task Test_ReferenceType(string fromData, string toData)
         {
-        VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
     {
         string s = null;
 
-        s = <<<>>>;
+        s = [||];
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Theory]
@@ -45,9 +45,9 @@ class C
         [InlineData("(ni == null) ? 1 : ni.Value", "ni ?? 1")]
         [InlineData("(ni.HasValue) ? ni.Value : 1", "ni ?? 1")]
         [InlineData("(!ni.HasValue) ? 1 : ni.Value", "ni ?? 1")]
-        public static void TestDiagnosticWithCodeFix_ValuType(string fixableCode, string fixedCode)
+        public async Task Test_ValueType(string fromData, string toData)
         {
-            VerifyDiagnosticAndFix(@"
+            await VerifyDiagnosticAndFixAsync(@"
 class C
 {
     void M()
@@ -55,16 +55,16 @@ class C
         int i = 0;
         int? ni = null;
 
-        i = <<<>>>;
+        i = [||];
     }
 }
-", fixableCode, fixedCode, Descriptor, Analyzer, CodeFixProvider);
+", fromData, toData);
         }
 
         [Fact]
-        public static void TestNoDiagnostic()
+        public async Task TestNoDiagnostic()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 class C
 {
     public unsafe void M()
@@ -75,13 +75,13 @@ class C
         s = (s == null) ? s : """";
     }
 }
-", Descriptor, Analyzer);
+");
         }
 
         [Fact]
-        public static void TestNoDiagnostic_Pointer()
+        public async Task TestNoDiagnostic_Pointer()
         {
-            VerifyNoDiagnostic(@"
+            await VerifyNoDiagnosticAsync(@"
 class C
 {
     public unsafe void M()
@@ -92,7 +92,7 @@ class C
         i = (i != null) ? i : default(int*);
     }
 }
-", Descriptor, Analyzer);
+");
         }
     }
 }

@@ -1,28 +1,25 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.CSharp.Refactorings;
+using System.Threading.Tasks;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpCodeRefactoringVerifier;
 
-namespace Roslynator.Refactorings.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public static class RR0197InitializeFieldFromConstructorTests
+    public class RR0197InitializeFieldFromConstructorTests : AbstractCSharpCodeRefactoringVerifier
     {
-        private const string RefactoringId = RefactoringIdentifiers.InitializeFieldFromConstructor;
-
-        private static CodeRefactoringProvider CodeRefactoringProvider { get; } = new RoslynatorCodeRefactoringProvider();
+        public override string RefactoringId { get; } = RefactoringIdentifiers.InitializeFieldFromConstructor;
 
         [Fact]
-        public static void TestCodeRefactoring()
+        public async Task TestRefactoring()
         {
-            VerifyRefactoring(
-@"
+            await VerifyRefactoringAsync(@"
 class Foo : FooBase
 {
-<<<    private string bar;
+[|    private string bar;
 
-    private string _bar2, _bar3;>>>
+    private string _bar2, _bar3;|]
 
     public Foo()
     {
@@ -101,7 +98,7 @@ class FooBase
     public FooBase() { }
     public FooBase(object parameter1, object bar) { }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
     }
 }

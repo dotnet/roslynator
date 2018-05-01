@@ -1,22 +1,20 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.CSharp.Refactorings;
+using System.Threading.Tasks;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpCodeRefactoringVerifier;
 
-namespace Roslynator.Refactorings.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public static class RR0127InlineConstantValueTests
+    public class RR0127InlineConstantValueTests : AbstractCSharpCodeRefactoringVerifier
     {
-        private const string RefactoringId = RefactoringIdentifiers.InlineConstantValue;
-
-        private static CodeRefactoringProvider CodeRefactoringProvider { get; } = new RoslynatorCodeRefactoringProvider();
+        public override string RefactoringId { get; } = RefactoringIdentifiers.InlineConstantValue;
 
         [Fact]
-        public static void TestCodeRefactoring_Field()
+        public async Task Test_Field()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 namespace A.B
 {
     class C
@@ -28,11 +26,11 @@ namespace A.B
 
         void M(string s)
         {
-            s = <<<K>>>;
-            s = <<<K3>>>;
-            s = <<<C.K>>>;
-            s = <<<A.B.C.K>>>;
-            s = <<<K4>>>;
+            s = [|K|];
+            s = [|K3|];
+            s = [|C.K|];
+            s = [|A.B.C.K|];
+            s = [|K4|];
         }
     }
 }
@@ -56,20 +54,20 @@ namespace A.B
         }
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring_BoolField()
+        public async Task Test_BoolField()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     public const bool KB = true;
 
     void M()
     {
-        bool b = <<<KB>>>;
+        bool b = [|KB|];
     }
 }
 ", @"
@@ -82,20 +80,20 @@ class C
         bool b = true;
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring_CharField()
+        public async Task Test_CharFieldAsync()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     public const char KC = '\n';
 
     void M()
     {
-        char c = <<<KC>>>;
+        char c = [|KC|];
     }
 }
 ", @"
@@ -108,20 +106,20 @@ class C
         char c = '\n';
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring_IntField()
+        public async Task Test_IntFieldAsync()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     public const int KI = int.MaxValue;
 
     void M()
     {
-        int i = <<<KI>>>;
+        int i = [|KI|];
     }
 }
 ", @"
@@ -134,20 +132,20 @@ class C
         int i = 2147483647;
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring_LongField()
+        public async Task Test_LongFieldAsync()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     public const long KL = 1;
 
     void M()
     {
-        long l = <<<KL>>>;
+        long l = [|KL|];
     }
 }
 ", @"
@@ -160,13 +158,13 @@ class C
         long l = 1;
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestCodeRefactoring_MultipleDocuments()
+        public async Task Test_MultipleDocumentsAsync()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 namespace A.B
 {
     class C
@@ -175,12 +173,25 @@ namespace A.B
 
         void M(string s)
         {
-            s = <<<K>>>;
+            s = [|K|];
+        }
+    }
+}
+", @"
+namespace A.B
+{
+    class C
+    {
+        public const string K = C2.K2;
+
+        void M(string s)
+        {
+            s = @""x"";
         }
     }
 }
 ",
-new string[] { @"
+RefactoringId, additionalSources: new string[] { @"
 namespace A.B
 {
     class C2
@@ -196,62 +207,13 @@ namespace A.B
         public const string K3 = @""x"";
     }
 }
-", }, @"
-namespace A.B
-{
-    class C
-    {
-        public const string K = C2.K2;
-
-        void M(string s)
-        {
-            s = @""x"";
-        }
-    }
-}
-", CodeRefactoringProvider, RefactoringId);
+", });
         }
 
         [Fact]
-        public static void TestCodeRefactoring_Local()
+        public async Task TestNoRefactoring()
         {
-            VerifyRefactoring(@"
-class C
-{
-    string M(string s)
-    {
-        const string k = @""x"";
-        const string k2 = k;
-        const string k3 = k2;
-
-        s += <<<k>>>;
-        s += <<<k3>>>;
-
-        return k3;
-    }
-}
-", @"
-class C
-{
-    string M(string s)
-    {
-        const string k = @""x"";
-        const string k2 = k;
-        const string k3 = k2;
-
-        s += @""x"";
-        s += @""x"";
-
-        return k3;
-    }
-}
-", CodeRefactoringProvider, RefactoringId);
-        }
-
-        [Fact]
-        public static void TestNoCodeRefactoring()
-        {
-            VerifyNoRefactoring(@"
+            await VerifyNoRefactoringAsync(@"
 using System;
 
 class C
@@ -260,14 +222,14 @@ class C
 
     void M(string s)
     {
-        s = <<<""x"">>>;
-        s = <<<""x"" + ""x"">>>;
-        s = <<<F>>>;
-        s = <<<string.Empty>>>;
-        var options = <<<StringSplitOptions.None>>>;
+        s = [|""x""|];
+        s = [|""x"" + ""x""|];
+        s = [|F|];
+        s = [|string.Empty|];
+        var options = [|StringSplitOptions.None|];
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
     }
 }

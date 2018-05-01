@@ -1,43 +1,41 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.CSharp.Refactorings;
+using System.Threading.Tasks;
 using Xunit;
-using static Roslynator.Tests.CSharp.CSharpCodeRefactoringVerifier;
 
-namespace Roslynator.Refactorings.Tests
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public static class RR0166UseConditionalExpressionInsteadOfIfTests
+    public class RR0166UseConditionalExpressionInsteadOfIfTests : AbstractCSharpCodeRefactoringVerifier
     {
-        private const string RefactoringId = RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf;
-
-        private static CodeRefactoringProvider CodeRefactoringProvider { get; } = new RoslynatorCodeRefactoringProvider();
+        public override string RefactoringId { get; } = RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf;
 
         [Theory]
         [InlineData("if (f) { z = x; } else { z = y; }", "z = (f) ? x : y;")]
         [InlineData("if (f) z = x; else z = y;", "z = (f) ? x : y;")]
-        public static void TestRefactoring_IfElseToAssignmentWithConditionalExpression(string fixableCode, string fixedCode)
+        public async Task Test_IfElseToAssignmentWithConditionalExpression(string fromData, string toData)
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, string x, string y, string z)
     {
-        <<<>>>
+        [||]
     }
 }
-", fixableCode, fixedCode, CodeRefactoringProvider, RefactoringId);
+", fromData, toData, RefactoringId);
         }
 
         [Fact]
-        public static void TestRefactoring_AssignmentAndIfElseToAssignmentWithConditionalExpression()
+        public async Task Test_AssignmentAndIfElseToAssignmentWithConditionalExpression()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, string x, string y, string z)
     {
-<<<        z = null;
+[|        z = null;
         if (f)
         {
             z = x;
@@ -45,11 +43,10 @@ class C
         else
         {
             z = y;
-        }>>>
+        }|]
     }
 }
-",
-@"
+", @"
 class C
 {
     void M(bool f, string x, string y, string z)
@@ -57,18 +54,18 @@ class C
         z = (f) ? x : y;
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestRefactoring_LocalDeclarationAndIfElseToAssignmentWithConditionalExpression()
+        public async Task Test_LocalDeclarationAndIfElseToAssignmentWithConditionalExpression()
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     void M(bool f, string x, string y)
     {
-<<<        string z = null;
+[|        string z = null;
         if (f)
         {
             z = x;
@@ -76,11 +73,10 @@ class C
         else
         {
             z = y;
-        }>>>
+        }|]
     }
 }
-",
-@"
+", @"
 class C
 {
     void M(bool f, string x, string y)
@@ -88,7 +84,7 @@ class C
         string z = (f) ? x : y;
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Theory]
@@ -96,48 +92,47 @@ class C
         [InlineData("if (f) return x; else return y;", "return (f) ? x : y;")]
         [InlineData("if (f) { return x; } return y;", "return (f) ? x : y;")]
         [InlineData("if (f) return x; return y;", "return (f) ? x : y;")]
-        public static void TestRefactoring_IfToReturnWithConditionalExpression(string fixableCode, string fixedCode)
+        public async Task Test_IfToReturnWithConditionalExpression(string fromData, string toData)
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
     string M(bool f, string x, string y, string z)
     {
-        <<<>>>
+        [||]
     }
 }
-", fixableCode, fixedCode, CodeRefactoringProvider, RefactoringId);
+", fromData, toData, RefactoringId);
         }
 
         [Theory]
         [InlineData("if (f) { yield return x; } else { yield return y; }", "yield return (f) ? x : y;")]
         [InlineData("if (f) yield return x; else yield return y;", "yield return (f) ? x : y;")]
-        public static void TestRefactoring_IfElseToYieldReturnWithConditionalExpression(string fixableCode, string fixedCode)
+        public async Task Test_IfElseToYieldReturnWithConditionalExpression(string fromData, string toData)
         {
-            VerifyRefactoring(@"
+            await VerifyRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
 {
     IEnumerable<string> M(bool f, string x, string y, string z)
     {
-        <<<>>>
+        [||]
     }
 }
-", fixableCode, fixedCode, CodeRefactoringProvider, RefactoringId);
+", fromData, toData, RefactoringId);
         }
 
         [Fact]
-        public static void TestNoRefactoring_IfElseToAssignmentWithConditionalExpression()
+        public async Task TestNoRefactoring_IfElseToAssignmentWithConditionalExpression()
         {
-            VerifyNoRefactoring(
-@"
+            await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(bool f)
     {
         int? ni;
-        <<<>>>if (f)
+        [||]if (f)
         {
             ni = null;
         }
@@ -147,19 +142,18 @@ class C
         }
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestNoRefactoring_LocalDeclarationAndIfElseAssignmentWithConditionalExpression()
+        public async Task TestNoRefactoring_LocalDeclarationAndIfElseAssignmentWithConditionalExpression()
         {
-            VerifyNoRefactoring(
-@"
+            await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(bool f)
     {
-<<<        int? ni;
+[|        int? ni;
         if (f)
         {
             ni = null;
@@ -167,22 +161,22 @@ class C
         else
         {
             ni = 1;
-        }>>>
+        }|]
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestNoRefactoring_AssignmentAndIfElseToAssignmentWithConditionalExpression()
+        public async Task TestNoRefactoring_AssignmentAndIfElseToAssignmentWithConditionalExpression()
         {
-            VerifyNoRefactoring(@"
+            await VerifyNoRefactoringAsync(@"
 class C
 {
     void M(bool f)
     {
         int? ni;
-<<<        ni = null;
+[|        ni = null;
         if (f)
         {
             ni = null;
@@ -190,73 +184,73 @@ class C
         else
         {
             ni = 1;
-        }>>>
+        }|]
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestNoRefactoring_IfElseToYieldReturnWithConditionalExpression()
+        public async Task TestNoRefactoring_IfElseToYieldReturnWithConditionalExpression()
         {
-            VerifyNoRefactoring(@"
+            await VerifyNoRefactoringAsync(@"
 using System.Collections.Generic;
 
 class C
 {
     IEnumerable<int?> M(bool f)
     {
-<<<        if (f)
+[|        if (f)
         {
             yield return null;
         }
         else
         {
             yield return 1;
-        }>>>
+        }|]
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestNoRefactoring_IfElseToReturnWithConditionalExpression()
+        public async Task TestNoRefactoring_IfElseToReturnWithConditionalExpression()
         {
-            VerifyNoRefactoring(@"
+            await VerifyNoRefactoringAsync(@"
 class C
 {
     int? M(bool f)
     {
-<<<        if (f)
+[|        if (f)
         {
             return null;
         }
         else
         {
             return 1;
-        }>>>
+        }|]
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
 
         [Fact]
-        public static void TestNoRefactoring_IfReturnToReturnWithConditionalExpression()
+        public async Task TestNoRefactoring_IfReturnToReturnWithConditionalExpression()
         {
-            VerifyNoRefactoring(@"
+            await VerifyNoRefactoringAsync(@"
 class C
 {
     int? M(bool f)
     {
-<<<        if (f)
+[|        if (f)
         {
             return null;
         }
 
-        return 1;>>>
+        return 1;|]
     }
 }
-", CodeRefactoringProvider, RefactoringId);
+", RefactoringId);
         }
     }
 }
