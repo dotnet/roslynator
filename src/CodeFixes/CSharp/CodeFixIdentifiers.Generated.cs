@@ -110,5 +110,8 @@ namespace Roslynator.CSharp
         public const string RenameDestructorToMatchClassName = Prefix + "0104";
         public const string RemoveBaseList = Prefix + "0105";
         public const string AddDefaultValueToParameter = Prefix + "0106";
+        public const string AddMissingComma = Prefix + "0107";
+        public const string RemoveParentheses = Prefix + "0108";
+        public const string RemoveParameter = Prefix + "0109";
     }
 }

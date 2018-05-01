@@ -743,6 +743,13 @@
     Message="; expected"
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1002" />
   <Diagnostic
+    Id="CS1003"
+    Identifier="SyntaxErrorCharExpected"
+    Severity="Error"
+    Title="Syntax error, 'char' expected."
+    Message="Syntax error, '{0}' expected"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1003" />
+  <Diagnostic
     Id="CS1004"
     Identifier="DuplicateModifier"
     Severity="Error"
@@ -883,6 +890,13 @@
     Message="Iterators cannot have ref or out parameters"
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1623" />
   <Diagnostic
+    Id="CS1624"
+    Identifier="BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType"
+    Severity="Error"
+    Title="The body of 'identifier' cannot be an iterator block because 'type' is not an iterator interface type."
+    Message="The body of '{0}' cannot be an iterator block because '{1}' is not an iterator interface type"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1624" />
+  <Diagnostic
     Id="CS1643"
     Identifier="NotAllCodePathsReturnValueInAnonymousFunction"
     Severity="Error"
@@ -960,6 +974,20 @@
     Message="Non-invocable member '{0}' cannot be used like a method."
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1955" />
   <Diagnostic
+    Id="CS1983"
+    Identifier="ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT"
+    Severity="Error"
+    Title="The return type of an async method must be void, Task or Task&lt;T&gt;."
+    Message="The return type of an async method must be void, Task or Task&lt;T&gt;"
+    HelpUrl="" />
+  <Diagnostic
+    Id="CS1988"
+    Identifier="AsyncMethodsCannotHaveRefOrOutParameters"
+    Severity="Error"
+    Title="Async methods cannot have ref or out parameters."
+    Message="Async methods cannot have ref or out parameters"
+    HelpUrl="" />
+  <Diagnostic
     Id="CS1994"
     Identifier="AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody"
     Severity="Error"
@@ -972,13 +1000,6 @@
     Severity="Error"
     Title="Since 'RemoveReturnKeywordOrReturnExpression.FooAsync()' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task&lt;T&gt;&gt;'?"
     Message="Since '{0}' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task&lt;T&gt;'?"
-    HelpUrl="" />
-  <Diagnostic
-    Id="CS1988"
-    Identifier="AsyncMethodsCannotHaveRefOrOutParameters"
-    Severity="Error"
-    Title="Async methods cannot have ref or out parameters."
-    Message="Async methods cannot have ref or out parameters"
     HelpUrl="" />
   <Diagnostic
     Id="CS8070"

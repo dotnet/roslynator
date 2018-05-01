@@ -41,20 +41,20 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(
-                root,
-                context.Span,
-                out SyntaxNode node,
-                predicate: f => f.IsKind(SyntaxKind.VariableDeclaration, SyntaxKind.ForEachStatement, SyntaxKind.Parameter, SyntaxKind.DeclarationPattern)))
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
+                SyntaxKind.VariableDeclaration,
+                SyntaxKind.ForEachStatement,
+                SyntaxKind.Parameter,
+                SyntaxKind.DeclarationPattern,
+                SyntaxKind.DeclarationExpression)))
             {
                 return;
             }
 
-            if (node.IsKind(SyntaxKind.Parameter, SyntaxKind.DeclarationPattern))
+            if (node.IsKind(SyntaxKind.ForEachStatement, SyntaxKind.Parameter, SyntaxKind.DeclarationPattern, SyntaxKind.DeclarationExpression))
                 return;
 
-            if (!(node is VariableDeclarationSyntax variableDeclaration))
-                return;
+            var variableDeclaration = (VariableDeclarationSyntax)node;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {

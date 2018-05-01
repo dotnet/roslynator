@@ -3,7 +3,6 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -35,14 +34,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
-                SyntaxKind.AwaitExpression,
-                SyntaxKind.IdentifierName,
-                SyntaxKind.GenericName,
-                SyntaxKind.MemberBindingExpression)))
-            {
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression))
                 return;
-            }
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
@@ -50,11 +43,11 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound:
                         {
-                            switch (node)
+                            switch (expression)
                             {
                                 case SimpleNameSyntax simpleName:
                                     {
-                                        Debug.Assert(node.IsKind(SyntaxKind.IdentifierName, SyntaxKind.GenericName), node.Kind().ToString());
+                                        Debug.Assert(expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.GenericName), expression.Kind().ToString());
 
                                         if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.FixMemberAccessName))
                                             break;
@@ -92,14 +85,14 @@ namespace Roslynator.CSharp.CodeFixes
                                             "Remove 'await'",
                                             cancellationToken =>
                                             {
-                                                ExpressionSyntax expression = awaitExpression.Expression;
+                                                ExpressionSyntax expression2 = awaitExpression.Expression;
 
                                                 SyntaxTriviaList leadingTrivia = awaitExpression
                                                     .GetLeadingTrivia()
                                                     .AddRange(awaitExpression.AwaitKeyword.TrailingTrivia.EmptyIfWhitespace())
-                                                    .AddRange(expression.GetLeadingTrivia().EmptyIfWhitespace());
+                                                    .AddRange(expression2.GetLeadingTrivia().EmptyIfWhitespace());
 
-                                                ExpressionSyntax newNode = expression.WithLeadingTrivia(leadingTrivia);
+                                                ExpressionSyntax newNode = expression2.WithLeadingTrivia(leadingTrivia);
 
                                                 return context.Document.ReplaceNodeAsync(awaitExpression, newNode, cancellationToken);
                                             },
@@ -116,89 +109,67 @@ namespace Roslynator.CSharp.CodeFixes
             }
         }
 
-        private async Task ComputeCodeFixAsync(CodeFixContext context, Diagnostic diagnostic, ExpressionSyntax expression, SimpleNameSyntax simpleName)
-        {
-            switch (simpleName.Identifier.ValueText)
-            {
-                case "Count":
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        ComputeCodeFix(context, diagnostic, expression, simpleName, semanticModel, "Count", "Length");
-                        break;
-                    }
-                case "Length":
-                    {
-                        SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                        ComputeCodeFix(context, diagnostic, expression, simpleName, semanticModel, "Length", "Count");
-                        break;
-                    }
-            }
-        }
-
-        private void ComputeCodeFix(
+        private async Task ComputeCodeFixAsync(
             CodeFixContext context,
             Diagnostic diagnostic,
             ExpressionSyntax expression,
-            SimpleNameSyntax simpleName,
-            SemanticModel semanticModel,
-            string name,
-            string newName)
+            SimpleNameSyntax simpleName)
         {
-            if (IsFixable(expression, newName, semanticModel, context.CancellationToken))
-            {
-                CodeAction codeAction = CodeAction.Create(
-                    $"Use '{newName}' instead of '{name}'",
-                    cancellationToken => RefactorAsync(context.Document, simpleName, newName, cancellationToken),
-                    GetEquivalenceKey(diagnostic));
+            string name = simpleName.Identifier.ValueText;
 
-                context.RegisterCodeFix(codeAction, diagnostic);
+            if (name != "Count"
+                && name != "Length")
+            {
+                return;
             }
-        }
 
-        private static bool IsFixable(
-            ExpressionSyntax expression,
-            string newName,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+            string newName = (name == "Count") ? "Length" : "Count";
 
-            if (typeSymbol != null)
-            {
-                if (typeSymbol is IArrayTypeSymbol arrayType)
-                    typeSymbol = arrayType.ElementType;
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                foreach (ISymbol symbol in typeSymbol.GetMembers(newName))
+            if (!IsFixable())
+                return;
+
+            CodeAction codeAction = CodeAction.Create(
+                $"Use '{newName}' instead of '{name}'",
+                cancellationToken =>
                 {
-                    if (!symbol.IsStatic
-                        && symbol.Kind == SymbolKind.Property)
-                    {
-                        var propertySymbol = (IPropertySymbol)symbol;
+                    SimpleNameSyntax newNode = simpleName.WithIdentifier(Identifier(newName).WithTriviaFrom(simpleName.Identifier));
 
-                        if (!propertySymbol.IsIndexer
-                            && propertySymbol.IsReadOnly
-                            && semanticModel.IsAccessible(expression.SpanStart, symbol))
+                    return context.Document.ReplaceNodeAsync(simpleName, newNode, cancellationToken);
+                },
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+
+            bool IsFixable()
+            {
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+                if (typeSymbol != null)
+                {
+                    if (typeSymbol is IArrayTypeSymbol arrayType)
+                        typeSymbol = arrayType.ElementType;
+
+                    foreach (ISymbol symbol in typeSymbol.GetMembers(newName))
+                    {
+                        if (!symbol.IsStatic
+                            && symbol.Kind == SymbolKind.Property)
                         {
-                            return true;
+                            var propertySymbol = (IPropertySymbol)symbol;
+
+                            if (!propertySymbol.IsIndexer
+                                && propertySymbol.IsReadOnly
+                                && semanticModel.IsAccessible(expression.SpanStart, symbol))
+                            {
+                                return true;
+                            }
                         }
                     }
                 }
+
+                return false;
             }
-
-            return false;
-        }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            SimpleNameSyntax simpleName,
-            string newName,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SimpleNameSyntax newNode = simpleName.WithIdentifier(Identifier(newName).WithTriviaFrom(simpleName.Identifier));
-
-            return document.ReplaceNodeAsync(simpleName, newNode, cancellationToken);
         }
     }
 }

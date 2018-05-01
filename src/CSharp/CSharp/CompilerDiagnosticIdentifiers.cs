@@ -112,6 +112,7 @@ namespace Roslynator.CSharp
         public const string ImplicitlyTypedVariablesCannotHaveMultipleDeclarators = "CS0819";
         public const string ImplicitlyTypedVariablesCannotBeConstant = "CS0822";
         public const string SemicolonExpected = "CS1002";
+        public const string SyntaxErrorCharExpected = "CS1003";
         public const string DuplicateModifier = "CS1004";
         public const string EmbeddedStatementCannotBeDeclarationOrLabeledStatement = "CS1023";
         public const string TypeExpected = "CS1031";
@@ -132,6 +133,7 @@ namespace Roslynator.CSharp
         public const string YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression = "CS1621";
         public const string CannotReturnValueFromIterator = "CS1622";
         public const string IteratorsCannotHaveRefOrOutParameters = "CS1623";
+        public const string BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType = "CS1624";
         public const string NotAllCodePathsReturnValueInAnonymousFunction = "CS1643";
         public const string TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable = "CS1674";
         public const string AttributeIsOnlyValidOnMethodsOrAttributeClasses = "CS1689";
@@ -143,6 +145,7 @@ namespace Roslynator.CSharp
         public const string ValueCannotBeUsedAsDefaultParameter = "CS1750";
         public const string CannotSpecifyDefaultValueForParameterArray = "CS1751";
         public const string NonInvocableMemberCannotBeUsedLikeMethod = "CS1955";
+        public const string ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT = "CS1983";
         public const string AsyncMethodsCannotHaveRefOrOutParameters = "CS1988";
         public const string AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody = "CS1994";
         public const string SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression = "CS1997";

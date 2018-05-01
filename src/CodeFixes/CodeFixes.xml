@@ -86,6 +86,8 @@
     <FixableDiagnosticIds>
       <Id>CS0508</Id>
       <Id>CS0766</Id>
+      <Id>CS1624</Id>
+      <Id>CS1983</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0019" Identifier="MemberTypeMustMatchOverriddenMemberType" Title="Member type must match overridden member type">
@@ -590,6 +592,21 @@
   <CodeFix Id="RCF0106" Identifier="AddDefaultValueToParameter" Title="Add default value to parameter">
     <FixableDiagnosticIds>
       <Id>CS1737</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0107" Identifier="AddMissingComma" Title="Add missing comma">
+    <FixableDiagnosticIds>
+      <Id>CS1003</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0108" Identifier="RemoveParentheses" Title="Remove parentheses">
+    <FixableDiagnosticIds>
+      <Id>CS0210</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0109" Identifier="RemoveParameter" Title="Remove parameter">
+    <FixableDiagnosticIds>
+      <Id>CS0136</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

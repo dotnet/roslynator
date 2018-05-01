@@ -55,7 +55,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceConstantWithField)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParentheses))
             {
                 return;
             }
@@ -126,6 +127,9 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddCastExpression))
                                 CodeFixRegistrator.AddCastExpression(context, diagnostic, expression, convertedType, semanticModel);
+
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer))
+                                ChangeTypeAccordingToInitializerRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
 
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.CreateSingletonArray)
                                 && type?.IsErrorType() == false
@@ -247,6 +251,19 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement:
                         {
+                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParentheses)
+                                && expression is ParenthesizedExpressionSyntax parenthesizedExpression
+                                && parenthesizedExpression?.IsMissing == false)
+                            {
+                                CodeAction codeAction = CodeAction.Create(
+                                    "Remove parentheses",
+                                    cancellationToken => RemoveRedundantParenthesesRefactoring.RefactorAsync(context.Document, parenthesizedExpression, cancellationToken),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                                break;
+                            }
+
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                             if (expression.Parent is ArrowExpressionClauseSyntax arrowExpresssionClause)

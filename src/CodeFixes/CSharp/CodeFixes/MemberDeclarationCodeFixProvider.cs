@@ -95,15 +95,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             ITypeSymbol typeSymbol = methodSymbol.OverriddenMethod.ReturnType;
 
-                            if (typeSymbol?.IsErrorType() == false)
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    $"Change return type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, memberDeclaration.SpanStart, SymbolDisplayFormats.Default)}'",
-                                    cancellationToken => MemberTypeMustMatchOverriddenMemberTypeRefactoring.RefactorAsync(context.Document, memberDeclaration, typeSymbol, semanticModel, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
+                            CodeFixRegistrator.ChangeMemberDeclarationType(context, diagnostic, memberDeclaration, typeSymbol, semanticModel);
 
                             break;
                         }
@@ -172,17 +164,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                             }
 
-                            if (typeSymbol?.IsErrorType() == false)
-                            {
-                                string title = $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, memberDeclaration.SpanStart, SymbolDisplayFormats.Default)}'";
-
-                                CodeAction codeAction = CodeAction.Create(
-                                    title,
-                                    cancellationToken => MemberTypeMustMatchOverriddenMemberTypeRefactoring.RefactorAsync(context.Document, memberDeclaration, typeSymbol, semanticModel, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
+                            CodeFixRegistrator.ChangeMemberDeclarationType(context, diagnostic, memberDeclaration, typeSymbol, semanticModel);
 
                             break;
                         }
