@@ -24,13 +24,13 @@
     <Syntaxes>
       <Syntax>switch section</Syntax>
     </Syntaxes>
-    <Span>statements</Span>
+    <Span>case or default keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0005" Identifier="AddBracesToSwitchSections" Title="Add braces to switch sections">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
-    <Span>switch keyword</Span>
+    <Span>case or default keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0006" Identifier="AddCastExpression" Title="Add cast expression">
     <Syntaxes>
@@ -680,13 +680,13 @@ if (y)
     <Syntaxes>
       <Syntax>switch section</Syntax>
     </Syntaxes>
-    <Span>block</Span>
+    <Span>case or default keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0097" Identifier="RemoveBracesFromSwitchSections" Title="Remove braces from switch sections">
     <Syntaxes>
       <Syntax>switch statement</Syntax>
     </Syntaxes>
-    <Span>switch keyword</Span>
+    <Span>case or default keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0098" Identifier="RemoveComment" Title="Remove comment">
     <Syntaxes>

@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
@@ -20,12 +21,13 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitSwitchLabels))
                 SplitSwitchLabelsRefactoring.ComputeRefactoring(context, switchSection);
 
-            if (context.Span.IsEmpty
-                && context.IsAnyRefactoringEnabled(
+            if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.AddBracesToSwitchSection,
                     RefactoringIdentifiers.AddBracesToSwitchSections,
                     RefactoringIdentifiers.RemoveBracesFromSwitchSection,
-                    RefactoringIdentifiers.RemoveBracesFromSwitchSections))
+                    RefactoringIdentifiers.RemoveBracesFromSwitchSections)
+                && context.Span.IsEmpty
+                && IsContainedInCaseOrDefaultKeyword(context.Span))
             {
                 var switchStatement = (SwitchStatementSyntax)switchSection.Parent;
 
@@ -71,6 +73,17 @@ namespace Roslynator.CSharp.Refactorings
                             RefactoringIdentifiers.RemoveBracesFromSwitchSections);
                     }
                 }
+            }
+
+            bool IsContainedInCaseOrDefaultKeyword(TextSpan span)
+            {
+                foreach (SwitchLabelSyntax label in switchSection.Labels)
+                {
+                    if (label.Keyword.Span.Contains(span))
+                        return true;
+                }
+
+                return false;
             }
         }
     }
