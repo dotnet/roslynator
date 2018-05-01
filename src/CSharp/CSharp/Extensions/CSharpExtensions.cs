@@ -340,11 +340,7 @@ namespace Roslynator.CSharp
             {
                 case SyntaxKind.NullLiteralExpression:
                     {
-                        //TODO: check expression type symbol
-                        if (typeSymbol.IsReferenceTypeOrNullableType())
-                            return true;
-
-                        break;
+                        return typeSymbol.IsReferenceTypeOrNullableType();
                     }
                 case SyntaxKind.DefaultLiteralExpression:
                     {

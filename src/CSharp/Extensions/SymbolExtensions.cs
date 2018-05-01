@@ -376,6 +376,33 @@ namespace Roslynator
             return GetAttribute(symbol, attributeClass) != null;
         }
 
+        /// <summary>
+        /// Returns true if the type symbol has the specified attribute.
+        /// </summary>
+        /// <param name="typeSymbol"></param>
+        /// <param name="attributeClass"></param>
+        /// <param name="includeBaseTypes"></param>
+        /// <returns></returns>
+        public static bool HasAttribute(this ITypeSymbol typeSymbol, INamedTypeSymbol attributeClass, bool includeBaseTypes)
+        {
+            if (!includeBaseTypes)
+                return HasAttribute(typeSymbol, attributeClass);
+
+            ITypeSymbol t = typeSymbol;
+
+            do
+            {
+                if (t.HasAttribute(attributeClass))
+                    return true;
+
+                t = t.BaseType;
+
+            } while (t != null
+                && t.SpecialType != SpecialType.System_Object);
+
+            return false;
+        }
+
         internal static AttributeData GetAttributeByMetadataName(this INamedTypeSymbol typeSymbol, string fullyQualifiedMetadataName, Compilation compilation)
         {
             ImmutableArray<AttributeData> attributes = typeSymbol.GetAttributes();
@@ -444,6 +471,33 @@ namespace Roslynator
         internal static bool IsContainingType(this ISymbol symbol, SpecialType specialType)
         {
             return symbol?.ContainingType?.SpecialType == specialType;
+        }
+
+        /// <summary>
+        /// Return true if the specified symbol is publicly visible.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <returns></returns>
+        public static bool IsPubliclyVisible(this ISymbol symbol)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            do
+            {
+                if (!symbol.DeclaredAccessibility.Is(
+                    Accessibility.Public,
+                    Accessibility.Protected,
+                    Accessibility.ProtectedOrInternal))
+                {
+                    return false;
+                }
+
+                symbol = symbol.ContainingType;
+
+            } while (symbol != null);
+
+            return true;
         }
         #endregion ISymbol
 

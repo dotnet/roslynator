@@ -392,8 +392,15 @@ namespace Roslynator
                 .ReplaceAt(1, list[1].WithTrailingTrivia(node.GetTrailingTrivia()));
         }
 
-        //TODO: make public
-        internal static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
+        /// <summary>
+        /// Get a list of all the trivia associated with the nodes in the list.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="descendIntoChildren"></param>
+        /// <param name="descendIntoTrivia"></param>
+        /// <returns></returns>
+        public static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
             this SyntaxList<TNode> list,
             Func<SyntaxNode, bool> descendIntoChildren = null,
             bool descendIntoTrivia = false) where TNode : SyntaxNode
@@ -407,8 +414,16 @@ namespace Roslynator
             }
         }
 
-        //TODO: make public
-        internal static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
+        /// <summary>
+        /// Get a list of all the trivia associated with the nodes in the list.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="span"></param>
+        /// <param name="descendIntoChildren"></param>
+        /// <param name="descendIntoTrivia"></param>
+        /// <returns></returns>
+        public static IEnumerable<SyntaxTrivia> DescendantTrivia<TNode>(
             this SyntaxList<TNode> list,
             TextSpan span,
             Func<SyntaxNode, bool> descendIntoChildren = null,
