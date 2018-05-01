@@ -1137,11 +1137,11 @@ i--;]]></After>
       <Image>SplitLocalDeclaration</Image>
     </Images>
   </Refactoring>
-  <Refactoring Id="RR0159" Identifier="SwapExpressionsInBinaryExpression" Title="Swap expressions in binary expression">
+  <Refactoring Id="RR0159" Identifier="SwapBinaryOperands" Title="Swap binary operands">
     <Syntaxes>
-      <Syntax>logical and/or expression</Syntax>
+      <Syntax>binary expression</Syntax>
     </Syntaxes>
-    <Span>binary operator</Span>
+    <Span>binary operator or selected binary expression</Span>
   </Refactoring>
   <Refactoring Id="RR0160" Identifier="SwapExpressionsInConditionalExpression" Title="Swap expressions in conditional expression">
     <Syntaxes>

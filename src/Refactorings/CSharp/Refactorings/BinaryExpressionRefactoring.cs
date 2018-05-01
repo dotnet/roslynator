@@ -15,28 +15,32 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator))
-            {
-                SyntaxToken operatorToken = binaryExpression.OperatorToken;
+            SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-                if (operatorToken.Span.Contains(context.Span)
-                    && NegateOperatorRefactoring.CanBeNegated(operatorToken))
-                {
-                    context.RegisterRefactoring(
-                        "Negate operator",
-                        cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, operatorToken, cancellationToken),
-                        RefactoringIdentifiers.NegateOperator);
-                }
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorToken)
+                && NegateOperatorRefactoring.CanBeNegated(operatorToken))
+            {
+                context.RegisterRefactoring(
+                    "Negate operator",
+                    cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, operatorToken, cancellationToken),
+                    RefactoringIdentifiers.NegateOperator);
+            }
+
+            if (context.Span.IsEmptyAndContainedInSpan(operatorToken))
+            {
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression))
+                    NegateBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
+
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapBinaryOperands))
+                    SwapBinaryOperandsRefactoring.ComputeRefactoring(context, binaryExpression);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.FormatBinaryExpression))
                 FormatBinaryExpressionRefactoring.ComputeRefactorings(context, binaryExpression);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression))
-                NegateBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ExpandCoalesceExpression)
-                && binaryExpression.OperatorToken.Span.Contains(context.Span))
+                && operatorToken.Span.Contains(context.Span))
             {
                 ExpandCoalesceExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
             }
@@ -60,12 +64,6 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)
-                && context.Span.IsBetweenSpans(binaryExpression))
-            {
-                SwapExpressionsInBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAsWithCast)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(binaryExpression))
             {
@@ -83,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateIsExpression))
                 NegateIsExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
 
-            if (context.Span.IsContainedInSpanOrBetweenSpans(binaryExpression.OperatorToken))
+            if (context.Span.IsContainedInSpanOrBetweenSpans(operatorToken))
             {
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals))
                     await ReplaceEqualsExpressionWithStringEqualsRefactoring.ComputeRefactoringAsync(context, binaryExpression).ConfigureAwait(false);

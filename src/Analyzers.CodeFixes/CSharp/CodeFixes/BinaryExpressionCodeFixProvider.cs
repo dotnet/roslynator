@@ -85,8 +85,8 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                $"Swap '{binaryExpression.Left}' and '{binaryExpression.Right}'",
-                                cancellationToken => SwapExpressionsInBinaryExpressionRefactoring.RefactorAsync(context.Document, binaryExpression, cancellationToken),
+                                "Swap operands",
+                                cancellationToken => CommonRefactorings.SwapBinaryOperandsAsync(context.Document, binaryExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

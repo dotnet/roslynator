@@ -178,7 +178,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string SplitIfStatement = Prefix + "0184";
         public const string SplitSwitchLabels = Prefix + "0157";
         public const string SplitVariableDeclaration = Prefix + "0158";
-        public const string SwapExpressionsInBinaryExpression = Prefix + "0159";
+        public const string SwapBinaryOperands = Prefix + "0159";
         public const string SwapExpressionsInConditionalExpression = Prefix + "0160";
         public const string SwapIfElse = Prefix + "0162";
         public const string SwapMemberDeclarations = Prefix + "0161";

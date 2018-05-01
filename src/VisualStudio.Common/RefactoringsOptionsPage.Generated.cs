@@ -182,7 +182,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitAttributes, "Split attributes", IsEnabled(RefactoringIdentifiers.SplitAttributes)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitSwitchLabels, "Split switch labels", IsEnabled(RefactoringIdentifiers.SplitSwitchLabels)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SplitVariableDeclaration, "Split variable declaration", IsEnabled(RefactoringIdentifiers.SplitVariableDeclaration)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapExpressionsInBinaryExpression, "Swap expressions in binary expression", IsEnabled(RefactoringIdentifiers.SwapExpressionsInBinaryExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapBinaryOperands, "Swap binary operands", IsEnabled(RefactoringIdentifiers.SwapBinaryOperands)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapExpressionsInConditionalExpression, "Swap expressions in conditional expression", IsEnabled(RefactoringIdentifiers.SwapExpressionsInConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapMemberDeclarations, "Swap member declarations", IsEnabled(RefactoringIdentifiers.SwapMemberDeclarations)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapIfElse, "Swap if-else", IsEnabled(RefactoringIdentifiers.SwapIfElse)));
