@@ -1,3 +1,15 @@
+### 1.8.2 (2018-05-02)
+
+#### Analyzers
+
+* Add analyzer [UsePatternMatchingInsteadOfIsAndCast](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1220.md) (RCS1220)
+* Add analyzer [UsePatternMatchingInsteadOfAsAndNullCheck](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1221.md) (RCS1221)
+* Add analyzer [MergePreprocessorDirectives](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1222.md) (RCS1222)
+
+#### Code Fixes
+
+* Add code fixes for CS0136, CS0210, CS1003, CS1624, and CS1983.
+
 ### 1.8.1 (2018-04-17)
 
 #### Analyzers

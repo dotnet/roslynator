@@ -77,6 +77,7 @@
 | Readability | [Declare using directive on top level](../../docs/analyzers/RCS1094.md) | RCS1094 | \- |
 | Readability | [Default label should be the last label in a switch section](../../docs/analyzers/RCS1099.md) | RCS1099 | &#x2713; |
 | Readability | [Enum member should declare explicit value](../../docs/analyzers/RCS1161.md) | RCS1161 | &#x2713; |
+| Readability | [Merge preprocessor directives](../../docs/analyzers/RCS1222.md) | RCS1222 | &#x2713; |
 | Readability | [Reorder modifiers](../../docs/analyzers/RCS1019.md) | RCS1019 | \- |
 | Readability | [Reorder named arguments according to the order of parameters](../../docs/analyzers/RCS1205.md) | RCS1205 | &#x2713; |
 | Readability | [Reorder type parameter constraints](../../docs/analyzers/RCS1209.md) | RCS1209 | &#x2713; |
@@ -196,6 +197,8 @@
 | Usage | [Use EventHandler\<T>](../../docs/analyzers/RCS1159.md) | RCS1159 | &#x2713; |
 | Usage | [Use expression-bodied member](../../docs/analyzers/RCS1016.md) | RCS1016 | \- |
 | Usage | [Use lambda expression instead of anonymous method](../../docs/analyzers/RCS1048.md) | RCS1048 | &#x2713; |
+| Usage | [Use pattern matching instead of combination of 'as' operator and null check](../../docs/analyzers/RCS1221.md) | RCS1221 | &#x2713; |
+| Usage | [Use pattern matching instead of combination of 'is' operator and cast operator](../../docs/analyzers/RCS1220.md) | RCS1220 | &#x2713; |
 | Usage | [Use predefined type](../../docs/analyzers/RCS1013.md) | RCS1013 | \- |
 | Usage | [Use Regex instance instead of static method](../../docs/analyzers/RCS1186.md) | RCS1186 | &#x2713; |
 | Usage | [Use 'string.IsNullOrEmpty' method](../../docs/analyzers/RCS1113.md) | RCS1113 | &#x2713; |

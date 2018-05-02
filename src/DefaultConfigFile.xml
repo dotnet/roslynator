@@ -126,7 +126,7 @@
       <Refactoring Id="RR0124" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringEquals -->
       <Refactoring Id="RR0125" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrEmpty -->
       <Refactoring Id="RR0126" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace -->
-      <Refactoring Id="RR0127" IsEnabled="true" /> <!-- ReplaceExpressionWithConstantValue -->
+      <Refactoring Id="RR0127" IsEnabled="true" /> <!-- InlineConstantValue -->
       <Refactoring Id="RR0128" IsEnabled="true" /> <!-- UseConstantInsteadOfField -->
       <Refactoring Id="RR0129" IsEnabled="true" /> <!-- ReplaceForEachWithFor -->
       <Refactoring Id="RR0130" IsEnabled="true" /> <!-- ReplaceForWithForEach -->
@@ -143,7 +143,7 @@
       <Refactoring Id="RR0141" IsEnabled="true" /> <!-- ReplacePropertyWithMethod -->
       <Refactoring Id="RR0142" IsEnabled="true" /> <!-- ReplaceRegularStringLiteralWithVerbatimStringLiteral -->
       <Refactoring Id="RR0143" IsEnabled="true" /> <!-- ReplaceStatementWithIfElse -->
-      <Refactoring Id="RR0144" IsEnabled="true" /> <!-- ReplaceStringContainsWithStringIndexOf -->
+      <Refactoring Id="RR0144" IsEnabled="true" /> <!-- CallIndexOfInsteadOfContains -->
       <Refactoring Id="RR0145" IsEnabled="true" /> <!-- ReplaceStringFormatWithInterpolatedString -->
       <Refactoring Id="RR0147" IsEnabled="true" /> <!-- ReplaceSwitchWithIf -->
       <Refactoring Id="RR0148" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiteral -->
@@ -157,7 +157,7 @@
       <Refactoring Id="RR0156" IsEnabled="true" /> <!-- SplitAttributes -->
       <Refactoring Id="RR0157" IsEnabled="true" /> <!-- SplitSwitchLabels -->
       <Refactoring Id="RR0158" IsEnabled="true" /> <!-- SplitVariableDeclaration -->
-      <Refactoring Id="RR0159" IsEnabled="true" /> <!-- SwapExpressionsInBinaryExpression -->
+      <Refactoring Id="RR0159" IsEnabled="true" /> <!-- SwapBinaryOperands -->
       <Refactoring Id="RR0160" IsEnabled="true" /> <!-- SwapExpressionsInConditionalExpression -->
       <Refactoring Id="RR0161" IsEnabled="true" /> <!-- SwapMemberDeclarations -->
       <Refactoring Id="RR0162" IsEnabled="true" /> <!-- SwapIfElse -->
@@ -222,7 +222,7 @@
       <CodeFix Id="RCF0014" IsEnabled="true" /> <!-- RemoveUnusedLabel (fixes CS0164) -->
       <CodeFix Id="RCF0016" IsEnabled="true" /> <!-- AddDocumentationComment (fixes CS1591) -->
       <CodeFix Id="RCF0017" IsEnabled="true" /> <!-- RemoveUnreachableCode (fixes CS0162) -->
-      <CodeFix Id="RCF0018" IsEnabled="true" /> <!-- ChangeMethodReturnType (fixes CS0508, CS0766) -->
+      <CodeFix Id="RCF0018" IsEnabled="true" /> <!-- ChangeMethodReturnType (fixes CS0508, CS0766, CS1624, CS1983) -->
       <CodeFix Id="RCF0019" IsEnabled="true" /> <!-- MemberTypeMustMatchOverriddenMemberType (fixes CS1715) -->
       <CodeFix Id="RCF0020" IsEnabled="true" /> <!-- AddReturnStatementThatReturnsDefaultValue (fixes CS0161, CS1643) -->
       <CodeFix Id="RCF0021" IsEnabled="true" /> <!-- UseYieldReturnInsteadOfReturn (fixes CS0029, CS1622) -->
@@ -310,6 +310,9 @@
       <CodeFix Id="RCF0104" IsEnabled="true" /> <!-- RenameDestructorToMatchClassName (fixes CS0574) -->
       <CodeFix Id="RCF0105" IsEnabled="true" /> <!-- RemoveBaseList (fixes CS0713, CS0714) -->
       <CodeFix Id="RCF0106" IsEnabled="true" /> <!-- AddDefaultValueToParameter (fixes CS1737) -->
+      <CodeFix Id="RCF0107" IsEnabled="true" /> <!-- AddMissingComma (fixes CS1003) -->
+      <CodeFix Id="RCF0108" IsEnabled="true" /> <!-- RemoveParentheses (fixes CS0210) -->
+      <CodeFix Id="RCF0109" IsEnabled="true" /> <!-- RemoveParameter (fixes CS0136) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

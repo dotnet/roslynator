@@ -204,6 +204,9 @@
 | RCS1217 | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | Readability | &#x2713; |
 | RCS1218 | [Simplify code branching](../../docs/analyzers/RCS1218.md) | Readability | &#x2713; |
 | RCS1219 | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | Performance | \- |
+| RCS1220 | [Use pattern matching instead of combination of 'is' operator and cast operator](../../docs/analyzers/RCS1220.md) | Usage | &#x2713; |
+| RCS1221 | [Use pattern matching instead of combination of 'as' operator and null check](../../docs/analyzers/RCS1221.md) | Usage | &#x2713; |
+| RCS1222 | [Merge preprocessor directives](../../docs/analyzers/RCS1222.md) | Readability | &#x2713; |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

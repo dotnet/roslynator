@@ -21,6 +21,7 @@
 | RR0014 | [Add using static directive](../../docs/refactorings/RR0014.md) | &#x2713; |
 | RR0015 | [Call 'ConfigureAwait(false)'](../../docs/refactorings/RR0015.md) | &#x2713; |
 | RR0016 | [Call extension method as instance method](../../docs/refactorings/RR0016.md) | &#x2713; |
+| RR0144 | [Call string.IndexOf instead of string.Contains](../../docs/refactorings/RR0144.md) | &#x2713; |
 | RR0017 | [Call 'To...' method (ToString, ToArray, ToList)](../../docs/refactorings/RR0017.md) | &#x2713; |
 | RR0186 | [Change accessibility](../../docs/refactorings/RR0186.md) | &#x2713; |
 | RR0018 | [Change explicit type to 'var'](../../docs/refactorings/RR0018.md) | &#x2713; |
@@ -69,6 +70,7 @@
 | RR0060 | [Initialize local with default value](../../docs/refactorings/RR0060.md) | &#x2713; |
 | RR0061 | [Inline alias expression](../../docs/refactorings/RR0061.md) | &#x2713; |
 | RR0181 | [Inline constant](../../docs/refactorings/RR0181.md) | &#x2713; |
+| RR0127 | [Inline constant value](../../docs/refactorings/RR0127.md) | &#x2713; |
 | RR0062 | [Inline method](../../docs/refactorings/RR0062.md) | &#x2713; |
 | RR0198 | [Inline property](../../docs/refactorings/RR0198.md) | &#x2713; |
 | RR0180 | [Inline using static](../../docs/refactorings/RR0180.md) | &#x2713; |
@@ -139,7 +141,6 @@
 | RR0124 | [Replace equals expression with string.Equals](../../docs/refactorings/RR0124.md) | &#x2713; |
 | RR0125 | [Replace equals expression with string.IsNullOrEmpty](../../docs/refactorings/RR0125.md) | &#x2713; |
 | RR0126 | [Replace equals expression with string.IsNullOrWhiteSpace](../../docs/refactorings/RR0126.md) | &#x2713; |
-| RR0127 | [Replace expression with constant value](../../docs/refactorings/RR0127.md) | &#x2713; |
 | RR0130 | [Replace for statement with foreach statement](../../docs/refactorings/RR0130.md) | &#x2713; |
 | RR0131 | [Replace for statement with while statement](../../docs/refactorings/RR0131.md) | &#x2713; |
 | RR0129 | [Replace foreach statement with for statement](../../docs/refactorings/RR0129.md) | &#x2713; |
@@ -157,7 +158,6 @@
 | RR0140 | [Replace prefix operator to postfix operator](../../docs/refactorings/RR0140.md) | &#x2713; |
 | RR0141 | [Replace property with method](../../docs/refactorings/RR0141.md) | &#x2713; |
 | RR0142 | [Replace regular string literal with verbatim string literal](../../docs/refactorings/RR0142.md) | &#x2713; |
-| RR0144 | [Replace string.Contains with string.IndexOf](../../docs/refactorings/RR0144.md) | &#x2713; |
 | RR0145 | [Replace string.Format with interpolated string](../../docs/refactorings/RR0145.md) | &#x2713; |
 | RR0147 | [Replace switch with if](../../docs/refactorings/RR0147.md) | &#x2713; |
 | RR0148 | [Replace verbatim string literal with regular string literal](../../docs/refactorings/RR0148.md) | &#x2713; |
@@ -174,7 +174,7 @@
 | RR0190 | [Split if-else](../../docs/refactorings/RR0190.md) | &#x2713; |
 | RR0157 | [Split switch labels](../../docs/refactorings/RR0157.md) | &#x2713; |
 | RR0158 | [Split variable declaration](../../docs/refactorings/RR0158.md) | &#x2713; |
-| RR0159 | [Swap expressions in binary expression](../../docs/refactorings/RR0159.md) | &#x2713; |
+| RR0159 | [Swap binary operands](../../docs/refactorings/RR0159.md) | &#x2713; |
 | RR0160 | [Swap expressions in conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
 | RR0162 | [Swap if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0161 | [Swap member declarations](../../docs/refactorings/RR0161.md) | &#x2713; |

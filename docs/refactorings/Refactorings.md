@@ -15,13 +15,13 @@
 #### Add braces to switch section \(RR0004\)
 
 * **Syntax**: switch section
-* **Span**: statements
+* **Span**: case or default keyword
 ![Add braces to switch section](../../images/refactorings/AddBracesToSwitchSection.png)
 
 #### Add braces to switch sections \(RR0005\)
 
 * **Syntax**: switch statement
-* **Span**: switch keyword
+* **Span**: case or default keyword
 ![Add braces to switch sections](../../images/refactorings/AddBracesToSwitchSections.png)
 
 #### Add cast expression \(RR0006\)
@@ -152,6 +152,27 @@ public interface IFoo
 
 * **Syntax**: method invocation
 ![Call extension method as instance method](../../images/refactorings/CallExtensionMethodAsInstanceMethod.png)
+
+#### Call string\.IndexOf instead of string\.Contains \(RR0144\)
+
+* **Syntax**: method invocation
+* **Span**: method name
+
+#### Before
+
+```csharp
+if (s.Contains("a"))
+{
+{
+```
+
+#### After
+
+```csharp
+if (s.IndexOf("a", StringComparison.OrdinalIgnoreCase) != -1)
+{
+{
+```
 
 #### Call 'To\.\.\.' method \(ToString, ToArray, ToList\) \(RR0017\)
 
@@ -598,6 +619,32 @@ public class Foo
 * **Syntax**: constant declaration
 ![Inline constant](../../images/refactorings/InlineConstant.png)
 
+#### Inline constant value \(RR0127\)
+
+* **Syntax**: expression that has constant value
+
+#### Before
+
+```csharp
+public const string Value = "x";
+
+void Foo()
+{
+    string x = Value;
+}
+```
+
+#### After
+
+```csharp
+public const string Value = "x";
+
+void Foo()
+{
+    string x = "x";
+}
+```
+
 #### Inline method \(RR0062\)
 
 * **Syntax**: method invocation
@@ -931,13 +978,13 @@ Foo3();
 #### Remove braces from switch section \(RR0096\)
 
 * **Syntax**: switch section
-* **Span**: block
+* **Span**: case or default keyword
 ![Remove braces from switch section](../../images/refactorings/RemoveBracesFromSwitchSection.png)
 
 #### Remove braces from switch sections \(RR0097\)
 
 * **Syntax**: switch statement
-* **Span**: switch keyword
+* **Span**: case or default keyword
 ![Remove braces from switch sections](../../images/refactorings/RemoveBracesFromSwitchSections.png)
 
 #### Remove comment \(RR0098\)
@@ -1166,11 +1213,6 @@ while (condition)
 * **Span**: operator
 ![Replace equals expression with string.IsNullOrWhiteSpace](../../images/refactorings/ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace.png)
 
-#### Replace expression with constant value \(RR0127\)
-
-* **Syntax**: expression that has constant value
-![Replace expression with constant value](../../images/refactorings/ReplaceExpressionWithConstantValue.png)
-
 #### Replace for statement with foreach statement \(RR0130\)
 
 * **Syntax**: for statement
@@ -1301,7 +1343,18 @@ string.Format("name: {0,0:f} value: {1}", name, value)
 #### Replace method group with lambda \(RR0137\)
 
 * **Syntax**: method group
-![Replace method group with lambda](../../images/refactorings/ReplaceMethodGroupWithLambda.png)
+
+#### Before
+
+```csharp
+Func<object, object, object> func = Foo;
+```
+
+#### After
+
+```csharp
+Func<object, object, object> func = (f, g) => Foo(f, g)
+```
 
 #### Replace method with property \(RR0138\)
 
@@ -1359,12 +1412,6 @@ object[] arr = null;
 
 * **Syntax**: regular string literal
 ![Replace regular string literal with verbatim string literal](../../images/refactorings/ReplaceRegularStringLiteralWithVerbatimStringLiteral.png)
-
-#### Replace string\.Contains with string\.IndexOf \(RR0144\)
-
-* **Syntax**: method invocation
-* **Span**: method name
-![Replace string.Contains with string.IndexOf](../../images/refactorings/ReplaceStringContainsWithStringIndexOf.png)
 
 #### Replace string\.Format with interpolated string \(RR0145\)
 
@@ -1520,11 +1567,26 @@ return false;
 * **Syntax**: local declaration, field declaration, event field declaration
 ![Split variable declaration](../../images/refactorings/SplitLocalDeclaration.png)
 
-#### Swap expressions in binary expression \(RR0159\)
+#### Swap binary operands \(RR0159\)
 
-* **Syntax**: logical and/or expression
+* **Syntax**: binary expression
 * **Span**: binary operator
-![Swap expressions in binary expression](../../images/refactorings/SwapExpressionsInBinaryExpression.png)
+
+#### Before
+
+```csharp
+if (x && y)
+{
+{
+```
+
+#### After
+
+```csharp
+if (y && x)
+{
+{
+```
 
 #### Swap expressions in conditional expression \(RR0160\)
 

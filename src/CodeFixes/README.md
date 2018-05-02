@@ -108,6 +108,7 @@
 | [CS0819](../../docs/cs/CS0819.md) | Implicitly typed locals cannot have multiple declarators\. |
 | [CS0822](../../docs/cs/CS0822.md) | Implicitly typed locals cannot be const\. |
 | [CS1002](../../docs/cs/CS1002.md) | ; expected\. |
+| [CS1003](../../docs/cs/CS1003.md) | Syntax error, 'char' expected\. |
 | [CS1004](../../docs/cs/CS1004.md) | Duplicate 'modifier' modifier\. |
 | [CS1023](../../docs/cs/CS1023.md) | Embedded statement cannot be a declaration or labeled statement\. |
 | [CS1031](../../docs/cs/CS1031.md) | Type expected\. |
@@ -128,6 +129,7 @@
 | [CS1621](../../docs/cs/CS1621.md) | The yield statement cannot be used inside an anonymous method or lambda expression\. |
 | [CS1622](../../docs/cs/CS1622.md) | Cannot return a value from an iterator\. Use the yield return statement to return a value, or yield break to end the iteration\. |
 | [CS1623](../../docs/cs/CS1623.md) | Iterators cannot have ref or out parameters\. |
+| [CS1624](../../docs/cs/CS1624.md) | The body of 'identifier' cannot be an iterator block because 'type' is not an iterator interface type\. |
 | [CS1643](../../docs/cs/CS1643.md) | Not all code paths return a value in method of type 'type'\. |
 | [CS1674](../../docs/cs/CS1674.md) | 'T': type used in a using statement must be implicitly convertible to 'System\.IDisposable'\. |
 | [CS1689](../../docs/cs/CS1689.md) | Attribute 'attribute' is only valid on methods or attribute classes\. |
@@ -139,6 +141,7 @@
 | [CS1750](../../docs/cs/CS1750.md) | A value of type 'type1' cannot be used as a default parameter because there are no standard conversions to type 'type2\. |
 | [CS1751](../../docs/cs/CS1751.md) | Cannot specify a default value for a parameter array\. |
 | [CS1955](../../docs/cs/CS1955.md) | Non\-invocable member 'name' cannot be used like a method\. |
+| [CS1983](../../docs/cs/CS1983.md) | The return type of an async method must be void, Task or Task\<T>\. |
 | [CS1988](../../docs/cs/CS1988.md) | Async methods cannot have ref or out parameters\. |
 | [CS1994](../../docs/cs/CS1994.md) | The 'async' modifier can only be used in methods that have a body\. |
 | [CS1997](../../docs/cs/CS1997.md) | Since 'RemoveReturnKeywordOrReturnExpression\.FooAsync\(\)' is an async method that returns 'Task', a return keyword must not be followed by an object expression\. Did you intend to return 'Task\<T>>'? |

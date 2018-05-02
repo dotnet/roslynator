@@ -1,4 +1,5 @@
-﻿Change configuration to 'ReleaseTools'
+﻿Run tests
+Change configuration to 'ReleaseTools'
 Run clean.cmd
 Build
 Run tools.cmd

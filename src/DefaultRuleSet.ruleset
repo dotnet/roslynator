@@ -248,5 +248,8 @@
     <Rule Id="RCS1217FadeOut" Action="Hidden" />
     <Rule Id="RCS1218" Action="Info" /> <!-- Simplify code branching. -->
     <Rule Id="RCS1219" Action="None" /> <!-- Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'. -->
+    <Rule Id="RCS1220" Action="Info" /> <!-- Use pattern matching instead of combination of 'is' operator and cast operator. -->
+    <Rule Id="RCS1221" Action="Info" /> <!-- Use pattern matching instead of combination of 'as' operator and null check. -->
+    <Rule Id="RCS1222" Action="Info" /> <!-- Merge preprocessor directives. -->
   </Rules>
 </RuleSet>

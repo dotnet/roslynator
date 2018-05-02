@@ -889,6 +889,22 @@ if (y)
     <Syntaxes>
       <Syntax>expression that has constant value</Syntax>
     </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public const string Value = "x";
+
+void Foo()
+{
+    string x = Value;
+}]]></Before>
+        <After><![CDATA[public const string Value = "x";
+
+void Foo()
+{
+    string x = "x";
+}]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0128" Identifier="UseConstantInsteadOfField" Title="Use constant instead of field">
     <Syntaxes>
@@ -1040,6 +1056,16 @@ i--;]]></After>
       <Syntax>method invocation</Syntax>
     </Syntaxes>
     <Span>method name</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (s.Contains("a"))
+{
+{]]></Before>
+        <After><![CDATA[if (s.IndexOf("a", StringComparison.OrdinalIgnoreCase) != -1)
+{
+{]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0145" Identifier="ReplaceStringFormatWithInterpolatedString" Title="Replace string.Format with interpolated string">
     <Syntaxes>
@@ -1141,7 +1167,21 @@ i--;]]></After>
     <Syntaxes>
       <Syntax>binary expression</Syntax>
     </Syntaxes>
-    <Span>binary operator or selected binary expression</Span>
+    <Span>binary operator</Span>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[if (x && y)
+{
+{]]>
+        </Before>
+        <After>
+          <![CDATA[if (y && x)
+{
+{]]>
+        </After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0160" Identifier="SwapExpressionsInConditionalExpression" Title="Swap expressions in conditional expression">
     <Syntaxes>
