@@ -25,13 +25,13 @@ namespace Roslynator.CSharp.CodeFixes
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMissingComma))
-            {
                 return;
-            }
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindNode(root, context.Span, out InitializerExpressionSyntax initializer))
+            ExpressionSyntax expression = root.FindNode(context.Span).FirstAncestorOrSelf<ExpressionSyntax>();
+
+            if (expression == null)
                 return;
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
@@ -43,12 +43,14 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMissingComma))
                                 break;
 
-                            if (!initializer.IsKind(SyntaxKind.ArrayInitializerExpression))
+                            if (!expression.IsParentKind(SyntaxKind.ArrayInitializerExpression))
                                 break;
+
+                            var initializer = (InitializerExpressionSyntax)expression.Parent;
 
                             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
-                            int index = expressions.IndexOf(initializer);
+                            int index = expressions.IndexOf(expression);
 
                             SyntaxToken comma = expressions.GetSeparator(index);
 
@@ -62,7 +64,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 "Add missing comma",
                                 cancellationToken =>
                                 {
-                                    var textChange = new TextChange(new TextSpan(initializer.Span.End, 0), ",");
+                                    var textChange = new TextChange(new TextSpan(expression.Span.End, 0), ",");
                                     return context.Document.WithTextChangeAsync(textChange, cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
