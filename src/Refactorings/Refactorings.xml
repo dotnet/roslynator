@@ -842,6 +842,22 @@ if (y)
       <Syntax>return statement conditional expression</Syntax>
       <Syntax>yield statement conditional expression</Syntax>
     </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string s = (condition) ? "a" : "b";
+{
+}]]></Before>
+        <After><![CDATA[string s;
+if (condition)
+{
+    s = "a";
+}
+else
+{
+    s = "b";
+}]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0121" Identifier="ReplaceConstantWithField" Title="Replace constant with field">
     <Syntaxes>

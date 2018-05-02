@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Refactorings
             IdentifierNameSyntax left = IdentifierName(variableDeclarator.Identifier.ValueText);
 
             IfStatementSyntax ifStatement = IfElseStatement(
-                conditionalExpression.Condition.WalkDownParentheses().WithoutTrivia(),
+                conditionalExpression.Condition,
                 SimpleAssignmentStatement(left, conditionalExpression.WhenTrue.WithoutTrivia()),
                 SimpleAssignmentStatement(left, conditionalExpression.WhenFalse.WithoutTrivia()));
 
@@ -110,9 +110,9 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax newStatement = statement.TrimTrivia();
 
             IfStatementSyntax ifStatement = IfElseStatement(
-                conditionalExpression.Condition.WalkDownParentheses().WithoutTrivia(),
-                SetExpression(newStatement, conditionalExpression.WhenTrue),
-                SetExpression(newStatement, conditionalExpression.WhenFalse));
+                conditionalExpression.Condition,
+                CreateNewStatement(newStatement, conditionalExpression.WhenTrue.WithoutTrivia()),
+                CreateNewStatement(newStatement, conditionalExpression.WhenFalse.WithoutTrivia()));
 
             ifStatement = ifStatement
                 .WithTriviaFrom(statement)
@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(statement, ifStatement, cancellationToken);
         }
 
-        private static StatementSyntax SetExpression(StatementSyntax statement, ExpressionSyntax expression)
+        private static StatementSyntax CreateNewStatement(StatementSyntax statement, ExpressionSyntax expression)
         {
             switch (statement.Kind())
             {
@@ -154,7 +154,7 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax whenFalseStatement)
         {
             return IfStatement(
-                condition,
+                condition.WalkDownParentheses().WithoutTrivia(),
                 Block(whenTrueStatement),
                 ElseClause(Block(whenFalseStatement)));
         }
