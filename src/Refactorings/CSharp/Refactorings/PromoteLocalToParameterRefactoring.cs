@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -23,13 +24,15 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol.IsImplicitlyDeclared)
                 return;
 
-            if (methodSymbol.MethodKind != MethodKind.Ordinary)
+            if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
                 return;
 
             if (methodSymbol.PartialImplementationPart != null)
                 methodSymbol = methodSymbol.PartialImplementationPart;
 
-            if (!(methodSymbol.GetSyntax(context.CancellationToken) is MethodDeclarationSyntax methodDeclaration))
+            SyntaxNode methodOrLocalFunction = methodSymbol.GetSyntax(context.CancellationToken);
+
+            if (!methodOrLocalFunction.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement))
                 return;
 
             VariableDeclarationSyntax declaration = localDeclaration.Declaration;
@@ -69,7 +72,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     return RefactorAsync(
                         context.Document,
-                        methodDeclaration,
+                        methodOrLocalFunction,
                         localDeclaration,
                         type.WithoutTrivia().WithSimplifierAnnotation(),
                         variable,
@@ -80,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static Task<Document> RefactorAsync(
             Document document,
-            MethodDeclarationSyntax method,
+            SyntaxNode methodOrLocalFunction,
             LocalDeclarationStatementSyntax localDeclaration,
             TypeSyntax type,
             VariableDeclaratorSyntax variable,
@@ -90,7 +93,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax initializerValue = variable.Initializer?.Value;
             SyntaxToken identifier = variable.Identifier.WithoutTrivia();
 
-            MethodDeclarationSyntax newMethod = method;
+            SyntaxNode newNode = methodOrLocalFunction;
 
             if (initializerValue != null)
             {
@@ -106,31 +109,40 @@ namespace Roslynator.CSharp.Refactorings
                         variable,
                         SyntaxRemoveOptions.KeepUnbalancedDirectives);
 
-                    newMethod = newMethod.ReplaceNode(
+                    newNode = newNode.ReplaceNode(
                         localDeclaration,
                         new SyntaxNode[] { newLocalDeclaration, expressionStatement });
                 }
                 else
                 {
-                    newMethod = newMethod.ReplaceNode(
+                    newNode = newNode.ReplaceNode(
                         localDeclaration,
                         expressionStatement.WithTriviaFrom(localDeclaration));
                 }
             }
             else if (variableCount > 1)
             {
-                newMethod = newMethod.RemoveNode(variable, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+                newNode = newNode.RemoveNode(variable, SyntaxRemoveOptions.KeepUnbalancedDirectives);
             }
             else
             {
-                newMethod = newMethod.RemoveNode(localDeclaration, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+                newNode = newNode.RemoveNode(localDeclaration, SyntaxRemoveOptions.KeepUnbalancedDirectives);
             }
 
             ParameterSyntax newParameter = Parameter(type, identifier).WithFormatterAnnotation();
 
-            newMethod = newMethod.AddParameterListParameters(newParameter);
+            if (newNode.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.MethodDeclaration))
+            {
+                var methodDeclaration = (MethodDeclarationSyntax)newNode;
+                newNode = methodDeclaration.AddParameterListParameters(newParameter);
+            }
+            else
+            {
+                var localFunction = (LocalFunctionStatementSyntax)newNode;
+                newNode = localFunction.AddParameterListParameters(newParameter);
+            }
 
-            return document.ReplaceNodeAsync(method, newMethod, cancellationToken);
+            return document.ReplaceNodeAsync(methodOrLocalFunction, newNode, cancellationToken);
         }
     }
 }
