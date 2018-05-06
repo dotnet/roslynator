@@ -37,13 +37,53 @@ namespace Roslynator.CSharp.Refactorings
 
             IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
+            ComputeRefactoring(context, methodSymbol, semanticModel, body, returnType);
+        }
+
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, LocalFunctionStatementSyntax localFunction)
+        {
+            TypeSyntax returnType = localFunction.ReturnType;
+
+            if (returnType?.IsVoid() != false)
+                return;
+
+            BlockSyntax body = localFunction.Body;
+
+            if (body == null)
+                return;
+
+            SyntaxList<StatementSyntax> statements = body.Statements;
+
+            if (!statements.Any())
+                return;
+
+            if (statements.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.ThrowStatement)
+                return;
+
+            if (localFunction.ContainsYield())
+                return;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(localFunction, context.CancellationToken);
+
+            ComputeRefactoring(context, methodSymbol, semanticModel, body, returnType);
+        }
+
+        private static void ComputeRefactoring(
+            RefactoringContext context,
+            IMethodSymbol methodSymbol,
+            SemanticModel semanticModel,
+            BlockSyntax body,
+            TypeSyntax returnType)
+        {
             if (methodSymbol?.IsOverride != false)
                 return;
 
             if (methodSymbol.ImplementsInterfaceMember())
                 return;
 
-            if (IsAsyncMethodThatReturnsTask(methodSymbol, semanticModel))
+            if (IsAsyncMethodThatReturnsTask())
                 return;
 
             ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
@@ -51,30 +91,24 @@ namespace Roslynator.CSharp.Refactorings
             if (!analysis.Succeeded)
                 return;
 
-            if (!analysis.ReturnStatements.All(IsReturnStatementWithoutExpression))
+            if (!analysis.ReturnStatements.All(f => (f as ReturnStatementSyntax)?.Expression == null))
                 return;
 
             context.RegisterRefactoring(
                 "Change return type to 'void'",
                 ct => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, returnType, CSharpFactory.VoidType(), ct),
                 RefactoringIdentifiers.ChangeMethodReturnTypeToVoid);
-        }
 
-        private static bool IsAsyncMethodThatReturnsTask(IMethodSymbol methodSymbol, SemanticModel semanticModel)
-        {
-            if (!methodSymbol.IsAsync)
-                return false;
+            bool IsAsyncMethodThatReturnsTask()
+            {
+                if (!methodSymbol.IsAsync)
+                    return false;
 
-            ITypeSymbol returnType = methodSymbol.ReturnType;
+                ITypeSymbol returnTypeSymbol = methodSymbol.ReturnType;
 
-            return returnType?.IsErrorType() == false
-                && returnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task));
-        }
-
-        private static bool IsReturnStatementWithoutExpression(SyntaxNode node)
-        {
-            return node.IsKind(SyntaxKind.ReturnStatement)
-                && ((ReturnStatementSyntax)node).Expression == null;
+                return returnTypeSymbol?.IsErrorType() == false
+                    && returnTypeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task));
+            }
         }
     }
 }

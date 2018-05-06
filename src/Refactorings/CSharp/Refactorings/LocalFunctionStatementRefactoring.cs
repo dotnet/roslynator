@@ -43,6 +43,12 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)
+                && context.Span.IsEmptyAndContainedInSpan(localFunctionStatement))
+            {
+                await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, localFunctionStatement).ConfigureAwait(false);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddTypeParameter))
                 AddTypeParameterRefactoring.ComputeRefactoring(context, localFunctionStatement);
 

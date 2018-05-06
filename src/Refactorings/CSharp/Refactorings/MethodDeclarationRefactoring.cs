@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, MethodDeclarationSyntax methodDeclaration)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeMethodReturnTypeToVoid)
-                && methodDeclaration.Span.Contains(context.Span))
+                && context.Span.IsEmptyAndContainedInSpan(methodDeclaration))
             {
                 await ChangeMethodReturnTypeToVoidRefactoring.ComputeRefactoringAsync(context, methodDeclaration).ConfigureAwait(false);
             }

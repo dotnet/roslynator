@@ -129,6 +129,7 @@
   <Refactoring Id="RR0021" Identifier="ChangeMethodReturnTypeToVoid" Title="Change method return type to 'void'">
     <Syntaxes>
       <Syntax>method</Syntax>
+      <Syntax>local function</Syntax>
     </Syntaxes>
   </Refactoring>
   <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression" IsObsolete="true">
