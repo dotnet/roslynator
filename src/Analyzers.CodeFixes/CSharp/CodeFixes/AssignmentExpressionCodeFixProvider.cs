@@ -42,9 +42,9 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case DiagnosticIdentifiers.UseCompoundAssignment:
                         {
-                            var binaryExpression = (BinaryExpressionSyntax)assignment.Right;
+                            var binaryExpression = (BinaryExpressionSyntax)assignment.Right.WalkDownParentheses();
 
-                            string operatorText = UseCompoundAssignmentAnalysis.GetCompoundOperatorText(binaryExpression);
+                            string operatorText = UseCompoundAssignmentAnalyzer.GetCompoundAssignmentOperatorText(binaryExpression);
 
                             CodeAction codeAction = CodeAction.Create(
                                 $"Use {operatorText} operator",

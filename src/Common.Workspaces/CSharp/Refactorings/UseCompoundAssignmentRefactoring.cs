@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxToken operatorToken = assignmentExpression.OperatorToken;
 
-            var binaryExpression = (BinaryExpressionSyntax)assignmentExpression.Right;
+            var binaryExpression = (BinaryExpressionSyntax)assignmentExpression.Right.WalkDownParentheses();
 
             SyntaxKind kind = GetCompoundAssignmentKind(binaryExpression.Kind());
 
