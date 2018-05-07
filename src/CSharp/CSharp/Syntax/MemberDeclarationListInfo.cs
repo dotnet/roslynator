@@ -21,8 +21,6 @@ namespace Roslynator.CSharp.Syntax
             Members = members;
         }
 
-        private static MemberDeclarationListInfo Default { get; } = new MemberDeclarationListInfo();
-
         /// <summary>
         /// The declaration that contains the members.
         /// </summary>
@@ -81,7 +79,7 @@ namespace Roslynator.CSharp.Syntax
         internal static MemberDeclarationListInfo Create(CompilationUnitSyntax compilationUnit)
         {
             if (compilationUnit == null)
-                return Default;
+                return default;
 
             return new MemberDeclarationListInfo(compilationUnit, compilationUnit.Members);
         }
@@ -89,7 +87,7 @@ namespace Roslynator.CSharp.Syntax
         internal static MemberDeclarationListInfo Create(NamespaceDeclarationSyntax namespaceDeclaration)
         {
             if (namespaceDeclaration == null)
-                return Default;
+                return default;
 
             return new MemberDeclarationListInfo(namespaceDeclaration, namespaceDeclaration.Members);
         }
@@ -97,7 +95,7 @@ namespace Roslynator.CSharp.Syntax
         internal static MemberDeclarationListInfo Create(TypeDeclarationSyntax typeDeclaration)
         {
             if (typeDeclaration == null)
-                return Default;
+                return default;
 
             return new MemberDeclarationListInfo(typeDeclaration, typeDeclaration.Members);
         }
@@ -105,7 +103,7 @@ namespace Roslynator.CSharp.Syntax
         internal static MemberDeclarationListInfo Create(ClassDeclarationSyntax classDeclaration)
         {
             if (classDeclaration == null)
-                return Default;
+                return default;
 
             return new MemberDeclarationListInfo(classDeclaration, classDeclaration.Members);
         }
@@ -113,7 +111,7 @@ namespace Roslynator.CSharp.Syntax
         internal static MemberDeclarationListInfo Create(StructDeclarationSyntax structDeclaration)
         {
             if (structDeclaration == null)
-                return Default;
+                return default;
 
             return new MemberDeclarationListInfo(structDeclaration, structDeclaration.Members);
         }
@@ -121,7 +119,7 @@ namespace Roslynator.CSharp.Syntax
         internal static MemberDeclarationListInfo Create(InterfaceDeclarationSyntax interfaceDeclaration)
         {
             if (interfaceDeclaration == null)
-                return Default;
+                return default;
 
             return new MemberDeclarationListInfo(interfaceDeclaration, interfaceDeclaration.Members);
         }
@@ -149,7 +147,7 @@ namespace Roslynator.CSharp.Syntax
                     }
             }
 
-            return Default;
+            return default;
         }
 
         internal static MemberDeclarationListInfo Create(MemberDeclarationListSelection selectedMembers)

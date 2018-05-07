@@ -24,8 +24,6 @@ namespace Roslynator.CSharp.Syntax
             Statement = statement;
         }
 
-        private static SimpleIfStatementInfo Default { get; } = new SimpleIfStatementInfo();
-
         /// <summary>
         /// The if statement.
         /// </summary>
@@ -63,17 +61,17 @@ namespace Roslynator.CSharp.Syntax
             bool allowMissing = false)
         {
             if (ifStatement?.IsSimpleIf() != true)
-                return Default;
+                return default;
 
             ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
             if (condition == null)
-                return Default;
+                return default;
 
             StatementSyntax statement = ifStatement.Statement;
 
             if (!Check(statement, allowMissing))
-                return Default;
+                return default;
 
             return new SimpleIfStatementInfo(ifStatement, condition, statement);
         }

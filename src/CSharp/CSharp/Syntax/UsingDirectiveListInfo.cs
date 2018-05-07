@@ -21,8 +21,6 @@ namespace Roslynator.CSharp.Syntax
             Usings = usings;
         }
 
-        private static UsingDirectiveListInfo Default { get; } = new UsingDirectiveListInfo();
-
         /// <summary>
         /// The declaration that contains the usings.
         /// </summary>
@@ -81,7 +79,7 @@ namespace Roslynator.CSharp.Syntax
         internal static UsingDirectiveListInfo Create(NamespaceDeclarationSyntax namespaceDeclaration)
         {
             if (namespaceDeclaration == null)
-                return Default;
+                return default;
 
             return new UsingDirectiveListInfo(namespaceDeclaration, namespaceDeclaration.Usings);
         }
@@ -89,7 +87,7 @@ namespace Roslynator.CSharp.Syntax
         internal static UsingDirectiveListInfo Create(CompilationUnitSyntax compilationUnit)
         {
             if (compilationUnit == null)
-                return Default;
+                return default;
 
             return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
         }
@@ -110,7 +108,7 @@ namespace Roslynator.CSharp.Syntax
                     }
             }
 
-            return Default;
+            return default;
         }
 
         /// <summary>

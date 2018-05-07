@@ -19,8 +19,6 @@ namespace Roslynator.CSharp.Syntax
             Statement = statement;
         }
 
-        private static LocalDeclarationStatementInfo Default { get; } = new LocalDeclarationStatementInfo();
-
         /// <summary>
         /// The local declaration statement.
         /// </summary>
@@ -81,15 +79,15 @@ namespace Roslynator.CSharp.Syntax
             VariableDeclarationSyntax variableDeclaration = localDeclarationStatement?.Declaration;
 
             if (!Check(variableDeclaration, allowMissing))
-                return Default;
+                return default;
 
             TypeSyntax type = variableDeclaration.Type;
 
             if (!Check(type, allowMissing))
-                return Default;
+                return default;
 
             if (!variableDeclaration.Variables.Any())
-                return Default;
+                return default;
 
             return new LocalDeclarationStatementInfo(localDeclarationStatement);
         }
@@ -101,23 +99,23 @@ namespace Roslynator.CSharp.Syntax
             SyntaxNode node = value?.WalkUpParentheses().Parent;
 
             if (node?.Kind() != SyntaxKind.EqualsValueClause)
-                return Default;
+                return default;
 
             node = node.Parent;
 
             if (node?.Kind() != SyntaxKind.VariableDeclarator)
-                return Default;
+                return default;
 
             if (!(node?.Parent is VariableDeclarationSyntax declaration))
-                return Default;
+                return default;
 
             TypeSyntax type = declaration.Type;
 
             if (!Check(type, allowMissing))
-                return Default;
+                return default;
 
             if (!(declaration.Parent is LocalDeclarationStatementSyntax localDeclarationStatement))
-                return Default;
+                return default;
 
             return new LocalDeclarationStatementInfo(localDeclarationStatement);
         }

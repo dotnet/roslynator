@@ -20,8 +20,6 @@ namespace Roslynator.CSharp.Syntax
             EndDirective = endDirective;
         }
 
-        private static RegionInfo Default { get; } = new RegionInfo();
-
         /// <summary>
         /// #region directive.
         /// </summary>
@@ -123,21 +121,21 @@ namespace Roslynator.CSharp.Syntax
                     return Create((EndRegionDirectiveTriviaSyntax)node);
             }
 
-            return Default;
+            return default;
         }
 
         internal static RegionInfo Create(RegionDirectiveTriviaSyntax regionDirective)
         {
             if (regionDirective == null)
-                return Default;
+                return default;
 
             List<DirectiveTriviaSyntax> list = regionDirective.GetRelatedDirectives();
 
             if (list.Count != 2)
-                return Default;
+                return default;
 
             if (list[1].Kind() != SyntaxKind.EndRegionDirectiveTrivia)
-                return Default;
+                return default;
 
             return new RegionInfo(regionDirective, (EndRegionDirectiveTriviaSyntax)list[1]);
         }
@@ -145,15 +143,15 @@ namespace Roslynator.CSharp.Syntax
         internal static RegionInfo Create(EndRegionDirectiveTriviaSyntax endRegionDirective)
         {
             if (endRegionDirective == null)
-                return Default;
+                return default;
 
             List<DirectiveTriviaSyntax> list = endRegionDirective.GetRelatedDirectives();
 
             if (list.Count != 2)
-                return Default;
+                return default;
 
             if (list[0].Kind() != SyntaxKind.RegionDirectiveTrivia)
-                return Default;
+                return default;
 
             return new RegionInfo((RegionDirectiveTriviaSyntax)list[0], endRegionDirective);
         }

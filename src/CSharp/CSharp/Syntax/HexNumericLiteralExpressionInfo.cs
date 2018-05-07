@@ -17,8 +17,6 @@ namespace Roslynator.CSharp.Syntax
             Token = token;
         }
 
-        private static HexNumericLiteralExpressionInfo Default { get; } = new HexNumericLiteralExpressionInfo();
-
         public LiteralExpressionSyntax LiteralExpression { get; }
 
         public SyntaxToken Token { get; }
@@ -102,17 +100,17 @@ namespace Roslynator.CSharp.Syntax
         internal static HexNumericLiteralExpressionInfo Create(LiteralExpressionSyntax literalExpression)
         {
             if (literalExpression == null)
-                return Default;
+                return default;
 
             if (!literalExpression.IsKind(SyntaxKind.NumericLiteralExpression))
-                return Default;
+                return default;
 
             SyntaxToken token = literalExpression.Token;
 
             string text = token.Text;
 
             if (!text.StartsWith("0x", StringComparison.OrdinalIgnoreCase))
-                return Default;
+                return default;
 
             return new HexNumericLiteralExpressionInfo(literalExpression, token);
         }

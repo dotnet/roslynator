@@ -20,8 +20,6 @@ namespace Roslynator.CSharp.Syntax
             _info = info;
         }
 
-        private static SimpleMemberInvocationStatementInfo Default { get; } = new SimpleMemberInvocationStatementInfo();
-
         /// <summary>
         /// The invocation expression.
         /// </summary>
@@ -82,7 +80,7 @@ namespace Roslynator.CSharp.Syntax
                     return Create(invocationExpression, allowMissing);
             }
 
-            return Default;
+            return default;
         }
 
         internal static SimpleMemberInvocationStatementInfo Create(
@@ -90,7 +88,7 @@ namespace Roslynator.CSharp.Syntax
             bool allowMissing = false)
         {
             if (!(expressionStatement?.Expression is InvocationExpressionSyntax invocationExpression))
-                return Default;
+                return default;
 
             return CreateImpl(invocationExpression, allowMissing);
         }
@@ -100,7 +98,7 @@ namespace Roslynator.CSharp.Syntax
             bool allowMissing = false)
         {
             if (!invocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
-                return Default;
+                return default;
 
             return CreateImpl(invocationExpression, allowMissing);
         }

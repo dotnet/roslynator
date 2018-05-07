@@ -25,8 +25,6 @@ namespace Roslynator.CSharp.Syntax
             Right = right;
         }
 
-        private static BinaryExpressionInfo Default { get; } = new BinaryExpressionInfo();
-
         /// <summary>
         /// The binary expression.
         /// </summary>
@@ -194,17 +192,17 @@ namespace Roslynator.CSharp.Syntax
             bool allowMissing = false)
         {
             if (binaryExpression == null)
-                return Default;
+                return default;
 
             ExpressionSyntax left = Walk(binaryExpression.Left, walkDownParentheses);
 
             if (!Check(left, allowMissing))
-                return Default;
+                return default;
 
             ExpressionSyntax right = Walk(binaryExpression.Right, walkDownParentheses);
 
             if (!Check(right, allowMissing))
-                return Default;
+                return default;
 
             return new BinaryExpressionInfo(binaryExpression, left, right);
         }

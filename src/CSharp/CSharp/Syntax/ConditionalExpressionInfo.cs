@@ -23,8 +23,6 @@ namespace Roslynator.CSharp.Syntax
             WhenFalse = whenFalse;
         }
 
-        private static ConditionalExpressionInfo Default { get; } = new ConditionalExpressionInfo();
-
         /// <summary>
         /// The conditional expression.
         /// </summary>
@@ -97,22 +95,22 @@ namespace Roslynator.CSharp.Syntax
             bool allowMissing = false)
         {
             if (conditionalExpression == null)
-                return Default;
+                return default;
 
             ExpressionSyntax condition = WalkAndCheck(conditionalExpression.Condition, walkDownParentheses, allowMissing);
 
             if (condition == null)
-                return Default;
+                return default;
 
             ExpressionSyntax whenTrue = WalkAndCheck(conditionalExpression.WhenTrue, walkDownParentheses, allowMissing);
 
             if (whenTrue == null)
-                return Default;
+                return default;
 
             ExpressionSyntax whenFalse = WalkAndCheck(conditionalExpression.WhenFalse, walkDownParentheses, allowMissing);
 
             if (whenFalse == null)
-                return Default;
+                return default;
 
             return new ConditionalExpressionInfo(condition, whenTrue, whenFalse);
         }

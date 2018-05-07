@@ -19,8 +19,6 @@ namespace Roslynator.CSharp.Syntax
             ElementKind = elementKind;
         }
 
-        private static XmlElementInfo Default { get; } = new XmlElementInfo();
-
         /// <summary>
         /// The xml element.
         /// </summary>
@@ -66,7 +64,7 @@ namespace Roslynator.CSharp.Syntax
                         string localName = element.StartTag?.Name?.LocalName.ValueText;
 
                         if (localName == null)
-                            return Default;
+                            return default;
 
                         return new XmlElementInfo(element, localName, GetXmlElementKind(localName));
                     }
@@ -75,13 +73,13 @@ namespace Roslynator.CSharp.Syntax
                         string localName = element.Name?.LocalName.ValueText;
 
                         if (localName == null)
-                            return Default;
+                            return default;
 
                         return new XmlElementInfo(element, localName, GetXmlElementKind(localName));
                     }
             }
 
-            return Default;
+            return default;
         }
 
         private static XmlElementKind GetXmlElementKind(string localName)

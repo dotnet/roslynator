@@ -25,8 +25,6 @@ namespace Roslynator.CSharp.Syntax
             Style = style;
         }
 
-        private static NullCheckExpressionInfo Default { get; } = new NullCheckExpressionInfo();
-
         /// <summary>
         /// The null check expression, e.g. "x == null".
         /// </summary>
@@ -106,7 +104,7 @@ namespace Roslynator.CSharp.Syntax
             ExpressionSyntax expression = WalkAndCheck(node, walkDownParentheses, allowMissing);
 
             if (expression == null)
-                return Default;
+                return default;
 
             SyntaxKind kind = expression.Kind();
 
@@ -213,7 +211,7 @@ namespace Roslynator.CSharp.Syntax
                     }
             }
 
-            return Default;
+            return default;
         }
 
         private static NullCheckExpressionInfo Create(
@@ -268,7 +266,7 @@ namespace Roslynator.CSharp.Syntax
                     }
             }
 
-            return Default;
+            return default;
         }
 
         private static NullCheckExpressionInfo Create(
@@ -281,24 +279,24 @@ namespace Roslynator.CSharp.Syntax
             CancellationToken cancellationToken)
         {
             if ((allowedStyles & (NullCheckStyles.HasValueProperty)) == 0)
-                return Default;
+                return default;
 
             if (!(expression is MemberAccessExpressionSyntax memberAccessExpression))
-                return Default;
+                return default;
 
             if (memberAccessExpression.Kind() != SyntaxKind.SimpleMemberAccessExpression)
-                return Default;
+                return default;
 
             if (!IsPropertyOfNullableOfT(memberAccessExpression.Name, "HasValue", semanticModel, cancellationToken))
-                return Default;
+                return default;
 
             if ((allowedStyles & style) == 0)
-                return Default;
+                return default;
 
             ExpressionSyntax expression2 = memberAccessExpression.Expression;
 
             if (!Check(expression2, allowMissing))
-                return Default;
+                return default;
 
             return new NullCheckExpressionInfo(binaryExpression, expression2, style);
         }

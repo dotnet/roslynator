@@ -24,8 +24,6 @@ namespace Roslynator.CSharp.Syntax
             Body = body;
         }
 
-        private static SingleParameterLambdaExpressionInfo Default { get; } = new SingleParameterLambdaExpressionInfo();
-
         /// <summary>
         /// The lambda expression.
         /// </summary>
@@ -131,7 +129,7 @@ namespace Roslynator.CSharp.Syntax
                     }
             }
 
-            return Default;
+            return default;
         }
 
         /// <summary>

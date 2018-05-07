@@ -27,8 +27,6 @@ namespace Roslynator.CSharp.Syntax
             WhenFalse = whenFalse;
         }
 
-        private static SimpleIfElseInfo Default { get; } = new SimpleIfElseInfo();
-
         /// <summary>
         /// The if statement.
         /// </summary>
@@ -71,25 +69,25 @@ namespace Roslynator.CSharp.Syntax
             bool allowMissing = false)
         {
             if (ifStatement?.IsParentKind(SyntaxKind.ElseClause) != false)
-                return Default;
+                return default;
 
             StatementSyntax whenFalse = ifStatement.Else?.Statement;
 
             if (!Check(whenFalse, allowMissing))
-                return Default;
+                return default;
 
             if (whenFalse.IsKind(SyntaxKind.IfStatement))
-                return Default;
+                return default;
 
             StatementSyntax whenTrue = ifStatement.Statement;
 
             if (!Check(whenTrue, allowMissing))
-                return Default;
+                return default;
 
             ExpressionSyntax condition = WalkAndCheck(ifStatement.Condition, walkDownParentheses, allowMissing);
 
             if (condition == null)
-                return Default;
+                return default;
 
             return new SimpleIfElseInfo(ifStatement, condition, whenTrue, whenFalse);
         }
