@@ -205,6 +205,11 @@ namespace Roslynator.Text
             StringBuilder.Append(value);
         }
 
+        public void Append(char value, int repeatCount)
+        {
+            StringBuilder.Append(value, repeatCount);
+        }
+
         public void AppendLine()
         {
             StringBuilder.AppendLine();

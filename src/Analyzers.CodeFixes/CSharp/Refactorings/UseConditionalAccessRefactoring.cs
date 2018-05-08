@@ -19,18 +19,14 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task<Document> RefactorAsync(
             Document document,
-            BinaryExpressionSyntax logicalAnd,
+            BinaryExpressionSyntax binaryExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax left = logicalAnd.Left;
-            ExpressionSyntax right = logicalAnd.Right.WalkDownParentheses();
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            if (logicalAnd.Left.IsKind(SyntaxKind.LogicalAndExpression))
-                left = ((BinaryExpressionSyntax)logicalAnd.Left).Right;
+            (ExpressionSyntax left, ExpressionSyntax right) = UseConditionalAccessAnalyzer.GetFixableExpressions(binaryExpression, binaryExpression.Kind(), semanticModel, cancellationToken);
 
             NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, allowedStyles: NullCheckStyles.NotEqualsToNull);
-
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             ExpressionSyntax expression = nullCheck.Expression;
 
@@ -41,9 +37,15 @@ namespace Roslynator.CSharp.Refactorings
                 right,
                 isNullable: isNullable);
 
-            var builder = new SyntaxNodeTextBuilder(logicalAnd, StringBuilderCache.GetInstance(logicalAnd.FullSpan.Length));
+            var builder = new SyntaxNodeTextBuilder(binaryExpression, StringBuilderCache.GetInstance(binaryExpression.FullSpan.Length));
 
-            builder.Append(TextSpan.FromBounds(logicalAnd.FullSpan.Start, left.Span.Start));
+            builder.Append(TextSpan.FromBounds(binaryExpression.FullSpan.Start, left.Span.Start));
+
+            int parenDiff = GetParenTokenDiff();
+
+            if (parenDiff > 0)
+                builder.Append('(', parenDiff);
+
             builder.AppendSpan(expression);
             builder.Append("?");
             builder.Append(TextSpan.FromBounds(expression2.Span.End, right.Span.End));
@@ -79,7 +81,10 @@ namespace Roslynator.CSharp.Refactorings
                     }
             }
 
-            builder.AppendTrailingTrivia();
+            if (parenDiff < 0)
+                builder.Append(')', -parenDiff);
+
+            builder.Append(TextSpan.FromBounds(right.Span.End, binaryExpression.FullSpan.End));
 
             string text = StringBuilderCache.GetStringAndFree(builder.StringBuilder);
 
@@ -87,7 +92,30 @@ namespace Roslynator.CSharp.Refactorings
                 .WithFormatterAnnotation()
                 .Parenthesize();
 
-            return await document.ReplaceNodeAsync(logicalAnd, newNode, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken).ConfigureAwait(false);
+
+            int GetParenTokenDiff()
+            {
+                int count = 0;
+
+                foreach (SyntaxToken token in binaryExpression.DescendantTokens(TextSpan.FromBounds(left.Span.Start, expression2.Span.End)))
+                {
+                    SyntaxKind kind = token.Kind();
+
+                    if (kind == SyntaxKind.OpenParenToken)
+                    {
+                        if (token.IsParentKind(SyntaxKind.ParenthesizedExpression))
+                            count++;
+                    }
+                    else if (kind == SyntaxKind.CloseParenToken)
+                    {
+                        if (token.IsParentKind(SyntaxKind.ParenthesizedExpression))
+                            count--;
+                    }
+                }
+
+                return count;
+            }
         }
 
         public static async Task<Document> RefactorAsync(
