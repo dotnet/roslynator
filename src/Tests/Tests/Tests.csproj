@@ -1,24 +1,31 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard1.3</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
-    <AssemblyName>Roslynator.CSharp.Tests</AssemblyName>
-    <RootNamespace>Roslynator.CSharp.Tests</RootNamespace>
-    <CodeAnalysisRuleSet>..\Tests.ruleset</CodeAnalysisRuleSet>
-    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+    <AssemblyName>Roslynator.Tests</AssemblyName>
+    <RootNamespace>Roslynator</RootNamespace>
+    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Tests.snk</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>
-    <IsPackable>false</IsPackable> 
+    <IsPackable>false</IsPackable>
     <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.4.0" />
+    <PackageReference Include="xunit" Version="2.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.3.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\CSharp\CSharp.csproj" />
+  </ItemGroup>
 
+  <ItemGroup>
+    <None Remove="Tests.snk" />
+  </ItemGroup>
 
 </Project>

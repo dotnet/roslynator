@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RefactoringsTests", "Refact
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFixesTests", "CodeFixesTests\CodeFixesTests.csproj", "{73C0BB00-F170-44A1-AB72-008E29F8D34A}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests.csproj", "{6E6106A6-D2BD-4C72-BC8A-5EB37C5A2E42}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{091558A3-9797-4101-A761-6D1AC70F6BE5}"
 	ProjectSection(SolutionItems) = preProject
 		AnalyzersTests.ruleset = AnalyzersTests.ruleset
@@ -37,10 +35,6 @@ Global
 		{73C0BB00-F170-44A1-AB72-008E29F8D34A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73C0BB00-F170-44A1-AB72-008E29F8D34A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73C0BB00-F170-44A1-AB72-008E29F8D34A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6E6106A6-D2BD-4C72-BC8A-5EB37C5A2E42}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6E6106A6-D2BD-4C72-BC8A-5EB37C5A2E42}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6E6106A6-D2BD-4C72-BC8A-5EB37C5A2E42}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{6E6106A6-D2BD-4C72-BC8A-5EB37C5A2E42}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

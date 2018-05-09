@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 
         public override CodeFixProvider FixProvider { get; } = new MethodDeclarationOrLocalFunctionStatementCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default.AddAllowedCompilerDiagnosticsId(CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
+        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
 
         [Fact]
         public async Task Test_Method_String()

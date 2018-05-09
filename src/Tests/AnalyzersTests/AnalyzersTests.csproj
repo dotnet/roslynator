@@ -22,10 +22,4 @@
     <PackageReference Include="System.ValueTuple" Version="4.4.0" />
   </ItemGroup>
 
-
-
-  <ItemGroup>
-    <ProjectReference Include="..\Tests\Tests.csproj" />
-  </ItemGroup>
-
 </Project>

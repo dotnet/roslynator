@@ -6,6 +6,5 @@ namespace Roslynator.CSharp.Analysis.Tests
 {
     public abstract class AbstractCSharpCodeFixVerifier : CSharpCodeFixVerifier
     {
-
     }
 }

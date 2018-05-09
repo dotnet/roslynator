@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Roslynator.Tests;
@@ -16,7 +15,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 
         public override CodeFixProvider FixProvider { get; } = new ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default.AddAllowedCompilerDiagnosticsId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
+        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
 
         [Fact]
         public async Task Test_Task()

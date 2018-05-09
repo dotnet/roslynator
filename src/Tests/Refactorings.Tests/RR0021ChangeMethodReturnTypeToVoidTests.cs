@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeMethodReturnTypeToVoid;
 
-        public override CodeVerificationOptions Options => base.Options.AddAllowedCompilerDiagnosticsId("CS0161");
+        public override CodeVerificationOptions Options => base.Options.AddAllowedCompilerDiagnosticId("CS0161");
 
         [Fact]
         public async Task Test_Method()

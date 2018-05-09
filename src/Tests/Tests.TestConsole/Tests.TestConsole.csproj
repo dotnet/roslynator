@@ -1,7 +1,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
   </PropertyGroup>
@@ -9,6 +8,10 @@
   <PropertyGroup>
     <LangVersion>latest</LangVersion>
     <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
+    <AssemblyName>Roslynator.Tests.TestConsole</AssemblyName>
+    <RootNamespace>Roslynator.Tests.TestConsole</RootNamespace>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Tests.TestConsole.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -16,7 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Tests.Utilities\Tests.Utilities.csproj" />
+    <ProjectReference Include="..\Tests\Tests.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Remove="Tests.TestConsole.snk" />
   </ItemGroup>
 
 </Project>
