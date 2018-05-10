@@ -28,14 +28,32 @@ namespace Roslynator.CSharp.Refactorings
         {
             public override SyntaxNode VisitUsingStatement(UsingStatementSyntax node)
             {
+                node = (UsingStatementSyntax)base.VisitUsingStatement(node);
+
                 if (SimplifyNestedUsingStatementAnalyzer.ContainsEmbeddableUsingStatement(node))
                 {
                     var block = (BlockSyntax)node.Statement;
 
-                    node = node.WithStatement(block.Statements[0]);
+                    SyntaxToken closeParen = node.CloseParenToken;
+
+                    SyntaxTriviaList trailing = closeParen.TrailingTrivia;
+
+                    if (!trailing.Any(SyntaxKind.EndOfLineTrivia))
+                    {
+                        trailing = trailing.EmptyIfWhitespace().AddRange(block.OpenBraceToken.TrailingTrivia);
+                        closeParen = closeParen.WithTrailingTrivia(trailing);
+                    }
+
+                    node = node.Update(
+                        usingKeyword: node.UsingKeyword,
+                        openParenToken: node.OpenParenToken,
+                        declaration: node.Declaration,
+                        expression: node.Expression,
+                        closeParenToken: closeParen,
+                        statement: block.Statements[0]);
                 }
 
-                return base.VisitUsingStatement(node);
+                return node;
             }
         }
     }

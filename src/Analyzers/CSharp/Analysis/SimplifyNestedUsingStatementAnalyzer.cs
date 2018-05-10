@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -41,11 +40,13 @@ namespace Roslynator.CSharp.Analysis
             if (!ContainsEmbeddableUsingStatement(usingStatement))
                 return;
 
-            if (usingStatement
-                .Ancestors()
-                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && ContainsEmbeddableUsingStatement((UsingStatementSyntax)f)))
+            for (SyntaxNode parent = usingStatement.Parent; parent != null; parent = parent.Parent)
             {
-                return;
+                if (parent.IsKind(SyntaxKind.UsingStatement)
+                    && ContainsEmbeddableUsingStatement((UsingStatementSyntax)parent))
+                {
+                    return;
+                }
             }
 
             var block = (BlockSyntax)usingStatement.Statement;
