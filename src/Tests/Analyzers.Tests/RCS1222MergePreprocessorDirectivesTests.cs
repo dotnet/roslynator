@@ -30,7 +30,7 @@ class C
 [|#pragma warning disable RCS0|]
 #pragma warning disable RCS1, RCS2,
     
-#pragma warning disable RCS3, RCS4, RCS5
+#pragma warning disable RCS3, RCS4, RCS5 // comment
 #pragma warning restore RCS0
     }
 }
@@ -39,7 +39,7 @@ class C
 {
     void M()
     {
-#pragma warning disable RCS0, RCS1, RCS2, RCS3, RCS4, RCS5
+#pragma warning disable RCS0, RCS1, RCS2, RCS3, RCS4, RCS5 // comment
 #pragma warning restore RCS0
     }
 }
@@ -57,7 +57,7 @@ class C
 [|#pragma warning restore RCS0|]
 #pragma warning restore RCS1, RCS2,
     
-#pragma warning restore RCS3, RCS4, RCS5
+#pragma warning restore RCS3, RCS4, RCS5 // comment
 #pragma warning disable RCS0
     }
 }
@@ -66,7 +66,7 @@ class C
 {
     void M()
     {
-#pragma warning restore RCS0, RCS1, RCS2, RCS3, RCS4, RCS5
+#pragma warning restore RCS0, RCS1, RCS2, RCS3, RCS4, RCS5 // comment
 #pragma warning disable RCS0
     }
 }
@@ -74,7 +74,7 @@ class C
         }
 
         [Fact]
-        public async Task TestNoDiagnostic()
+        public async Task TestNoDiagnostic_SingleDirective()
         {
             await VerifyNoDiagnosticAsync(@"
 class C
@@ -83,8 +83,82 @@ class C
     {
 #pragma warning disable RCS0
     }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_DisableAndRestore()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
 #pragma warning disable RCS0
 #pragma warning restore RCS0
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_TrailingComment()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+#pragma warning disable RCS1 // comment
+#pragma warning disable RCS2
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_TrailingComma_TrailingComment()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+#pragma warning disable RCS1, // comment
+#pragma warning disable RCS2
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_PreviousDirectiveIsSuppressingThisAnalyzer()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+#pragma warning disable RCS1222
+#pragma warning disable RCS1
+#pragma warning disable RCS2
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_NextDirectiveIsSuppressingThisAnalyzer()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+#pragma warning disable RCS1
+#pragma warning disable RCS1222
+    }
 }
 ");
         }

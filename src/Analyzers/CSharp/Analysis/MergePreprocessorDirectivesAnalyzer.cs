@@ -31,6 +31,26 @@ namespace Roslynator.CSharp.Analysis
         {
             var directive = (PragmaWarningDirectiveTriviaSyntax)context.Node;
 
+            SeparatedSyntaxList<ExpressionSyntax> errorCodes = directive.ErrorCodes;
+
+            int codeCount = errorCodes.Count;
+
+            if (codeCount == 0)
+                return;
+
+            if (codeCount == errorCodes.SeparatorCount)
+            {
+                if (!errorCodes.GetSeparator(codeCount - 1).TrailingTrivia.IsEmptyOrWhitespace())
+                    return;
+            }
+            else if (!errorCodes.Last().GetTrailingTrivia().IsEmptyOrWhitespace())
+            {
+                return;
+            }
+
+            if (IsSuppressingThisAnalyzer(errorCodes))
+                return;
+
             SyntaxTrivia trivia = directive.ParentTrivia;
 
             if (!trivia.TryGetContainingList(out SyntaxTriviaList list))
@@ -54,10 +74,17 @@ namespace Roslynator.CSharp.Analysis
                 i--;
             }
 
-            if (i >= 0
-                && list[i].IsKind(SyntaxKind.PragmaWarningDirectiveTrivia))
+            if (i >= 0)
             {
-                return;
+                SyntaxTrivia directiveTrivia = list[i];
+
+                if (directiveTrivia.IsKind(SyntaxKind.PragmaWarningDirectiveTrivia))
+                {
+                    var previousDirective = (PragmaWarningDirectiveTriviaSyntax)directiveTrivia.GetStructure();
+
+                    if (!IsSuppressingThisAnalyzer(previousDirective.ErrorCodes))
+                        return;
+                }
             }
 
             i = index + 1;
@@ -77,10 +104,26 @@ namespace Roslynator.CSharp.Analysis
             if (!(list[i].GetStructure() is PragmaWarningDirectiveTriviaSyntax nextDirective))
                 return;
 
-            if (directive.DisableOrRestoreKeyword.Kind() != nextDirective.DisableOrRestoreKeyword.Kind())
+            SyntaxToken disableOrRestoreKeyword = directive.DisableOrRestoreKeyword;
+
+            SyntaxKind keywordKind = disableOrRestoreKeyword.Kind();
+
+            if (keywordKind != nextDirective.DisableOrRestoreKeyword.Kind())
                 return;
 
+            if (keywordKind == SyntaxKind.DisableKeyword
+                && IsSuppressingThisAnalyzer(nextDirective.ErrorCodes))
+            {
+                return;
+            }
+
             context.ReportDiagnostic(DiagnosticDescriptors.MergePreprocessorDirectives, directive);
+        }
+
+        private static bool IsSuppressingThisAnalyzer(SeparatedSyntaxList<ExpressionSyntax> errorCodes)
+        {
+            return errorCodes.SingleOrDefault(shouldThrow: false) is IdentifierNameSyntax identifierName
+                && string.Equals(identifierName.Identifier.ValueText, DiagnosticIdentifiers.MergePreprocessorDirectives, StringComparison.Ordinal);
         }
     }
 }

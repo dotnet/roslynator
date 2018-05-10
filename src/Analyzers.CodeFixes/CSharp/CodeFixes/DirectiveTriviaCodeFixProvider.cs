@@ -87,7 +87,8 @@ namespace Roslynator.CSharp.CodeFixes
                     sb.Append(errorCodes.ToString());
 
                     addComma = !errorCodes.HasTrailingSeparator();
-                    end = directive2.EndOfDirectiveToken.Span.End;
+
+                    end = directive2.ErrorCodes.Span.End;
                 }
 
                 i++;
