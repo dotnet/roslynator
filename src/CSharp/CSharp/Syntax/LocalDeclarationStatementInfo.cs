@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,6 +13,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about local declaration statement.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct LocalDeclarationStatementInfo : IEquatable<LocalDeclarationStatementInfo>
     {
         private LocalDeclarationStatementInfo(LocalDeclarationStatementSyntax statement)
@@ -70,6 +72,12 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return Statement != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return ToDebugString(Success, this, Statement); }
         }
 
         internal static LocalDeclarationStatementInfo Create(

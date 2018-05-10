@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -9,6 +10,7 @@ using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 
 namespace Roslynator.CSharp.Syntax
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct ParameterInfo : IEquatable<ParameterInfo>
     {
         public ParameterInfo(ParameterSyntax parameter, CSharpSyntaxNode body)
@@ -58,6 +60,12 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return ParameterList != null || Parameter != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return SyntaxInfoHelpers.ToDebugString(Success, this, ParameterList ?? (SyntaxNode)Parameter); }
         }
 
         internal static ParameterInfo Create(ConstructorDeclarationSyntax constructorDeclaration, bool allowMissing = false)

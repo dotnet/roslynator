@@ -12,6 +12,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about modifier list.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct ModifierListInfo : IEquatable<ModifierListInfo>
     {
         internal ModifierListInfo(SyntaxNode parent, SyntaxTokenList modifiers)
@@ -129,6 +130,17 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return Parent != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return (Success)
+                     ? $"{GetType().Name} {Modifiers} {Parent.Kind()}"
+                     : "Uninitialized";
+            }
         }
 
         internal static ModifierListInfo Create(SyntaxNode node)

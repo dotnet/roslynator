@@ -19,6 +19,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about string concatenation, i.e. a binary expression that binds to string '+' operator.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct StringConcatenationExpressionInfo : IEquatable<StringConcatenationExpressionInfo>
     {
         private StringConcatenationExpressionInfo(
@@ -42,6 +43,12 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return BinaryExpression != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return ToDebugString(Success, this, BinaryExpression, (Span != null) ? BinaryExpression.ToString(Span.Value) : null); }
         }
 
         internal StringConcatenationAnalysis Analyze()

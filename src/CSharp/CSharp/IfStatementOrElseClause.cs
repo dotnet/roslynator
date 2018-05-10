@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,6 +12,7 @@ namespace Roslynator.CSharp
     /// <summary>
     /// A wrapper for either an <see cref="IfStatementSyntax"/> or an <see cref="ElseClauseSyntax"/>.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct IfStatementOrElseClause : IEquatable<IfStatementOrElseClause>
     {
         private readonly IfStatementSyntax _ifStatement;
@@ -146,6 +148,12 @@ namespace Roslynator.CSharp
 
                 return default(TextSpan);
             }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return $"{GetType().Name} {Kind} {ToString()}"; }
         }
 
         /// <summary>

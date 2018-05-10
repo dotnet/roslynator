@@ -9,8 +9,15 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CodeFixes
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public abstract class AbstractCodeFixProvider : CodeFixProvider
     {
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return $"{{{string.Join(", ", FixableDiagnosticIds)}}}"; }
+        }
+
         public override FixAllProvider GetFixAllProvider()
         {
             return WellKnownFixAllProviders.BatchFixer;

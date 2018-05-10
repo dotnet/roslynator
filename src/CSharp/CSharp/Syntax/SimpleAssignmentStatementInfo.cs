@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,6 +13,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about a simple assignment expression in an expression statement.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct SimpleAssignmentStatementInfo : IEquatable<SimpleAssignmentStatementInfo>
     {
         private readonly SimpleAssignmentExpressionInfo _info;
@@ -53,6 +55,12 @@ namespace Roslynator.CSharp.Syntax
         /// Determines whether this struct was initialized with an actual syntax.
         /// </summary>
         public bool Success => _info.Success;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return SyntaxInfoHelpers.ToDebugString(Success, this, Statement); }
+        }
 
         internal static SimpleAssignmentStatementInfo Create(
             StatementSyntax statement,

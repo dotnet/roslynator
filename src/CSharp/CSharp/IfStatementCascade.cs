@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
@@ -10,6 +11,7 @@ namespace Roslynator.CSharp
     /// <summary>
     /// Enables to enumerate if statement cascade.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct IfStatementCascade : IEquatable<IfStatementCascade>, IEnumerable<IfStatementOrElseClause>
     {
         internal IfStatementCascade(IfStatementSyntax ifStatement)
@@ -21,6 +23,24 @@ namespace Roslynator.CSharp
         /// The if statement.
         /// </summary>
         public IfStatementSyntax IfStatement { get; }
+
+        private int Count
+        {
+            get
+            {
+                int count = 0;
+                foreach (IfStatementOrElseClause ifOrElse in this)
+                    count++;
+
+                return count;
+            }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return (IfStatement != null) ? $"Count = {Count} {IfStatement}" : "Uninitialized"; }
+        }
 
         /// <summary>
         /// Gets the enumerator for the if-else cascade.

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,6 +14,7 @@ namespace Roslynator.CSharp.Syntax
     /// Provides information about a simple if-else.
     /// Simple if-else is defined as follows: it is not a child of an else clause and it has an else clause and the else clause does not continue with another if statement.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct SimpleIfElseInfo : IEquatable<SimpleIfElseInfo>
     {
         private SimpleIfElseInfo(
@@ -61,6 +63,12 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return IfStatement != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return ToDebugString(Success, this, IfStatement); }
         }
 
         internal static SimpleIfElseInfo Create(

@@ -1,28 +1,29 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.Text
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal class SyntaxNodeTextBuilder
     {
-        private readonly string _text;
-
         public SyntaxNodeTextBuilder(SyntaxNode node)
             : this(node, new StringBuilder())
         {
         }
 
-        public SyntaxNodeTextBuilder(SyntaxNode node, StringBuilder stringBuilder)
+        public SyntaxNodeTextBuilder(SyntaxNode node, StringBuilder sb)
         {
             Node = node ?? throw new ArgumentNullException(nameof(node));
-            StringBuilder = stringBuilder ?? throw new ArgumentNullException(nameof(stringBuilder));
+            StringBuilder = sb ?? throw new ArgumentNullException(nameof(sb));
 
             FullSpan = Node.FullSpan;
-            _text = node.ToFullString();
+            FullString = node.ToFullString();
         }
 
         public SyntaxNode Node { get; }
@@ -30,6 +31,14 @@ namespace Roslynator.Text
         public StringBuilder StringBuilder { get; }
 
         public TextSpan FullSpan { get; }
+
+        public string FullString { get; }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return $"{Node.Kind()} {ToString()}"; }
+        }
 
         public override string ToString()
         {
@@ -228,7 +237,7 @@ namespace Roslynator.Text
 
         private void AppendImpl(TextSpan span)
         {
-            StringBuilder.Append(_text, span.Start - FullSpan.Start, span.Length);
+            StringBuilder.Append(FullString, span.Start - FullSpan.Start, span.Length);
         }
 
         private void ThrowIfInvalid(SyntaxNode node)

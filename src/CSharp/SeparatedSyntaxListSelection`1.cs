@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -11,6 +12,7 @@ namespace Roslynator
     /// Represents selected nodes in a <see cref="SeparatedSyntaxList{TNode}"/>.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class SeparatedSyntaxListSelection<TNode> : Selection<TNode> where TNode : SyntaxNode
     {
         internal int Length;
@@ -42,6 +44,12 @@ namespace Roslynator
         /// Gets an underlying list that contains selected nodes.
         /// </summary>
         protected override IReadOnlyList<TNode> Items => UnderlyingList;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return $"Count = {Count} FirstIndex = {FirstIndex} LastIndex = {LastIndex} {UnderlyingList.ToString(TextSpan.FromBounds(First().SpanStart, Last().Span.End))}"; }
+        }
 
         /// <summary>
         /// Creates a new <see cref="SeparatedSyntaxListSelection{TNode}"/> based on the specified list and span.

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
@@ -11,6 +12,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about conditional expression.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct ConditionalExpressionInfo : IEquatable<ConditionalExpressionInfo>
     {
         private ConditionalExpressionInfo(
@@ -68,6 +70,12 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return Condition != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return ToDebugString(Success, this, ConditionalExpression); }
         }
 
         internal static ConditionalExpressionInfo Create(

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,6 +12,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about invocation expression in an expression statement.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct SimpleMemberInvocationStatementInfo : IEquatable<SimpleMemberInvocationStatementInfo>
     {
         private readonly SimpleMemberInvocationExpressionInfo _info;
@@ -67,6 +69,12 @@ namespace Roslynator.CSharp.Syntax
         /// Determines whether this struct was initialized with an actual syntax.
         /// </summary>
         public bool Success => _info.Success;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return SyntaxInfoHelpers.ToDebugString(Success, this, Statement); }
+        }
 
         internal static SimpleMemberInvocationStatementInfo Create(
             SyntaxNode node,

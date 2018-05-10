@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,6 +14,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about a list of using directives.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct UsingDirectiveListInfo : IEquatable<UsingDirectiveListInfo>, IReadOnlyList<UsingDirectiveSyntax>
     {
         internal UsingDirectiveListInfo(SyntaxNode parent, SyntaxList<UsingDirectiveSyntax> usings)
@@ -45,6 +47,12 @@ namespace Roslynator.CSharp.Syntax
         public int Count
         {
             get { return Usings.Count; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return SyntaxInfoHelpers.ToDebugString(Success, Usings); }
         }
 
         /// <summary>

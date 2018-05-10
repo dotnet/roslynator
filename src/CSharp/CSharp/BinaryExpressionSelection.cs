@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct BinaryExpressionSelection
     {
         private BinaryExpressionSelection(BinaryExpressionSyntax binaryExpression, ImmutableArray<ExpressionSyntax> expressions, TextSpan span)
@@ -28,6 +30,12 @@ namespace Roslynator.CSharp
         public bool Success
         {
             get { return BinaryExpression != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return $"Count = {Expressions.Length} {BinaryExpression.Kind()} {BinaryExpression.ToString(Span)}"; }
         }
 
         public override string ToString()

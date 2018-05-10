@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,6 +12,7 @@ using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 
 namespace Roslynator.CSharp.Syntax
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct BinaryExpressionChainInfo : IEquatable<BinaryExpressionChainInfo>, IReadOnlyList<ExpressionSyntax>
     {
         private BinaryExpressionChainInfo(
@@ -38,6 +40,12 @@ namespace Roslynator.CSharp.Syntax
         public int Count
         {
             get { return Expressions.Length; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return (Success) ? $"Count = {Count}" : "Uninitialized"; }
         }
 
         public ExpressionSyntax this[int index]

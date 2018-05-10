@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -9,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
 {
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct OverriddenSymbolInfo : IEquatable<OverriddenSymbolInfo>
     {
         public OverriddenSymbolInfo(ISymbol symbol, ISymbol overriddenSymbol)
@@ -26,6 +28,12 @@ namespace Roslynator.CSharp
         public bool Success
         {
             get { return Symbol != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return $"{Symbol.ToDisplayString(SymbolDisplayFormats.Test)} {OverriddenSymbol.ToDisplayString(SymbolDisplayFormats.Test)}"; }
         }
 
         public static bool CanCreate(SyntaxNode node)

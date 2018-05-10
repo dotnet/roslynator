@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,6 +13,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about a region.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct RegionInfo : IEquatable<RegionInfo>
     {
         private RegionInfo(RegionDirectiveTriviaSyntax directive, EndRegionDirectiveTriviaSyntax endDirective)
@@ -79,6 +81,12 @@ namespace Roslynator.CSharp.Syntax
                 return trivia.TryGetContainingList(out SyntaxTriviaList list)
                     && object.ReferenceEquals(EndDirective, FindEndRegionDirective(list, list.IndexOf(trivia)));
             }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return SyntaxInfoHelpers.ToDebugString(Success, this, Directive); }
         }
 
         private static EndRegionDirectiveTriviaSyntax FindEndRegionDirective(SyntaxTriviaList list, int index)

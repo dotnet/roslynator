@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -13,6 +14,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about a null check expression.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct NullCheckExpressionInfo : IEquatable<NullCheckExpressionInfo>
     {
         private NullCheckExpressionInfo(
@@ -62,6 +64,17 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return Style != NullCheckStyles.None; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return (Success)
+                    ? $"{GetType().Name} {Style} {Expression} {NullCheckExpression}"
+                    : "Uninitialized";
+            }
         }
 
         internal static NullCheckExpressionInfo Create(

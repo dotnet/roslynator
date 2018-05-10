@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -12,6 +13,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about a lambda expression with a single parameter.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct SingleParameterLambdaExpressionInfo : IEquatable<SingleParameterLambdaExpressionInfo>
     {
         private SingleParameterLambdaExpressionInfo(
@@ -69,6 +71,12 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return LambdaExpression != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return ToDebugString(Success, this, LambdaExpression); }
         }
 
         internal static SingleParameterLambdaExpressionInfo Create(

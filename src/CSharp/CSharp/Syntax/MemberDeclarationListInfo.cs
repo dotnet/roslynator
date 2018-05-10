@@ -3,6 +3,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -13,6 +14,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about a list of member declaration list.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct MemberDeclarationListInfo : IEquatable<MemberDeclarationListInfo>, IReadOnlyList<MemberDeclarationSyntax>
     {
         internal MemberDeclarationListInfo(SyntaxNode parent, SyntaxList<MemberDeclarationSyntax> members)
@@ -45,6 +47,12 @@ namespace Roslynator.CSharp.Syntax
         public int Count
         {
             get { return Members.Count; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return SyntaxInfoHelpers.ToDebugString(Success, Members); }
         }
 
         /// <summary>

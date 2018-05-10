@@ -12,6 +12,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about generic syntax (class, struct, interface, delegate, method or local function).
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct GenericInfo : IEquatable<GenericInfo>
     {
         private GenericInfo(TypeDeclarationSyntax typeDeclaration)
@@ -113,6 +114,17 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return Node != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return (Success)
+                    ? $"{GetType().Name} {Node.Kind()} {TypeParameterList} {ConstraintClauses}"
+                    : "Uninitialized";
+            }
         }
 
         internal static GenericInfo Create(SyntaxNode node)

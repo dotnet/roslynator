@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.Text
@@ -9,6 +10,7 @@ namespace Roslynator.Text
     /// <summary>
     /// Represents selected lines in a <see cref="TextLineCollection"/>.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class TextLineCollectionSelection : Selection<TextLine>
     {
         private TextLineCollectionSelection(TextLineCollection lines, TextSpan span, SelectionResult result)
@@ -31,6 +33,12 @@ namespace Roslynator.Text
         /// Gets an underlying collection that contains selected lines.
         /// </summary>
         protected override IReadOnlyList<TextLine> Items => UnderlyingLines;
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return $"Count = {Count} FirstIndex = {FirstIndex} LastIndex = {LastIndex}"; }
+        }
 
         /// <summary>
         /// Creates a new <see cref="TextLineCollectionSelection"/> based on the specified list and span.

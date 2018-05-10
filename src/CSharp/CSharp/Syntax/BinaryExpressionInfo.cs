@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -13,6 +14,7 @@ namespace Roslynator.CSharp.Syntax
     /// <summary>
     /// Provides information about binary expression.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct BinaryExpressionInfo : IEquatable<BinaryExpressionInfo>
     {
         internal BinaryExpressionInfo(
@@ -54,6 +56,12 @@ namespace Roslynator.CSharp.Syntax
         public bool Success
         {
             get { return BinaryExpression != null; }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get { return ToDebugString(Success, this, BinaryExpression); }
         }
 
         /// <summary>

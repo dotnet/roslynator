@@ -2,12 +2,14 @@
 
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using System.Diagnostics;
 
 namespace Roslynator
 {
     /// <summary>
     /// Represents an extension method symbol.
     /// </summary>
+    [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct ExtensionMethodSymbolInfo
     {
         internal ExtensionMethodSymbolInfo(IMethodSymbol symbol, IMethodSymbol reducedSymbol)
@@ -40,6 +42,17 @@ namespace Roslynator
         public bool IsReduced
         {
             get { return Symbol != null && !object.ReferenceEquals(ReducedSymbol, Symbol); }
+        }
+
+        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+        private string DebuggerDisplay
+        {
+            get
+            {
+                return (Symbol != null)
+                  ? $"{Symbol.MethodKind} {Symbol.ToDisplayString(SymbolDisplayFormats.Test)}"
+                  : "Uninitialized";
+            }
         }
 
 #pragma warning disable CS1591

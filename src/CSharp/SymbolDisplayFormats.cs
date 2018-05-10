@@ -11,5 +11,27 @@ namespace Roslynator
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+
+        public static SymbolDisplayFormat Test { get; } = new SymbolDisplayFormat(
+            globalNamespaceStyle: SymbolDisplayGlobalNamespaceStyle.OmittedAsContaining,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
+            propertyStyle: SymbolDisplayPropertyStyle.ShowReadWriteDescriptor,
+            localOptions: SymbolDisplayLocalOptions.IncludeType,
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters
+                | SymbolDisplayGenericsOptions.IncludeVariance,
+            memberOptions: SymbolDisplayMemberOptions.IncludeParameters
+                | SymbolDisplayMemberOptions.IncludeContainingType
+                | SymbolDisplayMemberOptions.IncludeType
+                | SymbolDisplayMemberOptions.IncludeRef
+                | SymbolDisplayMemberOptions.IncludeExplicitInterface,
+            kindOptions: SymbolDisplayKindOptions.IncludeMemberKeyword,
+            parameterOptions: SymbolDisplayParameterOptions.IncludeOptionalBrackets
+                | SymbolDisplayParameterOptions.IncludeDefaultValue
+                | SymbolDisplayParameterOptions.IncludeParamsRefOut
+                | SymbolDisplayParameterOptions.IncludeExtensionThis
+                | SymbolDisplayParameterOptions.IncludeType
+                | SymbolDisplayParameterOptions.IncludeName,
+            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
+                | SymbolDisplayMiscellaneousOptions.UseErrorTypeSymbolName);
     }
 }
