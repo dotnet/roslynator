@@ -856,6 +856,28 @@ namespace Roslynator.CSharp
         {
             return SeparatedList<TNode>(nodesAndTokens);
         }
+
+        //TODO: make public ToSyntaxTokenList(IEnumerable<SyntaxToken>)
+        /// <summary>
+        /// Creates a list of syntax tokens from a sequence of tokens.
+        /// </summary>
+        /// <param name="tokens"></param>
+        /// <returns></returns>
+        internal static SyntaxTokenList ToSyntaxTokenList(this IEnumerable<SyntaxToken> tokens)
+        {
+            return TokenList(tokens);
+        }
+
+        //TODO: make public ToSyntaxTriviaList(IEnumerable<SyntaxTrivia>)
+        /// <summary>
+        /// Creates a list of syntax trivia from a sequence of trivias.
+        /// </summary>
+        /// <param name="trivias"></param>
+        /// <returns></returns>
+        internal static SyntaxTriviaList ToSyntaxTriviaList(this IEnumerable<SyntaxTrivia> trivias)
+        {
+            return TriviaList(trivias);
+        }
         #endregion IEnumerable<T>
 
         #region IndexerDeclarationSyntax
@@ -1583,20 +1605,32 @@ namespace Roslynator.CSharp
             return tree.IsMultiLineSpan(span, cancellationToken);
         }
 
-        internal static SeparatedSyntaxList<TNode> ReplaceRangeAt<TNode>(
+        /// <summary>
+        /// Creates a new list with the elements in the specified range replaced with new nodes.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <param name="newNodes"></param>
+        /// <returns></returns>
+        public static SeparatedSyntaxList<TNode> ReplaceRange<TNode>(
             this SeparatedSyntaxList<TNode> list,
-            int startIndex,
+            int index,
             int count,
             IEnumerable<TNode> newNodes) where TNode : SyntaxNode
         {
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index), index, "");
 
             if (count < 0
-                || startIndex + count > list.Count)
+                || index + count > list.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(count), count, "");
             }
+
+            if (newNodes == null)
+                throw new ArgumentNullException(nameof(newNodes));
 
             return SeparatedList(ReplaceRange());
 
@@ -1606,14 +1640,14 @@ namespace Roslynator.CSharp
 
                 int i = 0;
 
-                while (i < startIndex
+                while (i < index
                     && en.MoveNext())
                 {
                     yield return en.Current;
                     i++;
                 }
 
-                int endIndex = startIndex + count;
+                int endIndex = index + count;
 
                 while (i < endIndex
                     && en.MoveNext())
@@ -1621,8 +1655,11 @@ namespace Roslynator.CSharp
                     i++;
                 }
 
-                foreach (TNode newNode in newNodes)
-                    yield return newNode;
+                if ((newNodes as ICollection<TNode>)?.Count != 0)
+                {
+                    foreach (TNode newNode in newNodes)
+                        yield return newNode;
+                }
 
                 while (en.MoveNext())
                     yield return en.Current;
@@ -1630,53 +1667,19 @@ namespace Roslynator.CSharp
         }
 
         /// <summary>
-        /// Creates a new list with elements at the specified range removed.
+        /// Creates a new list with elements in the specified range removed.
         /// </summary>
         /// <typeparam name="TNode"></typeparam>
         /// <param name="list"></param>
-        /// <param name="startIndex">An index of the first element to remove.</param>
+        /// <param name="index">An index of the first element to remove.</param>
         /// <param name="count">A number of elements to remove.</param>
         /// <returns></returns>
         public static SeparatedSyntaxList<TNode> RemoveRange<TNode>(
             this SeparatedSyntaxList<TNode> list,
-            int startIndex,
+            int index,
             int count) where TNode : SyntaxNode
         {
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
-
-            if (count < 0
-                || startIndex + count > list.Count)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, "");
-            }
-
-            return SeparatedList(RemoveRange());
-
-            IEnumerable<TNode> RemoveRange()
-            {
-                SeparatedSyntaxList<TNode>.Enumerator en = list.GetEnumerator();
-
-                int i = 0;
-
-                while (i < startIndex
-                    && en.MoveNext())
-                {
-                    yield return en.Current;
-                    i++;
-                }
-
-                int endIndex = startIndex + count;
-
-                while (i < endIndex
-                    && en.MoveNext())
-                {
-                    i++;
-                }
-
-                while (en.MoveNext())
-                    yield return en.Current;
-            }
+            return ReplaceRange(list, index, count, Empty.ReadOnlyList<TNode>());
         }
         #endregion SeparatedSyntaxList<T>
 
@@ -1743,7 +1746,7 @@ namespace Roslynator.CSharp
             return statements.Any();
         }
 
-        private static StatementSyntax SingleNonBlockStatementOrDefault(this StatementSyntax statement, bool recursive = false)
+        internal static StatementSyntax SingleNonBlockStatementOrDefault(this StatementSyntax statement, bool recursive = false)
         {
             return (statement.Kind() == SyntaxKind.Block)
                 ? SingleNonBlockStatementOrDefault((BlockSyntax)statement, recursive)
@@ -2059,20 +2062,32 @@ namespace Roslynator.CSharp
             return statements.Insert(index, statement);
         }
 
-        internal static SyntaxList<TNode> ReplaceRangeAt<TNode>(
+        /// <summary>
+        /// Creates a new list with the elements in the specified range replaced with new nodes.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <param name="newNodes"></param>
+        /// <returns></returns>
+        public static SyntaxList<TNode> ReplaceRange<TNode>(
             this SyntaxList<TNode> list,
-            int startIndex,
+            int index,
             int count,
             IEnumerable<TNode> newNodes) where TNode : SyntaxNode
         {
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index), index, "");
 
             if (count < 0
-                || startIndex + count > list.Count)
+                || index + count > list.Count)
             {
                 throw new ArgumentOutOfRangeException(nameof(count), count, "");
             }
+
+            if (newNodes == null)
+                throw new ArgumentNullException(nameof(newNodes));
 
             return List(ReplaceRange());
 
@@ -2082,14 +2097,14 @@ namespace Roslynator.CSharp
 
                 int i = 0;
 
-                while (i < startIndex
+                while (i < index
                     && en.MoveNext())
                 {
                     yield return en.Current;
                     i++;
                 }
 
-                int endIndex = startIndex + count;
+                int endIndex = index + count;
 
                 while (i < endIndex
                     && en.MoveNext())
@@ -2097,8 +2112,11 @@ namespace Roslynator.CSharp
                     i++;
                 }
 
-                foreach (TNode newNode in newNodes)
-                    yield return newNode;
+                if ((newNodes as ICollection<TNode>)?.Count != 0)
+                {
+                    foreach (TNode newNode in newNodes)
+                        yield return newNode;
+                }
 
                 while (en.MoveNext())
                     yield return en.Current;
@@ -2106,53 +2124,19 @@ namespace Roslynator.CSharp
         }
 
         /// <summary>
-        /// Creates a new list with elements at the specified range removed.
+        /// Creates a new list with elements in the specified range removed.
         /// </summary>
         /// <typeparam name="TNode"></typeparam>
         /// <param name="list"></param>
-        /// <param name="startIndex">An index of the first element to remove.</param>
+        /// <param name="index">An index of the first element to remove.</param>
         /// <param name="count">A number of elements to remove.</param>
         /// <returns></returns>
         public static SyntaxList<TNode> RemoveRange<TNode>(
             this SyntaxList<TNode> list,
-            int startIndex,
+            int index,
             int count) where TNode : SyntaxNode
         {
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
-
-            if (count < 0
-                || startIndex + count > list.Count)
-            {
-                throw new ArgumentOutOfRangeException(nameof(count), count, "");
-            }
-
-            return List(RemoveRange());
-
-            IEnumerable<TNode> RemoveRange()
-            {
-                SyntaxList<TNode>.Enumerator en = list.GetEnumerator();
-
-                int i = 0;
-
-                while (i < startIndex
-                    && en.MoveNext())
-                {
-                    yield return en.Current;
-                    i++;
-                }
-
-                int endIndex = startIndex + count;
-
-                while (i < endIndex
-                    && en.MoveNext())
-                {
-                    i++;
-                }
-
-                while (en.MoveNext())
-                    yield return en.Current;
-            }
+            return ReplaceRange(list, index, count, Empty.ReadOnlyList<TNode>());
         }
         #endregion SyntaxList<T>
 
@@ -2514,7 +2498,7 @@ namespace Roslynator.CSharp
             if (count == 0)
                 return node;
 
-            for (int i = 0; i < count ; i++)
+            for (int i = 0; i < count; i++)
             {
                 if (!leadingTrivia[i].IsWhitespaceOrEndOfLineTrivia())
                 {
@@ -2928,7 +2912,7 @@ namespace Roslynator.CSharp
                 int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
 
                 while (!node.FullSpan.Contains(lineStartIndex))
-                    node = node.Parent;
+                    node = GetParent(node, ascendOutOfTrivia: true);
 
                 SyntaxToken token = node.FindToken(lineStartIndex);
 
@@ -3406,6 +3390,81 @@ namespace Roslynator.CSharp
 
             return tokens;
         }
+
+        /// <summary>
+        /// Creates a new list with tokens in the specified range removed.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="index">An index of the first element to remove.</param>
+        /// <param name="count">A number of elements to remove.</param>
+        /// <returns></returns>
+        public static SyntaxTokenList RemoveRange(
+            this SyntaxTokenList list,
+            int index,
+            int count)
+        {
+            return ReplaceRange(list, index, count, Empty.ReadOnlyList<SyntaxToken>());
+        }
+
+        /// <summary>
+        /// Creates a new list with the tokens in the specified range replaced with new tokens.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <param name="newTokens"></param>
+        /// <returns></returns>
+        public static SyntaxTokenList ReplaceRange(
+            this SyntaxTokenList list,
+            int index,
+            int count,
+            IEnumerable<SyntaxToken> newTokens)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index), index, "");
+
+            if (count < 0
+                || index + count > list.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), count, "");
+            }
+
+            if (newTokens == null)
+                throw new ArgumentNullException(nameof(newTokens));
+
+            return TokenList(ReplaceRange());
+
+            IEnumerable<SyntaxToken> ReplaceRange()
+            {
+                SyntaxTokenList.Enumerator en = list.GetEnumerator();
+
+                int i = 0;
+
+                while (i < index
+                    && en.MoveNext())
+                {
+                    yield return en.Current;
+                    i++;
+                }
+
+                int endIndex = index + count;
+
+                while (i < endIndex
+                    && en.MoveNext())
+                {
+                    i++;
+                }
+
+                if ((newTokens as ICollection<SyntaxToken>)?.Count != 0)
+                {
+                    foreach (SyntaxToken token in newTokens)
+                        yield return token;
+                }
+
+                while (en.MoveNext())
+                    yield return en.Current;
+            }
+        }
         #endregion SyntaxTokenList
 
         #region SyntaxTrivia
@@ -3624,6 +3683,81 @@ namespace Roslynator.CSharp
             return triviaList.Count == 1
                 && triviaList[0].IsElasticMarker();
         }
+
+        /// <summary>
+        /// Creates a new list with trivia in the specified range removed.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="index">An index of the first element to remove.</param>
+        /// <param name="count">A number of elements to remove.</param>
+        /// <returns></returns>
+        public static SyntaxTriviaList RemoveRange(
+            this SyntaxTriviaList list,
+            int index,
+            int count)
+        {
+            return ReplaceRange(list, index, count, Empty.ReadOnlyList<SyntaxTrivia>());
+        }
+
+        /// <summary>
+        /// Creates a new list with the trivia in the specified range replaced with new trivia.
+        /// </summary>
+        /// <param name="list"></param>
+        /// <param name="index"></param>
+        /// <param name="count"></param>
+        /// <param name="newTrivia"></param>
+        /// <returns></returns>
+        public static SyntaxTriviaList ReplaceRange(
+            this SyntaxTriviaList list,
+            int index,
+            int count,
+            IEnumerable<SyntaxTrivia> newTrivia)
+        {
+            if (index < 0)
+                throw new ArgumentOutOfRangeException(nameof(index), index, "");
+
+            if (count < 0
+                || index + count > list.Count)
+            {
+                throw new ArgumentOutOfRangeException(nameof(count), count, "");
+            }
+
+            if (newTrivia == null)
+                throw new ArgumentNullException(nameof(newTrivia));
+
+            return TriviaList(ReplaceRange());
+
+            IEnumerable<SyntaxTrivia> ReplaceRange()
+            {
+                SyntaxTriviaList.Enumerator en = list.GetEnumerator();
+
+                int i = 0;
+
+                while (i < index
+                    && en.MoveNext())
+                {
+                    yield return en.Current;
+                    i++;
+                }
+
+                int endIndex = index + count;
+
+                while (i < endIndex
+                    && en.MoveNext())
+                {
+                    i++;
+                }
+
+                if ((newTrivia as ICollection<SyntaxTrivia>)?.Count != 0)
+                {
+                    foreach (SyntaxTrivia trivia in newTrivia)
+                        yield return trivia;
+                }
+
+                while (en.MoveNext())
+                    yield return en.Current;
+            }
+        }
         #endregion SyntaxTriviaList
 
         #region TypeDeclarationSyntax
@@ -3791,6 +3925,18 @@ namespace Roslynator.CSharp
             return xmlElement.StartTag?.Name?.IsLocalName(localName1, localName2, comparison) == true;
         }
         #endregion XmlElementSyntax
+
+        #region XmlEmptyElementSyntax
+        internal static bool IsLocalName(this XmlEmptyElementSyntax xmlEmptyElement, string localName, StringComparison comparison = StringComparison.Ordinal)
+        {
+            return xmlEmptyElement.Name?.IsLocalName(localName, comparison) == true;
+        }
+
+        internal static bool IsLocalName(this XmlEmptyElementSyntax xmlEmptyElement, string localName1, string localName2, StringComparison comparison = StringComparison.Ordinal)
+        {
+            return xmlEmptyElement.Name?.IsLocalName(localName1, localName2, comparison) == true;
+        }
+        #endregion XmlEmptyElementSyntax
 
         #region XmlNameSyntax
         internal static bool IsLocalName(this XmlNameSyntax xmlName, string localName, StringComparison comparison = StringComparison.Ordinal)

@@ -99,7 +99,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
             SyntaxList<MemberDeclarationSyntax> newMembers = info
                 .Members
-                .ReplaceRangeAt(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
+                .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
 
             return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
         }

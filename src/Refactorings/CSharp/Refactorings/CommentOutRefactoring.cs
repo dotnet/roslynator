@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings
                 TextLine textLine = sourceText.Lines[i];
                 string s = textLine.ToString();
 
-                if (StringUtility.IsWhitespace(s))
+                if (StringUtility.IsEmptyOrWhitespace(s))
                 {
                     sb.Append(s);
                 }

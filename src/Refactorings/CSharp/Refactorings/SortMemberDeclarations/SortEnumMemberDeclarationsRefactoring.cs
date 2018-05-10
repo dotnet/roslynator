@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration
                 .Members
-                .ReplaceRangeAt(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
+                .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
 
             MemberDeclarationSyntax newNode = enumDeclaration.WithMembers(newMembers);
 
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
 
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration
                 .Members
-                .ReplaceRangeAt(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
+                .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, sorted);
 
             MemberDeclarationSyntax newNode = enumDeclaration.WithMembers(newMembers);
 

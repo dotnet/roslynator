@@ -201,6 +201,20 @@ namespace Roslynator
             }
         }
 
+        //TODO: make public GetTrailingSeparator<TNode>(SeparatedSyntaxList<TNode>)
+        internal static SyntaxToken GetTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        {
+            int count = list.Count;
+
+            if (count > 0
+                && count == list.SeparatorCount)
+            {
+                return list.GetSeparator(count - 1);
+            }
+
+            return default;
+        }
+
         //TODO: make public HasTrailingSeparator<TNode>(SeparatedSyntaxList<TNode>)
         internal static bool HasTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
@@ -1231,7 +1245,7 @@ namespace Roslynator
             return -1;
         }
 
-        internal static bool IsSorted(SyntaxTokenList modifiers, IComparer<SyntaxToken> comparer)
+        internal static bool IsSorted(this SyntaxTokenList modifiers, IComparer<SyntaxToken> comparer)
         {
             int count = modifiers.Count;
 

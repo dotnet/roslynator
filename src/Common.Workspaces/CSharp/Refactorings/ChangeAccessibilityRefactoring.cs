@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxList<MemberDeclarationSyntax> newMembers = selectedMembers
                 .UnderlyingList
-                .ReplaceRangeAt(selectedMembers.FirstIndex, selectedMembers.Count, selectedMembers.Select(f => SyntaxAccessibility.WithExplicitAccessibility(f, newAccessibility)));
+                .ReplaceRange(selectedMembers.FirstIndex, selectedMembers.Count, selectedMembers.Select(f => SyntaxAccessibility.WithExplicitAccessibility(f, newAccessibility)));
 
             MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(selectedMembers);
 

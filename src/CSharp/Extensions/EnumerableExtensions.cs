@@ -30,57 +30,6 @@ namespace Roslynator
             return true;
         }
 
-        public static IEnumerable<T> ReplaceRangeAt<T>(
-            this IEnumerable<T> enumerable,
-            int startIndex,
-            int count,
-            IEnumerable<T> newNodes)
-        {
-            if (enumerable == null)
-                throw new ArgumentNullException(nameof(enumerable));
-
-            if (startIndex < 0)
-                throw new ArgumentOutOfRangeException(nameof(startIndex), startIndex, "");
-
-            if (count < 0)
-                throw new ArgumentOutOfRangeException(nameof(count), count, "");
-
-            return ReplaceRange();
-
-            IEnumerable<T> ReplaceRange()
-            {
-                using (IEnumerator<T> en = enumerable.GetEnumerator())
-                {
-                    int i = 0;
-
-                    while (i < startIndex)
-                    {
-                        if (!en.MoveNext())
-                            throw new InvalidOperationException();
-
-                        yield return en.Current;
-                        i++;
-                    }
-
-                    int endIndex = startIndex + count;
-
-                    while (i < endIndex)
-                    {
-                        if (!en.MoveNext())
-                            throw new InvalidOperationException();
-
-                        i++;
-                    }
-
-                    foreach (T newNode in newNodes)
-                        yield return newNode;
-
-                    while (en.MoveNext())
-                        yield return en.Current;
-                }
-            }
-        }
-
         public static IEnumerable<T> ModifyRange<T>(
             this IEnumerable<T> enumerable,
             int startIndex,

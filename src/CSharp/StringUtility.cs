@@ -112,11 +112,8 @@ namespace Roslynator
                 && char.IsUpper(value[0]);
         }
 
-        public static bool IsWhitespace(string value)
+        public static bool IsEmptyOrWhitespace(string value)
         {
-            if (value == null)
-                throw new ArgumentNullException(nameof(value));
-
             for (int i = 0; i < value.Length; i++)
             {
                 if (!char.IsWhiteSpace(value[i]))
