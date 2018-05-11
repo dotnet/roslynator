@@ -13,6 +13,25 @@ namespace Roslynator.Diagnostics
 
         public string FullName { get; }
 
+        public string Name
+        {
+            get
+            {
+                if (FullName == null)
+                    return null;
+
+                int index = FullName.LastIndexOf('.');
+
+                if (index == -1)
+                    return null;
+
+                if (index == FullName.Length - 1)
+                    return null;
+
+                return FullName.Substring(index + 1);
+            }
+        }
+
         public int Elapsed { get; }
 
         public int Percent { get; }

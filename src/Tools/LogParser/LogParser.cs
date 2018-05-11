@@ -1,15 +1,17 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Text.RegularExpressions;
-using static Pihrtsoft.Text.RegularExpressions.Linq.Patterns;
 using Pihrtsoft.Text.RegularExpressions.Linq;
+using static Pihrtsoft.Text.RegularExpressions.Linq.Patterns;
 
 namespace Roslynator.Diagnostics
 {
     public static class LogParser
     {
-        private static readonly string _pattern = BeginLine()
+        private static readonly string _pattern = NonbacktrackingGroup(BeginLine()
             .WhileWhiteSpaceExceptNewLine()
             .NamedGroup("ElapsedSign", "<").Maybe()
             .NamedGroup("ElapsedSeconds", ArabicDigits())
@@ -20,17 +22,33 @@ namespace Roslynator.Diagnostics
             .NamedGroup("Percent", ArabicDigits())
             .WhiteSpaceExceptNewLine().OneMany()
             .NamedGroup("FullName", NotChar(Chars.WhiteSpace().Comma()).OneMany())
-            .WhiteSpace()
+            .WhiteSpace())
             .ToString(PatternOptions.Format);
 
-        private static readonly Regex _regex = new Regex(_pattern, RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex _regex = new Regex(_pattern, RegexOptions.Multiline | RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
 
         public static IEnumerable<AnalyzerLogInfo> Parse(string content)
         {
+            double length = content.Length;
+
+            Console.WriteLine("Parsing log file");
+
             Match match = _regex.Match(content);
+
+            double limit = 1;
 
             while (match.Success)
             {
+                double percentage = (match.Index / length) * 10;
+                if (percentage > limit)
+                {
+                    Console.WriteLine($"{(percentage * 10).ToString("n0", CultureInfo.InvariantCulture)}% processed");
+                    limit++;
+
+                    while (percentage > limit)
+                        limit++;
+                }
+
                 string fullName = match.Groups["FullName"].Value;
 
                 int elapsed = 0;
@@ -54,6 +72,8 @@ namespace Roslynator.Diagnostics
 
                 match = match.NextMatch();
             }
+
+            Console.WriteLine("100% processed");
         }
     }
 }
