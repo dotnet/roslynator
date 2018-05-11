@@ -23,8 +23,12 @@ namespace Roslynator.CSharp.Refactorings
                     refactoring.ComputeRefactoring(context, RefactoringIdentifiers.DuplicateParameter);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
-                    await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameterList).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
+                    && SeparatedSyntaxListSelection<ParameterSyntax>.TryCreate(parameterList.Parameters, context.Span, out SeparatedSyntaxListSelection<ParameterSyntax> selectedParameters))
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    CheckParameterForNullRefactoring.ComputeRefactoring(context, selectedParameters, semanticModel);
+                }
 
                 if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.IntroduceAndInitializeField,

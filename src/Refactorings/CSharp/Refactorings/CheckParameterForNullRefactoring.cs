@@ -19,55 +19,69 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class CheckParameterForNullRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterSyntax parameter)
+        public static void ComputeRefactoring(RefactoringContext context, ParameterSyntax parameter, SemanticModel semanticModel)
         {
-            if (!parameter.Identifier.Span.Contains(context.Span))
-                return;
-
             if (!IsValid(parameter))
                 return;
-
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             if (!CanRefactor(parameter, semanticModel, context.CancellationToken))
                 return;
 
-            RegisterRefactoring(context, parameter);
+            RegisterRefactoring(context, parameter, semanticModel);
         }
 
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, ParameterListSyntax parameterList)
+        public static void ComputeRefactoring(RefactoringContext context, SeparatedSyntaxListSelection<ParameterSyntax> selectedParameters, SemanticModel semanticModel)
         {
-            if (!SeparatedSyntaxListSelection<ParameterSyntax>.TryCreate(parameterList.Parameters, context.Span, out SeparatedSyntaxListSelection<ParameterSyntax> selection))
-                return;
+            ParameterSyntax singleParameter = null;
+            ImmutableArray<ParameterSyntax>.Builder builder = default;
 
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            ImmutableArray<ParameterSyntax> parameters = selection
-                .Where(parameter => IsValid(parameter) && CanRefactor(parameter, semanticModel, context.CancellationToken))
-                .ToImmutableArray();
-
-            if (parameters.Length == 1)
+            foreach (ParameterSyntax parameter in selectedParameters)
             {
-                RegisterRefactoring(context, parameters[0]);
+                if (IsValid(parameter)
+                    && CanRefactor(parameter, semanticModel, context.CancellationToken))
+                {
+                    if (singleParameter == null)
+                    {
+                        singleParameter = parameter;
+                    }
+                    else
+                    {
+                        if (builder == null)
+                            builder = ImmutableArray.CreateBuilder<ParameterSyntax>(selectedParameters.Count);
+
+                        builder.Add(singleParameter);
+                        builder.Add(parameter);
+                    }
+                }
             }
-            else if (parameters.Length > 0)
+
+            if (builder != null)
             {
-                RegisterRefactoring(context, parameters, "parameters");
+                RegisterRefactoring(context, builder.ToImmutableArray(), "parameters", semanticModel);
+            }
+            else if (singleParameter != null)
+            {
+                RegisterRefactoring(context, singleParameter, semanticModel);
             }
         }
 
-        private static void RegisterRefactoring(RefactoringContext context, ParameterSyntax parameter)
+        private static void RegisterRefactoring(RefactoringContext context, ParameterSyntax parameter, SemanticModel semanticModel)
         {
-            RegisterRefactoring(context, ImmutableArray.Create(parameter), $"'{parameter.Identifier.ValueText}'");
+            RegisterRefactoring(context, ImmutableArray.Create(parameter), $"'{parameter.Identifier.ValueText}'", semanticModel);
         }
 
-        private static void RegisterRefactoring(RefactoringContext context, ImmutableArray<ParameterSyntax> parameters, string name)
+        private static void RegisterRefactoring(
+            RefactoringContext context,
+            ImmutableArray<ParameterSyntax> parameters,
+            string name,
+            SemanticModel semanticModel)
         {
                 context.RegisterRefactoring(
                 $"Check {name} for null",
                 cancellationToken => RefactorAsync(
                     context.Document,
                     parameters,
+                    semanticModel,
                     cancellationToken),
                 RefactoringIdentifiers.CheckParameterForNull);
         }
@@ -79,30 +93,44 @@ namespace Roslynator.CSharp.Refactorings
         {
             BlockSyntax body = GetBody(parameter);
 
-            if (body != null)
-            {
-                IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
+            if (body == null)
+                return false;
 
-                return parameterSymbol?.Type?.IsReferenceType == true
-                    && !ContainsNullCheck(body, parameter, semanticModel, cancellationToken);
+            IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
+
+            if (parameterSymbol?.Type.IsReferenceTypeOrNullableType() != true)
+                return false;
+
+            foreach (StatementSyntax statement in body.Statements)
+            {
+                NullCheckExpressionInfo nullCheck = GetNullCheckExpressionInfo(statement, semanticModel, cancellationToken);
+
+                if (nullCheck.Success)
+                {
+                    if (string.Equals(((IdentifierNameSyntax)nullCheck.Expression).Identifier.ValueText, parameter.Identifier.ValueText, StringComparison.Ordinal))
+                        return false;
+                }
+                else
+                {
+                    break;
+                }
             }
 
-            return false;
+            return true;
         }
 
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ImmutableArray<ParameterSyntax> parameters,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             BlockSyntax body = GetBody(parameters[0]);
 
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             int count = statements
-                .TakeWhile(f => IsNullCheck(f, semanticModel, cancellationToken))
+                .TakeWhile(f => GetNullCheckExpressionInfo(f, semanticModel, cancellationToken).Success)
                 .Count();
 
             List<IfStatementSyntax> ifStatements = CreateNullChecks(parameters);
@@ -139,7 +167,7 @@ namespace Roslynator.CSharp.Refactorings
                 .WithStatements(statements.InsertRange(count, ifStatements))
                 .WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(body, newBody, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(body, newBody, cancellationToken);
         }
 
         private static List<IfStatementSyntax> CreateNullChecks(ImmutableArray<ParameterSyntax> parameters)
@@ -170,67 +198,38 @@ namespace Roslynator.CSharp.Refactorings
             return ifStatements;
         }
 
-        private static bool ContainsNullCheck(
-            BlockSyntax body,
-            ParameterSyntax parameter,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxList<StatementSyntax> statements = body.Statements;
-
-            for (int i = 0; i < statements.Count; i++)
-            {
-                if (IsNullCheck(statements[i], semanticModel, cancellationToken))
-                {
-                    if (IsNullCheck(statements[i], parameter.Identifier.ToString()))
-                        return true;
-                }
-                else
-                {
-                    return false;
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsNullCheck(StatementSyntax statement, string identifier)
-        {
-            var ifStatement = (IfStatementSyntax)statement;
-            var binaryExpression = (BinaryExpressionSyntax)ifStatement.Condition;
-            var identifierName = (IdentifierNameSyntax)binaryExpression.Left;
-
-            return string.Equals(identifier, identifierName.Identifier.ToString(), StringComparison.Ordinal);
-        }
-
-        private static bool IsNullCheck(
+        private static NullCheckExpressionInfo GetNullCheckExpressionInfo(
             StatementSyntax statement,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!(statement is IfStatementSyntax ifStatement))
-                return false;
+                return default;
 
             NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, NullCheckStyles.EqualsToNull | NullCheckStyles.IsNull);
 
             if (!nullCheck.Success)
-                return false;
+                return default;
 
             if (nullCheck.Expression.Kind() != SyntaxKind.IdentifierName)
-                return false;
+                return default;
 
             var throwStatement = ifStatement.SingleNonBlockStatementOrDefault() as ThrowStatementSyntax;
 
             if (throwStatement?.Expression?.Kind() != SyntaxKind.ObjectCreationExpression)
-                return false;
+                return default;
 
             var objectCreation = (ObjectCreationExpressionSyntax)throwStatement.Expression;
 
-            INamedTypeSymbol exceptionType = semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException);
-
             ISymbol type = semanticModel.GetSymbol(objectCreation.Type, cancellationToken);
 
-            return type?.Equals(exceptionType) == true;
+            if (!string.Equals(type?.Name, "ArgumentNullException", StringComparison.Ordinal))
+                return default;
+
+            if (!type.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException)))
+                return default;
+
+            return nullCheck;
         }
 
         private static BlockSyntax GetBody(ParameterSyntax parameter)
@@ -271,7 +270,7 @@ namespace Roslynator.CSharp.Refactorings
             return parameter.Type != null
                 && !parameter.Identifier.IsMissing
                 && parameter.IsParentKind(SyntaxKind.ParameterList)
-                && parameter.Default?.Value?.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultExpression) != true;
+                && parameter.Default?.Value?.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression, SyntaxKind.DefaultExpression) != true;
         }
     }
 }

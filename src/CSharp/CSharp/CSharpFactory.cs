@@ -2583,8 +2583,17 @@ namespace Roslynator.CSharp
 
         public static InvocationExpressionSyntax NameOfExpression(ExpressionSyntax expression)
         {
+            string text = SyntaxFacts.GetText(SyntaxKind.NameOfKeyword);
+
+            SyntaxToken identifier = Identifier(
+                leading: default(SyntaxTriviaList),
+                contextualKind: SyntaxKind.NameOfKeyword,
+                text: text,
+                valueText: text,
+                trailing: default(SyntaxTriviaList));
+
             return InvocationExpression(
-                IdentifierName("nameof"),
+                IdentifierName(identifier),
                 ArgumentList(SyntaxFactory.Argument(expression)));
         }
 

@@ -3,6 +3,7 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Refactorings.IntroduceAndInitialize;
+using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -12,8 +13,12 @@ namespace Roslynator.CSharp.Refactorings
         {
             await AddOrRenameParameterRefactoring.ComputeRefactoringsAsync(context, parameter).ConfigureAwait(false);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull))
-                await CheckParameterForNullRefactoring.ComputeRefactoringAsync(context, parameter).ConfigureAwait(false);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.CheckParameterForNull)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(parameter.Identifier))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                CheckParameterForNullRefactoring.ComputeRefactoring(context, parameter, semanticModel);
+            }
 
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.IntroduceAndInitializeField,
