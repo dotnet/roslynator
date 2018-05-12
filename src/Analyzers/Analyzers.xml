@@ -4792,4 +4792,30 @@ if (y == null)
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="MarkTypeWithDebuggerDisplayAttribute">
+    <Id>RCS1223</Id>
+    <Title>Mark publicly visible type with DebuggerDisplay attribute.</Title>
+    <MessageFormat>Mark '{0}' with DebuggerDisplay attribute.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public class Foo // RCS1223
+{
+}]]></Before>
+        <After><![CDATA[DebuggerDisplay("{DebuggerDisplay,nq}")]
+public class Foo
+{
+    [DebuggerBrowsable(DebuggerBrowsableState.Never)]
+    private string DebuggerDisplay
+    {
+        get { return ToString(); }
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

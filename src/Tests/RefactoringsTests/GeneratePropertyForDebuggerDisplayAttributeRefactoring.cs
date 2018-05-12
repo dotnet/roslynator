@@ -6,7 +6,7 @@ using System.Diagnostics;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal static class AddPropertyForDebuggerDisplayAttributeRefactoring
+    internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
     {
         //" \\{\\} Value1: {Value1,nq} Value2: {Value2} \" \\"
         [DebuggerDisplay(" \\{\\} Value1: {Value1,nq} Value2: {Value2} \" \\")]

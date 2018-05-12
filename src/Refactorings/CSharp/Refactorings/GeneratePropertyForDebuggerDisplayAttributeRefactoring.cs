@@ -9,15 +9,12 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.Text;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class GeneratePropertyForDebuggerDisplayAttributeRefactoring
     {
-        private const string PropertyName = "DebuggerDisplay";
-
         public static async Task ComputeRefactoringAsync(RefactoringContext context, AttributeSyntax attribute)
         {
             if (attribute.ArgumentList?.Arguments.Count(f => f.NameEquals == null) != 1)
@@ -42,14 +39,14 @@ namespace Roslynator.CSharp.Refactorings
             if (value == null)
                 return;
 
-            if (string.Equals(value, $"{{{PropertyName},nq}}", StringComparison.Ordinal))
+            if (string.Equals(value, $"{{{DefaultNames.DebuggerDisplayPropertyName},nq}}", StringComparison.Ordinal))
                 return;
 
             if (!CanRefactor(value))
                 return;
 
             context.RegisterRefactoring(
-                $"Generate property '{PropertyName}'",
+                $"Generate property '{DefaultNames.DebuggerDisplayPropertyName}'",
                 cancellationToken => RefactorAsync(context.Document, attribute, cancellationToken),
                 RefactoringIdentifiers.GeneratePropertyForDebuggerDisplayAttribute);
         }
@@ -196,7 +193,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            string propertyName = NameGenerator.Default.EnsureUniqueMemberName(PropertyName, semanticModel, typeDeclaration.OpenBraceToken.Span.End, cancellationToken: cancellationToken);
+            string propertyName = NameGenerator.Default.EnsureUniqueMemberName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, typeDeclaration.OpenBraceToken.Span.End, cancellationToken: cancellationToken);
 
             AttributeArgumentSyntax argument = attribute.ArgumentList.Arguments.First();
 
@@ -212,31 +209,11 @@ namespace Roslynator.CSharp.Refactorings
                 .Value
                 .ToString();
 
-            ExpressionSyntax returnExpression = GetReturnExpression(value, SyntaxInfo.StringLiteralExpressionInfo(argument.Expression).IsVerbatim);
+            bool isVerbatim = SyntaxInfo.StringLiteralExpressionInfo(argument.Expression).IsVerbatim;
 
-            PropertyDeclarationSyntax propertyDeclaration = PropertyDeclaration(
-                SingletonList(
-                    AttributeList(
-                        Attribute(
-                            ParseName("System.Diagnostics.DebuggerBrowsableAttribute"),
-                            AttributeArgument(
-                                SimpleMemberAccessExpression(
-                                    ParseName("System.Diagnostics.DebuggerBrowsableState").WithSimplifierAnnotation(),
-                                    IdentifierName("Never"))
-                            )
-                        ).WithSimplifierAnnotation()
-                    )
-                ),
-                Modifiers.Private(),
-                CSharpTypeFactory.StringType(),
-                default(ExplicitInterfaceSpecifierSyntax),
-                Identifier(propertyName).WithRenameAnnotation(),
-                AccessorList(
-                    GetAccessorDeclaration(
-                        Block(
-                            ReturnStatement(returnExpression)))));
+            ExpressionSyntax returnExpression = GetReturnExpression(value, isVerbatim);
 
-            propertyDeclaration = propertyDeclaration.WithFormatterAnnotation();
+            PropertyDeclarationSyntax propertyDeclaration = MarkTypeWithDebuggerDisplayAttributeRefactoring.DebuggerDisplayPropertyDeclaration(propertyName, returnExpression);
 
             newTypeDeclaration = MemberDeclarationInserter.Default.Insert(newTypeDeclaration, propertyDeclaration);
 
@@ -284,7 +261,7 @@ namespace Roslynator.CSharp.Refactorings
             sb.Append(value, lastPos, i - lastPos);
             sb.Append("\"");
 
-            return ParseExpression(StringBuilderCache.GetStringAndFree(sb));
+            return SyntaxFactory.ParseExpression(StringBuilderCache.GetStringAndFree(sb));
 
             void AppendInterpolatedText()
             {

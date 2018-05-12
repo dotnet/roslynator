@@ -2495,5 +2495,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MergePreprocessorDirectives}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1223</summary>
+        public static readonly DiagnosticDescriptor MarkTypeWithDebuggerDisplayAttribute = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute, 
+            title:              "Mark publicly visible type with DebuggerDisplay attribute.", 
+            messageFormat:      "Mark '{0}' with DebuggerDisplay attribute.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: false, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute}", 
+            customTags:         Array.Empty<string>());
+
     }
 }
