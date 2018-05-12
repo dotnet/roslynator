@@ -32,7 +32,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.MarkFieldAsReadOnly,
                     DiagnosticIdentifiers.UseConstantInsteadOfField,
                     DiagnosticIdentifiers.UseReadOnlyAutoProperty,
-                    DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment);
+                    DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment,
+                    DiagnosticIdentifiers.MakeMethodExtensionMethod);
             }
         }
 
@@ -144,6 +145,25 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 ReplaceCommentWithDocumentationCommentRefactoring.Title,
                                 cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, context.Span, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.MakeMethodExtensionMethod:
+                        {
+                            var methodDeclaration = (MethodDeclarationSyntax)memberDeclaration;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Make method an extension method",
+                                cancellationToken =>
+                                {
+                                    ParameterSyntax parameter = methodDeclaration.ParameterList.Parameters[0];
+
+                                    ParameterSyntax newParameter = ModifierList.Insert(parameter, SyntaxKind.ThisKeyword);
+
+                                    return context.Document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
+                                },
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

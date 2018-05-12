@@ -4818,4 +4818,33 @@ public class Foo
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="MakeMethodExtensionMethod">
+    <Id>RCS1224</Id>
+    <Title>Make method an extension method.</Title>
+    <MessageFormat>Make method an extension method.</MessageFormat>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary>Public/internal method in public/internal static class whose name ends with "Extensions" should be an extension method.</Summary>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[public static class FooExtensions
+{
+    public static string Bar(Foo foo) // RCS1224
+    {
+    }
+}]]></Before>
+        <After><![CDATA[public static class FooExtensions
+{
+    public static string Bar(this Foo foo)
+    {
+    }
+}]]>
+        </After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
