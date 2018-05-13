@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -547,6 +549,101 @@ namespace Roslynator.CSharp
             }
 
             return false;
+        }
+
+        public static IEnumerable<SyntaxNode> EnumerateExpressionChain(ExpressionSyntax expression)
+        {
+            SyntaxNode e = expression;
+
+            yield return e;
+
+            while (true)
+            {
+                ExpressionSyntax last = GetLastChild(e);
+
+                if (last != null)
+                {
+                    e = last;
+                }
+                else
+                {
+                    while (e != expression
+                        && IsFirstChild(e))
+                    {
+                        e = e.Parent;
+                    }
+
+                    if (e == expression)
+                        break;
+
+                    e = GetPreviousSibling(e);
+                }
+
+                yield return e;
+            }
+
+            ExpressionSyntax GetLastChild(SyntaxNode node)
+            {
+                switch (node?.Kind())
+                {
+                    case SyntaxKind.ConditionalAccessExpression:
+                        return ((ConditionalAccessExpressionSyntax)node).WhenNotNull;
+                    case SyntaxKind.MemberBindingExpression:
+                        return ((MemberBindingExpressionSyntax)node).Name;
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        return ((MemberAccessExpressionSyntax)node).Name;
+                    case SyntaxKind.ElementAccessExpression:
+                        return ((ElementAccessExpressionSyntax)node).Expression;
+                    case SyntaxKind.InvocationExpression:
+                        return ((InvocationExpressionSyntax)node).Expression;
+                }
+
+                return null;
+            }
+
+            SyntaxNode GetPreviousSibling(SyntaxNode node)
+            {
+                SyntaxNode parent = node.Parent;
+
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.ConditionalAccessExpression:
+                        {
+                            var conditionalAccess = (ConditionalAccessExpressionSyntax)parent;
+
+                            if (conditionalAccess.WhenNotNull == node)
+                                return conditionalAccess.Expression;
+
+                            break;
+                        }
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        {
+                            var memberAccess = (MemberAccessExpressionSyntax)parent;
+
+                            if (memberAccess.Name == node)
+                                return memberAccess.Expression;
+
+                            break;
+                        }
+                }
+
+                return null;
+            }
+
+            bool IsFirstChild(SyntaxNode node)
+            {
+                SyntaxNode parent = node.Parent;
+
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.ConditionalAccessExpression:
+                        return ((ConditionalAccessExpressionSyntax)parent).Expression == node;
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        return ((MemberAccessExpressionSyntax)parent).Expression == node;
+                }
+
+                return true;
+            }
         }
     }
 }

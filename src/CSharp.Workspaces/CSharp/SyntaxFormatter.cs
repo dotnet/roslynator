@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
@@ -19,12 +21,12 @@ namespace Roslynator.CSharp
     {
         public static Task<Document> ToSingleLineAsync<TNode>(
             Document document,
-            TNode condition,
+            TNode node,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            TNode newNode = ToSingleLine(condition);
+            TNode newNode = ToSingleLine(node);
 
-            return document.ReplaceNodeAsync(condition, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
         private static TNode ToSingleLine<TNode>(TNode node) where TNode : SyntaxNode
@@ -240,32 +242,72 @@ namespace Roslynator.CSharp
 
         public static Task<Document> ToMultiLineAsync(
             Document document,
-            MemberAccessExpressionSyntax[] expressions,
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            MemberAccessExpressionSyntax expression = expressions[0];
+            SyntaxTrivia trivia = expression.GetIndentation(cancellationToken);
 
-            SyntaxTriviaList leadingTrivia = expression.GetIncreasedIndentation(cancellationToken);
+            string indentation = Environment.NewLine + trivia.ToString() + SingleIndentation(trivia).ToString();
 
-            leadingTrivia = leadingTrivia.Insert(0, NewLine());
+            TextChange? textChange = null;
+            List<TextChange> textChanges = null;
 
-            MemberAccessExpressionSyntax newNode = expression.ReplaceNodes(expressions, (node, node2) =>
+            foreach (SyntaxNode node in CSharpUtility.EnumerateExpressionChain(expression))
             {
-                SyntaxToken operatorToken = node.OperatorToken;
-
-                if (!operatorToken.HasLeadingTrivia)
+                switch (node.Kind())
                 {
-                    return node2.WithOperatorToken(operatorToken.WithLeadingTrivia(leadingTrivia));
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                        {
+                            var memberAccess = (MemberAccessExpressionSyntax)node;
+
+                            if (memberAccess.Expression.IsKind(SyntaxKind.ThisExpression))
+                                break;
+
+                            if (semanticModel
+                                .GetSymbol(memberAccess.Expression, cancellationToken)?
+                                .Kind == SymbolKind.Namespace)
+                            {
+                                break;
+                            }
+
+                            AddTextChange(memberAccess.OperatorToken);
+                            break;
+                        }
+                    case SyntaxKind.MemberBindingExpression:
+                        {
+                            var memberBinding = (MemberBindingExpressionSyntax)node;
+
+                            AddTextChange(memberBinding.OperatorToken);
+                            break;
+                        }
+                }
+            }
+
+            if (textChanges != null)
+            {
+                TextChange[] arr = textChanges.ToArray();
+                Array.Reverse(arr);
+                return document.WithTextChangesAsync(arr, cancellationToken);
+            }
+            else
+            {
+                return document.WithTextChangeAsync(textChange.Value, cancellationToken);
+            }
+
+            void AddTextChange(SyntaxToken operatorToken)
+            {
+                var tc = new TextChange(new TextSpan(operatorToken.SpanStart, 0), indentation);
+
+                if (textChange == null)
+                {
+                    textChange = tc;
                 }
                 else
                 {
-                    return node2;
+                    (textChanges ?? (textChanges = new List<TextChange>() { textChange.Value })).Add(tc);
                 }
-            });
-
-            newNode = newNode.WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(expression, newNode, cancellationToken);
+            }
         }
 
         public static Task<Document> ToMultiLineAsync(
