@@ -42,18 +42,17 @@ namespace Roslynator.CSharp.Refactorings
             SeparatedSyntaxListSelection<EnumMemberDeclarationSyntax> selection,
             CancellationToken cancellationToken)
         {
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = members;
-
-            for (int i = selection.FirstIndex; i <= selection.LastIndex; i++)
-            {
-                EnumMemberDeclarationSyntax newMember = members[i]
-                    .WithEqualsValue(null)
-                    .WithTrailingTrivia(members[i].GetTrailingTrivia())
-                    .WithFormatterAnnotation();
-
-                newMembers = newMembers.ReplaceAt(i, newMember);
-            }
+            SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration.Members.ModifyRange(
+                selection.FirstIndex,
+                selection.Count,
+                enumMember =>
+                {
+                    return enumMember
+                        .WithEqualsValue(null)
+                        .WithTrailingTrivia(enumMember.GetTrailingTrivia())
+                        .WithFormatterAnnotation();
+                })
+                .ToSeparatedSyntaxList();
 
             EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.WithMembers(newMembers);
 

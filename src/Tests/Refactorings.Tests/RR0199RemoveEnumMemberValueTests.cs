@@ -1,0 +1,86 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading.Tasks;
+using Xunit;
+
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Refactorings.Tests
+{
+    public class RR0199RemoveEnumMemberValueTests : AbstractCSharpCodeRefactoringVerifier
+    {
+        public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveEnumMemberValue;
+
+        [Fact]
+        public async Task Test_SingleMember()
+        {
+            await VerifyRefactoringAsync(@"
+enum E
+{
+    [|A = 0,|]
+    B = 1,
+    C
+}
+", @"
+enum E
+{
+    A,
+    B = 1,
+    C
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_MultipleMembers()
+        {
+            await VerifyRefactoringAsync(@"
+enum E
+{
+    A = 0,
+    [|B = 1,
+    C,
+    D = 4|]
+}
+", @"
+enum E
+{
+    A = 0,
+    B,
+    C,
+    D
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task TestNoRefactoring_SingleMember()
+        {
+            await VerifyNoRefactoringAsync(@"
+enum E
+{
+    A = 0,
+    B = 1,
+    [|C,|]
+    D,
+    E = 4
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task TestNoRefactoring_MultipleMembers()
+        {
+            await VerifyNoRefactoringAsync(@"
+enum E
+{
+    A = 0,
+    B = 1,
+    [|C,
+    D,|]
+    E = 4
+}
+", RefactoringId);
+        }
+    }
+}
