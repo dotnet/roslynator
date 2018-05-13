@@ -2519,5 +2519,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MakeMethodExtensionMethod}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1225</summary>
+        public static readonly DiagnosticDescriptor MakeClassSealed = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.MakeClassSealed, 
+            title:              "Make class sealed.", 
+            messageFormat:      "Make class sealed.", 
+            category:           DiagnosticCategories.Design, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MakeClassSealed}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

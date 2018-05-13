@@ -4847,4 +4847,31 @@ public class Foo
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="MakeClassSealed">
+    <Id>RCS1225</Id>
+    <Title>Make class sealed.</Title>
+    <MessageFormat>Make class sealed.</MessageFormat>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary>A class that has only private constructors should be marked as sealed.</Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[public class Foo // RCS1225
+{
+    private Foo()
+    {
+    }
+}]]></Before>
+<After><![CDATA[public sealed class Foo
+{
+    private Foo()
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

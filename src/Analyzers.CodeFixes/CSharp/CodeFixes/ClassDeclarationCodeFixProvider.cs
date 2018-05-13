@@ -26,7 +26,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.MakeClassStatic,
                     DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations,
                     DiagnosticIdentifiers.ImplementExceptionConstructors,
-                    DiagnosticIdentifiers.UseAttributeUsageAttribute);
+                    DiagnosticIdentifiers.UseAttributeUsageAttribute,
+                    DiagnosticIdentifiers.MakeClassSealed);
             }
         }
 
@@ -96,6 +97,16 @@ namespace Roslynator.CSharp.CodeFixes
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.MakeClassSealed:
+                        {
+                            ModifiersCodeFixRegistrator.AddModifier(
+                                context,
+                                diagnostic,
+                                classDeclaration,
+                                SyntaxKind.SealedKeyword);
+
                             break;
                         }
                 }

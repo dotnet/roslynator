@@ -3,7 +3,9 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Linq;
 using Roslynator.Metadata;
+using System.Collections.Generic;
 
 namespace Roslynator.CodeGeneration
 {
@@ -29,7 +31,14 @@ namespace Roslynator.CodeGeneration
             get
             {
                 if (_analyzers.IsDefault)
-                    _analyzers = MetadataFile.ReadAllAnalyzers(GetPath(@"Analyzers\Analyzers.xml"));
+                {
+                    IEnumerable<AnalyzerDescriptor> analyzers = Directory
+                        .EnumerateFiles(GetPath("Analyzers"), "Analyzers.*.xml", SearchOption.TopDirectoryOnly)
+                        .Where(filePath => Path.GetFileName(filePath) != "Analyzers.Template.xml")
+                        .SelectMany(filePath => MetadataFile.ReadAllAnalyzers(filePath));
+
+                    _analyzers = MetadataFile.ReadAllAnalyzers(GetPath(@"Analyzers\Analyzers.xml")).AddRange(analyzers);
+                }
 
                 return _analyzers;
             }
