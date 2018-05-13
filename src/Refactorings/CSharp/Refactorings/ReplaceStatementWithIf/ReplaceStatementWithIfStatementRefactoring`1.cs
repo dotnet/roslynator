@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
             if (expression == null)
                 return;
 
-            if (CSharpFacts.IsBooleanExpression(expression.Kind()))
+            if (CSharpFacts.IsBooleanLiteralExpression(expression.Kind()))
                 return;
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -35,6 +35,8 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
                 .ConvertedType?
                 .SpecialType == SpecialType.System_Boolean)
             {
+                context.ThrowIfCancellationRequested();
+
                 context.RegisterRefactoring(
                     GetTitle(statement),
                     cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken),
@@ -51,6 +53,8 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
             IfStatementSyntax ifStatement = CreateIfStatement(statement, expression)
                 .WithTriviaFrom(statement)
                 .WithFormatterAnnotation();
+
+            cancellationToken.ThrowIfCancellationRequested();
 
             return document.ReplaceNodeAsync(statement, ifStatement, cancellationToken);
         }
