@@ -1285,29 +1285,37 @@ namespace Roslynator
         /// </summary>
         /// <param name="trivia"></param>
         /// <param name="triviaList"></param>
+        /// <param name="allowLeading">If true, trivia can be part of leading trivia.</param>
+        /// <param name="allowTrailing">If true, trivia can be part of trailing trivia.</param>
         /// <returns></returns>
-        public static bool TryGetContainingList(this SyntaxTrivia trivia, out SyntaxTriviaList triviaList)
+        public static bool TryGetContainingList(this SyntaxTrivia trivia, out SyntaxTriviaList triviaList, bool allowLeading = true, bool allowTrailing = true)
         {
             SyntaxToken token = trivia.Token;
 
-            SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
-
-            int index = leadingTrivia.IndexOf(trivia);
-
-            if (index != -1)
+            if (allowLeading)
             {
-                triviaList = leadingTrivia;
-                return true;
+                SyntaxTriviaList leading = token.LeadingTrivia;
+
+                int index = leading.IndexOf(trivia);
+
+                if (index != -1)
+                {
+                    triviaList = leading;
+                    return true;
+                }
             }
 
-            SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
-
-            index = trailingTrivia.IndexOf(trivia);
-
-            if (index != -1)
+            if (allowTrailing)
             {
-                triviaList = trailingTrivia;
-                return true;
+                SyntaxTriviaList trailing = token.TrailingTrivia;
+
+                int index = trailing.IndexOf(trivia);
+
+                if (index != -1)
+                {
+                    triviaList = trailing;
+                    return true;
+                }
             }
 
             triviaList = default(SyntaxTriviaList);

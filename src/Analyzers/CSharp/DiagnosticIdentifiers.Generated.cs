@@ -214,5 +214,6 @@ namespace Roslynator.CSharp
         public const string MarkTypeWithDebuggerDisplayAttribute = "RCS1223";
         public const string MakeMethodExtensionMethod = "RCS1224";
         public const string MakeClassSealed = "RCS1225";
+        public const string AddParagraphToDocumentationComment = "RCS1226";
     }
 }

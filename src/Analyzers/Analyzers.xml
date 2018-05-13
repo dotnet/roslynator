@@ -4874,4 +4874,41 @@ public class Foo
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="AddParagraphToDocumentationComment">
+    <Id>RCS1226</Id>
+    <Title>Add paragraph to documentation comment.</Title>
+    <MessageFormat>Add paragraph to documentation comment.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[/// <summary>
+/// summary1 // RCS1126
+/// 
+/// summary2 // RCS1126
+/// summary3
+/// </summary>
+class Foo
+{
+}]]>
+        </Before>
+        <After>
+          <![CDATA[/// <summary>
+/// <para>summary1</para>
+/// <para>
+/// summary2
+/// summary3
+/// </para>
+/// </summary>
+class Foo
+{
+}]]>
+        </After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

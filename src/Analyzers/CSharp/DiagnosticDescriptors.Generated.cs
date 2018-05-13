@@ -2531,5 +2531,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MakeClassSealed}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1226</summary>
+        public static readonly DiagnosticDescriptor AddParagraphToDocumentationComment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AddParagraphToDocumentationComment, 
+            title:              "Add paragraph to documentation comment.", 
+            messageFormat:      "Add paragraph to documentation comment.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddParagraphToDocumentationComment}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

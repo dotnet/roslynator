@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var documentationComment = (DocumentationCommentTriviaSyntax)context.Node;
 
-            if (!IsPartOfMemberDeclaration(documentationComment))
+            if (!documentationComment.IsPartOfMemberDeclaration())
                 return;
 
             bool containsInheritDoc = false;
@@ -101,17 +101,6 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
                     documentationComment);
             }
-        }
-
-        private static bool IsPartOfMemberDeclaration(DocumentationCommentTriviaSyntax documentationComment)
-        {
-            SyntaxNode node = (documentationComment as IStructuredTriviaSyntax)?.ParentTrivia.Token.Parent;
-
-            if (node is MemberDeclarationSyntax)
-                return true;
-
-            return node is AttributeListSyntax
-                && node.Parent is MemberDeclarationSyntax;
         }
 
         private static bool IsSummaryMissing(XmlElementSyntax summaryElement)
