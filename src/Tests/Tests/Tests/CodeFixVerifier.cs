@@ -36,7 +36,7 @@ namespace Roslynator.Tests
 
             IEnumerable<Diagnostic> diagnostics = analysis.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan));
 
-            await VerifyDiagnosticAsync(analysis.Source, diagnostics, cancellationToken).ConfigureAwait(false);
+            await VerifyDiagnosticAsync(analysis.Source, diagnostics, additionalSources: null, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             await VerifyFixAsync(analysis.Source, expected, cancellationToken).ConfigureAwait(false);
         }
@@ -55,7 +55,7 @@ namespace Roslynator.Tests
             {
                 IEnumerable<Diagnostic> diagnostics = analysis.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan));
 
-                await VerifyDiagnosticAsync(analysis.Source, diagnostics, cancellationToken).ConfigureAwait(false);
+                await VerifyDiagnosticAsync(analysis.Source, diagnostics, additionalSources: null, cancellationToken).ConfigureAwait(false);
 
                 await VerifyFixAsync(analysis.Source, expected, cancellationToken).ConfigureAwait(false);
             }
@@ -74,7 +74,7 @@ namespace Roslynator.Tests
         {
             Assert.True(FixProvider.CanFixAny(Analyzer.SupportedDiagnostics), $"Code fix provider '{FixProvider.GetType().Name}' cannot fix any diagnostic supported by analyzer '{Analyzer}'.");
 
-            Document document = WorkspaceFactory.Document(source);
+            Document document = CreateDocument(source);
 
             Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
@@ -157,7 +157,7 @@ namespace Roslynator.Tests
 
         public async Task VerifyNoFixAsync(string source, CancellationToken cancellationToken = default(CancellationToken))
         {
-            Document document = WorkspaceFactory.Document(source);
+            Document document = CreateDocument(source);
 
             Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 

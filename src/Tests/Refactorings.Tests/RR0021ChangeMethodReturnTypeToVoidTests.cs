@@ -10,9 +10,14 @@ namespace Roslynator.CSharp.Refactorings.Tests
 {
     public class RR0021ChangeMethodReturnTypeToVoidTests : AbstractCSharpCodeRefactoringVerifier
     {
+        public RR0021ChangeMethodReturnTypeToVoidTests()
+        {
+            Options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue);
+        }
+
         public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeMethodReturnTypeToVoid;
 
-        public override CodeVerificationOptions Options => base.Options.AddAllowedCompilerDiagnosticId("CS0161");
+        public override CodeVerificationOptions Options { get; }
 
         [Fact]
         public async Task Test_Method()

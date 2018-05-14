@@ -37,6 +37,7 @@ namespace Roslynator.Tests
             await VerifyDiagnosticAsync(
                 analysis.Source,
                 analysis.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan)),
+                additionalSources: null,
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -78,6 +79,7 @@ namespace Roslynator.Tests
             await VerifyDiagnosticAsync(
                 source,
                 spans.Select(span => CreateDiagnostic(source, span)),
+                additionalSources: null,
                 cancellationToken).ConfigureAwait(false);
         }
 
@@ -87,28 +89,21 @@ namespace Roslynator.Tests
             CancellationToken cancellationToken = default(CancellationToken))
         {
             await VerifyDiagnosticAsync(
-                new string[] { source },
+                source,
                 new Diagnostic[] { diagnostic },
+                additionalSources: null,
                 cancellationToken).ConfigureAwait(false);
         }
 
         public async Task VerifyDiagnosticAsync(
             string source,
             IEnumerable<Diagnostic> expectedDiagnostics,
+            string[] additionalSources = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            await VerifyDiagnosticAsync(
-                new string[] { source },
-                expectedDiagnostics,
-                cancellationToken).ConfigureAwait(false);
-        }
+            Document document = CreateDocument(source, additionalSources ?? Array.Empty<string>());
 
-        public async Task VerifyDiagnosticAsync(
-            IEnumerable<string> sources,
-            IEnumerable<Diagnostic> expectedDiagnostics,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            Project project = WorkspaceFactory.Project(sources);
+            Project project = document.Project;
 
             Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
@@ -158,26 +153,23 @@ namespace Roslynator.Tests
         {
             (string source, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData);
 
-            await VerifyNoDiagnosticAsync(source, cancellationToken).ConfigureAwait(false);
-        }
-
-        public async Task VerifyNoDiagnosticAsync(
-            string source,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
             await VerifyNoDiagnosticAsync(
-                new string[] { source },
+                source: source,
+                additionalSource: null,
                 cancellationToken).ConfigureAwait(false);
         }
 
         public async Task VerifyNoDiagnosticAsync(
-            IEnumerable<string> sources,
+            string source,
+            string[] additionalSource = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!Analyzer.Supports(Descriptor))
                 Assert.True(false, $"Diagnostic \"{Descriptor.Id}\" is not supported by analyzer \"{Analyzer.GetType().Name}\".");
 
-            Project project = WorkspaceFactory.Project(sources);
+            Document document = CreateDocument(source, additionalSource ?? Array.Empty<string>());
+
+            Project project = document.Project;
 
             Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 

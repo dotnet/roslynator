@@ -103,7 +103,7 @@ namespace Roslynator.Tests
             string[] additionalSources = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Document document = WorkspaceFactory.Document(source, additionalSources ?? Array.Empty<string>());
+            Document document = CreateDocument(source, additionalSources ?? Array.Empty<string>());
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
@@ -183,7 +183,7 @@ namespace Roslynator.Tests
             string equivalenceKey,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Document document = WorkspaceFactory.Document(source);
+            Document document = CreateDocument(source);
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
