@@ -36,8 +36,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
 
                 NameColonSyntax nameColon = argument.NameColon;
 
-                if (nameColon == null
-                    || nameColon.IsMissing)
+                if (nameColon?.IsMissing != false)
                 {
                     IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(
                         argument,

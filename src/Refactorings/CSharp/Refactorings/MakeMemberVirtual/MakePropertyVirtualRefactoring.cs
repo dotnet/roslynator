@@ -15,9 +15,7 @@ namespace Roslynator.CSharp.Refactorings.MakeMemberVirtual
             if (!propertyDeclaration.Modifiers.Contains(SyntaxKind.AbstractKeyword))
                 return;
 
-            var classDeclaration = propertyDeclaration.Parent as ClassDeclarationSyntax;
-
-            if (classDeclaration == null)
+            if (!(propertyDeclaration.Parent is ClassDeclarationSyntax classDeclaration))
                 return;
 
             if (classDeclaration.Modifiers.Contains(SyntaxKind.SealedKeyword))

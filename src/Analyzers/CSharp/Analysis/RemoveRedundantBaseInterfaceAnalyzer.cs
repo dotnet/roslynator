@@ -112,21 +112,18 @@ namespace Roslynator.CSharp.Analysis
         {
             foreach (INamedTypeSymbol interfaceSymbol in interfaceInfo2.Interfaces)
             {
-                if (interfaceInfo.Symbol.Equals(interfaceSymbol))
+                if (interfaceInfo.Symbol.Equals(interfaceSymbol)
+                    && typeSymbol?.IsAnyInterfaceMemberExplicitlyImplemented(interfaceInfo.Symbol) != true)
                 {
-                    if (typeSymbol == null
-                        || !typeSymbol.IsAnyInterfaceMemberExplicitlyImplemented(interfaceInfo.Symbol))
-                    {
-                        BaseTypeSyntax baseType = interfaceInfo.BaseType;
+                    BaseTypeSyntax baseType = interfaceInfo.BaseType;
 
-                        context.ReportDiagnostic(
-                            DiagnosticDescriptors.RemoveRedundantBaseInterface,
-                            baseType,
-                            SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default),
-                            SymbolDisplay.ToMinimalDisplayString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default));
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveRedundantBaseInterface,
+                        baseType,
+                        SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default),
+                        SymbolDisplay.ToMinimalDisplayString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default));
 
-                        return;
-                    }
+                    return;
                 }
             }
         }

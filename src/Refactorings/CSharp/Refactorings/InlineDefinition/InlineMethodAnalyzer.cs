@@ -43,9 +43,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            var methodSymbol = semanticModel.GetSymbol(node, cancellationToken) as IMethodSymbol;
-
-            if (methodSymbol == null)
+            if (!(semanticModel.GetSymbol(node, cancellationToken) is IMethodSymbol methodSymbol))
                 return null;
 
             if (methodSymbol.Language != LanguageNames.CSharp)

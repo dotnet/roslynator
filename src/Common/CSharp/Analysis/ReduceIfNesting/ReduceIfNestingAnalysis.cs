@@ -211,9 +211,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                         if (jumpKind != SyntaxKind.None)
                             return Success(jumpKind, parent);
 
-                        var methodSymbol = semanticModel.GetSymbol(anonymousFunction, cancellationToken) as IMethodSymbol;
-
-                        if (methodSymbol == null)
+                        if (!(semanticModel.GetSymbol(anonymousFunction, cancellationToken) is IMethodSymbol methodSymbol))
                             return Fail(parent);
 
                         if (methodSymbol.ReturnsVoid)

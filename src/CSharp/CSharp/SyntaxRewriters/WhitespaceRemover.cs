@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.SyntaxRewriters
 {
-    internal class WhitespaceRemover : CSharpSyntaxRewriter
+    internal sealed class WhitespaceRemover : CSharpSyntaxRewriter
     {
         private WhitespaceRemover(TextSpan? span = null)
         {
@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {
             if (trivia.IsWhitespaceOrEndOfLineTrivia()
-                && (Span == null || Span.Value.Contains(trivia.Span)))
+                && (Span?.Contains(trivia.Span) != false))
             {
                 return Replacement;
             }

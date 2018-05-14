@@ -108,8 +108,7 @@ namespace Roslynator.CSharp.Refactorings
 
             StatementSyntax statement = GetEmbeddedStatement(block.Statements[0]);
 
-            return statement == null
-                || !statement.FullSpan.Contains(context.Span);
+            return statement?.FullSpan.Contains(context.Span) != true;
         }
 
         private static StatementSyntax GetEmbeddedStatement(SyntaxNode node)

@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 {
-    internal class WrapInRegionRefactoring : WrapSelectedLinesRefactoring
+    internal sealed class WrapInRegionRefactoring : WrapSelectedLinesRefactoring
     {
         private WrapInRegionRefactoring()
         {

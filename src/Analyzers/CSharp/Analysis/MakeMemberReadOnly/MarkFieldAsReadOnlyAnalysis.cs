@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 {
-    internal class MarkFieldAsReadOnlyAnalysis : MakeMemberReadOnlyAnalysis
+    internal sealed class MarkFieldAsReadOnlyAnalysis : MakeMemberReadOnlyAnalysis
     {
         private MarkFieldAsReadOnlyAnalysis()
         {

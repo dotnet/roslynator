@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Comparers
 {
-    internal class EnumMemberDeclarationNameComparer : IComparer<EnumMemberDeclarationSyntax>
+    internal sealed class EnumMemberDeclarationNameComparer : IComparer<EnumMemberDeclarationSyntax>
     {
         private EnumMemberDeclarationNameComparer()
         {

@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {
             if (trivia.IsWhitespaceOrEndOfLineTrivia()
-                && (Span == null || Span.Value.Contains(trivia.Span)))
+                && (Span?.Contains(trivia.Span) != false))
             {
                 return Replacement;
             }

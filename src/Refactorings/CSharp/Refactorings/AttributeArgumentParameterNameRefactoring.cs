@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (argument.NameColon == null || argument.NameColon.IsMissing)
+            if (argument.NameColon?.IsMissing != false)
             {
                 IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(
                     argument,
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             foreach (AttributeArgumentSyntax argument in arguments)
             {
-                if (argument.NameColon == null || argument.NameColon.IsMissing)
+                if (argument.NameColon?.IsMissing != false)
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

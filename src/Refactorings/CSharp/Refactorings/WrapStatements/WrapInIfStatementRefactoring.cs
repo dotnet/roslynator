@@ -7,7 +7,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings.WrapStatements
 {
-    internal class WrapInIfStatementRefactoring : WrapStatementsRefactoring<IfStatementSyntax>
+    internal sealed class WrapInIfStatementRefactoring : WrapStatementsRefactoring<IfStatementSyntax>
     {
         private WrapInIfStatementRefactoring()
         {

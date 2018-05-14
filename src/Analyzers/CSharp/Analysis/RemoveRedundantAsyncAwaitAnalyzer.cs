@@ -470,9 +470,7 @@ namespace Roslynator.CSharp.Analysis
 
                 ExpressionSyntax expression = awaitExpression.Expression;
 
-                var expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken) as INamedTypeSymbol;
-
-                if (expressionTypeSymbol == null)
+                if (!(semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol expressionTypeSymbol))
                     return false;
 
                 if (!expressionTypeSymbol.ConstructedFrom.EqualsOrInheritsFrom(taskOfT)
@@ -516,9 +514,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = awaitExpression.Expression;
 
-            var expressionTypeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken) as INamedTypeSymbol;
-
-            if (expressionTypeSymbol == null)
+            if (!(semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol expressionTypeSymbol))
                 return false;
 
             return expressionTypeSymbol.ConstructedFrom.EqualsOrInheritsFrom(taskOfT)

@@ -69,8 +69,8 @@ namespace Roslynator
 
             while (symbol != null)
             {
-                if (symbol is TSymbol)
-                    return (TSymbol)symbol;
+                if (symbol is TSymbol tsymbol)
+                    return tsymbol;
 
                 symbol = symbol.ContainingSymbol;
             }

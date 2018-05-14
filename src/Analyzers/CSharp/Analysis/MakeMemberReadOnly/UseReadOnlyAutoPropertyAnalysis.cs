@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 {
-    internal class UseReadOnlyAutoPropertyAnalysis : MakeMemberReadOnlyAnalysis
+    internal sealed class UseReadOnlyAutoPropertyAnalysis : MakeMemberReadOnlyAnalysis
     {
         private UseReadOnlyAutoPropertyAnalysis()
         {

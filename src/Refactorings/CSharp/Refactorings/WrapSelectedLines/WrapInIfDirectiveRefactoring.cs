@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings.WrapSelectedLines
 {
-    internal class WrapInIfDirectiveRefactoring : WrapSelectedLinesRefactoring
+    internal sealed class WrapInIfDirectiveRefactoring : WrapSelectedLinesRefactoring
     {
         private WrapInIfDirectiveRefactoring()
         {

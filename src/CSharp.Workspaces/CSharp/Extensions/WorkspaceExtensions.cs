@@ -423,7 +423,7 @@ namespace Roslynator.CSharp
         }
 
         internal static async Task<Document> AddNewDocumentationCommentsAsync(
-            Document document,
+            this Document document,
             DocumentationCommentGeneratorSettings settings = null,
             bool skipNamespaceDeclaration = true,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -441,7 +441,7 @@ namespace Roslynator.CSharp
         }
 
         internal static async Task<Document> AddBaseOrNewDocumentationCommentsAsync(
-            Document document,
+            this Document document,
             SemanticModel semanticModel,
             DocumentationCommentGeneratorSettings settings = null,
             bool skipNamespaceDeclaration = true,

@@ -8,8 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
-    internal class ExtractConditionFromWhileToNestedIfRefactoring
-        : ExtractConditionRefactoring<WhileStatementSyntax>
+    internal sealed class ExtractConditionFromWhileToNestedIfRefactoring : ExtractConditionRefactoring<WhileStatementSyntax>
     {
         private ExtractConditionFromWhileToNestedIfRefactoring()
         {

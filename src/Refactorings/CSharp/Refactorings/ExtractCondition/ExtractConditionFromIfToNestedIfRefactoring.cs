@@ -8,8 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
-    internal class ExtractConditionFromIfToNestedIfRefactoring
-        : ExtractConditionFromIfRefactoring
+    internal sealed class ExtractConditionFromIfToNestedIfRefactoring : ExtractConditionFromIfRefactoring
     {
         private ExtractConditionFromIfToNestedIfRefactoring()
         {

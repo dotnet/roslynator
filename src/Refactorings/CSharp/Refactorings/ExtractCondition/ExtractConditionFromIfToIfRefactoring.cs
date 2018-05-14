@@ -9,8 +9,7 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
-    internal class ExtractConditionFromIfToIfRefactoring
-        : ExtractConditionFromIfRefactoring
+    internal sealed class ExtractConditionFromIfToIfRefactoring : ExtractConditionFromIfRefactoring
     {
         private ExtractConditionFromIfToIfRefactoring()
         {

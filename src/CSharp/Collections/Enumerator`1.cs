@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Roslynator.Collections
 {
@@ -18,6 +19,7 @@ namespace Roslynator.Collections
             get { throw new InvalidOperationException(); }
         }
 
+        [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly", Justification = "<Pending>")]
         public void Dispose()
         {
         }

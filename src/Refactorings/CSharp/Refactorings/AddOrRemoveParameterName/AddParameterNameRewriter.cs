@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings.AddOrRemoveParameterName
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (argument.NameColon == null || argument.NameColon.IsMissing)
+            if (argument.NameColon?.IsMissing != false)
             {
                 IParameterSymbol parameterSymbol = semanticModel.DetermineParameter(
                     argument,

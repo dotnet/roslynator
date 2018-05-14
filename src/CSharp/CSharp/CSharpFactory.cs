@@ -2502,44 +2502,44 @@ namespace Roslynator.CSharp
             if (value == null)
                 return NullLiteralExpression();
 
-            if (value is bool)
-                return ((bool)value) ? TrueLiteralExpression() : FalseLiteralExpression();
+            if (value is bool boolValue)
+                return (boolValue) ? TrueLiteralExpression() : FalseLiteralExpression();
 
-            if (value is char)
-                return CharacterLiteralExpression((char)value);
+            if (value is char charValue)
+                return CharacterLiteralExpression(charValue);
 
-            if (value is sbyte)
-                return NumericLiteralExpression((sbyte)value);
+            if (value is sbyte sbyteValue)
+                return NumericLiteralExpression(sbyteValue);
 
-            if (value is byte)
-                return NumericLiteralExpression((byte)value);
+            if (value is byte byteValue)
+                return NumericLiteralExpression(byteValue);
 
-            if (value is short)
-                return NumericLiteralExpression((short)value);
+            if (value is short shortValue)
+                return NumericLiteralExpression(shortValue);
 
-            if (value is ushort)
-                return NumericLiteralExpression((ushort)value);
+            if (value is ushort ushortValue)
+                return NumericLiteralExpression(ushortValue);
 
-            if (value is int)
-                return NumericLiteralExpression((int)value);
+            if (value is int intValue)
+                return NumericLiteralExpression(intValue);
 
-            if (value is uint)
-                return NumericLiteralExpression((uint)value);
+            if (value is uint uintValue)
+                return NumericLiteralExpression(uintValue);
 
-            if (value is long)
-                return NumericLiteralExpression((long)value);
+            if (value is long longValue)
+                return NumericLiteralExpression(longValue);
 
-            if (value is ulong)
-                return NumericLiteralExpression((ulong)value);
+            if (value is ulong ulongValue)
+                return NumericLiteralExpression(ulongValue);
 
-            if (value is decimal)
-                return NumericLiteralExpression((decimal)value);
+            if (value is decimal decimalValue)
+                return NumericLiteralExpression(decimalValue);
 
-            if (value is float)
-                return NumericLiteralExpression((float)value);
+            if (value is float floatValue)
+                return NumericLiteralExpression(floatValue);
 
-            if (value is double)
-                return NumericLiteralExpression((double)value);
+            if (value is double doubleValue)
+                return NumericLiteralExpression(doubleValue);
 
             return StringLiteralExpression(value.ToString());
         }

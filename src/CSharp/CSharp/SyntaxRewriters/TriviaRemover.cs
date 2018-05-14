@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.SyntaxRewriters
 {
-    internal class TriviaRemover : CSharpSyntaxRewriter
+    internal sealed class TriviaRemover : CSharpSyntaxRewriter
     {
         private TriviaRemover(TextSpan? span = null)
         {
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.SyntaxRewriters
 
         public override SyntaxTrivia VisitTrivia(SyntaxTrivia trivia)
         {
-            if (Span == null || Span.Value.Contains(trivia.Span))
+            if (Span?.Contains(trivia.Span) != false)
             {
                 return Replacement;
             }

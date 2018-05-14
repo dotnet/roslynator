@@ -14,6 +14,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -30,6 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             RegisterRefactoring(context, parameter, semanticModel);
         }
 
+        [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.", Justification = "<Pending>")]
         public static void ComputeRefactoring(RefactoringContext context, SeparatedSyntaxListSelection<ParameterSyntax> selectedParameters, SemanticModel semanticModel)
         {
             ParameterSyntax singleParameter = null;

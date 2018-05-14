@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
             EqualsValueClauseSyntax initializer = declarator.Initializer;
             EqualsValueClauseSyntax newInitializer = EqualsValueClause(value);
 
-            if (initializer == null || initializer.IsMissing)
+            if (initializer?.IsMissing != false)
             {
                 return declarator
                     .WithIdentifier(declarator.Identifier.WithoutTrailingTrivia())

@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using Roslynator.CodeFixes;
 
 namespace Roslynator.Configuration
 {
+    [SuppressMessage("Naming", "CA1724:Type names should not match namespaces", Justification = "<Pending>")]
     public class Settings
     {
         public bool PrefixFieldIdentifierWithUnderscore { get; set; } = true;

@@ -5,7 +5,7 @@ using Roslynator.VisualStudio;
 
 namespace Roslynator.Configuration
 {
-    public class SettingsManager
+    public sealed class SettingsManager
     {
         private SettingsManager()
         {

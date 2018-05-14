@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (node == null)
                     throw new ArgumentNullException(nameof(node));
 
-                if (_previousIf == null || _previousIf.Equals(node.GetPreviousIf()))
+                if (_previousIf?.Equals(node.GetPreviousIf()) != false)
                 {
                     if (node.Statement?.IsKind(SyntaxKind.Block) == false)
                     {
@@ -58,8 +58,7 @@ namespace Roslynator.CSharp.Refactorings
                     throw new ArgumentNullException(nameof(node));
 
                 if (_previousIf.Equals(node.Parent)
-                    && node.Statement != null
-                    && !node.Statement.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement))
+                    && node.Statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false)
                 {
                     return node.WithStatement(SyntaxFactory.Block(node.Statement));
                 }

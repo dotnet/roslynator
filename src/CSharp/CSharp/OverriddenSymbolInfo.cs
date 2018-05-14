@@ -220,9 +220,7 @@ namespace Roslynator.CSharp
             if (variableDeclarator.Parent.Parent?.Kind() != SyntaxKind.EventFieldDeclaration)
                 return Default;
 
-            var eventSymbol = semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken) as IEventSymbol;
-
-            if (eventSymbol == null)
+            if (!(semanticModel.GetDeclaredSymbol(variableDeclarator, cancellationToken) is IEventSymbol eventSymbol))
                 return Default;
 
             IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;

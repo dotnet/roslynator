@@ -2,7 +2,7 @@
 
 namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
 {
-    internal class ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring : ReplaceEqualsExpressionRefactoring
+    internal sealed class ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring : ReplaceEqualsExpressionRefactoring
     {
         private ReplaceEqualsExpressionWithStringIsNullOrEmptyRefactoring()
         {

@@ -35,8 +35,7 @@ namespace Roslynator.CSharp.Refactorings
 
             public override SyntaxNode VisitIfStatement(IfStatementSyntax node)
             {
-                if (_previousIf == null
-                    || _previousIf.Equals(node.GetPreviousIf()))
+                if (_previousIf?.Equals(node.GetPreviousIf()) != false)
                 {
                     if (node.Statement?.Kind() == SyntaxKind.Block)
                     {

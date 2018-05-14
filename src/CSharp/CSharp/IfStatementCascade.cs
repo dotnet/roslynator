@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp
@@ -115,7 +116,10 @@ namespace Roslynator.CSharp
             return !(info1 == info2);
         }
 
-#pragma warning disable CS1591
+        [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
+        [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "RCS1224:Use DebuggerDisplay attribute for publicly visible type.", Justification = "<Pending>")]
         public struct Enumerator
         {
             private IfStatementOrElseClause _ifOrElse;
@@ -238,6 +242,5 @@ namespace Roslynator.CSharp
             {
             }
         }
-#pragma warning disable CS1591
     }
 }

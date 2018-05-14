@@ -6,5 +6,4 @@
 // a specific target and scoped to a namespace, type, member, etc.
 
 [assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Redundancy", "RCS1093:Remove file with no code.", Justification = "<Pending>")]
-[assembly: System.Diagnostics.CodeAnalysis.SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.", Justification = "<Pending>", Scope = "member", Target = "~M:Roslynator.CSharp.Analysis.UnusedMember.UnusedMemberAnalyzer.AnalyzeTypeDeclaration(Microsoft.CodeAnalysis.Diagnostics.SyntaxNodeAnalysisContext,Microsoft.CodeAnalysis.CSharp.Syntax.TypeDeclarationSyntax,Microsoft.CodeAnalysis.INamedTypeSymbol)")]
 

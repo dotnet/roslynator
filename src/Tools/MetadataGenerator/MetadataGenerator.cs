@@ -97,7 +97,7 @@ namespace Roslynator.CodeGeneration
             foreach (string path in Directory.EnumerateFiles(GetPath(@"..\docs\refactorings")))
             {
                 if (Path.GetFileName(path) != "Refactorings.md"
-                    && Refactorings.FirstOrDefault(f => f.Id == Path.GetFileNameWithoutExtension(path)) == null)
+                    && !Refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
                 {
                     Console.WriteLine($"FILE TO DELETE: {path}");
                 }

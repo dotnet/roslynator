@@ -47,9 +47,7 @@ namespace Roslynator.CSharp.Analysis
             if (!contents.Any())
                 return;
 
-            var interpolation = contents.SingleOrDefault(shouldThrow: false) as InterpolationSyntax;
-
-            if (interpolation == null)
+            if (!(contents.SingleOrDefault(shouldThrow: false) is InterpolationSyntax interpolation))
                 return;
 
             ExpressionSyntax expression = interpolation.Expression;

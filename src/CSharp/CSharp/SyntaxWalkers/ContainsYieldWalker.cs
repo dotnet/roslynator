@@ -149,22 +149,18 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
             if (kind == SyntaxKind.YieldReturnStatement)
             {
-                if (IsSearchingForYieldReturn)
+                if (IsSearchingForYieldReturn
+                    && _span?.Contains(node.FullSpan) != false)
                 {
-                    if (_span == null || _span.Value.Contains(node.FullSpan))
-                    {
-                        _success = true;
-                    }
+                    _success = true;
                 }
             }
             else if (kind == SyntaxKind.YieldBreakStatement)
             {
-                if (IsSearchingForYieldBreak)
+                if (IsSearchingForYieldBreak
+                    && _span?.Contains(node.FullSpan) != false)
                 {
-                    if (_span == null || _span.Value.Contains(node.FullSpan))
-                    {
-                        _success = true;
-                    }
+                    _success = true;
                 }
             }
         }

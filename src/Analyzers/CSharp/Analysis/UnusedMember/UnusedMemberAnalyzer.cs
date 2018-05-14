@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -46,6 +47,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node, debuggerDisplayAttribute);
         }
 
+        [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.", Justification = "<Pending>")]
         private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration, INamedTypeSymbol debuggerDisplayAttribute)
         {
             if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))

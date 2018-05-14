@@ -75,9 +75,7 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
-            var localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
-
-            if (localSymbol == null)
+            if (!(semanticModel.GetSymbol(identifierName, cancellationToken) is ILocalSymbol localSymbol))
                 return;
 
             if (!localSymbol.Equals(semanticModel.GetDeclaredSymbol(localInfo.Declarator, cancellationToken)))
