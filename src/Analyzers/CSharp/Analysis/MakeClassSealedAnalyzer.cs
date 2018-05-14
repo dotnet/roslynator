@@ -42,6 +42,9 @@ namespace Roslynator.CSharp.Analysis
             if (symbol.IsImplicitlyDeclared)
                 return;
 
+            if (symbol.DeclaredAccessibility == Accessibility.Private)
+                return;
+
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
             if (namedTypeSymbol.IsImplicitClass)
