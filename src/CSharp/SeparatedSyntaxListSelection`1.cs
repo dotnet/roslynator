@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 
@@ -100,6 +102,109 @@ namespace Roslynator
                 return null;
 
             return new SeparatedSyntaxListSelection<TNode>(list, span, result);
+        }
+
+        /// <summary>
+        /// Returns an enumerator that iterates through selected items.
+        /// </summary>
+        /// <returns></returns>
+        public Enumerator GetEnumerator()
+        {
+            return new Enumerator(this);
+        }
+
+        protected override IEnumerator<TNode> GetEnumeratorCore()
+        {
+            return new EnumeratorImpl(this);
+        }
+
+        [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
+        [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
+        public struct Enumerator
+        {
+            private readonly SeparatedSyntaxListSelection<TNode> _selection;
+            private int _index;
+
+            internal Enumerator(SeparatedSyntaxListSelection<TNode> selection)
+            {
+                _selection = selection;
+                _index = -1;
+            }
+
+            public bool MoveNext()
+            {
+                if (_index == -1)
+                {
+                    _index = _selection.FirstIndex;
+                    return true;
+                }
+                else
+                {
+                    int newIndex = _index + 1;
+                    if (newIndex <= _selection.LastIndex)
+                    {
+                        _index = newIndex;
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+
+            public TNode Current
+            {
+                get { return _selection.UnderlyingList[_index]; }
+            }
+
+            public void Reset()
+            {
+                _index = -1;
+            }
+
+            public override bool Equals(object obj)
+            {
+                throw new NotSupportedException();
+            }
+
+            public override int GetHashCode()
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        private class EnumeratorImpl : IEnumerator<TNode>
+        {
+            private Enumerator _en;
+
+            internal EnumeratorImpl(SeparatedSyntaxListSelection<TNode> selection)
+            {
+                _en = new Enumerator(selection);
+            }
+
+            public bool MoveNext()
+            {
+                return _en.MoveNext();
+            }
+
+            public TNode Current
+            {
+                get { return _en.Current; }
+            }
+
+            object IEnumerator.Current
+            {
+                get { return _en.Current; }
+            }
+
+            void IEnumerator.Reset()
+            {
+                _en.Reset();
+            }
+
+            void IDisposable.Dispose()
+            {
+            }
         }
     }
 }
