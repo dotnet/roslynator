@@ -81,24 +81,27 @@ namespace Roslynator.Tests
         public async Task VerifyRefactoringAsync(
             string source,
             string expected,
-            TextSpan span,
+            IEnumerable<TextSpan> spans,
             string equivalenceKey,
             string[] additionalSources = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            await VerifyRefactoringAsync(
-                source: source,
-                expected: expected,
-                spans: ImmutableArray.Create(span),
-                equivalenceKey: equivalenceKey,
-                additionalSources: additionalSources,
-                cancellationToken: cancellationToken).ConfigureAwait(false);
+            foreach (TextSpan span in spans)
+            {
+                await VerifyRefactoringAsync(
+                    source: source,
+                    expected: expected,
+                    span,
+                    equivalenceKey: equivalenceKey,
+                    additionalSources: additionalSources,
+                    cancellationToken: cancellationToken).ConfigureAwait(false);
+            }
         }
 
         public async Task VerifyRefactoringAsync(
             string source,
             string expected,
-            IEnumerable<TextSpan> spans,
+            TextSpan span,
             string equivalenceKey,
             string[] additionalSources = null,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -110,40 +113,36 @@ namespace Roslynator.Tests
             ImmutableArray<Diagnostic> compilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 
             VerifyCompilerDiagnostics(compilerDiagnostics);
+            CodeAction action = null;
 
-            foreach (TextSpan span in spans)
-            {
-                CodeAction action = null;
-
-                var context = new CodeRefactoringContext(
-                    document,
-                    span,
-                    a =>
+            var context = new CodeRefactoringContext(
+                document,
+                span,
+                a =>
+                {
+                    if (equivalenceKey == null
+                        || string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal))
                     {
-                        if (equivalenceKey == null
-                            || string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal))
-                        {
-                            if (action == null)
-                                action = a;
-                        }
-                    },
-                    CancellationToken.None);
+                        if (action == null)
+                            action = a;
+                    }
+                },
+                CancellationToken.None);
 
-                await RefactoringProvider.ComputeRefactoringsAsync(context).ConfigureAwait(false);
+            await RefactoringProvider.ComputeRefactoringsAsync(context).ConfigureAwait(false);
 
-                Assert.True(action != null, "No code refactoring has been registered.");
+            Assert.True(action != null, "No code refactoring has been registered.");
 
-                document = await document.ApplyCodeActionAsync(action).ConfigureAwait(false);
+            document = await document.ApplyCodeActionAsync(action).ConfigureAwait(false);
 
-                semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                ImmutableArray<Diagnostic> newCompilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
+            ImmutableArray<Diagnostic> newCompilerDiagnostics = semanticModel.GetDiagnostics(cancellationToken: cancellationToken);
 
-                VerifyCompilerDiagnostics(newCompilerDiagnostics);
+            VerifyCompilerDiagnostics(newCompilerDiagnostics);
 
-                if (!Options.AllowNewCompilerDiagnostics)
-                    VerifyNoNewCompilerDiagnostics(compilerDiagnostics, newCompilerDiagnostics);
-            }
+            if (!Options.AllowNewCompilerDiagnostics)
+                VerifyNoNewCompilerDiagnostics(compilerDiagnostics, newCompilerDiagnostics);
 
             string actual = await document.ToFullStringAsync(simplify: true, format: true).ConfigureAwait(false);
 

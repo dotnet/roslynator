@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
+using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
 using Roslynator.CSharp.Refactorings.MakeMemberVirtual;
 using Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod;
@@ -52,6 +53,32 @@ namespace Roslynator.CSharp.Refactorings
                         "Expand property and add backing field",
                         cancellationToken => ExpandPropertyAndAddBackingFieldRefactoring.RefactorAsync(context.Document, propertyDeclaration, context.Settings.PrefixFieldIdentifierWithUnderscore, cancellationToken),
                         RefactoringIdentifiers.ExpandPropertyAndAddBackingField);
+                }
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
+                && context.SupportsCSharp6)
+            {
+                AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
+
+                if (accessorList != null
+                    && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(accessorList))
+                {
+                    AccessorDeclarationSyntax accessor = propertyDeclaration
+                        .AccessorList?
+                        .Accessors
+                        .SingleOrDefault(shouldThrow: false);
+
+                    if (accessor?.AttributeLists.Any() == false
+                            && accessor.IsKind(SyntaxKind.GetAccessorDeclaration)
+                            && accessor.Body != null
+                            && (UseExpressionBodiedMemberAnalysis.GetReturnExpression(accessor.Body) != null))
+                    {
+                        context.RegisterRefactoring(
+                            UseExpressionBodiedMemberRefactoring.Title,
+                            ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, propertyDeclaration, ct),
+                            RefactoringIdentifiers.UseExpressionBodiedMember);
+                    }
                 }
             }
 

@@ -48,121 +48,139 @@ namespace Roslynator.CSharp.Analysis
         {
             var method = (MethodDeclarationSyntax)context.Node;
 
-            if (method.ExpressionBody == null)
-            {
-                BlockSyntax body = method.Body;
+            BlockSyntax body = method.Body;
 
-                ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+            if (body == null)
+                return;
 
-                if (expression != null)
-                    AnalyzeExpression(context, body, expression);
-            }
+            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+
+            if (expression == null)
+                return;
+
+            AnalyzeExpression(context, body, expression);
         }
 
         private static void  AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var declaration = (OperatorDeclarationSyntax)context.Node;
 
-            if (declaration.ExpressionBody == null)
-                AnalyzeBody(context, declaration.Body);
+            BlockSyntax body = declaration.Body;
+
+            if (body == null)
+                return;
+
+            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetReturnExpression(body);
+
+            if (expression == null)
+                return;
+
+            AnalyzeExpression(context, body, expression);
         }
 
         private static void  AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var declaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
-            if (declaration.ExpressionBody == null)
-                AnalyzeBody(context, declaration.Body);
+            BlockSyntax body = declaration.Body;
+
+            if (body == null)
+                return;
+
+            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetReturnExpression(body);
+
+            if (expression == null)
+                return;
+
+            AnalyzeExpression(context, body, expression);
         }
 
         private static void  AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var declaration = (ConstructorDeclarationSyntax)context.Node;
 
-            if (declaration.ExpressionBody == null)
-            {
-                BlockSyntax body = declaration.Body;
+            BlockSyntax body = declaration.Body;
 
-                ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+            if (body == null)
+                return;
 
-                if (expression != null)
-                    AnalyzeExpression(context, body, expression);
-            }
+            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+
+            if (expression == null)
+                return;
+
+            AnalyzeExpression(context, body, expression);
         }
 
         private static void  AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var declaration = (DestructorDeclarationSyntax)context.Node;
 
-            if (declaration.ExpressionBody == null)
-            {
-                BlockSyntax body = declaration.Body;
+            BlockSyntax body = declaration.Body;
 
-                ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+            if (body == null)
+                return;
 
-                if (expression != null)
-                    AnalyzeExpression(context, body, expression);
-            }
+            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+
+            if (expression == null)
+                return;
+
+            AnalyzeExpression(context, body, expression);
         }
 
         private static void  AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
-            var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
+            var localFunction = (LocalFunctionStatementSyntax)context.Node;
 
-            if (localFunctionStatement.ExpressionBody == null)
-            {
-                BlockSyntax body = localFunctionStatement.Body;
+            BlockSyntax body = localFunction.Body;
 
-                ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+            if (body == null)
+                return;
 
-                if (expression != null)
-                    AnalyzeExpression(context, body, expression);
-            }
+            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+
+            if (expression == null)
+                return;
+
+            AnalyzeExpression(context, body, expression);
         }
 
         private static void  AnalyzeAccessorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var accessor = (AccessorDeclarationSyntax)context.Node;
 
-            if (accessor.ExpressionBody == null
-                && !accessor.AttributeLists.Any())
+            BlockSyntax body = accessor.Body;
+
+            if (body == null)
+                return;
+
+            if (accessor.AttributeLists.Any())
+                return;
+
+            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+
+            if (expression?.IsSingleLine() != true)
+                return;
+
+            if (accessor.Parent is AccessorListSyntax accessorList
+                && accessorList
+                    .Accessors
+                    .SingleOrDefault(shouldThrow: false)?
+                    .Kind() == SyntaxKind.GetAccessorDeclaration)
             {
-                BlockSyntax body = accessor.Body;
-
-                ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
-
-                if (expression?.IsSingleLine() == true)
+                if (accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    if (accessor.Parent is AccessorListSyntax accessorList)
-                    {
-                        SyntaxList<AccessorDeclarationSyntax> accessors = accessorList.Accessors;
-
-                        if (accessors.Count == 1
-                            && accessors.First().IsKind(SyntaxKind.GetAccessorDeclaration))
-                        {
-                            if (accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                            {
-                                ReportDiagnostic(context, accessorList, expression);
-                                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessor.Keyword);
-                                context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, body);
-                            }
-
-                            return;
-                        }
-                    }
-
-                    if (accessor.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                        ReportDiagnostic(context, body, expression);
+                    ReportDiagnostic(context, accessorList, expression);
+                    context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessor.Keyword);
+                    context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, body);
                 }
+
+                return;
             }
-        }
 
-        private static void AnalyzeBody(SyntaxNodeAnalysisContext context, BlockSyntax body)
-        {
-            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetReturnExpression(body);
-
-            if (expression != null)
-                AnalyzeExpression(context, body, expression);
+            if (accessor.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+                ReportDiagnostic(context, body, expression);
         }
 
         private static void AnalyzeExpression(SyntaxNodeAnalysisContext context, BlockSyntax block, ExpressionSyntax expression)
@@ -176,28 +194,20 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, BlockSyntax block, ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.UseExpressionBodiedMember,
-                block);
+            context.ReportDiagnostic(DiagnosticDescriptors.UseExpressionBodiedMember, block);
 
-            SyntaxNode parent = expression.Parent;
-
-            if (parent.IsKind(SyntaxKind.ReturnStatement))
-                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, ((ReturnStatementSyntax)parent).ReturnKeyword);
+            if (expression.Parent is ReturnStatementSyntax returnStatement)
+                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, returnStatement.ReturnKeyword);
 
             context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, block);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList, ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(
-                DiagnosticDescriptors.UseExpressionBodiedMember,
-                accessorList);
+            context.ReportDiagnostic(DiagnosticDescriptors.UseExpressionBodiedMember, accessorList);
 
-            SyntaxNode parent = expression.Parent;
-
-            if (parent.IsKind(SyntaxKind.ReturnStatement))
-                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, ((ReturnStatementSyntax)parent).ReturnKeyword);
+            if (expression.Parent is ReturnStatementSyntax returnStatement)
+                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, returnStatement.ReturnKeyword);
 
             context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessorList);
         }

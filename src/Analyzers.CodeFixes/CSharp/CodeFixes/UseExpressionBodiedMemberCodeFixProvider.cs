@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Use expression-bodied member",
+                UseExpressionBodiedMemberRefactoring.Title,
                 cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, node, cancellationToken),
                 GetEquivalenceKey(DiagnosticIdentifiers.UseExpressionBodiedMember));
 

@@ -30,40 +30,39 @@ namespace Roslynator.CSharp.Refactorings
                                 RefactoringIdentifiers.FormatAccessorBraces);
                         }
                     }
-                    else
+                    else if (body.Statements.SingleOrDefault(shouldThrow: false)?.IsSingleLine() == true
+                        && accessor.DescendantTrivia(accessor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                     {
-                        SyntaxList<StatementSyntax> statements = body.Statements;
-
-                        if (body.Statements.SingleOrDefault(shouldThrow: false)?.IsSingleLine() == true
-                            && accessor.DescendantTrivia(accessor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-                        {
-                            context.RegisterRefactoring(
-                                "Format braces on a single line",
-                                ct => SyntaxFormatter.ToSingleLineAsync(context.Document, accessor, ct),
-                                RefactoringIdentifiers.FormatAccessorBraces);
-                        }
+                        context.RegisterRefactoring(
+                            "Format braces on a single line",
+                            ct => SyntaxFormatter.ToSingleLineAsync(context.Document, accessor, ct),
+                            RefactoringIdentifiers.FormatAccessorBraces);
                     }
                 }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && context.SupportsCSharp6
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(accessor)
-                && UseExpressionBodiedMemberAnalysis.IsFixable(accessor))
+                && context.SupportsCSharp6)
             {
-                SyntaxNode node = accessor;
+                BlockSyntax body = accessor.Body;
 
-                if (accessor.Parent is AccessorListSyntax accessorList
-                    && accessorList.Accessors.SingleOrDefault(shouldThrow: false)?.Kind() == SyntaxKind.GetAccessorDeclaration
-                    && (accessorList.Parent is MemberDeclarationSyntax parent))
+                if (body != null
+                    && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(accessor)
+                        || context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(body))
+                    && !accessor.AttributeLists.Any()
+                    && ((accessor.IsKind(SyntaxKind.GetAccessorDeclaration))
+                        ? UseExpressionBodiedMemberAnalysis.GetReturnExpression(body) != null
+                        : UseExpressionBodiedMemberAnalysis.GetExpression(body) != null)
+                    && (accessor.Parent as AccessorListSyntax)?
+                        .Accessors
+                        .SingleOrDefault(shouldThrow: false)?
+                        .Kind() != SyntaxKind.GetAccessorDeclaration)
                 {
-                    node = parent;
+                    context.RegisterRefactoring(
+                        UseExpressionBodiedMemberRefactoring.Title,
+                        ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, accessor, ct),
+                        RefactoringIdentifiers.UseExpressionBodiedMember);
                 }
-
-                context.RegisterRefactoring(
-                    "Use expression-bodied member",
-                    ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, node, ct),
-                    RefactoringIdentifiers.UseExpressionBodiedMember);
             }
         }
     }

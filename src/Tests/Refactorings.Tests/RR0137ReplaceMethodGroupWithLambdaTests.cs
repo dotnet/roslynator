@@ -12,207 +12,535 @@ namespace Roslynator.CSharp.Refactorings.Tests
         public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceMethodGroupWithLambda;
 
         [Fact]
-        public async Task Test_VariableDeclaration()
+        public async Task Test_VariableDeclaration_Action()
         {
             await VerifyRefactoringAsync(@"
 using System;
 
-public class C
+class C
 {
-    public void Foo()
+    void M()
     {
-        Action action1 = [||]VM;
-        Action<string> action2 = [||]VM1;
-        Action<string, string> action3 = [||]VM2;
+        Action action = [||]M;
     }
-
-    public void Foo2()
-    {
-        Func<string> func1 = [||]M;
-        Func<string, string> func2 = [||]M1;
-        Func<string, string, string> func3 = [||]M2;
-    }
-
-    public void VM() { }
-    public void VM1(string s) { }
-    public void VM2(string s1, string s2) { }
-    public string M() => null;
-    public string M1(string s) => null;
-    public string M2(string s1, string s2) => null;
 }
 ", @"
 using System;
 
-public class C
+class C
 {
-    public void Foo()
+    void M()
     {
-        Action action1 = () => VM();
-        Action<string> action2 = f2 => VM1(f2);
-        Action<string, string> action3 = (f, g) => VM2(f, g);
+        Action action = () => M();
     }
-
-    public void Foo2()
-    {
-        Func<string> func1 = () => M();
-        Func<string, string> func2 = f2 => M1(f2);
-        Func<string, string, string> func3 = (f, g) => M2(f, g);
-    }
-
-    public void VM() { }
-    public void VM1(string s) { }
-    public void VM2(string s1, string s2) { }
-    public string M() => null;
-    public string M1(string s) => null;
-    public string M2(string s1, string s2) => null;
 }
 ", RefactoringId);
         }
 
         [Fact]
-        public async Task Test_SimpleAssignment()
+        public async Task Test_VariableDeclaration_Action1()
         {
             await VerifyRefactoringAsync(@"
 using System;
 
-public class C
+class C
 {
-    public void Foo()
+    void M(string s)
     {
-        Action action1 = null;
-        Action<string> action2 = null;
-        Action<string, string> action3 = null;
-
-        action1 = [||]VM;
-        action2 = [||]VM1;
-        action3 = [||]VM2;
+        Action<string> action = [||]M;
     }
-
-    public void Foo2()
-    {
-        Func<string> func1 = null;
-        Func<string, string> func2 = null;
-        Func<string, string, string> func3 = null;
-
-        func1 = [||]M;
-        func2 = [||]M1;
-        func3 = [||]M2;
-    }
-
-    public void VM() { }
-    public void VM1(string s) { }
-    public void VM2(string s1, string s2) { }
-    public string M() => null;
-    public string M1(string s) => null;
-    public string M2(string s1, string s2) => null;
 }
 ", @"
 using System;
 
-public class C
+class C
 {
-    public void Foo()
+    void M(string s)
     {
-        Action action1 = null;
-        Action<string> action2 = null;
-        Action<string, string> action3 = null;
-
-        action1 = () => VM();
-        action2 = f2 => VM1(f2);
-        action3 = (f, g) => VM2(f, g);
+        Action<string> action = f => M(f);
     }
-
-    public void Foo2()
-    {
-        Func<string> func1 = null;
-        Func<string, string> func2 = null;
-        Func<string, string, string> func3 = null;
-
-        func1 = () => M();
-        func2 = f2 => M1(f2);
-        func3 = (f, g) => M2(f, g);
-    }
-
-    public void VM() { }
-    public void VM1(string s) { }
-    public void VM2(string s1, string s2) { }
-    public string M() => null;
-    public string M1(string s) => null;
-    public string M2(string s1, string s2) => null;
 }
 ", RefactoringId);
         }
 
         [Fact]
-        public async Task Test_Argument()
+        public async Task Test_VariableDeclaration_Action2()
         {
             await VerifyRefactoringAsync(@"
 using System;
 
-public class C
+class C
 {
-    public void M(
-        Func<string> func1,
-        Func<string, string> func2,
-        Func<string, string, string> func3)
+    void M(string s1, string s2)
     {
-        M(
-            [||]M,
-            [||]M1,
-            [||]M2);
+        Action<string, string> action = [||]M;
     }
-
-    public void MM(
-        Action action1,
-        Action<string> action2,
-        Action<string, string> action3)
-    {
-        MM(
-            [||]VM,
-            [||]VM1,
-            [||]VM2);
-    }
-
-    public void VM() { }
-    public void VM1(string s) { }
-    public void VM2(string s1, string s2) { }
-    public string M() => null;
-    public string M1(string s) => null;
-    public string M2(string s1, string s2) => null;
 }
 ", @"
 using System;
 
-public class C
+class C
 {
-    public void M(
-        Func<string> func1,
-        Func<string, string> func2,
-        Func<string, string, string> func3)
+    void M(string s1, string s2)
     {
-        M(
-            () => M(),
-            f2 => M1(f2),
-            (f, g) => M2(f, g));
+        Action<string, string> action = (f, g) => M(f, g);
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_VariableDeclaration_Func()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    string M()
+    {
+        Func<string> func = [||]M;
+        return null;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    string M()
+    {
+        Func<string> func = () => M();
+        return null;
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_VariableDeclaration_Func2()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    string M(string s)
+    {
+        Func<string, string> func = [||]M;
+        return null;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    string M(string s)
+    {
+        Func<string, string> func = f => M(f);
+        return null;
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_VariableDeclaration_Func3()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    string M(string s1, string s2)
+    {
+        Func<string, string, string> func = [||]M;
+        return null;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    string M(string s1, string s2)
+    {
+        Func<string, string, string> func = (f, g) => M(f, g);
+        return null;
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignment_Action()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        Action action = null;
+
+        action = [||]M;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        Action action = null;
+
+        action = () => M();
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignment_Action1()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M(string s)
+    {
+        Action<string> action = null;
+
+        action = [||]M;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M(string s)
+    {
+        Action<string> action = null;
+
+        action = f => M(f);
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignment_Action2()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M(string s1, string s2)
+    {
+        Action<string, string> action = null;
+
+        action = [||]M;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M(string s1, string s2)
+    {
+        Action<string, string> action = null;
+
+        action = (f, g) => M(f, g);
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignment_Func()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    string M()
+    {
+        Func<string> func = null;
+
+        func = [||]M;
+
+        return null;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    string M()
+    {
+        Func<string> func = null;
+
+        func = () => M();
+
+        return null;
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignment_Func1()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    string M(string s)
+    {
+        Func<string, string> func = null;
+
+        func = [||]M;
+
+        return null;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    string M(string s)
+    {
+        Func<string, string> func = null;
+
+        func = f => M(f);
+
+        return null;
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignment_Func2()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    string M(string s1, string s2)
+    {
+        Func<string, string, string> func = null;
+
+        func = [||]M;
+
+        return null;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    string M(string s1, string s2)
+    {
+        Func<string, string, string> func = null;
+
+        func = (f, g) => M(f, g);
+
+        return null;
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Argument_Action()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M2(Action action)
+    {
+        M2([||]M);
     }
 
-    public void MM(
-        Action action1,
-        Action<string> action2,
-        Action<string, string> action3)
+    void M() { }
+}
+", @"
+using System;
+
+class C
+{
+    void M2(Action action)
     {
-        MM(
-            () => VM(),
-            f2 => VM1(f2),
-            (f, g) => VM2(f, g));
+        M2(() => M());
     }
 
-    public void VM() { }
-    public void VM1(string s) { }
-    public void VM2(string s1, string s2) { }
-    public string M() => null;
-    public string M1(string s) => null;
-    public string M2(string s1, string s2) => null;
+    void M() { }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Argument_Action1()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M(Action<string> action)
+    {
+        M([||]M2);
+    }
+
+    void M2(string s) { }
+}
+", @"
+using System;
+
+class C
+{
+    void M(Action<string> action)
+    {
+        M(f => M2(f));
+    }
+
+    void M2(string s) { }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Argument_Action2()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M(Action<string, string> action)
+    {
+        M([||]M2);
+    }
+
+    void M2(string s1, string s2) { }
+}
+", @"
+using System;
+
+class C
+{
+    void M(Action<string, string> action)
+    {
+        M((f, g) => M2(f, g));
+    }
+
+    void M2(string s1, string s2) { }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Argument_Func()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M(Func<string> func)
+    {
+        M([||]M2);
+    }
+
+    string M2() => null;
+}
+", @"
+using System;
+
+class C
+{
+    void M(Func<string> func)
+    {
+        M(() => M2());
+    }
+
+    string M2() => null;
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Argument_Func1()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M(Func<string, string> func)
+    {
+        M([||]M2);
+    }
+
+    string M2(string s) => null;
+}
+", @"
+using System;
+
+class C
+{
+    void M(Func<string, string> func)
+    {
+        M(f => M2(f));
+    }
+
+    string M2(string s) => null;
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Argument_Func2()
+        {
+            await VerifyRefactoringAsync(@"
+using System;
+
+class C
+{
+    void M(Func<string, string, string> func)
+    {
+        M([||]M2);
+    }
+
+    string M2(string s1, string s2) => null;
+}
+", @"
+using System;
+
+class C
+{
+    void M(Func<string, string, string> func)
+    {
+        M((f, g) => M2(f, g));
+    }
+
+    string M2(string s1, string s2) => null;
 }
 ", RefactoringId);
         }

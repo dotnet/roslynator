@@ -186,10 +186,10 @@ namespace Roslynator.CSharp.Refactorings
                 && context.SupportsCSharp6
                 && operatorDeclaration.Body != null
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body)
-                && UseExpressionBodiedMemberAnalysis.IsFixable(operatorDeclaration))
+                && UseExpressionBodiedMemberAnalysis.GetReturnExpression(operatorDeclaration.Body) != null)
             {
                 context.RegisterRefactoring(
-                    "Use expression-bodied member",
+                    UseExpressionBodiedMemberRefactoring.Title,
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken),
                     RefactoringIdentifiers.UseExpressionBodiedMember);
             }
@@ -201,10 +201,10 @@ namespace Roslynator.CSharp.Refactorings
                 && context.SupportsCSharp6
                 && operatorDeclaration.Body != null
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body)
-                && UseExpressionBodiedMemberAnalysis.IsFixable(operatorDeclaration))
+                && UseExpressionBodiedMemberAnalysis.GetReturnExpression(operatorDeclaration.Body) != null)
             {
                 context.RegisterRefactoring(
-                    "Use expression-bodied member",
+                    UseExpressionBodiedMemberRefactoring.Title,
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, operatorDeclaration, cancellationToken),
                     RefactoringIdentifiers.UseExpressionBodiedMember);
             }

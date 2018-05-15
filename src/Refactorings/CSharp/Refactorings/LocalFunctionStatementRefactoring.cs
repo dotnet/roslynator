@@ -55,10 +55,10 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && localFunctionStatement.Body != null
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(localFunctionStatement.Body)
-                && UseExpressionBodiedMemberAnalysis.IsFixable(localFunctionStatement))
+                && UseExpressionBodiedMemberAnalysis.GetExpression(localFunctionStatement.Body) != null)
             {
                 context.RegisterRefactoring(
-                    "Use expression-bodied member",
+                    UseExpressionBodiedMemberRefactoring.Title,
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, localFunctionStatement, cancellationToken),
                     RefactoringIdentifiers.UseExpressionBodiedMember);
             }

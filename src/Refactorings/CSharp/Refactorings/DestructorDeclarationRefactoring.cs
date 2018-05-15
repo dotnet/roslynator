@@ -13,10 +13,10 @@ namespace Roslynator.CSharp.Refactorings
                 && context.SupportsCSharp6
                 && destructorDeclaration.Body != null
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(destructorDeclaration.Body)
-                && UseExpressionBodiedMemberAnalysis.IsFixable(destructorDeclaration))
+                && UseExpressionBodiedMemberAnalysis.GetExpression(destructorDeclaration.Body) != null)
             {
                 context.RegisterRefactoring(
-                    "Use expression-bodied member",
+                    UseExpressionBodiedMemberRefactoring.Title,
                     cancellationToken => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, destructorDeclaration, cancellationToken),
                     RefactoringIdentifiers.UseExpressionBodiedMember);
             }

@@ -12,7 +12,115 @@ namespace Roslynator.CSharp.Refactorings.Tests
         public override string RefactoringId { get; } = RefactoringIdentifiers.InlineConstantValue;
 
         [Fact]
-        public async Task Test_Field()
+        public async Task Test_Field_Null()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    public const string K = null;
+
+    void M(string s)
+    {
+        s = [|K|];
+    }
+}
+", @"
+class C
+{
+    public const string K = null;
+
+    void M(string s)
+    {
+        s = null;
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Field_VerbatimLiteral()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    public const string K = @""x"";
+
+    void M(string s)
+    {
+        s = [|K|];
+    }
+}
+", @"
+class C
+{
+    public const string K = @""x"";
+
+    void M(string s)
+    {
+        s = @""x"";
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Field_VerbatimLiteral_MultipleDefinitions()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    public const string K = @""x"";
+    public const string K2 = K;
+    public const string K3 = K2;
+
+    void M(string s)
+    {
+        s = [|K3|];
+    }
+}
+", @"
+class C
+{
+    public const string K = @""x"";
+    public const string K2 = K;
+    public const string K3 = K2;
+
+    void M(string s)
+    {
+        s = @""x"";
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Field_QualifiedWithClassName()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    public const string K = @""x"";
+
+    void M(string s)
+    {
+        s = [|C.K|];
+    }
+}
+", @"
+class C
+{
+    public const string K = @""x"";
+
+    void M(string s)
+    {
+        s = @""x"";
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
+        public async Task Test_Field_QualifiedWithNamespaceName()
         {
             await VerifyRefactoringAsync(@"
 namespace A.B
@@ -20,17 +128,10 @@ namespace A.B
     class C
     {
         public const string K = @""x"";
-        public const string K2 = K;
-        public const string K3 = K2;
-        public const string K4 = null;
 
         void M(string s)
         {
-            s = [|K|];
-            s = [|K3|];
-            s = [|C.K|];
             s = [|A.B.C.K|];
-            s = [|K4|];
         }
     }
 }
@@ -40,17 +141,10 @@ namespace A.B
     class C
     {
         public const string K = @""x"";
-        public const string K2 = K;
-        public const string K3 = K2;
-        public const string K4 = null;
 
         void M(string s)
         {
             s = @""x"";
-            s = @""x"";
-            s = @""x"";
-            s = @""x"";
-            s = null;
         }
     }
 }

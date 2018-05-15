@@ -7,7 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -15,37 +14,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseExpressionBodiedMemberRefactoring
     {
-        private static ExpressionSyntax GetReturnExpressionOrThrowExpression(AccessorListSyntax accessorList)
-        {
-            StatementSyntax statement = accessorList.Accessors[0].Body.Statements[0];
-
-            switch (statement.Kind())
-            {
-                case SyntaxKind.ReturnStatement:
-                    return ((ReturnStatementSyntax)statement).Expression;
-                case SyntaxKind.ThrowStatement:
-                    return ThrowExpression(((ThrowStatementSyntax)statement).Expression);
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
-
-        private static ExpressionSyntax GetExpressionOrThrowExpression(AccessorDeclarationSyntax accessor)
-        {
-            StatementSyntax statement = accessor.Body.Statements[0];
-
-            switch (statement.Kind())
-            {
-                case SyntaxKind.ReturnStatement:
-                    return ((ReturnStatementSyntax)statement).Expression;
-                case SyntaxKind.ExpressionStatement:
-                    return ((ExpressionStatementSyntax)statement).Expression;
-                case SyntaxKind.ThrowStatement:
-                    return ThrowExpression(((ThrowStatementSyntax)statement).Expression);
-                default:
-                    throw new InvalidOperationException();
-            }
-        }
+        public const string Title = "Use expression-bodied member";
 
         public static Task<Document> RefactorAsync(
             Document document,
@@ -66,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.MethodDeclaration:
                     {
                         var methodDeclaration = (MethodDeclarationSyntax)node;
-                        ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpressionOrThrowExpression(methodDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(methodDeclaration.Body);
 
                         return methodDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -76,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ConstructorDeclaration:
                     {
                         var constructorDeclaration = (ConstructorDeclarationSyntax)node;
-                        ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpressionOrThrowExpression(constructorDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(constructorDeclaration.Body);
 
                         return constructorDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -86,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.DestructorDeclaration:
                     {
                         var destructorDeclaration = (DestructorDeclarationSyntax)node;
-                        ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpressionOrThrowExpression(destructorDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(destructorDeclaration.Body);
 
                         return destructorDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -96,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.LocalFunctionStatement:
                     {
                         var local = (LocalFunctionStatementSyntax)node;
-                        ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpressionOrThrowExpression(local.Body);
+                        ExpressionSyntax expression = GetExpression(local.Body);
 
                         return local
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -106,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.OperatorDeclaration:
                     {
                         var operatorDeclaration = (OperatorDeclarationSyntax)node;
-                        ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpressionOrThrowExpression(operatorDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(operatorDeclaration.Body);
 
                         return operatorDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -116,7 +85,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ConversionOperatorDeclaration:
                     {
                         var operatorDeclaration = (ConversionOperatorDeclarationSyntax)node;
-                        ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpressionOrThrowExpression(operatorDeclaration.Body);
+                        ExpressionSyntax expression = GetExpression(operatorDeclaration.Body);
 
                         return operatorDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -126,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.PropertyDeclaration:
                     {
                         var propertyDeclaration = (PropertyDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetReturnExpressionOrThrowExpression(propertyDeclaration.AccessorList);
+                        ExpressionSyntax expression = GetExpressionOrThrowExpression(propertyDeclaration.AccessorList);
 
                         return propertyDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -136,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.IndexerDeclaration:
                     {
                         var indexerDeclaration = (IndexerDeclarationSyntax)node;
-                        ExpressionSyntax expression = GetReturnExpressionOrThrowExpression(indexerDeclaration.AccessorList);
+                        ExpressionSyntax expression = GetExpressionOrThrowExpression(indexerDeclaration.AccessorList);
 
                         return indexerDeclaration
                             .WithExpressionBody(ArrowExpressionClause(expression))
@@ -162,6 +131,33 @@ namespace Roslynator.CSharp.Refactorings
                         Debug.Fail(node.Kind().ToString());
                         return node;
                     }
+            }
+        }
+
+        private static ExpressionSyntax GetExpressionOrThrowExpression(AccessorListSyntax accessorList)
+        {
+            return GetExpressionOrThrowExpression(accessorList.Accessors[0]);
+        }
+
+        private static ExpressionSyntax GetExpressionOrThrowExpression(AccessorDeclarationSyntax accessor)
+        {
+            return GetExpression(accessor.Body);
+        }
+
+        private static ExpressionSyntax GetExpression(BlockSyntax block)
+        {
+            StatementSyntax statement = block.Statements[0];
+
+            switch (statement.Kind())
+            {
+                case SyntaxKind.ReturnStatement:
+                    return ((ReturnStatementSyntax)statement).Expression;
+                case SyntaxKind.ExpressionStatement:
+                    return ((ExpressionStatementSyntax)statement).Expression;
+                case SyntaxKind.ThrowStatement:
+                    return ThrowExpression(((ThrowStatementSyntax)statement).Expression);
+                default:
+                    throw new InvalidOperationException();
             }
         }
     }
