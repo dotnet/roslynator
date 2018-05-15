@@ -3,7 +3,8 @@
 "C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Roslynator.sln" ^
  /t:Clean,Build ^
  /p:Configuration=ReleaseTools,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591 ^
- /v:normal
+ /v:normal ^
+ /m
 
 if errorlevel 1 (
  pause
@@ -21,7 +22,8 @@ dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll
 "C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Roslynator.sln" ^
  /t:Clean,Build ^
  /p:Configuration=Release,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591 ^
- /v:normal
+ /v:normal ^
+ /m
 
 if errorlevel 1 (
  pause
@@ -48,6 +50,9 @@ if errorlevel 1 (
  pause
  exit
 )
+
+dotnet pack -c Release --no-build -v normal "..\src\CSharp\CSharp.csproj"
+dotnet pack -c Release --no-build -v normal "..\src\CSharp.Workspaces\CSharp.Workspaces.csproj"
 
 echo OK
 pause
