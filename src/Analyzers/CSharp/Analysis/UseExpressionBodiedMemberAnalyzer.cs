@@ -158,16 +158,18 @@ namespace Roslynator.CSharp.Analysis
             if (accessor.AttributeLists.Any())
                 return;
 
-            ExpressionSyntax expression = UseExpressionBodiedMemberAnalysis.GetExpression(body);
+            bool isGetter = accessor.IsKind(SyntaxKind.GetAccessorDeclaration);
+
+            ExpressionSyntax expression = (isGetter)
+                ? UseExpressionBodiedMemberAnalysis.GetReturnExpression(body)
+                : UseExpressionBodiedMemberAnalysis.GetExpression(body);
 
             if (expression?.IsSingleLine() != true)
                 return;
 
-            if (accessor.Parent is AccessorListSyntax accessorList
-                && accessorList
-                    .Accessors
-                    .SingleOrDefault(shouldThrow: false)?
-                    .Kind() == SyntaxKind.GetAccessorDeclaration)
+            if (isGetter
+                && accessor.Parent is AccessorListSyntax accessorList
+                && accessorList.Accessors.Count == 1)
             {
                 if (accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
