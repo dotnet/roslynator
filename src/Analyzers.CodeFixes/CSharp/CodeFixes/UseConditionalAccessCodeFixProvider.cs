@@ -28,12 +28,18 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.IfStatement)))
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
+                SyntaxKind.LogicalAndExpression,
+                SyntaxKind.LogicalOrExpression,
+                SyntaxKind.IfStatement)))
+            {
                 return;
+            }
 
             switch (node.Kind())
             {
                 case SyntaxKind.LogicalAndExpression:
+                case SyntaxKind.LogicalOrExpression:
                     {
                         CodeAction codeAction = CodeAction.Create(
                             Title,

@@ -24,9 +24,15 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            (ExpressionSyntax left, ExpressionSyntax right) = UseConditionalAccessAnalyzer.GetFixableExpressions(binaryExpression, binaryExpression.Kind(), semanticModel, cancellationToken);
+            SyntaxKind kind = binaryExpression.Kind();
 
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, allowedStyles: NullCheckStyles.NotEqualsToNull);
+            (ExpressionSyntax left, ExpressionSyntax right) = UseConditionalAccessAnalyzer.GetFixableExpressions(binaryExpression, kind, semanticModel, cancellationToken);
+
+            NullCheckStyles allowedStyles = (kind == SyntaxKind.LogicalAndExpression)
+                ? NullCheckStyles.NotEqualsToNull
+                : NullCheckStyles.EqualsToNull;
+
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(left, allowedStyles: allowedStyles);
 
             ExpressionSyntax expression = nullCheck.Expression;
 
@@ -71,12 +77,12 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 case SyntaxKind.LogicalNotExpression:
                     {
-                        builder.Append(" == false");
+                        builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == false" : " != true");
                         break;
                     }
                 default:
                     {
-                        builder.Append(" == true");
+                        builder.Append((kind == SyntaxKind.LogicalAndExpression) ? " == true" : " != false");
                         break;
                     }
             }
@@ -100,14 +106,14 @@ namespace Roslynator.CSharp.Refactorings
 
                 foreach (SyntaxToken token in binaryExpression.DescendantTokens(TextSpan.FromBounds(left.Span.Start, expression2.Span.End)))
                 {
-                    SyntaxKind kind = token.Kind();
+                    SyntaxKind tokenKind = token.Kind();
 
-                    if (kind == SyntaxKind.OpenParenToken)
+                    if (tokenKind == SyntaxKind.OpenParenToken)
                     {
                         if (token.IsParentKind(SyntaxKind.ParenthesizedExpression))
                             count++;
                     }
-                    else if (kind == SyntaxKind.CloseParenToken)
+                    else if (tokenKind == SyntaxKind.CloseParenToken)
                     {
                         if (token.IsParentKind(SyntaxKind.ParenthesizedExpression))
                             count--;

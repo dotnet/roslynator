@@ -183,6 +183,44 @@ class Foo
         }
 
         [Fact]
+        public async Task Test_LogicalOr_ReferenceType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class Foo
+{
+    void M()
+    {
+        Foo x = null;
+
+        if ([|x == null || x.Equals(x)|]) { }
+
+        if ([|x == null || (x.Equals(x)|])) { }
+
+        if ([|x == null || !x.Equals(x)|]) { }
+
+        if ([|x == null || (!x.Equals(x)|])) { }
+    }
+}
+", @"
+class Foo
+{
+    void M()
+    {
+        Foo x = null;
+
+        if (x?.Equals(x) != false) { }
+
+        if ((x?.Equals(x) != false)) { }
+
+        if (x?.Equals(x) != true) { }
+
+        if ((x?.Equals(x) != true)) { }
+    }
+}
+");
+        }
+
+        [Fact]
         public async Task Test_LogicalAnd_ElementAccess()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -331,6 +369,36 @@ struct Foo
         }
 
         [Fact]
+        public async Task Test_LogicalOr_NullableType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+struct Foo
+{
+    void M()
+    {
+        Foo? x = null;
+
+        if ([|x == null || x.Value.Equals(x)|]) { }
+
+        if ([|x == null || !x.Value.Equals(x)|]) { }
+    }
+}
+", @"
+struct Foo
+{
+    void M()
+    {
+        Foo? x = null;
+
+        if (x?.Equals(x) != false) { }
+
+        if (x?.Equals(x) != true) { }
+    }
+}
+");
+        }
+
+        [Fact]
         public async Task Test_LogicalAnd_Nested_NullableType()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -391,6 +459,56 @@ class Foo
         if (x != null && x.P != s && f) { }
 
         if (x != null && (x.P != null) is object _) { }
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_LogicalOr_ReferenceType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class Foo
+{
+    const string NullConst = null;
+    const string NonNullConst = ""x"";
+
+    string P { get; }
+
+    void M()
+    {
+        bool f = false;
+
+        string s = null;
+
+        Foo x = null;
+
+
+        if (x == null || x.P.Length > 1) { }
+
+        if (x == null || x.P == ""x"") { }
+
+        if (x == null || x.P == NonNullConst) { }
+
+        if (x == null || x.P != null) { }
+
+        if (x == null || x.P is object) { }
+
+        if (x == null || x.P is object _) { }
+
+        if (x == null || x.P == null && f) { }
+
+        if (x == null || x.P == NullConst && f) { }
+
+        if (x == null || x.P == s && f) { }
+
+        if (x == null || x.P != ""x"" && f) { }
+
+        if (x == null || x.P != NonNullConst && f) { }
+
+        if (x == null || x.P != s && f) { }
+
+        if (x == null || (x.P != null) is object _) { }
     }
 }
 ");
@@ -465,6 +583,72 @@ struct Foo
         }
 
         [Fact]
+        public async Task TestNoDiagnostic_LogicalOr_NullableType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+struct Foo
+{
+    const string NonNullConst = ""x"";
+
+    string P { get; }
+
+    void M()
+    {
+        bool? f = null;
+
+        if (f == null || f.Value) { }
+
+        if (f == null || f.Value && f.Value) { }
+
+        if (f == null || (f.Value)) { }
+
+        if (f == null || !f.Value) { }
+
+        if (f == null || !f.Value && !f.Value) { }
+
+        if (f == null || (!f.Value)) { }
+
+        Foo? x = null;
+
+        var value = default(Foo);
+
+        if (x == null || x.Value.P.Length > 1) { }
+
+        if (x == null || x.Value.P == ""x"") { }
+
+        if (x == null || x.Value.P == NonNullConst) { }
+
+        if (x == null || x.Value.P != null) { }
+
+        if (x == null || x.Value.P is object) { }
+
+        if (x == null || x.Value.P is object _) { }
+
+        if (x == null || x.Value.ToString() == null || x.Value.ToString().ToString() == null) { }
+
+
+        if (x == null || x.Value == null) { }
+
+        if (x == null || x.Value == value) { }
+
+        if (x == null || x.Value != null) { }
+
+        if (x == null || x.Value != null) { }
+
+        if (x == null || x.Value != value) { }
+
+        if (x == null || x.HasValue.Equals(true)) { }
+
+        if (x == null || (x.Value == null) is object _) { }
+    }
+
+    public static bool operator ==(Foo left, Foo right) => left.Equals(right);
+    public static bool operator !=(Foo left, Foo right) => !(left == right);
+}
+");
+        }
+
+        [Fact]
         public async Task TestNoDiagnostic_LogicalAnd_OutParameter()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -481,6 +665,28 @@ class C
 if (dic != null && dic.TryGetValue(0, out value)) { }
 
         if (dic != null && dic.TryGetValue(0, out string value2)) { }
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_LogicalOr_OutParameter()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        Dictionary<int, string> dic = null;
+
+        string value;
+
+        if (dic == null || dic.TryGetValue(0, out value)) { }
+
+        if (dic == null || dic.TryGetValue(0, out string value2)) { }
     }
 }
 ");
@@ -504,5 +710,25 @@ class C
 }
 ");
         }
+
+        [Fact]
+        public async Task TestNoDiagnostic_LogicalOr_ExpressionTree()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Linq.Expressions;
+
+class C
+{
+    public void M<T>(Expression<Func<T>> expression)
+    {
+        string s = null;
+
+        M(() => s == null || s.Equals(s));
     }
 }
+");
+        }
+    }
+}
+
