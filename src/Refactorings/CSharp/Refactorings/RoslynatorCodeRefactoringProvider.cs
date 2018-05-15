@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = "RoslynatorCodeRefactoringProvider")]
+    [ExportCodeRefactoringProvider(LanguageNames.CSharp, Name = nameof(RoslynatorCodeRefactoringProvider))]
     public class RoslynatorCodeRefactoringProvider : CodeRefactoringProvider
     {
         public override async Task ComputeRefactoringsAsync(CodeRefactoringContext context)
@@ -26,7 +26,6 @@ namespace Roslynator.CSharp.Refactorings
             }
             catch (Exception ex) when (!(ex is OperationCanceledException))
             {
-                Debug.WriteLine(ex.ToString());
                 Debug.Fail(nameof(RoslynatorCodeRefactoringProvider));
                 throw;
             }
