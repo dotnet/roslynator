@@ -1,3 +1,21 @@
+### 1.8.3 (2018-05-17)
+
+#### Analyzers
+
+* Add analyzer [MarkTypeWithDebuggerDisplayAttribute](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1223.md) (RCC1223)
+* Add analyzer [MakeMethodExtensionMethod](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1224.md) (RCC1224)
+* Add analyzer [MakeSealedClass](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1225.md) (RCC1225)
+* Add analyzer [AddParagraphToDocumentationComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1226.md) (RCC1226)
+
+* Improve analyzer [UseConditionalAccess](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1146.md) (RCS1146)
+  * `x == null || x.y` can be simplified to `x?.y != false`
+  * `x == null || !x.y` can be simplified to `x?.y != true` 
+
+#### Refactorings
+
+* Improve refactoring [FormatExpressionChain](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0051.md) (RR0051)
+  * A chain that contains conditional access (`x?.y`) will be properly formatted.
+
 ### 1.8.2 (2018-05-02)
 
 #### Analyzers

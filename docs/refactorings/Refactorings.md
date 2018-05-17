@@ -192,7 +192,7 @@ if (s.IndexOf("a", StringComparison.OrdinalIgnoreCase) != -1)
 
 #### Change method return type to 'void' \(RR0021\)
 
-* **Syntax**: method
+* **Syntax**: method, local function
 ![Change method return type to 'void'](../../images/refactorings/ChangeMethodReturnTypeToVoid.png)
 
 #### Change method/property/indexer type according to return expression \(RR0019\)
@@ -1121,7 +1121,28 @@ public enum Foo
 #### Replace ?: with if\-else \(RR0120\)
 
 * **Syntax**: local declaration statement with conditional expression, assignment with conditional expression, return statement conditional expression, yield statement conditional expression
-![Replace ?: with if-else](../../images/refactorings/ReplaceConditionalExpressionWithIfElse.png)
+
+#### Before
+
+```csharp
+string s = (condition) ? "a" : "b";
+{
+}
+```
+
+#### After
+
+```csharp
+string s;
+if (condition)
+{
+    s = "a";
+}
+else
+{
+    s = "b";
+}
+```
 
 #### Replace Any with All \(or All with Any\) \(RR0116\)
 

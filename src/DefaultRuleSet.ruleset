@@ -251,5 +251,9 @@
     <Rule Id="RCS1220" Action="Info" /> <!-- Use pattern matching instead of combination of 'is' operator and cast operator. -->
     <Rule Id="RCS1221" Action="Info" /> <!-- Use pattern matching instead of combination of 'as' operator and null check. -->
     <Rule Id="RCS1222" Action="Info" /> <!-- Merge preprocessor directives. -->
+    <Rule Id="RCS1223" Action="None" /> <!-- Mark publicly visible type with DebuggerDisplay attribute. -->
+    <Rule Id="RCS1224" Action="Info" /> <!-- Make method an extension method. -->
+    <Rule Id="RCS1225" Action="Info" /> <!-- Make class sealed. -->
+    <Rule Id="RCS1226" Action="Info" /> <!-- Add paragraph to documentation comment. -->
   </Rules>
 </RuleSet>

@@ -10,7 +10,9 @@
 | Design | [Declare enum member with zero value (when enum has FlagsAttribute)](../../docs/analyzers/RCS1135.md) | RCS1135 | &#x2713; |
 | Design | [Declare type inside namespace](../../docs/analyzers/RCS1110.md) | RCS1110 | &#x2713; |
 | Design | [Implement exception constructors](../../docs/analyzers/RCS1194.md) | RCS1194 | &#x2713; |
+| Design | [Make class sealed](../../docs/analyzers/RCS1225.md) | RCS1225 | &#x2713; |
 | Design | [Make class static](../../docs/analyzers/RCS1102.md) | RCS1102 | &#x2713; |
+| Design | [Make method an extension method](../../docs/analyzers/RCS1224.md) | RCS1224 | &#x2713; |
 | Design | [Mark field as read-only](../../docs/analyzers/RCS1169.md) | RCS1169 | &#x2713; |
 | Design | [Overriding member cannot change 'params' modifier](../../docs/analyzers/RCS1193.md) | RCS1193 | &#x2713; |
 | Design | [Static member in generic type should use a type parameter](../../docs/analyzers/RCS1158.md) | RCS1158 | &#x2713; |
@@ -186,9 +188,11 @@
 | Style | [Remove argument list from object creation expression](../../docs/analyzers/RCS1067.md) | RCS1067 | \- |
 | Style | [Remove braces from if-else](../../docs/analyzers/RCS1004.md) | RCS1004 | \- |
 | Style | [Remove braces](../../docs/analyzers/RCS1002.md) | RCS1002 | \- |
+| Usage | [Add paragraph to documentation comment](../../docs/analyzers/RCS1226.md) | RCS1226 | &#x2713; |
 | Usage | [Avoid NullReferenceException](../../docs/analyzers/RCS1202.md) | RCS1202 | &#x2713; |
 | Usage | [Call Debug.Fail instead of Debug.Assert](../../docs/analyzers/RCS1178.md) | RCS1178 | &#x2713; |
 | Usage | [Call 'Enumerable.ThenBy' instead of 'Enumerable.OrderBy'](../../docs/analyzers/RCS1200.md) | RCS1200 | &#x2713; |
+| Usage | [Mark publicly visible type with DebuggerDisplay attribute](../../docs/analyzers/RCS1223.md) | RCS1223 | \- |
 | Usage | [Return Task.FromResult instead of returning null](../../docs/analyzers/RCS1210.md) | RCS1210 | &#x2713; |
 | Usage | [Unconstrained type parameter checked for null](../../docs/analyzers/RCS1165.md) | RCS1165 | &#x2713; |
 | Usage | [Use conditional access instead of conditional expression](../../docs/analyzers/RCS1206.md) | RCS1206 | &#x2713; |

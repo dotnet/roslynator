@@ -207,6 +207,10 @@
 | RCS1220 | [Use pattern matching instead of combination of 'is' operator and cast operator](../../docs/analyzers/RCS1220.md) | Usage | &#x2713; |
 | RCS1221 | [Use pattern matching instead of combination of 'as' operator and null check](../../docs/analyzers/RCS1221.md) | Usage | &#x2713; |
 | RCS1222 | [Merge preprocessor directives](../../docs/analyzers/RCS1222.md) | Readability | &#x2713; |
+| RCS1223 | [Mark publicly visible type with DebuggerDisplay attribute](../../docs/analyzers/RCS1223.md) | Usage | \- |
+| RCS1224 | [Make method an extension method](../../docs/analyzers/RCS1224.md) | Design | &#x2713; |
+| RCS1225 | [Make class sealed](../../docs/analyzers/RCS1225.md) | Design | &#x2713; |
+| RCS1226 | [Add paragraph to documentation comment](../../docs/analyzers/RCS1226.md) | Usage | &#x2713; |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
