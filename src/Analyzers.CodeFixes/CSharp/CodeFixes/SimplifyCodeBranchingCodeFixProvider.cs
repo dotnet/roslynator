@@ -16,9 +16,9 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyConditionCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(SimplifyCodeBranchingCodeFixProvider))]
     [Shared]
-    public class SimplifyConditionCodeFixProvider : BaseCodeFixProvider
+    public class SimplifyCodeBranchingCodeFixProvider : BaseCodeFixProvider
     {
         private const string Title = "Simplify code branching";
 

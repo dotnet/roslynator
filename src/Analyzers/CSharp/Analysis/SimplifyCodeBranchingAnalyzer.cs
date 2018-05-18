@@ -85,6 +85,9 @@ namespace Roslynator.CSharp.Analysis
             {
                 var nestedIf = (IfStatementSyntax)whenFalse;
 
+                if (nestedIf.Else != null)
+                    return false;
+
                 if (nestedIf.Condition?.WalkDownParentheses().IsMissing != false)
                     return false;
 
