@@ -4806,7 +4806,7 @@ if (y == null)
         <Before><![CDATA[public class Foo // RCS1223
 {
 }]]></Before>
-        <After><![CDATA[DebuggerDisplay("{DebuggerDisplay,nq}")]
+        <After><![CDATA[[DebuggerDisplay("{DebuggerDisplay,nq}")]
 public class Foo
 {
     [DebuggerBrowsable(DebuggerBrowsableState.Never)]
