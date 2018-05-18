@@ -15,7 +15,33 @@ namespace Roslynator.CSharp.CodeFixes.Tests
         public override CodeFixProvider FixProvider { get; } = new SyntaxErrorCharExpectedCodeFixProvider();
 
         [Fact]
-        public async Task Test_MissingCommaInInitializer()
+        public async Task Test_MissingCommaInInitializer_Singleline()
+        {
+            await VerifyFixAsync(@"
+class C
+{
+    public void M()
+    {
+        string s = null;
+
+        var items = new string[] { s s s };
+    }
+}
+", @"
+class C
+{
+    public void M()
+    {
+        string s = null;
+
+        var items = new string[] { s, s, s };
+    }
+}
+", EquivalenceKey.Create(DiagnosticId));
+        }
+
+        [Fact]
+        public async Task Test_MissingCommaInInitializer_Multiline()
         {
             await VerifyFixAsync(@"
 class C
@@ -26,9 +52,9 @@ class C
 
         var items = new string[]
         {
-            s,
             s
-            s,
+            s
+            s
         };
     }
 }
@@ -43,7 +69,7 @@ class C
         {
             s,
             s,
-            s,
+            s
         };
     }
 }
