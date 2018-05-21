@@ -16,7 +16,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = $"{RefactoringIdentifiers.IntroduceConstructor},{RefactoringIdentifiers.RemoveAllDocumentationComments},{RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop},{RefactoringIdentifiers.ReplaceMethodWithProperty},{RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral}";
+        = $"{RefactoringIdentifiers.AddIdentifierToParameter},{RefactoringIdentifiers.AddIdentifierToVariableDeclaration},{RefactoringIdentifiers.IntroduceConstructor},{RefactoringIdentifiers.RemoveAllDocumentationComments},{RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop},{RefactoringIdentifiers.ReplaceMethodWithProperty},{RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral}";
         protected override string MaxId
         {
             get;
@@ -25,6 +25,8 @@ namespace Roslynator.VisualStudio
         = RefactoringIdentifiers.AddEmptyLineBetweenDeclarations;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
+            settings.DisableRefactoring(RefactoringIdentifiers.AddIdentifierToParameter);
+            settings.DisableRefactoring(RefactoringIdentifiers.AddIdentifierToVariableDeclaration);
             settings.DisableRefactoring(RefactoringIdentifiers.IntroduceConstructor);
             settings.DisableRefactoring(RefactoringIdentifiers.RemoveAllDocumentationComments);
             settings.DisableRefactoring(RefactoringIdentifiers.ReplaceForEachWithForAndReverseLoop);
@@ -44,7 +46,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddExceptionToDocumentationComment, "Add exception to documentation comment", IsEnabled(RefactoringIdentifiers.AddExceptionToDocumentationComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddIdentifierToVariableDeclaration, "Add identifier to variable declaration", IsEnabled(RefactoringIdentifiers.AddIdentifierToVariableDeclaration)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterNameToArgument, "Add parameter name to argument", IsEnabled(RefactoringIdentifiers.AddParameterNameToArgument)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddParameterNameToParameter, "Add parameter name to parameter", IsEnabled(RefactoringIdentifiers.AddParameterNameToParameter)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.AddIdentifierToParameter, "Add identifier to parameter", IsEnabled(RefactoringIdentifiers.AddIdentifierToParameter)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingDirective, "Add using directive", IsEnabled(RefactoringIdentifiers.AddUsingDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddUsingStaticDirective, "Add using static directive", IsEnabled(RefactoringIdentifiers.AddUsingStaticDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallConfigureAwait, "Call 'ConfigureAwait(false)'", IsEnabled(RefactoringIdentifiers.CallConfigureAwait)));

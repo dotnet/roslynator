@@ -62,7 +62,7 @@
       <Syntax>throw statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0010" Identifier="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration">
+  <Refactoring Id="RR0010" Identifier="AddIdentifierToVariableDeclaration" Title="Add identifier to variable declaration" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
     </Syntaxes>
@@ -72,7 +72,7 @@
       <Syntax>argument list</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0012" Identifier="AddParameterNameToParameter" Title="Add parameter name to parameter">
+  <Refactoring Id="RR0012" Identifier="AddIdentifierToParameter" Title="Add identifier to parameter" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>parameter</Syntax>
     </Syntaxes>

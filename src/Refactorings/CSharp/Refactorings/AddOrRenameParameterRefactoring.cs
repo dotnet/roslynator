@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ParameterSyntax parameter)
         {
             if (!context.IsAnyRefactoringEnabled(
-                RefactoringIdentifiers.AddParameterNameToParameter,
+                RefactoringIdentifiers.AddIdentifierToParameter,
                 RefactoringIdentifiers.RenameParameterAccordingToTypeName))
             {
                 return;
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (parameter.Identifier.IsMissing)
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterNameToParameter))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddIdentifierToParameter))
                 {
                     TextSpan span = (parameter.Type != null)
                         ? TextSpan.FromBounds(parameter.Type.Span.End, parameter.Span.End)
@@ -44,9 +44,9 @@ namespace Roslynator.CSharp.Refactorings
                         if (!string.IsNullOrEmpty(name))
                         {
                             context.RegisterRefactoring(
-                                $"Add parameter name '{name}'",
+                                $"Add identifier '{name}'",
                                 cancellationToken => AddParameterNameToParameterAsync(context.Document, parameter, name, cancellationToken),
-                                RefactoringIdentifiers.AddParameterNameToParameter);
+                                RefactoringIdentifiers.AddIdentifierToParameter);
                         }
                     }
                 }
