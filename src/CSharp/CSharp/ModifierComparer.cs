@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
 {
     internal abstract class ModifierComparer : IComparer<SyntaxToken>
     {
-        internal const int MaxRank = 17;
+        internal const int MaxRank = 21;
 
         protected ModifierComparer()
         {

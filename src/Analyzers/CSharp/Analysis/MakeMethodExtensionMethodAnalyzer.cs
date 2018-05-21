@@ -58,8 +58,57 @@ namespace Roslynator.CSharp.Analysis
 
                 ParameterSyntax parameter = methodDeclaration.ParameterList?.Parameters.FirstOrDefault();
 
-                if (parameter?.Modifiers.Contains(SyntaxKind.ThisKeyword) != false)
+                if (parameter == null)
                     continue;
+
+                bool isThis = false;
+                bool isIn = false;
+                bool isRef = false;
+
+                foreach (SyntaxToken modifier in parameter.Modifiers)
+                {
+                    SyntaxKind kind = modifier.Kind();
+
+                    if (kind == SyntaxKind.ThisKeyword)
+                    {
+                        isThis = true;
+                        break;
+                    }
+                    else if (kind == SyntaxKind.InKeyword)
+                    {
+                        isIn = true;
+                    }
+                    else if (kind == SyntaxKind.RefKeyword)
+                    {
+                        isRef = true;
+                    }
+
+                    if (isThis)
+                        break;
+                }
+
+                if (isThis)
+                    continue;
+
+                if (isIn)
+                {
+                    IParameterSymbol parameterSymbol = context.SemanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+
+                    ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+                    if (!typeSymbol.IsValueType)
+                        continue;
+
+                    if (typeSymbol.Kind == SymbolKind.TypeParameter)
+                        continue;
+                }
+                else if (isRef)
+                {
+                    IParameterSymbol parameterSymbol = context.SemanticModel.GetDeclaredSymbol(parameter, context.CancellationToken);
+
+                    if (!parameterSymbol.Type.IsValueType)
+                        continue;
+                }
 
                 context.ReportDiagnostic(DiagnosticDescriptors.MakeMethodExtensionMethod, methodDeclaration.Identifier);
             }

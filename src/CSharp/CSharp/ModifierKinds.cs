@@ -129,5 +129,10 @@ namespace Roslynator.CSharp
         /// A "params" modifier.
         /// </summary>
         Params = 1048576,
+
+        /// <summary>
+        /// A "this" modifier.
+        /// </summary>
+        This = 2097152,
     }
 }

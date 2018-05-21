@@ -53,6 +53,14 @@ namespace Roslynator.CSharp
                     return 15;
                 case SyntaxKind.PartialKeyword:
                     return 16;
+                case SyntaxKind.ThisKeyword:
+                    return 17;
+                case SyntaxKind.RefKeyword:
+                    return 18;
+                case SyntaxKind.OutKeyword:
+                    return 19;
+                case SyntaxKind.InKeyword:
+                    return 20;
                 default:
                     {
                         Debug.Fail($"unknown modifier '{kind}'");
