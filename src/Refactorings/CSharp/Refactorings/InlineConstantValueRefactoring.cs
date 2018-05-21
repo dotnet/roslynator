@@ -94,10 +94,14 @@ namespace Roslynator.CSharp.Refactorings
                     if (semanticModel.SyntaxTree != value.SyntaxTree)
                         semanticModel = semanticModel.Compilation.GetSemanticModel(value.SyntaxTree);
 
-                    fieldSymbol = semanticModel.GetSymbol(value, cancellationToken) as IFieldSymbol;
-
-                    if (fieldSymbol == null)
+                    if (semanticModel.GetSymbol(value, cancellationToken) is IFieldSymbol fieldSymbol2)
+                    {
+                        fieldSymbol = fieldSymbol2;
+                    }
+                    else
+                    {
                         break;
+                    }
                 }
 
                 return LiteralExpression(fieldSymbol.ConstantValue);
@@ -113,10 +117,14 @@ namespace Roslynator.CSharp.Refactorings
                     if (value.WalkDownParentheses() is LiteralExpressionSyntax literalExpression)
                         return literalExpression;
 
-                    localSymbol = semanticModel.GetSymbol(value, cancellationToken) as ILocalSymbol;
-
-                    if (localSymbol == null)
+                    if (semanticModel.GetSymbol(value, cancellationToken) is ILocalSymbol localSymbol2)
+                    {
+                        localSymbol = localSymbol2;
+                    }
+                    else
+                    {
                         break;
+                    }
                 }
 
                 return LiteralExpression(localSymbol.ConstantValue);

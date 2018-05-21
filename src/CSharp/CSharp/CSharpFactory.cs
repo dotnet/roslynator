@@ -2502,6 +2502,9 @@ namespace Roslynator.CSharp
             if (value == null)
                 return NullLiteralExpression();
 
+            if (value is string stringValue)
+                return StringLiteralExpression(stringValue);
+
             if (value is bool boolValue)
                 return (boolValue) ? TrueLiteralExpression() : FalseLiteralExpression();
 

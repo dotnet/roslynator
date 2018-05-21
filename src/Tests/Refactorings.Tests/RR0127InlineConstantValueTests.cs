@@ -256,6 +256,34 @@ class C
         }
 
         [Fact]
+        public async Task Test_Field_AddExpression()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    public const string K = @""a"";
+    public const string K2 = K + K;
+
+    void M()
+    {
+        string s = [|K2|];
+    }
+}
+", @"
+class C
+{
+    public const string K = @""a"";
+    public const string K2 = K + K;
+
+    void M()
+    {
+        string s = ""aa"";
+    }
+}
+", RefactoringId);
+        }
+
+        [Fact]
         public async Task Test_MultipleDocumentsAsync()
         {
             await VerifyRefactoringAsync(@"
