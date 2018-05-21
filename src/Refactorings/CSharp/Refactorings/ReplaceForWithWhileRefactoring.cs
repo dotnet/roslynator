@@ -42,11 +42,15 @@ namespace Roslynator.CSharp.Refactorings
                 if (!statement.IsKind(SyntaxKind.Block))
                     statement = Block(statement);
 
-                ExpressionStatementSyntax[] items = incrementors
+                ExpressionStatementSyntax[] incrementorStatements = incrementors
                     .Select(f => ExpressionStatement(f).WithFormatterAnnotation())
                     .ToArray();
 
-                statement = ((BlockSyntax)statement).AddStatements(items);
+                var rewriter = new InsertIncrementorsBeforeContinueRewriter(incrementorStatements);
+
+                statement = (StatementSyntax)rewriter.Visit(statement);
+
+                statement = ((BlockSyntax)statement).AddStatements(incrementorStatements);
             }
 
             statements.Add(WhileStatement(forStatement.Condition ?? TrueLiteralExpression(), statement));
@@ -60,6 +64,62 @@ namespace Roslynator.CSharp.Refactorings
             else
             {
                 return document.ReplaceNodeAsync(forStatement, statements, cancellationToken);
+            }
+        }
+
+        private class InsertIncrementorsBeforeContinueRewriter : CSharpSyntaxRewriter
+        {
+            private readonly ExpressionStatementSyntax[] _incrementorStatements;
+
+            public InsertIncrementorsBeforeContinueRewriter(ExpressionStatementSyntax[] incrementorStatements)
+            {
+                _incrementorStatements = incrementorStatements;
+            }
+
+            public override SyntaxNode VisitContinueStatement(ContinueStatementSyntax node)
+            {
+                if (node.IsEmbedded())
+                    return Block(_incrementorStatements).AddStatements(node);
+
+                return base.VisitContinueStatement(node);
+            }
+
+            public override SyntaxNode VisitBlock(BlockSyntax node)
+            {
+                node = (BlockSyntax)base.VisitBlock(node);
+
+                foreach (StatementSyntax statement in node.Statements)
+                {
+                    if (statement.IsKind(SyntaxKind.ContinueStatement))
+                        return node.InsertNodesBefore(statement, _incrementorStatements);
+                }
+
+                return node;
+            }
+
+            public override SyntaxNode VisitForStatement(ForStatementSyntax node)
+            {
+                return node;
+            }
+
+            public override SyntaxNode VisitForEachStatement(ForEachStatementSyntax node)
+            {
+                return node;
+            }
+
+            public override SyntaxNode VisitForEachVariableStatement(ForEachVariableStatementSyntax node)
+            {
+                return node;
+            }
+
+            public override SyntaxNode VisitWhileStatement(WhileStatementSyntax node)
+            {
+                return node;
+            }
+
+            public override SyntaxNode VisitDoStatement(DoStatementSyntax node)
+            {
+                return node;
             }
         }
     }
