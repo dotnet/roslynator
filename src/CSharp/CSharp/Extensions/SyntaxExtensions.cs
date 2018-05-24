@@ -1267,10 +1267,14 @@ namespace Roslynator.CSharp
 
             if (DocumentationCommentGenerator.CanGenerateFromBase(member.Kind()))
             {
-                DocumentationCommentData info = DocumentationCommentGenerator.GenerateFromBase(member, semanticModel, cancellationToken);
+                DocumentationCommentData data = DocumentationCommentGenerator.GenerateFromBase(member, semanticModel, cancellationToken);
 
-                if (info.Success)
-                    return member.WithDocumentationComment(info.Comment, indent: true);
+                if (data.Success)
+                {
+                    SyntaxTrivia comment = data.GetDocumentationCommentTrivia(semanticModel, member.SpanStart);
+
+                    return member.WithDocumentationComment(comment, indent: true);
+                }
             }
 
             return WithNewSingleLineDocumentationComment(member, settings);

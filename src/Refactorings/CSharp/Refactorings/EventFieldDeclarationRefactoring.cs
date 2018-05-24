@@ -24,9 +24,11 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.CopyDocumentationCommentFromBaseMember)
-                && eventFieldDeclaration.Span.Contains(context.Span))
+                && eventFieldDeclaration.Span.Contains(context.Span)
+                && !eventFieldDeclaration.HasDocumentationComment())
             {
-                await CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoringAsync(context, eventFieldDeclaration).ConfigureAwait(false);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                CopyDocumentationCommentFromBaseMemberRefactoring.ComputeRefactoring(context, eventFieldDeclaration, semanticModel);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface))

@@ -26,7 +26,11 @@ namespace Roslynator.CSharp.Refactorings
                 DocumentationCommentData data = DocumentationCommentGenerator.GenerateFromBase(memberDeclaration, semanticModel, cancellationToken);
 
                 if (data.Success)
-                    newNode = memberDeclaration.WithDocumentationComment(data.Comment, indent: true);
+                {
+                    SyntaxTrivia comment = data.GetDocumentationCommentTrivia(semanticModel, memberDeclaration.SpanStart);
+
+                    newNode = memberDeclaration.WithDocumentationComment(comment, indent: true);
+                }
             }
 
             newNode = newNode ?? memberDeclaration.WithNewSingleLineDocumentationComment();
