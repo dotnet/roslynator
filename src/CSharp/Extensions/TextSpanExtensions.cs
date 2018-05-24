@@ -13,6 +13,11 @@ namespace Roslynator
             return new TextSpan(span.Start + value, span.Length);
         }
 
+        public static bool IsContainedIn(this TextSpan self, TextSpan span)
+        {
+            return span.Contains(self);
+        }
+
         public static bool IsContainedInSpan(this TextSpan span, SyntaxToken token1, SyntaxToken token2)
         {
             return token1.Span.Contains(span) || token2.Span.Contains(span);

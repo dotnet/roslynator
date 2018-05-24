@@ -321,13 +321,15 @@ class C
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M()
     {
+        bool f = false;
+
         while (true)
         {
             M();
 
-            [|if (f1)
+            [|if (f)
             {
                 break;
             }|]
@@ -337,13 +339,15 @@ class C
 ", @"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M()
     {
+        bool f = false;
+
         do
         {
             M();
         }
-        while (!f1);
+        while (!f);
     }
 }
 ");
@@ -355,7 +359,7 @@ class C
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M(bool f1 = false)
     {
         while (true)
         {
@@ -369,7 +373,7 @@ class C
 ", @"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M(bool f1 = false)
     {
         do
         {
@@ -449,13 +453,15 @@ class C
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M()
     {
+        bool f = false;
+
         do
         {
             M();
 
-            [|if (f1)
+            [|if (f)
             {
                 break;
             }|]
@@ -466,13 +472,15 @@ class C
 ", @"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M()
     {
+        bool f = false;
+
         do
         {
             M();
         }
-        while (!f1);
+        while (!f);
     }
 }
 ");
@@ -484,7 +492,7 @@ class C
             await VerifyDiagnosticAndFixAsync(@"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M(bool f1 = false)
     {
         do
         {
@@ -499,7 +507,7 @@ class C
 ", @"
 class C
 {
-    void M(bool f1 = false, bool f2 = false)
+    void M(bool f1 = false)
     {
         do
         {
@@ -772,6 +780,108 @@ class C
         }
 
         [Fact]
+        public async Task TestNoDiagnostic_While_ConditionContainsLocalDefinedInLoopBody_LocalDeclaration()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        while (true)
+        {
+            bool f = false;
+
+            if (f)
+            {
+                break;
+            }
+        }
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_While_ConditionContainsLocalDefinedInLoopBody_IsPatternExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        while (true)
+        {
+            object x = null;
+            if (!(x is bool f))
+            {
+                f = false;
+            }
+
+
+            if (f)
+            {
+                break;
+            }
+        }
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_While_ConditionContainsLocalDefinedInLoopBody_OutVariable()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        while (true)
+        {
+            if (TryGet(out bool f))
+            {
+            }
+
+            if (f)
+            {
+                break;
+            }
+        }
+    }
+
+    private bool TryGet(out bool f)
+    {
+        throw new NotImplementedException();
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_While_ConditionContainsLocalDefinedInLoopBody_DeconstructionVariable()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        while (true)
+        {
+            (bool f, bool f2) = (false, false);
+
+            if (f)
+            {
+                break;
+            }
+        }
+    }
+}
+");
+        }
+
+        [Fact]
         public async Task TestNoDiagnostic_Do()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -866,6 +976,112 @@ class C
             }
 
         } while (f1);
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_Do_ConditionContainsLocalDefinedInLoopBody_LocalDeclaration()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        do
+        {
+            bool f = false;
+
+            if (f)
+            {
+                break;
+            }
+        }
+        while (true);
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_Do_ConditionContainsLocalDefinedInLoopBody_IsPatternExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        do
+        {
+            object x = null;
+            if (!(x is bool f))
+            {
+                f = false;
+            }
+
+
+            if (f)
+            {
+                break;
+            }
+        }
+        while (true);
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_Do_ConditionContainsLocalDefinedInLoopBody_OutVariable()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        do
+        {
+            if (TryGet(out bool f))
+            {
+            }
+
+            if (f)
+            {
+                break;
+            }
+        }
+        while (true);
+    }
+
+    private bool TryGet(out bool f)
+    {
+        throw new NotImplementedException();
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_Do_ConditionContainsLocalDefinedInLoopBody_DeconstructionVariable()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        do
+        {
+            (bool f, bool f2) = (false, false);
+
+            if (f)
+            {
+                break;
+            }
+        }
+        while (true);
     }
 }
 ");

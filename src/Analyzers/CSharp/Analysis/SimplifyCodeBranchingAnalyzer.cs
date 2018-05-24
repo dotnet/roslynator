@@ -2,10 +2,12 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -57,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
                     if (IsFixableIfElseInsideWhile(ifStatement, elseClause))
                         context.ReportDiagnostic(DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
                 }
-                else if (IsFixableIfInsideWhileOrDo(ifStatement))
+                else if (IsFixableSimpleIfInsideWhileOrDo(ifStatement, context.SemanticModel, context.CancellationToken))
                 {
                     context.ReportDiagnostic(DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
                 }
@@ -137,7 +139,10 @@ namespace Roslynator.CSharp.Analysis
             return true;
         }
 
-        private static bool IsFixableIfInsideWhileOrDo(IfStatementSyntax ifStatement)
+        private static bool IsFixableSimpleIfInsideWhileOrDo(
+            IfStatementSyntax ifStatement,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             SyntaxNode parent = ifStatement.Parent;
 
@@ -177,6 +182,18 @@ namespace Roslynator.CSharp.Analysis
 
                 if (whileStatement.Condition?.WalkDownParentheses().Kind() != SyntaxKind.TrueLiteralExpression)
                     return false;
+
+                if (index == count - 1
+                    && ContainsLocalDefinedInLoopBody(
+                        ifStatement.Condition,
+                        TextSpan.FromBounds(block.SpanStart, ifStatement.SpanStart),
+                        semanticModel,
+                        cancellationToken))
+                {
+                    return false;
+                }
+
+                return true;
             }
             else if (kind == SyntaxKind.DoStatement)
             {
@@ -187,13 +204,44 @@ namespace Roslynator.CSharp.Analysis
 
                 if (doStatement.Condition?.WalkDownParentheses().Kind() != SyntaxKind.TrueLiteralExpression)
                     return false;
-            }
-            else
-            {
-                return false;
+
+                if (index == count - 1
+                    && ContainsLocalDefinedInLoopBody(
+                        ifStatement.Condition,
+                        TextSpan.FromBounds(block.SpanStart, ifStatement.SpanStart),
+                        semanticModel,
+                        cancellationToken))
+                {
+                    return false;
+                }
+
+                return true;
             }
 
-            return true;
+            return false;
+        }
+
+        private static bool ContainsLocalDefinedInLoopBody(
+            ExpressionSyntax condition,
+            TextSpan span,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            foreach (SyntaxNode node in condition.DescendantNodesAndSelf())
+            {
+                if (node.IsKind(SyntaxKind.IdentifierName))
+                {
+                    ISymbol symbol = semanticModel.GetSymbol((ExpressionSyntax)node, cancellationToken);
+
+                    if (symbol?.Kind == SymbolKind.Local
+                        && symbol.GetSyntaxOrDefault(cancellationToken)?.Span.IsContainedIn(span) == true)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }
