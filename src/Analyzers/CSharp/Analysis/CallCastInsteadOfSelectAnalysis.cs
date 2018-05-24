@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis
     {
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
-            SimpleMemberInvocationExpressionInfo invocationInfo)
+            in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
             if (extensionInfo.Symbol == null)
                 return;
 
-            if (!SymbolUtility.IsLinqSelect(extensionInfo.Symbol, semanticModel, allowImmutableArrayExtension: true))
+            if (!SymbolUtility.IsLinqSelect(extensionInfo.Symbol, allowImmutableArrayExtension: true))
                 return;
 
             ITypeSymbol typeArgument = extensionInfo.ReducedSymbolOrSymbol.TypeArguments[0];
@@ -62,13 +62,11 @@ namespace Roslynator.CSharp.Analysis
             if (!string.Equals(lambdaInfo.Parameter.Identifier.ValueText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
                 return;
 
-            var castSymbol = semanticModel.GetSymbol(castExpression, cancellationToken) as IMethodSymbol;
-
-            if (castSymbol?.MethodKind == MethodKind.Conversion)
+            if (semanticModel.GetMethodSymbol(castExpression, cancellationToken)?.MethodKind == MethodKind.Conversion)
                 return;
 
             context.ReportDiagnostic(
-                DiagnosticDescriptors.CallCastInsteadOfSelect,
+                DiagnosticDescriptors.OptimizeLinqMethodCall,
                 Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationExpression.Span.End)));
         }
 

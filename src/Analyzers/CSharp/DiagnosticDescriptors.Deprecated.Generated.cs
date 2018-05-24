@@ -70,6 +70,30 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatementFadeOut = MergeLocalDeclarationWithReturnStatement.CreateFadeOut();
 
         [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfCountMethod = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod, 
+            title:              "Use 'Count/Length' property instead of 'Count' method.", 
+            messageFormat:      "Use '{0}' property instead of 'Count' method.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod}", 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor CallAnyInsteadOfCount = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallAnyInsteadOfCount, 
+            title:              "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
+            messageFormat:      "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Warning, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallAnyInsteadOfCount}", 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
         public static readonly DiagnosticDescriptor UseCSharp6DictionaryInitializer = new DiagnosticDescriptor(
             id:                 DiagnosticIdentifiers.UseCSharp6DictionaryInitializer, 
             title:              "Use C# 6.0 dictionary initializer.", 
@@ -79,6 +103,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseCSharp6DictionaryInitializer}", 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor CallCastInsteadOfSelect = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallCastInsteadOfSelect, 
+            title:              "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.", 
+            messageFormat:      "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallCastInsteadOfSelect}", 
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
@@ -115,6 +151,42 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddReturnStatementThatReturnsDefaultValue}", 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor CallFindInsteadOfFirstOrDefault = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault, 
+            title:              "Call 'Find' instead of 'FirstOrDefault'.", 
+            messageFormat:      "Call 'Find' instead of 'FirstOrDefault'.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault}", 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor UseElementAccessInsteadOfElementAt = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt, 
+            title:              "Use [] instead of calling 'ElementAt'.", 
+            messageFormat:      "Use [] instead of calling 'ElementAt'.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt}", 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        public static readonly DiagnosticDescriptor UseElementAccessInsteadOfFirst = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseElementAccessInsteadOfFirst, 
+            title:              "Use [] instead of calling 'First'.", 
+            messageFormat:      "Use [] instead of calling 'First'.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseElementAccessInsteadOfFirst}", 
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]

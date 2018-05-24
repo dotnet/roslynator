@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol == null)
                 return false;
 
-            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, semanticModel, fromMethodName))
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol, fromMethodName))
                 return false;
 
             ExpressionSyntax expression = GetExpression(invocation);

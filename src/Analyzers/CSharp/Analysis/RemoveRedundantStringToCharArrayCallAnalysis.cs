@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Linq;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -14,55 +13,44 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class RemoveRedundantStringToCharArrayCallAnalysis
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, InvocationExpressionSyntax invocation)
+        public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
-            if (!IsFixable(invocation, context.SemanticModel, context.CancellationToken))
+            if (invocationInfo.OperatorToken.ContainsDirectives)
                 return;
 
-            var memberAccess = (MemberAccessExpressionSyntax)invocation.Expression;
-
-            TextSpan span = TextSpan.FromBounds(memberAccess.OperatorToken.SpanStart, invocation.Span.End);
-
-            if (invocation.ContainsDirectives(span))
+            if (invocationInfo.Name.ContainsDirectives)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall, Location.Create(invocation.SyntaxTree, span));
-        }
+            if (invocationInfo.ArgumentList.ContainsDirectives)
+                return;
 
-        public static bool IsFixable(
-            InvocationExpressionSyntax invocation,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (!ParentIsElementAccessOrForEachExpression(invocation.WalkUpParentheses()))
-                return false;
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-            SimpleMemberInvocationExpressionInfo info = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
+            if (!ParentIsElementAccessOrForEachExpression(invocationExpression.WalkUpParentheses()))
+                return;
 
-            if (!info.Success)
-                return false;
-
-            if (info.Arguments.Any())
-                return false;
-
-            if (!string.Equals(info.NameText, "ToCharArray"))
-                return false;
-
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocation, cancellationToken);
+            IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocationExpression, context.CancellationToken);
 
             if (!SymbolUtility.IsPublicInstanceNonGeneric(methodSymbol, "ToCharArray"))
-                return false;
+                return;
 
             if (methodSymbol.ContainingType?.SpecialType != SpecialType.System_String)
-                return false;
+                return;
 
             if (methodSymbol.Parameters.Any())
-                return false;
+                return;
 
             if (!(methodSymbol.ReturnType is IArrayTypeSymbol arrayType))
-                return false;
+                return;
 
-            return arrayType.ElementType.SpecialType == SpecialType.System_Char;
+            if (arrayType.ElementType.SpecialType != SpecialType.System_Char)
+                return;
+
+            TextSpan span = TextSpan.FromBounds(invocationInfo.MemberAccessExpression.OperatorToken.SpanStart, invocationExpression.Span.End);
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall,
+                Location.Create(invocationExpression.SyntaxTree, span));
         }
 
         private static bool ParentIsElementAccessOrForEachExpression(ExpressionSyntax expression)

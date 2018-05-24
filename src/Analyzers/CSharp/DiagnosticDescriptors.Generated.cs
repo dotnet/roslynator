@@ -890,15 +890,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1077</summary>
-        public static readonly DiagnosticDescriptor SimplifyLinqMethodChain = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.SimplifyLinqMethodChain, 
-            title:              "Simplify LINQ method chain.", 
-            messageFormat:      "Simplify LINQ method chain.", 
-            category:           DiagnosticCategories.Simplification, 
+        public static readonly DiagnosticDescriptor OptimizeLinqMethodCall = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OptimizeLinqMethodCall, 
+            title:              "Optimize LINQ method call.", 
+            messageFormat:      "Optimize LINQ method call.", 
+            category:           DiagnosticCategories.Performance, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SimplifyLinqMethodChain}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OptimizeLinqMethodCall}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1078</summary>
@@ -947,30 +947,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.SplitVariableDeclaration}", 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1082</summary>
-        public static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfCountMethod = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod, 
-            title:              "Use 'Count/Length' property instead of 'Count' method.", 
-            messageFormat:      "Use '{0}' property instead of 'Count' method.", 
-            category:           DiagnosticCategories.Performance, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod}", 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1083</summary>
-        public static readonly DiagnosticDescriptor CallAnyInsteadOfCount = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.CallAnyInsteadOfCount, 
-            title:              "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
-            messageFormat:      "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
-            category:           DiagnosticCategories.Performance, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallAnyInsteadOfCount}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1084</summary>
@@ -1267,18 +1243,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddStaticModifierToAllPartialClassDeclarations}", 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1109</summary>
-        public static readonly DiagnosticDescriptor CallCastInsteadOfSelect = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.CallCastInsteadOfSelect, 
-            title:              "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.", 
-            messageFormat:      "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.", 
-            category:           DiagnosticCategories.Simplification, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallCastInsteadOfSelect}", 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1110</summary>
         public static readonly DiagnosticDescriptor DeclareTypeInsideNamespace = new DiagnosticDescriptor(
             id:                 DiagnosticIdentifiers.DeclareTypeInsideNamespace, 
@@ -1353,42 +1317,6 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MarkLocalVariableAsConst}", 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1119</summary>
-        public static readonly DiagnosticDescriptor CallFindInsteadOfFirstOrDefault = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault, 
-            title:              "Call 'Find' instead of 'FirstOrDefault'.", 
-            messageFormat:      "Call 'Find' instead of 'FirstOrDefault'.", 
-            category:           DiagnosticCategories.Performance, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault}", 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1120</summary>
-        public static readonly DiagnosticDescriptor UseElementAccessInsteadOfElementAt = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt, 
-            title:              "Use [] instead of calling 'ElementAt'.", 
-            messageFormat:      "Use [] instead of calling 'ElementAt'.", 
-            category:           DiagnosticCategories.Performance, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt}", 
-            customTags:         Array.Empty<string>());
-
-        /// <summary>RCS1121</summary>
-        public static readonly DiagnosticDescriptor UseElementAccessInsteadOfFirst = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.UseElementAccessInsteadOfFirst, 
-            title:              "Use [] instead of calling 'First'.", 
-            messageFormat:      "Use [] instead of calling 'First'.", 
-            category:           DiagnosticCategories.Performance, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseElementAccessInsteadOfFirst}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1123</summary>

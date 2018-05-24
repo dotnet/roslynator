@@ -2,7 +2,6 @@
 
 using System.Threading;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
 
@@ -25,26 +24,23 @@ namespace Roslynator.CSharp.Analysis
             if (invocationInfo.Arguments.Count != 1)
                 return false;
 
-            MemberAccessExpressionSyntax memberAccess = GetTopmostMemberAccessExpression(invocationInfo.MemberAccessExpression);
-
             if (invocationInfo.NameText != "HasFlag")
                 return false;
 
-            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(memberAccess, cancellationToken);
+            return IsFixable(invocationInfo, semanticModel, cancellationToken);
+        }
 
-            return methodSymbol?.Name == "HasFlag"
-                && !methodSymbol.IsStatic
+        public static bool IsFixable(
+            SimpleMemberInvocationExpressionInfo invocationInfo,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
+
+            return methodSymbol?.IsStatic == false
                 && methodSymbol.IsReturnType(SpecialType.System_Boolean)
                 && methodSymbol.HasSingleParameter(SpecialType.System_Enum)
                 && methodSymbol.IsContainingType(SpecialType.System_Enum);
-        }
-
-        private static MemberAccessExpressionSyntax GetTopmostMemberAccessExpression(MemberAccessExpressionSyntax memberAccess)
-        {
-            while (memberAccess.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
-                memberAccess = (MemberAccessExpressionSyntax)memberAccess.Parent;
-
-            return memberAccess;
         }
     }
 }

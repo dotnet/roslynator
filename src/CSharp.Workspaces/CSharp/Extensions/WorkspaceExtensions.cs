@@ -20,6 +20,22 @@ namespace Roslynator.CSharp
     /// </summary>
     public static class WorkspaceExtensions
     {
+        internal static bool SupportsLanguageFeature(this Document document, CSharpLanguageFeature feature)
+        {
+            switch (feature)
+            {
+                case CSharpLanguageFeature.Unknown:
+                    return false;
+                case CSharpLanguageFeature.AsyncMain:
+                case CSharpLanguageFeature.DefaultLiteral:
+                case CSharpLanguageFeature.InferredTupleElementNames:
+                case CSharpLanguageFeature.PatternMatchingWithGenerics:
+                    return ((CSharpParseOptions)document.Project.ParseOptions).LanguageVersion >= LanguageVersion.CSharp7_1;
+            }
+
+            throw new ArgumentException($"Unknown enum value '{feature}'.", nameof(feature));
+        }
+
         internal static Task<Document> RemoveNodeAsync(
             this Document document,
             SyntaxNode node,

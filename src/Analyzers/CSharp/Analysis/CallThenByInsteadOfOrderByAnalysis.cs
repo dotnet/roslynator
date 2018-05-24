@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             IMethodSymbol methodSymbol = semanticModel.GetExtensionMethodInfo(invocationExpression, cancellationToken).Symbol;
 
             return methodSymbol?.IsName("OrderBy", "OrderByDescending") == true
-                && SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol, semanticModel);
+                && SymbolUtility.IsLinqExtensionOfIEnumerableOfT(methodSymbol);
         }
     }
 }

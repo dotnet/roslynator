@@ -1697,27 +1697,78 @@ catch (Exception ex) // RCS1075
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="SimplifyLinqMethodChain">
+  <Analyzer Identifier="OptimizeLinqMethodCall">
     <Id>RCS1077</Id>
-    <Title>Simplify LINQ method chain.</Title>
-    <MessageFormat>Simplify LINQ method chain.</MessageFormat>
-    <Category>Simplification</Category>
+    <Title>Optimize LINQ method call.</Title>
+    <MessageFormat>Optimize LINQ method call.</MessageFormat>
+    <Category>Performance</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool x = items.Where(f => string.IsNullOrEmpty(f)).Any(); // RCS1077]]></Before>
-        <After><![CDATA[bool x = items.Any(f => string.IsNullOrEmpty(f));]]></After>
+        <Before><![CDATA[bool x = items.Where(f => Foo(f)).Any(); // RCS1077]]></Before>
+        <After><![CDATA[bool x = items.Any(f => Foo(f));]]></After>
       </Sample>
       <Sample>
         <Before><![CDATA[IEnumerable<Foo> x = items.Where(f => f is Foo).Cast<Foo>(); // RCS1077]]></Before>
         <After><![CDATA[IEnumerable<Foo> x = items.OfType<Foo>();]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool x = items.Where((f) => !string.IsNullOrEmpty(f)).Any(f => f.StartsWith("a")); // RCS1077]]></Before>
-        <After><![CDATA[bool x = items.Any((f) => !string.IsNullOrEmpty(f) && f.StartsWith("a"));]]></After>
+        <Before><![CDATA[bool x = items.Where((f) => Foo1(f)).Any(f => Foo2(f)); // RCS1077]]></Before>
+        <After><![CDATA[bool x = items.Any((f) => Foo1(f) && Foo2(f));]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[IEnumerable<object> x = items.Select(f => (object)f); // RCS1077]]></Before>
+        <After><![CDATA[IEnumerable<object> x = items.Cast<object>();]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[bool x = items.FirstOrDefault((f) => Foo(f)) != null; // RCS1077]]></Before>
+        <After><![CDATA[bool x = items.Any((f) => Foo(f));]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[bool x = items.FirstOrDefault() != null; // RCS1077]]></Before>
+        <After><![CDATA[bool x = items.Any();]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[var x = list.ElementAt(1); // RCS1077]]></Before>
+        <After><![CDATA[var x = list[1];]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[var x = list.First(); // RCS1077]]></Before>
+        <After><![CDATA[var x = list[0];]]></After>
+      </Sample>      <Sample>
+        <Before><![CDATA[if (enumerable.Count() != 0) // RCS1077
+{
+}]]></Before>
+        <After><![CDATA[if (enumerable.Any())
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (list.Count() == 1) // RCS1077
+{
+}]]></Before>
+        <After><![CDATA[if (list.Count == 1)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[var stack = new Stack<object>();
+// ...
+object x = stack.First(); // RCS1077]]></Before>
+        <After><![CDATA[var stack = new Stack<object>();
+// ...
+object x = items.Peek();]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[var queue = new Queue<object>();
+// ...
+object x = stack.First(); // RCS1077]]></Before>
+        <After><![CDATA[var queue = new Queue<object>();
+// ...
+object x = items.Peek();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -1792,7 +1843,7 @@ private string s2;]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfCountMethod">
+  <Analyzer Identifier="UseCountOrLengthPropertyInsteadOfCountMethod" IsObsolete="true">
     <Id>RCS1082</Id>
     <Title>Use 'Count/Length' property instead of 'Count' method.</Title>
     <MessageFormat>Use '{0}' property instead of 'Count' method.</MessageFormat>
@@ -1812,7 +1863,7 @@ private string s2;]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="CallAnyInsteadOfCount">
+  <Analyzer Identifier="CallAnyInsteadOfCount" IsObsolete="true">
     <Id>RCS1083</Id>
     <Title>Call 'Enumerable.Any' instead of 'Enumerable.Count'.</Title>
     <MessageFormat>Call 'Enumerable.Any' instead of 'Enumerable.Count'.</MessageFormat>
@@ -2333,7 +2384,7 @@ public static partial class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="CallCastInsteadOfSelect">
+  <Analyzer Identifier="CallCastInsteadOfSelect" IsObsolete="true">
     <Id>RCS1109</Id>
     <Title>Call 'Enumerable.Cast' instead of 'Enumerable.Select'.</Title>
     <MessageFormat>Call 'Enumerable.Cast' instead of 'Enumerable.Select'.</MessageFormat>
@@ -2500,7 +2551,7 @@ string s2 = s + "b";]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="CallFindInsteadOfFirstOrDefault">
+  <Analyzer Identifier="CallFindInsteadOfFirstOrDefault" IsObsolete="true">
     <Id>RCS1119</Id>
     <Title>Call 'Find' instead of 'FirstOrDefault'.</Title>
     <MessageFormat>Call 'Find' instead of 'FirstOrDefault'.</MessageFormat>
@@ -2516,7 +2567,7 @@ string s2 = s + "b";]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseElementAccessInsteadOfElementAt">
+  <Analyzer Identifier="UseElementAccessInsteadOfElementAt" IsObsolete="true">
     <Id>RCS1120</Id>
     <Title>Use [] instead of calling 'ElementAt'.</Title>
     <MessageFormat>Use [] instead of calling 'ElementAt'.</MessageFormat>
@@ -2532,7 +2583,7 @@ string s2 = s + "b";]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="UseElementAccessInsteadOfFirst">
+  <Analyzer Identifier="UseElementAccessInsteadOfFirst" IsObsolete="true">
     <Id>RCS1121</Id>
     <Title>Use [] instead of calling 'First'.</Title>
     <MessageFormat>Use [] instead of calling 'First'.</MessageFormat>

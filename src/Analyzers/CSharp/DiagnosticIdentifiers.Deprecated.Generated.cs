@@ -17,13 +17,25 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string MergeLocalDeclarationWithReturnStatement = "RCS1054";
         [Obsolete("", error: true)]
+        public const string UseCountOrLengthPropertyInsteadOfCountMethod = "RCS1082";
+        [Obsolete("", error: true)]
+        public const string CallAnyInsteadOfCount = "RCS1083";
+        [Obsolete("", error: true)]
         public const string UseCSharp6DictionaryInitializer = "RCS1095";
+        [Obsolete("", error: true)]
+        public const string CallCastInsteadOfSelect = "RCS1109";
         [Obsolete("", error: true)]
         public const string ReplaceReturnStatementWithExpressionStatement = "RCS1115";
         [Obsolete("", error: true)]
         public const string AddBreakStatementToSwitchSection = "RCS1116";
         [Obsolete("", error: true)]
         public const string AddReturnStatementThatReturnsDefaultValue = "RCS1117";
+        [Obsolete("", error: true)]
+        public const string CallFindInsteadOfFirstOrDefault = "RCS1119";
+        [Obsolete("", error: true)]
+        public const string UseElementAccessInsteadOfElementAt = "RCS1120";
+        [Obsolete("", error: true)]
+        public const string UseElementAccessInsteadOfFirst = "RCS1121";
         [Obsolete("", error: true)]
         public const string AddMissingSemicolon = "RCS1122";
         [Obsolete("", error: true)]

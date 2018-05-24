@@ -20,9 +20,6 @@ namespace Roslynator.CSharp.Analysis
             if (firstArgument == null)
                 return;
 
-            if (invocationInfo.NameText != "Join")
-                return;
-
             if (invocationInfo.MemberAccessExpression.SpanOrTrailingTriviaContainsDirectives()
                 || invocationInfo.ArgumentList.OpenParenToken.ContainsDirectives
                 || firstArgument.ContainsDirectives)

@@ -13,9 +13,6 @@ namespace Roslynator.CSharp.Analysis
     {
         internal static void Analyze(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
         {
-            if (!ValidateMethodNameAndArgumentCount())
-                return;
-
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;
 
@@ -47,32 +44,6 @@ namespace Roslynator.CSharp.Analysis
             }
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod, invocationInfo.Name);
-
-            bool ValidateMethodNameAndArgumentCount()
-            {
-                switch (invocationInfo.NameText)
-                {
-                    case "IsMatch":
-                    case "Match":
-                    case "Matches":
-                    case "Split":
-                        {
-                            int count = invocationInfo.Arguments.Count;
-
-                            return count >= 2
-                                && count <= 3;
-                        }
-                    case "Replace":
-                        {
-                            int count = invocationInfo.Arguments.Count;
-
-                            return count >= 3
-                                && count <= 4;
-                        }
-                }
-
-                return false;
-            }
 
             bool ValidateArgument(ArgumentSyntax argument)
             {

@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -29,32 +30,36 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeAsExpression, SyntaxKind.AsExpression);
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
+        public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
-            switch (invocationInfo.NameText)
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
+
+            if (!IsExpressionOfAccessExpression(expression))
+                return;
+
+            IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocationExpression, context.CancellationToken);
+
+            if (methodSymbol?.ReturnType.IsReferenceType != true)
+                return;
+
+            INamedTypeSymbol containingType = methodSymbol.ContainingType;
+
+            if (containingType == null)
+                return;
+
+            if (methodSymbol.IsExtensionMethod)
             {
-                case "ElementAtOrDefault":
-                case "FirstOrDefault":
-                case "LastOrDefault":
-                    {
-                        InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+                if (containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable))
+                    ReportDiagnostic(context, expression);
+            }
+            else if (!methodSymbol.IsStatic)
+            {
+                Debug.Assert(containingType.Implements(SpecialType.System_Collections_Generic_IEnumerable_T, allInterfaces: true), "Type does not implement IEnumerable<T>");
 
-                        ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
-
-                        if (!IsExpressionOfAccessExpression(expression))
-                            break;
-
-                        IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocationExpression, context.CancellationToken);
-
-                        if (methodSymbol?.ReturnType.IsReferenceType != true)
-                            break;
-
-                        if (methodSymbol.ContainingType?.Equals(context.SemanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable)) != true)
-                            break;
-
-                        ReportDiagnostic(context, expression);
-                        break;
-                    }
+                if (containingType.Implements(SpecialType.System_Collections_Generic_IEnumerable_T, allInterfaces: true))
+                    ReportDiagnostic(context, expression);
             }
         }
 

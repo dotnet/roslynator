@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new InvocationExpressionAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new CallSkipAndAnyInsteadOfCountAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 
