@@ -1,0 +1,382 @@
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
+using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.CodeFixes;
+using Xunit;
+
+#pragma warning disable RCS1090
+
+namespace Roslynator.CSharp.Analysis.Tests
+{
+    public class RCS1128UseCoalesceExpressionTests : AbstractCSharpCodeFixVerifier
+    {
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseCoalesceExpression;
+
+        public override DiagnosticAnalyzer Analyzer { get; } = new UseCoalesceExpressionAnalyzer();
+
+        public override CodeFixProvider FixProvider { get; } = new StatementCodeFixProvider();
+
+        [Fact]
+        public async Task Test_LocalDeclarationStatement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string s)
+    {
+        [|string x = s;|]
+
+        if (x == null)
+        {
+            x = (true) ? ""a"" : ""b"";
+        }
+    }
+}
+", @"
+class C
+{
+    void M(string s)
+    {
+        string x = s ?? ((true) ? ""a"" : ""b"");
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_LocalDeclarationStatement_IsNull()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string s)
+    {
+        [|string x = s;|]
+
+        if (x is null)
+        {
+            x = (true) ? ""a"" : ""b"";
+        }
+    }
+}
+", @"
+class C
+{
+    void M(string s)
+    {
+        string x = s ?? ((true) ? ""a"" : ""b"");
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_LocalDeclarationStatement_WithComments()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string s)
+    {
+        [|string x = s;|]
+
+        // a
+        if (x == null)
+        {
+            // b
+            x = (true) ? ""a"" : ""b"";
+        }
+    }
+}
+", @"
+class C
+{
+    void M(string s)
+    {
+        string x = s ?? ((true) ? ""a"" : ""b"");
+
+        // a
+           
+        
+            // b
+                  
+        
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_LocalDeclarationStatement_EmbeddedStatement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string s)
+    {
+        [|string x = s;|]
+
+        if (x == null)
+            x = """";
+    }
+}
+", @"
+class C
+{
+    void M(string s)
+    {
+        string x = s ?? """";
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_LocalDeclarationStatement_CastExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C : B
+{
+    void M(C c)
+    {
+        [|B b = c;|]
+
+        if (b == null)
+        {
+            b = default(C);
+        }
+    }
+}
+
+class B { }
+", @"
+class C : B
+{
+    void M(C c)
+    {
+        B b = c ?? (B)default(C);
+    }
+}
+
+class B { }
+");
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignmentStatement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string s, string x)
+    {
+        [|x = """";|]
+
+        if (x == null)
+        {
+            x = (true) ? ""a"" : ""b"";
+        }
+    }
+}
+", @"
+class C
+{
+    void M(string s, string x)
+    {
+        x = """" ?? ((true) ? ""a"" : ""b"");
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignmentStatement_CastExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C : B
+{
+    void M(C c, B b)
+    {
+        [|b = c;|]
+
+        if (b == null)
+        {
+            b = default(C);
+        }
+    }
+}
+
+class B { }
+", @"
+class C : B
+{
+    void M(C c, B b)
+    {
+        b = c ?? (B)default(C);
+    }
+}
+
+class B { }
+");
+        }
+
+        [Fact]
+        public async Task Test_IfStatement_Nullable()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(int? i)
+    {
+        [|int? x = i;|]
+
+        if (x == null)
+        {
+            x = (true) ? 1 : 2;
+        }
+    }
+}
+", @"
+class C
+{
+    void M(int? i)
+    {
+        int? x = i ?? (int?)((true) ? 1 : 2);
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_IfStatement_Nullable_NotHasValue()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(int? i)
+    {
+        [|int? x = i;|]
+
+        if (!x.HasValue)
+        {
+            x = (true) ? 1 : 2;
+        }
+    }
+}
+", @"
+class C
+{
+    void M(int? i)
+    {
+        int? x = i ?? (int?)((true) ? 1 : 2);
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_LocalDeclarationStatement_Nullable()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(int? i)
+    {
+        [|int? x = i;|]
+
+        if (x == null)
+        {
+            x = (true) ? 1 : 2;
+        }
+    }
+}
+", @"
+class C
+{
+    void M(int? i)
+    {
+        int? x = i ?? (int?)((true) ? 1 : 2);
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task Test_SimpleAssignmentStatement_Nullable()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(int? i, int? x)
+    {
+        [|x = i;|]
+
+        if (x == null)
+        {
+            x = (true) ? 1 : 2;
+        }
+    }
+}
+", @"
+class C
+{
+    void M(int? i, int? x)
+    {
+        x = i ?? (int?)((true) ? 1 : 2);
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_NotEqualsToNull()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string x = """";
+
+        if (x != null)
+            x = """";
+    }
+}");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_NotIsNull()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        string x = """";
+
+        if (!(x is null))
+            x = """";
+    }
+}");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_HasValue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        int? x = 0;
+
+        if (x.HasValue)
+            x = 0;
+    }
+}");
+        }
+    }
+}

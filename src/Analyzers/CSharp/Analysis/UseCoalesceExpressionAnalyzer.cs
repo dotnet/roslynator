@@ -6,7 +6,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis
@@ -38,13 +37,13 @@ namespace Roslynator.CSharp.Analysis
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (!ifStatement.IsSimpleIf())
-                return;
-
             if (ifStatement.ContainsDiagnostics)
                 return;
 
             if (ifStatement.SpanContainsDirectives())
+                return;
+
+            if (!ifStatement.IsSimpleIf())
                 return;
 
             SyntaxList<StatementSyntax> statements = SyntaxInfo.StatementListInfo(ifStatement).Statements;
@@ -52,23 +51,27 @@ namespace Roslynator.CSharp.Analysis
             if (!statements.Any())
                 return;
 
-            if (IsPartOfLazyInitialization(ifStatement, statements))
+            if (IsPartOfLazyInitialization())
                 return;
 
-            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(ifStatement.Condition, semanticModel: context.SemanticModel, cancellationToken: context.CancellationToken);
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(
+                ifStatement.Condition,
+                semanticModel: context.SemanticModel,
+                allowedStyles: NullCheckStyles.CheckingNull,
+                cancellationToken: context.CancellationToken);
 
             if (!nullCheck.Success)
                 return;
 
-            SimpleAssignmentStatementInfo simpleAssignment = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.SingleNonBlockStatementOrDefault());
+            SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.SingleNonBlockStatementOrDefault());
 
-            if (!simpleAssignment.Success)
+            if (!assignmentInfo.Success)
                 return;
 
-            if (!CSharpFactory.AreEquivalent(simpleAssignment.Left, nullCheck.Expression))
+            if (!CSharpFactory.AreEquivalent(assignmentInfo.Left, nullCheck.Expression))
                 return;
 
-            if (!simpleAssignment.Right.IsSingleLine())
+            if (!assignmentInfo.Right.IsSingleLine())
                 return;
 
             int index = statements.IndexOf(ifStatement);
@@ -78,7 +81,9 @@ namespace Roslynator.CSharp.Analysis
                 StatementSyntax previousStatement = statements[index - 1];
 
                 if (!previousStatement.ContainsDiagnostics
-                    && IsFixable(previousStatement, ifStatement, nullCheck.Expression, ifStatement.Parent))
+                    && !previousStatement.GetTrailingTrivia().Any(f => f.IsDirective)
+                    && !ifStatement.GetLeadingTrivia().Any(f => f.IsDirective)
+                    && CanUseCoalesceExpression(previousStatement, nullCheck.Expression))
                 {
                     context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, previousStatement);
                 }
@@ -100,82 +105,52 @@ namespace Roslynator.CSharp.Analysis
             if (!CSharpFactory.AreEquivalent(nullCheck.Expression, invocationInfo.Expression))
                 return;
 
-            if (ifStatement.Parent.ContainsDirectives(TextSpan.FromBounds(ifStatement.SpanStart, nextStatement.Span.End)))
+            if (ifStatement.GetTrailingTrivia().Any(f => f.IsDirective))
+                return;
+
+            if (nextStatement.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.InlineLazyInitialization, ifStatement);
-        }
 
-        private static bool IsPartOfLazyInitialization(IfStatementSyntax ifStatement, SyntaxList<StatementSyntax> statements)
-        {
-            return statements.Count == 2
-                && statements.IndexOf(ifStatement) == 0
-                && statements[1].IsKind(SyntaxKind.ReturnStatement);
-        }
-
-        private static bool IsFixable(
-            StatementSyntax statement,
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax expression,
-            SyntaxNode parent)
-        {
-            switch (statement.Kind())
+            bool IsPartOfLazyInitialization()
             {
-                case SyntaxKind.LocalDeclarationStatement:
-                    return IsFixable((LocalDeclarationStatementSyntax)statement, ifStatement, expression, parent);
-                case SyntaxKind.ExpressionStatement:
-                    return IsFixable((ExpressionStatementSyntax)statement, ifStatement, expression, parent);
-                default:
-                    return false;
+                return statements.Count == 2
+                    && statements.IndexOf(ifStatement) == 0
+                    && statements[1].IsKind(SyntaxKind.ReturnStatement);
             }
         }
 
-        private static bool IsFixable(
-            LocalDeclarationStatementSyntax localDeclarationStatement,
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax expression,
-            SyntaxNode parent)
+        private static bool CanUseCoalesceExpression(StatementSyntax statement, ExpressionSyntax expression)
         {
-            VariableDeclaratorSyntax declarator = localDeclarationStatement
-                .Declaration?
-                .Variables
-                .SingleOrDefault(shouldThrow: false);
+            SyntaxKind kind = statement.Kind();
 
-            if (declarator != null)
+            if (kind == SyntaxKind.LocalDeclarationStatement)
             {
-                ExpressionSyntax value = declarator.Initializer?.Value;
+                var localDeclarationStatement = (LocalDeclarationStatementSyntax)statement;
+
+                VariableDeclaratorSyntax declarator = localDeclarationStatement.Declaration?
+                    .Variables
+                    .SingleOrDefault(shouldThrow: false);
+
+                ExpressionSyntax value = declarator?.Initializer?.Value;
 
                 return value != null
                     && expression.IsKind(SyntaxKind.IdentifierName)
                     && string.Equals(declarator.Identifier.ValueText, ((IdentifierNameSyntax)expression).Identifier.ValueText, StringComparison.Ordinal)
-                    && !parent.ContainsDirectives(TextSpan.FromBounds(value.Span.End, ifStatement.SpanStart));
+                    && !value.GetTrailingTrivia().Any(f => f.IsDirective)
+                    && !localDeclarationStatement.SemicolonToken.ContainsDirectives;
             }
-
-            return false;
-        }
-
-        private static bool IsFixable(
-            ExpressionStatementSyntax expressionStatement,
-            IfStatementSyntax ifStatement,
-            ExpressionSyntax expression,
-            SyntaxNode parent)
-        {
-            ExpressionSyntax expression2 = expressionStatement.Expression;
-
-            if (expression2?.Kind() == SyntaxKind.SimpleAssignmentExpression)
+            else if (kind == SyntaxKind.ExpressionStatement)
             {
-                var assignment = (AssignmentExpressionSyntax)expression2;
+                var expressionStatement = (ExpressionStatementSyntax)statement;
 
-                ExpressionSyntax left = assignment.Left;
+                SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(expressionStatement);
 
-                if (left?.IsMissing == false)
-                {
-                    ExpressionSyntax right = assignment.Right;
-
-                    return right?.IsMissing == false
-                        && CSharpFactory.AreEquivalent(expression, left)
-                        && !parent.ContainsDirectives(TextSpan.FromBounds(right.Span.End, ifStatement.SpanStart));
-                }
+                return assignmentInfo.Success
+                    && CSharpFactory.AreEquivalent(expression, assignmentInfo.Left)
+                    && !assignmentInfo.Right.GetTrailingTrivia().Any(f => f.IsDirective)
+                    && !expressionStatement.SemicolonToken.ContainsDirectives;
             }
 
             return false;
