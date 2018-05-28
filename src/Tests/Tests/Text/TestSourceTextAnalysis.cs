@@ -34,12 +34,12 @@ namespace Roslynator.Tests.Text
             return Hash.Combine(Spans.GetHashCode(), Hash.Create(Source));
         }
 
-        public static bool operator ==(TestSourceTextAnalysis analysis1, TestSourceTextAnalysis analysis2)
+        public static bool operator ==(in TestSourceTextAnalysis analysis1, in TestSourceTextAnalysis analysis2)
         {
             return analysis1.Equals(analysis2);
         }
 
-        public static bool operator !=(TestSourceTextAnalysis analysis1, TestSourceTextAnalysis analysis2)
+        public static bool operator !=(in TestSourceTextAnalysis analysis1, in TestSourceTextAnalysis analysis2)
         {
             return !(analysis1 == analysis2);
         }

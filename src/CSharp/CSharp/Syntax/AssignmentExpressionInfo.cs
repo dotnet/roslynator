@@ -138,12 +138,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<AssignmentExpressionSyntax>.Default.GetHashCode(AssignmentExpression);
         }
 
-        public static bool operator ==(AssignmentExpressionInfo info1, AssignmentExpressionInfo info2)
+        public static bool operator ==(in AssignmentExpressionInfo info1, in AssignmentExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(AssignmentExpressionInfo info1, AssignmentExpressionInfo info2)
+        public static bool operator !=(in AssignmentExpressionInfo info1, in AssignmentExpressionInfo info2)
         {
             return !(info1 == info2);
         }

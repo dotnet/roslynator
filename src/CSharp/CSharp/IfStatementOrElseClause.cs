@@ -214,12 +214,12 @@ namespace Roslynator.CSharp
         }
 
 #pragma warning disable CS1591
-        public static bool operator ==(IfStatementOrElseClause left, IfStatementOrElseClause right)
+        public static bool operator ==(in IfStatementOrElseClause left, in IfStatementOrElseClause right)
         {
             return left.Equals(right);
         }
 
-        public static bool operator !=(IfStatementOrElseClause left, IfStatementOrElseClause right)
+        public static bool operator !=(in IfStatementOrElseClause left, in IfStatementOrElseClause right)
         {
             return !left.Equals(right);
         }

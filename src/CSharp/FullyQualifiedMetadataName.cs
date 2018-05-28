@@ -182,12 +182,12 @@ namespace Roslynator
                 Hash.Create(Name)));
         }
 
-        public static bool operator ==(FullyQualifiedMetadataName info1, FullyQualifiedMetadataName info2)
+        public static bool operator ==(in FullyQualifiedMetadataName info1, in FullyQualifiedMetadataName info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(FullyQualifiedMetadataName info1, FullyQualifiedMetadataName info2)
+        public static bool operator !=(in FullyQualifiedMetadataName info1, in FullyQualifiedMetadataName info2)
         {
             return !(info1 == info2);
         }

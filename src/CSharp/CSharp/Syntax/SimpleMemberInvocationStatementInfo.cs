@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Syntax
     {
         private readonly SimpleMemberInvocationExpressionInfo _info;
 
-        private SimpleMemberInvocationStatementInfo(SimpleMemberInvocationExpressionInfo info)
+        private SimpleMemberInvocationStatementInfo(in SimpleMemberInvocationExpressionInfo info)
         {
             _info = info;
         }
@@ -156,12 +156,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<SyntaxNode>.Default.GetHashCode(InvocationExpression?.Parent);
         }
 
-        public static bool operator ==(SimpleMemberInvocationStatementInfo info1, SimpleMemberInvocationStatementInfo info2)
+        public static bool operator ==(in SimpleMemberInvocationStatementInfo info1, in SimpleMemberInvocationStatementInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(SimpleMemberInvocationStatementInfo info1, SimpleMemberInvocationStatementInfo info2)
+        public static bool operator !=(in SimpleMemberInvocationStatementInfo info1, in SimpleMemberInvocationStatementInfo info2)
         {
             return !(info1 == info2);
         }

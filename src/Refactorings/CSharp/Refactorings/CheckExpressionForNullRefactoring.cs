@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
         }
 
         private static bool CanRefactor(
-            SimpleAssignmentStatementInfo assignmentInfo,
+            in SimpleAssignmentStatementInfo assignmentInfo,
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Refactorings
             RegisterRefactoring(context, IdentifierName(localInfo.Identifier), localInfo.Statement);
         }
 
-        private static bool CanRefactor(SingleLocalDeclarationStatementInfo localInfo, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool CanRefactor(in SingleLocalDeclarationStatementInfo localInfo, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             if (!localInfo.Success)
                 return false;
@@ -277,7 +277,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             ExpressionSyntax expression,
             SyntaxList<StatementSyntax> statements,
-            StatementListInfo statementsInfo,
+            in StatementListInfo statementsInfo,
             int statementIndex,
             int lastStatementIndex,
             CancellationToken cancellationToken)

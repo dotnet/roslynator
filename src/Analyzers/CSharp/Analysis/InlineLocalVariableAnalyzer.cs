@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Analysis
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
             SyntaxList<StatementSyntax> statements,
-            SingleLocalDeclarationStatementInfo localDeclarationInfo,
+            in SingleLocalDeclarationStatementInfo localDeclarationInfo,
             int index,
             ExpressionStatementSyntax expressionStatement)
         {
@@ -177,7 +177,7 @@ namespace Roslynator.CSharp.Analysis
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
             SyntaxList<StatementSyntax> statements,
-            SingleLocalDeclarationStatementInfo localDeclarationInfo,
+            in SingleLocalDeclarationStatementInfo localDeclarationInfo,
             int index,
             LocalDeclarationStatementSyntax localDeclaration2)
         {
@@ -219,7 +219,7 @@ namespace Roslynator.CSharp.Analysis
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
             SyntaxList<StatementSyntax> statements,
-            SingleLocalDeclarationStatementInfo localDeclarationInfo,
+            in SingleLocalDeclarationStatementInfo localDeclarationInfo,
             ExpressionSyntax expression)
         {
             if (expression?.Kind() != SyntaxKind.IdentifierName)
@@ -247,7 +247,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(
             SyntaxNodeAnalysisContext context,
-            SingleLocalDeclarationStatementInfo localDeclarationInfo,
+            in SingleLocalDeclarationStatementInfo localDeclarationInfo,
             ExpressionSyntax expression)
         {
             context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclarationInfo.Statement);

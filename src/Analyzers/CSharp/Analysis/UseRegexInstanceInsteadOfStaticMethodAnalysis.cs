@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class UseRegexInstanceInsteadOfStaticMethodAnalysis
     {
-        internal static void Analyze(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
+        internal static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
             SemanticModel semanticModel = context.SemanticModel;
             CancellationToken cancellationToken = context.CancellationToken;

@@ -161,12 +161,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<ConditionalExpressionSyntax>.Default.GetHashCode(ConditionalExpression);
         }
 
-        public static bool operator ==(ConditionalExpressionInfo info1, ConditionalExpressionInfo info2)
+        public static bool operator ==(in ConditionalExpressionInfo info1, in ConditionalExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(ConditionalExpressionInfo info1, ConditionalExpressionInfo info2)
+        public static bool operator !=(in ConditionalExpressionInfo info1, in ConditionalExpressionInfo info2)
         {
             return !(info1 == info2);
         }

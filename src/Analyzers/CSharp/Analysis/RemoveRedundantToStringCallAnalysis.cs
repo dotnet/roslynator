@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class RemoveRedundantToStringCallAnalysis
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
+        public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
             if (!IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
                 return;
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
         }
 
         public static bool IsFixable(
-            SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {

@@ -106,8 +106,8 @@ namespace Roslynator.CSharp.Analysis
 
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
-            SymbolInterfaceInfo interfaceInfo,
-            SymbolInterfaceInfo interfaceInfo2,
+            in SymbolInterfaceInfo interfaceInfo,
+            in SymbolInterfaceInfo interfaceInfo2,
             INamedTypeSymbol typeSymbol = null)
         {
             foreach (INamedTypeSymbol interfaceSymbol in interfaceInfo2.Interfaces)

@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Syntax
         }
 
         internal static StringConcatenationExpressionInfo Create(
-            BinaryExpressionSelection binaryExpressionSelection,
+            in BinaryExpressionSelection binaryExpressionSelection,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -368,7 +368,7 @@ namespace Roslynator.CSharp.Syntax
                 throw new InvalidOperationException($"{nameof(StringConcatenationExpressionInfo)} is not initalized.");
         }
 
-        private static void ThrowIfContainsNonStringLiteralExpression(StringConcatenationAnalysis analysis)
+        private static void ThrowIfContainsNonStringLiteralExpression(in StringConcatenationAnalysis analysis)
         {
             if (analysis.ContainsNonStringLiteral)
                 throw new InvalidOperationException("String concatenation contains an expression that is not a string literal.");
@@ -404,12 +404,12 @@ namespace Roslynator.CSharp.Syntax
             return Hash.Combine(Span.GetHashCode(), Hash.Create(BinaryExpression));
         }
 
-        public static bool operator ==(StringConcatenationExpressionInfo info1, StringConcatenationExpressionInfo info2)
+        public static bool operator ==(in StringConcatenationExpressionInfo info1, in StringConcatenationExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(StringConcatenationExpressionInfo info1, StringConcatenationExpressionInfo info2)
+        public static bool operator !=(in StringConcatenationExpressionInfo info1, in StringConcatenationExpressionInfo info2)
         {
             return !(info1 == info2);
         }

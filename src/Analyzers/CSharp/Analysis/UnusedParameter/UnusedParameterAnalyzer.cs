@@ -310,7 +310,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             Analyze(context, parameterInfo);
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, ParameterInfo parameterInfo, bool isIndexer = false)
+        private static void Analyze(SyntaxNodeAnalysisContext context, in ParameterInfo parameterInfo, bool isIndexer = false)
         {
             Dictionary<string, NodeSymbolInfo> unusedNodes = FindUnusedNodes(context, parameterInfo, isIndexer);
 
@@ -320,7 +320,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             unusedNodes.Clear();
         }
 
-        private static Dictionary<string, NodeSymbolInfo> FindUnusedNodes(SyntaxNodeAnalysisContext context, ParameterInfo parameterInfo, bool isIndexer = false)
+        private static Dictionary<string, NodeSymbolInfo> FindUnusedNodes(SyntaxNodeAnalysisContext context, in ParameterInfo parameterInfo, bool isIndexer = false)
         {
             UnusedParameterWalker walker = UnusedParameterWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken, isIndexer);
 

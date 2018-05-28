@@ -178,12 +178,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<LambdaExpressionSyntax>.Default.GetHashCode(LambdaExpression);
         }
 
-        public static bool operator ==(SingleParameterLambdaExpressionInfo info1, SingleParameterLambdaExpressionInfo info2)
+        public static bool operator ==(in SingleParameterLambdaExpressionInfo info1, in SingleParameterLambdaExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(SingleParameterLambdaExpressionInfo info1, SingleParameterLambdaExpressionInfo info2)
+        public static bool operator !=(in SingleParameterLambdaExpressionInfo info1, in SingleParameterLambdaExpressionInfo info2)
         {
             return !(info1 == info2);
         }

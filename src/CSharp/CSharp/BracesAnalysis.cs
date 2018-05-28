@@ -154,12 +154,12 @@ namespace Roslynator.CSharp
             return value.Flags;
         }
 
-        public static bool operator ==(BracesAnalysis analysis1, BracesAnalysis analysis2)
+        public static bool operator ==(in BracesAnalysis analysis1, in BracesAnalysis analysis2)
         {
             return analysis1.Equals(analysis2);
         }
 
-        public static bool operator !=(BracesAnalysis analysis1, BracesAnalysis analysis2)
+        public static bool operator !=(in BracesAnalysis analysis1, in BracesAnalysis analysis2)
         {
             return !(analysis1 == analysis2);
         }

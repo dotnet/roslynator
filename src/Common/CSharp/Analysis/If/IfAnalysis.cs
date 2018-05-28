@@ -220,7 +220,7 @@ namespace Roslynator.CSharp.Analysis.If
             IfStatementSyntax ifStatement,
             ExpressionSyntax expression1,
             ExpressionSyntax expression2,
-            NullCheckExpressionInfo nullCheck,
+            in NullCheckExpressionInfo nullCheck,
             IfAnalysisOptions options,
             bool isYield,
             SemanticModel semanticModel,
@@ -333,7 +333,7 @@ namespace Roslynator.CSharp.Analysis.If
             ExpressionSyntax left,
             ExpressionSyntax expression1,
             ExpressionSyntax expression2,
-            NullCheckExpressionInfo nullCheck,
+            in NullCheckExpressionInfo nullCheck,
             IfAnalysisOptions options,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)

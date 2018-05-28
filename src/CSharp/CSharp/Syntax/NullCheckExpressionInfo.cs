@@ -372,12 +372,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<ExpressionSyntax>.Default.GetHashCode(NullCheckExpression);
         }
 
-        public static bool operator ==(NullCheckExpressionInfo info1, NullCheckExpressionInfo info2)
+        public static bool operator ==(in NullCheckExpressionInfo info1, in NullCheckExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(NullCheckExpressionInfo info1, NullCheckExpressionInfo info2)
+        public static bool operator !=(in NullCheckExpressionInfo info1, in NullCheckExpressionInfo info2)
         {
             return !(info1 == info2);
         }

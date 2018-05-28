@@ -439,12 +439,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<SyntaxNode>.Default.GetHashCode(Parent);
         }
 
-        public static bool operator ==(UsingDirectiveListInfo info1, UsingDirectiveListInfo info2)
+        public static bool operator ==(in UsingDirectiveListInfo info1, in UsingDirectiveListInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(UsingDirectiveListInfo info1, UsingDirectiveListInfo info2)
+        public static bool operator !=(in UsingDirectiveListInfo info1, in UsingDirectiveListInfo info2)
         {
             return !(info1 == info2);
         }

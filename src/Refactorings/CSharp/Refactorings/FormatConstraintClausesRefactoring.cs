@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static GenericInfo ToSingleLine(GenericInfo info)
+        private static GenericInfo ToSingleLine(in GenericInfo info)
         {
             SyntaxNode declaration = info.Node;
 
@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Refactorings
             return SyntaxInfo.GenericInfo(declaration).WithConstraintClauses(constraintClauses);
         }
 
-        private static GenericInfo ToMultiLine(GenericInfo info)
+        private static GenericInfo ToMultiLine(in GenericInfo info)
         {
             SyntaxNode declaration = info.Node;
             SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;

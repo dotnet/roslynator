@@ -106,12 +106,12 @@ namespace Roslynator.CSharp
             return EqualityComparer<IfStatementSyntax>.Default.GetHashCode(IfStatement);
         }
 
-        public static bool operator ==(IfStatementCascade info1, IfStatementCascade info2)
+        public static bool operator ==(in IfStatementCascade info1, in IfStatementCascade info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(IfStatementCascade info1, IfStatementCascade info2)
+        public static bool operator !=(in IfStatementCascade info1, in IfStatementCascade info2)
         {
             return !(info1 == info2);
         }

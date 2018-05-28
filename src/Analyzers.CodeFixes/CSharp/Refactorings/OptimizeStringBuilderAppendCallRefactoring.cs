@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static Task<Document> RefactorAsync(
             Document document,
-            SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
             CancellationToken cancellationToken)
         {
             SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
@@ -127,7 +127,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static InvocationExpressionSyntax ConvertInterpolatedStringExpressionToInvocationExpression(
             InterpolatedStringExpressionSyntax interpolatedString,
-            SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel)
         {
             bool isVerbatim = interpolatedString.IsVerbatim();

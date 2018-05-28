@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> ToInterpolatedStringAsync(
             Document document,
-            StringConcatenationExpressionInfo concatenationInfo,
+            in StringConcatenationExpressionInfo concatenationInfo,
             CancellationToken cancellationToken)
         {
             InterpolatedStringExpressionSyntax newExpression = concatenationInfo.ToInterpolatedStringExpression();
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Refactorings
 
         public static Task<Document> ToStringLiteralAsync(
             Document document,
-            StringConcatenationExpressionInfo concatenationInfo,
+            in StringConcatenationExpressionInfo concatenationInfo,
             bool multiline,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> RefactorAsync(
             Document document,
-            StringConcatenationExpressionInfo concatenationInfo,
+            in StringConcatenationExpressionInfo concatenationInfo,
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {

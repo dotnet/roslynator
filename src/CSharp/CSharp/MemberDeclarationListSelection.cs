@@ -12,7 +12,7 @@ namespace Roslynator.CSharp
     /// </summary>
     public sealed class MemberDeclarationListSelection : SyntaxListSelection<MemberDeclarationSyntax>
     {
-        private MemberDeclarationListSelection(SyntaxNode parent, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, SelectionResult result)
+        private MemberDeclarationListSelection(SyntaxNode parent, SyntaxList<MemberDeclarationSyntax> members, TextSpan span, in SelectionResult result)
              : this(parent, members, span, result.FirstIndex, result.LastIndex)
         {
         }

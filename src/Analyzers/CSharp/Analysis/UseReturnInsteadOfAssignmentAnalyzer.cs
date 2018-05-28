@@ -193,7 +193,7 @@ namespace Roslynator.CSharp.Analysis
             return false;
         }
 
-        private static bool IsSymbolAssignedInLastStatement(IfStatementOrElseClause ifOrElse, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static bool IsSymbolAssignedInLastStatement(in IfStatementOrElseClause ifOrElse, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             StatementSyntax statement = GetLastStatementOrDefault(ifOrElse.Statement);
 

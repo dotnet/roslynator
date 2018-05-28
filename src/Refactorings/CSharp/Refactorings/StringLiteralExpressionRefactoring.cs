@@ -120,7 +120,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static int GetStartIndex(StringLiteralExpressionInfo info, TextSpan span)
+        private static int GetStartIndex(in StringLiteralExpressionInfo info, TextSpan span)
         {
             int spanStart = info.Expression.SpanStart;
 

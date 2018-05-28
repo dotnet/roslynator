@@ -325,12 +325,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<SyntaxNode>.Default.GetHashCode(Node);
         }
 
-        public static bool operator ==(ParameterInfo info1, ParameterInfo info2)
+        public static bool operator ==(in ParameterInfo info1, in ParameterInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(ParameterInfo info1, ParameterInfo info2)
+        public static bool operator !=(in ParameterInfo info1, in ParameterInfo info2)
         {
             return !(info1 == info2);
         }

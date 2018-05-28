@@ -17,7 +17,7 @@ namespace Roslynator
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class SyntaxListSelection<TNode> : Selection<TNode> where TNode : SyntaxNode
     {
-        private SyntaxListSelection(SyntaxList<TNode> list, TextSpan span, SelectionResult result)
+        private SyntaxListSelection(SyntaxList<TNode> list, TextSpan span, in SelectionResult result)
             : this(list, span, result.FirstIndex, result.LastIndex)
         {
         }

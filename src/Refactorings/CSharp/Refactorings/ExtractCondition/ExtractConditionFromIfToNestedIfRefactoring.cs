@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             Document document,
             IfStatementSyntax ifStatement,
             BinaryExpressionSyntax condition,
-            BinaryExpressionSelection binaryExpressionSelection,
+            in BinaryExpressionSelection binaryExpressionSelection,
             CancellationToken cancellationToken)
         {
             IfStatementSyntax newNode = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSelection);

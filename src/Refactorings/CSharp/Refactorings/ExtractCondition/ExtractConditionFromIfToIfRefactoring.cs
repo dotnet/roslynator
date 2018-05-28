@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public Task<Document> RefactorAsync(
             Document document,
-            StatementListInfo statementsInfo,
+            in StatementListInfo statementsInfo,
             BinaryExpressionSyntax condition,
             ExpressionSyntax expression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -41,9 +41,9 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public Task<Document> RefactorAsync(
             Document document,
-            StatementListInfo statementsInfo,
+            in StatementListInfo statementsInfo,
             BinaryExpressionSyntax condition,
-            BinaryExpressionSelection binaryExpressionSelection,
+            in BinaryExpressionSelection binaryExpressionSelection,
             CancellationToken cancellationToken)
         {
             var ifStatement = (IfStatementSyntax)condition.Parent;
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
         }
 
         private static SyntaxNode AddNextIf(
-            StatementListInfo statementsInfo,
+            in StatementListInfo statementsInfo,
             IfStatementSyntax ifStatement,
             IfStatementSyntax newIfStatement,
             ExpressionSyntax expression)

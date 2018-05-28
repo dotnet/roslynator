@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
         public static MethodChainingWithAssignmentAnalysis WithAssignmentAnalysis { get; } = new MethodChainingWithAssignmentAnalysis();
 
         public static bool IsFixable(
-            SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
         }
 
         public bool Analyze(
-            SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
             StatementSyntax statement,
             string name,
             SemanticModel semanticModel,

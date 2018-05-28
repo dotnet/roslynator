@@ -207,7 +207,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> RefactorAsync(
             Document document,
-            StatementListInfo statementsInfo,
+            in StatementListInfo statementsInfo,
             StatementSyntax statement,
             InitializerExpressionSyntax initializer,
             ExpressionSyntax initializedExpression,

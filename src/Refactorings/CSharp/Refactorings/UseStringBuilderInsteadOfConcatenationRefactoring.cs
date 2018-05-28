@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseStringBuilderInsteadOfConcatenationRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, StringConcatenationExpressionInfo concatenationInfo)
+        public static void ComputeRefactoring(RefactoringContext context, in StringConcatenationExpressionInfo concatenationInfo)
         {
             BinaryExpressionSyntax binaryExpression = concatenationInfo.BinaryExpression;
 

@@ -7,7 +7,7 @@ namespace Roslynator.Tests.Text
 {
     internal readonly struct LinePositionSpanInfo : IEquatable<LinePositionSpanInfo>
     {
-        public LinePositionSpanInfo(LinePositionInfo start, LinePositionInfo end)
+        public LinePositionSpanInfo(in LinePositionInfo start, in LinePositionInfo end)
         {
             Start = start;
             End = end;
@@ -44,12 +44,12 @@ namespace Roslynator.Tests.Text
             return Hash.Combine(Start.GetHashCode(), End.GetHashCode());
         }
 
-        public static bool operator ==(LinePositionSpanInfo info1, LinePositionSpanInfo info2)
+        public static bool operator ==(in LinePositionSpanInfo info1, in LinePositionSpanInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(LinePositionSpanInfo info1, LinePositionSpanInfo info2)
+        public static bool operator !=(in LinePositionSpanInfo info1, in LinePositionSpanInfo info2)
         {
             return !(info1 == info2);
         }

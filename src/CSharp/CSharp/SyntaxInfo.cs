@@ -1051,7 +1051,7 @@ namespace Roslynator.CSharp
         }
 
         internal static StringConcatenationExpressionInfo StringConcatenationExpressionInfo(
-            BinaryExpressionSelection binaryExpressionSelection,
+            in BinaryExpressionSelection binaryExpressionSelection,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {

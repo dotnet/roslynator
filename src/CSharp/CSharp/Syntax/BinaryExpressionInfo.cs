@@ -259,12 +259,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<BinaryExpressionSyntax>.Default.GetHashCode(BinaryExpression);
         }
 
-        public static bool operator ==(BinaryExpressionInfo info1, BinaryExpressionInfo info2)
+        public static bool operator ==(in BinaryExpressionInfo info1, in BinaryExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(BinaryExpressionInfo info1, BinaryExpressionInfo info2)
+        public static bool operator !=(in BinaryExpressionInfo info1, in BinaryExpressionInfo info2)
         {
             return !(info1 == info2);
         }

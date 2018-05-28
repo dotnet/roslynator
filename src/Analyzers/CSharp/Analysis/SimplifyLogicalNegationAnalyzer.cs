@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        public static void Analyze(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
+        public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
             SyntaxNode parent = invocationInfo.InvocationExpression.WalkUpParentheses().Parent;
 

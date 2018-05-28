@@ -418,12 +418,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<SyntaxNode>.Default.GetHashCode(Node);
         }
 
-        public static bool operator ==(GenericInfo info1, GenericInfo info2)
+        public static bool operator ==(in GenericInfo info1, in GenericInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(GenericInfo info1, GenericInfo info2)
+        public static bool operator !=(in GenericInfo info1, in GenericInfo info2)
         {
             return !(info1 == info2);
         }

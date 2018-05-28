@@ -82,18 +82,19 @@ namespace Roslynator.CSharp.Refactorings
             string GetTitle()
             {
                 string s;
+                DocumentationCommentOrigin origin = data.Origin;
 
-                if (data.Origin == DocumentationCommentOrigin.BaseMember)
+                if (origin == DocumentationCommentOrigin.BaseMember)
                 {
                     s = "base";
                 }
-                else if (data.Origin == DocumentationCommentOrigin.InterfaceMember)
+                else if (origin == DocumentationCommentOrigin.InterfaceMember)
                 {
                     s = "interface";
                 }
                 else
                 {
-                    Debug.Fail(data.Origin.ToString());
+                    Debug.Fail(origin.ToString());
                     s = "base";
                 }
 
@@ -104,7 +105,7 @@ namespace Roslynator.CSharp.Refactorings
         public static Task<Document> RefactorAsync(
             Document document,
             MemberDeclarationSyntax memberDeclaration,
-            DocumentationCommentData data,
+            in DocumentationCommentData data,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {

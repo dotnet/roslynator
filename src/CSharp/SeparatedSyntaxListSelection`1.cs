@@ -19,7 +19,7 @@ namespace Roslynator
     {
         internal int Length;
 
-        private SeparatedSyntaxListSelection(SeparatedSyntaxList<TNode> list, TextSpan span, SelectionResult result)
+        private SeparatedSyntaxListSelection(SeparatedSyntaxList<TNode> list, TextSpan span, in SelectionResult result)
             : this(list, span, result.FirstIndex, result.LastIndex)
         {
         }

@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceEqualsExpression
 
         private Task<Document> RefactorAsync(
             Document document,
-            NullCheckExpressionInfo nullCheck,
+            in NullCheckExpressionInfo nullCheck,
             CancellationToken cancellationToken)
         {
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(

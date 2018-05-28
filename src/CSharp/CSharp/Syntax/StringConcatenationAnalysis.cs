@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Syntax
 
         public bool ContainsVerbatimExpression => (Flags & StringConcatenationFlags.ContainsVerbatimExpression) != 0;
 
-        public static StringConcatenationAnalysis Create(StringConcatenationExpressionInfo stringConcatenation)
+        public static StringConcatenationAnalysis Create(in StringConcatenationExpressionInfo stringConcatenation)
         {
             var flags = StringConcatenationFlags.None;
 
@@ -91,12 +91,12 @@ namespace Roslynator.CSharp.Syntax
             return Flags.GetHashCode();
         }
 
-        public static bool operator ==(StringConcatenationAnalysis analysis1, StringConcatenationAnalysis analysis2)
+        public static bool operator ==(in StringConcatenationAnalysis analysis1, in StringConcatenationAnalysis analysis2)
         {
             return analysis1.Equals(analysis2);
         }
 
-        public static bool operator !=(StringConcatenationAnalysis analysis1, StringConcatenationAnalysis analysis2)
+        public static bool operator !=(in StringConcatenationAnalysis analysis1, in StringConcatenationAnalysis analysis2)
         {
             return !(analysis1 == analysis2);
         }

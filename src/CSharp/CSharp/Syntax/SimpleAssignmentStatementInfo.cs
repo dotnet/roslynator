@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Syntax
     {
         private readonly SimpleAssignmentExpressionInfo _info;
 
-        private SimpleAssignmentStatementInfo(SimpleAssignmentExpressionInfo info)
+        private SimpleAssignmentStatementInfo(in SimpleAssignmentExpressionInfo info)
         {
             _info = info;
         }
@@ -142,12 +142,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<SyntaxNode>.Default.GetHashCode(AssignmentExpression?.Parent);
         }
 
-        public static bool operator ==(SimpleAssignmentStatementInfo info1, SimpleAssignmentStatementInfo info2)
+        public static bool operator ==(in SimpleAssignmentStatementInfo info1, in SimpleAssignmentStatementInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(SimpleAssignmentStatementInfo info1, SimpleAssignmentStatementInfo info2)
+        public static bool operator !=(in SimpleAssignmentStatementInfo info1, in SimpleAssignmentStatementInfo info2)
         {
             return !(info1 == info2);
         }

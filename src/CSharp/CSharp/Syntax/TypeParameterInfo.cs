@@ -145,12 +145,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<TypeParameterListSyntax>.Default.GetHashCode(TypeParameterList);
         }
 
-        public static bool operator ==(TypeParameterInfo info1, TypeParameterInfo info2)
+        public static bool operator ==(in TypeParameterInfo info1, in TypeParameterInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(TypeParameterInfo info1, TypeParameterInfo info2)
+        public static bool operator !=(in TypeParameterInfo info1, in TypeParameterInfo info2)
         {
             return !(info1 == info2);
         }

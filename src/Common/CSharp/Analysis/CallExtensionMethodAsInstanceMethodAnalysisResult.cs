@@ -52,12 +52,12 @@ namespace Roslynator.CSharp.Analysis
             return Hash.Combine(InvocationExpression, Hash.Combine(NewInvocationExpression, Hash.Create(MethodSymbol)));
         }
 
-        public static bool operator ==(CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
+        public static bool operator ==(in CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, in CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
         {
             return analysis1.Equals(analysis2);
         }
 
-        public static bool operator !=(CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
+        public static bool operator !=(in CallExtensionMethodAsInstanceMethodAnalysisResult analysis1, in CallExtensionMethodAsInstanceMethodAnalysisResult analysis2)
         {
             return !(analysis1 == analysis2);
         }

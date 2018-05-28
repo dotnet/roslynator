@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class UseCountOrLengthPropertyInsteadOfAnyMethodAnalysis
     {
-        public static void Analyze(SyntaxNodeAnalysisContext context, SimpleMemberInvocationExpressionInfo invocationInfo)
+        public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 

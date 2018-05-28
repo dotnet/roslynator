@@ -116,7 +116,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void Analyze(
             SyntaxNodeAnalysisContext context,
-            ConditionalExpressionInfo conditionalExpressionInfo,
+            in ConditionalExpressionInfo conditionalExpressionInfo,
             ExpressionSyntax whenNull,
             ExpressionSyntax whenNotNull,
             SemanticModel semanticModel,

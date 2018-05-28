@@ -136,7 +136,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 return null;
             }
 
-            private SyntaxNode Rewrite(StatementListInfo statementsInfo)
+            private SyntaxNode Rewrite(in StatementListInfo statementsInfo)
             {
                 _statementsInfo = statementsInfo;
 
@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 return Rewrite(_statementsInfo, ifStatement);
             }
 
-            private SyntaxNode Rewrite(StatementListInfo statementsInfo, IfStatementSyntax ifStatement)
+            private SyntaxNode Rewrite(in StatementListInfo statementsInfo, IfStatementSyntax ifStatement)
             {
                 SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
 

@@ -246,12 +246,12 @@ namespace Roslynator.CSharp
             return Symbol?.GetHashCode() ?? 0;
         }
 
-        public static bool operator ==(OverriddenSymbolInfo info1, OverriddenSymbolInfo info2)
+        public static bool operator ==(in OverriddenSymbolInfo info1, in OverriddenSymbolInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(OverriddenSymbolInfo info1, OverriddenSymbolInfo info2)
+        public static bool operator !=(in OverriddenSymbolInfo info1, in OverriddenSymbolInfo info2)
         {
             return !(info1 == info2);
         }

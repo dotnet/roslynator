@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> SwapMembersAsync(
             Document document,
-            MemberDeclarationListInfo info,
+            in MemberDeclarationListInfo info,
             int index,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> ReplaceMembersAsync(
             Document document,
-            MemberDeclarationListInfo info,
+            in MemberDeclarationListInfo info,
             IEnumerable<MemberDeclarationSyntax> newMembers,
             CancellationToken cancellationToken = default(CancellationToken))
         {

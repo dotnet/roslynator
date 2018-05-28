@@ -15,7 +15,7 @@ namespace Roslynator.Text
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class TextLineCollectionSelection : Selection<TextLine>
     {
-        private TextLineCollectionSelection(TextLineCollection lines, TextSpan span, SelectionResult result)
+        private TextLineCollectionSelection(TextLineCollection lines, TextSpan span, in SelectionResult result)
             : this(lines, span, result.FirstIndex, result.LastIndex)
         {
         }

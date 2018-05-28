@@ -809,12 +809,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<SyntaxNode>.Default.GetHashCode(Parent);
         }
 
-        public static bool operator ==(ModifierListInfo info1, ModifierListInfo info2)
+        public static bool operator ==(in ModifierListInfo info1, in ModifierListInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(ModifierListInfo info1, ModifierListInfo info2)
+        public static bool operator !=(in ModifierListInfo info1, in ModifierListInfo info2)
         {
             return !(info1 == info2);
         }

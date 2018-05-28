@@ -188,12 +188,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<InvocationExpressionSyntax>.Default.GetHashCode(InvocationExpression);
         }
 
-        public static bool operator ==(SimpleMemberInvocationExpressionInfo info1, SimpleMemberInvocationExpressionInfo info2)
+        public static bool operator ==(in SimpleMemberInvocationExpressionInfo info1, in SimpleMemberInvocationExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(SimpleMemberInvocationExpressionInfo info1, SimpleMemberInvocationExpressionInfo info2)
+        public static bool operator !=(in SimpleMemberInvocationExpressionInfo info1, in SimpleMemberInvocationExpressionInfo info2)
         {
             return !(info1 == info2);
         }

@@ -229,12 +229,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<TypeParameterConstraintClauseSyntax>.Default.GetHashCode(ConstraintClause);
         }
 
-        public static bool operator ==(TypeParameterConstraintInfo info1, TypeParameterConstraintInfo info2)
+        public static bool operator ==(in TypeParameterConstraintInfo info1, in TypeParameterConstraintInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(TypeParameterConstraintInfo info1, TypeParameterConstraintInfo info2)
+        public static bool operator !=(in TypeParameterConstraintInfo info1, in TypeParameterConstraintInfo info2)
         {
             return !(info1 == info2);
         }

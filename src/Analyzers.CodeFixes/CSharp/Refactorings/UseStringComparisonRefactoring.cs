@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
         internal static Task<Document> RefactorAsync(
             Document document,
-            SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
             string comparisonName,
             CancellationToken cancellationToken)
         {

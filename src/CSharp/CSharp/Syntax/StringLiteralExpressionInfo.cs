@@ -188,12 +188,12 @@ namespace Roslynator.CSharp.Syntax
             return Expression?.GetHashCode() ?? 0;
         }
 
-        public static bool operator ==(StringLiteralExpressionInfo info1, StringLiteralExpressionInfo info2)
+        public static bool operator ==(in StringLiteralExpressionInfo info1, in StringLiteralExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(StringLiteralExpressionInfo info1, StringLiteralExpressionInfo info2)
+        public static bool operator !=(in StringLiteralExpressionInfo info1, in StringLiteralExpressionInfo info2)
         {
             return !(info1 == info2);
         }

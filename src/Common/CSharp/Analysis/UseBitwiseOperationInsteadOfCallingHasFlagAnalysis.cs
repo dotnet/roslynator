@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
         }
 
         public static bool IsFixable(
-            SimpleMemberInvocationExpressionInfo invocationInfo,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {

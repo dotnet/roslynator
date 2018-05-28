@@ -163,12 +163,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<XmlNodeSyntax>.Default.GetHashCode(Element);
         }
 
-        public static bool operator ==(XmlElementInfo info1, XmlElementInfo info2)
+        public static bool operator ==(in XmlElementInfo info1, in XmlElementInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(XmlElementInfo info1, XmlElementInfo info2)
+        public static bool operator !=(in XmlElementInfo info1, in XmlElementInfo info2)
         {
             return !(info1 == info2);
         }

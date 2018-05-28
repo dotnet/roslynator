@@ -143,12 +143,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<LiteralExpressionSyntax>.Default.GetHashCode(LiteralExpression);
         }
 
-        public static bool operator ==(HexNumericLiteralExpressionInfo info1, HexNumericLiteralExpressionInfo info2)
+        public static bool operator ==(in HexNumericLiteralExpressionInfo info1, in HexNumericLiteralExpressionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(HexNumericLiteralExpressionInfo info1, HexNumericLiteralExpressionInfo info2)
+        public static bool operator !=(in HexNumericLiteralExpressionInfo info1, in HexNumericLiteralExpressionInfo info2)
         {
             return !(info1 == info2);
         }

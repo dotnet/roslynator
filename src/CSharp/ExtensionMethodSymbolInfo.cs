@@ -61,7 +61,7 @@ namespace Roslynator
             return obj is ExtensionMethodSymbolInfo other && Equals(other);
         }
 
-        public bool Equals(ExtensionMethodSymbolInfo other)
+        public bool Equals(in ExtensionMethodSymbolInfo other)
         {
             return EqualityComparer<IMethodSymbol>.Default.Equals(Symbol, other.Symbol);
         }
@@ -71,12 +71,12 @@ namespace Roslynator
             return Symbol?.GetHashCode() ?? 0;
         }
 
-        public static bool operator ==(ExtensionMethodSymbolInfo info1, ExtensionMethodSymbolInfo info2)
+        public static bool operator ==(in ExtensionMethodSymbolInfo info1, in ExtensionMethodSymbolInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(ExtensionMethodSymbolInfo info1, ExtensionMethodSymbolInfo info2)
+        public static bool operator !=(in ExtensionMethodSymbolInfo info1, in ExtensionMethodSymbolInfo info2)
         {
             return !(info1 == info2);
         }

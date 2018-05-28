@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             Document document,
             WhileStatementSyntax whileStatement,
             BinaryExpressionSyntax condition,
-            BinaryExpressionSelection binaryExpressionSelection,
+            in BinaryExpressionSelection binaryExpressionSelection,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             WhileStatementSyntax newNode = RemoveExpressionsFromCondition(whileStatement, condition, binaryExpressionSelection);

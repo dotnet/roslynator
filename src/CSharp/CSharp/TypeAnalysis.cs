@@ -530,12 +530,12 @@ namespace Roslynator.CSharp
             return value.Flags;
         }
 
-        public static bool operator ==(TypeAnalysis analysis1, TypeAnalysis analysis2)
+        public static bool operator ==(in TypeAnalysis analysis1, in TypeAnalysis analysis2)
         {
             return analysis1.Equals(analysis2);
         }
 
-        public static bool operator !=(TypeAnalysis analysis1, TypeAnalysis analysis2)
+        public static bool operator !=(in TypeAnalysis analysis1, in TypeAnalysis analysis2)
         {
             return !(analysis1 == analysis2);
         }

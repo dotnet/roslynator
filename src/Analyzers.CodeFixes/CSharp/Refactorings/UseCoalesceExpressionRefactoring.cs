@@ -103,7 +103,7 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             IfStatementSyntax ifStatement,
             int statementIndex,
-            StatementListInfo statementsInfo,
+            in StatementListInfo statementsInfo,
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)

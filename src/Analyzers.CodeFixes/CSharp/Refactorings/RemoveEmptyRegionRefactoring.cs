@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static Task<Document> RefactorAsync(
             Document document,
-            RegionInfo region,
+            in RegionInfo region,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             return document.RemoveRegionAsync(region, cancellationToken);

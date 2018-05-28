@@ -13,7 +13,7 @@ namespace Roslynator.CSharp
     /// </summary>
     public sealed class StatementListSelection : SyntaxListSelection<StatementSyntax>
     {
-        private StatementListSelection(SyntaxList<StatementSyntax> statements, TextSpan span, SelectionResult result)
+        private StatementListSelection(SyntaxList<StatementSyntax> statements, TextSpan span, in SelectionResult result)
              : this(statements, span, result.FirstIndex, result.LastIndex)
         {
         }
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp
         /// <param name="statementsInfo"></param>
         /// <param name="span"></param>
         /// <returns></returns>
-        public static StatementListSelection Create(StatementListInfo statementsInfo, TextSpan span)
+        public static StatementListSelection Create(in StatementListInfo statementsInfo, TextSpan span)
         {
             return CreateImpl(statementsInfo.Statements, span);
         }

@@ -43,12 +43,12 @@ namespace Roslynator.Tests.Text
             return Hash.Combine(Index, Hash.Combine(LineIndex, ColumnIndex));
         }
 
-        public static bool operator ==(LinePositionInfo info1, LinePositionInfo info2)
+        public static bool operator ==(in LinePositionInfo info1, in LinePositionInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(LinePositionInfo info1, LinePositionInfo info2)
+        public static bool operator !=(in LinePositionInfo info1, in LinePositionInfo info2)
         {
             return !(info1 == info2);
         }

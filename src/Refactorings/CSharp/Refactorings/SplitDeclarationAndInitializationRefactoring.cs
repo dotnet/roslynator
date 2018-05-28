@@ -63,9 +63,9 @@ namespace Roslynator.CSharp.Refactorings
 
         private static Task<Document> RefactorAsync(
             Document document,
-            SingleLocalDeclarationStatementInfo localInfo,
+            in SingleLocalDeclarationStatementInfo localInfo,
             TypeSyntax type,
-            StatementListInfo statementsInfo,
+            in StatementListInfo statementsInfo,
             CancellationToken cancellationToken)
         {
             LocalDeclarationStatementSyntax localStatement = localInfo.Statement;

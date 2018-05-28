@@ -546,12 +546,12 @@ namespace Roslynator.CSharp.Syntax
             return EqualityComparer<SyntaxNode>.Default.GetHashCode(Parent);
         }
 
-        public static bool operator ==(MemberDeclarationListInfo info1, MemberDeclarationListInfo info2)
+        public static bool operator ==(in MemberDeclarationListInfo info1, in MemberDeclarationListInfo info2)
         {
             return info1.Equals(info2);
         }
 
-        public static bool operator !=(MemberDeclarationListInfo info1, MemberDeclarationListInfo info2)
+        public static bool operator !=(in MemberDeclarationListInfo info1, in MemberDeclarationListInfo info2)
         {
             return !(info1 == info2);
         }
