@@ -47,7 +47,7 @@ namespace Roslynator.Diagnostics
                 {
                     string line = en.Current;
 
-                    if (en.Current.StartsWith("  Total analyzer execution time:"))
+                    if (IsMatch(en.Current, "Total analyzer execution time:"))
                     {
                         Match match = _totalTimeRegex.Match(en.Current);
 
@@ -59,13 +59,13 @@ namespace Roslynator.Diagnostics
                         if (!en.MoveNext())
                             throw new InvalidOperationException();
 
-                        if (!en.Current.StartsWith("  NOTE:", StringComparison.Ordinal))
+                        if (!IsMatch(en.Current, "NOTE:"))
                             throw new InvalidOperationException();
 
                         if (!en.MoveNext())
                             throw new InvalidOperationException();
 
-                        if (!en.Current.StartsWith("  Time (s)", StringComparison.Ordinal))
+                        if (!IsMatch(en.Current, "Time (s)"))
                             throw new InvalidOperationException();
 
                         ImmutableArray<AnalyzerDiagnosticInfo>.Builder builder = ImmutableArray.CreateBuilder<AnalyzerDiagnosticInfo>();
@@ -94,6 +94,21 @@ namespace Roslynator.Diagnostics
                         yield return new ProjectDiagnosticInfo(total, builder.ToImmutableArray());
                     }
                 }
+            }
+
+            bool IsMatch(string s1, string s2)
+            {
+                int i = 0;
+
+                while (i < s1.Length
+                    && char.IsWhiteSpace(s1[i]))
+                {
+                    i++;
+                }
+
+                int result = string.Compare(s1, i, s2, 0, s2.Length, StringComparison.Ordinal);
+
+                return result == 0;
             }
         }
     }

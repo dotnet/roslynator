@@ -12,12 +12,15 @@ if errorlevel 1 (
 )
 
 dotnet "..\src\Tools\AddCodeFileHeader\bin\Release\netcoreapp2.0\AddCodeFileHeader.dll" "..\src"
-echo AddCodeFileHeader DONE
 dotnet "..\src\Tools\MetadataGenerator\bin\Release\netcoreapp2.0\MetadataGenerator.dll" "..\src"
-echo MetadataGenerator DONE
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
-echo CodeGenerator DONE
 dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "1.8.3.0"
+
+"C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Roslynator.sln" ^
+ /t:Clean ^
+ /p:Configuration=Debug ^
+ /v:minimal ^
+ /m
 
 "C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Roslynator.sln" ^
  /t:Clean,Build ^
@@ -51,6 +54,8 @@ if errorlevel 1 (
  exit
 )
 
+dotnet pack -c Release --no-build -v normal "..\src\Analyzers\Analyzers.csproj"
+dotnet pack -c Release --no-build -v normal "..\src\CodeFixes\CodeFixes.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\CSharp\CSharp.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\CSharp.Workspaces\CSharp.Workspaces.csproj"
 

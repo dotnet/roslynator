@@ -56,6 +56,22 @@ namespace Roslynator.Diagnostics
             }
         }
 
+        public string RootNamespace
+        {
+            get
+            {
+                if (FullName == null)
+                    return null;
+
+                int index = FullName.IndexOf('.');
+
+                if (index == -1)
+                    return null;
+
+                return FullName.Remove(index);
+            }
+        }
+
         public int Elapsed { get; }
 
         public int Percent { get; }

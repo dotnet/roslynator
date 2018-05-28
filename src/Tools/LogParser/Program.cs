@@ -26,25 +26,33 @@ namespace Roslynator.Diagnostics
 
             List<ProjectDiagnosticInfo> projectDiagnostics = LogParser.Parse(filePath).ToList();
 
-            int total = projectDiagnostics.Sum(f => f.Total);
-
-            int totalElapsed = 0;
-
-            foreach (AnalyzerDiagnosticInfo info in projectDiagnostics
+            IOrderedEnumerable<IGrouping<string, AnalyzerDiagnosticInfo>> groupedByRootNamespace = projectDiagnostics
                 .SelectMany(f => f.AnalyzerDiagnostics)
-                .Where(f => f.FullName.StartsWith("Roslynator.", StringComparison.Ordinal) && f.Elapsed > 0)
-                .GroupBy(f => f.FullName)
-                .Select(f => new AnalyzerDiagnosticInfo(f.Key, f.Sum(g => g.Elapsed), f.Sum(g => g.Percent) / f.Count()))
-                .OrderBy(f => f.Elapsed))
-            {
-                Console.WriteLine(info.Elapsed.ToString("n0", CultureInfo.InvariantCulture) + " " + info.Name);
+                .Where(f => f.Elapsed > 0)
+                .GroupBy(f => f.RootNamespace)
+                .OrderBy(f => f.Key);
 
-                totalElapsed += info.Elapsed;
+            foreach (IGrouping<string, AnalyzerDiagnosticInfo> grouping in groupedByRootNamespace)
+            {
+                Console.WriteLine(grouping.Key);
+
+                foreach (AnalyzerDiagnosticInfo info in grouping
+                    .OrderBy(f => f.Elapsed))
+                {
+                    Console.WriteLine(info.Elapsed.ToString("n0", CultureInfo.InvariantCulture) + " " + info.Name);
+                }
+
+                Console.WriteLine();
             }
 
-            Console.WriteLine();
-            Console.WriteLine($"Total analyzer execution time: {total.ToString("n0", CultureInfo.InvariantCulture)}");
-            Console.WriteLine($"Sum of analyzer times: {totalElapsed.ToString("n0", CultureInfo.InvariantCulture)}");
+            foreach ((string rootNamespace, int elapsed) in groupedByRootNamespace
+                .Select(f => (rootNamespace: f.Key, elapsed: f.Sum(info => info.Elapsed)))
+                .OrderBy(f => f.elapsed))
+            {
+                Console.WriteLine($"{rootNamespace}: {elapsed.ToString("n0", CultureInfo.InvariantCulture)}");
+            }
+
+            Console.WriteLine($"Total analyzer execution time: {projectDiagnostics.Sum(f => f.Total).ToString("n0", CultureInfo.InvariantCulture)}");
 
             if (Debugger.IsAttached)
             {
