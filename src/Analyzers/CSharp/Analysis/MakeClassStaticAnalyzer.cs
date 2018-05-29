@@ -51,6 +51,9 @@ namespace Roslynator.CSharp.Analysis
             if (symbol.BaseType?.IsObject() != true)
                 return;
 
+            if (!symbol.Interfaces.IsDefaultOrEmpty)
+                return;
+
             var syntaxReferences = default(ImmutableArray<SyntaxReference>);
 
             if (symbol.IsSealed)
