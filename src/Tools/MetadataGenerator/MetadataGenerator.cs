@@ -13,7 +13,7 @@ namespace Roslynator.CodeGeneration
 {
     internal class MetadataGenerator : Generator
     {
-        private static readonly Encoding _utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+        private static readonly UTF8Encoding _utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
 
         public MetadataGenerator(string rootPath, StringComparer comparer = null)
             : base(rootPath, comparer)
@@ -89,7 +89,7 @@ namespace Roslynator.CodeGeneration
 
             Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
 
-            FileHelper.WriteAllText(path, content, _utf8NoBom, onlyIfChanges, fileMustExists);
+            FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
         }
 
         public void FindFilesToDelete()

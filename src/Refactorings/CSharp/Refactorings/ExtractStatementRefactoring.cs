@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static IEnumerable<StatementSyntax> GetNewNodes(StatementSyntax statement)
         {
-            List<SyntaxTrivia> list = null;
+            List<SyntaxTrivia> list;
 
             if (statement.IsParentKind(SyntaxKind.ElseClause))
             {

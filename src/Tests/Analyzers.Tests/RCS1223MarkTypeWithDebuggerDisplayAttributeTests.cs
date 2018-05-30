@@ -14,10 +14,12 @@ namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpCodeFixVerifier
     {
+        private readonly CodeVerificationOptions _options;
+
         public RCS1223MarkTypeWithDebuggerDisplayAttributeTests()
         {
             //TODO: Remove after upgrade to C# 7.2
-            Options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.MoreThanOneProtectionModifier);
+            _options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.MoreThanOneProtectionModifier);
         }
 
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MarkTypeWithDebuggerDisplayAttribute;
@@ -26,7 +28,10 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new MarkTypeWithDebuggerDisplayAttributeCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; }
+        public override CodeVerificationOptions Options
+        {
+            get { return _options; }
+        }
 
         [Fact]
         public async Task Test_PublicClass()

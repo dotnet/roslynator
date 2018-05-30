@@ -9,6 +9,7 @@
     <AssemblyName>Roslynator.Utilities</AssemblyName>
     <RootNamespace>Roslynator.Utilities</RootNamespace>
     <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Utilities.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>

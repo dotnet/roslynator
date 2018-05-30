@@ -105,9 +105,6 @@ namespace Roslynator.CSharp.CodeFixes
         {
             IsExpressionInfo isInfo = SyntaxInfo.IsExpressionInfo(expression);
 
-            IdentifierNameSyntax identifierName = isInfo.Expression as IdentifierNameSyntax
-                ?? (IdentifierNameSyntax)((MemberAccessExpressionSyntax)isInfo.Expression).Name;
-
             ISymbol symbol = semanticModel.GetSymbol(isInfo.Expression, cancellationToken);
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(isInfo.Type, cancellationToken);

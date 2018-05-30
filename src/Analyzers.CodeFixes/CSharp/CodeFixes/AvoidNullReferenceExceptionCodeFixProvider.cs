@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode root = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            var conditionalAccessExpression = (ConditionalAccessExpressionSyntax)root.FindNode(span);
+            var conditionalAccessExpression = (ConditionalAccessExpressionSyntax)root.FindNode(span, getInnermostNodeForTie: true);
 
             SemanticModel semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
 

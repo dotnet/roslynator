@@ -19,9 +19,9 @@ namespace Roslynator.CSharp.Refactorings
 
             StringConcatenationExpressionInfo concatenationInfo = SyntaxInfo.StringConcatenationExpressionInfo(binaryExpression, semanticModel, cancellationToken);
 
-            ExpressionSyntax newNode = null;
-
             StringConcatenationAnalysis analysis = concatenationInfo.Analyze();
+
+            ExpressionSyntax newNode;
 
             if (analysis.ContainsStringLiteral)
             {

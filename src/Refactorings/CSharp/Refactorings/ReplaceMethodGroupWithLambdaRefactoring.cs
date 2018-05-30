@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             ImmutableArray<IParameterSymbol> parameterSymbols = methodSymbol.Parameters;
 
-            LambdaExpressionSyntax lambda = null;
+            LambdaExpressionSyntax lambda;
 
             if (parameterSymbols.Length == 0)
             {

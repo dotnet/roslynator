@@ -14,10 +14,12 @@ namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1218SimplifyCodeBranchingTests : AbstractCSharpCodeFixVerifier
     {
+        private readonly CodeVerificationOptions _options;
+
         public RCS1218SimplifyCodeBranchingTests()
         {
             //TODO: 
-            Options = base.Options.AddAllowedCompilerDiagnosticId("CS1525");
+            _options = base.Options.AddAllowedCompilerDiagnosticId("CS1525");
         }
 
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyCodeBranching;
@@ -26,7 +28,10 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new SimplifyCodeBranchingCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; }
+        public override CodeVerificationOptions Options
+        {
+            get { return _options; }
+        }
 
         [Fact]
         public async Task Test_IfElse_WithBraces()

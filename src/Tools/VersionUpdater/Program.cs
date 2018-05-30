@@ -89,8 +89,6 @@ namespace VersionUpdater
         {
             XDocument doc = XDocument.Load(filePath, LoadOptions.PreserveWhitespace);
 
-            System.Collections.Generic.IEnumerable<XElement> elements = doc.Root.Elements();
-
             XName name = (XNamespace)VsixXmlNamespace + "Metadata";
             XAttribute versionAttribute = doc.Root
                 .Elements(name).FirstOrDefault()?

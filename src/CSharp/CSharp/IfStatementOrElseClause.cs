@@ -229,7 +229,7 @@ namespace Roslynator.CSharp
             return new IfStatementOrElseClause(ifStatement);
         }
 
-        public static implicit operator IfStatementSyntax(IfStatementOrElseClause ifOrElse)
+        public static implicit operator IfStatementSyntax(in IfStatementOrElseClause ifOrElse)
         {
             return ifOrElse.AsIf();
         }
@@ -239,7 +239,7 @@ namespace Roslynator.CSharp
             return new IfStatementOrElseClause(elseClause);
         }
 
-        public static implicit operator ElseClauseSyntax(IfStatementOrElseClause ifOrElse)
+        public static implicit operator ElseClauseSyntax(in IfStatementOrElseClause ifOrElse)
         {
             return ifOrElse.AsElse();
         }

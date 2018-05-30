@@ -50,12 +50,12 @@ namespace Roslynator.CSharp.Refactorings
 
             bool isVerbatim = interpolatedString.IsVerbatim();
 
-            ExpressionSyntax newNode = null;
-
             SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;
 
             InterpolatedStringContentSyntax content1 = contents[0];
             InterpolatedStringContentSyntax content2 = contents[1];
+
+            ExpressionSyntax newNode;
 
             if (content1.Kind() == SyntaxKind.InterpolatedStringText)
             {

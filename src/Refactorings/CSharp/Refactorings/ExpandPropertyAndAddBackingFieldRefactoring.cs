@@ -56,7 +56,18 @@ namespace Roslynator.CSharp.Refactorings
 
                 IdentifierNameSyntax newNode = IdentifierName(fieldName);
 
-                MemberDeclarationListInfo newInfo = SyntaxInfo.MemberDeclarationListInfo(info.Parent.ReplaceNodes(nodes, (f, _) => newNode.WithTriviaFrom(f)));
+                SyntaxNode newParent = info.Parent.ReplaceNodes(nodes, (f, _) =>
+                {
+                    if (f.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                        && ((MemberAccessExpressionSyntax)f.Parent).Expression.IsKind(SyntaxKind.BaseExpression))
+                    {
+                        return f;
+                    }
+
+                    return newNode.WithTriviaFrom(f);
+                });
+
+                MemberDeclarationListInfo newInfo = SyntaxInfo.MemberDeclarationListInfo(newParent);
 
                 members = newInfo.Members;
             }

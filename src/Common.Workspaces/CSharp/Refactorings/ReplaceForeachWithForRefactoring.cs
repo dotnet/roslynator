@@ -38,9 +38,9 @@ namespace Roslynator.CSharp.Refactorings
                 forEachExpression.WithoutTrivia(),
                 IdentifierName(CSharpUtility.GetCountOrLengthPropertyName(forEachExpression, semanticModel, cancellationToken)));
 
-            VariableDeclarationSyntax declaration = null;
-            BinaryExpressionSyntax condition = null;
-            PostfixUnaryExpressionSyntax incrementor = null;
+            VariableDeclarationSyntax declaration;
+            BinaryExpressionSyntax condition;
+            PostfixUnaryExpressionSyntax incrementor;
 
             if (reverseLoop)
             {

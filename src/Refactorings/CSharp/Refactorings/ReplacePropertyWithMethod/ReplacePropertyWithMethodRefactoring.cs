@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Refactorings.ReplacePropertyWithMethod
 
             BlockSyntax getterBody = getter.Body;
 
-            BlockSyntax methodBody = null;
+            BlockSyntax methodBody;
 
             if (getterBody != null)
             {

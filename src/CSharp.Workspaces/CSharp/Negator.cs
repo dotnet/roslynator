@@ -26,7 +26,7 @@ namespace Roslynator.CSharp
             return newExpression.WithTriviaFrom(expression);
         }
 
-        private static ExpressionSyntax LogicallyNegateAndParenthesize(
+        private static ParenthesizedExpressionSyntax LogicallyNegateAndParenthesize(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -258,7 +258,7 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        private static ExpressionSyntax NegateBinaryExpression(BinaryExpressionSyntax binaryExpression)
+        private static BinaryExpressionSyntax NegateBinaryExpression(BinaryExpressionSyntax binaryExpression)
         {
             SyntaxToken operatorToken = NegateBinaryOperatorToken(binaryExpression.OperatorToken);
 
@@ -303,7 +303,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static ExpressionSyntax NegateBinaryExpression(
+        private static BinaryExpressionSyntax NegateBinaryExpression(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -357,7 +357,7 @@ namespace Roslynator.CSharp
             return kind;
         }
 
-        private static ExpressionSyntax NegateConditionalExpression(
+        private static ConditionalExpressionSyntax NegateConditionalExpression(
             ConditionalExpressionSyntax conditionalExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -385,7 +385,7 @@ namespace Roslynator.CSharp
             return newConditionalExpression.WithTriviaFrom(conditionalExpression);
         }
 
-        private static ExpressionSyntax DefaultNegate(ExpressionSyntax expression)
+        private static PrefixUnaryExpressionSyntax DefaultNegate(ExpressionSyntax expression)
         {
             Debug.Assert(expression.Kind() != SyntaxKind.ParenthesizedExpression, expression.Kind().ToString());
 

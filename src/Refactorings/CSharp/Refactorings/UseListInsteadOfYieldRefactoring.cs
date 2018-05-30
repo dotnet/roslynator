@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
             context.RegisterRefactoring(
                 "Use List<T> instead of yield",
-                cancellationToken => RefactorAsync(context.Document, type, body, body.Statements, cancellationToken),
+                cancellationToken => RefactorAsync(context.Document, type, body, body.Statements, semanticModel, cancellationToken),
                 RefactoringIdentifiers.UseListInsteadOfYield);
         }
 
@@ -62,15 +62,14 @@ namespace Roslynator.CSharp.Refactorings
             return null;
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             ITypeSymbol typeSymbol,
             BlockSyntax block,
             SyntaxList<StatementSyntax> statements,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
             int position = statements[0].SpanStart;
 
             string name = NameGenerator.Default.EnsureUniqueLocalName("items", semanticModel, position);
@@ -101,7 +100,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newBlock = (BlockSyntax)rewriter.Visit(newBlock);
 
-            return await document.ReplaceNodeAsync(block, newBlock, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
 
         private static SyntaxList<StatementSyntax> InsertLocalDeclarationStatement(

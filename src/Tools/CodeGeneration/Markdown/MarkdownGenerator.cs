@@ -163,10 +163,10 @@ namespace Roslynator.CodeGeneration.Markdown
             if (links.Any())
             {
                 yield return Heading2("Related Links");
-                yield return BulletList(links.Select(GetContent));
+                yield return BulletList(links.Select(f => GetContent(f)));
             }
 
-            MElement GetContent(LinkDescriptor link)
+            MElement GetContent(in LinkDescriptor link)
             {
                 if (string.IsNullOrEmpty(link.Text))
                 {

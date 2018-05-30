@@ -45,8 +45,6 @@ namespace Roslynator.Diagnostics
             {
                 while (en.MoveNext())
                 {
-                    string line = en.Current;
-
                     if (IsMatch(en.Current, "Total analyzer execution time:"))
                     {
                         Match match = _totalTimeRegex.Match(en.Current);

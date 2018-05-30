@@ -123,9 +123,9 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<StatementSyntax> statements = block.Statements;
 
-            SyntaxNode newNode = null;
-
             int count = statements.Count;
+
+            SyntaxNode newNode;
 
             if (count == 0)
             {

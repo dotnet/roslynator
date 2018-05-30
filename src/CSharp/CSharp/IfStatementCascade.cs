@@ -175,8 +175,7 @@ namespace Roslynator.CSharp
 
                 if (count >= 0)
                 {
-                    IfStatementSyntax ifStatement = null;
-
+                    IfStatementSyntax ifStatement;
                     if (_ifOrElse.IsElse)
                     {
                         ifStatement = (IfStatementSyntax)_ifOrElse.Parent;

@@ -401,8 +401,6 @@ namespace Roslynator.CSharp.CodeFixes
         {
             ExpressionSyntax left = binaryExpression.Left;
 
-            ExpressionSyntax right = binaryExpression.Right;
-
             ExpressionSyntax newNode = null;
 
             switch (binaryExpression.Kind())

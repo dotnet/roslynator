@@ -63,15 +63,16 @@ namespace Roslynator.CSharp.Analysis
             switch (parent.Kind())
             {
                 case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
                     {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
+                        var binaryExpression = (BinaryExpressionSyntax)parent;
 
-                        if (equalsExpression.Left == invocationExpression)
+                        if (binaryExpression.Left == invocationExpression)
                         {
-                            if (!equalsExpression.Right.IsNumericLiteralExpression("0"))
+                            if (!binaryExpression.Right.IsNumericLiteralExpression("0"))
                                 ReportDiagnostic(parent);
                         }
-                        else if (!equalsExpression.Left.IsNumericLiteralExpression("1"))
+                        else if (!binaryExpression.Left.IsNumericLiteralExpression("1"))
                         {
                             ReportDiagnostic(parent);
                         }
@@ -79,47 +80,16 @@ namespace Roslynator.CSharp.Analysis
                         break;
                     }
                 case SyntaxKind.GreaterThanOrEqualExpression:
-                    {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
-
-                        if (equalsExpression.Left == invocationExpression)
-                        {
-                            if (!equalsExpression.Right.IsNumericLiteralExpression("1"))
-                                ReportDiagnostic(parent);
-                        }
-                        else if (!equalsExpression.Left.IsNumericLiteralExpression("0"))
-                        {
-                            ReportDiagnostic(parent);
-                        }
-
-                        break;
-                    }
                 case SyntaxKind.LessThanExpression:
                     {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
+                        var binaryExpression = (BinaryExpressionSyntax)parent;
 
-                        if (equalsExpression.Left == invocationExpression)
+                        if (binaryExpression.Left == invocationExpression)
                         {
-                            if (!equalsExpression.Right.IsNumericLiteralExpression("1"))
+                            if (!binaryExpression.Right.IsNumericLiteralExpression("1"))
                                 ReportDiagnostic(parent);
                         }
-                        else if (!equalsExpression.Left.IsNumericLiteralExpression("0"))
-                        {
-                            ReportDiagnostic(parent);
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.LessThanOrEqualExpression:
-                    {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
-
-                        if (equalsExpression.Left == invocationExpression)
-                        {
-                            if (!equalsExpression.Right.IsNumericLiteralExpression("0"))
-                                ReportDiagnostic(parent);
-                        }
-                        else if (!equalsExpression.Left.IsNumericLiteralExpression("1"))
+                        else if (!binaryExpression.Left.IsNumericLiteralExpression("0"))
                         {
                             ReportDiagnostic(parent);
                         }

@@ -84,9 +84,7 @@ namespace Roslynator.CSharp.CodeFixes
             }
             else if (elseClause != null)
             {
-                WhileStatementSyntax whileStatement = null;
-
-                SyntaxNode newNode = null;
+                WhileStatementSyntax whileStatement;
 
                 if (ifStatement.Parent is BlockSyntax block)
                 {
@@ -104,7 +102,7 @@ namespace Roslynator.CSharp.CodeFixes
                     ? block.WithStatements(ifBlock.Statements)
                     : block.WithStatements(SingletonList(ifStatement.Statement));
 
-                newNode = whileStatement.Update(
+                SyntaxNode newNode = whileStatement.Update(
                     whileStatement.WhileKeyword,
                     whileStatement.OpenParenToken,
                     ifStatement.Condition,

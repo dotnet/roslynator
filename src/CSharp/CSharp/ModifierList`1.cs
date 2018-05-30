@@ -135,7 +135,7 @@ namespace Roslynator.CSharp
 
         private TNode InsertModifier(TNode node, SyntaxTokenList modifiers, SyntaxToken modifier, int index)
         {
-            var token = default(SyntaxToken);
+            SyntaxToken token;
 
             if (!modifiers.Any()
                 || index == modifiers.Count)

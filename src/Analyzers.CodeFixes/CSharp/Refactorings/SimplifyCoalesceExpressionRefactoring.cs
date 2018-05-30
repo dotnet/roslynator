@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax right = binaryExpression.Right;
             SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-            ExpressionSyntax newNode = null;
+            ExpressionSyntax newNode;
 
             if (expression == left)
             {

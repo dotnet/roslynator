@@ -44,7 +44,7 @@ namespace Roslynator.CSharp
             bool includeElasticTrivia = true,
             bool simplifiable = true)
         {
-            ParenthesizedExpressionSyntax parenthesizedExpression = null;
+            ParenthesizedExpressionSyntax parenthesizedExpression;
 
             if (includeElasticTrivia)
             {

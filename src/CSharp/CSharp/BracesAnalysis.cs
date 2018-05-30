@@ -149,7 +149,7 @@ namespace Roslynator.CSharp
             return new BracesAnalysis(value);
         }
 
-        public static implicit operator BracesAnalysisFlags(BracesAnalysis value)
+        public static implicit operator BracesAnalysisFlags(in BracesAnalysis value)
         {
             return value.Flags;
         }

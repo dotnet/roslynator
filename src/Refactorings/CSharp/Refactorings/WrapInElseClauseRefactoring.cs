@@ -53,9 +53,9 @@ namespace Roslynator.CSharp.Refactorings
             StatementListSelection selectedStatements,
             CancellationToken cancellationToken)
         {
-            StatementSyntax newStatement = null;
-
             int count = selectedStatements.Count;
+
+            StatementSyntax newStatement;
 
             if (count == 1
                 && !ifStatement.AsCascade().Any(f => f.Statement?.Kind() == SyntaxKind.Block))

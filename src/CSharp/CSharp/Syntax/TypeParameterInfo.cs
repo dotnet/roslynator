@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Syntax
@@ -68,43 +67,7 @@ namespace Roslynator.CSharp.Syntax
             if (!(typeParameter.Parent is TypeParameterListSyntax typeParameterList))
                 return default;
 
-            SyntaxNode parent = typeParameterList.Parent;
-
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    {
-                        var classDeclaration = (ClassDeclarationSyntax)parent;
-                        return new TypeParameterInfo(typeParameter, typeParameterList);
-                    }
-                case SyntaxKind.DelegateDeclaration:
-                    {
-                        var delegateDeclaration = (DelegateDeclarationSyntax)parent;
-                        return new TypeParameterInfo(typeParameter, typeParameterList);
-                    }
-                case SyntaxKind.InterfaceDeclaration:
-                    {
-                        var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
-                        return new TypeParameterInfo(typeParameter, typeParameterList);
-                    }
-                case SyntaxKind.LocalFunctionStatement:
-                    {
-                        var localFunctionStatement = (LocalFunctionStatementSyntax)parent;
-                        return new TypeParameterInfo(typeParameter, typeParameterList);
-                    }
-                case SyntaxKind.MethodDeclaration:
-                    {
-                        var methodDeclaration = (MethodDeclarationSyntax)parent;
-                        return new TypeParameterInfo(typeParameter, typeParameterList);
-                    }
-                case SyntaxKind.StructDeclaration:
-                    {
-                        var structDeclaration = (StructDeclarationSyntax)parent;
-                        return new TypeParameterInfo(typeParameter, typeParameterList);
-                    }
-            }
-
-            return default;
+            return new TypeParameterInfo(typeParameter, typeParameterList);
         }
 
         /// <summary>

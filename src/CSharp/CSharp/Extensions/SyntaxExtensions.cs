@@ -87,7 +87,7 @@ namespace Roslynator.CSharp
         {
             if (recursive)
             {
-                StatementSyntax statement = null;
+                StatementSyntax statement;
 
                 do
                 {
@@ -488,14 +488,19 @@ namespace Roslynator.CSharp
             if (documentationComment == null)
                 throw new ArgumentNullException(nameof(documentationComment));
 
-            foreach (XmlNodeSyntax node in documentationComment.Content)
-            {
-                if (node.IsKind(SyntaxKind.XmlElement))
-                {
-                    var xmlElement = (XmlElementSyntax)node;
+            return ElementsIterator();
 
-                    if (xmlElement.IsLocalName(localName))
-                        yield return xmlElement;
+            IEnumerable<XmlElementSyntax> ElementsIterator()
+            {
+                foreach (XmlNodeSyntax node in documentationComment.Content)
+                {
+                    if (node.IsKind(SyntaxKind.XmlElement))
+                    {
+                        var xmlElement = (XmlElementSyntax)node;
+
+                        if (xmlElement.IsLocalName(localName))
+                            yield return xmlElement;
+                    }
                 }
             }
         }
@@ -868,26 +873,14 @@ namespace Roslynator.CSharp
             return SeparatedList<TNode>(nodesAndTokens);
         }
 
-        //TODO: make public ToSyntaxTokenList(IEnumerable<SyntaxToken>)
         /// <summary>
         /// Creates a list of syntax tokens from a sequence of tokens.
         /// </summary>
         /// <param name="tokens"></param>
         /// <returns></returns>
-        internal static SyntaxTokenList ToSyntaxTokenList(this IEnumerable<SyntaxToken> tokens)
+        public static SyntaxTokenList ToSyntaxTokenList(this IEnumerable<SyntaxToken> tokens)
         {
             return TokenList(tokens);
-        }
-
-        //TODO: make public ToSyntaxTriviaList(IEnumerable<SyntaxTrivia>)
-        /// <summary>
-        /// Creates a list of syntax trivia from a sequence of trivias.
-        /// </summary>
-        /// <param name="trivias"></param>
-        /// <returns></returns>
-        internal static SyntaxTriviaList ToSyntaxTriviaList(this IEnumerable<SyntaxTrivia> trivias)
-        {
-            return TriviaList(trivias);
         }
         #endregion IEnumerable<T>
 
@@ -1575,7 +1568,7 @@ namespace Roslynator.CSharp
             if (count == 0)
                 return false;
 
-            SyntaxNode firstNode = list.First();
+            TNode firstNode = list.First();
 
             if (count == 1)
                 return IsSingleLine(firstNode, includeExteriorTrivia, trim, cancellationToken);
@@ -1603,7 +1596,7 @@ namespace Roslynator.CSharp
             if (count == 0)
                 return false;
 
-            SyntaxNode firstNode = list.First();
+            TNode firstNode = list.First();
 
             if (count == 1)
                 return IsMultiLine(firstNode, includeExteriorTrivia, trim, cancellationToken);
@@ -1968,7 +1961,7 @@ namespace Roslynator.CSharp
             if (count == 0)
                 return false;
 
-            SyntaxNode firstNode = list.First();
+            TNode firstNode = list.First();
 
             if (count == 1)
                 return IsSingleLine(firstNode, includeExteriorTrivia, trim, cancellationToken);
@@ -1996,7 +1989,7 @@ namespace Roslynator.CSharp
             if (count == 0)
                 return false;
 
-            SyntaxNode firstNode = list.First();
+            TNode firstNode = list.First();
 
             if (count == 1)
                 return IsMultiLine(firstNode, includeExteriorTrivia, trim, cancellationToken);

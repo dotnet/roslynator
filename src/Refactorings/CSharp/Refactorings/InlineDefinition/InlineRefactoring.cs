@@ -300,7 +300,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
             return replacementMap;
 
-            bool ParameterEquals(ParameterInfo parameterInfo, IParameterSymbol parameterSymbol2)
+            bool ParameterEquals(in ParameterInfo parameterInfo, IParameterSymbol parameterSymbol2)
             {
                 IParameterSymbol parameterSymbol = parameterInfo.ParameterSymbol;
 

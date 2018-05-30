@@ -173,7 +173,7 @@ namespace Roslynator.CSharp.CodeFixes
             SyntaxKind modifierKind,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            SyntaxNode newNode = ModifierList.Remove(node, modifierKind);
+            TNode newNode = ModifierList.Remove(node, modifierKind);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.CodeFixes
             SyntaxToken modifier,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            SyntaxNode newNode = ModifierList.Remove(node, modifier);
+            TNode newNode = ModifierList.Remove(node, modifier);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }

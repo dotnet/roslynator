@@ -55,7 +55,7 @@ namespace AddCodeFileHeader
             {
                 if (!IsGeneratedCodeFile(filePath))
                 {
-                    using (var en = File.ReadLines(filePath, Encoding.UTF8).GetEnumerator())
+                    using (IEnumerator<string> en = File.ReadLines(filePath, Encoding.UTF8).GetEnumerator())
                     {
                         if (en.MoveNext()
                             && !string.Equals(en.Current, Header, StringComparison.Ordinal))

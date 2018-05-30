@@ -31,10 +31,6 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out UsingStatementSyntax usingStatement))
                 return;
 
-            bool fMultiple = usingStatement.Statement
-                .DescendantNodes()
-                .Any(f => f.IsKind(SyntaxKind.UsingStatement) && SimplifyNestedUsingStatementAnalyzer.ContainsEmbeddableUsingStatement((UsingStatementSyntax)f));
-
             CodeAction codeAction = CodeAction.Create(
                 "Remove braces",
                 cancellationToken => SimplifyNestedUsingStatementRefactoring.RefactorAsync(context.Document, usingStatement, cancellationToken),

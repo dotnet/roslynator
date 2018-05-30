@@ -90,13 +90,8 @@ namespace Roslynator.CSharp.Analysis
 
                         if (typeSymbol != null)
                         {
-                            if (typeSymbol.Kind == SymbolKind.ArrayType
-                                && ((IArrayTypeSymbol)typeSymbol).Rank == 1)
-                            {
-                                Report(context, invocationInfo.Name);
-                                return;
-                            }
-                            else if (typeSymbol.OriginalDefinition.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Collections_Generic_List_T))
+                            if ((typeSymbol.Kind == SymbolKind.ArrayType && ((IArrayTypeSymbol)typeSymbol).Rank == 1)
+                                || typeSymbol.OriginalDefinition.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Collections_Generic_List_T))
                             {
                                 Report(context, invocationInfo.Name);
                                 return;
@@ -414,15 +409,16 @@ namespace Roslynator.CSharp.Analysis
                         break;
                     }
                 case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
                     {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
+                        var binaryExpression = (BinaryExpressionSyntax)parent;
 
-                        if (equalsExpression.Left == invocationExpression)
+                        if (binaryExpression.Left == invocationExpression)
                         {
-                            if (equalsExpression.Right.IsNumericLiteralExpression("0"))
+                            if (binaryExpression.Right.IsNumericLiteralExpression("0"))
                                 ReportNameWithArgumentList(context, invocationInfo);
                         }
-                        else if (equalsExpression.Left.IsNumericLiteralExpression("1"))
+                        else if (binaryExpression.Left.IsNumericLiteralExpression("1"))
                         {
                             ReportNameWithArgumentList(context, invocationInfo);
                         }
@@ -430,47 +426,16 @@ namespace Roslynator.CSharp.Analysis
                         break;
                     }
                 case SyntaxKind.GreaterThanOrEqualExpression:
-                    {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
-
-                        if (equalsExpression.Left == invocationExpression)
-                        {
-                            if (equalsExpression.Right.IsNumericLiteralExpression("1"))
-                                ReportNameWithArgumentList(context, invocationInfo);
-                        }
-                        else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
-                        {
-                            ReportNameWithArgumentList(context, invocationInfo);
-                        }
-
-                        break;
-                    }
                 case SyntaxKind.LessThanExpression:
                     {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
+                        var binaryExpression = (BinaryExpressionSyntax)parent;
 
-                        if (equalsExpression.Left == invocationExpression)
+                        if (binaryExpression.Left == invocationExpression)
                         {
-                            if (equalsExpression.Right.IsNumericLiteralExpression("1"))
+                            if (binaryExpression.Right.IsNumericLiteralExpression("1"))
                                 ReportNameWithArgumentList(context, invocationInfo);
                         }
-                        else if (equalsExpression.Left.IsNumericLiteralExpression("0"))
-                        {
-                            ReportNameWithArgumentList(context, invocationInfo);
-                        }
-
-                        break;
-                    }
-                case SyntaxKind.LessThanOrEqualExpression:
-                    {
-                        var equalsExpression = (BinaryExpressionSyntax)parent;
-
-                        if (equalsExpression.Left == invocationExpression)
-                        {
-                            if (equalsExpression.Right.IsNumericLiteralExpression("0"))
-                                ReportNameWithArgumentList(context, invocationInfo);
-                        }
-                        else if (equalsExpression.Left.IsNumericLiteralExpression("1"))
+                        else if (binaryExpression.Left.IsNumericLiteralExpression("0"))
                         {
                             ReportNameWithArgumentList(context, invocationInfo);
                         }

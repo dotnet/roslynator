@@ -373,8 +373,6 @@ namespace Roslynator.CSharp.Documentation
 
             if (methodSymbol?.IsErrorType() == false)
             {
-                int position = methodDeclaration.SpanStart;
-
                 string xml = GenerateFromOverriddenMethods(methodSymbol, cancellationToken);
 
                 if (xml != null)

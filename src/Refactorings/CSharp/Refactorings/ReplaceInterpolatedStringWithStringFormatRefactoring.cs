@@ -42,8 +42,6 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         case SyntaxKind.Interpolation:
                             {
-                                var interpolation = (InterpolationSyntax)content;
-
                                 containsInterpolation = true;
 
                                 if (containsInterpolatedText)

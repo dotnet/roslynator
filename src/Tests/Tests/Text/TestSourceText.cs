@@ -18,7 +18,7 @@ namespace Roslynator.Tests.Text
 
         public static (string result, TextSpan span) ReplaceSpan(string s, string replacement)
         {
-            int index = s.IndexOf(OpenMarkerAndCloseMarker);
+            int index = s.IndexOf(OpenMarkerAndCloseMarker, StringComparison.Ordinal);
 
             var span = new TextSpan(index, replacement.Length);
 
@@ -32,7 +32,7 @@ namespace Roslynator.Tests.Text
             string replacement1,
             string replacement2)
         {
-            int index = s.IndexOf(OpenMarkerAndCloseMarker);
+            int index = s.IndexOf(OpenMarkerAndCloseMarker, StringComparison.Ordinal);
 
             var span = new TextSpan(index, replacement1.Length);
 

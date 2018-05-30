@@ -39,8 +39,8 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax expression = left.WalkDownParentheses();
 
-            ExpressionSyntax condition = null;
-            ExpressionSyntax whenTrue = null;
+            ExpressionSyntax condition;
+            ExpressionSyntax whenTrue;
 
             if (expression.IsKind(SyntaxKind.AsExpression))
             {

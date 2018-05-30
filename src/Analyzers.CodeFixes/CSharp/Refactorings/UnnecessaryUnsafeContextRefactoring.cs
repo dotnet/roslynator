@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
 
             BlockSyntax block = unsafeStatement.Block;
 
-            IEnumerable<SyntaxTrivia> leadingTrivia = keyword.LeadingTrivia
+            SyntaxTriviaList leadingTrivia = keyword.LeadingTrivia
                 .AddRange(keyword.TrailingTrivia.EmptyIfWhitespace())
                 .AddRange(block.GetLeadingTrivia().EmptyIfWhitespace());
 

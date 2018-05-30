@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.Documentation
 
             using (var sr = new StringReader(innerXml))
             {
-                string s = null;
+                string s;
 
                 while ((s = sr.ReadLine()) != null)
                 {

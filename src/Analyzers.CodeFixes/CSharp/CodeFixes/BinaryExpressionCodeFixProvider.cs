@@ -149,7 +149,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(binaryExpression.Left, context.CancellationToken);
 
-                            string title = null;
+                            string title;
 
                             if (CSharpFacts.IsSimpleType(typeSymbol.SpecialType)
                                 || typeSymbol.ContainsMember<IMethodSymbol>(WellKnownMemberNames.EqualityOperatorName))

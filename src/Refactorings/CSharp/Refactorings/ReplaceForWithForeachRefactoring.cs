@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ForEachStatementSyntax forEachStatement = ForEachStatement(
                 VarType(),
-                name,
+                Identifier(name).WithRenameAnnotation(),
                 expression,
                 newStatement);
 

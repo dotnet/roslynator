@@ -525,7 +525,7 @@ namespace Roslynator.CSharp
             return new TypeAnalysis(value);
         }
 
-        public static implicit operator TypeAnalysisFlags(TypeAnalysis value)
+        public static implicit operator TypeAnalysisFlags(in TypeAnalysis value)
         {
             return value.Flags;
         }

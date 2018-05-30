@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
         {
-            StatementSyntax newStatement = null;
+            StatementSyntax newStatement;
 
             if (ifStatement.Parent is IfStatementSyntax parentIf)
             {
