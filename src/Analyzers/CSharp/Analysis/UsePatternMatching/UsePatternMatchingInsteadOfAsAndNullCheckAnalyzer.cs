@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -69,6 +70,18 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
             if (!string.Equals(localInfo.IdentifierText, (nullCheck.Expression as IdentifierNameSyntax)?.Identifier.ValueText, StringComparison.Ordinal))
                 return;
+
+            if (!localInfo.Type.IsVar)
+            {
+                SemanticModel semanticModel = context.SemanticModel;
+                CancellationToken cancellationToken = context.CancellationToken;
+
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken);
+                ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(asExpressionInfo.Type, cancellationToken);
+
+                if (!typeSymbol.Equals(typeSymbol2))
+                    return;
+            }
 
             context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatchingInsteadOfAsAndNullCheck, localInfo.Statement);
         }
