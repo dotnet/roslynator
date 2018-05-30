@@ -60,14 +60,21 @@ namespace Roslynator.CSharp.Analysis
             if (!(semanticModel.GetSymbol(invocationExpression, cancellationToken) is IMethodSymbol methodSymbol))
                 return;
 
-            if (!methodSymbol.IsStatic
-                && expression.Kind() != SyntaxKind.IdentifierName
-                && !ExpressionIsParameter(expression, lambda.Parameter))
-            {
-                return;
-            }
-
             bool isReduced = methodSymbol.MethodKind == MethodKind.ReducedExtension;
+
+            if (!methodSymbol.IsStatic
+                && expression.Kind() != SyntaxKind.IdentifierName)
+            {
+                if (!ExpressionIsParameter(expression, lambda.Parameter))
+                {
+                    return;
+                }
+                else if (isReduced
+                    && !context.ContainingSymbol.ContainingType.Equals(methodSymbol.ContainingType))
+                {
+                    return;
+                }
+            }
 
             ImmutableArray<IParameterSymbol> parameterSymbols = (isReduced) ? methodSymbol.ReducedFrom.Parameters : methodSymbol.Parameters;
 
@@ -137,10 +144,17 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             if (!methodSymbol.IsStatic
-                && expression.Kind() != SyntaxKind.IdentifierName
-                && !ExpressionIsParameter(expression, lambda.ParameterList))
+                && expression.Kind() != SyntaxKind.IdentifierName)
             {
-                return;
+                if (!ExpressionIsParameter(expression, lambda.ParameterList))
+                {
+                    return;
+                }
+                else if (methodSymbol.MethodKind == MethodKind.ReducedExtension
+                    && !context.ContainingSymbol.ContainingType.Equals(methodSymbol.ContainingType))
+                {
+                    return;
+                }
             }
 
             ImmutableArray<IParameterSymbol> parameterSymbols = methodSymbol.Parameters;
@@ -228,10 +242,17 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             if (!methodSymbol.IsStatic
-                && expression.Kind() != SyntaxKind.IdentifierName
-                && !ExpressionIsParameter(expression, parameterList))
+                && expression.Kind() != SyntaxKind.IdentifierName)
             {
-                return;
+                if (!ExpressionIsParameter(expression, parameterList))
+                {
+                    return;
+                }
+                else if (methodSymbol.MethodKind == MethodKind.ReducedExtension
+                    && !context.ContainingSymbol.ContainingType.Equals(methodSymbol.ContainingType))
+                {
+                    return;
+                }
             }
 
             ImmutableArray<IParameterSymbol> parameterSymbols = methodSymbol.Parameters;
