@@ -6,6 +6,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using System.Collections.Immutable;
 
 namespace Roslynator.CSharp.Analysis.UnusedMember
 {
@@ -67,18 +68,46 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                         Nodes[i] = info;
                     }
 
-                    ISymbol symbol = SemanticModel.GetSymbol(node, CancellationToken);
+                    SymbolInfo symbolInfo = SemanticModel.GetSymbolInfo(node, CancellationToken);
 
-                    if (symbol == null)
-                        continue;
-
-                    if (symbol is IMethodSymbol methodSymbol)
-                        symbol = methodSymbol.ReducedFrom ?? methodSymbol;
-
-                    if (info.Symbol.Equals(symbol.OriginalDefinition)
-                        && _containingMethodSymbol?.Equals(symbol.OriginalDefinition) != true)
+                    if (symbolInfo.Symbol != null)
                     {
-                        RemoveNodeAt(i);
+                        ISymbol symbol = symbolInfo.Symbol;
+
+                        if (symbol.Kind == SymbolKind.Method)
+                        {
+                            var methodSymbol = ((IMethodSymbol)symbol);
+
+                            if (methodSymbol.MethodKind == MethodKind.ReducedExtension)
+                                symbol = methodSymbol.ReducedFrom;
+                        }
+
+                        symbol = symbol.OriginalDefinition;
+
+                        if (info.Symbol.Equals(symbol)
+                            && _containingMethodSymbol?.Equals(symbol) != true)
+                        {
+                            RemoveNodeAt(i);
+                        }
+                    }
+                    else if (symbolInfo.CandidateReason == CandidateReason.MemberGroup)
+                    {
+                        ImmutableArray<ISymbol> candidateSymbols = symbolInfo.CandidateSymbols;
+
+                        for (int j = 0; j < candidateSymbols.Length; j++)
+                        {
+                            ISymbol symbol = candidateSymbols[j].OriginalDefinition;
+
+                            if (info.Symbol.Equals(symbol)
+                                && _containingMethodSymbol?.Equals(symbol) != true)
+                            {
+                                RemoveNodeAt(i);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.Fail(symbolInfo.CandidateReason.ToString());
                     }
                 }
             }
