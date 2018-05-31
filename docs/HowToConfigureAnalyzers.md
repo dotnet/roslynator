@@ -32,7 +32,9 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ## Step by Step Tutorial
 
-### 1) Create Your Own Rule Set File
+### Old csproj format (.NET Framework)
+
+#### 1) Create Your Own Rule Set File
 
 * Skip this step if you already have one.
 * Go to Solution Explorer - Solution - Project - References - Analyzers - Open Active Rule Set.
@@ -45,14 +47,14 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ![Rule Set Editor](/images/RuleSetEditor.png)
 
-### 2) Modify Rule Set File Manually
+#### 2) Modify Rule Set File Manually
 
 * Open rule set file in text editor.
 * Change its name (rule set is represented in the IDE by its name).
 
 ![Edit Rule Set File](/images/EditRuleSetFile.png)
 
-### 3) Attach Rule Set to Project(s)
+#### 3) Attach Rule Set to Project(s)
 
 * Go to Main Menu - Analysis - Configure Code Analysis - For Solution
 
@@ -63,15 +65,28 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ![Code Analysis Settings](/images/CodeAnalysisSettings.png)
 
-## How to Enable Rule Set in .NET Core project
 
-To enable ruleset file in .NET Core project it is necessary to manually edit csproj file by adding relative or absolute path to rule set file:
+### New csproj format (.NET Core, .NET Standard)
+
+#### 1) Create Your Own Rule Set File
+
+* Skip this step if you already have one.
+* Create new file with extension `ruleset` and add following content:
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="My Rules" ToolsVersion="15.0">
+</RuleSet>
+```
+
+#### 2) Attach Rule Set to Project(s)
+
+* Open csproj file in text editor or go to Solution Explorer - Project - Context Menu - Edit ProjectName.csproj
+* Add following `PropertyGroup` (or add element to the existing `PropertyGroup`):
 
 ```xml
 <PropertyGroup>
-	...
-  <CodeAnalysisRuleSet>my.ruleset</CodeAnalysisRuleSet>
-	...
+  <CodeAnalysisRuleSet>relative_or_absolute_path_to_ruleset_file</CodeAnalysisRuleSet>
 </PropertyGroup>
 ```
 
