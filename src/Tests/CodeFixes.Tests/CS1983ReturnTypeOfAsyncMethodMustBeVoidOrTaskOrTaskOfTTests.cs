@@ -11,13 +11,18 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests : AbstractCSharpCompilerCodeFixVerifier
     {
+        public CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests()
+        {
+            Options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
+        }
+
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT;
 
         public override CodeFixProvider FixProvider { get; } = new ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression);
+        public override CodeVerificationOptions Options { get; }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
         public async Task Test_Task()
         {
             await VerifyFixAsync(@"
@@ -104,10 +109,10 @@ public class Foo
         return Task.CompletedTask;
     }
 }
-", EquivalenceKey.Create(DiagnosticId, "Task"));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "Task"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
         public async Task Test_TaskOfT()
         {
             await VerifyFixAsync(@"
@@ -210,10 +215,10 @@ public class Foo
         return Task.CompletedTask;
     }
 }
-", EquivalenceKey.Create(DiagnosticId, "TaskOfT"));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "TaskOfT"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfT)]
         public async Task TestNoFix()
         {
             const string source = @"
@@ -253,9 +258,9 @@ public class Foo
     }
 }
 ";
-            await VerifyNoFixAsync(source, EquivalenceKey.Create(DiagnosticId, "Task"));
+            await VerifyNoFixAsync(source, equivalenceKey: EquivalenceKey.Create(DiagnosticId, "Task"));
 
-            await VerifyNoFixAsync(source, EquivalenceKey.Create(DiagnosticId, "TaskOfT"));
+            await VerifyNoFixAsync(source, equivalenceKey: EquivalenceKey.Create(DiagnosticId, "TaskOfT"));
         }
     }
 }

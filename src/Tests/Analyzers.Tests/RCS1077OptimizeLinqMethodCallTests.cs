@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new OptimizeLinqMethodCallCodeFixProvider();
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("Where(_ => true).Any()", "Any(_ => true)")]
         [InlineData("Where(_ => true).Count()", "Count(_ => true)")]
         [InlineData("Where(_ => true).First()", "First(_ => true)")]
@@ -45,7 +45,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_Where_Multiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -80,7 +80,7 @@ class C
 ");
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("Where(_ => true).Any()", "Any(_ => true)")]
         [InlineData("Where(_ => true).Count()", "Count(_ => true)")]
         [InlineData("Where(_ => true).First()", "First(_ => true)")]
@@ -107,7 +107,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("Where(f => f is object).Cast<object>()", "OfType<object>()")]
         [InlineData("Where((f) => f is object).Cast<object>()", "OfType<object>()")]
         [InlineData(@"Where(f =>
@@ -132,7 +132,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
         [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]
         public async Task Test_CombineWhereAndAny(string fromData, string toData)
@@ -153,7 +153,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData(@"Where(f => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any(f => f.StartsWith(""a"") && f.StartsWith(""b""))")]
         [InlineData(@"Where((f) => f.StartsWith(""a"")).Any(f => f.StartsWith(""b""))", @"Any((f) => f.StartsWith(""a"") && f.StartsWith(""b""))")]
         public async Task Test_CombineWhereAndAny_ImmutableArray(string fromData, string toData)
@@ -174,7 +174,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
@@ -198,7 +198,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
@@ -222,7 +222,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
@@ -247,7 +247,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.FirstOrDefault(_ => true) != null", "items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) == null", "!items.Any(_ => true)")]
         [InlineData("items.FirstOrDefault(_ => true) is null", "!items.Any(_ => true)")]
@@ -272,7 +272,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_OptimizeOfType_ReferenceType()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -304,7 +304,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_OptimizeOfType_ValueType()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -336,7 +336,7 @@ struct C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_OptimizeOfType_TypeParameterWithStructConstraint()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -368,7 +368,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallCastInsteadOfSelect_ExtensionMethodCall()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -394,7 +394,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallCastInsteadOfSelect_StaticMethodCall()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -420,7 +420,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallCastInsteadOfSelect_ParenthesizedLambda()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -446,7 +446,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallCastInsteadOfSelect_LambdaWithBlock()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -475,7 +475,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallPeekInsteadOfFirst_Queue()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -507,7 +507,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallPeekInsteadOfFirst_Stack()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -539,7 +539,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallFindInsteadOfFirstOrDefault_List()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -571,7 +571,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task Test_CallFindInsteadOfFirstOrDefault_Array()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -603,7 +603,7 @@ class C
 ");
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("((List<object>)x).[|Count()|]", "((List<object>)x).Count")]
         [InlineData("((IList<object>)x).[|Count()|]", "((IList<object>)x).Count")]
         [InlineData("((IReadOnlyList<object>)x).[|Count()|]", "((IReadOnlyList<object>)x).Count")]
@@ -633,7 +633,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("((List<object>)x).[|First()|]", "((List<object>)x)[0]")]
         [InlineData("((IList<object>)x).[|First()|]", "((IList<object>)x)[0]")]
         [InlineData("((IReadOnlyList<object>)x).[|First()|]", "((IReadOnlyList<object>)x)[0]")]
@@ -661,7 +661,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("((List<object>)x).[|ElementAt(1)|]", "((List<object>)x)[1]")]
         [InlineData("((IList<object>)x).[|ElementAt(1)|]", "((IList<object>)x)[1]")]
         [InlineData("((IReadOnlyList<object>)x).[|ElementAt(1)|]", "((IReadOnlyList<object>)x)[1]")]
@@ -689,7 +689,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("items.[|Count()|] != 0", "items.Any()")]
         [InlineData("items.[|Count()|] > 0", "items.Any()")]
         [InlineData("items.[|Count()|] >= 1", "items.Any()")]
@@ -723,7 +723,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -742,7 +742,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CombineWhereAndAny()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -761,7 +761,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_FirstOrDefault_ValueType()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -791,7 +791,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallCastInsteadOfSelect_Conversion()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -820,7 +820,7 @@ class C2
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_OptimizeCountCall_IEnumerableOfT()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -836,7 +836,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallAnyInsteadOfCount()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -871,7 +871,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -902,7 +902,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_UseElementAccessInsteadOfFirst()
         {
             await VerifyNoDiagnosticAsync(@"

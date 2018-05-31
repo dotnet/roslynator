@@ -11,13 +11,18 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CSTests : AbstractCSharpCompilerCodeFixVerifier
     {
+        public CSTests()
+        {
+            Options = base.Options;
+        }
+
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands;
 
         public override CodeFixProvider FixProvider { get; }
 
-        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default;
+        public override CodeVerificationOptions Options { get; }
 
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
         public async Task Test()
         {
             await VerifyFixAsync(@"
@@ -33,10 +38,10 @@ class C
     }
 }
 ", @"
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        //[Theory]
+        //[Theory, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
         //[InlineData("", "")]
         public async Task Test(string fromData, string toData)
         {
@@ -52,10 +57,10 @@ class C
     {
     }
 }
-", fromData, toData, EquivalenceKey.Create(DiagnosticId));
+", fromData, toData, equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
         public async Task TestNoFix()
         {
             await VerifyNoFixAsync(@"
@@ -70,7 +75,7 @@ class C
     {
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
     }
 }

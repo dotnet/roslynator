@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new InvocationExpressionCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin)]
         public async Task Test_EmptyStringLiteral()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -27,7 +27,7 @@ class C
 {
     void M()
     {
-        string s = string.Join("""", default(object), default(object));
+        string s = string.[|Join|]("""", default(object), default(object));
     }
 }
 ", @"
@@ -41,7 +41,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin)]
         public async Task Test_EmptyStringLiteral2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -49,7 +49,7 @@ class C
 {
     void M()
     {
-        string s = string.Join("""", ""a"", ""b"");
+        string s = string.[|Join|]("""", ""a"", ""b"");
     }
 }
 ", @"
@@ -63,7 +63,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin)]
         public async Task Test_StringEmpty()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -71,7 +71,7 @@ class C
 {
     void M()
     {
-        string s = string.Join(string.Empty, new string[] { """" });
+        string s = string.[|Join|](string.Empty, new string[] { """" });
     }
 }
 ", @"
@@ -85,7 +85,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin)]
         public async Task Test_EmptyStringConstant()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -95,7 +95,7 @@ class C
 
     void M()
     {
-        string s = string.Join(EmptyString, new object[] { """" });
+        string s = string.[|Join|](EmptyString, new object[] { """" });
     }
 }
 ", @"
@@ -111,7 +111,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin)]
         public async Task TestNoDiagnostic_NonEmptySeparator()
         {
             await VerifyNoDiagnosticAsync(@"

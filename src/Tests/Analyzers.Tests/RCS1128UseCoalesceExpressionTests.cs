@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new StatementCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_LocalDeclarationStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -46,7 +46,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_LocalDeclarationStatement_IsNull()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -73,7 +73,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_LocalDeclarationStatement_WithComments()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_LocalDeclarationStatement_EmbeddedStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -134,7 +134,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_LocalDeclarationStatement_CastExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -165,7 +165,7 @@ class B { }
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_SimpleAssignmentStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -192,7 +192,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_SimpleAssignmentStatement_CastExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -223,7 +223,7 @@ class B { }
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_IfStatement_Nullable()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -250,7 +250,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_IfStatement_Nullable_NotHasValue()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -277,7 +277,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_LocalDeclarationStatement_Nullable()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -304,7 +304,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_SimpleAssignmentStatement_Nullable()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -331,7 +331,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task TestNoDiagnostic_NotEqualsToNull()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -347,7 +347,7 @@ class C
 }");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task TestNoDiagnostic_NotIsNull()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -363,7 +363,7 @@ class C
 }");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task TestNoDiagnostic_HasValue()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new UnusedMemberCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task Test_Method()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task Test_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task TestNoDiagnostic_Property_AttributeArgument_NameOf()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -73,7 +73,7 @@ class FooAttribute : Attribute
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task TestNoDiagnostic_Method_AttributeArgument_NameOf()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -96,7 +96,7 @@ class FooAttribute : Attribute
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task TestNoDiagnostic_Method_Argument_NameOf()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task TestNoDiagnostic_Indexer_Argument_NameOf()
         {
             await VerifyNoDiagnosticAsync(@"

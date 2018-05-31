@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new ConditionalExpressionCodeFixProvider();
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
         [InlineData("f ? true : false", "f")]
         [InlineData("!f ? false : true", "f")]
         [InlineData("((f)) ? ((true)) : ((false))", "f")]
@@ -49,7 +49,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
         [InlineData("f ? g : false", "f && g")]
         [InlineData(@"[|f
             ? g
@@ -68,7 +68,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
         [InlineData("f ? true : g", "f || g")]
         [InlineData(@"[|f
             ? true
@@ -87,7 +87,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

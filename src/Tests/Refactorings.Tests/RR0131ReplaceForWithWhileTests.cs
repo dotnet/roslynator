@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceForWithWhile;
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
         public async Task Test_CommonFor()
         {
             await VerifyRefactoringAsync(@"
@@ -46,10 +46,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
         public async Task Test_ForWithEmbeddedStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -82,10 +82,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
         public async Task Test_ForWithContinue()
         {
             await VerifyRefactoringAsync(@"
@@ -154,10 +154,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
         public async Task Test_ForWithMultipleDeclarationsAndIncrementors()
         {
             await VerifyRefactoringAsync(@"
@@ -192,10 +192,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
         public async Task Test_EmptyFor()
         {
             await VerifyRefactoringAsync(@"
@@ -218,10 +218,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
         public async Task Test_EmbeddedFor()
         {
             await VerifyRefactoringAsync(@"
@@ -260,7 +260,7 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

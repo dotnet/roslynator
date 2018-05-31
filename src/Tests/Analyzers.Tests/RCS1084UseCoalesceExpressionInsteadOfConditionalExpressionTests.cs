@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new ConditionalExpressionCodeFixProvider();
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
         [InlineData("s != null ? s : \"\"", "s ?? \"\"")]
         [InlineData("s == null ? \"\" : s", "s ?? \"\"")]
 
@@ -40,7 +40,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
         [InlineData("(ni != null) ? ni.Value : 1", "ni ?? 1")]
         [InlineData("(ni == null) ? 1 : ni.Value", "ni ?? 1")]
         [InlineData("(ni.HasValue) ? ni.Value : 1", "ni ?? 1")]
@@ -61,7 +61,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -78,7 +78,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression)]
         public async Task TestNoDiagnostic_Pointer()
         {
             await VerifyNoDiagnosticAsync(@"

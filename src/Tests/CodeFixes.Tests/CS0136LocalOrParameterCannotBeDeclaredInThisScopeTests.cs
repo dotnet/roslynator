@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
         {
             public override CodeFixProvider FixProvider { get; } = new VariableDeclarationCodeFixProvider();
 
-            [Fact]
+            [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
             public async Task Test_ReplaceVariableDeclarationWithAssignment()
             {
                 await VerifyFixAsync(@"
@@ -47,10 +47,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
             }
 
-            [Fact]
+            [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
             public async Task TestNoFix()
             {
                 await VerifyNoFixAsync(
@@ -67,7 +67,7 @@ class C
             string s = null;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
             }
         }
 
@@ -75,7 +75,7 @@ class C
         {
             public override CodeFixProvider FixProvider { get; } = new ParameterCannotBeDeclaredInThisScopeCodeFixProvider();
 
-            [Fact]
+            [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter)]
             public async Task Test_RemoveParameter()
             {
                 await VerifyFixAsync(@"
@@ -102,7 +102,7 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
             }
         }
     }

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new UseExplicitTypeInsteadOfVarCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
         public async Task Test_LocalVariable()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -43,7 +43,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
         public async Task Test_DeclarationExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -71,7 +71,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
         public async Task Test_Tuple()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -103,7 +103,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
         internal async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

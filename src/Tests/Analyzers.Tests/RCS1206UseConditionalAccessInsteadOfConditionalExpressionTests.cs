@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new ConditionalExpressionCodeFixProvider();
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         [InlineData("(x != null) ? x.ToString() : null", "x?.ToString()")]
         [InlineData("(x != null) ? x.ToString() : default", "x?.ToString()")]
         [InlineData("(x != null) ? x.ToString() : default(string)", "x?.ToString()")]
@@ -42,7 +42,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         [InlineData("(x != null) ? x.Value : 0", "x?.Value ?? 0")]
         [InlineData("(x != null) ? x.Value : default", "x?.Value ?? (default)")]
         [InlineData("(x != null) ? x.Value : default(int)", "x?.Value ?? default(int)")]
@@ -67,7 +67,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         [InlineData("(x != null) ? x.Value : null", "x?.Value")]
         [InlineData("(x != null) ? x.Value : default", "x?.Value")]
         [InlineData("(x != null) ? x.Value : default(int?)", "x?.Value")]
@@ -92,7 +92,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         [InlineData("(ni != null) ? ni.Value.ToString() : null", "ni?.ToString()")]
         [InlineData("(ni == null) ? null : ni.Value.ToString()", "ni?.ToString()")]
         [InlineData("(ni.HasValue) ? ni.Value.ToString() : null", "ni?.ToString()")]
@@ -112,7 +112,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         [InlineData("(ni != null) ? ni.Value.GetHashCode() : 0", "ni?.GetHashCode() ?? 0")]
         [InlineData("(ni == null) ? 0 : ni.Value.GetHashCode()", "ni?.GetHashCode() ?? 0")]
         [InlineData("(ni.HasValue) ? ni.Value.GetHashCode() : 0", "ni?.GetHashCode() ?? 0")]
@@ -132,7 +132,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

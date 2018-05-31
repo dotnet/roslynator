@@ -1,4 +1,4 @@
-// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount)]
         [InlineData("items.Count() > i", "items.Skip(i).Any()")]
         [InlineData("i < items.Count()", "items.Skip(i).Any()")]
         [InlineData("items.Count() >= i", "items.Skip(i - 1).Any()")]
@@ -49,7 +49,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CallSkipAndAnyInsteadOfCount)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

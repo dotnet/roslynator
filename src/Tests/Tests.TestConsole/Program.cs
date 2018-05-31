@@ -17,7 +17,7 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.Tests
 {
-    internal static  class Program
+    internal static class Program
     {
         internal static async Task Main()
         {
@@ -34,13 +34,10 @@ class C
 }
 ";
 
-            ProjectId projectId = ProjectId.CreateNewId();
-
             Project project = new AdhocWorkspace()
                 .CurrentSolution
-                .AddProject(projectId, "TestProject", "TestProject", LanguageNames.CSharp)
-                .AddMetadataReferences(
-                    projectId,
+                .AddProject("TestProject", "TestProject", LanguageNames.CSharp)
+                .WithMetadataReferences(
                     new MetadataReference[]
                     {
                         MetadataReference.CreateFromFile(typeof(object).Assembly.Location),
@@ -51,21 +48,13 @@ class C
                         RuntimeMetadataReference.CreateFromAssemblyName("System.Collections.Immutable.dll"),
                         RuntimeMetadataReference.CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
                         RuntimeMetadataReference.CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll"),
-                    })
-                .GetProject(projectId);
+                    });
 
             var parseOptions = (CSharpParseOptions)project.ParseOptions;
 
-            project = project.WithParseOptions(parseOptions.WithLanguageVersion(LanguageVersion.Latest));
-
-            DocumentId documentId = DocumentId.CreateNewId(projectId);
-
-            project = project
-                .Solution
-                .AddDocument(documentId, "Test.cs", SourceText.From(source))
-                .GetProject(projectId);
-
-            Document document = project.GetDocument(documentId);
+            Document document = project
+                .WithParseOptions(parseOptions.WithLanguageVersion(LanguageVersion.Latest))
+                .AddDocument("Test.cs", SourceText.From(source));
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
             SyntaxTree tree = await document.GetSyntaxTreeAsync().ConfigureAwait(false);

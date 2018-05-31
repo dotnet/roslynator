@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf;
 
-        [Theory]
+        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         [InlineData("if (f) { z = x; } else { z = y; }", "z = (f) ? x : y;")]
         [InlineData("if (f) z = x; else z = y;", "z = (f) ? x : y;")]
         public async Task Test_IfElseToAssignmentWithConditionalExpression(string fromData, string toData)
@@ -24,10 +24,10 @@ class C
         [||]
     }
 }
-", fromData, toData, RefactoringId);
+", fromData, toData, equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task Test_AssignmentAndIfElseToAssignmentWithConditionalExpression()
         {
             await VerifyRefactoringAsync(@"
@@ -54,10 +54,10 @@ class C
         z = (f) ? x : y;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task Test_LocalDeclarationAndIfElseToAssignmentWithConditionalExpression()
         {
             await VerifyRefactoringAsync(@"
@@ -84,10 +84,10 @@ class C
         string z = (f) ? x : y;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         [InlineData("if (f) { return x; } else { return y; }", "return (f) ? x : y;")]
         [InlineData("if (f) return x; else return y;", "return (f) ? x : y;")]
         [InlineData("if (f) { return x; } return y;", "return (f) ? x : y;")]
@@ -102,10 +102,10 @@ class C
         [||]
     }
 }
-", fromData, toData, RefactoringId);
+", fromData, toData, equivalenceKey: RefactoringId);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         [InlineData("if (f) { yield return x; } else { yield return y; }", "yield return (f) ? x : y;")]
         [InlineData("if (f) yield return x; else yield return y;", "yield return (f) ? x : y;")]
         public async Task Test_IfElseToYieldReturnWithConditionalExpression(string fromData, string toData)
@@ -120,10 +120,10 @@ class C
         [||]
     }
 }
-", fromData, toData, RefactoringId);
+", fromData, toData, equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task TestNoRefactoring_IfElseToAssignmentWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -142,10 +142,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task TestNoRefactoring_LocalDeclarationAndIfElseAssignmentWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -164,10 +164,10 @@ class C
         }|]
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task TestNoRefactoring_AssignmentAndIfElseToAssignmentWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -187,10 +187,10 @@ class C
         }|]
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task TestNoRefactoring_IfElseToYieldReturnWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -210,10 +210,10 @@ class C
         }|]
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task TestNoRefactoring_IfElseToReturnWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -231,10 +231,10 @@ class C
         }|]
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task TestNoRefactoring_IfReturnToReturnWithConditionalExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -250,7 +250,7 @@ class C
         return 1;|]
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

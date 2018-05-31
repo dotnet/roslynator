@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.PromoteLocalToParameter;
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
         public async Task Test_MethodWithSingleLocalDeclaration()
         {
             await VerifyRefactoringAsync(@"
@@ -30,10 +30,10 @@ class C
         value = new object();
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
         public async Task Test_LocalFunctionWithSingleLocalDeclaration()
         {
             await VerifyRefactoringAsync(@"
@@ -58,10 +58,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
         public async Task Test_MethodWithMultipleLocalDeclarationsWithoutInitialization()
         {
             await VerifyRefactoringAsync(@"
@@ -80,10 +80,10 @@ class C
         string y;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
         public async Task Test_MethodWithMultipleLocalDeclarationsWithInitialization()
         {
             await VerifyRefactoringAsync(@"
@@ -103,10 +103,10 @@ class C
         x = null;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.PromoteLocalToParameter)]
         public async Task TestNoRefactoring_TypeDoesNotSupportExplicitDeclaration()
         {
             await VerifyNoRefactoringAsync(@"
@@ -120,7 +120,7 @@ class C
         var [||]q2 = q;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

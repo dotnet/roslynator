@@ -11,13 +11,18 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests : AbstractCSharpCompilerCodeFixVerifier
     {
+        public CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests()
+        {
+            Options = base.Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
+        }
+
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType;
 
         public override CodeFixProvider FixProvider { get; } = new MethodDeclarationOrLocalFunctionStatementCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; } = CodeVerificationOptions.Default.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
+        public override CodeVerificationOptions Options { get; }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
         public async Task Test_Method_String()
         {
             await VerifyFixAsync(@"
@@ -44,10 +49,10 @@ class C
         yield return DateTime.Now;
     }
 }
-", EquivalenceKey.Create(DiagnosticId, "string"));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "string"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
         public async Task Test_LocalFunction_String()
         {
             await VerifyFixAsync(@"
@@ -80,10 +85,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId, "string"));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "string"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
         public async Task Test_Method_DateTime()
         {
             await VerifyFixAsync(@"
@@ -110,10 +115,10 @@ class C
         yield return DateTime.Now;
     }
 }
-", EquivalenceKey.Create(DiagnosticId, "DateTime"));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "DateTime"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
         public async Task Test_LocalFunction_DateTime()
         {
             await VerifyFixAsync(@"
@@ -146,10 +151,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId, "DateTime"));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, "DateTime"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType)]
         public async Task TestNoFix()
         {
             await VerifyNoFixAsync(@"
@@ -175,7 +180,7 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
     }
 }

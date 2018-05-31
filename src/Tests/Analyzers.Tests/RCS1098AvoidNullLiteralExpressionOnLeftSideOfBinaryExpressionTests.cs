@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression)]
         public async Task TestDiagnosticWithCodeFix()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -45,7 +45,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 
         public override CodeFixProvider FixProvider { get; } = new MemberDeclarationCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType)]
         public async Task TestFix()
         {
             await VerifyFixAsync(@"
@@ -31,7 +31,7 @@ class C
     {
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
     }
 }

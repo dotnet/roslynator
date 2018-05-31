@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new RemoveRedundantParenthesesCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_Argument()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -41,7 +41,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_AttributeArgument()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -61,7 +61,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_ReturnExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -83,7 +83,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_YieldReturnExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -109,7 +109,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_ExpressionBody()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -125,7 +125,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_AwaitExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -153,7 +153,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_ArrayRankSpecifier()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -175,7 +175,7 @@ class C
 ");
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         [InlineData("while ([|(|]true)) { }", "while (true) { }")]
         [InlineData("do { } while ([|(|]true));", "do { } while (true);")]
         [InlineData("using ([|(|](IDisposable)null)) { }", "using ((IDisposable)null) { }")]
@@ -215,7 +215,7 @@ class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         [InlineData("f = ![|(|]f);", "f = !f;")]
         [InlineData(@"f = ![|(|]s.StartsWith(""""));", @"f = !s.StartsWith("""");")]
         [InlineData("f = ![|(|]foo.Value);", "f = !foo.Value;")]
@@ -244,7 +244,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         [InlineData("[|(|]f) == [|(|]true)", "f == true")]
         [InlineData("[|(|]f) != [|(|]true)", "f != true")]
         public async Task Test_EqualsNotEquals(string fromData, string toData)
@@ -262,7 +262,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         [InlineData("[|(|]i) > [|(|]0)", "i > 0")]
         [InlineData("[|(|]i) >= [|(|]0)", "i >= 0")]
         [InlineData("[|(|]i) < [|(|]0)", "i < 0")]
@@ -282,7 +282,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         [InlineData("[|(|]i) * [|(|]0)", "i * 0")]
         [InlineData("[|(|]i) % [|(|]0)", "i % 0")]
         [InlineData("[|(|]i) / [|(|]0)", "i / 0")]
@@ -312,7 +312,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         [InlineData("[|(|]i * 0) * i", "i * 0 * i")]
         [InlineData("[|(|]i % 0) % i", "i % 0 % i")]
         [InlineData("[|(|]i / 0) / i", "i / 0 / i")]
@@ -342,7 +342,7 @@ class Foo
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task TestNoDiagnostic_AssignmentInInitializer()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -359,7 +359,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task TestNoDiagnostic_ConditionalExpressionInInterpolatedString()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -373,7 +373,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task TestNoDiagnostic_AssignmentInAwaitExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -387,7 +387,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task TestNoDiagnostic_ForEach()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -410,7 +410,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task TestNoDiagnostic_BinaryExpressionChain_ParenthesizedRight()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis.Tests
             get { return _options; }
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task Test_PublicClass()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -60,7 +60,7 @@ public class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task Test_PublicClassWithDocComment()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -89,7 +89,7 @@ public class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task Test_PublicClassWithAttribute()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -120,7 +120,7 @@ public class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task Test_PublicClassWithDocCommentAndAttribute()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -157,7 +157,7 @@ public class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task Test_PublicStructWithDocCommentAndAttribute()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -194,7 +194,7 @@ public struct C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttribute()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -207,7 +207,7 @@ public class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task TestNoDiagnostic_ClassWithDebuggerDisplayAttributeOnBaseClass()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -224,7 +224,7 @@ public class C : B
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task TestNoDiagnostic_StaticClass()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -234,7 +234,7 @@ static class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task TestNoDiagnostic_Interface()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -244,7 +244,7 @@ public interface IC
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MarkTypeWithDebuggerDisplayAttribute)]
         public async Task TestNoDiagnostic_NonPubliclyVisibleType()
         {
             await VerifyNoDiagnosticAsync(@"

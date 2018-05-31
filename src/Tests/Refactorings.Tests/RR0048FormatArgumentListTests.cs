@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.FormatArgumentList;
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
         public async Task Test_ToMultiLine()
         {
             await VerifyRefactoringAsync(@"
@@ -33,10 +33,10 @@ class C
             p3);
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
         public async Task Test_ToMultiLine2()
         {
             await VerifyRefactoringAsync(@"
@@ -58,10 +58,10 @@ class C
             p3);
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
         public async Task Test_ToSingleLine()
         {
             await VerifyRefactoringAsync(@"
@@ -83,10 +83,10 @@ class C
         M(p1, p2, p3);
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
         public async Task Test_ToSingleLine2()
         {
             await VerifyRefactoringAsync(@"
@@ -108,10 +108,10 @@ class C
         M(p1, p2, p3);
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"
@@ -125,7 +125,7 @@ class C
             p3|]);
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Roslynator.CodeFixes
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return $"{{{string.Join(", ", FixableDiagnosticIds)}}}"; }
+            get { return $"{GetType()} {{{string.Join(", ", FixableDiagnosticIds)}}}"; }
         }
 
         public override FixAllProvider GetFixAllProvider()

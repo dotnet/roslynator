@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new ClassDeclarationCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
         public async Task Test_ClassWithoutAccessibilityModifier()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -39,7 +39,7 @@ sealed class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
         public async Task Test_ClassWithAccessibilityModifier()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -59,7 +59,7 @@ public sealed class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
         public async Task Test_ClassWithTwoConstructors()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -87,7 +87,7 @@ public sealed class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
         public async Task TestNoDiagnostic_StaticClass()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -100,7 +100,7 @@ static class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
         public async Task TestNoDiagnostic_SealedClass()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -113,7 +113,7 @@ sealed class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
         public async Task TestNoDiagnostic_ProtectedConstructor()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -126,7 +126,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
         public async Task TestNoDiagnostic_NoExplicitConstructor()
         {
             await VerifyNoDiagnosticAsync(@"

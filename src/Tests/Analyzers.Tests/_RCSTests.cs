@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.Tests;
 using Xunit;
 
 #pragma warning disable RCS1090
@@ -13,13 +14,20 @@ namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCSTests : AbstractCSharpCodeFixVerifier
     {
+        public RCSTests()
+        {
+            Options = base.Options;
+        }
+
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines;
 
         public override DiagnosticAnalyzer Analyzer { get; }
 
         public override CodeFixProvider FixProvider { get; }
 
-        //[Fact]
+        public override CodeVerificationOptions Options { get; }
+
+        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +46,7 @@ class C
 ");
         }
 
-        //[Theory]
+        //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
         //[InlineData("", "")]
         public async Task Test2(string fromData, string toData)
         {
@@ -57,7 +65,7 @@ class C
 ", fromData, toData);
         }
 
-        //[Fact]
+        //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -75,7 +83,7 @@ class C
 ");
         }
 
-        //[Theory]
+        //[Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
         //[InlineData("")]
         public async Task TestNoDiagnostic2(string fromData)
         {

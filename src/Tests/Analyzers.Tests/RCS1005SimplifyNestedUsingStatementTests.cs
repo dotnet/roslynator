@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new SimplifyNestedUsingStatementCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -63,7 +63,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
         public async Task Test_OpenBraceAtTheEndOfLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -105,7 +105,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
         public async Task TestNoDiagnostic_MultipleStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -131,7 +131,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyNestedUsingStatement)]
         public async Task TestNoDiagnostic_WithComment()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new UseExpressionBodiedMemberCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Constructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -42,7 +42,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Destructor()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -65,7 +65,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Method()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +84,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_VoidMethod()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -103,7 +103,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_LocalFunction()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -128,7 +128,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_VoidLocalFunction()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -153,7 +153,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_PropertyWithGetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -172,7 +172,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_PropertyWithGetterAndSetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -200,7 +200,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_IndexerWithGetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -219,7 +219,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_IndexerWithGetterAndSetter()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -247,7 +247,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Operator()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -266,7 +266,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_ConversionOperator()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -285,7 +285,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Constructor_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -308,7 +308,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Destructor_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -327,7 +327,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Method_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -346,7 +346,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_VoidMethod_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -365,7 +365,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_LocalFunction_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -390,7 +390,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_VoidLocalFunction_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -415,7 +415,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_PropertyWithGetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -434,7 +434,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_PropertyWithGetterAndSetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -462,7 +462,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_IndexerWithGetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -481,7 +481,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_IndexerWithGetterAndSetter_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -509,7 +509,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_Operator_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -528,7 +528,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task Test_ConversionOperator_Throw()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -547,7 +547,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_MethodWithMultipleStatements()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -562,7 +562,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_MethodWithLocalFunction()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -576,7 +576,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_VoidMethodWithNoStatements()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -589,7 +589,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_VoidMethodWithMultipleStatements()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -604,7 +604,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_MethodWithMultilineStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -619,7 +619,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_PropertyWithMultipleStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -639,7 +639,21 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
+        public async Task TestNoDiagnostic_PropertyInvalidStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string P
+    {
+        get { new object(); }
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.NotAllCodePathsReturnValue));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_AccessorWithAttribute()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -659,7 +673,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_IndexerWithMultipleStatements()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -681,7 +695,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoDiagnostic_ExpressionBody()
         {
             await VerifyNoDiagnosticAsync(@"

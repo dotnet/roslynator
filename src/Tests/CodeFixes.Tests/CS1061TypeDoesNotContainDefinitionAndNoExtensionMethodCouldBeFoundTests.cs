@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 
         public override CodeFixProvider FixProvider { get; } = new TypeDoesNotContainDefinitionCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_RemoveAwaitKeyword()
         {
             await VerifyFixAsync(@"
@@ -61,10 +61,10 @@ class C
         string Foo() => null;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_LengthToCount()
         {
             await VerifyFixAsync(@"
@@ -101,10 +101,10 @@ class C
         i = collection.Count;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
         public async Task Test_LengthToCount_ConditionalAccess()
         {
             await VerifyFixAsync(@"
@@ -141,7 +141,7 @@ class C
         ni = collection?.Count;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
     }
 }

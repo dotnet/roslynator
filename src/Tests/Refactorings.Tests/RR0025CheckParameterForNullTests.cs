@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.CheckParameterForNull;
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task Test_ReferenceType()
         {
             await VerifyRefactoringAsync(@"
@@ -34,10 +34,10 @@ class C
             throw new ArgumentNullException(nameof(p));
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task Test_NullableType()
         {
             await VerifyRefactoringAsync(@"
@@ -60,10 +60,10 @@ class C
             throw new ArgumentNullException(nameof(p));
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task Test_MultipleParametersSelected_OneNullCheckAdded()
         {
             await VerifyRefactoringAsync(@"
@@ -91,10 +91,10 @@ class C
             throw new ArgumentNullException(nameof(p2));
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task Test_MultipleParametersSelected_TwoNullChecksAdded()
         {
             await VerifyRefactoringAsync(@"
@@ -131,10 +131,10 @@ class C
             throw new ArgumentNullException(nameof(pi));
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task TestNoRefactoring_NullCheckAlreadyExists()
         {
             await VerifyNoRefactoringAsync(@"
@@ -148,10 +148,10 @@ class C
             throw new ArgumentNullException(nameof(p));
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task TestNoRefactoring_NullCheckAlreadyExists_MultipleParametersSelected()
         {
             await VerifyNoRefactoringAsync(@"
@@ -168,10 +168,10 @@ class C
             throw new ArgumentNullException(nameof(p2));
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task TestNoRefactoring_ValueType()
         {
             await VerifyNoRefactoringAsync(@"
@@ -181,10 +181,10 @@ class C
     {
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task TestNoRefactoring_NullLiteral()
         {
             await VerifyNoRefactoringAsync(@"
@@ -194,10 +194,10 @@ class C
     {
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task TestNoRefactoring_DefaultLiteral()
         {
             await VerifyNoRefactoringAsync(@"
@@ -207,10 +207,10 @@ class C
     {
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.CheckParameterForNull)]
         public async Task TestNoRefactoring_DefaultExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -220,7 +220,7 @@ class C
     {
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

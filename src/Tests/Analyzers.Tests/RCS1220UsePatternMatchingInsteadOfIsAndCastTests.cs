@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new UsePatternMatchingInsteadOfIsAndCastCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
         public async Task Test_LogicalAndExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -78,7 +78,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
         public async Task Test_IfStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -178,7 +178,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
         public async Task TestNoDiagnostic_LogicalAndExpression()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -202,7 +202,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
         public async Task TestNoDiagnostic_IfStatement()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -235,7 +235,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
         public async Task TestNoDiagnostic_LogicalAnd_ExpressionTree()
         {
             await VerifyNoDiagnosticAsync(@"

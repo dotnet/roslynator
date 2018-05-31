@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new UseRegexInstanceInsteadOfStaticMethodCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_IsMatch1()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -35,7 +35,7 @@ class C
 
         void M()
         {
-            bool isMatch = Regex.IsMatch(_input, (""pattern""));
+            bool isMatch = Regex.[|IsMatch|](_input, (""pattern""));
         }
     }
 }
@@ -60,7 +60,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_IsMatch2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -73,7 +73,7 @@ class C
 
     void M()
     {
-        bool isMatch = Regex.IsMatch(_input, _pattern);
+        bool isMatch = Regex.[|IsMatch|](_input, _pattern);
     }
 }
 ", @"
@@ -93,7 +93,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_IsMatch3()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -105,7 +105,7 @@ class C
 
     void M()
     {
-        bool isMatch = Regex.IsMatch(_input, ""pattern"", RegexOptions.Singleline);
+        bool isMatch = Regex.[|IsMatch|](_input, ""pattern"", RegexOptions.Singleline);
     }
 }
 ", @"
@@ -124,7 +124,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_IsMatch4()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -136,7 +136,7 @@ class C
 
     void M()
     {
-        bool isMatch = Regex.IsMatch(_input, ""pattern"", RegexOptions.Singleline | RegexOptions.Multiline);
+        bool isMatch = Regex.[|IsMatch|](_input, ""pattern"", RegexOptions.Singleline | RegexOptions.Multiline);
     }
 }
 ", @"
@@ -155,7 +155,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Match1()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -167,7 +167,7 @@ class C
 
     void M()
     {
-        Match match = Regex.Match(_input, ""pattern"");
+        Match match = Regex.[|Match|](_input, ""pattern"");
     }
 }
 ", @"
@@ -186,7 +186,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Match2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -198,7 +198,7 @@ class C
 
     void M()
     {
-        Match match = Regex.Match(_input, ""pattern"", RegexOptions.None);
+        Match match = Regex.[|Match|](_input, ""pattern"", RegexOptions.None);
     }
 }
 ", @"
@@ -217,7 +217,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Matches1()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -229,7 +229,7 @@ class C
 
     void M()
     {
-        MatchCollection matches = Regex.Matches(_input, ""pattern"");
+        MatchCollection matches = Regex.[|Matches|](_input, ""pattern"");
     }
 }
 ", @"
@@ -248,7 +248,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Matches2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -260,7 +260,7 @@ class C
 
     void M()
     {
-        MatchCollection matches = Regex.Matches(_input, ""pattern"", RegexOptions.None);
+        MatchCollection matches = Regex.[|Matches|](_input, ""pattern"", RegexOptions.None);
     }
 }
 ", @"
@@ -279,7 +279,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Split1()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -291,7 +291,7 @@ class C
 
     void M()
     {
-        var values = Regex.Split(_input, ""pattern"");
+        var values = Regex.[|Split|](_input, ""pattern"");
     }
 }
 ", @"
@@ -310,7 +310,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Split2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -322,7 +322,7 @@ class C
 
     void M()
     {
-        var values = Regex.Split(_input, ""pattern"", RegexOptions.None);
+        var values = Regex.[|Split|](_input, ""pattern"", RegexOptions.None);
     }
 }
 ", @"
@@ -341,7 +341,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Replace1()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -355,7 +355,7 @@ class C
 
     void M()
     {
-        string s = Regex.Replace(_input, _pattern, _replacement);
+        string s = Regex.[|Replace|](_input, _pattern, _replacement);
     }
 }
 ", @"
@@ -376,7 +376,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Replace2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -389,7 +389,7 @@ class C
 
     void M()
     {
-        string s = Regex.Replace(_input, ""pattern"", _replacement, RegexOptions.None);
+        string s = Regex.[|Replace|](_input, ""pattern"", _replacement, RegexOptions.None);
     }
 }
 ", @"
@@ -409,7 +409,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Replace3()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -422,7 +422,7 @@ class C
 
     void M()
     {
-        string s = Regex.Replace(_input, ""pattern"", default(MatchEvaluator));
+        string s = Regex.[|Replace|](_input, ""pattern"", default(MatchEvaluator));
     }
 }
 ", @"
@@ -442,7 +442,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Replace4()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -455,7 +455,7 @@ class C
 
     void M()
     {
-        string s = Regex.Replace(_input, ""pattern"", default(MatchEvaluator), RegexOptions.None);
+        string s = Regex.[|Replace|](_input, ""pattern"", default(MatchEvaluator), RegexOptions.None);
     }
 }
 ", @"
@@ -475,7 +475,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_LambdaExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -488,7 +488,7 @@ class C
 
     void M()
     {
-        Action<object> action = f => { Match match = Regex.Match(_input, ""pattern""); };
+        Action<object> action = f => { Match match = Regex.[|Match|](_input, ""pattern""); };
     }
 }
 ", @"
@@ -508,7 +508,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task Test_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -523,7 +523,7 @@ class C
     {
         get
         {
-            Match match = Regex.Match(_input, _pattern);
+            Match match = Regex.[|Match|](_input, _pattern);
             return null;
         }
     }
@@ -549,7 +549,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task TestNoDiagnostic_InstanceCall()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -578,7 +578,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task TestNoDiagnostic_PatternIsLocalConst()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -598,7 +598,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task TestNoDiagnostic_OptionsIsLocalConst()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -618,7 +618,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseRegexInstanceInsteadOfStaticMethod)]
         public async Task TestNoDiagnostic_NonConstValue()
         {
             await VerifyNoDiagnosticAsync(@"

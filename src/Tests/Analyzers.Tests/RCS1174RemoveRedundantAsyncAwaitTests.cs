@@ -15,20 +15,13 @@ namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1174RemoveRedundantAsyncAwaitTests : AbstractCSharpCodeFixVerifier
     {
-        public RCS1174RemoveRedundantAsyncAwaitTests()
-        {
-            Options = base.Options.AddAllowedCompilerDiagnosticIds(new string[] { "CS1998" });
-        }
-
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantAsyncAwait;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantAsyncAwaitAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new RemoveRedundantAsyncAwaitCodeFixProvider();
 
-        public override CodeVerificationOptions Options { get; }
-
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_Method_Body_ReturnAwait()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -58,7 +51,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_Method_Body_ReturnAwait_ConfigureAwait()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -84,7 +77,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_Method_ExpressionBody()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -104,7 +97,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_LocalFunction_Body_ReturnAwait()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -136,7 +129,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_LocalFunction_ExpressionBody()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -162,7 +155,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_SimpleLambda_Body()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -197,10 +190,10 @@ class C
         return GetAsync();
     }
 }
-");
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_SimpleLambda_ExpressionBody()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -229,10 +222,10 @@ class C
         return GetAsync();
     }
 }
-");
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_ParenthesizedLambda_Body()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -267,10 +260,10 @@ class C
         return GetAsync();
     }
 }
-");
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_ParenthesizedLambda_ExpressionBody()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -299,10 +292,10 @@ class C
         return GetAsync();
     }
 }
-");
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_AnonymousMethod()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -337,10 +330,10 @@ class C
         return GetAsync();
     }
 }
-");
+", options: Options.AddAllowedCompilerDiagnosticId("CS1998"));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_IfElseIfReturn()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -388,7 +381,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_IfElse()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -432,7 +425,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_SwitchWithoutDefaultSection()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -486,7 +479,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task Test_SwitchWithDefaultSection()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -544,7 +537,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_IfElse_ReturnWithoutAwait()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -575,7 +568,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_IfElse_AwaitWithoutReturn()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -602,7 +595,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_Switch_ReturnWithoutAwait()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -638,7 +631,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_Switch_AwaitWithoutReturn()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -670,7 +663,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_Method_ReturnWithoutAwait()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -698,7 +691,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_Method_AwaitWithoutReturn()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -726,24 +719,23 @@ class C
 ");
         }
 
-        //TODO: CS1997
-        //[Fact]
-//        public async Task TestNoDiagnostic_Method_ReturnsTask()
-//        {
-//            await VerifyNoDiagnosticAsync(@"
-//using System.Threading.Tasks;
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
+        public async Task TestNoDiagnostic_Method_ReturnsTask()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
 
-//class C
-//{
-//    async Task DoAsync()
-//    {
-//        return await DoAsync();
-//    }
-//}
-//");
-//        }
+class C
+{
+    async Task DoAsync()
+    {
+        return await DoAsync();
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId(CompilerDiagnosticIdentifiers.SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression));
+        }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_ReturnTypeAndAwaitTypeDoNotEqual()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -863,7 +855,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAsyncAwait)]
         public async Task TestNoDiagnostic_AwaitContainsAwait()
         {
             await VerifyNoDiagnosticAsync(@"

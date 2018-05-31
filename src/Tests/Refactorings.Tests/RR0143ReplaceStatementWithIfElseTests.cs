@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceStatementWithIfElse;
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
         public async Task Test_ReturnStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -37,10 +37,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
         public async Task Test_ReturnStatement_SelectEntireStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -66,10 +66,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
         public async Task Test_YieldReturnStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -99,10 +99,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
         public async Task Test_YieldReturnStatement_SelectEntireStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -132,10 +132,10 @@ class C
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
         public async Task TestNoRefactoring_NotBooleanExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -146,10 +146,10 @@ class C
         [||]return s;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
         public async Task TestNoRefactoring_TrueLiteralExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -160,10 +160,10 @@ class C
         [||]return true;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
         public async Task TestNoRefactoring_FalseLiteralExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -174,7 +174,7 @@ class C
         [||]return false;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

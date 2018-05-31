@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new AnonymousFunctionCodeFixProvider();
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         [InlineData("f => M(f)", "M")]
         [InlineData("f => { M(f); }", "M")]
         [InlineData("(f) => M(f)", "M")]
@@ -50,7 +50,7 @@ static class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         [InlineData("f => M(f)", "M")]
         [InlineData("f => { return M(f); }", "M")]
         [InlineData("delegate (string f) { return M(f); }", "M")]
@@ -78,7 +78,7 @@ static class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         [InlineData("(f, i) => M(f, i)", "M")]
         [InlineData("(f, i) => { return M(f, i); }", "M")]
         [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
@@ -106,7 +106,7 @@ static class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         [InlineData("f => M(f)", "M")]
         [InlineData("f => { return M(f); }", "M")]
         [InlineData("delegate (string f) { return M(f); }", "M")]
@@ -130,7 +130,7 @@ static class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         [InlineData("(f, i) => M(f, i)", "M")]
         [InlineData("(f, i) => { return M(f, i); }", "M")]
         [InlineData("delegate (string f, int i) { return M(f, i); }", "M")]
@@ -154,7 +154,7 @@ static class C
 ", fromData, toData);
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         [InlineData("() => Foo.M()", "Foo.M")]
         [InlineData("delegate () { return Foo.M(); }", "Foo.M")]
         public async Task Test_StaticMethod_Assignment(string fromData, string toData)
@@ -178,7 +178,7 @@ static class Foo
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         public async Task TestNoDiagnostic_NullReferenceException()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -202,7 +202,7 @@ class Foo
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         public async Task TestNoDiagnostic_FuncToAction()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -218,7 +218,7 @@ class Foo
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         public async Task TestNoDiagnostic_FuncToAction2()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -259,7 +259,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         public async Task TestNoDiagnostic_ReducedExtensionFromOtherClassInvokedOnLambdaParameter()
         {
             await VerifyNoDiagnosticAsync(@"

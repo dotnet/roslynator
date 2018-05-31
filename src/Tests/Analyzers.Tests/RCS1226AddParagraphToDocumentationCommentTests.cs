@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new AddParagraphToDocumentationCommentCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_TwoParagraphs_Summary()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -48,7 +48,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_TwoParagraphs_Returns()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -79,7 +79,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_TwoParagraphs_Remarks()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -110,7 +110,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_TwoParagraphs_Multiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -147,7 +147,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_TwoParagraphs_Multiline2()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -180,7 +180,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_TwoParagraphs_Multiline3()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -213,7 +213,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_ThreeParagraphs()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -245,7 +245,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_ThreeParagraphs_Multiline()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -289,7 +289,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_TwoParagraphs_ElementsOnly()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -326,7 +326,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task Test_ClassWithAttribute()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -361,7 +361,7 @@ namespace N
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task TestNoDiagnostic_SimpleComment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -374,7 +374,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
         public async Task TestNoDiagnostic_NoEmptyLine()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -11,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.Tests.Text;
 using Xunit;
+using static Roslynator.Tests.CompilerDiagnosticVerifier;
 
 namespace Roslynator.Tests
 {
@@ -31,23 +33,31 @@ namespace Roslynator.Tests
             string theory,
             string fromData,
             string toData,
-            string equivalenceKey)
+            string equivalenceKey = null,
+            CodeVerificationOptions options = null,
+            CancellationToken cancellationToken = default(CancellationToken))
         {
             (string source, string expected, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData, toData);
 
             await VerifyFixAsync(
                 source: source,
                 expected: expected,
-                equivalenceKey: equivalenceKey).ConfigureAwait(false);
+                equivalenceKey: equivalenceKey,
+                options: options,
+                cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
         public async Task VerifyFixAsync(
             string source,
             string expected,
-            string equivalenceKey,
+            string equivalenceKey = null,
+            CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            Assert.True(FixProvider.FixableDiagnosticIds.Contains(DiagnosticId), $"Code fix provider '{FixProvider.GetType().Name}' cannot fix diagnostic '{DiagnosticId}'.");
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (!FixProvider.FixableDiagnosticIds.Contains(DiagnosticId))
+                Assert.True(false, $"Code fix provider '{FixProvider.GetType().Name}' cannot fix diagnostic '{DiagnosticId}'.");
 
             Document document = CreateDocument(source);
 
@@ -61,6 +71,8 @@ namespace Roslynator.Tests
 
             while (diagnostics.Length > 0)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 Diagnostic diagnostic = FindDiagnostic();
 
                 if (diagnostic == null)
@@ -102,8 +114,11 @@ namespace Roslynator.Tests
 
                 ImmutableArray<Diagnostic> newDiagnostics = compilation.GetDiagnostics(cancellationToken: cancellationToken);
 
-                if (!Options.AllowNewCompilerDiagnostics)
-                    VerifyNoNewCompilerDiagnostics(diagnostics, newDiagnostics);
+                if (options == null)
+                    options = Options;
+
+                if (!options.AllowNewCompilerDiagnostics)
+                    VerifyNoNewCompilerDiagnostics(diagnostics, newDiagnostics, options);
 
                 diagnostics = newDiagnostics;
             }
@@ -126,11 +141,15 @@ namespace Roslynator.Tests
             }
         }
 
+        [SuppressMessage("Redundancy", "RCS1163:Unused parameter.", Justification = "<Pending>")]
         public async Task VerifyNoFixAsync(
             string source,
-            string equivalenceKey,
+            string equivalenceKey = null,
+            CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             Document document = CreateDocument(source);
 
             Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
@@ -139,6 +158,8 @@ namespace Roslynator.Tests
 
             foreach (Diagnostic diagnostic in compilation.GetDiagnostics(cancellationToken: cancellationToken))
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 if (!fixableDiagnosticIds.Contains(diagnostic.Id))
                     continue;
 
@@ -156,7 +177,7 @@ namespace Roslynator.Tests
                             return;
                         }
 
-                        Assert.True(false, "Expected no code fix.");
+                        Assert.True(false, "No code fix expected.");
                     },
                     CancellationToken.None);
 

@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new AssignmentExpressionCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
         public async Task Test_EventHandler()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -55,7 +55,7 @@ class Foo
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
         public async Task Test_EventHandlerOfT()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -99,7 +99,7 @@ class Foo
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
         public async Task Test_CustomEventHandler()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -147,7 +147,7 @@ class Foo
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantDelegateCreation)]
         public async Task Test_TEventArgs()
         {
             await VerifyDiagnosticAndFixAsync(@"

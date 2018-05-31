@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new AssignmentExpressionCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
         public async Task Test_Property()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -45,7 +45,7 @@ class C
 ");
         }
 
-        [Theory]
+        [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
         [InlineData("i = i + 1", "i += 1")]
         [InlineData("i = (i + 1)", "i += 1")]
         [InlineData("i = i - 1", "i -= 1")]
@@ -70,7 +70,7 @@ class C
 ", fromData, toData);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.FormatExpressionChain;
 
-        [Theory]
+        [Theory, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatExpressionChain)]
         [InlineData("[||]x.M().M()", @"x
                 .M()
                 .M()")]
@@ -72,10 +72,10 @@ namespace A.B
         public Foo this[int index] => null;
     }
 }
-", fixableCode, fixedCode, RefactoringId);
+", fixableCode, fixedCode, equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatExpressionChain)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"
@@ -113,7 +113,7 @@ namespace A.B
         public Foo this[int index] => null;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

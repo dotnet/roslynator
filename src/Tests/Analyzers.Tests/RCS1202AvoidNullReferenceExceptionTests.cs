@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         {
             public override DiagnosticAnalyzer Analyzer { get; } = new InvocationExpressionAnalyzer();
 
-            [Theory]
+            [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
             [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
             [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
@@ -45,7 +45,7 @@ class C
 ", fromData, toData);
             }
 
-            [Theory]
+            [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
             [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
             [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
@@ -79,7 +79,7 @@ class C : IEnumerable<object>
 ", fromData, toData);
             }
 
-            [Theory]
+            [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             [InlineData("((x.ElementAtOrDefault(1)))[|.|]ToString()", "((x.ElementAtOrDefault(1)))?.ToString()")]
             [InlineData("((Enumerable.ElementAtOrDefault(x, 1)))[|.|]ToString()", "((Enumerable.ElementAtOrDefault(x, 1)))?.ToString()")]
             public async Task Test_MemberAccessExpression_Parenthesized(string fromData, string toData)
@@ -99,7 +99,7 @@ class C
 ", fromData, toData);
             }
 
-            [Fact]
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             public async Task Test_MemberAccessExpression_AddCoalesceExpression()
             {
                 await VerifyDiagnosticAndFixAsync(@"
@@ -129,7 +129,7 @@ class C
 ");
             }
 
-            [Theory]
+            [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
             [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
             [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
@@ -153,7 +153,7 @@ class C
 ", fromData, toData);
             }
 
-            [Theory]
+            [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
             [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
             [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
@@ -187,7 +187,7 @@ class C : IEnumerable<object>
 ", fromData, toData);
             }
 
-            [Fact]
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             public async Task Test_ElementAccessExpression_AddCoalesceExpression()
             {
                 await VerifyDiagnosticAndFixAsync(@"
@@ -217,7 +217,7 @@ class C
 ");
             }
 
-            [Fact]
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             public async Task TestNoDiagnostic_ValueType()
             {
                 await VerifyNoDiagnosticAsync(@"
@@ -240,7 +240,7 @@ class C
 ");
             }
 
-            [Fact]
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             public async Task TestNoDiagnostic_NullableType()
             {
                 await VerifyNoDiagnosticAsync(@"
@@ -263,7 +263,7 @@ class C
 ");
             }
 
-            [Fact]
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             public async Task TestNoDiagnostic_NoMemberAccessOrElementAccess()
             {
                 await VerifyNoDiagnosticAsync(@"
@@ -286,7 +286,7 @@ class C
 ");
             }
 
-            [Fact]
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             public async Task TestNoDiagnostic_ConditionalAccess()
             {
                 await VerifyNoDiagnosticAsync(@"
@@ -335,7 +335,7 @@ class C
 
             public override CodeFixProvider FixProvider { get; } = new AvoidNullReferenceExceptionCodeFixProvider();
 
-            [Theory]
+            [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
             [InlineData("(x as string)[|.|]ToString()", "(x as string)?.ToString()")]
             [InlineData("(x as string)[|[[|]0]", "(x as string)?[0]")]
             public async Task Test_AsExpression(string fromData, string toData)

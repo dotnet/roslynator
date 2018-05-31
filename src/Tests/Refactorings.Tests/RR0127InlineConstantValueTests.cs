@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.InlineConstantValue;
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_Field_Null()
         {
             await VerifyRefactoringAsync(@"
@@ -34,10 +34,10 @@ class C
         s = null;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_Field_VerbatimLiteral()
         {
             await VerifyRefactoringAsync(@"
@@ -60,10 +60,10 @@ class C
         s = @""x"";
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_Field_VerbatimLiteral_MultipleDefinitions()
         {
             await VerifyRefactoringAsync(@"
@@ -90,10 +90,10 @@ class C
         s = @""x"";
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_Field_QualifiedWithClassName()
         {
             await VerifyRefactoringAsync(@"
@@ -116,10 +116,10 @@ class C
         s = @""x"";
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_Field_QualifiedWithNamespaceName()
         {
             await VerifyRefactoringAsync(@"
@@ -148,10 +148,10 @@ namespace A.B
         }
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_BoolField()
         {
             await VerifyRefactoringAsync(@"
@@ -174,10 +174,10 @@ class C
         bool b = true;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_CharFieldAsync()
         {
             await VerifyRefactoringAsync(@"
@@ -200,10 +200,10 @@ class C
         char c = '\n';
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_IntFieldAsync()
         {
             await VerifyRefactoringAsync(@"
@@ -226,10 +226,10 @@ class C
         int i = 2147483647;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_LongFieldAsync()
         {
             await VerifyRefactoringAsync(@"
@@ -252,10 +252,10 @@ class C
         long l = 1;
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_Field_AddExpression()
         {
             await VerifyRefactoringAsync(@"
@@ -280,10 +280,10 @@ class C
         string s = ""aa"";
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task Test_MultipleDocumentsAsync()
         {
             await VerifyRefactoringAsync(@"
@@ -332,7 +332,7 @@ namespace A.B
 ", });
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"
@@ -351,7 +351,7 @@ class C
         var options = [|StringSplitOptions.None|];
     }
 }
-", RefactoringId);
+", equivalenceKey: RefactoringId);
         }
     }
 }

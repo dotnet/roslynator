@@ -11,14 +11,14 @@ namespace Roslynator.Tests.Text
 {
     internal static class TestSourceText
     {
-        internal const string OpenMarker = "[|";
-        internal const string CloseMarker = "|]";
-        internal const string OpenMarkerAndCloseMarker = OpenMarker + CloseMarker;
-        internal static readonly int MarkersLength = OpenMarkerAndCloseMarker.Length;
+        private const string OpenToken = "[|";
+        private const string CloseToken = "|]";
+        private const string OpenCloseTokens = OpenToken + CloseToken;
+        private const int TokensLength = 4;
 
         public static (string result, TextSpan span) ReplaceSpan(string s, string replacement)
         {
-            int index = s.IndexOf(OpenMarkerAndCloseMarker, StringComparison.Ordinal);
+            int index = s.IndexOf(OpenCloseTokens, StringComparison.Ordinal);
 
             var span = new TextSpan(index, replacement.Length);
 
@@ -32,7 +32,7 @@ namespace Roslynator.Tests.Text
             string replacement1,
             string replacement2)
         {
-            int index = s.IndexOf(OpenMarkerAndCloseMarker, StringComparison.Ordinal);
+            int index = s.IndexOf(OpenCloseTokens, StringComparison.Ordinal);
 
             var span = new TextSpan(index, replacement1.Length);
 
@@ -44,7 +44,7 @@ namespace Roslynator.Tests.Text
 
         public static TestSourceTextAnalysis GetSpans(string s, bool reverse = false)
         {
-            StringBuilder sb = StringBuilderCache.GetInstance(s.Length - MarkersLength);
+            StringBuilder sb = StringBuilderCache.GetInstance(s.Length - TokensLength);
 
             bool startPending = false;
             LinePositionInfo start = default;
@@ -199,10 +199,10 @@ namespace Roslynator.Tests.Text
 
         private static string Replace(string s, int index, string replacement)
         {
-            StringBuilder sb = StringBuilderCache.GetInstance(s.Length - MarkersLength + replacement.Length)
+            StringBuilder sb = StringBuilderCache.GetInstance(s.Length - TokensLength + replacement.Length)
                 .Append(s, 0, index)
                 .Append(replacement)
-                .Append(s, index + MarkersLength, s.Length - index - MarkersLength);
+                .Append(s, index + TokensLength, s.Length - index - TokensLength);
 
             return StringBuilderCache.GetStringAndFree(sb);
         }

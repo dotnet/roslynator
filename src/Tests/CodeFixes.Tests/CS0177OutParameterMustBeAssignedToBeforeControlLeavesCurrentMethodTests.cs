@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 
         public override CodeFixProvider FixProvider { get; } = new AssignDefaultValueToOutParameterCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_VoidMethodWithTwoOutParameters()
         {
             await VerifyFixAsync(@"
@@ -33,10 +33,10 @@ class C
         p3 = null;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_VoidMethodWithStatement()
         {
             await VerifyFixAsync(@"
@@ -57,10 +57,10 @@ class C
         p3 = null;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolMethodWithReturnStatement()
         {
             await VerifyFixAsync(@"
@@ -81,10 +81,10 @@ class C
         return false;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolMethodWithStatements()
         {
             await VerifyFixAsync(@"
@@ -108,10 +108,10 @@ class C
         return false;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolMethodWithReturnStatements()
         {
             await VerifyFixAsync(@"
@@ -142,10 +142,10 @@ class C
         return false;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_MethodWithExpressionBody()
         {
             await VerifyFixAsync(@"
@@ -163,12 +163,12 @@ class C
         return p1 = p2 = null;
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
         // Flow analysis APIs do not work with local functions: https://github.com/dotnet/roslyn/issues/14214
 #pragma warning disable xUnit1013
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_VoidLocalFunctionWithTwoOutParameters()
         {
             await VerifyFixAsync(@"
@@ -193,10 +193,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_VoidLocalFunctionWithStatement()
         {
             await VerifyFixAsync(@"
@@ -223,10 +223,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolLocalFunctionWithReturnStatement()
         {
             await VerifyFixAsync(@"
@@ -253,10 +253,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolLocalFunctionWithStatements()
         {
             await VerifyFixAsync(@"
@@ -286,10 +286,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_BoolLocalFunctionWithReturnStatements()
         {
             await VerifyFixAsync(@"
@@ -326,10 +326,10 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        //[Fact]
+        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task Test_LocalFunctionWithExpressionBody()
         {
             await VerifyFixAsync(@"
@@ -353,11 +353,11 @@ class C
         }
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 #pragma warning restore xUnit1013
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task TestNoFix_MethodWithoutBody()
         {
             await VerifyNoFixAsync(@"
@@ -365,10 +365,10 @@ class C
 {
     void M(object p1, out object p2, out object p3)
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
 
-        [Fact]
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod)]
         public async Task TestNoFix_LocalFunctionWithoutBody()
         {
             await VerifyNoFixAsync(@"
@@ -379,7 +379,7 @@ class C
         void LF(object p1, out object p2, out object p3)
     }
 }
-", EquivalenceKey.Create(DiagnosticId));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
     }
 }

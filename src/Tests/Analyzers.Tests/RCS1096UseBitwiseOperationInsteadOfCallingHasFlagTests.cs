@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new InvocationExpressionCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
         public async Task Test_HasFlag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -31,7 +31,7 @@ class C
     {
         var options = StringSplitOptions.None;
 
-        if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+        if ([|options.HasFlag(StringSplitOptions.RemoveEmptyEntries)|]) { }
     }
 }
 ", @"
@@ -49,7 +49,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
         public async Task Test_NotHasFlag()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -61,7 +61,7 @@ class C
     {
         var options = StringSplitOptions.None;
 
-        if (!options.HasFlag(StringSplitOptions.RemoveEmptyEntries)) { }
+        if (![|options.HasFlag(StringSplitOptions.RemoveEmptyEntries)|]) { }
     }
 }
 ", @"
@@ -79,7 +79,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
         public async Task Test_HasFlag_EqualsTrue()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -91,7 +91,7 @@ class C
     {
         var options = StringSplitOptions.None;
 
-        if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries) == true) { }
+        if ([|options.HasFlag(StringSplitOptions.RemoveEmptyEntries)|] == true) { }
     }
 }
 ", @"
@@ -109,7 +109,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
         public async Task Test_HasFlag_EqualsFalse()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -121,7 +121,7 @@ class C
     {
         var options = StringSplitOptions.None;
 
-        if (options.HasFlag(StringSplitOptions.RemoveEmptyEntries) == false) { }
+        if ([|options.HasFlag(StringSplitOptions.RemoveEmptyEntries)|] == false) { }
     }
 }
 ", @"
@@ -139,7 +139,7 @@ class C
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
         public async Task Test_HasFlag_WithTrivia()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -151,7 +151,7 @@ class C
     {
         var options = StringSplitOptions.None;
 
-        if ( /*lt*/ options.HasFlag(StringSplitOptions.RemoveEmptyEntries /*tt*/ ).Equals(true)) { }
+        if ( /*lt*/ [|options.HasFlag(StringSplitOptions.RemoveEmptyEntries /*tt*/ )|].Equals(true)) { }
     }
 }
 ", @"

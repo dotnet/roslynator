@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override CodeFixProvider FixProvider { get; } = new ClassDeclarationCodeFixProvider();
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
         public async Task Test()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -38,7 +38,7 @@ class FooAttribute : Attribute
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
         public async Task TestNoDiagnostic_AttributeUsageAttributeAlreadyExistsOrIsInherited()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -55,7 +55,7 @@ class BarAttribute : FooAttribute
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
         public async Task TestNoDiagnostic_DoesNotInheritFromAttribute()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -65,7 +65,7 @@ class FooAttribute
 ");
         }
 
-        [Fact]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAttributeUsageAttribute)]
         public async Task TestNoDiagnostic_NameDoesNotEndWithAttribute()
         {
             await VerifyNoDiagnosticAsync(@"

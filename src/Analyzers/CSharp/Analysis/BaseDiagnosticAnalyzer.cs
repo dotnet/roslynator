@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Analysis
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return $"{{{string.Join(", ", SupportedDiagnostics.Select(f => f.Id))}}}"; }
+            get { return $"{GetType()} {{{string.Join(", ", SupportedDiagnostics.Select(f => f.Id))}}}"; }
         }
 
         public override void Initialize(AnalysisContext context)
