@@ -234,5 +234,25 @@ class C
 }
 ");
         }
+
+        [Fact]
+        public async Task TestNoDiagnostic_LogicalAnd_ExpressionTree()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Linq.Expressions;
+
+class C
+{
+    public void M<T>(Expression<Func<T>> expression)
+    {
+        object x = null;
+        string s = null;
+
+        M(() => x is string && ((string)x) == s);
+    }
+}
+");
+        }
     }
 }

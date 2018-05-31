@@ -77,7 +77,13 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         if (right == null)
                             return;
 
-                        if (!IsFixable(right, identifierName, context.SemanticModel, context.CancellationToken))
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
+
+                        if (logicalAnd.Parent.IsInExpressionTree(semanticModel, cancellationToken))
+                            return;
+
+                        if (!IsFixable(right, identifierName, semanticModel, cancellationToken))
                             return;
 
                         context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
