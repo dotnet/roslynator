@@ -153,6 +153,28 @@ class C
 ");
         }
 
+        [Fact]
+        public async Task Test_ArrayRankSpecifier()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var arr = new object[[|(|]0)];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var arr = new object[0];
+    }
+}
+");
+        }
+
         [Theory]
         [InlineData("while ([|(|]true)) { }", "while (true) { }")]
         [InlineData("do { } while ([|(|]true));", "do { } while (true);")]
@@ -164,17 +186,17 @@ class C
         [InlineData("var arr = new string[] { [|(|]null) };", "var arr = new string[] { null };")]
         [InlineData("var items = new List<string>() { [|(|]null) };", "var items = new List<string>() { null };")]
         [InlineData(@"s = $""{[|(|]"""")}"";", @"s = $""{""""}"";")]
-        [InlineData("[|(|]i) = (0);", "i = (0);")]
-        [InlineData("[|(|]i) += (0);", "i += (0);")]
-        [InlineData("[|(|]i) -= (0);", "i -= (0);")]
-        [InlineData("[|(|]i) *= (0);", "i *= (0);")]
-        [InlineData("[|(|]i) /= (0);", "i /= (0);")]
-        [InlineData("[|(|]i) %= (0);", "i %= (0);")]
-        [InlineData("[|(|]i) &= (0);", "i &= (0);")]
-        [InlineData("[|(|]i) ^= (0);", "i ^= (0);")]
-        [InlineData("[|(|]i) |= (0);", "i |= (0);")]
-        [InlineData("[|(|]i) <<= (0);", "i <<= (0);")]
-        [InlineData("[|(|]i) >>= (0);", "i >>= (0);")]
+        [InlineData("[|(|]i) = [|(|]0);", "i = 0;")]
+        [InlineData("[|(|]i) += [|(|]0);", "i += 0;")]
+        [InlineData("[|(|]i) -= [|(|]0);", "i -= 0;")]
+        [InlineData("[|(|]i) *= [|(|]0);", "i *= 0;")]
+        [InlineData("[|(|]i) /= [|(|]0);", "i /= 0;")]
+        [InlineData("[|(|]i) %= [|(|]0);", "i %= 0;")]
+        [InlineData("[|(|]i) &= [|(|]0);", "i &= 0;")]
+        [InlineData("[|(|]i) ^= [|(|]0);", "i ^= 0;")]
+        [InlineData("[|(|]i) |= [|(|]0);", "i |= 0;")]
+        [InlineData("[|(|]i) <<= [|(|]0);", "i <<= 0;")]
+        [InlineData("[|(|]i) >>= [|(|]0);", "i >>= 0;")]
         public async Task Test_Statement(string fromData, string toData)
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -217,6 +239,104 @@ class Foo
     public bool this[int i]
     {
         get { return i == 0; }
+    }
+}
+", fromData, toData);
+        }
+
+        [Theory]
+        [InlineData("[|(|]f) == [|(|]true)", "f == true")]
+        [InlineData("[|(|]f) != [|(|]true)", "f != true")]
+        public async Task Test_EqualsNotEquals(string fromData, string toData)
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class Foo
+{
+    void M()
+    {
+        bool f = false;
+
+        if ([||]) { }
+    }
+}
+", fromData, toData);
+        }
+
+        [Theory]
+        [InlineData("[|(|]i) > [|(|]0)", "i > 0")]
+        [InlineData("[|(|]i) >= [|(|]0)", "i >= 0")]
+        [InlineData("[|(|]i) < [|(|]0)", "i < 0")]
+        [InlineData("[|(|]i) <= [|(|]0)", "i <= 0")]
+        public async Task Test_GreaterThanLessThan(string fromData, string toData)
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class Foo
+{
+    void M()
+    {
+        int i = 0;
+
+        if ([||]) { }
+    }
+}
+", fromData, toData);
+        }
+
+        [Theory]
+        [InlineData("[|(|]i) * [|(|]0)", "i * 0")]
+        [InlineData("[|(|]i) % [|(|]0)", "i % 0")]
+        [InlineData("[|(|]i) / [|(|]0)", "i / 0")]
+        [InlineData("[|(|]i) + [|(|]0)", "i + 0")]
+        [InlineData("[|(|]i) - [|(|]0)", "i - 0")]
+        [InlineData("[|(|]i) << [|(|]0)", "i << 0")]
+        [InlineData("[|(|]i) >> [|(|]0)", "i >> 0")]
+        [InlineData("[|(|]i) & [|(|]0)", "i & 0")]
+        [InlineData("[|(|]i) ^ [|(|]0)", "i ^ 0")]
+        [InlineData("[|(|]i) | [|(|]0)", "i | 0")]
+        [InlineData("[|(|]f) && [|(|]f2)", "f && f2")]
+        [InlineData("[|(|]f) || [|(|]f2)", "f || f2")]
+        public async Task Test_BinaryExpression(string fromData, string toData)
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class Foo
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        int i = 0;
+
+        var x = [||];
+    }
+}
+", fromData, toData);
+        }
+
+        [Theory]
+        [InlineData("[|(|]i * 0) * i", "i * 0 * i")]
+        [InlineData("[|(|]i % 0) % i", "i % 0 % i")]
+        [InlineData("[|(|]i / 0) / i", "i / 0 / i")]
+        [InlineData("[|(|]i + 0) + i", "i + 0 + i")]
+        [InlineData("[|(|]i - 0) - i", "i - 0 - i")]
+        [InlineData("[|(|]i << 0) << i", "i << 0 << i")]
+        [InlineData("[|(|]i >> 0) >> i", "i >> 0 >> i")]
+        [InlineData("[|(|]i & 0) & i", "i & 0 & i")]
+        [InlineData("[|(|]i ^ 0) ^ i", "i ^ 0 ^ i")]
+        [InlineData("[|(|]i | 0) | i", "i | 0 | i")]
+        [InlineData("[|(|]f && f2) && f", "f && f2 && f")]
+        [InlineData("[|(|]f || f2) || f", "f || f2 || f")]
+        public async Task Test_BinaryExpressionChain(string fromData, string toData)
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class Foo
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+        int i = 0;
+
+        var x = [||];
     }
 }
 ", fromData, toData);
@@ -285,6 +405,36 @@ class C
         foreach ((string, string) item in (Enumerable.Empty<(string, string)>()))
         {
         }
+    }
+}
+");
+        }
+
+        [Fact]
+        public async Task TestNoDiagnostic_BinaryExpressionChain_ParenthesizedRight()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        int i = 0;
+
+        i = i * (0 * i);
+        i = i % (0 % i);
+        i = i / (0 / i);
+        i = i + (0 + i);
+        i = i - (0 - i);
+        i = i << (0 << i);
+        i = i >> (0 >> i);
+        i = i & (0 & i);
+        i = i ^ (0 ^ i);
+        i = i | (0 | i);
+
+        bool f = false;
+
+        f = f && (true && f);
+        f = f || (true || f);
     }
 }
 ");
