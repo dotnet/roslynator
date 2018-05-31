@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -15,36 +16,22 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseListInsteadOfYieldRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, MethodDeclarationSyntax methodDeclaration, SemanticModel semanticModel)
-        {
-            ComputeRefactoring(context, methodDeclaration, methodDeclaration.Body, semanticModel);
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, LocalFunctionStatementSyntax localFunctionStatement, SemanticModel semanticModel)
-        {
-            ComputeRefactoring(context, localFunctionStatement, localFunctionStatement.Body, semanticModel);
-        }
-
-        private static void ComputeRefactoring(
+        public static void ComputeRefactoring(
             RefactoringContext context,
-            SyntaxNode node,
-            BlockSyntax body,
+            SyntaxNode declaration,
             SemanticModel semanticModel)
         {
-            if (body?.ContainsYieldReturn() != true)
+            if (!(semanticModel.GetDeclaredSymbol(declaration, context.CancellationToken) is IMethodSymbol methodSymbol))
                 return;
 
-            if (!(semanticModel.GetDeclaredSymbol(node, context.CancellationToken) is IMethodSymbol methodSymbol))
-                return;
+            ITypeSymbol typeSymbol = GetElementType(methodSymbol.ReturnType, semanticModel);
 
-            ITypeSymbol type = GetElementType(methodSymbol.ReturnType, semanticModel);
-
-            if (type?.IsErrorType() != false)
+            if (typeSymbol?.IsErrorType() != false)
                 return;
 
             context.RegisterRefactoring(
-                "Use List<T> instead of yield",
-                cancellationToken => RefactorAsync(context.Document, type, body, body.Statements, semanticModel, cancellationToken),
+                "Use List instead of yield",
+                cancellationToken => RefactorAsync(context.Document, declaration, typeSymbol, semanticModel, cancellationToken),
                 RefactoringIdentifiers.UseListInsteadOfYield);
         }
 
@@ -53,23 +40,23 @@ namespace Roslynator.CSharp.Refactorings
             if (returnType.SpecialType == SpecialType.System_Collections_IEnumerable)
                 return semanticModel.Compilation.ObjectType;
 
-            if (returnType is INamedTypeSymbol namedType
-                && namedType.ConstructedFrom.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
-            {
-                return namedType.TypeArguments[0];
-            }
+            if (returnType.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T)
+                return ((INamedTypeSymbol)returnType).TypeArguments[0];
 
             return null;
         }
 
         private static Task<Document> RefactorAsync(
             Document document,
+            SyntaxNode declaration,
             ITypeSymbol typeSymbol,
-            BlockSyntax block,
-            SyntaxList<StatementSyntax> statements,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
+            BlockSyntax body = GetBody();
+
+            SyntaxList<StatementSyntax> statements = body.Statements;
+
             int position = statements[0].SpanStart;
 
             string name = NameGenerator.Default.EnsureUniqueLocalName("items", semanticModel, position);
@@ -94,13 +81,28 @@ namespace Roslynator.CSharp.Refactorings
 
             newStatements = InsertReturnStatement(newStatements, returnStatement);
 
-            BlockSyntax newBlock = block.WithStatements(newStatements);
+            BlockSyntax newBlock = body.WithStatements(newStatements);
 
             var rewriter = new YieldRewriter(identifierName, typeSymbol, semanticModel);
 
             newBlock = (BlockSyntax)rewriter.Visit(newBlock);
 
-            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
+            return document.ReplaceNodeAsync(body, newBlock, cancellationToken);
+
+            BlockSyntax GetBody()
+            {
+                switch (declaration)
+                {
+                    case MethodDeclarationSyntax methodDeclaration:
+                        return methodDeclaration.Body;
+                    case LocalFunctionStatementSyntax localFunction:
+                        return localFunction.Body;
+                    case AccessorDeclarationSyntax accessorDeclaration:
+                        return accessorDeclaration.Body;
+                }
+
+                throw new InvalidOperationException();
+            }
         }
 
         private static SyntaxList<StatementSyntax> InsertLocalDeclarationStatement(

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -52,6 +53,22 @@ namespace Roslynator.CSharp.Refactorings
                     || context.Span.IsBetweenSpans(yieldStatement)))
             {
                 await ReplaceStatementWithIfStatementRefactoring.ReplaceYieldReturnWithIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
+            }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield)
+                && yieldStatement.IsYieldReturn()
+                && context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword))
+            {
+                SyntaxNode declaration = yieldStatement.FirstAncestor(SyntaxKind.MethodDeclaration, SyntaxKind.LocalFunctionStatement, SyntaxKind.GetAccessorDeclaration, ascendOutOfTrivia: false);
+
+                Debug.Assert(declaration != null);
+
+                if (declaration != null)
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, declaration, semanticModel);
+                }
             }
         }
     }

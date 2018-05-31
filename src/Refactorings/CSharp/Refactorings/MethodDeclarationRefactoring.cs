@@ -80,14 +80,6 @@ namespace Roslynator.CSharp.Refactorings
 
                 AddMemberToInterfaceRefactoring.ComputeRefactoring(context, methodDeclaration, semanticModel);
             }
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield)
-                && methodDeclaration.Identifier.Span.Contains(context.Span))
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, methodDeclaration, semanticModel);
-            }
         }
 
         private static async Task RenameMethodAccoringToTypeNameAsync(

@@ -63,14 +63,6 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.UseExpressionBodiedMember);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield)
-                && localFunctionStatement.Identifier.Span.Contains(context.Span))
-            {
-                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                UseListInsteadOfYieldRefactoring.ComputeRefactoring(context, localFunctionStatement, semanticModel);
-            }
-
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MoveUnsafeContextToContainingDeclaration))
                 MoveUnsafeContextToContainingDeclarationRefactoring.ComputeRefactoring(context, localFunctionStatement);
         }
