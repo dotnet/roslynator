@@ -124,7 +124,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!constructedFrom.IsOrImplements(SpecialType.System_Collections_Generic_IEnumerable_T, allInterfaces: true))
                 return;
 
-            INamedTypeSymbol enumerable = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable);
+            INamedTypeSymbol enumerable = semanticModel.GetTypeByMetadataName("System.Linq.Enumerable");
 
             if (enumerable != null)
                 CallToMethodRefactoring.ComputeRefactoring(context, expression, enumerable, "ToArray");
@@ -136,10 +136,10 @@ namespace Roslynator.CSharp.Refactorings
             INamedTypeSymbol destinationType,
             SemanticModel semanticModel)
         {
-            if (!destinationType.ConstructedFrom.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_List_T)))
+            if (!destinationType.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_List_T))
                 return;
 
-            INamedTypeSymbol enumerable = semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_Enumerable);
+            INamedTypeSymbol enumerable = semanticModel.GetTypeByMetadataName("System.Linq.Enumerable");
 
             if (enumerable != null)
                 CallToMethodRefactoring.ComputeRefactoring(context, expression, enumerable, "ToList");

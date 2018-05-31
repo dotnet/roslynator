@@ -50,16 +50,14 @@ namespace Roslynator.CSharp.CodeFixes
 
             if (containsAwaitStatement)
             {
-                INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+                INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task");
 
                 CodeFixRegistrator.ChangeReturnType(context, diagnostic, node, taskSymbol, semanticModel, "Task");
             }
 
             if (containsReturnAwait)
             {
-                INamedTypeSymbol taskOfT = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-                typeSymbol = taskOfT.Construct(typeSymbol);
+                typeSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task`1").Construct(typeSymbol);
 
                 CodeFixRegistrator.ChangeReturnType(context, diagnostic, node, typeSymbol, semanticModel, "TaskOfT");
             }

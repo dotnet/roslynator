@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
             if (containingType?.TypeKind != TypeKind.Enum)
                 return;
 
-            if (containingType.HasAttribute(context.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute)))
+            if (containingType.HasAttribute(MetadataNames.System_FlagsAttribute))
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseNameOfOperator, invocationInfo.InvocationExpression);

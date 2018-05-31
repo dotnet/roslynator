@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -25,18 +24,15 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol eventHandler = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_EventHandler);
-
-                if (eventHandler != null)
-                    startContext.RegisterSymbolAction(f => AnalyzeEvent(f, eventHandler), SymbolKind.Event);
-            });
+            context.RegisterSymbolAction(AnalyzeEvent, SymbolKind.Event);
         }
 
-        public static void AnalyzeEvent(SymbolAnalysisContext context, INamedTypeSymbol eventHandlerSymbol)
+        public static void AnalyzeEvent(SymbolAnalysisContext context)
         {
             var eventSymbol = (IEventSymbol)context.Symbol;
+
+            if (eventSymbol.IsImplicitlyDeclared)
+                return;
 
             if (eventSymbol.IsOverride)
                 return;
@@ -44,15 +40,12 @@ namespace Roslynator.CSharp.Analysis
             if (!eventSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
                 return;
 
-            if (eventSymbol.ImplementsInterfaceMember<IEventSymbol>(allInterfaces: true))
-                return;
-
             var namedType = eventSymbol.Type as INamedTypeSymbol;
 
             if (namedType?.Arity != 0)
                 return;
 
-            if (namedType.Equals(eventHandlerSymbol))
+            if (namedType.HasMetadataName(MetadataNames.System_EventHandler))
                 return;
 
             IMethodSymbol delegateInvokeMethod = namedType.DelegateInvokeMethod;
@@ -68,12 +61,10 @@ namespace Roslynator.CSharp.Analysis
             if (!parameters[0].Type.IsObject())
                 return;
 
-            SyntaxNode node = eventSymbol.GetSyntaxOrDefault(context.CancellationToken);
-
-            Debug.Assert(node != null, eventSymbol.ToString());
-
-            if (node == null)
+            if (eventSymbol.ImplementsInterfaceMember<IEventSymbol>(allInterfaces: true))
                 return;
+
+            SyntaxNode node = eventSymbol.GetSyntax(context.CancellationToken);
 
             TypeSyntax type = GetTypeSyntax(node);
 

@@ -25,10 +25,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!(semanticModel.GetSymbol(expression, cancellationToken) is IMethodSymbol methodSymbol))
                 return false;
 
-            INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
-            return methodSymbol.ReturnType.EqualsOrInheritsFrom(taskSymbol)
-                && semanticModel.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) != null;
+            return methodSymbol.ReturnType.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task);
         }
 
         public static Task<Document> RefactorAsync(

@@ -33,38 +33,19 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
             base.Initialize(context);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                Compilation compilation = startContext.Compilation;
+            context.RegisterSyntaxNodeAction(AnalyzeConstructorDeclaration, SyntaxKind.ConstructorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeOperatorDeclaration, SyntaxKind.OperatorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeConversionOperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeIndexerDeclaration, SyntaxKind.IndexerDeclaration);
 
-                INamedTypeSymbol serializationInfoSymbol = compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_Serialization_SerializationInfo);
-                INamedTypeSymbol streamingContextSymbol = null;
-
-                if (serializationInfoSymbol != null)
-                    streamingContextSymbol = compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_Serialization_StreamingContext);
-
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeConstructorDeclaration(f, serializationInfoSymbol, streamingContextSymbol), SyntaxKind.ConstructorDeclaration);
-                startContext.RegisterSyntaxNodeAction(AnalyzeOperatorDeclaration, SyntaxKind.OperatorDeclaration);
-                startContext.RegisterSyntaxNodeAction(AnalyzeConversionOperatorDeclaration, SyntaxKind.ConversionOperatorDeclaration);
-                startContext.RegisterSyntaxNodeAction(AnalyzeIndexerDeclaration, SyntaxKind.IndexerDeclaration);
-
-                INamedTypeSymbol eventArgsSymbol = compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
-
-                if (eventArgsSymbol != null)
-                {
-                    startContext.RegisterSyntaxNodeAction(f => AnalyzeMethodDeclaration(f, eventArgsSymbol), SyntaxKind.MethodDeclaration);
-                    startContext.RegisterSyntaxNodeAction(f => AnalyzeLocalFunctionStatement(f, eventArgsSymbol), SyntaxKind.LocalFunctionStatement);
-                    startContext.RegisterSyntaxNodeAction(f => AnalyzeSimpleLambdaExpression(f, eventArgsSymbol), SyntaxKind.SimpleLambdaExpression);
-                    startContext.RegisterSyntaxNodeAction(f => AnalyzeParenthesizedLambdaExpression(f, eventArgsSymbol), SyntaxKind.ParenthesizedLambdaExpression);
-                    startContext.RegisterSyntaxNodeAction(f => AnalyzeAnonymousMethodExpression(f, eventArgsSymbol), SyntaxKind.AnonymousMethodExpression);
-                }
-            });
+            context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeLocalFunctionStatement, SyntaxKind.LocalFunctionStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeSimpleLambdaExpression, SyntaxKind.SimpleLambdaExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeParenthesizedLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeAnonymousMethodExpression, SyntaxKind.AnonymousMethodExpression);
         }
 
-        public static void AnalyzeConstructorDeclaration(
-            SyntaxNodeAnalysisContext context,
-            INamedTypeSymbol serializationInfoSymbol,
-            INamedTypeSymbol streamingContextSymbol)
+        public static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
@@ -80,8 +61,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
                 return;
 
             // Skip a constructor that is required by ISerializable interface
-            if (serializationInfoSymbol != null
-                && parameterInfo.Parameters.Count == 2)
+            if (parameterInfo.Parameters.Count == 2)
             {
                 IMethodSymbol symbol = context.SemanticModel.GetDeclaredSymbol(constructorDeclaration, context.CancellationToken);
 
@@ -90,8 +70,8 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
                     ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
 
                     if (parameters.Length == 2
-                        && parameters[0].Type.Equals(serializationInfoSymbol)
-                        && parameters[1].Type.Equals(streamingContextSymbol))
+                        && parameters[0].Type.HasMetadataName(MetadataNames.System_Runtime_Serialization_SerializationInfo)
+                        && parameters[1].Type.HasMetadataName(MetadataNames.System_Runtime_Serialization_StreamingContext))
                     {
                         return;
                     }
@@ -101,7 +81,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             Analyze(context, parameterInfo);
         }
 
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
+        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
@@ -127,7 +107,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodSymbol == null)
                 return;
 
-            if (SymbolUtility.IsEventHandlerMethod(methodSymbol, eventArgsSymbol))
+            if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
                 return;
 
             if (!methodSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
@@ -218,7 +198,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             Analyze(context, parameterInfo, isIndexer: true);
         }
 
-        public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
+        public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
         {
             var localFunctionStatement = (LocalFunctionStatementSyntax)context.Node;
 
@@ -235,13 +215,13 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodSymbol == null)
                 return;
 
-            if (SymbolUtility.IsEventHandlerMethod(methodSymbol, eventArgsSymbol))
+            if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
                 return;
 
             Analyze(context, parameterInfo);
         }
 
-        public static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
+        public static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             var lambda = (SimpleLambdaExpressionSyntax)context.Node;
 
@@ -258,13 +238,13 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodSymbol == null)
                 return;
 
-            if (SymbolUtility.IsEventHandlerMethod(methodSymbol, eventArgsSymbol))
+            if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
                 return;
 
             Analyze(context, parameterInfo);
         }
 
-        public static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
+        public static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
         {
             var lambda = (ParenthesizedLambdaExpressionSyntax)context.Node;
 
@@ -281,13 +261,13 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodSymbol == null)
                 return;
 
-            if (SymbolUtility.IsEventHandlerMethod(methodSymbol, eventArgsSymbol))
+            if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
                 return;
 
             Analyze(context, parameterInfo);
         }
 
-        public static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
+        public static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
         {
             var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
 
@@ -304,7 +284,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodSymbol == null)
                 return;
 
-            if (SymbolUtility.IsEventHandlerMethod(methodSymbol, eventArgsSymbol))
+            if (SymbolUtility.IsEventHandlerMethod(methodSymbol))
                 return;
 
             Analyze(context, parameterInfo);

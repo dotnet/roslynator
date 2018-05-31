@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -27,18 +26,10 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol debugSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Diagnostics_Debug);
-
-                if (debugSymbol == null)
-                    return;
-
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeInvocationExpression(nodeContext, debugSymbol), SyntaxKind.InvocationExpression);
-            });
+            context.RegisterSyntaxNodeAction(AnalyzeInvocationExpression, SyntaxKind.InvocationExpression);
         }
 
-        public static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol debugSymbol)
+        public static void AnalyzeInvocationExpression(SyntaxNodeAnalysisContext context)
         {
             var invocation = (InvocationExpressionSyntax)context.Node;
 
@@ -68,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsPublicStaticNonGeneric(methodSymbol, "Assert"))
                 return;
 
-            if (methodSymbol.ContainingType?.Equals(debugSymbol) != true)
+            if (methodSymbol.ContainingType?.HasMetadataName(MetadataNames.System_Diagnostics_Debug) != true)
                 return;
 
             if (!methodSymbol.ReturnsVoid)
@@ -93,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
             if (expression.Kind() != SyntaxKind.SimpleMemberAccessExpression
                 && context.SemanticModel.GetSpeculativeMethodSymbol(invocation.SpanStart, GetNewInvocation(invocation))?
                     .ContainingType?
-                    .Equals(debugSymbol) != true)
+                    .HasMetadataName(MetadataNames.System_Diagnostics_Debug) != true)
             {
                 return;
             }
@@ -135,7 +126,7 @@ namespace Roslynator.CSharp.Analysis
             if (arguments.Count == 1)
             {
                 ArgumentSyntax argument = arguments[0];
-                arguments = arguments.ReplaceAt(0, argument.WithExpression(StringLiteralExpression("").WithTriviaFrom(argument.Expression)));
+                arguments = arguments.ReplaceAt(0, argument.WithExpression(CSharpFactory.StringLiteralExpression("").WithTriviaFrom(argument.Expression)));
             }
             else
             {

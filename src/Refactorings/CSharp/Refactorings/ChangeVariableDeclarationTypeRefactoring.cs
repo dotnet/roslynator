@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             TypeSyntax type = variableDeclaration.Type;
 
             if (variableDeclaration.Variables.SingleOrDefault(shouldThrow: false)?.Initializer?.Value != null
-                && typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT(semanticModel))
+                && typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
             {
                 ISymbol enclosingSymbol = semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, cancellationToken);
 

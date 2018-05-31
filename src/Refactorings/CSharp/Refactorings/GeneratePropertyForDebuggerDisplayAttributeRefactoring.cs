@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string value = semanticModel
                 .GetDeclaredSymbol((TypeDeclarationSyntax)attribute.Parent.Parent, context.CancellationToken)
-                .GetAttribute(semanticModel.GetTypeByMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
+                .GetAttribute(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute)?
                 .ConstructorArguments
                 .SingleOrDefault(shouldThrow: false)
                 .Value?
@@ -204,7 +204,7 @@ namespace Roslynator.CSharp.Refactorings
 
             string value = semanticModel
                 .GetDeclaredSymbol(typeDeclaration, cancellationToken)
-                .GetAttribute(semanticModel.GetTypeByMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))
+                .GetAttribute(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute)
                 .ConstructorArguments[0]
                 .Value
                 .ToString();

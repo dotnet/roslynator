@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                         && !propertySymbol.IsReadOnly
                         && !propertySymbol.IsImplicitlyDeclared
                         && propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
-                        && !propertySymbol.HasAttribute(context.GetTypeByMetadataName(MetadataNames.System_Runtime_Serialization_DataMemberAttribute)))
+                        && !propertySymbol.HasAttribute(MetadataNames.System_Runtime_Serialization_DataMemberAttribute))
                     {
                         IMethodSymbol setMethod = propertySymbol.SetMethod;
 

@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 isAsyncMethod = true;
 
-                INamedTypeSymbol taskOfT = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+                INamedTypeSymbol taskOfT = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
 
                 if (taskOfT == null)
                     return;
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Refactorings
                     insertAwait = true;
                     additionalKey = "InsertAwait";
                 }
-                else if (expressionTypeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task)))
+                else if (expressionTypeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
                 {
                     return;
                 }
@@ -96,14 +96,13 @@ namespace Roslynator.CSharp.Refactorings
 
             if (!isYield
                 && !isAsyncMethod
-                && newTypeSymbol is INamedTypeSymbol newNamedType
-                && newNamedType.ConstructedFrom.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T))
-                && !typeSymbol.OriginalDefinition.IsIEnumerableOfT())
+                && !typeSymbol.OriginalDefinition.IsIEnumerableOfT()
+                && newTypeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Linq_IOrderedEnumerable_T))
             {
                 INamedTypeSymbol constructedEnumerableSymbol = semanticModel
                     .Compilation
                     .GetSpecialType(SpecialType.System_Collections_Generic_IEnumerable_T)
-                    .Construct(newNamedType.TypeArguments.ToArray());
+                    .Construct(((INamedTypeSymbol)newTypeSymbol).TypeArguments.ToArray());
 
                 RegisterCodeFix(context, diagnostic, node, type, expression, constructedEnumerableSymbol, semanticModel, insertAwait: false);
                 additionalKey = "IOrderedEnumerable<T>";

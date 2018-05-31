@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_NotImplementedException);
+                INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.NotImplementedException");
 
                 if (exceptionSymbol == null)
                     return;

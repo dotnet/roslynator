@@ -83,8 +83,11 @@ namespace Roslynator.CSharp.Refactorings
             if (methodSymbol.ImplementsInterfaceMember())
                 return;
 
-            if (IsAsyncMethodThatReturnsTask())
+            if (methodSymbol.IsAsync
+                && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
+            {
                 return;
+            }
 
             ControlFlowAnalysis analysis = semanticModel.AnalyzeControlFlow(body);
 
@@ -98,17 +101,6 @@ namespace Roslynator.CSharp.Refactorings
                 "Change return type to 'void'",
                 ct => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, returnType, CSharpFactory.VoidType(), ct),
                 RefactoringIdentifiers.ChangeMethodReturnTypeToVoid);
-
-            bool IsAsyncMethodThatReturnsTask()
-            {
-                if (!methodSymbol.IsAsync)
-                    return false;
-
-                ITypeSymbol returnTypeSymbol = methodSymbol.ReturnType;
-
-                return returnTypeSymbol?.IsErrorType() == false
-                    && returnTypeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task));
-            }
         }
     }
 }

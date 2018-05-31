@@ -124,7 +124,6 @@ namespace Roslynator.CSharp.Refactorings
                         | ReduceIfNestingOptions.AllowIfInsideIfElse
                         | ReduceIfNestingOptions.AllowLoop
                         | ReduceIfNestingOptions.AllowSwitchSection,
-                    taskSymbol: semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task),
                     cancellationToken: context.CancellationToken);
 
                 if (analysis.Success)

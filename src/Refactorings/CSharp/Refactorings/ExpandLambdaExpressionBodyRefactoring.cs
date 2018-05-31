@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings
             var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(lambda, cancellationToken);
 
             StatementSyntax statement;
-            if (ShouldCreateExpressionStatement(expression, methodSymbol, semanticModel))
+            if (ShouldCreateExpressionStatement(expression, methodSymbol))
             {
                 statement = ExpressionStatement(expression);
             }
@@ -68,20 +68,15 @@ namespace Roslynator.CSharp.Refactorings
             return await document.ReplaceNodeAsync(lambda, newLambda, cancellationToken).ConfigureAwait(false);
         }
 
-        private static bool ShouldCreateExpressionStatement(ExpressionSyntax expression, IMethodSymbol methodSymbol, SemanticModel semanticModel)
+        private static bool ShouldCreateExpressionStatement(ExpressionSyntax expression, IMethodSymbol methodSymbol)
         {
             if (methodSymbol.ReturnsVoid)
                 return true;
 
-            if (expression.IsKind(SyntaxKind.AwaitExpression))
+            if (expression.IsKind(SyntaxKind.AwaitExpression)
+                && !methodSymbol.ReturnType.OriginalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_Task_T))
             {
-                ITypeSymbol returnType = methodSymbol.ReturnType;
-
-                if (returnType?.Kind == SymbolKind.NamedType
-                    && !((INamedTypeSymbol)returnType).ConstructedFrom.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T)))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;

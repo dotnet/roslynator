@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             INamedTypeSymbol equalityComparerSymbol = semanticModel
-                .GetTypeByMetadataName(MetadataNames.System_Collections_Generic_EqualityComparer_T)
+                .GetTypeByMetadataName("System.Collections.Generic.EqualityComparer`1")
                 .Construct(typeSymbol);
 
             ExpressionSyntax newNode = InvocationExpression(

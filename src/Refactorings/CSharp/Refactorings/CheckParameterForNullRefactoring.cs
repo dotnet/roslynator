@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.Refactorings
                         NullLiteralExpression()),
                     ThrowStatement(
                         ObjectCreationExpression(
-                            type: ParseName(MetadataNames.System_ArgumentNullException).WithSimplifierAnnotation(),
+                            type: ParseName("System.ArgumentNullException").WithSimplifierAnnotation(),
                             argumentList: ArgumentList(Argument(NameOfExpression(parameters[i].Identifier.ValueText))),
                             initializer: default(InitializerExpressionSyntax))));
 
@@ -228,7 +228,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!string.Equals(type?.Name, "ArgumentNullException", StringComparison.Ordinal))
                 return default;
 
-            if (!type.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException)))
+            if (!type.HasMetadataName(MetadataNames.System_ArgumentNullException))
                 return default;
 
             return nullCheck;

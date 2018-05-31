@@ -365,6 +365,21 @@ namespace Roslynator
             return null;
         }
 
+        //TODO: make public
+        internal static AttributeData GetAttribute(this ISymbol symbol, in MetadataName metadataName)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            foreach (AttributeData attributeData in symbol.GetAttributes())
+            {
+                if (attributeData.AttributeClass.HasMetadataName(metadataName))
+                    return attributeData;
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Returns true if the symbol has the specified attribute.
         /// </summary>
@@ -403,25 +418,31 @@ namespace Roslynator
             return false;
         }
 
-        internal static AttributeData GetAttributeByMetadataName(this INamedTypeSymbol typeSymbol, string fullyQualifiedMetadataName, Compilation compilation)
+        //TODO: make public
+        internal static bool HasAttribute(this ISymbol symbol, in MetadataName metadataName)
         {
-            ImmutableArray<AttributeData> attributes = typeSymbol.GetAttributes();
+            return GetAttribute(symbol, metadataName) != null;
+        }
 
-            if (attributes.Any())
+        //TODO: make public
+        internal static bool HasAttribute(this ITypeSymbol typeSymbol, in MetadataName metadataName, bool includeBaseTypes)
+        {
+            if (!includeBaseTypes)
+                return HasAttribute(typeSymbol, metadataName);
+
+            ITypeSymbol t = typeSymbol;
+
+            do
             {
-                INamedTypeSymbol attributeType = compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
+                if (t.HasAttribute(metadataName))
+                    return true;
 
-                if (attributeType != null)
-                {
-                    foreach (AttributeData attributeData in attributes)
-                    {
-                        if (attributeData.AttributeClass.Equals(attributeType))
-                            return attributeData;
-                    }
-                }
-            }
+                t = t.BaseType;
 
-            return null;
+            } while (t != null
+                && t.SpecialType != SpecialType.System_Object);
+
+            return false;
         }
 
         internal static ImmutableArray<IParameterSymbol> ParametersOrDefault(this ISymbol symbol)
@@ -500,9 +521,9 @@ namespace Roslynator
             return true;
         }
 
-        internal static bool HasFullyQualifiedMetadataName(this ISymbol symbol, in FullyQualifiedMetadataName fullyQualifiedMetadataName)
+        internal static bool HasMetadataName(this ISymbol symbol, in MetadataName metadataName)
         {
-            return fullyQualifiedMetadataName.Equals(symbol);
+            return metadataName.Equals(symbol);
         }
         #endregion ISymbol
 
@@ -1305,10 +1326,25 @@ namespace Roslynator
             return false;
         }
 
-        internal static bool IsEnumWithFlags(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        //TODO: make public
+        internal static bool Implements(this ITypeSymbol typeSymbol, in MetadataName metadataName, bool allInterfaces = false)
+        {
+            if (typeSymbol == null)
+                throw new ArgumentNullException(nameof(typeSymbol));
+
+            foreach (INamedTypeSymbol interfaceSymbol in typeSymbol.GetInterfaces(allInterfaces))
+            {
+                if (interfaceSymbol.HasMetadataName(metadataName))
+                    return true;
+            }
+
+            return false;
+        }
+
+        internal static bool IsEnumWithFlags(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.TypeKind == TypeKind.Enum
-                && typeSymbol.HasAttribute(semanticModel.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute));
+                && typeSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
         }
 
         /// <summary>
@@ -1416,6 +1452,34 @@ namespace Roslynator
             return false;
         }
 
+        //TODO: make public
+        internal static bool InheritsFrom(this ITypeSymbol type, in MetadataName metadataName, bool includeInterfaces = false)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+
+            INamedTypeSymbol baseType = type.BaseType;
+
+            while (baseType != null)
+            {
+                if (baseType.HasMetadataName(metadataName))
+                    return true;
+
+                baseType = baseType.BaseType;
+            }
+
+            if (includeInterfaces)
+            {
+                foreach (INamedTypeSymbol interfaceType in type.AllInterfaces)
+                {
+                    if (interfaceType.HasMetadataName(metadataName))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         /// <summary>
         /// Returns true if the type is equal or inherits from a specified base type.
         /// </summary>
@@ -1430,6 +1494,16 @@ namespace Roslynator
 
             return type.Equals(baseType)
                 || InheritsFrom(type, baseType, includeInterfaces);
+        }
+
+        //TODO: make public
+        internal static bool EqualsOrInheritsFrom(this ITypeSymbol type, in MetadataName metadataName, bool includeInterfaces = false)
+        {
+            if (type == null)
+                throw new ArgumentNullException(nameof(type));
+
+            return type.HasMetadataName(metadataName)
+                || InheritsFrom(type, metadataName, includeInterfaces);
         }
 
         /// <summary>
@@ -1563,9 +1637,9 @@ namespace Roslynator
             return null;
         }
 
-        internal static bool EqualsOrInheritsFromTaskOfT(this ITypeSymbol typeSymbol, SemanticModel semanticModel)
+        internal static bool EqualsOrInheritsFromTaskOfT(this ITypeSymbol typeSymbol)
         {
-            return typeSymbol?.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T)) == true;
+            return typeSymbol?.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T) == true;
         }
 
         /// <summary>

@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
 
             AttributeListSyntax attributeList = AttributeList(
                 Attribute(
-                    ParseName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute).WithSimplifierAnnotation(),
+                    ParseName("System.Diagnostics.DebuggerDisplayAttribute").WithSimplifierAnnotation(),
                     AttributeArgument(LiteralExpression($"{{{propertyName},nq}}"))));
 
             PropertyDeclarationSyntax propertyDeclaration = DebuggerDisplayPropertyDeclaration(propertyName, InvocationExpression(IdentifierName("ToString")));

@@ -25,26 +25,18 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol flagsAttribute = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute);
-
-                if (flagsAttribute == null)
-                    return;
-
-                startContext.RegisterSymbolAction(f => AnalyzeNamedType(f, flagsAttribute), SymbolKind.NamedType);
-            });
+            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
         }
 
         //XPERF:
-        public static void AnalyzeNamedType(SymbolAnalysisContext context, INamedTypeSymbol flagsAttribute)
+        public static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var namedType = (INamedTypeSymbol)context.Symbol;
 
             if (namedType.TypeKind != TypeKind.Enum)
                 return;
 
-            if (!namedType.HasAttribute(flagsAttribute))
+            if (!namedType.HasAttribute(MetadataNames.System_FlagsAttribute))
                 return;
 
             ImmutableArray<ISymbol> fields = namedType.GetMembers();

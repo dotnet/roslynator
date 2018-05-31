@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Refactorings
             return semanticModel
                 .GetDeclaredSymbol(property, context.CancellationToken)?
                 .ContainingType?
-                .Implements(semanticModel.GetTypeByMetadataName(MetadataNames.System_ComponentModel_INotifyPropertyChanged), allInterfaces: true) == true;
+                .Implements(MetadataNames.System_ComponentModel_INotifyPropertyChanged, allInterfaces: true) == true;
         }
 
         public static Task<Document> RefactorAsync(

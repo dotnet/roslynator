@@ -111,7 +111,7 @@ namespace Roslynator.Helpers
                             ImmutableArray<INamedTypeSymbol> allInterfaces = typeSymbol.AllInterfaces;
 
                             return allInterfaces.Any(f => f.SpecialType == SpecialType.System_Collections_IEnumerable)
-                                && !allInterfaces.Any(ImplementsIDictionary);
+                                && !allInterfaces.Any(f => f.HasMetadataName(MetadataNames.System_Collections_IDictionary));
                         }
 
                         break;
@@ -119,12 +119,6 @@ namespace Roslynator.Helpers
             }
 
             return false;
-        }
-
-        private static bool ImplementsIDictionary(INamedTypeSymbol namedTypeSymbol)
-        {
-            return string.Equals(namedTypeSymbol.ContainingNamespace?.ToString(), MetadataNames.System_Collections, StringComparison.Ordinal)
-                && string.Equals(namedTypeSymbol.MetadataName, "IDictionary", StringComparison.Ordinal);
         }
 
         private static string GetName(ITypeSymbol typeSymbol)

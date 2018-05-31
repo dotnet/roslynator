@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
+                        INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison");
 
                         if (!invocationInfo.NameText.EndsWith("Invariant", StringComparison.Ordinal)
                             || !RegisterCodeFix(context, diagnostic, binaryExpression, comparisonSymbol, "InvariantCultureIgnoreCase"))
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison);
+                        INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison");
 
                         if (!invocationInfo2.NameText.EndsWith("Invariant", StringComparison.Ordinal)
                             || !RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "InvariantCultureIgnoreCase"))

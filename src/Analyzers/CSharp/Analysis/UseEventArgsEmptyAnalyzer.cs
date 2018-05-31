@@ -24,34 +24,28 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol eventArgsSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
-
-                if (eventArgsSymbol != null)
-                {
-                    startContext.RegisterSyntaxNodeAction(
-                        nodeContext => AnalyzeObjectCreationExpression(nodeContext, eventArgsSymbol),
-                        SyntaxKind.ObjectCreationExpression);
-                }
-            });
+            context.RegisterSyntaxNodeAction(AnalyzeObjectCreationExpression, SyntaxKind.ObjectCreationExpression);
         }
 
-        public static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
+        public static void AnalyzeObjectCreationExpression(SyntaxNodeAnalysisContext context)
         {
             if (context.Node.SpanContainsDirectives())
                 return;
 
             var objectCreation = (ObjectCreationExpressionSyntax)context.Node;
 
-            if (objectCreation.ArgumentList?.Arguments.Count == 0
-                && objectCreation.Initializer == null)
-            {
-                ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
+            if (objectCreation.ArgumentList?.Arguments.Count != 0)
+                return;
 
-                if (typeSymbol?.Equals(eventArgsSymbol) == true)
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseEventArgsEmpty, objectCreation);
-            }
+            if (objectCreation.Initializer != null)
+                return;
+
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
+
+            if (typeSymbol?.HasMetadataName(MetadataNames.System_EventArgs) != true)
+                return;
+
+            context.ReportDiagnostic(DiagnosticDescriptors.UseEventArgsEmpty, objectCreation);
         }
     }
 }

@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     TypeDeclarationSyntax newTypeDeclaration = typeDeclaration.ReplaceNode(invocationExpression, newInvocationExpression);
 
-                    TypeSyntax regexType = semanticModel.GetTypeByMetadataName(MetadataNames.System_Text_RegularExpressions_Regex).ToMinimalTypeSyntax(semanticModel, typeDeclaration.SpanStart);
+                    TypeSyntax regexType = ParseTypeName("System.Text.RegularExpressions.Regex").WithSimplifierAnnotation();
 
                     FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
                         Modifiers.PrivateStaticReadOnly(),
@@ -97,14 +97,14 @@ namespace Roslynator.CSharp.Refactorings
                     }
 
                     if (regexOptions == null
-                        && parameterSymbol.Type.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions)))
+                        && parameterSymbol.Type.HasMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions))
                     {
                         regexOptions = arguments[i];
                         newArguments = newArguments.RemoveAt(i);
                     }
 
                     if (matchTimeout == null
-                        && parameterSymbol.Type.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_TimeSpan)))
+                        && parameterSymbol.Type.HasMetadataName(MetadataNames.System_TimeSpan))
                     {
                         matchTimeout = arguments[i];
                         newArguments = newArguments.RemoveAt(i);

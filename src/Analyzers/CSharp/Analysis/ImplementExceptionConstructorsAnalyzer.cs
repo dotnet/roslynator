@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Exception);
+                INamedTypeSymbol exceptionSymbol = startContext.Compilation.GetTypeByMetadataName("System.Exception");
 
                 if (exceptionSymbol == null)
                     return;

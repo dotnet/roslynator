@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol taskOfTSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
+                INamedTypeSymbol taskOfTSymbol = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task`1");
 
                 if (taskOfTSymbol == null)
                     return;

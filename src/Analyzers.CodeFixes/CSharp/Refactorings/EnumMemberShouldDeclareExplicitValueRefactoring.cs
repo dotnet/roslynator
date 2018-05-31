@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Refactorings
 
             INamedTypeSymbol enumSymbol = fieldSymbol.ContainingType;
 
-            if (enumSymbol.IsEnumWithFlags(semanticModel))
+            if (enumSymbol.IsEnumWithFlags())
             {
                 return GetFlagsValue(enumMember, enumSymbol, semanticModel, cancellationToken);
             }

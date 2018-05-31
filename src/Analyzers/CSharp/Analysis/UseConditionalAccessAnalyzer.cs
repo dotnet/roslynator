@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol expressionOfTSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Linq_Expressions_Expression_1);
+                INamedTypeSymbol expressionOfTSymbol = startContext.Compilation.GetTypeByMetadataName("System.Linq.Expressions.Expression`1");
 
                 startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeIfStatement(nodeContext, expressionOfTSymbol), SyntaxKind.IfStatement);
                 startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBinaryExpression(nodeContext, expressionOfTSymbol), SyntaxKind.LogicalAndExpression);

@@ -3,8 +3,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -15,14 +16,11 @@ namespace Roslynator.CSharp.Refactorings
             ObjectCreationExpressionSyntax objectCreationExpression,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+            MemberAccessExpressionSyntax newNode = SimpleMemberAccessExpression(
+                ParseTypeName("System.EventArgs").WithSimplifierAnnotation(),
+                IdentifierName("Empty"));
 
-            TypeSyntax type = semanticModel
-                .GetTypeByMetadataName(MetadataNames.System_EventArgs)
-                .ToMinimalTypeSyntax(semanticModel, objectCreationExpression.SpanStart);
-
-            MemberAccessExpressionSyntax newNode = CSharpFactory.SimpleMemberAccessExpression(type, SyntaxFactory.IdentifierName("Empty"))
-                .WithTriviaFrom(objectCreationExpression);
+            newNode = newNode.WithTriviaFrom(objectCreationExpression);
 
             return await document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken).ConfigureAwait(false);
         }

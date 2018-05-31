@@ -26,14 +26,14 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol taskSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+                INamedTypeSymbol taskSymbol = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
 
                 if (taskSymbol == null)
                     return;
 
-                INamedTypeSymbol valueTaskOfTSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T);
+                INamedTypeSymbol valueTaskOfTSymbol = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask`1");
 
-                if (startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) == null)
+                if (startContext.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") == null)
                     return;
 
                 startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeAwaitExpression(nodeContext, taskSymbol, valueTaskOfTSymbol), SyntaxKind.AwaitExpression);

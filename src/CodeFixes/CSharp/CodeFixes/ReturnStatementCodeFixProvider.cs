@@ -134,7 +134,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     var methodSymbol = (IMethodSymbol)symbol;
 
                                     if (methodSymbol.ReturnsVoid
-                                        || methodSymbol.ReturnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task)))
+                                        || methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Remove return expression",

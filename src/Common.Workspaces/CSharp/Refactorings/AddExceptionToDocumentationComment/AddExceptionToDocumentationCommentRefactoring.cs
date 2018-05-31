@@ -282,7 +282,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
 
             var throwInfos = new List<ThrowInfo>() { throwInfo };
 
-            INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Exception);
+            INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName("System.Exception");
 
             foreach (ThrowInfo info in GetOtherUndocumentedExceptions(memberDeclaration, declarationSymbol, node => node != throwInfo.Node, exceptionSymbol, semanticModel, cancellationToken))
             {
@@ -363,7 +363,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
                 sb.Append(parameterSymbol.Name);
                 sb.Append("\"/>");
 
-                if (exceptionSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_ArgumentNullException)))
+                if (exceptionSymbol.HasMetadataName(MetadataNames.System_ArgumentNullException))
                     sb.Append(" is <c>null</c>.");
             }
 

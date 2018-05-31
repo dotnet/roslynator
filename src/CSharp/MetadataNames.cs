@@ -1,62 +1,61 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
+
 namespace Roslynator
 {
     internal static class MetadataNames
     {
-        public const string System_ArgumentException = "System.ArgumentException";
-        public const string System_ArgumentNullException = "System.ArgumentNullException";
-        public const string System_Attribute = "System.Attribute";
-        public const string System_AttributeTargets = "System.AttributeTargets";
-        public const string System_AttributeUsageAttribute = "System.AttributeUsageAttribute";
-        public const string System_Collections = "System.Collections";
-        public const string System_Collections_Generic = "System.Collections.Generic";
-        public const string System_Collections_Generic_EqualityComparer_T = "System.Collections.Generic.EqualityComparer`1";
-        public const string System_Collections_Generic_IEnumerable_T = "System.Collections.Generic.IEnumerable`1";
-        public const string System_Collections_Generic_List_T = "System.Collections.Generic.List`1";
-        public const string System_Collections_ICollection = "System.Collections.ICollection";
-        public const string System_Collections_IEnumerable = "System.Collections.IEnumerable";
-        public const string System_Collections_Immutable_ImmutableArray = "System.Collections.Immutable.ImmutableArray";
-        public const string System_Collections_Immutable_ImmutableArray_T = "System.Collections.Immutable.ImmutableArray`1";
-        public const string System_ComponentModel = "System.ComponentModel";
-        public const string System_ComponentModel_INotifyPropertyChanged = "System.ComponentModel.INotifyPropertyChanged";
-        public const string System_Diagnostics = "System.Diagnostics";
-        public const string System_Diagnostics_Debug = "System.Diagnostics.Debug";
-        public const string System_Diagnostics_DebuggerDisplayAttribute = "System.Diagnostics.DebuggerDisplayAttribute";
-        public const string System_EventArgs = "System.EventArgs";
-        public const string System_EventHandler = "System.EventHandler";
-        public const string System_EventHandler_T = "System.EventHandler`1";
-        public const string System_Exception = "System.Exception";
-        public const string System_FlagsAttribute = "System.FlagsAttribute";
-        public const string System_Func_T2 = "System.Func`2";
-        public const string System_Func_T3 = "System.Func`3";
-        public const string System_IEquatable_T = "System.IEquatable`1";
-        public const string System_InvalidOperationException = "System.InvalidOperationException";
-        public const string System_Linq = "System.Linq";
-        public const string System_Linq_Enumerable = "System.Linq.Enumerable";
-        public const string System_Linq_Expressions_Expression_1 = "System.Linq.Expressions.Expression`1";
-        public const string System_Linq_ImmutableArrayExtensions = "System.Linq.ImmutableArrayExtensions";
-        public const string System_Linq_IOrderedEnumerable_T = "System.Linq.IOrderedEnumerable`1";
-        public const string System_NonSerializedAttribute = "System.NonSerializedAttribute";
-        public const string System_NotImplementedException = "System.NotImplementedException";
-        public const string System_NotSupportedException = "System.NotSupportedException";
-        public const string System_Runtime_CompilerServices_ConfiguredTaskAwaitable = "System.Runtime.CompilerServices.ConfiguredTaskAwaitable";
-        public const string System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = "System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1";
-        public const string System_Runtime_InteropServices_LayoutKind = "System.Runtime.InteropServices.LayoutKind";
-        public const string System_Runtime_InteropServices_StructLayoutAttribute = "System.Runtime.InteropServices.StructLayoutAttribute";
-        public const string System_Runtime_Serialization_DataMemberAttribute = "System.Runtime.Serialization.DataMemberAttribute";
-        public const string System_Runtime_Serialization_SerializationInfo = "System.Runtime.Serialization.SerializationInfo";
-        public const string System_Runtime_Serialization_StreamingContext = "System.Runtime.Serialization.StreamingContext";
-        public const string System_String = "System.String";
-        public const string System_StringComparison = "System.StringComparison";
-        public const string System_Text_RegularExpressions = "System.Text.RegularExpressions";
-        public const string System_Text_RegularExpressions_Regex = "System.Text.RegularExpressions.Regex";
-        public const string System_Text_RegularExpressions_RegexOptions = "System.Text.RegularExpressions.RegexOptions";
-        public const string System_Text_StringBuilder = "System.Text.StringBuilder";
-        public const string System_Threading_SpinLock = "System.Threading.SpinLock";
-        public const string System_Threading_Tasks_Task = "System.Threading.Tasks.Task";
-        public const string System_Threading_Tasks_Task_T = "System.Threading.Tasks.Task`1";
-        public const string System_Threading_Tasks_ValueTask_T = "System.Threading.Tasks.ValueTask`1";
-        public const string System_TimeSpan = "System.TimeSpan";
+        public static readonly MetadataName System_ArgumentException = new MetadataName(Namespaces.System, "ArgumentException");
+        public static readonly MetadataName System_ArgumentNullException = new MetadataName(Namespaces.System, "ArgumentNullException");
+        public static readonly MetadataName System_Collections_Generic = new MetadataName(Namespaces.System_Collections, "Generic");
+        public static readonly MetadataName System_Collections_Generic_List_T = new MetadataName(Namespaces.System_Collections_Generic, "List`1");
+        public static readonly MetadataName System_Collections_IDictionary = new MetadataName(Namespaces.System_Collections, "IDictionary");
+        public static readonly MetadataName System_Collections_Immutable_ImmutableArray_T = new MetadataName(Namespaces.System_Collections_Immutable, "ImmutableArray`1");
+        public static readonly MetadataName System_ComponentModel_INotifyPropertyChanged = new MetadataName(Namespaces.System_ComponentModel, "INotifyPropertyChanged");
+        public static readonly MetadataName System_Diagnostics_Debug = new MetadataName(Namespaces.System_Diagnostics, "Debug");
+        public static readonly MetadataName System_Diagnostics_DebuggerDisplayAttribute = new MetadataName(Namespaces.System_Diagnostics, "DebuggerDisplayAttribute");
+        public static readonly MetadataName System_EventArgs = new MetadataName(Namespaces.System, "EventArgs");
+        public static readonly MetadataName System_EventHandler = new MetadataName(Namespaces.System, "EventHandler");
+        public static readonly MetadataName System_FlagsAttribute = new MetadataName(Namespaces.System, "FlagsAttribute");
+        public static readonly MetadataName System_Func_T2 = new MetadataName(Namespaces.System, "Func`2");
+        public static readonly MetadataName System_Func_T3 = new MetadataName(Namespaces.System, "Func`3");
+        public static readonly MetadataName System_IEquatable_T = new MetadataName(Namespaces.System, "IEquatable`1");
+        public static readonly MetadataName System_Linq_Enumerable = new MetadataName(Namespaces.System_Linq, "Enumerable");
+        public static readonly MetadataName System_Linq_Expressions_Expression_T = new MetadataName(Namespaces.System_Linq_Expressions, "Expression`1");
+        public static readonly MetadataName System_Linq_ImmutableArrayExtensions = new MetadataName(Namespaces.System_Linq, "ImmutableArrayExtensions");
+        public static readonly MetadataName System_Linq_IOrderedEnumerable_T = new MetadataName(Namespaces.System_Linq, "IOrderedEnumerable`1");
+        public static readonly MetadataName System_NonSerializedAttribute = new MetadataName(Namespaces.System, "NonSerializedAttribute");
+        public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable = new MetadataName(Namespaces.System_Runtime_CompilerServices, "ConfiguredTaskAwaitable");
+        public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = new MetadataName(Namespaces.System_Runtime_CompilerServices, "ConfiguredTaskAwaitable`1");
+        public static readonly MetadataName System_Runtime_InteropServices_LayoutKind = new MetadataName(Namespaces.System_Runtime_InteropServices, "LayoutKind");
+        public static readonly MetadataName System_Runtime_InteropServices_StructLayoutAttribute = new MetadataName(Namespaces.System_Runtime_InteropServices, "StructLayoutAttribute");
+        public static readonly MetadataName System_Runtime_Serialization_DataMemberAttribute = new MetadataName(Namespaces.System_Runtime_Serialization, "DataMemberAttribute");
+        public static readonly MetadataName System_Runtime_Serialization_SerializationInfo = new MetadataName(Namespaces.System_Runtime_Serialization, "SerializationInfo");
+        public static readonly MetadataName System_Runtime_Serialization_StreamingContext = new MetadataName(Namespaces.System_Runtime_Serialization, "StreamingContext");
+        public static readonly MetadataName System_Text_RegularExpressions_Regex = new MetadataName(Namespaces.System_Text_RegularExpressions, "Regex");
+        public static readonly MetadataName System_Text_RegularExpressions_RegexOptions = new MetadataName(Namespaces.System_Text_RegularExpressions, "RegexOptions");
+        public static readonly MetadataName System_Text_StringBuilder = new MetadataName(Namespaces.System_Text, "StringBuilder");
+        public static readonly MetadataName System_Threading_Tasks_Task = new MetadataName(Namespaces.System_Threading_Tasks, "Task");
+        public static readonly MetadataName System_Threading_Tasks_Task_T = new MetadataName(Namespaces.System_Threading_Tasks, "Task`1");
+        public static readonly MetadataName System_TimeSpan = new MetadataName(Namespaces.System, "TimeSpan");
+
+        private static class Namespaces
+        {
+            public static readonly ImmutableArray<string> System = ImmutableArray.Create("System");
+            public static readonly ImmutableArray<string> System_Collections = ImmutableArray.Create("System", "Collections");
+            public static readonly ImmutableArray<string> System_Collections_Generic = ImmutableArray.Create("System", "Collections", "Generic");
+            public static readonly ImmutableArray<string> System_Collections_Immutable = ImmutableArray.Create("System", "Collections", "Immutable");
+            public static readonly ImmutableArray<string> System_ComponentModel = ImmutableArray.Create("System", "ComponentModel");
+            public static readonly ImmutableArray<string> System_Diagnostics = ImmutableArray.Create("System", "Diagnostics");
+            public static readonly ImmutableArray<string> System_Linq = ImmutableArray.Create("System", "Linq");
+            public static readonly ImmutableArray<string> System_Linq_Expressions = ImmutableArray.Create("System", "Linq", "Expressions");
+            public static readonly ImmutableArray<string> System_Runtime_CompilerServices = ImmutableArray.Create("System", "Runtime", "CompilerServices");
+            public static readonly ImmutableArray<string> System_Runtime_InteropServices = ImmutableArray.Create("System", "Runtime", "InteropServices");
+            public static readonly ImmutableArray<string> System_Runtime_Serialization = ImmutableArray.Create("System", "Runtime", "Serialization");
+            public static readonly ImmutableArray<string> System_Text = ImmutableArray.Create("System", "Text");
+            public static readonly ImmutableArray<string> System_Text_RegularExpressions = ImmutableArray.Create("System", "Text", "RegularExpressions");
+            public static readonly ImmutableArray<string> System_Threading_Tasks = ImmutableArray.Create("System", "Threading", "Tasks");
+        }
     }
 }

@@ -26,15 +26,10 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeIfStatement(f, taskType), SyntaxKind.IfStatement);
-            });
+            context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
         }
 
-        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskType)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
@@ -42,7 +37,6 @@ namespace Roslynator.CSharp.Analysis
                 ifStatement,
                 context.SemanticModel,
                 options: ReduceIfNestingOptions.None,
-                taskSymbol: taskType,
                 cancellationToken: context.CancellationToken);
 
             if (!analysis.Success)

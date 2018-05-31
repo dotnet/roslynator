@@ -177,10 +177,8 @@ namespace Roslynator.CSharp.Refactorings
                 name = GenericName("FromResult", type);
             }
 
-            INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
             InvocationExpressionSyntax newNode = SimpleMemberInvocationExpression(
-                taskOfTSymbol.ToMinimalTypeSyntax(semanticModel, position),
+                ParseTypeName("System.Threading.Tasks.Task").WithSimplifierAnnotation(),
                 name,
                 Argument(defaultValue));
 

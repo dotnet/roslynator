@@ -262,11 +262,8 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (methodSymbol.IsAsync)
                         {
-                            if (returnType is INamedTypeSymbol namedTypeSymbol
-                                && namedTypeSymbol.ConstructedFrom.EqualsOrInheritsFrom(analysis.SemanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T)))
-                            {
-                                return namedTypeSymbol.TypeArguments[0];
-                            }
+                            if (returnType.OriginalDefinition.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))
+                                return ((INamedTypeSymbol)returnType).TypeArguments[0];
                         }
                         else if (!analysis.IsYield)
                         {

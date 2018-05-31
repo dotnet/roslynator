@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
             else
             {
                 INamedTypeSymbol equalityComparerSymbol = semanticModel
-                    .GetTypeByMetadataName(MetadataNames.System_Collections_Generic_EqualityComparer_T)
+                    .GetTypeByMetadataName("System.Collections.Generic.EqualityComparer`1")
                     .Construct(typeSymbol);
 
                 newNode = InvocationExpression(

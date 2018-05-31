@@ -16,8 +16,8 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             return CompilationUnit(
                 UsingDirectives(
-                    MetadataNames.System_Collections_Generic,
-                    MetadataNames.System_ComponentModel,
+                    "System.Collections.Generic",
+                    "System.ComponentModel",
                     "Roslynator.CSharp.Refactorings",
                     "Roslynator.VisualStudio.TypeConverters"),
                 NamespaceDeclaration(

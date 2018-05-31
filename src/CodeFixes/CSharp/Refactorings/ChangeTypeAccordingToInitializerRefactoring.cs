@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             SemanticModel semanticModel)
         {
-            if (!typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT(semanticModel))
+            if (!typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
                 return;
 
             if (!(semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol))

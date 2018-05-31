@@ -24,18 +24,10 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol flagsAttribute = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_FlagsAttribute);
-
-                if (flagsAttribute == null)
-                    return;
-
-                startContext.RegisterSymbolAction(f => AnalyzeNamedType(f, flagsAttribute), SymbolKind.NamedType);
-            });
+            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
         }
 
-        public static void AnalyzeNamedType(SymbolAnalysisContext context, INamedTypeSymbol flagsAttribute)
+        public static void AnalyzeNamedType(SymbolAnalysisContext context)
         {
             var namedTypeSymbol = (INamedTypeSymbol)context.Symbol;
 
@@ -45,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
             if (namedTypeSymbol.TypeKind != TypeKind.Enum)
                 return;
 
-            if (!namedTypeSymbol.HasAttribute(flagsAttribute))
+            if (!namedTypeSymbol.HasAttribute(MetadataNames.System_FlagsAttribute))
                 return;
 
             if (ContainsMemberWithZeroValue(namedTypeSymbol))

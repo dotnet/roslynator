@@ -34,9 +34,9 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
+                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
 
-                INamedTypeSymbol valueTaskType = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T);
+                INamedTypeSymbol valueTaskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask`1");
 
                 var windowsRuntimeTypes = default(WindowsRuntimeAsyncTypes);
 

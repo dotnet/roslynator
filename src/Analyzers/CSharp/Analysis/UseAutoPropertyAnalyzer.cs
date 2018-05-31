@@ -108,10 +108,13 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            if (BackingFieldHasNonSerializedAttribute(fieldSymbol, context.Compilation))
-                return;
+            foreach (AttributeData attributeData in fieldSymbol.GetAttributes())
+            {
+                if (attributeData.AttributeClass.HasMetadataName(MetadataNames.System_NonSerializedAttribute))
+                    return;
+            }
 
-            if (HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType, context.Compilation))
+            if (HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType))
                 return;
 
             if (IsBackingFieldUsedInRefOrOutArgument(context, fieldSymbol, property))
@@ -134,24 +137,6 @@ namespace Roslynator.CSharp.Analysis
                 if (setter != null)
                     FadeOutBodyOrExpressionBody(context, setter);
             }
-        }
-
-        private static bool BackingFieldHasNonSerializedAttribute(IFieldSymbol fieldSymbol, Compilation compilation)
-        {
-            ImmutableArray<AttributeData> attributes = fieldSymbol.GetAttributes();
-
-            for (int i = 0; i < attributes.Length; i++)
-            {
-                INamedTypeSymbol attributeSymbol = attributes[i].AttributeClass;
-
-                if (attributeSymbol.MetadataName == "NonSerializedAttribute"
-                    && attributeSymbol.Equals(compilation.GetTypeByMetadataName(MetadataNames.System_NonSerializedAttribute)))
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
 
         private static bool IsBackingFieldUsedInRefOrOutArgument(
@@ -213,21 +198,16 @@ namespace Roslynator.CSharp.Analysis
             return false;
         }
 
-        private static bool HasStructLayoutAttributeWithExplicitKind(INamedTypeSymbol typeSymbol, Compilation compilation)
+        private static bool HasStructLayoutAttributeWithExplicitKind(INamedTypeSymbol typeSymbol)
         {
-            AttributeData attribute = typeSymbol.GetAttributeByMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute, compilation);
+            AttributeData attribute = typeSymbol.GetAttribute(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute);
 
             if (attribute != null)
             {
-                ImmutableArray<TypedConstant> constructorArguments = attribute.ConstructorArguments;
+                TypedConstant typedConstant = attribute.ConstructorArguments.SingleOrDefault(shouldThrow:false);
 
-                if (constructorArguments.Length == 1)
-                {
-                    TypedConstant typedConstant = constructorArguments[0];
-
-                    return typedConstant.Type?.Equals(compilation.GetTypeByMetadataName(MetadataNames.System_Runtime_InteropServices_LayoutKind)) == true
-                        && (((LayoutKind)typedConstant.Value) == LayoutKind.Explicit);
-                }
+                return typedConstant.Type?.HasMetadataName(MetadataNames.System_Runtime_InteropServices_LayoutKind) == true
+                    && (((LayoutKind)typedConstant.Value) == LayoutKind.Explicit);
             }
 
             return false;

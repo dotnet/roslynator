@@ -182,15 +182,13 @@ namespace Roslynator.CSharp.Refactorings
             if (kind == SyntaxKind.ThrowExpression)
                 return true;
 
-            if (kind == SyntaxKind.AwaitExpression)
+            if (kind == SyntaxKind.AwaitExpression
+                && !semanticModel
+                    .GetTypeSymbol(returnType, cancellationToken)
+                    .OriginalDefinition
+                    .EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T))
             {
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(returnType, cancellationToken);
-
-                if (typeSymbol?.Kind == SymbolKind.NamedType
-                    && !((INamedTypeSymbol)typeSymbol).ConstructedFrom.EqualsOrInheritsFrom(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T)))
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;

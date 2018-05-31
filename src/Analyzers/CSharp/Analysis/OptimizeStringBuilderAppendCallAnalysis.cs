@@ -14,11 +14,6 @@ namespace Roslynator.CSharp.Analysis
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
-            INamedTypeSymbol stringBuilderSymbol = context.GetTypeByMetadataName(MetadataNames.System_Text_StringBuilder);
-
-            if (stringBuilderSymbol == null)
-                return;
-
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocationExpression, context.CancellationToken);
@@ -29,7 +24,7 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol.IsExtensionMethod)
                 return;
 
-            if (methodSymbol.ContainingType?.Equals(stringBuilderSymbol) != true)
+            if (methodSymbol.ContainingType?.HasMetadataName(MetadataNames.System_Text_StringBuilder) != true)
                 return;
 
             ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
@@ -49,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
                         IMethodSymbol methodInfo2 = context.SemanticModel.GetMethodSymbol(invocationInfo2.InvocationExpression, context.CancellationToken);
 
                         if (methodInfo2?.IsStatic == false
-                            && methodInfo2.ContainingType?.Equals(stringBuilderSymbol) == true
+                            && methodInfo2.ContainingType?.HasMetadataName(MetadataNames.System_Text_StringBuilder) == true
                             && methodInfo2.HasSingleParameter(SpecialType.System_String))
                         {
                             context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, invocationInfo.Name, methodSymbol.Name);

@@ -164,11 +164,6 @@ namespace Roslynator
                 properties: properties,
                 messageArgs: messageArgs));
         }
-
-        internal static INamedTypeSymbol GetTypeByMetadataName(this SymbolAnalysisContext context, string fullyQualifiedMetadataName)
-        {
-            return context.Compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
-        }
         #endregion SymbolAnalysisContext
 
         #region SyntaxNodeAnalysisContext
@@ -321,13 +316,6 @@ namespace Roslynator
                 additionalLocations: additionalLocations,
                 properties: properties,
                 messageArgs: messageArgs));
-        }
-
-        internal static INamedTypeSymbol GetTypeByMetadataName(
-            this SyntaxNodeAnalysisContext context,
-            string fullyQualifiedMetadataName)
-        {
-            return context.SemanticModel.Compilation.GetTypeByMetadataName(fullyQualifiedMetadataName);
         }
 
         internal static void ReportToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object[] messageArgs)

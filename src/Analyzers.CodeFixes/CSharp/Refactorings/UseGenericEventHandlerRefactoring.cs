@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeSymbol = delegateSymbol.DelegateInvokeMethod.Parameters[1].Type;
 
-            INamedTypeSymbol eventHandlerSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_EventHandler);
+            INamedTypeSymbol eventHandlerSymbol = semanticModel.GetTypeByMetadataName("System.EventHandler");
 
             return GenericName(
                 Identifier(SymbolDisplay.ToMinimalDisplayString(eventHandlerSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)),

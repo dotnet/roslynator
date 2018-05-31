@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            IFieldSymbol fieldSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_StringComparison).FindFieldWithConstantValue(0);
+            IFieldSymbol fieldSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison").FindFieldWithConstantValue(0);
 
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Refactorings
                     Argument(binaryExpression.Right),
                     Argument(
                         SimpleMemberAccessExpression(
-                            ParseName(MetadataNames.System_StringComparison).WithSimplifierAnnotation(),
+                            ParseName("System.StringComparison").WithSimplifierAnnotation(),
                             IdentifierName(fieldSymbol.Name)))));
 
             if (binaryExpression.OperatorToken.IsKind(SyntaxKind.ExclamationEqualsToken))

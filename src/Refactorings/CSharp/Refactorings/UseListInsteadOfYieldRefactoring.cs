@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
             IdentifierNameSyntax identifierName = IdentifierName(name);
 
             TypeSyntax listType = semanticModel
-                .GetTypeByMetadataName(MetadataNames.System_Collections_Generic_List_T)
+                .GetTypeByMetadataName("System.Collections.Generic.List`1")
                 .Construct(typeSymbol)
                 .ToMinimalTypeSyntax(semanticModel, position);
 

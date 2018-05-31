@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
                                 {
                                     if (methodSymbol.ReturnsVoid
-                                        || (methodSymbol.IsAsync && methodSymbol.ReturnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))))
+                                        || (methodSymbol.IsAsync && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)))
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Replace 'break' with 'return'",
@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 if (semanticModel.GetEnclosingSymbol(statement.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol)
                                 {
                                     if (methodSymbol.ReturnsVoid
-                                        || (methodSymbol.IsAsync && methodSymbol.ReturnType.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task))))
+                                        || (methodSymbol.IsAsync && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task)))
                                     {
                                         CodeAction codeAction = CodeAction.Create(
                                             "Replace 'break' with 'return'",

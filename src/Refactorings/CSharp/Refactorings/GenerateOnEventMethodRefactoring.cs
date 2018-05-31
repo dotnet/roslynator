@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<ITypeSymbol> typeArguments = eventHandlerType.TypeArguments;
 
             if (typeArguments.Length == 0)
-                return semanticModel.GetTypeByMetadataName(MetadataNames.System_EventArgs);
+                return semanticModel.GetTypeByMetadataName("System.EventArgs");
 
             if (typeArguments.Length == 1)
                 return typeArguments[0];

@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol debuggerDisplayAttributeSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute);
+                INamedTypeSymbol debuggerDisplayAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Diagnostics.DebuggerDisplayAttribute");
 
                 if (debuggerDisplayAttributeSymbol != null)
                 {

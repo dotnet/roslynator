@@ -67,6 +67,27 @@ namespace Roslynator
             return false;
         }
 
+        public static bool IsEventHandlerMethod(IMethodSymbol methodSymbol)
+        {
+            if (methodSymbol?.ReturnsVoid == true)
+            {
+                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                if (parameters.Length == 2
+                    && parameters[0].Type.SpecialType == SpecialType.System_Object)
+                {
+                    ITypeSymbol type = parameters[1].Type;
+
+                    if (type.Kind == SymbolKind.TypeParameter)
+                        return type.Name.EndsWith("EventArgs", StringComparison.Ordinal);
+
+                    return type.EqualsOrInheritsFrom(MetadataNames.System_EventArgs);
+                }
+            }
+
+            return false;
+        }
+
         public static bool HasAccessibleIndexer(
             ITypeSymbol typeSymbol,
             SemanticModel semanticModel,
@@ -203,7 +224,7 @@ namespace Roslynator
 
         public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2)
         {
-            if (!symbol.OriginalDefinition.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Func_T2))
+            if (!symbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Func_T2))
                 return false;
 
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
@@ -215,7 +236,7 @@ namespace Roslynator
 
         public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, ITypeSymbol parameter3)
         {
-            if (!symbol.OriginalDefinition.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Func_T3))
+            if (!symbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Func_T3))
                 return false;
 
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
@@ -228,7 +249,7 @@ namespace Roslynator
 
         public static bool IsPredicateFunc(ISymbol symbol, ITypeSymbol parameter)
         {
-            if (!symbol.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Func_T2))
+            if (!symbol.HasMetadataName(MetadataNames.System_Func_T2))
                 return false;
 
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
@@ -240,7 +261,7 @@ namespace Roslynator
 
         public static bool IsPredicateFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2)
         {
-            if (!symbol.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Func_T3))
+            if (!symbol.HasMetadataName(MetadataNames.System_Func_T3))
                 return false;
 
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
@@ -288,7 +309,7 @@ namespace Roslynator
 
             ITypeSymbol typeSymbol = methodSymbol.Parameters[1].Type;
 
-            if (!typeSymbol.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Func_T3))
+            if (!typeSymbol.HasMetadataName(MetadataNames.System_Func_T3))
                 return false;
 
             ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)typeSymbol).TypeArguments;
@@ -318,7 +339,7 @@ namespace Roslynator
             if (containingType == null)
                 return false;
 
-            if (containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable))
+            if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -327,7 +348,7 @@ namespace Roslynator
                     && IsFunc(parameters[1].Type, methodSymbol.TypeArguments[0], methodSymbol.TypeArguments[1]);
             }
             else if (allowImmutableArrayExtension
-                && containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_ImmutableArrayExtensions))
+                && containingType.HasMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -346,7 +367,7 @@ namespace Roslynator
                 && methodSymbol.IsName("Cast")
                 && methodSymbol.Arity == 1
                 && methodSymbol.HasSingleParameter(SpecialType.System_Collections_IEnumerable)
-                && methodSymbol.ContainingType?.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable) == true;
+                && methodSymbol.ContainingType?.HasMetadataName(MetadataNames.System_Linq_Enumerable) == true;
         }
 
         internal static bool IsLinqOfType(IMethodSymbol methodSymbol)
@@ -356,7 +377,7 @@ namespace Roslynator
                 && methodSymbol.IsName("OfType")
                 && methodSymbol.Arity == 1
                 && methodSymbol.HasSingleParameter(SpecialType.System_Collections_IEnumerable)
-                && methodSymbol.ContainingType?.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable) == true;
+                && methodSymbol.ContainingType?.HasMetadataName(MetadataNames.System_Linq_Enumerable) == true;
         }
 
         internal static bool IsLinqExtensionOfIEnumerableOfT(
@@ -376,7 +397,7 @@ namespace Roslynator
             if (containingType == null)
                 return false;
 
-            if (containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable))
+            if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -384,7 +405,7 @@ namespace Roslynator
                     && parameters[0].Type.OriginalDefinition.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
             }
             else if (allowImmutableArrayExtension
-                && containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_ImmutableArrayExtensions))
+                && containingType.HasMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -420,7 +441,7 @@ namespace Roslynator
             if (containingType == null)
                 return false;
 
-            if (containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable))
+            if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -429,7 +450,7 @@ namespace Roslynator
                     && IsPredicateFunc(parameters[1].Type, methodSymbol.TypeArguments[0]);
             }
             else if (allowImmutableArrayExtension
-                && containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_ImmutableArrayExtensions))
+                && containingType.HasMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -443,7 +464,7 @@ namespace Roslynator
 
         public static bool IsImmutableArrayOfT(ITypeSymbol typeSymbol)
         {
-            return typeSymbol.OriginalDefinition.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Collections_Immutable_ImmutableArray_T);
+            return typeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Immutable_ImmutableArray_T);
         }
 
         public static bool SupportsSwitchExpression(ITypeSymbol typeSymbol)

@@ -32,19 +32,11 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol eventArgsSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_EventArgs);
-
-                if (eventArgsSymbol == null)
-                    return;
-
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f, eventArgsSymbol), SyntaxKind.AddAssignmentExpression);
-                startContext.RegisterSyntaxNodeAction(f => AnalyzeAssignmentExpression(f, eventArgsSymbol), SyntaxKind.SubtractAssignmentExpression);
-            });
+            context.RegisterSyntaxNodeAction(AnalyzeAssignmentExpression, SyntaxKind.AddAssignmentExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeAssignmentExpression, SyntaxKind.SubtractAssignmentExpression);
         }
 
-        public static void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol eventArgsSymbol)
+        public static void AnalyzeAssignmentExpression(SyntaxNodeAnalysisContext context)
         {
             var assignmentExpression = (AssignmentExpressionSyntax)context.Node;
 
@@ -93,7 +85,7 @@ namespace Roslynator.CSharp.Analysis
             if (!(methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type is INamedTypeSymbol typeSymbol))
                 return;
 
-            if (!SymbolUtility.IsEventHandlerMethod(typeSymbol.DelegateInvokeMethod, eventArgsSymbol))
+            if (!SymbolUtility.IsEventHandlerMethod(typeSymbol.DelegateInvokeMethod))
                 return;
 
             if (semanticModel.GetSymbol(expression, cancellationToken)?.Kind != SymbolKind.Method)

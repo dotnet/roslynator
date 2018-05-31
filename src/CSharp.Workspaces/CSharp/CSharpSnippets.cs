@@ -139,12 +139,12 @@ namespace Roslynator.CSharp
 
         public static ThrowExpressionSyntax ThrowNewNotImplementedExceptionExpression(SemanticModel semanticModel, int position)
         {
-            return ThrowNewExceptionExpression(MetadataNames.System_NotImplementedException, semanticModel, position);
+            return ThrowNewExceptionExpression("System.NotImplementedException", semanticModel, position);
         }
 
         public static ThrowStatementSyntax ThrowNewNotImplementedExceptionStatement(SemanticModel semanticModel, int position)
         {
-            return ThrowNewExceptionStatement(MetadataNames.System_NotImplementedException, semanticModel, position);
+            return ThrowNewExceptionStatement("System.NotImplementedException", semanticModel, position);
         }
 
         private static ThrowExpressionSyntax ThrowNewExceptionExpression(string fullyQualifiedMetadataName, SemanticModel semanticModel, int position)

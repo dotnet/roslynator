@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
 
-            if (enumSymbol?.IsEnumWithFlags(semanticModel) != true)
+            if (enumSymbol?.IsEnumWithFlags() != true)
                 return;
 
             object[] constantValues = selection

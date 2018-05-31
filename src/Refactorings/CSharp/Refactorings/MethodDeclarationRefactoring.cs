@@ -140,26 +140,18 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            if (!(semanticModel.GetTypeSymbol(returnType, cancellationToken) is INamedTypeSymbol returnTypeSymbol))
+            ITypeSymbol returnTypeSymbol = semanticModel.GetTypeSymbol(returnType, cancellationToken);
+
+            if (returnTypeSymbol == null)
                 return null;
 
-            INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task);
-
-            if (taskSymbol == null)
+            if (returnTypeSymbol.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
                 return null;
 
-            if (returnTypeSymbol.Equals(taskSymbol))
+            if (!returnTypeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_Task_T))
                 return null;
 
-            INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-            if (taskOfTSymbol == null)
-                return null;
-
-            if (!returnTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol))
-                return null;
-
-            return returnTypeSymbol.TypeArguments[0];
+            return ((INamedTypeSymbol)returnTypeSymbol).TypeArguments[0];
         }
     }
 }

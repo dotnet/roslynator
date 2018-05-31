@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
 
                                 if (ienumerableOfTSymbol == null)
-                                    ienumerableOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Collections_Generic_IEnumerable_T);
+                                    ienumerableOfTSymbol = semanticModel.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
 
                                 CodeFixRegistrator.ChangeReturnType(
                                     context,

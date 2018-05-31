@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (methodSymbol.IsExtensionMethod)
             {
-                if (containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable))
+                if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
                     ReportDiagnostic(context, expression);
             }
             else if (!methodSymbol.IsStatic)

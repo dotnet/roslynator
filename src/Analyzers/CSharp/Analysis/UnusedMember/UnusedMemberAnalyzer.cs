@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -28,27 +29,22 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol debuggerDisplayAttribute = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute);
-
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeClassDeclaration(nodeContext, debuggerDisplayAttribute), SyntaxKind.ClassDeclaration);
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeStructDeclaration(nodeContext, debuggerDisplayAttribute), SyntaxKind.StructDeclaration);
-            });
+            context.RegisterSyntaxNodeAction(AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeStructDeclaration, SyntaxKind.StructDeclaration);
         }
 
-        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol debuggerDisplayAttribute)
+        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node, debuggerDisplayAttribute);
+            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
         }
 
-        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol debuggerDisplayAttribute)
+        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node, debuggerDisplayAttribute);
+            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
         }
 
         [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.", Justification = "<Pending>")]
-        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration, INamedTypeSymbol debuggerDisplayAttribute)
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration)
         {
             if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                 return;
@@ -56,6 +52,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
 
             UnusedMemberWalker walker = null;
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
 
             foreach (MemberDeclarationSyntax member in members)
             {
@@ -74,7 +72,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             if (SyntaxAccessibility.GetAccessibility(declaration) == Accessibility.Private)
                             {
                                 if (walker == null)
-                                    walker = UnusedMemberWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken);
+                                    walker = UnusedMemberWalkerCache.GetInstance(semanticModel, cancellationToken);
 
                                 walker.AddDelegate(declaration.Identifier.ValueText, declaration);
                             }
@@ -89,7 +87,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                                 && SyntaxAccessibility.GetAccessibility(declaration) == Accessibility.Private)
                             {
                                 if (walker == null)
-                                    walker = UnusedMemberWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken);
+                                    walker = UnusedMemberWalkerCache.GetInstance(semanticModel, cancellationToken);
 
                                 walker.AddNode(declaration.Identifier.ValueText, declaration);
                             }
@@ -103,7 +101,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             if (SyntaxAccessibility.GetAccessibility(declaration) == Accessibility.Private)
                             {
                                 if (walker == null)
-                                    walker = UnusedMemberWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken);
+                                    walker = UnusedMemberWalkerCache.GetInstance(semanticModel, cancellationToken);
 
                                 walker.AddNodes(declaration.Declaration);
                             }
@@ -118,7 +116,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             if (SyntaxAccessibility.GetAccessibility(declaration) == Accessibility.Private)
                             {
                                 if (walker == null)
-                                    walker = UnusedMemberWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken);
+                                    walker = UnusedMemberWalkerCache.GetInstance(semanticModel, cancellationToken);
 
                                 walker.AddNodes(declaration.Declaration, isConst: modifiers.Contains(SyntaxKind.ConstKeyword));
                             }
@@ -140,7 +138,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                                 if (!IsMainMethod(declaration, modifiers, methodName))
                                 {
                                     if (walker == null)
-                                        walker = UnusedMemberWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken);
+                                        walker = UnusedMemberWalkerCache.GetInstance(semanticModel, cancellationToken);
 
                                     walker.AddNode(methodName, declaration);
                                 }
@@ -156,7 +154,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                                 && SyntaxAccessibility.GetAccessibility(declaration) == Accessibility.Private)
                             {
                                 if (walker == null)
-                                    walker = UnusedMemberWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken);
+                                    walker = UnusedMemberWalkerCache.GetInstance(semanticModel, cancellationToken);
 
                                 walker.AddNode(declaration.Identifier.ValueText, declaration);
                             }
@@ -169,28 +167,29 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             if (walker == null)
                 return;
 
-            if (debuggerDisplayAttribute != null
-                && walker.Nodes.Any(f => f.CanBeInDebuggerDisplayAttribute)
-                && ShouldAnalyzeDebuggerDisplayAttribute())
+            Collection<NodeSymbolInfo> unusedMembers = walker.Nodes;
+
+            if (ShouldAnalyzeDebuggerDisplayAttribute()
+                && unusedMembers.Any(f => f.CanBeInDebuggerDisplayAttribute))
             {
-                string value = context.SemanticModel
-                    .GetDeclaredSymbol(typeDeclaration, context.CancellationToken)
-                    .GetAttribute(debuggerDisplayAttribute)?
+                string value = semanticModel
+                    .GetDeclaredSymbol(typeDeclaration, cancellationToken)
+                    .GetAttribute(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute)?
                     .ConstructorArguments
                     .SingleOrDefault(shouldThrow: false)
                     .Value?
                     .ToString();
 
                 if (value != null)
-                    RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(walker.Nodes, value);
+                    RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(value, ref unusedMembers);
 
-                if (walker.Nodes.Count == 0)
+                if (unusedMembers.Count == 0)
                     return;
             }
 
             walker.Visit(typeDeclaration);
 
-            Collection<NodeSymbolInfo> unusedMembers = UnusedMemberWalkerCache.GetNodesAndFree(walker);
+            unusedMembers = UnusedMemberWalkerCache.GetNodesAndFree(walker);
 
             foreach (NodeSymbolInfo info in unusedMembers)
             {
@@ -219,9 +218,6 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
             bool ShouldAnalyzeDebuggerDisplayAttribute()
             {
-                if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
-                    return true;
-
                 foreach (AttributeListSyntax attributeList in typeDeclaration.AttributeLists)
                 {
                     foreach (AttributeSyntax attribute in attributeList.Attributes)
@@ -244,8 +240,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         }
 
         private static void RemoveMethodsAndPropertiesThatAreInDebuggerDisplayAttributeValue(
-            Collection<NodeSymbolInfo> nodes,
-            string value)
+            string value,
+            ref Collection<NodeSymbolInfo> nodes)
         {
             int length = value.Length;
 

@@ -25,8 +25,8 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol attributeSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_Attribute);
-                INamedTypeSymbol attributeUsageAttributeSymbol = startContext.Compilation.GetTypeByMetadataName(MetadataNames.System_AttributeUsageAttribute);
+                INamedTypeSymbol attributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.Attribute");
+                INamedTypeSymbol attributeUsageAttributeSymbol = startContext.Compilation.GetTypeByMetadataName("System.AttributeUsageAttribute");
 
                 if (attributeSymbol != null
                     && attributeUsageAttributeSymbol != null)

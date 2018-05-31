@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsPublicStaticNonGeneric(methodSymbol))
                 return;
 
-            if (methodSymbol.ContainingType?.Equals(context.GetTypeByMetadataName(MetadataNames.System_Text_RegularExpressions_Regex)) != true)
+            if (methodSymbol.ContainingType?.HasMetadataName(MetadataNames.System_Text_RegularExpressions_Regex) != true)
                 return;
 
             SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Analysis
                             if (typeSymbol == null)
                                 return false;
 
-                            return typeSymbol.Equals(semanticModel.GetTypeByMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions));
+                            return typeSymbol.HasMetadataName(MetadataNames.System_Text_RegularExpressions_RegexOptions);
                         }
                     default:
                         {

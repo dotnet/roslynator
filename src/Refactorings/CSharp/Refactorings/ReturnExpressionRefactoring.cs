@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             if (expressionSymbol?.IsErrorType() != false)
                 return;
 
-            ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol, semanticModel);
+            ITypeSymbol castTypeSymbol = GetCastTypeSymbol(memberSymbol, memberTypeSymbol, expressionSymbol);
 
             if (castTypeSymbol == null)
                 return;
@@ -44,23 +44,16 @@ namespace Roslynator.CSharp.Refactorings
         private static ITypeSymbol GetCastTypeSymbol(
             ISymbol memberSymbol,
             ITypeSymbol memberTypeSymbol,
-            ITypeSymbol expressionSymbol,
-            SemanticModel semanticModel)
+            ITypeSymbol expressionSymbol)
         {
             if (memberSymbol.IsAsyncMethod())
             {
-                if (memberTypeSymbol.Kind == SymbolKind.NamedType)
+                if (memberTypeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_Task_T))
                 {
-                    var namedTypeSymbol = (INamedTypeSymbol)memberTypeSymbol;
+                    ITypeSymbol typeArgument = ((INamedTypeSymbol)memberTypeSymbol).TypeArguments[0];
 
-                    INamedTypeSymbol taskOfTSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_Threading_Tasks_Task_T);
-
-                    if (taskOfTSymbol != null
-                        && namedTypeSymbol.ConstructedFrom.Equals(taskOfTSymbol)
-                        && !namedTypeSymbol.TypeArguments[0].Equals(expressionSymbol))
-                    {
-                        return namedTypeSymbol.TypeArguments[0];
-                    }
+                    if (!typeArgument.Equals(expressionSymbol))
+                        return typeArgument;
                 }
             }
             else if (!memberTypeSymbol.Equals(expressionSymbol))

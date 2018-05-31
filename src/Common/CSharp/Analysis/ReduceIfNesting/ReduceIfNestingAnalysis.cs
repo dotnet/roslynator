@@ -25,13 +25,12 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
             IfStatementSyntax ifStatement,
             SemanticModel semanticModel,
             ReduceIfNestingOptions options,
-            INamedTypeSymbol taskSymbol = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (!IsFixable(ifStatement))
                 return Fail(ifStatement);
 
-            return AnalyzeCore(ifStatement, semanticModel, SyntaxKind.None, options, taskSymbol, cancellationToken);
+            return AnalyzeCore(ifStatement, semanticModel, SyntaxKind.None, options, cancellationToken);
         }
 
         private static ReduceIfNestingAnalysisResult AnalyzeCore(
@@ -39,7 +38,6 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
             SemanticModel semanticModel,
             SyntaxKind jumpKind,
             ReduceIfNestingOptions options,
-            INamedTypeSymbol taskSymbol = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
@@ -68,7 +66,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                     return Fail(switchSection);
 
                 if (!options.AllowNestedFix()
-                    && IsNestedFix(switchSection.Parent, semanticModel, options, taskSymbol, cancellationToken))
+                    && IsNestedFix(switchSection.Parent, semanticModel, options, cancellationToken))
                 {
                     return Fail(switchSection);
                 }
@@ -101,7 +99,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                 }
 
                 if (!options.AllowNestedFix()
-                    && IsNestedFix(parent.Parent, semanticModel, options, taskSymbol, cancellationToken))
+                    && IsNestedFix(parent.Parent, semanticModel, options, cancellationToken))
                 {
                     return Fail(parent);
                 }
@@ -151,11 +149,10 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                             return Success(SyntaxKind.ReturnStatement, parent);
 
                         if (methodDeclaration.Modifiers.Contains(SyntaxKind.AsyncKeyword)
-                            && taskSymbol != null
                             && semanticModel
                                 .GetDeclaredSymbol(methodDeclaration, cancellationToken)?
                                 .ReturnType
-                                .Equals(taskSymbol) == true)
+                                .HasMetadataName(MetadataNames.System_Threading_Tasks_Task) == true)
                         {
                             return Success(SyntaxKind.ReturnStatement, parent);
                         }
@@ -183,10 +180,9 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                             return Success(SyntaxKind.ReturnStatement, parent);
 
                         if (localFunction.Modifiers.Contains(SyntaxKind.AsyncKeyword)
-                            && taskSymbol != null
                             && semanticModel.GetDeclaredSymbol(localFunction, cancellationToken)?
                                 .ReturnType
-                                .Equals(taskSymbol) == true)
+                                .HasMetadataName(MetadataNames.System_Threading_Tasks_Task) == true)
                         {
                             return Success(SyntaxKind.ReturnStatement, parent);
                         }
@@ -218,7 +214,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                             return Success(SyntaxKind.ReturnStatement, parent);
 
                         if (anonymousFunction.AsyncKeyword.Kind() == SyntaxKind.AsyncKeyword
-                            && methodSymbol.ReturnType.Equals(taskSymbol))
+                            && methodSymbol.ReturnType.HasMetadataName(MetadataNames.System_Threading_Tasks_Task))
                         {
                             return Success(SyntaxKind.ReturnStatement, parent);
                         }
@@ -237,7 +233,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                             if (!options.AllowIfInsideIfElse())
                                 return Fail(parent);
 
-                            return AnalyzeCore(ifStatement.GetTopmostIf(), semanticModel, jumpKind, options, taskSymbol, cancellationToken);
+                            return AnalyzeCore(ifStatement.GetTopmostIf(), semanticModel, jumpKind, options, cancellationToken);
                         }
                         else
                         {
@@ -247,7 +243,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
                             if (!options.AllowNestedFix())
                                 return Fail(parent);
 
-                            return AnalyzeCore(ifStatement, semanticModel, jumpKind, options, taskSymbol, cancellationToken);
+                            return AnalyzeCore(ifStatement, semanticModel, jumpKind, options, cancellationToken);
                         }
                     }
                 case SyntaxKind.ElseClause:
@@ -257,14 +253,14 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
 
                         var elseClause = (ElseClauseSyntax)parent;
 
-                        return AnalyzeCore(elseClause.GetTopmostIf(), semanticModel, jumpKind, options, taskSymbol, cancellationToken);
+                        return AnalyzeCore(elseClause.GetTopmostIf(), semanticModel, jumpKind, options, cancellationToken);
                     }
             }
 
             return Fail(parent);
         }
 
-        private static bool IsNestedFix(SyntaxNode node, SemanticModel semanticModel, ReduceIfNestingOptions options, INamedTypeSymbol taskSymbol, CancellationToken cancellationToken)
+        private static bool IsNestedFix(SyntaxNode node, SemanticModel semanticModel, ReduceIfNestingOptions options, CancellationToken cancellationToken)
         {
             options |= ReduceIfNestingOptions.AllowNestedFix;
 
@@ -272,7 +268,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
             {
                 if (node is IfStatementSyntax ifStatement)
                 {
-                    ReduceIfNestingAnalysisResult analysis = Analyze(ifStatement, semanticModel, options, taskSymbol, cancellationToken);
+                    ReduceIfNestingAnalysisResult analysis = Analyze(ifStatement, semanticModel, options, cancellationToken);
 
                     if (analysis.Success)
                         return true;

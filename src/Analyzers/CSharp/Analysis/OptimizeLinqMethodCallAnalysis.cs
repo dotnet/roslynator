@@ -75,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
 
             bool success = false;
 
-            if (containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_Enumerable))
+            if (containingType.HasMetadataName(MetadataNames.System_Linq_Enumerable))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Analysis
                         if (typeSymbol != null)
                         {
                             if ((typeSymbol.Kind == SymbolKind.ArrayType && ((IArrayTypeSymbol)typeSymbol).Rank == 1)
-                                || typeSymbol.OriginalDefinition.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Collections_Generic_List_T))
+                                || typeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_List_T))
                             {
                                 Report(context, invocationInfo.Name);
                                 return;
@@ -109,7 +109,7 @@ namespace Roslynator.CSharp.Analysis
                     }
                 }
             }
-            else if (containingType.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Linq_ImmutableArrayExtensions))
+            else if (containingType.HasMetadataName(MetadataNames.System_Linq_ImmutableArrayExtensions))
             {
                 ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
 
@@ -351,7 +351,7 @@ namespace Roslynator.CSharp.Analysis
             if (!StringUtility.Equals(typeSymbol.MetadataName, "Queue`1", "Stack`1"))
                 return;
 
-            if (!typeSymbol.ContainingNamespace.HasFullyQualifiedMetadataName(FullyQualifiedMetadataNames.System_Collections_Generic))
+            if (!typeSymbol.ContainingNamespace.HasMetadataName(MetadataNames.System_Collections_Generic))
                 return;
 
             Report(context, invocationInfo.Name, property: new KeyValuePair<string, string>("MethodName", "Peek"));

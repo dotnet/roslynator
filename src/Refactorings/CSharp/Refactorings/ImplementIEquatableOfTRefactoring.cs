@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -46,15 +47,16 @@ namespace Roslynator.CSharp.Refactorings
             if (classSymbol.IsStatic)
                 return;
 
-            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_IEquatable_T);
+            foreach (INamedTypeSymbol interfaceSymbol in classSymbol.AllInterfaces)
+            {
+                if (interfaceSymbol.HasMetadataName(MetadataNames.System_IEquatable_T)
+                    && interfaceSymbol.TypeArguments.Single().Equals(classSymbol))
+                {
+                    return;
+                }
+            }
 
-            if (equatableSymbol == null)
-                return;
-
-            equatableSymbol = equatableSymbol.Construct(classSymbol);
-
-            if (classSymbol.Implements(equatableSymbol, allInterfaces: true))
-                return;
+            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1").Construct(classSymbol);
 
             context.RegisterRefactoring(
                 GetTitle(equatableSymbol, semanticModel, classDeclaration.SpanStart),
@@ -91,15 +93,16 @@ namespace Roslynator.CSharp.Refactorings
             if (typeSymbol?.IsErrorType() != false)
                 return;
 
-            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName(MetadataNames.System_IEquatable_T);
+            foreach (INamedTypeSymbol interfaceSymbol in typeSymbol.AllInterfaces)
+            {
+                if (interfaceSymbol.HasMetadataName(MetadataNames.System_IEquatable_T)
+                    && interfaceSymbol.TypeArguments.Single().Equals(typeSymbol))
+                {
+                    return;
+                }
+            }
 
-            if (equatableSymbol == null)
-                return;
-
-            equatableSymbol = equatableSymbol.Construct(typeSymbol);
-
-            if (typeSymbol.Implements(equatableSymbol, allInterfaces: true))
-                return;
+            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1").Construct(typeSymbol);
 
             context.RegisterRefactoring(
                 GetTitle(equatableSymbol, semanticModel, structDeclaration.SpanStart),
@@ -128,7 +131,7 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax classType = typeSymbol.ToMinimalTypeSyntax(semanticModel, position);
 
-            newNode = MemberDeclarationInserter.Default.Insert(newNode, CreateEqualsMethod(classType, semanticModel, position));
+            newNode = MemberDeclarationInserter.Default.Insert(newNode, CreateEqualsMethod(classType));
 
             return document.ReplaceNodeAsync(classDeclaration, newNode, cancellationToken);
         }
@@ -206,7 +209,7 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax classType = typeSymbol.ToMinimalTypeSyntax(semanticModel, position);
 
-            newNode = MemberDeclarationInserter.Default.Insert(newNode, CreateEqualsMethod(classType, semanticModel, position));
+            newNode = MemberDeclarationInserter.Default.Insert(newNode, CreateEqualsMethod(classType));
 
             return document.ReplaceNodeAsync(structDeclaration, newNode, cancellationToken);
         }
@@ -268,7 +271,7 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static MethodDeclarationSyntax CreateEqualsMethod(TypeSyntax type, SemanticModel semanticModel, int position)
+        private static MethodDeclarationSyntax CreateEqualsMethod(TypeSyntax type)
         {
             return MethodDeclaration(
                 Modifiers.Public(),
@@ -277,7 +280,7 @@ namespace Roslynator.CSharp.Refactorings
                 ParameterList(Parameter(type, Identifier("other"))),
                 Block(
                     ThrowStatement(
-                        ObjectCreationExpression(semanticModel.GetTypeByMetadataName(MetadataNames.System_NotImplementedException).ToMinimalTypeSyntax(semanticModel, position), ArgumentList()))));
+                        ObjectCreationExpression(ParseTypeName("System.NotImplementedException").WithSimplifierAnnotation(), ArgumentList()))));
         }
     }
 }
