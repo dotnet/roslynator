@@ -111,6 +111,7 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AbstractPackage.cs" />
     <Compile Include="BaseModel.cs" />
     <Compile Include="BaseOptionsPage.cs">
       <SubType>Component</SubType>

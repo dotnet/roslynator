@@ -123,7 +123,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VSPackage.partial.cs" />
     <Compile Include="VSPackage.cs" />
   </ItemGroup>
   <ItemGroup>
