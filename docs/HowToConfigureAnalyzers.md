@@ -50,7 +50,7 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 #### 2) Modify Rule Set File Manually
 
 * Open rule set file in text editor.
-* Change its name (rule set is represented in the IDE by its name).
+* Change value of attribute 'Name' (rule set is represented in the IDE by its name).
 
 ![Edit Rule Set File](/images/EditRuleSetFile.png)
 
@@ -68,18 +68,18 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ### New csproj format (.NET Core, .NET Standard)
 
-#### 1) Create Your Own Rule Set File
+#### 1) Add New Rule Set File to Your Solution
 
-* Skip this step if you already have one.
-* Create new file with extension `ruleset` and add following content:
+* Go to Solution Explorer - Solution - Context Menu - Add - New Item - Code Analysis Rule Set
 
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="My Rules" ToolsVersion="15.0">
-</RuleSet>
-```
+#### 2) Modify Rule Set File Manually
 
-#### 2) Attach Rule Set to Project(s)
+* Open rule set file in text editor.
+* Change value of attribute 'Name' (rule set is represented in the IDE by its name).
+
+![Edit Rule Set File](/images/EditNewRuleSetFile.png)
+
+#### 3) Attach Rule Set to Project(s)
 
 * Open csproj file in text editor or go to Solution Explorer - Project - Context Menu - Edit ProjectName.csproj
 * Add following `PropertyGroup` (or add element to the existing `PropertyGroup`):
