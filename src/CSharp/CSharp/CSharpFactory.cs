@@ -1420,7 +1420,8 @@ namespace Roslynator.CSharp
                 identifier,
                 parameterList,
                 default(ConstructorInitializerSyntax),
-                expressionBody);
+                expressionBody,
+                SemicolonToken());
         }
 
         public static EnumDeclarationSyntax EnumDeclaration(SyntaxTokenList modifiers, SyntaxToken identifier, SeparatedSyntaxList<EnumMemberDeclarationSyntax> members)
@@ -1552,11 +1553,11 @@ namespace Roslynator.CSharp
         }
 
         public static MethodDeclarationSyntax MethodDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax returnType,
-    SyntaxToken identifier,
-    ParameterListSyntax parameterList,
-    BlockSyntax body)
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken identifier,
+            ParameterListSyntax parameterList,
+            BlockSyntax body)
         {
             return SyntaxFactory.MethodDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1572,11 +1573,11 @@ namespace Roslynator.CSharp
         }
 
         public static MethodDeclarationSyntax MethodDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax returnType,
-    SyntaxToken identifier,
-    ParameterListSyntax parameterList,
-    ArrowExpressionClauseSyntax expressionBody)
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken identifier,
+            ParameterListSyntax parameterList,
+            ArrowExpressionClauseSyntax expressionBody)
         {
             return SyntaxFactory.MethodDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1588,15 +1589,16 @@ namespace Roslynator.CSharp
                 parameterList,
                 default(SyntaxList<TypeParameterConstraintClauseSyntax>),
                 default(BlockSyntax),
-                expressionBody);
+                expressionBody,
+                SemicolonToken());
         }
 
         public static OperatorDeclarationSyntax OperatorDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax returnType,
-    SyntaxToken operatorToken,
-    ParameterListSyntax parameterList,
-    BlockSyntax body)
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken operatorToken,
+            ParameterListSyntax parameterList,
+            BlockSyntax body)
         {
             return SyntaxFactory.OperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1609,27 +1611,29 @@ namespace Roslynator.CSharp
         }
 
         public static OperatorDeclarationSyntax OperatorDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax returnType,
-    SyntaxToken operatorToken,
-    ParameterListSyntax parameterList,
-    ArrowExpressionClauseSyntax expressionBody)
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken operatorToken,
+            ParameterListSyntax parameterList,
+            ArrowExpressionClauseSyntax expressionBody)
         {
             return SyntaxFactory.OperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
                 returnType,
+                OperatorKeyword(),
                 operatorToken,
                 parameterList,
                 default(BlockSyntax),
-                expressionBody);
+                expressionBody,
+                SemicolonToken());
         }
 
         public static ConversionOperatorDeclarationSyntax ImplicitConversionOperatorDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    ParameterListSyntax parameterList,
-    BlockSyntax body)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            ParameterListSyntax parameterList,
+            BlockSyntax body)
         {
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1642,26 +1646,28 @@ namespace Roslynator.CSharp
         }
 
         public static ConversionOperatorDeclarationSyntax ImplicitConversionOperatorDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    ParameterListSyntax parameterList,
-    ArrowExpressionClauseSyntax expressionBody)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            ParameterListSyntax parameterList,
+            ArrowExpressionClauseSyntax expressionBody)
         {
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
                 ImplicitKeyword(),
+                OperatorKeyword(),
                 type,
                 parameterList,
                 default(BlockSyntax),
-                expressionBody);
+                expressionBody,
+                SemicolonToken());
         }
 
         public static ConversionOperatorDeclarationSyntax ExplicitConversionOperatorDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    ParameterListSyntax parameterList,
-    BlockSyntax body)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            ParameterListSyntax parameterList,
+            BlockSyntax body)
         {
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1674,27 +1680,29 @@ namespace Roslynator.CSharp
         }
 
         public static ConversionOperatorDeclarationSyntax ExplicitConversionOperatorDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    ParameterListSyntax parameterList,
-    ArrowExpressionClauseSyntax expressionBody)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            ParameterListSyntax parameterList,
+            ArrowExpressionClauseSyntax expressionBody)
         {
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
                 ExplicitKeyword(),
+                OperatorKeyword(),
                 type,
                 parameterList,
                 default(BlockSyntax),
-                expressionBody);
+                expressionBody,
+                SemicolonToken());
         }
 
         public static PropertyDeclarationSyntax PropertyDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    SyntaxToken identifier,
-    AccessorListSyntax accessorList,
-    ExpressionSyntax value = null)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            SyntaxToken identifier,
+            AccessorListSyntax accessorList,
+            ExpressionSyntax value = null)
         {
             return SyntaxFactory.PropertyDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1709,10 +1717,10 @@ namespace Roslynator.CSharp
         }
 
         public static PropertyDeclarationSyntax PropertyDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    SyntaxToken identifier,
-    ArrowExpressionClauseSyntax expressionBody)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            SyntaxToken identifier,
+            ArrowExpressionClauseSyntax expressionBody)
         {
             return SyntaxFactory.PropertyDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1722,14 +1730,15 @@ namespace Roslynator.CSharp
                 identifier,
                 default(AccessorListSyntax),
                 expressionBody,
-                default(EqualsValueClauseSyntax));
+                default(EqualsValueClauseSyntax),
+                SemicolonToken());
         }
 
         public static IndexerDeclarationSyntax IndexerDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    BracketedParameterListSyntax parameterList,
-    AccessorListSyntax accessorList)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            BracketedParameterListSyntax parameterList,
+            AccessorListSyntax accessorList)
         {
             return SyntaxFactory.IndexerDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
@@ -1741,19 +1750,21 @@ namespace Roslynator.CSharp
         }
 
         public static IndexerDeclarationSyntax IndexerDeclaration(
-    SyntaxTokenList modifiers,
-    TypeSyntax type,
-    BracketedParameterListSyntax parameterList,
-    ArrowExpressionClauseSyntax expressionBody)
+            SyntaxTokenList modifiers,
+            TypeSyntax type,
+            BracketedParameterListSyntax parameterList,
+            ArrowExpressionClauseSyntax expressionBody)
         {
             return SyntaxFactory.IndexerDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
                 type,
                 default(ExplicitInterfaceSpecifierSyntax),
+                ThisKeyword(),
                 parameterList,
                 default(AccessorListSyntax),
-                expressionBody);
+                expressionBody,
+                SemicolonToken());
         }
         #endregion MemberDeclaration
 
@@ -1783,7 +1794,9 @@ namespace Roslynator.CSharp
                 SyntaxKind.GetAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                expressionBody);
+                GetKeyword(),
+                expressionBody,
+                SemicolonToken());
         }
 
         public static AccessorDeclarationSyntax SetAccessorDeclaration(BlockSyntax body)
@@ -1811,7 +1824,9 @@ namespace Roslynator.CSharp
                 SyntaxKind.SetAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                expressionBody);
+                SetKeyword(),
+                expressionBody,
+                SemicolonToken());
         }
 
         public static AccessorDeclarationSyntax AddAccessorDeclaration(BlockSyntax body)
@@ -1839,7 +1854,9 @@ namespace Roslynator.CSharp
                 SyntaxKind.AddAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                expressionBody);
+                AddKeyword(),
+                expressionBody,
+                SemicolonToken());
         }
 
         public static AccessorDeclarationSyntax RemoveAccessorDeclaration(BlockSyntax body)
@@ -1867,7 +1884,9 @@ namespace Roslynator.CSharp
                 SyntaxKind.RemoveAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                expressionBody);
+                RemoveKeyword(),
+                expressionBody,
+                SemicolonToken());
         }
 
         public static AccessorDeclarationSyntax AutoGetAccessorDeclaration(SyntaxTokenList modifiers = default(SyntaxTokenList))
@@ -1975,6 +1994,43 @@ namespace Roslynator.CSharp
         public static BlockSyntax Block(SyntaxToken openBrace, StatementSyntax statement, SyntaxToken closeBrace)
         {
             return SyntaxFactory.Block(openBrace, SingletonList(statement), closeBrace);
+        }
+
+        public static LocalFunctionStatementSyntax LocalFunctionStatement(
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken identifier,
+            ParameterListSyntax parameterList,
+            BlockSyntax body)
+        {
+            return SyntaxFactory.LocalFunctionStatement(
+                modifiers,
+                returnType,
+                identifier,
+                default(TypeParameterListSyntax),
+                parameterList,
+                default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+                body,
+                default(ArrowExpressionClauseSyntax));
+        }
+
+        public static LocalFunctionStatementSyntax LocalFunctionStatement(
+            SyntaxTokenList modifiers,
+            TypeSyntax returnType,
+            SyntaxToken identifier,
+            ParameterListSyntax parameterList,
+            ArrowExpressionClauseSyntax expressionBody)
+        {
+            return SyntaxFactory.LocalFunctionStatement(
+                modifiers,
+                returnType,
+                identifier,
+                default(TypeParameterListSyntax),
+                parameterList,
+                default(SyntaxList<TypeParameterConstraintClauseSyntax>),
+                default(BlockSyntax),
+                expressionBody,
+                SemicolonToken());
         }
         #endregion Statement
 
