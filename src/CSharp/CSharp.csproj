@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.3</Version>
+    <Version>1.0.0.4</Version>
     <AssemblyName>Roslynator.CSharp</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
@@ -20,7 +20,7 @@
 
   <PropertyGroup>
     <PackageId>Roslynator.CSharp</PackageId>
-    <PackageVersion>1.0.0-rc2</PackageVersion>
+    <PackageVersion>1.0.0-rc3</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
     <Description>This library extends functionality of Microsoft.CodeAnalysis.CSharp

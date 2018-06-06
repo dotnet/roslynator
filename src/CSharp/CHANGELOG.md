@@ -1,3 +1,16 @@
+### 1.0.0-rc3 (2018-06-06)
+
+#### Bug Fixes
+
+* Struct Roslynator.ExtensionMethodSymbolInfo implements IEquatable<ExtensionMethodSymbolInfo>
+
+#### New API
+
+* Add method Roslynator.CSharp.CSharpFactory.DefaultLiteralExpression
+* Add methods Roslynator.CSharp.CSharpFactory.LocalFunctionStatement
+* Add extension method Roslynator.CSharp.SyntaxExtensions ToSyntaxTokenList(IEnumerable<SyntaxToken>)
+* Add field 'This' to enum Roslynator.CSharp.ModifierKinds
+
 ### 1.0.0-rc2 (2018-05-17)
 
 #### Bug Fixes
