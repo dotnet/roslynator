@@ -925,7 +925,7 @@ namespace Roslynator.CSharp.Refactorings
 
             RefactoringFlagsCache.Free(flags);
 
-            await SyntaxNodeRefactoring.ComputeRefactoringsAsync(this, firstNode).ConfigureAwait(false);
+            await SelectedLinesRefactoring.ComputeRefactoringsAsync(this, firstNode).ConfigureAwait(false);
 
             CommentTriviaRefactoring.ComputeRefactorings(this, firstNode);
         }
