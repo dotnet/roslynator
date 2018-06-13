@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -44,15 +43,48 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out IdentifierNameSyntax identifierName))
                 return;
 
+            Document document = context.Document;
+            CancellationToken cancellationToken = context.CancellationToken;
+
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
                 switch (diagnostic.Id)
                 {
                     case CompilerDiagnosticIdentifiers.UseOfUnassignedLocalVariable:
                         {
+                            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                            if (!(semanticModel.GetSymbol(identifierName, cancellationToken) is ILocalSymbol localSymbol))
+                                break;
+
+                            ITypeSymbol typeSymbol = localSymbol.Type;
+
+                            if (typeSymbol.Kind == SymbolKind.ErrorType)
+                                break;
+
+                            if (!(localSymbol.GetSyntax(cancellationToken) is VariableDeclaratorSyntax variableDeclarator))
+                                break;
+
                             CodeAction codeAction = CodeAction.Create(
                                 $"Initialize '{identifierName.Identifier.ValueText}' with default value",
-                                cancellationToken => RefactorAsync(context.Document, identifierName, cancellationToken),
+                                ct =>
+                                {
+                                    SyntaxToken identifier = variableDeclarator.Identifier;
+
+                                    var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
+
+                                    ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
+
+                                    EqualsValueClauseSyntax newEqualsValue = EqualsValueClause(value)
+                                        .WithLeadingTrivia(TriviaList(Space))
+                                        .WithTrailingTrivia(identifier.TrailingTrivia);
+
+                                    VariableDeclaratorSyntax newNode = variableDeclarator
+                                        .WithInitializer(newEqualsValue)
+                                        .WithIdentifier(identifier.WithoutTrailingTrivia());
+
+                                    return document.ReplaceNodeAsync(variableDeclarator, newNode, ct);
+                                },
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -68,7 +100,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            foreach (ITypeSymbol typeSymbol in DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, context.CancellationToken))
+                            foreach (ITypeSymbol typeSymbol in DetermineParameterTypeHelper.DetermineParameterTypes(argument, semanticModel, cancellationToken))
                             {
                                 if (typeSymbol.Kind == SymbolKind.TypeParameter)
                                     continue;
@@ -77,7 +109,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 CodeAction codeAction = CodeAction.Create(
                                     $"Add variable type '{typeName}'",
-                                    cancellationToken =>
+                                    ct =>
                                     {
                                         DeclarationExpressionSyntax newNode = DeclarationExpression(
                                             ParseName(typeName),
@@ -87,7 +119,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             .WithTriviaFrom(identifierName)
                                             .WithFormatterAnnotation();
 
-                                        return context.Document.ReplaceNodeAsync(identifierName, newNode, cancellationToken);
+                                        return document.ReplaceNodeAsync(identifierName, newNode, ct);
                                     },
                                     GetEquivalenceKey(diagnostic, typeName));
 
@@ -99,40 +131,6 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
-        }
-
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            IdentifierNameSyntax identifierName,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            var localSymbol = semanticModel.GetSymbol(identifierName, cancellationToken) as ILocalSymbol;
-
-            if (localSymbol?.Type?.IsErrorType() == false
-                && localSymbol.GetSyntax(cancellationToken) is VariableDeclaratorSyntax variableDeclarator)
-            {
-                SyntaxToken identifier = variableDeclarator.Identifier;
-
-                var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
-
-                ExpressionSyntax value = localSymbol.Type.GetDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
-
-                EqualsValueClauseSyntax newEqualsValue = EqualsValueClause(value)
-                    .WithLeadingTrivia(TriviaList(Space))
-                    .WithTrailingTrivia(identifier.TrailingTrivia);
-
-                VariableDeclaratorSyntax newNode = variableDeclarator
-                    .WithInitializer(newEqualsValue)
-                    .WithIdentifier(identifier.WithoutTrailingTrivia());
-
-                return await document.ReplaceNodeAsync(variableDeclarator, newNode, cancellationToken).ConfigureAwait(false);
-            }
-
-            Debug.Fail(identifierName.ToString());
-
-            return document;
         }
     }
 }
