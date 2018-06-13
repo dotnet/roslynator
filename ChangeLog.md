@@ -1,3 +1,13 @@
+### 1.9.0 (2018-06-13)
+
+#### Analyzers
+
+* Incorporate RCS1082, RCS1083, RCS1109, RCS1119, RCS1120 and RCS1121 into [RCS1077](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCC1077.md)
+
+#### Refactorings
+
+* Disable RR0010 and RR0012 by default
+
 ### 1.8.3 (2018-05-17)
 
 #### Analyzers

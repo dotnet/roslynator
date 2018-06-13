@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Roslynator>
   <Settings>
     <General>
@@ -13,9 +13,9 @@
       <Refactoring Id="RR0007" IsEnabled="true" /> <!-- AddDefaultValueToParameter -->
       <Refactoring Id="RR0008" IsEnabled="true" /> <!-- AddDefaultValueToReturnStatement -->
       <Refactoring Id="RR0009" IsEnabled="true" /> <!-- AddExceptionToDocumentationComment -->
-      <Refactoring Id="RR0010" IsEnabled="true" /> <!-- AddIdentifierToVariableDeclaration -->
+      <Refactoring Id="RR0010" IsEnabled="false" /> <!-- AddIdentifierToVariableDeclaration -->
       <Refactoring Id="RR0011" IsEnabled="true" /> <!-- AddParameterNameToArgument -->
-      <Refactoring Id="RR0012" IsEnabled="true" /> <!-- AddParameterNameToParameter -->
+      <Refactoring Id="RR0012" IsEnabled="false" /> <!-- AddIdentifierToParameter -->
       <Refactoring Id="RR0013" IsEnabled="true" /> <!-- AddUsingDirective -->
       <Refactoring Id="RR0014" IsEnabled="true" /> <!-- AddUsingStaticDirective -->
       <Refactoring Id="RR0015" IsEnabled="true" /> <!-- CallConfigureAwait -->

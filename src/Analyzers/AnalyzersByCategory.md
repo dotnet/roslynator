@@ -57,15 +57,11 @@
 | Naming | [Non-asynchronous method name should not end with 'Async'](../../docs/analyzers/RCS1047.md) | RCS1047 | &#x2713; |
 | Naming | [Rename private field according to camel case with underscore](../../docs/analyzers/RCS1045.md) | RCS1045 | \- |
 | Performance | [Avoid unnecessary boxing of value type](../../docs/analyzers/RCS1198.md) | RCS1198 | \- |
-| Performance | [Call 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1083.md) | RCS1083 | &#x2713; |
 | Performance | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | RCS1219 | \- |
-| Performance | [Call 'Find' instead of 'FirstOrDefault'](../../docs/analyzers/RCS1119.md) | RCS1119 | &#x2713; |
+| Performance | [Optimize LINQ method call](../../docs/analyzers/RCS1077.md) | RCS1077 | &#x2713; |
 | Performance | [Optimize StringBuilder.Append/AppendLine call](../../docs/analyzers/RCS1197.md) | RCS1197 | &#x2713; |
-| Performance | [Use \[\] instead of calling 'ElementAt'](../../docs/analyzers/RCS1120.md) | RCS1120 | &#x2713; |
-| Performance | [Use \[\] instead of calling 'First'](../../docs/analyzers/RCS1121.md) | RCS1121 | &#x2713; |
 | Performance | [Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md) | RCS1096 | &#x2713; |
 | Performance | [Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md) | RCS1080 | &#x2713; |
-| Performance | [Use 'Count/Length' property instead of 'Count' method](../../docs/analyzers/RCS1082.md) | RCS1082 | &#x2713; |
 | Readability | [Add default access modifier](../../docs/analyzers/RCS1018.md) | RCS1018 | &#x2713; |
 | Readability | [Add or remove region name](../../docs/analyzers/RCS1189.md) | RCS1189 | &#x2713; |
 | Readability | [Add parentheses according to operator precedence](../../docs/analyzers/RCS1123.md) | RCS1123 | &#x2713; |
@@ -134,7 +130,6 @@
 | Redundancy | [Unused parameter](../../docs/analyzers/RCS1163.md) | RCS1163 | &#x2713; |
 | Redundancy | [Unused this parameter](../../docs/analyzers/RCS1175.md) | RCS1175 | &#x2713; |
 | Redundancy | [Unused type parameter](../../docs/analyzers/RCS1164.md) | RCS1164 | &#x2713; |
-| Simplification | [Call 'Enumerable.Cast' instead of 'Enumerable.Select'](../../docs/analyzers/RCS1109.md) | RCS1109 | &#x2713; |
 | Simplification | [Call string.Concat instead of string.Join](../../docs/analyzers/RCS1150.md) | RCS1150 | &#x2713; |
 | Simplification | [Combine 'Enumerable.Where' method chain](../../docs/analyzers/RCS1112.md) | RCS1112 | &#x2713; |
 | Simplification | [Inline lazy initialization](../../docs/analyzers/RCS1180.md) | RCS1180 | &#x2713; |
@@ -152,7 +147,6 @@
 | Simplification | [Simplify conditional expression](../../docs/analyzers/RCS1104.md) | RCS1104 | &#x2713; |
 | Simplification | [Simplify lambda expression](../../docs/analyzers/RCS1021.md) | RCS1021 | &#x2713; |
 | Simplification | [Simplify lazy initialization](../../docs/analyzers/RCS1171.md) | RCS1171 | &#x2713; |
-| Simplification | [Simplify LINQ method chain](../../docs/analyzers/RCS1077.md) | RCS1077 | &#x2713; |
 | Simplification | [Simplify logical negation](../../docs/analyzers/RCS1068.md) | RCS1068 | &#x2713; |
 | Simplification | [Simplify nested using statement](../../docs/analyzers/RCS1005.md) | RCS1005 | &#x2713; |
 | Simplification | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | RCS1020 | &#x2713; |

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <RuleSet Name="Default RuleSet" ToolsVersion="15.0">
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <Rule Id="RCS1001" Action="Info" /> <!-- Add braces (when expression spans over multiple lines). -->
@@ -94,7 +94,7 @@
     <Rule Id="RCS1074" Action="Hidden" /> <!-- Remove redundant constructor. -->
     <Rule Id="RCS1075" Action="Warning" /> <!-- Avoid empty catch clause that catches System.Exception. -->
     <Rule Id="RCS1076" Action="Hidden" /> <!-- Format declaration braces. -->
-    <Rule Id="RCS1077" Action="Info" /> <!-- Simplify LINQ method chain. -->
+    <Rule Id="RCS1077" Action="Info" /> <!-- Optimize LINQ method call. -->
     <Rule Id="RCS1078" Action="None" /> <!-- Use "" instead of string.Empty. -->
     <Rule Id="RCS1079" Action="Info" /> <!-- Throwing of new NotImplementedException. -->
     <Rule Id="RCS1080" Action="Info" /> <!-- Use 'Count/Length' property instead of 'Any' method. -->

@@ -75,13 +75,11 @@
 | RCS1074 | [Remove redundant constructor](../../docs/analyzers/RCS1074.md) | Redundancy | &#x2713; |
 | RCS1075 | [Avoid empty catch clause that catches System.Exception](../../docs/analyzers/RCS1075.md) | Design | &#x2713; |
 | RCS1076 | [Format declaration braces](../../docs/analyzers/RCS1076.md) | Formatting | &#x2713; |
-| RCS1077 | [Simplify LINQ method chain](../../docs/analyzers/RCS1077.md) | Simplification | &#x2713; |
+| RCS1077 | [Optimize LINQ method call](../../docs/analyzers/RCS1077.md) | Performance | &#x2713; |
 | RCS1078 | [Use "" instead of string.Empty](../../docs/analyzers/RCS1078.md) | General | \- |
 | RCS1079 | [Throwing of new NotImplementedException](../../docs/analyzers/RCS1079.md) | General | &#x2713; |
 | RCS1080 | [Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md) | Performance | &#x2713; |
 | RCS1081 | [Split variable declaration](../../docs/analyzers/RCS1081.md) | Readability | \- |
-| RCS1082 | [Use 'Count/Length' property instead of 'Count' method](../../docs/analyzers/RCS1082.md) | Performance | &#x2713; |
-| RCS1083 | [Call 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1083.md) | Performance | &#x2713; |
 | RCS1084 | [Use coalesce expression instead of conditional expression](../../docs/analyzers/RCS1084.md) | Simplification | &#x2713; |
 | RCS1085 | [Use auto-implemented property](../../docs/analyzers/RCS1085.md) | Simplification | &#x2713; |
 | RCS1086 | [Use linefeed as newline](../../docs/analyzers/RCS1086.md) | General | \- |
@@ -106,16 +104,12 @@
 | RCS1106 | [Remove empty destructor](../../docs/analyzers/RCS1106.md) | Redundancy | &#x2713; |
 | RCS1107 | [Remove redundant 'ToCharArray' call](../../docs/analyzers/RCS1107.md) | Redundancy | &#x2713; |
 | RCS1108 | [Add 'static' modifier to all partial class declarations](../../docs/analyzers/RCS1108.md) | Readability | &#x2713; |
-| RCS1109 | [Call 'Enumerable.Cast' instead of 'Enumerable.Select'](../../docs/analyzers/RCS1109.md) | Simplification | &#x2713; |
 | RCS1110 | [Declare type inside namespace](../../docs/analyzers/RCS1110.md) | Design | &#x2713; |
 | RCS1111 | [Add braces to switch section with multiple statements](../../docs/analyzers/RCS1111.md) | Style | \- |
 | RCS1112 | [Combine 'Enumerable.Where' method chain](../../docs/analyzers/RCS1112.md) | Simplification | &#x2713; |
 | RCS1113 | [Use 'string.IsNullOrEmpty' method](../../docs/analyzers/RCS1113.md) | Usage | &#x2713; |
 | RCS1114 | [Remove redundant delegate creation](../../docs/analyzers/RCS1114.md) | Redundancy | &#x2713; |
 | RCS1118 | [Mark local variable as const](../../docs/analyzers/RCS1118.md) | General | &#x2713; |
-| RCS1119 | [Call 'Find' instead of 'FirstOrDefault'](../../docs/analyzers/RCS1119.md) | Performance | &#x2713; |
-| RCS1120 | [Use \[\] instead of calling 'ElementAt'](../../docs/analyzers/RCS1120.md) | Performance | &#x2713; |
-| RCS1121 | [Use \[\] instead of calling 'First'](../../docs/analyzers/RCS1121.md) | Performance | &#x2713; |
 | RCS1123 | [Add parentheses according to operator precedence](../../docs/analyzers/RCS1123.md) | Readability | &#x2713; |
 | RCS1124 | [Inline local variable](../../docs/analyzers/RCS1124.md) | Simplification | &#x2713; |
 | RCS1126 | [Add braces to if-else](../../docs/analyzers/RCS1126.md) | Style | \- |

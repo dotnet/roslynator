@@ -12,10 +12,10 @@
 | RR0007 | [Add default value to parameter](../../docs/refactorings/RR0007.md) | &#x2713; |
 | RR0205 | [Add empty line between declarations](../../docs/refactorings/RR0205.md) | &#x2713; |
 | RR0009 | [Add exception to documentation comment](../../docs/refactorings/RR0009.md) | &#x2713; |
-| RR0010 | [Add identifier to variable declaration](../../docs/refactorings/RR0010.md) | &#x2713; |
+| RR0012 | [Add identifier to parameter](../../docs/refactorings/RR0012.md) | \- |
+| RR0010 | [Add identifier to variable declaration](../../docs/refactorings/RR0010.md) | \- |
 | RR0195 | [Add member to interface](../../docs/refactorings/RR0195.md) | &#x2713; |
 | RR0011 | [Add parameter name to argument](../../docs/refactorings/RR0011.md) | &#x2713; |
-| RR0012 | [Add parameter name to parameter](../../docs/refactorings/RR0012.md) | &#x2713; |
 | RR0178 | [Add type parameter](../../docs/refactorings/RR0178.md) | &#x2713; |
 | RR0013 | [Add using directive](../../docs/refactorings/RR0013.md) | &#x2713; |
 | RR0014 | [Add using static directive](../../docs/refactorings/RR0014.md) | &#x2713; |

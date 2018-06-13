@@ -3,7 +3,7 @@
 set /p _apiKey=Enter API Key:
 set _source=https://api.nuget.org/v3/index.json
 
-set _version=1.9.0-rc
+set _version=1.9.0
 
 set _filePath=..\src\Analyzers.CodeFixes\bin\Release\Roslynator.Analyzers.%_version%.nupkg
 dotnet nuget push "%_filePath%" -k %_apiKey% -s %_source%

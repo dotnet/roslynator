@@ -73,6 +73,12 @@ private object z;
 * **Syntax**: throw statement
 ![Add exception to documentation comment](../../images/refactorings/AddExceptionToDocumentationComment.png)
 
+#### Add identifier to parameter \(RR0012\)
+
+* **Syntax**: parameter
+* **Span**: missing identifier
+![Add identifier to parameter](../../images/refactorings/AddIdentifierToParameter.png)
+
 #### Add identifier to variable declaration \(RR0010\)
 
 * **Syntax**: variable declaration
@@ -118,12 +124,6 @@ public interface IFoo
 
 * **Syntax**: argument list
 ![Add parameter name to argument](../../images/refactorings/AddParameterNameToArgument.png)
-
-#### Add parameter name to parameter \(RR0012\)
-
-* **Syntax**: parameter
-* **Span**: missing identifier
-![Add parameter name to parameter](../../images/refactorings/AddParameterNameToParameter.png)
 
 #### Add type parameter \(RR0178\)
 
