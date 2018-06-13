@@ -9,16 +9,15 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Roslynator.CSharp.Syntax
 {
     /// <summary>
-    /// Provides information about a <see cref="XmlNodeSyntax"/>.
+    /// Provides information about a <see cref="XmlElementSyntax"/> or <see cref="XmlEmptyElementSyntax"/>.
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public readonly struct XmlElementInfo : IEquatable<XmlElementInfo>
     {
-        private XmlElementInfo(XmlNodeSyntax element, string localName, XmlElementKind elementKind)
+        private XmlElementInfo(XmlNodeSyntax element, string localName)
         {
             Element = element;
             LocalName = localName;
-            ElementKind = elementKind;
         }
 
         /// <summary>
@@ -30,8 +29,6 @@ namespace Roslynator.CSharp.Syntax
         /// Local name of the element.
         /// </summary>
         public string LocalName { get; }
-
-        internal XmlElementKind ElementKind { get; }
 
         /// <summary>
         /// Element kind.
@@ -63,6 +60,11 @@ namespace Roslynator.CSharp.Syntax
             get { return SyntaxInfoHelpers.ToDebugString(Success, this, Element); }
         }
 
+        internal XmlElementKind GetElementKind()
+        {
+            return XmlElementNameKindMapper.GetKindOrDefault(LocalName);
+        }
+
         internal static XmlElementInfo Create(XmlNodeSyntax node)
         {
             switch (node)
@@ -74,7 +76,7 @@ namespace Roslynator.CSharp.Syntax
                         if (localName == null)
                             return default;
 
-                        return new XmlElementInfo(element, localName, GetXmlElementKind(localName));
+                        return new XmlElementInfo(element, localName);
                     }
                 case XmlEmptyElementSyntax element:
                     {
@@ -83,35 +85,11 @@ namespace Roslynator.CSharp.Syntax
                         if (localName == null)
                             return default;
 
-                        return new XmlElementInfo(element, localName, GetXmlElementKind(localName));
+                        return new XmlElementInfo(element, localName);
                     }
             }
 
             return default;
-        }
-
-        private static XmlElementKind GetXmlElementKind(string localName)
-        {
-            switch (localName)
-            {
-                case "include":
-                case "INCLUDE":
-                    return XmlElementKind.Include;
-                case "exclude":
-                case "EXCLUDE":
-                    return XmlElementKind.Exclude;
-                case "inheritdoc":
-                case "INHERITDOC":
-                    return XmlElementKind.InheritDoc;
-                case "summary":
-                case "SUMMARY":
-                    return XmlElementKind.Summary;
-                case "exception":
-                case "EXCEPTION":
-                    return XmlElementKind.Exception;
-                default:
-                    return XmlElementKind.None;
-            }
         }
 
         internal bool IsLocalName(string localName, StringComparison comparison = StringComparison.Ordinal)

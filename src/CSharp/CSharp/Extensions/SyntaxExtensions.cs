@@ -505,7 +505,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal static IEnumerable<XmlElementSyntax> Elements(this DocumentationCommentTriviaSyntax documentationComment, string localName1, string localName2)
+        internal static IEnumerable<XmlElementSyntax> Elements(this DocumentationCommentTriviaSyntax documentationComment, XmlElementKind elementKind)
         {
             foreach (XmlNodeSyntax node in documentationComment.Content)
             {
@@ -513,7 +513,7 @@ namespace Roslynator.CSharp
                 {
                     var xmlElement = (XmlElementSyntax)node;
 
-                    if (xmlElement.IsLocalName(localName1, localName2))
+                    if (xmlElement.IsElementKind(elementKind))
                         yield return xmlElement;
                 }
             }
@@ -3946,43 +3946,43 @@ namespace Roslynator.CSharp
         #endregion WhileStatementSyntax
 
         #region XmlElementSyntax
+        internal static bool IsElementKind(this XmlElementSyntax xmlElement, XmlElementKind elementKind)
+        {
+            return GetElementKind(xmlElement) == elementKind;
+        }
+
+        internal static XmlElementKind GetElementKind(this XmlElementSyntax xmlElement)
+        {
+            return XmlElementNameKindMapper.GetKindOrDefault(xmlElement.StartTag?.Name?.LocalName.ValueText);
+        }
+
         internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName, StringComparison comparison = StringComparison.Ordinal)
         {
             return xmlElement.StartTag?.Name?.IsLocalName(localName, comparison) == true;
         }
-
-        internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName1, string localName2, StringComparison comparison = StringComparison.Ordinal)
-        {
-            return xmlElement.StartTag?.Name?.IsLocalName(localName1, localName2, comparison) == true;
-        }
         #endregion XmlElementSyntax
 
         #region XmlEmptyElementSyntax
+        internal static bool IsElementKind(this XmlEmptyElementSyntax xmlElement, XmlElementKind elementKind)
+        {
+            return GetElementKind(xmlElement) == elementKind;
+        }
+
+        internal static XmlElementKind GetElementKind(this XmlEmptyElementSyntax xmlElement)
+        {
+            return XmlElementNameKindMapper.GetKindOrDefault(xmlElement.Name?.LocalName.ValueText);
+        }
+
         internal static bool IsLocalName(this XmlEmptyElementSyntax xmlEmptyElement, string localName, StringComparison comparison = StringComparison.Ordinal)
         {
             return xmlEmptyElement.Name?.IsLocalName(localName, comparison) == true;
-        }
-
-        internal static bool IsLocalName(this XmlEmptyElementSyntax xmlEmptyElement, string localName1, string localName2, StringComparison comparison = StringComparison.Ordinal)
-        {
-            return xmlEmptyElement.Name?.IsLocalName(localName1, localName2, comparison) == true;
         }
         #endregion XmlEmptyElementSyntax
 
         #region XmlNameSyntax
         internal static bool IsLocalName(this XmlNameSyntax xmlName, string localName, StringComparison comparison = StringComparison.Ordinal)
         {
-            string name = xmlName.LocalName.ValueText;
-
-            return string.Equals(name, localName, comparison);
-        }
-
-        internal static bool IsLocalName(this XmlNameSyntax xmlName, string localName1, string localName2, StringComparison comparison = StringComparison.Ordinal)
-        {
-            string name = xmlName.LocalName.ValueText;
-
-            return string.Equals(name, localName1, comparison)
-                || string.Equals(name, localName2, comparison);
+            return string.Equals(xmlName.LocalName.ValueText, localName, comparison);
         }
         #endregion XmlNameSyntax
 

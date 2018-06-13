@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis.Documentation;
@@ -9,17 +8,15 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
     internal class AddTypeParameterToDocumentationCommentRefactoring : DocumentationCommentRefactoring<TypeParameterSyntax>
     {
-        public override string ElementName
+        public override XmlElementKind ElementKind
         {
-            get { return "typeparam"; }
+            get { return XmlElementKind.TypeParam; }
         }
 
-        public override string ElementNameUppercase
+        public override bool ShouldBeBefore(XmlElementKind elementKind)
         {
-            get { return "TYPEPARAM"; }
+            return elementKind == XmlElementKind.Summary;
         }
-
-        public override ImmutableArray<string> ElementNames { get; } = ImmutableArray.Create("typeparam", "TYPEPARAM", "summary", "SUMMARY");
 
         public override SeparatedSyntaxList<TypeParameterSyntax> GetContainingList(TypeParameterSyntax node)
         {

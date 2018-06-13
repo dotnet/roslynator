@@ -9,53 +9,42 @@ namespace Roslynator.CSharp.Analysis.Documentation
 {
     internal class AddTypeParameterToDocumentationCommentAnalysis : DocumentationCommentAnalysis<TypeParameterSyntax>
     {
-        public override string ElementName
+        public override XmlElementKind ElementKind
         {
-            get { return "typeparam"; }
+            get { return XmlElementKind.TypeParam; }
         }
-
-        public override string ElementNameUppercase
-        {
-            get { return "TYPEPARAM"; }
-        }
-
-        public override ImmutableArray<string> ElementNames { get; } = ImmutableArray.Create("typeparam", "TYPEPARAM", "summary", "SUMMARY");
 
         public static void Analyze(
             SyntaxNodeAnalysisContext context,
             MemberDeclarationSyntax memberDeclaration,
             SeparatedSyntaxList<TypeParameterSyntax> typeParameters)
         {
-            if (typeParameters.Any())
+            if (!typeParameters.Any())
+                return;
+
+            DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationComment();
+
+            if (comment == null)
+                return;
+
+            ImmutableArray<string> values = DocumentationCommentAnalysis.GetAttributeValues(comment, XmlElementKind.TypeParam, "name");
+
+            if (values.IsDefault)
+                return;
+
+            foreach (TypeParameterSyntax typeParameter in typeParameters)
             {
-                DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationComment();
-
-                if (comment != null)
+                if (!typeParameter.IsMissing
+                    && !values.Contains(typeParameter.Identifier.ValueText))
                 {
-                    ImmutableArray<string> values = DocumentationCommentAnalysis.GetAttributeValues(comment, "typeparam", "TYPEPARAM", "name");
-
-                    if (!values.IsDefault)
-                    {
-                        foreach (TypeParameterSyntax typeParameter in typeParameters)
-                        {
-                            if (!typeParameter.IsMissing
-                                && !values.Contains(typeParameter.Identifier.ValueText))
-                            {
-                                context.ReportDiagnostic(
-                                    DiagnosticDescriptors.AddTypeParameterToDocumentationComment,
-                                    typeParameter.Identifier);
-                            }
-                        }
-                    }
+                    context.ReportDiagnostic(DiagnosticDescriptors.AddTypeParameterToDocumentationComment, typeParameter.Identifier);
                 }
             }
         }
 
         public override SeparatedSyntaxList<TypeParameterSyntax> GetContainingList(TypeParameterSyntax node)
         {
-            var typeParameterList = (TypeParameterListSyntax)node.Parent;
-
-            return typeParameterList.Parameters;
+            return ((TypeParameterListSyntax)node.Parent).Parameters;
         }
 
         public override string GetName(TypeParameterSyntax node)

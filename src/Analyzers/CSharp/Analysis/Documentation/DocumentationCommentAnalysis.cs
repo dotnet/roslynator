@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Analysis.Documentation
 {
     internal static class DocumentationCommentAnalysis
     {
-        public static ImmutableArray<string> GetAttributeValues(DocumentationCommentTriviaSyntax comment, string elementName1, string elementName2, string attributeName)
+        public static ImmutableArray<string> GetAttributeValues(DocumentationCommentTriviaSyntax comment, XmlElementKind elementKind, string attributeName)
         {
             HashSet<string> values = null;
             bool containsIncludeOrExclude = false;
@@ -21,9 +21,12 @@ namespace Roslynator.CSharp.Analysis.Documentation
             foreach (XmlNodeSyntax node in comment.Content)
             {
                 XmlElementInfo info = SyntaxInfo.XmlElementInfo(node);
+
                 if (info.Success)
                 {
-                    switch (info.ElementKind)
+                    XmlElementKind kind = info.GetElementKind();
+
+                    switch (kind)
                     {
                         case XmlElementKind.Include:
                         case XmlElementKind.Exclude:
@@ -40,7 +43,7 @@ namespace Roslynator.CSharp.Analysis.Documentation
                         default:
                             {
                                 if (!info.IsEmptyElement
-                                    && info.IsLocalName(elementName1, elementName2))
+                                    && kind == elementKind)
                                 {
                                     string value = GetAttributeValue((XmlElementSyntax)info.Element, attributeName);
 

@@ -1,8 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis.Documentation;
 
@@ -10,30 +8,20 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 {
     internal class AddParameterToDocumentationCommentRefactoring : DocumentationCommentRefactoring<ParameterSyntax>
     {
-        public override string ElementName
+        public override XmlElementKind ElementKind
         {
-            get { return "param"; }
+            get { return XmlElementKind.Param; }
         }
 
-        public override string ElementNameUppercase
+        public override bool ShouldBeBefore(XmlElementKind elementKind)
         {
-            get { return "PARAM"; }
+            return elementKind == XmlElementKind.TypeParam
+                || elementKind == XmlElementKind.Summary;
         }
-
-        public override ImmutableArray<string> ElementNames { get; } = ImmutableArray.Create("param", "PARAM", "typeparam", "TYPEPARAM", "summary", "SUMMARY");
 
         public override SeparatedSyntaxList<ParameterSyntax> GetContainingList(ParameterSyntax node)
         {
-            SyntaxNode parent = node.Parent;
-
-            if (parent.IsKind(SyntaxKind.ParameterList))
-            {
-                return ((ParameterListSyntax)parent).Parameters;
-            }
-            else
-            {
-                return ((BracketedParameterListSyntax)parent).Parameters;
-            }
+            return ((BaseParameterListSyntax)node.Parent).Parameters;
         }
 
         public override string GetName(ParameterSyntax node)

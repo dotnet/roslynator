@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
                 XmlElementInfo info = SyntaxInfo.XmlElementInfo(node);
                 if (info.Success)
                 {
-                    switch (info.ElementKind)
+                    switch (info.GetElementKind())
                     {
                         case XmlElementKind.Include:
                         case XmlElementKind.Exclude:
