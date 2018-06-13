@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
@@ -15,19 +14,17 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    //XPERF:
     internal static class UseAutoPropertyRefactoring
     {
         private static readonly SyntaxAnnotation _removeAnnotation = new SyntaxAnnotation();
-
-        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
-            miscellaneousOptions: SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         public static async Task<Solution> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
             SyntaxToken propertyIdentifier = propertyDeclaration.Identifier.WithoutTrivia();
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
@@ -48,6 +45,8 @@ namespace Roslynator.CSharp.Refactorings
 
             foreach (DocumentReferenceInfo info in await SyntaxFinder.FindReferencesByDocumentAsync(fieldSymbol, solution, allowCandidate: false, cancellationToken: cancellationToken).ConfigureAwait(false))
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 ImmutableArray<SyntaxNode> nodes = info.References;
 
                 if (propertyDeclaration.SyntaxTree == info.SyntaxTree)
@@ -70,9 +69,25 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         case SyntaxKind.IdentifierName:
                             {
-                                return CreateNewExpression(node, propertyIdentifier, propertySymbol)
-                                    .WithTriviaFrom(node)
-                                    .WithFormatterAnnotation();
+                                SyntaxNode newNode = null;
+
+                                if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                                    && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
+                                {
+                                    newNode = IdentifierName(propertyIdentifier);
+                                }
+                                else if (propertySymbol.IsStatic)
+                                {
+                                    newNode = SimpleMemberAccessExpression(
+                                        propertySymbol.ContainingType.ToTypeSyntax(),
+                                        (SimpleNameSyntax)ParseName(propertySymbol.ToDisplayString(SymbolDisplayFormats.Default))).WithSimplifierAnnotation();
+                                }
+                                else
+                                {
+                                    newNode = IdentifierName(propertyIdentifier).QualifyWithThis();
+                                }
+
+                                return newNode.WithTriviaFrom(node);
                             }
                         case SyntaxKind.PropertyDeclaration:
                             {
@@ -129,27 +144,35 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        public static ExpressionSyntax CreateNewExpression(SyntaxNode node, SyntaxToken identifier, IPropertySymbol propertySymbol)
+        public static PropertyDeclarationSyntax CreateAutoProperty(PropertyDeclarationSyntax property, EqualsValueClauseSyntax initializer)
         {
-            if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
-                && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
+            AccessorListSyntax accessorList = property.AccessorList;
+
+            if (accessorList != null)
             {
-                return IdentifierName(identifier);
-            }
-            else if (propertySymbol.IsStatic)
-            {
-                return ParseName($"{propertySymbol.ContainingType.ToTypeSyntax()}.{propertySymbol.ToDisplayString(_symbolDisplayFormat)}")
-                    .WithSimplifierAnnotation();
+                SyntaxList<AccessorDeclarationSyntax> newAccessors = accessorList
+                    .Accessors
+                    .Select(accessor =>
+                    {
+                        accessor = accessor.Update(
+                            attributeLists: accessor.AttributeLists,
+                            modifiers: accessor.Modifiers,
+                            keyword: accessor.Keyword,
+                            body: default(BlockSyntax),
+                            expressionBody: default(ArrowExpressionClauseSyntax),
+                            semicolonToken: SemicolonToken());
+
+                        return accessor.WithTriviaFrom(accessor);
+                    })
+                    .ToSyntaxList();
+
+                accessorList = accessorList.WithAccessors(newAccessors);
             }
             else
             {
-                return IdentifierName(identifier).QualifyWithThis();
+                accessorList = AccessorList(AutoGetAccessorDeclaration())
+                    .WithTriviaFrom(property.ExpressionBody);
             }
-        }
-
-        public static PropertyDeclarationSyntax CreateAutoProperty(PropertyDeclarationSyntax propertyDeclaration, EqualsValueClauseSyntax initializer)
-        {
-            AccessorListSyntax accessorList = CreateAccessorList(propertyDeclaration);
 
             if (accessorList
                 .DescendantTrivia()
@@ -158,51 +181,20 @@ namespace Roslynator.CSharp.Refactorings
                 accessorList = accessorList.RemoveWhitespace();
             }
 
-            PropertyDeclarationSyntax newProperty = propertyDeclaration
-                .WithIdentifier(propertyDeclaration.Identifier.WithTrailingTrivia(Space))
-                .WithExpressionBody(null)
-                .WithAccessorList(accessorList);
-
-            if (initializer != null)
-            {
-                newProperty = newProperty
-                    .WithInitializer(initializer)
-                    .WithSemicolonToken(SemicolonToken());
-            }
-            else
-            {
-                newProperty = newProperty.WithSemicolonToken(default(SyntaxToken));
-            }
+            PropertyDeclarationSyntax newProperty = property.Update(
+                attributeLists: property.AttributeLists,
+                modifiers: property.Modifiers,
+                type: property.Type,
+                explicitInterfaceSpecifier: property.ExplicitInterfaceSpecifier,
+                identifier: property.Identifier.WithTrailingTrivia(Space),
+                accessorList: accessorList,
+                expressionBody: default(ArrowExpressionClauseSyntax),
+                initializer: initializer,
+                semicolonToken: (initializer != null) ? SemicolonToken() : default(SyntaxToken));
 
             return newProperty
-                .WithTriviaFrom(propertyDeclaration)
+                .WithTriviaFrom(property)
                 .WithFormatterAnnotation();
-        }
-
-        private static AccessorListSyntax CreateAccessorList(PropertyDeclarationSyntax property)
-        {
-            if (property.ExpressionBody != null)
-            {
-                return AccessorList(AutoGetAccessorDeclaration())
-                    .WithTriviaFrom(property.ExpressionBody);
-            }
-            else
-            {
-                AccessorListSyntax accessorList = property.AccessorList;
-
-                IEnumerable<AccessorDeclarationSyntax> newAccessors = accessorList
-                    .Accessors
-                    .Select(accessor =>
-                    {
-                        return accessor
-                            .WithBody(null)
-                            .WithExpressionBody(null)
-                            .WithSemicolonToken(SemicolonToken())
-                            .WithTriviaFrom(accessor);
-                    });
-
-                return accessorList.WithAccessors(List(newAccessors));
-            }
         }
     }
 }

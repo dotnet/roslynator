@@ -27,6 +27,7 @@ namespace Roslynator.Tests.CSharp
                 CreateFromAssemblyName("System.Core.dll"),
                 CreateFromAssemblyName("System.Linq.dll"),
                 CreateFromAssemblyName("System.Linq.Expressions.dll"),
+                CreateFromAssemblyName("System.Runtime.Serialization.Formatters.dll"),
                 CreateFromAssemblyName("System.Runtime.dll"),
                 CreateFromAssemblyName("System.Collections.dll"),
                 CreateFromAssemblyName("System.Collections.Immutable.dll"),
