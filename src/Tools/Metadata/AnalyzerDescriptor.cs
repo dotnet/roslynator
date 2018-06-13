@@ -21,6 +21,7 @@ namespace Roslynator.Metadata
             bool supportsFadeOut,
             bool supportsFadeOutAnalyzer,
             string summary,
+            string remarks,
             IEnumerable<SampleDescriptor> samples,
             IEnumerable<LinkDescriptor> links)
         {
@@ -35,6 +36,7 @@ namespace Roslynator.Metadata
             SupportsFadeOut = supportsFadeOut;
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
             Summary = summary;
+            Remarks = remarks;
             Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
             Links = new ReadOnlyCollection<LinkDescriptor>(links?.ToArray() ?? Array.Empty<LinkDescriptor>());
         }
@@ -60,6 +62,8 @@ namespace Roslynator.Metadata
         public bool SupportsFadeOutAnalyzer { get; }
 
         public string Summary { get; }
+
+        public string Remarks { get; }
 
         public IReadOnlyList<SampleDescriptor> Samples { get; }
 

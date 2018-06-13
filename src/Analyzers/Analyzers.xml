@@ -12,7 +12,7 @@
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-    Foo( // RCS1001
+    Foo( // [|Id|]
         x,
         y);]]></Before>
         <After><![CDATA[if (condition)
@@ -36,7 +36,7 @@
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-{ // RCS1002
+{ // [|Id|]
     Foo();
 }]]></Before>
         <After>
@@ -56,7 +56,7 @@
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // RCS1003
+        <Before><![CDATA[if (condition) // [|Id|]
     WhenTrue(
         x,
         y);
@@ -90,7 +90,7 @@ else
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // RCS1004
+        <Before><![CDATA[if (condition) // [|Id|]
 {
     WhenTrue();
 }
@@ -117,7 +117,7 @@ else
     <Samples>
       <Sample>
         <Before><![CDATA[using (var fs = new FileStream("path", FileMode.OpenOrCreate))
-{ // RCS1005
+{ // [|Id|]
     using (var sr = new StreamReader(fs))
     {
     }
@@ -145,7 +145,7 @@ using (var sr = new StreamReader(fs))
     Foo1();
 }
 else
-{ // RCS1006
+{ // [|Id|]
     if (condition2)
     {
         Foo2();
@@ -174,7 +174,7 @@ else if (condition2)
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-    Foo(); // RCS1007]]></Before>
+    Foo(); // [|Id|]]]></Before>
         <After><![CDATA[if (condition)
 {
     Foo();
@@ -193,7 +193,7 @@ else if (condition2)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var s = GetValue(); // RCS1008]]></Before>
+        <Before><![CDATA[var s = GetValue(); // [|Id|]]]></Before>
         <After><![CDATA[string s = GetValue();]]></After>
       </Sample>
     </Samples>
@@ -213,7 +213,7 @@ else if (condition2)
 
 // ...
 
-foreach (var item in items) // RCS1009
+foreach (var item in items) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[foreach (string item in items)
@@ -233,7 +233,7 @@ foreach (var item in items) // RCS1009
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[Foo foo = new Foo(); // RCS1010]]></Before>
+        <Before><![CDATA[Foo foo = new Foo(); // [|Id|]]]></Before>
         <After><![CDATA[var foo = new Foo();]]></After>
       </Sample>
     </Samples>
@@ -249,7 +249,7 @@ foreach (var item in items) // RCS1009
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var foo = new Foo(); // RCS1012]]></Before>
+        <Before><![CDATA[var foo = new Foo(); // [|Id|]]]></Before>
         <After><![CDATA[Foo foo = new Foo();]]></After>
       </Sample>
     </Samples>
@@ -265,7 +265,7 @@ foreach (var item in items) // RCS1009
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[String s = null; // RCS1013]]></Before>
+        <Before><![CDATA[String s = null; // [|Id|]]]></Before>
         <After><![CDATA[string s = null;]]></After>
       </Sample>
     </Samples>
@@ -281,7 +281,7 @@ foreach (var item in items) // RCS1009
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var items = new[] { "" }; // RCS1014]]></Before>
+        <Before><![CDATA[var items = new[] { "" }; // [|Id|]]]></Before>
         <After><![CDATA[var items = new string[] { "" };]]></After>
       </Sample>
     </Samples>
@@ -301,7 +301,7 @@ foreach (var item in items) // RCS1009
 {
     if (parameter == null)
     {
-        throw new ArgumentNullException("parameter", "message"); // RCS1015
+        throw new ArgumentNullException("parameter", "message"); // [|Id|]
     }
 }]]></Before>
         <After>
@@ -327,7 +327,7 @@ foreach (var item in items) // RCS1009
     <Samples>
       <Sample>
         <Before><![CDATA[public object Foo()
-{ // RCS1016
+{ // [|Id|]
     return null;
 }]]></Before>
         <After><![CDATA[public object Foo() => null;]]></After>
@@ -345,7 +345,7 @@ foreach (var item in items) // RCS1009
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public string[] Foo() => new string[] // RCS1017
+        <Before><![CDATA[public string[] Foo() => new string[] // [|Id|]
 {
     "a",
     "b",
@@ -374,9 +374,9 @@ foreach (var item in items) // RCS1009
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[class Foo // RCS1018
+        <Before><![CDATA[class Foo // [|Id|]
 {
-    void Bar() // RCS1018
+    void Bar() // [|Id|]
     {
     }
 }]]></Before>
@@ -400,9 +400,9 @@ foreach (var item in items) // RCS1009
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[private readonly static object _f; // RCS1019
+        <Before><![CDATA[private readonly static object _f; // [|Id|]
 
-internal protected class Foo // RCS1019
+internal protected class Foo // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[private static readonly object _f;
@@ -424,7 +424,7 @@ protected internal class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[Nullable<int> x = null; // RCS1020]]></Before>
+        <Before><![CDATA[Nullable<int> x = null; // [|Id|]]]></Before>
         <After><![CDATA[int? x = null;]]></After>
       </Sample>
     </Samples>
@@ -441,7 +441,7 @@ protected internal class Foo
     <Samples>
       <Sample>
         <Before><![CDATA[var x = items.Select(f =>
-{ // RCS1021
+{ // [|Id|]
     return f.ToString();
 });]]></Before>
         <After><![CDATA[var x = items.Select(f => f.ToString());]]></After>
@@ -470,7 +470,7 @@ protected internal class Foo
     <Samples>
       <Sample>
         <Before><![CDATA[public void Foo()
-{ } // RCS1023]]></Before>
+{ } // [|Id|]]]></Before>
         <After><![CDATA[public void Foo()
 {
 }]]></After>
@@ -488,7 +488,7 @@ protected internal class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public string Foo { get { return _foo; } set { _foo = value; } } // RCS1024]]></Before>
+        <Before><![CDATA[public string Foo { get { return _foo; } set { _foo = value; } } // [|Id|]]]></Before>
         <After>
           <![CDATA[public string Foo
 {
@@ -509,7 +509,7 @@ protected internal class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo { A, B, C, } // RCS1025]]></Before>
+        <Before><![CDATA[public enum Foo { A, B, C, } // [|Id|]]]></Before>
         <After><![CDATA[public enum Foo
 {
     A,
@@ -530,7 +530,7 @@ protected internal class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = ""; Foo(s); // RCS1026]]></Before>
+        <Before><![CDATA[string s = ""; Foo(s); // [|Id|]]]></Before>
         <After><![CDATA[string s = "";
 Foo(s);]]></After>
       </Sample>
@@ -547,7 +547,7 @@ Foo(s);]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) Foo(); // RCS1027]]></Before>
+        <Before><![CDATA[if (condition) Foo(); // [|Id|]]]></Before>
         <After><![CDATA[if (condition)
 {
     Foo();
@@ -568,7 +568,7 @@ Foo(s);]]></After>
       <Sample>
         <Before><![CDATA[switch (s)
 {
-    case "a": return Foo(); // RCS1028
+    case "a": return Foo(); // [|Id|]
     case "b": return Bar();
 }]]></Before>
         <After><![CDATA[switch (s)
@@ -592,7 +592,7 @@ Foo(s);]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x && // RCS1029
+        <Before><![CDATA[if (x && // [|Id|]
     y &&
     z)
 {
@@ -619,7 +619,7 @@ Foo(s);]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[if (x)
-    Foo(); // RCS1030
+    Foo(); // [|Id|]
 if (y)
     Bar();]]></Before>
         <After><![CDATA[if (x)
@@ -651,9 +651,9 @@ if (y)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if ((x)) // RCS1032
+        <Before><![CDATA[if ((x)) // [|Id|]
 {
-    return (y); // RCS1032
+    return (y); // [|Id|]
 }]]></Before>
         <After><![CDATA[if (x)
 {
@@ -673,11 +673,11 @@ if (y)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (f == true) // RCS1033
+        <Before><![CDATA[if (f == true) // [|Id|]
 {
 }
 
-if (f != false) // RCS1033
+if (f != false) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (f)
@@ -704,7 +704,7 @@ if (f)
         <Before>
           <![CDATA[public sealed class Foo
 {
-    public sealed override string ToString() // RCS1034
+    public sealed override string ToString() // [|Id|]
     {
         return "";
     }
@@ -729,7 +729,7 @@ if (f)
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    var arr = new string[] { "a", "b", "c", }; // RCS1035
+    var arr = new string[] { "a", "b", "c", }; // [|Id|]
 }]]></Before>
         <After><![CDATA[public void Foo()
 {
@@ -798,7 +798,7 @@ if (f)
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    ; // RCS1038
+    ; // [|Id|]
 }]]></Before>
         <After><![CDATA[public void Foo()
 {
@@ -817,7 +817,7 @@ if (f)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[[Obsolete()] // RCS1039
+        <Before><![CDATA[[Obsolete()] // [|Id|]
 public void Foo()
 {
 }]]></Before>
@@ -843,7 +843,7 @@ public void Foo()
 {
     Foo();
 }
-else // RCS1040
+else // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (condition)
@@ -864,7 +864,7 @@ else // RCS1040
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var items = new List<object>() { }; // RCS1041]]></Before>
+        <Before><![CDATA[var items = new List<object>() { }; // [|Id|]]]></Before>
         <After><![CDATA[var items = new List<object>();]]></After>
       </Sample>
     </Samples>
@@ -880,7 +880,7 @@ else // RCS1040
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo : int // RCS1042
+        <Before><![CDATA[public enum Foo : int // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[public enum Foo
@@ -900,7 +900,7 @@ else // RCS1040
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public partial class Foo // RCS1043
+        <Before><![CDATA[public partial class Foo // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[public class Foo
@@ -926,7 +926,7 @@ else // RCS1040
 }
 catch (Exception ex)
 {
-    throw ex; // RCS1044
+    throw ex; // [|Id|]
 }]]></Before>
         <After><![CDATA[try
 {
@@ -950,7 +950,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[private string f; // RCS1045]]></Before>
+        <Before><![CDATA[private string f; // [|Id|]]]></Before>
         <After><![CDATA[private string _f;]]></After>
       </Sample>
     </Samples>
@@ -966,7 +966,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public static async Task<bool> Foo() // RCS1046
+        <Before><![CDATA[public static async Task<bool> Foo() // [|Id|]
 {
     return await Task.FromResult(false);
 }]]></Before>
@@ -988,7 +988,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public void FooAsync() // RCS1047
+        <Before><![CDATA[public void FooAsync() // [|Id|]
 {
 }]]></Before>
         <After>
@@ -1009,7 +1009,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = items.Select(delegate (object f) // RCS1048
+        <Before><![CDATA[var x = items.Select(delegate (object f) // [|Id|]
 {
     return f.ToString();
 });]]></Before>
@@ -1036,11 +1036,11 @@ catch (Exception ex)
 
 // ...
 
-if (f == false) // RCS1049
+if (f == false) // [|Id|]
 {
 }
 
-if (f != true) // RCS1049
+if (f != true) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (!f)
@@ -1064,7 +1064,7 @@ if (!f)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var items = new List<string> { "a", "b", "c"  }; // RCS1050]]></Before>
+        <Before><![CDATA[var items = new List<string> { "a", "b", "c"  }; // [|Id|]]]></Before>
         <After><![CDATA[var items = new List<string>() { "a", "b", "c"  };]]></After>
       </Sample>
     </Samples>
@@ -1080,7 +1080,7 @@ if (!f)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[object x = condition ? WhenTrue() : WhenFalse(); // RCS1051]]></Before>
+        <Before><![CDATA[object x = condition ? WhenTrue() : WhenFalse(); // [|Id|]]]></Before>
         <After><![CDATA[object x = (condition) ? WhenTrue() : WhenFalse();]]></After>
       </Sample>
     </Samples>
@@ -1096,7 +1096,7 @@ if (!f)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[[Obsolete, Conditional("DEBUG")] // RCS1052
+        <Before><![CDATA[[Obsolete, Conditional("DEBUG")] // [|Id|]
 public void Foo()
 {
 }]]></Before>
@@ -1141,7 +1141,7 @@ public void Foo()
       <Sample>
         <Before><![CDATA[public class Foo
 {
-}; // RCS1055]]></Before>
+}; // [|Id|]]]></Before>
         <After><![CDATA[public class Foo
 {
 }]]></After>
@@ -1159,7 +1159,7 @@ public void Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[using S = System.String; // RCS1056
+        <Before><![CDATA[using S = System.String; // [|Id|]
 
 public class Foo
 {
@@ -1194,27 +1194,27 @@ public class Foo
 {
     public void M1()
     {
-    } // RCS1057
+    } // [|Id|]
     public void M2()
     {
-    } // RCS1057
+    } // [|Id|]
     /// <summary>
     /// ...
     /// </summary>
     public void M3()
     {
-    } // RCS1057
-    public string P1 { get; set; } // RCS1057
+    } // [|Id|]
+    public string P1 { get; set; } // [|Id|]
     [Obsolete]
     public string P2 { get; set; }
-} // RCS1057
+} // [|Id|]
 public enum FooEnum
 {
-    A = 0, // RCS1057
+    A = 0, // [|Id|]
     /// <summary>
     /// ...
     /// </summary>
-    B = 1, // RCS1057
+    B = 1, // [|Id|]
     [Obsolete]
     C = 2,
 }]]></Before>
@@ -1267,7 +1267,7 @@ public enum FooEnum
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[i = i + 2; // RCS1058]]></Before>
+        <Before><![CDATA[i = i + 2; // [|Id|]]]></Before>
         <After><![CDATA[i += 2;]]></After>
       </Sample>
     </Samples>
@@ -1285,7 +1285,7 @@ public enum FooEnum
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    lock (this) // RCS1059
+    lock (this) // [|Id|]
     {
     }
 }]]></Before>
@@ -1311,7 +1311,7 @@ public void Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // RCS1060
+        <Before><![CDATA[public class Foo // [|Id|]
 {
 }
 
@@ -1332,7 +1332,7 @@ public class Bar
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // RCS1061
+        <Before><![CDATA[if (condition) // [|Id|]
 {
     if (condition2)
     {
@@ -1355,7 +1355,7 @@ public class Bar
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = $""; // RCS1062]]></Before>
+        <Before><![CDATA[string s = $""; // [|Id|]]]></Before>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
     </Samples>
@@ -1371,7 +1371,7 @@ public class Bar
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[do // RCS1063
+        <Before><![CDATA[do // [|Id|]
 {
     // ...
 }
@@ -1394,7 +1394,7 @@ while (true);]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[for (;;) // RCS1064
+        <Before><![CDATA[for (;;) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[while (true)
@@ -1414,7 +1414,7 @@ while (true);]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[while (true) // RCS1065
+        <Before><![CDATA[while (true) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[do
@@ -1442,7 +1442,7 @@ while (true);]]></After>
 catch (Exception ex)
 {
 }
-finally // RCS1066
+finally // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[try
@@ -1466,7 +1466,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var items = new List<string>() { "a", "b", "c" }; // RCS1067]]></Before>
+        <Before><![CDATA[var items = new List<string>() { "a", "b", "c" }; // [|Id|]]]></Before>
         <After><![CDATA[var items = new List<string> { "a", "b", "c" };]]></After>
       </Sample>
     </Samples>
@@ -1482,15 +1482,15 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool f = !true; // RCS1068]]></Before>
+        <Before><![CDATA[bool f = !true; // [|Id|]]]></Before>
         <After><![CDATA[bool f = false;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool f = !!f2; // RCS1068]]></Before>
+        <Before><![CDATA[bool f = !!f2; // [|Id|]]]></Before>
         <After><![CDATA[bool f = f2;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool f = !items.Any(s => !string.IsNullOrEmpty(s)); // RCS1068]]></Before>
+        <Before><![CDATA[bool f = !items.Any(s => !string.IsNullOrEmpty(s)); // [|Id|]]]></Before>
         <After><![CDATA[bool f = items.All(s => string.IsNullOrEmpty(s));]]></After>
       </Sample>
     </Samples>
@@ -1510,7 +1510,7 @@ catch (Exception ex)
 {
     case "a":
         return true;
-    case "b": // RCS1069
+    case "b": // [|Id|]
     default:
         return false;
 }]]></Before>
@@ -1541,7 +1541,7 @@ catch (Exception ex)
         return true;
     case "b":
         return false;
-    default: // RCS1070
+    default: // [|Id|]
         break;
 }]]></Before>
         <After><![CDATA[switch (s)
@@ -1567,7 +1567,7 @@ catch (Exception ex)
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public Foo() : base() // RCS1071
+    public Foo() : base() // [|Id|]
     {
     }
 }]]></Before>
@@ -1591,7 +1591,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[namespace Foo // RCS1072
+        <Before><![CDATA[namespace Foo // [|Id|]
 {
 }]]></Before>
       </Sample>
@@ -1608,7 +1608,7 @@ catch (Exception ex)
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x) // RCS1073
+        <Before><![CDATA[if (x) // [|Id|]
 {
     return true;
 }
@@ -1619,7 +1619,7 @@ else
         <After><![CDATA[return x;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x != null) // RCS1073
+        <Before><![CDATA[if (x != null) // [|Id|]
 {
     return x;
 }
@@ -1644,7 +1644,7 @@ else
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public Foo() // RCS1074
+    public Foo() // [|Id|]
     {
     }
 }]]></Before>
@@ -1669,7 +1669,7 @@ else
 {
     Foo();
 }
-catch (Exception ex) // RCS1075
+catch (Exception ex) // [|Id|]
 {
 }]]></Before>
       </Sample>
@@ -1687,7 +1687,7 @@ catch (Exception ex) // RCS1075
     <Samples>
       <Sample>
         <Before><![CDATA[public interface IFoo
-{ // RCS1076
+{ // [|Id|]
 
 }]]></Before>
         <After>
@@ -1708,38 +1708,38 @@ catch (Exception ex) // RCS1075
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool x = items.Where(f => Foo(f)).Any(); // RCS1077]]></Before>
+        <Before><![CDATA[bool x = items.Where(f => Foo(f)).Any(); // [|Id|]]]></Before>
         <After><![CDATA[bool x = items.Any(f => Foo(f));]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[IEnumerable<Foo> x = items.Where(f => f is Foo).Cast<Foo>(); // RCS1077]]></Before>
+        <Before><![CDATA[IEnumerable<Foo> x = items.Where(f => f is Foo).Cast<Foo>(); // [|Id|]]]></Before>
         <After><![CDATA[IEnumerable<Foo> x = items.OfType<Foo>();]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool x = items.Where((f) => Foo1(f)).Any(f => Foo2(f)); // RCS1077]]></Before>
+        <Before><![CDATA[bool x = items.Where((f) => Foo1(f)).Any(f => Foo2(f)); // [|Id|]]]></Before>
         <After><![CDATA[bool x = items.Any((f) => Foo1(f) && Foo2(f));]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[IEnumerable<object> x = items.Select(f => (object)f); // RCS1077]]></Before>
+        <Before><![CDATA[IEnumerable<object> x = items.Select(f => (object)f); // [|Id|]]]></Before>
         <After><![CDATA[IEnumerable<object> x = items.Cast<object>();]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool x = items.FirstOrDefault((f) => Foo(f)) != null; // RCS1077]]></Before>
+        <Before><![CDATA[bool x = items.FirstOrDefault((f) => Foo(f)) != null; // [|Id|]]]></Before>
         <After><![CDATA[bool x = items.Any((f) => Foo(f));]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool x = items.FirstOrDefault() != null; // RCS1077]]></Before>
+        <Before><![CDATA[bool x = items.FirstOrDefault() != null; // [|Id|]]]></Before>
         <After><![CDATA[bool x = items.Any();]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[var x = list.ElementAt(1); // RCS1077]]></Before>
+        <Before><![CDATA[var x = list.ElementAt(1); // [|Id|]]]></Before>
         <After><![CDATA[var x = list[1];]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[var x = list.First(); // RCS1077]]></Before>
+        <Before><![CDATA[var x = list.First(); // [|Id|]]]></Before>
         <After><![CDATA[var x = list[0];]]></After>
       </Sample>      <Sample>
-        <Before><![CDATA[if (enumerable.Count() != 0) // RCS1077
+        <Before><![CDATA[if (enumerable.Count() != 0) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (enumerable.Any())
@@ -1747,7 +1747,7 @@ catch (Exception ex) // RCS1075
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (list.Count() == 1) // RCS1077
+        <Before><![CDATA[if (list.Count() == 1) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (list.Count == 1)
@@ -1757,7 +1757,7 @@ catch (Exception ex) // RCS1075
       <Sample>
         <Before><![CDATA[var stack = new Stack<object>();
 // ...
-object x = stack.First(); // RCS1077]]></Before>
+object x = stack.First(); // [|Id|]]]></Before>
         <After><![CDATA[var stack = new Stack<object>();
 // ...
 object x = items.Peek();]]></After>
@@ -1765,7 +1765,7 @@ object x = items.Peek();]]></After>
       <Sample>
         <Before><![CDATA[var queue = new Queue<object>();
 // ...
-object x = stack.First(); // RCS1077]]></Before>
+object x = stack.First(); // [|Id|]]]></Before>
         <After><![CDATA[var queue = new Queue<object>();
 // ...
 object x = items.Peek();]]></After>
@@ -1783,7 +1783,7 @@ object x = items.Peek();]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = string.Empty; // RCS1078]]></Before>
+        <Before><![CDATA[string s = string.Empty; // [|Id|]]]></Before>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
     </Samples>
@@ -1801,7 +1801,7 @@ object x = items.Peek();]]></After>
       <Sample>
         <Before><![CDATA[public void Foo()
 {
-    throw new NotImplementedException(); // RCS1079
+    throw new NotImplementedException(); // [|Id|]
 }]]></Before>
       </Sample>
     </Samples>
@@ -1817,7 +1817,7 @@ object x = items.Peek();]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (list.Any()) // RCS1080
+        <Before><![CDATA[if (list.Any()) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (list.Count > 0)
@@ -1837,7 +1837,7 @@ object x = items.Peek();]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[private string s, s2; // RCS1081]]></Before>
+        <Before><![CDATA[private string s, s2; // [|Id|]]]></Before>
         <After><![CDATA[private string s;
 private string s2;]]></After>
       </Sample>
@@ -1854,7 +1854,7 @@ private string s2;]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (list.Count() == 1) // RCS1082
+        <Before><![CDATA[if (list.Count() == 1) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (list.Count == 1)
@@ -1874,7 +1874,7 @@ private string s2;]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (enumerable.Count() == 0) // RCS1083
+        <Before><![CDATA[if (enumerable.Count() == 0) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (!enumerable.Any())
@@ -1894,7 +1894,7 @@ private string s2;]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string x = (s != null) ? s : ""; // RCS1084]]></Before>
+        <Before><![CDATA[string x = (s != null) ? s : ""; // [|Id|]]]></Before>
         <After><![CDATA[string x = s ?? "";]]></After>
       </Sample>
     </Samples>
@@ -1912,7 +1912,7 @@ private string s2;]]></After>
       <Sample>
         <Before><![CDATA[private string _foo;
 
-public string Foo // RCS1085
+public string Foo // [|Id|]
 {
     get { return _foo; }
     set { _foo = value; }
@@ -1962,7 +1962,7 @@ public string Foo // RCS1085
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[i = i + 1; // RCS1089]]></Before>
+        <Before><![CDATA[i = i + 1; // [|Id|]]]></Before>
         <After><![CDATA[i++;]]></After>
       </Sample>
     </Samples>
@@ -1981,7 +1981,7 @@ public string Foo // RCS1085
         <Before>
           <![CDATA[public async Task FooAsync()
 {
-    await GetValueAsync(); // RCS1090
+    await GetValueAsync(); // [|Id|]
 }]]></Before>
         <After><![CDATA[public async Task FooAsync()
 {
@@ -2001,7 +2001,7 @@ public string Foo // RCS1085
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[#region Region // RCS1091
+        <Before><![CDATA[#region Region // [|Id|]
             
 #endregion]]></Before>
       </Sample>
@@ -2020,7 +2020,7 @@ public string Foo // RCS1085
       <Sample>
         <Before><![CDATA[do
 {
-    Foo(); // RCS1092
+    Foo(); // [|Id|]
 } while (condition);]]></Before>
         <After><![CDATA[do
 {
@@ -2053,7 +2053,7 @@ public string Foo // RCS1085
       <Sample>
         <Before><![CDATA[namespace Foo
 {
-    using System; // RCS1094
+    using System; // [|Id|]
 }]]></Before>
         <After><![CDATA[using System;
 
@@ -2084,7 +2084,7 @@ namespace Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (options.HasFlag(RegexOptions.IgnoreCase)) // RCS1096
+        <Before><![CDATA[if (options.HasFlag(RegexOptions.IgnoreCase)) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if ((options & RegexOptions.IgnoreCase) != 0)
@@ -2104,11 +2104,11 @@ namespace Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string x = s.ToString(); // RCS1097]]></Before>
+        <Before><![CDATA[string x = s.ToString(); // [|Id|]]]></Before>
         <After><![CDATA[string x = s;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[string x = $"{s.ToString()}"; // RCS1097]]></Before>
+        <Before><![CDATA[string x = $"{s.ToString()}"; // [|Id|]]]></Before>
         <After><![CDATA[string x = $"{s}";]]></After>
       </Sample>
     </Samples>
@@ -2124,7 +2124,7 @@ namespace Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (null == x) // RCS1098
+        <Before><![CDATA[if (null == x) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x == null)
@@ -2146,7 +2146,7 @@ namespace Foo
       <Sample>
         <Before><![CDATA[switch (s)
 {
-    default: // RCS1099
+    default: // [|Id|]
     case "a":
     case "b":
         break;
@@ -2172,7 +2172,7 @@ namespace Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <summary> // RCS1100
+        <Before><![CDATA[/// <summary> // [|Id|]
 /// ...
 /// </summary>
 public void Foo()
@@ -2196,7 +2196,7 @@ public void Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <summary>...</summary> // RCS1101
+        <Before><![CDATA[/// <summary>...</summary> // [|Id|]
 public void Foo()
 {
 }]]></Before>
@@ -2220,7 +2220,7 @@ public void Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // RCS1102
+        <Before><![CDATA[public class Foo // [|Id|]
 {
     private static string _f;
 
@@ -2250,7 +2250,7 @@ public void Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) // RCS1103
+        <Before><![CDATA[if (condition) // [|Id|]
 {
     f = true;
 }
@@ -2261,7 +2261,7 @@ else
         <After><![CDATA[f = condition;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x != null) // RCS1103
+        <Before><![CDATA[if (x != null) // [|Id|]
 {
     y = x;
 }
@@ -2284,15 +2284,15 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool x = y ? true : false; // RCS1104]]></Before>
+        <Before><![CDATA[bool x = y ? true : false; // [|Id|]]]></Before>
         <After><![CDATA[bool x = y;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool x = y ? z : false; // RCS1104]]></Before>
+        <Before><![CDATA[bool x = y ? z : false; // [|Id|]]]></Before>
         <After><![CDATA[bool x = y && z;]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[bool x = y ? true : z; // RCS1104]]></Before>
+        <Before><![CDATA[bool x = y ? true : z; // [|Id|]]]></Before>
         <After><![CDATA[bool x = y || z;]]></After>
       </Sample>
     </Samples>
@@ -2308,7 +2308,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = $"a{"b"}c"; // RCS1105]]></Before>
+        <Before><![CDATA[string s = $"a{"b"}c"; // [|Id|]]]></Before>
         <After><![CDATA[string s = $"abc";]]></After>
       </Sample>
     </Samples>
@@ -2326,7 +2326,7 @@ else
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    ~Foo() // RCS1106
+    ~Foo() // [|Id|]
     {
     }
 }]]></Before>
@@ -2347,7 +2347,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[foreach (char ch in s.ToCharArray()) // RCS1107
+        <Before><![CDATA[foreach (char ch in s.ToCharArray()) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[foreach (char ch in s)
@@ -2371,7 +2371,7 @@ else
 {
 }
 
-public partial class Foo // RCS1108
+public partial class Foo // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[public static partial class Foo
@@ -2395,7 +2395,7 @@ public static partial class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[IEnumerable<object> x = items.Select(f => (object)f); // RCS1109]]></Before>
+        <Before><![CDATA[IEnumerable<object> x = items.Select(f => (object)f); // [|Id|]]]></Before>
         <After><![CDATA[IEnumerable<object> x = items.Cast<object>();]]></After>
       </Sample>
     </Samples>
@@ -2411,7 +2411,7 @@ public static partial class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // RCS1110
+        <Before><![CDATA[public class Foo // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[namespace Namespace
@@ -2437,7 +2437,7 @@ public static partial class Foo
         <Before><![CDATA[switch (s)
 {
     case "a":
-        Foo(); // RCS1111
+        Foo(); // [|Id|]
         break;
 }]]></Before>
         <After><![CDATA[switch (s)
@@ -2462,7 +2462,7 @@ public static partial class Foo
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[IEnumerable<string> x = items.Where(f => Foo(f)).Where(f => Bar(f)); // RCS1112]]></Before>
+        <Before><![CDATA[IEnumerable<string> x = items.Where(f => Foo(f)).Where(f => Bar(f)); // [|Id|]]]></Before>
         <After><![CDATA[IEnumerable<string> x = items.Where(f => Foo(f) && Bar(f));]]></After>
       </Sample>
     </Samples>
@@ -2478,7 +2478,7 @@ public static partial class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (s == null || s.Length == 0) // RCS1113
+        <Before><![CDATA[if (s == null || s.Length == 0) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (string.IsNullOrEmpty(s))
@@ -2498,7 +2498,7 @@ public static partial class Foo
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[Changed += new EventHandler(OnChanged); // RCS1114]]></Before>
+        <Before><![CDATA[Changed += new EventHandler(OnChanged); // [|Id|]]]></Before>
         <After><![CDATA[Changed += OnChanged;]]></After>
       </Sample>
       </Samples>
@@ -2544,7 +2544,7 @@ public static partial class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = "a"; // RCS1118
+        <Before><![CDATA[string s = "a"; // [|Id|]
 string s2 = s + "b";]]></Before>
         <After><![CDATA[const string s = "a";
 string s2 = s + "b";]]></After>
@@ -2562,7 +2562,7 @@ string s2 = s + "b";]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = list.FirstOrDefault(f => f.StartsWith("a")); // RCS1119]]></Before>
+        <Before><![CDATA[string s = list.FirstOrDefault(f => f.StartsWith("a")); // [|Id|]]]></Before>
         <After><![CDATA[string s = list.Find(f => f.StartsWith("a"));]]></After>
       </Sample>
     </Samples>
@@ -2578,7 +2578,7 @@ string s2 = s + "b";]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = list.ElementAt(1); // RCS1120]]></Before>
+        <Before><![CDATA[var x = list.ElementAt(1); // [|Id|]]]></Before>
         <After><![CDATA[var x = list[1];]]></After>
       </Sample>
     </Samples>
@@ -2594,7 +2594,7 @@ string s2 = s + "b";]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = list.First(); // RCS1121]]></Before>
+        <Before><![CDATA[var x = list.First(); // [|Id|]]]></Before>
         <After><![CDATA[var x = list[0];]]></After>
       </Sample>
     </Samples>
@@ -2620,7 +2620,7 @@ string s2 = s + "b";]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x || y && z) // RCS1123
+        <Before><![CDATA[if (x || y && z) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x || (y && z))
@@ -2640,7 +2640,7 @@ string s2 = s + "b";]]></After>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[IEnumerable<object> items = GetValues(); // RCS1124
+        <Before><![CDATA[IEnumerable<object> items = GetValues(); // [|Id|]
 foreach (object item in items)
 {
 }]]></Before>
@@ -2672,7 +2672,7 @@ foreach (object item in items)
     <Samples>
       <Sample>
         <Before><![CDATA[if (condition)
-    Foo(); // RCS1126
+    Foo(); // [|Id|]
 else
     Bar();]]></Before>
         <After><![CDATA[if (condition)
@@ -2697,7 +2697,7 @@ else
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s; // RCS1127
+        <Before><![CDATA[string s; // [|Id|]
 s = "";]]></Before>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
@@ -2714,7 +2714,7 @@ s = "";]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = GetValue(); // RCS1128
+        <Before><![CDATA[string s = GetValue(); // [|Id|]
 
 if (s == null)
 {
@@ -2735,7 +2735,7 @@ if (s == null)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[private bool _f = false; // RCS1129]]></Before>
+        <Before><![CDATA[private bool _f = false; // [|Id|]]]></Before>
         <After><![CDATA[private bool _f;]]></After>
       </Sample>
     </Samples>
@@ -2751,7 +2751,7 @@ if (s == null)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[DayOfWeek x = dayOfWeek | DayOfWeek.Tuesday; // RCS1130]]></Before>
+        <Before><![CDATA[DayOfWeek x = dayOfWeek | DayOfWeek.Tuesday; // [|Id|]]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
@@ -2778,7 +2778,7 @@ if (s == null)
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public override string ToString() // RCS1132
+    public override string ToString() // [|Id|]
     {
         return base.ToString();
     }
@@ -2800,7 +2800,7 @@ if (s == null)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[using (streamReader) // RCS1133
+        <Before><![CDATA[using (streamReader) // [|Id|]
 {
     // ...
 
@@ -2828,7 +2828,7 @@ if (s == null)
 {
     // ...
 
-    return; // RCS1134
+    return; // [|Id|]
 }]]></Before>
         <After><![CDATA[public void Foo()
 {
@@ -2840,7 +2840,7 @@ if (s == null)
 {
     /// ...
 
-    continue; // RCS1134
+    continue; // [|Id|]
 }]]></Before>
         <After><![CDATA[]]></After>
       </Sample>
@@ -2858,7 +2858,7 @@ if (s == null)
     <Samples>
       <Sample>
         <Before><![CDATA[[Flags]
-public enum Foo // RCS1135
+public enum Foo // [|Id|]
 {
     A = 1,
     B = 2
@@ -2887,7 +2887,7 @@ public enum Foo
         <Before><![CDATA[switch (s)
 {
     case "a":
-        break; // RCS1136
+        break; // [|Id|]
     case "b":
         break;
 }]]></Before>
@@ -2921,7 +2921,7 @@ public enum Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <summary> // RCS1138
+        <Before><![CDATA[/// <summary> // [|Id|]
 /// 
 /// </summary>
 public void Foo()
@@ -2941,7 +2941,7 @@ public void Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[/// <param name="parameter"></param> // RCS1139
+        <Before><![CDATA[/// <param name="parameter"></param> // [|Id|]
 public void Foo(object parameter)
 {
 }]]></Before>
@@ -2974,7 +2974,7 @@ public void Foo(object parameter)
 public void Foo(object parameter)
 {
     if (parameter == null)
-        throw new ArgumentNullException(nameof(parameter)); // RCS1140
+        throw new ArgumentNullException(nameof(parameter)); // [|Id|]
 }]]></Before>
         <After><![CDATA[/// <summary>
 /// ...
@@ -3003,7 +3003,7 @@ public void Foo(object parameter)
         <Before><![CDATA[/// <summary>
 /// ...
 /// </summary>
-public void Foo(object parameter) // RCS1141
+public void Foo(object parameter) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[/// <summary>
@@ -3031,7 +3031,7 @@ public void Foo(object parameter)
 /// ...
 /// </summary>
 /// <typeparam name="T1"></typeparam>
-public class Foo<T1, T2> // RCS1142
+public class Foo<T1, T2> // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[/// <summary>
@@ -3056,7 +3056,7 @@ public class Foo<T1, T2>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = default(string) ?? ""; // RCS1143]]></Before>
+        <Before><![CDATA[string s = default(string) ?? ""; // [|Id|]]]></Before>
         <After><![CDATA[string s = "";]]></After>
       </Sample>
     </Samples>
@@ -3084,7 +3084,7 @@ public class Foo<T1, T2>
       <Sample>
         <Before><![CDATA[string s = null;
 
-string s2 = s as string; // RCS1145]]></Before>
+string s2 = s as string; // [|Id|]]]></Before>
         <After><![CDATA[string s2 = s;]]></After>
       </Sample>
     </Samples>
@@ -3100,7 +3100,7 @@ string s2 = s as string; // RCS1145]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (s != null && s.StartsWith("a")) // RCS1146
+        <Before><![CDATA[if (s != null && s.StartsWith("a")) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (s?.StartsWith("a") == true)
@@ -3108,7 +3108,7 @@ string s2 = s as string; // RCS1145]]></Before>
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (dic != null && dic[0].StartsWith("a")) // RCS1146
+        <Before><![CDATA[if (dic != null && dic[0].StartsWith("a")) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (dic?[0].StartsWith("a") == true)
@@ -3116,7 +3116,7 @@ string s2 = s as string; // RCS1145]]></Before>
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[if (x != null) // RCS1146
+        <Before><![CDATA[if (x != null) // [|Id|]
     x.Foo();]]></Before>
         <After><![CDATA[x?.Foo();]]></After>
       </Sample>
@@ -3163,7 +3163,7 @@ string s2 = s as string; // RCS1145]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = string.Join("", "a", "b", "c"); // RCS1150]]></Before>
+        <Before><![CDATA[string s = string.Join("", "a", "b", "c"); // [|Id|]]]></Before>
         <After><![CDATA[string s = string.Concat("a", "b", "c");]]></After>
       </Sample>
     </Samples>
@@ -3181,11 +3181,11 @@ string s2 = s as string; // RCS1145]]></Before>
       <Sample>
         <Before><![CDATA[var b = new Base();
 
-((Foo)b).Bar(); // RCS1151]]></Before>
+((Foo)b).Bar(); // [|Id|]]]></Before>
         <After><![CDATA[b.Bar();]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[IEnumerable<string> x = EnumerateStrings().Cast<string>(); // RCS1151]]></Before>
+        <Before><![CDATA[IEnumerable<string> x = EnumerateStrings().Cast<string>(); // [|Id|]]]></Before>
         <After><![CDATA[IEnumerable<string> x = EnumerateStrings();]]></After>
       </Sample>
     </Samples>
@@ -3213,7 +3213,7 @@ string s2 = s as string; // RCS1145]]></Before>
       <Sample>
         <Before><![CDATA[            if (x)
             {
-            } // RCS1153
+            } // [|Id|]
             if (y)
             {
             }]]></Before>
@@ -3238,7 +3238,7 @@ string s2 = s as string; // RCS1145]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo // RCS1154
+        <Before><![CDATA[public enum Foo // [|Id|]
 {
     D = 4,
     B = 2,
@@ -3266,7 +3266,7 @@ string s2 = s as string; // RCS1145]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x.ToLower() == y.ToLower()) // RCS1155
+        <Before><![CDATA[if (x.ToLower() == y.ToLower()) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (string.Equals(x, y, StringComparison.OrdinalIgnoreCase))
@@ -3286,7 +3286,7 @@ string s2 = s as string; // RCS1145]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (s == "") // RCS1156
+        <Before><![CDATA[if (s == "") // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (s?.Length == 0)
@@ -3314,7 +3314,7 @@ public enum Foo
     B = 2,
     C = 4,
     D = 8,
-    X = 17 // RCS1157
+    X = 17 // [|Id|]
 }]]></Before>
       </Sample>
     </Samples>
@@ -3333,7 +3333,7 @@ public enum Foo
         <Before>
           <![CDATA[public class Foo<T>
 {
-    public static void Bar() // RCS1158
+    public static void Bar() // [|Id|]
     {
     }
 }]]></Before>
@@ -3353,7 +3353,7 @@ public enum Foo
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    public event FooEventHandler EventName; // RCS1159
+    public event FooEventHandler EventName; // [|Id|]
 }
 
 public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Before>
@@ -3377,7 +3377,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
       <Sample>
         <Before><![CDATA[public abstract class Foo
 {
-    public Foo() // RCS1160
+    public Foo() // [|Id|]
     {
     }
 }]]></Before>
@@ -3403,7 +3403,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
       <Sample>
         <Before><![CDATA[public enum Foo
 {
-    A, // RCS1161
+    A, // [|Id|]
     B,
     C,
 }]]></Before>
@@ -3427,7 +3427,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[x = y = z; // RCS1162]]></Before>
+        <Before><![CDATA[x = y = z; // [|Id|]]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
@@ -3440,15 +3440,17 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
-    <Summary>Parameter is not reported when its name consists of underscore(s).</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[public bool Bar(object parameter) // RCS1163
+        <Before><![CDATA[public bool Bar(object parameter) // [|Id|]
 {
     return false;
 }]]></Before>
       </Sample>
     </Samples>
+    <Remarks>This analyzer does not provide a code fix. Use built-in "Change signature.." dialog to remove a parameter.
+
+Unused parameter is not reported when its name consists of underscore(s).</Remarks>
   </Analyzer>
   <Analyzer Identifier="UnusedTypeParameter">
     <Id>RCS1164</Id>
@@ -3461,7 +3463,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public bool Bar<T>() // RCS1164
+        <Before><![CDATA[public bool Bar<T>() // [|Id|]
 {
     return false
 }]]></Before>
@@ -3483,7 +3485,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
 {
     var x = default(T1);
 
-    if (x == null) // RCS1165
+    if (x == null) // [|Id|]
     {
     }
 }]]></Before>
@@ -3509,7 +3511,7 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
 
 // ...
 
-if (x == null) // RCS1166
+if (x == null) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x == 0)
@@ -3546,7 +3548,7 @@ if (x == null) // RCS1166
 
 public abstract class Foo : IFoo
 {
-    public abstract string Bar(object value); // RCS1168
+    public abstract string Bar(object value); // [|Id|]
 }]]></Before>
         <After><![CDATA[public abstract string Bar(object parameter);]]></After>
       </Sample>
@@ -3565,7 +3567,7 @@ public abstract class Foo : IFoo
       <Sample>
         <Before><![CDATA[public class Foo
 {
-    private int _f; // RCS1169
+    private int _f; // [|Id|]
 
     public Foo()
     {
@@ -3587,7 +3589,7 @@ public abstract class Foo : IFoo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public object Foo { get; private set; } // RCS1170]]></Before>
+        <Before><![CDATA[public object Foo { get; private set; } // [|Id|]]]></Before>
         <After><![CDATA[public object Foo { get; }]]></After>
       </Sample>
     </Samples>
@@ -3606,7 +3608,7 @@ public abstract class Foo : IFoo
         <Before>
           <![CDATA[public object Foo()
 {
-    if (_foo == null) // RCS1171
+    if (_foo == null) // [|Id|]
     {
         _foo = Initialize();
     }
@@ -3632,7 +3634,7 @@ public abstract class Foo : IFoo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x as string != null) // RCS1172
+        <Before><![CDATA[if (x as string != null) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x is string)
@@ -3652,7 +3654,7 @@ public abstract class Foo : IFoo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x != null) // RCS1173
+        <Before><![CDATA[if (x != null) // [|Id|]
 {
     z = x;
 }
@@ -3675,7 +3677,7 @@ else
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public static async Task<object> FooAsync() // RCS1174
+        <Before><![CDATA[public static async Task<object> FooAsync() // [|Id|]
 {
     return await GetAsync().ConfigureAwait(false);
 }]]></Before>
@@ -3697,7 +3699,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public static bool Bar(this Foo foo, object parameter) // RCS1175
+        <Before><![CDATA[public static bool Bar(this Foo foo, object parameter) // [|Id|]
 {
     return parameter != null;
 }]]></Before>
@@ -3715,7 +3717,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = GetValue(); // RCS1176]]></Before>
+        <Before><![CDATA[string s = GetValue(); // [|Id|]]]></Before>
         <After><![CDATA[var s = GetValue();]]></After>
       </Sample>
     </Samples>
@@ -3732,7 +3734,7 @@ else
     <Samples>
       <Sample>
         <Before>
-          <![CDATA[foreach (string item in items) // RCS1177
+          <![CDATA[foreach (string item in items) // [|Id|]
 {
 }]]></Before>
         <After>
@@ -3753,7 +3755,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[Debug.Assert(false, "message"); // RCS1178]]></Before>
+        <Before><![CDATA[Debug.Assert(false, "message"); // [|Id|]]]></Before>
         <After><![CDATA[Debug.Fail("message");]]></After>
       </Sample>
     </Samples>
@@ -3770,7 +3772,7 @@ else
     <Samples>
       <Sample>
         <Before>
-          <![CDATA[if (condition) // RCS1179
+          <![CDATA[if (condition) // [|Id|]
 {
     x = 1;
 }
@@ -3806,7 +3808,7 @@ else
 
 // ...
 
-if (items == null) // RCS1180
+if (items == null) // [|Id|]
 {
     items = new List<object>();
 }
@@ -3827,7 +3829,7 @@ items.Add(x);]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[// Represents foo. // RCS1181
+        <Before><![CDATA[// Represents foo. // [|Id|]
 public class Foo
 {
 }]]></Before>
@@ -3839,7 +3841,7 @@ public class Foo
 }]]></After>
       </Sample>
       <Sample>
-        <Before><![CDATA[public string Value { get; } // Gets a value. // RCS1181]]></Before>
+        <Before><![CDATA[public string Value { get; } // Gets a value. // [|Id|]]]></Before>
         <After><![CDATA[/// <summary>
 /// Gets a value.
 /// </summary>
@@ -3858,7 +3860,7 @@ public string Value { get; }]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo<T> : List<T>, IEnumerable<T> // RCS1182
+        <Before><![CDATA[public class Foo<T> : List<T>, IEnumerable<T> // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[public class Foo<T> : List<T>
@@ -3879,7 +3881,7 @@ public string Value { get; }]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[var dic = new Dictionary<int, string>()
-{ // RCS1183
+{ // [|Id|]
     { 0, "0" }
 };]]></Before>
         <After><![CDATA[var dic = new Dictionary<int, string>() { { 0, "0" } };]]></After>
@@ -3897,7 +3899,7 @@ public string Value { get; }]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool x = (condition) ? // RCS1184
+        <Before><![CDATA[bool x = (condition) ? // [|Id|]
     a :
     b;]]></Before>
         <After><![CDATA[bool x = (condition)
@@ -3917,7 +3919,7 @@ public string Value { get; }]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public Foo() { Bar(); } // RCS1185]]></Before>
+        <Before><![CDATA[public Foo() { Bar(); } // [|Id|]]]></Before>
         <After><![CDATA[public Foo()
 {
     Bar();
@@ -3938,7 +3940,7 @@ public string Value { get; }]]></After>
       <Sample>
         <Before><![CDATA[private void Bar()
 {
-    bool isMatch = Regex.IsMatch("abc", @"\w"); // RCS1186
+    bool isMatch = Regex.IsMatch("abc", @"\w"); // [|Id|]
 }]]></Before>
         <After><![CDATA[private readonly Regex _regex = new Regex(@"\w");
 
@@ -3960,7 +3962,7 @@ private void Bar()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[private static readonly int _foo = 0; // RCS1187]]></Before>
+        <Before><![CDATA[private static readonly int _foo = 0; // [|Id|]]]></Before>
         <After><![CDATA[private const int _foo = 0;]]></After>
       </Sample>
     </Samples>
@@ -3976,7 +3978,7 @@ private void Bar()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public string Foo { get; set; } = null; // RCS1188]]></Before>
+        <Before><![CDATA[public string Foo { get; set; } = null; // [|Id|]]]></Before>
         <After><![CDATA[public string Foo { get; set; }]]></After>
       </Sample>
     </Samples>
@@ -3996,7 +3998,7 @@ private void Bar()
 public static void Foo()
 {
 }
-#endregion // RCS1189]]></Before>
+#endregion // [|Id|]]]></Before>
         <After><![CDATA[#region Methods
 public static void Foo()
 {
@@ -4016,7 +4018,7 @@ public static void Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = "a" + "b"; // RCS1190]]></Before>
+        <Before><![CDATA[string s = "a" + "b"; // [|Id|]]]></Before>
         <After><![CDATA[string s = "ab";]]></After>
       </Sample>
     </Samples>
@@ -4039,7 +4041,7 @@ public enum Foo
     A = 1,
     B = 2,
     C = 4,
-    ABC = 7 // RCS1191
+    ABC = 7 // [|Id|]
 }]]></Before>
         <After><![CDATA[[Flags]
 public enum Foo
@@ -4064,7 +4066,7 @@ public enum Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = @"x"; // RCS1192]]></Before>
+        <Before><![CDATA[string s = @"x"; // [|Id|]]]></Before>
         <After><![CDATA[string s = "x";]]></After>
       </Sample>
     </Samples>
@@ -4089,7 +4091,7 @@ public enum Foo
 
 public class Derived : Base
 {
-    public override void Foo(object[] values) // RCS1193
+    public override void Foo(object[] values) // [|Id|]
     {
     }
 }]]></Before>
@@ -4113,7 +4115,7 @@ public class Derived : Base
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class FooException : Exception // RCS1194
+        <Before><![CDATA[public class FooException : Exception // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[public class FooException : Exception
@@ -4144,7 +4146,7 @@ public class Derived : Base
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if ((x && !y) || (!x && y)) // RCS1195
+        <Before><![CDATA[if ((x && !y) || (!x && y)) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x ^ y)
@@ -4164,7 +4166,7 @@ public class Derived : Base
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = Enumerable.Select(items, f => f.ToString()) // RCS1196]]></Before>
+        <Before><![CDATA[var x = Enumerable.Select(items, f => f.ToString()) // [|Id|]]]></Before>
         <After><![CDATA[var x = items.Select(f => f.ToString());]]></After>
       </Sample>
     </Samples>
@@ -4180,7 +4182,7 @@ public class Derived : Base
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[sb.Append(s + "x"); // RCS1197]]></Before>
+        <Before><![CDATA[sb.Append(s + "x"); // [|Id|]]]></Before>
         <After><![CDATA[sb.Append(s).Append("x");]]></After>
       </Sample>
     </Samples>
@@ -4201,7 +4203,7 @@ int i = 0;
 
 // ...
 
-string x = s + i; // RCS1198]]></Before>
+string x = s + i; // [|Id|]]]></Before>
         <After><![CDATA[string x = s + i.ToString();]]></After>
       </Sample>
     </Samples>
@@ -4221,7 +4223,7 @@ string x = s + i; // RCS1198]]></Before>
 
 // ...
 
-if (x.HasValue && x.Value) // RCS1199
+if (x.HasValue && x.Value) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x == true)
@@ -4241,7 +4243,7 @@ if (x.HasValue && x.Value) // RCS1199
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = items.OrderBy(f => f.Surname).OrderBy(f => f.Name); // RCS1200]]></Before>
+        <Before><![CDATA[var x = items.OrderBy(f => f.Surname).OrderBy(f => f.Name); // [|Id|]]]></Before>
         <After><![CDATA[var x = items.OrderBy(f => f.Surname).ThenBy(f => f.Name);]]></After>
       </Sample>
     </Samples>
@@ -4259,7 +4261,7 @@ if (x.HasValue && x.Value) // RCS1199
       <Sample>
         <Before><![CDATA[sb = new StringBuilder();
 
-sb.Append("a"); // RCS1201
+sb.Append("a"); // [|Id|]
 sb.Append("b");
 sb.Append("c");]]></Before>
         <After><![CDATA[sb = new StringBuilder();
@@ -4281,7 +4283,7 @@ sb.Append("a")
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = items.FirstOrDefault().ToString(); // RCS1202]]></Before>
+        <Before><![CDATA[string s = items.FirstOrDefault().ToString(); // [|Id|]]]></Before>
         <After><![CDATA[string s = items.FirstOrDefault()?.ToString();]]></After>
       </Sample>
     </Samples>
@@ -4297,7 +4299,7 @@ sb.Append("a")
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class FooAttribute : Attribute // RCS1203
+        <Before><![CDATA[public class FooAttribute : Attribute // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[[AttributeUsageAttribute(AttributeTargets.All, AllowMultiple = false)]
@@ -4318,7 +4320,7 @@ public class FooAttribute : Attribute
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = new EventArgs(); // RCS1204]]></Before>
+        <Before><![CDATA[var x = new EventArgs(); // [|Id|]]]></Before>
         <After><![CDATA[var x = EventArgs.Empty;]]></After>
       </Sample>
     </Samples>
@@ -4337,7 +4339,7 @@ public class FooAttribute : Attribute
         <Before><![CDATA[using (var sm = new StreamReader(
     stream: default(Stream),
     encoding: Encoding.UTF8,
-    bufferSize: 0, // RCS1205
+    bufferSize: 0, // [|Id|]
     leaveOpen: false,
     detectEncodingFromByteOrderMarks: true))
 {
@@ -4368,7 +4370,7 @@ public class FooAttribute : Attribute
 
 // ...
 
-        string s = (x != null) ? x.ToString() : null; // RCS1206]]></Before>
+        string s = (x != null) ? x.ToString() : null; // [|Id|]]]></Before>
         <After><![CDATA[string s = x?.ToString();]]></After>
       </Sample>
       <Sample>
@@ -4376,7 +4378,7 @@ public class FooAttribute : Attribute
 
 // ...
 
-int i = (x != null) ? x.Value.GetHashCode() : 0; // RCS1206]]></Before>
+int i = (x != null) ? x.Value.GetHashCode() : 0; // [|Id|]]]></Before>
         <After><![CDATA[int i = x?.GetHashCode() ?? 0;]]></After>
       </Sample>
     </Samples>
@@ -4392,7 +4394,7 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // RCS1206]]></Before>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var x = items.Select(f => Foo(f)); // RCS1207]]></Before>
+        <Before><![CDATA[var x = items.Select(f => Foo(f)); // [|Id|]]]></Before>
         <After><![CDATA[var x = items.Select(Foo);]]></After>
       </Sample>
     </Samples>
@@ -4408,7 +4410,7 @@ int i = (x != null) ? x.Value.GetHashCode() : 0; // RCS1206]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition1) // RCS1208
+        <Before><![CDATA[if (condition1) // [|Id|]
 {
     Foo1();
 
@@ -4457,7 +4459,7 @@ Foo3();]]></After>
     <Samples>
       <Sample>
         <Before><![CDATA[public class Foo<T1, T2, T3>
-    where T3 : class // RCS1209
+    where T3 : class // [|Id|]
     where T2 : class
     where T1 : class
 {
@@ -4484,7 +4486,7 @@ Foo3();]]></After>
       <Sample>
         <Before><![CDATA[Task<object> GetAsync()
 {
-    return null; // RCS1210
+    return null; // [|Id|]
 }]]></Before>
         <After><![CDATA[Task<object> GetAsync()
 {
@@ -4494,7 +4496,7 @@ Foo3();]]></After>
       <Sample>
         <Before><![CDATA[Task<object> GetAsync()
 {
-    return _foo?.GetAsync(); // RCS1210
+    return _foo?.GetAsync(); // [|Id|]
 }]]></Before>
         <After><![CDATA[Task<object> GetAsync()
 {
@@ -4526,7 +4528,7 @@ Foo3();]]></After>
 {
     return WhenTrue();
 }
-else // RCS1211
+else // [|Id|]
 {
     return WhenFalse();
 }]]></Before>
@@ -4554,7 +4556,7 @@ return WhenFalse();]]></After>
 {
     // ...
 
-    f = false; // RCS1212
+    f = false; // [|Id|]
     return f;
 }]]></Before>
         <After><![CDATA[bool Foo()
@@ -4611,7 +4613,7 @@ string y = $"{x}";]]></Before>
 
 // ...
 
-if (i >= 0) // RCS1213
+if (i >= 0) // [|Id|]
 {
 }]]></Before>
       </Sample>
@@ -4622,7 +4624,7 @@ if (i >= 0) // RCS1213
 // ...
 
 
-if (items.Count < 0) // RCS1213
+if (items.Count < 0) // [|Id|]
 {
 }]]></Before>
       </Sample>
@@ -4639,17 +4641,17 @@ if (items.Count < 0) // RCS1213
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public unsafe class Foo // RCS1216
+        <Before><![CDATA[public unsafe class Foo // [|Id|]
 {
     public Foo()
     {
-        unsafe // RCS1216
+        unsafe // [|Id|]
         {
             Bar();
         }
     }
 
-    private unsafe void Bar() // RCS1216
+    private unsafe void Bar() // [|Id|]
     {
     }
 }]]></Before>
@@ -4682,7 +4684,7 @@ if (items.Count < 0) // RCS1213
           <![CDATA[string x = null;
 // ...
 
-string y = $"{x}{x}{x}"; // RCS1217]]></Before>
+string y = $"{x}{x}{x}"; // [|Id|]]]></Before>
         <After><![CDATA[string y = x + x + x;]]></After>
       </Sample>
     </Samples>
@@ -4698,7 +4700,7 @@ string y = $"{x}{x}{x}"; // RCS1217]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x) // RCS1218
+        <Before><![CDATA[if (x) // [|Id|]
 {
 }
 else
@@ -4712,7 +4714,7 @@ else
       <Sample>
         <Before><![CDATA[while (true)
 {
-  if (x)  // RCS1218
+  if (x)  // [|Id|]
   {
     Foo();
   }
@@ -4729,7 +4731,7 @@ else
       <Sample>
         <Before><![CDATA[while (true)
 {
-  if (x)  // RCS1218
+  if (x)  // [|Id|]
   {
     break;
   }
@@ -4747,7 +4749,7 @@ else
 {
   Foo();
 
-  if (x)  // RCS1218
+  if (x)  // [|Id|]
   {
     break;
   }
@@ -4772,7 +4774,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (enumerable.Count() > x) // RCS1219
+        <Before><![CDATA[if (enumerable.Count() > x) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (enumerable.Skip(x).Any())
@@ -4792,7 +4794,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (x is T && Foo((T)x)) // RCS1220
+        <Before><![CDATA[if (x is T && Foo((T)x)) // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[if (x is T y && Foo(y))
@@ -4812,7 +4814,7 @@ else
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[var y = x as Foo; // RCS1221
+        <Before><![CDATA[var y = x as Foo; // [|Id|]
 
 if (y == null)
 {
@@ -4854,7 +4856,7 @@ if (y == null)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // RCS1223
+        <Before><![CDATA[public class Foo // [|Id|]
 {
 }]]></Before>
         <After><![CDATA[[DebuggerDisplay("{DebuggerDisplay,nq}")]
@@ -4884,7 +4886,7 @@ public class Foo
         <Before>
           <![CDATA[public static class FooExtensions
 {
-    public static string Bar(Foo foo) // RCS1224
+    public static string Bar(Foo foo) // [|Id|]
     {
     }
 }]]></Before>
@@ -4910,7 +4912,7 @@ public class Foo
     <Summary>A class that has only private constructors should be marked as sealed.</Summary>
     <Samples>
       <Sample>
-        <Before><![CDATA[public class Foo // RCS1225
+        <Before><![CDATA[public class Foo // [|Id|]
 {
     private Foo()
     {
@@ -4938,9 +4940,9 @@ public class Foo
       <Sample>
         <Before>
           <![CDATA[/// <summary>
-/// summary1 // RCS1126
+/// summary1 // [|Id|]
 /// 
-/// summary2 // RCS1126
+/// summary2 // [|Id|]
 /// summary3
 /// </summary>
 class Foo

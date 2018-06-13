@@ -158,24 +158,15 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static IEnumerable<MElement> GetLinks(IEnumerable<LinkDescriptor> links)
+        private static MElement CreateLink(in LinkDescriptor link)
         {
-            if (links.Any())
+            if (string.IsNullOrEmpty(link.Text))
             {
-                yield return Heading2("Related Links");
-                yield return BulletList(links.Select(f => GetContent(f)));
+                return new MAutolink(link.Url);
             }
-
-            MElement GetContent(in LinkDescriptor link)
+            else
             {
-                if (string.IsNullOrEmpty(link.Text))
-                {
-                    return new MAutolink(link.Url);
-                }
-                else
-                {
-                    return Link(link.Text, link.Url, link.Title);
-                }
+                return Link(link.Text, link.Url, link.Title);
             }
         }
 
@@ -191,16 +182,28 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Syntax", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name))),
                     (!string.IsNullOrEmpty(refactoring.Span)) ? TableRow("Span", refactoring.Span) : null,
                     TableRow("Enabled by Default", CheckboxOrHyphen(refactoring.IsEnabledByDefault))),
-                (!string.IsNullOrEmpty(refactoring.Summary)) ? Raw(refactoring.Summary) : null,
+                CreateSummary(refactoring.Summary),
                 Heading3("Usage"),
                 GetRefactoringSamples(refactoring),
-                GetLinks(refactoring.Links),
+                CreateRemarks(refactoring.Remarks),
+                Links(),
                 Link("full list of refactorings", "Refactorings.md"),
                 NewLine);
 
             document.AddFootnote();
 
             return document.ToString(format);
+
+            IEnumerable<MElement> Links()
+            {
+                IReadOnlyList<LinkDescriptor> links = refactoring.Links;
+
+                if (links.Count > 0)
+                {
+                    yield return Heading2("See Also");
+                    yield return BulletList(links.Select(f => CreateLink(f)));
+                }
+            }
         }
 
         public static string CreateAnalyzerMarkdown(AnalyzerDescriptor analyzer)
@@ -217,16 +220,10 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Enabled by Default", CheckboxOrHyphen(analyzer.IsEnabledByDefault)),
                     TableRow("Supports Fade-Out", CheckboxOrHyphen(analyzer.SupportsFadeOut)),
                     TableRow("Supports Fade-Out Analyzer", CheckboxOrHyphen(analyzer.SupportsFadeOutAnalyzer))),
-                (!string.IsNullOrEmpty(analyzer.Summary)) ? Raw(analyzer.Summary) : null,
+                CreateSummary(analyzer.Summary),
                 Samples(),
-                GetLinks(analyzer.Links),
-                Heading2("How to Suppress"),
-                Heading3("SuppressMessageAttribute"),
-                FencedCodeBlock($"[assembly: SuppressMessage(\"{analyzer.Category}\", \"{analyzer.Id}:{analyzer.Title}\", Justification = \"<Pending>\")]", LanguageIdentifiers.CSharp),
-                Heading3("#pragma"),
-                FencedCodeBlock($"#pragma warning disable {analyzer.Id} // {analyzer.Title}\r\n#pragma warning restore {analyzer.Id} // {analyzer.Title}", LanguageIdentifiers.CSharp),
-                Heading3("Ruleset"),
-                BulletItem(Link("How to configure rule set", "../HowToConfigureAnalyzers.md")));
+                CreateRemarks(analyzer.Remarks),
+                Links());
 
             document.AddFootnote();
 
@@ -243,6 +240,15 @@ namespace Roslynator.CodeGeneration.Markdown
                     foreach (MElement item in GetSamples(samples, Heading3("Code with Diagnostic"), Heading3("Code with Fix")))
                         yield return item;
                 }
+            }
+
+            IEnumerable<MElement> Links()
+            {
+                yield return Heading2("See Also");
+
+                yield return BulletList(
+                    Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic"),
+                    analyzer.Links.Select(f => CreateLink(f)));
             }
         }
 
@@ -359,6 +365,24 @@ namespace Roslynator.CodeGeneration.Markdown
                             CheckboxOrHyphen(analyzer.IsEnabledByDefault));
                     }
                 }
+            }
+        }
+
+        private static IEnumerable<MElement> CreateSummary(string summary)
+        {
+            if (!string.IsNullOrEmpty(summary))
+            {
+                yield return Heading2("Summary");
+                yield return Raw(summary);
+            }
+        }
+
+        private static IEnumerable<MElement> CreateRemarks(string remarks)
+        {
+            if (!string.IsNullOrEmpty(remarks))
+            {
+                yield return Heading2("Remarks");
+                yield return Raw(remarks);
             }
         }
 

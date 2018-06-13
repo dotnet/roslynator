@@ -18,6 +18,7 @@ namespace Roslynator.Metadata
             bool isObsolete,
             string span,
             string summary,
+            string remarks,
             IEnumerable<SyntaxDescriptor> syntaxes,
             IEnumerable<ImageDescriptor> images,
             IEnumerable<SampleDescriptor> samples,
@@ -30,6 +31,7 @@ namespace Roslynator.Metadata
             IsObsolete = isObsolete;
             Span = span;
             Summary = summary;
+            Remarks = remarks;
             Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes?.ToArray() ?? Array.Empty<SyntaxDescriptor>());
             Images = new ReadOnlyCollection<ImageDescriptor>(images?.ToArray() ?? Array.Empty<ImageDescriptor>());
             Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
@@ -45,6 +47,8 @@ namespace Roslynator.Metadata
         public string Span { get; }
 
         public string Summary { get; }
+
+        public string Remarks { get; }
 
         public bool IsEnabledByDefault { get; }
 

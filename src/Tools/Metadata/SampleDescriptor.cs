@@ -1,23 +1,21 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Text.RegularExpressions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Roslynator.Metadata
 {
-    public class SampleDescriptor
+    [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
+    public readonly struct SampleDescriptor
     {
-        private static readonly Regex _lfWithoutCr = new Regex(@"(?<!\r)\n");
-
         public SampleDescriptor(string before, string after)
         {
-            if (before != null)
-                Before = _lfWithoutCr.Replace(before, "\r\n");
+            Before = TextUtility.NormalizeNewLine(before);
 
-            if (after != null)
-                After = _lfWithoutCr.Replace(after, "\r\n");
+            After = TextUtility.NormalizeNewLine(after);
         }
 
         public string Before { get; }
+
         public string After { get; }
     }
 }

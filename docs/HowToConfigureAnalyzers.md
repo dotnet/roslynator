@@ -1,5 +1,12 @@
 ﻿# How to: Configure Analyzers
 
+## Content
+
+* [Introduction](#introduction) 
+* [What Is Rule Set](#what-is-rule-set)
+* [How to Configure a Rule Set](#how-to-configure-a-rule-set)
+* [How to Suppress a Diagnostic](#how-to-suppress-a-diagnostic)
+
 ## Introduction
 
 * It is a common requirement to enable/disable specific analyzer or/and to change its action (from **Warning** to **Info** etc.)
@@ -30,7 +37,7 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 </RuleSet>
 ```
 
-## Step by Step Tutorial
+## How to Configure a Rule Set
 
 ### Old csproj format (.NET Framework)
 
@@ -90,8 +97,47 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 </PropertyGroup>
 ```
 
-## MSDN Links
+## How to Suppress a Diagnostic
+
+If you want to disable an analyzer completely you have use a rule set.
+But if you want to suppress a diagnostic you have to use either `SuppressMessageAttribute` or `#pragma warning` preprocessor directive.
+
+### Add `SuppressMessageAttribute` to Containing Declaration
+
+```csharp
+[SuppressMessage("Readability", "RCS1008", Justification = "<Pending>")]
+void M()
+{
+    var x = Foo(); // no RCS1008 here
+}
+```
+
+### Add `SuppressMessageAttribute` to Assembly
+
+```csharp
+
+[assembly: SuppressMessage("Readability", "RCS1008", Justification = "<Pending>", Scope = "member", Target = "~M:C.M")]
+
+class C
+{
+    void M()
+    {
+        var x = Foo(); // no RCS1008 here
+    }
+}
+```
+
+### Add `#pragma warning` Preprocessor Directive
+
+```csharp
+#pragma warning disable RCS1008
+var x = Foo(); // no RCS1008 here
+#pragma warning restore RCS1008
+```
+
+## See Also
 
 * [How to: Create a Custom Rule Set](https://msdn.microsoft.com/en-us/library/dd264974.aspx)
 * [Working in the Code Analysis Rule Set Editor](https://msdn.microsoft.com/en-us/library/dd380626.aspx)
 * [How to: Specify Managed Code Rule Sets for Multiple Projects in a Solution](https://msdn.microsoft.com/en-us/library/dd465181.aspx)
+* [Rule Set XML Schema](https://github.com/dotnet/roslyn/blob/master/src/Compilers/Core/Portable/RuleSet/RuleSetSchema.xsd)

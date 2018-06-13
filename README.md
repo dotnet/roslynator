@@ -56,6 +56,7 @@ Please read the [tutorial](docs/RoslynatorForVisualStudioCode.md) how to install
 * [Analyzers vs. Refactorings](docs/AnalyzersVsRefactorings.md)
 * [How to Configure Analyzers](docs/HowToConfigureAnalyzers.md)
 * [How to Configure Refactorings](docs/HowToConfigureRefactorings.md)
+* [How to Customize Rules for a Project](docs/HowToCustomizeRulesForProject.md)
 
 ## Other Projects
 

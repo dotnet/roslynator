@@ -5,6 +5,7 @@ using System.Collections.Immutable;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -12,6 +13,13 @@ namespace Roslynator.Metadata
 {
     public static class MetadataFile
     {
+        private static readonly Regex _lfWithoutCr = new Regex(@"(?<!\r)\n");
+
+        private static string NormalizeNewLine(this string value)
+        {
+            return (value != null) ? _lfWithoutCr.Replace(value, "\r\n") : null;
+        }
+
         public static ImmutableArray<AnalyzerDescriptor> ReadAllAnalyzers(string filePath)
         {
             return ImmutableArray.CreateRange(ReadAnalyzers(filePath));
@@ -23,8 +31,10 @@ namespace Roslynator.Metadata
 
             foreach (XElement element in doc.Root.Elements())
             {
+                string id = element.Element("Id").Value;
+
                 yield return new AnalyzerDescriptor(
-                    element.Element("Id").Value,
+                    id,
                     element.Attribute("Identifier").Value,
                     element.Element("Title").Value,
                     element.Element("MessageFormat").Value,
@@ -34,8 +44,9 @@ namespace Roslynator.Metadata
                     element.AttributeValueAsBooleanOrDefault("IsObsolete"),
                     bool.Parse(element.Element("SupportsFadeOut").Value),
                     bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value),
-                    element.Element("Summary")?.Value,
-                    LoadSamples(element),
+                    element.Element("Summary")?.Value.NormalizeNewLine(),
+                    element.Element("Remarks")?.Value.NormalizeNewLine(),
+                    LoadSamples(element)?.Select(f => new SampleDescriptor(f.Before.Replace("[|Id|]", id), f.After)),
                     LoadLinks(element));
             }
         }
@@ -58,7 +69,8 @@ namespace Roslynator.Metadata
                     element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
                     element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
                     element.Element("Span")?.Value,
-                    element.Element("Summary")?.Value,
+                    element.Element("Summary")?.Value.NormalizeNewLine(),
+                    element.Element("Remarks")?.Value.NormalizeNewLine(),
                     element.Element("Syntaxes")
                         .Elements("Syntax")
                         .Select(f => new SyntaxDescriptor(f.Value)),
@@ -81,7 +93,7 @@ namespace Roslynator.Metadata
             return element
                 .Element("Samples")?
                 .Elements("Sample")
-                .Select(f => new SampleDescriptor(f.Element("Before").Value, f.Element("After")?.Value));
+                .Select(f => new SampleDescriptor(f.Element("Before").Value.NormalizeNewLine(), f.Element("After")?.Value.NormalizeNewLine()));
         }
 
         private static IEnumerable<LinkDescriptor> LoadLinks(XElement element)

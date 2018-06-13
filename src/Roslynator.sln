@@ -9,20 +9,16 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{228E25E1-FDE6-40C1-98AF-8E636D174D94}"
 	ProjectSection(SolutionItems) = preProject
 		Analyzers\Analyzers.xml = Analyzers\Analyzers.xml
-		..\docs\AnalyzersVsRefactorings.md = ..\docs\AnalyzersVsRefactorings.md
 		..\ChangeLog.md = ..\ChangeLog.md
 		CodeFixes\CodeFixes.xml = CodeFixes\CodeFixes.xml
 		DefaultConfigFile.xml = DefaultConfigFile.xml
 		DefaultRuleSet.ruleset = DefaultRuleSet.ruleset
 		CodeFixes\Diagnostics.xml = CodeFixes\Diagnostics.xml
 		global.ruleset = global.ruleset
-		..\docs\HowToConfigureAnalyzers.md = ..\docs\HowToConfigureAnalyzers.md
-		..\docs\HowToConfigureRefactorings.md = ..\docs\HowToConfigureRefactorings.md
 		..\LICENSE.txt = ..\LICENSE.txt
 		..\README.md = ..\README.md
 		Refactorings\Refactorings.xml = Refactorings\Refactorings.xml
 		..\text\ReleaseCheckList.txt = ..\text\ReleaseCheckList.txt
-		..\docs\RoslynatorForVisualStudioCode.md = ..\docs\RoslynatorForVisualStudioCode.md
 	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddCodeFileHeader", "Tools\AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"
@@ -80,6 +76,15 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFixes.Tests", "Tests\CodeFixes.Tests\CodeFixes.Tests.csproj", "{BD31315B-B89B-43F7-994D-EBE6FFC2D89B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests\Tests.csproj", "{306D8762-6A4E-4957-ABE6-5C30E13BD95F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{97FBDF71-F240-48F2-B29A-E6B27597E38B}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\AnalyzersVsRefactorings.md = ..\docs\AnalyzersVsRefactorings.md
+		..\docs\HowToConfigureAnalyzers.md = ..\docs\HowToConfigureAnalyzers.md
+		..\docs\HowToConfigureRefactorings.md = ..\docs\HowToConfigureRefactorings.md
+		..\docs\HowToCustomizeRulesForProject.md = ..\docs\HowToCustomizeRulesForProject.md
+		..\docs\RoslynatorForVisualStudioCode.md = ..\docs\RoslynatorForVisualStudioCode.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -321,6 +326,7 @@ Global
 		{B2E65325-8B4A-46D1-9726-0B1AF9BF26EC} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
 		{BD31315B-B89B-43F7-994D-EBE6FFC2D89B} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
 		{306D8762-6A4E-4957-ABE6-5C30E13BD95F} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
+		{97FBDF71-F240-48F2-B29A-E6B27597E38B} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1943010-8F47-4798-9A3D-97BC24CF1AC4}
