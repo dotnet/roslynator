@@ -2,12 +2,12 @@
 
 using System;
 using System.Collections.Immutable;
-using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -38,9 +38,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var initializer = (InitializerExpressionSyntax)context.Node;
 
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-
-            ExpressionSyntax expression = expressions.SingleOrDefault(shouldThrow: false);
+            ExpressionSyntax expression = initializer.Expressions.SingleOrDefault(shouldThrow: false);
 
             if (expression == null)
                 return;
@@ -54,12 +52,8 @@ namespace Roslynator.CSharp.Analysis
             if (initializer.IsSingleLine())
                 return;
 
-            if (!initializer
-                .DescendantTrivia(TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End))
-                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
-            {
+            if (!TriviaWalker.ContainsOnlyWhitespaceOrEndOfLineTrivia(initializer, TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End)))
                 return;
-            }
 
             context.ReportDiagnostic(DiagnosticDescriptors.FormatInitializerWithSingleExpressionOnSingleLine, initializer);
         }
