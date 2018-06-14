@@ -2,7 +2,7 @@
 
 #### Analyzers
 
-* Incorporate RCS1082, RCS1083, RCS1109, RCS1119, RCS1120 and RCS1121 into [RCS1077](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCC1077.md)
+* Incorporate RCS1082, RCS1083, RCS1109, RCS1119, RCS1120 and RCS1121 into [RCS1077](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1077.md)
 
 #### Refactorings
 
