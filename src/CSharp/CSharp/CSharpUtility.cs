@@ -565,5 +565,34 @@ namespace Roslynator.CSharp
                 return true;
             }
         }
+
+        public static bool IsConditionallyAccessed(SyntaxNode node)
+        {
+            SyntaxNode prev = node;
+
+            for (SyntaxNode parent = node.Parent; parent != null; parent = parent.Parent)
+            {
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                    case SyntaxKind.ElementAccessExpression:
+                    case SyntaxKind.InvocationExpression:
+                        {
+                            prev = parent;
+                            continue;
+                        }
+                    case SyntaxKind.ConditionalAccessExpression:
+                        {
+                            return ((ConditionalAccessExpressionSyntax)parent).WhenNotNull == prev;
+                        }
+                    default:
+                        {
+                            return false;
+                        }
+                }
+            }
+
+            return false;
+        }
     }
 }

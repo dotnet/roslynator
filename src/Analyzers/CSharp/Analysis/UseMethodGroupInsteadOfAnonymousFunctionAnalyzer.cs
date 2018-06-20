@@ -418,6 +418,10 @@ namespace Roslynator.CSharp.Analysis
                 {
                     SyntaxNode node = argument.Parent.Parent;
 
+                    // related to https://github.com/dotnet/roslyn/issues/25262
+                    if (CSharpUtility.IsConditionallyAccessed(node))
+                        return false;
+
                     SyntaxNode newNode = node.ReplaceNode(argument.Expression, expression);
 
                     SymbolInfo symbolInfo = semanticModel.GetSpeculativeSymbolInfo(node.SpanStart, newNode, SpeculativeBindingOption.BindAsExpression);
