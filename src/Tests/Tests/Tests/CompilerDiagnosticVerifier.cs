@@ -30,20 +30,21 @@ namespace Roslynator.Tests
             {
                 foreach (Diagnostic diagnostic in diagnostics)
                 {
-                    if (diagnostic.Severity <= maxAllowedSeverity)
-                        continue;
-
-                    bool isAllowed = false;
-                    foreach (string diagnosticId in allowedDiagnosticIds)
+                    if (diagnostic.Severity > maxAllowedSeverity
+                        && !IsAllowed(diagnostic))
                     {
-                        if (diagnostic.Id == diagnosticId)
-                        {
-                            isAllowed = true;
-                            break;
-                        }
+                        return true;
                     }
+                }
 
-                    if (!isAllowed)
+                return false;
+            }
+
+            bool IsAllowed(Diagnostic diagnostic)
+            {
+                foreach (string diagnosticId in allowedDiagnosticIds)
+                {
+                    if (diagnostic.Id == diagnosticId)
                         return true;
                 }
 
@@ -74,30 +75,32 @@ namespace Roslynator.Tests
             {
                 foreach (Diagnostic newDiagnostic in newDiagnostics)
                 {
-                    bool isAllowed = false;
-                    foreach (string diagnosticId in allowedDiagnosticIds)
+                    if (!IsAllowed(newDiagnostic)
+                        && !EqualsAny(newDiagnostic))
                     {
-                        if (newDiagnostic.Id == diagnosticId)
-                        {
-                            isAllowed = true;
-                            break;
-                        }
+                        return true;
                     }
+                }
 
-                    if (isAllowed)
-                        continue;
+                return false;
+            }
 
-                    bool isNew = true;
-                    foreach (Diagnostic diagnostic in diagnostics)
-                    {
-                        if (DiagnosticDeepEqualityComparer.Instance.Equals(newDiagnostic, diagnostic))
-                        {
-                            isNew = false;
-                            break;
-                        }
-                    }
+            bool IsAllowed(Diagnostic diagnostic)
+            {
+                foreach (string diagnosticId in allowedDiagnosticIds)
+                {
+                    if (diagnostic.Id == diagnosticId)
+                        return true;
+                }
 
-                    if (isNew)
+                return false;
+            }
+
+            bool EqualsAny(Diagnostic newDiagnostic)
+            {
+                foreach (Diagnostic diagnostic in diagnostics)
+                {
+                    if (DiagnosticDeepEqualityComparer.Instance.Equals(diagnostic, newDiagnostic))
                         return true;
                 }
 

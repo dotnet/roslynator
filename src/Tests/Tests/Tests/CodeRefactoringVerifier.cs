@@ -93,18 +93,25 @@ namespace Roslynator.Tests
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            foreach (TextSpan span in spans)
+            using (IEnumerator<TextSpan> en = spans.GetEnumerator())
             {
-                cancellationToken.ThrowIfCancellationRequested();
+                if (!en.MoveNext())
+                    throw new InvalidOperationException($"'{nameof(spans)}' contains no elements.");
 
-                await VerifyRefactoringAsync(
-                    source: source,
-                    expected: expected,
-                    span,
-                    equivalenceKey: equivalenceKey,
-                    additionalSources: additionalSources,
-                    options: options,
-                    cancellationToken: cancellationToken).ConfigureAwait(false);
+                do
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    await VerifyRefactoringAsync(
+                        source: source,
+                        expected: expected,
+                        en.Current,
+                        equivalenceKey: equivalenceKey,
+                        additionalSources: additionalSources,
+                        options: options,
+                        cancellationToken: cancellationToken).ConfigureAwait(false);
+
+                } while (en.MoveNext());
             }
         }
 

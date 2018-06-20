@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Xunit;
 
-#pragma warning disable CA1034, RCS1090
+#pragma warning disable CA1034
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {

@@ -8,8 +8,6 @@ using Roslynator.CSharp.CodeFixes;
 using Xunit;
 using Roslynator.CSharp.Analysis.UnusedMember;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1213RemoveUnusedMemberDeclarationTests : AbstractCSharpCodeFixVerifier

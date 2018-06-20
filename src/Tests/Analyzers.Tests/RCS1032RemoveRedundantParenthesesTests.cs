@@ -7,8 +7,6 @@ using Roslynator.CSharp.CodeFixes;
 using Xunit;
 using System.Threading.Tasks;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1032RemoveRedundantParenthesesTests : AbstractCSharpCodeFixVerifier

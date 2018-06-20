@@ -33,6 +33,20 @@ if errorlevel 1 (
  exit
 )
 
+dotnet test -c Debug --no-build "..\src\Tests\CSharp.Tests\CSharp.Tests.csproj"
+
+if errorlevel 1 (
+ pause
+ exit
+)
+
+dotnet test -c Debug --no-build "..\src\Tests\CSharp.Workspaces.Tests\CSharp.Workspaces.Tests.csproj"
+
+if errorlevel 1 (
+ pause
+ exit
+)
+
 dotnet test -c Release --no-build "..\src\Tests\Analyzers.Tests\Analyzers.Tests.csproj"
 
 if errorlevel 1 (

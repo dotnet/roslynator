@@ -8,8 +8,6 @@ using Roslynator.CSharp.CodeFixes;
 using Roslynator.Tests;
 using Xunit;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCSTests : AbstractCSharpCodeFixVerifier

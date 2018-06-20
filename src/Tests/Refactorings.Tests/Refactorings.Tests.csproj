@@ -7,7 +7,7 @@
   <PropertyGroup>
     <AssemblyName>Roslynator.Refactorings.Tests</AssemblyName>
     <RootNamespace>Roslynator.Refactorings.Tests</RootNamespace>
-    <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\tests.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Refactorings.Tests.snk</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>

@@ -14,7 +14,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		AnalyzersTests.ruleset = AnalyzersTests.ruleset
 		CodeFixesTests.ruleset = CodeFixesTests.ruleset
 		RefactoringsTests.ruleset = RefactoringsTests.ruleset
-		Tests.ruleset = Tests.ruleset
 	EndProjectSection
 EndProject
 Global

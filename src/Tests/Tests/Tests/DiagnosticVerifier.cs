@@ -116,9 +116,7 @@ namespace Roslynator.Tests
 
             Document document = CreateDocument(source, additionalSources ?? Array.Empty<string>());
 
-            Project project = document.Project;
-
-            Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 
@@ -190,9 +188,7 @@ namespace Roslynator.Tests
 
             Document document = CreateDocument(source, additionalSources ?? Array.Empty<string>());
 
-            Project project = document.Project;
-
-            Compilation compilation = await project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
+            Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
             ImmutableArray<Diagnostic> compilerDiagnostics = compilation.GetDiagnostics(cancellationToken);
 

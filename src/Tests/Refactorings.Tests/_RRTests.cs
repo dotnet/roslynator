@@ -5,8 +5,6 @@ using Microsoft.CodeAnalysis.CodeRefactorings;
 using Roslynator.Tests;
 using Xunit;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     public class RRTests : AbstractCSharpCodeRefactoringVerifier

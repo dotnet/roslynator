@@ -5,8 +5,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Roslynator.Tests;
 using Xunit;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CSTests : AbstractCSharpCompilerCodeFixVerifier

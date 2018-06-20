@@ -3,8 +3,6 @@
 using System.Threading.Tasks;
 using Xunit;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     public class RR0173WrapInElseClauseTests : AbstractCSharpCodeRefactoringVerifier

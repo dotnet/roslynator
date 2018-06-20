@@ -9,8 +9,6 @@ using Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait;
 using Xunit;
 using Roslynator.Tests;
 
-#pragma warning disable RCS1090
-
 namespace Roslynator.CSharp.Analysis.Tests
 {
     public class RCS1174RemoveRedundantAsyncAwaitTests : AbstractCSharpCodeFixVerifier
