@@ -49,6 +49,12 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithEnumerator)
+                && context.Span.IsEmptyAndContainedInSpan(forEachStatement.ForEachKeyword))
+            {
+                ReplaceForEachWithEnumeratorRefactoring.ComputeRefactoring(context, forEachStatement);
+            }
         }
 
         internal static async Task ChangeTypeAsync(

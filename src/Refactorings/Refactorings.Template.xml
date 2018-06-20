@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Refactorings>
+  <Refactoring Id="RR" Identifier="" Title="">
+    <Syntaxes>
+      <Syntax></Syntax>
+    </Syntaxes>
+    <Span></Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[]]></Before>
+        <After><![CDATA[]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+</Refactorings>

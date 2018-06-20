@@ -9,9 +9,9 @@ namespace Roslynator.Metadata
     {
         public SampleDescriptor(string before, string after)
         {
-            Before = TextUtility.NormalizeNewLine(before);
+            Before = before;
 
-            After = TextUtility.NormalizeNewLine(after);
+            After = after;
         }
 
         public string Before { get; }

@@ -49,7 +49,14 @@ namespace Roslynator.CodeGeneration
             get
             {
                 if (_refactorings.IsDefault)
-                    _refactorings = MetadataFile.ReadAllRefactorings(GetPath(@"Refactorings\Refactorings.xml"));
+                {
+                    IEnumerable<RefactoringDescriptor> refactorings = Directory
+                        .EnumerateFiles(GetPath("Refactorings"), "Refactorings.*.xml", SearchOption.TopDirectoryOnly)
+                        .Where(filePath => Path.GetFileName(filePath) != "Refactorings.Template.xml")
+                        .SelectMany(filePath => MetadataFile.ReadAllRefactorings(filePath));
+
+                    _refactorings = MetadataFile.ReadAllRefactorings(GetPath(@"Refactorings\Refactorings.xml")).AddRange(refactorings);
+                }
 
                 return _refactorings;
             }

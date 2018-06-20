@@ -144,6 +144,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceEqualsExpressionWithStringEquals = Prefix + "0124";
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = Prefix + "0125";
         public const string ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = Prefix + "0126";
+        public const string ReplaceForEachWithEnumerator = Prefix + "0206";
         public const string ReplaceForEachWithFor = Prefix + "0129";
         public const string ReplaceForEachWithForAndReverseLoop = Prefix + "0188";
         public const string ReplaceForWithForEach = Prefix + "0130";
