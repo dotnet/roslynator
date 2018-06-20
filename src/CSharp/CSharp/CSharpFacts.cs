@@ -920,5 +920,24 @@ namespace Roslynator.CSharp
                     return 0;
             }
         }
+
+        /// <summary>
+        /// Returns true if a declaration of the specified type can have virtual, abstract or override modifier.
+        /// </summary>
+        /// <param name="kind"></param>
+        internal static bool IsVirtualDeclaration(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.PropertyDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                case SyntaxKind.EventDeclaration:
+                case SyntaxKind.EventFieldDeclaration:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }

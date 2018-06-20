@@ -533,14 +533,19 @@ namespace Roslynator
             if (eventSymbol == null)
                 throw new ArgumentNullException(nameof(eventSymbol));
 
+            IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
+
+            if (overriddenEvent == null)
+                return null;
+
             while (true)
             {
-                IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
+                IEventSymbol symbol = overriddenEvent.OverriddenEvent;
 
-                if (overriddenEvent == null)
-                    return eventSymbol;
+                if (symbol == null)
+                    return overriddenEvent;
 
-                eventSymbol = overriddenEvent;
+                overriddenEvent = symbol;
             }
         }
 
@@ -881,14 +886,19 @@ namespace Roslynator
             if (methodSymbol == null)
                 throw new ArgumentNullException(nameof(methodSymbol));
 
+            IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+
+            if (overriddenMethod == null)
+                return null;
+
             while (true)
             {
-                IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+                IMethodSymbol symbol = overriddenMethod.OverriddenMethod;
 
-                if (overriddenMethod == null)
-                    return methodSymbol;
+                if (symbol == null)
+                    return overriddenMethod;
 
-                methodSymbol = overriddenMethod;
+                overriddenMethod = symbol;
             }
         }
 
@@ -1039,14 +1049,19 @@ namespace Roslynator
             if (propertySymbol == null)
                 throw new ArgumentNullException(nameof(propertySymbol));
 
+            IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+
+            if (overriddenProperty == null)
+                return null;
+
             while (true)
             {
-                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
+                IPropertySymbol symbol = overriddenProperty.OverriddenProperty;
 
-                if (overriddenProperty == null)
-                    return propertySymbol;
+                if (symbol == null)
+                    return overriddenProperty;
 
-                propertySymbol = overriddenProperty;
+                overriddenProperty = symbol;
             }
         }
 

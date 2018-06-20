@@ -1,44 +1,33 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
+using System.Collections.Immutable;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
+using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class SelectedMemberDeclarationsRefactoring
     {
-        public static void ComputeRefactoring(RefactoringContext context, NamespaceDeclarationSyntax namespaceDeclaration)
+        public static ImmutableDictionary<Accessibility, string> _accessiblityIdentifierMap = ImmutableDictionary.CreateRange(new KeyValuePair<Accessibility, string>[]
         {
-            if (MemberDeclarationListSelection.TryCreate(namespaceDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                ComputeRefactoring(context, selectedMembers);
-        }
+            new KeyValuePair<Accessibility, string>(Accessibility.Public, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Public))),
+            new KeyValuePair<Accessibility, string>(Accessibility.Internal, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Internal))),
+            new KeyValuePair<Accessibility, string>(Accessibility.Protected, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Protected))),
+            new KeyValuePair<Accessibility, string>(Accessibility.Private, EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, nameof(Accessibility.Private)))
+        });
 
-        public static void ComputeRefactoring(RefactoringContext context, ClassDeclarationSyntax classDeclaration)
-        {
-            if (MemberDeclarationListSelection.TryCreate(classDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                ComputeRefactoring(context, selectedMembers);
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, InterfaceDeclarationSyntax interfaceDeclaration)
-        {
-            if (MemberDeclarationListSelection.TryCreate(interfaceDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                ComputeRefactoring(context, selectedMembers);
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, StructDeclarationSyntax structDeclaration)
-        {
-            if (MemberDeclarationListSelection.TryCreate(structDeclaration, context.Span, out MemberDeclarationListSelection selectedMembers))
-                ComputeRefactoring(context, selectedMembers);
-        }
-
-        public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
+        public static async Task ComputeRefactoringAsync(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeAccessibility)
                 && !selectedMembers.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
             {
-                Accessibilities validAccessibilities = ChangeAccessibilityAnalysis.GetValidAccessibilities(selectedMembers, allowOverride: true);
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                Accessibilities validAccessibilities = ChangeAccessibilityAnalysis.GetValidAccessibilities(selectedMembers, semanticModel, context.CancellationToken);
 
                 if (validAccessibilities != Accessibilities.None)
                 {
@@ -82,7 +71,7 @@ namespace Roslynator.CSharp.Refactorings
                                 SemanticModel semanticModel = await context.Document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
                                 return await ChangeAccessibilityRefactoring.RefactorAsync(context.Document.Solution(), selectedMembers, accessibility, semanticModel, cancellationToken).ConfigureAwait(false);
                             },
-                            EquivalenceKey.Join(RefactoringIdentifiers.ChangeAccessibility, accessibility.ToString()));
+                            _accessiblityIdentifierMap[accessibility]);
                     }
                     else
                     {
