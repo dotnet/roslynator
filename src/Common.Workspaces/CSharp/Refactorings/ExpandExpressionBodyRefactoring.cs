@@ -1,11 +1,14 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -13,26 +16,45 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ExpandExpressionBodyRefactoring
     {
+        public const string Title = "Expand expression body";
+
         public static async Task<Document> RefactorAsync(
             Document document,
-            ArrowExpressionClauseSyntax arrowExpressionClause,
+            MemberDeclarationListSelection selectedMembers,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            IEnumerable<MemberDeclarationSyntax> newMembers = selectedMembers
+                .UnderlyingList
+                .ModifyRange(
+                    selectedMembers.FirstIndex,
+                    selectedMembers.Count,
+                    f => (MemberDeclarationSyntax)Refactor(CSharpUtility.GetExpressionBody(f), semanticModel, cancellationToken).WithFormatterAnnotation());
+
+            return await document.ReplaceMembersAsync(SyntaxInfo.MemberDeclarationListInfo(selectedMembers.Parent), newMembers, cancellationToken).ConfigureAwait(false);
+        }
+
+        public static async Task<Document> RefactorAsync(
+            Document document,
+            ArrowExpressionClauseSyntax expressionBody,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newNode = Refactor(arrowExpressionClause, semanticModel, cancellationToken).WithFormatterAnnotation();
+            SyntaxNode newNode = Refactor(expressionBody, semanticModel, cancellationToken).WithFormatterAnnotation();
 
-            return await document.ReplaceNodeAsync(arrowExpressionClause.Parent, newNode, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(expressionBody.Parent, newNode, cancellationToken).ConfigureAwait(false);
         }
 
         public static SyntaxNode Refactor(
-            ArrowExpressionClauseSyntax arrowExpressionClause,
+            ArrowExpressionClauseSyntax expressionBody,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            SyntaxNode node = arrowExpressionClause.Parent;
+            SyntaxNode node = expressionBody.Parent;
 
-            ExpressionSyntax expression = arrowExpressionClause.Expression;
+            ExpressionSyntax expression = expressionBody.Expression;
 
             switch (node.Kind())
             {

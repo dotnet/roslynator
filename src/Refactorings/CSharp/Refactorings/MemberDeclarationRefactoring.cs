@@ -4,7 +4,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -184,9 +183,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && context.SupportsCSharp6
-                && operatorDeclaration.Body != null
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body)
-                && UseExpressionBodiedMemberAnalysis.GetReturnExpression(operatorDeclaration.Body) != null)
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     UseExpressionBodiedMemberRefactoring.Title,
@@ -199,9 +196,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && context.SupportsCSharp6
-                && operatorDeclaration.Body != null
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorDeclaration.Body)
-                && UseExpressionBodiedMemberAnalysis.GetReturnExpression(operatorDeclaration.Body) != null)
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(operatorDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     UseExpressionBodiedMemberRefactoring.Title,

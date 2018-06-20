@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.Refactorings
                     && ExpandExpressionBodyAnalysis.IsFixable(arrowExpressionClause))
                 {
                     context.RegisterRefactoring(
-                        "Expand expression body",
+                        ExpandExpressionBodyRefactoring.Title,
                         cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
                         RefactoringIdentifiers.ExpandExpressionBody);
                 }

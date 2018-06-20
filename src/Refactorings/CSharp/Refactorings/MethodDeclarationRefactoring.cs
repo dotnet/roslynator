@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Options;
 using Microsoft.CodeAnalysis.Rename;
-using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
 using Roslynator.CSharp.Refactorings.MakeMemberVirtual;
 using Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty;
@@ -40,9 +39,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && context.SupportsCSharp6
-                && methodDeclaration.Body != null
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(methodDeclaration.Body)
-                && UseExpressionBodiedMemberAnalysis.GetExpression(methodDeclaration.Body) != null)
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(methodDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     UseExpressionBodiedMemberRefactoring.Title,

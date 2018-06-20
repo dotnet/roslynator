@@ -51,6 +51,13 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
+            if (context.IsAnyRefactoringEnabled(
+                RefactoringIdentifiers.UseExpressionBodiedMember,
+                RefactoringIdentifiers.ExpandExpressionBody))
+            {
+                InvertBodyAndExpressionBodyRefactoring.ComputeRefactoring(context, selectedMembers);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)
                 && !selectedMembers.Parent.IsKind(SyntaxKind.InterfaceDeclaration))
             {

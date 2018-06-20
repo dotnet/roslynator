@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -13,9 +12,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
                 && context.SupportsCSharp6
-                && constructorDeclaration.Body != null
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(constructorDeclaration.Body)
-                && UseExpressionBodiedMemberAnalysis.GetExpression(constructorDeclaration.Body) != null)
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(constructorDeclaration, context.Span))
             {
                 context.RegisterRefactoring(
                     UseExpressionBodiedMemberRefactoring.Title,

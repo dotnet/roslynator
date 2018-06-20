@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Expand expression body",
+                ExpandExpressionBodyRefactoring.Title,
                 cancellationToken => ExpandExpressionBodyRefactoring.RefactorAsync(context.Document, arrowExpressionClause, cancellationToken),
                 GetEquivalenceKey(DiagnosticIdentifiers.AvoidMultilineExpressionBody));
 

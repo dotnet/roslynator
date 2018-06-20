@@ -2,9 +2,7 @@
 
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -42,27 +40,13 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember)
-                && context.SupportsCSharp6)
+                && context.SupportsCSharp6
+                && UseExpressionBodiedMemberRefactoring.CanRefactor(accessor, context.Span))
             {
-                BlockSyntax body = accessor.Body;
-
-                if (body != null
-                    && (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(accessor)
-                        || context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(body))
-                    && !accessor.AttributeLists.Any()
-                    && ((accessor.IsKind(SyntaxKind.GetAccessorDeclaration))
-                        ? UseExpressionBodiedMemberAnalysis.GetReturnExpression(body) != null
-                        : UseExpressionBodiedMemberAnalysis.GetExpression(body) != null)
-                    && (accessor.Parent as AccessorListSyntax)?
-                        .Accessors
-                        .SingleOrDefault(shouldThrow: false)?
-                        .Kind() != SyntaxKind.GetAccessorDeclaration)
-                {
-                    context.RegisterRefactoring(
-                        UseExpressionBodiedMemberRefactoring.Title,
-                        ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, accessor, ct),
-                        RefactoringIdentifiers.UseExpressionBodiedMember);
-                }
+                context.RegisterRefactoring(
+                    UseExpressionBodiedMemberRefactoring.Title,
+                    ct => UseExpressionBodiedMemberRefactoring.RefactorAsync(context.Document, accessor, ct),
+                    RefactoringIdentifiers.UseExpressionBodiedMember);
             }
         }
     }
