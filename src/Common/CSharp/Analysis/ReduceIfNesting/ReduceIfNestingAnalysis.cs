@@ -364,6 +364,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
 
                         if (kind.Is(
                             SyntaxKind.NullLiteralExpression,
+                            SyntaxKind.DefaultLiteralExpression,
                             SyntaxKind.TrueLiteralExpression,
                             SyntaxKind.FalseLiteralExpression))
                         {

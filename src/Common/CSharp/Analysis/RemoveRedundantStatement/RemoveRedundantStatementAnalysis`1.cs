@@ -9,20 +9,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
     internal abstract class RemoveRedundantStatementAnalysis<TStatement> where TStatement : StatementSyntax
     {
-        public void Analyze(SyntaxNodeAnalysisContext context)
-        {
-            if (context.Node.SpanContainsDirectives())
-                return;
-
-            var statement = (TStatement)context.Node;
-
-            if (!IsFixable(statement))
-                return;
-
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantStatement, statement);
-        }
-
-        protected virtual bool IsFixable(TStatement statement)
+        public virtual bool IsFixable(TStatement statement)
         {
             if (!(statement.Parent is BlockSyntax block))
                 return false;
@@ -30,6 +17,69 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
             if (!block.Statements.IsLast(statement, ignoreLocalFunctions: true))
                 return false;
 
+            SyntaxNode parent = block.Parent;
+
+            StatementSyntax containingStatement = statement;
+
+            while (true)
+            {
+                if (parent == null)
+                    return false;
+
+                SyntaxKind kind = parent.Kind();
+
+                switch (kind)
+                {
+                    case SyntaxKind.IfStatement:
+                        {
+                            containingStatement = (StatementSyntax)parent;
+
+                            block = containingStatement.Parent as BlockSyntax;
+
+                            if (block == null)
+                                return false;
+
+                            if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
+                                return false;
+
+                            parent = block.Parent;
+                            break;
+                        }
+                    case SyntaxKind.ElseClause:
+                        {
+                            parent = ((ElseClauseSyntax)parent).GetTopmostIf();
+                            break;
+                        }
+                    case SyntaxKind.TryStatement:
+                        {
+                            containingStatement = (TryStatementSyntax)parent;
+
+                            block = containingStatement.Parent as BlockSyntax;
+
+                            if (block == null)
+                                return false;
+
+                            if (!block.Statements.IsLast(containingStatement, ignoreLocalFunctions: true))
+                                return false;
+
+                            parent = block.Parent;
+                            break;
+                        }
+                    case SyntaxKind.CatchClause:
+                        {
+                            parent = parent.Parent as TryStatementSyntax;
+                            break;
+                        }
+                    default:
+                        {
+                            return IsFixable(containingStatement, block, kind);
+                        }
+                }
+            }
+        }
+
+        internal bool IsFixable(StatementSyntax statement, BlockSyntax block)
+        {
             SyntaxNode parent = block.Parent;
 
             StatementSyntax containingStatement = statement;

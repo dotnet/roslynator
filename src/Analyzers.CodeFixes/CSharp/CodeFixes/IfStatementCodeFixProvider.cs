@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.ReduceIfNesting:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Reduce if nesting",
+                                "Invert if",
                                 cancellationToken =>
                                 {
                                     return ReduceIfNestingRefactoring.RefactorAsync(

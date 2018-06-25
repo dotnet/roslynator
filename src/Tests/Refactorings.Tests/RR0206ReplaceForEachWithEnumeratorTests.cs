@@ -24,7 +24,49 @@ class C
         {
             int x = item;
         }
+    }
 
+    int M(int value)
+    {
+        return value;
+    }
+}
+",
+@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        using (var en = Enumerable.Range(0, 1).GetEnumerator())
+        {
+            while (en.MoveNext())
+            {
+                int x = en.Current;
+            }
+        }
+    }
+
+    int M(int value)
+    {
+        return value;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
+        public async Task TestCodeRefactoring_WithUsing_EmbeddedStatement()
+        {
+            await VerifyRefactoringAsync(
+@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
         for[||]each (int item in Enumerable.Range(0, 1))
             M(item);
     }
@@ -42,14 +84,6 @@ class C
 {
     void M()
     {
-        using (var en2 = Enumerable.Range(0, 1).GetEnumerator())
-        {
-            while (en2.MoveNext())
-            {
-                int x = en2.Current;
-            }
-        }
-
         using (var en = Enumerable.Range(0, 1).GetEnumerator())
         {
             while (en.MoveNext())
@@ -93,6 +127,7 @@ class C
     void M()
     {
         SyntaxList<SyntaxNode> nodes;
+
         var en = nodes.GetEnumerator();
         while (en.MoveNext())
         {

@@ -190,7 +190,7 @@ namespace Roslynator
 
                 if (separatorCount == count - 1)
                 {
-                    return list.ReplaceAt(1, list[1].WithTrailingTrivia(node.GetTrailingTrivia()));
+                    return list.ReplaceAt(count - 1, list[count - 1].WithTrailingTrivia(node.GetTrailingTrivia()));
                 }
                 else
                 {
@@ -429,7 +429,7 @@ namespace Roslynator
 
             return list
                 .ReplaceAt(0, list[0].WithLeadingTrivia(node.GetLeadingTrivia()))
-                .ReplaceAt(1, list[1].WithTrailingTrivia(node.GetTrailingTrivia()));
+                .ReplaceAt(count - 1, list[count - 1].WithTrailingTrivia(node.GetTrailingTrivia()));
         }
 
         /// <summary>

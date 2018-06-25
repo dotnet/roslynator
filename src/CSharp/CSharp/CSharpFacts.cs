@@ -756,6 +756,29 @@ namespace Roslynator.CSharp
                 SyntaxKind.TypeConstraint);
         }
 
+        //TODO: make public
+        /// <summary>
+        /// Returns true if a syntax of the specified kind is a literal expression.
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        internal static bool IsLiteralExpression(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.NumericLiteralExpression:
+                case SyntaxKind.StringLiteralExpression:
+                case SyntaxKind.CharacterLiteralExpression:
+                case SyntaxKind.TrueLiteralExpression:
+                case SyntaxKind.FalseLiteralExpression:
+                case SyntaxKind.NullLiteralExpression:
+                case SyntaxKind.DefaultLiteralExpression:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         internal static SyntaxKind GetCompoundAssignmentKind(SyntaxKind binaryExpressionKind)
         {
             switch (binaryExpressionKind)

@@ -6,8 +6,14 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
-    internal class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedundantStatementAnalysis<YieldStatementSyntax>
+    internal sealed class RemoveRedundantYieldBreakStatementAnalysis : RemoveRedundantStatementAnalysis<YieldStatementSyntax>
     {
+        public static RemoveRedundantYieldBreakStatementAnalysis Instance { get; } = new RemoveRedundantYieldBreakStatementAnalysis();
+
+        private RemoveRedundantYieldBreakStatementAnalysis()
+        {
+        }
+
         protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
         {
             if (!parentKind.Is(

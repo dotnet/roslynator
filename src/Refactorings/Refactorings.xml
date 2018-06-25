@@ -1211,11 +1211,11 @@ i--;]]></After>
       <Syntax>empty line between member declarations</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0162" Identifier="SwapIfElse" Title="Swap if-else">
+  <Refactoring Id="RR0162" Identifier="InvertIfElse" Title="Invert if-else">
     <Syntaxes>
-      <Syntax>if statement</Syntax>
+      <Syntax>if-else statement</Syntax>
     </Syntaxes>
-    <Span>if keyword or selected if statement</Span>
+    <Span>if keyword</Span>
   </Refactoring>
   <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="UncommentSingleLineComment">
     <Syntaxes>
@@ -1400,7 +1400,7 @@ i--;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0189" Identifier="ReduceIfNesting" Title="Reduce if nesting">
+  <Refactoring Id="RR0189" Identifier="InvertIf" Title="Invert if">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1409,16 +1409,9 @@ i--;]]></After>
       <Sample>
         <Before><![CDATA[if (condition1)
 {
-    Foo1();
-
     if (condition2)
     {
-        Foo2();
-
-        if (condition3)
-        {
-            Foo3();
-        }
+        Foo();
     }
 }]]></Before>
         <After><![CDATA[if (!condition1)
@@ -1426,23 +1419,34 @@ i--;]]></After>
     return;
 }
 
-Foo1();
+if (!condition2)
+{
+    return;
+}
+
+Foo();]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (!condition1)
+{
+    return;
+}
 
 if (!condition2)
 {
     return;
 }
 
-Foo2();
-
-if (!condition3)
+Foo();]]></Before>
+        <After><![CDATA[if (condition1)
 {
-    return;
-}
-
-Foo3();]]></After>
+    if (condition2)
+    {
+        Foo();
+    }
+}]]></After>
       </Sample>
-    </Samples>
+  </Samples>
   </Refactoring>
   <Refactoring Id="RR0190" Identifier="SplitIfElse" Title="Split if-else">
     <Syntaxes>

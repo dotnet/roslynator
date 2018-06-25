@@ -70,8 +70,10 @@ namespace Roslynator.CSharp.Refactorings
 
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, IfStatementSyntax ifStatement)
         {
+            SyntaxToken ifKeyword = ifStatement.IfKeyword;
+
             if (ifStatement.IsTopmostIf()
-                && (context.Span.IsEmptyAndContainedInSpan(ifStatement.IfKeyword) || context.Span.IsBetweenSpans(ifStatement)))
+                && (context.Span.IsEmptyAndContainedInSpan(ifKeyword) || context.Span.IsBetweenSpans(ifStatement)))
             {
                 if (context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
@@ -90,14 +92,17 @@ namespace Roslynator.CSharp.Refactorings
                         {
                             context.RegisterRefactoring(
                                 analysis.Title,
-                                cancellationToken => IfRefactoring.RefactorAsync(context.Document, analysis, cancellationToken),
-                                equivalenceKey: refactoringId);
+                                ct => IfRefactoring.RefactorAsync(context.Document, analysis, ct),
+                                refactoringId);
                         }
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapIfElse))
-                    SwapIfElseRefactoring.ComputeRefactoring(context, ifStatement);
+                if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.InvertIf, RefactoringIdentifiers.InvertIfElse)
+                    & context.Span.IsEmptyAndContainedInSpan(ifKeyword))
+                {
+                    InvertIfRefactoring.ComputeRefactoring(context, ifStatement);
+                }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch))
                     await ReplaceIfWithSwitchRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
@@ -106,14 +111,14 @@ namespace Roslynator.CSharp.Refactorings
                     SplitIfStatementRefactoring.ComputeRefactoring(context, ifStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfWithParentIf)
-                    && context.Span.IsEmptyAndContainedInSpan(ifStatement.IfKeyword))
+                    && context.Span.IsEmptyAndContainedInSpan(ifKeyword))
                 {
                     MergeIfWithParentIfRefactoring.ComputeRefactoring(context, ifStatement);
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReduceIfNesting)
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(ifStatement.IfKeyword))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertIf)
+                && context.Span.IsEmptyAndContainedInSpan(ifKeyword))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -129,22 +134,22 @@ namespace Roslynator.CSharp.Refactorings
                 if (analysis.Success)
                 {
                     context.RegisterRefactoring(
-                        "Reduce if nesting",
-                        cancellationToken => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, analysis.JumpKind, false, cancellationToken),
-                        RefactoringIdentifiers.ReduceIfNesting);
+                        "Invert if",
+                        ct => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, analysis.JumpKind, false, ct),
+                        RefactoringIdentifiers.InvertIf);
 
                     if (ReduceIfNestingAnalysis.IsFixableRecursively(ifStatement, analysis.JumpKind))
                     {
                         context.RegisterRefactoring(
-                            "Reduce if nesting (recursively)",
-                            cancellationToken => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, analysis.JumpKind, true, cancellationToken),
-                            EquivalenceKey.Join(RefactoringIdentifiers.ReduceIfNesting, "Recursive"));
+                            "Invert if (recursively)",
+                            ct => ReduceIfNestingRefactoring.RefactorAsync(context.Document, ifStatement, analysis.JumpKind, true, ct),
+                            EquivalenceKey.Join(RefactoringIdentifiers.InvertIf, "Recursive"));
                     }
                 }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfElse)
-                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(ifStatement.IfKeyword))
+                && context.Span.IsEmptyAndContainedInSpan(ifKeyword))
             {
                 SplitIfElseRefactoring.ComputeRefactoring(context, ifStatement);
             }

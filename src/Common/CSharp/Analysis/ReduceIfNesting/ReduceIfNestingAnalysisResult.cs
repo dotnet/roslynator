@@ -13,6 +13,7 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
             Debug.Assert(jumpKind == SyntaxKind.None
                 || jumpKind == SyntaxKind.ReturnStatement
                 || jumpKind == SyntaxKind.NullLiteralExpression
+                || jumpKind == SyntaxKind.DefaultLiteralExpression
                 || jumpKind == SyntaxKind.FalseLiteralExpression
                 || jumpKind == SyntaxKind.TrueLiteralExpression
                 || jumpKind == SyntaxKind.BreakStatement

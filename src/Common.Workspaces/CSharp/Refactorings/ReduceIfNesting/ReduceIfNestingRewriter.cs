@@ -46,6 +46,8 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                         return ReturnStatement(FalseLiteralExpression());
                     case SyntaxKind.TrueLiteralExpression:
                         return ReturnStatement(TrueLiteralExpression());
+                    case SyntaxKind.DefaultLiteralExpression:
+                        return ReturnStatement(DefaultLiteralExpression());
                     case SyntaxKind.BreakStatement:
                         return BreakStatement();
                     case SyntaxKind.ContinueStatement:

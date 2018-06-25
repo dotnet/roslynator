@@ -5,8 +5,14 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
-    internal class RemoveRedundantContinueStatementAnalysis : RemoveRedundantStatementAnalysis<ContinueStatementSyntax>
+    internal sealed class RemoveRedundantContinueStatementAnalysis : RemoveRedundantStatementAnalysis<ContinueStatementSyntax>
     {
+        public static RemoveRedundantContinueStatementAnalysis Instance { get; } = new RemoveRedundantContinueStatementAnalysis();
+
+        private RemoveRedundantContinueStatementAnalysis()
+        {
+        }
+
         protected override bool IsFixable(StatementSyntax statement, BlockSyntax block, SyntaxKind parentKind)
         {
             return CSharpFacts.IsIterationStatement(parentKind);

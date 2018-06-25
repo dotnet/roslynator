@@ -5,9 +5,16 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
-    internal class RemoveRedundantReturnStatementAnalysis : RemoveRedundantStatementAnalysis<ReturnStatementSyntax>
+    internal sealed class RemoveRedundantReturnStatementAnalysis : RemoveRedundantStatementAnalysis<ReturnStatementSyntax>
     {
-        protected override bool IsFixable(ReturnStatementSyntax statement)
+        public static RemoveRedundantReturnStatementAnalysis Instance { get; } = new RemoveRedundantReturnStatementAnalysis();
+
+        private RemoveRedundantReturnStatementAnalysis()
+        {
+
+        }
+
+        public override bool IsFixable(ReturnStatementSyntax statement)
         {
             return statement.Expression == null
                 && base.IsFixable(statement);
