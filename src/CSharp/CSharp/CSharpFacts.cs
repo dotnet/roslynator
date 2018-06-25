@@ -779,6 +779,53 @@ namespace Roslynator.CSharp
             }
         }
 
+        //TODO: make public
+        /// <summary>
+        /// Returns true if a syntax of the specified kind is a statement (which includes <see cref="SyntaxKind.Block"/>).
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        internal static bool IsStatement(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.Block:
+                case SyntaxKind.LocalDeclarationStatement:
+                case SyntaxKind.ExpressionStatement:
+                case SyntaxKind.EmptyStatement:
+                case SyntaxKind.LabeledStatement:
+                case SyntaxKind.GotoStatement:
+                case SyntaxKind.GotoCaseStatement:
+                case SyntaxKind.GotoDefaultStatement:
+                case SyntaxKind.BreakStatement:
+                case SyntaxKind.ContinueStatement:
+                case SyntaxKind.ReturnStatement:
+                case SyntaxKind.YieldReturnStatement:
+                case SyntaxKind.YieldBreakStatement:
+                case SyntaxKind.ThrowStatement:
+                case SyntaxKind.WhileStatement:
+                case SyntaxKind.DoStatement:
+                case SyntaxKind.ForStatement:
+                case SyntaxKind.ForEachStatement:
+                case SyntaxKind.UsingStatement:
+                case SyntaxKind.FixedStatement:
+                case SyntaxKind.CheckedStatement:
+                case SyntaxKind.UncheckedStatement:
+                case SyntaxKind.UnsafeStatement:
+                case SyntaxKind.LockStatement:
+                case SyntaxKind.IfStatement:
+                case SyntaxKind.SwitchStatement:
+                case SyntaxKind.TryStatement:
+                case SyntaxKind.LocalFunctionStatement:
+                case SyntaxKind.GlobalStatement:
+                case SyntaxKind.ForEachVariableStatement:
+                    return true;
+            }
+
+            Debug.Assert(!kind.ToString().EndsWith("Statement", StringComparison.Ordinal), kind.ToString());
+            return false;
+        }
+
         internal static SyntaxKind GetCompoundAssignmentKind(SyntaxKind binaryExpressionKind)
         {
             switch (binaryExpressionKind)

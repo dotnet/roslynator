@@ -2471,5 +2471,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddParagraphToDocumentationComment}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1227</summary>
+        public static readonly DiagnosticDescriptor ValidateArgumentsCorrectly = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ValidateArgumentsCorrectly, 
+            title:              "Validate arguments correctly.", 
+            messageFormat:      "Validate arguments correctly.", 
+            category:           DiagnosticCategories.Design, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ValidateArgumentsCorrectly}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

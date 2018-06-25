@@ -4964,4 +4964,45 @@ class Foo
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="ValidateArgumentsCorrectly">
+    <Id>RCS1227</Id>
+    <Title>Validate arguments correctly.</Title>
+    <MessageFormat>Validate arguments correctly.</MessageFormat>
+    <Category>Design</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary>
+      An iterator method (a method that contains `yield`) will not validate arguments until the caller begins to enumerate the result items.
+
+      To ensure that arguments are validated immediately (when the method is called), move
+      the iterator to a separate method (local function).
+    </Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[IEnumerable<object> Foo(IEnumerable<object> items)
+{
+    if (items == null)
+        throw new ArgumentNullException(nameof(items));
+
+    foreach (object item in items) // RCSX002
+        yield return item;
+}]]></Before>
+        <After><![CDATA[IEnumerable<object> Foo(IEnumerable<object> items)
+{
+    if (items == null)
+        throw new ArgumentNullException(nameof(items));
+
+    return FooIterator();
+
+    IEnumerable<object> FooIterator()
+    {
+        foreach (object item in items)
+            yield return item;    
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

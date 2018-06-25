@@ -66,8 +66,11 @@ namespace Roslynator.CSharp.CodeFixes
             if (bodyOrExpressionBody == null)
                 return;
 
-            if (ContainsYieldWalker.ContainsYield(bodyOrExpressionBody))
+            if (bodyOrExpressionBody is BlockSyntax body
+                && body.ContainsYield())
+            {
                 return;
+            }
 
             SemanticModel semanticModel = await context.Document.GetSemanticModelAsync().ConfigureAwait(false);
 

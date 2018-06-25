@@ -1,8 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 {
@@ -23,12 +24,30 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
                 return false;
             }
 
-            if (object.ReferenceEquals(block.Statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), statement))
+            SyntaxList<StatementSyntax> statements = block.Statements;
+
+            if (object.ReferenceEquals(statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), statement))
                 return false;
 
-            TextSpan span = TextSpan.FromBounds(block.SpanStart, statement.FullSpan.Start);
+            ContainsYieldWalker walker = ContainsYieldWalker.Cache.GetInstance();
 
-            return block.ContainsYield(span);
+            bool success = false;
+
+            int index = statements.IndexOf(statement);
+
+            for (int i = 0; i < index; i++)
+            {
+                walker.VisitStatement(statements[i]);
+
+                success = walker.YieldStatement != null;
+
+                if (success)
+                    break;
+            }
+
+            ContainsYieldWalker.Cache.Free(walker);
+
+            return success;
         }
     }
 }
