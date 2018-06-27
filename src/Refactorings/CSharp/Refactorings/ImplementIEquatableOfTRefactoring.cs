@@ -56,11 +56,16 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1").Construct(classSymbol);
+            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1");
+
+            if (equatableSymbol == null)
+                return;
+
+            equatableSymbol = equatableSymbol.Construct(classSymbol);
 
             context.RegisterRefactoring(
                 GetTitle(equatableSymbol, semanticModel, classDeclaration.SpanStart),
-                f => RefactorAsync(context.Document, classDeclaration, classSymbol, equatableSymbol, semanticModel, f),
+                ct => RefactorAsync(context.Document, classDeclaration, classSymbol, equatableSymbol, semanticModel, ct),
                 RefactoringIdentifiers.ImplementIEquatableOfT);
         }
 
@@ -102,11 +107,16 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1").Construct(typeSymbol);
+            INamedTypeSymbol equatableSymbol = semanticModel.GetTypeByMetadataName("System.IEquatable`1");
+
+            if (equatableSymbol == null)
+                return;
+
+            equatableSymbol = equatableSymbol.Construct(typeSymbol);
 
             context.RegisterRefactoring(
                 GetTitle(equatableSymbol, semanticModel, structDeclaration.SpanStart),
-                f => RefactorAsync(context.Document, structDeclaration, typeSymbol, equatableSymbol, semanticModel, f),
+                ct => RefactorAsync(context.Document, structDeclaration, typeSymbol, equatableSymbol, semanticModel, ct),
                 RefactoringIdentifiers.ImplementIEquatableOfT);
         }
 
