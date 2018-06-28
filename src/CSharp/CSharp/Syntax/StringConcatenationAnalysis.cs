@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Syntax
         {
             var flags = StringConcatenationFlags.None;
 
-            foreach (ExpressionSyntax expression in stringConcatenation.Expressions())
+            foreach (ExpressionSyntax expression in stringConcatenation.AsChain().Reverse())
             {
                 StringLiteralExpressionInfo stringLiteral = SyntaxInfo.StringLiteralExpressionInfo(expression);
 

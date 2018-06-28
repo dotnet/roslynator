@@ -75,13 +75,17 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression,
             CancellationToken cancellationToken)
         {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            BinaryExpressionSyntax binaryExpression = concatenationInfo.BinaryExpression;
+
             if (concatenationInfo.Span.HasValue)
             {
                 TextSpan span = concatenationInfo.Span.Value;
 
-                int start = concatenationInfo.BinaryExpression.SpanStart;
+                int start = binaryExpression.SpanStart;
 
-                string s = concatenationInfo.BinaryExpression.ToString();
+                string s = binaryExpression.ToString();
 
                 s = s.Remove(span.Start - start)
                     + expression
@@ -91,10 +95,10 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             expression = expression
-                .WithTriviaFrom(concatenationInfo.BinaryExpression)
+                .WithTriviaFrom(binaryExpression)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(concatenationInfo.BinaryExpression, expression, cancellationToken);
+            return document.ReplaceNodeAsync(binaryExpression, expression, cancellationToken);
         }
     }
 }

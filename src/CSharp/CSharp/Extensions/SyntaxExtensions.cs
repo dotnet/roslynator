@@ -136,6 +136,13 @@ namespace Roslynator.CSharp
         }
         #endregion BaseArgumentListSyntax
 
+        #region BinaryExpressionSyntax
+        public static ExpressionChain AsChain(this BinaryExpressionSyntax binaryExpression, TextSpan? span = null)
+        {
+            return new ExpressionChain(binaryExpression, span);
+        }
+        #endregion BinaryExpressionSyntax
+
         #region CastExpressionSyntax
         /// <summary>
         /// The absolute span of the parentheses, not including its leading and trailing trivia.

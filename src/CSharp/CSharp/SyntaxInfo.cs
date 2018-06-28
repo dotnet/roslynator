@@ -1050,12 +1050,19 @@ namespace Roslynator.CSharp
             return Syntax.StringConcatenationExpressionInfo.Create(binaryExpression, semanticModel, cancellationToken);
         }
 
-        internal static StringConcatenationExpressionInfo StringConcatenationExpressionInfo(
-            in BinaryExpressionSelection binaryExpressionSelection,
+        /// <summary>
+        /// Creates a new <see cref="Syntax.StringConcatenationExpressionInfo"/> from the specified expression chain.
+        /// </summary>
+        /// <param name="expressionChain"></param>
+        /// <param name="semanticModel"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static StringConcatenationExpressionInfo StringConcatenationExpressionInfo(
+            in ExpressionChain expressionChain,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            return Syntax.StringConcatenationExpressionInfo.Create(binaryExpressionSelection, semanticModel, cancellationToken);
+            return Syntax.StringConcatenationExpressionInfo.Create(expressionChain, semanticModel, cancellationToken);
         }
 
         /// <summary>

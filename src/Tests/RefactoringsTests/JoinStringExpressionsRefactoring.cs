@@ -4,7 +4,7 @@
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    internal static class MergeStringExpressionsRefactoring
+    internal static class JoinStringExpressionsRefactoring
     {
         public static void Foo(string s)
         {

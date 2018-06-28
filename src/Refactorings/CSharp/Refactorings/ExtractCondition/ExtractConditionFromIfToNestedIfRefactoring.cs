@@ -31,8 +31,7 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
             IfStatementSyntax newIfStatement = RemoveExpressionFromCondition(ifStatement, condition, expression);
 
-            IfStatementSyntax newNode = AddNestedIf(newIfStatement, expression)
-                .WithFormatterAnnotation();
+            IfStatementSyntax newNode = AddNestedIf(newIfStatement, expression).WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
         }
@@ -41,15 +40,14 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             Document document,
             IfStatementSyntax ifStatement,
             BinaryExpressionSyntax condition,
-            in BinaryExpressionSelection binaryExpressionSelection,
+            in ExpressionChain expressionChain,
             CancellationToken cancellationToken)
         {
-            IfStatementSyntax newNode = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSelection);
+            IfStatementSyntax newNode = RemoveExpressionsFromCondition(ifStatement, condition, expressionChain);
 
-            ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSelection.ToString());
+            ExpressionSyntax expression = SyntaxFactory.ParseExpression(expressionChain.ToString());
 
-            newNode = AddNestedIf(newNode, expression)
-                .WithFormatterAnnotation();
+            newNode = AddNestedIf(newNode, expression).WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken);
         }

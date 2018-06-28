@@ -43,15 +43,15 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             Document document,
             in StatementListInfo statementsInfo,
             BinaryExpressionSyntax condition,
-            in BinaryExpressionSelection binaryExpressionSelection,
+            in ExpressionChain expressionChain,
             CancellationToken cancellationToken)
         {
             var ifStatement = (IfStatementSyntax)condition.Parent;
 
-            IfStatementSyntax newIfStatement = RemoveExpressionsFromCondition(ifStatement, condition, binaryExpressionSelection)
+            IfStatementSyntax newIfStatement = RemoveExpressionsFromCondition(ifStatement, condition, expressionChain)
                 .WithFormatterAnnotation();
 
-            ExpressionSyntax expression = SyntaxFactory.ParseExpression(binaryExpressionSelection.ToString());
+            ExpressionSyntax expression = SyntaxFactory.ParseExpression(expressionChain.ToString());
 
             SyntaxNode newNode = AddNextIf(statementsInfo, ifStatement, newIfStatement, expression);
 
@@ -64,7 +64,8 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
             IfStatementSyntax newIfStatement,
             ExpressionSyntax expression)
         {
-            IfStatementSyntax nextIfStatement = ifStatement.WithCondition(expression)
+            IfStatementSyntax nextIfStatement = ifStatement
+                .WithCondition(expression)
                 .WithFormatterAnnotation();
 
             SyntaxList<StatementSyntax> statements = statementsInfo.Statements;

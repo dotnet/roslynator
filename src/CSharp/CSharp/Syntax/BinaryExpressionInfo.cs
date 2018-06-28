@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -65,114 +64,28 @@ namespace Roslynator.CSharp.Syntax
         }
 
         /// <summary>
-        /// Returns expressions of this binary expression, including expressions of nested binary expressions of the same kind.
+        /// Returns expressions of this binary expression, including expressions of nested binary expressions of the same kind as parent binary expression.
         /// </summary>
         /// <param name="leftToRight">If true expressions are enumerated as they are displayed in the source code.</param>
         /// <returns></returns>
+        [Obsolete("This method is obsolete. Use method 'AsChain' instead.")]
         public IEnumerable<ExpressionSyntax> Expressions(bool leftToRight = false)
         {
             ThrowInvalidOperationIfNotInitialized();
 
-            BinaryExpressionSyntax binaryExpression = BinaryExpression;
-            SyntaxKind kind = Kind;
-
-            return (leftToRight) ? EnumerateLeftToRight() : Enumerate();
-
-            IEnumerable<ExpressionSyntax> Enumerate()
+            if (leftToRight)
             {
-                while (true)
-                {
-                    ExpressionSyntax right = binaryExpression.Right;
-
-                    if (right != null)
-                        yield return right;
-
-                    ExpressionSyntax left = binaryExpression.Left;
-
-                    if (left == null)
-                        break;
-
-                    if (left.Kind() == kind)
-                    {
-                        binaryExpression = (BinaryExpressionSyntax)left;
-                    }
-                    else
-                    {
-                        yield return left;
-                        break;
-                    }
-                }
+                return AsChain();
             }
-
-            IEnumerable<ExpressionSyntax> EnumerateLeftToRight()
+            else
             {
-                int count = 0;
-
-                while (true)
-                {
-                    ExpressionSyntax left2 = binaryExpression.Left;
-
-                    if (left2?.Kind() != kind)
-                        break;
-
-                    binaryExpression = (BinaryExpressionSyntax)left2;
-                    count++;
-                }
-
-                ExpressionSyntax left = binaryExpression.Left;
-
-                if (left != null)
-                    yield return left;
-
-                while (true)
-                {
-                    ExpressionSyntax right = binaryExpression.Right;
-
-                    if (right != null)
-                        yield return right;
-
-                    if (count > 0)
-                    {
-                        binaryExpression = binaryExpression.FirstAncestor<BinaryExpressionSyntax>(ascendOutOfTrivia: false);
-                        count--;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
+                return AsChain().Reverse();
             }
         }
 
-        internal bool IsStringConcatenation(SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
+        public ExpressionChain AsChain()
         {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            ThrowInvalidOperationIfNotInitialized();
-
-            BinaryExpressionSyntax binaryExpression = BinaryExpression;
-
-            while (true)
-            {
-                if (CSharpUtility.IsStringConcatenation(binaryExpression, semanticModel, cancellationToken))
-                {
-                    ExpressionSyntax left = binaryExpression.Left;
-
-                    if (left.IsKind(SyntaxKind.AddExpression))
-                    {
-                        binaryExpression = (BinaryExpressionSyntax)left;
-                    }
-                    else
-                    {
-                        return true;
-                    }
-                }
-                else
-                {
-                    return false;
-                }
-            }
+            return new ExpressionChain(BinaryExpression);
         }
 
         internal static BinaryExpressionInfo Create(
