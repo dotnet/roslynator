@@ -15,6 +15,7 @@ namespace Roslynator
         public static readonly MetadataName System_ComponentModel_INotifyPropertyChanged = new MetadataName(Namespaces.System_ComponentModel, "INotifyPropertyChanged");
         public static readonly MetadataName System_Diagnostics_Debug = new MetadataName(Namespaces.System_Diagnostics, "Debug");
         public static readonly MetadataName System_Diagnostics_DebuggerDisplayAttribute = new MetadataName(Namespaces.System_Diagnostics, "DebuggerDisplayAttribute");
+        public static readonly MetadataName System_Enum = new MetadataName(Namespaces.System, "Enum");
         public static readonly MetadataName System_EventArgs = new MetadataName(Namespaces.System, "EventArgs");
         public static readonly MetadataName System_EventHandler = new MetadataName(Namespaces.System, "EventHandler");
         public static readonly MetadataName System_FlagsAttribute = new MetadataName(Namespaces.System, "FlagsAttribute");

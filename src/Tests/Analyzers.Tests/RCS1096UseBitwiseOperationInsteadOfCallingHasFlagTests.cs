@@ -166,5 +166,26 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        public async Task TestNoDiagnostic_TypeIsSystemEnum()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var @enum = default(Enum);
+        var options = StringSplitOptions.None;
+
+        if (options.HasFlag(@enum)) { }
+
+        if (@enum.HasFlag(options)) { }
+    }
+}
+");
+        }
     }
 }
