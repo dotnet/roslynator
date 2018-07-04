@@ -173,6 +173,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReverseForLoop = Prefix + "0152";
         public const string SimplifyIf = Prefix + "0153";
         public const string SimplifyLambdaExpression = Prefix + "0154";
+        public const string SortCaseLabels = Prefix + "0207";
         public const string SortMemberDeclarations = Prefix + "0155";
         public const string SplitAttributes = Prefix + "0156";
         public const string SplitDeclarationAndInitialization = Prefix + "0194";

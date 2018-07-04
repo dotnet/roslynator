@@ -18,6 +18,13 @@ namespace Roslynator.CSharp.Refactorings
                 await SelectedStatementsRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortCaseLabels)
+                && SyntaxListSelection<SwitchLabelSyntax>.TryCreate(switchSection.Labels, context.Span, out SyntaxListSelection<SwitchLabelSyntax> selectedLabels)
+                && selectedLabels.Count > 1)
+            {
+                SortCaseLabelsRefactoring.ComputeRefactoring(context, selectedLabels);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitSwitchLabels))
                 SplitSwitchLabelsRefactoring.ComputeRefactoring(context, switchSection);
 

@@ -1810,4 +1810,40 @@ private object z;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0207" Identifier="SortCaseLabels" Title="Sort case labels">
+    <Syntaxes>
+      <Syntax>selected case labels with string literal or enum field</Syntax>
+    </Syntaxes>
+    <Span></Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[bool Foo(string s)
+{
+    switch (s)
+    {
+        case "d":
+        case "b":
+        case "a":
+        case "c":
+            return true;
+        default:
+            return false;
+    }
+}]]></Before>
+        <After><![CDATA[bool Foo(string s)
+{
+    switch (s)
+    {
+        case "a":
+        case "b":
+        case "c":
+        case "d":
+            return true;
+        default:
+            return false;
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>
