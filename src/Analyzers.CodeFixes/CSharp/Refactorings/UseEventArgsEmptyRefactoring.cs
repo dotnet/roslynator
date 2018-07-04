@@ -11,7 +11,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseEventArgsEmptyRefactoring
     {
-        public static async Task<Document> RefactorAsync(
+        public static Task<Document> RefactorAsync(
             Document document,
             ObjectCreationExpressionSyntax objectCreationExpression,
             CancellationToken cancellationToken)
@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
 
             newNode = newNode.WithTriviaFrom(objectCreationExpression);
 
-            return await document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(objectCreationExpression, newNode, cancellationToken);
         }
     }
 }

@@ -101,10 +101,25 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxList<MemberDeclarationSyntax> members = info.Members;
 
             MemberDeclarationSyntax member = members[index];
+            MemberDeclarationSyntax nextMember = members[index + 1];
 
-            SyntaxList<MemberDeclarationSyntax> newMembers = members.Replace(member, members[index + 1]);
+            if (index == 0
+                && !member.GetLeadingTrivia().FirstOrDefault().IsEndOfLineTrivia())
+            {
+                SyntaxTriviaList leading = nextMember.GetLeadingTrivia();
 
-            newMembers = newMembers.Replace(newMembers[index + 1], member);
+                SyntaxTrivia trivia = leading.FirstOrDefault();
+
+                if (trivia.IsEndOfLineTrivia())
+                {
+                    member = member.PrependToLeadingTrivia(trivia);
+                    nextMember = nextMember.WithLeadingTrivia(leading.Remove(trivia));
+                }
+            }
+
+            SyntaxList<MemberDeclarationSyntax> newMembers = members
+                .ReplaceAt(index, nextMember)
+                .ReplaceAt(index + 1, member);
 
             return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
         }

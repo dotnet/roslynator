@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Text.RegularExpressions;
 
 namespace AddCodeFileHeader
 {
@@ -42,7 +41,7 @@ namespace AddCodeFileHeader
 
                     string s = File.ReadAllText(filePath, Encoding.UTF8);
 
-                    s = Header + "\r\n" + "\r\n" + s.TrimStart();
+                    s = Header + "\r\n\r\n" + s.TrimStart();
 
                     File.WriteAllText(filePath, s, Encoding.UTF8);
                 }

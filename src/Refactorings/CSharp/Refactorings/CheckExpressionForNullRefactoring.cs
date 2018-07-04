@@ -43,8 +43,13 @@ namespace Roslynator.CSharp.Refactorings
             if (!assignmentInfo.Success)
                 return false;
 
-            if (assignmentInfo.Right.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultExpression))
+            if (assignmentInfo.Right.IsKind(
+                SyntaxKind.NullLiteralExpression,
+                SyntaxKind.DefaultLiteralExpression,
+                SyntaxKind.DefaultExpression))
+            {
                 return false;
+            }
 
             if (CannotBeEqualToNull(assignmentInfo.Right))
                 return false;

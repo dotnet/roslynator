@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator
 {
     /// <summary>
-    /// Represents selected nodes in a <see cref="SyntaxListSelection{TNode}"/>.
+    /// Represents selected nodes in a <see cref="SyntaxList{TNode}"/>.
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]

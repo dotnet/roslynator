@@ -185,11 +185,9 @@ namespace Roslynator.CSharp.Refactorings
                     List<SwitchLabelSyntax> labels = CreateSwitchLabels(condition, new List<SwitchLabelSyntax>());
                     labels.Reverse();
 
-                    SwitchSectionSyntax section = SwitchSection(
+                    yield return SwitchSection(
                         List(labels),
                         AddBreakStatementIfNecessary(ifStatement.Statement));
-
-                    yield return section;
                 }
                 else
                 {

@@ -105,10 +105,6 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             }
                         }
                     }
-                    else
-                    {
-                        Debug.Fail(symbolInfo.CandidateReason.ToString());
-                    }
                 }
             }
         }

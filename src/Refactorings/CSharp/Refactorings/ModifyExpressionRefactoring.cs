@@ -151,8 +151,10 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol destinationType,
             SemanticModel semanticModel)
         {
+            string typeDisplayString = SymbolDisplay.ToDisplayString(destinationType, SymbolDisplayFormats.Default);
+
             context.RegisterRefactoring(
-                $"Cast to '{SymbolDisplay.ToDisplayString(destinationType, SymbolDisplayFormats.Default)}'",
+                $"Cast to '{typeDisplayString}'",
                 cancellationToken =>
                 {
                     return AddCastExpressionRefactoring.RefactorAsync(
@@ -162,7 +164,7 @@ namespace Roslynator.CSharp.Refactorings
                         semanticModel,
                         cancellationToken);
                 },
-                RefactoringIdentifiers.AddCastExpression);
+                EquivalenceKey.Join(RefactoringIdentifiers.AddCastExpression, typeDisplayString));
         }
     }
 }
