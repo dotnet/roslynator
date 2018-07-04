@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReturnTaskInsteadOfReturningNullAnalyzer : BaseDiagnosticAnalyzer
+    public class ReturnTaskInsteadOfNullAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -347,8 +347,13 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 
             walker.VisitBlock(body);
 
-            foreach (ExpressionSyntax expression in ReturnTaskInsteadOfNullWalkerCache.GetExpressionsAndFree(walker))
-                ReportDiagnostic(context, expression);
+            if (walker.Expressions?.Count > 0)
+            {
+                foreach (ExpressionSyntax expression in walker.Expressions)
+                    ReportDiagnostic(context, expression);
+            }
+
+            ReturnTaskInsteadOfNullWalkerCache.Free(walker);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
