@@ -7,6 +7,7 @@ namespace Roslynator.CSharp
         None,
         //C,
         //Code,
+        Content,
         //Example,
         Exception,
         Exclude,
