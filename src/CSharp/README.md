@@ -47,6 +47,7 @@
 ### Structs
 
 * CommentKinds
+* ExpressionChain
 * IfStatementCascade
 * IfStatementOrElseClause
 * ModifierKinds

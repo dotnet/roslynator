@@ -80,6 +80,8 @@
 | RR0066 | [Introduce constructor](../../docs/refactorings/RR0066.md) | \- |
 | RR0067 | [Introduce field to lock on](../../docs/refactorings/RR0067.md) | &#x2713; |
 | RR0068 | [Introduce local variable](../../docs/refactorings/RR0068.md) | &#x2713; |
+| RR0189 | [Invert if](../../docs/refactorings/RR0189.md) | &#x2713; |
+| RR0162 | [Invert if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0134 | [Invert prefix/postfix unary operator](../../docs/refactorings/RR0134.md) | &#x2713; |
 | RR0078 | [Join string expressions](../../docs/refactorings/RR0078.md) | &#x2713; |
 | RR0069 | [Make member abstract](../../docs/refactorings/RR0069.md) | &#x2713; |
@@ -97,7 +99,6 @@
 | RR0083 | [Notify property changed](../../docs/refactorings/RR0083.md) | &#x2713; |
 | RR0084 | [Parenthesize expression](../../docs/refactorings/RR0084.md) | &#x2713; |
 | RR0085 | [Promote local to parameter](../../docs/refactorings/RR0085.md) | &#x2713; |
-| RR0189 | [Reduce if nesting](../../docs/refactorings/RR0189.md) | &#x2713; |
 | RR0086 | [Remove all comments](../../docs/refactorings/RR0086.md) | &#x2713; |
 | RR0087 | [Remove all comments (except documentation comments)](../../docs/refactorings/RR0087.md) | &#x2713; |
 | RR0088 | [Remove all documentation comments](../../docs/refactorings/RR0088.md) | \- |
@@ -144,6 +145,7 @@
 | RR0130 | [Replace for statement with foreach statement](../../docs/refactorings/RR0130.md) | &#x2713; |
 | RR0131 | [Replace for statement with while statement](../../docs/refactorings/RR0131.md) | &#x2713; |
 | RR0129 | [Replace foreach statement with for statement](../../docs/refactorings/RR0129.md) | &#x2713; |
+| RR0206 | [Replace foreach with enumerator](../../docs/refactorings/RR0206.md) | &#x2713; |
 | RR0188 | [Replace foreach with for and reverse loop](../../docs/refactorings/RR0188.md) | \- |
 | RR0132 | [Replace hexadecimal literal with decimal literal](../../docs/refactorings/RR0132.md) | &#x2713; |
 | RR0133 | [Replace if with switch](../../docs/refactorings/RR0133.md) | &#x2713; |
@@ -167,6 +169,7 @@
 | RR0152 | [Reverse for loop](../../docs/refactorings/RR0152.md) | &#x2713; |
 | RR0153 | [Simplify if](../../docs/refactorings/RR0153.md) | &#x2713; |
 | RR0154 | [Simplify lambda expression](../../docs/refactorings/RR0154.md) | &#x2713; |
+| RR0207 | [Sort case labels](../../docs/refactorings/RR0207.md) | &#x2713; |
 | RR0155 | [Sort member declarations](../../docs/refactorings/RR0155.md) | &#x2713; |
 | RR0156 | [Split attributes](../../docs/refactorings/RR0156.md) | &#x2713; |
 | RR0194 | [Split declaration and initialization](../../docs/refactorings/RR0194.md) | &#x2713; |
@@ -176,7 +179,6 @@
 | RR0158 | [Split variable declaration](../../docs/refactorings/RR0158.md) | &#x2713; |
 | RR0159 | [Swap binary operands](../../docs/refactorings/RR0159.md) | &#x2713; |
 | RR0160 | [Swap expressions in conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
-| RR0162 | [Swap if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0161 | [Swap member declarations](../../docs/refactorings/RR0161.md) | &#x2713; |
 | RR0200 | [Uncomment multi-line comment](../../docs/refactorings/RR0200.md) | &#x2713; |
 | RR0163 | [UncommentSingleLineComment](../../docs/refactorings/RR0163.md) | &#x2713; |

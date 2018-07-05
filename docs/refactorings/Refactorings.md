@@ -693,6 +693,75 @@ void Foo()
 * **Syntax**: expression statement, expression in using statement
 ![Introduce local variable](../../images/refactorings/IntroduceLocalVariable.png)
 
+#### Invert if \(RR0189\)
+
+* **Syntax**: if statement
+* **Span**: if keyword
+
+#### Before
+
+```csharp
+if (condition1)
+{
+    if (condition2)
+    {
+        Foo();
+    }
+}
+```
+
+#### After
+
+```csharp
+if (!condition1)
+{
+    return;
+}
+
+if (!condition2)
+{
+    return;
+}
+
+Foo();
+```
+
+- - -
+
+#### Before
+
+```csharp
+if (!condition1)
+{
+    return;
+}
+
+if (!condition2)
+{
+    return;
+}
+
+Foo();
+```
+
+#### After
+
+```csharp
+if (condition1)
+{
+    if (condition2)
+    {
+        Foo();
+    }
+}
+```
+
+#### Invert if\-else \(RR0162\)
+
+* **Syntax**: if\-else statement
+* **Span**: if keyword
+![Invert if-else](../../images/refactorings/InvertIfElse.png)
+
 #### Invert prefix/postfix unary operator \(RR0134\)
 
 * **Syntax**: prefix/postfix unary expression
@@ -870,55 +939,6 @@ public unsafe class Foo
 
 * **Syntax**: local declaration in method
 ![Promote local to parameter](../../images/refactorings/PromoteLocalToParameter.png)
-
-#### Reduce if nesting \(RR0189\)
-
-* **Syntax**: if statement
-* **Span**: if keyword
-
-#### Before
-
-```csharp
-if (condition1)
-{
-    Foo1();
-
-    if (condition2)
-    {
-        Foo2();
-
-        if (condition3)
-        {
-            Foo3();
-        }
-    }
-}
-```
-
-#### After
-
-```csharp
-if (!condition1)
-{
-    return;
-}
-
-Foo1();
-
-if (!condition2)
-{
-    return;
-}
-
-Foo2();
-
-if (!condition3)
-{
-    return;
-}
-
-Foo3();
-```
 
 #### Remove all comments \(RR0086\)
 
@@ -1250,6 +1270,32 @@ while (condition)
 * **Syntax**: foreach statement
 ![Replace foreach statement with for statement](../../images/refactorings/ReplaceForEachWithFor.png)
 
+#### Replace foreach with enumerator \(RR0206\)
+
+* **Syntax**: foreach statement
+* **Span**: foreach keyword
+
+#### Before
+
+```csharp
+foreach (var item in items)
+{
+    yield return item;
+}
+```
+
+#### After
+
+```csharp
+using (var en = items.GetEnumerator())
+{
+    while (en.MoveNext())
+    {
+        yield return item;
+    }
+}
+```
+
 #### Replace foreach with for and reverse loop \(RR0188\)
 
 * **Syntax**: foreach statement
@@ -1499,6 +1545,46 @@ do
 * **Span**: body
 ![Simplify lambda expression](../../images/refactorings/SimplifyLambdaExpression.png)
 
+#### Sort case labels \(RR0207\)
+
+* **Syntax**: selected case labels with string literal or enum field
+
+#### Before
+
+```csharp
+bool Foo(string s)
+{
+    switch (s)
+    {
+        case "d":
+        case "b":
+        case "a":
+        case "c":
+            return true;
+        default:
+            return false;
+    }
+}
+```
+
+#### After
+
+```csharp
+bool Foo(string s)
+{
+    switch (s)
+    {
+        case "a":
+        case "b":
+        case "c":
+        case "d":
+            return true;
+        default:
+            return false;
+    }
+}
+```
+
 #### Sort member declarations \(RR0155\)
 
 * **Syntax**: namespace declarations, class declarations, struct declarations, interface declarations, enum declarations
@@ -1614,12 +1700,6 @@ if (y && x)
 * **Syntax**: conditional expression
 * **Span**: condition
 ![Swap expressions in conditional expression](../../images/refactorings/SwapExpressionsInConditionalExpression.png)
-
-#### Swap if\-else \(RR0162\)
-
-* **Syntax**: if statement
-* **Span**: if keyword or selected if statement
-![Swap if-else](../../images/refactorings/SwapIfElse.png)
 
 #### Swap member declarations \(RR0161\)
 

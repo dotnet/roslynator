@@ -255,5 +255,6 @@
     <Rule Id="RCS1224" Action="Info" /> <!-- Make method an extension method. -->
     <Rule Id="RCS1225" Action="Info" /> <!-- Make class sealed. -->
     <Rule Id="RCS1226" Action="Info" /> <!-- Add paragraph to documentation comment. -->
+    <Rule Id="RCS1227" Action="Info" /> <!-- Validate arguments correctly. -->
   </Rules>
 </RuleSet>

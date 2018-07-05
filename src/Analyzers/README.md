@@ -205,6 +205,7 @@
 | RCS1224 | [Make method an extension method](../../docs/analyzers/RCS1224.md) | Design | &#x2713; |
 | RCS1225 | [Make class sealed](../../docs/analyzers/RCS1225.md) | Design | &#x2713; |
 | RCS1226 | [Add paragraph to documentation comment](../../docs/analyzers/RCS1226.md) | Usage | &#x2713; |
+| RCS1227 | [Validate arguments correctly](../../docs/analyzers/RCS1227.md) | Design | &#x2713; |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

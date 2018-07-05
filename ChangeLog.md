@@ -1,3 +1,17 @@
+### 1.9.1 (2018-07-06)
+
+#### Analyzers
+
+* Add analyzer [ValidateArgumentsCorrectly](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1227.md) (RCC1227)
+
+#### Refactorings
+
+* Add refactoring [ReplaceForEachWithEnumerator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0206.md)  (RR0206)
+* Add refactoring [SortCaseLabels](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0207.md)  (RR0207)
+
+* Enable refactorings UseExpressionBodiedMember and ExpandExpressionBody for multiple members (RR0037, RR0169).
+* Extend refactoring ReduceIfNesting and rename it to InvertIf (RR0189).
+
 ### 1.9.0 (2018-06-13)
 
 #### Analyzers

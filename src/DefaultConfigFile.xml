@@ -160,7 +160,7 @@
       <Refactoring Id="RR0159" IsEnabled="true" /> <!-- SwapBinaryOperands -->
       <Refactoring Id="RR0160" IsEnabled="true" /> <!-- SwapExpressionsInConditionalExpression -->
       <Refactoring Id="RR0161" IsEnabled="true" /> <!-- SwapMemberDeclarations -->
-      <Refactoring Id="RR0162" IsEnabled="true" /> <!-- SwapIfElse -->
+      <Refactoring Id="RR0162" IsEnabled="true" /> <!-- InvertIfElse -->
       <Refactoring Id="RR0163" IsEnabled="true" /> <!-- UncommentSingleLineComment -->
       <Refactoring Id="RR0164" IsEnabled="true" /> <!-- UseBitwiseOperationInsteadOfCallingHasFlag -->
       <Refactoring Id="RR0165" IsEnabled="true" /> <!-- UseCoalesceExpressionInsteadOfIf -->
@@ -187,7 +187,7 @@
       <Refactoring Id="RR0186" IsEnabled="true" /> <!-- ChangeAccessibility -->
       <Refactoring Id="RR0187" IsEnabled="true" /> <!-- FormatConstraintClauses -->
       <Refactoring Id="RR0188" IsEnabled="false" /> <!-- ReplaceForEachWithForAndReverseLoop -->
-      <Refactoring Id="RR0189" IsEnabled="true" /> <!-- ReduceIfNesting -->
+      <Refactoring Id="RR0189" IsEnabled="true" /> <!-- InvertIf -->
       <Refactoring Id="RR0190" IsEnabled="true" /> <!-- SplitIfElse -->
       <Refactoring Id="RR0191" IsEnabled="true" /> <!-- UseCSharp6DictionaryInitializer -->
       <Refactoring Id="RR0192" IsEnabled="true" /> <!-- ReplaceCommentWithDocumentationComment -->
@@ -204,6 +204,8 @@
       <Refactoring Id="RR0203" IsEnabled="true" /> <!-- ExtractEventHandlerMethod -->
       <Refactoring Id="RR0204" IsEnabled="true" /> <!-- GeneratePropertyForDebuggerDisplayAttribute -->
       <Refactoring Id="RR0205" IsEnabled="true" /> <!-- AddEmptyLineBetweenDeclarations -->
+      <Refactoring Id="RR0206" IsEnabled="true" /> <!-- ReplaceForEachWithEnumerator -->
+      <Refactoring Id="RR0207" IsEnabled="true" /> <!-- SortCaseLabels -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->

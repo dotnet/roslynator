@@ -19,6 +19,7 @@
 | Design | [Use AttributeUsageAttribute](../../docs/analyzers/RCS1203.md) | RCS1203 | &#x2713; |
 | Design | [Use constant instead of field](../../docs/analyzers/RCS1187.md) | RCS1187 | &#x2713; |
 | Design | [Use read-only auto-implemented property](../../docs/analyzers/RCS1170.md) | RCS1170 | &#x2713; |
+| Design | [Validate arguments correctly](../../docs/analyzers/RCS1227.md) | RCS1227 | &#x2713; |
 | Formatting | [Add empty line after closing brace](../../docs/analyzers/RCS1153.md) | RCS1153 | \- |
 | Formatting | [Add empty line after embedded statement](../../docs/analyzers/RCS1030.md) | RCS1030 | \- |
 | Formatting | [Add empty line after last statement in do statement](../../docs/analyzers/RCS1092.md) | RCS1092 | \- |
