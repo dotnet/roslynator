@@ -50,6 +50,9 @@ namespace Roslynator.CSharp.Analysis
             if (!initializer.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
+            if (initializer.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
+                return;
+
             context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyInitializer, initializer);
         }
     }
