@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
             TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
 
-            Report(context, invocation, span, checkDirectives: true);
+            Report(context, invocation, span, checkDirectives: true, property: new KeyValuePair<string, string>("Name", "SimplifyLinqMethodChain"));
         }
 
         public static void AnalyzeFirstOrDefault(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)

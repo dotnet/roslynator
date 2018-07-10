@@ -105,6 +105,34 @@ class C
 ", fromData, toData);
         }
 
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_WhereAndCount()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(IEnumerable<C> items, int count)
+    {
+        if (items.[|Where(_ => true).Count()|] != count) { }
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(IEnumerable<C> items, int count)
+    {
+        if (items.Count(_ => true) != count) { }
+    }
+}
+");
+        }
+
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("Where(f => f is object).Cast<object>()", "OfType<object>()")]
         [InlineData("Where((f) => f is object).Cast<object>()", "OfType<object>()")]
