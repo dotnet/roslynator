@@ -121,6 +121,7 @@
   <CodeFix Id="RCF0024" Identifier="RemovePropertyOrFieldInitializer" Title="Remove property or field initializer">
     <FixableDiagnosticIds>
       <Id>CS0573</Id>
+      <Id>CS8050</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0025" Identifier="AddPartialModifier" Title="Add 'partial' modifier">

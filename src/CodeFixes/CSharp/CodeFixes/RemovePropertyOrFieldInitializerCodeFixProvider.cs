@@ -21,7 +21,12 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct); }
+            get
+            {
+                return ImmutableArray.Create(
+                    CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct,
+                    CompilerDiagnosticIdentifiers.OnlyAutoImplementedPropertiesCanHaveInitializers);
+            }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -38,6 +43,8 @@ namespace Roslynator.CSharp.CodeFixes
 
             if (token.Kind() != SyntaxKind.IdentifierToken)
                 return;
+
+            Diagnostic diagnostic = context.Diagnostics[0];
 
             SyntaxNode parent = token.Parent;
 
@@ -61,9 +68,9 @@ namespace Roslynator.CSharp.CodeFixes
 
                                 return context.Document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
                             },
-                            GetEquivalenceKey(CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
+                            GetEquivalenceKey(diagnostic, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
-                        context.RegisterCodeFix(codeAction, context.Diagnostics);
+                        context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
                 case SyntaxKind.VariableDeclarator:
@@ -83,7 +90,7 @@ namespace Roslynator.CSharp.CodeFixes
                             },
                             GetEquivalenceKey(CompilerDiagnosticIdentifiers.CannotHaveInstancePropertyOrFieldInitializersInStruct, CodeFixIdentifiers.RemovePropertyOrFieldInitializer));
 
-                        context.RegisterCodeFix(codeAction, context.Diagnostics);
+                        context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
             }

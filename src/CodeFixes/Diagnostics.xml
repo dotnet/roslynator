@@ -1002,6 +1002,13 @@
     Message="Since '{0}' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task&lt;T&gt;'?"
     HelpUrl="" />
   <Diagnostic
+    Id="CS8050"
+    Identifier="OnlyAutoImplementedPropertiesCanHaveInitializers"
+    Severity="Error"
+    Title="Only auto-implemented properties can have initializers."
+    Message="Only auto-implemented properties can have initializers."
+    HelpUrl="" />
+  <Diagnostic
     Id="CS8070"
     Identifier="ControlCannotFallOutOfSwitchFromFinalCaseLabel"
     Severity="Error"

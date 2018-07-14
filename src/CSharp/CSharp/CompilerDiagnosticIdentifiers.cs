@@ -149,6 +149,7 @@ namespace Roslynator.CSharp
         public const string AsyncMethodsCannotHaveRefOrOutParameters = "CS1988";
         public const string AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody = "CS1994";
         public const string SinceMethodIsAsyncMethodThatReturnsTaskReturnKeywordMustNotBeFollowedByObjectExpression = "CS1997";
+        public const string OnlyAutoImplementedPropertiesCanHaveInitializers = "CS8050";
         public const string ControlCannotFallOutOfSwitchFromFinalCaseLabel = "CS8070";
         public const string LocalFunctionMustAlwaysHaveBody = "CS8112";
         public const string InstanceFieldsOfReadOnlyStructsMustBeReadOnly = "CS8340";
