@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class SwapExpressionsInConditionalExpressionRefactoring
+    internal static class InvertConditionalExpressionRefactoring
     {
         public static bool CanRefactor(ConditionalExpressionSyntax conditionalExpression)
         {

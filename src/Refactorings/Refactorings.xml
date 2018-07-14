@@ -1200,7 +1200,7 @@ i--;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0160" Identifier="SwapExpressionsInConditionalExpression" Title="Swap expressions in conditional expression">
+  <Refactoring Id="RR0160" Identifier="InvertConditionalExpression" Title="Invert conditional expression">
     <Syntaxes>
       <Syntax>conditional expression</Syntax>
     </Syntaxes>

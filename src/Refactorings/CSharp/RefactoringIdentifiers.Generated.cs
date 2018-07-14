@@ -84,6 +84,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string IntroduceConstructor = Prefix + "0066";
         public const string IntroduceFieldToLockOn = Prefix + "0067";
         public const string IntroduceLocalVariable = Prefix + "0068";
+        public const string InvertConditionalExpression = Prefix + "0160";
         public const string InvertIf = Prefix + "0189";
         public const string InvertIfElse = Prefix + "0162";
         public const string InvertPrefixOrPostfixUnaryOperator = Prefix + "0134";
@@ -182,7 +183,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string SplitSwitchLabels = Prefix + "0157";
         public const string SplitVariableDeclaration = Prefix + "0158";
         public const string SwapBinaryOperands = Prefix + "0159";
-        public const string SwapExpressionsInConditionalExpression = Prefix + "0160";
         public const string SwapMemberDeclarations = Prefix + "0161";
         public const string UncommentMultiLineComment = Prefix + "0200";
         public const string UncommentSingleLineComment = Prefix + "0163";
