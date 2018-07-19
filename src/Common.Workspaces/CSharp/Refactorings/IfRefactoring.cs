@@ -181,12 +181,12 @@ namespace Roslynator.CSharp.Refactorings
             IfElseToAssignmentWithConditionAnalysis analysis,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ExpressionSyntax right = analysis.Right.WithoutTrivia();
+            ExpressionSyntax right = analysis.Right;
 
             if (analysis.Negate)
                 right = Negator.LogicallyNegate(right, analysis.SemanticModel, cancellationToken);
 
-            ExpressionStatementSyntax newNode = SimpleAssignmentStatement(analysis.Left.WithoutTrivia(), right)
+            ExpressionStatementSyntax newNode = SimpleAssignmentStatement(analysis.Left.WithoutTrivia(), right.WithoutTrivia())
                 .WithTriviaFrom(analysis.IfStatement)
                 .WithFormatterAnnotation();
 
