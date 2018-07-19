@@ -249,6 +249,20 @@ namespace Roslynator
                 return list.ToFullString().Substring(span.Start - listFullSpan.Start, span.Length);
             }
         }
+
+        //TODO: make public
+        internal static SyntaxTriviaList GetTrailingTrivia<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        {
+            int count = list.Count;
+
+            if (count == 0)
+                return default;
+
+            if (count == list.SeparatorCount)
+                return list.GetSeparator(count - 1).TrailingTrivia;
+
+            return list[count - 1].GetTrailingTrivia();
+        }
         #endregion SeparatedSyntaxList<T>
 
         #region SyntaxList<T>

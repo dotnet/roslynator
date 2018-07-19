@@ -47,6 +47,10 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeAccessorList, SyntaxKind.AccessorList);
 
             context.RegisterSyntaxNodeAction(AnalyzeBlock, SyntaxKind.Block);
+
+            context.RegisterSyntaxNodeAction(AnalyzeInitializer, SyntaxKind.ArrayInitializerExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeInitializer, SyntaxKind.CollectionInitializerExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeInitializer, SyntaxKind.ObjectInitializerExpression);
         }
 
         public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
@@ -351,6 +355,62 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
+        public static void AnalyzeInitializer(SyntaxNodeAnalysisContext context)
+        {
+            var initializer = (InitializerExpressionSyntax)context.Node;
+
+            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+
+            ExpressionSyntax first = expressions.FirstOrDefault();
+
+            if (first == null)
+                return;
+
+            if (IsExpectedTrailingTrivia(initializer.OpenBraceToken.TrailingTrivia))
+            {
+                SyntaxTriviaList leading = first.GetLeadingTrivia();
+
+                if (leading.Any())
+                {
+                    TextSpan? span = GetEmptyLineSpan(leading, isEnd: false);
+
+                    if (span != null)
+                        ReportDiagnostic(context, span.Value);
+                }
+            }
+
+            if (IsExpectedTrailingTrivia(expressions.GetTrailingTrivia()))
+            {
+                SyntaxTriviaList leading = initializer.CloseBraceToken.LeadingTrivia;
+
+                if (leading.Any())
+                {
+                    TextSpan? span = GetEmptyLineSpan(leading, isEnd: true);
+
+                    if (span != null)
+                        ReportDiagnostic(context, span.Value);
+                }
+            }
+
+            bool IsExpectedTrailingTrivia(SyntaxTriviaList triviaList)
+            {
+                foreach (SyntaxTrivia trivia in triviaList)
+                {
+                    switch (trivia.Kind())
+                    {
+                        case SyntaxKind.WhitespaceTrivia:
+                            break;
+                        case SyntaxKind.EndOfLineTrivia:
+                            return true;
+                        default:
+                            return false;
+                    }
+                }
+
+                return false;
+            }
+        }
+
         public static void AnalyzeAccessorList(SyntaxNodeAnalysisContext context)
         {
             var accessorList = (AccessorListSyntax)context.Node;
@@ -442,29 +502,35 @@ namespace Roslynator.CSharp.Analysis
             SyntaxTriviaList triviaList,
             bool isEnd)
         {
-            int i = 0;
-
-            foreach (SyntaxTrivia trivia in triviaList)
+            SyntaxTriviaList.Enumerator en = triviaList.GetEnumerator();
+            while (en.MoveNext())
             {
-                if (trivia.IsEndOfLineTrivia())
+                switch (en.Current.Kind())
                 {
-                    if (isEnd)
-                    {
-                        for (int j = i + 1; j < triviaList.Count; j++)
+                    case SyntaxKind.EndOfLineTrivia:
                         {
-                            if (!triviaList[j].IsWhitespaceOrEndOfLineTrivia())
-                                return null;
+                            SyntaxTrivia endOfLine = en.Current;
+
+                            if (isEnd)
+                            {
+                                while (en.MoveNext())
+                                {
+                                    if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                                        return null;
+                                }
+                            }
+
+                            return TextSpan.FromBounds(triviaList.Span.Start, endOfLine.Span.End);
                         }
-                    }
-
-                    return TextSpan.FromBounds(triviaList.Span.Start, trivia.Span.End);
+                    case SyntaxKind.WhitespaceTrivia:
+                        {
+                            break;
+                        }
+                    default:
+                        {
+                            return null;
+                        }
                 }
-                else if (!trivia.IsWhitespaceTrivia())
-                {
-                    return null;
-                }
-
-                i++;
             }
 
             return null;
@@ -490,6 +556,13 @@ namespace Roslynator.CSharp.Analysis
             }
 
             return false;
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TextSpan span)
+        {
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                Location.Create(context.Node.SyntaxTree, span));
         }
     }
 }
