@@ -15,7 +15,7 @@ namespace Roslynator
     /// </summary>
     /// <typeparam name="TNode"></typeparam>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class SeparatedSyntaxListSelection<TNode> : Selection<TNode> where TNode : SyntaxNode
+    public class SeparatedSyntaxListSelection<TNode> : ISelection<TNode> where TNode : SyntaxNode
     {
         private SeparatedSyntaxListSelection(SeparatedSyntaxList<TNode> list, TextSpan span, in SelectionResult result)
             : this(list, span, result.FirstIndex, result.LastIndex)
@@ -30,9 +30,17 @@ namespace Roslynator
         /// <param name="firstIndex"></param>
         /// <param name="lastIndex"></param>
         protected SeparatedSyntaxListSelection(SeparatedSyntaxList<TNode> list, TextSpan span, int firstIndex, int lastIndex)
-            : base(span, firstIndex, lastIndex)
         {
+            if (firstIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(firstIndex), firstIndex, "Index of the first selected node must be greater than or equal to zero.");
+
+            if (lastIndex < firstIndex)
+                throw new ArgumentOutOfRangeException(nameof(lastIndex), lastIndex, "Index of the last selected node must be greater or equal to index of the first selected node.");
+
             UnderlyingList = list;
+            OriginalSpan = span;
+            FirstIndex = firstIndex;
+            LastIndex = lastIndex;
         }
 
         /// <summary>
@@ -41,14 +49,68 @@ namespace Roslynator
         public SeparatedSyntaxList<TNode> UnderlyingList { get; }
 
         /// <summary>
-        /// Gets an underlying list that contains selected nodes.
+        /// Gets the original span that was used to determine selected nodes.
         /// </summary>
-        protected override IReadOnlyList<TNode> Items => UnderlyingList;
+        public TextSpan OriginalSpan { get; }
+
+        /// <summary>
+        /// Gets an index of the first selected node.
+        /// </summary>
+        public int FirstIndex { get; }
+
+        /// <summary>
+        /// Gets an index of the last selected node.
+        /// </summary>
+        public int LastIndex { get; }
+
+        /// <summary>
+        /// Gets a number of selected nodes.
+        /// </summary>
+        public int Count
+        {
+            get { return LastIndex - FirstIndex + 1; }
+        }
+
+        /// <summary>
+        /// Gets the selected node at the specified index.
+        /// </summary>
+        /// <returns>The node at the specified index.</returns>
+        /// <param name="index">The zero-based index of the node to get. </param>
+        public TNode this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "");
+                }
+
+                return UnderlyingList[index + FirstIndex];
+            }
+        }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
             get { return $"Count = {Count} FirstIndex = {FirstIndex} LastIndex = {LastIndex} {UnderlyingList.ToString(TextSpan.FromBounds(First().SpanStart, Last().Span.End))}"; }
+        }
+
+        /// <summary>
+        /// Gets the first selected node.
+        /// </summary>
+        /// <returns></returns>
+        public TNode First()
+        {
+            return UnderlyingList[FirstIndex];
+        }
+
+        /// <summary>
+        /// Gets the last selected node.
+        /// </summary>
+        /// <returns></returns>
+        public TNode Last()
+        {
+            return UnderlyingList[LastIndex];
         }
 
         /// <summary>
@@ -103,7 +165,7 @@ namespace Roslynator
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through selected items.
+        /// Returns an enumerator that iterates through selected nodes.
         /// </summary>
         /// <returns></returns>
         public Enumerator GetEnumerator()
@@ -111,7 +173,12 @@ namespace Roslynator
             return new Enumerator(this);
         }
 
-        protected override IEnumerator<TNode> GetEnumeratorCore()
+        IEnumerator<TNode> IEnumerable<TNode>.GetEnumerator()
+        {
+            return new EnumeratorImpl(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return new EnumeratorImpl(this);
         }

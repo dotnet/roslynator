@@ -13,7 +13,7 @@ namespace Roslynator.Text
     /// Represents selected lines in a <see cref="TextLineCollection"/>.
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public class TextLineCollectionSelection : Selection<TextLine>
+    public class TextLineCollectionSelection : ISelection<TextLine>
     {
         private TextLineCollectionSelection(TextLineCollection lines, TextSpan span, in SelectionResult result)
             : this(lines, span, result.FirstIndex, result.LastIndex)
@@ -21,9 +21,17 @@ namespace Roslynator.Text
         }
 
         protected TextLineCollectionSelection(TextLineCollection lines, TextSpan span, int firstIndex, int lastIndex)
-            : base(span, firstIndex, lastIndex)
         {
+            if (firstIndex < 0)
+                throw new ArgumentOutOfRangeException(nameof(firstIndex), firstIndex, "Index of the first selected line must be greater than or equal to zero.");
+
+            if (lastIndex < firstIndex)
+                throw new ArgumentOutOfRangeException(nameof(lastIndex), lastIndex, "Index of the last selected line must be greater or equal to index of the first selected line.");
+
             UnderlyingLines = lines;
+            OriginalSpan = span;
+            FirstIndex = firstIndex;
+            LastIndex = lastIndex;
         }
 
         /// <summary>
@@ -32,14 +40,68 @@ namespace Roslynator.Text
         public TextLineCollection UnderlyingLines { get; }
 
         /// <summary>
-        /// Gets an underlying collection that contains selected lines.
+        /// Gets the original span that was used to determine selected lines.
         /// </summary>
-        protected override IReadOnlyList<TextLine> Items => UnderlyingLines;
+        public TextSpan OriginalSpan { get; }
+
+        /// <summary>
+        /// Gets an index of the first selected line.
+        /// </summary>
+        public int FirstIndex { get; }
+
+        /// <summary>
+        /// Gets an index of the last selected line.
+        /// </summary>
+        public int LastIndex { get; }
+
+        /// <summary>
+        /// Gets a number of selected lines.
+        /// </summary>
+        public int Count
+        {
+            get { return LastIndex - FirstIndex + 1; }
+        }
+
+        /// <summary>
+        /// Gets the selected line at the specified index.
+        /// </summary>
+        /// <returns>The line at the specified index.</returns>
+        /// <param name="index">The zero-based index of the line to get. </param>
+        public TextLine this[int index]
+        {
+            get
+            {
+                if (index < 0 || index >= Count)
+                {
+                    throw new ArgumentOutOfRangeException(nameof(index), index, "");
+                }
+
+                return UnderlyingLines[index + FirstIndex];
+            }
+        }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
             get { return $"Count = {Count} FirstIndex = {FirstIndex} LastIndex = {LastIndex}"; }
+        }
+
+        /// <summary>
+        /// Gets the first selected line.
+        /// </summary>
+        /// <returns></returns>
+        public TextLine First()
+        {
+            return UnderlyingLines[FirstIndex];
+        }
+
+        /// <summary>
+        /// Gets the last selected line.
+        /// </summary>
+        /// <returns></returns>
+        public TextLine Last()
+        {
+            return UnderlyingLines[LastIndex];
         }
 
         /// <summary>
@@ -97,7 +159,7 @@ namespace Roslynator.Text
         }
 
         /// <summary>
-        /// Returns an enumerator that iterates through selected items.
+        /// Returns an enumerator that iterates through selected lines.
         /// </summary>
         /// <returns></returns>
         public Enumerator GetEnumerator()
@@ -105,7 +167,12 @@ namespace Roslynator.Text
             return new Enumerator(this);
         }
 
-        protected override IEnumerator<TextLine> GetEnumeratorCore()
+        IEnumerator<TextLine> IEnumerable<TextLine>.GetEnumerator()
+        {
+            return new EnumeratorImpl(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
         {
             return new EnumeratorImpl(this);
         }
