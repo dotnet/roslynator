@@ -593,7 +593,23 @@ namespace Roslynator.CodeGeneration.CSharp
                         }));
                 }
 
-                yield return DefaultSwitchSection(ThrowNewArgumentException(ParseExpression(@"$""Unrecognized node '{node.Kind()}'."""), "node"));
+                yield return DefaultSwitchSection(
+                    List(new StatementSyntax[]
+                    {
+                        ExpressionStatement(
+                            SimpleMemberInvocationExpression(
+                                IdentifierName("Debug"),
+                                IdentifierName("Fail"),
+                                ArgumentList(
+                                    Argument(
+                                        ParseExpression(@"$""Unrecognized kind '{node.Kind()}'."""))))),
+                        ExpressionStatement(
+                            SimpleMemberInvocationExpression(
+                                BaseExpression(),
+                                IdentifierName("Visit"),
+                                ArgumentList(Argument(IdentifierName("node"))))),
+                        BreakStatement()
+                    }));
             }
         }
     }

@@ -20,13 +20,14 @@ namespace Roslynator.CodeGeneration.CSharp
             return CompilationUnit(
                 UsingDirectives(
                     "System",
+                    "System.Diagnostics",
                     "Microsoft.CodeAnalysis",
                     "Microsoft.CodeAnalysis.CSharp",
                     "Microsoft.CodeAnalysis.CSharp.Syntax"),
                 NamespaceDeclaration("Roslynator.CSharp.SyntaxWalkers",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
-                        Modifiers.PublicAbstract(),
+                        Modifiers.InternalAbstract(),
                         Identifier("CSharpSyntaxNodeWalker"),
                         default(TypeParameterListSyntax),
                         BaseList(SimpleBaseType(IdentifierName("CSharpSyntaxWalker"))),
