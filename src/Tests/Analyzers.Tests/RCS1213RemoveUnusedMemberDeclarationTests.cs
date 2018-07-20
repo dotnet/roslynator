@@ -49,6 +49,24 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task Test_Method_Recursive()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void [|M|]()
+    {
+        M();
+    }
+}
+", @"
+class C
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task TestNoDiagnostic_Property_AttributeArgument_NameOf()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -116,6 +134,25 @@ class C
     string M { get; }
 
     string this[int index, string s = nameof(M)] => s;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task TestNoDiagnostic_ExtensionMethod()
+        {
+            await VerifyNoDiagnosticAsync(@"
+static class C
+{
+    public static bool M(this string s)
+    {
+        return s.M2();
+    }
+
+    private static bool M2(this string s)
+    {
+        return s == null;
+    }
 }
 ");
         }

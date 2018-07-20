@@ -10,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -443,7 +444,7 @@ namespace Roslynator.CSharp.Analysis
             return true;
         }
 
-        private class UseAutoPropertyWalker : CSharpSyntaxWalker
+        private class UseAutoPropertyWalker : CSharpSyntaxNodeWalker
         {
             private bool _isInInstanceConstructor;
 
@@ -460,6 +461,15 @@ namespace Roslynator.CSharp.Analysis
             public bool IsUsedInRefOrOutArgument { get; private set; }
 
             public bool IsReferencedInInstanceConstructor { get; private set; }
+
+            protected override bool ShouldVisit
+            {
+                get
+                {
+                    return !IsUsedInRefOrOutArgument
+                        && !IsReferencedInInstanceConstructor;
+                }
+            }
 
             public void SetValues(
                 IFieldSymbol fieldSymbol,
@@ -485,15 +495,6 @@ namespace Roslynator.CSharp.Analysis
                     default(Compilation),
                     default(SemanticModel),
                     default(CancellationToken));
-            }
-
-            public override void Visit(SyntaxNode node)
-            {
-                if (!IsUsedInRefOrOutArgument
-                    && !IsReferencedInInstanceConstructor)
-                {
-                    base.Visit(node);
-                }
             }
 
             public override void VisitArgument(ArgumentSyntax node)

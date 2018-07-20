@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
@@ -14,16 +13,15 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
 
         public bool IsMatch { get; private set; }
 
+        protected override bool ShouldVisit
+        {
+            get { return !IsMatch; }
+        }
+
         public void Clear()
         {
             Identifiers.Clear();
             IsMatch = false;
-        }
-
-        public override void Visit(SyntaxNode node)
-        {
-            if (!IsMatch)
-                base.Visit(node);
         }
 
         public override void VisitAssignedExpression(ExpressionSyntax expression)

@@ -4,10 +4,11 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UsePatternMatching
 {
-    internal class UsePatternMatchingWalker : CSharpSyntaxWalker
+    internal class UsePatternMatchingWalker : CSharpSyntaxNodeWalker
     {
         private ISymbol _symbol;
         private IdentifierNameSyntax _identifierName;
@@ -16,6 +17,11 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
         private CancellationToken _cancellationToken;
 
         public bool? IsFixable { get; private set; }
+
+        protected override bool ShouldVisit
+        {
+            get { return IsFixable != false; }
+        }
 
         public void SetValues(
             IdentifierNameSyntax identifierName,
@@ -36,14 +42,10 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
             SetValues(default(IdentifierNameSyntax), default(SemanticModel), default(CancellationToken));
         }
 
-        public override void Visit(SyntaxNode node)
-        {
-            if (IsFixable != false)
-                base.Visit(node);
-        }
-
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
+            _cancellationToken.ThrowIfCancellationRequested();
+
             if (string.Equals(node.Identifier.ValueText, _name))
             {
                 if (_symbol == null)

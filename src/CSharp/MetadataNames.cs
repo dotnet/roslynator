@@ -27,6 +27,7 @@ namespace Roslynator
         public static readonly MetadataName System_Linq_ImmutableArrayExtensions = new MetadataName(Namespaces.System_Linq, "ImmutableArrayExtensions");
         public static readonly MetadataName System_Linq_IOrderedEnumerable_T = new MetadataName(Namespaces.System_Linq, "IOrderedEnumerable`1");
         public static readonly MetadataName System_NonSerializedAttribute = new MetadataName(Namespaces.System, "NonSerializedAttribute");
+        public static readonly MetadataName System_ObsoleteAttribute = new MetadataName(Namespaces.System, "ObsoleteAttribute");
         public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable = new MetadataName(Namespaces.System_Runtime_CompilerServices, "ConfiguredTaskAwaitable");
         public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = new MetadataName(Namespaces.System_Runtime_CompilerServices, "ConfiguredTaskAwaitable`1");
         public static readonly MetadataName System_Runtime_InteropServices_LayoutKind = new MetadataName(Namespaces.System_Runtime_InteropServices, "LayoutKind");

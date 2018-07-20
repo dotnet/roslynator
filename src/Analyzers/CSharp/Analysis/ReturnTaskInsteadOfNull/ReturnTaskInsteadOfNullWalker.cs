@@ -7,7 +7,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 {
-    internal class ReturnTaskInsteadOfNullWalker : SkipFunctionWalker
+    internal class ReturnTaskInsteadOfNullWalker : StatementWalker
     {
         public List<ExpressionSyntax> Expressions { get; private set; }
 
@@ -28,10 +28,10 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             {
                 (Expressions ?? (Expressions = new List<ExpressionSyntax>())).Add(expression);
             }
-            else
-            {
-                base.VisitReturnStatement(node);
-            }
+        }
+
+        public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
+        {
         }
     }
 }

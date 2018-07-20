@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 
@@ -176,8 +175,9 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
 
         private static bool ContainsAwaitExpression(SyntaxNode node)
         {
-            RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance(node.Span, stopOnFirstAwaitExpression: true);
+            RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance();
 
+            walker.StopOnFirstAwaitExpression = true;
             walker.Visit(node);
 
             bool result = walker.AwaitExpressions.Count == 1;
@@ -207,9 +207,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                         if (awaitExpression == null)
                             return;
 
-                        RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance(TextSpan.FromBounds(body.SpanStart, returnStatement.Span.End));
-
-                        walker.Visit(body);
+                        RemoveRedundantAsyncAwaitWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
@@ -252,9 +250,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                     }
                 case SyntaxKind.IfStatement:
                     {
-                        RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance(TextSpan.FromBounds(body.SpanStart, statement.Span.End));
-
-                        walker.Visit(body);
+                        RemoveRedundantAsyncAwaitWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
@@ -271,9 +267,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
 
                 case SyntaxKind.SwitchStatement:
                     {
-                        RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance(TextSpan.FromBounds(body.SpanStart, statement.Span.End));
-
-                        walker.Visit(body);
+                        RemoveRedundantAsyncAwaitWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
@@ -287,6 +281,24 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                         RemoveRedundantAsyncAwaitWalkerCache.Free(walker);
                         break;
                     }
+            }
+
+            RemoveRedundantAsyncAwaitWalker VisitStatements()
+            {
+                RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance();
+
+                foreach (StatementSyntax s in statements)
+                {
+                    walker.Visit(s);
+
+                    if (walker.ShouldStop)
+                        return walker;
+
+                    if (s == statement)
+                        return walker;
+                }
+
+                return walker;
             }
         }
 

@@ -12,7 +12,7 @@ namespace Roslynator.CodeGeneration
             if (args == null || args.Length == 0)
             {
 #if DEBUG
-                args = new string[] { @"..\..\..\.." };
+                args = new string[] { @"..\..\..\..\.." };
 #else
                 args = new string[] { Environment.CurrentDirectory };
 #endif

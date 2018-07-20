@@ -2,53 +2,34 @@
 
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
 {
-    internal class RemoveRedundantAsyncAwaitWalker : SkipFunctionWalker
+    internal class RemoveRedundantAsyncAwaitWalker : CSharpSyntaxNodeWalker
     {
-        private bool _shouldStop;
-
         public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = new HashSet<AwaitExpressionSyntax>();
 
-        public TextSpan Span { get; private set; }
+        public bool StopOnFirstAwaitExpression { get; set; }
 
-        public bool StopOnFirstAwaitExpression { get; private set; }
-
-        public void SetValues(TextSpan span, bool stopOnFirstAwaitExpression = false)
+        public void Reset()
         {
-            _shouldStop = false;
-            Span = span;
-            StopOnFirstAwaitExpression = stopOnFirstAwaitExpression;
+            ShouldStop = false;
+            StopOnFirstAwaitExpression = false;
             AwaitExpressions.Clear();
         }
 
-        public void Clear()
+        protected override bool ShouldVisit
         {
-            SetValues(default(TextSpan));
+            get { return !ShouldStop; }
         }
 
-        public override void Visit(SyntaxNode node)
-        {
-            if (_shouldStop)
-                return;
-
-            TextSpan span = node.Span;
-
-            if (Span.OverlapsWith(span)
-                || (span.IsEmpty && Span.IntersectsWith(span)))
-            {
-                base.Visit(node);
-            }
-        }
+        public bool ShouldStop { get; private set; }
 
         public override void VisitAwaitExpression(AwaitExpressionSyntax node)
         {
-            _shouldStop = true;
+            ShouldStop = true;
 
             if (StopOnFirstAwaitExpression)
             {
@@ -70,14 +51,30 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
             {
                 Visit(awaitExpression.Expression);
 
-                if (!_shouldStop)
+                if (!ShouldStop)
                     AwaitExpressions.Add(awaitExpression);
             }
             else
             {
-                _shouldStop = true;
+                ShouldStop = true;
                 AwaitExpressions.Clear();
             }
+        }
+
+        public override void VisitAnonymousMethodExpression(AnonymousMethodExpressionSyntax node)
+        {
+        }
+
+        public override void VisitSimpleLambdaExpression(SimpleLambdaExpressionSyntax node)
+        {
+        }
+
+        public override void VisitParenthesizedLambdaExpression(ParenthesizedLambdaExpressionSyntax node)
+        {
+        }
+
+        public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
+        {
         }
     }
 }

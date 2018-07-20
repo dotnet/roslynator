@@ -4,10 +4,12 @@ using System;
 using System.IO;
 using System.Linq;
 using System.Text;
+using Roslynator.CodeGeneration.CSharp;
 using Roslynator.CodeGeneration.Markdown;
 using Roslynator.CodeGeneration.Xml;
 using Roslynator.Metadata;
 using Roslynator.Utilities;
+using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CodeGeneration
 {
