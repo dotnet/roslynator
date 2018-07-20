@@ -34,15 +34,6 @@ namespace Roslynator.VisualStudio
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
             var solution = await GetServiceAsync(typeof(SVsSolution)) as IVsSolution;
 
-            ErrorHandler.ThrowOnFailure(solution.GetProperty((int)__VSPROPID.VSPROPID_SolutionFileName, out object solutionFileNameValue));
-
-            if (solutionFileNameValue is string solutionFileName
-                && !string.IsNullOrEmpty(solutionFileName))
-            {
-                SolutionDirectoryPath = Path.GetDirectoryName(solutionFileName);
-                ConfigFilePath = Path.Combine(SolutionDirectoryPath, ConfigFileSettings.FileName);
-            }
-
             ErrorHandler.ThrowOnFailure(solution.GetProperty((int)__VSPROPID.VSPROPID_IsSolutionOpen, out object isSolutionOpenValue));
 
             if (isSolutionOpenValue is bool isSolutionOpen
@@ -80,6 +71,16 @@ namespace Roslynator.VisualStudio
 
         private void AfterOpenSolution(object sender = null, OpenSolutionEventArgs e = null)
         {
+            var solution = GetService(typeof(SVsSolution)) as IVsSolution;
+
+            if (solution.GetProperty((int)__VSPROPID.VSPROPID_SolutionFileName, out object solutionFileNameValue) == VSConstants.S_OK
+                && solutionFileNameValue is string solutionFileName
+                && !string.IsNullOrEmpty(solutionFileName))
+            {
+                SolutionDirectoryPath = Path.GetDirectoryName(solutionFileName);
+                ConfigFilePath = Path.Combine(SolutionDirectoryPath, ConfigFileSettings.FileName);
+            }
+
             UpdateSettings();
 
             WatchConfigFile();
@@ -87,6 +88,9 @@ namespace Roslynator.VisualStudio
 
         private void AfterCloseSolution(object sender = null, EventArgs e = null)
         {
+            SolutionDirectoryPath = null;
+            ConfigFilePath = null;
+
             if (_watcher != null)
             {
                 _watcher.Dispose();
