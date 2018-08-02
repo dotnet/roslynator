@@ -114,11 +114,40 @@ namespace Roslynator.CSharp.Analysis
 
             (ExpressionSyntax left, ExpressionSyntax right) = GetFixableExpressions(binaryExpression, kind, context.SemanticModel, context.CancellationToken);
 
-            if (left != null)
+            if (left == null)
+                return;
+
+            ISymbol operatorSymbol = context.SemanticModel.GetSymbol(binaryExpression, context.CancellationToken);
+
+            if (operatorSymbol?.Name == WellKnownMemberNames.BitwiseOrOperatorName)
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.UseConditionalAccess,
-                    Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(left.SpanStart, right.Span.End)));
+                INamedTypeSymbol containingType = operatorSymbol.ContainingType;
+
+                if (containingType.SpecialType != SpecialType.System_Boolean
+                    && !ExistsImplicitConversionToBoolean(containingType))
+                {
+                    return;
+                }
+            }
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.UseConditionalAccess,
+                Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(left.SpanStart, right.Span.End)));
+
+            bool ExistsImplicitConversionToBoolean(INamedTypeSymbol typeSymbol)
+            {
+                foreach (ISymbol member in typeSymbol.GetMembers(WellKnownMemberNames.ImplicitConversionName))
+                {
+                    if (member.Kind == SymbolKind.Method)
+                    {
+                        var methodSymbol = (IMethodSymbol)member;
+
+                        if (methodSymbol.ReturnType.SpecialType == SpecialType.System_Boolean)
+                            return true;
+                    }
+                }
+
+                return false;
             }
         }
 

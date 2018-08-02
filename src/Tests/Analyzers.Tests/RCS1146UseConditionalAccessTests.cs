@@ -727,6 +727,53 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+        public async Task TestNoDiagnostic_TypeOverloadsOrOperatorAndImplicitConversionToBooleanDoesNotExist()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    public SqlBoolean Value { get; set; }
+
+    void M()
+    {
+        C x = null;
+
+        if (x == null || x.Value)
+        {
+        }
+
+        if (x == null || !x.Value)
+        {
+        }
+    }
+}
+
+struct SqlBoolean
+{
+    private readonly bool _boolean;
+
+    public SqlBoolean(bool boolean) => _boolean = boolean;
+
+    public static SqlBoolean operator !(SqlBoolean x) => new SqlBoolean(!x._boolean);
+
+    public static SqlBoolean operator |(SqlBoolean x, SqlBoolean y) => new SqlBoolean(x._boolean | y._boolean);
+
+    public static bool operator true(SqlBoolean x) => x._boolean;
+
+    public static bool operator false(SqlBoolean x) => !x._boolean;
+
+    public static explicit operator bool(SqlBoolean x) => x._boolean;
+
+    public static implicit operator SqlBoolean(bool x) => new SqlBoolean(x);
+
+    public static SqlBoolean operator !=(SqlBoolean x, SqlBoolean y) => !(x == y);
+
+    public static SqlBoolean operator ==(SqlBoolean x, SqlBoolean y) => x._boolean == y._boolean;
+}
+");
+        }
     }
 }
 
