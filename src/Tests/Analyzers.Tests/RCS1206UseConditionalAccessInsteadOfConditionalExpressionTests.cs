@@ -131,6 +131,58 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+        public async Task Test_NullableTypeToNullableType_HasValue()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+struct C
+{
+    void M(C? x)
+    {
+        int? i = [|(x.HasValue) ? (int?)x.Value.M2() : null|];
+    }
+
+    int M2() => 0;
+}
+", @"
+struct C
+{
+    void M(C? x)
+    {
+        int? i = x?.M2();
+    }
+
+    int M2() => 0;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+        public async Task Test_NullableTypeToNullableType_NotHasValue()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+struct C
+{
+    void M(C? x)
+    {
+        int? i = [|(!x.HasValue) ? default : (int?)x.Value.M2()|];
+    }
+
+    int M2() => 0;
+}
+", @"
+struct C
+{
+    void M(C? x)
+    {
+        int? i = x?.M2();
+    }
+
+    int M2() => 0;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"

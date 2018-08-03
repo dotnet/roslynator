@@ -112,6 +112,29 @@ namespace Roslynator.CSharp.Analysis
                     }
                 }
             }
+            else if (whenNotNull.IsKind(SyntaxKind.CastExpression)
+                && whenNull.IsKind(SyntaxKind.NullLiteralExpression, SyntaxKind.DefaultLiteralExpression))
+            {
+                var castExpression = (CastExpressionSyntax)whenNotNull;
+
+                if (castExpression.Type.IsKind(SyntaxKind.NullableType)
+                    && castExpression.Expression.IsKind(SyntaxKind.InvocationExpression, SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression))
+                {
+                    ExpressionSyntax expression = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, castExpression.Expression, isNullable: true);
+
+                    if (expression != null)
+                    {
+                        ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(nullCheck.Expression, cancellationToken);
+
+                        if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
+                        {
+                            context.ReportDiagnostic(
+                                DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
+                                conditionalExpression);
+                        }
+                    }
+                }
+            }
         }
 
         private static void Analyze(

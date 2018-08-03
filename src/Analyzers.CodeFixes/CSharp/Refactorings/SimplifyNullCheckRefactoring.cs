@@ -29,7 +29,9 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax whenNull = (nullCheck.IsCheckingNotNull) ? conditionalExpressionInfo.WhenFalse : conditionalExpressionInfo.WhenTrue;
 
-            ExpressionSyntax expression = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
+            ExpressionSyntax expression = (whenNotNull.IsKind(SyntaxKind.CastExpression))
+                ? UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, ((CastExpressionSyntax)whenNotNull).Expression)
+                : UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
 
             bool coalesce = false;
 
