@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
 using Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait;
 using Xunit;
-using Roslynator.Tests;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {

@@ -7,7 +7,6 @@ namespace Roslynator
 {
     internal static class TextSpanExtensions
     {
-        //TODO: span starts or ends between \r and \n
         public static LinePositionSpan ToLinePositionSpan(this TextSpan span, string s)
         {
             if (s == null)
@@ -45,6 +44,13 @@ namespace Roslynator
                             {
                                 case '\n':
                                     {
+                                        if (i == startIndex
+                                            && i > 0
+                                            && s[i - 1] == '\r')
+                                        {
+                                            throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
+                                        }
+
                                         if (i > startIndex
                                             && s[i - 1] == '\r')
                                         {
@@ -56,6 +62,13 @@ namespace Roslynator
                                     }
                                 case '\r':
                                     {
+                                        if (i == endIndex - 1
+                                            && i < length - 1
+                                            && s[i + 1] == '\n')
+                                        {
+                                            throw new InvalidOperationException("Span cannot start of end between '\r' and '\n'.");
+                                        }
+
                                         line++;
                                         break;
                                     }

@@ -3,6 +3,7 @@
 using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.Tests.Text;
 
 namespace Roslynator.Tests
 {
@@ -11,6 +12,8 @@ namespace Roslynator.Tests
         public abstract CodeVerificationOptions Options { get; }
 
         public abstract string Language { get; }
+
+        protected virtual SpanParser SpanParser { get; } = SpanParser.Default;
 
         protected abstract Project CreateProject();
 

@@ -38,12 +38,12 @@ namespace Roslynator.Tests
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source, reverse: true);
+            SpanParserResult result = SpanParser.GetSpans(source, reverse: true);
 
             await VerifyRefactoringAsync(
-                source: analysis.Source,
+                source: result.Text,
                 expected: expected,
-                spans: analysis.Spans.Select(f => f.Span),
+                spans: result.Spans.Select(f => f.Span),
                 equivalenceKey: equivalenceKey,
                 additionalSources: additionalSources,
                 options: options,
@@ -58,16 +58,16 @@ namespace Roslynator.Tests
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            (string source, string expected, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData, toData);
+            (TextSpan span, string source, string expected) = SpanParser.ReplaceSpan(theory, fromData, toData);
 
-            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source, reverse: true);
+            SpanParserResult result = SpanParser.GetSpans(source, reverse: true);
 
-            if (analysis.Spans.Any())
+            if (result.Spans.Any())
             {
                 await VerifyRefactoringAsync(
-                    source: analysis.Source,
+                    source: result.Text,
                     expected: expected,
-                    spans: analysis.Spans.Select(f => f.Span),
+                    spans: result.Spans.Select(f => f.Span),
                     equivalenceKey: equivalenceKey,
                     options: options,
                     cancellationToken: cancellationToken).ConfigureAwait(false);
@@ -178,11 +178,11 @@ namespace Roslynator.Tests
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source, reverse: true);
+            SpanParserResult result = SpanParser.GetSpans(source, reverse: true);
 
             await VerifyNoRefactoringAsync(
-                source: analysis.Source,
-                spans: analysis.Spans.Select(f => f.Span),
+                source: result.Text,
+                spans: result.Spans.Select(f => f.Span),
                 equivalenceKey: equivalenceKey,
                 options: options,
                 cancellationToken: cancellationToken).ConfigureAwait(false);

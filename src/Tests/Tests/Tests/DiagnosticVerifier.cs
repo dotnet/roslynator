@@ -34,11 +34,11 @@ namespace Roslynator.Tests
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source);
+            SpanParserResult result = SpanParser.GetSpans(source);
 
             await VerifyDiagnosticAsync(
-                analysis.Source,
-                analysis.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan)),
+                result.Text,
+                result.Spans.Select(f => CreateDiagnostic(f.Span, f.LineSpan)),
                 additionalSources: null,
                 options: options,
                 cancellationToken).ConfigureAwait(false);
@@ -50,17 +50,17 @@ namespace Roslynator.Tests
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            (string source, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData);
+            (TextSpan span, string text) = SpanParser.ReplaceSpan(theory, fromData);
 
-            TestSourceTextAnalysis analysis = TestSourceText.GetSpans(source);
+            SpanParserResult result = SpanParser.GetSpans(text);
 
-            if (analysis.Spans.Any())
+            if (result.Spans.Any())
             {
-                await VerifyDiagnosticAsync(analysis.Source, analysis.Spans.Select(f => f.Span), options, cancellationToken).ConfigureAwait(false);
+                await VerifyDiagnosticAsync(result.Text, result.Spans.Select(f => f.Span), options, cancellationToken).ConfigureAwait(false);
             }
             else
             {
-                await VerifyDiagnosticAsync(source, span, options, cancellationToken).ConfigureAwait(false);
+                await VerifyDiagnosticAsync(text, span, options, cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -166,10 +166,10 @@ namespace Roslynator.Tests
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            (string source, TextSpan span) = TestSourceText.ReplaceSpan(theory, fromData);
+            (TextSpan span, string text) = SpanParser.ReplaceSpan(theory, fromData);
 
             await VerifyNoDiagnosticAsync(
-                source: source,
+                source: text,
                 additionalSources: null,
                 options: options,
                 cancellationToken).ConfigureAwait(false);
