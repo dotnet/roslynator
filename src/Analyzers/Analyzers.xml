@@ -5037,4 +5037,41 @@ public string Foo()
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="UseAsyncAwait">
+    <Id>RCS1229</Id>
+    <Title>Use async/await when necessary.</Title>
+    <MessageFormat>Use async/await when necessary.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[Task<object> FooAsync()
+{
+    using (var service = CreateService()) // [|Id|]
+    {
+        return service.GetAsync();
+    }
+}
+]]></Before>
+        <After><![CDATA[async Task<object> FooAsync()
+{
+    using (var service = CreateService())
+    {
+        return await service.GetAsync();
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+    <Remarks></Remarks>
+    <Links>
+      <Link>
+        <Url>http://thebillwagner.com/Blog/Item/2017-05-03-ThecuriouscaseofasyncawaitandIDisposable</Url>
+        <Text>The curious case of async, await, and IDisposable</Text>
+      </Link>
+    </Links>
+  </Analyzer>
 </Analyzers>

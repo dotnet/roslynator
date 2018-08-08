@@ -211,5 +211,6 @@ namespace Roslynator.CSharp
         public const string AddParagraphToDocumentationComment = "RCS1226";
         public const string ValidateArgumentsCorrectly = "RCS1227";
         public const string UnusedElementInDocumentationComment = "RCS1228";
+        public const string UseAsyncAwait = "RCS1229";
     }
 }

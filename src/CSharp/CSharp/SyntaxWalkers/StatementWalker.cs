@@ -1,28 +1,20 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
+using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.SyntaxWalkers
 {
-    internal class StatementWalker
+    internal class StatementWalker : CSharpSyntaxWalker
     {
         public virtual bool ShouldVisit
         {
             get { return true; }
         }
 
-        private void VisitBlockIfNotNull(BlockSyntax node)
-        {
-            if (node != null
-                && ShouldVisit)
-            {
-                VisitBlock(node);
-            }
-        }
-
-        public virtual void VisitBlock(BlockSyntax node)
+        public override void VisitBlock(BlockSyntax node)
         {
             foreach (StatementSyntax statement in node.Statements)
             {
@@ -33,92 +25,92 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
-        public virtual void VisitBreakStatement(BreakStatementSyntax node)
+        public override void VisitBreakStatement(BreakStatementSyntax node)
         {
         }
 
-        public virtual void VisitCheckedStatement(CheckedStatementSyntax node)
+        public override void VisitCheckedStatement(CheckedStatementSyntax node)
         {
             VisitBlockIfNotNull(node.Block);
         }
 
-        public virtual void VisitContinueStatement(ContinueStatementSyntax node)
+        public override void VisitContinueStatement(ContinueStatementSyntax node)
         {
         }
 
-        public virtual void VisitDoStatement(DoStatementSyntax node)
-        {
-            VisitStatementIfNotNull(node.Statement);
-        }
-
-        public virtual void VisitEmptyStatement(EmptyStatementSyntax node)
-        {
-        }
-
-        public virtual void VisitExpressionStatement(ExpressionStatementSyntax node)
-        {
-        }
-
-        public virtual void VisitFixedStatement(FixedStatementSyntax node)
+        public override void VisitDoStatement(DoStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitForEachStatement(ForEachStatementSyntax node)
+        public override void VisitEmptyStatement(EmptyStatementSyntax node)
+        {
+        }
+
+        public override void VisitExpressionStatement(ExpressionStatementSyntax node)
+        {
+        }
+
+        public override void VisitFixedStatement(FixedStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitForEachVariableStatement(ForEachVariableStatementSyntax node)
+        public override void VisitForEachStatement(ForEachStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitForStatement(ForStatementSyntax node)
+        public override void VisitForEachVariableStatement(ForEachVariableStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitGlobalStatement(GlobalStatementSyntax node)
+        public override void VisitForStatement(ForStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitGotoStatement(GotoStatementSyntax node)
+        public override void VisitGlobalStatement(GlobalStatementSyntax node)
+        {
+            VisitStatementIfNotNull(node.Statement);
+        }
+
+        public override void VisitGotoStatement(GotoStatementSyntax node)
         {
         }
 
-        public virtual void VisitIfStatement(IfStatementSyntax node)
+        public override void VisitIfStatement(IfStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
 
             VisitStatementIfNotNull(node.Else?.Statement);
         }
 
-        public virtual void VisitLabeledStatement(LabeledStatementSyntax node)
+        public override void VisitLabeledStatement(LabeledStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
+        public override void VisitLocalDeclarationStatement(LocalDeclarationStatementSyntax node)
         {
         }
 
-        public virtual void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
+        public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
         {
             VisitBlockIfNotNull(node.Body);
         }
 
-        public virtual void VisitLockStatement(LockStatementSyntax node)
+        public override void VisitLockStatement(LockStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitReturnStatement(ReturnStatementSyntax node)
+        public override void VisitReturnStatement(ReturnStatementSyntax node)
         {
         }
 
-        public virtual void VisitSwitchStatement(SwitchStatementSyntax node)
+        public override void VisitSwitchStatement(SwitchStatementSyntax node)
         {
             foreach (SwitchSectionSyntax section in node.Sections)
             {
@@ -135,11 +127,11 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
-        public virtual void VisitThrowStatement(ThrowStatementSyntax node)
+        public override void VisitThrowStatement(ThrowStatementSyntax node)
         {
         }
 
-        public virtual void VisitTryStatement(TryStatementSyntax node)
+        public override void VisitTryStatement(TryStatementSyntax node)
         {
             VisitBlockIfNotNull(node.Block);
 
@@ -152,23 +144,32 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 VisitBlockIfNotNull(finallyClause.Block);
         }
 
-        public virtual void VisitUnsafeStatement(UnsafeStatementSyntax node)
+        public override void VisitUnsafeStatement(UnsafeStatementSyntax node)
         {
             VisitBlockIfNotNull(node.Block);
         }
 
-        public virtual void VisitUsingStatement(UsingStatementSyntax node)
+        public override void VisitUsingStatement(UsingStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitWhileStatement(WhileStatementSyntax node)
+        public override void VisitWhileStatement(WhileStatementSyntax node)
         {
             VisitStatementIfNotNull(node.Statement);
         }
 
-        public virtual void VisitYieldStatement(YieldStatementSyntax node)
+        public override void VisitYieldStatement(YieldStatementSyntax node)
         {
+        }
+
+        private void VisitBlockIfNotNull(BlockSyntax node)
+        {
+            if (node != null
+                && ShouldVisit)
+            {
+                VisitBlock(node);
+            }
         }
 
         private void VisitStatementIfNotNull(StatementSyntax node)
@@ -315,7 +316,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     }
                 default:
                     {
-                        throw new ArgumentException($"Unknown statement '{node.Kind()}'.", nameof(node));
+                        Debug.Fail(node.Kind().ToString());
+                        Visit(node);
+                        break;
                     }
             }
         }

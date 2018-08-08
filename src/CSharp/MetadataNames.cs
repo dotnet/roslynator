@@ -38,8 +38,10 @@ namespace Roslynator
         public static readonly MetadataName System_Text_RegularExpressions_Regex = new MetadataName(Namespaces.System_Text_RegularExpressions, "Regex");
         public static readonly MetadataName System_Text_RegularExpressions_RegexOptions = new MetadataName(Namespaces.System_Text_RegularExpressions, "RegexOptions");
         public static readonly MetadataName System_Text_StringBuilder = new MetadataName(Namespaces.System_Text, "StringBuilder");
+        public static readonly MetadataName System_Threading_Tasks = new MetadataName(Namespaces.System_Threading, "Tasks");
         public static readonly MetadataName System_Threading_Tasks_Task = new MetadataName(Namespaces.System_Threading_Tasks, "Task");
         public static readonly MetadataName System_Threading_Tasks_Task_T = new MetadataName(Namespaces.System_Threading_Tasks, "Task`1");
+        public static readonly MetadataName System_Threading_Tasks_ValueTask_T = new MetadataName(Namespaces.System_Threading_Tasks, "ValueTask`1");
         public static readonly MetadataName System_TimeSpan = new MetadataName(Namespaces.System, "TimeSpan");
 
         private static class Namespaces
@@ -57,6 +59,7 @@ namespace Roslynator
             public static readonly ImmutableArray<string> System_Runtime_Serialization = ImmutableArray.Create("System", "Runtime", "Serialization");
             public static readonly ImmutableArray<string> System_Text = ImmutableArray.Create("System", "Text");
             public static readonly ImmutableArray<string> System_Text_RegularExpressions = ImmutableArray.Create("System", "Text", "RegularExpressions");
+            public static readonly ImmutableArray<string> System_Threading = ImmutableArray.Create("System", "Threading");
             public static readonly ImmutableArray<string> System_Threading_Tasks = ImmutableArray.Create("System", "Threading", "Tasks");
         }
     }
