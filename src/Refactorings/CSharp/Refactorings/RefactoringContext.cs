@@ -171,6 +171,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             ComputeRefactoringsForTriviaInsideTrivia();
 
+            ComputeRefactoringsForTokenInsideTrivia();
+
             ComputeRefactoringsForNodeInsideTrivia();
 
             await ComputeRefactoringsForTokenAsync().ConfigureAwait(false);
@@ -186,6 +188,45 @@ namespace Roslynator.CSharp.Refactorings
 
             if (trivia.IsPartOfStructuredTrivia())
                 CommentTriviaRefactoring.ComputeRefactorings(this, trivia);
+        }
+
+        public void ComputeRefactoringsForTokenInsideTrivia()
+        {
+            SyntaxToken token = Root.FindToken(Span.Start, findInsideTrivia: true);
+
+            switch (token.Kind())
+            {
+                case SyntaxKind.XmlTextLiteralToken:
+                    {
+                        if (IsRefactoringEnabled(RefactoringIdentifiers.AddTagToDocumentationComment)
+                            && !Span.IsEmpty)
+                        {
+                            TextSpan span = token.Span;
+
+                            if (span.Contains(Span))
+                            {
+                                string text = token.Text;
+
+                                if (span.Start == Span.Start
+                                    || (!char.IsLetterOrDigit(text[Span.Start - span.Start - 1])
+                                        && char.IsLetterOrDigit(text[Span.Start - span.Start])))
+                                {
+                                    if (span.End == Span.End
+                                        || (char.IsLetterOrDigit(text[Span.End - span.Start - 1])
+                                            && !char.IsLetterOrDigit(text[Span.End - span.Start])))
+                                    {
+                                        RegisterRefactoring(
+                                            "Add tag 'c'",
+                                            ct => Document.WithTextChangeAsync(new TextChange(Span, $"<c>{token.ToString(Span)}</c>"), ct),
+                                            RefactoringIdentifiers.AddTagToDocumentationComment);
+                                    }
+                                }
+                            }
+                        }
+
+                        break;
+                    }
+            }
         }
 
         public void ComputeRefactoringsForNodeInsideTrivia()

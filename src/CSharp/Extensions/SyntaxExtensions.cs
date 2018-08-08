@@ -1170,6 +1170,32 @@ namespace Roslynator
         {
             return TextSpan.FromBounds(token.Span.End, token.FullSpan.End);
         }
+
+        //TODO: make public ToString(SyntaxToken, TextSpan)
+        internal static string ToString(this SyntaxToken token, TextSpan span)
+        {
+            TextSpan tokenFullSpan = token.FullSpan;
+
+            if (!tokenFullSpan.Contains(span))
+                throw new ArgumentException("", nameof(span));
+
+            if (span == tokenFullSpan)
+                return token.ToFullString();
+
+            TextSpan tokenSpan = token.Span;
+
+            if (span == tokenSpan)
+                return token.ToString();
+
+            if (tokenSpan.Contains(span))
+            {
+                return token.ToString().Substring(span.Start - tokenSpan.Start, span.Length);
+            }
+            else
+            {
+                return token.ToFullString().Substring(span.Start - tokenFullSpan.Start, span.Length);
+            }
+        }
         #endregion SyntaxToken
 
         #region SyntaxTokenList

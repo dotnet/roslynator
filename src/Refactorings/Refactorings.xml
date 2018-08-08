@@ -1846,4 +1846,26 @@ private object z;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0208" Identifier="AddTagToDocumentationComment" Title="Add tag to documentation comment">
+    <Syntaxes>
+      <Syntax>selected word(s) in documentation comment</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[/// <summary>
+/// null
+/// </summary>
+public class Foo
+{
+}
+]]></Before>
+        <After><![CDATA[/// <summary>
+/// <c>null</c>
+/// </summary>
+public class Foo
+{
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>
