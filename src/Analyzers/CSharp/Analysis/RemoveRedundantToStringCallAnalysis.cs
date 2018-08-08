@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -15,34 +16,41 @@ namespace Roslynator.CSharp.Analysis
     {
         public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
+            if (invocationInfo.OperatorToken.ContainsDirectives)
+                return;
+
+            if (invocationInfo.ArgumentList.ContainsDirectives)
+                return;
+
             if (!IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
                 return;
 
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-            TextSpan span = TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, invocationExpression.Span.End);
-
-            if (invocationExpression.ContainsDirectives(span))
-                return;
-
             context.ReportDiagnostic(
                 DiagnosticDescriptors.RemoveRedundantToStringCall,
-                Location.Create(invocationExpression.SyntaxTree, span));
+                Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, invocationExpression.Span.End)));
         }
 
-        public static bool IsFixable(
+        private static bool IsFixable(
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken)
         {
-            if (invocationInfo.Expression.Kind() == SyntaxKind.BaseExpression)
+            if (invocationInfo.Expression.IsKind(SyntaxKind.BaseExpression))
                 return false;
+
+            if (invocationInfo.Expression.WalkDownParentheses().IsKind(SyntaxKind.StringLiteralExpression, SyntaxKind.InterpolatedStringExpression))
+                return true;
 
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationExpression, cancellationToken);
 
-            if (SymbolUtility.IsPublicInstanceNonGeneric(methodSymbol, "ToString")
+            if (methodSymbol?.DeclaredAccessibility == Accessibility.Public
+                && !methodSymbol.IsStatic
+                && !methodSymbol.IsGenericMethod
+                && string.Equals(methodSymbol.Name, "ToString", StringComparison.Ordinal)
                 && methodSymbol.ReturnType.SpecialType == SpecialType.System_String
                 && !methodSymbol.Parameters.Any())
             {
@@ -54,35 +62,10 @@ namespace Roslynator.CSharp.Analysis
                     if (containingType.SpecialType == SpecialType.System_String)
                         return true;
 
-                    ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
-
-                    SyntaxNode parent = expression.Parent;
-
-                    if (parent != null)
+                    if (invocationExpression.WalkUpParentheses().Parent.IsKind(SyntaxKind.Interpolation)
+                        && IsNotHidden(methodSymbol, containingType))
                     {
-                        SyntaxKind kind = parent.Kind();
-
-                        if (kind == SyntaxKind.Interpolation)
-                        {
-                            return IsNotHidden(methodSymbol, containingType);
-                        }
-                        else if (kind == SyntaxKind.AddExpression)
-                        {
-                            if (!parent.ContainsDiagnostics
-                                && IsNotHidden(methodSymbol, containingType))
-                            {
-                                var addExpression = (BinaryExpressionSyntax)expression.Parent;
-
-                                if (CSharpUtility.IsStringConcatenation(addExpression, semanticModel, cancellationToken))
-                                {
-                                    BinaryExpressionSyntax newAddExpression = addExpression.ReplaceNode(expression, invocationInfo.Expression);
-
-                                    IMethodSymbol speculativeSymbol = semanticModel.GetSpeculativeMethodSymbol(addExpression.SpanStart, newAddExpression);
-
-                                    return SymbolUtility.IsStringAdditionOperator(speculativeSymbol);
-                                }
-                            }
-                        }
+                        return true;
                     }
                 }
             }
@@ -92,7 +75,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static bool IsNotHidden(IMethodSymbol methodSymbol, INamedTypeSymbol containingType)
         {
-            if (containingType.IsObject())
+            if (containingType.SpecialType == SpecialType.System_Object)
                 return true;
 
             if (methodSymbol.IsOverride)
