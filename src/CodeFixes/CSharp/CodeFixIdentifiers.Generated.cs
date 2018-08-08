@@ -113,5 +113,6 @@ namespace Roslynator.CSharp
         public const string AddMissingComma = Prefix + "0107";
         public const string RemoveParentheses = Prefix + "0108";
         public const string RemoveParameter = Prefix + "0109";
+        public const string RenameTupleElement = Prefix + "0110";
     }
 }

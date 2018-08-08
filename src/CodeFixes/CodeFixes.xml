@@ -610,4 +610,9 @@
       <Id>CS0136</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0110" Identifier="RenameTupleElement" Title="Rename tuple element to match overridden member">
+    <FixableDiagnosticIds>
+      <Id>CS8139</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

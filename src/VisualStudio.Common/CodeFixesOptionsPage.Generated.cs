@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.RemoveParameter;
+        = CodeFixIdentifiers.RenameTupleElement;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -131,6 +131,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddMissingComma, "Add missing comma (fixes CS1003)", IsEnabled(CodeFixIdentifiers.AddMissingComma)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveParentheses, "Remove parentheses (fixes CS0210)", IsEnabled(CodeFixIdentifiers.RemoveParentheses)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveParameter, "Remove parameter (fixes CS0136)", IsEnabled(CodeFixIdentifiers.RemoveParameter)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RenameTupleElement, "Rename tuple element to match overridden member (fixes CS8139)", IsEnabled(CodeFixIdentifiers.RenameTupleElement)));
         }
     }
 }

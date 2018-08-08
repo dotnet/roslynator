@@ -3,6 +3,7 @@
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -11,6 +12,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.SyntaxRewriters;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -37,7 +39,8 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.InterfacesCannotDeclareTypes,
                     CompilerDiagnosticIdentifiers.OnlyClassTypesCanContainDestructors,
                     CompilerDiagnosticIdentifiers.StructsCannotContainExplicitParameterlessConstructors,
-                    CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass);
+                    CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass,
+                    CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember);
             }
         }
 
@@ -50,7 +53,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingClassAbstract)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RenameDestructorToMatchClassName))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RenameDestructorToMatchClassName)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RenameTupleElement))
             {
                 return;
             }
@@ -286,8 +290,165 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
+                    case CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RenameTupleElement))
+                                break;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            if (memberDeclaration is MethodDeclarationSyntax methodDeclaration)
+                            {
+                                IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
+
+                                if (!(methodSymbol.ReturnType is INamedTypeSymbol tupleType))
+                                    break;
+
+                                if (!tupleType.IsTupleType)
+                                    break;
+
+                                if (!(methodSymbol.OverriddenMethod?.ReturnType is INamedTypeSymbol baseTupleType))
+                                    break;
+
+                                if (!baseTupleType.IsTupleType)
+                                    break;
+
+                                ImmutableArray<IFieldSymbol> elements = tupleType.TupleElements;
+                                ImmutableArray<IFieldSymbol> baseElements = baseTupleType.TupleElements;
+
+                                if (elements.Length != baseElements.Length)
+                                    break;
+
+                                int i = 0;
+                                while (i < elements.Length)
+                                {
+                                    if (elements[i].Name != baseElements[i].Name)
+                                        break;
+
+                                    i++;
+                                }
+
+                                if (i == elements.Length)
+                                    break;
+
+                                TupleElementSyntax tupleElement = ((TupleTypeSyntax)methodDeclaration.ReturnType).Elements[i];
+
+                                CodeAction codeAction = CodeAction.Create(
+                                    $"Rename '{elements[i].Name}' to '{baseElements[i].Name}'",
+                                    ct => RenameTupleElementAsync(context.Document, methodDeclaration, tupleElement, elements[i], baseElements[i].Name, semanticModel, ct),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+                            else if (memberDeclaration is PropertyDeclarationSyntax propertyDeclaration)
+                            {
+                                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
+
+                                if (!(propertySymbol.Type is INamedTypeSymbol tupleType))
+                                    break;
+
+                                if (!tupleType.IsTupleType)
+                                    break;
+
+                                if (!(propertySymbol.OverriddenProperty?.Type is INamedTypeSymbol baseTupleType))
+                                    break;
+
+                                if (!baseTupleType.IsTupleType)
+                                    break;
+
+                                ImmutableArray<IFieldSymbol> elements = tupleType.TupleElements;
+                                ImmutableArray<IFieldSymbol> baseElements = baseTupleType.TupleElements;
+
+                                if (elements.Length != baseElements.Length)
+                                    break;
+
+                                int i = 0;
+                                while (i < elements.Length)
+                                {
+                                    if (elements[i].Name != baseElements[i].Name)
+                                        break;
+
+                                    i++;
+                                }
+
+                                if (i == elements.Length)
+                                    break;
+
+                                TupleElementSyntax tupleElement = ((TupleTypeSyntax)propertyDeclaration.Type).Elements[i];
+
+                                CodeAction codeAction = CodeAction.Create(
+                                    $"Rename '{elements[i].Name}' to '{baseElements[i].Name}'",
+                                    ct => RenameTupleElementAsync(context.Document, propertyDeclaration, tupleElement, elements[i], baseElements[i].Name, semanticModel, ct),
+                                    GetEquivalenceKey(diagnostic));
+
+                                context.RegisterCodeFix(codeAction, diagnostic);
+                            }
+
+                            break;
+                        }
                 }
             }
+        }
+
+        private static Task<Document> RenameTupleElementAsync(
+            Document document,
+            MethodDeclarationSyntax methodDeclaration,
+            TupleElementSyntax tupleElement,
+            IFieldSymbol fieldSymbol,
+            string newName,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            MethodDeclarationSyntax newNode = methodDeclaration;
+
+            var returnType = (TupleTypeSyntax)methodDeclaration.ReturnType;
+
+            SyntaxToken newIdentifier = SyntaxFactory.Identifier(newName).WithTriviaFrom(tupleElement.Identifier);
+
+            SeparatedSyntaxList<TupleElementSyntax> newElements = returnType.Elements.Replace(tupleElement, tupleElement.WithIdentifier(newIdentifier));
+
+            newNode = methodDeclaration.WithReturnType(returnType.WithElements(newElements));
+
+            var rewriter = new RenameRewriter(fieldSymbol, newName, semanticModel, cancellationToken);
+
+            if (methodDeclaration.Body is BlockSyntax body)
+            {
+                newNode = newNode.WithBody((BlockSyntax)rewriter.VisitBlock(body));
+            }
+            else if (methodDeclaration.ExpressionBody is ArrowExpressionClauseSyntax expressionBody)
+            {
+                newNode = newNode.WithExpressionBody((ArrowExpressionClauseSyntax)rewriter.VisitArrowExpressionClause(expressionBody));
+            }
+
+            return document.ReplaceNodeAsync(methodDeclaration, newNode, cancellationToken);
+        }
+
+        private static Task<Document> RenameTupleElementAsync(
+            Document document,
+            PropertyDeclarationSyntax propertyDeclaration,
+            TupleElementSyntax tupleElement,
+            IFieldSymbol fieldSymbol,
+            string newName,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            PropertyDeclarationSyntax newNode = propertyDeclaration;
+
+            var type = (TupleTypeSyntax)propertyDeclaration.Type;
+
+            SyntaxToken newIdentifier = SyntaxFactory.Identifier(newName).WithTriviaFrom(tupleElement.Identifier);
+
+            SeparatedSyntaxList<TupleElementSyntax> newElements = type.Elements.Replace(tupleElement, tupleElement.WithIdentifier(newIdentifier));
+
+            newNode = propertyDeclaration.WithType(type.WithElements(newElements));
+
+            var rewriter = new RenameRewriter(fieldSymbol, newName, semanticModel, cancellationToken);
+
+            var newAccessorList = (AccessorListSyntax)rewriter.VisitAccessorList(propertyDeclaration.AccessorList);
+
+            newNode = newNode.WithAccessorList(newAccessorList);
+
+            return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
         }
     }
 }

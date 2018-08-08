@@ -1023,6 +1023,13 @@
     Message="'{0}' is a local function and must therefore always have a body."
     HelpUrl="" />
   <Diagnostic
+    Id="CS8139"
+    Identifier="CannotChangeTupleElementNameWhenOverridingInheritedMember"
+    Severity="Error"
+    Title="Cannot change tuple element names when overriding inherited member."
+    Message="'{0}': cannot change tuple element names when overriding inherited member '{1}'"
+    HelpUrl="" />
+  <Diagnostic
     Id="CS8340"
     Identifier="InstanceFieldsOfReadOnlyStructsMustBeReadOnly"
     Severity="Error"
