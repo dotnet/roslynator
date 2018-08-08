@@ -18,12 +18,12 @@ namespace Roslynator.CSharp
         None = 0,
 
         /// <summary>
-        /// <code>x == null</code>
+        /// <c>x == null</c>
         /// </summary>
         EqualsToNull = 1,
 
         /// <summary>
-        /// <code>x != null</code>
+        /// <c>x != null</c>
         /// </summary>
         NotEqualsToNull = 2,
 
@@ -33,12 +33,12 @@ namespace Roslynator.CSharp
         ComparisonToNull = EqualsToNull | NotEqualsToNull,
 
         /// <summary>
-        /// <code>x is null</code>
+        /// <c>x is null</c>
         /// </summary>
         IsNull = 4,
 
         /// <summary>
-        /// <code>!(x is null)</code>
+        /// <c>!(x is null)</c>
         /// </summary>
         NotIsNull = 8,
 
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp
         IsPattern = IsNull | NotIsNull,
 
         /// <summary>
-        /// <code>!x.HasValue</code>
+        /// <c>!x.HasValue</c>
         /// </summary>
         NotHasValue = 16,
 
@@ -58,7 +58,7 @@ namespace Roslynator.CSharp
         CheckingNull = EqualsToNull | IsNull | NotHasValue,
 
         /// <summary>
-        /// <code>x.HasValue</code>
+        /// <c>x.HasValue</c>
         /// </summary>
         HasValue = 32,
 
