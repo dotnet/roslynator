@@ -2483,5 +2483,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ValidateArgumentsCorrectly}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1228</summary>
+        public static readonly DiagnosticDescriptor UnusedElementInDocumentationComment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnusedElementInDocumentationComment, 
+            title:              "Unused element in documentation comment.", 
+            messageFormat:      "Unused element in documentation comment.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnusedElementInDocumentationComment}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

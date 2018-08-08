@@ -492,11 +492,8 @@ namespace Roslynator.CSharp
         {
             SyntaxNode node = documentationComment.ParentTrivia.Token.Parent;
 
-            if (node is MemberDeclarationSyntax)
-                return true;
-
-            return node.IsKind(SyntaxKind.AttributeList)
-                && node.Parent is MemberDeclarationSyntax;
+            return node is MemberDeclarationSyntax
+                || node.Parent is MemberDeclarationSyntax;
         }
         #endregion DocumentationCommentTriviaSyntax
 

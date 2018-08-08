@@ -4986,7 +4986,7 @@ class Foo
     if (items == null)
         throw new ArgumentNullException(nameof(items));
 
-    foreach (object item in items) // RCSX002
+    foreach (object item in items) // [|Id|]
         yield return item;
 }]]></Before>
         <After><![CDATA[IEnumerable<object> Foo(IEnumerable<object> items)
@@ -5002,6 +5002,38 @@ class Foo
             yield return item;    
     }
 }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UnusedElementInDocumentationComment">
+    <Id>RCS1228</Id>
+    <Title>Unused element in documentation comment.</Title>
+    <MessageFormat>Unused element in documentation comment.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[/// <summary>
+/// 
+/// </summary>
+/// <returns></returns> // [|Id|]
+public string Foo()
+{
+    return null;
+}
+]]></Before>
+        <After><![CDATA[/// <summary>
+/// 
+/// </summary>
+public string Foo()
+{
+    return null;
+}
+]]></After>
       </Sample>
     </Samples>
   </Analyzer>

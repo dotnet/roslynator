@@ -99,6 +99,7 @@ namespace Roslynator.Tests
                 cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
+        //TODO: add parameter equivalenceKey
         public async Task VerifyFixAsync(
             string source,
             string expected,

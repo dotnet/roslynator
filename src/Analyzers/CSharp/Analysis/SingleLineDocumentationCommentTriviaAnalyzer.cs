@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -11,7 +12,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddSummaryToDocumentationCommentAnalyzer : BaseDiagnosticAnalyzer
+    public class SingleLineDocumentationCommentTriviaAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -19,7 +20,8 @@ namespace Roslynator.CSharp.Analysis
             {
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.AddSummaryToDocumentationComment,
-                    DiagnosticDescriptors.AddSummaryElementToDocumentationComment);
+                    DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
+                    DiagnosticDescriptors.UnusedElementInDocumentationComment);
             }
         }
 
@@ -46,8 +48,12 @@ namespace Roslynator.CSharp.Analysis
             bool containsContentElement = false;
             bool isFirst = true;
 
+            CancellationToken cancellationToken = context.CancellationToken;
+
             foreach (XmlNodeSyntax node in documentationComment.Content)
             {
+                cancellationToken.ThrowIfCancellationRequested();
+
                 XmlElementInfo info = SyntaxInfo.XmlElementInfo(node);
                 if (info.Success)
                 {
@@ -73,7 +79,7 @@ namespace Roslynator.CSharp.Analysis
                             }
                         case XmlElementKind.Summary:
                             {
-                                if (info.IsEmptyElement || IsSummaryMissing((XmlElementSyntax)info.Element))
+                                if (info.IsContentEmptyOrWhitespace)
                                 {
                                     context.ReportDiagnostic(
                                         DiagnosticDescriptors.AddSummaryToDocumentationComment,
@@ -81,6 +87,21 @@ namespace Roslynator.CSharp.Analysis
                                 }
 
                                 containsSummaryElement = true;
+                                break;
+                            }
+                        case XmlElementKind.Code:
+                        case XmlElementKind.Example:
+                        case XmlElementKind.Remarks:
+                        case XmlElementKind.Returns:
+                        case XmlElementKind.Value:
+                            {
+                                if (info.IsContentEmptyOrWhitespace)
+                                {
+                                    context.ReportDiagnostic(
+                                        DiagnosticDescriptors.UnusedElementInDocumentationComment,
+                                        info.Element);
+                                }
+
                                 break;
                             }
                     }
@@ -93,16 +114,6 @@ namespace Roslynator.CSharp.Analysis
                     {
                         containsIncludeOrExclude = false;
                     }
-
-                    if (containsSummaryElement)
-                    {
-                        if (containsInheritDoc
-                            || containsIncludeOrExclude
-                            || containsContentElement)
-                        {
-                            return;
-                        }
-                    }
                 }
             }
 
@@ -114,42 +125,6 @@ namespace Roslynator.CSharp.Analysis
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
                     documentationComment);
-            }
-        }
-
-        private static bool IsSummaryMissing(XmlElementSyntax summaryElement)
-        {
-            SyntaxList<XmlNodeSyntax> content = summaryElement.Content;
-
-            if (content.Count == 0)
-            {
-                return true;
-            }
-            else if (content.Count == 1)
-            {
-                XmlNodeSyntax node = content.First();
-
-                if (node.IsKind(SyntaxKind.XmlText))
-                {
-                    var xmlText = (XmlTextSyntax)node;
-
-                    return xmlText.TextTokens.All(IsWhitespaceOrNewLine);
-                }
-            }
-
-            return false;
-        }
-
-        private static bool IsWhitespaceOrNewLine(SyntaxToken token)
-        {
-            switch (token.Kind())
-            {
-                case SyntaxKind.XmlTextLiteralNewLineToken:
-                    return true;
-                case SyntaxKind.XmlTextLiteralToken:
-                    return string.IsNullOrWhiteSpace(token.ValueText);
-                default:
-                    return false;
             }
         }
     }

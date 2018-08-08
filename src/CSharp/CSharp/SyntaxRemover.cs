@@ -80,6 +80,36 @@ namespace Roslynator.CSharp
             return declaration;
         }
 
+        internal static TNode RemoveSingleLineDocumentationComment<TNode>(TNode node, DocumentationCommentTriviaSyntax documentationComment) where TNode : SyntaxNode
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (!documentationComment.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
+                throw new ArgumentException($"Documentation comment's kind must be '{nameof(SyntaxKind.SingleLineDocumentationCommentTrivia)}'.", nameof(documentationComment));
+
+            SyntaxTrivia trivia = documentationComment.ParentTrivia;
+
+            SyntaxToken token = trivia.Token;
+
+            SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
+
+            int index = leadingTrivia.IndexOf(trivia);
+
+            if (index >= 0
+                && index < leadingTrivia.Count - 1
+                && leadingTrivia[index + 1].IsWhitespaceTrivia())
+            {
+                SyntaxTriviaList newLeadingTrivia = leadingTrivia.RemoveRange(index, 2);
+
+                SyntaxToken newToken = token.WithLeadingTrivia(newLeadingTrivia);
+
+                return node.ReplaceToken(token, newToken);
+            }
+
+            return node.RemoveNode(documentationComment, SyntaxRemoveOptions.KeepNoTrivia);
+        }
+
         public static TNode RemoveComments<TNode>(TNode node, CommentKinds kinds) where TNode : SyntaxNode
         {
             if (node == null)

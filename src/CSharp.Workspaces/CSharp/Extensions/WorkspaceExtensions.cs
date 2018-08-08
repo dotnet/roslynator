@@ -378,6 +378,17 @@ namespace Roslynator.CSharp
             return document.WithText(newSourceText);
         }
 
+        internal static Task<Document> RemoveSingleLineDocumentationComment(
+            this Document document,
+            DocumentationCommentTriviaSyntax documentationComment,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxNode node = documentationComment.ParentTrivia.Token.Parent;
+            SyntaxNode newNode = SyntaxRemover.RemoveSingleLineDocumentationComment(node, documentationComment);
+
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+        }
+
         internal static Task<Document> ReplaceStatementsAsync(
             this Document document,
             in StatementListInfo statementsInfo,
