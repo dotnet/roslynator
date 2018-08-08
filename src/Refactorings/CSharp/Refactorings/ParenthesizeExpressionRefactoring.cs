@@ -46,9 +46,33 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.AttributeArgument:
                 case SyntaxKind.ThrowExpression:
                 case SyntaxKind.PredefinedType:
-                    return false;
+                    {
+                        return false;
+                    }
                 case SyntaxKind.QualifiedName:
-                    return !node.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.UsingDirective);
+                    {
+                        return !node.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.UsingDirective);
+                    }
+                case SyntaxKind.TupleType:
+                case SyntaxKind.GenericName:
+                    {
+                        switch (node.Parent.Kind())
+                        {
+                            case SyntaxKind.LocalFunctionStatement:
+                            case SyntaxKind.DelegateDeclaration:
+                            case SyntaxKind.FieldDeclaration:
+                            case SyntaxKind.EventFieldDeclaration:
+                            case SyntaxKind.MethodDeclaration:
+                            case SyntaxKind.OperatorDeclaration:
+                            case SyntaxKind.ConversionOperatorDeclaration:
+                            case SyntaxKind.PropertyDeclaration:
+                            case SyntaxKind.EventDeclaration:
+                            case SyntaxKind.IndexerDeclaration:
+                                return true;
+                        }
+
+                        break;
+                    }
             }
 
             SyntaxNode parent = node.Parent;
