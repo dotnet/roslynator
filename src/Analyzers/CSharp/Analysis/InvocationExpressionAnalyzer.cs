@@ -281,6 +281,7 @@ namespace Roslynator.CSharp.Analysis
                 case "ElementAtOrDefault":
                 case "FirstOrDefault":
                 case "LastOrDefault":
+                case "SingleOrDefault":
                     {
                         if (argumentCount == 0
                             || argumentCount == 1

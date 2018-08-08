@@ -23,9 +23,11 @@ namespace Roslynator.CSharp.Analysis.Tests
             [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
             [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
             [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
+            [InlineData("x.SingleOrDefault()[|.|]ToString()", "x.SingleOrDefault()?.ToString()")]
             [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|.|]ToString()", "Enumerable.ElementAtOrDefault(x, 1)?.ToString()")]
             [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
             [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
+            [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
             public async Task Test_MemberAccessExpression(string fromData, string toData)
             {
                 await VerifyDiagnosticAndFixAsync(@"
@@ -47,9 +49,11 @@ class C
             [InlineData("x.ElementAtOrDefault(1)[|.|]ToString()", "x.ElementAtOrDefault(1)?.ToString()")]
             [InlineData("x.FirstOrDefault()[|.|]ToString()", "x.FirstOrDefault()?.ToString()")]
             [InlineData("x.LastOrDefault()[|.|]ToString()", "x.LastOrDefault()?.ToString()")]
+            [InlineData("x.SingleOrDefault()[|.|]ToString()", "x.SingleOrDefault()?.ToString()")]
             [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|.|]ToString()", "Enumerable.ElementAtOrDefault(x, 1)?.ToString()")]
             [InlineData("Enumerable.FirstOrDefault(x)[|.|]ToString()", "Enumerable.FirstOrDefault(x)?.ToString()")]
             [InlineData("Enumerable.LastOrDefault(x)[|.|]ToString()", "Enumerable.LastOrDefault(x)?.ToString()")]
+            [InlineData("Enumerable.SingleOrDefault(x)[|.|]ToString()", "Enumerable.SingleOrDefault(x)?.ToString()")]
             public async Task Test_MemberAccessExpression2(string fromData, string toData)
             {
                 await VerifyDiagnosticAndFixAsync(@"
@@ -131,9 +135,11 @@ class C
             [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
             [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
             [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
+            [InlineData("x.SingleOrDefault()[|[[|]0]", "x.SingleOrDefault()?[0]")]
             [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|[[|]0]", "Enumerable.ElementAtOrDefault(x, 1)?[0]")]
             [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
             [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
+            [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
             public async Task Test_ElementAccessExpression(string fromData, string toData)
             {
                 await VerifyDiagnosticAndFixAsync(@"
@@ -155,9 +161,11 @@ class C
             [InlineData("x.ElementAtOrDefault(1)[|[[|]0]", "x.ElementAtOrDefault(1)?[0]")]
             [InlineData("x.FirstOrDefault()[|[[|]0]", "x.FirstOrDefault()?[0]")]
             [InlineData("x.LastOrDefault()[|[[|]0]", "x.LastOrDefault()?[0]")]
+            [InlineData("x.SingleOrDefault()[|[[|]0]", "x.SingleOrDefault()?[0]")]
             [InlineData("Enumerable.ElementAtOrDefault(x, 1)[|[[|]0]", "Enumerable.ElementAtOrDefault(x, 1)?[0]")]
             [InlineData("Enumerable.FirstOrDefault(x)[|[[|]0]", "Enumerable.FirstOrDefault(x)?[0]")]
             [InlineData("Enumerable.LastOrDefault(x)[|[[|]0]", "Enumerable.LastOrDefault(x)?[0]")]
+            [InlineData("Enumerable.SingleOrDefault(x)[|[[|]0]", "Enumerable.SingleOrDefault(x)?[0]")]
             public async Task Test_ElementAccessExpression2(string fromData, string toData)
             {
                 await VerifyDiagnosticAndFixAsync(@"
@@ -233,6 +241,7 @@ class C
         i = values.ElementAtOrDefault(1).GetHashCode();
         i = values.FirstOrDefault().GetHashCode();
         i = values.LastOrDefault().GetHashCode();
+        i = values.SingleOrDefault().GetHashCode();
     }
 }
 ");
@@ -256,6 +265,7 @@ class C
         i = values.ElementAtOrDefault(1).GetHashCode();
         i = values.FirstOrDefault().GetHashCode();
         i = values.LastOrDefault().GetHashCode();
+        i = values.SingleOrDefault().GetHashCode();
     }
 }
 ");
@@ -278,6 +288,7 @@ class C
         s = x.ElementAtOrDefault(1);
         s = x.FirstOrDefault();
         s = x.LastOrDefault();
+        s = x.SingleOrDefault();
         s = (s as string);
     }
 }
@@ -302,23 +313,24 @@ class C
         s = x.ElementAtOrDefault(1)?.ToUpper();
         s = x.FirstOrDefault()?.ToUpper();
         s = x.LastOrDefault()?.ToUpper();
+        s = x.SingleOrDefault()?.ToUpper();
         s = (s as string)?.ToUpper();
 
         s = Enumerable.ElementAtOrDefault(x, 1)?.ToUpper();
         s = Enumerable.FirstOrDefault(x)?.ToUpper();
         s = Enumerable.LastOrDefault(x)?.ToUpper();
-
-        s = x.SingleOrDefault().ToUpper();
-        s = Enumerable.SingleOrDefault(x).ToUpper();
+        s = Enumerable.SingleOrDefault(x)?.ToUpper();
 
         ch = x.ElementAtOrDefault(1)?[0] ?? default(char);
         ch = x.FirstOrDefault()?[0] ?? default(char);
         ch = x.LastOrDefault()?[0] ?? default(char);
+        ch = x.SingleOrDefault()?[0] ?? default(char);
         ch = (s as string)?[0] ?? default(char);
 
         ch = Enumerable.ElementAtOrDefault(x, 1)?[0] ?? default(char);
         ch = Enumerable.FirstOrDefault(x)?[0] ?? default(char);
         ch = Enumerable.LastOrDefault(x)?[0] ?? default(char);
+        ch = Enumerable.SingleOrDefault(x)?[0] ?? default(char);
     }
 }
 ");
