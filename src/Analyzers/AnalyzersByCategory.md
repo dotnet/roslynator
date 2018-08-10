@@ -84,6 +84,7 @@
 | Readability | [Simplify code branching](../../docs/analyzers/RCS1218.md) | RCS1218 | &#x2713; |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | &#x2713; |
 | Readability | [Split variable declaration](../../docs/analyzers/RCS1081.md) | RCS1081 | \- |
+| Readability | [Unused element in documentation comment](../../docs/analyzers/RCS1228.md) | RCS1228 | &#x2713; |
 | Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | \- |
 | Readability | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | RCS1008 | \- |
 | Readability | [Use explicit type instead of 'var' (when the type is obvious)](../../docs/analyzers/RCS1012.md) | RCS1012 | \- |
@@ -190,6 +191,7 @@
 | Usage | [Mark publicly visible type with DebuggerDisplay attribute](../../docs/analyzers/RCS1223.md) | RCS1223 | \- |
 | Usage | [Return Task.FromResult instead of returning null](../../docs/analyzers/RCS1210.md) | RCS1210 | &#x2713; |
 | Usage | [Unconstrained type parameter checked for null](../../docs/analyzers/RCS1165.md) | RCS1165 | &#x2713; |
+| Usage | [Use async/await when necessary](../../docs/analyzers/RCS1229.md) | RCS1229 | &#x2713; |
 | Usage | [Use conditional access instead of conditional expression](../../docs/analyzers/RCS1206.md) | RCS1206 | &#x2713; |
 | Usage | [Use conditional access](../../docs/analyzers/RCS1146.md) | RCS1146 | &#x2713; |
 | Usage | [Use EventArgs.Empty](../../docs/analyzers/RCS1204.md) | RCS1204 | &#x2713; |

@@ -1,8 +1,24 @@
+### 1.9.2 (2018-08-10)
+
+#### Analyzers
+
+* Add analyzer [UnusedElementInDocumentationComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1228.md) (RCS1228)
+* Add analyzer [UseAsyncAwait](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1229.md) (RCS1229)
+* Add code fix for analyzer [UnusedParameter](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1163.md) (RCS1163)
+
+#### Refactorings
+
+* Add refactoring [AddTagToDocumentationComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0206.md)  (RR0208)
+
+#### Code Fixes
+
+* Add code fixes for CS8050 and CS8139.
+
 ### 1.9.1 (2018-07-06)
 
 #### Analyzers
 
-* Add analyzer [ValidateArgumentsCorrectly](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1227.md) (RCC1227)
+* Add analyzer [ValidateArgumentsCorrectly](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1227.md) (RCS1227)
 
 #### Refactorings
 

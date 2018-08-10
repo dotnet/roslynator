@@ -256,5 +256,7 @@
     <Rule Id="RCS1225" Action="Info" /> <!-- Make class sealed. -->
     <Rule Id="RCS1226" Action="Info" /> <!-- Add paragraph to documentation comment. -->
     <Rule Id="RCS1227" Action="Info" /> <!-- Validate arguments correctly. -->
+    <Rule Id="RCS1228" Action="Hidden" /> <!-- Unused element in documentation comment. -->
+    <Rule Id="RCS1229" Action="Info" /> <!-- Use async/await when necessary. -->
   </Rules>
 </RuleSet>

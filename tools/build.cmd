@@ -14,7 +14,7 @@ if errorlevel 1 (
 dotnet "..\src\Tools\AddCodeFileHeader\bin\Release\netcoreapp2.0\AddCodeFileHeader.dll" "..\src"
 dotnet "..\src\Tools\MetadataGenerator\bin\Release\netcoreapp2.0\MetadataGenerator.dll" "..\src"
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
-dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "1.9.1.0"
+dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "1.9.2.0"
 
 "C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Roslynator.sln" ^
  /t:Clean ^

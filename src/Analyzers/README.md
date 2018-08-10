@@ -206,6 +206,8 @@
 | RCS1225 | [Make class sealed](../../docs/analyzers/RCS1225.md) | Design | &#x2713; |
 | RCS1226 | [Add paragraph to documentation comment](../../docs/analyzers/RCS1226.md) | Usage | &#x2713; |
 | RCS1227 | [Validate arguments correctly](../../docs/analyzers/RCS1227.md) | Design | &#x2713; |
+| RCS1228 | [Unused element in documentation comment](../../docs/analyzers/RCS1228.md) | Readability | &#x2713; |
+| RCS1229 | [Use async/await when necessary](../../docs/analyzers/RCS1229.md) | Usage | &#x2713; |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

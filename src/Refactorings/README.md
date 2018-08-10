@@ -16,6 +16,7 @@
 | RR0010 | [Add identifier to variable declaration](../../docs/refactorings/RR0010.md) | \- |
 | RR0195 | [Add member to interface](../../docs/refactorings/RR0195.md) | &#x2713; |
 | RR0011 | [Add parameter name to argument](../../docs/refactorings/RR0011.md) | &#x2713; |
+| RR0208 | [Add tag to documentation comment](../../docs/refactorings/RR0208.md) | &#x2713; |
 | RR0178 | [Add type parameter](../../docs/refactorings/RR0178.md) | &#x2713; |
 | RR0013 | [Add using directive](../../docs/refactorings/RR0013.md) | &#x2713; |
 | RR0014 | [Add using static directive](../../docs/refactorings/RR0014.md) | &#x2713; |
@@ -80,6 +81,7 @@
 | RR0066 | [Introduce constructor](../../docs/refactorings/RR0066.md) | \- |
 | RR0067 | [Introduce field to lock on](../../docs/refactorings/RR0067.md) | &#x2713; |
 | RR0068 | [Introduce local variable](../../docs/refactorings/RR0068.md) | &#x2713; |
+| RR0160 | [Invert conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
 | RR0189 | [Invert if](../../docs/refactorings/RR0189.md) | &#x2713; |
 | RR0162 | [Invert if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0134 | [Invert prefix/postfix unary operator](../../docs/refactorings/RR0134.md) | &#x2713; |
@@ -178,7 +180,6 @@
 | RR0157 | [Split switch labels](../../docs/refactorings/RR0157.md) | &#x2713; |
 | RR0158 | [Split variable declaration](../../docs/refactorings/RR0158.md) | &#x2713; |
 | RR0159 | [Swap binary operands](../../docs/refactorings/RR0159.md) | &#x2713; |
-| RR0160 | [Swap expressions in conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
 | RR0161 | [Swap member declarations](../../docs/refactorings/RR0161.md) | &#x2713; |
 | RR0200 | [Uncomment multi-line comment](../../docs/refactorings/RR0200.md) | &#x2713; |
 | RR0163 | [UncommentSingleLineComment](../../docs/refactorings/RR0163.md) | &#x2713; |

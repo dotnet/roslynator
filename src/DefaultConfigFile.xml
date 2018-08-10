@@ -158,7 +158,7 @@
       <Refactoring Id="RR0157" IsEnabled="true" /> <!-- SplitSwitchLabels -->
       <Refactoring Id="RR0158" IsEnabled="true" /> <!-- SplitVariableDeclaration -->
       <Refactoring Id="RR0159" IsEnabled="true" /> <!-- SwapBinaryOperands -->
-      <Refactoring Id="RR0160" IsEnabled="true" /> <!-- SwapExpressionsInConditionalExpression -->
+      <Refactoring Id="RR0160" IsEnabled="true" /> <!-- InvertConditionalExpression -->
       <Refactoring Id="RR0161" IsEnabled="true" /> <!-- SwapMemberDeclarations -->
       <Refactoring Id="RR0162" IsEnabled="true" /> <!-- InvertIfElse -->
       <Refactoring Id="RR0163" IsEnabled="true" /> <!-- UncommentSingleLineComment -->
@@ -206,6 +206,7 @@
       <Refactoring Id="RR0205" IsEnabled="true" /> <!-- AddEmptyLineBetweenDeclarations -->
       <Refactoring Id="RR0206" IsEnabled="true" /> <!-- ReplaceForEachWithEnumerator -->
       <Refactoring Id="RR0207" IsEnabled="true" /> <!-- SortCaseLabels -->
+      <Refactoring Id="RR0208" IsEnabled="true" /> <!-- AddTagToDocumentationComment -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -230,7 +231,7 @@
       <CodeFix Id="RCF0021" IsEnabled="true" /> <!-- UseYieldReturnInsteadOfReturn (fixes CS0029, CS1622) -->
       <CodeFix Id="RCF0022" IsEnabled="true" /> <!-- ReplaceStringLiteralWithCharacterLiteral (fixes CS0029) -->
       <CodeFix Id="RCF0023" IsEnabled="true" /> <!-- AddComparisonWithBooleanLiteral (fixes CS0019, CS0266) -->
-      <CodeFix Id="RCF0024" IsEnabled="true" /> <!-- RemovePropertyOrFieldInitializer (fixes CS0573) -->
+      <CodeFix Id="RCF0024" IsEnabled="true" /> <!-- RemovePropertyOrFieldInitializer (fixes CS0573, CS8050) -->
       <CodeFix Id="RCF0025" IsEnabled="true" /> <!-- AddPartialModifier (fixes CS0101, CS0102, CS0260, CS0751) -->
       <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddBody (fixes CS0501, CS0756, CS8112) -->
       <CodeFix Id="RCF0027" IsEnabled="true" /> <!-- RemoveRefModifier (fixes CS0192, CS1615, CS1988, CS1623) -->
@@ -315,6 +316,7 @@
       <CodeFix Id="RCF0107" IsEnabled="true" /> <!-- AddMissingComma (fixes CS1003) -->
       <CodeFix Id="RCF0108" IsEnabled="true" /> <!-- RemoveParentheses (fixes CS0210) -->
       <CodeFix Id="RCF0109" IsEnabled="true" /> <!-- RemoveParameter (fixes CS0136) -->
+      <CodeFix Id="RCF0110" IsEnabled="true" /> <!-- RenameTupleElement (fixes CS8139) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

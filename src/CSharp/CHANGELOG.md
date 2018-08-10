@@ -1,3 +1,19 @@
+### 1.0.0-rc4 (2018-08-10)
+
+#### New API
+
+* Add struct `Roslynator.CSharp.ExpressionChain`
+* Add method `Roslynator.CSharp.SyntaxExtensions.AsChain`
+* Add method `Roslynator.CSharp.Syntax.BinaryExpressionInfo.AsChain`
+* Add method `Roslynator.CSharp.Syntax.StringConcatenationExpressionInfo.AsChain`
+* Add method `Roslynator.CSharp.CSharpFacts.IsLiteralExpression`
+
+#### Changed API
+
+* Replace abstract class `Roslynator.Selection<T>` with interface `Roslynator.ISelection<T>`
+* Make method `Roslynator.CSharp.Syntax.BinaryExpressionInfo.Expressions` obsolete
+* Make method `Roslynator.CSharp.Syntax.StringConcatenationExpressionInfo.Expressions` obsolete
+
 ### 1.0.0-rc3 (2018-06-06)
 
 #### Bug Fixes

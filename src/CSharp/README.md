@@ -15,13 +15,16 @@
 ### Classes
 
 * NameGenerator
-* Selection\`1
 * SeparatedSyntaxListSelection\`1
 * SyntaxListSelection\`1
 
 ### Structs
 
 * ExtensionMethodSymbolInfo
+
+### Interfaces
+
+* ISelection\`1
 
 ## Namespace Roslynator\.CSharp
 

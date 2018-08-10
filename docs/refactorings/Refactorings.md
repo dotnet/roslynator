@@ -125,6 +125,32 @@ public interface IFoo
 * **Syntax**: argument list
 ![Add parameter name to argument](../../images/refactorings/AddParameterNameToArgument.png)
 
+#### Add tag to documentation comment \(RR0208\)
+
+* **Syntax**: selected word\(s\) in documentation comment
+
+#### Before
+
+```csharp
+/// <summary>
+/// null
+/// </summary>
+public class Foo
+{
+}
+```
+
+#### After
+
+```csharp
+/// <summary>
+/// <c>null</c>
+/// </summary>
+public class Foo
+{
+}
+```
+
 #### Add type parameter \(RR0178\)
 
 * **Syntax**: class declaration, struct declaration, interface declaration, delegate declaration, method declaration, local function
@@ -692,6 +718,12 @@ void Foo()
 
 * **Syntax**: expression statement, expression in using statement
 ![Introduce local variable](../../images/refactorings/IntroduceLocalVariable.png)
+
+#### Invert conditional expression \(RR0160\)
+
+* **Syntax**: conditional expression
+* **Span**: condition
+![Invert conditional expression](../../images/refactorings/InvertConditionalExpression.png)
 
 #### Invert if \(RR0189\)
 
@@ -1694,12 +1726,6 @@ if (y && x)
 {
 {
 ```
-
-#### Swap expressions in conditional expression \(RR0160\)
-
-* **Syntax**: conditional expression
-* **Span**: condition
-![Swap expressions in conditional expression](../../images/refactorings/SwapExpressionsInConditionalExpression.png)
 
 #### Swap member declarations \(RR0161\)
 
