@@ -756,13 +756,12 @@ namespace Roslynator.CSharp
                 SyntaxKind.TypeConstraint);
         }
 
-        //TODO: make public
         /// <summary>
         /// Returns true if a syntax of the specified kind is a literal expression.
         /// </summary>
         /// <param name="kind"></param>
         /// <returns></returns>
-        internal static bool IsLiteralExpression(SyntaxKind kind)
+        public static bool IsLiteralExpression(SyntaxKind kind)
         {
             switch (kind)
             {
@@ -773,6 +772,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.FalseLiteralExpression:
                 case SyntaxKind.NullLiteralExpression:
                 case SyntaxKind.DefaultLiteralExpression:
+                case SyntaxKind.ArgListExpression:
                     return true;
                 default:
                     return false;
