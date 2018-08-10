@@ -8,7 +8,7 @@
 
 #### Refactorings
 
-* Add refactoring [AddTagToDocumentationComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0206.md)  (RR0208)
+* Add refactoring [AddTagToDocumentationComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0208.md)  (RR0208)
 
 #### Code Fixes
 
