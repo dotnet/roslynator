@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -33,13 +34,13 @@ namespace Roslynator.CSharp.Refactorings
                     case SyntaxKind.SimpleLambdaExpression:
                         {
                             return ((SimpleLambdaExpressionSyntax)lambda)
-                                .WithArrowToken(lambda.ArrowToken.WithoutTrailingTrivia())
+                                .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
                                 .WithBody(expression);
                         }
                     case SyntaxKind.ParenthesizedLambdaExpression:
                         {
                             return ((ParenthesizedLambdaExpressionSyntax)lambda)
-                                .WithArrowToken(lambda.ArrowToken.WithoutTrailingTrivia())
+                                .WithArrowToken(lambda.ArrowToken.WithTrailingTrivia(TriviaList(Space)))
                                 .WithBody(expression);
                         }
                     default:
@@ -59,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
                 case SyntaxKind.ExpressionStatement:
                     return ((ExpressionStatementSyntax)statement).Expression;
                 case SyntaxKind.ThrowStatement:
-                    return SyntaxFactory.ThrowExpression(((ThrowStatementSyntax)statement).Expression);
+                    return ThrowExpression(((ThrowStatementSyntax)statement).Expression);
             }
 
             return null;
