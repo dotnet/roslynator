@@ -17,20 +17,20 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateOperator)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertOperator)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(operatorToken)
-                && NegateOperatorRefactoring.CanBeNegated(operatorToken))
+                && InvertOperatorRefactoring.CanBeInverted(operatorToken))
             {
                 context.RegisterRefactoring(
-                    "Negate operator",
-                    cancellationToken => NegateOperatorRefactoring.RefactorAsync(context.Document, operatorToken, cancellationToken),
-                    RefactoringIdentifiers.NegateOperator);
+                    "Invert operator",
+                    cancellationToken => InvertOperatorRefactoring.RefactorAsync(context.Document, operatorToken, cancellationToken),
+                    RefactoringIdentifiers.InvertOperator);
             }
 
             if (context.Span.IsEmptyAndContainedInSpan(operatorToken))
             {
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateBinaryExpression))
-                    NegateBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertBinaryExpression))
+                    InvertBinaryExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SwapBinaryOperands))
                     SwapBinaryOperandsRefactoring.ComputeRefactoring(context, binaryExpression);
@@ -93,8 +93,8 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.NegateIsExpression))
-                NegateIsExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertIsExpression))
+                InvertIsExpressionRefactoring.ComputeRefactoring(context, binaryExpression);
 
             if (context.Span.IsContainedInSpanOrBetweenSpans(operatorToken))
             {

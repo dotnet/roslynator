@@ -168,7 +168,7 @@ namespace Roslynator.CSharp.Analysis.If
                             return Empty;
                         }
 
-                        return new IfToReturnWithExpressionAnalysis(ifStatement, condition, isYield, negate: kind1 == SyntaxKind.FalseLiteralExpression, semanticModel: semanticModel).ToImmutableArray();
+                        return new IfToReturnWithExpressionAnalysis(ifStatement, condition, isYield, invert: kind1 == SyntaxKind.FalseLiteralExpression, semanticModel: semanticModel).ToImmutableArray();
                     }
 
                     return Empty;
@@ -294,7 +294,7 @@ namespace Roslynator.CSharp.Analysis.If
                     && kind1 != kind2)
                 {
                     if (options.UseExpression)
-                        return new IfElseToAssignmentWithConditionAnalysis(ifStatement, left1, condition, semanticModel, negate: kind1 == SyntaxKind.FalseLiteralExpression).ToImmutableArray();
+                        return new IfElseToAssignmentWithConditionAnalysis(ifStatement, left1, condition, semanticModel, invert: kind1 == SyntaxKind.FalseLiteralExpression).ToImmutableArray();
 
                     return Empty;
                 }

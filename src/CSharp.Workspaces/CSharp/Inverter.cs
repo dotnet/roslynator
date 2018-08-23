@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    internal static class Negator
+    internal static class Inverter
     {
         public static ExpressionSyntax LogicallyNegate(
             ExpressionSyntax expression,
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.CastExpression:
                     {
-                        return DefaultNegate(expression);
+                        return DefaultInvert(expression);
                     }
                 case SyntaxKind.LessThanExpression:
                 case SyntaxKind.LessThanOrEqualExpression:
@@ -76,37 +76,37 @@ namespace Roslynator.CSharp
                 case SyntaxKind.GreaterThanOrEqualExpression:
                     {
                         return (semanticModel != null)
-                            ? NegateLessThanGreaterThan((BinaryExpressionSyntax)expression, semanticModel, cancellationToken)
-                            : DefaultNegate(expression);
+                            ? InvertLessThanGreaterThan((BinaryExpressionSyntax)expression, semanticModel, cancellationToken)
+                            : DefaultInvert(expression);
                     }
                 case SyntaxKind.IsExpression:
                 case SyntaxKind.AsExpression:
                 case SyntaxKind.IsPatternExpression:
                     {
-                        return DefaultNegate(expression);
+                        return DefaultInvert(expression);
                     }
                 case SyntaxKind.EqualsExpression:
                 case SyntaxKind.NotEqualsExpression:
                     {
-                        return NegateBinaryExpression((BinaryExpressionSyntax)expression);
+                        return InvertBinaryExpression((BinaryExpressionSyntax)expression);
                     }
                 case SyntaxKind.BitwiseAndExpression:
                     {
-                        return NegateBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
+                        return InvertBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
                     }
                 case SyntaxKind.ExclusiveOrExpression:
                     {
-                        return DefaultNegate(expression);
+                        return DefaultInvert(expression);
                     }
                 case SyntaxKind.BitwiseOrExpression:
                 case SyntaxKind.LogicalOrExpression:
                 case SyntaxKind.LogicalAndExpression:
                     {
-                        return NegateBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
+                        return InvertBinaryExpression((BinaryExpressionSyntax)expression, semanticModel, cancellationToken);
                     }
                 case SyntaxKind.ConditionalExpression:
                     {
-                        return NegateConditionalExpression((ConditionalExpressionSyntax)expression, semanticModel, cancellationToken);
+                        return InvertConditionalExpression((ConditionalExpressionSyntax)expression, semanticModel, cancellationToken);
                     }
                 case SyntaxKind.SimpleAssignmentExpression:
                 case SyntaxKind.AddAssignmentExpression:
@@ -120,7 +120,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.LeftShiftAssignmentExpression:
                 case SyntaxKind.RightShiftAssignmentExpression:
                     {
-                        return DefaultNegate(expression);
+                        return DefaultInvert(expression);
                     }
                 case SyntaxKind.TrueLiteralExpression:
                     {
@@ -150,16 +150,16 @@ namespace Roslynator.CSharp
                     }
                 case SyntaxKind.AwaitExpression:
                     {
-                        return DefaultNegate(expression);
+                        return DefaultInvert(expression);
                     }
             }
 
             Debug.Fail($"Logical negation of unknown kind '{expression.Kind()}'");
 
-            return DefaultNegate(expression);
+            return DefaultInvert(expression);
         }
 
-        private static ExpressionSyntax NegateLessThanGreaterThan(
+        private static ExpressionSyntax InvertLessThanGreaterThan(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -171,26 +171,26 @@ namespace Roslynator.CSharp
             {
                 if (!IsConstructedFromNullableOfT(right))
                 {
-                    return NegateLessThanGreaterThan(binaryExpression, left, right, isLeft: true);
+                    return InvertLessThanGreaterThan(binaryExpression, left, right, isLeft: true);
                 }
                 else
                 {
-                    return DefaultNegate(binaryExpression);
+                    return DefaultInvert(binaryExpression);
                 }
             }
             else if (IsConstructedFromNullableOfT(right))
             {
                 if (semanticModel.HasConstantValue(left, cancellationToken))
                 {
-                    return NegateLessThanGreaterThan(binaryExpression, right, left, isLeft: false);
+                    return InvertLessThanGreaterThan(binaryExpression, right, left, isLeft: false);
                 }
                 else
                 {
-                    return DefaultNegate(binaryExpression);
+                    return DefaultInvert(binaryExpression);
                 }
             }
 
-            return NegateBinaryExpression(binaryExpression);
+            return InvertBinaryExpression(binaryExpression);
 
             bool IsConstructedFromNullableOfT(ExpressionSyntax expression)
             {
@@ -202,7 +202,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static ExpressionSyntax NegateLessThanGreaterThan(
+        private static ExpressionSyntax InvertLessThanGreaterThan(
             BinaryExpressionSyntax binaryExpression,
             ExpressionSyntax expression,
             ExpressionSyntax otherExpression,
@@ -212,25 +212,25 @@ namespace Roslynator.CSharp
             {
                 return LogicalOrExpression(
                     EqualsExpression(expression, NullLiteralExpression()),
-                    NegateBinaryExpression(binaryExpression));
+                    InvertBinaryExpression(binaryExpression));
             }
 
             if (!(expression is ConditionalAccessExpressionSyntax conditionalAccess))
-                return DefaultNegate(binaryExpression);
+                return DefaultInvert(binaryExpression);
 
             if (conditionalAccess.Expression.Kind() != SyntaxKind.IdentifierName)
-                return DefaultNegate(binaryExpression);
+                return DefaultInvert(binaryExpression);
 
             ExpressionSyntax newExpression = TryCreateExpressionWithoutConditionalAccess(conditionalAccess);
 
             if (newExpression == null)
-                return DefaultNegate(binaryExpression);
+                return DefaultInvert(binaryExpression);
 
             return LogicalOrExpression(
                 EqualsExpression(conditionalAccess.Expression, NullLiteralExpression()),
                 binaryExpression.Update(
                     (isLeft) ? newExpression : otherExpression,
-                    NegateBinaryOperatorToken(binaryExpression.OperatorToken),
+                    InvertBinaryOperatorToken(binaryExpression.OperatorToken),
                     (isLeft) ? otherExpression : newExpression));
         }
 
@@ -258,21 +258,21 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        private static BinaryExpressionSyntax NegateBinaryExpression(BinaryExpressionSyntax binaryExpression)
+        private static BinaryExpressionSyntax InvertBinaryExpression(BinaryExpressionSyntax binaryExpression)
         {
-            SyntaxToken operatorToken = NegateBinaryOperatorToken(binaryExpression.OperatorToken);
+            SyntaxToken operatorToken = InvertBinaryOperatorToken(binaryExpression.OperatorToken);
 
             return binaryExpression.WithOperatorToken(operatorToken);
         }
 
-        private static SyntaxToken NegateBinaryOperatorToken(SyntaxToken operatorToken)
+        private static SyntaxToken InvertBinaryOperatorToken(SyntaxToken operatorToken)
         {
             return Token(
                 operatorToken.LeadingTrivia,
-                NegateBinaryOperator(operatorToken.Kind()),
+                InvertBinaryOperator(operatorToken.Kind()),
                 operatorToken.TrailingTrivia);
 
-            SyntaxKind NegateBinaryOperator(SyntaxKind kind)
+            SyntaxKind InvertBinaryOperator(SyntaxKind kind)
             {
                 switch (kind)
                 {
@@ -303,7 +303,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static BinaryExpressionSyntax NegateBinaryExpression(
+        private static BinaryExpressionSyntax InvertBinaryExpression(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -312,7 +312,7 @@ namespace Roslynator.CSharp
             ExpressionSyntax right = binaryExpression.Right;
             SyntaxToken operatorToken = binaryExpression.OperatorToken;
 
-            SyntaxKind kind = NegateBinaryExpressionKind(binaryExpression.Kind());
+            SyntaxKind kind = InvertBinaryExpressionKind(binaryExpression.Kind());
 
             left = LogicallyNegateAndParenthesize(left, semanticModel, cancellationToken);
 
@@ -321,13 +321,13 @@ namespace Roslynator.CSharp
             BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
                 kind,
                 left,
-                NegateBinaryOperatorToken(operatorToken),
+                InvertBinaryOperatorToken(operatorToken),
                 right);
 
             return newBinaryExpression.WithTriviaFrom(binaryExpression);
         }
 
-        private static SyntaxKind NegateBinaryExpressionKind(SyntaxKind kind)
+        private static SyntaxKind InvertBinaryExpressionKind(SyntaxKind kind)
         {
             switch (kind)
             {
@@ -357,7 +357,7 @@ namespace Roslynator.CSharp
             return kind;
         }
 
-        private static ConditionalExpressionSyntax NegateConditionalExpression(
+        private static ConditionalExpressionSyntax InvertConditionalExpression(
             ConditionalExpressionSyntax conditionalExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -385,7 +385,7 @@ namespace Roslynator.CSharp
             return newConditionalExpression.WithTriviaFrom(conditionalExpression);
         }
 
-        private static PrefixUnaryExpressionSyntax DefaultNegate(ExpressionSyntax expression)
+        private static PrefixUnaryExpressionSyntax DefaultInvert(ExpressionSyntax expression)
         {
             Debug.Assert(expression.Kind() != SyntaxKind.ParenthesizedExpression, expression.Kind().ToString());
 

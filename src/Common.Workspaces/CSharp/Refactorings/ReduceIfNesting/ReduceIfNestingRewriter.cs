@@ -153,7 +153,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
 
                 int index = statements.IndexOf(ifStatement);
 
-                ExpressionSyntax newCondition = Negator.LogicallyNegate(ifStatement.Condition, _semanticModel, _cancellationToken);
+                ExpressionSyntax newCondition = Inverter.LogicallyNegate(ifStatement.Condition, _semanticModel, _cancellationToken);
 
                 if (_recursive)
                     ifStatement = (IfStatementSyntax)VisitIfStatement(ifStatement);

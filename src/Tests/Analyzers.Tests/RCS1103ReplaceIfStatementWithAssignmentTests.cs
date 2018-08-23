@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override CodeFixProvider FixProvider { get; } = new IfStatementCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithAssignment)]
-        public async Task Test_NegateCondition()
+        public async Task Test_InvertCondition()
         {
             await VerifyDiagnosticAndFixAsync(@"
 class C

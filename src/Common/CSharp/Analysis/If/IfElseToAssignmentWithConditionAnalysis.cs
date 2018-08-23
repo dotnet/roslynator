@@ -12,11 +12,11 @@ namespace Roslynator.CSharp.Analysis.If
             ExpressionSyntax left,
             ExpressionSyntax right,
             SemanticModel semanticModel,
-            bool negate) : base(ifStatement, semanticModel)
+            bool invert) : base(ifStatement, semanticModel)
         {
             Left = left;
             Right = right;
-            Negate = negate;
+            Invert = invert;
         }
 
         public override IfAnalysisKind Kind
@@ -33,6 +33,6 @@ namespace Roslynator.CSharp.Analysis.If
 
         public ExpressionSyntax Right { get; }
 
-        public bool Negate { get; }
+        public bool Invert { get; }
     }
 }

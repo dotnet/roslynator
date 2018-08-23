@@ -106,10 +106,10 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeIfStatements, "Merge if statements", IsEnabled(RefactoringIdentifiers.MergeIfStatements)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.MergeLocalDeclarations, "Merge local declarations", IsEnabled(RefactoringIdentifiers.MergeLocalDeclarations)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.JoinStringExpressions, "Join string expressions", IsEnabled(RefactoringIdentifiers.JoinStringExpressions)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.NegateBinaryExpression, "Negate binary expression", IsEnabled(RefactoringIdentifiers.NegateBinaryExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.NegateBooleanLiteral, "Negate boolean literal", IsEnabled(RefactoringIdentifiers.NegateBooleanLiteral)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.NegateIsExpression, "Negate is expression", IsEnabled(RefactoringIdentifiers.NegateIsExpression)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.NegateOperator, "Negate operator", IsEnabled(RefactoringIdentifiers.NegateOperator)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertBinaryExpression, "Invert binary expression", IsEnabled(RefactoringIdentifiers.InvertBinaryExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertBooleanLiteral, "Invert boolean literal", IsEnabled(RefactoringIdentifiers.InvertBooleanLiteral)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertIsExpression, "Invert is expression", IsEnabled(RefactoringIdentifiers.InvertIsExpression)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertOperator, "Invert operator", IsEnabled(RefactoringIdentifiers.InvertOperator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.NotifyPropertyChanged, "Notify property changed", IsEnabled(RefactoringIdentifiers.NotifyPropertyChanged)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ParenthesizeExpression, "Parenthesize expression", IsEnabled(RefactoringIdentifiers.ParenthesizeExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.PromoteLocalToParameter, "Promote local to parameter", IsEnabled(RefactoringIdentifiers.PromoteLocalToParameter)));

@@ -183,8 +183,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax right = analysis.Right;
 
-            if (analysis.Negate)
-                right = Negator.LogicallyNegate(right, analysis.SemanticModel, cancellationToken);
+            if (analysis.Invert)
+                right = Inverter.LogicallyNegate(right, analysis.SemanticModel, cancellationToken);
 
             ExpressionStatementSyntax newNode = SimpleAssignmentStatement(analysis.Left.WithoutTrivia(), right.WithoutTrivia())
                 .WithTriviaFrom(analysis.IfStatement)
@@ -323,8 +323,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             ExpressionSyntax expression = analysis.Expression;
 
-            if (analysis.Negate)
-                expression = Negator.LogicallyNegate(expression, analysis.SemanticModel, cancellationToken);
+            if (analysis.Invert)
+                expression = Inverter.LogicallyNegate(expression, analysis.SemanticModel, cancellationToken);
 
             StatementSyntax statement;
             if (analysis.IsYield)
@@ -492,11 +492,11 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return Negator.LogicallyNegate(condition, semanticModel, cancellationToken);
+                                return Inverter.LogicallyNegate(condition, semanticModel, cancellationToken);
                             case SyntaxKind.FalseLiteralExpression:
                                 return expression2;
                             default:
-                                return LogicalAndExpression(Negator.LogicallyNegate(condition, semanticModel, cancellationToken), expression2);
+                                return LogicalAndExpression(Inverter.LogicallyNegate(condition, semanticModel, cancellationToken), expression2);
                         }
                     }
                 default:
@@ -504,7 +504,7 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return LogicalOrExpression(Negator.LogicallyNegate(condition, semanticModel, cancellationToken), expression1);
+                                return LogicalOrExpression(Inverter.LogicallyNegate(condition, semanticModel, cancellationToken), expression1);
                             case SyntaxKind.FalseLiteralExpression:
                                 return LogicalAndExpression(condition, expression1);
                             default:

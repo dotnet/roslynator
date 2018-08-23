@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class NegateOperatorRefactoring
+    internal static class InvertOperatorRefactoring
     {
-        public static bool CanBeNegated(SyntaxToken operatorToken)
+        public static bool CanBeInverted(SyntaxToken operatorToken)
         {
             switch (operatorToken.Kind())
             {
@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxToken operatorToken,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            SyntaxToken newToken = SyntaxFactory.Token(GetNegatedOperatorKind(operatorToken))
+            SyntaxToken newToken = SyntaxFactory.Token(GetInvertedOperatorKind(operatorToken))
                 .WithTriviaFrom(operatorToken);
 
             return document.ReplaceTokenAsync(
@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken);
         }
 
-        private static SyntaxKind GetNegatedOperatorKind(SyntaxToken operatorToken)
+        private static SyntaxKind GetInvertedOperatorKind(SyntaxToken operatorToken)
         {
             switch (operatorToken.Kind())
             {

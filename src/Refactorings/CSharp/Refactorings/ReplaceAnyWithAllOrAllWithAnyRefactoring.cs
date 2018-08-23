@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             InvocationExpressionSyntax newNode = invocationExpression
-                .ReplaceNode(expression, Negator.LogicallyNegate(expression, semanticModel, cancellationToken))
+                .ReplaceNode(expression, Inverter.LogicallyNegate(expression, semanticModel, cancellationToken))
                 .WithExpression(newMemberAccessExpression);
 
             return await document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken).ConfigureAwait(false);

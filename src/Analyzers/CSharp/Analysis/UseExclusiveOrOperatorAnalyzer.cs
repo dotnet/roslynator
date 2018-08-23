@@ -61,16 +61,16 @@ namespace Roslynator.CSharp.Analysis
             if (!expressions2.IsValid)
                 return;
 
-            if (expressions.Expression.Kind() != expressions2.NegatedExpression.Kind())
+            if (expressions.Expression.Kind() != expressions2.InvertedExpression.Kind())
                 return;
 
-            if (expressions.NegatedExpression.Kind() != expressions2.Expression.Kind())
+            if (expressions.InvertedExpression.Kind() != expressions2.Expression.Kind())
                 return;
 
-            if (!AreEquivalent(expressions.Expression, expressions2.NegatedExpression))
+            if (!AreEquivalent(expressions.Expression, expressions2.InvertedExpression))
                 return;
 
-            if (!AreEquivalent(expressions.NegatedExpression, expressions2.Expression))
+            if (!AreEquivalent(expressions.InvertedExpression, expressions2.Expression))
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseExclusiveOrOperator, context.Node);
@@ -107,19 +107,19 @@ namespace Roslynator.CSharp.Analysis
 
         private readonly struct ExpressionPair
         {
-            public ExpressionPair(ExpressionSyntax expression, ExpressionSyntax negatedExpression)
+            public ExpressionPair(ExpressionSyntax expression, ExpressionSyntax invertedExpression)
             {
                 Expression = expression;
-                NegatedExpression = negatedExpression;
+                InvertedExpression = invertedExpression;
             }
 
             public bool IsValid
             {
-                get { return Expression != null && NegatedExpression != null; }
+                get { return Expression != null && InvertedExpression != null; }
             }
 
             public ExpressionSyntax Expression { get; }
-            public ExpressionSyntax NegatedExpression { get; }
+            public ExpressionSyntax InvertedExpression { get; }
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class NegateBinaryExpressionRefactoring
+    internal static class InvertBinaryExpressionRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
@@ -22,9 +22,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                "Negate binary expression",
+                "Invert binary expression",
                 cancellationToken => RefactorAsync(context.Document, binaryExpression, cancellationToken),
-                RefactoringIdentifiers.NegateBinaryExpression);
+                RefactoringIdentifiers.InvertBinaryExpression);
         }
 
         private static bool CanRefactor(SyntaxNode node)
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ExpressionSyntax newNode = Negator.LogicallyNegate(binaryExpression, semanticModel, cancellationToken);
+            ExpressionSyntax newNode = Inverter.LogicallyNegate(binaryExpression, semanticModel, cancellationToken);
 
             newNode = newNode.WithFormatterAnnotation();
 

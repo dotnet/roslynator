@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class NegateIsExpressionRefactoring
+    internal static class InvertIsExpressionRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, BinaryExpressionSyntax binaryExpression)
         {
@@ -48,9 +48,9 @@ namespace Roslynator.CSharp.Refactorings
         private static void RegisterRefactoring(RefactoringContext context, ExpressionSyntax expression)
         {
             context.RegisterRefactoring(
-                "Negate is",
+                "Invert is",
                 cancellationToken => RefactorAsync(context.Document, expression, cancellationToken),
-                RefactoringIdentifiers.NegateIsExpression);
+                RefactoringIdentifiers.InvertIsExpression);
         }
 
         private static async Task<Document> RefactorAsync(
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ExpressionSyntax newNode = Negator.LogicallyNegate(expression, semanticModel, cancellationToken);
+            ExpressionSyntax newNode = Inverter.LogicallyNegate(expression, semanticModel, cancellationToken);
 
             return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
         }

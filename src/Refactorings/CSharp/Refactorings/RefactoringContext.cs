@@ -785,7 +785,7 @@ namespace Roslynator.CSharp.Refactorings
                             if (flags.IsSet(Flag.IsPatternExpression))
                                 continue;
 
-                            NegateIsExpressionRefactoring.ComputeRefactoring(this, (IsPatternExpressionSyntax)node);
+                            InvertIsExpressionRefactoring.ComputeRefactoring(this, (IsPatternExpressionSyntax)node);
                             flags.Set(Flag.IsPatternExpression);
                             continue;
                         }

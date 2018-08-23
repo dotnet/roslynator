@@ -11,17 +11,17 @@ namespace Roslynator.CSharp.Analysis.If
             IfStatementSyntax ifStatement,
             ExpressionSyntax expression,
             bool isYield,
-            bool negate,
+            bool invert,
             SemanticModel semanticModel) : base(ifStatement, semanticModel)
         {
             Expression = expression;
-            Negate = negate;
+            Invert = invert;
             IsYield = isYield;
         }
 
         public ExpressionSyntax Expression { get; }
 
-        public bool Negate { get; }
+        public bool Invert { get; }
 
         public bool IsYield { get; }
 
