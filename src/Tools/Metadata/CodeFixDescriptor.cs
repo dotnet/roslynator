@@ -14,12 +14,14 @@ namespace Roslynator.Metadata
             string identifier,
             string title,
             bool isEnabledByDefault,
+            bool isObsolete,
             IEnumerable<string> fixableDiagnosticIds)
         {
             Id = id;
             Identifier = identifier;
             Title = title;
             IsEnabledByDefault = isEnabledByDefault;
+            IsObsolete = isObsolete;
             FixableDiagnosticIds = new ReadOnlyCollection<string>(fixableDiagnosticIds?.ToArray() ?? Array.Empty<string>());
         }
 
@@ -30,6 +32,8 @@ namespace Roslynator.Metadata
         public string Title { get; }
 
         public bool IsEnabledByDefault { get; }
+
+        public bool IsObsolete { get; }
 
         public IReadOnlyList<string> FixableDiagnosticIds { get; }
     }

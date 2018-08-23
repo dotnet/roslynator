@@ -120,6 +120,7 @@ namespace Roslynator.Metadata
                     element.Attribute("Identifier").Value,
                     element.Attribute("Title").Value,
                     element.AttributeValueAsBooleanOrDefault("IsEnabledByDefault", true),
+                    element.AttributeValueAsBooleanOrDefault("IsObsolete", false),
                     element.Element("FixableDiagnosticIds")
                         .Elements("Id")
                         .Select(f => f.Value));

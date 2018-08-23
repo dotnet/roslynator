@@ -24,7 +24,6 @@ namespace Roslynator.VisualStudio
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
-            codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveUnusedVariable, "Remove unused variable (fixes CS0168, CS0219)", IsEnabled(CodeFixIdentifiers.RemoveUnusedVariable)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddBreakStatementToSwitchSection, "Add break statement to switch section (fixes CS0163, CS8070)", IsEnabled(CodeFixIdentifiers.AddBreakStatementToSwitchSection)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.CreateSingletonArray, "Create singleton array (fixes CS0266)", IsEnabled(CodeFixIdentifiers.CreateSingletonArray)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.AddOutModifierToArgument, "Add 'out' modifier to argument (fixes CS1620)", IsEnabled(CodeFixIdentifiers.AddOutModifierToArgument)));

@@ -23,7 +23,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     ClassDeclaration(
                         Modifiers.PublicPartial(),
                         "CodeFixesOptionsPage",
-                        CreateMembers(codeFixes, comparer).ToSyntaxList())));
+                        CreateMembers(codeFixes.Where(f => !f.IsObsolete), comparer).ToSyntaxList())));
         }
 
         private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<CodeFixDescriptor> codeFixes, IComparer<string> comparer)

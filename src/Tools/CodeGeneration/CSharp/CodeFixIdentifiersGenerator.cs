@@ -22,6 +22,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         Modifiers.PublicStaticPartial(),
                         "CodeFixIdentifiers",
                         codeFixes
+                            .Where(f => !f.IsObsolete)
                             .OrderBy(f => f.Id, comparer)
                             .Select(f =>
                             {
