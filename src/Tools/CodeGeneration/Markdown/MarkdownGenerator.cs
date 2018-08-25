@@ -247,8 +247,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 yield return Heading2("See Also");
 
                 yield return BulletList(
-                    Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic"),
-                    analyzer.Links.Select(f => CreateLink(f)));
+                    analyzer.Links.Select(f => CreateLink(f)),
+                    Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic"));
             }
         }
 
