@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                     newNode = LogicalOrExpression(
                         condition.Parenthesize().AppendToTrailingTrivia(trailingTrivia),
                         Token(info.ColonToken.LeadingTrivia, SyntaxKind.BarBarToken, info.ColonToken.TrailingTrivia),
-                        whenFalse);
+                        whenFalse.Parenthesize());
                 }
             }
             else if (falseKind == SyntaxKind.FalseLiteralExpression)
@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Refactorings
                 newNode = LogicalAndExpression(
                     condition.Parenthesize(),
                     Token(info.QuestionToken.LeadingTrivia, SyntaxKind.AmpersandAmpersandToken, info.QuestionToken.TrailingTrivia),
-                    whenTrue.WithTrailingTrivia(trailingTrivia));
+                    whenTrue.WithTrailingTrivia(trailingTrivia).Parenthesize());
             }
             else if (trueKind == SyntaxKind.FalseLiteralExpression
                 && falseKind == SyntaxKind.TrueLiteralExpression)
@@ -73,6 +73,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 newNode = CreateNewNode(conditionalExpression, Inverter.LogicallyNegate(condition, semanticModel, cancellationToken));
             }
+
+            newNode = newNode.Parenthesize();
 
             return await document.ReplaceNodeAsync(conditionalExpression, newNode, cancellationToken).ConfigureAwait(false);
         }
@@ -88,9 +90,9 @@ namespace Roslynator.CSharp.Refactorings
                 .AddRange(conditionalExpression.GetTrailingTrivia());
 
             return newNode
-                .WithSimplifierAnnotation()
                 .WithLeadingTrivia(conditionalExpression.GetLeadingTrivia())
-                .WithTrailingTrivia(trailingTrivia);
+                .WithTrailingTrivia(trailingTrivia)
+                .WithSimplifierAnnotation();
         }
     }
 }

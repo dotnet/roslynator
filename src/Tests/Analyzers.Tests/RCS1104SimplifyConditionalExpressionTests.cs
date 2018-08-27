@@ -49,6 +49,7 @@ class C
 
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
         [InlineData("f ? g : false", "f && g")]
+        [InlineData("f ? g || g : false", "f && (g || g)")]
         [InlineData(@"[|f
             ? g
             : false|] /**/", @"f
