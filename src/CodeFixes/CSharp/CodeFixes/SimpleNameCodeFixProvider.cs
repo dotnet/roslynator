@@ -23,7 +23,8 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     CompilerDiagnosticIdentifiers.CannotConvertMethodGroupToNonDelegateType,
-                    CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound);
+                    CompilerDiagnosticIdentifiers.TypeOrNamespaceNameCouldNotBeFound,
+                    CompilerDiagnosticIdentifiers.NameIsNotValidInGivenContext);
             }
         }
 
@@ -46,6 +47,7 @@ namespace Roslynator.CSharp.CodeFixes
                 switch (diagnostic.Id)
                 {
                     case CompilerDiagnosticIdentifiers.CannotConvertMethodGroupToNonDelegateType:
+                    case CompilerDiagnosticIdentifiers.NameIsNotValidInGivenContext:
                         {
                             if (!simpleName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
                                 break;

@@ -134,6 +134,13 @@
     Message="'{0}': no suitable method found to override"
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0115" />
   <Diagnostic
+    Id="CS0119"
+    Identifier="NameIsNotValidInGivenContext"
+    Severity="Error"
+    Title="'identifier' is a 'construct', which is not valid in the given context."
+    Message="'{0}' is a {1}, which is not valid in the given context"
+    HelpUrl="https://docs.microsoft.com/cs-cz/dotnet/csharp/misc/cs0119" />
+  <Diagnostic
     Id="CS0120"
     Identifier="ObjectReferenceIsRequiredForNonStaticMember"
     Severity="Error"

@@ -210,6 +210,7 @@
   <CodeFix Id="RCF0039" Identifier="AddArgumentList" Title="Add argument list">
     <FixableDiagnosticIds>
       <Id>CS0023</Id>
+      <Id>CS0119</Id>
       <Id>CS0428</Id>
       <Id>CS0201</Id>
       <Id>CS1526</Id>
