@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new UseCoalesceExpressionAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new StatementCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UseCoalesceExpressionCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
         public async Task Test_LocalDeclarationStatement()

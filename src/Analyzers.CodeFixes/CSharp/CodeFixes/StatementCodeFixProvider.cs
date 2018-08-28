@@ -24,7 +24,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
-                    DiagnosticIdentifiers.UseCoalesceExpression,
                     DiagnosticIdentifiers.InlineLazyInitialization,
                     DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
                     DiagnosticIdentifiers.RemoveRedundantStatement,
@@ -50,22 +49,6 @@ namespace Roslynator.CSharp.CodeFixes
                                 cancellationToken =>
                                 {
                                     return AddEmptyLineAfterLastStatementInDoStatementRefactoring.RefactorAsync(
-                                        context.Document,
-                                        statement,
-                                        cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.UseCoalesceExpression:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Use coalesce expression",
-                                cancellationToken =>
-                                {
-                                    return UseCoalesceExpressionRefactoring.RefactorAsync(
                                         context.Document,
                                         statement,
                                         cancellationToken);
