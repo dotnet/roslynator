@@ -9,24 +9,24 @@ using Roslynator.Text;
 
 namespace Roslynator.Tests.Text
 {
-    public abstract class SpanParser
+    public abstract class TextSpanParser
     {
-        public static SpanParser Default { get; } = new DefaultSpanParser();
+        public static TextSpanParser Default { get; } = new DefaultSpanParser();
 
-        public abstract SpanParserResult GetSpans(string s, bool reverse = false);
+        public abstract TextSpanParserResult GetSpans(string s, bool reverse = false);
 
-        public abstract (TextSpan span, string text) ReplaceSpan(string s, string replacement);
+        public abstract (TextSpan span, string text) ReplaceEmptySpan(string s, string replacement);
 
-        public abstract (TextSpan span, string text1, string text2) ReplaceSpan(string s, string replacement1, string replacement2);
+        public abstract (TextSpan span, string text1, string text2) ReplaceEmptySpan(string s, string replacement1, string replacement2);
 
-        private class DefaultSpanParser : SpanParser
+        private class DefaultSpanParser : TextSpanParser
         {
             private const string OpenToken = "[|";
             private const string CloseToken = "|]";
             private const string OpenCloseTokens = OpenToken + CloseToken;
             private const int TokensLength = 4;
 
-            public override SpanParserResult GetSpans(string s, bool reverse = false)
+            public override TextSpanParserResult GetSpans(string s, bool reverse = false)
             {
                 StringBuilder sb = StringBuilderCache.GetInstance(s.Length - TokensLength);
 
@@ -142,7 +142,7 @@ namespace Roslynator.Tests.Text
                     spans.Reverse();
                 }
 
-                return new SpanParserResult(
+                return new TextSpanParserResult(
                     StringBuilderCache.GetStringAndFree(sb),
                     spans?.ToImmutableArray() ?? ImmutableArray<LinePositionSpanInfo>.Empty);
 
@@ -181,9 +181,12 @@ namespace Roslynator.Tests.Text
                 }
             }
 
-            public override (TextSpan span, string text) ReplaceSpan(string s, string replacement)
+            public override (TextSpan span, string text) ReplaceEmptySpan(string s, string replacement)
             {
                 int index = s.IndexOf(OpenCloseTokens, StringComparison.Ordinal);
+
+                if (index == -1)
+                    throw new ArgumentException("Empty span not found in.", nameof(s));
 
                 var span = new TextSpan(index, replacement.Length);
 
@@ -192,9 +195,12 @@ namespace Roslynator.Tests.Text
                 return (span, result);
             }
 
-            public override (TextSpan span, string text1, string text2) ReplaceSpan(string s, string replacement1, string replacement2)
+            public override (TextSpan span, string text1, string text2) ReplaceEmptySpan(string s, string replacement1, string replacement2)
             {
                 int index = s.IndexOf(OpenCloseTokens, StringComparison.Ordinal);
+
+                if (index == -1)
+                    throw new ArgumentException("Empty span not found in.", nameof(s));
 
                 var span = new TextSpan(index, replacement1.Length);
 

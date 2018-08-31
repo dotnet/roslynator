@@ -13,7 +13,7 @@ namespace Roslynator.Tests
 
         public abstract string Language { get; }
 
-        protected virtual SpanParser SpanParser { get; } = SpanParser.Default;
+        protected virtual TextSpanParser SpanParser { get; } = TextSpanParser.Default;
 
         protected abstract Project CreateProject();
 
