@@ -1,9 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -78,7 +80,101 @@ namespace Roslynator.CSharp.Analysis
                     return false;
             }
 
+            foreach (IMethodSymbol constructorSymbol in fieldSymbol.ContainingType.StaticConstructors)
+            {
+                foreach (SyntaxReference syntaxReference in constructorSymbol.DeclaringSyntaxReferences)
+                {
+                    if (syntaxReference.SyntaxTree != fieldDeclaration.SyntaxTree)
+                        return false;
+
+                    var constructorDeclaration = (ConstructorDeclarationSyntax)syntaxReference.GetSyntax(cancellationToken);
+
+                    BlockSyntax body = constructorDeclaration.Body;
+
+                    if (body != null)
+                    {
+                        UseConstantInsteadOfFieldWalker walker = UseConstantInsteadOfFieldWalker.GetInstance();
+
+                        walker.FieldSymbol = fieldSymbol;
+                        walker.SemanticModel = semanticModel;
+                        walker.CancellationToken = cancellationToken;
+
+                        walker.VisitBlock(body);
+
+                        bool isUsedInRefOrOutArgument = walker.IsUsedInRefOrOutArgument;
+
+                        UseConstantInsteadOfFieldWalker.Free(walker);
+
+                        if (isUsedInRefOrOutArgument)
+                            return false;
+                    }
+                }
+            }
+
             return true;
+        }
+
+        private class UseConstantInsteadOfFieldWalker : AssignedExpressionWalker
+        {
+            public IFieldSymbol FieldSymbol { get; set; }
+
+            public SemanticModel SemanticModel { get; set; }
+
+            public CancellationToken CancellationToken { get; set; }
+
+            public bool IsUsedInRefOrOutArgument { get; private set; }
+
+            protected override bool ShouldVisit
+            {
+                get { return !IsUsedInRefOrOutArgument; }
+            }
+
+            public override void VisitAssignedExpression(ExpressionSyntax expression)
+            {
+                CancellationToken.ThrowIfCancellationRequested();
+
+                expression = expression.WalkDownParentheses();
+
+                if (expression.IsKind(SyntaxKind.IdentifierName))
+                {
+                    var identifierName = (IdentifierNameSyntax)expression;
+
+                    if (string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
+                        && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true)
+                    {
+                        IsUsedInRefOrOutArgument = true;
+                    }
+                }
+            }
+
+            [ThreadStatic]
+            private static UseConstantInsteadOfFieldWalker _cachedInstance;
+
+            public static UseConstantInsteadOfFieldWalker GetInstance()
+            {
+                UseConstantInsteadOfFieldWalker walker = _cachedInstance;
+
+                if (walker != null)
+                {
+                    _cachedInstance = null;
+
+                    return walker;
+                }
+                else
+                {
+                    return new UseConstantInsteadOfFieldWalker();
+                }
+            }
+
+            public static void Free(UseConstantInsteadOfFieldWalker walker)
+            {
+                walker.FieldSymbol = null;
+                walker.SemanticModel = null;
+                walker.CancellationToken = default;
+                walker.IsUsedInRefOrOutArgument = false;
+
+                _cachedInstance = walker;
+            }
         }
     }
 }
