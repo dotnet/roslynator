@@ -46,5 +46,19 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task TestNoDiagnostic_StackAllocArrayCreationExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    unsafe void M(int length)
+    {
+        var memory = stackalloc byte[length];
+    }
+}
+");
+        }
     }
 }

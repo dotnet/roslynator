@@ -72,8 +72,35 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         protected override void VisitType(TypeSyntax node)
         {
-            if (IsAnyTypeParameter)
-                base.VisitType(node);
+            switch (node.Kind())
+            {
+                case SyntaxKind.ArrayType:
+                    {
+                        VisitArrayType((ArrayTypeSyntax)node);
+                        break;
+                    }
+                case SyntaxKind.AliasQualifiedName:
+                case SyntaxKind.GenericName:
+                case SyntaxKind.IdentifierName:
+                case SyntaxKind.NullableType:
+                case SyntaxKind.OmittedTypeArgument:
+                case SyntaxKind.PointerType:
+                case SyntaxKind.PredefinedType:
+                case SyntaxKind.QualifiedName:
+                case SyntaxKind.RefType:
+                case SyntaxKind.TupleType:
+                    {
+                        if (IsAnyTypeParameter)
+                            base.VisitType(node);
+
+                        break;
+                    }
+                default:
+                    {
+                        base.VisitType(node);
+                        break;
+                    }
+            }
         }
 
         public override void VisitIdentifierName(IdentifierNameSyntax node)
