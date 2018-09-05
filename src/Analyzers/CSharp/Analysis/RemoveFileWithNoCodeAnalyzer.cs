@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -38,9 +39,16 @@ namespace Roslynator.CSharp.Analysis
                 && !token.HasTrailingTrivia
                 && token.LeadingTrivia.All(f => !f.IsDirective))
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.RemoveFileWithNoCode,
-                    Location.Create(compilationUnit.SyntaxTree, default(TextSpan)));
+                SyntaxTree syntaxTree = compilationUnit.SyntaxTree;
+
+                Debug.Assert(!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath), syntaxTree.FilePath);
+
+                if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
+                {
+                    context.ReportDiagnostic(
+                        DiagnosticDescriptors.RemoveFileWithNoCode,
+                        Location.Create(syntaxTree, default(TextSpan)));
+                }
             }
         }
     }
