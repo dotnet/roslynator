@@ -52,5 +52,46 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+        public async Task TestNoDiagnostic_OutInStaticConstructor()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    private static readonly int _f = 1;
+
+    static C()
+    {
+        M(out _f);
+    }
+
+    static void M(out int value)
+    {
+        value = 0;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConstantInsteadOfField)]
+        public async Task TestNoDiagnostic_InInStaticConstructor()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    private static readonly int _f = 1;
+
+    static C()
+    {
+        M(in _f);
+    }
+
+    static void M(in int value)
+    {
+    }
+}
+");
+        }
     }
 }

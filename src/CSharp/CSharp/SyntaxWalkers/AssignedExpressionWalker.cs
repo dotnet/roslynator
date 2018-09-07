@@ -70,12 +70,22 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
         public override void VisitArgument(ArgumentSyntax node)
         {
-            if (node.RefOrOutKeyword.IsKind(SyntaxKind.RefKeyword, SyntaxKind.OutKeyword))
+            switch (node.RefOrOutKeyword.Kind())
             {
-                ExpressionSyntax expression = node.Expression;
+                case SyntaxKind.RefKeyword:
+                    {
+                        VisitAssignedExpression(node.Expression);
+                        break;
+                    }
+                case SyntaxKind.OutKeyword:
+                    {
+                        ExpressionSyntax expression = node.Expression;
 
-                if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
-                    VisitAssignedExpression(expression);
+                        if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
+                            VisitAssignedExpression(expression);
+
+                        break;
+                    }
             }
 
             base.VisitArgument(node);

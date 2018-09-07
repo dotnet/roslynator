@@ -101,11 +101,11 @@ namespace Roslynator.CSharp.Analysis
 
                         walker.VisitBlock(body);
 
-                        bool isUsedInRefOrOutArgument = walker.IsUsedInRefOrOutArgument;
+                        bool canBeConvertedToConstant = walker.CanBeConvertedToConstant;
 
                         UseConstantInsteadOfFieldWalker.Free(walker);
 
-                        if (isUsedInRefOrOutArgument)
+                        if (!canBeConvertedToConstant)
                             return false;
                     }
                 }
@@ -122,18 +122,24 @@ namespace Roslynator.CSharp.Analysis
 
             public CancellationToken CancellationToken { get; set; }
 
-            public bool IsUsedInRefOrOutArgument { get; private set; }
+            public bool CanBeConvertedToConstant { get; private set; }
 
             protected override bool ShouldVisit
             {
-                get { return !IsUsedInRefOrOutArgument; }
+                get { return CanBeConvertedToConstant; }
             }
 
             public override void VisitAssignedExpression(ExpressionSyntax expression)
             {
+                if (IsFieldIdentifier(expression))
+                    CanBeConvertedToConstant = false;
+            }
+
+            private bool IsFieldIdentifier(ExpressionSyntax expression)
+            {
                 CancellationToken.ThrowIfCancellationRequested();
 
-                expression = expression.WalkDownParentheses();
+                expression = expression?.WalkDownParentheses();
 
                 if (expression.IsKind(SyntaxKind.IdentifierName))
                 {
@@ -142,9 +148,41 @@ namespace Roslynator.CSharp.Analysis
                     if (string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
                         && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true)
                     {
-                        IsUsedInRefOrOutArgument = true;
+                        return true;
                     }
                 }
+
+                return false;
+            }
+
+            public override void VisitArgument(ArgumentSyntax node)
+            {
+                switch (node.RefOrOutKeyword.Kind())
+                {
+                    case SyntaxKind.RefKeyword:
+                        {
+                            VisitAssignedExpression(node.Expression);
+                            break;
+                        }
+                    case SyntaxKind.OutKeyword:
+                        {
+                            ExpressionSyntax expression = node.Expression;
+
+                            if (expression?.IsKind(SyntaxKind.DeclarationExpression) == false)
+                                VisitAssignedExpression(expression);
+
+                            break;
+                        }
+                    case SyntaxKind.InKeyword:
+                        {
+                            if (IsFieldIdentifier(node.Expression))
+                                CanBeConvertedToConstant = false;
+
+                            break;
+                        }
+                }
+
+                base.VisitArgument(node);
             }
 
             [ThreadStatic]
@@ -171,7 +209,7 @@ namespace Roslynator.CSharp.Analysis
                 walker.FieldSymbol = null;
                 walker.SemanticModel = null;
                 walker.CancellationToken = default;
-                walker.IsUsedInRefOrOutArgument = false;
+                walker.CanBeConvertedToConstant = true;
 
                 _cachedInstance = walker;
             }
