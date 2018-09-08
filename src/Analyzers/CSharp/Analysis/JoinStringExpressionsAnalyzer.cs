@@ -2,12 +2,14 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -57,7 +59,9 @@ namespace Roslynator.CSharp.Analysis
                 {
                     case SyntaxKind.StringLiteralExpression:
                         {
-                            bool isVerbatim2 = SyntaxInfo.StringLiteralExpressionInfo(expression).IsVerbatim;
+                            StringLiteralExpressionInfo stringLiteral = SyntaxInfo.StringLiteralExpressionInfo(expression);
+
+                            bool isVerbatim2 = stringLiteral.IsVerbatim;
 
                             if (firstExpression == null)
                             {
@@ -66,7 +70,8 @@ namespace Roslynator.CSharp.Analysis
                                 isVerbatim = isVerbatim2;
                             }
                             else if (!isLiteral
-                                || isVerbatim != isVerbatim2)
+                                || isVerbatim != isVerbatim2
+                                || (!isVerbatim && !CheckHexadecimalEscapeSequence(stringLiteral)))
                             {
                                 if (lastExpression != null)
                                     Analyze(context, firstExpression, lastExpression, isVerbatim);
@@ -83,7 +88,9 @@ namespace Roslynator.CSharp.Analysis
                         }
                     case SyntaxKind.InterpolatedStringExpression:
                         {
-                            bool isVerbatim2 = ((InterpolatedStringExpressionSyntax)expression).IsVerbatim();
+                            var interpolatedString = ((InterpolatedStringExpressionSyntax)expression);
+
+                            bool isVerbatim2 = interpolatedString.IsVerbatim();
 
                             if (firstExpression == null)
                             {
@@ -92,7 +99,8 @@ namespace Roslynator.CSharp.Analysis
                                 isVerbatim = isVerbatim2;
                             }
                             else if (isLiteral
-                                || isVerbatim != isVerbatim2)
+                                || isVerbatim != isVerbatim2
+                                || (!isVerbatim && !CheckHexadecimalEscapeSequence(interpolatedString)))
                             {
                                 if (lastExpression != null)
                                     Analyze(context, firstExpression, lastExpression, isVerbatim);
@@ -148,6 +156,109 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticDescriptors.JoinStringExpressions,
                     Location.Create(tree, span));
             }
+        }
+
+        private static bool CheckHexadecimalEscapeSequence(in StringLiteralExpressionInfo stringLiteral)
+        {
+            string text = stringLiteral.Text;
+
+            return CheckHexadecimalEscapeSequence(text, 1, text.Length - 2);
+        }
+
+        private static bool CheckHexadecimalEscapeSequence(InterpolatedStringExpressionSyntax interpolatedString)
+        {
+            InterpolatedStringContentSyntax content = interpolatedString.Contents.LastOrDefault();
+
+            if (content.IsKind(SyntaxKind.InterpolatedStringText))
+            {
+                var interpolatedStringText = (InterpolatedStringTextSyntax)content;
+
+                string text = interpolatedStringText.TextToken.Text;
+
+                return CheckHexadecimalEscapeSequence(text, 0, text.Length);
+            }
+
+            return true;
+        }
+
+        private static bool CheckHexadecimalEscapeSequence(string text, int start, int length)
+        {
+            for (int pos = start; pos < start + length; pos++)
+            {
+                if (text[pos] == '\\')
+                {
+                    pos++;
+
+                    if (pos >= text.Length)
+                        return false;
+
+                    switch (text[pos])
+                    {
+                        case '\'':
+                        case '\"':
+                        case '\\':
+                        case '0':
+                        case 'a':
+                        case 'b':
+                        case 'f':
+                        case 'n':
+                        case 'r':
+                        case 't':
+                        case 'v':
+                            {
+                                break;
+                            }
+                        case 'u':
+                            {
+                                pos += 4;
+                                break;
+                            }
+                        case 'U':
+                            {
+                                pos += 8;
+                                break;
+                            }
+                        case 'x':
+                            {
+                                pos++;
+
+                                if (pos < text.Length
+                                    && StringUtility.IsHexadecimalDigit(text[pos]))
+                                {
+                                    pos++;
+                                    if (pos < text.Length
+                                        && StringUtility.IsHexadecimalDigit(text[pos]))
+                                    {
+                                        pos++;
+                                        if (pos < text.Length
+                                            && StringUtility.IsHexadecimalDigit(text[pos]))
+                                        {
+                                            pos++;
+                                            if (pos < text.Length
+                                                && StringUtility.IsHexadecimalDigit(text[pos]))
+                                            {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (pos == start + length)
+                                    return false;
+
+                                pos--;
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Fail(text[pos].ToString());
+                                return false;
+                            }
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -379,5 +379,12 @@ namespace Roslynator
 
             return true;
         }
+
+        public static bool IsHexadecimalDigit(char ch)
+        {
+            return char.IsDigit(ch)
+                || (ch >= 'a' && ch <= 'f')
+                || (ch >= 'A' && ch <= 'F');
+        }
     }
 }

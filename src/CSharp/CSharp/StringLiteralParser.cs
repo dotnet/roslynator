@@ -504,9 +504,7 @@ namespace Roslynator.CSharp
 
         private static bool IsHexadecimalDigit(char ch)
         {
-            return char.IsDigit(ch)
-                || (ch >= 'a' && ch <= 'f')
-                || (ch >= 'A' && ch <= 'F');
+            return StringUtility.IsHexadecimalDigit(ch);
         }
 
         private static StringLiteralParserResult Fail(bool throwOnError, string message)

@@ -25,7 +25,7 @@ class C
 {
     void M(string s)
     {
-        s = [|""a"" + ""b"" + ""c""|];
+        s = [|""\x1g"" + ""\x1\x1234"" + ""\x1""|];
     }
 }
 ", @"
@@ -33,7 +33,7 @@ class C
 {
     void M(string s)
     {
-        s = ""abc"";
+        s = ""\x1g\x1\x1234\x1"";
     }
 }
 ");
@@ -113,7 +113,7 @@ class C
 {
     void M(string s)
     {
-        s = [|$""a"" + $""b"" + $""c""|];
+        s = [|$""\x1g"" + $""\x1\x1234"" + $""{s}\x1""|];
     }
 }
 ", @"
@@ -121,7 +121,7 @@ class C
 {
     void M(string s)
     {
-        s = $""abc"";
+        s = $""\x1g\x1\x1234{s}\x1"";
     }
 }
 ");
@@ -135,7 +135,7 @@ class C
 {
     void M(string s)
     {
-        s = s + [|$""a"" + $""b"" + $""c""|] + s;
+        s = s + [|$""a"" + $""b"" + $""{s}\x1""|] + s;
     }
 }
 ", @"
@@ -143,7 +143,7 @@ class C
 {
     void M(string s)
     {
-        s = s + $""abc"" + s;
+        s = s + $""ab{s}\x1"" + s;
     }
 }
 ");
@@ -330,6 +330,26 @@ class C
     void M(string s1, string s2, string s3)
     {
         s1 = s1 + ""a"" + s2 +  ""b"" + s3;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.JoinStringExpressions)]
+        public async Task TestNoDiagnostic_HexadecimalDigit()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(string s)
+    {
+        s = ""a"" + ""\x1"" + ""b"";
+        s = ""a"" + ""\x12"" + ""b"";
+        s = ""a"" + ""\x123"" + ""b"";
+
+        s = ""a"" + $""{s}\x1"" + ""b"";
+        s = ""a"" + $""{s}\x12"" + ""b"";
+        s = ""a"" + $""{s}\x123"" + ""b"";
     }
 }
 ");
