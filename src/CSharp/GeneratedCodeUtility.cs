@@ -7,28 +7,30 @@ namespace Roslynator
 {
     internal static class GeneratedCodeUtility
     {
+        private static readonly char[] _separators = new char[] { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar, Path.VolumeSeparatorChar };
+
         public static bool IsGeneratedCodeFile(string filePath)
         {
             if (string.IsNullOrEmpty(filePath))
                 return false;
 
-            int directorySeparatorIndex = filePath.LastIndexOf(Path.DirectorySeparatorChar);
+            int directorySeparatorIndex = filePath.LastIndexOfAny(_separators);
 
             if (string.Compare("TemporaryGeneratedFile_", 0, filePath, directorySeparatorIndex + 1, "TemporaryGeneratedFile_".Length, StringComparison.OrdinalIgnoreCase) == 0)
                 return true;
 
-            int dotIndex = filePath.LastIndexOf(".", filePath.Length - 1, filePath.Length - 1 - directorySeparatorIndex);
+            int dotIndex = filePath.LastIndexOf(".", filePath.Length - 1, filePath.Length - directorySeparatorIndex - 1);
 
             if (dotIndex == -1)
                 return false;
 
-            return EndsWith(".Designer")
-                || EndsWith(".Generated")
-                || EndsWith(".g")
-                || EndsWith(".g.i")
-                || EndsWith(".AssemblyAttributes");
+            return IsMatch(".Designer")
+                || IsMatch(".Generated")
+                || IsMatch(".g")
+                || IsMatch(".g.i")
+                || IsMatch(".AssemblyAttributes");
 
-            bool EndsWith(string value)
+            bool IsMatch(string value)
             {
                 int length = value.Length;
 
