@@ -58,12 +58,34 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddOutModifierToArgument))
                                 return;
 
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            IParameterSymbol parameter = semanticModel.DetermineParameter(argument, allowCandidate: true, cancellationToken: context.CancellationToken);
+
+                            if (parameter == null)
+                                return;
+
+                            SyntaxToken refOrOutKeyword = default;
+
+                            if (parameter.RefKind == RefKind.Out)
+                            {
+                                refOrOutKeyword = CSharpFactory.OutKeyword();
+                            }
+                            else if (parameter.RefKind == RefKind.Ref)
+                            {
+                                refOrOutKeyword = CSharpFactory.RefKeyword();
+                            }
+                            else
+                            {
+                                return;
+                            }
+
                             CodeAction codeAction = CodeAction.Create(
-                           "Add 'out' modifier",
+                           $"Add '{SyntaxFacts.GetText(refOrOutKeyword.Kind())}' modifier",
                            cancellationToken =>
                            {
                                ArgumentSyntax newArgument = argument
-                                   .WithRefOrOutKeyword(CSharpFactory.OutKeyword())
+                                   .WithRefOrOutKeyword(refOrOutKeyword)
                                    .WithFormatterAnnotation();
 
                                return context.Document.ReplaceNodeAsync(argument, newArgument, cancellationToken);
@@ -71,7 +93,6 @@ namespace Roslynator.CSharp.CodeFixes
                            GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
-
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.ArgumentShouldNotBePassedWithRefOrOutKeyword:

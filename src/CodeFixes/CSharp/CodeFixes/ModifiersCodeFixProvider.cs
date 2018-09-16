@@ -151,11 +151,19 @@ namespace Roslynator.CSharp.CodeFixes
                                     return false;
                                 });
                             }
-                            else if (node.IsKind(SyntaxKind.IndexerDeclaration))
+                            else if (node.IsKind(SyntaxKind.MethodDeclaration, SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration, SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration)
+                                && node.IsParentKind(SyntaxKind.StructDeclaration)
+                                && modifiers.Contains(SyntaxKind.VirtualKeyword))
+                            {
+                                ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.VirtualKeyword);
+                            }
+                            else if (node.IsKind(SyntaxKind.IndexerDeclaration)
+                                && modifiers.Contains(SyntaxKind.StaticKeyword))
                             {
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.StaticKeyword);
                             }
-                            else if (node.IsKind(SyntaxKind.PropertyDeclaration))
+                            else if (node.IsKind(SyntaxKind.PropertyDeclaration, SyntaxKind.IndexerDeclaration, SyntaxKind.EventDeclaration, SyntaxKind.EventFieldDeclaration)
+                                && modifiers.Contains(SyntaxKind.AsyncKeyword))
                             {
                                 ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, node, SyntaxKind.AsyncKeyword);
                             }
@@ -453,6 +461,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveVirtualModifier))
                             {
+                                if (node is AccessorDeclarationSyntax
+                                    && SyntaxInfo.ModifierListInfo(node.Parent.Parent).IsVirtual)
+                                {
+                                    node = node.Parent.Parent;
+                                }
+
                                 ModifiersCodeFixRegistrator.RemoveModifier(
                                     context,
                                     diagnostic,
