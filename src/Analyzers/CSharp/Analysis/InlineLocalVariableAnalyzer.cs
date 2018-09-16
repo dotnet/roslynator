@@ -125,6 +125,9 @@ namespace Roslynator.CSharp.Analysis
                     }
                 case SyntaxKind.ForEachStatement:
                     {
+                        if (value.WalkDownParentheses().IsKind(SyntaxKind.AwaitExpression))
+                            return;
+
                         if (!value.IsSingleLine())
                             return;
 
@@ -157,8 +160,11 @@ namespace Roslynator.CSharp.Analysis
                     }
                 case SyntaxKind.SwitchStatement:
                     {
+                        if (value.WalkDownParentheses().IsKind(SyntaxKind.AwaitExpression))
+                            return;
+
                         if (!value.IsSingleLine())
-                            break;
+                            return;
 
                         var switchStatement = (SwitchStatementSyntax)nextStatement;
 

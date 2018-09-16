@@ -63,5 +63,52 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+        public async Task TestNoDiagnostic_ForEachWithAwait()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Threading.Tasks;
+
+class C
+{
+    async Task<IEnumerable<object>> GetAsync()
+    {
+        var items = await GetAsync();
+
+        foreach (var item in items)
+        {
+        }
+
+        return null;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.InlineLocalVariable)]
+        public async Task TestNoDiagnostic_SwitchWithAwait()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task<string> GetAsync()
+    {
+        var x = await GetAsync();
+
+        switch (x)
+        {
+            case """":
+                break;
+        }
+
+        return null;
+    }
+}
+");
+        }
     }
 }
