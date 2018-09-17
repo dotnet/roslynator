@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 case SyntaxKind.InterpolatedStringExpression:
                     {
-                        newInvocation = ConvertInterpolatedStringExpressionToInvocationExpression((InterpolatedStringExpressionSyntax)argument.Expression, invocationInfo, semanticModel);
+                        newInvocation = ConvertInterpolatedStringExpressionToInvocationExpression((InterpolatedStringExpressionSyntax)expression, invocationInfo, semanticModel);
                         break;
                     }
                 case SyntaxKind.AddExpression:
@@ -155,6 +155,8 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (newExpression == null)
                 {
+                    arguments = arguments.Replace(arguments[0], arguments[0].WithLeadingTrivia(interpolatedString.GetLeadingTrivia()));
+
                     newExpression = invocation
                         .ReplaceNode(invocationInfo.Name, IdentifierName(methodName).WithTriviaFrom(invocationInfo.Name))
                         .WithArgumentList(invocation.ArgumentList.WithArguments(arguments.ToSeparatedSyntaxList()).WithoutTrailingTrivia());
