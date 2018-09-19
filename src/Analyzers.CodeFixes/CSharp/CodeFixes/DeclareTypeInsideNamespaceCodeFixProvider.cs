@@ -21,6 +21,11 @@ namespace Roslynator.CSharp.CodeFixes
             get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareTypeInsideNamespace); }
         }
 
+        public override FixAllProvider GetFixAllProvider()
+        {
+            return null;
+        }
+
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
