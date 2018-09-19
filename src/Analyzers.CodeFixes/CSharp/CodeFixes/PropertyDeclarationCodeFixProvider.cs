@@ -18,12 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.UseAutoProperty,
-                    DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization);
-            }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -37,16 +32,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.UseAutoProperty:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Use auto-property",
-                                cancellationToken => UseAutoPropertyRefactoring.RefactorAsync(context.Document, property, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.RemoveRedundantAutoPropertyInitialization:
                         {
                             CodeAction codeAction = CodeAction.Create(

@@ -1,24 +1,52 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Composition;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CodeFixes;
 using Roslynator.CSharp;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.CodeFixes
 {
-    internal static class UseAutoPropertyRefactoring
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(UseAutoPropertyCodeFixProvider))]
+    [Shared]
+    public class UseAutoPropertyCodeFixProvider : BaseCodeFixProvider
     {
         private static readonly SyntaxAnnotation _removeAnnotation = new SyntaxAnnotation();
 
-        public static async Task<Solution> RefactorAsync(
+        public sealed override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UseAutoProperty); }
+        }
+
+        public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        {
+            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out PropertyDeclarationSyntax property))
+                return;
+
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            CodeAction codeAction = CodeAction.Create(
+                "Use auto-property",
+                cancellationToken => RefactorAsync(context.Document, property, cancellationToken),
+                GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
+        }
+
+        public static async Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
             CancellationToken cancellationToken)
@@ -41,80 +69,70 @@ namespace Roslynator.CSharp.Refactorings
 
             bool isSingleDeclarator = variableDeclaration.Variables.Count == 1;
 
-            Solution solution = document.Solution();
+            ImmutableArray<SyntaxNode> nodes = await SyntaxFinder.FindReferencesAsync(fieldSymbol, document, allowCandidate: false, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            foreach (DocumentReferenceInfo info in await SyntaxFinder.FindReferencesByDocumentAsync(fieldSymbol, solution, allowCandidate: false, cancellationToken: cancellationToken).ConfigureAwait(false))
+            nodes = nodes.Add(propertyDeclaration);
+
+            if (isSingleDeclarator)
             {
-                cancellationToken.ThrowIfCancellationRequested();
-
-                ImmutableArray<SyntaxNode> nodes = info.References;
-
-                if (propertyDeclaration.SyntaxTree == info.SyntaxTree)
-                {
-                    nodes = nodes.Add(propertyDeclaration);
-
-                    if (isSingleDeclarator)
-                    {
-                        nodes = nodes.Add(fieldDeclaration);
-                    }
-                    else
-                    {
-                        nodes = nodes.Add(variableDeclarator);
-                    }
-                }
-
-                SyntaxNode newRoot = info.Root.ReplaceNodes(nodes, (node, _) =>
-                {
-                    switch (node.Kind())
-                    {
-                        case SyntaxKind.IdentifierName:
-                            {
-                                SyntaxNode newNode = null;
-
-                                if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
-                                    && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
-                                {
-                                    newNode = IdentifierName(propertyIdentifier);
-                                }
-                                else if (propertySymbol.IsStatic)
-                                {
-                                    newNode = SimpleMemberAccessExpression(
-                                        propertySymbol.ContainingType.ToTypeSyntax(),
-                                        (SimpleNameSyntax)ParseName(propertySymbol.ToDisplayString(SymbolDisplayFormats.Default))).WithSimplifierAnnotation();
-                                }
-                                else
-                                {
-                                    newNode = IdentifierName(propertyIdentifier).QualifyWithThis();
-                                }
-
-                                return newNode.WithTriviaFrom(node);
-                            }
-                        case SyntaxKind.PropertyDeclaration:
-                            {
-                                return CreateAutoProperty(propertyDeclaration, variableDeclarator.Initializer);
-                            }
-                        case SyntaxKind.VariableDeclarator:
-                        case SyntaxKind.FieldDeclaration:
-                            {
-                                return node.WithAdditionalAnnotations(_removeAnnotation);
-                            }
-                        default:
-                            {
-                                Debug.Fail(node.ToString());
-                                return node;
-                            }
-                    }
-                });
-
-                SyntaxNode nodeToRemove = newRoot.GetAnnotatedNodes(_removeAnnotation).FirstOrDefault();
-
-                if (nodeToRemove != null)
-                    newRoot = newRoot.RemoveNode(nodeToRemove, SyntaxRemoveOptions.KeepUnbalancedDirectives);
-
-                solution = solution.WithDocumentSyntaxRoot(info.Document.Id, newRoot);
+                nodes = nodes.Add(fieldDeclaration);
+            }
+            else
+            {
+                nodes = nodes.Add(variableDeclarator);
             }
 
-            return solution;
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+            SyntaxNode newRoot = root.ReplaceNodes(nodes, (node, _) =>
+            {
+                switch (node.Kind())
+                {
+                    case SyntaxKind.IdentifierName:
+                        {
+                            SyntaxNode newNode = null;
+
+                            if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                                && ((MemberAccessExpressionSyntax)node.Parent).Name == node)
+                            {
+                                newNode = IdentifierName(propertyIdentifier);
+                            }
+                            else if (propertySymbol.IsStatic)
+                            {
+                                newNode = SimpleMemberAccessExpression(
+                                    propertySymbol.ContainingType.ToTypeSyntax(),
+                                    (SimpleNameSyntax)ParseName(propertySymbol.ToDisplayString(SymbolDisplayFormats.Default))).WithSimplifierAnnotation();
+                            }
+                            else
+                            {
+                                newNode = IdentifierName(propertyIdentifier).QualifyWithThis();
+                            }
+
+                            return newNode.WithTriviaFrom(node);
+                        }
+                    case SyntaxKind.PropertyDeclaration:
+                        {
+                            return CreateAutoProperty(propertyDeclaration, variableDeclarator.Initializer);
+                        }
+                    case SyntaxKind.VariableDeclarator:
+                    case SyntaxKind.FieldDeclaration:
+                        {
+                            return node.WithAdditionalAnnotations(_removeAnnotation);
+                        }
+                    default:
+                        {
+                            Debug.Fail(node.ToString());
+                            return node;
+                        }
+                }
+            });
+
+            SyntaxNode nodeToRemove = newRoot.GetAnnotatedNodes(_removeAnnotation).FirstOrDefault();
+
+            if (nodeToRemove != null)
+                newRoot = newRoot.RemoveNode(nodeToRemove, SyntaxRemoveOptions.KeepUnbalancedDirectives);
+
+            return document.WithSyntaxRoot(newRoot);
         }
 
         private static ISymbol GetFieldSymbol(PropertyDeclarationSyntax property, SemanticModel semanticModel, CancellationToken cancellationToken)
@@ -160,7 +178,7 @@ namespace Roslynator.CSharp.Refactorings
                             keyword: accessor.Keyword,
                             body: default(BlockSyntax),
                             expressionBody: default(ArrowExpressionClauseSyntax),
-                            semicolonToken: SemicolonToken());
+                            semicolonToken: Token(default, SyntaxKind.SemicolonToken, TriviaList(NewLine())));
 
                         return accessor.WithTriviaFrom(accessor);
                     })
@@ -170,13 +188,12 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                accessorList = AccessorList(AutoGetAccessorDeclaration())
+                accessorList = AccessorList(AutoGetAccessorDeclaration().WithTrailingTrivia(NewLine()))
                     .WithTriviaFrom(property.ExpressionBody);
             }
 
-            if (accessorList
-                .DescendantTrivia()
-                .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
+            if (accessorList.Accessors.All(f => f.AttributeLists.Count == 0)
+                && accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 accessorList = accessorList.RemoveWhitespace();
             }

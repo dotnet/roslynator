@@ -129,7 +129,7 @@ namespace Roslynator.CSharp.Analysis
             if (HasStructLayoutAttributeWithExplicitKind(propertySymbol.ContainingType))
                 return;
 
-            if (!IsFixableBackingField(property, propertySymbol, fieldSymbol, context.Compilation, semanticModel, cancellationToken))
+            if (!IsFixableBackingField(property, propertySymbol, fieldSymbol, semanticModel, cancellationToken))
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
@@ -181,31 +181,28 @@ namespace Roslynator.CSharp.Analysis
             PropertyDeclarationSyntax propertyDeclaration,
             IPropertySymbol propertySymbol,
             IFieldSymbol fieldSymbol,
-            Compilation compilation,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            UseAutoPropertyWalker walker = UseAutoPropertyWalkerCache.GetInstance();
-
             INamedTypeSymbol containingType = fieldSymbol.ContainingType;
 
             bool shouldSearchForReferenceInInstanceConstructor = !containingType.IsSealed
                 && !propertySymbol.IsStatic
                 && (propertySymbol.IsVirtual || propertySymbol.IsOverride);
 
+            UseAutoPropertyWalker walker = UseAutoPropertyWalker.GetInstance();
+
+            bool isFixable = false;
+
             ImmutableArray<SyntaxReference> syntaxReferences = containingType.DeclaringSyntaxReferences;
 
             if (syntaxReferences.Length == 1)
             {
-                walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, default(Compilation), semanticModel, cancellationToken);
+                walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
 
                 walker.Visit(propertyDeclaration.Parent);
 
-                bool isFixable = !walker.IsReferencedInInstanceConstructor && !walker.IsUsedInRefOrOutArgument;
-
-                UseAutoPropertyWalkerCache.Free(walker);
-
-                return isFixable;
+                isFixable = !walker.IsReferencedInInstanceConstructor && !walker.IsUsedInRefOrOutArgument;
             }
             else
             {
@@ -213,29 +210,26 @@ namespace Roslynator.CSharp.Analysis
                 {
                     SyntaxNode typeDeclaration = syntaxReference.GetSyntax(cancellationToken);
 
-                    if (typeDeclaration.SyntaxTree == semanticModel.SyntaxTree)
+                    if (typeDeclaration.SyntaxTree != semanticModel.SyntaxTree)
                     {
-                        walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, default(Compilation), semanticModel, cancellationToken);
+                        isFixable = false;
+                        break;
                     }
-                    else
-                    {
-                        walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, compilation, default(SemanticModel), cancellationToken);
-                    }
+
+                    walker.SetValues(fieldSymbol, shouldSearchForReferenceInInstanceConstructor, semanticModel, cancellationToken);
 
                     walker.Visit(typeDeclaration);
 
-                    bool isFixable = !walker.IsReferencedInInstanceConstructor && !walker.IsUsedInRefOrOutArgument;
+                    isFixable = !walker.IsReferencedInInstanceConstructor && !walker.IsUsedInRefOrOutArgument;
 
                     if (!isFixable)
-                    {
-                        UseAutoPropertyWalkerCache.Free(walker);
-                        return false;
-                    }
+                        break;
                 }
-
-                UseAutoPropertyWalkerCache.Free(walker);
-                return true;
             }
+
+            UseAutoPropertyWalker.Free(walker);
+
+            return isFixable;
         }
 
         private static IFieldSymbol GetBackingFieldSymbol(
@@ -452,8 +446,6 @@ namespace Roslynator.CSharp.Analysis
 
             public bool ShouldSearchForReferenceInInstanceConstructor { get; private set; }
 
-            public Compilation Compilation { get; private set; }
-
             public SemanticModel SemanticModel { get; private set; }
 
             public CancellationToken CancellationToken { get; private set; }
@@ -474,27 +466,15 @@ namespace Roslynator.CSharp.Analysis
             public void SetValues(
                 IFieldSymbol fieldSymbol,
                 bool shouldSearchForReferenceInInstanceConstructor,
-                Compilation compilation,
                 SemanticModel semanticModel,
                 CancellationToken cancellationToken)
             {
                 FieldSymbol = fieldSymbol;
                 ShouldSearchForReferenceInInstanceConstructor = shouldSearchForReferenceInInstanceConstructor;
-                Compilation = compilation;
                 SemanticModel = semanticModel;
                 CancellationToken = cancellationToken;
                 IsUsedInRefOrOutArgument = false;
                 IsReferencedInInstanceConstructor = false;
-            }
-
-            public void ClearValues()
-            {
-                SetValues(
-                    default(IFieldSymbol),
-                    false,
-                    default(Compilation),
-                    default(SemanticModel),
-                    default(CancellationToken));
             }
 
             public override void VisitArgument(ArgumentSyntax node)
@@ -564,21 +544,10 @@ namespace Roslynator.CSharp.Analysis
 
             private bool IsBackingFieldReference(IdentifierNameSyntax identifierName)
             {
-                if (string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal))
-                {
-                    if (SemanticModel == null)
-                        SemanticModel = Compilation.GetSemanticModel(identifierName.SyntaxTree);
-
-                    if (SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true)
-                        return true;
-                }
-
-                return false;
+                return string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
+                    && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true;
             }
-        }
 
-        private static class UseAutoPropertyWalkerCache
-        {
             [ThreadStatic]
             private static UseAutoPropertyWalker _cachedInstance;
 
@@ -600,7 +569,12 @@ namespace Roslynator.CSharp.Analysis
 
             public static void Free(UseAutoPropertyWalker walker)
             {
-                walker.ClearValues();
+                walker.SetValues(
+                    default(IFieldSymbol),
+                    false,
+                    default(SemanticModel),
+                    default(CancellationToken));
+
                 _cachedInstance = walker;
             }
         }

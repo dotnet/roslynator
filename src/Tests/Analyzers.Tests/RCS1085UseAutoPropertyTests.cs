@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new UseAutoPropertyAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new PropertyDeclarationCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new UseAutoPropertyCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
         public async Task Test_Property()
@@ -348,14 +348,47 @@ abstract class B
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
-        public async Task Test_PartialClassInMultipleDocuments()
+        public async Task Test_AccessorWithAttribute()
         {
             await VerifyDiagnosticAndFixAsync(@"
-partial class C
+using System.Diagnostics;
+
+class C
 {
     private string _f;
 
     public string [|P|]
+    {
+        [DebuggerStepThrough]
+        get { return _f; }
+        set { _f = value; }
+    }
+}
+", @"
+using System.Diagnostics;
+
+class C
+{
+
+    public string P
+    {
+        [DebuggerStepThrough]
+        get;
+        set;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task TestNoDiagnostic_PartialClassInMultipleDocuments()
+        {
+            await VerifyNoDiagnosticAsync(@"
+partial class C
+{
+    private string _f;
+
+    public string P
     {
         get { return _f; }
         set { _f = value; }
@@ -369,23 +402,8 @@ partial class C
         _f = null;
     }
 }
-", @"
-partial class C
-{
-
-    public string P { get; set; }
-}
-
-partial class C
-{
-    public C()
-    {
-        P = null;
-    }
-}
-",
- additionalData: new (string, string)[]
-{ (@"
+", additionalSources: new string[]
+{ @"
 partial class C
 {
     public C(object p)
@@ -398,20 +416,7 @@ partial class C
         _f = null;
     }
 }
-", @"
-partial class C
-{
-    public C(object p)
-    {
-        P = null;
-    }
-
-    void M2()
-    {
-        P = null;
-    }
-}
-") });
+" });
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
