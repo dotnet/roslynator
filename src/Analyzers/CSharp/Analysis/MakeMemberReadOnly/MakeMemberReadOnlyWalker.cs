@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Generic;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxWalkers;
@@ -40,18 +41,20 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                 var memberAccessExpression = (MemberAccessExpressionSyntax)expression;
 
                 if (memberAccessExpression.Name is IdentifierNameSyntax identifierName)
-                    AddAssigned(identifierName);
+                {
+                    AddAssigned(identifierName, isInInstanceConstructor: memberAccessExpression.Expression.IsKind(SyntaxKind.ThisExpression));
+                }
             }
         }
 
-        private void AddAssigned(IdentifierNameSyntax identifierName)
+        private void AddAssigned(IdentifierNameSyntax identifierName, bool isInInstanceConstructor = true)
         {
             AssignedInfo info;
 
             if (_localFunctionDepth == 0
                 && _anonymousFunctionDepth == 0)
             {
-                info = new AssignedInfo(identifierName, _isInInstanceConstructor, _isInStaticConstructor);
+                info = new AssignedInfo(identifierName, isInInstanceConstructor && _isInInstanceConstructor, _isInStaticConstructor);
             }
             else
             {
