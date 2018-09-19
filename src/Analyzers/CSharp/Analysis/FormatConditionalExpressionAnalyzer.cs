@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
             if (conditionalExpression.ContainsDiagnostics)
                 return;
 
-            if (conditionalExpression.SpanContainsDirectives())
+            if (conditionalExpression.ContainsDirectives)
                 return;
 
             if (!IsFixable(conditionalExpression.Condition, conditionalExpression.QuestionToken)
