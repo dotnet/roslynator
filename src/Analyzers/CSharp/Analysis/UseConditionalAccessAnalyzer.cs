@@ -186,9 +186,9 @@ namespace Roslynator.CSharp.Analysis
             if (RefactoringUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
                 return false;
 
-            ExpressionSyntax expression2 = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType);
+            ExpressionSyntax e = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType);
 
-            return expression2?.SpanContainsDirectives() == false;
+            return e != null;
         }
 
         internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression, bool isNullable = false)
@@ -343,8 +343,11 @@ namespace Roslynator.CSharp.Analysis
                     {
                         left = e;
 
-                        if (IsFixable(left, right, kind, semanticModel, cancellationToken))
+                        if (!binaryExpression.ContainsDirectives(TextSpan.FromBounds(left.SpanStart, right.Span.End))
+                            && IsFixable(left, right, kind, semanticModel, cancellationToken))
+                        {
                             return (left, right);
+                        }
 
                         right = left;
                         left = null;

@@ -774,6 +774,27 @@ struct SqlBoolean
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+        public async Task TestNoDiagnostic_PreprocessorDirective()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(string s)
+    {
+        if (s != null
+
+#if X
+                && s != s
+#endif
+                && !s.Equals(s))
+        {
+        }
+    }
+}
+");
+        }
     }
 }
 
