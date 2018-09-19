@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -90,8 +91,16 @@ namespace Roslynator.CSharp.Analysis
 
                         if (typeSymbol != null)
                         {
-                            if ((typeSymbol.Kind == SymbolKind.ArrayType && ((IArrayTypeSymbol)typeSymbol).Rank == 1)
-                                || typeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_List_T))
+                            if (typeSymbol.Kind == SymbolKind.ArrayType)
+                            {
+                                if (((IArrayTypeSymbol)typeSymbol).Rank == 1
+                                    && context.SemanticModel.Compilation.GetTypeByMetadataName("System.Array").GetMembers("Find").Any())
+                                {
+                                    Report(context, invocationInfo.Name);
+                                    return;
+                                }
+                            }
+                            else if (typeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_List_T))
                             {
                                 Report(context, invocationInfo.Name);
                                 return;
