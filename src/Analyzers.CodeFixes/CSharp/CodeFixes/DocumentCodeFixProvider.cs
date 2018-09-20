@@ -19,6 +19,11 @@ namespace Roslynator.CSharp.CodeFixes
             get { return ImmutableArray.Create(DiagnosticIdentifiers.RemoveFileWithNoCode); }
         }
 
+        public override FixAllProvider GetFixAllProvider()
+        {
+            return null;
+        }
+
         public sealed override Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             foreach (Diagnostic diagnostic in context.Diagnostics)
