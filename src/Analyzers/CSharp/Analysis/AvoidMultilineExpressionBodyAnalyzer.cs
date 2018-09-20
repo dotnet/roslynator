@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ArrowExpressionClauseAnalyzer : BaseDiagnosticAnalyzer
+    public class AvoidMultilineExpressionBodyAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -30,6 +30,12 @@ namespace Roslynator.CSharp.Analysis
         private static void AnalyzeArrowExpressionClause(SyntaxNodeAnalysisContext context)
         {
             var arrowExpressionClause = (ArrowExpressionClauseSyntax)context.Node;
+
+            if (arrowExpressionClause.ContainsDiagnostics)
+                return;
+
+            if (arrowExpressionClause.ContainsDirectives)
+                return;
 
             ExpressionSyntax expression = arrowExpressionClause.Expression;
 
