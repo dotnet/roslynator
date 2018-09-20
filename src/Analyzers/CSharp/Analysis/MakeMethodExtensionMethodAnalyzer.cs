@@ -61,6 +61,9 @@ namespace Roslynator.CSharp.Analysis
                 if (parameter == null)
                     continue;
 
+                if (parameter.Default != null)
+                    continue;
+
                 bool isThis = false;
                 bool isIn = false;
                 bool isRef = false;

@@ -230,5 +230,16 @@ public static class FooExtensions
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeMethodExtensionMethod)]
+        public async Task TestNoDiagnostic_ParameterHasDefaultValue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+public static class FooExtensions
+{
+        public static void M(object p = null) { }
+}
+");
+        }
     }
 }
