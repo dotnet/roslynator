@@ -47,7 +47,10 @@ namespace Roslynator.CSharp.Analysis
 
             if (trueKind == SyntaxKind.TrueLiteralExpression)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                if (context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
+                {
+                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                }
             }
             else
             {
@@ -55,7 +58,10 @@ namespace Roslynator.CSharp.Analysis
 
                 if (falseKind == SyntaxKind.FalseLiteralExpression)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                    if (context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
+                    {
+                        context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                    }
                 }
                 else if (trueKind == SyntaxKind.FalseLiteralExpression
                     && falseKind == SyntaxKind.TrueLiteralExpression)

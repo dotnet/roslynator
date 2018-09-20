@@ -110,5 +110,21 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyConditionalExpression)]
+        public async Task TestNoDiagnostic_NullableBool()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool x = false;
+
+        bool? y = (x) ? default(bool?) : false;
+    }
+}
+");
+        }
     }
 }

@@ -21,7 +21,6 @@ namespace Roslynator.CSharp.Refactorings
         {
             ConditionalExpressionInfo info = SyntaxInfo.ConditionalExpressionInfo(conditionalExpression);
 
-            ExpressionSyntax condition = info.Condition;
             ExpressionSyntax whenTrue = info.WhenTrue;
             ExpressionSyntax whenFalse = info.WhenFalse;
 
@@ -34,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 if (falseKind == SyntaxKind.FalseLiteralExpression)
                 {
-                    newNode = CreateNewNode(conditionalExpression, condition);
+                    newNode = CreateNewNode(conditionalExpression, info.Condition);
                 }
                 else
                 {
@@ -46,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                         .EmptyIfWhitespace();
 
                     newNode = LogicalOrExpression(
-                        condition.Parenthesize().AppendToTrailingTrivia(trailingTrivia),
+                        conditionalExpression.Condition.Parenthesize().AppendToTrailingTrivia(trailingTrivia),
                         Token(info.ColonToken.LeadingTrivia, SyntaxKind.BarBarToken, info.ColonToken.TrailingTrivia),
                         whenFalse.Parenthesize());
                 }
@@ -62,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                     .AddRange(whenFalse.GetTrailingTrivia());
 
                 newNode = LogicalAndExpression(
-                    condition.Parenthesize(),
+                    conditionalExpression.Condition.Parenthesize(),
                     Token(info.QuestionToken.LeadingTrivia, SyntaxKind.AmpersandAmpersandToken, info.QuestionToken.TrailingTrivia),
                     whenTrue.WithTrailingTrivia(trailingTrivia).Parenthesize());
             }
@@ -71,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                newNode = CreateNewNode(conditionalExpression, Inverter.LogicallyNegate(condition, semanticModel, cancellationToken));
+                newNode = CreateNewNode(conditionalExpression, Inverter.LogicallyNegate(info.Condition, semanticModel, cancellationToken));
             }
 
             newNode = newNode.Parenthesize();
