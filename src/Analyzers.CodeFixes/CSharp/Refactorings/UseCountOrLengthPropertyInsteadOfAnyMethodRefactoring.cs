@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.Refactorings
 
             memberAccess = memberAccess
                 .WithName(IdentifierName(propertyName).WithTriviaFrom(memberAccess.Name))
-                .AppendToTrailingTrivia(invocation.ArgumentList.DescendantTrivia().Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
+                .AppendToTrailingTrivia(invocation.ArgumentList.DescendantTrivia(invocation.ArgumentList.Span).Where(f => !f.IsWhitespaceOrEndOfLineTrivia()));
 
             if (invocation.IsParentKind(SyntaxKind.LogicalNotExpression))
             {
