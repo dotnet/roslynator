@@ -1,10 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
@@ -30,18 +29,20 @@ namespace Roslynator.CSharp.Refactorings
 
             var returnStatement = (ReturnStatementSyntax)statement.NextStatement();
 
-            IEnumerable<SyntaxTrivia> trivia = statementsInfo
+            SyntaxTriviaList trivia = statementsInfo
                 .Parent
                 .DescendantTrivia(TextSpan.FromBounds(statement.SpanStart, returnStatement.SpanStart))
-                .Where(f => !f.IsWhitespaceOrEndOfLineTrivia());
+                .ToSyntaxTriviaList()
+                .EmptyIfWhitespace();
 
             trivia = statement
                 .GetLeadingTrivia()
-                .Concat(trivia);
+                .AddRange(trivia);
 
             returnStatement = returnStatement
                 .WithExpression(assignmentExpression.Right.WithTriviaFrom(returnStatement.Expression))
-                .WithLeadingTrivia(trivia);
+                .WithLeadingTrivia(trivia)
+                .WithFormatterAnnotation();
 
             statements = statements.ReplaceAt(index, returnStatement);
 
