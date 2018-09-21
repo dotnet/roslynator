@@ -381,6 +381,33 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
+        public async Task Test_FieldInCref()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    /// <summary>
+    /// <seealso cref=""p""/>
+    /// </summary>
+    public int [|P|]
+        {
+            get { return p; }
+        }
+
+    private readonly int p;
+}
+", @"
+class C
+{
+    /// <summary>
+    /// <seealso cref=""p""/>
+    /// </summary>
+    public int P { get; }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseAutoProperty)]
         public async Task TestNoDiagnostic_PartialClassInMultipleDocuments()
         {
             await VerifyNoDiagnosticAsync(@"
