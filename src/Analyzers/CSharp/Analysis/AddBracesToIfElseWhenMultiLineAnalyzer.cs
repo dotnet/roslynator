@@ -37,6 +37,12 @@ namespace Roslynator.CSharp.Analysis
             if (ifStatement.Else == null)
                 return;
 
+            if (ifStatement.Else.ContainsDirectives)
+                return;
+
+            if (ifStatement.Statement.ContainsDirectives)
+                return;
+
             BracesAnalysis analysis = BracesAnalysis.AnalyzeBraces(ifStatement);
 
             if (!analysis.AddBraces)

@@ -46,6 +46,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(ifStatement));
         }
 
@@ -56,6 +59,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = elseClause.EmbeddedStatement(allowIfStatement: false);
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(elseClause));
@@ -70,6 +76,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(forEachStatement));
         }
 
@@ -80,6 +89,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = forStatement.EmbeddedStatement();
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(forStatement));
@@ -94,6 +106,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(usingStatement));
         }
 
@@ -104,6 +119,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = whileStatement.EmbeddedStatement();
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(whileStatement));
@@ -118,6 +136,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(doStatement));
         }
 
@@ -130,6 +151,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(lockStatement));
         }
 
@@ -140,6 +164,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = fixedStatement.EmbeddedStatement();
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.AddBraces, statement, CSharpFacts.GetTitle(fixedStatement));

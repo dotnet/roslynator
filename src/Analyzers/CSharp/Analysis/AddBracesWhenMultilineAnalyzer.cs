@@ -11,7 +11,7 @@ using static Roslynator.CSharp.Analysis.EmbeddedStatementAnalysis;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddBracesMultilineAnalyzer : BaseDiagnosticAnalyzer
+    public class AddBracesWhenMultilineAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -49,6 +49,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(ifStatement))
                 return;
 
@@ -62,6 +65,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = forEachStatement.EmbeddedStatement();
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(forEachStatement))
@@ -79,6 +85,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(forStatement))
                 return;
 
@@ -92,6 +101,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = usingStatement.EmbeddedStatement(allowUsingStatement: false);
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(usingStatement))
@@ -109,6 +121,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(whileStatement))
                 return;
 
@@ -122,6 +137,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = doStatement.EmbeddedStatement();
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(doStatement))
@@ -139,6 +157,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(lockStatement))
                 return;
 
@@ -152,6 +173,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = fixedStatement.EmbeddedStatement();
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             if (statement.IsSingleLine() && FormattingSupportsEmbeddedStatement(fixedStatement))

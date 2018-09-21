@@ -41,6 +41,9 @@ namespace Roslynator.CSharp.Analysis
             if (statement == null)
                 return;
 
+            if (statement.ContainsDirectives)
+                return;
+
             context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(ifStatement));
         }
 
@@ -51,6 +54,9 @@ namespace Roslynator.CSharp.Analysis
             StatementSyntax statement = elseClause.EmbeddedStatement(allowIfStatement: false);
 
             if (statement == null)
+                return;
+
+            if (statement.ContainsDirectives)
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(elseClause));
