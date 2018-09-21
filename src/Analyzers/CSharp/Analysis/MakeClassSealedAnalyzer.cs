@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -65,6 +66,9 @@ namespace Roslynator.CSharp.Analysis
             }
 
             if (!isAnyExplicit)
+                return;
+
+            if (namedTypeSymbol.GetMembers().Any(f => f.IsVirtual))
                 return;
 
             var classDeclaration = (ClassDeclarationSyntax)namedTypeSymbol.GetSyntax(context.CancellationToken);

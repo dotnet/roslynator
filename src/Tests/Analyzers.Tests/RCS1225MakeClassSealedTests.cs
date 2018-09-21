@@ -133,5 +133,22 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassSealed)]
+        public async Task TestNoDiagnostic_VirtualMember()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    private C()
+    {
+    }
+
+    protected virtual void M()
+    {
+    }
+}
+");
+        }
     }
 }
