@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Threading;
@@ -47,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             return missing;
         }
 
-        public static bool IsAnyBaseConstructorMissing(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol)
+        public static bool IsAnyBaseConstructorMissing(INamedTypeSymbol symbol, INamedTypeSymbol baseSymbol, Func<IMethodSymbol, bool> predicate)
         {
             ImmutableArray<IMethodSymbol> constructors = symbol.InstanceConstructors;
 
@@ -55,6 +56,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (!baseConstructor.IsImplicitlyDeclared
                     && IsAccessibleFromDerivedClass(baseConstructor)
+                    && predicate(baseConstructor)
                     && constructors.IndexOf(baseConstructor, ParametersComparer.Instance) == -1)
                 {
                     return true;

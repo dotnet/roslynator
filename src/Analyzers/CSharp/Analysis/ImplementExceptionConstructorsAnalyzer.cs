@@ -58,12 +58,21 @@ namespace Roslynator.CSharp.Analysis
             if (!baseType.EqualsOrInheritsFrom(exceptionSymbol))
                 return;
 
-            if (!GenerateBaseConstructorsAnalysis.IsAnyBaseConstructorMissing(symbol, baseType))
+            if (!GenerateBaseConstructorsAnalysis.IsAnyBaseConstructorMissing(symbol, baseType, f => !IsSerializationConstructor(f)))
                 return;
 
             var classDeclaration = (ClassDeclarationSyntax)symbol.GetSyntax(context.CancellationToken);
 
             context.ReportDiagnostic(DiagnosticDescriptors.ImplementExceptionConstructors, classDeclaration.Identifier);
+        }
+
+        private static bool IsSerializationConstructor(IMethodSymbol methodSymbol)
+        {
+            ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+            return parameters.Length == 2
+                && parameters[0].Type.HasMetadataName(MetadataNames.System_Runtime_Serialization_SerializationInfo)
+                && parameters[1].Type.HasMetadataName(MetadataNames.System_Runtime_Serialization_StreamingContext);
         }
     }
 }
