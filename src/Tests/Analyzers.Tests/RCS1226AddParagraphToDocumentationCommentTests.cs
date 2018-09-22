@@ -385,5 +385,21 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddParagraphToDocumentationComment)]
+        public async Task TestNoDiagnostic_MissingEndTag()
+        {
+            await VerifyNoDiagnosticAsync(@"
+/// <summary>
+/// x
+///
+/// <a>x
+///
+/// </summary>
+class C
+{
+}
+");
+        }
     }
 }

@@ -98,8 +98,18 @@ namespace Roslynator.CSharp.Analysis
                         {
                             var xmlElement = (XmlElementSyntax)node;
 
-                            if (xmlElement.IsLocalName("para", StringComparison.OrdinalIgnoreCase))
+                            string name = xmlElement.StartTag?.Name?.LocalName.ValueText;
+
+                            if (string.Equals(name, "para", StringComparison.OrdinalIgnoreCase))
                                 return (default, default, spans);
+
+                            if (!string.Equals(
+                                name,
+                                xmlElement.EndTag?.Name?.LocalName.ValueText,
+                                StringComparison.OrdinalIgnoreCase))
+                            {
+                                return (default, default, spans);
+                            }
 
                             switch (state)
                             {
