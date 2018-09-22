@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,53 +26,13 @@ namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
 
             int index = SyntaxInfo.UsingDirectiveListInfo(parent).IndexOf(usingDirective);
 
-            List<IdentifierNameSyntax> names = CollectNames(parent, aliasSymbol, semanticModel, cancellationToken);
+            var rewriter = new Rewriter(aliasSymbol, aliasSymbol.Target.ToTypeSyntax(), semanticModel, cancellationToken);
 
-            NameSyntax name = usingDirective.Name;
-
-            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
-
-            SyntaxNode newNode = parent.ReplaceNodes(names, (f, _) =>
-            {
-                if (symbol != null
-                    && semanticModel
-                        .GetSpeculativeSymbolInfo(f.SpanStart, name, SpeculativeBindingOption.BindAsTypeOrNamespace)
-                        .Symbol?
-                        .Equals(symbol) == true)
-                {
-                    return name.WithTriviaFrom(f);
-                }
-                else
-                {
-                    return aliasSymbol.Target.ToMinimalTypeSyntax(semanticModel, f.SpanStart).WithTriviaFrom(f);
-                }
-            });
+            SyntaxNode newNode = rewriter.Visit(parent);
 
             newNode = RemoveUsingDirective(newNode, index);
 
             return await document.ReplaceNodeAsync(parent, newNode, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static List<IdentifierNameSyntax> CollectNames(
-            SyntaxNode node,
-            IAliasSymbol aliasSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            var names = new List<IdentifierNameSyntax>();
-
-            foreach (SyntaxNode descendant in node.DescendantNodes())
-            {
-                if (descendant.Kind() == SyntaxKind.IdentifierName)
-                {
-                    IAliasSymbol symbol = semanticModel.GetAliasInfo(descendant, cancellationToken);
-
-                    if (symbol?.Equals(aliasSymbol) == true)
-                        names.Add((IdentifierNameSyntax)descendant);
-                }
-            }
-
-            return names;
         }
 
         private static SyntaxNode RemoveUsingDirective(SyntaxNode node, int index)
@@ -97,6 +56,39 @@ namespace Roslynator.CSharp.Refactorings.InlineAliasExpression
             }
 
             return node;
+        }
+
+        private class Rewriter : CSharpSyntaxRewriter
+        {
+            public Rewriter(IAliasSymbol aliasSymbol, TypeSyntax replacement, SemanticModel semanticModel, CancellationToken cancellationToken)
+            {
+                AliasSymbol = aliasSymbol;
+                Replacement = replacement;
+                SemanticModel = semanticModel;
+                CancellationToken = cancellationToken;
+            }
+
+            public IAliasSymbol AliasSymbol { get; }
+
+            public TypeSyntax Replacement { get; }
+
+            public SemanticModel SemanticModel { get; }
+
+            public CancellationToken CancellationToken { get; }
+
+            public override SyntaxNode VisitIdentifierName(IdentifierNameSyntax node)
+            {
+                IAliasSymbol aliasSymbol = SemanticModel.GetAliasInfo(node, CancellationToken);
+
+                if (aliasSymbol?.Equals(AliasSymbol) == true)
+                {
+                    return Replacement
+                        .WithTriviaFrom(node)
+                        .WithSimplifierAnnotation();
+                }
+
+                return base.VisitIdentifierName(node);
+            }
         }
     }
 }

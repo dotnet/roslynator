@@ -110,8 +110,8 @@ namespace Roslynator.CSharp
 
         private static void ThrowIfExplicitDeclarationIsNotSupported(INamespaceSymbol namespaceSymbol)
         {
-            if (namespaceSymbol.NamespaceKind != NamespaceKind.Module)
-                throw new ArgumentException($"Namespace '{namespaceSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(namespaceSymbol));
+            if (namespaceSymbol.IsGlobalNamespace)
+                throw new ArgumentException("Global namespace does not support explicit declaration.", nameof(namespaceSymbol));
         }
         #endregion INamespaceSymbol
 
