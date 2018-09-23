@@ -151,7 +151,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
                 ExpressionSyntax expression = memberAccess.Expression;
 
-                SyntaxNode nodeIncludingConditionalAccess = node.WalkUp(SyntaxKind.ConditionalAccessExpression);
+                SyntaxNode nodeIncludingConditionalAccess = node.WalkUp(f => f.IsKind(SyntaxKind.ConditionalAccessExpression));
 
                 if (nodeIncludingConditionalAccess != node)
                 {

@@ -3024,14 +3024,6 @@ namespace Roslynator.CSharp
 
             return IncreaseIndentation(trivia);
         }
-
-        internal static SyntaxNode WalkUp(this SyntaxNode node, SyntaxKind kind)
-        {
-            while (node.Parent?.Kind() == kind)
-                node = node.Parent;
-
-            return node;
-        }
         #endregion SyntaxNode
 
         #region SyntaxToken
