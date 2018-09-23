@@ -84,9 +84,20 @@ namespace Roslynator.CSharp.CodeFixes
 
             leadingTrivia = localDeclaration.GetLeadingTrivia().AddRange(leadingTrivia);
 
+            StatementSyntax newStatement = ifStatement.Statement;
+
+            if (ifStatement.SingleNonBlockStatementOrDefault() is ReturnStatementSyntax returnStatement
+                && returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
+                && string.Equals(identifierName.Identifier.ValueText, variableDeclarator.Identifier.ValueText, System.StringComparison.Ordinal))
+            {
+                newStatement = newStatement.ReplaceNode(returnStatement.Expression, NullLiteralExpression().WithTriviaFrom(returnStatement.Expression));
+            }
+
             IfStatementSyntax newIfStatement = ifStatement
                 .WithCondition(newCondition.WithTriviaFrom(ifStatement.Condition))
-                .WithLeadingTrivia(leadingTrivia);
+                .WithStatement(newStatement)
+                .WithLeadingTrivia(leadingTrivia)
+                .WithFormatterAnnotation();
 
             StatementListInfo newStatements = statements.RemoveAt(index).ReplaceAt(index, newIfStatement);
 
