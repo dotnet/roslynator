@@ -64,6 +64,9 @@ namespace Roslynator.CSharp.Analysis
                 if (parameter.Default != null)
                     continue;
 
+                if (parameter.Type.IsKind(SyntaxKind.PointerType))
+                    continue;
+
                 bool isThis = false;
                 bool isIn = false;
                 bool isRef = false;
