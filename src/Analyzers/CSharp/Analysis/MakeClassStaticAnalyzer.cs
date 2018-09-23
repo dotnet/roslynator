@@ -42,6 +42,9 @@ namespace Roslynator.CSharp.Analysis
             if (symbol.IsAbstract)
                 return;
 
+            if (symbol.IsSealed)
+                return;
+
             if (symbol.IsImplicitClass)
                 return;
 

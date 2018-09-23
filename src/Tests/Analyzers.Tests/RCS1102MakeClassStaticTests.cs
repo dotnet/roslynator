@@ -18,6 +18,17 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override CodeFixProvider FixProvider { get; } = new ClassDeclarationCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+        public async Task TestNoDiagnostic_SealedClass()
+        {
+            await VerifyNoDiagnosticAsync(@"
+sealed class Foo
+{
+    const string K = null;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
         public async Task TestNoDiagnostic_ImplementsInterface()
         {
             await VerifyNoDiagnosticAsync(@"
