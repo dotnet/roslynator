@@ -356,7 +356,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             if ((typeSymbol as IArrayTypeSymbol)?.Rank == 1)
             {
-                NameSyntax arrayName = ParseName("System.Array")
+                NameSyntax arrayName = ParseName("global::System.Array")
                     .WithLeadingTrivia(invocationInfo.InvocationExpression.GetLeadingTrivia())
                     .WithSimplifierAnnotation();
 

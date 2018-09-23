@@ -958,5 +958,25 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task TestNoDiagnostic_CallFindInsteadOfFirstOrDefault_Array_ConditionalAccess()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        var x = new C();
+
+        object item = x?.Items.FirstOrDefault(f => f != null);
+    }
+
+    object[] Items { get; }
+}
+");
+        }
     }
 }

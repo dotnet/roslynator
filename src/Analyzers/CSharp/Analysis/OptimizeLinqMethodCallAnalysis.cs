@@ -94,6 +94,7 @@ namespace Roslynator.CSharp.Analysis
                             if (typeSymbol.Kind == SymbolKind.ArrayType)
                             {
                                 if (((IArrayTypeSymbol)typeSymbol).Rank == 1
+                                    && !invocationInfo.Expression.IsKind(SyntaxKind.MemberBindingExpression)
                                     && context.SemanticModel.Compilation.GetTypeByMetadataName("System.Array").GetMembers("Find").Any())
                                 {
                                     Report(context, invocationInfo.Name);
