@@ -38,9 +38,14 @@ namespace Roslynator.CSharp.Analysis
             if (!info.Success)
                 return;
 
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(info.Type, context.CancellationToken);
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(info.Expression, context.CancellationToken);
 
-            if (typeSymbol?.IsErrorType() != false)
+            if (typeSymbol?.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType) != false)
+                return;
+
+            typeSymbol = context.SemanticModel.GetTypeSymbol(info.Type, context.CancellationToken);
+
+            if (typeSymbol?.IsKind(SymbolKind.ErrorType, SymbolKind.DynamicType) != false)
                 return;
 
             Conversion conversion = context.SemanticModel.ClassifyConversion(info.Expression, typeSymbol);
