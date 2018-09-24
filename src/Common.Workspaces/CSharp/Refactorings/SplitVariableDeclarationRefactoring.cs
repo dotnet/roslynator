@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -57,15 +58,13 @@ namespace Roslynator.CSharp.Refactorings
             LocalDeclarationStatementSyntax statement,
             CancellationToken cancellationToken)
         {
-            var block = (BlockSyntax)statement.Parent;
+            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
 
-            SyntaxList<StatementSyntax> newStatements = block.Statements.ReplaceRange(
+            SyntaxList<StatementSyntax> newStatements = statementsInfo.Statements.ReplaceRange(
                 statement,
                 SplitLocalDeclaration(statement));
 
-            BlockSyntax newBlock = block.WithStatements(newStatements);
-
-            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
+            return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
         }
 
         private static Task<Document> SplitFieldDeclarationAsync(
