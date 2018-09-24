@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
 
-            if (!IsExpressionOfAccessExpression(expression))
+            if (GetAccessExpression(expression) == null)
                 return;
 
             IMethodSymbol methodSymbol = context.SemanticModel.GetMethodSymbol(invocationExpression, context.CancellationToken);
@@ -72,7 +72,12 @@ namespace Roslynator.CSharp.Analysis
             if (asExpression == expression)
                 return;
 
-            if (!IsExpressionOfAccessExpression(expression))
+            SyntaxNode topExpression = GetAccessExpression(expression)?.WalkUp(f => f.IsKind(
+                SyntaxKind.SimpleMemberAccessExpression,
+                SyntaxKind.ElementAccessExpression,
+                SyntaxKind.InvocationExpression));
+
+            if (topExpression == null)
                 return;
 
             if (context.SemanticModel
@@ -82,22 +87,45 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
+            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(topExpression, context.CancellationToken);
+
+            if (typeSymbol == null)
+                return;
+
+            if (!typeSymbol.IsReferenceType && !typeSymbol.IsValueType)
+                return;
+
             ReportDiagnostic(context, expression);
         }
 
-        private static bool IsExpressionOfAccessExpression(ExpressionSyntax expression)
+        private static ExpressionSyntax GetAccessExpression(ExpressionSyntax expression)
         {
             SyntaxNode parent = expression.Parent;
 
             switch (parent?.Kind())
             {
                 case SyntaxKind.SimpleMemberAccessExpression:
-                    return expression == ((MemberAccessExpressionSyntax)parent).Expression;
+                    {
+                        var memberAccessExpression = (MemberAccessExpressionSyntax)parent;
+
+                        if (expression == memberAccessExpression.Expression)
+                            return memberAccessExpression;
+
+                        break;
+                    }
+
                 case SyntaxKind.ElementAccessExpression:
-                    return expression == ((ElementAccessExpressionSyntax)parent).Expression;
+                    {
+                        var elementAccess = (ElementAccessExpressionSyntax)parent;
+
+                        if (expression == elementAccess.Expression)
+                            return elementAccess;
+
+                        break;
+                    }
             }
 
-            return false;
+            return null;
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)

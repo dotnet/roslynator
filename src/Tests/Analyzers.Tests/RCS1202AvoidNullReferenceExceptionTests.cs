@@ -364,6 +364,47 @@ class C
 }
 ", fromData, toData);
             }
+
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+            public async Task TestNoDiagnostic_UnconstrainedTypeParameter()
+            {
+                await VerifyNoDiagnosticAsync(@"
+class C<T>
+{
+    T P { get; }
+
+    void M()
+    {
+        object x = null;
+
+        x = (x as C<T>).P;
+    }
+}
+");
+            }
+
+            [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+            public async Task TestNoDiagnostic_UnconstrainedTypeParameter2()
+            {
+                await VerifyNoDiagnosticAsync(@"
+class C<T, U> where T : B<U>
+{
+    T P { get; }
+
+    void M()
+    {
+        object x = null;
+
+        x = (x as C<T, U>).P.M();
+    }
+}
+
+class B<T>
+{
+    public T M() => default;
+}
+");
+            }
         }
     }
 }
