@@ -4,6 +4,7 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Roslynator.CSharp.Syntax;
 using static Roslynator.SymbolUtility;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -14,6 +15,9 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
+            if (invocationInfo.InvocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
+                return false;
+
             IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
             if (methodSymbol == null)
@@ -32,6 +36,9 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
+            if (invocationInfo.InvocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
+                return false;
+
             IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
             if (methodSymbol == null)
@@ -50,6 +57,9 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
+            if (invocationInfo.InvocationExpression.IsParentKind(SyntaxKind.ExpressionStatement))
+                return false;
+
             IMethodSymbol methodSymbol = semanticModel.GetReducedExtensionMethodInfo(invocationInfo.InvocationExpression, cancellationToken).Symbol;
 
             if (methodSymbol == null)

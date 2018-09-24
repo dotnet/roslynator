@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -12,6 +13,9 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
+            if (invocation.IsParentKind(SyntaxKind.ExpressionStatement))
+                return;
+
             SimpleMemberInvocationExpressionInfo invocationInfo = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocation);
 
             if (!invocationInfo.Success)
