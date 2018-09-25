@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -32,38 +33,33 @@ namespace Roslynator.CSharp.Analysis
         {
             var equalsExpression = (BinaryExpressionSyntax)context.Node;
 
-            ExpressionSyntax left = equalsExpression.Left;
+            if (equalsExpression.ContainsDirectives)
+                return;
 
-            if (left?.IsMissing == false)
+            BinaryExpressionInfo equalsExpressionInfo = SyntaxInfo.BinaryExpressionInfo(equalsExpression);
+
+            if (!equalsExpressionInfo.Success)
+                return;
+
+            ExpressionSyntax left = equalsExpressionInfo.Left;
+            ExpressionSyntax right = equalsExpressionInfo.Right;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            if (CSharpUtility.IsEmptyStringExpression(left, semanticModel, cancellationToken))
             {
-                ExpressionSyntax right = equalsExpression.Right;
-
-                if (right?.IsMissing == false)
+                if (CSharpUtility.IsStringExpression(right, semanticModel, cancellationToken)
+                    && !equalsExpression.IsInExpressionTree(semanticModel, cancellationToken))
                 {
-                    SemanticModel semanticModel = context.SemanticModel;
-                    CancellationToken cancellationToken = context.CancellationToken;
-
-                    if (CSharpUtility.IsEmptyStringExpression(left, semanticModel, cancellationToken))
-                    {
-                        if (CSharpUtility.IsStringExpression(right, semanticModel, cancellationToken))
-                            ReportDiagnostic(context, equalsExpression);
-                    }
-                    else if (CSharpUtility.IsEmptyStringExpression(right, semanticModel, cancellationToken)
-                        && CSharpUtility.IsStringExpression(left, semanticModel, cancellationToken))
-                    {
-                        ReportDiagnostic(context, equalsExpression);
-                    }
+                    context.ReportDiagnostic(DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
                 }
             }
-        }
-
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
-        {
-            if (!node.SpanContainsDirectives())
+            else if (CSharpUtility.IsEmptyStringExpression(right, semanticModel, cancellationToken)
+                && CSharpUtility.IsStringExpression(left, semanticModel, cancellationToken)
+                && !equalsExpression.IsInExpressionTree(semanticModel, cancellationToken))
             {
-                context.ReportDiagnostic(
-                    DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString,
-                    node);
+                context.ReportDiagnostic(DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
             }
         }
     }
