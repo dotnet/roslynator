@@ -40,7 +40,12 @@ namespace Roslynator.CSharp.Analysis
             if (usingDirective.SpanContainsDirectives())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective, usingDirective);
+            if (context.SemanticModel
+                .GetSymbol(usingDirective.Name, context.CancellationToken)?
+                .IsKind(SymbolKind.Namespace, SymbolKind.NamedType) == true)
+            {
+                context.ReportDiagnostic(DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective, usingDirective);
+            }
         }
     }
 }
