@@ -174,11 +174,11 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     if (KeepReturnStatement)
                     {
-                        return node.WithExpression(AwaitExpression(expression.WithoutTrivia()).WithTriviaFrom(expression));
+                        return node.WithExpression(AwaitExpression(expression.WithoutTrivia().Parenthesize()).WithTriviaFrom(expression));
                     }
                     else
                     {
-                        return ExpressionStatement(AwaitExpression(expression.WithoutTrivia()).WithTriviaFrom(expression)).WithTriviaFrom(node);
+                        return ExpressionStatement(AwaitExpression(expression.WithoutTrivia().Parenthesize()).WithTriviaFrom(expression)).WithTriviaFrom(node);
                     }
                 }
 
