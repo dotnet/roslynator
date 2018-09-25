@@ -34,6 +34,11 @@ namespace Roslynator.CSharp.CodeFixes
             if (IsPartOfLeftSideOfAssignment())
                 return;
 
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            if (expression.IsInExpressionTree(semanticModel, context.CancellationToken))
+                return;
+
             SyntaxKind kind = expression.Kind();
 
             if (kind == SyntaxKind.SimpleMemberAccessExpression)
