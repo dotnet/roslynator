@@ -426,6 +426,112 @@ namespace Roslynator.CSharp
         }
         #endregion DestructorDeclarationSyntax
 
+        #region DirectiveTriviaSyntax
+        //TODO: make public
+        internal static DirectiveTriviaSyntax GetNextRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
+        {
+            DirectiveTriviaSyntax d = directiveTrivia;
+
+            switch (d.Kind())
+            {
+                case SyntaxKind.IfDirectiveTrivia:
+                case SyntaxKind.ElifDirectiveTrivia:
+                    {
+                        while (true)
+                        {
+                            d = d.GetNextPossiblyRelatedDirective();
+
+                            if (d == null)
+                                break;
+
+                            if (d.IsKind(
+                                SyntaxKind.ElifDirectiveTrivia,
+                                SyntaxKind.ElseDirectiveTrivia,
+                                SyntaxKind.EndIfDirectiveTrivia))
+                            {
+                                return d;
+                            }
+                        }
+
+                        break;
+                    }
+                case SyntaxKind.ElseDirectiveTrivia:
+                    {
+                        while (true)
+                        {
+                            d = d.GetNextPossiblyRelatedDirective();
+
+                            if (d == null)
+                                break;
+
+                            if (d.Kind() == SyntaxKind.EndIfDirectiveTrivia)
+                                return d;
+                        }
+
+                        break;
+                    }
+                case SyntaxKind.RegionDirectiveTrivia:
+                    {
+                        while (true)
+                        {
+                            d = d.GetNextPossiblyRelatedDirective();
+
+                            if (d == null)
+                                break;
+
+                            if (d.Kind() == SyntaxKind.EndRegionDirectiveTrivia)
+                                return d;
+                        }
+
+                        break;
+                    }
+            }
+
+            return null;
+        }
+
+        private static DirectiveTriviaSyntax GetNextPossiblyRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
+        {
+            DirectiveTriviaSyntax d = directiveTrivia;
+
+            while (d != null)
+            {
+                d = d.GetNextDirective();
+
+                if (d != null)
+                {
+                    switch (d.Kind())
+                    {
+                        case SyntaxKind.IfDirectiveTrivia:
+                            {
+                                do
+                                {
+                                    d = d.GetNextRelatedDirective();
+                                }
+                                while (d != null && d.Kind() != SyntaxKind.EndIfDirectiveTrivia);
+
+                                continue;
+                            }
+                        case SyntaxKind.RegionDirectiveTrivia:
+                            {
+                                do
+                                {
+                                    d = d.GetNextRelatedDirective();
+                                }
+                                while (d != null && d.Kind() != SyntaxKind.EndRegionDirectiveTrivia);
+
+                                continue;
+                            }
+                    }
+                }
+
+                return d;
+            }
+
+            return null;
+        }
+        #endregion DirectiveTriviaSyntax
+
         #region DocumentationCommentTriviaSyntax
         internal static XmlElementSyntax SummaryElement(this DocumentationCommentTriviaSyntax documentationComment)
         {
@@ -3023,6 +3129,53 @@ namespace Roslynator.CSharp
             SyntaxTrivia trivia = GetIndentation(node, cancellationToken);
 
             return IncreaseIndentation(trivia);
+        }
+
+        //TODO: make public
+        internal static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node)
+        {
+            if (node.ContainsDirectives)
+            {
+                DirectiveTriviaSyntax first = node.GetFirstDirective(f => f.IsKind(
+                    SyntaxKind.IfDirectiveTrivia,
+                    SyntaxKind.ElseDirectiveTrivia,
+                    SyntaxKind.ElifDirectiveTrivia,
+                    SyntaxKind.EndIfDirectiveTrivia));
+
+                if (first != null)
+                {
+                    if (!first.IsKind(SyntaxKind.IfDirectiveTrivia))
+                        return true;
+
+                    DirectiveTriviaSyntax last = node.GetLastDirective(f => f.IsKind(
+                        SyntaxKind.IfDirectiveTrivia,
+                        SyntaxKind.ElseDirectiveTrivia,
+                        SyntaxKind.ElifDirectiveTrivia,
+                        SyntaxKind.EndIfDirectiveTrivia));
+
+                    if (last == first)
+                        return true;
+
+                    if (!last.IsKind(SyntaxKind.EndIfDirectiveTrivia))
+                        return true;
+
+                    DirectiveTriviaSyntax d = first;
+
+                    do
+                    {
+                        d = d.GetNextRelatedDirective();
+
+                        if (d == null)
+                            return true;
+
+                        if (!d.FullSpan.OverlapsWith(node.FullSpan))
+                            return true;
+                    }
+                    while (d != last);
+                }
+            }
+
+            return false;
         }
         #endregion SyntaxNode
 

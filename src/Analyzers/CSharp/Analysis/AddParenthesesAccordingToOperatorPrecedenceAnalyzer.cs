@@ -49,6 +49,9 @@ namespace Roslynator.CSharp.Analysis
 
         private static void Analyze(SyntaxNodeAnalysisContext context, ExpressionSyntax expression, SyntaxKind binaryExpressionKind)
         {
+            if (expression.ContainsUnbalancedIfElseDirectives())
+                return;
+
             if (!IsFixable(expression, binaryExpressionKind))
                 return;
 
