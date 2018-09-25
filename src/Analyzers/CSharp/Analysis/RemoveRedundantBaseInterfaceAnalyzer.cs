@@ -110,22 +110,99 @@ namespace Roslynator.CSharp.Analysis
             in SymbolInterfaceInfo interfaceInfo2,
             INamedTypeSymbol typeSymbol = null)
         {
+            if (IsFixable(interfaceInfo, interfaceInfo2, typeSymbol))
+            {
+                BaseTypeSyntax baseType = interfaceInfo.BaseType;
+
+                context.ReportDiagnostic(
+                    DiagnosticDescriptors.RemoveRedundantBaseInterface,
+                    baseType,
+                    SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default),
+                    SymbolDisplay.ToMinimalDisplayString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default));
+            }
+        }
+
+        private static bool IsFixable(
+            in SymbolInterfaceInfo interfaceInfo,
+            in SymbolInterfaceInfo interfaceInfo2,
+            INamedTypeSymbol typeSymbol = null)
+        {
+            ImmutableArray<ISymbol> members = default;
+
             foreach (INamedTypeSymbol interfaceSymbol in interfaceInfo2.Interfaces)
             {
-                if (interfaceInfo.Symbol.Equals(interfaceSymbol)
-                    && typeSymbol?.IsAnyInterfaceMemberExplicitlyImplemented(interfaceInfo.Symbol) != true)
+                if (interfaceInfo.Symbol.Equals(interfaceSymbol))
                 {
-                    BaseTypeSyntax baseType = interfaceInfo.BaseType;
+                    if (typeSymbol != null)
+                    {
+                        if (members.IsDefault)
+                            members = typeSymbol.GetMembers();
 
-                    context.ReportDiagnostic(
-                        DiagnosticDescriptors.RemoveRedundantBaseInterface,
-                        baseType,
-                        SymbolDisplay.ToMinimalDisplayString(interfaceInfo.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default),
-                        SymbolDisplay.ToMinimalDisplayString(interfaceInfo2.Symbol, context.SemanticModel, baseType.SpanStart, SymbolDisplayFormats.Default));
+                        if (IsExplicitlyImplemented(interfaceInfo, members))
+                            continue;
+                    }
 
-                    return;
+                    return true;
                 }
             }
+
+            return false;
+        }
+
+        private static bool IsExplicitlyImplemented(in SymbolInterfaceInfo interfaceInfo, ImmutableArray<ISymbol> members)
+        {
+            if (IsExplicitlyImplemented(interfaceInfo.Symbol, members))
+                return true;
+
+            foreach (INamedTypeSymbol interfaceSymbol in interfaceInfo.Interfaces)
+            {
+                if (IsExplicitlyImplemented(interfaceSymbol, members))
+                    return true;
+            }
+
+            return false;
+        }
+
+        internal static bool IsExplicitlyImplemented(ISymbol interfaceSymbol, ImmutableArray<ISymbol> members)
+        {
+            foreach (ISymbol member in members)
+            {
+                switch (member.Kind)
+                {
+                    case SymbolKind.Event:
+                        {
+                            foreach (IEventSymbol eventSymbol in ((IEventSymbol)member).ExplicitInterfaceImplementations)
+                            {
+                                if (eventSymbol.ContainingType?.Equals(interfaceSymbol) == true)
+                                    return true;
+                            }
+
+                            break;
+                        }
+                    case SymbolKind.Method:
+                        {
+                            foreach (IMethodSymbol methodSymbol in ((IMethodSymbol)member).ExplicitInterfaceImplementations)
+                            {
+                                if (methodSymbol.ContainingType?.Equals(interfaceSymbol) == true)
+                                    return true;
+                            }
+
+                            break;
+                        }
+                    case SymbolKind.Property:
+                        {
+                            foreach (IPropertySymbol propertySymbol in ((IPropertySymbol)member).ExplicitInterfaceImplementations)
+                            {
+                                if (propertySymbol.ContainingType?.Equals(interfaceSymbol) == true)
+                                    return true;
+                            }
+
+                            break;
+                        }
+                }
+            }
+
+            return false;
         }
 
         private readonly struct SymbolInterfaceInfo
