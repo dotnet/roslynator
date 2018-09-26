@@ -85,9 +85,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxNode parent = initializer.Parent;
 
-            initializer = initializer
-                .ReplaceWhitespace(SyntaxFactory.ElasticMarker, TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End))
-                .WithFormatterAnnotation();
+            initializer = initializer.ReplaceWhitespace(SyntaxFactory.ElasticSpace, TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End));
 
             SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
 
@@ -97,7 +95,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             initializer = initializer.WithExpressions(expressions);
 
-            SyntaxNode newParent = GetNewParent();
+            SyntaxNode newParent = GetNewParent().WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(parent, newParent, cancellationToken);
 
@@ -131,6 +129,12 @@ namespace Roslynator.CSharp.CodeFixes
                             return implicitArrayCreation
                                 .WithInitializer(initializer)
                                 .WithCloseBracketToken(implicitArrayCreation.CloseBracketToken.WithoutTrailingTrivia());
+                        }
+                    case EqualsValueClauseSyntax equalsValueClause:
+                        {
+                            return equalsValueClause
+                                .WithValue(initializer)
+                                .WithEqualsToken(equalsValueClause.EqualsToken.WithoutTrailingTrivia());
                         }
                 }
 

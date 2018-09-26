@@ -89,6 +89,16 @@ namespace Roslynator.CSharp
 
                         break;
                     }
+                case SyntaxKind.EqualsValueClause:
+                    {
+                        var equalsValueClause = (EqualsValueClauseSyntax)parent;
+
+                        newParent = equalsValueClause
+                            .WithValue(newInitializer)
+                            .WithEqualsToken(equalsValueClause.EqualsToken.WithoutTrailingTrivia());
+
+                        break;
+                    }
                 default:
                     {
                         Debug.Fail(parent.Kind().ToString());

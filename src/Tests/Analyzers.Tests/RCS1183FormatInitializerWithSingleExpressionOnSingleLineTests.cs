@@ -69,7 +69,56 @@ class C
 
     void M()
     {
-        var x = new C() { P = null };
+        var x = new C() { P = null  };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine)]
+        public async Task Test_ObjectInitializer_TrailingComma2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    public C P { get; set; }
+
+    void M()
+    {
+        var items = new List<C>()
+        {
+            new C
+            {
+                P =
+                new C()
+            },
+            new C
+            [|{
+                P = new C(),
+            }|],
+        };
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    public C P { get; set; }
+
+    void M()
+    {
+        var items = new List<C>()
+        {
+            new C
+            {
+                P =
+                new C()
+            },
+            new C {  P = new C()  },
+        };
     }
 }
 ");
@@ -182,6 +231,94 @@ class C
     void M()
     {
         var items = new C[] { null };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine)]
+        public async Task Test_ArrayInitializer_Field()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string[] _f =
+    [|{
+        null
+    }|];
+}
+", @"
+class C
+{
+    string[] _f = { null };
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine)]
+        public async Task Test_ArrayInitializer_TrailingComma_Field()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string[] _f =
+    [|{
+        null,
+    }|];
+}
+", @"
+class C
+{
+    string[] _f = { null  };
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine)]
+        public async Task Test_ArrayInitializer_Local()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string[] x =
+        [|{
+            null
+        }|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string[] x = { null };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine)]
+        public async Task Test_ArrayInitializer_TrailingComma_Local()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string[] x =
+        [|{
+            null,
+        }|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string[] x = { null  };
     }
 }
 ");
