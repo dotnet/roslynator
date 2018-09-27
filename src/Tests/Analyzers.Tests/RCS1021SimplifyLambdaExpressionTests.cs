@@ -52,5 +52,35 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLambdaExpression)]
+        public async Task Test2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var actions = new Action[] {
+            new Action(() => [|{ throw new InvalidOperationException(); }|])
+        };
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var actions = new Action[] {
+            new Action(() => throw new InvalidOperationException())
+        };
+    }
+}
+");
+        }
     }
 }
