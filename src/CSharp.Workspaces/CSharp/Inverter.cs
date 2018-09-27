@@ -60,7 +60,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.UncheckedExpression:
                 case SyntaxKind.IdentifierName:
                     {
-                        return LogicalNotExpression(expression);
+                        return DefaultInvert(expression);
                     }
                 case SyntaxKind.LogicalNotExpression:
                     {
@@ -389,7 +389,11 @@ namespace Roslynator.CSharp
         {
             Debug.Assert(expression.Kind() != SyntaxKind.ParenthesizedExpression, expression.Kind().ToString());
 
-            return LogicalNotExpression(expression.Parenthesize());
+            SyntaxTriviaList leadingTrivia = expression.GetLeadingTrivia();
+
+            return LogicalNotExpression(
+                expression.WithoutLeadingTrivia().Parenthesize(),
+                Token(leadingTrivia, SyntaxKind.ExclamationToken, SyntaxTriviaList.Empty));
         }
     }
 }
