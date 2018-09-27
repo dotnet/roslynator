@@ -1359,29 +1359,38 @@ namespace Roslynator
                             return true;
                         }
 
-                        return !ContainsAnonymousType(namedTypeSymbol.TypeArguments);
+                        return SupportsExplicitDeclaration2(namedTypeSymbol.TypeArguments);
                     }
             }
 
             return false;
 
-            bool ContainsAnonymousType(ImmutableArray<ITypeSymbol> typeSymbols)
+            bool SupportsExplicitDeclaration2(ImmutableArray<ITypeSymbol> typeSymbols)
             {
                 foreach (ITypeSymbol symbol in typeSymbols)
                 {
                     if (symbol.IsAnonymousType)
-                        return true;
+                        return false;
 
-                    if (symbol.Kind == SymbolKind.NamedType)
+                    switch (symbol.Kind)
                     {
-                        var namedTypeSymbol = (INamedTypeSymbol)symbol;
+                        case SymbolKind.NamedType:
+                            {
+                                var namedTypeSymbol = (INamedTypeSymbol)symbol;
 
-                        if (ContainsAnonymousType(namedTypeSymbol.TypeArguments))
-                            return true;
+                                if (!SupportsExplicitDeclaration2(namedTypeSymbol.TypeArguments))
+                                    return false;
+
+                                break;
+                            }
+                        case SymbolKind.ErrorType:
+                            {
+                                return false;
+                            }
                     }
                 }
 
-                return false;
+                return true;
             }
         }
 
