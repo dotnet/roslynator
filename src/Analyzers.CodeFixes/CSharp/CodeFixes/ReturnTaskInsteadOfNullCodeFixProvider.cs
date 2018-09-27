@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -31,6 +32,17 @@ namespace Roslynator.CSharp.CodeFixes
 
             if (expression.IsKind(SyntaxKind.ConditionalAccessExpression))
                 return;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            if (!semanticModel
+                .Compilation
+                .GetTypeByMetadataName("System.Threading.Tasks.Task")
+                .GetMembers("FromResult")
+                .Any())
+            {
+                return;
+            }
 
             expression = expression.WalkUpParentheses();
 
