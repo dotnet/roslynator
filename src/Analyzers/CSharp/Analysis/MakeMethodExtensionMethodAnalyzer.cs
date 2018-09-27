@@ -67,6 +67,9 @@ namespace Roslynator.CSharp.Analysis
                 if (parameter.Type.IsKind(SyntaxKind.PointerType))
                     continue;
 
+                if (parameter.Modifiers.Contains(SyntaxKind.ParamsKeyword))
+                    continue;
+
                 bool isThis = false;
                 bool isIn = false;
                 bool isRef = false;
