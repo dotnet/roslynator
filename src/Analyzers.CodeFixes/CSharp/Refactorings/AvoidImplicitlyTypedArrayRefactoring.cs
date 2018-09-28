@@ -12,16 +12,16 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task<Document> RefactorAsync(
             Document document,
-            ImplicitArrayCreationExpressionSyntax expression,
+            ImplicitArrayCreationExpressionSyntax implicitArrayCreation,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, cancellationToken);
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, cancellationToken);
 
-            var arrayType = (ArrayTypeSyntax)typeSymbol.ToMinimalTypeSyntax(semanticModel, expression.SpanStart);
+            var arrayType = (ArrayTypeSyntax)typeSymbol.ToTypeSyntax().WithSimplifierAnnotation();
 
-            SyntaxToken newKeyword = expression.NewKeyword;
+            SyntaxToken newKeyword = implicitArrayCreation.NewKeyword;
 
             if (!newKeyword.HasTrailingTrivia)
                 newKeyword = newKeyword.WithTrailingTrivia(SyntaxFactory.Space);
@@ -29,13 +29,11 @@ namespace Roslynator.CSharp.Refactorings
             ArrayCreationExpressionSyntax newNode = SyntaxFactory.ArrayCreationExpression(
                 newKeyword,
                 arrayType
-                    .WithLeadingTrivia(expression.OpenBracketToken.LeadingTrivia)
-                    .WithTrailingTrivia(expression.CloseBracketToken.TrailingTrivia),
-                expression.Initializer);
+                    .WithLeadingTrivia(implicitArrayCreation.OpenBracketToken.LeadingTrivia)
+                    .WithTrailingTrivia(implicitArrayCreation.CloseBracketToken.TrailingTrivia),
+                implicitArrayCreation.Initializer);
 
-            newNode = newNode.WithFormatterAnnotation();
-
-            return await document.ReplaceNodeAsync(expression, newNode, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(implicitArrayCreation, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }
