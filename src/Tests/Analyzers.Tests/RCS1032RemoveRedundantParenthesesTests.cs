@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
 using Xunit;
-using System.Threading.Tasks;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
@@ -82,6 +82,28 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
+        public async Task Test_ReturnExpression_NoSpace()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    object M()
+    {
+        return[|(|]null);
+    }
+}
+", @"
+class C
+{
+    object M()
+    {
+        return null;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
         public async Task Test_YieldReturnExpression()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -92,6 +114,32 @@ class C
     IEnumerable<object> M()
     {
         yield return [|(|]null);
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<object> M()
+    {
+        yield return null;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
+        public async Task Test_YieldReturnExpression_NoSpace()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<object> M()
+    {
+        yield return[|(|]null);
     }
 }
 ", @"
@@ -135,6 +183,34 @@ class C
     {
         await [|(|]FooAsync());
         await [|(|](Task)FooAsync());
+    }
+}
+", @"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task FooAsync()
+    {
+        await FooAsync();
+        await (Task)FooAsync();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
+        public async Task Test_AwaitExpression_NoSpace()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    async Task FooAsync()
+    {
+        await[|(|]FooAsync());
+        await[|(|](Task)FooAsync());
     }
 }
 ", @"
