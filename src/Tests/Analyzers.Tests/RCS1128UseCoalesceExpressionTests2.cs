@@ -42,5 +42,39 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+        public async Task Test_GetValueOrDefault_ConditionalAccess()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        var x = new C();
+
+        int? i = x.P1?.P2.[|GetValueOrDefault|](0);
+    }
+
+    public C P1 { get; }
+
+    public int? P2 { get; }
+}
+", @"
+class C
+{
+    void M()
+    {
+        var x = new C();
+
+        int? i = x.P1?.P2 ?? 0;
+    }
+
+    public C P1 { get; }
+
+    public int? P2 { get; }
+}
+");
+        }
     }
 }

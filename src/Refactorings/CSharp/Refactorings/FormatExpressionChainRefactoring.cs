@@ -26,12 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!context.Span.IsEmptyAndContainedInSpan(expression))
                 return;
 
-            expression = (ExpressionSyntax)expression.WalkUp(f => f.IsKind(
-                SyntaxKind.ConditionalAccessExpression,
-                SyntaxKind.SimpleMemberAccessExpression,
-                SyntaxKind.ElementAccessExpression,
-                SyntaxKind.MemberBindingExpression,
-                SyntaxKind.InvocationExpression));
+            expression = CSharpUtility.GetTopmostExpressionInCallChain(expression);
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

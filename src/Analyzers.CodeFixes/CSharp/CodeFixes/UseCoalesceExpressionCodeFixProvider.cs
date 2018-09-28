@@ -16,6 +16,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -197,7 +198,7 @@ namespace Roslynator.CSharp.CodeFixes
                     right.Parenthesize()).WithSimplifierAnnotation();
             }
 
-            return CSharpFactory.CoalesceExpression(
+            return CoalesceExpression(
                 left.Parenthesize(),
                 right.Parenthesize());
         }
@@ -207,13 +208,27 @@ namespace Roslynator.CSharp.CodeFixes
             InvocationExpressionSyntax invocationExpression,
             CancellationToken cancellationToken)
         {
-            ExpressionSyntax newNode = CSharpFactory.CoalesceExpression(
-                ((MemberAccessExpressionSyntax)invocationExpression.Expression).Expression.Parenthesize(),
+            var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
+
+            ExpressionSyntax expression = memberAccessExpression.Expression;
+
+            ExpressionSyntax topExpression = CSharpUtility.GetTopmostExpressionInCallChain(invocationExpression);
+
+            if (topExpression != invocationExpression)
+            {
+                expression = ParseExpression(topExpression.ToString(TextSpan.FromBounds(topExpression.FullSpan.Start, expression.FullSpan.End)));
+            }
+
+            ExpressionSyntax newNode = CoalesceExpression(
+                expression.Parenthesize(),
                 invocationExpression.ArgumentList.Arguments.Single().Expression.Parenthesize());
 
             newNode = newNode.Parenthesize().WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
+            return document.ReplaceNodeAsync(
+                (topExpression != invocationExpression) ? topExpression : invocationExpression,
+                newNode,
+                cancellationToken);
         }
     }
 }
