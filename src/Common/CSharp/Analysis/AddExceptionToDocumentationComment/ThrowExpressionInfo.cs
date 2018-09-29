@@ -24,6 +24,9 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
 
             SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(parent.Parent);
 
+            if (!simpleAssignment.Success)
+                return null;
+
             ISymbol leftSymbol = semanticModel.GetSymbol(simpleAssignment.Left, cancellationToken);
 
             if (leftSymbol?.Kind != SymbolKind.Parameter)
