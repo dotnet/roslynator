@@ -863,6 +863,34 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task TestNoDiagnostic_OptimizeCountCall_ExpressionCannotBeMemberAccessExpression()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M(Action action)
+    {
+        var items = new List<object>();
+
+        items.Count();
+
+        M(() => items.Count());
+
+        M(_ => items.Count());
+    }
+
+    void M(Action<object> action)
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallAnyInsteadOfCount()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -393,7 +393,9 @@ namespace Roslynator.CSharp.Analysis
 
             if (propertyName != null)
             {
-                ReportNameWithArgumentList(context, invocationInfo, property: new KeyValuePair<string, string>("PropertyName", propertyName), messageArgs: propertyName);
+                if (CanBeReplacedWithMemberAccessExpression(invocationExpression))
+                    ReportNameWithArgumentList(context, invocationInfo, property: new KeyValuePair<string, string>("PropertyName", propertyName), messageArgs: propertyName);
+
                 return;
             }
 
@@ -452,6 +454,26 @@ namespace Roslynator.CSharp.Analysis
 
                         break;
                     }
+            }
+
+            bool CanBeReplacedWithMemberAccessExpression(ExpressionSyntax e)
+            {
+                SyntaxNode p = CSharpUtility.GetTopmostExpressionInCallChain(e).WalkUpParentheses().Parent;
+
+                switch (p.Kind())
+                {
+                    case SyntaxKind.ExpressionStatement:
+                        {
+                            return false;
+                        }
+                    case SyntaxKind.SimpleLambdaExpression:
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                        {
+                            return semanticModel.GetMethodSymbol((LambdaExpressionSyntax)p, cancellationToken)?.ReturnType.IsVoid() == false;
+                        }
+                }
+
+                return true;
             }
         }
 
