@@ -64,6 +64,9 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             if (typeSymbol?.SupportsConstantValue() != true)
                 return;
 
+            if (localInfo.Type.IsVar && !typeSymbol.SupportsExplicitDeclaration())
+                return;
+
             foreach (VariableDeclaratorSyntax declarator in localInfo.Variables)
             {
                 if (!HasConstantValue(declarator.Initializer?.Value, typeSymbol, context.SemanticModel, context.CancellationToken))
