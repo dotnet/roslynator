@@ -183,6 +183,36 @@ struct C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
+        public async Task Test_NullableTypeToNullableType_WithCastExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    TimeSpan? P { get; }
+
+    void M()
+    {
+        int? x = [|(P == null) ? null : (int?)P.Value.TotalSeconds|];
+    }
+}
+", @"
+using System;
+
+class C
+{
+    TimeSpan? P { get; }
+
+    void M()
+    {
+        int? x = (int?)P?.TotalSeconds;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
