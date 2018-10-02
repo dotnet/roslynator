@@ -69,7 +69,7 @@ class C
 
     void M()
     {
-        var x = new C() { P = null  };
+        var x = new C() { P = null };
     }
 }
 ");
@@ -117,7 +117,89 @@ class C
                 P =
                 new C()
             },
-            new C {  P = new C()  },
+            new C { P = new C() },
+        };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine)]
+        public async Task Test_ObjectInitializer_AssignmentExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    C P1 { get; set; }
+
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = new C()
+        {
+            P2 = null,
+            P1 =
+            [|{
+                P2 = null
+            }|]
+        };
+    }
+}
+", @"
+class C
+{
+    C P1 { get; set; }
+
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = new C()
+        {
+            P2 = null,
+            P1 = { P2 = null }
+        };
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.FormatInitializerWithSingleExpressionOnSingleLine)]
+        public async Task Test_ObjectInitializer_TrailingComma_AssignmentExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    C P1 { get; set; }
+
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = new C()
+        {
+            P2 = null,
+            P1 =
+            [|{
+                P2 = null,
+            }|]
+        };
+    }
+}
+", @"
+class C
+{
+    C P1 { get; set; }
+
+    string P2 { get; set; }
+
+    void M()
+    {
+        var x = new C()
+        {
+            P2 = null,
+            P1 = { P2 = null }
         };
     }
 }
@@ -269,7 +351,7 @@ class C
 ", @"
 class C
 {
-    string[] _f = { null  };
+    string[] _f = { null };
 }
 ");
         }
@@ -318,7 +400,7 @@ class C
 {
     void M()
     {
-        string[] x = { null  };
+        string[] x = { null };
     }
 }
 ");

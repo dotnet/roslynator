@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading;
@@ -10,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -78,68 +76,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            SyntaxToken trailingComma = initializer.Expressions.GetTrailingSeparator();
-
-            if (trailingComma == default)
-                return SyntaxFormatter.ToSingleLineAsync(document, initializer, cancellationToken);
-
-            SyntaxNode parent = initializer.Parent;
-
-            initializer = initializer.ReplaceWhitespace(SyntaxFactory.ElasticSpace, TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End));
-
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-
-            expressions = expressions.ReplaceAt(0, expressions.First().WithTrailingTrivia(SyntaxFactory.Space));
-
-            expressions = expressions.ReplaceSeparator(expressions.GetSeparator(0), SyntaxFactory.MissingToken(SyntaxKind.CommaToken));
-
-            initializer = initializer.WithExpressions(expressions);
-
-            SyntaxNode newParent = GetNewParent().WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(parent, newParent, cancellationToken);
-
-            SyntaxNode GetNewParent()
-            {
-                switch (parent)
-                {
-                    case ObjectCreationExpressionSyntax objectCreation:
-                        {
-                            objectCreation = objectCreation.WithInitializer(initializer);
-
-                            ArgumentListSyntax argumentList = objectCreation.ArgumentList;
-
-                            if (argumentList != null)
-                            {
-                                return objectCreation.WithArgumentList(argumentList.WithoutTrailingTrivia());
-                            }
-                            else
-                            {
-                                return objectCreation.WithType(objectCreation.Type.WithoutTrailingTrivia());
-                            }
-                        }
-                    case ArrayCreationExpressionSyntax arrayCreation:
-                        {
-                            return arrayCreation
-                                .WithInitializer(initializer)
-                                .WithType(arrayCreation.Type.WithoutTrailingTrivia());
-                        }
-                    case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
-                        {
-                            return implicitArrayCreation
-                                .WithInitializer(initializer)
-                                .WithCloseBracketToken(implicitArrayCreation.CloseBracketToken.WithoutTrailingTrivia());
-                        }
-                    case EqualsValueClauseSyntax equalsValueClause:
-                        {
-                            return equalsValueClause
-                                .WithValue(initializer)
-                                .WithEqualsToken(equalsValueClause.EqualsToken.WithoutTrailingTrivia());
-                        }
-                }
-
-                throw new InvalidOperationException();
-            }
+            return SyntaxFormatter.ToSingleLineAsync(document, initializer, removeTrailingComma: true, cancellationToken);
         }
 
         private static InitializerExpressionSyntax RemoveTrailingComma(InitializerExpressionSyntax initializer)

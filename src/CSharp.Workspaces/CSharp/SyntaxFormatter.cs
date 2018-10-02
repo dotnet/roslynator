@@ -38,11 +38,53 @@ namespace Roslynator.CSharp
         public static Task<Document> ToSingleLineAsync(
             Document document,
             InitializerExpressionSyntax initializer,
+            bool removeTrailingComma = false,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             InitializerExpressionSyntax newInitializer = initializer
-                .ReplaceWhitespace(ElasticSpace, TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End))
+                .ReplaceWhitespace(ElasticSpace, TextSpan.FromBounds(initializer.Span.Start, initializer.Span.End))
                 .WithFormatterAnnotation();
+
+            newInitializer = newInitializer.WithOpenBraceToken(newInitializer.OpenBraceToken.WithoutLeadingTrivia().WithTrailingTrivia(Space));
+
+            newInitializer = newInitializer.WithCloseBraceToken(newInitializer.CloseBraceToken.WithoutLeadingTrivia());
+
+            SeparatedSyntaxList<ExpressionSyntax> expressions = newInitializer.Expressions;
+
+            if (expressions.Any())
+            {
+                ExpressionSyntax firstExpression = expressions.First();
+
+                newInitializer = newInitializer.WithExpressions(expressions.Replace(firstExpression, firstExpression.WithoutLeadingTrivia()));
+
+                expressions = newInitializer.Expressions;
+
+                SyntaxToken trailingComma = expressions.GetTrailingSeparator();
+
+                if (trailingComma.IsKind(SyntaxKind.CommaToken))
+                {
+                    if (removeTrailingComma)
+                    {
+                        expressions = expressions.ReplaceSeparator(trailingComma, MissingToken(SyntaxKind.CommaToken));
+
+                        ExpressionSyntax lastExpression = expressions.Last();
+
+                        expressions = expressions.Replace(lastExpression, lastExpression.WithTrailingTrivia(Space));
+
+                        newInitializer = newInitializer.WithExpressions(expressions);
+                    }
+                    else
+                    {
+                        newInitializer = newInitializer.WithExpressions(expressions.ReplaceSeparator(trailingComma, trailingComma.WithTrailingTrivia(Space)));
+                    }
+                }
+                else
+                {
+                    ExpressionSyntax lastExpression = expressions.Last();
+
+                    newInitializer = newInitializer.WithExpressions(expressions.Replace(lastExpression, lastExpression.WithTrailingTrivia(Space)));
+                }
+            }
 
             SyntaxNode parent = initializer.Parent;
 
@@ -60,11 +102,11 @@ namespace Roslynator.CSharp
 
                         if (argumentList != null)
                         {
-                            newParent = expression.WithArgumentList(argumentList.WithoutTrailingTrivia());
+                            newParent = expression.WithArgumentList(argumentList.WithTrailingTrivia(Space));
                         }
                         else
                         {
-                            newParent = expression.WithType(expression.Type.WithoutTrailingTrivia());
+                            newParent = expression.WithType(expression.Type.WithTrailingTrivia(Space));
                         }
 
                         break;
@@ -75,7 +117,7 @@ namespace Roslynator.CSharp
 
                         newParent = expression
                             .WithInitializer(newInitializer)
-                            .WithType(expression.Type.WithoutTrailingTrivia());
+                            .WithType(expression.Type.WithTrailingTrivia(Space));
 
                         break;
                     }
@@ -85,7 +127,7 @@ namespace Roslynator.CSharp
 
                         newParent = expression
                             .WithInitializer(newInitializer)
-                            .WithCloseBracketToken(expression.CloseBracketToken.WithoutTrailingTrivia());
+                            .WithCloseBracketToken(expression.CloseBracketToken.WithTrailingTrivia(Space));
 
                         break;
                     }
@@ -95,7 +137,17 @@ namespace Roslynator.CSharp
 
                         newParent = equalsValueClause
                             .WithValue(newInitializer)
-                            .WithEqualsToken(equalsValueClause.EqualsToken.WithoutTrailingTrivia());
+                            .WithEqualsToken(equalsValueClause.EqualsToken.WithTrailingTrivia(Space));
+
+                        break;
+                    }
+                case SyntaxKind.SimpleAssignmentExpression:
+                    {
+                        var simpleAssignment = (AssignmentExpressionSyntax)parent;
+
+                        newParent = simpleAssignment
+                            .WithRight(newInitializer)
+                            .WithOperatorToken(simpleAssignment.OperatorToken.WithTrailingTrivia(Space));
 
                         break;
                     }
