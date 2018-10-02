@@ -85,6 +85,7 @@ class C
         using (default(IDisposable))
         {
             await DoAsync();
+            return;
         }
     }
 
