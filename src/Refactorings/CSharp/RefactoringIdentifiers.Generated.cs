@@ -113,6 +113,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string RemoveAllRegionDirectives = Prefix + "0091";
         public const string RemoveAllStatements = Prefix + "0092";
         public const string RemoveAllSwitchSections = Prefix + "0093";
+        public const string RemoveAsyncAwait = Prefix + "0209";
         public const string RemoveBraces = Prefix + "0094";
         public const string RemoveBracesFromIfElse = Prefix + "0095";
         public const string RemoveBracesFromSwitchSection = Prefix + "0096";

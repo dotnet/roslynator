@@ -1868,4 +1868,31 @@ public class Foo
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0209" Identifier="RemoveAsyncAwait" Title="Remove async/await">
+    <Syntaxes>
+      <Syntax>method declaration</Syntax>
+      <Syntax>local function</Syntax>
+      <Syntax>lambda</Syntax>
+      <Syntax>anonymous method</Syntax>
+    </Syntaxes>
+    <Span>async keyword</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C
+{
+    async Task<object> FooAsync()
+    {
+        return await BarAsync().ConfigureAwait(false);
+    }
+}]]></Before>
+        <After><![CDATA[class C
+{
+    Task<object> FooAsync()
+    {
+        return BarAsync();
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

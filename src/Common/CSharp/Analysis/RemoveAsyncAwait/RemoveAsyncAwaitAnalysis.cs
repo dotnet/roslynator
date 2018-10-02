@@ -2,199 +2,156 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
+namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
 {
-    [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RemoveRedundantAsyncAwaitAnalyzer : BaseDiagnosticAnalyzer
+    internal static class RemoveAsyncAwaitAnalysis
     {
-        public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
+        public static RemoveAsyncAwaitResult Analyze(
+            MethodDeclarationSyntax methodDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticDescriptors.RemoveRedundantAsyncAwait,
-                    DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut);
-            }
-        }
-
-        public override void Initialize(AnalysisContext context)
-        {
-            if (context == null)
-                throw new ArgumentNullException(nameof(context));
-
-            base.Initialize(context);
-            context.EnableConcurrentExecution();
-
-            context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeLocalFunctionStatement, SyntaxKind.LocalFunctionStatement);
-            context.RegisterSyntaxNodeAction(AnalyzeAnonymousMethodExpression, SyntaxKind.AnonymousMethodExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeLambdaExpression, SyntaxKind.SimpleLambdaExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression);
-        }
-
-        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            var methodDeclaration = (MethodDeclarationSyntax)context.Node;
-
-            if (methodDeclaration.SpanContainsDirectives())
-                return;
-
-            SyntaxToken asyncKeyword = methodDeclaration.Modifiers.Find(SyntaxKind.AsyncKeyword);
-
-            if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
-                return;
-
             BlockSyntax body = methodDeclaration.Body;
 
             if (body != null)
             {
-                Analyze(context, methodDeclaration, asyncKeyword, body);
+                return AnalyzeMethodBody(methodDeclaration, body, semanticModel, cancellationToken);
             }
             else
             {
                 ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
                 if (expressionBody != null)
-                    AnalyzeExpressionBody(context, methodDeclaration, asyncKeyword, expressionBody);
+                    return AnalyzeExpressionBody(methodDeclaration, expressionBody, semanticModel, cancellationToken);
             }
+
+            return default;
         }
 
-        public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
+        public static RemoveAsyncAwaitResult Analyze(
+            LocalFunctionStatementSyntax localFunction,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
         {
-            var localFunction = (LocalFunctionStatementSyntax)context.Node;
-
-            if (localFunction.SpanContainsDirectives())
-                return;
-
-            SyntaxToken asyncKeyword = localFunction.Modifiers.Find(SyntaxKind.AsyncKeyword);
-
-            if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
-                return;
-
             BlockSyntax body = localFunction.Body;
 
             if (body != null)
             {
-                Analyze(context, localFunction, asyncKeyword, body);
+                return AnalyzeMethodBody(localFunction, body, semanticModel, cancellationToken);
             }
             else
             {
                 ArrowExpressionClauseSyntax expressionBody = localFunction.ExpressionBody;
 
                 if (expressionBody != null)
-                    AnalyzeExpressionBody(context, localFunction, asyncKeyword, expressionBody);
+                    return AnalyzeExpressionBody(localFunction, expressionBody, semanticModel, cancellationToken);
             }
+
+            return default;
         }
 
-        public static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
+        public static RemoveAsyncAwaitResult Analyze(
+            AnonymousMethodExpressionSyntax anonymousMethod,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
         {
-            var anonymousMethod = (AnonymousMethodExpressionSyntax)context.Node;
-
-            if (anonymousMethod.SpanContainsDirectives())
-                return;
-
-            SyntaxToken asyncKeyword = anonymousMethod.AsyncKeyword;
-
-            if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
-                return;
-
             BlockSyntax block = anonymousMethod.Block;
 
             if (block == null)
-                return;
+                return default;
 
-            Analyze(context, anonymousMethod, asyncKeyword, block);
+            return AnalyzeMethodBody(anonymousMethod, block, semanticModel, cancellationToken);
         }
 
-        private static void AnalyzeExpressionBody(
-            SyntaxNodeAnalysisContext context,
+        private static RemoveAsyncAwaitResult AnalyzeExpressionBody(
             SyntaxNode node,
-            SyntaxToken asyncKeyword,
-            ArrowExpressionClauseSyntax expressionBody)
+            ArrowExpressionClauseSyntax expressionBody,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             ExpressionSyntax expression = expressionBody.Expression;
 
             if (expression?.Kind() != SyntaxKind.AwaitExpression)
-                return;
+                return default;
 
             var awaitExpression = (AwaitExpressionSyntax)expression;
 
-            if (!VerifyTypes(node, awaitExpression, context.SemanticModel, context.CancellationToken))
-                return;
+            if (!VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
+                return default;
 
             if (ContainsAwaitExpression(awaitExpression.Expression))
-                return;
+                return default;
 
-            ReportDiagnostic(context, asyncKeyword, awaitExpression);
+            return new RemoveAsyncAwaitResult(awaitExpression);
         }
 
-        public static void AnalyzeLambdaExpression(SyntaxNodeAnalysisContext context)
+        public static RemoveAsyncAwaitResult Analyze(
+            LambdaExpressionSyntax lambda,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
         {
-            var lambda = (LambdaExpressionSyntax)context.Node;
-
-            if (lambda.SpanContainsDirectives())
-                return;
-
-            SyntaxToken asyncKeyword = lambda.AsyncKeyword;
-
-            if (!asyncKeyword.IsKind(SyntaxKind.AsyncKeyword))
-                return;
-
             CSharpSyntaxNode body = lambda.Body;
 
             if (body == null)
-                return;
+                return default;
 
-            SyntaxKind kind = body.Kind();
-
-            if (kind == SyntaxKind.Block)
+            switch (body.Kind())
             {
-                Analyze(context, lambda, asyncKeyword, (BlockSyntax)body);
-            }
-            else if (kind == SyntaxKind.AwaitExpression)
-            {
-                var awaitExpression = (AwaitExpressionSyntax)body;
+                case SyntaxKind.Block:
+                    {
+                        return AnalyzeMethodBody(lambda, (BlockSyntax)body, semanticModel, cancellationToken);
+                    }
+                case SyntaxKind.AwaitExpression:
+                    {
+                        var awaitExpression = (AwaitExpressionSyntax)body;
 
-                if (!ContainsAwaitExpression(awaitExpression.Expression)
-                    && VerifyTypes(lambda, awaitExpression, context.SemanticModel, context.CancellationToken))
-                {
-                    ReportDiagnostic(context, asyncKeyword, awaitExpression);
-                }
+                        if (!ContainsAwaitExpression(awaitExpression.Expression)
+                            && VerifyTypes(lambda, awaitExpression, semanticModel, cancellationToken))
+                        {
+                            return new RemoveAsyncAwaitResult(awaitExpression);
+                        }
+
+                        break;
+                    }
             }
+
+            return default;
         }
 
         private static bool ContainsAwaitExpression(SyntaxNode node)
         {
-            RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance();
+            RemoveAsyncAwaitWalker walker = RemoveAsyncAwaitWalker.GetInstance();
 
             walker.StopOnFirstAwaitExpression = true;
             walker.Visit(node);
 
             bool result = walker.AwaitExpressions.Count == 1;
 
-            RemoveRedundantAsyncAwaitWalkerCache.Free(walker);
+            RemoveAsyncAwaitWalker.Free(walker);
 
             return result;
         }
 
-        private static void Analyze(SyntaxNodeAnalysisContext context, SyntaxNode node, SyntaxToken asyncKeyword, BlockSyntax body)
+        private static RemoveAsyncAwaitResult AnalyzeMethodBody(
+            SyntaxNode node,
+            BlockSyntax body,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             StatementSyntax statement = statements.LastOrDefault(f => !f.IsKind(SyntaxKind.LocalFunctionStatement));
 
             if (statement == null)
-                return;
+                return default;
 
             switch (statement.Kind())
             {
@@ -205,16 +162,16 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                         AwaitExpressionSyntax awaitExpression = GetAwaitExpression(returnStatement);
 
                         if (awaitExpression == null)
-                            return;
+                            return default;
 
-                        RemoveRedundantAsyncAwaitWalker walker = VisitStatements();
+                        RemoveAsyncAwaitWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
                         if (awaitExpressions.Count == 1)
                         {
-                            if (VerifyTypes(node, awaitExpression, context.SemanticModel, context.CancellationToken))
-                                ReportDiagnostic(context, asyncKeyword, awaitExpression);
+                            if (VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
+                                return new RemoveAsyncAwaitResult(walker);
                         }
                         else if (awaitExpressions.Count > 1)
                         {
@@ -225,9 +182,9 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                                 case SyntaxKind.IfStatement:
                                     {
                                         if (VerifyIfStatement((IfStatementSyntax)prevStatement, awaitExpressions.Count - 1, endsWithElse: false)
-                                            && VerifyTypes(node, awaitExpressions, context.SemanticModel, context.CancellationToken))
+                                            && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                                         {
-                                            ReportDiagnostic(context, asyncKeyword, awaitExpressions);
+                                            return new RemoveAsyncAwaitResult(walker);
                                         }
 
                                         break;
@@ -235,9 +192,9 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                                 case SyntaxKind.SwitchStatement:
                                     {
                                         if (VerifySwitchStatement((SwitchStatementSyntax)prevStatement, awaitExpressions.Count - 1, containsDefaultSection: false)
-                                            && VerifyTypes(node, awaitExpressions, context.SemanticModel, context.CancellationToken))
+                                            && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                                         {
-                                            ReportDiagnostic(context, asyncKeyword, awaitExpressions);
+                                            return new RemoveAsyncAwaitResult(walker);
                                         }
 
                                         break;
@@ -245,47 +202,52 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                             }
                         }
 
-                        RemoveRedundantAsyncAwaitWalkerCache.Free(walker);
-                        break;
+                        RemoveAsyncAwaitWalker.Free(walker);
+
+                        return default;
                     }
                 case SyntaxKind.IfStatement:
                     {
-                        RemoveRedundantAsyncAwaitWalker walker = VisitStatements();
+                        RemoveAsyncAwaitWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
                         if (awaitExpressions.Count > 0
                             && VerifyIfStatement((IfStatementSyntax)statement, awaitExpressions.Count, endsWithElse: true)
-                            && VerifyTypes(node, awaitExpressions, context.SemanticModel, context.CancellationToken))
+                            && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                         {
-                            ReportDiagnostic(context, asyncKeyword, awaitExpressions);
+                            return new RemoveAsyncAwaitResult(walker);
                         }
 
-                        RemoveRedundantAsyncAwaitWalkerCache.Free(walker);
-                        break;
+                        RemoveAsyncAwaitWalker.Free(walker);
+
+                        return default;
                     }
 
                 case SyntaxKind.SwitchStatement:
                     {
-                        RemoveRedundantAsyncAwaitWalker walker = VisitStatements();
+                        RemoveAsyncAwaitWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
                         if (awaitExpressions.Count > 0
                             && VerifySwitchStatement((SwitchStatementSyntax)statement, awaitExpressions.Count, containsDefaultSection: true)
-                            && VerifyTypes(node, awaitExpressions, context.SemanticModel, context.CancellationToken))
+                            && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                         {
-                            ReportDiagnostic(context, asyncKeyword, awaitExpressions);
+                            return new RemoveAsyncAwaitResult(walker);
                         }
 
-                        RemoveRedundantAsyncAwaitWalkerCache.Free(walker);
-                        break;
+                        RemoveAsyncAwaitWalker.Free(walker);
+
+                        return default;
                     }
             }
 
-            RemoveRedundantAsyncAwaitWalker VisitStatements()
+            return default;
+
+            RemoveAsyncAwaitWalker VisitStatements()
             {
-                RemoveRedundantAsyncAwaitWalker walker = RemoveRedundantAsyncAwaitWalkerCache.GetInstance();
+                RemoveAsyncAwaitWalker walker = RemoveAsyncAwaitWalker.GetInstance();
 
                 foreach (StatementSyntax s in statements)
                 {
@@ -463,7 +425,10 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
                 && expressionTypeSymbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T);
         }
 
-        private static IMethodSymbol GetMethodSymbol(SyntaxNode node, SemanticModel semanticModel, CancellationToken cancellationToken)
+        private static IMethodSymbol GetMethodSymbol(
+            SyntaxNode node,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
             switch (node.Kind())
             {
@@ -477,45 +442,6 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantAsyncAwait
             }
 
             throw new InvalidOperationException();
-        }
-
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken asyncKeyword, AwaitExpressionSyntax awaitExpression)
-        {
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantAsyncAwait, asyncKeyword);
-            context.ReportToken(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, asyncKeyword);
-
-            ReportAwaitAndConfigureAwait(context, awaitExpression);
-        }
-
-        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken asyncKeyword, IEnumerable<AwaitExpressionSyntax> awaitExpressions)
-        {
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantAsyncAwait, asyncKeyword);
-            context.ReportToken(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, asyncKeyword);
-
-            foreach (AwaitExpressionSyntax awaitExpression in awaitExpressions)
-                ReportAwaitAndConfigureAwait(context, awaitExpression);
-        }
-
-        private static void ReportAwaitAndConfigureAwait(SyntaxNodeAnalysisContext context, AwaitExpressionSyntax awaitExpression)
-        {
-            context.ReportToken(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, awaitExpression.AwaitKeyword);
-
-            ExpressionSyntax expression = awaitExpression.Expression;
-
-            ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(expression, context.CancellationToken);
-
-            if (typeSymbol?.OriginalDefinition.HasMetadataName(MetadataNames.System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T) == true
-                && (expression is InvocationExpressionSyntax invocation))
-            {
-                var memberAccess = invocation.Expression as MemberAccessExpressionSyntax;
-
-                if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
-                {
-                    context.ReportNode(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, memberAccess.Name);
-                    context.ReportToken(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, memberAccess.OperatorToken);
-                    context.ReportNode(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, invocation.ArgumentList);
-                }
-            }
         }
     }
 }

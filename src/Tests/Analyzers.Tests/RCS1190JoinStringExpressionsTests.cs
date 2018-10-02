@@ -339,8 +339,11 @@ class C
         public async Task TestNoDiagnostic_HexadecimalDigit()
         {
             await VerifyNoDiagnosticAsync(@"
+using System.Text.RegularExpressions;
 class C
 {
+    private static readonly Regex _regex = new Regex(""\x1A"" + ""E\\d+E"");
+
     void M(string s)
     {
         s = ""a"" + ""\x1"" + ""b"";
