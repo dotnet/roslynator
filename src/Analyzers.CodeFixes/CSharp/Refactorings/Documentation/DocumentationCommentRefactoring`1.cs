@@ -20,29 +20,20 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
         public abstract bool ShouldBeBefore(XmlElementKind elementKind);
 
-        public abstract SeparatedSyntaxList<TNode> GetContainingList(TNode node);
-
         public abstract string GetName(TNode node);
 
         public abstract ElementInfo<TNode> CreateInfo(TNode node, int insertIndex, NewLinePosition newLinePosition);
 
-        public virtual MemberDeclarationSyntax GetMemberDeclaration(TNode node)
-        {
-            return node.FirstAncestor<MemberDeclarationSyntax>();
-        }
-
         public async Task<Document> RefactorAsync(
             Document document,
-            TNode node,
+            DocumentationCommentTriviaSyntax comment,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            MemberDeclarationSyntax memberDeclaration = GetMemberDeclaration(node);
+            MemberDeclarationSyntax memberDeclaration = comment.FirstAncestor<MemberDeclarationSyntax>();
 
-            DocumentationCommentTriviaSyntax comment = memberDeclaration.GetSingleLineDocumentationComment();
-
-            SeparatedSyntaxList<TNode> typeParameters = GetContainingList(node);
+            SeparatedSyntaxList<TNode> typeParameters = GetSyntaxList(memberDeclaration);
 
             List<ElementInfo<TNode>> infos = GetElementInfos(comment, typeParameters);
 
@@ -67,6 +58,8 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
             return document;
         }
+
+        protected abstract SeparatedSyntaxList<TNode> GetSyntaxList(SyntaxNode node);
 
         private string GetNewTrivia(
             DocumentationCommentTriviaSyntax comment,

@@ -781,7 +781,7 @@ namespace Roslynator
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return node.Parent?.FirstAncestorOrSelf(predicate, ascendOutOfTrivia);
+            return GetParent(node, ascendOutOfTrivia: ascendOutOfTrivia)?.FirstAncestorOrSelf(predicate, ascendOutOfTrivia: ascendOutOfTrivia);
         }
 
         //TODO: make public ToString(SyntaxNode, TextSpan)
@@ -924,6 +924,20 @@ namespace Roslynator
             }
 
             return default(TNode);
+        }
+
+        internal static SyntaxNode GetParent(this SyntaxNode node, bool ascendOutOfTrivia)
+        {
+            SyntaxNode parent = node.Parent;
+
+            if (parent == null
+                && ascendOutOfTrivia
+                && (node is IStructuredTriviaSyntax structuredTrivia))
+            {
+                parent = structuredTrivia.ParentTrivia.Token.Parent;
+            }
+
+            return parent;
         }
 
         internal static SyntaxNode WalkUp(this SyntaxNode node, Func<SyntaxNode, bool> predicate)

@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
-using Roslynator.CSharp.Refactorings.DocumentationComment;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -19,12 +18,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddTypeParameterToDocumentationComment,
-                    DiagnosticIdentifiers.UnusedTypeParameter);
-            }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.UnusedTypeParameter); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -38,18 +32,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.AddTypeParameterToDocumentationComment:
-                        {
-                            var refactoring = new AddTypeParameterToDocumentationCommentRefactoring();
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add type parameter to documentation comment",
-                                cancellationToken => refactoring.RefactorAsync(context.Document, typeParameter, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.UnusedTypeParameter:
                         {
                             CodeAction codeAction = CodeAction.Create(

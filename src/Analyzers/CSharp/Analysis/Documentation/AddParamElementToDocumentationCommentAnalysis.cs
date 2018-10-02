@@ -2,21 +2,14 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis.Documentation;
 
-namespace Roslynator.CSharp.Refactorings.DocumentationComment
+namespace Roslynator.CSharp.Analysis.Documentation
 {
-    internal class AddParameterToDocumentationCommentRefactoring : DocumentationCommentRefactoring<ParameterSyntax>
+    internal class AddParamElementToDocumentationCommentAnalysis : DocumentationCommentAnalysis<ParameterSyntax>
     {
         public override XmlElementKind ElementKind
         {
             get { return XmlElementKind.Param; }
-        }
-
-        public override bool ShouldBeBefore(XmlElementKind elementKind)
-        {
-            return elementKind == XmlElementKind.TypeParam
-                || elementKind == XmlElementKind.Summary;
         }
 
         public override SeparatedSyntaxList<ParameterSyntax> GetContainingList(ParameterSyntax node)

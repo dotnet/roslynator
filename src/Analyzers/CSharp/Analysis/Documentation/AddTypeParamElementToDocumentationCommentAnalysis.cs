@@ -2,27 +2,19 @@
 
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis.Documentation;
 
-namespace Roslynator.CSharp.Refactorings.DocumentationComment
+namespace Roslynator.CSharp.Analysis.Documentation
 {
-    internal class AddTypeParameterToDocumentationCommentRefactoring : DocumentationCommentRefactoring<TypeParameterSyntax>
+    internal class AddTypeParamElementToDocumentationCommentAnalysis : DocumentationCommentAnalysis<TypeParameterSyntax>
     {
         public override XmlElementKind ElementKind
         {
             get { return XmlElementKind.TypeParam; }
         }
 
-        public override bool ShouldBeBefore(XmlElementKind elementKind)
-        {
-            return elementKind == XmlElementKind.Summary;
-        }
-
         public override SeparatedSyntaxList<TypeParameterSyntax> GetContainingList(TypeParameterSyntax node)
         {
-            var typeParameterList = (TypeParameterListSyntax)node.Parent;
-
-            return typeParameterList.Parameters;
+            return ((TypeParameterListSyntax)node.Parent).Parameters;
         }
 
         public override string GetName(TypeParameterSyntax node)

@@ -4,11 +4,9 @@ using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings.DocumentationComment;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -19,12 +17,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get
-            {
-                return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddParameterToDocumentationComment,
-                    DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier);
-            }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -38,18 +31,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.AddParameterToDocumentationComment:
-                        {
-                            var refactoring = new AddParameterToDocumentationCommentRefactoring();
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add parameter to documentation comment",
-                                cancellationToken => refactoring.RefactorAsync(context.Document, parameter, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.OverridingMemberCannotChangeParamsModifier:
                         {
                             if (parameter.IsParams())

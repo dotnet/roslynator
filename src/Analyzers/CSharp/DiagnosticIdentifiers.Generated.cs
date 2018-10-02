@@ -129,8 +129,8 @@ namespace Roslynator.CSharp
         public const string AddSummaryToDocumentationComment = "RCS1138";
         public const string AddSummaryElementToDocumentationComment = "RCS1139";
         public const string AddExceptionToDocumentationComment = "RCS1140";
-        public const string AddParameterToDocumentationComment = "RCS1141";
-        public const string AddTypeParameterToDocumentationComment = "RCS1142";
+        public const string AddParamElementToDocumentationComment = "RCS1141";
+        public const string AddTypeParamElementToDocumentationComment = "RCS1142";
         public const string SimplifyCoalesceExpression = "RCS1143";
         public const string RemoveRedundantAsOperator = "RCS1145";
         public const string UseConditionalAccess = "RCS1146";

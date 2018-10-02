@@ -2989,12 +2989,12 @@ public void Foo(object parameter)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddParameterToDocumentationComment">
+  <Analyzer Identifier="AddParamElementToDocumentationComment">
     <Id>RCS1141</Id>
-    <Title>Add parameter to documentation comment.</Title>
-    <MessageFormat>Add parameter to documentation comment.</MessageFormat>
+    <Title>Add 'param' element to documentation comment.</Title>
+    <MessageFormat>Add 'param' element to documentation comment.</MessageFormat>
     <Category>Maintainability</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
@@ -3016,12 +3016,12 @@ public void Foo(object parameter)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddTypeParameterToDocumentationComment">
+  <Analyzer Identifier="AddTypeParamElementToDocumentationComment">
     <Id>RCS1142</Id>
-    <Title>Add type parameter to documentation comment.</Title>
-    <MessageFormat>Add type parameter to documentation comment.</MessageFormat>
+    <Title>Add 'typeparam' element to documentation comment.</Title>
+    <MessageFormat>Add 'typeparam' element to documentation comment.</MessageFormat>
     <Category>Maintainability</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Refactorings.DocumentationComment;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -22,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.FormatDocumentationSummaryOnSingleLine,
-                    DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines);
+                    DiagnosticIdentifiers.FormatDocumentationSummaryOnMultipleLines,
+                    DiagnosticIdentifiers.AddParamElementToDocumentationComment,
+                    DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment);
             }
         }
 
@@ -52,6 +55,30 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Format summary on multiple lines",
                                 cancellationToken => FormatSummaryOnMultipleLinesRefactoring.RefactorAsync(context.Document, documentationComment, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AddParamElementToDocumentationComment:
+                        {
+                            var refactoring = new AddParamElementToDocumentationCommentRefactoring();
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add 'param' element",
+                                cancellationToken => refactoring.RefactorAsync(context.Document, documentationComment, cancellationToken),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AddTypeParamElementToDocumentationComment:
+                        {
+                            var refactoring = new AddTypeParamElementToDocumentationCommentRefactoring();
+
+                            CodeAction codeAction = CodeAction.Create(
+                                "Add 'typeparam' element",
+                                cancellationToken => refactoring.RefactorAsync(context.Document, documentationComment, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

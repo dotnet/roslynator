@@ -2815,7 +2815,7 @@ namespace Roslynator.CSharp
             if (predicate == null)
                 throw new ArgumentNullException(nameof(predicate));
 
-            SyntaxNode parent = GetParent(node, ascendOutOfTrivia);
+            SyntaxNode parent = node.GetParent(ascendOutOfTrivia);
 
             if (parent != null)
             {
@@ -2898,24 +2898,10 @@ namespace Roslynator.CSharp
                 if (predicate(node))
                     return node;
 
-                node = GetParent(node, ascendOutOfTrivia);
+                node = node.GetParent(ascendOutOfTrivia);
             }
 
             return null;
-        }
-
-        internal static SyntaxNode GetParent(this SyntaxNode node, bool ascendOutOfTrivia)
-        {
-            SyntaxNode parent = node.Parent;
-
-            if (parent == null
-                && ascendOutOfTrivia
-                && (node is IStructuredTriviaSyntax structuredTrivia))
-            {
-                parent = structuredTrivia.ParentTrivia.Token.Parent;
-            }
-
-            return parent;
         }
 
         internal static TRoot RemoveNode<TRoot>(this TRoot root, SyntaxNode node) where TRoot : SyntaxNode
@@ -3086,7 +3072,7 @@ namespace Roslynator.CSharp
                 int lineStartIndex = span.Start - tree.GetLineSpan(span, cancellationToken).StartLinePosition.Character;
 
                 while (!node.FullSpan.Contains(lineStartIndex))
-                    node = GetParent(node, ascendOutOfTrivia: true);
+                    node = node.GetParent(ascendOutOfTrivia: true);
 
                 if (node.IsKind(SyntaxKind.SingleLineDocumentationCommentTrivia))
                 {
