@@ -346,7 +346,7 @@ namespace Roslynator.CSharp
             }
 
             return semanticModel.GetTypeInfo(expression, cancellationToken)
-                .ConvertedType?
+                .Type?
                 .SpecialType == SpecialType.System_String;
         }
 
