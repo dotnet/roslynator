@@ -84,6 +84,20 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
             _isInStaticConstructor = false;
         }
 
+        public override void VisitRefExpression(RefExpressionSyntax node)
+        {
+            ExpressionSyntax expression = node.Expression;
+
+            if (expression != null)
+            {
+                VisitAssignedExpression(expression);
+            }
+            else
+            {
+                base.VisitRefExpression(node);
+            }
+        }
+
         public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
         {
             _localFunctionDepth++;
