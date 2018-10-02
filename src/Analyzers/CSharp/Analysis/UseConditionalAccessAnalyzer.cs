@@ -30,17 +30,12 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterCompilationStartAction(startContext =>
-            {
-                INamedTypeSymbol expressionOfTSymbol = startContext.Compilation.GetTypeByMetadataName("System.Linq.Expressions.Expression`1");
-
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeIfStatement(nodeContext, expressionOfTSymbol), SyntaxKind.IfStatement);
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBinaryExpression(nodeContext, expressionOfTSymbol), SyntaxKind.LogicalAndExpression);
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeBinaryExpression(nodeContext, expressionOfTSymbol), SyntaxKind.LogicalOrExpression);
-            });
+            context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.LogicalAndExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.LogicalOrExpression);
         }
 
-        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context, INamedTypeSymbol expressionOfTSymbol)
+        public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
@@ -91,13 +86,13 @@ namespace Roslynator.CSharp.Analysis
             if (!CSharpFactory.AreEquivalent(expression, expression2))
                 return;
 
-            if (ifStatement.IsInExpressionTree(expressionOfTSymbol, context.SemanticModel, context.CancellationToken))
+            if (ifStatement.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, ifStatement);
         }
 
-        public static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol expressionOfTSymbol)
+        public static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
         {
             var binaryExpression = (BinaryExpressionSyntax)context.Node;
 
@@ -109,7 +104,7 @@ namespace Roslynator.CSharp.Analysis
             if (binaryExpression.WalkUpParentheses().IsParentKind(kind))
                 return;
 
-            if (binaryExpression.IsInExpressionTree(expressionOfTSymbol, context.SemanticModel, context.CancellationToken))
+            if (binaryExpression.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
                 return;
 
             (ExpressionSyntax left, ExpressionSyntax right) = GetFixableExpressions(binaryExpression, kind, context.SemanticModel, context.CancellationToken);

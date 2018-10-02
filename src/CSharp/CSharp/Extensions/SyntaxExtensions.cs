@@ -3040,39 +3040,35 @@ namespace Roslynator.CSharp
         {
             for (SyntaxNode current = node; current != null; current = current.Parent)
             {
-                if (CSharpFacts.IsLambdaExpression(current.Kind())
-                    && semanticModel
-                        .GetTypeInfo(current, cancellationToken)
-                        .ConvertedType?
-                        .OriginalDefinition
-                        .HasMetadataName(MetadataNames.System_Linq_Expressions_Expression_T) == true)
+                switch (current.Kind())
                 {
-                    return true;
-                }
-            }
+                    case SyntaxKind.SimpleLambdaExpression:
+                    case SyntaxKind.ParenthesizedLambdaExpression:
+                        {
+                            if (semanticModel
+                                .GetTypeInfo(current, cancellationToken)
+                                .ConvertedType?
+                                .OriginalDefinition
+                                .HasMetadataName(MetadataNames.System_Linq_Expressions_Expression_T) == true)
+                            {
+                                return true;
+                            }
 
-            return false;
-        }
+                            break;
+                        }
+                    case SyntaxKind.QueryExpression:
+                        {
+                            if (semanticModel
+                                .GetTypeInfo(current, cancellationToken)
+                                .ConvertedType?
+                                .OriginalDefinition
+                                .HasMetadataName(MetadataNames.System_Linq_IQueryable_T) == true)
+                            {
+                                return true;
+                            }
 
-        internal static bool IsInExpressionTree(
-            this SyntaxNode node,
-            INamedTypeSymbol expressionType,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (expressionType == null)
-                return false;
-
-            for (SyntaxNode current = node; current != null; current = current.Parent)
-            {
-                if (CSharpFacts.IsLambdaExpression(current.Kind())
-                    && semanticModel
-                        .GetTypeInfo(current, cancellationToken)
-                        .ConvertedType?
-                        .OriginalDefinition
-                        .Equals(expressionType) == true)
-                {
-                    return true;
+                            break;
+                        }
                 }
             }
 
