@@ -32,8 +32,8 @@ namespace Roslynator.CSharp.Refactorings
             var castExpression = whenNotNull as CastExpressionSyntax;
 
             ExpressionSyntax expression = (castExpression != null)
-                ? UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, castExpression.Expression)
-                : UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
+                ? UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, castExpression.Expression, semanticModel, cancellationToken)
+                : UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull, semanticModel, cancellationToken);
 
             bool coalesce = false;
 

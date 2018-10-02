@@ -795,6 +795,25 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+        public async Task TestNoDiagnostic_PointerType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+unsafe class C
+{
+    public int* P { get; }
+
+    void M()
+    {
+        var c = new C();
+
+        if (c != null && c.P != null)
+        {
+        }
     }
 }
-
+");
+        }
+    }
+}

@@ -75,7 +75,11 @@ namespace Roslynator.CSharp.Analysis
                 SyntaxKind.ConditionalAccessExpression,
                 SyntaxKind.InvocationExpression))
             {
-                ExpressionSyntax expression = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, whenNotNull);
+                ExpressionSyntax expression = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(
+                    nullCheck.Expression,
+                    whenNotNull,
+                    semanticModel,
+                    cancellationToken);
 
                 if (expression == null)
                     return;
@@ -120,7 +124,12 @@ namespace Roslynator.CSharp.Analysis
                 if (castExpression.Type.IsKind(SyntaxKind.NullableType)
                     && castExpression.Expression.IsKind(SyntaxKind.InvocationExpression, SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression))
                 {
-                    ExpressionSyntax expression = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(nullCheck.Expression, castExpression.Expression, isNullable: true);
+                    ExpressionSyntax expression = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(
+                        nullCheck.Expression,
+                        castExpression.Expression,
+                        isNullable: true,
+                        semanticModel,
+                        cancellationToken);
 
                     if (expression != null)
                     {

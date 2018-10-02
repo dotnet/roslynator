@@ -186,12 +186,31 @@ namespace Roslynator.CSharp.Analysis
             if (RefactoringUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
                 return false;
 
-            ExpressionSyntax e = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType);
+            ExpressionSyntax e = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType, semanticModel, cancellationToken);
 
             return e != null;
         }
 
-        internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(ExpressionSyntax expressionToFind, ExpressionSyntax expression, bool isNullable = false)
+        internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(
+            ExpressionSyntax expressionToFind,
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
+        {
+            return FindExpressionThatCanBeConditionallyAccessed(
+                expressionToFind: expressionToFind,
+                expression: expression,
+                isNullable: false,
+                semanticModel: semanticModel,
+                cancellationToken: cancellationToken);
+        }
+
+        internal static ExpressionSyntax FindExpressionThatCanBeConditionallyAccessed(
+            ExpressionSyntax expressionToFind,
+            ExpressionSyntax expression,
+            bool isNullable,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default)
         {
             if (expression.IsKind(SyntaxKind.LogicalNotExpression))
                 expression = ((PrefixUnaryExpressionSyntax)expression).Operand;
@@ -208,6 +227,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (kind == node.Kind()
                     && node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)
+                    && semanticModel.GetTypeSymbol(node.Parent, cancellationToken)?.Kind != SymbolKind.PointerType
                     && CSharpFactory.AreEquivalent(expressionToFind, node))
                 {
                     if (!isNullable)

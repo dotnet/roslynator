@@ -41,7 +41,9 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression2 = UseConditionalAccessAnalyzer.FindExpressionThatCanBeConditionallyAccessed(
                 expression,
                 right,
-                isNullable: isNullable);
+                isNullable: isNullable,
+                semanticModel,
+                cancellationToken);
 
             var builder = new SyntaxNodeTextBuilder(binaryExpression, StringBuilderCache.GetInstance(binaryExpression.FullSpan.Length));
 
