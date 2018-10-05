@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Refactorings
                 expression
                     .WithLeadingTrivia(left.GetLeadingTrivia())
                     .WithTrailingTrivia(trailingTrivia),
-                EqualsEqualsToken().WithTriviaFrom(logicalAnd.OperatorToken),
+                SyntaxFactory.Token(SyntaxKind.EqualsEqualsToken).WithTriviaFrom(logicalAnd.OperatorToken),
                 (right.WalkDownParentheses().IsKind(SyntaxKind.LogicalNotExpression, SyntaxKind.EqualsExpression))
                     ? FalseLiteralExpression()
                     : TrueLiteralExpression().WithTriviaFrom(right));

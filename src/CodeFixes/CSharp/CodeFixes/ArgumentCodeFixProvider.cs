@@ -69,11 +69,11 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (parameter.RefKind == RefKind.Out)
                             {
-                                refOrOutKeyword = CSharpFactory.OutKeyword();
+                                refOrOutKeyword = Token(SyntaxKind.OutKeyword);
                             }
                             else if (parameter.RefKind == RefKind.Ref)
                             {
-                                refOrOutKeyword = CSharpFactory.RefKeyword();
+                                refOrOutKeyword = Token(SyntaxKind.RefKeyword);
                             }
                             else
                             {

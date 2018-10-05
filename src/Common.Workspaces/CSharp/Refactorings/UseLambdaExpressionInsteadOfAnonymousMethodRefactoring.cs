@@ -3,9 +3,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax newNode = ParenthesizedLambdaExpression(
                 anonymousMethod.AsyncKeyword,
                 anonymousMethod.ParameterList,
-                EqualsGreaterThanToken(),
+                Token(SyntaxKind.EqualsGreaterThanToken),
                 anonymousMethod.Block);
 
             newNode = newNode

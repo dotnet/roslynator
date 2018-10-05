@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Syntax;
@@ -87,7 +88,7 @@ namespace Roslynator.CSharp.CodeFixes
             localFunction = localFunction.WithFormatterAnnotation();
 
             ReturnStatementSyntax returnStatement = ReturnStatement(
-                ReturnKeyword().WithLeadingTrivia(statement.GetLeadingTrivia()),
+                Token(SyntaxKind.ReturnKeyword).WithLeadingTrivia(statement.GetLeadingTrivia()),
                 InvocationExpression(IdentifierName(name)),
                 SemicolonToken());
 

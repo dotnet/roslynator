@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 condition = IsExpression(
                     asExpression.Left,
-                    IsKeyword().WithTriviaFrom(asExpression.OperatorToken),
+                    Token(SyntaxKind.IsKeyword).WithTriviaFrom(asExpression.OperatorToken),
                     asExpression.Right);
 
                 whenTrue = CastExpression((TypeSyntax)asExpression.Right, asExpression.Left.Parenthesize());

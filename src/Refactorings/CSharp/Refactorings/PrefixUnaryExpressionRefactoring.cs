@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -60,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             PrefixUnaryExpressionSyntax preDecrement = preIncrement
-                .WithOperatorToken(MinusMinusToken())
+                .WithOperatorToken(Token(SyntaxKind.MinusMinusToken))
                 .WithTriviaFrom(preIncrement)
                 .WithFormatterAnnotation();
 
@@ -96,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             PrefixUnaryExpressionSyntax preIncrement = preDecrement
-                .WithOperatorToken(PlusPlusToken())
+                .WithOperatorToken(Token(SyntaxKind.PlusPlusToken))
                 .WithTriviaFrom(preDecrement)
                 .WithFormatterAnnotation();
 

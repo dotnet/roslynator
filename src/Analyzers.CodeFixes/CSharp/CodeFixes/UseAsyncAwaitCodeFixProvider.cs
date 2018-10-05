@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         SimpleLambdaExpressionSyntax newNode = lambda
                             .WithBody(newBody)
-                            .WithAsyncKeyword(AsyncKeyword());
+                            .WithAsyncKeyword(Token(SyntaxKind.AsyncKeyword));
 
                         return await document.ReplaceNodeAsync(lambda, newNode, cancellationToken).ConfigureAwait(false);
                     }
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         ParenthesizedLambdaExpressionSyntax newNode = lambda
                             .WithBody(newBody)
-                            .WithAsyncKeyword(AsyncKeyword());
+                            .WithAsyncKeyword(Token(SyntaxKind.AsyncKeyword));
 
                         return await document.ReplaceNodeAsync(lambda, newNode, cancellationToken).ConfigureAwait(false);
                     }
@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         AnonymousMethodExpressionSyntax newNode = anonymousMethod
                             .WithBody(newBody)
-                            .WithAsyncKeyword(AsyncKeyword());
+                            .WithAsyncKeyword(Token(SyntaxKind.AsyncKeyword));
 
                         return await document.ReplaceNodeAsync(anonymousMethod, newNode, cancellationToken).ConfigureAwait(false);
                     }

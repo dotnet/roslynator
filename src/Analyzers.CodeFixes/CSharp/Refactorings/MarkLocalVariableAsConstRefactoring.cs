@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -43,7 +42,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 newNode = newNode
                     .WithoutLeadingTrivia()
-                    .WithModifiers(TokenList(ConstKeyword().WithLeadingTrivia(newNode.GetLeadingTrivia())));
+                    .WithModifiers(TokenList(Token(SyntaxKind.ConstKeyword).WithLeadingTrivia(newNode.GetLeadingTrivia())));
             }
 
             return await document.ReplaceNodeAsync(localDeclaration, newNode).ConfigureAwait(false);

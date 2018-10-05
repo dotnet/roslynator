@@ -76,1009 +76,44 @@ namespace Roslynator.CSharp
         #endregion Trivia
 
         #region Token
-        public static SyntaxToken TildeToken()
-        {
-            return Token(SyntaxKind.TildeToken);
-        }
-
-        public static SyntaxToken ExclamationToken()
-        {
-            return Token(SyntaxKind.ExclamationToken);
-        }
-
-        public static SyntaxToken DollarToken()
-        {
-            return Token(SyntaxKind.DollarToken);
-        }
-
-        public static SyntaxToken PercentToken()
-        {
-            return Token(SyntaxKind.PercentToken);
-        }
-
-        public static SyntaxToken CaretToken()
-        {
-            return Token(SyntaxKind.CaretToken);
-        }
-
-        public static SyntaxToken AmpersandToken()
-        {
-            return Token(SyntaxKind.AmpersandToken);
-        }
-
-        public static SyntaxToken AsteriskToken()
-        {
-            return Token(SyntaxKind.AsteriskToken);
-        }
-
-        public static SyntaxToken OpenParenToken()
+        internal static SyntaxToken OpenParenToken()
         {
             return Token(SyntaxKind.OpenParenToken);
         }
 
-        public static SyntaxToken CloseParenToken()
+        internal static SyntaxToken CloseParenToken()
         {
             return Token(SyntaxKind.CloseParenToken);
         }
 
-        public static SyntaxToken MinusToken()
-        {
-            return Token(SyntaxKind.MinusToken);
-        }
-
-        public static SyntaxToken PlusToken()
-        {
-            return Token(SyntaxKind.PlusToken);
-        }
-
-        public static SyntaxToken EqualsToken()
-        {
-            return Token(SyntaxKind.EqualsToken);
-        }
-
-        public static SyntaxToken OpenBraceToken()
+        internal static SyntaxToken OpenBraceToken()
         {
             return Token(SyntaxKind.OpenBraceToken);
         }
 
-        public static SyntaxToken CloseBraceToken()
+        internal static SyntaxToken CloseBraceToken()
         {
             return Token(SyntaxKind.CloseBraceToken);
         }
 
-        public static SyntaxToken OpenBracketToken()
+        internal static SyntaxToken OpenBracketToken()
         {
             return Token(SyntaxKind.OpenBracketToken);
         }
 
-        public static SyntaxToken CloseBracketToken()
+        internal static SyntaxToken CloseBracketToken()
         {
             return Token(SyntaxKind.CloseBracketToken);
         }
 
-        public static SyntaxToken BarToken()
-        {
-            return Token(SyntaxKind.BarToken);
-        }
-
-        public static SyntaxToken BackslashToken()
-        {
-            return Token(SyntaxKind.BackslashToken);
-        }
-
-        public static SyntaxToken ColonToken()
-        {
-            return Token(SyntaxKind.ColonToken);
-        }
-
-        public static SyntaxToken SemicolonToken()
+        internal static SyntaxToken SemicolonToken()
         {
             return Token(SyntaxKind.SemicolonToken);
         }
 
-        public static SyntaxToken DoubleQuoteToken()
-        {
-            return Token(SyntaxKind.DoubleQuoteToken);
-        }
-
-        public static SyntaxToken SingleQuoteToken()
-        {
-            return Token(SyntaxKind.SingleQuoteToken);
-        }
-
-        public static SyntaxToken LessThanToken()
-        {
-            return Token(SyntaxKind.LessThanToken);
-        }
-
-        public static SyntaxToken CommaToken()
+        internal static SyntaxToken CommaToken()
         {
             return Token(SyntaxKind.CommaToken);
-        }
-
-        public static SyntaxToken GreaterThanToken()
-        {
-            return Token(SyntaxKind.GreaterThanToken);
-        }
-
-        public static SyntaxToken DotToken()
-        {
-            return Token(SyntaxKind.DotToken);
-        }
-
-        public static SyntaxToken QuestionToken()
-        {
-            return Token(SyntaxKind.QuestionToken);
-        }
-
-        public static SyntaxToken HashToken()
-        {
-            return Token(SyntaxKind.HashToken);
-        }
-
-        public static SyntaxToken SlashToken()
-        {
-            return Token(SyntaxKind.SlashToken);
-        }
-
-        public static SyntaxToken SlashGreaterThanToken()
-        {
-            return Token(SyntaxKind.SlashGreaterThanToken);
-        }
-
-        public static SyntaxToken LessThanSlashToken()
-        {
-            return Token(SyntaxKind.LessThanSlashToken);
-        }
-
-        public static SyntaxToken XmlCommentStartToken()
-        {
-            return Token(SyntaxKind.XmlCommentStartToken);
-        }
-
-        public static SyntaxToken XmlCommentEndToken()
-        {
-            return Token(SyntaxKind.XmlCommentEndToken);
-        }
-
-        public static SyntaxToken XmlCDataStartToken()
-        {
-            return Token(SyntaxKind.XmlCDataStartToken);
-        }
-
-        public static SyntaxToken XmlCDataEndToken()
-        {
-            return Token(SyntaxKind.XmlCDataEndToken);
-        }
-
-        public static SyntaxToken XmlProcessingInstructionStartToken()
-        {
-            return Token(SyntaxKind.XmlProcessingInstructionStartToken);
-        }
-
-        public static SyntaxToken XmlProcessingInstructionEndToken()
-        {
-            return Token(SyntaxKind.XmlProcessingInstructionEndToken);
-        }
-
-        public static SyntaxToken BarBarToken()
-        {
-            return Token(SyntaxKind.BarBarToken);
-        }
-
-        public static SyntaxToken AmpersandAmpersandToken()
-        {
-            return Token(SyntaxKind.AmpersandAmpersandToken);
-        }
-
-        public static SyntaxToken MinusMinusToken()
-        {
-            return Token(SyntaxKind.MinusMinusToken);
-        }
-
-        public static SyntaxToken PlusPlusToken()
-        {
-            return Token(SyntaxKind.PlusPlusToken);
-        }
-
-        public static SyntaxToken ColonColonToken()
-        {
-            return Token(SyntaxKind.ColonColonToken);
-        }
-
-        public static SyntaxToken QuestionQuestionToken()
-        {
-            return Token(SyntaxKind.QuestionQuestionToken);
-        }
-
-        public static SyntaxToken MinusGreaterThanToken()
-        {
-            return Token(SyntaxKind.MinusGreaterThanToken);
-        }
-
-        public static SyntaxToken ExclamationEqualsToken()
-        {
-            return Token(SyntaxKind.ExclamationEqualsToken);
-        }
-
-        public static SyntaxToken EqualsEqualsToken()
-        {
-            return Token(SyntaxKind.EqualsEqualsToken);
-        }
-
-        public static SyntaxToken EqualsGreaterThanToken()
-        {
-            return Token(SyntaxKind.EqualsGreaterThanToken);
-        }
-
-        public static SyntaxToken LessThanEqualsToken()
-        {
-            return Token(SyntaxKind.LessThanEqualsToken);
-        }
-
-        public static SyntaxToken LessThanLessThanToken()
-        {
-            return Token(SyntaxKind.LessThanLessThanToken);
-        }
-
-        public static SyntaxToken LessThanLessThanEqualsToken()
-        {
-            return Token(SyntaxKind.LessThanLessThanEqualsToken);
-        }
-
-        public static SyntaxToken GreaterThanEqualsToken()
-        {
-            return Token(SyntaxKind.GreaterThanEqualsToken);
-        }
-
-        public static SyntaxToken GreaterThanGreaterThanToken()
-        {
-            return Token(SyntaxKind.GreaterThanGreaterThanToken);
-        }
-
-        public static SyntaxToken GreaterThanGreaterThanEqualsToken()
-        {
-            return Token(SyntaxKind.GreaterThanGreaterThanEqualsToken);
-        }
-
-        public static SyntaxToken SlashEqualsToken()
-        {
-            return Token(SyntaxKind.SlashEqualsToken);
-        }
-
-        public static SyntaxToken AsteriskEqualsToken()
-        {
-            return Token(SyntaxKind.AsteriskEqualsToken);
-        }
-
-        public static SyntaxToken BarEqualsToken()
-        {
-            return Token(SyntaxKind.BarEqualsToken);
-        }
-
-        public static SyntaxToken AmpersandEqualsToken()
-        {
-            return Token(SyntaxKind.AmpersandEqualsToken);
-        }
-
-        public static SyntaxToken PlusEqualsToken()
-        {
-            return Token(SyntaxKind.PlusEqualsToken);
-        }
-
-        public static SyntaxToken MinusEqualsToken()
-        {
-            return Token(SyntaxKind.MinusEqualsToken);
-        }
-
-        public static SyntaxToken CaretEqualsToken()
-        {
-            return Token(SyntaxKind.CaretEqualsToken);
-        }
-
-        public static SyntaxToken PercentEqualsToken()
-        {
-            return Token(SyntaxKind.PercentEqualsToken);
-        }
-
-        public static SyntaxToken BoolKeyword()
-        {
-            return Token(SyntaxKind.BoolKeyword);
-        }
-
-        public static SyntaxToken ByteKeyword()
-        {
-            return Token(SyntaxKind.ByteKeyword);
-        }
-
-        public static SyntaxToken SByteKeyword()
-        {
-            return Token(SyntaxKind.SByteKeyword);
-        }
-
-        public static SyntaxToken ShortKeyword()
-        {
-            return Token(SyntaxKind.ShortKeyword);
-        }
-
-        public static SyntaxToken UShortKeyword()
-        {
-            return Token(SyntaxKind.UShortKeyword);
-        }
-
-        public static SyntaxToken IntKeyword()
-        {
-            return Token(SyntaxKind.IntKeyword);
-        }
-
-        public static SyntaxToken UIntKeyword()
-        {
-            return Token(SyntaxKind.UIntKeyword);
-        }
-
-        public static SyntaxToken LongKeyword()
-        {
-            return Token(SyntaxKind.LongKeyword);
-        }
-
-        public static SyntaxToken ULongKeyword()
-        {
-            return Token(SyntaxKind.ULongKeyword);
-        }
-
-        public static SyntaxToken DoubleKeyword()
-        {
-            return Token(SyntaxKind.DoubleKeyword);
-        }
-
-        public static SyntaxToken FloatKeyword()
-        {
-            return Token(SyntaxKind.FloatKeyword);
-        }
-
-        public static SyntaxToken DecimalKeyword()
-        {
-            return Token(SyntaxKind.DecimalKeyword);
-        }
-
-        public static SyntaxToken StringKeyword()
-        {
-            return Token(SyntaxKind.StringKeyword);
-        }
-
-        public static SyntaxToken CharKeyword()
-        {
-            return Token(SyntaxKind.CharKeyword);
-        }
-
-        public static SyntaxToken VoidKeyword()
-        {
-            return Token(SyntaxKind.VoidKeyword);
-        }
-
-        public static SyntaxToken ObjectKeyword()
-        {
-            return Token(SyntaxKind.ObjectKeyword);
-        }
-
-        public static SyntaxToken TypeOfKeyword()
-        {
-            return Token(SyntaxKind.TypeOfKeyword);
-        }
-
-        public static SyntaxToken SizeOfKeyword()
-        {
-            return Token(SyntaxKind.SizeOfKeyword);
-        }
-
-        public static SyntaxToken NullKeyword()
-        {
-            return Token(SyntaxKind.NullKeyword);
-        }
-
-        public static SyntaxToken TrueKeyword()
-        {
-            return Token(SyntaxKind.TrueKeyword);
-        }
-
-        public static SyntaxToken FalseKeyword()
-        {
-            return Token(SyntaxKind.FalseKeyword);
-        }
-
-        public static SyntaxToken IfKeyword()
-        {
-            return Token(SyntaxKind.IfKeyword);
-        }
-
-        public static SyntaxToken ElseKeyword()
-        {
-            return Token(SyntaxKind.ElseKeyword);
-        }
-
-        public static SyntaxToken WhileKeyword()
-        {
-            return Token(SyntaxKind.WhileKeyword);
-        }
-
-        public static SyntaxToken ForKeyword()
-        {
-            return Token(SyntaxKind.ForKeyword);
-        }
-
-        public static SyntaxToken ForEachKeyword()
-        {
-            return Token(SyntaxKind.ForEachKeyword);
-        }
-
-        public static SyntaxToken DoKeyword()
-        {
-            return Token(SyntaxKind.DoKeyword);
-        }
-
-        public static SyntaxToken SwitchKeyword()
-        {
-            return Token(SyntaxKind.SwitchKeyword);
-        }
-
-        public static SyntaxToken CaseKeyword()
-        {
-            return Token(SyntaxKind.CaseKeyword);
-        }
-
-        public static SyntaxToken DefaultKeyword()
-        {
-            return Token(SyntaxKind.DefaultKeyword);
-        }
-
-        public static SyntaxToken TryKeyword()
-        {
-            return Token(SyntaxKind.TryKeyword);
-        }
-
-        public static SyntaxToken CatchKeyword()
-        {
-            return Token(SyntaxKind.CatchKeyword);
-        }
-
-        public static SyntaxToken FinallyKeyword()
-        {
-            return Token(SyntaxKind.FinallyKeyword);
-        }
-
-        public static SyntaxToken LockKeyword()
-        {
-            return Token(SyntaxKind.LockKeyword);
-        }
-
-        public static SyntaxToken GotoKeyword()
-        {
-            return Token(SyntaxKind.GotoKeyword);
-        }
-
-        public static SyntaxToken BreakKeyword()
-        {
-            return Token(SyntaxKind.BreakKeyword);
-        }
-
-        public static SyntaxToken ContinueKeyword()
-        {
-            return Token(SyntaxKind.ContinueKeyword);
-        }
-
-        public static SyntaxToken ReturnKeyword()
-        {
-            return Token(SyntaxKind.ReturnKeyword);
-        }
-
-        public static SyntaxToken ThrowKeyword()
-        {
-            return Token(SyntaxKind.ThrowKeyword);
-        }
-
-        public static SyntaxToken PublicKeyword()
-        {
-            return Token(SyntaxKind.PublicKeyword);
-        }
-
-        public static SyntaxToken PrivateKeyword()
-        {
-            return Token(SyntaxKind.PrivateKeyword);
-        }
-
-        public static SyntaxToken InternalKeyword()
-        {
-            return Token(SyntaxKind.InternalKeyword);
-        }
-
-        public static SyntaxToken ProtectedKeyword()
-        {
-            return Token(SyntaxKind.ProtectedKeyword);
-        }
-
-        public static SyntaxToken StaticKeyword()
-        {
-            return Token(SyntaxKind.StaticKeyword);
-        }
-
-        public static SyntaxToken ReadOnlyKeyword()
-        {
-            return Token(SyntaxKind.ReadOnlyKeyword);
-        }
-
-        public static SyntaxToken SealedKeyword()
-        {
-            return Token(SyntaxKind.SealedKeyword);
-        }
-
-        public static SyntaxToken ConstKeyword()
-        {
-            return Token(SyntaxKind.ConstKeyword);
-        }
-
-        public static SyntaxToken FixedKeyword()
-        {
-            return Token(SyntaxKind.FixedKeyword);
-        }
-
-        public static SyntaxToken StackAllocKeyword()
-        {
-            return Token(SyntaxKind.StackAllocKeyword);
-        }
-
-        public static SyntaxToken VolatileKeyword()
-        {
-            return Token(SyntaxKind.VolatileKeyword);
-        }
-
-        public static SyntaxToken NewKeyword()
-        {
-            return Token(SyntaxKind.NewKeyword);
-        }
-
-        public static SyntaxToken OverrideKeyword()
-        {
-            return Token(SyntaxKind.OverrideKeyword);
-        }
-
-        public static SyntaxToken AbstractKeyword()
-        {
-            return Token(SyntaxKind.AbstractKeyword);
-        }
-
-        public static SyntaxToken VirtualKeyword()
-        {
-            return Token(SyntaxKind.VirtualKeyword);
-        }
-
-        public static SyntaxToken EventKeyword()
-        {
-            return Token(SyntaxKind.EventKeyword);
-        }
-
-        public static SyntaxToken ExternKeyword()
-        {
-            return Token(SyntaxKind.ExternKeyword);
-        }
-
-        public static SyntaxToken RefKeyword()
-        {
-            return Token(SyntaxKind.RefKeyword);
-        }
-
-        public static SyntaxToken OutKeyword()
-        {
-            return Token(SyntaxKind.OutKeyword);
-        }
-
-        public static SyntaxToken InKeyword()
-        {
-            return Token(SyntaxKind.InKeyword);
-        }
-
-        public static SyntaxToken IsKeyword()
-        {
-            return Token(SyntaxKind.IsKeyword);
-        }
-
-        public static SyntaxToken AsKeyword()
-        {
-            return Token(SyntaxKind.AsKeyword);
-        }
-
-        public static SyntaxToken ParamsKeyword()
-        {
-            return Token(SyntaxKind.ParamsKeyword);
-        }
-
-        public static SyntaxToken ArgListKeyword()
-        {
-            return Token(SyntaxKind.ArgListKeyword);
-        }
-
-        public static SyntaxToken MakeRefKeyword()
-        {
-            return Token(SyntaxKind.MakeRefKeyword);
-        }
-
-        public static SyntaxToken RefTypeKeyword()
-        {
-            return Token(SyntaxKind.RefTypeKeyword);
-        }
-
-        public static SyntaxToken RefValueKeyword()
-        {
-            return Token(SyntaxKind.RefValueKeyword);
-        }
-
-        public static SyntaxToken ThisKeyword()
-        {
-            return Token(SyntaxKind.ThisKeyword);
-        }
-
-        public static SyntaxToken BaseKeyword()
-        {
-            return Token(SyntaxKind.BaseKeyword);
-        }
-
-        public static SyntaxToken NamespaceKeyword()
-        {
-            return Token(SyntaxKind.NamespaceKeyword);
-        }
-
-        public static SyntaxToken UsingKeyword()
-        {
-            return Token(SyntaxKind.UsingKeyword);
-        }
-
-        public static SyntaxToken ClassKeyword()
-        {
-            return Token(SyntaxKind.ClassKeyword);
-        }
-
-        public static SyntaxToken StructKeyword()
-        {
-            return Token(SyntaxKind.StructKeyword);
-        }
-
-        public static SyntaxToken InterfaceKeyword()
-        {
-            return Token(SyntaxKind.InterfaceKeyword);
-        }
-
-        public static SyntaxToken EnumKeyword()
-        {
-            return Token(SyntaxKind.EnumKeyword);
-        }
-
-        public static SyntaxToken DelegateKeyword()
-        {
-            return Token(SyntaxKind.DelegateKeyword);
-        }
-
-        public static SyntaxToken CheckedKeyword()
-        {
-            return Token(SyntaxKind.CheckedKeyword);
-        }
-
-        public static SyntaxToken UncheckedKeyword()
-        {
-            return Token(SyntaxKind.UncheckedKeyword);
-        }
-
-        public static SyntaxToken UnsafeKeyword()
-        {
-            return Token(SyntaxKind.UnsafeKeyword);
-        }
-
-        public static SyntaxToken OperatorKeyword()
-        {
-            return Token(SyntaxKind.OperatorKeyword);
-        }
-
-        public static SyntaxToken ExplicitKeyword()
-        {
-            return Token(SyntaxKind.ExplicitKeyword);
-        }
-
-        public static SyntaxToken ImplicitKeyword()
-        {
-            return Token(SyntaxKind.ImplicitKeyword);
-        }
-
-        public static SyntaxToken YieldKeyword()
-        {
-            return Token(SyntaxKind.YieldKeyword);
-        }
-
-        public static SyntaxToken PartialKeyword()
-        {
-            return Token(SyntaxKind.PartialKeyword);
-        }
-
-        public static SyntaxToken AliasKeyword()
-        {
-            return Token(SyntaxKind.AliasKeyword);
-        }
-
-        public static SyntaxToken GlobalKeyword()
-        {
-            return Token(SyntaxKind.GlobalKeyword);
-        }
-
-        public static SyntaxToken AssemblyKeyword()
-        {
-            return Token(SyntaxKind.AssemblyKeyword);
-        }
-
-        public static SyntaxToken ModuleKeyword()
-        {
-            return Token(SyntaxKind.ModuleKeyword);
-        }
-
-        public static SyntaxToken TypeKeyword()
-        {
-            return Token(SyntaxKind.TypeKeyword);
-        }
-
-        public static SyntaxToken FieldKeyword()
-        {
-            return Token(SyntaxKind.FieldKeyword);
-        }
-
-        public static SyntaxToken MethodKeyword()
-        {
-            return Token(SyntaxKind.MethodKeyword);
-        }
-
-        public static SyntaxToken ParamKeyword()
-        {
-            return Token(SyntaxKind.ParamKeyword);
-        }
-
-        public static SyntaxToken PropertyKeyword()
-        {
-            return Token(SyntaxKind.PropertyKeyword);
-        }
-
-        public static SyntaxToken TypeVarKeyword()
-        {
-            return Token(SyntaxKind.TypeVarKeyword);
-        }
-
-        public static SyntaxToken GetKeyword()
-        {
-            return Token(SyntaxKind.GetKeyword);
-        }
-
-        public static SyntaxToken SetKeyword()
-        {
-            return Token(SyntaxKind.SetKeyword);
-        }
-
-        public static SyntaxToken AddKeyword()
-        {
-            return Token(SyntaxKind.AddKeyword);
-        }
-
-        public static SyntaxToken RemoveKeyword()
-        {
-            return Token(SyntaxKind.RemoveKeyword);
-        }
-
-        public static SyntaxToken WhereKeyword()
-        {
-            return Token(SyntaxKind.WhereKeyword);
-        }
-
-        public static SyntaxToken FromKeyword()
-        {
-            return Token(SyntaxKind.FromKeyword);
-        }
-
-        public static SyntaxToken GroupKeyword()
-        {
-            return Token(SyntaxKind.GroupKeyword);
-        }
-
-        public static SyntaxToken JoinKeyword()
-        {
-            return Token(SyntaxKind.JoinKeyword);
-        }
-
-        public static SyntaxToken IntoKeyword()
-        {
-            return Token(SyntaxKind.IntoKeyword);
-        }
-
-        public static SyntaxToken LetKeyword()
-        {
-            return Token(SyntaxKind.LetKeyword);
-        }
-
-        public static SyntaxToken ByKeyword()
-        {
-            return Token(SyntaxKind.ByKeyword);
-        }
-
-        public static SyntaxToken SelectKeyword()
-        {
-            return Token(SyntaxKind.SelectKeyword);
-        }
-
-        public static SyntaxToken OrderByKeyword()
-        {
-            return Token(SyntaxKind.OrderByKeyword);
-        }
-
-        public static SyntaxToken OnKeyword()
-        {
-            return Token(SyntaxKind.OnKeyword);
-        }
-
-        public static SyntaxToken EqualsKeyword()
-        {
-            return Token(SyntaxKind.EqualsKeyword);
-        }
-
-        public static SyntaxToken AscendingKeyword()
-        {
-            return Token(SyntaxKind.AscendingKeyword);
-        }
-
-        public static SyntaxToken DescendingKeyword()
-        {
-            return Token(SyntaxKind.DescendingKeyword);
-        }
-
-        public static SyntaxToken NameOfKeyword()
-        {
-            return Token(SyntaxKind.NameOfKeyword);
-        }
-
-        public static SyntaxToken AsyncKeyword()
-        {
-            return Token(SyntaxKind.AsyncKeyword);
-        }
-
-        public static SyntaxToken AwaitKeyword()
-        {
-            return Token(SyntaxKind.AwaitKeyword);
-        }
-
-        public static SyntaxToken WhenKeyword()
-        {
-            return Token(SyntaxKind.WhenKeyword);
-        }
-
-        public static SyntaxToken ElifKeyword()
-        {
-            return Token(SyntaxKind.ElifKeyword);
-        }
-
-        public static SyntaxToken EndIfKeyword()
-        {
-            return Token(SyntaxKind.EndIfKeyword);
-        }
-
-        public static SyntaxToken RegionKeyword()
-        {
-            return Token(SyntaxKind.RegionKeyword);
-        }
-
-        public static SyntaxToken EndRegionKeyword()
-        {
-            return Token(SyntaxKind.EndRegionKeyword);
-        }
-
-        public static SyntaxToken DefineKeyword()
-        {
-            return Token(SyntaxKind.DefineKeyword);
-        }
-
-        public static SyntaxToken UndefKeyword()
-        {
-            return Token(SyntaxKind.UndefKeyword);
-        }
-
-        public static SyntaxToken WarningKeyword()
-        {
-            return Token(SyntaxKind.WarningKeyword);
-        }
-
-        public static SyntaxToken ErrorKeyword()
-        {
-            return Token(SyntaxKind.ErrorKeyword);
-        }
-
-        public static SyntaxToken LineKeyword()
-        {
-            return Token(SyntaxKind.LineKeyword);
-        }
-
-        public static SyntaxToken PragmaKeyword()
-        {
-            return Token(SyntaxKind.PragmaKeyword);
-        }
-
-        public static SyntaxToken HiddenKeyword()
-        {
-            return Token(SyntaxKind.HiddenKeyword);
-        }
-
-        public static SyntaxToken ChecksumKeyword()
-        {
-            return Token(SyntaxKind.ChecksumKeyword);
-        }
-
-        public static SyntaxToken DisableKeyword()
-        {
-            return Token(SyntaxKind.DisableKeyword);
-        }
-
-        public static SyntaxToken RestoreKeyword()
-        {
-            return Token(SyntaxKind.RestoreKeyword);
-        }
-
-        public static SyntaxToken ReferenceKeyword()
-        {
-            return Token(SyntaxKind.ReferenceKeyword);
-        }
-
-        public static SyntaxToken LoadKeyword()
-        {
-            return Token(SyntaxKind.LoadKeyword);
-        }
-
-        public static SyntaxToken InterpolatedStringStartToken()
-        {
-            return Token(SyntaxKind.InterpolatedStringStartToken);
-        }
-
-        public static SyntaxToken InterpolatedStringEndToken()
-        {
-            return Token(SyntaxKind.InterpolatedStringEndToken);
-        }
-
-        public static SyntaxToken InterpolatedVerbatimStringStartToken()
-        {
-            return Token(SyntaxKind.InterpolatedVerbatimStringStartToken);
-        }
-
-        public static SyntaxToken UnderscoreToken()
-        {
-            return Token(SyntaxKind.UnderscoreToken);
-        }
-
-        public static SyntaxToken OmittedTypeArgumentToken()
-        {
-            return Token(SyntaxKind.OmittedTypeArgumentToken);
-        }
-
-        public static SyntaxToken OmittedArraySizeExpressionToken()
-        {
-            return Token(SyntaxKind.OmittedArraySizeExpressionToken);
-        }
-
-        public static SyntaxToken EndOfDirectiveToken()
-        {
-            return Token(SyntaxKind.EndOfDirectiveToken);
-        }
-
-        public static SyntaxToken EndOfDocumentationCommentToken()
-        {
-            return Token(SyntaxKind.EndOfDocumentationCommentToken);
-        }
-
-        public static SyntaxToken EndOfFileToken()
-        {
-            return Token(SyntaxKind.EndOfFileToken);
-        }
-
-        private static SyntaxToken Token(SyntaxKind syntaxKind)
-        {
-            return SyntaxFactory.Token(syntaxKind);
         }
         #endregion Token
 
@@ -1664,7 +699,7 @@ namespace Roslynator.CSharp
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
                 returnType,
-                OperatorKeyword(),
+                Token(SyntaxKind.OperatorKeyword),
                 operatorToken,
                 parameterList,
                 default(BlockSyntax),
@@ -1681,7 +716,7 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                ImplicitKeyword(),
+                Token(SyntaxKind.ImplicitKeyword),
                 type,
                 parameterList,
                 body,
@@ -1697,8 +732,8 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                ImplicitKeyword(),
-                OperatorKeyword(),
+                Token(SyntaxKind.ImplicitKeyword),
+                Token(SyntaxKind.OperatorKeyword),
                 type,
                 parameterList,
                 default(BlockSyntax),
@@ -1715,7 +750,7 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                ExplicitKeyword(),
+                Token(SyntaxKind.ExplicitKeyword),
                 type,
                 parameterList,
                 body,
@@ -1731,8 +766,8 @@ namespace Roslynator.CSharp
             return SyntaxFactory.ConversionOperatorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                ExplicitKeyword(),
-                OperatorKeyword(),
+                Token(SyntaxKind.ExplicitKeyword),
+                Token(SyntaxKind.OperatorKeyword),
                 type,
                 parameterList,
                 default(BlockSyntax),
@@ -1803,7 +838,7 @@ namespace Roslynator.CSharp
                 modifiers,
                 type,
                 default(ExplicitInterfaceSpecifierSyntax),
-                ThisKeyword(),
+                Token(SyntaxKind.ThisKeyword),
                 parameterList,
                 default(AccessorListSyntax),
                 expressionBody,
@@ -1837,7 +872,7 @@ namespace Roslynator.CSharp
                 SyntaxKind.GetAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                GetKeyword(),
+                Token(SyntaxKind.GetKeyword),
                 expressionBody,
                 SemicolonToken());
         }
@@ -1867,7 +902,7 @@ namespace Roslynator.CSharp
                 SyntaxKind.SetAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                SetKeyword(),
+                Token(SyntaxKind.SetKeyword),
                 expressionBody,
                 SemicolonToken());
         }
@@ -1897,7 +932,7 @@ namespace Roslynator.CSharp
                 SyntaxKind.AddAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                AddKeyword(),
+                Token(SyntaxKind.AddKeyword),
                 expressionBody,
                 SemicolonToken());
         }
@@ -1927,7 +962,7 @@ namespace Roslynator.CSharp
                 SyntaxKind.RemoveAccessorDeclaration,
                 default(SyntaxList<AttributeListSyntax>),
                 modifiers,
-                RemoveKeyword(),
+                Token(SyntaxKind.RemoveKeyword),
                 expressionBody,
                 SemicolonToken());
         }
@@ -2751,7 +1786,7 @@ namespace Roslynator.CSharp
 
         public static CheckedExpressionSyntax CheckedExpression(SyntaxToken openParenToken, ExpressionSyntax expression, SyntaxToken closeParenToken)
         {
-            return SyntaxFactory.CheckedExpression(SyntaxKind.CheckedExpression, CheckedKeyword(), openParenToken, expression, closeParenToken);
+            return SyntaxFactory.CheckedExpression(SyntaxKind.CheckedExpression, Token(SyntaxKind.CheckedKeyword), openParenToken, expression, closeParenToken);
         }
 
         public static CheckedExpressionSyntax UncheckedExpression(ExpressionSyntax expression)
@@ -2761,7 +1796,7 @@ namespace Roslynator.CSharp
 
         public static CheckedExpressionSyntax UncheckedExpression(SyntaxToken openParenToken, ExpressionSyntax expression, SyntaxToken closeParenToken)
         {
-            return SyntaxFactory.CheckedExpression(SyntaxKind.UncheckedExpression, UncheckedKeyword(), openParenToken, expression, closeParenToken);
+            return SyntaxFactory.CheckedExpression(SyntaxKind.UncheckedExpression, Token(SyntaxKind.UncheckedKeyword), openParenToken, expression, closeParenToken);
         }
         #endregion Expression
 
@@ -2822,7 +1857,7 @@ namespace Roslynator.CSharp
         public static UsingDirectiveSyntax UsingStaticDirective(NameSyntax name)
         {
             return UsingDirective(
-                StaticKeyword(),
+                Token(SyntaxKind.StaticKeyword),
                 default(NameEqualsSyntax),
                 name);
         }
@@ -2913,12 +1948,12 @@ namespace Roslynator.CSharp
 
         public static ClassOrStructConstraintSyntax ClassConstraint()
         {
-            return ClassOrStructConstraint(SyntaxKind.ClassConstraint, ClassKeyword());
+            return ClassOrStructConstraint(SyntaxKind.ClassConstraint, Token(SyntaxKind.ClassKeyword));
         }
 
         public static ClassOrStructConstraintSyntax StructConstraint()
         {
-            return ClassOrStructConstraint(SyntaxKind.StructConstraint, StructKeyword());
+            return ClassOrStructConstraint(SyntaxKind.StructConstraint, Token(SyntaxKind.StructKeyword));
         }
 
         public static ConstructorInitializerSyntax BaseConstructorInitializer(ArgumentListSyntax argumentList = null)
@@ -2928,7 +1963,7 @@ namespace Roslynator.CSharp
 
         public static ConstructorInitializerSyntax BaseConstructorInitializer(SyntaxToken semicolonToken, ArgumentListSyntax argumentList)
         {
-            return ConstructorInitializer(SyntaxKind.BaseConstructorInitializer, semicolonToken, BaseKeyword(), argumentList);
+            return ConstructorInitializer(SyntaxKind.BaseConstructorInitializer, semicolonToken, Token(SyntaxKind.BaseKeyword), argumentList);
         }
 
         public static ConstructorInitializerSyntax ThisConstructorInitializer(ArgumentListSyntax argumentList = null)
@@ -2938,7 +1973,7 @@ namespace Roslynator.CSharp
 
         public static ConstructorInitializerSyntax ThisConstructorInitializer(SyntaxToken semicolonToken, ArgumentListSyntax argumentList)
         {
-            return ConstructorInitializer(SyntaxKind.ThisConstructorInitializer, semicolonToken, ThisKeyword(), argumentList);
+            return ConstructorInitializer(SyntaxKind.ThisConstructorInitializer, semicolonToken, Token(SyntaxKind.ThisKeyword), argumentList);
         }
 
         public static SwitchSectionSyntax SwitchSection(SwitchLabelSyntax switchLabel, StatementSyntax statement)

@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -240,7 +238,7 @@ namespace Roslynator.CSharp.Refactorings
         private static BlockSyntax CreateBlockWithReturnStatement(ExpressionSyntax expression, SyntaxToken semicolon)
         {
             ReturnStatementSyntax returnStatement = ReturnStatement(
-                ReturnKeyword().WithLeadingTrivia(expression.GetLeadingTrivia()),
+                Token(SyntaxKind.ReturnKeyword).WithLeadingTrivia(expression.GetLeadingTrivia()),
                 expression.WithoutLeadingTrivia(),
                 semicolon);
 

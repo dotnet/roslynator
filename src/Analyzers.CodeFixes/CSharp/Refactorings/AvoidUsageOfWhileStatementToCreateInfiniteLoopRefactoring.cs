@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken)
         {
             ForStatementSyntax newNode = ForStatement(
-                ForKeyword().WithTriviaFrom(whileStatement.WhileKeyword),
+                Token(SyntaxKind.ForKeyword).WithTriviaFrom(whileStatement.WhileKeyword),
                 Token(
                     whileStatement.OpenParenToken.LeadingTrivia,
                     SyntaxKind.OpenParenToken,

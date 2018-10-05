@@ -3,9 +3,9 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
             TypeSyntax nullableType,
             CancellationToken cancellationToken)
         {
-            TypeSyntax newType = NullableType(nullableType.WithoutTrivia(), QuestionToken())
+            TypeSyntax newType = NullableType(nullableType.WithoutTrivia(), Token(SyntaxKind.QuestionToken))
                 .WithTriviaFrom(type)
                 .WithFormatterAnnotation();
 

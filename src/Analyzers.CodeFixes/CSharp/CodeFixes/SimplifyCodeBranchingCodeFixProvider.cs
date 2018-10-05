@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 newNode = DoStatement(
                                     Token(whileStatement.WhileKeyword.LeadingTrivia, SyntaxKind.DoKeyword, whileStatement.CloseParenToken.TrailingTrivia),
                                     newBlock.WithoutTrailingTrivia(),
-                                    WhileKeyword(),
+                                    Token(SyntaxKind.WhileKeyword),
                                     OpenParenToken(),
                                     newCondition,
                                     CloseParenToken(),

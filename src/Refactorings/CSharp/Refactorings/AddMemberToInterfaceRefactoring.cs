@@ -259,7 +259,7 @@ namespace Roslynator.CSharp.Refactorings
                         return EventFieldDeclaration(
                             default(SyntaxList<AttributeListSyntax>),
                             default(SyntaxTokenList),
-                            EventKeyword(),
+                            Token(SyntaxKind.EventKeyword),
                             VariableDeclaration(eventDeclaration.Type.WithoutTrivia(), eventDeclaration.Identifier.WithoutTrivia()),
                             SemicolonToken());
                     }
@@ -268,7 +268,7 @@ namespace Roslynator.CSharp.Refactorings
                         return EventFieldDeclaration(
                             default(SyntaxList<AttributeListSyntax>),
                             default(SyntaxTokenList),
-                            EventKeyword(),
+                            Token(SyntaxKind.EventKeyword),
                             eventFieldDeclaration.Declaration.WithoutTrivia(),
                             SemicolonToken());
                     }
@@ -304,7 +304,7 @@ namespace Roslynator.CSharp.Refactorings
                         SyntaxKind.GetAccessorDeclaration,
                         default(SyntaxList<AttributeListSyntax>),
                         default(SyntaxTokenList),
-                        GetKeyword(),
+                        Token(SyntaxKind.GetKeyword),
                         default(ArrowExpressionClauseSyntax),
                         SemicolonToken()));
             }

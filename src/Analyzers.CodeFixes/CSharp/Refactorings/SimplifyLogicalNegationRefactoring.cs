@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         BinaryExpressionSyntax notEqualsExpression = NotEqualsExpression(
                             equalsExpression.Left,
-                            ExclamationEqualsToken().WithTriviaFrom(equalsExpression.OperatorToken),
+                            SyntaxFactory.Token(SyntaxKind.ExclamationEqualsToken).WithTriviaFrom(equalsExpression.OperatorToken),
                             equalsExpression.Right);
 
                         return operand.ReplaceNode(equalsExpression, notEqualsExpression);

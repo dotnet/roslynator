@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = ExclusiveOrExpression(
                 newLeft.WithTriviaFrom(left).Parenthesize(),
-                CaretToken().WithTriviaFrom(logicalOr.OperatorToken),
+                SyntaxFactory.Token(SyntaxKind.CaretToken).WithTriviaFrom(logicalOr.OperatorToken),
                 newRight.WithTriviaFrom(right).Parenthesize());
 
             newNode = newNode

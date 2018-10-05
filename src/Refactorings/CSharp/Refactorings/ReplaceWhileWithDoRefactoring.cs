@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Refactorings
                     SyntaxKind.DoKeyword,
                     whileStatement.CloseParenToken.TrailingTrivia),
                 whileStatement.Statement.WithoutTrailingTrivia(),
-                WhileKeyword(),
+                Token(SyntaxKind.WhileKeyword),
                 whileStatement.OpenParenToken,
                 whileStatement.Condition,
                 whileStatement.CloseParenToken.WithoutTrailingTrivia(),
