@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             if (!classDeclaration.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.CompilationUnit))
                 return;
 
-            if (!SyntaxAccessibility.GetAccessibility(classDeclaration).Is(Accessibility.Public, Accessibility.Internal))
+            if (!SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetAccessibility(classDeclaration).Is(Accessibility.Public, Accessibility.Internal))
                 return;
 
             foreach (MemberDeclarationSyntax member in classDeclaration.Members)
@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!methodDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
                     continue;
 
-                if (!SyntaxAccessibility.GetAccessibility(methodDeclaration).Is(Accessibility.Public, Accessibility.Internal))
+                if (!SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility(methodDeclaration).Is(Accessibility.Public, Accessibility.Internal))
                     continue;
 
                 ParameterSyntax parameter = methodDeclaration.ParameterList?.Parameters.FirstOrDefault();

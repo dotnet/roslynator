@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
-            if (!SyntaxAccessibility.GetExplicitAccessibility(constructorDeclaration).Is(Accessibility.Public, Accessibility.ProtectedOrInternal))
+            if (!SyntaxAccessibility<ConstructorDeclarationSyntax>.Instance.GetExplicitAccessibility(constructorDeclaration).Is(Accessibility.Public, Accessibility.ProtectedOrInternal))
                 return;
 
             if (!constructorDeclaration.IsParentKind(SyntaxKind.ClassDeclaration))

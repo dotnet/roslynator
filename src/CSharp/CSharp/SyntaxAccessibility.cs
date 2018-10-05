@@ -20,7 +20,7 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="declaration"></param>
         /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(MemberDeclarationSyntax declaration)
+        public static Accessibility GetDefaultAccessibility(SyntaxNode declaration)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -28,380 +28,45 @@ namespace Roslynator.CSharp
             switch (declaration.Kind())
             {
                 case SyntaxKind.ConstructorDeclaration:
-                    return GetDefaultAccessibility((ConstructorDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<ConstructorDeclarationSyntax>.Instance.GetDefaultAccessibility((ConstructorDeclarationSyntax)declaration);
                 case SyntaxKind.DestructorDeclaration:
-                    return GetDefaultAccessibility((DestructorDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<DestructorDeclarationSyntax>.Instance.GetDefaultAccessibility((DestructorDeclarationSyntax)declaration);
                 case SyntaxKind.MethodDeclaration:
-                    return GetDefaultAccessibility((MethodDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetDefaultAccessibility((MethodDeclarationSyntax)declaration);
                 case SyntaxKind.PropertyDeclaration:
-                    return GetDefaultAccessibility((PropertyDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetDefaultAccessibility((PropertyDeclarationSyntax)declaration);
                 case SyntaxKind.IndexerDeclaration:
-                    return GetDefaultAccessibility((IndexerDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<IndexerDeclarationSyntax>.Instance.GetDefaultAccessibility((IndexerDeclarationSyntax)declaration);
                 case SyntaxKind.EventDeclaration:
-                    return GetDefaultAccessibility((EventDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetDefaultAccessibility((EventDeclarationSyntax)declaration);
                 case SyntaxKind.EventFieldDeclaration:
-                    return GetDefaultAccessibility((EventFieldDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetDefaultAccessibility((EventFieldDeclarationSyntax)declaration);
                 case SyntaxKind.FieldDeclaration:
-                    return Accessibility.Private;
+                    return SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetDefaultAccessibility((FieldDeclarationSyntax)declaration);
                 case SyntaxKind.OperatorDeclaration:
+                    return SyntaxAccessibility<OperatorDeclarationSyntax>.Instance.GetDefaultAccessibility((OperatorDeclarationSyntax)declaration);
                 case SyntaxKind.ConversionOperatorDeclaration:
-                    return Accessibility.Public;
+                    return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetDefaultAccessibility((ConversionOperatorDeclarationSyntax)declaration);
                 case SyntaxKind.ClassDeclaration:
+                    return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetDefaultAccessibility((ClassDeclarationSyntax)declaration);
                 case SyntaxKind.StructDeclaration:
+                    return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetDefaultAccessibility((StructDeclarationSyntax)declaration);
                 case SyntaxKind.InterfaceDeclaration:
+                    return SyntaxAccessibility<InterfaceDeclarationSyntax>.Instance.GetDefaultAccessibility((InterfaceDeclarationSyntax)declaration);
                 case SyntaxKind.EnumDeclaration:
-                    return GetDefaultAccessibility((BaseTypeDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<EnumDeclarationSyntax>.Instance.GetDefaultAccessibility((EnumDeclarationSyntax)declaration);
                 case SyntaxKind.DelegateDeclaration:
-                    return GetDefaultAccessibility((DelegateDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetDefaultAccessibility((DelegateDeclarationSyntax)declaration);
                 case SyntaxKind.EnumMemberDeclaration:
+                    return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetDefaultAccessibility((EnumMemberDeclarationSyntax)declaration);
                 case SyntaxKind.NamespaceDeclaration:
-                    return Accessibility.Public;
-            }
-
-            Debug.Fail(declaration.Kind().ToString());
-
-            return Accessibility.NotApplicable;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="classDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(ClassDeclarationSyntax classDeclaration)
-        {
-            return GetDefaultAccessibility((TypeDeclarationSyntax)classDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="constructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(ConstructorDeclarationSyntax constructorDeclaration)
-        {
-            if (constructorDeclaration == null)
-                throw new ArgumentNullException(nameof(constructorDeclaration));
-
-            if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-            {
-                return Accessibility.Public;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="conversionOperatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
-        {
-            if (conversionOperatorDeclaration == null)
-                throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="delegateDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(DelegateDeclarationSyntax delegateDeclaration)
-        {
-            if (delegateDeclaration == null)
-                throw new ArgumentNullException(nameof(delegateDeclaration));
-
-            if (delegateDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
-            {
-                return Accessibility.Private;
-            }
-            else
-            {
-                return Accessibility.Internal;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="destructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(DestructorDeclarationSyntax destructorDeclaration)
-        {
-            if (destructorDeclaration == null)
-                throw new ArgumentNullException(nameof(destructorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="enumDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(EnumDeclarationSyntax enumDeclaration)
-        {
-            return GetDefaultAccessibility((BaseTypeDeclarationSyntax)enumDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="enumMemberDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(EnumMemberDeclarationSyntax enumMemberDeclaration)
-        {
-            if (enumMemberDeclaration == null)
-                throw new ArgumentNullException(nameof(enumMemberDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(EventDeclarationSyntax eventDeclaration)
-        {
-            if (eventDeclaration == null)
-                throw new ArgumentNullException(nameof(eventDeclaration));
-
-            return Accessibility.Private;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventFieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(EventFieldDeclarationSyntax eventFieldDeclaration)
-        {
-            if (eventFieldDeclaration == null)
-                throw new ArgumentNullException(nameof(eventFieldDeclaration));
-
-            if (eventFieldDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.Public;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="fieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(FieldDeclarationSyntax fieldDeclaration)
-        {
-            if (fieldDeclaration == null)
-                throw new ArgumentNullException(nameof(fieldDeclaration));
-
-            return Accessibility.Private;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="indexerDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(IndexerDeclarationSyntax indexerDeclaration)
-        {
-            if (indexerDeclaration == null)
-                throw new ArgumentNullException(nameof(indexerDeclaration));
-
-            if (indexerDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.Public;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="interfaceDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(InterfaceDeclarationSyntax interfaceDeclaration)
-        {
-            return GetDefaultAccessibility((BaseTypeDeclarationSyntax)interfaceDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="methodDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            if (methodDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.Public;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="namespaceDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(NamespaceDeclarationSyntax namespaceDeclaration)
-        {
-            if (namespaceDeclaration == null)
-                throw new ArgumentNullException(nameof(namespaceDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="operatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(OperatorDeclarationSyntax operatorDeclaration)
-        {
-            if (operatorDeclaration == null)
-                throw new ArgumentNullException(nameof(operatorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="propertyDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(PropertyDeclarationSyntax propertyDeclaration)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            if (propertyDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.Public;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="structDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(StructDeclarationSyntax structDeclaration)
-        {
-            return GetDefaultAccessibility((BaseTypeDeclarationSyntax)structDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="baseTypeDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(BaseTypeDeclarationSyntax baseTypeDeclaration)
-        {
-            if (baseTypeDeclaration == null)
-                throw new ArgumentNullException(nameof(baseTypeDeclaration));
-
-            if (baseTypeDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
-            {
-                return Accessibility.Private;
-            }
-            else
-            {
-                return Accessibility.Internal;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="accessorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultAccessibility(AccessorDeclarationSyntax accessorDeclaration)
-        {
-            if (accessorDeclaration == null)
-                throw new ArgumentNullException(nameof(accessorDeclaration));
-
-            SyntaxNode declaration = accessorDeclaration.Parent?.Parent;
-
-            switch (declaration?.Kind())
-            {
-                case SyntaxKind.PropertyDeclaration:
-                    return GetDefaultAccessibility((PropertyDeclarationSyntax)declaration);
-                case SyntaxKind.IndexerDeclaration:
-                    return GetDefaultAccessibility((IndexerDeclarationSyntax)declaration);
-                case SyntaxKind.EventDeclaration:
-                    return GetDefaultAccessibility((EventDeclarationSyntax)declaration);
-            }
-
-            Debug.Assert(declaration == null, declaration.Kind().ToString());
-
-            return Accessibility.NotApplicable;
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="declaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(MemberDeclarationSyntax declaration)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            switch (declaration.Kind())
-            {
-                case SyntaxKind.ConstructorDeclaration:
-                    return GetDefaultExplicitAccessibility((ConstructorDeclarationSyntax)declaration);
-                case SyntaxKind.DestructorDeclaration:
-                    return GetDefaultExplicitAccessibility((DestructorDeclarationSyntax)declaration);
-                case SyntaxKind.MethodDeclaration:
-                    return GetDefaultExplicitAccessibility((MethodDeclarationSyntax)declaration);
-                case SyntaxKind.PropertyDeclaration:
-                    return GetDefaultExplicitAccessibility((PropertyDeclarationSyntax)declaration);
-                case SyntaxKind.IndexerDeclaration:
-                    return GetDefaultExplicitAccessibility((IndexerDeclarationSyntax)declaration);
-                case SyntaxKind.EventDeclaration:
-                    return GetDefaultExplicitAccessibility((EventDeclarationSyntax)declaration);
-                case SyntaxKind.EventFieldDeclaration:
-                    return GetDefaultExplicitAccessibility((EventFieldDeclarationSyntax)declaration);
-                case SyntaxKind.FieldDeclaration:
-                    return Accessibility.Private;
-                case SyntaxKind.OperatorDeclaration:
-                case SyntaxKind.ConversionOperatorDeclaration:
-                    return Accessibility.Public;
-                case SyntaxKind.ClassDeclaration:
-                case SyntaxKind.StructDeclaration:
-                case SyntaxKind.InterfaceDeclaration:
-                case SyntaxKind.EnumDeclaration:
-                    return GetDefaultExplicitAccessibility((BaseTypeDeclarationSyntax)declaration);
-                case SyntaxKind.DelegateDeclaration:
-                    return GetDefaultExplicitAccessibility((DelegateDeclarationSyntax)declaration);
-                case SyntaxKind.EnumMemberDeclaration:
-                case SyntaxKind.NamespaceDeclaration:
-                    return Accessibility.NotApplicable;
+                    return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetDefaultAccessibility((NamespaceDeclarationSyntax)declaration);
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetDefaultAccessibility((AccessorDeclarationSyntax)declaration);
             }
 
             Debug.Fail(declaration.Kind().ToString());
@@ -412,291 +77,9 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns a default explicit accessibility of the specified declaration.
         /// </summary>
-        /// <param name="classDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(ClassDeclarationSyntax classDeclaration)
-        {
-            return GetDefaultExplicitAccessibility((TypeDeclarationSyntax)classDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="constructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(ConstructorDeclarationSyntax constructorDeclaration)
-        {
-            if (constructorDeclaration == null)
-                throw new ArgumentNullException(nameof(constructorDeclaration));
-
-            if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-            {
-                return Accessibility.NotApplicable;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="conversionOperatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
-        {
-            if (conversionOperatorDeclaration == null)
-                throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="delegateDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(DelegateDeclarationSyntax delegateDeclaration)
-        {
-            if (delegateDeclaration == null)
-                throw new ArgumentNullException(nameof(delegateDeclaration));
-
-            if (delegateDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
-            {
-                return Accessibility.Private;
-            }
-            else
-            {
-                return Accessibility.Internal;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="destructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(DestructorDeclarationSyntax destructorDeclaration)
-        {
-            if (destructorDeclaration == null)
-                throw new ArgumentNullException(nameof(destructorDeclaration));
-
-            return Accessibility.NotApplicable;
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="enumDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(EnumDeclarationSyntax enumDeclaration)
-        {
-            return GetDefaultExplicitAccessibility((BaseTypeDeclarationSyntax)enumDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="enumMemberDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(EnumMemberDeclarationSyntax enumMemberDeclaration)
-        {
-            if (enumMemberDeclaration == null)
-                throw new ArgumentNullException(nameof(enumMemberDeclaration));
-
-            return Accessibility.NotApplicable;
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(EventDeclarationSyntax eventDeclaration)
-        {
-            if (eventDeclaration == null)
-                throw new ArgumentNullException(nameof(eventDeclaration));
-
-            if (eventDeclaration.ExplicitInterfaceSpecifier != null)
-            {
-                return Accessibility.NotApplicable;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventFieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(EventFieldDeclarationSyntax eventFieldDeclaration)
-        {
-            if (eventFieldDeclaration == null)
-                throw new ArgumentNullException(nameof(eventFieldDeclaration));
-
-            if (eventFieldDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.NotApplicable;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="fieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(FieldDeclarationSyntax fieldDeclaration)
-        {
-            if (fieldDeclaration == null)
-                throw new ArgumentNullException(nameof(fieldDeclaration));
-
-            return Accessibility.Private;
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="indexerDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(IndexerDeclarationSyntax indexerDeclaration)
-        {
-            if (indexerDeclaration == null)
-                throw new ArgumentNullException(nameof(indexerDeclaration));
-
-            if (indexerDeclaration.ExplicitInterfaceSpecifier != null
-                || indexerDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.NotApplicable;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="interfaceDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(InterfaceDeclarationSyntax interfaceDeclaration)
-        {
-            return GetDefaultExplicitAccessibility((BaseTypeDeclarationSyntax)interfaceDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="methodDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            if (methodDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword)
-                || methodDeclaration.ExplicitInterfaceSpecifier != null
-                || methodDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.NotApplicable;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="namespaceDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(NamespaceDeclarationSyntax namespaceDeclaration)
-        {
-            if (namespaceDeclaration == null)
-                throw new ArgumentNullException(nameof(namespaceDeclaration));
-
-            return Accessibility.NotApplicable;
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="operatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(OperatorDeclarationSyntax operatorDeclaration)
-        {
-            if (operatorDeclaration == null)
-                throw new ArgumentNullException(nameof(operatorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="propertyDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(PropertyDeclarationSyntax propertyDeclaration)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            if (propertyDeclaration.ExplicitInterfaceSpecifier != null
-                || propertyDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-            {
-                return Accessibility.NotApplicable;
-            }
-            else
-            {
-                return Accessibility.Private;
-            }
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="structDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(StructDeclarationSyntax structDeclaration)
-        {
-            return GetDefaultExplicitAccessibility((BaseTypeDeclarationSyntax)structDeclaration);
-        }
-
-        /// <summary>
-        /// Returns a default explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="baseTypeDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetDefaultExplicitAccessibility(BaseTypeDeclarationSyntax baseTypeDeclaration)
-        {
-            if (baseTypeDeclaration == null)
-                throw new ArgumentNullException(nameof(baseTypeDeclaration));
-
-            if (baseTypeDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
-            {
-                return Accessibility.Private;
-            }
-            else
-            {
-                return Accessibility.Internal;
-            }
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
         /// <param name="declaration"></param>
         /// <returns></returns>
-        public static Accessibility GetAccessibility(MemberDeclarationSyntax declaration)
+        public static Accessibility GetDefaultExplicitAccessibility(SyntaxNode declaration)
         {
             if (declaration == null)
                 throw new ArgumentNullException(nameof(declaration));
@@ -704,36 +87,48 @@ namespace Roslynator.CSharp
             switch (declaration.Kind())
             {
                 case SyntaxKind.ConstructorDeclaration:
-                    return GetAccessibility((ConstructorDeclarationSyntax)declaration);
-                case SyntaxKind.MethodDeclaration:
-                    return GetAccessibility((MethodDeclarationSyntax)declaration);
-                case SyntaxKind.PropertyDeclaration:
-                    return GetAccessibility((PropertyDeclarationSyntax)declaration);
-                case SyntaxKind.IndexerDeclaration:
-                    return GetAccessibility((IndexerDeclarationSyntax)declaration);
-                case SyntaxKind.EventDeclaration:
-                    return GetAccessibility((EventDeclarationSyntax)declaration);
-                case SyntaxKind.EventFieldDeclaration:
-                    return GetAccessibility((EventFieldDeclarationSyntax)declaration);
-                case SyntaxKind.FieldDeclaration:
-                    return GetAccessibility((FieldDeclarationSyntax)declaration);
-                case SyntaxKind.ClassDeclaration:
-                    return GetAccessibility((ClassDeclarationSyntax)declaration);
-                case SyntaxKind.StructDeclaration:
-                    return GetAccessibility((StructDeclarationSyntax)declaration);
-                case SyntaxKind.InterfaceDeclaration:
-                    return GetAccessibility((InterfaceDeclarationSyntax)declaration);
-                case SyntaxKind.EnumDeclaration:
-                    return GetAccessibility((EnumDeclarationSyntax)declaration);
-                case SyntaxKind.DelegateDeclaration:
-                    return GetAccessibility((DelegateDeclarationSyntax)declaration);
+                    return SyntaxAccessibility<ConstructorDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((ConstructorDeclarationSyntax)declaration);
                 case SyntaxKind.DestructorDeclaration:
+                    return SyntaxAccessibility<DestructorDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((DestructorDeclarationSyntax)declaration);
+                case SyntaxKind.MethodDeclaration:
+                    return SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((MethodDeclarationSyntax)declaration);
+                case SyntaxKind.PropertyDeclaration:
+                    return SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((PropertyDeclarationSyntax)declaration);
+                case SyntaxKind.IndexerDeclaration:
+                    return SyntaxAccessibility<IndexerDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((IndexerDeclarationSyntax)declaration);
+                case SyntaxKind.EventDeclaration:
+                    return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((EventDeclarationSyntax)declaration);
+                case SyntaxKind.EventFieldDeclaration:
+                    return SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((EventFieldDeclarationSyntax)declaration);
+                case SyntaxKind.FieldDeclaration:
+                    return SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((FieldDeclarationSyntax)declaration);
                 case SyntaxKind.OperatorDeclaration:
+                    return SyntaxAccessibility<OperatorDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((OperatorDeclarationSyntax)declaration);
                 case SyntaxKind.ConversionOperatorDeclaration:
+                    return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((ConversionOperatorDeclarationSyntax)declaration);
+                case SyntaxKind.ClassDeclaration:
+                    return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((ClassDeclarationSyntax)declaration);
+                case SyntaxKind.StructDeclaration:
+                    return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((StructDeclarationSyntax)declaration);
+                case SyntaxKind.InterfaceDeclaration:
+                    return SyntaxAccessibility<InterfaceDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((InterfaceDeclarationSyntax)declaration);
+                case SyntaxKind.EnumDeclaration:
+                    return SyntaxAccessibility<EnumDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((EnumDeclarationSyntax)declaration);
+                case SyntaxKind.DelegateDeclaration:
+                    return SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((DelegateDeclarationSyntax)declaration);
                 case SyntaxKind.EnumMemberDeclaration:
+                    return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((EnumMemberDeclarationSyntax)declaration);
                 case SyntaxKind.NamespaceDeclaration:
-                    return Accessibility.Public;
+                    return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((NamespaceDeclarationSyntax)declaration);
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetDefaultExplicitAccessibility((AccessorDeclarationSyntax)declaration);
             }
+
+            Debug.Fail(declaration.Kind().ToString());
 
             return Accessibility.NotApplicable;
         }
@@ -741,363 +136,127 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns an accessibility of the specified declaration.
         /// </summary>
-        /// <param name="classDeclaration"></param>
+        /// <param name="declaration"></param>
         /// <returns></returns>
-        public static Accessibility GetAccessibility(ClassDeclarationSyntax classDeclaration)
+        public static Accessibility GetAccessibility(SyntaxNode declaration)
         {
-            if (classDeclaration == null)
-                throw new ArgumentNullException(nameof(classDeclaration));
-
-            Accessibility accessibility = GetExplicitAccessibility(classDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(classDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="constructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(ConstructorDeclarationSyntax constructorDeclaration)
-        {
-            if (constructorDeclaration == null)
-                throw new ArgumentNullException(nameof(constructorDeclaration));
-
-            SyntaxTokenList modifiers = constructorDeclaration.Modifiers;
-
-            if (modifiers.Contains(SyntaxKind.StaticKeyword))
-                return Accessibility.Private;
-
-            Accessibility accessibility = GetExplicitAccessibility(modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(constructorDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="conversionOperatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
-        {
-            if (conversionOperatorDeclaration == null)
-                throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="delegateDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(DelegateDeclarationSyntax delegateDeclaration)
-        {
-            if (delegateDeclaration == null)
-                throw new ArgumentNullException(nameof(delegateDeclaration));
-
-            Accessibility accessibility = GetExplicitAccessibility(delegateDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(delegateDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="destructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(DestructorDeclarationSyntax destructorDeclaration)
-        {
-            if (destructorDeclaration == null)
-                throw new ArgumentNullException(nameof(destructorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="enumDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(EnumDeclarationSyntax enumDeclaration)
-        {
-            if (enumDeclaration == null)
-                throw new ArgumentNullException(nameof(enumDeclaration));
-
-            Accessibility accessibility = GetExplicitAccessibility(enumDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(enumDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="enumMemberDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(EnumMemberDeclarationSyntax enumMemberDeclaration)
-        {
-            if (enumMemberDeclaration == null)
-                throw new ArgumentNullException(nameof(enumMemberDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(EventDeclarationSyntax eventDeclaration)
-        {
-            if (eventDeclaration == null)
-                throw new ArgumentNullException(nameof(eventDeclaration));
-
-            if (eventDeclaration.ExplicitInterfaceSpecifier != null)
-                return Accessibility.Private;
-
-            Accessibility accessibility = GetExplicitAccessibility(eventDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(eventDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventFieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(EventFieldDeclarationSyntax eventFieldDeclaration)
-        {
-            if (eventFieldDeclaration == null)
-                throw new ArgumentNullException(nameof(eventFieldDeclaration));
-
-            if (eventFieldDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                return Accessibility.Public;
-
-            Accessibility accessibility = GetExplicitAccessibility(eventFieldDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(eventFieldDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="fieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(FieldDeclarationSyntax fieldDeclaration)
-        {
-            if (fieldDeclaration == null)
-                throw new ArgumentNullException(nameof(fieldDeclaration));
-
-            Accessibility accessibility = GetExplicitAccessibility(fieldDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(fieldDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="indexerDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(IndexerDeclarationSyntax indexerDeclaration)
-        {
-            if (indexerDeclaration == null)
-                throw new ArgumentNullException(nameof(indexerDeclaration));
-
-            if (indexerDeclaration.ExplicitInterfaceSpecifier != null)
-                return Accessibility.Private;
-
-            if (indexerDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                return Accessibility.Public;
-
-            Accessibility accessibility = GetExplicitAccessibility(indexerDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(indexerDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="interfaceDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(InterfaceDeclarationSyntax interfaceDeclaration)
-        {
-            if (interfaceDeclaration == null)
-                throw new ArgumentNullException(nameof(interfaceDeclaration));
-
-            Accessibility accessibility = GetExplicitAccessibility(interfaceDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(interfaceDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="methodDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            SyntaxTokenList modifiers = methodDeclaration.Modifiers;
-
-            if (modifiers.Contains(SyntaxKind.PartialKeyword))
-                return Accessibility.Private;
-
-            if (methodDeclaration.ExplicitInterfaceSpecifier != null)
-                return Accessibility.Private;
-
-            if (methodDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                return Accessibility.Public;
-
-            Accessibility accessibility = GetExplicitAccessibility(methodDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(methodDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="namespaceDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(NamespaceDeclarationSyntax namespaceDeclaration)
-        {
-            if (namespaceDeclaration == null)
-                throw new ArgumentNullException(nameof(namespaceDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="operatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(OperatorDeclarationSyntax operatorDeclaration)
-        {
-            if (operatorDeclaration == null)
-                throw new ArgumentNullException(nameof(operatorDeclaration));
-
-            return Accessibility.Public;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="propertyDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(PropertyDeclarationSyntax propertyDeclaration)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            if (propertyDeclaration.ExplicitInterfaceSpecifier != null)
-                return Accessibility.Private;
-
-            if (propertyDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
-                return Accessibility.Public;
-
-            Accessibility accessibility = GetExplicitAccessibility(propertyDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(propertyDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="structDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(StructDeclarationSyntax structDeclaration)
-        {
-            if (structDeclaration == null)
-                throw new ArgumentNullException(nameof(structDeclaration));
-
-            Accessibility accessibility = GetExplicitAccessibility(structDeclaration.Modifiers);
-
-            if (accessibility == Accessibility.NotApplicable)
-                accessibility = GetDefaultAccessibility(structDeclaration);
-
-            return accessibility;
-        }
-
-        /// <summary>
-        /// Returns an accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="accessorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetAccessibility(AccessorDeclarationSyntax accessorDeclaration)
-        {
-            if (accessorDeclaration == null)
-                throw new ArgumentNullException(nameof(accessorDeclaration));
-
-            Accessibility accessibility = GetExplicitAccessibility(accessorDeclaration.Modifiers);
-
-            SyntaxNode declaration = accessorDeclaration.Parent?.Parent;
-
             if (declaration == null)
-                return accessibility;
+                throw new ArgumentNullException(nameof(declaration));
 
-            Accessibility declarationAccessibility = GetDeclarationAccessibility();
-
-            if (declarationAccessibility == Accessibility.NotApplicable)
-                return accessibility;
-
-            return (accessibility.IsMoreRestrictiveThan(declarationAccessibility))
-                ? accessibility
-                : declarationAccessibility;
-
-            Accessibility GetDeclarationAccessibility()
+            switch (declaration.Kind())
             {
-                switch (declaration.Kind())
-                {
-                    case SyntaxKind.PropertyDeclaration:
-                        return GetAccessibility((PropertyDeclarationSyntax)declaration);
-                    case SyntaxKind.IndexerDeclaration:
-                        return GetAccessibility((IndexerDeclarationSyntax)declaration);
-                    case SyntaxKind.EventDeclaration:
-                        return GetAccessibility((EventDeclarationSyntax)declaration);
-                }
-
-                Debug.Fail(declaration.Kind().ToString());
-
-                return Accessibility.NotApplicable;
+                case SyntaxKind.ConstructorDeclaration:
+                    return SyntaxAccessibility<ConstructorDeclarationSyntax>.Instance.GetAccessibility((ConstructorDeclarationSyntax)declaration);
+                case SyntaxKind.DestructorDeclaration:
+                    return SyntaxAccessibility<DestructorDeclarationSyntax>.Instance.GetAccessibility((DestructorDeclarationSyntax)declaration);
+                case SyntaxKind.MethodDeclaration:
+                    return SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetAccessibility((MethodDeclarationSyntax)declaration);
+                case SyntaxKind.PropertyDeclaration:
+                    return SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetAccessibility((PropertyDeclarationSyntax)declaration);
+                case SyntaxKind.IndexerDeclaration:
+                    return SyntaxAccessibility<IndexerDeclarationSyntax>.Instance.GetAccessibility((IndexerDeclarationSyntax)declaration);
+                case SyntaxKind.EventDeclaration:
+                    return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetAccessibility((EventDeclarationSyntax)declaration);
+                case SyntaxKind.EventFieldDeclaration:
+                    return SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetAccessibility((EventFieldDeclarationSyntax)declaration);
+                case SyntaxKind.FieldDeclaration:
+                    return SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetAccessibility((FieldDeclarationSyntax)declaration);
+                case SyntaxKind.OperatorDeclaration:
+                    return SyntaxAccessibility<OperatorDeclarationSyntax>.Instance.GetAccessibility((OperatorDeclarationSyntax)declaration);
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetAccessibility((ConversionOperatorDeclarationSyntax)declaration);
+                case SyntaxKind.ClassDeclaration:
+                    return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetAccessibility((ClassDeclarationSyntax)declaration);
+                case SyntaxKind.StructDeclaration:
+                    return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetAccessibility((StructDeclarationSyntax)declaration);
+                case SyntaxKind.InterfaceDeclaration:
+                    return SyntaxAccessibility<InterfaceDeclarationSyntax>.Instance.GetAccessibility((InterfaceDeclarationSyntax)declaration);
+                case SyntaxKind.EnumDeclaration:
+                    return SyntaxAccessibility<EnumDeclarationSyntax>.Instance.GetAccessibility((EnumDeclarationSyntax)declaration);
+                case SyntaxKind.DelegateDeclaration:
+                    return SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetAccessibility((DelegateDeclarationSyntax)declaration);
+                case SyntaxKind.EnumMemberDeclaration:
+                    return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetAccessibility((EnumMemberDeclarationSyntax)declaration);
+                case SyntaxKind.NamespaceDeclaration:
+                    return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetAccessibility((NamespaceDeclarationSyntax)declaration);
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetAccessibility((AccessorDeclarationSyntax)declaration);
             }
+
+            Debug.Fail(declaration.Kind().ToString());
+
+            return Accessibility.NotApplicable;
         }
 
-        internal static Accessibility GetExplicitAccessibility(SyntaxTokenList modifiers)
+        /// <summary>
+        /// Returns an explicit accessibility of the specified declaration.
+        /// </summary>
+        /// <param name="declaration"></param>
+        /// <returns></returns>
+        public static Accessibility GetExplicitAccessibility(SyntaxNode declaration)
+        {
+            if (declaration == null)
+                throw new ArgumentNullException(nameof(declaration));
+
+            switch (declaration.Kind())
+            {
+                case SyntaxKind.ConstructorDeclaration:
+                    return SyntaxAccessibility<ConstructorDeclarationSyntax>.Instance.GetExplicitAccessibility((ConstructorDeclarationSyntax)declaration);
+                case SyntaxKind.DestructorDeclaration:
+                    return SyntaxAccessibility<DestructorDeclarationSyntax>.Instance.GetExplicitAccessibility((DestructorDeclarationSyntax)declaration);
+                case SyntaxKind.MethodDeclaration:
+                    return SyntaxAccessibility<MethodDeclarationSyntax>.Instance.GetExplicitAccessibility((MethodDeclarationSyntax)declaration);
+                case SyntaxKind.PropertyDeclaration:
+                    return SyntaxAccessibility<PropertyDeclarationSyntax>.Instance.GetExplicitAccessibility((PropertyDeclarationSyntax)declaration);
+                case SyntaxKind.IndexerDeclaration:
+                    return SyntaxAccessibility<IndexerDeclarationSyntax>.Instance.GetExplicitAccessibility((IndexerDeclarationSyntax)declaration);
+                case SyntaxKind.EventDeclaration:
+                    return SyntaxAccessibility<EventDeclarationSyntax>.Instance.GetExplicitAccessibility((EventDeclarationSyntax)declaration);
+                case SyntaxKind.EventFieldDeclaration:
+                    return SyntaxAccessibility<EventFieldDeclarationSyntax>.Instance.GetExplicitAccessibility((EventFieldDeclarationSyntax)declaration);
+                case SyntaxKind.FieldDeclaration:
+                    return SyntaxAccessibility<FieldDeclarationSyntax>.Instance.GetExplicitAccessibility((FieldDeclarationSyntax)declaration);
+                case SyntaxKind.OperatorDeclaration:
+                    return SyntaxAccessibility<OperatorDeclarationSyntax>.Instance.GetExplicitAccessibility((OperatorDeclarationSyntax)declaration);
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return SyntaxAccessibility<ConversionOperatorDeclarationSyntax>.Instance.GetExplicitAccessibility((ConversionOperatorDeclarationSyntax)declaration);
+                case SyntaxKind.ClassDeclaration:
+                    return SyntaxAccessibility<ClassDeclarationSyntax>.Instance.GetExplicitAccessibility((ClassDeclarationSyntax)declaration);
+                case SyntaxKind.StructDeclaration:
+                    return SyntaxAccessibility<StructDeclarationSyntax>.Instance.GetExplicitAccessibility((StructDeclarationSyntax)declaration);
+                case SyntaxKind.InterfaceDeclaration:
+                    return SyntaxAccessibility<InterfaceDeclarationSyntax>.Instance.GetExplicitAccessibility((InterfaceDeclarationSyntax)declaration);
+                case SyntaxKind.EnumDeclaration:
+                    return SyntaxAccessibility<EnumDeclarationSyntax>.Instance.GetExplicitAccessibility((EnumDeclarationSyntax)declaration);
+                case SyntaxKind.DelegateDeclaration:
+                    return SyntaxAccessibility<DelegateDeclarationSyntax>.Instance.GetExplicitAccessibility((DelegateDeclarationSyntax)declaration);
+                case SyntaxKind.EnumMemberDeclaration:
+                    return SyntaxAccessibility<EnumMemberDeclarationSyntax>.Instance.GetExplicitAccessibility((EnumMemberDeclarationSyntax)declaration);
+                case SyntaxKind.NamespaceDeclaration:
+                    return SyntaxAccessibility<NamespaceDeclarationSyntax>.Instance.GetExplicitAccessibility((NamespaceDeclarationSyntax)declaration);
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
+                case SyntaxKind.UnknownAccessorDeclaration:
+                    return SyntaxAccessibility<AccessorDeclarationSyntax>.Instance.GetExplicitAccessibility((AccessorDeclarationSyntax)declaration);
+            }
+
+            Debug.Fail(declaration.Kind().ToString());
+
+            return Accessibility.NotApplicable;
+        }
+
+        /// <summary>
+        /// Returns an explicit accessibility of the specified modifiers.
+        /// </summary>
+        /// <param name="declaration"></param>
+        /// <returns></returns>
+        public static Accessibility GetExplicitAccessibility(SyntaxTokenList modifiers)
         {
             int count = modifiers.Count;
 
@@ -1148,240 +307,6 @@ namespace Roslynator.CSharp
             }
 
             return Accessibility.NotApplicable;
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="declaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(SyntaxNode declaration)
-        {
-            if (declaration == null)
-                throw new ArgumentNullException(nameof(declaration));
-
-            return SyntaxInfo.ModifierListInfo(declaration).ExplicitAccessibility;
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="classDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(ClassDeclarationSyntax classDeclaration)
-        {
-            if (classDeclaration == null)
-                throw new ArgumentNullException(nameof(classDeclaration));
-
-            return GetExplicitAccessibility(classDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="constructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(ConstructorDeclarationSyntax constructorDeclaration)
-        {
-            if (constructorDeclaration == null)
-                throw new ArgumentNullException(nameof(constructorDeclaration));
-
-            return GetExplicitAccessibility(constructorDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="conversionOperatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(ConversionOperatorDeclarationSyntax conversionOperatorDeclaration)
-        {
-            if (conversionOperatorDeclaration == null)
-                throw new ArgumentNullException(nameof(conversionOperatorDeclaration));
-
-            return GetExplicitAccessibility(conversionOperatorDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="delegateDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(DelegateDeclarationSyntax delegateDeclaration)
-        {
-            if (delegateDeclaration == null)
-                throw new ArgumentNullException(nameof(delegateDeclaration));
-
-            return GetExplicitAccessibility(delegateDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="destructorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(DestructorDeclarationSyntax destructorDeclaration)
-        {
-            if (destructorDeclaration == null)
-                throw new ArgumentNullException(nameof(destructorDeclaration));
-
-            return GetExplicitAccessibility(destructorDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="enumDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(EnumDeclarationSyntax enumDeclaration)
-        {
-            if (enumDeclaration == null)
-                throw new ArgumentNullException(nameof(enumDeclaration));
-
-            return GetExplicitAccessibility(enumDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(EventDeclarationSyntax eventDeclaration)
-        {
-            if (eventDeclaration == null)
-                throw new ArgumentNullException(nameof(eventDeclaration));
-
-            return GetExplicitAccessibility(eventDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="eventFieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(EventFieldDeclarationSyntax eventFieldDeclaration)
-        {
-            if (eventFieldDeclaration == null)
-                throw new ArgumentNullException(nameof(eventFieldDeclaration));
-
-            return GetExplicitAccessibility(eventFieldDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="fieldDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(FieldDeclarationSyntax fieldDeclaration)
-        {
-            if (fieldDeclaration == null)
-                throw new ArgumentNullException(nameof(fieldDeclaration));
-
-            return GetExplicitAccessibility(fieldDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="indexerDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(IndexerDeclarationSyntax indexerDeclaration)
-        {
-            if (indexerDeclaration == null)
-                throw new ArgumentNullException(nameof(indexerDeclaration));
-
-            return GetExplicitAccessibility(indexerDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="interfaceDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(InterfaceDeclarationSyntax interfaceDeclaration)
-        {
-            if (interfaceDeclaration == null)
-                throw new ArgumentNullException(nameof(interfaceDeclaration));
-
-            return GetExplicitAccessibility(interfaceDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="methodDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(MethodDeclarationSyntax methodDeclaration)
-        {
-            if (methodDeclaration == null)
-                throw new ArgumentNullException(nameof(methodDeclaration));
-
-            return GetExplicitAccessibility(methodDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="operatorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(OperatorDeclarationSyntax operatorDeclaration)
-        {
-            if (operatorDeclaration == null)
-                throw new ArgumentNullException(nameof(operatorDeclaration));
-
-            return GetExplicitAccessibility(operatorDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="propertyDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(PropertyDeclarationSyntax propertyDeclaration)
-        {
-            if (propertyDeclaration == null)
-                throw new ArgumentNullException(nameof(propertyDeclaration));
-
-            return GetExplicitAccessibility(propertyDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="structDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(StructDeclarationSyntax structDeclaration)
-        {
-            if (structDeclaration == null)
-                throw new ArgumentNullException(nameof(structDeclaration));
-
-            return GetExplicitAccessibility(structDeclaration.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="incompleteMember"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(IncompleteMemberSyntax incompleteMember)
-        {
-            if (incompleteMember == null)
-                throw new ArgumentNullException(nameof(incompleteMember));
-
-            return GetExplicitAccessibility(incompleteMember.Modifiers);
-        }
-
-        /// <summary>
-        /// Returns an explicit accessibility of the specified declaration.
-        /// </summary>
-        /// <param name="accessorDeclaration"></param>
-        /// <returns></returns>
-        public static Accessibility GetExplicitAccessibility(AccessorDeclarationSyntax accessorDeclaration)
-        {
-            if (accessorDeclaration == null)
-                throw new ArgumentNullException(nameof(accessorDeclaration));
-
-            return GetExplicitAccessibility(accessorDeclaration.Modifiers);
         }
 
         /// <summary>
