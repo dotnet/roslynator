@@ -37,7 +37,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 NamespaceDeclaration("Roslynator.CSharp.SyntaxWalkers",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
-                        Modifiers.PublicAbstract(),
+                        Modifiers.Public_Abstract(),
                         Identifier("IdentifierNameWalker"),
                         default(TypeParameterListSyntax),
                         default(BaseListSyntax),
@@ -62,7 +62,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
             if (context.ParameterType.Name == "IdentifierNameSyntax")
             {
-                return methodDeclaration.WithModifiers(Modifiers.PublicVirtual());
+                return methodDeclaration.WithModifiers(Modifiers.Public_Virtual());
             }
             else
             {

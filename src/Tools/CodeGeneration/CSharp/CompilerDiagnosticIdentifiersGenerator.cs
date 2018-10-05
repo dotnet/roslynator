@@ -19,14 +19,14 @@ namespace Roslynator.CodeGeneration.CSharp
                 NamespaceDeclaration(
                     "Roslynator.CSharp",
                     ClassDeclaration(
-                        Modifiers.InternalStatic(),
+                        Modifiers.Internal_Static(),
                         "CompilerDiagnosticIdentifiers",
                         descriptors
                             .OrderBy(f => f.Id, comparer)
                             .Select(f =>
                             {
                                 return FieldDeclaration(
-                                   Modifiers.PublicConst(),
+                                   Modifiers.Public_Const(),
                                    PredefinedStringType(),
                                    f.Identifier,
                                    StringLiteralExpression(f.Id));

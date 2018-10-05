@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Refactorings
                     TypeSyntax regexType = ParseTypeName("System.Text.RegularExpressions.Regex").WithSimplifierAnnotation();
 
                     FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                        Modifiers.PrivateStaticReadOnly(),
+                        Modifiers.Private_Static_ReadOnly(),
                         regexType,
                         Identifier(fieldName),
                         EqualsValueClause(

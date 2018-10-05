@@ -19,7 +19,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 UsingDirectives("System"),
                 NamespaceDeclaration("Roslynator.CSharp.Refactorings",
                     ClassDeclaration(
-                        Modifiers.PublicStaticPartial(),
+                        Modifiers.Public_Static_Partial(),
                         "RefactoringIdentifiers",
                         refactorings
                             .Where(f => f.IsObsolete == obsolete)
@@ -27,7 +27,7 @@ namespace Roslynator.CodeGeneration.CSharp
                             .Select(f =>
                             {
                                 FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                                    Modifiers.PublicConst(),
+                                    Modifiers.Public_Const(),
                                     PredefinedStringType(),
                                     f.Identifier,
                                     AddExpression(IdentifierName("Prefix"), StringLiteralExpression(f.Id.Substring(RefactoringIdentifiers.Prefix.Length))));

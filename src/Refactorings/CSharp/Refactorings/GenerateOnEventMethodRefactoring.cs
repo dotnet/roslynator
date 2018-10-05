@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Refactorings
                 default(SyntaxList<AttributeListSyntax>),
                 (eventSymbol.ContainingType.IsSealed || eventSymbol.ContainingType.TypeKind == TypeKind.Struct)
                     ? Modifiers.Private()
-                    : Modifiers.ProtectedVirtual(),
+                    : Modifiers.Protected_Virtual(),
                 VoidType(),
                 default(ExplicitInterfaceSpecifierSyntax),
                 Identifier($"On{eventSymbol.Name}"),

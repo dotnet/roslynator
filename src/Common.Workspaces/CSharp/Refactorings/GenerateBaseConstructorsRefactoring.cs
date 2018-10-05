@@ -2,6 +2,7 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
-                    Modifiers.FromParameterSymbol(parameterSymbol),
+                    CreateModifiers(parameterSymbol),
                     parameterSymbol.Type.ToMinimalTypeSyntax(semanticModel, position),
                     Identifier(parameterSymbol.Name),
                     @default));
@@ -92,13 +93,33 @@ namespace Roslynator.CSharp.Refactorings
 
             ConstructorDeclarationSyntax constructor = ConstructorDeclaration(
                 default(SyntaxList<AttributeListSyntax>),
-                Modifiers.FromAccessibility(accessibility),
+                TokenList(accessibility),
                 Identifier(className),
                 ParameterList(SeparatedList(parameters)),
                 BaseConstructorInitializer(ArgumentList(arguments.ToArray())),
                 Block());
 
             return constructor.WithFormatterAnnotation();
+        }
+
+        private static SyntaxTokenList CreateModifiers(IParameterSymbol parameterSymbol)
+        {
+            if (parameterSymbol.IsParams)
+                return TokenList(SyntaxKind.ParamsKeyword);
+
+            switch (parameterSymbol.RefKind)
+            {
+                case RefKind.None:
+                    return default(SyntaxTokenList);
+                case RefKind.Ref:
+                    return TokenList(SyntaxKind.RefKeyword);
+                case RefKind.Out:
+                    return TokenList(SyntaxKind.OutKeyword);
+            }
+
+            Debug.Fail(parameterSymbol.RefKind.ToString());
+
+            return default;
         }
 
         private class ParametersComparer : EqualityComparer<IMethodSymbol>

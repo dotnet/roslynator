@@ -21,7 +21,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 NamespaceDeclaration("Roslynator.CodeGeneration.CSharp",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
-                        Modifiers.InternalStatic(),
+                        Modifiers.Internal_Static(),
                         Identifier("PropertySymbolComparer"),
                         default(TypeParameterListSyntax),
                         default(BaseListSyntax),
@@ -32,7 +32,7 @@ namespace Roslynator.CodeGeneration.CSharp
         private static MethodDeclarationSyntax GenerateMethodDeclaration()
         {
             return MethodDeclaration(
-                Modifiers.PublicStatic(),
+                Modifiers.Public_Static(),
                 PredefinedIntType(),
                 Identifier("GetRank"),
                 ParameterList(Parameter(IdentifierName("IPropertySymbol"), "x")),

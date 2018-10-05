@@ -27,7 +27,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 NamespaceDeclaration("Roslynator.CSharp.SyntaxWalkers",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
-                        Modifiers.InternalAbstract(),
+                        Modifiers.Internal_Abstract(),
                         Identifier("CSharpSyntaxNodeWalker"),
                         default(TypeParameterListSyntax),
                         BaseList(SimpleBaseType(IdentifierName("CSharpSyntaxWalker"))),

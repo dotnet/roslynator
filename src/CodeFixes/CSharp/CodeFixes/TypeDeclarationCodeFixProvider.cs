@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.CodeFixes
             string localName = "other")
         {
             return MethodDeclaration(
-                Modifiers.PublicOverride(),
+                Modifiers.Public_Override(),
                 BoolType(),
                 Identifier("Equals"),
                 ParameterList(Parameter(ObjectType(), parameterName)),
@@ -130,7 +130,7 @@ namespace Roslynator.CSharp.CodeFixes
         private static MethodDeclarationSyntax ObjectGetHashCodeMethodDeclaration(SemanticModel semanticModel, int position)
         {
             return MethodDeclaration(
-                Modifiers.PublicOverride(),
+                Modifiers.Public_Override(),
                 IntType(),
                 Identifier("GetHashCode"),
                 ParameterList(),

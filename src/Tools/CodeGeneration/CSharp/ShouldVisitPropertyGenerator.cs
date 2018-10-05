@@ -23,7 +23,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 NamespaceDeclaration("Roslynator.CodeGeneration.CSharp",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
-                        Modifiers.PublicPartial(),
+                        Modifiers.Public_Partial(),
                         Identifier("CSharpSyntaxWalkerGenerator"),
                         default(TypeParameterListSyntax),
                         default(BaseListSyntax),
@@ -34,7 +34,7 @@ namespace Roslynator.CodeGeneration.CSharp
         private static MethodDeclarationSyntax GenerateMethodDeclaration()
         {
             return MethodDeclaration(
-                Modifiers.ProtectedVirtual(),
+                Modifiers.Protected_Virtual(),
                 PredefinedBoolType(),
                 Identifier("ShouldVisit"),
                 ParameterList(Parameter(IdentifierName("IPropertySymbol"), "propertySymbol")),

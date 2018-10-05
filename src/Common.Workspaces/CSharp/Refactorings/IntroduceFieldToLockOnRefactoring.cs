@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
         private static FieldDeclarationSyntax CreateFieldDeclaration(string name, bool isStatic)
         {
             return FieldDeclaration(
-                (isStatic) ? Modifiers.PrivateStaticReadOnly() : Modifiers.PrivateReadOnly(),
+                (isStatic) ? Modifiers.Private_Static_ReadOnly() : Modifiers.Private_ReadOnly(),
                 ObjectType(),
                 Identifier(name),
                 ObjectCreationExpression(ObjectType(), ArgumentList()));

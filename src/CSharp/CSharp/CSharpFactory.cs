@@ -1171,6 +1171,49 @@ namespace Roslynator.CSharp
         #endregion Type
 
         #region List
+        /// <summary>
+        /// Creates a list of modifiers from the specified accessibility.
+        /// </summary>
+        /// <param name="accessibility"></param>
+        /// <returns></returns>
+        public static SyntaxTokenList TokenList(Accessibility accessibility)
+        {
+            switch (accessibility)
+            {
+                case Accessibility.Public:
+                    return Modifiers.Public();
+                case Accessibility.Internal:
+                    return Modifiers.Internal();
+                case Accessibility.ProtectedOrInternal:
+                    return Modifiers.Protected_Internal();
+                case Accessibility.Protected:
+                    return Modifiers.Protected();
+                case Accessibility.ProtectedAndInternal:
+                    return Modifiers.Private_Protected();
+                case Accessibility.Private:
+                    return Modifiers.Private();
+                case Accessibility.NotApplicable:
+                    return default;
+                default:
+                    throw new ArgumentException($"Unknown accessibility '{accessibility}'.");
+            }
+        }
+
+        public static SyntaxTokenList TokenList(SyntaxKind kind)
+        {
+            return SyntaxFactory.TokenList(Token(kind));
+        }
+
+        public static SyntaxTokenList TokenList(SyntaxKind kind1, SyntaxKind kind2)
+        {
+            return SyntaxFactory.TokenList(Token(kind1), Token(kind2));
+        }
+
+        public static SyntaxTokenList TokenList(SyntaxKind kind1, SyntaxKind kind2, SyntaxKind kind3)
+        {
+            return SyntaxFactory.TokenList(Token(kind1), Token(kind2), Token(kind3));
+        }
+
         public static ArgumentListSyntax ArgumentList(params ArgumentSyntax[] arguments)
         {
             return SyntaxFactory.ArgumentList(SeparatedList(arguments));

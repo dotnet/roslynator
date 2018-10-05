@@ -21,7 +21,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 UsingDirectives("System", "Microsoft.CodeAnalysis"),
                 NamespaceDeclaration("Roslynator.CSharp",
                     ClassDeclaration(
-                        Modifiers.PublicStaticPartial(),
+                        Modifiers.Public_Static_Partial(),
                         "DiagnosticDescriptors",
                         List(
                             CreateMembers(
@@ -39,7 +39,7 @@ namespace Roslynator.CodeGeneration.CSharp
             foreach (AnalyzerDescriptor analyzer in analyzers)
             {
                 FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                    Modifiers.PublicStaticReadOnly(),
+                    Modifiers.Public_Static_ReadOnly(),
                     IdentifierName("DiagnosticDescriptor"),
                     analyzer.Identifier,
                     ObjectCreationExpression(
@@ -91,7 +91,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 if (analyzer.SupportsFadeOutAnalyzer)
                 {
                     yield return FieldDeclaration(
-                        Modifiers.PublicStaticReadOnly(),
+                        Modifiers.Public_Static_ReadOnly(),
                         IdentifierName("DiagnosticDescriptor"),
                         analyzer.Identifier + "FadeOut",
                         SimpleMemberInvocationExpression(

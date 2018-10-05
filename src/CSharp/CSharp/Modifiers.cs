@@ -1,9 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using Microsoft.CodeAnalysis.CSharp;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
@@ -19,7 +17,7 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Public()
         {
-            return TokenList(PublicKeyword());
+            return TokenList(SyntaxKind.PublicKeyword);
         }
 
         /// <summary>
@@ -28,7 +26,7 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Internal()
         {
-            return TokenList(InternalKeyword());
+            return TokenList(SyntaxKind.InternalKeyword);
         }
 
         /// <summary>
@@ -37,16 +35,16 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Protected()
         {
-            return TokenList(ProtectedKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword);
         }
 
         /// <summary>
         /// Return modifier list that contains "protected internal" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedInternal()
+        public static SyntaxTokenList Protected_Internal()
         {
-            return TokenList(ProtectedKeyword(), InternalKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.InternalKeyword);
         }
 
         /// <summary>
@@ -55,16 +53,16 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Private()
         {
-            return TokenList(PrivateKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "private protected" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PrivateProtected()
+        public static SyntaxTokenList Private_Protected()
         {
-            return TokenList(PrivateKeyword(), ProtectedKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.ProtectedKeyword);
         }
 
         /// <summary>
@@ -73,88 +71,88 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Virtual()
         {
-            return TokenList(VirtualKeyword());
+            return TokenList(SyntaxKind.VirtualKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public virtual" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicVirtual()
+        public static SyntaxTokenList Public_Virtual()
         {
-            return TokenList(PublicKeyword(), VirtualKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.VirtualKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal virtual" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalVirtual()
+        public static SyntaxTokenList Internal_Virtual()
         {
-            return TokenList(InternalKeyword(), VirtualKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.VirtualKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "protected virtual" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedVirtual()
+        public static SyntaxTokenList Protected_Virtual()
         {
-            return TokenList(ProtectedKeyword(), VirtualKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.VirtualKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public abstract" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicAbstract()
+        public static SyntaxTokenList Public_Abstract()
         {
-            return TokenList(PublicKeyword(), AbstractKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.AbstractKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal abstract" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalAbstract()
+        public static SyntaxTokenList Internal_Abstract()
         {
-            return TokenList(InternalKeyword(), AbstractKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.AbstractKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "protected abstract" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedAbstract()
+        public static SyntaxTokenList Protected_Abstract()
         {
-            return TokenList(ProtectedKeyword(), AbstractKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.AbstractKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public override" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicOverride()
+        public static SyntaxTokenList Public_Override()
         {
-            return TokenList(PublicKeyword(), OverrideKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.OverrideKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal override" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalOverride()
+        public static SyntaxTokenList Internal_Override()
         {
-            return TokenList(InternalKeyword(), OverrideKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.OverrideKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "protected override" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedOverride()
+        public static SyntaxTokenList Protected_Override()
         {
-            return TokenList(ProtectedKeyword(), OverrideKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.OverrideKeyword);
         }
 
         /// <summary>
@@ -163,43 +161,43 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Const()
         {
-            return TokenList(ConstKeyword());
+            return TokenList(SyntaxKind.ConstKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public const" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicConst()
+        public static SyntaxTokenList Public_Const()
         {
-            return TokenList(PublicKeyword(), ConstKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.ConstKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal const" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalConst()
+        public static SyntaxTokenList Internal_Const()
         {
-            return TokenList(InternalKeyword(), ConstKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.ConstKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "protected const" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedConst()
+        public static SyntaxTokenList Protected_Const()
         {
-            return TokenList(ProtectedKeyword(), ConstKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.ConstKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "private const" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PrivateConst()
+        public static SyntaxTokenList Private_Const()
         {
-            return TokenList(PrivateKeyword(), ConstKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.ConstKeyword);
         }
 
         /// <summary>
@@ -208,88 +206,88 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Static()
         {
-            return TokenList(StaticKeyword());
+            return TokenList(SyntaxKind.StaticKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public static" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicStatic()
+        public static SyntaxTokenList Public_Static()
         {
-            return TokenList(PublicKeyword(), StaticKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.StaticKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal static" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalStatic()
+        public static SyntaxTokenList Internal_Static()
         {
-            return TokenList(InternalKeyword(), StaticKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "protected static" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedStatic()
+        public static SyntaxTokenList Protected_Static()
         {
-            return TokenList(ProtectedKeyword(), StaticKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.StaticKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "private static" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PrivateStatic()
+        public static SyntaxTokenList Private_Static()
         {
-            return TokenList(PrivateKeyword(), StaticKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "static readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList StaticReadOnly()
+        public static SyntaxTokenList Static_ReadOnly()
         {
-            return TokenList(StaticKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public static readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicStaticReadOnly()
+        public static SyntaxTokenList Public_Static_ReadOnly()
         {
-            return TokenList(PublicKeyword(), StaticKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal static readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalStaticReadOnly()
+        public static SyntaxTokenList Internal_Static_ReadOnly()
         {
-            return TokenList(InternalKeyword(), StaticKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "protected static readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedStaticReadOnly()
+        public static SyntaxTokenList Protected_Static_ReadOnly()
         {
-            return TokenList(ProtectedKeyword(), StaticKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "private static readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PrivateStaticReadOnly()
+        public static SyntaxTokenList Private_Static_ReadOnly()
         {
-            return TokenList(PrivateKeyword(), StaticKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
@@ -298,43 +296,43 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList ReadOnly()
         {
-            return TokenList(ReadOnlyKeyword());
+            return TokenList(SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicReadOnly()
+        public static SyntaxTokenList Public_ReadOnly()
         {
-            return TokenList(PublicKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalReadOnly()
+        public static SyntaxTokenList Internal_ReadOnly()
         {
-            return TokenList(InternalKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "protected readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList ProtectedReadOnly()
+        public static SyntaxTokenList Protected_ReadOnly()
         {
-            return TokenList(ProtectedKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "private readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PrivateReadOnly()
+        public static SyntaxTokenList Private_ReadOnly()
         {
-            return TokenList(PrivateKeyword(), ReadOnlyKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.ReadOnlyKeyword);
         }
 
         /// <summary>
@@ -343,159 +341,70 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxTokenList Partial()
         {
-            return TokenList(PartialKeyword());
+            return TokenList(SyntaxKind.PartialKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public partial" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicPartial()
+        public static SyntaxTokenList Public_Partial()
         {
-            return TokenList(PublicKeyword(), PartialKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.PartialKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal partial" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalPartial()
+        public static SyntaxTokenList Internal_Partial()
         {
-            return TokenList(InternalKeyword(), PartialKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.PartialKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "private partial" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PrivatePartial()
+        public static SyntaxTokenList Private_Partial()
         {
-            return TokenList(PrivateKeyword(), PartialKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.PartialKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "public static partial" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PublicStaticPartial()
+        public static SyntaxTokenList Public_Static_Partial()
         {
-            return TokenList(PublicKeyword(), StaticKeyword(), PartialKeyword());
+            return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.StaticKeyword, SyntaxKind.PartialKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "internal static partial" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList InternalStaticPartial()
+        public static SyntaxTokenList Internal_Static_Partial()
         {
-            return TokenList(InternalKeyword(), StaticKeyword(), PartialKeyword());
+            return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword, SyntaxKind.PartialKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "private static partial" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList PrivateStaticPartial()
+        public static SyntaxTokenList Private_Static_Partial()
         {
-            return TokenList(PrivateKeyword(), StaticKeyword(), PartialKeyword());
-        }
-
-        /// <summary>
-        /// Creates a list of modifiers from the specified accessibility.
-        /// </summary>
-        /// <param name="accessibility"></param>
-        /// <returns></returns>
-        public static SyntaxTokenList FromAccessibility(Accessibility accessibility)
-        {
-            switch (accessibility)
-            {
-                case Accessibility.Private:
-                    return Private();
-                case Accessibility.Protected:
-                    return Protected();
-                case Accessibility.Internal:
-                    return Internal();
-                case Accessibility.ProtectedOrInternal:
-                    return ProtectedInternal();
-                case Accessibility.Public:
-                    return Public();
-                case Accessibility.NotApplicable:
-                    return default(SyntaxTokenList);
-                case Accessibility.ProtectedAndInternal:
-                    return PrivateProtected();
-                default:
-                    {
-                        Debug.Fail(accessibility.ToString());
-                        return default(SyntaxTokenList);
-                    }
-            }
-        }
-
-        /// <summary>
-        /// Creates a list of modifiers that contains "in" modifier.
-        /// </summary>
-        /// <returns></returns>
-        public static SyntaxTokenList In()
-        {
-            return TokenList(InKeyword());
-        }
-
-        /// <summary>
-        /// Creates a list of modifiers that contains "out" modifier.
-        /// </summary>
-        /// <returns></returns>
-        public static SyntaxTokenList Out()
-        {
-            return TokenList(OutKeyword());
-        }
-
-        /// <summary>
-        /// Creates a list of modifiers that contains "ref" modifier.
-        /// </summary>
-        /// <returns></returns>
-        public static SyntaxTokenList Ref()
-        {
-            return TokenList(RefKeyword());
+            return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword, SyntaxKind.PartialKeyword);
         }
 
         /// <summary>
         /// Creates a list of modifiers that contains "ref readonly" modifiers.
         /// </summary>
         /// <returns></returns>
-        public static SyntaxTokenList RefReadOnly()
+        public static SyntaxTokenList Ref_ReadOnly()
         {
-            return TokenList(RefKeyword(), ReadOnlyKeyword());
-        }
-
-        /// <summary>
-        /// Creates a list of modifiers that contains "params" modifier.
-        /// </summary>
-        /// <returns></returns>
-        public static SyntaxTokenList Params()
-        {
-            return TokenList(ParamsKeyword());
-        }
-
-        internal static SyntaxTokenList FromParameterSymbol(IParameterSymbol parameterSymbol)
-        {
-            if (parameterSymbol == null)
-                throw new ArgumentNullException(nameof(parameterSymbol));
-
-            if (parameterSymbol.IsParams)
-                return Params();
-
-            switch (parameterSymbol.RefKind)
-            {
-                case RefKind.None:
-                    return default(SyntaxTokenList);
-                case RefKind.Ref:
-                    return Ref();
-                case RefKind.Out:
-                    return Out();
-            }
-
-            Debug.Fail(parameterSymbol.RefKind.ToString());
-            return default(SyntaxTokenList);
+            return TokenList(SyntaxKind.RefKeyword, SyntaxKind.ReadOnlyKeyword);
         }
     }
 }

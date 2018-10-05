@@ -23,7 +23,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 NamespaceDeclaration(
                     "Roslynator.VisualStudio",
                     ClassDeclaration(
-                        Modifiers.PublicPartial(),
+                        Modifiers.Public_Partial(),
                         "RefactoringsOptionsPage",
                         CreateMembers(refactorings, comparer).ToSyntaxList())));
         }
@@ -31,7 +31,7 @@ namespace Roslynator.CodeGeneration.CSharp
         private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
         {
             yield return PropertyDeclaration(
-                Modifiers.ProtectedOverride(),
+                Modifiers.Protected_Override(),
                 PredefinedStringType(),
                 Identifier("DisabledByDefault"),
                 AccessorList(AutoGetAccessorDeclaration()),
@@ -44,14 +44,14 @@ namespace Roslynator.CodeGeneration.CSharp
                     "\""));
 
             yield return PropertyDeclaration(
-                Modifiers.ProtectedOverride(),
+                Modifiers.Protected_Override(),
                 PredefinedStringType(),
                 Identifier("MaxId"),
                 AccessorList(AutoGetAccessorDeclaration()),
                 ParseExpression($"RefactoringIdentifiers.{refactorings.OrderBy(f => f.Id, comparer).Last().Identifier}"));
 
             yield return MethodDeclaration(
-                Modifiers.InternalStatic(),
+                Modifiers.Internal_Static(),
                 VoidType(),
                 Identifier("SetRefactoringsDisabledByDefault"),
                 ParameterList(Parameter(IdentifierName("RefactoringSettings"), Identifier("settings"))),
@@ -65,7 +65,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     })));
 
             yield return MethodDeclaration(
-                Modifiers.ProtectedOverride(),
+                Modifiers.Protected_Override(),
                 VoidType(),
                 Identifier("Fill"),
                 ParameterList(Parameter(ParseTypeName("ICollection<BaseModel>"), Identifier("refactorings"))),

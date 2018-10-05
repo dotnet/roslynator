@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Refactorings
             cancellationToken.ThrowIfCancellationRequested();
 
             MethodDeclarationSyntax newMethodDeclaration = MethodDeclaration(
-                (SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic) ? Modifiers.PrivateStatic() : Modifiers.Private(),
+                (SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic) ? Modifiers.Private_Static() : Modifiers.Private(),
                 VoidType(),
                 Identifier(methodName).WithRenameAnnotation(),
                 parameterList.WithParameters(parameters),

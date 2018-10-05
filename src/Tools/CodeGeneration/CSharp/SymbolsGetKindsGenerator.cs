@@ -24,7 +24,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 NamespaceDeclaration("Roslynator.CodeGeneration.CSharp",
                     ClassDeclaration(
                         default(SyntaxList<AttributeListSyntax>),
-                        Modifiers.InternalStaticPartial(),
+                        Modifiers.Internal_Static_Partial(),
                         Identifier("Symbols"),
                         default(TypeParameterListSyntax),
                         default(BaseListSyntax),
@@ -49,7 +49,7 @@ namespace Roslynator.CodeGeneration.CSharp
             }
 
             MethodDeclarationSyntax methodDeclaration = MethodDeclaration(
-                Modifiers.PublicStatic(),
+                Modifiers.Public_Static(),
                 ParseTypeName("IEnumerable<SyntaxKind>"),
                 Identifier("GetKinds"),
                 ParameterList(Parameter(IdentifierName("INamedTypeSymbol"), "syntaxSymbol")),

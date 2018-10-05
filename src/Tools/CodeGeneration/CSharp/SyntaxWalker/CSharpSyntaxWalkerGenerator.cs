@@ -105,7 +105,7 @@ namespace Roslynator.CodeGeneration.CSharp
             CreateMethodStatements(context);
 
             return MethodDeclaration(
-                Modifiers.PublicOverride(),
+                Modifiers.Public_Override(),
                 VoidType(),
                 Identifier(context.MethodName),
                 ParseParameterList($"({context.ParameterSymbol.ToDisplayString(_parameterSymbolDisplayFormat)})"),
@@ -481,7 +481,7 @@ namespace Roslynator.CodeGeneration.CSharp
         public virtual PropertyDeclarationSyntax CreateShouldVisitPropertyDeclaration()
         {
             return PropertyDeclaration(
-                Modifiers.ProtectedVirtual(),
+                Modifiers.Protected_Virtual(),
                 PredefinedBoolType(),
                 Identifier("ShouldVisit"),
                 AccessorList(GetAccessorDeclaration(Block(ReturnStatement(TrueLiteralExpression())))));
@@ -490,7 +490,7 @@ namespace Roslynator.CodeGeneration.CSharp
         public virtual MethodDeclarationSyntax CreateVisitNodeMethodDeclaration()
         {
             return MethodDeclaration(
-                Modifiers.PublicOverride(),
+                Modifiers.Public_Override(),
                 VoidType(),
                 Identifier("Visit"),
                 ParameterList(Parameter(IdentifierName("SyntaxNode"), "node")),
@@ -562,7 +562,7 @@ namespace Roslynator.CodeGeneration.CSharp
             string name = metadataName.Name;
 
             return MethodDeclaration(
-                Modifiers.ProtectedVirtual(),
+                Modifiers.Protected_Virtual(),
                 VoidType(),
                 Identifier($"Visit{name.Remove(name.Length - 6)}"),
                 ParameterList(Parameter(IdentifierName(name), "node")),

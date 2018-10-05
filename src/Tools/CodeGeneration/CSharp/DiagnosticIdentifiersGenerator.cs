@@ -18,7 +18,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 UsingDirectives("System"),
                 NamespaceDeclaration("Roslynator.CSharp",
                     ClassDeclaration(
-                        Modifiers.PublicStaticPartial(),
+                        Modifiers.Public_Static_Partial(),
                         "DiagnosticIdentifiers",
                         analyzers
                             .Where(f => f.IsObsolete == obsolete)
@@ -26,7 +26,7 @@ namespace Roslynator.CodeGeneration.CSharp
                             .Select(f =>
                             {
                                 FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
-                                    Modifiers.PublicConst(),
+                                    Modifiers.Public_Const(),
                                     PredefinedStringType(),
                                     f.Identifier,
                                     StringLiteralExpression(f.Id));
