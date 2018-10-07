@@ -302,5 +302,25 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
+        public async Task TestNoDiagnostic_DelegateInvoke()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    delegate bool D(string s);
+
+    void M(Func<string, bool> func)
+    {
+        D d = null;
+
+        M(f => d(f));
+    }
+}
+");
+        }
     }
 }

@@ -60,6 +60,9 @@ namespace Roslynator.CSharp.Analysis
             if (!(semanticModel.GetSymbol(invocationExpression, cancellationToken) is IMethodSymbol methodSymbol))
                 return;
 
+            if (methodSymbol.MethodKind == MethodKind.DelegateInvoke)
+                return;
+
             bool isReduced = methodSymbol.MethodKind == MethodKind.ReducedExtension;
 
             if (!methodSymbol.IsStatic
@@ -141,6 +144,9 @@ namespace Roslynator.CSharp.Analysis
             CancellationToken cancellationToken = context.CancellationToken;
 
             if (!(semanticModel.GetSymbol(invocationExpression, cancellationToken) is IMethodSymbol methodSymbol))
+                return;
+
+            if (methodSymbol.MethodKind == MethodKind.DelegateInvoke)
                 return;
 
             if (!methodSymbol.IsStatic
@@ -239,6 +245,9 @@ namespace Roslynator.CSharp.Analysis
             CancellationToken cancellationToken = context.CancellationToken;
 
             if (!(semanticModel.GetSymbol(invocationExpression, cancellationToken) is IMethodSymbol methodSymbol))
+                return;
+
+            if (methodSymbol.MethodKind == MethodKind.DelegateInvoke)
                 return;
 
             if (!methodSymbol.IsStatic
