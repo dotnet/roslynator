@@ -71,9 +71,31 @@ namespace Roslynator.CSharp.Analysis
             if (namedTypeSymbol.GetMembers().Any(f => f.IsVirtual))
                 return;
 
+            if (ContainsDerivedType(namedTypeSymbol, namedTypeSymbol.GetTypeMembers()))
+                return;
+
             var classDeclaration = (ClassDeclarationSyntax)namedTypeSymbol.GetSyntax(context.CancellationToken);
 
             context.ReportDiagnostic(DiagnosticDescriptors.MakeClassSealed, classDeclaration.Identifier);
+        }
+
+        private static bool ContainsDerivedType(
+            INamedTypeSymbol typeSymbol,
+            ImmutableArray<INamedTypeSymbol> typeMembers)
+        {
+            foreach (INamedTypeSymbol typeMember in typeMembers)
+            {
+                if (typeMember.TypeKind == TypeKind.Class
+                    && typeMember.OriginalDefinition.BaseType?.Equals(typeSymbol) == true)
+                {
+                    return true;
+                }
+
+                if (ContainsDerivedType(typeSymbol, typeMember.GetTypeMembers()))
+                    return true;
+            }
+
+            return false;
         }
     }
 }
