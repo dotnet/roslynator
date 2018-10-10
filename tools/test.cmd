@@ -1,8 +1,8 @@
 @echo off
 
-"C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Roslynator.sln" ^
+"C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\Tests\Tests.sln" ^
  /t:Clean,Build ^
- /p:Configuration=DebugTests,RunCodeAnalysis=false ^
+ /p:Configuration=Debug,RunCodeAnalysis=false ^
  /v:minimal ^
  /m
 
