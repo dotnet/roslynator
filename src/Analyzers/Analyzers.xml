@@ -3475,7 +3475,7 @@ Unused parameter is not reported when its name consists of underscore(s).</Remar
     <Title>Unconstrained type parameter checked for null.</Title>
     <MessageFormat>Unconstrained type parameter checked for null.</MessageFormat>
     <Category>Usage</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>

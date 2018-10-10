@@ -1737,7 +1737,7 @@ namespace Roslynator.CSharp
             title:              "Unconstrained type parameter checked for null.", 
             messageFormat:      "Unconstrained type parameter checked for null.", 
             category:           DiagnosticCategories.Usage, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnconstrainedTypeParameterCheckedForNull}", 
