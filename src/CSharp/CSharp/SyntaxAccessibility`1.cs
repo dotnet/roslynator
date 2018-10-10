@@ -91,7 +91,7 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns an explicit accessibility of the specified declaration.
         /// </summary>
-        /// <param name="classDeclaration"></param>
+        /// <param name="declaration"></param>
         /// <returns></returns>
         public abstract Accessibility GetExplicitAccessibility(TNode declaration);
 

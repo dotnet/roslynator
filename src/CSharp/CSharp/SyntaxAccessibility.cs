@@ -254,7 +254,7 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns an explicit accessibility of the specified modifiers.
         /// </summary>
-        /// <param name="declaration"></param>
+        /// <param name="modifiers"></param>
         /// <returns></returns>
         public static Accessibility GetExplicitAccessibility(SyntaxTokenList modifiers)
         {
