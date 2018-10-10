@@ -32,6 +32,12 @@ namespace Roslynator.CSharp.Analysis
         {
             var interpolation = (InterpolationSyntax)context.Node;
 
+            if (interpolation.AlignmentClause != null)
+                return;
+
+            if (interpolation.FormatClause != null)
+                return;
+
             StringLiteralExpressionInfo stringLiteralInfo = SyntaxInfo.StringLiteralExpressionInfo(interpolation.Expression);
 
             if (!stringLiteralInfo.Success)
