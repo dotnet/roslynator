@@ -51,8 +51,6 @@ namespace Roslynator.CSharp
             if (_map.TryGetValue(name, out XmlElementKind kind))
                 return kind;
 
-            Debug.Fail(name);
-
             return XmlElementKind.None;
         }
 

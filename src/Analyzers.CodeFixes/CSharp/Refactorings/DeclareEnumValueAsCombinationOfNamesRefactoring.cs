@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Roslynator.CSharp.CSharpFactory;
-using static Roslynator.CSharp.Analysis.DeclareEnumValueAsCombinationOfNamesAnalyzer;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -24,13 +23,13 @@ namespace Roslynator.CSharp.Refactorings
 
             IFieldSymbol enumMemberSymbol = semanticModel.GetDeclaredSymbol(enumMemberDeclaration, cancellationToken);
 
-            ImmutableArray<EnumFieldInfo> infos = EnumFieldInfo.CreateRange(enumMemberSymbol.ContainingType);
+            ImmutableArray<EnumFieldSymbolInfo> infos = EnumFieldSymbolInfo.CreateRange(enumMemberSymbol.ContainingType);
 
             ExpressionSyntax value = enumMemberDeclaration.EqualsValue?.Value;
 
-            var info = new EnumFieldInfo(enumMemberSymbol);
+            var info = new EnumFieldSymbolInfo(enumMemberSymbol);
 
-            List<EnumFieldInfo> values = info.Decompose(infos);
+            List<EnumFieldSymbolInfo> values = info.Decompose(infos);
 
             values.Sort((f, g) =>
             {
@@ -61,6 +60,11 @@ namespace Roslynator.CSharp.Refactorings
             newValue = newValue.WithFormatterAnnotation();
 
             return await document.ReplaceNodeAsync(value, newValue, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static IdentifierNameSyntax ToIdentifierName(this in EnumFieldSymbolInfo info)
+        {
+            return SyntaxFactory.IdentifierName(info.Symbol.Name);
         }
     }
 }

@@ -46,10 +46,13 @@ namespace Roslynator
             return (value != null) ? unchecked(hash + value.GetHashCode()) : hash;
         }
 
-        public static int CombineValues<T>(IEnumerable<T> values, int maxItemsToHash = int.MaxValue)
+        public static int CombineValues<T>(IEnumerable<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
                 return 0;
+
+            if (comparer == null)
+                comparer = EqualityComparer<T>.Default;
 
             int hash = 0;
 
@@ -59,8 +62,8 @@ namespace Roslynator
                 if (count >= maxItemsToHash)
                     break;
 
-                if (!EqualityComparer<T>.Default.Equals(value, default(T)))
-                    hash = Combine(value.GetHashCode(), hash);
+                if (!comparer.Equals(value, default(T)))
+                    hash = Combine(comparer.GetHashCode(value), hash);
 
                 count++;
             }
@@ -68,10 +71,13 @@ namespace Roslynator
             return hash;
         }
 
-        public static int CombineValues<T>(T[] values, int maxItemsToHash = int.MaxValue)
+        public static int CombineValues<T>(T[] values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
         {
             if (values == null)
                 return 0;
+
+            if (comparer == null)
+                comparer = EqualityComparer<T>.Default;
 
             int hash = 0;
 
@@ -81,17 +87,20 @@ namespace Roslynator
             {
                 T value = values[i];
 
-                if (!EqualityComparer<T>.Default.Equals(value, default(T)))
-                    hash = Combine(value.GetHashCode(), hash);
+                if (!comparer.Equals(value, default(T)))
+                    hash = Combine(comparer.GetHashCode(value), hash);
             }
 
             return hash;
         }
 
-        public static int CombineValues<T>(ImmutableArray<T> values, int maxItemsToHash = int.MaxValue)
+        public static int CombineValues<T>(ImmutableArray<T> values, IEqualityComparer<T> comparer = null, int maxItemsToHash = int.MaxValue)
         {
             if (values.IsDefaultOrEmpty)
                 return 0;
+
+            if (comparer == null)
+                comparer = EqualityComparer<T>.Default;
 
             int hash = 0;
 
@@ -101,8 +110,8 @@ namespace Roslynator
             {
                 T value = values[i];
 
-                if (!EqualityComparer<T>.Default.Equals(value, default(T)))
-                    hash = Combine(value.GetHashCode(), hash);
+                if (!comparer.Equals(value, default(T)))
+                    hash = Combine(comparer.GetHashCode(value), hash);
             }
 
             return hash;

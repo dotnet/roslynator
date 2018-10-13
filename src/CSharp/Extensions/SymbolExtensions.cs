@@ -18,6 +18,37 @@ namespace Roslynator
     public static class SymbolExtensions
     {
         #region ISymbol
+        internal static IEnumerable<ISymbol> FindImplementedInterfaceMembers(this ISymbol symbol, bool allInterfaces = false)
+        {
+            if (symbol == null)
+                throw new ArgumentNullException(nameof(symbol));
+
+            return Iterator();
+
+            IEnumerable<ISymbol> Iterator()
+            {
+                INamedTypeSymbol containingType = symbol.ContainingType;
+
+                if (containingType != null)
+                {
+                    ImmutableArray<INamedTypeSymbol> interfaces = containingType.GetInterfaces(allInterfaces);
+
+                    for (int i = 0; i < interfaces.Length; i++)
+                    {
+                        ImmutableArray<ISymbol> members = interfaces[i].GetMembers();
+
+                        for (int j = 0; j < members.Length; j++)
+                        {
+                            if (symbol.Equals(containingType.FindImplementationForInterfaceMember(members[j])))
+                            {
+                                yield return members[j];
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         internal static ISymbol FindFirstImplementedInterfaceMember(this ISymbol symbol, bool allInterfaces = false)
         {
             if (symbol == null)
@@ -471,6 +502,20 @@ namespace Roslynator
                 {
                     return false;
                 }
+
+                symbol = symbol.ContainingType;
+
+            } while (symbol != null);
+
+            return true;
+        }
+
+        internal static bool IsPubliclyOrInternallyVisible(this ISymbol symbol)
+        {
+            do
+            {
+                if (symbol.DeclaredAccessibility == Accessibility.Private)
+                    return false;
 
                 symbol = symbol.ContainingType;
 

@@ -8,11 +8,14 @@ namespace Roslynator
     {
         public static readonly MetadataName System_ArgumentException = new MetadataName(Namespaces.System, "ArgumentException");
         public static readonly MetadataName System_ArgumentNullException = new MetadataName(Namespaces.System, "ArgumentNullException");
+        public static readonly MetadataName System_AttributeUsageAttribute = new MetadataName(Namespaces.System, "AttributeUsageAttribute");
         public static readonly MetadataName System_Collections_Generic = new MetadataName(Namespaces.System_Collections, "Generic");
         public static readonly MetadataName System_Collections_Generic_List_T = new MetadataName(Namespaces.System_Collections_Generic, "List`1");
         public static readonly MetadataName System_Collections_IDictionary = new MetadataName(Namespaces.System_Collections, "IDictionary");
         public static readonly MetadataName System_Collections_Immutable_ImmutableArray_T = new MetadataName(Namespaces.System_Collections_Immutable, "ImmutableArray`1");
         public static readonly MetadataName System_ComponentModel_INotifyPropertyChanged = new MetadataName(Namespaces.System_ComponentModel, "INotifyPropertyChanged");
+        public static readonly MetadataName System_Diagnostics = new MetadataName(Namespaces.System, "Diagnostics");
+        public static readonly MetadataName System_Diagnostics_CodeAnalysis = new MetadataName(Namespaces.System_Diagnostics, "CodeAnalysis");
         public static readonly MetadataName System_Diagnostics_Debug = new MetadataName(Namespaces.System_Diagnostics, "Debug");
         public static readonly MetadataName System_Diagnostics_DebuggerDisplayAttribute = new MetadataName(Namespaces.System_Diagnostics, "DebuggerDisplayAttribute");
         public static readonly MetadataName System_Enum = new MetadataName(Namespaces.System, "Enum");
@@ -29,6 +32,8 @@ namespace Roslynator
         public static readonly MetadataName System_Linq_IQueryable_T = new MetadataName(Namespaces.System_Linq, "IQueryable`1");
         public static readonly MetadataName System_NonSerializedAttribute = new MetadataName(Namespaces.System, "NonSerializedAttribute");
         public static readonly MetadataName System_ObsoleteAttribute = new MetadataName(Namespaces.System, "ObsoleteAttribute");
+        public static readonly MetadataName System_Reflection = new MetadataName(Namespaces.System, "Reflection");
+        public static readonly MetadataName System_Runtime_CompilerServices = new MetadataName(Namespaces.System_Runtime, "CompilerServices");
         public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable = new MetadataName(Namespaces.System_Runtime_CompilerServices, "ConfiguredTaskAwaitable");
         public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = new MetadataName(Namespaces.System_Runtime_CompilerServices, "ConfiguredTaskAwaitable`1");
         public static readonly MetadataName System_Runtime_InteropServices_LayoutKind = new MetadataName(Namespaces.System_Runtime_InteropServices, "LayoutKind");
@@ -55,6 +60,7 @@ namespace Roslynator
             public static readonly ImmutableArray<string> System_Diagnostics = ImmutableArray.Create("System", "Diagnostics");
             public static readonly ImmutableArray<string> System_Linq = ImmutableArray.Create("System", "Linq");
             public static readonly ImmutableArray<string> System_Linq_Expressions = ImmutableArray.Create("System", "Linq", "Expressions");
+            public static readonly ImmutableArray<string> System_Runtime = ImmutableArray.Create("System", "Runtime");
             public static readonly ImmutableArray<string> System_Runtime_CompilerServices = ImmutableArray.Create("System", "Runtime", "CompilerServices");
             public static readonly ImmutableArray<string> System_Runtime_InteropServices = ImmutableArray.Create("System", "Runtime", "InteropServices");
             public static readonly ImmutableArray<string> System_Runtime_Serialization = ImmutableArray.Create("System", "Runtime", "Serialization");

@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.1.0.0</Version>
+    <AssemblyName>Roslynator.Documentation</AssemblyName>
+    <RootNamespace>Roslynator.Documentation</RootNamespace>
+    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Documentation.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Documentation.snk" />
+  </ItemGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\$(Configuration)\netstandard1.3\Roslynator.Documentation.xml</DocumentationFile>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <PackageId>Roslynator.Documentation</PackageId>
+    <PackageVersion>0.1.0-beta</PackageVersion>
+    <Authors>Josef Pihrt</Authors>
+    <Company></Company>
+    <Description>This API enables to generate documentation for your .NET library
+
+Commonly Used Types:
+Roslynator.Documentation.DocumentationWriter
+Roslynator.Documentation.DocumentationGenerator</Description>
+    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>http://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>Roslyn;Documentation;GitHub;C#;CSharp</PackageTags>
+    <RepositoryUrl>http://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.0" />
+    <PackageReference Include="DotMarkdown" Version="0.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\CSharp\CSharp.csproj" />
+  </ItemGroup>
+
+</Project>

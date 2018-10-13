@@ -47,20 +47,22 @@ namespace Roslynator.CSharp
                     return 12;
                 case SyntaxKind.UnsafeKeyword:
                     return 13;
-                case SyntaxKind.VolatileKeyword:
+                case SyntaxKind.FixedKeyword:
                     return 14;
-                case SyntaxKind.AsyncKeyword:
+                case SyntaxKind.VolatileKeyword:
                     return 15;
-                case SyntaxKind.PartialKeyword:
+                case SyntaxKind.AsyncKeyword:
                     return 16;
-                case SyntaxKind.ThisKeyword:
+                case SyntaxKind.PartialKeyword:
                     return 17;
-                case SyntaxKind.RefKeyword:
+                case SyntaxKind.ThisKeyword:
                     return 18;
-                case SyntaxKind.OutKeyword:
+                case SyntaxKind.RefKeyword:
                     return 19;
-                case SyntaxKind.InKeyword:
+                case SyntaxKind.OutKeyword:
                     return 20;
+                case SyntaxKind.InKeyword:
+                    return 21;
                 default:
                     {
                         Debug.Fail($"unknown modifier '{kind}'");

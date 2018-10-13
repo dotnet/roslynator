@@ -1,0 +1,32 @@
+﻿<Project>
+
+  <Target Name="GenerateDocumentation" AfterTargets="RoslynatorInitialize" Condition=" '$(Configuration)' == 'Release'">
+
+    <PropertyGroup>
+      <RoslynatorAssemblies>&quot;$(TargetPath)&quot;</RoslynatorAssemblies>
+      <RoslynatorAssemblyReferencesFile>$(TargetDir)Roslynator.assemblyreferences</RoslynatorAssemblyReferencesFile>
+      <RoslynatorAssemblyReferences>&quot;$(RoslynatorAssemblyReferencesFile)&quot; &quot;$(TargetPath)&quot;</RoslynatorAssemblyReferences>
+    </PropertyGroup>
+
+    <WriteLinesToFile File="$(RoslynatorAssemblyReferencesFile)" Lines="@(_ResolveAssemblyReferenceResolvedFiles)" Overwrite="true" Encoding="Unicode" />
+
+    <Exec Command="$(RoslynatorExe) generate-doc ^
+      -a $(RoslynatorAssemblies) ^
+      -r &quot;$(RoslynatorAssemblyReferences)&quot; ^
+      -o &quot;$(SolutionDir)docs&quot; ^
+      -h &quot;API Reference&quot;"
+          LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+
+    <Exec Command="$(RoslynatorExe) generate-declarations ^
+      -a $(RoslynatorAssemblies) ^
+      -r &quot;$(RoslynatorAssemblyReferences)&quot; ^
+      -o &quot;$(SolutionDir)docs\api.cs&quot;"
+          LogStandardErrorAsError="true" ConsoleToMSBuild="true">
+      <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
+    </Exec>
+
+  </Target>
+
+</Project>

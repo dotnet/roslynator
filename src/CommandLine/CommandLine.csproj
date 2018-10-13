@@ -1,0 +1,54 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net461</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.1.0.0</Version>
+    <AssemblyName>Roslynator</AssemblyName>
+    <RootNamespace>Roslynator.CommandLine</RootNamespace>
+    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <LangVersion>latest</LangVersion>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>CommandLine.snk</AssemblyOriginatorKeyFile>
+    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <TrimFilesRootFiles Include="System.Runtime.InteropServices.RuntimeInformation.dll" />
+    <TrimFilesRootFiles Include="System.Diagnostics.Tracing.dll" />
+    <TrimFilesRootFiles Include="System.Composition.Convention.dll" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <NuspecFile>CommandLine.nuspec</NuspecFile> 
+    <IntermediatePackDir>$(MSBuildProjectDirectory)/bin/$(Configuration)/publish/</IntermediatePackDir>
+    <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
+    <NuspecProperties>publishDir=$([MSBuild]::NormalizeDirectory($(IntermediatePackDir)))</NuspecProperties>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="_._" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="CommandLineParser" Version="2.3.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.9.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="2.9.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="2.9.0" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.0.31" />
+    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Documentation\Documentation.csproj" />
+    <ProjectReference Include="..\CodeFixes.FixAll\CodeFixes.FixAll.csproj" />
+  </ItemGroup>
+
+</Project>

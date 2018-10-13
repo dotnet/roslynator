@@ -87,7 +87,24 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\docs\HowToConfigureAnalyzers.md = ..\docs\HowToConfigureAnalyzers.md
 		..\docs\HowToConfigureRefactorings.md = ..\docs\HowToConfigureRefactorings.md
 		..\docs\HowToCustomizeRulesForProject.md = ..\docs\HowToCustomizeRulesForProject.md
+		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
+		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md
 		..\docs\RoslynatorForVisualStudioCode.md = ..\docs\RoslynatorForVisualStudioCode.md
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "Documentation\Documentation.csproj", "{BE5E7831-F687-47E6-BC60-969BDEA93EAC}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLine", "CommandLine\CommandLine.csproj", "{A865E4D9-30C3-4CC8-A1AB-A897A7A1DA0C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFixes.FixAll", "CodeFixes.FixAll\CodeFixes.FixAll.csproj", "{02400C27-6E98-4840-A75C-0635C99B8814}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{A16068FE-9E6C-45D2-8114-CC189600AFA2}"
+	ProjectSection(SolutionItems) = preProject
+		..\docs\cli\fix-command.md = ..\docs\cli\fix-command.md
+		..\docs\cli\generate-declarations-command.md = ..\docs\cli\generate-declarations-command.md
+		..\docs\cli\generate-doc-command.md = ..\docs\cli\generate-doc-command.md
+		..\docs\cli\generate-doc-root-command.md = ..\docs\cli\generate-doc-root-command.md
+		..\docs\cli\README.md = ..\docs\cli\README.md
 	EndProjectSection
 EndProject
 Global
@@ -195,6 +212,14 @@ Global
 		{51056D0E-3697-4419-9760-B46BF3B4A16C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{51056D0E-3697-4419-9760-B46BF3B4A16C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{51056D0E-3697-4419-9760-B46BF3B4A16C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE5E7831-F687-47E6-BC60-969BDEA93EAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE5E7831-F687-47E6-BC60-969BDEA93EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A865E4D9-30C3-4CC8-A1AB-A897A7A1DA0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A865E4D9-30C3-4CC8-A1AB-A897A7A1DA0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02400C27-6E98-4840-A75C-0635C99B8814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02400C27-6E98-4840-A75C-0635C99B8814}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02400C27-6E98-4840-A75C-0635C99B8814}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02400C27-6E98-4840-A75C-0635C99B8814}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -222,6 +247,7 @@ Global
 		{9960FC47-14B1-492F-918C-114FDB75790E} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
 		{51056D0E-3697-4419-9760-B46BF3B4A16C} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
 		{97FBDF71-F240-48F2-B29A-E6B27597E38B} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
+		{A16068FE-9E6C-45D2-8114-CC189600AFA2} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1943010-8F47-4798-9A3D-97BC24CF1AC4}

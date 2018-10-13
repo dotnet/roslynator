@@ -1,0 +1,27 @@
+﻿<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>Roslynator.CommandLine</id>
+    <version>0.1.0-beta</version>
+    <authors>Josef Pihrt</authors>
+    <owners>Josef Pihrt</owners>
+    <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
+    <iconUrl>http://pihrt.net/images/Roslynator.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Command line tool for Roslynator</description>
+    <summary>Command line tool for Roslynator</summary>
+    <copyright>Copyright (c) 2017-2018 Josef Pihrt</copyright>
+    <tags>C# CSharp CLI Roslyn</tags>
+    <developmentDependency>true</developmentDependency>
+    <repository type="git" url="http://github.com/JosefPihrt/Roslynator.git" />
+  </metadata>
+  <files>
+    <file src="_._" target="lib/net45/" />
+    <file src="_._" target="lib/netstandard1.0/" />
+    <file src="CommandLine.targets" target="build/net45/Roslynator.CommandLine.targets" />
+    <file src="CommandLine.targets" target="build/netstandard1.0/Roslynator.CommandLine.targets" />
+    <file src="Roslynator.targets" target="tools/" />
+    <file src="$publishDir$\net461\**\*" target="tools/net461/" exclude="**\*.pdb;**\*.xml" />
+  </files>
+</package>

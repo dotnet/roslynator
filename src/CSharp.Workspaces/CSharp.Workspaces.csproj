@@ -44,10 +44,13 @@ Roslynator.NameGenerator</Description>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.0.0-beta2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.3.0" />
+    <PackageReference Include="Roslynator.CommandLine" Version="0.1.0-beta" PrivateAssets="All" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
   </ItemGroup>
+
+  <Import Project="GenerateDocumentation.targets" />
 
 </Project>

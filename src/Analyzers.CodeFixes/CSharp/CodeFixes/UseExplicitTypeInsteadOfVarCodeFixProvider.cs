@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.CodeFixes
                     cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
                     GetEquivalenceKey(diagnostic));
 
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
+                context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
     }

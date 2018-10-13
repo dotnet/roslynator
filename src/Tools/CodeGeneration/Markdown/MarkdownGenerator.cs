@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 using DotMarkdown;
 using DotMarkdown.Linq;
@@ -18,41 +17,6 @@ namespace Roslynator.CodeGeneration.Markdown
         private static void AddFootnote(this MDocument document)
         {
             document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
-        }
-
-        public static string GenerateAssemblyReadme(string assemblyName)
-        {
-            Assembly assembly = Assembly.Load(new AssemblyName(assemblyName));
-
-            var doc = new MDocument(Heading1(assemblyName + " API"));
-
-            foreach (IGrouping<string, TypeInfo> grouping in assembly
-                .DefinedTypes
-                .Where(f => f.IsPublic)
-                .GroupBy(f => f.Namespace)
-                .OrderBy(f => f.Key))
-            {
-                doc.Add(Heading2("Namespace " + grouping.Key));
-
-                AddHeadingWithTypes(doc, "Static Classes", grouping.Where(f => f.IsClass && f.IsStatic()));
-                AddHeadingWithTypes(doc, "Classes", grouping.Where(f => f.IsClass && !f.IsStatic()));
-                AddHeadingWithTypes(doc, "Structs", grouping.Where(f => f.IsValueType));
-                AddHeadingWithTypes(doc, "Interfaces", grouping.Where(f => f.IsInterface));
-            }
-
-            doc.AddFootnote();
-
-            return doc.ToString();
-
-            void AddHeadingWithTypes(MContainer parent, string name, IEnumerable<TypeInfo> types)
-            {
-                if (types.Any())
-                {
-                    parent.Add(Heading3(name), types
-                        .OrderBy(f => f.Name)
-                        .Select(f => BulletItem(f.Name)));
-                }
-            }
         }
 
         public static string CreateReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
