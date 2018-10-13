@@ -44,6 +44,10 @@ namespace Roslynator.CSharp
                 case SyntaxKind.PropertyDeclaration:
                 case SyntaxKind.IndexerDeclaration:
                 case SyntaxKind.EventDeclaration:
+                case SyntaxKind.GetAccessorDeclaration:
+                case SyntaxKind.SetAccessorDeclaration:
+                case SyntaxKind.AddAccessorDeclaration:
+                case SyntaxKind.RemoveAccessorDeclaration:
                     {
                         return true;
                     }
@@ -80,6 +84,8 @@ namespace Roslynator.CSharp
                     return CreateImpl(eventDeclaration, semanticModel, cancellationToken);
                 case VariableDeclaratorSyntax variableDeclarator:
                     return CreateImpl(variableDeclarator, semanticModel, cancellationToken);
+                case AccessorDeclarationSyntax accessorDeclaration:
+                    return CreateImpl(accessorDeclaration, semanticModel, cancellationToken);
                 default:
                     return Default;
             }
@@ -229,6 +235,24 @@ namespace Roslynator.CSharp
                 return Default;
 
             return new OverriddenSymbolInfo(eventSymbol, overriddenEvent);
+        }
+
+        private static OverriddenSymbolInfo CreateImpl(
+            AccessorDeclarationSyntax accessorDeclaration,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            IMethodSymbol methodSymbol = semanticModel.GetDeclaredSymbol(accessorDeclaration, cancellationToken);
+
+            if (methodSymbol == null)
+                return Default;
+
+            IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
+
+            if (overriddenMethod == null)
+                return Default;
+
+            return new OverriddenSymbolInfo(methodSymbol, overriddenMethod);
         }
 
         public override bool Equals(object obj)

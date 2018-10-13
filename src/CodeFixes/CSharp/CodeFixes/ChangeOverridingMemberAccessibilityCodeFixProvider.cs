@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -31,44 +32,48 @@ namespace Roslynator.CSharp.CodeFixes
                 root,
                 context.Span,
                 out SyntaxNode node,
-                predicate: f => OverriddenSymbolInfo.CanCreate(f)))
+                predicate: OverriddenSymbolInfo.CanCreate))
             {
                 return;
             }
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            OverriddenSymbolInfo overrideInfo = OverriddenSymbolInfo.Create(node, semanticModel, context.CancellationToken);
+
+            if (!overrideInfo.Success)
+                return;
+
+            Accessibility newAccessibility = overrideInfo.OverriddenSymbol.DeclaredAccessibility;
+
+            CodeAction codeAction = CodeAction.Create(
+                $"Change accessibility to '{SyntaxFacts.GetText(newAccessibility)}'",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.CannotChangeAccessModifiersWhenOverridingInheritedMember:
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    if (node.Kind() == SyntaxKind.VariableDeclarator)
+                    {
+                        node = node.Parent.Parent;
+                    }
 
-                            OverriddenSymbolInfo overrideInfo = OverriddenSymbolInfo.Create(node, semanticModel, context.CancellationToken);
+                    SyntaxNode newNode;
 
-                            if (!overrideInfo.Success)
-                                break;
+                    if (newAccessibility == Accessibility.Public
+                        && node is AccessorDeclarationSyntax)
+                    {
+                        newNode = SyntaxAccessibility.WithoutExplicitAccessibility(node);
+                    }
+                    else
+                    {
+                        newNode = SyntaxAccessibility.WithExplicitAccessibility(node, newAccessibility);
+                    }
 
-                            Accessibility newAccessibility = overrideInfo.OverriddenSymbol.DeclaredAccessibility;
+                    return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
+                },
+                GetEquivalenceKey(diagnostic));
 
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Change accessibility to '{SyntaxFacts.GetText(newAccessibility)}'",
-                                cancellationToken =>
-                                {
-                                    if (node.Kind() == SyntaxKind.VariableDeclarator)
-                                        node = node.Parent.Parent;
-
-                                    SyntaxNode newNode = SyntaxAccessibility.WithExplicitAccessibility(node, newAccessibility);
-
-                                    return context.Document.ReplaceNodeAsync(node, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }
