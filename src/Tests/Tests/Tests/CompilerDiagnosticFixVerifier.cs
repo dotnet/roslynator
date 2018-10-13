@@ -10,14 +10,13 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.Tests.Text;
 using Xunit;
 using static Roslynator.Tests.CompilerDiagnosticVerifier;
 
 namespace Roslynator.Tests
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public abstract class CompilerCodeFixVerifier : CodeVerifier
+    public abstract class CompilerDiagnosticFixVerifier : CodeVerifier
     {
         public abstract string DiagnosticId { get; }
 

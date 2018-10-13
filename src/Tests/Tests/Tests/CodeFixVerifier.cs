@@ -32,6 +32,7 @@ namespace Roslynator.Tests
             string source,
             string expected,
             IEnumerable<(string source, string expected)> additionalData = null,
+            string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -52,6 +53,7 @@ namespace Roslynator.Tests
                 result.Text,
                 expected,
                 additionalData,
+                equivalenceKey,
                 options,
                 cancellationToken).ConfigureAwait(false);
         }
@@ -60,6 +62,7 @@ namespace Roslynator.Tests
             string theory,
             string fromData,
             string toData,
+            string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -73,13 +76,13 @@ namespace Roslynator.Tests
 
                 await VerifyDiagnosticAsync(result.Text, diagnostics, additionalSources: null, options: options, cancellationToken).ConfigureAwait(false);
 
-                await VerifyFixAsync(result.Text, expected, additionalData: null, options, cancellationToken).ConfigureAwait(false);
+                await VerifyFixAsync(result.Text, expected, additionalData: null, equivalenceKey: equivalenceKey, options: options, cancellationToken: cancellationToken).ConfigureAwait(false);
             }
             else
             {
                 await VerifyDiagnosticAsync(source, span, options, cancellationToken).ConfigureAwait(false);
 
-                await VerifyFixAsync(source, expected, additionalData: null, options, cancellationToken).ConfigureAwait(false);
+                await VerifyFixAsync(source, expected, additionalData: null, equivalenceKey: equivalenceKey, options: options, cancellationToken: cancellationToken).ConfigureAwait(false);
             }
         }
 
@@ -87,6 +90,7 @@ namespace Roslynator.Tests
             string theory,
             string fromData,
             string toData,
+            string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -95,15 +99,16 @@ namespace Roslynator.Tests
             await VerifyFixAsync(
                 source: source,
                 expected: expected,
+                equivalenceKey: equivalenceKey,
                 options: options,
                 cancellationToken: cancellationToken).ConfigureAwait(false);
         }
 
-        //TODO: add parameter equivalenceKey
         public async Task VerifyFixAsync(
             string source,
             string expected,
             IEnumerable<(string source, string expected)> additionalData = null,
+            string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -169,8 +174,9 @@ namespace Roslynator.Tests
                     diagnostic,
                     (a, d) =>
                     {
-                        if (d.Contains(diagnostic)
-                            && action == null)
+                        if (action == null
+                            && (equivalenceKey == null || string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal))
+                            && d.Contains(diagnostic))
                         {
                             action = a;
                         }
@@ -236,6 +242,7 @@ namespace Roslynator.Tests
         public async Task VerifyNoFixAsync(
             string source,
             IEnumerable<string> additionalSources = null,
+            string equivalenceKey = null,
             CodeVerificationOptions options = null,
             CancellationToken cancellationToken = default(CancellationToken))
         {
@@ -289,7 +296,14 @@ namespace Roslynator.Tests
                 var context = new CodeFixContext(
                     document,
                     diagnostic,
-                    (_, d) => Assert.True(!d.Contains(diagnostic), "No code fix expected."),
+                    (a, d) =>
+                    {
+                        if ((equivalenceKey == null || string.Equals(a.EquivalenceKey, equivalenceKey, StringComparison.Ordinal))
+                            && d.Contains(diagnostic))
+                        {
+                            Assert.True(false, "No code fix expected.");
+                        }
+                    },
                     CancellationToken.None);
 
                 await FixProvider.RegisterCodeFixesAsync(context).ConfigureAwait(false);

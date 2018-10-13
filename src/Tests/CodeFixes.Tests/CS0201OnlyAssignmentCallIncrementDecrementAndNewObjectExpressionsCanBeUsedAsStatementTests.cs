@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS0201OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatementTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS0201OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatementTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement;
 

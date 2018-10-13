@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS0266CannotImplicitlyConvertTypeExplicitConversionExistsTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS0266CannotImplicitlyConvertTypeExplicitConversionExistsTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CannotImplicitlyConvertTypeExplicitConversionExists;
 

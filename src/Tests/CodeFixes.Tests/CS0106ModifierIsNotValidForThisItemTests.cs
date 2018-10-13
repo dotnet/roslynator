@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS0106ModifierIsNotValidForThisItemTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS0106ModifierIsNotValidForThisItemTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ModifierIsNotValidForThisItem;
 

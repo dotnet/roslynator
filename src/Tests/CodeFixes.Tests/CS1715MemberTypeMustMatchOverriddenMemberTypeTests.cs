@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS1715MemberTypeMustMatchOverriddenMemberTypeTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS1715MemberTypeMustMatchOverriddenMemberTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType;
 

@@ -8,7 +8,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public abstract class CS0136LocalOrParameterCannotBeDeclaredInThisScopeTests : AbstractCSharpCompilerCodeFixVerifier
+    public abstract class CS0136LocalOrParameterCannotBeDeclaredInThisScopeTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter;
 

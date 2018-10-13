@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public CS1624BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceTypeTests()
         {

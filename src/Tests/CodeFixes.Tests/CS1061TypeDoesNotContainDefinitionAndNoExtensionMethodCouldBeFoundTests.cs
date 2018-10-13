@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS1061TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFoundTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS1061TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFoundTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound;
 

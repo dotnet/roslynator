@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Tests.CSharp
 {
-    public abstract class CSharpCompilerCodeFixVerifier : CompilerCodeFixVerifier
+    public abstract class CSharpCompilerDiagnosticFixVerifier : CompilerDiagnosticFixVerifier
     {
         public override string Language
         {

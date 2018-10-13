@@ -2,12 +2,11 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Roslynator.Tests;
 using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS1620ArgumentMustBePassedWithRefOrOutKeywordTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS1620ArgumentMustBePassedWithRefOrOutKeywordTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.ArgumentMustBePassedWithRefOrOutKeyword;
 

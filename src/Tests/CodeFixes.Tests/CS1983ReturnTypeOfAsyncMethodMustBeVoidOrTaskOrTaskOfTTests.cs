@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public CS1983ReturnTypeOfAsyncMethodMustBeVoidOrTaskOrTaskOfTTests()
         {

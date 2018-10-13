@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS0549NewVirtualMemberInSealedClassTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS0549NewVirtualMemberInSealedClassTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.NewVirtualMemberInSealedClass;
 

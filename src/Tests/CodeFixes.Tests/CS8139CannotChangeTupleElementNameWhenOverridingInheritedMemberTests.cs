@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS8139CannotChangeTupleElementNameWhenOverridingInheritedMemberTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS8139CannotChangeTupleElementNameWhenOverridingInheritedMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember;
 

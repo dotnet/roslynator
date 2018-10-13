@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS0177OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethodTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS0177OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethodTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OutParameterMustBeAssignedToBeforeControlLeavesCurrentMethod;
 

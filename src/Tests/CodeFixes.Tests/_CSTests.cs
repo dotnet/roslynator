@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CSTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CSTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public CSTests()
         {

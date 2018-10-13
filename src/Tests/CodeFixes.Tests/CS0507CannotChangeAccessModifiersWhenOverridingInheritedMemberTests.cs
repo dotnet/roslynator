@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.CodeFixes.Tests
 {
-    public class CS0507CannotChangeAccessModifiersWhenOverridingInheritedMemberTests : AbstractCSharpCompilerCodeFixVerifier
+    public class CS0507CannotChangeAccessModifiersWhenOverridingInheritedMemberTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.CannotChangeAccessModifiersWhenOverridingInheritedMember;
 
