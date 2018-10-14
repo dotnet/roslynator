@@ -165,8 +165,8 @@
     <Rule Id="RCS1138" Action="Warning" /> <!-- Add summary to documentation comment. -->
     <Rule Id="RCS1139" Action="Warning" /> <!-- Add summary element to documentation comment. -->
     <Rule Id="RCS1140" Action="Hidden" /> <!-- Add exception to documentation comment. -->
-    <Rule Id="RCS1141" Action="Info" /> <!-- Add parameter to documentation comment. -->
-    <Rule Id="RCS1142" Action="Info" /> <!-- Add type parameter to documentation comment. -->
+    <Rule Id="RCS1141" Action="Hidden" /> <!-- Add 'param' element to documentation comment. -->
+    <Rule Id="RCS1142" Action="Hidden" /> <!-- Add 'typeparam' element to documentation comment. -->
     <Rule Id="RCS1143" Action="Hidden" /> <!-- Simplify coalesce expression. -->
     <Rule Id="RCS1144" Action="Hidden" /> <!-- Mark containing class as abstract. -->
     <Rule Id="RCS1145" Action="Hidden" /> <!-- Remove redundant 'as' operator. -->
@@ -189,7 +189,7 @@
     <Rule Id="RCS1162" Action="None" /> <!-- Avoid chain of assignments. -->
     <Rule Id="RCS1163" Action="Info" /> <!-- Unused parameter. -->
     <Rule Id="RCS1164" Action="Info" /> <!-- Unused type parameter. -->
-    <Rule Id="RCS1165" Action="Warning" /> <!-- Unconstrained type parameter checked for null. -->
+    <Rule Id="RCS1165" Action="Hidden" /> <!-- Unconstrained type parameter checked for null. -->
     <Rule Id="RCS1166" Action="Info" /> <!-- Value type object is never equal to null. -->
     <Rule Id="RCS1167" Action="Hidden" /> <!-- Overriding member cannot change access modifiers. -->
     <Rule Id="RCS1168" Action="Warning" /> <!-- Parameter name differs from base name. -->
@@ -198,8 +198,8 @@
     <Rule Id="RCS1171" Action="Info" /> <!-- Simplify lazy initialization. -->
     <Rule Id="RCS1172" Action="Warning" /> <!-- Use 'is' operator instead of 'as' operator. -->
     <Rule Id="RCS1173" Action="Info" /> <!-- Use coalesce expression instead of if. -->
-    <Rule Id="RCS1174" Action="Info" /> <!-- Remove redundant async/await. -->
-    <Rule Id="RCS1174FadeOut" Action="Info" />
+    <Rule Id="RCS1174" Action="None" /> <!-- Remove redundant async/await. -->
+    <Rule Id="RCS1174FadeOut" Action="None" />
     <Rule Id="RCS1175" Action="Info" /> <!-- Unused this parameter. -->
     <Rule Id="RCS1176" Action="None" /> <!-- Use 'var' instead of explicit type (when the type is not obvious). -->
     <Rule Id="RCS1177" Action="None" /> <!-- Use 'var' instead of explicit type (in foreach). -->

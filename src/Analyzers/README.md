@@ -125,8 +125,8 @@
 | RCS1138 | [Add summary to documentation comment](../../docs/analyzers/RCS1138.md) | Maintainability | &#x2713; |
 | RCS1139 | [Add summary element to documentation comment](../../docs/analyzers/RCS1139.md) | Maintainability | &#x2713; |
 | RCS1140 | [Add exception to documentation comment](../../docs/analyzers/RCS1140.md) | Maintainability | &#x2713; |
-| RCS1141 | [Add parameter to documentation comment](../../docs/analyzers/RCS1141.md) | Maintainability | &#x2713; |
-| RCS1142 | [Add type parameter to documentation comment](../../docs/analyzers/RCS1142.md) | Maintainability | &#x2713; |
+| RCS1141 | [Add 'param' element to documentation comment](../../docs/analyzers/RCS1141.md) | Maintainability | &#x2713; |
+| RCS1142 | [Add 'typeparam' element to documentation comment](../../docs/analyzers/RCS1142.md) | Maintainability | &#x2713; |
 | RCS1143 | [Simplify coalesce expression](../../docs/analyzers/RCS1143.md) | Simplification | &#x2713; |
 | RCS1145 | [Remove redundant 'as' operator](../../docs/analyzers/RCS1145.md) | Redundancy | &#x2713; |
 | RCS1146 | [Use conditional access](../../docs/analyzers/RCS1146.md) | Usage | &#x2713; |
@@ -152,7 +152,7 @@
 | RCS1171 | [Simplify lazy initialization](../../docs/analyzers/RCS1171.md) | Simplification | &#x2713; |
 | RCS1172 | [Use 'is' operator instead of 'as' operator](../../docs/analyzers/RCS1172.md) | Simplification | &#x2713; |
 | RCS1173 | [Use coalesce expression instead of if](../../docs/analyzers/RCS1173.md) | Simplification | &#x2713; |
-| RCS1174 | [Remove redundant async/await](../../docs/analyzers/RCS1174.md) | Redundancy | &#x2713; |
+| RCS1174 | [Remove redundant async/await](../../docs/analyzers/RCS1174.md) | Redundancy | \- |
 | RCS1175 | [Unused this parameter](../../docs/analyzers/RCS1175.md) | Redundancy | &#x2713; |
 | RCS1176 | [Use 'var' instead of explicit type (when the type is not obvious)](../../docs/analyzers/RCS1176.md) | Simplification | \- |
 | RCS1177 | [Use 'var' instead of explicit type (in foreach)](../../docs/analyzers/RCS1177.md) | Simplification | \- |

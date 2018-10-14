@@ -79,10 +79,10 @@
       <Refactoring Id="RR0076" IsEnabled="true" /> <!-- MergeInterpolationIntoInterpolatedString -->
       <Refactoring Id="RR0077" IsEnabled="true" /> <!-- MergeLocalDeclarations -->
       <Refactoring Id="RR0078" IsEnabled="true" /> <!-- JoinStringExpressions -->
-      <Refactoring Id="RR0079" IsEnabled="true" /> <!-- NegateBinaryExpression -->
-      <Refactoring Id="RR0080" IsEnabled="true" /> <!-- NegateBooleanLiteral -->
-      <Refactoring Id="RR0081" IsEnabled="true" /> <!-- NegateIsExpression -->
-      <Refactoring Id="RR0082" IsEnabled="true" /> <!-- NegateOperator -->
+      <Refactoring Id="RR0079" IsEnabled="true" /> <!-- InvertBinaryExpression -->
+      <Refactoring Id="RR0080" IsEnabled="true" /> <!-- InvertBooleanLiteral -->
+      <Refactoring Id="RR0081" IsEnabled="true" /> <!-- InvertIsExpression -->
+      <Refactoring Id="RR0082" IsEnabled="true" /> <!-- InvertOperator -->
       <Refactoring Id="RR0083" IsEnabled="true" /> <!-- NotifyPropertyChanged -->
       <Refactoring Id="RR0084" IsEnabled="true" /> <!-- ParenthesizeExpression -->
       <Refactoring Id="RR0085" IsEnabled="true" /> <!-- PromoteLocalToParameter -->
@@ -207,6 +207,7 @@
       <Refactoring Id="RR0206" IsEnabled="true" /> <!-- ReplaceForEachWithEnumerator -->
       <Refactoring Id="RR0207" IsEnabled="true" /> <!-- SortCaseLabels -->
       <Refactoring Id="RR0208" IsEnabled="true" /> <!-- AddTagToDocumentationComment -->
+      <Refactoring Id="RR0209" IsEnabled="true" /> <!-- RemoveAsyncAwait -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -245,7 +246,7 @@
       <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- SynchronizeAccessibility (fixes CS0262) -->
       <CodeFix Id="RCF0037" IsEnabled="true" /> <!-- RemoveArgumentList (fixes CS1955) -->
       <CodeFix Id="RCF0038" IsEnabled="true" /> <!-- FixMemberAccessName (fixes CS1061) -->
-      <CodeFix Id="RCF0039" IsEnabled="true" /> <!-- AddArgumentList (fixes CS0023, CS0428, CS0201, CS1526) -->
+      <CodeFix Id="RCF0039" IsEnabled="true" /> <!-- AddArgumentList (fixes CS0023, CS0119, CS0428, CS0201, CS1526) -->
       <CodeFix Id="RCF0040" IsEnabled="true" /> <!-- InitializeLocalVariableWithDefaultValue (fixes CS0165) -->
       <CodeFix Id="RCF0041" IsEnabled="true" /> <!-- ChangeTypeOfLocalVariable (fixes CS0123, CS0407, CS0815) -->
       <CodeFix Id="RCF0042" IsEnabled="true" /> <!-- MakeMemberNonStatic (fixes CS0120) -->

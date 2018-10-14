@@ -21,6 +21,7 @@
 | [CS0112](../../docs/cs/CS0112.md) | A static member 'function' cannot be marked as override, virtual or abstract\. |
 | [CS0114](../../docs/cs/CS0114.md) | 'function1' hides inherited member 'function2'\. To make the current method override that implementation, add the override keyword\. Otherwise add the new keyword\. |
 | [CS0115](../../docs/cs/CS0115.md) | 'function': no suitable method found to override\. |
+| [CS0119](../../docs/cs/CS0119.md) | 'identifier' is a 'construct', which is not valid in the given context\. |
 | [CS0120](../../docs/cs/CS0120.md) | An object reference is required for the nonstatic field, method, or property 'member'\. |
 | [CS0123](../../docs/cs/CS0123.md) | No overload for 'method' matches delegate 'delegate'\. |
 | [CS0126](../../docs/cs/CS0126.md) | An object of a type convertible to 'type' is required\. |

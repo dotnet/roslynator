@@ -5,8 +5,8 @@
     <version>0.1.0-beta</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
-    <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
-    <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
+    <licenseUrl>https://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
+    <projectUrl>https://github.com/JosefPihrt/Roslynator</projectUrl>
     <iconUrl>http://pihrt.net/images/Roslynator.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Command line tool for Roslynator</description>
@@ -14,7 +14,7 @@
     <copyright>Copyright (c) 2017-2018 Josef Pihrt</copyright>
     <tags>C# CSharp CLI Roslyn</tags>
     <developmentDependency>true</developmentDependency>
-    <repository type="git" url="http://github.com/JosefPihrt/Roslynator.git" />
+    <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />
   </metadata>
   <files>
     <file src="_._" target="lib/net45/" />

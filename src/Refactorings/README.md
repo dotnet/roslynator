@@ -81,9 +81,13 @@
 | RR0066 | [Introduce constructor](../../docs/refactorings/RR0066.md) | \- |
 | RR0067 | [Introduce field to lock on](../../docs/refactorings/RR0067.md) | &#x2713; |
 | RR0068 | [Introduce local variable](../../docs/refactorings/RR0068.md) | &#x2713; |
+| RR0079 | [Invert binary expression](../../docs/refactorings/RR0079.md) | &#x2713; |
+| RR0080 | [Invert boolean literal](../../docs/refactorings/RR0080.md) | &#x2713; |
 | RR0160 | [Invert conditional expression](../../docs/refactorings/RR0160.md) | &#x2713; |
 | RR0189 | [Invert if](../../docs/refactorings/RR0189.md) | &#x2713; |
 | RR0162 | [Invert if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
+| RR0081 | [Invert is expression](../../docs/refactorings/RR0081.md) | &#x2713; |
+| RR0082 | [Invert operator](../../docs/refactorings/RR0082.md) | &#x2713; |
 | RR0134 | [Invert prefix/postfix unary operator](../../docs/refactorings/RR0134.md) | &#x2713; |
 | RR0078 | [Join string expressions](../../docs/refactorings/RR0078.md) | &#x2713; |
 | RR0069 | [Make member abstract](../../docs/refactorings/RR0069.md) | &#x2713; |
@@ -94,10 +98,6 @@
 | RR0196 | [Merge if with parent if](../../docs/refactorings/RR0196.md) | &#x2713; |
 | RR0077 | [Merge local declarations](../../docs/refactorings/RR0077.md) | &#x2713; |
 | RR0202 | [Move unsafe context to containing declaration](../../docs/refactorings/RR0202.md) | &#x2713; |
-| RR0079 | [Negate binary expression](../../docs/refactorings/RR0079.md) | &#x2713; |
-| RR0080 | [Negate boolean literal](../../docs/refactorings/RR0080.md) | &#x2713; |
-| RR0081 | [Negate is expression](../../docs/refactorings/RR0081.md) | &#x2713; |
-| RR0082 | [Negate operator](../../docs/refactorings/RR0082.md) | &#x2713; |
 | RR0083 | [Notify property changed](../../docs/refactorings/RR0083.md) | &#x2713; |
 | RR0084 | [Parenthesize expression](../../docs/refactorings/RR0084.md) | &#x2713; |
 | RR0085 | [Promote local to parameter](../../docs/refactorings/RR0085.md) | &#x2713; |
@@ -109,6 +109,7 @@
 | RR0091 | [Remove all region directives](../../docs/refactorings/RR0091.md) | &#x2713; |
 | RR0092 | [Remove all statements](../../docs/refactorings/RR0092.md) | &#x2713; |
 | RR0093 | [Remove all switch sections](../../docs/refactorings/RR0093.md) | &#x2713; |
+| RR0209 | [Remove async/await](../../docs/refactorings/RR0209.md) | &#x2713; |
 | RR0094 | [Remove braces](../../docs/refactorings/RR0094.md) | &#x2713; |
 | RR0095 | [Remove braces from if-else](../../docs/refactorings/RR0095.md) | &#x2713; |
 | RR0096 | [Remove braces from switch section](../../docs/refactorings/RR0096.md) | &#x2713; |

@@ -1,3 +1,26 @@
+### 2.0.0 (2018-10-14)
+
+#### New Features
+
+* Add nuget package [Roslynator.CommandLine](https://nuget.org/packages/Roslynator.CommandLine)
+  * [Fix all diagnostics in a solution](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToFixAllDiagnostics.md)
+  * [Generate API documentation](http://github.com/JosefPihrt/Roslynator/blob/master/docs/HowToGenerateDocumentation.md)
+
+#### Analyzers
+
+* Change default severity of [RCS1141](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1141.md), [RCS1142](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1142.md) and [RCS1165](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1165.md) to 'Hidden'
+* Disable [RCS1174](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1174.md) by default
+* Improve analyzer [RCS1128](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1128.md) - `x.GetValueOrDefault(y)` can be replaced with `x ?? y`
+* Change code fix for [RCS1194](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1194.md) - do not generate "serialization" constructor
+
+#### Refactorings
+
+* Add refactoring [RemoveAsyncAwait](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0209.md)  (RR0209)
+
+#### Code Fixes
+
+* Add code fix for CS0119.
+
 ### 1.9.2 (2018-08-10)
 
 #### Analyzers

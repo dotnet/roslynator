@@ -46,10 +46,10 @@
 | General | [Use linefeed as newline](../../docs/analyzers/RCS1086.md) | RCS1086 | \- |
 | General | [Use space(s) instead of tab](../../docs/analyzers/RCS1088.md) | RCS1088 | \- |
 | Maintainability | [Add exception to documentation comment](../../docs/analyzers/RCS1140.md) | RCS1140 | &#x2713; |
-| Maintainability | [Add parameter to documentation comment](../../docs/analyzers/RCS1141.md) | RCS1141 | &#x2713; |
+| Maintainability | [Add 'param' element to documentation comment](../../docs/analyzers/RCS1141.md) | RCS1141 | &#x2713; |
 | Maintainability | [Add summary element to documentation comment](../../docs/analyzers/RCS1139.md) | RCS1139 | &#x2713; |
 | Maintainability | [Add summary to documentation comment](../../docs/analyzers/RCS1138.md) | RCS1138 | &#x2713; |
-| Maintainability | [Add type parameter to documentation comment](../../docs/analyzers/RCS1142.md) | RCS1142 | &#x2713; |
+| Maintainability | [Add 'typeparam' element to documentation comment](../../docs/analyzers/RCS1142.md) | RCS1142 | &#x2713; |
 | Maintainability | [Declare each type in separate file](../../docs/analyzers/RCS1060.md) | RCS1060 | \- |
 | Maintainability | [Parameter name differs from base name](../../docs/analyzers/RCS1168.md) | RCS1168 | &#x2713; |
 | Maintainability | [Remove original exception from throw statement](../../docs/analyzers/RCS1044.md) | RCS1044 | &#x2713; |
@@ -105,7 +105,7 @@
 | Redundancy | [Remove 'partial' modifier from type with a single part](../../docs/analyzers/RCS1043.md) | RCS1043 | &#x2713; |
 | Redundancy | [Remove redundant 'as' operator](../../docs/analyzers/RCS1145.md) | RCS1145 | &#x2713; |
 | Redundancy | [Remove redundant assignment](../../docs/analyzers/RCS1212.md) | RCS1212 | &#x2713; |
-| Redundancy | [Remove redundant async/await](../../docs/analyzers/RCS1174.md) | RCS1174 | &#x2713; |
+| Redundancy | [Remove redundant async/await](../../docs/analyzers/RCS1174.md) | RCS1174 | \- |
 | Redundancy | [Remove redundant auto-property initialization](../../docs/analyzers/RCS1188.md) | RCS1188 | &#x2713; |
 | Redundancy | [Remove redundant base constructor call](../../docs/analyzers/RCS1071.md) | RCS1071 | &#x2713; |
 | Redundancy | [Remove redundant base interface](../../docs/analyzers/RCS1182.md) | RCS1182 | &#x2713; |

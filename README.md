@@ -7,6 +7,11 @@
 * [Release notes](ChangeLog.md)
 * Follow on [Twitter](https://twitter.com/roslynator)
 
+### New Features
+
+* [Fix all diagnostics in a solution](docs/HowToFixAllDiagnostics.md)
+* [Generate API documentation](docs/HowToGenerateDocumentation.md)
+
 ### Donation
 
 > "It's so good, that I made my first ever donation." Mateusz Piasecki, Roslynator user.
@@ -42,13 +47,17 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 * Package [Roslynator.CSharp](http://www.nuget.org/packages/Roslynator.CSharp/) is a must-have for Roslyn-based development.
 * It is built on top of Roslyn API (namely [Microsoft.CodeAnalysis.CSharp](http://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp/)).
-* For more information, please see API [overview](src/CSharp/README.md).
+<!--* See [API Reference](docs/api/README.md#_top). -->
 
 ### Roslynator.CSharp.Workspaces &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CSharp.Workspaces.svg)](https://nuget.org/packages/Roslynator.CSharp.Workspaces)
 
 * Package [Roslynator.CSharp.Workspaces](http://www.nuget.org/packages/Roslynator.CSharp.Workspaces/) is a must-have for Roslyn-based development.
 * It is built on top of Roslyn API (namely [Microsoft.CodeAnalysis.CSharp.Workspaces](http://www.nuget.org/packages/Microsoft.CodeAnalysis.CSharp.Workspaces/)).
-* For more information, please see API [overview](src/CSharp.Workspaces/README.md).
+<!-- * See [API Reference](docs/api/README.md#_top). -->
+
+### Roslynator.CommandLine &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
+
+* See [Roslynator Command-Line Interface](docs/cli/README.md#_top).
 
 ## Roslynator for VS Code
 
@@ -62,6 +71,8 @@ Please read the [tutorial](docs/RoslynatorForVisualStudioCode.md) how to install
 * [How to Configure Analyzers](docs/HowToConfigureAnalyzers.md)
 * [How to Configure Refactorings](docs/HowToConfigureRefactorings.md)
 * [How to Customize Rules for a Project](docs/HowToCustomizeRulesForProject.md)
+* [How to Fix All Diagnostics in a Solution](docs/HowToFixAllDiagnostics.md)
+* [How to Generate API Documentation](docs/HowToGenerateDocumentation.md)
 
 ## Other Projects
 

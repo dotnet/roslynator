@@ -719,6 +719,16 @@ void Foo()
 * **Syntax**: expression statement, expression in using statement
 ![Introduce local variable](../../images/refactorings/IntroduceLocalVariable.png)
 
+#### Invert binary expression \(RR0079\)
+
+* **Syntax**: logical and/or expression
+![Invert binary expression](../../images/refactorings/InvertBinaryExpression.png)
+
+#### Invert boolean literal \(RR0080\)
+
+* **Syntax**: boolean literal
+![Invert boolean literal](../../images/refactorings/InvertBooleanLiteral.png)
+
 #### Invert conditional expression \(RR0160\)
 
 * **Syntax**: conditional expression
@@ -793,6 +803,17 @@ if (condition1)
 * **Syntax**: if\-else statement
 * **Span**: if keyword
 ![Invert if-else](../../images/refactorings/InvertIfElse.png)
+
+#### Invert is expression \(RR0081\)
+
+* **Syntax**: is expression
+* **Span**: operator
+![Invert is expression](../../images/refactorings/InvertIsExpression.png)
+
+#### Invert operator \(RR0082\)
+
+* **Syntax**: \!=, &&, \|\|, \<, \<=, ==, >, >=
+![Invert operator](../../images/refactorings/InvertOperator.png)
 
 #### Invert prefix/postfix unary operator \(RR0134\)
 
@@ -935,27 +956,6 @@ public unsafe class Foo
 }
 ```
 
-#### Negate binary expression \(RR0079\)
-
-* **Syntax**: logical and/or expression
-![Negate binary expression](../../images/refactorings/NegateBinaryExpression.png)
-
-#### Negate boolean literal \(RR0080\)
-
-* **Syntax**: boolean literal
-![Negate boolean literal](../../images/refactorings/NegateBooleanLiteral.png)
-
-#### Negate is expression \(RR0081\)
-
-* **Syntax**: is expression
-* **Span**: operator
-![Negate is expression](../../images/refactorings/NegateIsExpression.png)
-
-#### Negate operator \(RR0082\)
-
-* **Syntax**: \!=, &&, \|\|, \<, \<=, ==, >, >=
-![Negate operator](../../images/refactorings/NegateOperator.png)
-
 #### Notify property changed \(RR0083\)
 
 * **Syntax**: property in class/struct that implements INotifyPropertyChanged
@@ -1014,6 +1014,35 @@ public unsafe class Foo
 * **Syntax**: switch statement
 * **Span**: opening or closing brace
 ![Remove all switch sections](../../images/refactorings/RemoveAllSwitchSections.png)
+
+#### Remove async/await \(RR0209\)
+
+* **Syntax**: method declaration, local function, lambda, anonymous method
+* **Span**: async keyword
+
+#### Before
+
+```csharp
+class C
+{
+    async Task<object> FooAsync()
+    {
+        return await BarAsync().ConfigureAwait(false);
+    }
+}
+```
+
+#### After
+
+```csharp
+class C
+{
+    Task<object> FooAsync()
+    {
+        return BarAsync();
+    }
+}
+```
 
 #### Remove braces \(RR0094\)
 

@@ -2,6 +2,8 @@
 
 dotnet restore --force "..\src\CommandLine.sln"
 
+rd /S /Q "..\src\CommandLine\bin\Release\publish"
+
 "C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild" "..\src\CommandLine.sln" ^
  /t:Clean,Publish ^
  /p:Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors="1591" ^
