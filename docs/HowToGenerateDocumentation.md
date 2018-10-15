@@ -1,5 +1,5 @@
 
-# How to Generate Documentation for .NET Project
+# How to Generate API Documentation
 
 1) Install package [Roslynator.CommandLine](http://www.nuget.org/packages/Roslynator.CommandLine/)&ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
 
@@ -29,8 +29,7 @@
     -r $(RoslynatorAssemblyReferences) ^
     -o &quot;$(SolutionDir)docs&quot; ^
     -h &quot;API Reference&quot;"
-        LogStandardErrorAsError="true"
-        ConsoleToMSBuild="true">
+        LogStandardErrorAsError="true" ConsoleToMSBuild="true">
     <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
   </Exec>
 
@@ -39,8 +38,7 @@
     -a $(RoslynatorAssemblies) ^
     -r $(RoslynatorAssemblyReferences) ^
     -o &quot;$(SolutionDir)docs\api.cs&quot;"
-        LogStandardErrorAsError="true"
-        ConsoleToMSBuild="true">
+        LogStandardErrorAsError="true" ConsoleToMSBuild="true">
     <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
   </Exec>
 

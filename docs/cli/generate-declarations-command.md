@@ -6,7 +6,7 @@ Generates a single file that contains all declarations from specified assemblies
 ## Synopsis
 
 ```
-roslynator declarations
+roslynator generate-declarations
 -a|--assemblies
 -o|--output
 -r|--references

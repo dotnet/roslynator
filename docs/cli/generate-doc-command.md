@@ -6,7 +6,7 @@ Generates documentation files from specified assemblies.
 ## Synopsis
 
 ```
-roslynator doc
+roslynator generate-doc
 -a|--assemblies
 -h|--heading
 -o|--output
