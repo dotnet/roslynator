@@ -229,6 +229,18 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         public override void VisitDelegateDeclaration(DelegateDeclarationSyntax node)
         {
             VisitAttributeLists(node.AttributeLists);
+
+            if (!ShouldVisit)
+                return;
+
+            TypeSyntax returnType = node.ReturnType;
+
+            if (returnType != null)
+                VisitType(returnType);
+
+            if (!ShouldVisit)
+                return;
+
             VisitParameterList(node.ParameterList);
         }
 
@@ -256,6 +268,14 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
         {
             VisitAttributeLists(node.AttributeLists);
+
+            if (!ShouldVisit)
+                return;
+
+            TypeSyntax type = node.Type;
+
+            if (type != null)
+                VisitType(type);
 
             if (!ShouldVisit)
                 return;
@@ -290,6 +310,14 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             if (!ShouldVisit)
                 return;
 
+            TypeSyntax type = node.Type;
+
+            if (type != null)
+                VisitType(type);
+
+            if (!ShouldVisit)
+                return;
+
             BracketedParameterListSyntax parameterList = node.ParameterList;
 
             if (node != null)
@@ -315,6 +343,14 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         public override void VisitLocalFunctionStatement(LocalFunctionStatementSyntax node)
         {
+            TypeSyntax returnType = node.ReturnType;
+
+            if (returnType != null)
+                VisitType(returnType);
+
+            if (!ShouldVisit)
+                return;
+
             VisitParameterList(node.ParameterList);
 
             if (!ShouldVisit)
@@ -344,6 +380,18 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             _containingMethodSymbol = SemanticModel.GetDeclaredSymbol(node, CancellationToken);
 
             VisitAttributeLists(node.AttributeLists);
+
+            if (!ShouldVisit)
+                return;
+
+            TypeSyntax returnType = node.ReturnType;
+
+            if (returnType != null)
+                VisitType(returnType);
+
+            if (!ShouldVisit)
+                return;
+
             VisitParameterList(node.ParameterList);
 
             if (!ShouldVisit)

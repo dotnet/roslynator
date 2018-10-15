@@ -156,5 +156,23 @@ static class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task TestNoDiagnostic_DelegateAsReturnType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    private delegate void D(object p);
+
+    private D M()
+    {
+        return default;
+    }
+
+    public void M2() => M();
+}
+");
+        }
     }
 }
