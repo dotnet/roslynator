@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case  DiagnosticIdentifiers.UseLinefeedAsNewLine:
+                    case DiagnosticIdentifiers.UseLinefeedAsNewLine:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use linefeed as newline",
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case  DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine:
+                    case DiagnosticIdentifiers.UseCarriageReturnAndLinefeedAsNewLine:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Use carriage return + linefeed as newline",

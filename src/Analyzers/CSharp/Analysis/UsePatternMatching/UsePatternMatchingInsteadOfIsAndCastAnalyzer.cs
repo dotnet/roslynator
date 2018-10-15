@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                 }
 
                 if (identifierName == null)
-                return;
+                    return;
             }
 
             ExpressionSyntax left = isExpression.WalkUpParentheses();

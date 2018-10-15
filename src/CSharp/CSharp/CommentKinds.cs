@@ -49,6 +49,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Documentation or non-documentation comment.
         /// </summary>
-        All = NonDocumentation |  Documentation,
+        All = NonDocumentation | Documentation,
     }
 }

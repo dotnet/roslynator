@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     count++;
 
-                    if (count  == 2)
+                    if (count == 2)
                         break;
                 }
             }

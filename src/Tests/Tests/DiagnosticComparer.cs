@@ -21,7 +21,7 @@ namespace Roslynator
 
         public int Compare(object x, object y)
         {
-            if ( x == y)
+            if (x == y)
                 return 0;
 
             if (x == null)

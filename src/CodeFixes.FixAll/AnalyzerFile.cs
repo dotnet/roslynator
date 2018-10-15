@@ -92,7 +92,7 @@ namespace Roslynator.CodeFixes
             catch (ReflectionTypeLoadException)
             {
 #if DEBUG
-                    WriteLine($"Cannot load types from assembly '{analyzerAssembly.Location}'", ConsoleColor.Yellow);
+                WriteLine($"Cannot load types from assembly '{analyzerAssembly.Location}'", ConsoleColor.Yellow);
 #endif
             }
 

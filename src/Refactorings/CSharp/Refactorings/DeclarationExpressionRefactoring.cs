@@ -64,5 +64,5 @@ namespace Roslynator.CSharp.Refactorings
                 cancellationToken => Renamer.RenameSymbolAsync(context.Solution, localSymbol, newName, default(OptionSet), cancellationToken),
                 RefactoringIdentifiers.RenameIdentifierAccordingToTypeName);
         }
-   }
+    }
 }

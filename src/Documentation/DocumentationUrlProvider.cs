@@ -143,7 +143,7 @@ namespace Roslynator.Documentation
 
             sb.Append(folders[0]);
 
-            for (int i = 1; i < folders.Length ; i++)
+            for (int i = 1; i < folders.Length; i++)
             {
                 sb.Append(separator);
                 sb.Append(folders[i]);

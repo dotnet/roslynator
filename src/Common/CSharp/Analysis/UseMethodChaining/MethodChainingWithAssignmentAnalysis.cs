@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis.UseMethodChaining
 
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
-            if (methodSymbol== null)
+            if (methodSymbol == null)
                 return false;
 
             if (!methodSymbol.ReturnType.Equals(typeSymbol))

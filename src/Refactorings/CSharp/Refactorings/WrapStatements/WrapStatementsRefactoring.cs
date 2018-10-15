@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
 
         public Task<Document> RefactorAsync(
             Document document,
-            StatementSyntax  embeddedStatement,
+            StatementSyntax embeddedStatement,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             BlockSyntax newNode = Block(CreateStatement(ImmutableArray.Create(embeddedStatement)))

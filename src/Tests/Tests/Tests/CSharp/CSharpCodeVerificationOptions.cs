@@ -32,7 +32,7 @@ namespace Roslynator.Tests.CSharp
 
         public override CodeVerificationOptions AddAllowedCompilerDiagnosticId(string diagnosticId)
         {
-            return  WithAllowedCompilerDiagnosticIds(AllowedCompilerDiagnosticIds.Add(diagnosticId));
+            return WithAllowedCompilerDiagnosticIds(AllowedCompilerDiagnosticIds.Add(diagnosticId));
         }
 
         public override CodeVerificationOptions AddAllowedCompilerDiagnosticIds(IEnumerable<string> diagnosticIds)

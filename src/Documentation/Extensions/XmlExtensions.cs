@@ -297,7 +297,7 @@ namespace Roslynator.Documentation
                         foreach (XElement element2 in element.Elements())
                         {
                             writer.WriteStartTableCell();
-                            WriteContentTo(element2, writer,  inlineOnly: true);
+                            WriteContentTo(element2, writer, inlineOnly: true);
                             writer.WriteEndTableCell();
                         }
 

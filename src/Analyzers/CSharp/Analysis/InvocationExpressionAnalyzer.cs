@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticDescriptors.SimplifyLogicalNegation,
                     DiagnosticDescriptors.CallStringConcatInsteadOfStringJoin,
                     DiagnosticDescriptors.UseCoalesceExpression);
-           }
+            }
         }
 
         public override void Initialize(AnalysisContext context)
