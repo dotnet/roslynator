@@ -252,5 +252,26 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UsePatternMatchingInsteadOfIsAndCast)]
+        public async Task TestNoDiagnostic_NullableType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(int? p)
+    {
+        object x = null;
+
+        if (x is int?)
+        {
+            M((int?)x);
+        }
+
+        if (x is int? && ((int?)x) == 0) { }
+    }
+}
+");
+        }
     }
 }

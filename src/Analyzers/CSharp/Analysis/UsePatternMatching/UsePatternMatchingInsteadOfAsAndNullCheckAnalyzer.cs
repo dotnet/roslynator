@@ -76,10 +76,12 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                 SemanticModel semanticModel = context.SemanticModel;
                 CancellationToken cancellationToken = context.CancellationToken;
 
-                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken);
-                ITypeSymbol typeSymbol2 = semanticModel.GetTypeSymbol(asExpressionInfo.Type, cancellationToken);
+                ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(asExpressionInfo.Type, cancellationToken);
 
-                if (!typeSymbol.Equals(typeSymbol2))
+                if (typeSymbol.IsNullableType())
+                    return;
+
+                if (!semanticModel.GetTypeSymbol(localInfo.Type, cancellationToken).Equals(typeSymbol))
                     return;
             }
 

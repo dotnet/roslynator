@@ -80,6 +80,9 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         SemanticModel semanticModel = context.SemanticModel;
                         CancellationToken cancellationToken = context.CancellationToken;
 
+                        if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
+                            return;
+
                         if (logicalAnd.Parent.IsInExpressionTree(semanticModel, cancellationToken))
                             return;
 
@@ -101,7 +104,13 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         if (statement == null)
                             return;
 
-                        if (!IsFixable(statement, identifierName, context.SemanticModel, context.CancellationToken))
+                        SemanticModel semanticModel = context.SemanticModel;
+                        CancellationToken cancellationToken = context.CancellationToken;
+
+                        if (semanticModel.GetTypeSymbol(isExpressionInfo.Type, cancellationToken).IsNullableType())
+                            return;
+
+                        if (!IsFixable(statement, identifierName, semanticModel, cancellationToken))
                             return;
 
                         context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
