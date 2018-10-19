@@ -404,7 +404,7 @@ namespace Roslynator.CSharp.Analysis
             ExpressionSyntax expression,
             IParameterSymbol parameterSymbol)
         {
-            return !parameterSymbol.IsRefOrOut()
+            return parameterSymbol.RefKind == RefKind.None
                 && !parameterSymbol.IsParams
                 && string.Equals(
                     parameter.Identifier.ValueText,
