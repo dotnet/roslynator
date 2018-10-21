@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Xml.Linq;
 using Roslynator.CSharp.Refactorings;
 
@@ -11,7 +12,7 @@ namespace Roslynator.CodeGeneration
 {
     internal static class Program
     {
-        private static void Main(string[] args)
+        private static async Task Main(string[] args)
         {
             if (args == null || args.Length == 0)
             {
@@ -30,7 +31,7 @@ namespace Roslynator.CodeGeneration
 
             var generator = new MetadataGenerator(dirPath, comparer);
 
-            generator.Generate();
+            await generator.GenerateAsync().ConfigureAwait(false);
 
             generator.FindFilesToDelete();
 

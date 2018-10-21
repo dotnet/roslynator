@@ -2,7 +2,6 @@
 
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -154,8 +153,6 @@ namespace Roslynator.Metadata
                 new XElement("Diagnostics",
                     diagnostics.Select(f =>
                     {
-                        Debug.WriteLine(f.Id);
-
                         return new XElement(
                             "Diagnostic",
                             new XAttribute("Id", f.Id),
@@ -169,6 +166,41 @@ namespace Roslynator.Metadata
 
             using (var fs = new FileStream(path, FileMode.Create))
             using (XmlWriter xw = XmlWriter.Create(fs, new XmlWriterSettings() { Indent = true, NewLineOnAttributes = true }))
+                doc.Save(xw);
+        }
+
+        public static IEnumerable<SourceFile> ReadSourceFiles(string filePath)
+        {
+            XDocument doc = XDocument.Load(filePath);
+
+            foreach (XElement element in doc.Root.Elements())
+            {
+                string id = element.Attribute("Id").Value;
+
+                yield return new SourceFile(
+                    id,
+                    element
+                        .Element("Paths")
+                        .Elements("Path")
+                        .Select(f => f.Value));
+            }
+        }
+
+        public static void SaveSourceFiles(IEnumerable<SourceFile> sourceFiles, string path)
+        {
+            var doc = new XDocument(
+                new XElement("SourceFiles",
+                    sourceFiles.Select(sourceFile =>
+                    {
+                        return new XElement(
+                            "SourceFile",
+                            new XAttribute("Id", sourceFile.Id),
+                            new XElement("Paths", sourceFile.Paths.Select(p => new XElement("Path", p.Replace("\\", "/"))))
+                        );
+                    })));
+
+            using (var fs = new FileStream(path, FileMode.Create))
+            using (XmlWriter xw = XmlWriter.Create(fs, new XmlWriterSettings() { Indent = true }))
                 doc.Save(xw);
         }
     }

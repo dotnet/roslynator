@@ -6,6 +6,6 @@
  /v:minimal ^
  /m
 
-dotnet "..\src\Tools\MetadataGenerator\bin\Debug\netcoreapp2.0\MetadataGenerator.dll" "..\src"
+"..\src\Tools\MetadataGenerator\bin\Debug\net461\Roslynator.MetadataGenerator.exe" "..\src"
 
 pause

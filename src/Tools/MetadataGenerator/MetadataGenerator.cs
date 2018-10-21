@@ -1,15 +1,18 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using Roslynator.CodeGeneration.CSharp;
+using System.Threading.Tasks;
+using Microsoft.Build.Locator;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
 using Roslynator.CodeGeneration.Markdown;
 using Roslynator.CodeGeneration.Xml;
 using Roslynator.Metadata;
 using Roslynator.Utilities;
-using Microsoft.CodeAnalysis;
 
 namespace Roslynator.CodeGeneration
 {
@@ -22,7 +25,7 @@ namespace Roslynator.CodeGeneration
         {
         }
 
-        public void Generate()
+        public async Task GenerateAsync()
         {
             WriteAllText(
                 @"Analyzers\README.md",
@@ -32,12 +35,61 @@ namespace Roslynator.CodeGeneration
                 @"Analyzers\AnalyzersByCategory.md",
                 MarkdownGenerator.CreateAnalyzersByCategoryMarkdown(Analyzers.Where(f => !f.IsObsolete), Comparer));
 
-            foreach (AnalyzerDescriptor analyzer in Analyzers)
+            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().Single();
+
+            MSBuildLocator.RegisterInstance(instance);
+
+            using (MSBuildWorkspace workspace = MSBuildWorkspace.Create())
             {
-                WriteAllText(
-                    $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer),
-                    fileMustExists: false);
+                workspace.WorkspaceFailed += (o, e) => Console.WriteLine(e.Diagnostic.Message);
+
+                string solutionPath = Path.Combine(RootPath, "Roslynator.sln");
+
+                Console.WriteLine($"Loading solution '{solutionPath}'");
+
+                Solution solution = await workspace.OpenSolutionAsync(solutionPath).ConfigureAwait(false);
+
+                Console.WriteLine($"Finished loading solution '{solutionPath}'");
+
+                RoslynatorInfo roslynatorInfo = await RoslynatorInfo.Create(solution).ConfigureAwait(false);
+
+                IOrderedEnumerable<SourceFile> sourceFiles = Analyzers
+                    .Select(f => new SourceFile(f.Id, roslynatorInfo.GetAnalyzerFilesAsync(f.Identifier).Result))
+                    .Concat(Refactorings
+                        .Select(f => new SourceFile(f.Id, roslynatorInfo.GetRefactoringFilesAsync(f.Identifier).Result)))
+                    .OrderBy(f => f.Id);
+
+                MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
+
+                foreach (AnalyzerDescriptor analyzer in Analyzers)
+                {
+                    //IEnumerable<string> filePaths = await roslynatorInfo.GetAnalyzerFilesAsync(analyzer.Identifier).ConfigureAwait(false);
+
+                    WriteAllText(
+                        $@"..\docs\analyzers\{analyzer.Id}.md",
+                        MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, Array.Empty<string>()),
+                        fileMustExists: false);
+                }
+
+                foreach (RefactoringDescriptor refactoring in Refactorings)
+                {
+                    //IEnumerable<string> filePaths = await roslynatorInfo.GetRefactoringFilesAsync(refactoring.Identifier).ConfigureAwait(false);
+
+                    WriteAllText(
+                        $@"..\docs\refactorings\{refactoring.Id}.md",
+                        MarkdownGenerator.CreateRefactoringMarkdown(refactoring, Array.Empty<string>()),
+                        fileMustExists: false);
+                }
+
+                foreach (CompilerDiagnosticDescriptor diagnostic in CompilerDiagnostics)
+                {
+                    //IEnumerable<string> filePaths = await roslynatorInfo.GetCompilerDiagnosticFilesAsync(diagnostic.Identifier).ConfigureAwait(false);
+
+                    WriteAllText(
+                        $@"..\docs\cs\{diagnostic.Id}.md",
+                        MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, CodeFixes, Comparer, Array.Empty<string>()),
+                        fileMustExists: false);
+                }
             }
 
             WriteAllText(
@@ -48,25 +100,9 @@ namespace Roslynator.CodeGeneration
                 @"Refactorings\README.md",
                 MarkdownGenerator.CreateRefactoringsReadMe(Refactorings.Where(f => !f.IsObsolete), Comparer));
 
-            foreach (RefactoringDescriptor refactoring in Refactorings)
-            {
-                WriteAllText(
-                    $@"..\docs\refactorings\{refactoring.Id}.md",
-                    MarkdownGenerator.CreateRefactoringMarkdown(refactoring),
-                    fileMustExists: false);
-            }
-
             WriteAllText(
                 @"CodeFixes\README.md",
                 MarkdownGenerator.CreateCodeFixesReadMe(CompilerDiagnostics, Comparer));
-
-            foreach (CompilerDiagnosticDescriptor diagnostic in CompilerDiagnostics)
-            {
-                WriteAllText(
-                    $@"..\docs\cs\{diagnostic.Id}.md",
-                    MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, CodeFixes, Comparer),
-                    fileMustExists: false);
-            }
 
             WriteAllText(
                 "DefaultConfigFile.xml",

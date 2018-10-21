@@ -134,7 +134,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        public static string CreateRefactoringMarkdown(RefactoringDescriptor refactoring)
+        public static string CreateRefactoringMarkdown(RefactoringDescriptor refactoring, IEnumerable<string> filePaths)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -150,27 +150,15 @@ namespace Roslynator.CodeGeneration.Markdown
                 Heading3("Usage"),
                 GetRefactoringSamples(refactoring),
                 CreateRemarks(refactoring.Remarks),
-                Links(),
-                Link("full list of refactorings", "Refactorings.md"),
-                NewLine);
+                CreateSourceFiles(filePaths),
+                CreateSeeAlso(refactoring.Links.Select(f => CreateLink(f)), Link("Full list of refactorings", "Refactorings.md")));
 
             document.AddFootnote();
 
             return document.ToString(format);
-
-            IEnumerable<MElement> Links()
-            {
-                IReadOnlyList<LinkDescriptor> links = refactoring.Links;
-
-                if (links.Count > 0)
-                {
-                    yield return Heading2("See Also");
-                    yield return BulletList(links.Select(f => CreateLink(f)));
-                }
-            }
         }
 
-        public static string CreateAnalyzerMarkdown(AnalyzerDescriptor analyzer)
+        public static string CreateAnalyzerMarkdown(AnalyzerDescriptor analyzer, IEnumerable<string> filePaths)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -187,7 +175,10 @@ namespace Roslynator.CodeGeneration.Markdown
                 CreateSummary(analyzer.Summary),
                 Samples(),
                 CreateRemarks(analyzer.Remarks),
-                Links());
+                CreateSourceFiles(filePaths),
+                CreateSeeAlso(
+                    analyzer.Links.Select(f => CreateLink(f)),
+                    Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic")));
 
             document.AddFootnote();
 
@@ -205,18 +196,36 @@ namespace Roslynator.CodeGeneration.Markdown
                         yield return item;
                 }
             }
+        }
 
-            IEnumerable<MElement> Links()
+        private static IEnumerable<MElement> CreateSeeAlso(params object[] content)
+        {
+            yield return Heading2("See Also");
+            yield return BulletList(content);
+        }
+
+        private static IEnumerable<object> CreateSourceFiles(IEnumerable<string> filePaths)
+        {
+            using (IEnumerator<string> en = filePaths.GetEnumerator())
             {
-                yield return Heading2("See Also");
+                if (en.MoveNext())
+                {
+                    yield return Heading2("Related Source Files");
 
-                yield return BulletList(
-                    analyzer.Links.Select(f => CreateLink(f)),
-                    Link("How to Suppress a Diagnostic", "../HowToConfigureAnalyzers.md#how-to-suppress-a-diagnostic"));
+                    do
+                    {
+                        string title = Path.GetFileName(en.Current);
+
+                        string url = "../../src" + en.Current.Replace(@"\", "/");
+
+                        yield return BulletItem(Link(title, url));
+                    }
+                    while (en.MoveNext());
+                }
             }
         }
 
-        public static string CreateCompilerDiagnosticMarkdown(CompilerDiagnosticDescriptor diagnostic, IEnumerable<CodeFixDescriptor> codeFixes, IComparer<string> comparer)
+        public static string CreateCompilerDiagnosticMarkdown(CompilerDiagnosticDescriptor diagnostic, IEnumerable<CodeFixDescriptor> codeFixes, IComparer<string> comparer, IEnumerable<string> filePaths)
         {
             MDocument document = Document(
                 Heading1(diagnostic.Id),
@@ -230,7 +239,8 @@ namespace Roslynator.CodeGeneration.Markdown
                 BulletList(codeFixes
                     .Where(f => f.FixableDiagnosticIds.Any(diagnosticId => diagnosticId == diagnostic.Id))
                     .Select(f => f.Title)
-                    .OrderBy(f => f, comparer)));
+                    .OrderBy(f => f, comparer)),
+                CreateSourceFiles(filePaths));
 
             document.AddFootnote();
 
