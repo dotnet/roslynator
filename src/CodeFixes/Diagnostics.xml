@@ -597,7 +597,7 @@
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-messages/cs0592" />
   <Diagnostic
     Id="CS0621"
-    Identifier="VirtualOrAbstractmembersCannotBePrivate "
+    Identifier="VirtualOrAbstractMembersCannotBePrivate"
     Severity="Error"
     Title="'member': virtual or abstract members cannot be private."
     Message="'{0}': virtual or abstract members cannot be private"

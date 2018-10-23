@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.FieldCanNotBeBothVolatileAndReadOnly,
                     CompilerDiagnosticIdentifiers.NewProtectedMemberDeclaredInSealedClass,
                     CompilerDiagnosticIdentifiers.StaticClassesCannotContainProtectedMembers,
-                    CompilerDiagnosticIdentifiers.VirtualOrAbstractmembersCannotBePrivate,
+                    CompilerDiagnosticIdentifiers.VirtualOrAbstractMembersCannotBePrivate,
                     CompilerDiagnosticIdentifiers.AbstractPropertiesCannotHavePrivateAccessors,
                     CompilerDiagnosticIdentifiers.StaticMemberCannotBeMarkedOverrideVirtualOrAbstract,
                     CompilerDiagnosticIdentifiers.AsyncModifierCanOnlyBeUsedInMethodsThatHaveBody,
@@ -227,7 +227,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
-                    case CompilerDiagnosticIdentifiers.VirtualOrAbstractmembersCannotBePrivate:
+                    case CompilerDiagnosticIdentifiers.VirtualOrAbstractMembersCannotBePrivate:
                         {
                             if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeAccessibility))
                                 ModifiersCodeFixRegistrator.ChangeAccessibility(context, diagnostic, node, _publicOrInternalOrProtected);

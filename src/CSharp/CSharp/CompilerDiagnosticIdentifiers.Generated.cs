@@ -91,7 +91,7 @@ namespace Roslynator.CSharp
         public const string OnlyClassTypesCanContainDestructors = "CS0575";
         public const string DuplicateAttribute = "CS0579";
         public const string AttributeIsNotValidOnThisDeclarationType = "CS0592";
-        public const string VirtualOrAbstractmembersCannotBePrivate  = "CS0621";
+        public const string VirtualOrAbstractMembersCannotBePrivate = "CS0621";
         public const string NewProtectedMemberDeclaredInSealedClass = "CS0628";
         public const string TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode = "CS0659";
         public const string TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals = "CS0660";
