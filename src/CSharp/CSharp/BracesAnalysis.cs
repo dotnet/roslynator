@@ -122,6 +122,14 @@ namespace Roslynator.CSharp
 
                     if (statement == null)
                         return false;
+
+                    if (statement.Kind() == SyntaxKind.IfStatement
+                        && block.IsParentKind(SyntaxKind.IfStatement)
+                        && ((IfStatementSyntax)block.Parent).Else != null
+                        && ((IfStatementSyntax)statement).AsCascade().Last().AsIf() != null)
+                    {
+                        return false;
+                    }
                 }
 
                 return !statement.IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement)

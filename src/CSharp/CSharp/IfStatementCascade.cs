@@ -43,6 +43,27 @@ namespace Roslynator.CSharp
             get { return (IfStatement != null) ? $"Count = {Count} {IfStatement}" : "Uninitialized"; }
         }
 
+        public IfStatementOrElseClause First()
+        {
+            if (IfStatement == null)
+                throw new InvalidOperationException();
+
+            return IfStatement;
+        }
+
+        public IfStatementOrElseClause Last()
+        {
+            if (IfStatement == null)
+                throw new InvalidOperationException();
+
+            IfStatementOrElseClause last = default;
+
+            foreach (IfStatementOrElseClause ifOrElse in this)
+                last = ifOrElse;
+
+            return last;
+        }
+
         /// <summary>
         /// Gets the enumerator for the if-else cascade.
         /// </summary>

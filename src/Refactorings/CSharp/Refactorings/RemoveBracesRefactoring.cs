@@ -156,12 +156,43 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool IsEmbeddableBlock(BlockSyntax block)
         {
-            return block.Parent != null
-                && CSharpFacts.CanHaveEmbeddedStatement(block.Parent.Kind())
-                && block
-                    .Statements
-                    .SingleOrDefault(shouldThrow: false)?
-                    .IsKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.LabeledStatement) == false;
+            SyntaxNode parent = block.Parent;
+
+            if (parent != null)
+            {
+                SyntaxKind kind = parent.Kind();
+
+                if (CSharpFacts.CanHaveEmbeddedStatement(kind))
+                {
+                    StatementSyntax statement = block
+                        .Statements
+                        .SingleOrDefault(shouldThrow: false);
+
+                    if (statement != null)
+                    {
+                        switch (statement.Kind())
+                        {
+                            case SyntaxKind.LocalDeclarationStatement:
+                            case SyntaxKind.LabeledStatement:
+                                {
+                                    return false;
+                                }
+                            case SyntaxKind.IfStatement:
+                                {
+                                    return kind != SyntaxKind.IfStatement
+                                        || ((IfStatementSyntax)parent).Else == null
+                                        || ((IfStatementSyntax)statement).AsCascade().Last().AsIf() == null;
+                                }
+                            default:
+                                {
+                                    return true;
+                                }
+                        }
+                    }
+                }
+            }
+
+            return false;
         }
 
         public static Task<Document> RefactorAsync(
