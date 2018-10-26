@@ -75,6 +75,12 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
 
+                                    if (value.IsKind(SyntaxKind.DefaultExpression)
+                                        && document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))
+                                    {
+                                        value = CSharpFactory.DefaultLiteralExpression().WithTriviaFrom(value);
+                                    }
+
                                     EqualsValueClauseSyntax newEqualsValue = EqualsValueClause(value)
                                         .WithLeadingTrivia(TriviaList(Space))
                                         .WithTrailingTrivia(identifier.TrailingTrivia);
