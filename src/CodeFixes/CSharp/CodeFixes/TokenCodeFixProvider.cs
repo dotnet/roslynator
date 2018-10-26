@@ -46,7 +46,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveSemicolon)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionalAccess)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeForEachType)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDefaultValueToParameter))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDefaultValueToParameter)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeParameterType))
             {
                 return;
             }
@@ -132,7 +133,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                            if (!Settings.IsAnyCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, CodeFixIdentifiers.ChangeParameterType))
                                 break;
 
                             if (!(token.Parent is ParameterSyntax parameter))
@@ -143,12 +144,30 @@ namespace Roslynator.CSharp.CodeFixes
                             if (value == null)
                                 break;
 
-                            if (value.Kind() != SyntaxKind.NullLiteralExpression)
-                                break;
+                            if (value.IsKind(SyntaxKind.NullLiteralExpression))
+                            {
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                                {
+                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                                    CodeFixRegistrator.ReplaceNullWithDefaultValue(context, diagnostic, value, semanticModel);
+                                }
+                            }
+                            else if (!value.IsKind(SyntaxKind.DefaultExpression, SyntaxKind.DefaultLiteralExpression))
+                            {
+                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeParameterType))
+                                {
+                                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            CodeFixRegistrator.ReplaceNullWithDefaultValue(context, diagnostic, value, semanticModel);
+                                    ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(value, context.CancellationToken);
+
+                                    if (!typeSymbol.IsKind(SymbolKind.ErrorType))
+                                    {
+                                        CodeFixRegistrator.ChangeType(context, diagnostic, parameter.Type, typeSymbol, semanticModel);
+                                    }
+                                }
+                            }
+
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired:

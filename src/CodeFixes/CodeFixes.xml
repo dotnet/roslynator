@@ -616,4 +616,9 @@
       <Id>CS8139</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0111" Identifier="ChangeParameterType" Title="Change parameter type">
+    <FixableDiagnosticIds>
+      <Id>CS1750</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

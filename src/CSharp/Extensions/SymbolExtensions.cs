@@ -197,6 +197,17 @@ namespace Roslynator
         }
 
         /// <summary>
+        /// Returns true if the symbol is the specified kind.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static bool IsKind(this ISymbol symbol, SymbolKind kind)
+        {
+            return symbol?.Kind == kind;
+        }
+
+        /// <summary>
         /// Returns true if the symbol is one of the specified kinds.
         /// </summary>
         /// <param name="symbol"></param>
