@@ -30,11 +30,13 @@ namespace Roslynator.CSharp.Refactorings
 
             List<SimpleNameSyntax> names = CollectNames(parent, classSymbol, semanticModel, cancellationToken);
 
+            TypeSyntax type = classSymbol.ToTypeSyntax();
+
             SyntaxNode newNode = parent.ReplaceNodes(names, (node, _) =>
             {
-                TypeSyntax type = classSymbol.ToMinimalTypeSyntax(semanticModel, node.SpanStart);
-
-                return SimpleMemberAccessExpression(type, node).WithTriviaFrom(node);
+                return SimpleMemberAccessExpression(type, node.WithoutTrivia())
+                    .WithTriviaFrom(node)
+                    .WithSimplifierAnnotation();
             });
 
             newNode = RemoveUsingDirective(newNode, index);
