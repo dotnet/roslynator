@@ -10,11 +10,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FormatEachStatementOnSeparateLineAnalyzer : BaseDiagnosticAnalyzer
+    public class AddNewLineBeforeStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.FormatEachStatementOnSeparateLine); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBeforeStatement); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement)
                     && statement.GetSpanStartLine() == previousEndLine)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.FormatEachStatementOnSeparateLine, statement);
+                    context.ReportDiagnostic(DiagnosticDescriptors.AddNewLineBeforeStatement, statement);
                 }
 
                 previousEndLine = statement.GetSpanEndLine();

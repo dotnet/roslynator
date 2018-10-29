@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine,
+                    DiagnosticIdentifiers.AddNewLineBeforeEnumMember,
                     DiagnosticIdentifiers.SortEnumMembers);
             }
         }
@@ -42,11 +42,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.FormatEachEnumMemberOnSeparateLine:
+                    case DiagnosticIdentifiers.AddNewLineBeforeEnumMember:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Format each enum member on a separate line",
-                                cancellationToken => FormatEachEnumMemberOnSeparateLineRefactoring.RefactorAsync(context.Document, enumDeclaration, cancellationToken),
+                                "Add new line",
+                                cancellationToken => AddNewLineBeforeEnumMemberRefactoring.RefactorAsync(context.Document, enumDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

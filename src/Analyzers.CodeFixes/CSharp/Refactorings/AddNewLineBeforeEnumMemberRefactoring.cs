@@ -10,7 +10,7 @@ using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class FormatEachEnumMemberOnSeparateLineRefactoring
+    internal static class AddNewLineBeforeEnumMemberRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

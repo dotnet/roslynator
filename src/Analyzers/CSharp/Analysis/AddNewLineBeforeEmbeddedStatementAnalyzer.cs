@@ -11,11 +11,11 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FormatEmbeddedStatementOnSeparateLineAnalyzer : BaseDiagnosticAnalyzer
+    public class AddNewLineBeforeEmbeddedStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBeforeEmbeddedStatement); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Analysis
                 && statement?.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement) == false
                 && statement.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(token.SpanStart, statement.SpanStart)))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine, statement);
+                context.ReportDiagnostic(DiagnosticDescriptors.AddNewLineBeforeEmbeddedStatement, statement);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement?.IsKind(SyntaxKind.Block, SyntaxKind.IfStatement) == false
                 && elseClause.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(elseClause.ElseKeyword.SpanStart, statement.SpanStart)))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.FormatEmbeddedStatementOnSeparateLine, statement);
+                context.ReportDiagnostic(DiagnosticDescriptors.AddNewLineBeforeEmbeddedStatement, statement);
             }
         }
     }

@@ -30,10 +30,10 @@ namespace Roslynator.CSharp
         public const string SimplifyLambdaExpression = "RCS1021";
         public const string FormatEmptyBlock = "RCS1023";
         public const string FormatAccessorList = "RCS1024";
-        public const string FormatEachEnumMemberOnSeparateLine = "RCS1025";
-        public const string FormatEachStatementOnSeparateLine = "RCS1026";
-        public const string FormatEmbeddedStatementOnSeparateLine = "RCS1027";
-        public const string FormatSwitchSectionStatementOnSeparateLine = "RCS1028";
+        public const string AddNewLineBeforeEnumMember = "RCS1025";
+        public const string AddNewLineBeforeStatement = "RCS1026";
+        public const string AddNewLineBeforeEmbeddedStatement = "RCS1027";
+        public const string AddNewLineAfterSwitchLabel = "RCS1028";
         public const string FormatBinaryOperatorOnNextLine = "RCS1029";
         public const string AddEmptyLineAfterEmbeddedStatement = "RCS1030";
         public const string RemoveRedundantParentheses = "RCS1032";
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp
         public const string UsePostfixUnaryOperatorInsteadOfAssignment = "RCS1089";
         public const string CallConfigureAwait = "RCS1090";
         public const string RemoveEmptyRegion = "RCS1091";
-        public const string AddEmptyLineAfterLastStatementInDoStatement = "RCS1092";
+        public const string AddEmptyLineBeforeWhileInDoStatement = "RCS1092";
         public const string RemoveFileWithNoCode = "RCS1093";
         public const string DeclareUsingDirectiveOnTopLevel = "RCS1094";
         public const string UseBitwiseOperationInsteadOfCallingHasFlag = "RCS1096";
@@ -167,7 +167,7 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantBaseInterface = "RCS1182";
         public const string FormatInitializerWithSingleExpressionOnSingleLine = "RCS1183";
         public const string FormatConditionalExpression = "RCS1184";
-        public const string AvoidSingleLineBlock = "RCS1185";
+        public const string FormatSingleLineBlock = "RCS1185";
         public const string UseRegexInstanceInsteadOfStaticMethod = "RCS1186";
         public const string UseConstantInsteadOfField = "RCS1187";
         public const string RemoveRedundantAutoPropertyInitialization = "RCS1188";

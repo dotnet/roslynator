@@ -11,11 +11,11 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FormatEachEnumMemberOnSeparateLineAnalyzer : BaseDiagnosticAnalyzer
+    public class AddNewLineBeforeEnumMemberAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.FormatEachEnumMemberOnSeparateLine); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineBeforeEnumMember); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
                         members.Last().Span.End);
 
                     context.ReportDiagnostic(
-                        DiagnosticDescriptors.FormatEachEnumMemberOnSeparateLine,
+                        DiagnosticDescriptors.AddNewLineBeforeEnumMember,
                         Location.Create(enumDeclaration.SyntaxTree, span));
 
                     return;

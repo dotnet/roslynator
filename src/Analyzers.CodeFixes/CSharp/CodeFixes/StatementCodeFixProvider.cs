@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -23,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement,
+                    DiagnosticIdentifiers.AddEmptyLineBeforeWhileInDoStatement,
                     DiagnosticIdentifiers.InlineLazyInitialization,
                     DiagnosticIdentifiers.RemoveRedundantDisposeOrCloseCall,
                     DiagnosticIdentifiers.RemoveRedundantStatement,
@@ -42,17 +43,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.AddEmptyLineAfterLastStatementInDoStatement:
+                    case DiagnosticIdentifiers.AddEmptyLineBeforeWhileInDoStatement:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Add empty line",
-                                cancellationToken =>
-                                {
-                                    return AddEmptyLineAfterLastStatementInDoStatementRefactoring.RefactorAsync(
-                                        context.Document,
-                                        statement,
-                                        cancellationToken);
-                                },
+                                ct => AddEmptyLineBeforeWhileInDoStatementAsync(context.Document, statement, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -122,6 +117,22 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static Task<Document> AddEmptyLineBeforeWhileInDoStatementAsync(
+            Document document,
+            StatementSyntax statement,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            SyntaxTriviaList trailingTrivia = statement.GetTrailingTrivia();
+
+            int index = trailingTrivia.IndexOf(SyntaxKind.EndOfLineTrivia);
+
+            SyntaxTriviaList newTrailingTrivia = trailingTrivia.Insert(index, CSharpFactory.NewLine());
+
+            StatementSyntax newStatement = statement.WithTrailingTrivia(newTrailingTrivia);
+
+            return document.ReplaceNodeAsync(statement, newStatement, cancellationToken);
         }
     }
 }

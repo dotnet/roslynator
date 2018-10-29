@@ -12,13 +12,13 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FormatCaseLabelStatementOnSeparateLineCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddNewLineAfterSwitchLabelCodeFixProvider))]
     [Shared]
-    public class FormatCaseLabelStatementOnSeparateLineCodeFixProvider : BaseCodeFixProvider
+    public class AddNewLineAfterSwitchLabelCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddNewLineAfterSwitchLabel); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -29,9 +29,9 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Format statement on a separate line",
-                cancellationToken => FormatEachStatementOnSeparateLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.FormatSwitchSectionStatementOnSeparateLine));
+                "Add new line",
+                cancellationToken => AddNewLineBeforeStatementRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.AddNewLineAfterSwitchLabel));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

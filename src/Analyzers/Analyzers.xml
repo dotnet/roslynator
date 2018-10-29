@@ -498,10 +498,10 @@ protected internal class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatEachEnumMemberOnSeparateLine">
+  <Analyzer Identifier="AddNewLineBeforeEnumMember">
     <Id>RCS1025</Id>
-    <Title>Format each enum member on a separate line.</Title>
-    <MessageFormat>Format each enum member on a separate line.</MessageFormat>
+    <Title>Add new line before enum member.</Title>
+    <MessageFormat>Add new line before enum member.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -519,10 +519,10 @@ protected internal class Foo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatEachStatementOnSeparateLine">
+  <Analyzer Identifier="AddNewLineBeforeStatement">
     <Id>RCS1026</Id>
-    <Title>Format each statement on a separate line.</Title>
-    <MessageFormat>Format each statement on a separate line.</MessageFormat>
+    <Title>Add new line before statement.</Title>
+    <MessageFormat>Add new line before statement.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -536,10 +536,10 @@ Foo(s);]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatEmbeddedStatementOnSeparateLine">
+  <Analyzer Identifier="AddNewLineBeforeEmbeddedStatement">
     <Id>RCS1027</Id>
-    <Title>Format embedded statement on a separate line.</Title>
-    <MessageFormat>Format embedded statement on a separate line.</MessageFormat>
+    <Title>Add new line before embedded statement.</Title>
+    <MessageFormat>Add new line before embedded statement.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -555,10 +555,10 @@ Foo(s);]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="FormatSwitchSectionStatementOnSeparateLine">
+  <Analyzer Identifier="AddNewLineAfterSwitchLabel">
     <Id>RCS1028</Id>
-    <Title>Format switch section's statement on a separate line.</Title>
-    <MessageFormat>Format switch section's statement on a separate line.</MessageFormat>
+    <Title>Add new line after switch label.</Title>
+    <MessageFormat>Add new line after switch label.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -2007,10 +2007,10 @@ public string Foo // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddEmptyLineAfterLastStatementInDoStatement">
+  <Analyzer Identifier="AddEmptyLineBeforeWhileInDoStatement">
     <Id>RCS1092</Id>
-    <Title>Add empty line after last statement in do statement.</Title>
-    <MessageFormat>Add empty line after last statement in do statement.</MessageFormat>
+    <Title>Add empty line before 'while' keyword in 'do' statement.</Title>
+    <MessageFormat>Add empty line before 'while' keyword in 'do' statement.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -3908,10 +3908,10 @@ public string Value { get; }]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AvoidSingleLineBlock">
+  <Analyzer Identifier="FormatSingleLineBlock">
     <Id>RCS1185</Id>
-    <Title>Avoid single-line block.</Title>
-    <MessageFormat>Avoid single-line block.</MessageFormat>
+    <Title>Format single-line block.</Title>
+    <MessageFormat>Format single-line block.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>

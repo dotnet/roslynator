@@ -12,13 +12,13 @@ using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
-    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(FormatEmbeddedStatementOnSeparateLineCodeFixProvider))]
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(AddNewLineBeforeEmbeddedStatementCodeFixProvider))]
     [Shared]
-    public class FormatEmbeddedStatementOnSeparateLineCodeFixProvider : BaseCodeFixProvider
+    public class AddNewLineBeforeEmbeddedStatementCodeFixProvider : BaseCodeFixProvider
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -29,9 +29,9 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Format embedded statement on a separate line",
-                cancellationToken => FormatEachStatementOnSeparateLineRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.FormatEmbeddedStatementOnSeparateLine));
+                "Add new line",
+                cancellationToken => AddNewLineBeforeStatementRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
+                GetEquivalenceKey(DiagnosticIdentifiers.AddNewLineBeforeEmbeddedStatement));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
         }

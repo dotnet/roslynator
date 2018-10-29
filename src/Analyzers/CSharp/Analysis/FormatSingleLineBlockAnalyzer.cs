@@ -11,11 +11,11 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AvoidSingleLineBlockAnalyzer : BaseDiagnosticAnalyzer
+    public class FormatSingleLineBlockAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AvoidSingleLineBlock); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.FormatSingleLineBlock); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Analysis
             if (!block.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.SpanStart, closeBrace.Span.End), context.CancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AvoidSingleLineBlock, block);
+            context.ReportDiagnostic(DiagnosticDescriptors.FormatSingleLineBlock, block);
         }
     }
 }

@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class FormatEachStatementOnSeparateLineRefactoring
+    internal static class AddNewLineBeforeStatementRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

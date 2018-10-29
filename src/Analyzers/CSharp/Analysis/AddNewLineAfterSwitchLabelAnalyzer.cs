@@ -11,11 +11,11 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FormatSwitchSectionStatementOnSeparateLineAnalyzer : BaseDiagnosticAnalyzer
+    public class AddNewLineAfterSwitchLabelAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.FormatSwitchSectionStatementOnSeparateLine); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddNewLineAfterSwitchLabel); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
             if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(labels.Last().Span.End, statement.SpanStart)))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.FormatSwitchSectionStatementOnSeparateLine, statement);
+            context.ReportDiagnostic(DiagnosticDescriptors.AddNewLineAfterSwitchLabel, statement);
         }
     }
 }

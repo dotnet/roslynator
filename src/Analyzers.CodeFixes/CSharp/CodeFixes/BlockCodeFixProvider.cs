@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -22,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.SimplifyLazyInitialization,
-                    DiagnosticIdentifiers.AvoidSingleLineBlock);
+                    DiagnosticIdentifiers.FormatSingleLineBlock);
             }
         }
 
@@ -47,11 +48,11 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.AvoidSingleLineBlock:
+                    case DiagnosticIdentifiers.FormatSingleLineBlock:
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Format block",
-                                cancellationToken => AvoidSingleLineBlockRefactoring.RefactorAsync(context.Document, block, cancellationToken),
+                                ct => FormatSingleLineBlockAsync(context.Document, block, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -59,6 +60,20 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static Task<Document> FormatSingleLineBlockAsync(
+            Document document,
+            BlockSyntax block,
+            CancellationToken cancellationToken)
+        {
+            SyntaxToken closeBrace = block.CloseBraceToken;
+
+            BlockSyntax newBlock = block
+                .WithCloseBraceToken(closeBrace.WithLeadingTrivia(closeBrace.LeadingTrivia.Add(CSharpFactory.NewLine())))
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(block, newBlock, cancellationToken);
         }
     }
 }

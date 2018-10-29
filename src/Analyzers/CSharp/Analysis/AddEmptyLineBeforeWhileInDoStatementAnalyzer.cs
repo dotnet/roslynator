@@ -11,11 +11,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddEmptyLineAfterLastStatementInDoStatementAnalyzer : BaseDiagnosticAnalyzer
+    public class AddEmptyLineBeforeWhileInDoStatementAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddEmptyLineAfterLastStatementInDoStatement); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddEmptyLineBeforeWhileInDoStatement); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             context.ReportDiagnostic(
-                DiagnosticDescriptors.AddEmptyLineAfterLastStatementInDoStatement,
+                DiagnosticDescriptors.AddEmptyLineBeforeWhileInDoStatement,
                 Location.Create(doStatement.SyntaxTree, trivia.Span));
         }
     }
