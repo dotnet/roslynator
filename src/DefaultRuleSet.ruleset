@@ -32,10 +32,10 @@
     <Rule Id="RCS1022FadeOut" Action="None" />
     <Rule Id="RCS1023" Action="None" /> <!-- Format empty block. -->
     <Rule Id="RCS1024" Action="None" /> <!-- Format accessor list. -->
-    <Rule Id="RCS1025" Action="None" /> <!-- Format each enum member on a separate line. -->
-    <Rule Id="RCS1026" Action="None" /> <!-- Format each statement on a separate line. -->
-    <Rule Id="RCS1027" Action="None" /> <!-- Format embedded statement on a separate line. -->
-    <Rule Id="RCS1028" Action="None" /> <!-- Format switch section's statement on a separate line. -->
+    <Rule Id="RCS1025" Action="None" /> <!-- Add new line before enum member. -->
+    <Rule Id="RCS1026" Action="None" /> <!-- Add new line before statement. -->
+    <Rule Id="RCS1027" Action="None" /> <!-- Add new line before embedded statement. -->
+    <Rule Id="RCS1028" Action="None" /> <!-- Add new line after switch label. -->
     <Rule Id="RCS1029" Action="Info" /> <!-- Format binary operator on next line. -->
     <Rule Id="RCS1030" Action="None" /> <!-- Add empty line after embedded statement. -->
     <Rule Id="RCS1031" Action="Info" /> <!-- Remove redundant braces. -->
@@ -112,7 +112,7 @@
     <Rule Id="RCS1090" Action="Info" /> <!-- Call 'ConfigureAwait(false)'. -->
     <Rule Id="RCS1091" Action="Hidden" /> <!-- Remove empty region. -->
     <Rule Id="RCS1091FadeOut" Action="Hidden" />
-    <Rule Id="RCS1092" Action="None" /> <!-- Add empty line after last statement in do statement. -->
+    <Rule Id="RCS1092" Action="None" /> <!-- Add empty line before 'while' keyword in 'do' statement. -->
     <Rule Id="RCS1093" Action="Info" /> <!-- Remove file with no code. -->
     <Rule Id="RCS1094" Action="None" /> <!-- Declare using directive on top level. -->
     <Rule Id="RCS1095" Action="Info" /> <!-- Use C# 6.0 dictionary initializer. -->
@@ -210,7 +210,7 @@
     <Rule Id="RCS1182" Action="Hidden" /> <!-- Remove redundant base interface. -->
     <Rule Id="RCS1183" Action="Hidden" /> <!-- Format initializer with single expression on single line. -->
     <Rule Id="RCS1184" Action="None" /> <!-- Format conditional expression (format ? and : on next line). -->
-    <Rule Id="RCS1185" Action="None" /> <!-- Avoid single-line block. -->
+    <Rule Id="RCS1185" Action="None" /> <!-- Format single-line block. -->
     <Rule Id="RCS1186" Action="Hidden" /> <!-- Use Regex instance instead of static method. -->
     <Rule Id="RCS1187" Action="Info" /> <!-- Use constant instead of field. -->
     <Rule Id="RCS1188" Action="Hidden" /> <!-- Remove redundant auto-property initialization. -->

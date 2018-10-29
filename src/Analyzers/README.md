@@ -26,10 +26,10 @@
 | RCS1021 | [Simplify lambda expression](../../docs/analyzers/RCS1021.md) | Simplification | &#x2713; |
 | RCS1023 | [Format empty block](../../docs/analyzers/RCS1023.md) | Formatting | \- |
 | RCS1024 | [Format accessor list](../../docs/analyzers/RCS1024.md) | Formatting | \- |
-| RCS1025 | [Format each enum member on a separate line](../../docs/analyzers/RCS1025.md) | Formatting | \- |
-| RCS1026 | [Format each statement on a separate line](../../docs/analyzers/RCS1026.md) | Formatting | \- |
-| RCS1027 | [Format embedded statement on a separate line](../../docs/analyzers/RCS1027.md) | Formatting | \- |
-| RCS1028 | [Format switch section's statement on a separate line](../../docs/analyzers/RCS1028.md) | Formatting | \- |
+| RCS1025 | [Add new line before enum member](../../docs/analyzers/RCS1025.md) | Formatting | \- |
+| RCS1026 | [Add new line before statement](../../docs/analyzers/RCS1026.md) | Formatting | \- |
+| RCS1027 | [Add new line before embedded statement](../../docs/analyzers/RCS1027.md) | Formatting | \- |
+| RCS1028 | [Add new line after switch label](../../docs/analyzers/RCS1028.md) | Formatting | \- |
 | RCS1029 | [Format binary operator on next line](../../docs/analyzers/RCS1029.md) | Formatting | &#x2713; |
 | RCS1030 | [Add empty line after embedded statement](../../docs/analyzers/RCS1030.md) | Formatting | \- |
 | RCS1032 | [Remove redundant parentheses](../../docs/analyzers/RCS1032.md) | Redundancy | &#x2713; |
@@ -88,7 +88,7 @@
 | RCS1089 | [Use --/++ operator instead of assignment](../../docs/analyzers/RCS1089.md) | Simplification | &#x2713; |
 | RCS1090 | [Call 'ConfigureAwait(false)'](../../docs/analyzers/RCS1090.md) | Design | &#x2713; |
 | RCS1091 | [Remove empty region](../../docs/analyzers/RCS1091.md) | Redundancy | &#x2713; |
-| RCS1092 | [Add empty line after last statement in do statement](../../docs/analyzers/RCS1092.md) | Formatting | \- |
+| RCS1092 | [Add empty line before 'while' keyword in 'do' statement](../../docs/analyzers/RCS1092.md) | Formatting | \- |
 | RCS1093 | [Remove file with no code](../../docs/analyzers/RCS1093.md) | Redundancy | &#x2713; |
 | RCS1094 | [Declare using directive on top level](../../docs/analyzers/RCS1094.md) | Readability | \- |
 | RCS1096 | [Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md) | Performance | &#x2713; |
@@ -163,7 +163,7 @@
 | RCS1182 | [Remove redundant base interface](../../docs/analyzers/RCS1182.md) | Redundancy | &#x2713; |
 | RCS1183 | [Format initializer with single expression on single line](../../docs/analyzers/RCS1183.md) | Formatting | &#x2713; |
 | RCS1184 | [Format conditional expression (format ? and : on next line)](../../docs/analyzers/RCS1184.md) | Formatting | \- |
-| RCS1185 | [Avoid single-line block](../../docs/analyzers/RCS1185.md) | Formatting | \- |
+| RCS1185 | [Format single-line block](../../docs/analyzers/RCS1185.md) | Formatting | \- |
 | RCS1186 | [Use Regex instance instead of static method](../../docs/analyzers/RCS1186.md) | Usage | &#x2713; |
 | RCS1187 | [Use constant instead of field](../../docs/analyzers/RCS1187.md) | Design | &#x2713; |
 | RCS1188 | [Remove redundant auto-property initialization](../../docs/analyzers/RCS1188.md) | Redundancy | &#x2713; |

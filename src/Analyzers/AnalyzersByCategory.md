@@ -22,21 +22,21 @@
 | Design | [Validate arguments correctly](../../docs/analyzers/RCS1227.md) | RCS1227 | &#x2713; |
 | Formatting | [Add empty line after closing brace](../../docs/analyzers/RCS1153.md) | RCS1153 | \- |
 | Formatting | [Add empty line after embedded statement](../../docs/analyzers/RCS1030.md) | RCS1030 | \- |
-| Formatting | [Add empty line after last statement in do statement](../../docs/analyzers/RCS1092.md) | RCS1092 | \- |
+| Formatting | [Add empty line before 'while' keyword in 'do' statement](../../docs/analyzers/RCS1092.md) | RCS1092 | \- |
 | Formatting | [Add empty line between declarations](../../docs/analyzers/RCS1057.md) | RCS1057 | &#x2713; |
-| Formatting | [Avoid single-line block](../../docs/analyzers/RCS1185.md) | RCS1185 | \- |
+| Formatting | [Add new line after switch label](../../docs/analyzers/RCS1028.md) | RCS1028 | \- |
+| Formatting | [Add new line before embedded statement](../../docs/analyzers/RCS1027.md) | RCS1027 | \- |
+| Formatting | [Add new line before enum member](../../docs/analyzers/RCS1025.md) | RCS1025 | \- |
+| Formatting | [Add new line before statement](../../docs/analyzers/RCS1026.md) | RCS1026 | \- |
 | Formatting | [Format accessor list](../../docs/analyzers/RCS1024.md) | RCS1024 | \- |
 | Formatting | [Format binary operator on next line](../../docs/analyzers/RCS1029.md) | RCS1029 | &#x2713; |
 | Formatting | [Format conditional expression (format ? and : on next line)](../../docs/analyzers/RCS1184.md) | RCS1184 | \- |
 | Formatting | [Format declaration braces](../../docs/analyzers/RCS1076.md) | RCS1076 | &#x2713; |
 | Formatting | [Format documentation summary on a single line](../../docs/analyzers/RCS1100.md) | RCS1100 | \- |
 | Formatting | [Format documentation summary on multiple lines](../../docs/analyzers/RCS1101.md) | RCS1101 | \- |
-| Formatting | [Format each enum member on a separate line](../../docs/analyzers/RCS1025.md) | RCS1025 | \- |
-| Formatting | [Format each statement on a separate line](../../docs/analyzers/RCS1026.md) | RCS1026 | \- |
-| Formatting | [Format embedded statement on a separate line](../../docs/analyzers/RCS1027.md) | RCS1027 | \- |
 | Formatting | [Format empty block](../../docs/analyzers/RCS1023.md) | RCS1023 | \- |
 | Formatting | [Format initializer with single expression on single line](../../docs/analyzers/RCS1183.md) | RCS1183 | &#x2713; |
-| Formatting | [Format switch section's statement on a separate line](../../docs/analyzers/RCS1028.md) | RCS1028 | \- |
+| Formatting | [Format single-line block](../../docs/analyzers/RCS1185.md) | RCS1185 | \- |
 | General | [Bitwise operation on enum without Flags attribute](../../docs/analyzers/RCS1130.md) | RCS1130 | &#x2713; |
 | General | [Mark local variable as const](../../docs/analyzers/RCS1118.md) | RCS1118 | &#x2713; |
 | General | [Replace comment with documentation comment](../../docs/analyzers/RCS1181.md) | RCS1181 | &#x2713; |

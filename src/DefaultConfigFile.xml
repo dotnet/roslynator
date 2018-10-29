@@ -318,6 +318,7 @@
       <CodeFix Id="RCF0108" IsEnabled="true" /> <!-- RemoveParentheses (fixes CS0210) -->
       <CodeFix Id="RCF0109" IsEnabled="true" /> <!-- RemoveParameter (fixes CS0136) -->
       <CodeFix Id="RCF0110" IsEnabled="true" /> <!-- RenameTupleElement (fixes CS8139) -->
+      <CodeFix Id="RCF0111" IsEnabled="true" /> <!-- ChangeParameterType (fixes CS1750) -->
     </CodeFixes>
   </Settings>
 </Roslynator>
