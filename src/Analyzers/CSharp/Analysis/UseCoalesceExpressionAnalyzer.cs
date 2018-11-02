@@ -127,19 +127,14 @@ namespace Roslynator.CSharp.Analysis
 
             if (kind == SyntaxKind.LocalDeclarationStatement)
             {
-                var localDeclarationStatement = (LocalDeclarationStatementSyntax)statement;
+                SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo((LocalDeclarationStatementSyntax)statement);
 
-                VariableDeclaratorSyntax declarator = localDeclarationStatement.Declaration?
-                    .Variables
-                    .SingleOrDefault(shouldThrow: false);
-
-                ExpressionSyntax value = declarator?.Initializer?.Value;
-
-                return value != null
+                return localInfo.Success
+                    && !localInfo.Type.IsKind(SyntaxKind.RefType)
                     && expression.IsKind(SyntaxKind.IdentifierName)
-                    && string.Equals(declarator.Identifier.ValueText, ((IdentifierNameSyntax)expression).Identifier.ValueText, StringComparison.Ordinal)
-                    && !value.GetTrailingTrivia().Any(f => f.IsDirective)
-                    && !localDeclarationStatement.SemicolonToken.ContainsDirectives;
+                    && string.Equals(localInfo.IdentifierText, ((IdentifierNameSyntax)expression).Identifier.ValueText, StringComparison.Ordinal)
+                    && !localInfo.Value.GetTrailingTrivia().Any(f => f.IsDirective)
+                    && !localInfo.SemicolonToken.ContainsDirectives;
             }
             else if (kind == SyntaxKind.ExpressionStatement)
             {

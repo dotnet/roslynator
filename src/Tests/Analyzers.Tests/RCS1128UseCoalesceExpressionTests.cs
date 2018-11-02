@@ -342,7 +342,8 @@ class C
         if (x != null)
             x = """";
     }
-}");
+}
+");
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
@@ -358,7 +359,8 @@ class C
         if (!(x is null))
             x = """";
     }
-}");
+}
+");
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
@@ -374,7 +376,32 @@ class C
         if (x.HasValue)
             x = 0;
     }
-}");
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCoalesceExpression)]
+        public async Task TestNoDiagnostic_RefType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        ref object x = ref GetRef();
+
+        if (x == null)
+            x = new object();
+    }
+
+    private ref object GetRef()
+    {
+        throw new NotImplementedException();
+    }
+}
+");
         }
     }
 }
