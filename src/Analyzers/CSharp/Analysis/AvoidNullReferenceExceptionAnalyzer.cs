@@ -75,7 +75,8 @@ namespace Roslynator.CSharp.Analysis
             SyntaxNode topExpression = GetAccessExpression(expression)?.WalkUp(f => f.IsKind(
                 SyntaxKind.SimpleMemberAccessExpression,
                 SyntaxKind.ElementAccessExpression,
-                SyntaxKind.InvocationExpression));
+                SyntaxKind.InvocationExpression,
+                SyntaxKind.ParenthesizedExpression));
 
             if (topExpression == null)
                 return;
