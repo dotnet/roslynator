@@ -393,8 +393,11 @@ namespace Roslynator.CSharp.Analysis
 
             if (propertyName != null)
             {
-                if (CanBeReplacedWithMemberAccessExpression(invocationExpression))
+                if (CanBeReplacedWithMemberAccessExpression(invocationExpression)
+                    && CheckInfiniteRecursion(typeSymbol, propertyName, invocationExpression.SpanStart, semanticModel, cancellationToken))
+                {
                     ReportNameWithArgumentList(context, invocationInfo, property: new KeyValuePair<string, string>("PropertyName", propertyName), messageArgs: propertyName);
+                }
 
                 return;
             }
@@ -475,6 +478,42 @@ namespace Roslynator.CSharp.Analysis
 
                 return true;
             }
+        }
+
+        private static bool CheckInfiniteRecursion(
+            ITypeSymbol typeSymbol,
+            string propertyName,
+            int position,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
+        {
+            ISymbol symbol = semanticModel.GetEnclosingSymbol(position, cancellationToken);
+
+            if (symbol != null)
+            {
+                IPropertySymbol propertySymbol = null;
+
+                if (symbol.Kind == SymbolKind.Property)
+                {
+                    propertySymbol = (IPropertySymbol)symbol;
+                }
+                else if (symbol.Kind == SymbolKind.Method)
+                {
+                    var methodSymbol = (IMethodSymbol)symbol;
+
+                    if (methodSymbol.MethodKind.Is(MethodKind.PropertyGet, MethodKind.PropertySet))
+                        propertySymbol = methodSymbol.AssociatedSymbol as IPropertySymbol;
+                }
+
+                if (propertySymbol?.IsIndexer == false
+                    && propertySymbol.Name == propertyName
+                    && propertySymbol.ContainingType == typeSymbol)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         private static void ReportNameWithArgumentList(

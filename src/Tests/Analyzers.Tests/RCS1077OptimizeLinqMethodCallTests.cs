@@ -891,6 +891,53 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task TestNoDiagnostic_OptimizeCountCall_InfiniteRecursion()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+class C : IReadOnlyCollection<int>
+{
+    public int Count => this.Count();
+
+    public IEnumerator<int> GetEnumerator()
+    {
+        yield break;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task TestNoDiagnostic_OptimizeCountCall_InfiniteRecursion2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+class C : IReadOnlyCollection<int>
+{
+    public int Count
+    {
+        get { return this.Count(); }
+    }
+
+        public IEnumerator<int> GetEnumerator()
+    {
+        yield break;
+    }
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallAnyInsteadOfCount()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -1003,6 +1050,28 @@ class C
         ((List<object>)x).First();
         ((List<object>)x).ElementAt(1);
     }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task TestNoDiagnostic_UseElementAccessInsteadOfElementAt_InfiniteRecursion()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
+
+class C : IReadOnlyList<int>
+{
+    public int this[int index] => this.ElementAt(index);
+
+    public int Count => throw new NotImplementedException();
+
+    public IEnumerator<int> GetEnumerator() => throw new NotImplementedException();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }
 ");
         }
