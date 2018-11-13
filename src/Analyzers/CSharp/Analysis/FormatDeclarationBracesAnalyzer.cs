@@ -67,13 +67,13 @@ namespace Roslynator.CSharp.Analysis
             if (closeBrace.IsMissing)
                 return;
 
-            if (declaration.SyntaxTree.GetLineCount(TextSpan.FromBounds(openBrace.Span.End, closeBrace.SpanStart)) == 2)
+            if (declaration.SyntaxTree.GetLineCount(TextSpan.FromBounds(openBrace.SpanStart, closeBrace.Span.End)) != 1)
                 return;
 
             if (!openBrace.TrailingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            if (!closeBrace.LeadingTrivia.IsEmptyOrWhitespace())
+            if (closeBrace.LeadingTrivia.Any())
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.FormatDeclarationBraces, openBrace);

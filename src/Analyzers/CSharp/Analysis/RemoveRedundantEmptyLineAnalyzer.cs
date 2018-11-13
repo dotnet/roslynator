@@ -340,6 +340,10 @@ namespace Roslynator.CSharp.Analysis
                 AnalyzeStart(context, members.First(), openBrace);
                 AnalyzeEnd(context, members.Last(), closeBrace);
             }
+            else
+            {
+                AnalyzeEmptyBraces(context, openBrace, closeBrace);
+            }
         }
 
         public static void AnalyzeBlock(SyntaxNodeAnalysisContext context)
@@ -352,6 +356,10 @@ namespace Roslynator.CSharp.Analysis
             {
                 AnalyzeStart(context, statements.First(), block.OpenBraceToken);
                 AnalyzeEnd(context, statements.Last(), block.CloseBraceToken);
+            }
+            else
+            {
+                AnalyzeEmptyBraces(context, block.OpenBraceToken, block.CloseBraceToken);
             }
         }
 
@@ -469,6 +477,32 @@ namespace Roslynator.CSharp.Analysis
             context.ReportDiagnostic(
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
+        }
+
+        private static void AnalyzeEmptyBraces(
+            SyntaxNodeAnalysisContext context,
+            SyntaxToken openBrace,
+            SyntaxToken closeBrace)
+        {
+            if (openBrace.IsMissing)
+                return;
+
+            if (closeBrace.IsMissing)
+                return;
+
+            SyntaxTree tree = context.Node.SyntaxTree;
+
+            if (tree.GetLineCount(TextSpan.FromBounds(openBrace.SpanStart, closeBrace.Span.End)) <= 2)
+                return;
+
+            TextSpan? span = GetEmptyLineSpan(closeBrace.LeadingTrivia, isEnd: true);
+
+            if (span == null)
+                return;
+
+            context.ReportDiagnostic(
+                DiagnosticDescriptors.RemoveRedundantEmptyLine,
+                Location.Create(tree, span.Value));
         }
 
         private static bool IsEmptyLastLineInDoStatement(

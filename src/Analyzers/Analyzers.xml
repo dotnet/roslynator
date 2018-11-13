@@ -1687,9 +1687,7 @@ catch (Exception ex) // [|Id|]
     <Samples>
       <Sample>
         <Before><![CDATA[public interface IFoo
-{ // [|Id|]
-
-}]]></Before>
+{ } // [|Id|]]]></Before>
         <After>
           <![CDATA[public interface IFoo
 {

@@ -6,11 +6,12 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class BlockAnalyzer : BaseDiagnosticAnalyzer
+    public class FormatEmptyBlockAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -45,16 +46,13 @@ namespace Roslynator.CSharp.Analysis
             SyntaxToken openBrace = block.OpenBraceToken;
             SyntaxToken closeBrace = block.CloseBraceToken;
 
-            int startLine = openBrace.GetSpanStartLine();
-            int endLine = closeBrace.GetSpanEndLine();
-
-            if ((endLine - startLine) == 1)
+            if (block.SyntaxTree.GetLineCount(TextSpan.FromBounds(openBrace.SpanStart, closeBrace.Span.End)) != 1)
                 return;
 
             if (!openBrace.TrailingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            if (!closeBrace.LeadingTrivia.IsEmptyOrWhitespace())
+            if (closeBrace.LeadingTrivia.Any())
                 return;
 
             context.ReportDiagnostic(DiagnosticDescriptors.FormatEmptyBlock, block);
