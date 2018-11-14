@@ -128,13 +128,7 @@ namespace Roslynator
             if (value == null)
                 throw new ArgumentNullException(nameof(value));
 
-            int length = value.Length;
-
-            if (length == 0)
-                return "";
-
-            int i = 0;
-            do
+            for (int i = 0; i < value.Length; i++)
             {
                 char ch = value[i];
 
@@ -142,14 +136,11 @@ namespace Roslynator
                     || ch == '\n'
                     || !char.IsWhiteSpace(ch))
                 {
-                    break;
+                    return value.Remove(i);
                 }
+            }
 
-                i++;
-
-            } while (i < length);
-
-            return value.Remove(i);
+            return value;
         }
 
         public static string DoubleBraces(string value)
