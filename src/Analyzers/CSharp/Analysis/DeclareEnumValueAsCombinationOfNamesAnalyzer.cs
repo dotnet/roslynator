@@ -74,7 +74,7 @@ namespace Roslynator.CSharp.Analysis
 
                             if (values?.Count > 1)
                             {
-                                context.ReportDiagnostic(
+                                DiagnosticHelpers.ReportDiagnostic(context,
                                     DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames,
                                     valueExpression);
                             }

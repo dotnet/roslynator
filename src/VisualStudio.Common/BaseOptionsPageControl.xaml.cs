@@ -21,6 +21,8 @@ namespace Roslynator.VisualStudio
             DataContext = this;
         }
 
+        public string Comment { get; set; }
+
         public ObservableCollection<BaseModel> Items { get; } = new ObservableCollection<BaseModel>();
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
@@ -80,7 +82,7 @@ namespace Roslynator.VisualStudio
             dataView.Refresh();
         }
 
-        private bool FilterRefactorings(object item)
+        private bool FilterItems(object item)
         {
             string s = tbxFilter.Text;
 
@@ -88,32 +90,32 @@ namespace Roslynator.VisualStudio
             {
                 s = s.Trim();
 
-                var refactoring = (BaseModel)item;
+                var model = (BaseModel)item;
 
-                return refactoring.Id.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1
-                    || refactoring.Title.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1;
+                return model.Id.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1
+                    || model.Title.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1;
             }
 
             return true;
         }
 
-        private void EnableAllButton_Click(object sender, RoutedEventArgs e)
+        private void UncheckAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (BaseModel refactoring in Items)
-                refactoring.Enabled = true;
+            foreach (BaseModel model in Items)
+                model.Enabled = false;
         }
 
-        private void DisableAllButton_Click(object sender, RoutedEventArgs e)
+        private void CheckAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (BaseModel refactoring in Items)
-                refactoring.Enabled = false;
+            foreach (BaseModel model in Items)
+                model.Enabled = true;
         }
 
         private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var view = (CollectionView)CollectionViewSource.GetDefaultView(lsvItems.ItemsSource);
 
-            view.Filter = view.Filter ?? FilterRefactorings;
+            view.Filter = view.Filter ?? FilterItems;
 
             view.Refresh();
         }

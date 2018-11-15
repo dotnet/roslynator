@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
             if (interpolatedString.StringStartToken.ValueText.Contains("@") != stringLiteralInfo.IsVerbatim)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryInterpolation, interpolation);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryInterpolation, interpolation);
         }
     }
 }

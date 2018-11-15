@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
             if (closeBrace.LeadingTrivia.Any())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.FormatDeclarationBraces, openBrace);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.FormatDeclarationBraces, openBrace);
         }
     }
 }

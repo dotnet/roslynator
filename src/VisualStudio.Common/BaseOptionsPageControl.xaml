@@ -35,8 +35,11 @@
   <DockPanel Focusable="False">
     <TextBox DockPanel.Dock="Top" MinHeight="20" Margin="0,0,0,2" Name="tbxFilter" TextChanged="FilterTextBox_TextChanged" />
     <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
-      <Button Content="Enable All" Click="EnableAllButton_Click" />
-      <Button Content="Disable All" Click="DisableAllButton_Click" />
+      <TextBlock Text="{Binding Comment}" Margin="0,5,0,0" TextWrapping="WrapWithOverflow" />
+    </WrapPanel>
+    <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" HorizontalAlignment="Left">
+      <Button Content="Check All" Click="CheckAllButton_Click" />
+      <Button Content="Uncheck All" Click="UncheckAllButton_Click" />
     </WrapPanel>
     <ListView Name="lsvItems"
               DockPanel.Dock="Top"

@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
                         members.First().SpanStart,
                         members.Last().Span.End);
 
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.AddNewLineBeforeEnumMember,
                         Location.Create(enumDeclaration.SyntaxTree, span));
 

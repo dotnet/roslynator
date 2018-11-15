@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddBody))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.AddBody))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);

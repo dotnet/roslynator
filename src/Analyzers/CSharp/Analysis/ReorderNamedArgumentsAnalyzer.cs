@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
             if (argumentList.ContainsDirectives(span))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ReorderNamedArguments,
                 Location.Create(argumentList.SyntaxTree, span));
         }

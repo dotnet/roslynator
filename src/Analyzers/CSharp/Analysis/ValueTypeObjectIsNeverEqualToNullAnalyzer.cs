@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
                     && IsStructButNotNullableOfT(context.SemanticModel.GetTypeSymbol(left, context.CancellationToken))
                     && !binaryExpression.SpanContainsDirectives())
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.ValueTypeObjectIsNeverEqualToNull,
                         binaryExpression);
                 }

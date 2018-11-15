@@ -52,8 +52,8 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement, block);
-            context.ReportBraces(DiagnosticDescriptors.MergeElseClauseWithNestedIfStatementFadeOut, block);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergeElseClauseWithNestedIfStatement, block);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.MergeElseClauseWithNestedIfStatementFadeOut, block);
         }
     }
 }

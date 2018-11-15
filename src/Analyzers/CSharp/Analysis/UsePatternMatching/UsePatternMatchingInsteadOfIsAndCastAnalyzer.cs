@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         if (!IsFixable(right, identifierName, semanticModel, cancellationToken))
                             return;
 
-                        context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, logicalAnd);
                         break;
                     }
                 case SyntaxKind.IfStatement:
@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                         if (!IsFixable(statement, identifierName, semanticModel, cancellationToken))
                             return;
 
-                        context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatchingInsteadOfIsAndCast, ifStatement.Condition);
                         break;
                     }
             }

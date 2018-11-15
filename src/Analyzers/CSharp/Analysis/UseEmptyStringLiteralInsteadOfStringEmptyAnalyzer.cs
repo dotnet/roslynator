@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
             var memberAccess = (MemberAccessExpressionSyntax)context.Node;
 
             if (UseEmptyStringLiteralInsteadOfStringEmptyAnalysis.IsFixable(memberAccess, context.SemanticModel, context.CancellationToken))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmpty, memberAccess);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseEmptyStringLiteralInsteadOfStringEmpty, memberAccess);
         }
     }
 }

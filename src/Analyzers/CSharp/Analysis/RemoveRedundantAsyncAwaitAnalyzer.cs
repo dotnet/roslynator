@@ -121,8 +121,8 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxToken asyncKeyword, in RemoveAsyncAwaitResult result)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantAsyncAwait, asyncKeyword);
-            context.ReportToken(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, asyncKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAsyncAwait, asyncKeyword);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, asyncKeyword);
 
             if (result.AwaitExpression != null)
             {
@@ -138,7 +138,7 @@ namespace Roslynator.CSharp.Analysis
 
             void ReportAwaitAndConfigureAwait(AwaitExpressionSyntax awaitExpression)
             {
-                context.ReportToken(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, awaitExpression.AwaitKeyword);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, awaitExpression.AwaitKeyword);
 
                 ExpressionSyntax expression = awaitExpression.Expression;
 
@@ -151,9 +151,9 @@ namespace Roslynator.CSharp.Analysis
 
                     if (string.Equals(memberAccess?.Name?.Identifier.ValueText, "ConfigureAwait", StringComparison.Ordinal))
                     {
-                        context.ReportNode(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, memberAccess.Name);
-                        context.ReportToken(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, memberAccess.OperatorToken);
-                        context.ReportNode(DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, invocation.ArgumentList);
+                        DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, memberAccess.Name);
+                        DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, memberAccess.OperatorToken);
+                        DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.RemoveRedundantAsyncAwaitFadeOut, invocation.ArgumentList);
                     }
                 }
             }

@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (!classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.MakeClassStatic, classDeclaration.Identifier);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeClassStatic, classDeclaration.Identifier);
                     break;
                 }
             }

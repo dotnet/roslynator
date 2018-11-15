@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             if (info.Left.Kind() != SyntaxKind.NullLiteralExpression)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AvoidNullLiteralExpressionOnLeftSideOfBinaryExpression,
                 info.Left);
         }

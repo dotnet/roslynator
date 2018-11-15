@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParameter))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveParameter))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter:
                         {
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParameter)
+                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveParameter)
                                 && parameter.IsParentKind(SyntaxKind.ParameterList)
                                 && parameter.Parent.IsParentKind(SyntaxKind.LocalFunctionStatement))
                             {

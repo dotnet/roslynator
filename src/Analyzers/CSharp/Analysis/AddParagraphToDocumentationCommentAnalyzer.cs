@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (span2.End > 0)
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.AddParagraphToDocumentationComment,
                         Location.Create(documentationComment.SyntaxTree, TextSpan.FromBounds(span1.Start, span2.End)));
                 }

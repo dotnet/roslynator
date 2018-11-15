@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
 
             var enumDeclaration = (EnumDeclarationSyntax)namedTypeSymbol.GetSyntax(context.CancellationToken);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.DeclareEnumMemberWithZeroValue, enumDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEnumMemberWithZeroValue, enumDeclaration.Identifier);
         }
 
         private static bool ContainsMemberWithZeroValue(INamedTypeSymbol namedTypeSymbol)

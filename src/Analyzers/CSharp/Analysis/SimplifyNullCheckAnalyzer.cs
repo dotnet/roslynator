@@ -64,7 +64,7 @@ namespace Roslynator.CSharp.Analysis
                     .GetTypeSymbol(nullCheck.Expression, cancellationToken)?
                     .IsReferenceTypeOrNullableType() == true)
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
                         conditionalExpression);
                 }
@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.Analysis
                         {
                             if (memberAccessExpression == whenNotNull)
                             {
-                                context.ReportDiagnostic(
+                                DiagnosticHelpers.ReportDiagnostic(context,
                                     DiagnosticDescriptors.UseCoalesceExpressionInsteadOfConditionalExpression,
                                     conditionalExpression);
                             }
@@ -137,7 +137,7 @@ namespace Roslynator.CSharp.Analysis
 
                         if (typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T)
                         {
-                            context.ReportDiagnostic(
+                            DiagnosticHelpers.ReportDiagnostic(context,
                                 DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
                                 conditionalExpression);
                         }
@@ -162,7 +162,7 @@ namespace Roslynator.CSharp.Analysis
                 && !RefactoringUtility.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
                 && !conditionalExpressionInfo.ConditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.UseConditionalAccessInsteadOfConditionalExpression,
                     conditionalExpressionInfo.ConditionalExpression);
             }

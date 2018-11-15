@@ -208,7 +208,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, string booleanName)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ExpressionIsAlwaysEqualToTrueOrFalse,
                 context.Node,
                 booleanName);

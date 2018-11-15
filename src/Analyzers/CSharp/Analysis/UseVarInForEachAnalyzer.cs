@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Analysis
             if (analysis.IsExplicit
                 && analysis.SupportsImplicit)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.UseVarInsteadOfExplicitTypeInForEach, forEachStatement.Type);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseVarInsteadOfExplicitTypeInForEach, forEachStatement.Type);
             }
         }
     }

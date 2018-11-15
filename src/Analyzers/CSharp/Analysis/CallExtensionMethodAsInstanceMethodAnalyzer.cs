@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod, invocation);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallExtensionMethodAsInstanceMethod, invocation);
         }
     }
 }

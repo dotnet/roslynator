@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Analysis
             if (!info.Right.GetLeadingTrivia().IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.FormatBinaryOperatorOnNextLine,
                 binaryExpression.OperatorToken);
         }

@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.Success)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddExceptionToDocumentationComment, throwStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddExceptionToDocumentationComment, throwStatement);
         }
 
         private static void AnalyzeThrowExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol exceptionSymbol)
@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.Success)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddExceptionToDocumentationComment, throwExpression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddExceptionToDocumentationComment, throwExpression);
         }
     }
 }

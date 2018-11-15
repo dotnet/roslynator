@@ -17,9 +17,7 @@ namespace Roslynator.CodeGeneration.CSharp
             return CompilationUnit(
                 UsingDirectives(
                     "System.Collections.Generic",
-                    "System.ComponentModel",
-                    "Roslynator.CSharp.Refactorings",
-                    "Roslynator.VisualStudio.TypeConverters"),
+                    "Roslynator.CSharp.Refactorings"),
                 NamespaceDeclaration(
                     "Roslynator.VisualStudio",
                     ClassDeclaration(
@@ -61,7 +59,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     .Select(refactoring =>
                     {
                         return ExpressionStatement(
-                            ParseExpression($"settings.DisableRefactoring(RefactoringIdentifiers.{refactoring.Identifier})"));
+                            ParseExpression($"settings.Disable(RefactoringIdentifiers.{refactoring.Identifier})"));
                     })));
 
             yield return MethodDeclaration(

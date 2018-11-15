@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Analysis
             if (constructedFrom.Equals(valueTaskOfTSymbol)
                 || constructedFrom.EqualsOrInheritsFrom(taskSymbol))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.CallConfigureAwait, expression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallConfigureAwait, expression);
             }
         }
     }

@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
                 && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
             {
                 if (IsFixableIfElse(ifStatement))
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
             }
             else
             {
@@ -57,11 +57,11 @@ namespace Roslynator.CSharp.Analysis
                 if (elseClause != null)
                 {
                     if (IsFixableIfElseInsideWhile(ifStatement, elseClause))
-                        context.ReportDiagnostic(DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
                 }
                 else if (IsFixableSimpleIfInsideWhileOrDo(ifStatement, context.SemanticModel, context.CancellationToken))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
                 }
             }
         }

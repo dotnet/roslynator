@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod, invocationInfo.Name);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod, invocationInfo.Name);
 
             bool ValidateArgument(ArgumentSyntax argument)
             {

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (TypeAnalysis.IsImplicitThatCanBeExplicit(forEachStatement, context.SemanticModel))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.UseExplicitTypeInsteadOfVarInForEach,
                     forEachStatement.Type);
             }

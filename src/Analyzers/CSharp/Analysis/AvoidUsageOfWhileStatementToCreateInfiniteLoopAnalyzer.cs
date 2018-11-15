@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop, whileStatement.WhileKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidUsageOfWhileStatementToCreateInfiniteLoop, whileStatement.WhileKeyword);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (TypeAnalysis.IsImplicitThatCanBeExplicit(variableDeclaration, context.SemanticModel, TypeAppearance.NotObvious, context.CancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
                     variableDeclaration.Type);
             }
@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (TypeAnalysis.IsImplicitThatCanBeExplicit(declarationExpression, context.SemanticModel, context.CancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious,
                     declarationExpression.Type);
             }

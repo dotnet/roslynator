@@ -83,7 +83,7 @@ namespace Roslynator.CSharp.Analysis
             if (invocation.ContainsDirectives(span))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.CombineEnumerableWhereMethodChain,
                 Location.Create(invocation.SyntaxTree, span));
 
@@ -91,8 +91,8 @@ namespace Roslynator.CSharp.Analysis
                 invocationInfo.OperatorToken.SpanStart,
                 ((LambdaExpressionSyntax)expression).ArrowToken.Span.End);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.CombineEnumerableWhereMethodChainFadeOut, Location.Create(invocation.SyntaxTree, fadeOutSpan));
-            context.ReportDiagnostic(DiagnosticDescriptors.CombineEnumerableWhereMethodChainFadeOut, invocation.ArgumentList.CloseParenToken);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CombineEnumerableWhereMethodChainFadeOut, Location.Create(invocation.SyntaxTree, fadeOutSpan));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CombineEnumerableWhereMethodChainFadeOut, invocation.ArgumentList.CloseParenToken);
         }
 
         private static bool AreEquivalentLambdas(ExpressionSyntax expression1, ExpressionSyntax expression2)

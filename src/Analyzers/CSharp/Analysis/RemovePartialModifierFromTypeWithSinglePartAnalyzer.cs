@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart, partialKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemovePartialModifierFromTypeWithSinglePart, partialKeyword);
         }
     }
 }

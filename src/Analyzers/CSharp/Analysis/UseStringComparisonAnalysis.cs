@@ -277,7 +277,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.UseStringComparison, node);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringComparison, node);
         }
     }
 }

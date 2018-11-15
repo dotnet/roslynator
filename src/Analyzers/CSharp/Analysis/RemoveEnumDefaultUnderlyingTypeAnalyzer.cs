@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Analysis
             if (type != null
                 && context.SemanticModel.GetTypeSymbol(type, context.CancellationToken).SpecialType == SpecialType.System_Int32)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveEnumDefaultUnderlyingType, type);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEnumDefaultUnderlyingType, type);
             }
         }
     }

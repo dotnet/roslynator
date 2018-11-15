@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.AddArgumentList,
                 CodeFixIdentifiers.ChangeArrayType))
             {

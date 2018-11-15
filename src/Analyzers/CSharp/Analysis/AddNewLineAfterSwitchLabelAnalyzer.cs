@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
             if (!switchSection.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(labels.Last().Span.End, statement.SpanStart)))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddNewLineAfterSwitchLabel, statement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddNewLineAfterSwitchLabel, statement);
         }
     }
 }

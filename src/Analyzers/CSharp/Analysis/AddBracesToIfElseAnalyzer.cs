@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(ifStatement));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(ifStatement));
         }
 
         private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
             if (statement.ContainsDirectives)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(elseClause));
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBracesToIfElse, statement, CSharpFacts.GetTitle(elseClause));
         }
     }
 }

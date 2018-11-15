@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxToken sealedKeyword = info.Modifiers.Find(SyntaxKind.SealedKeyword);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantSealedModifier, sealedKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantSealedModifier, sealedKeyword);
         }
     }
 }

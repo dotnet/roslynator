@@ -319,7 +319,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node, string declarationName)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveUnusedMemberDeclaration, CSharpUtility.GetIdentifier(node), declarationName);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnusedMemberDeclaration, CSharpUtility.GetIdentifier(node), declarationName);
         }
     }
 }

@@ -186,7 +186,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, StatementSyntax statement, StatementSyntax embeddedStatement)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines,
                 embeddedStatement,
                 CSharpFacts.GetTitle(statement));

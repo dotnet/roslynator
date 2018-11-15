@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Analysis
                             {
                                 if (info.IsContentEmptyOrWhitespace)
                                 {
-                                    context.ReportDiagnostic(
+                                    DiagnosticHelpers.ReportDiagnostic(context,
                                         DiagnosticDescriptors.AddSummaryToDocumentationComment,
                                         info.Element);
                                 }
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Analysis
                             {
                                 if (info.IsContentEmptyOrWhitespace)
                                 {
-                                    context.ReportDiagnostic(
+                                    DiagnosticHelpers.ReportDiagnostic(context,
                                         DiagnosticDescriptors.UnusedElementInDocumentationComment,
                                         info.Element);
                                 }
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Analysis
                 && !containsIncludeOrExclude
                 && !containsContentElement)
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
                     documentationComment);
             }

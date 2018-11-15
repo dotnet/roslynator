@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
                             } while (i < text.Length && text[i] == '\t');
 
-                            context.ReportDiagnostic(
+                            DiagnosticHelpers.ReportDiagnostic(context,
                                 DiagnosticDescriptors.UseSpacesInsteadOfTab,
                                 Location.Create(context.Tree, new TextSpan(trivia.SpanStart + index, i - index)));
                         }

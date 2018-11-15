@@ -5,9 +5,9 @@ using System.Collections.Generic;
 
 namespace Roslynator
 {
-    public class RefactoringIdentifierSet : HashSet<string>
+    public class IdentifierSet : HashSet<string>
     {
-        public RefactoringIdentifierSet()
+        public IdentifierSet()
             : base(StringComparer.Ordinal)
         {
         }

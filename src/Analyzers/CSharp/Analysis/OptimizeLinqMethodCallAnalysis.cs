@@ -566,7 +566,7 @@ namespace Roslynator.CSharp.Analysis
                 ? ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { property.Value })
                 : ImmutableDictionary<string, string>.Empty;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 descriptor: DiagnosticDescriptors.OptimizeLinqMethodCall,
                 location: Location.Create(node.SyntaxTree, span),
                 properties: properties,

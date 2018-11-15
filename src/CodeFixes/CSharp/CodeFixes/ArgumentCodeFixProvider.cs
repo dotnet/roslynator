@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.AddOutModifierToArgument,
                 CodeFixIdentifiers.RemoveRefModifier,
                 CodeFixIdentifiers.CreateSingletonArray,
@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.ArgumentMustBePassedWithRefOrOutKeyword:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddOutModifierToArgument))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.AddOutModifierToArgument))
                                 return;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.ArgumentShouldNotBePassedWithRefOrOutKeyword:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRefModifier))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveRefModifier))
                                 return;
 
                             CodeAction codeAction = CodeAction.Create(
@@ -118,7 +118,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CannotConvertArgumentType:
                         {
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
                             {
                                 ExpressionSyntax expression = argument.Expression;
 
@@ -151,7 +151,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.AddArgumentList))
                             {
                                 ExpressionSyntax expression = argument.Expression;
 
@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.CreateSingletonArray))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.CreateSingletonArray))
                             {
                                 ExpressionSyntax expression = argument.Expression;
 

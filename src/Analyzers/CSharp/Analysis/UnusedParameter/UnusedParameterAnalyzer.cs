@@ -338,16 +338,16 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             {
                 if (parameter.Modifiers.Contains(SyntaxKind.ThisKeyword))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UnusedThisParameter, parameter, parameter.Identifier.ValueText);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnusedThisParameter, parameter, parameter.Identifier.ValueText);
                 }
                 else
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UnusedParameter, parameter, parameter.Identifier.ValueText);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnusedParameter, parameter, parameter.Identifier.ValueText);
                 }
             }
             else if (node is TypeParameterSyntax typeParameter)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.UnusedTypeParameter, typeParameter, typeParameter.Identifier.ValueText);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnusedTypeParameter, typeParameter, typeParameter.Identifier.ValueText);
             }
             else
             {

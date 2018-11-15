@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol?.Equals(exceptionSymbol) != true)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AvoidEmptyCatchClauseThatCatchesSystemException,
                 catchClause.CatchKeyword);
         }

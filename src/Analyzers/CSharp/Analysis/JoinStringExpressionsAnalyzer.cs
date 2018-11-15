@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Analysis
             if (isVerbatim
                 || tree.IsSingleLineSpan(span, cancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.JoinStringExpressions,
                     Location.Create(tree, span));
             }

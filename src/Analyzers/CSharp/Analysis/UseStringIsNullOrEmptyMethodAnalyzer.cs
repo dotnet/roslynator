@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
                         context.SemanticModel,
                         context.CancellationToken))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, binaryExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, binaryExpression);
                 }
             }
             else if (kind == SyntaxKind.LogicalAndExpression)
@@ -72,7 +72,7 @@ namespace Roslynator.CSharp.Analysis
                         context.SemanticModel,
                         context.CancellationToken))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, binaryExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringIsNullOrEmptyMethod, binaryExpression);
                 }
             }
         }

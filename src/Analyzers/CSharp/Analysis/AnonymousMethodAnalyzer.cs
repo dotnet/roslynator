@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (UseLambdaExpressionInsteadOfAnonymousMethodAnalysis.IsFixable(anonymousMethod))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethod,
                     anonymousMethod);
 
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            context.ReportToken(DiagnosticDescriptor, anonymousMethod.DelegateKeyword);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptor, anonymousMethod.DelegateKeyword);
 
             BlockSyntax block = anonymousMethod.Block;
 
@@ -67,10 +67,10 @@ namespace Roslynator.CSharp.Analysis
 
                 if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                 {
-                    context.ReportBraces(DiagnosticDescriptor, block);
+                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptor, block);
 
                     if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        context.ReportToken(DiagnosticDescriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
+                        DiagnosticHelpers.ReportToken(context, DiagnosticDescriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
                 }
             }
         }

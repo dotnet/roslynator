@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ParentDeclarationsContainsUnsafeModifier(unsafeStatement))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, unsafeStatement.UnsafeKeyword);
         }
 
         public static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ParentDeclarationsContainsUnsafeModifier(parent))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
         }
 
         public static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
@@ -180,7 +180,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ParentTypeDeclarationsContainsUnsafeModifier(memberDeclaration))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUnsafeContext, modifiers[index]);
         }
 
         private static bool ParentDeclarationsContainsUnsafeModifier(UnsafeStatementSyntax unsafeStatement)

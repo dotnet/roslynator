@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Analysis
                 && !string.IsNullOrEmpty(fieldSymbol.Name)
                 && !StringUtility.IsCamelCasePrefixedWithUnderscore(fieldSymbol.Name))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore,
                     fieldSymbol.Locations[0]);
             }

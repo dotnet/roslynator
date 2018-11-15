@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
             if (!constructor.DescendantTrivia(constructor.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantConstructor, constructor);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantConstructor, constructor);
         }
 
         private static bool IsSingleInstanceConstructor(ConstructorDeclarationSyntax constructor)

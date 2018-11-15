@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis.Documentation
                 if (!typeParameter.IsMissing
                     && !values.Contains(typeParameter.Identifier.ValueText))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.AddTypeParamElementToDocumentationComment, documentationComment);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddTypeParamElementToDocumentationComment, documentationComment);
                     return;
                 }
             }

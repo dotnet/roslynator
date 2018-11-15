@@ -27,7 +27,7 @@ namespace Roslynator.CSharp.Analysis
 
             InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantToStringCall,
                 Location.Create(invocationExpression.SyntaxTree, TextSpan.FromBounds(invocationInfo.OperatorToken.SpanStart, invocationExpression.Span.End)));
         }

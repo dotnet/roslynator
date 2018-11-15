@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.FormatConditionalExpression, conditionalExpression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.FormatConditionalExpression, conditionalExpression);
         }
 
         internal static bool IsFixable(ExpressionSyntax expression, SyntaxToken token)

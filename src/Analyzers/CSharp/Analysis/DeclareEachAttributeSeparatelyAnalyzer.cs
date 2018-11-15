@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
             var attributeList = (AttributeListSyntax)context.Node;
 
             if (IsFixable(attributeList))
-                context.ReportDiagnostic(DiagnosticDescriptors.DeclareEachAttributeSeparately, attributeList);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEachAttributeSeparately, attributeList);
         }
 
         public static bool IsFixable(AttributeListSyntax attributeList)

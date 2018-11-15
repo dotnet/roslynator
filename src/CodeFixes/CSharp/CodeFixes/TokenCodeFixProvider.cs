@@ -38,16 +38,16 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReorderModifiers)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReturnDefaultValue)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMissingType)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveSemicolon)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionalAccess)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeForEachType)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDefaultValueToParameter)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeParameterType))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.AddArgumentList)
+                && !Settings.IsEnabled(CodeFixIdentifiers.ReorderModifiers)
+                && !Settings.IsEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue)
+                && !Settings.IsEnabled(CodeFixIdentifiers.ReturnDefaultValue)
+                && !Settings.IsEnabled(CodeFixIdentifiers.AddMissingType)
+                && !Settings.IsEnabled(CodeFixIdentifiers.RemoveSemicolon)
+                && !Settings.IsEnabled(CodeFixIdentifiers.RemoveConditionalAccess)
+                && !Settings.IsEnabled(CodeFixIdentifiers.ChangeForEachType)
+                && !Settings.IsEnabled(CodeFixIdentifiers.AddDefaultValueToParameter)
+                && !Settings.IsEnabled(CodeFixIdentifiers.ChangeParameterType))
             {
                 return;
             }
@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     if (typeSymbol.IsValueType)
                                     {
-                                        if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionalAccess))
+                                        if (Settings.IsEnabled(CodeFixIdentifiers.RemoveConditionalAccess))
                                         {
                                             CodeAction codeAction = CodeAction.Create(
                                                 "Remove '?' operator",
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                     else if (typeSymbol.IsReferenceType)
                                     {
-                                        if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList)
+                                        if (Settings.IsEnabled(CodeFixIdentifiers.AddArgumentList)
                                             && conditionalAccess.WhenNotNull is MemberBindingExpressionSyntax memberBindingExpression)
                                         {
                                             ConditionalAccessExpressionSyntax newNode = conditionalAccess.WithWhenNotNull(
@@ -111,12 +111,12 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 }
 
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddArgumentList))
+                                if (Settings.IsEnabled(CodeFixIdentifiers.AddArgumentList))
                                 {
                                     break;
                                 }
 
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConditionalAccess))
+                                if (Settings.IsEnabled(CodeFixIdentifiers.RemoveConditionalAccess))
                                 {
                                 }
                             }
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReorderModifiers))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.ReorderModifiers))
                                 break;
 
                             ModifiersCodeFixRegistrator.MoveModifier(context, diagnostic, token.Parent, token);
@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.ValueCannotBeUsedAsDefaultParameter:
                         {
-                            if (!Settings.IsAnyCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, CodeFixIdentifiers.ChangeParameterType))
+                            if (!Settings.IsAnyEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue, CodeFixIdentifiers.ChangeParameterType))
                                 break;
 
                             if (!(token.Parent is ParameterSyntax parameter))
@@ -146,7 +146,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (value.IsKind(SyntaxKind.NullLiteralExpression))
                             {
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
+                                if (Settings.IsEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue))
                                 {
                                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -155,7 +155,7 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                             else if (!value.IsKind(SyntaxKind.DefaultExpression, SyntaxKind.DefaultLiteralExpression))
                             {
-                                if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeParameterType))
+                                if (Settings.IsEnabled(CodeFixIdentifiers.ChangeParameterType))
                                 {
                                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.ObjectOfTypeConvertibleToTypeIsRequired:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReturnDefaultValue))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.ReturnDefaultValue))
                                 break;
 
                             if (token.Kind() != SyntaxKind.ReturnKeyword)
@@ -244,7 +244,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.TypeExpected:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddMissingType))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.AddMissingType))
                                 break;
 
                             if (token.Kind() != SyntaxKind.CloseParenToken)
@@ -287,7 +287,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.SemicolonAfterMethodOrAccessorBlockIsNotValid:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveSemicolon))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveSemicolon))
                                 break;
 
                             if (token.Kind() != SyntaxKind.SemicolonToken)
@@ -385,7 +385,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CannotConvertType:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeForEachType))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeForEachType))
                                 break;
 
                             if (token.Kind() != SyntaxKind.ForEachKeyword)
@@ -408,7 +408,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.OptionalParametersMustAppearAfterAllRequiredParameters:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddDefaultValueToParameter))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.AddDefaultValueToParameter))
                                 break;
 
                             if (!(token.Parent is BaseParameterListSyntax parameterList))

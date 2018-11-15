@@ -150,7 +150,7 @@ namespace Roslynator.CSharp.Analysis
             if (modifiers.SpanContainsDirectives())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ReorderModifiers,
                 Location.Create(context.Node.SyntaxTree, modifiers.Span));
         }

@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
             if (!IsFixable(genericInfo.TypeParameters, genericInfo.ConstraintClauses))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ReorderTypeParameterConstraints,
                 genericInfo.ConstraintClauses.First());
         }

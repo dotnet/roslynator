@@ -34,7 +34,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (HasImplicitValue(enumMember, context.SemanticModel, context.CancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.EnumMemberShouldDeclareExplicitValue,
                     enumMember.Identifier);
             }

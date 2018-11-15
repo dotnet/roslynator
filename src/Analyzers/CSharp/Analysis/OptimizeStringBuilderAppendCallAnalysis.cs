@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
                             && methodInfo2.ContainingType?.HasMetadataName(MetadataNames.System_Text_StringBuilder) == true
                             && methodInfo2.HasSingleParameter(SpecialType.System_String))
                         {
-                            context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, invocationInfo.Name, methodSymbol.Name);
+                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeStringBuilderAppendCall, invocationInfo.Name, methodSymbol.Name);
                         }
                     }
                 }
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Analysis
                         {
                             case SyntaxKind.InterpolatedStringExpression:
                                 {
-                                    context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodSymbol.Name);
+                                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodSymbol.Name);
                                     return;
                                 }
                             case SyntaxKind.AddExpression:
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Analysis
                                     if (binaryExpressionInfo.Success
                                         && binaryExpressionInfo.AsChain().Reverse().IsStringConcatenation(context.SemanticModel, context.CancellationToken))
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodSymbol.Name);
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodSymbol.Name);
                                         return;
                                     }
 
@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
                                     if (expressionKind == SyntaxKind.InvocationExpression
                                         && IsFixable((InvocationExpressionSyntax)expression, context.SemanticModel, context.CancellationToken))
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodSymbol.Name);
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeStringBuilderAppendCall, argument, methodSymbol.Name);
                                         return;
                                     }
 
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Analysis
                                         && parameters[0].Type.IsObject()
                                         && context.SemanticModel.GetTypeSymbol(argument.Expression, context.CancellationToken).IsValueType)
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, argument);
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, argument);
                                         return;
                                     }
 
@@ -121,7 +121,7 @@ namespace Roslynator.CSharp.Analysis
                             .GetTypeSymbol(arguments[1].Expression, context.CancellationToken)
                             .IsValueType)
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, arguments[1]);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, arguments[1]);
                     }
                 }
             }
