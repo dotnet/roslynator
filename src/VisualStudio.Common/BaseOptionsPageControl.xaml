@@ -43,16 +43,20 @@
     </WrapPanel>
     <ListView Name="lsvItems"
               DockPanel.Dock="Top"
-              ItemsSource="{Binding Items}" 
+              ItemsSource="{Binding Items}"
               SelectionMode="Single"
               ScrollViewer.HorizontalScrollBarVisibility="Auto"
               ScrollViewer.VerticalScrollBarVisibility="Auto"
-              GridViewColumnHeader.Click="GridViewColumnHeader_Click">
+              GridViewColumnHeader.Click="GridViewColumnHeader_Click"
+              Loaded="ListView_Loaded">
       <ListView.View>
         <GridView>
           <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Id}"></GridViewColumn>
           <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Path=Title}" Width="300"></GridViewColumn>
-          <GridViewColumn Header="Enabled">
+          <GridViewColumn>
+            <GridViewColumn.Header>
+              <GridViewColumnHeader x:Name="checkBoxGridViewColumnHeader" Content="{Binding CheckBoxColumnHeaderText}"></GridViewColumnHeader>
+            </GridViewColumn.Header>
             <GridViewColumn.CellTemplate>
               <DataTemplate>
                 <CheckBox IsChecked="{Binding Enabled}" />

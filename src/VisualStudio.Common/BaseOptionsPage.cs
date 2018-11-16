@@ -87,11 +87,16 @@ namespace Roslynator.VisualStudio
         {
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                foreach (BaseModel item in Control.Items)
-                    SetIsEnabled(item.Id, item.Enabled);
+                OnApply();
             }
 
             base.OnApply(e);
+        }
+
+        protected virtual void OnApply()
+        {
+            foreach (BaseModel item in Control.Items)
+                SetIsEnabled(item.Id, item.Enabled);
         }
 
         protected void SetIsEnabled(string id, bool isEnabled)

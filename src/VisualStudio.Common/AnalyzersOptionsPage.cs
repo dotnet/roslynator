@@ -15,7 +15,9 @@ namespace Roslynator.VisualStudio
 
         public AnalyzersOptionsPage()
         {
-            Control.Comment = "NOTE: This option suppresses diagnostics but it does not disable the analyzer. " +
+            Control.DefaultSortDirection = ListSortDirection.Descending;
+            Control.CheckBoxColumnHeaderText = "Suppressed";
+            Control.Comment = "IMPORTANT: This option suppresses diagnostics but it does not disable the analyzer. " +
                 "It is highly recommended to use standard tool such as ruleset to disable the analyzer.";
         }
 
@@ -47,6 +49,12 @@ namespace Roslynator.VisualStudio
                 SettingsManager.Instance.UpdateVisualStudioSettings(this);
                 SettingsManager.Instance.ApplyTo(AnalyzerSettings.Current);
             }
+        }
+
+        protected override void OnApply()
+        {
+            foreach (BaseModel item in Control.Items)
+                SetIsEnabled(item.Id, !item.Enabled);
         }
     }
 }

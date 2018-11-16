@@ -47,7 +47,7 @@ namespace Roslynator.CodeGeneration.CSharp
                             .Select(analyzer =>
                             {
                                 return ExpressionStatement(
-                                    ParseExpression($"analyzers.Add(new BaseModel(DiagnosticIdentifiers.{analyzer.Identifier}, \"{StringUtility.EscapeQuote(analyzer.Title)}\", IsEnabled(DiagnosticIdentifiers.{analyzer.Identifier})))"));
+                                    ParseExpression($"analyzers.Add(new BaseModel(DiagnosticIdentifiers.{analyzer.Identifier}, \"{StringUtility.EscapeQuote(analyzer.Title)}\", !IsEnabled(DiagnosticIdentifiers.{analyzer.Identifier})))"));
                             }))));
         }
     }
