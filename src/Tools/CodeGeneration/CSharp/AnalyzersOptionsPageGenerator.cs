@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CodeGeneration.CSharp
 {
-    public static class DiagnosticsOptionsPageGenerator
+    public static class AnalyzersOptionsPageGenerator
     {
         public static CompilationUnitSyntax Generate(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
@@ -22,7 +22,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     "Roslynator.VisualStudio",
                     ClassDeclaration(
                         Modifiers.Public_Partial(),
-                        "DiagnosticsOptionsPage",
+                        "AnalyzersOptionsPage",
                         CreateMembers(analyzers, comparer).ToSyntaxList())));
         }
 
@@ -39,15 +39,15 @@ namespace Roslynator.CodeGeneration.CSharp
                 Modifiers.Protected_Override(),
                 VoidType(),
                 Identifier("Fill"),
-                ParameterList(Parameter(ParseTypeName("ICollection<BaseModel>"), Identifier("diagnostics"))),
+                ParameterList(Parameter(ParseTypeName("ICollection<BaseModel>"), Identifier("analyzers"))),
                 Block(
-                    SingletonList(ExpressionStatement(ParseExpression("diagnostics.Clear()")))
+                    SingletonList(ExpressionStatement(ParseExpression("analyzers.Clear()")))
                         .AddRange(analyzers
                             .OrderBy(f => f.Id, comparer)
                             .Select(analyzer =>
                             {
                                 return ExpressionStatement(
-                                    ParseExpression($"diagnostics.Add(new BaseModel(DiagnosticIdentifiers.{analyzer.Identifier}, \"{StringUtility.EscapeQuote(analyzer.Title)}\", IsEnabled(DiagnosticIdentifiers.{analyzer.Identifier})))"));
+                                    ParseExpression($"analyzers.Add(new BaseModel(DiagnosticIdentifiers.{analyzer.Identifier}, \"{StringUtility.EscapeQuote(analyzer.Title)}\", IsEnabled(DiagnosticIdentifiers.{analyzer.Identifier})))"));
                             }))));
         }
     }

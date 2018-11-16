@@ -9,19 +9,19 @@ namespace Roslynator.VisualStudio
 {
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [Guid("9851B486-A654-4F6A-B1BA-9E1071DCCA25")]
-    public partial class DiagnosticsOptionsPage : BaseOptionsPage
+    public partial class AnalyzersOptionsPage : BaseOptionsPage
     {
-        private const string DiagnosticCategory = "Diagnostic";
+        private const string AnalyzerCategory = "Analyzer";
 
-        public DiagnosticsOptionsPage()
+        public AnalyzersOptionsPage()
         {
-            Control.Comment = "NOTE: This option suppresses diagnostic but it does not disable it. " +
-                "It is highly recommended to use standard tool such as ruleset to disable a diagnostic.";
+            Control.Comment = "NOTE: This option suppresses diagnostics but it does not disable the analyzer. " +
+                "It is highly recommended to use standard tool such as ruleset to disable the analyzer.";
         }
 
-        [Category(DiagnosticCategory)]
+        [Category(AnalyzerCategory)]
         [Browsable(false)]
-        public string SuppressedDiagnostics
+        public string SuppressedAnalyzers
         {
             get { return string.Join(",", DisabledItems); }
             set
@@ -45,7 +45,7 @@ namespace Roslynator.VisualStudio
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
                 SettingsManager.Instance.UpdateVisualStudioSettings(this);
-                SettingsManager.Instance.ApplyTo(DiagnosticSettings.Current);
+                SettingsManager.Instance.ApplyTo(AnalyzerSettings.Current);
             }
         }
     }

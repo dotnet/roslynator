@@ -48,9 +48,9 @@ namespace Roslynator.Configuration
                 {
                     LoadCodeFixes(child, settings);
                 }
-                else if (name == "Diagnostics")
+                else if (name == "Analyzers")
                 {
-                    LoadDiagnostics(child, settings);
+                    LoadAnalyzers(child, settings);
                 }
             }
         }
@@ -90,14 +90,14 @@ namespace Roslynator.Configuration
             }
         }
 
-        private static void LoadDiagnostics(XElement element, ConfigFileSettings settings)
+        private static void LoadAnalyzers(XElement element, ConfigFileSettings settings)
         {
-            foreach (XElement child in element.Elements("Diagnostic"))
+            foreach (XElement child in element.Elements("Analyzer"))
             {
                 if (child.TryGetAttributeValueAsString("Id", out string id)
                     && child.TryGetAttributeValueAsBoolean("IsSuppressed", out bool isSuppressed))
                 {
-                    settings.Diagnostics[id] = isSuppressed;
+                    settings.Analyzers[id] = isSuppressed;
                 }
             }
         }

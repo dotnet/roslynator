@@ -2,8 +2,8 @@
 
 namespace Roslynator
 {
-    public sealed class DiagnosticSettings : CodeAnalysisSettings
+    public sealed class AnalyzerSettings : CodeAnalysisSettings
     {
-        public static DiagnosticSettings Current { get; } = new DiagnosticSettings();
+        public static AnalyzerSettings Current { get; } = new AnalyzerSettings();
     }
 }

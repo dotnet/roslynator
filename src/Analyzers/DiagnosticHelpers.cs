@@ -351,9 +351,9 @@ namespace Roslynator
 
         private static bool IsSuppressed(DiagnosticDescriptor descriptor)
         {
-            Debug.WriteLineIf(!DiagnosticSettings.Current.IsEnabled(descriptor.Id), $"{descriptor.Id} suppressed");
+            Debug.WriteLineIf(!AnalyzerSettings.Current.IsEnabled(descriptor.Id), $"{descriptor.Id} suppressed");
 
-            return !DiagnosticSettings.Current.IsEnabled(descriptor.Id);
+            return !AnalyzerSettings.Current.IsEnabled(descriptor.Id);
         }
     }
 }

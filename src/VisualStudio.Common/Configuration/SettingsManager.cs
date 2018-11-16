@@ -37,9 +37,9 @@ namespace Roslynator.Configuration
             UpdateVisualStudioSettings(VisualStudioSettings.CodeFixes, codeFixOptionsPage.GetDisabledItems());
         }
 
-        public void UpdateVisualStudioSettings(DiagnosticsOptionsPage diagnosticsOptionsPage)
+        public void UpdateVisualStudioSettings(AnalyzersOptionsPage analyzersOptionsPage)
         {
-            UpdateVisualStudioSettings(VisualStudioSettings.Diagnostics, diagnosticsOptionsPage.GetDisabledItems());
+            UpdateVisualStudioSettings(VisualStudioSettings.Analyzers, analyzersOptionsPage.GetDisabledItems());
         }
 
         public static void UpdateVisualStudioSettings(Dictionary<string, bool> values, IEnumerable<string> disabledItems)
@@ -70,7 +70,7 @@ namespace Roslynator.Configuration
                 ConfigFileSettings?.ApplyTo(settings);
         }
 
-        public void ApplyTo(DiagnosticSettings settings)
+        public void ApplyTo(AnalyzerSettings settings)
         {
             settings.Reset();
 

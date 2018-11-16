@@ -16,7 +16,7 @@ namespace Roslynator.Configuration
 
         public Dictionary<string, bool> CodeFixes { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
-        public Dictionary<string, bool> Diagnostics { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
+        public Dictionary<string, bool> Analyzers { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
         public virtual void Update(Settings settings)
         {
@@ -24,7 +24,7 @@ namespace Roslynator.Configuration
 
             Update(Refactorings, settings.Refactorings);
             Update(CodeFixes, settings.CodeFixes);
-            Update(Diagnostics, settings.Diagnostics);
+            Update(Analyzers, settings.Analyzers);
 
             void Update(Dictionary<string, bool> values, Dictionary<string, bool> newValues)
             {
@@ -46,9 +46,9 @@ namespace Roslynator.Configuration
             settings.Set(CodeFixes);
         }
 
-        public void ApplyTo(DiagnosticSettings settings)
+        public void ApplyTo(AnalyzerSettings settings)
         {
-            settings.Set(Diagnostics);
+            settings.Set(Analyzers);
         }
     }
 }
