@@ -36,6 +36,9 @@ namespace Roslynator.CSharp.Analysis
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
+            if (CSharpUtility.IsConditionallyAccessed(invocationInfo.InvocationExpression))
+                return false;
+
             IMethodSymbol methodSymbol = semanticModel.GetMethodSymbol(invocationInfo.InvocationExpression, cancellationToken);
 
             return methodSymbol?.IsStatic == false
