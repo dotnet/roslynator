@@ -33,7 +33,13 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeArgument, SyntaxKind.Argument);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.UseNameOfOperator))
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(AnalyzeArgument, SyntaxKind.Argument);
+            });
         }
 
         public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)

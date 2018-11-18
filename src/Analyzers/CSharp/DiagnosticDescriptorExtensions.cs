@@ -16,8 +16,8 @@ namespace Roslynator.CSharp
                 descriptor.MessageFormat,
                 DiagnosticCategories.FadeOut,
                 DiagnosticSeverity.Hidden,
-                isEnabledByDefault: descriptor.IsEnabledByDefault,
-                customTags: WellKnownDiagnosticTags.Unnecessary);
+                isEnabledByDefault: true,
+                customTags: new string[] { WellKnownDiagnosticTags.Unnecessary, WellKnownDiagnosticTags.NotConfigurable });
         }
     }
 }

@@ -77,38 +77,58 @@ namespace Roslynator.CSharp.Analysis
                         {
                             case "Any":
                                 {
-                                    UseCountOrLengthPropertyInsteadOfAnyMethodAnalysis.Analyze(context, invocationInfo);
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseCountOrLengthPropertyInsteadOfAnyMethod))
+                                        UseCountOrLengthPropertyInsteadOfAnyMethodAnalysis.Analyze(context, invocationInfo);
+
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+
                                     break;
                                 }
                             case "Cast":
                                 {
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeWhereAndCast(context, invocationInfo);
-                                    RemoveRedundantCastAnalyzer.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeWhereAndCast(context, invocationInfo);
+
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveRedundantCast))
+                                        RemoveRedundantCastAnalyzer.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                             case "Count":
                                 {
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeCount(context, invocationInfo);
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                    {
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeCount(context, invocationInfo);
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                    }
+
                                     break;
                                 }
                             case "First":
                                 {
-                                    if (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
-                                        && UseElementAccessAnalysis.IsFixableFirst(invocationInfo, context.SemanticModel, context.CancellationToken))
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeLinqMethodCall, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
+                                        if (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
+                                            && UseElementAccessAnalysis.IsFixableFirst(invocationInfo, context.SemanticModel, context.CancellationToken))
+                                        {
+                                            context.ReportDiagnostic(DiagnosticDescriptors.OptimizeLinqMethodCall, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
+                                        }
+
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeFirst(context, invocationInfo);
                                     }
 
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeFirst(context, invocationInfo);
                                     break;
                                 }
                             case "ToString":
                                 {
-                                    RemoveRedundantToStringCallAnalysis.Analyze(context, invocationInfo);
-                                    UseNameOfOperatorAnalyzer.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveRedundantToStringCall))
+                                        RemoveRedundantToStringCallAnalysis.Analyze(context, invocationInfo);
+
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseNameOfOperator))
+                                        UseNameOfOperatorAnalyzer.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                             case "ToLower":
@@ -116,13 +136,19 @@ namespace Roslynator.CSharp.Analysis
                             case "ToUpper":
                             case "ToUpperInvariant":
                                 {
-                                    UseStringComparisonAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseStringComparison))
+                                        UseStringComparisonAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                             case "FirstOrDefault":
                                 {
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                    {
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
+                                    }
+
                                     break;
                                 }
                             case "Last":
@@ -131,19 +157,26 @@ namespace Roslynator.CSharp.Analysis
                             case "Single":
                             case "SingleOrDefault":
                                 {
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+
                                     break;
                                 }
                             case "OfType":
                                 {
-                                    if (!invocation.SpanContainsDirectives())
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall)
+                                        && !invocation.SpanContainsDirectives())
+                                    {
                                         OptimizeLinqMethodCallAnalysis.AnalyzeOfType(context, invocationInfo);
+                                    }
 
                                     break;
                                 }
                             case "ToCharArray":
                                 {
-                                    RemoveRedundantStringToCharArrayCallAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall))
+                                        RemoveRedundantStringToCharArrayCallAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                         }
@@ -157,16 +190,21 @@ namespace Roslynator.CSharp.Analysis
                             case "All":
                             case "Any":
                                 {
-                                    SimplifyLogicalNegationAnalyzer.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.SimplifyLogicalNegation))
+                                        SimplifyLogicalNegationAnalyzer.Analyze(context, invocationInfo);
 
-                                    if (!invocation.SpanContainsDirectives())
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall)
+                                        && !invocation.SpanContainsDirectives())
+                                    {
                                         OptimizeLinqMethodCallAnalysis.AnalyzeWhereAndAny(context, invocationInfo);
+                                    }
 
                                     break;
                                 }
                             case "ElementAt":
                                 {
-                                    if (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall)
+                                        && !invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
                                         && UseElementAccessAnalysis.IsFixableElementAt(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
                                         context.ReportDiagnostic(DiagnosticDescriptors.OptimizeLinqMethodCall, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
@@ -176,12 +214,15 @@ namespace Roslynator.CSharp.Analysis
                                 }
                             case "FirstOrDefault":
                                 {
-                                    OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeFirstOrDefault(context, invocationInfo);
+
                                     break;
                                 }
                             case "GetValueOrDefault":
                                 {
-                                    if (invocationInfo.Name.IsKind(SyntaxKind.IdentifierName)
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseCoalesceExpression)
+                                        && invocationInfo.Name.IsKind(SyntaxKind.IdentifierName)
                                         && !invocation.IsParentKind(SyntaxKind.InvocationExpression, SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.ElementAccessExpression)
                                         && context.SemanticModel
                                             .GetMethodSymbol(invocationInfo.InvocationExpression, context.CancellationToken)?
@@ -196,12 +237,15 @@ namespace Roslynator.CSharp.Analysis
                                 }
                             case "Where":
                                 {
-                                    CombineEnumerableWhereMethodChainAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CombineEnumerableWhereMethodChain))
+                                        CombineEnumerableWhereMethodChainAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                             case "HasFlag":
                                 {
-                                    if (!invocation.SpanContainsDirectives()
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag)
+                                        && !invocation.SpanContainsDirectives()
                                         && UseBitwiseOperationInsteadOfCallingHasFlagAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
                                         context.ReportDiagnostic(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation);
@@ -211,12 +255,16 @@ namespace Roslynator.CSharp.Analysis
                                 }
                             case "Select":
                                 {
-                                    CallCastInsteadOfSelectAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        CallCastInsteadOfSelectAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                             case "OrderBy":
                                 {
-                                    CallThenByInsteadOfOrderByAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CallThenByInsteadOfOrderBy))
+                                        CallThenByInsteadOfOrderByAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                         }
@@ -232,19 +280,26 @@ namespace Roslynator.CSharp.Analysis
                             case "Matches":
                             case "Split":
                                 {
-                                    if (!invocation.SpanContainsDirectives())
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod)
+                                        && !invocation.SpanContainsDirectives())
+                                    {
                                         UseRegexInstanceInsteadOfStaticMethodAnalysis.Analyze(context, invocationInfo);
+                                    }
 
                                     break;
                                 }
                             case "Select":
                                 {
-                                    CallCastInsteadOfSelectAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        CallCastInsteadOfSelectAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                             case "OrderBy":
                                 {
-                                    CallThenByInsteadOfOrderByAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CallThenByInsteadOfOrderBy))
+                                        CallThenByInsteadOfOrderByAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                         }
@@ -261,14 +316,19 @@ namespace Roslynator.CSharp.Analysis
                             case "Split":
                             case "Replace":
                                 {
-                                    if (!invocation.SpanContainsDirectives())
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod)
+                                        && !invocation.SpanContainsDirectives())
+                                    {
                                         UseRegexInstanceInsteadOfStaticMethodAnalysis.Analyze(context, invocationInfo);
+                                    }
 
                                     break;
                                 }
                             case "OrderBy":
                                 {
-                                    CallThenByInsteadOfOrderByAnalysis.Analyze(context, invocationInfo);
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CallThenByInsteadOfOrderBy))
+                                        CallThenByInsteadOfOrderByAnalysis.Analyze(context, invocationInfo);
+
                                     break;
                                 }
                         }
@@ -281,8 +341,11 @@ namespace Roslynator.CSharp.Analysis
                         {
                             case "Replace":
                                 {
-                                    if (!invocation.SpanContainsDirectives())
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod)
+                                        && !invocation.SpanContainsDirectives())
+                                    {
                                         UseRegexInstanceInsteadOfStaticMethodAnalysis.Analyze(context, invocationInfo);
+                                    }
 
                                     break;
                                 }
@@ -299,11 +362,14 @@ namespace Roslynator.CSharp.Analysis
                 case "LastOrDefault":
                 case "SingleOrDefault":
                     {
-                        if (argumentCount == 0
-                            || argumentCount == 1
-                            || argumentCount == 2)
+                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AvoidNullReferenceException))
                         {
-                            AvoidNullReferenceExceptionAnalyzer.Analyze(context, invocationInfo);
+                            if (argumentCount == 0
+                                || argumentCount == 1
+                                || argumentCount == 2)
+                            {
+                                AvoidNullReferenceExceptionAnalyzer.Analyze(context, invocationInfo);
+                            }
                         }
 
                         break;
@@ -313,20 +379,28 @@ namespace Roslynator.CSharp.Analysis
                 case "AppendFormat":
                 case "Insert":
                     {
-                        OptimizeStringBuilderAppendCallAnalysis.Analyze(context, invocationInfo);
+                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeStringBuilderAppendCall))
+                            OptimizeStringBuilderAppendCallAnalysis.Analyze(context, invocationInfo);
+
                         break;
                     }
                 case "Join":
                     {
-                        if (argumentCount >= 2)
+                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CallStringConcatInsteadOfStringJoin)
+                            && argumentCount >= 2)
+                        {
                             CallStringConcatInsteadOfStringJoinAnalysis.Analyze(context, invocationInfo);
+                        }
 
                         break;
                     }
             }
 
-            if (UseMethodChainingAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
+            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseMethodChaining)
+                && UseMethodChainingAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
+            {
                 context.ReportDiagnostic(DiagnosticDescriptors.UseMethodChaining, invocationInfo.InvocationExpression);
+            }
         }
     }
 }
