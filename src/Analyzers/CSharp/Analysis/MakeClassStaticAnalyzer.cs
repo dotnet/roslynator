@@ -4,10 +4,12 @@ using System;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -26,30 +28,26 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterSymbolAction(AnalyzeNamedType, SymbolKind.NamedType);
+            context.RegisterSyntaxNodeAction(AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
         }
 
-        public static void AnalyzeNamedType(SymbolAnalysisContext context)
+        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            var symbol = (INamedTypeSymbol)context.Symbol;
+            var classDeclaration = (ClassDeclarationSyntax)context.Node;
 
-            if (symbol.TypeKind != TypeKind.Class)
+            if (classDeclaration.Modifiers.ContainsAny(
+                SyntaxKind.StaticKeyword,
+                SyntaxKind.AbstractKeyword,
+                SyntaxKind.SealedKeyword,
+                SyntaxKind.PartialKeyword))
+            {
+                return;
+            }
+
+            if (!classDeclaration.Members.Any())
                 return;
 
-            if (symbol.IsStatic)
-                return;
-
-            if (symbol.IsAbstract)
-                return;
-
-            if (symbol.IsSealed)
-                return;
-
-            if (symbol.IsImplicitClass)
-                return;
-
-            if (symbol.IsImplicitlyDeclared)
-                return;
+            INamedTypeSymbol symbol = context.SemanticModel.GetDeclaredSymbol(classDeclaration, context.CancellationToken);
 
             if (symbol.BaseType?.IsObject() != true)
                 return;
@@ -57,41 +55,37 @@ namespace Roslynator.CSharp.Analysis
             if (!symbol.Interfaces.IsDefaultOrEmpty)
                 return;
 
-            var syntaxReferences = default(ImmutableArray<SyntaxReference>);
-
-            if (symbol.IsSealed)
-            {
-                syntaxReferences = symbol.DeclaringSyntaxReferences;
-
-                if (syntaxReferences.Length != 1)
-                    return;
-            }
-
-            if (!AnalyzeMembers(symbol))
-                return;
-
-            if (syntaxReferences.IsDefault)
-                syntaxReferences = symbol.DeclaringSyntaxReferences;
-
-            foreach (SyntaxReference syntaxReference in syntaxReferences)
-            {
-                var classDeclaration = (ClassDeclarationSyntax)syntaxReference.GetSyntax(context.CancellationToken);
-
-                if (!classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
-                {
-                    context.ReportDiagnostic(DiagnosticDescriptors.MakeClassStatic, classDeclaration.Identifier);
-                    break;
-                }
-            }
-        }
-
-        public static bool AnalyzeMembers(INamedTypeSymbol symbol)
-        {
             ImmutableArray<ISymbol> members = symbol.GetMembers();
 
             if (!members.Any())
-                return false;
+                return;
 
+            if (!AnalyzeMembers(members))
+                return;
+
+            MakeClassStaticWalker walker = MakeClassStaticWalker.GetInstance();
+
+            walker.CanBeMadeStatic = true;
+            walker.Symbol = symbol;
+            walker.SemanticModel = context.SemanticModel;
+            walker.CancellationToken = context.CancellationToken;
+
+            walker.Visit(classDeclaration);
+
+            bool canBeMadeStatic = walker.CanBeMadeStatic;
+
+            walker.Symbol = null;
+            walker.SemanticModel = null;
+            walker.CancellationToken = default;
+
+            MakeClassStaticWalker.Free(walker);
+
+            if (canBeMadeStatic)
+                context.ReportDiagnostic(DiagnosticDescriptors.MakeClassStatic, classDeclaration.Identifier);
+        }
+
+        public static bool AnalyzeMembers(ImmutableArray<ISymbol> members)
+        {
             bool areAllImplicitlyDeclared = true;
 
             foreach (ISymbol memberSymbol in members)
@@ -165,6 +159,61 @@ namespace Roslynator.CSharp.Analysis
             }
 
             return !areAllImplicitlyDeclared;
+        }
+
+        private class MakeClassStaticWalker : CSharpSyntaxNodeWalker
+        {
+            [ThreadStatic]
+            private static MakeClassStaticWalker _cachedInstance;
+
+            public bool CanBeMadeStatic { get; set; }
+
+            public INamedTypeSymbol Symbol { get; set; }
+
+            public SemanticModel SemanticModel { get; set; }
+
+            public CancellationToken CancellationToken { get; set; }
+
+            protected override bool ShouldVisit => CanBeMadeStatic;
+
+            protected override void VisitType(TypeSyntax node)
+            {
+                if (node.IsKind(SyntaxKind.IdentifierName))
+                {
+                    var identifierName = (IdentifierNameSyntax)node;
+
+                    if (string.Equals(Symbol.Name, identifierName.Identifier.ValueText, StringComparison.Ordinal)
+                        && SemanticModel
+                            .GetSymbol(identifierName, CancellationToken)?
+                            .OriginalDefinition
+                            .Equals(Symbol) == true)
+                    {
+                        CanBeMadeStatic = false;
+                    }
+                }
+                else
+                {
+                    base.VisitType(node);
+                }
+            }
+
+            public static MakeClassStaticWalker GetInstance()
+            {
+                MakeClassStaticWalker walker = _cachedInstance;
+
+                if (walker != null)
+                {
+                    _cachedInstance = null;
+                    return walker;
+                }
+
+                return new MakeClassStaticWalker();
+            }
+
+            public static void Free(MakeClassStaticWalker walker)
+            {
+                _cachedInstance = walker;
+            }
         }
     }
 }
