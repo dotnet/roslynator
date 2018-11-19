@@ -18,10 +18,106 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override CodeFixProvider FixProvider { get; } = new ClassDeclarationCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+        public async Task Test()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class [|C|]
+{
+    static void M()
+    {
+    }
+}
+", @"
+static class C
+{
+    static void M()
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+        public async Task Test2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+public class [|C|]
+{
+    public const string K = null;
+
+    private static readonly string _f;
+
+    public static string P { get; set; }
+
+    public static event EventHandler E;
+
+    public static void M()
+    {
+    }
+
+    public class C2
+    {
+    }
+
+    public struct ST
+    {
+    }
+
+    public interface I
+    {
+    }
+
+    public delegate void D();
+
+    public enum EM
+    {
+    }
+}
+", @"
+using System;
+
+public static class C
+{
+    public const string K = null;
+
+    private static readonly string _f;
+
+    public static string P { get; set; }
+
+    public static event EventHandler E;
+
+    public static void M()
+    {
+    }
+
+    public class C2
+    {
+    }
+
+    public struct ST
+    {
+    }
+
+    public interface I
+    {
+    }
+
+    public delegate void D();
+
+    public enum EM
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
         public async Task TestNoDiagnostic_SealedClass()
         {
             await VerifyNoDiagnosticAsync(@"
-sealed class Foo
+sealed class C
 {
     const string K = null;
 }
@@ -32,13 +128,43 @@ sealed class Foo
         public async Task TestNoDiagnostic_ImplementsInterface()
         {
             await VerifyNoDiagnosticAsync(@"
-class Foo : IFoo
+class C : I
 {
     const string K = null;
 }
 
-interface IFoo
+interface I
 {
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+        public async Task TestNoDiagnostic_TypeArgument()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    static void M()
+    {
+        var x = new List<C>();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.MakeClassStatic)]
+        public async Task TestNoDiagnostic_ReturnType()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    static C M()
+    {
+        return null;
+    }
 }
 ");
         }

@@ -39,7 +39,18 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (startContext.AreAnalyzersSuppressed(
+                    DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf,
+                    DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement,
+                    DiagnosticDescriptors.ReplaceIfStatementWithAssignment))
+                {
+                    return;
+                }
+
+                startContext.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
+            });
         }
 
         private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
@@ -65,20 +76,26 @@ namespace Roslynator.CSharp.Analysis
                     case IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression:
                     case IfAnalysisKind.IfReturnToReturnWithCoalesceExpression:
                         {
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf, ifStatement);
+                            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf))
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf, ifStatement);
+
                             break;
                         }
                     case IfAnalysisKind.IfElseToReturnWithExpression:
                     case IfAnalysisKind.IfElseToYieldReturnWithExpression:
                     case IfAnalysisKind.IfReturnToReturnWithExpression:
                         {
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement, ifStatement);
+                            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement))
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement, ifStatement);
+
                             break;
                         }
                     case IfAnalysisKind.IfElseToAssignmentWithExpression:
                     case IfAnalysisKind.IfElseToAssignmentWithCondition:
                         {
-                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithAssignment, ifStatement);
+                            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ReplaceIfStatementWithAssignment))
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithAssignment, ifStatement);
+
                             break;
                         }
                 }

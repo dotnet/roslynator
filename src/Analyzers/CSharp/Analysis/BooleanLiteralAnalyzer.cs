@@ -33,12 +33,19 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeEqualsExpression, SyntaxKind.EqualsExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeNotEqualsExpression, SyntaxKind.NotEqualsExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeLogicalAndExpression, SyntaxKind.LogicalAndExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeLogicalOrExpression, SyntaxKind.LogicalOrExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (!startContext.AreAnalyzersSuppressed(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, DiagnosticDescriptors.SimplifyBooleanComparison))
+                {
+                    startContext.RegisterSyntaxNodeAction(AnalyzeEqualsExpression, SyntaxKind.EqualsExpression);
+                    startContext.RegisterSyntaxNodeAction(AnalyzeNotEqualsExpression, SyntaxKind.NotEqualsExpression);
+                    startContext.RegisterSyntaxNodeAction(AnalyzeLogicalAndExpression, SyntaxKind.LogicalAndExpression);
+                    startContext.RegisterSyntaxNodeAction(AnalyzeLogicalOrExpression, SyntaxKind.LogicalOrExpression);
+                }
 
-            context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
+                if (!startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveRedundantBooleanLiteral))
+                    startContext.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
+            });
         }
 
         private static void AnalyzeForStatement(SyntaxNodeAnalysisContext context)

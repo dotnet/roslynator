@@ -32,9 +32,15 @@ namespace Roslynator.CSharp.Analysis
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeSimpleLambdaExpression, SyntaxKind.SimpleLambdaExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeParenthesizedLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression);
-            context.RegisterSyntaxNodeAction(AnalyzeAnonyousMethodExpression, SyntaxKind.AnonymousMethodExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction))
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(AnalyzeSimpleLambdaExpression, SyntaxKind.SimpleLambdaExpression);
+                startContext.RegisterSyntaxNodeAction(AnalyzeParenthesizedLambdaExpression, SyntaxKind.ParenthesizedLambdaExpression);
+                startContext.RegisterSyntaxNodeAction(AnalyzeAnonyousMethodExpression, SyntaxKind.AnonymousMethodExpression);
+            });
         }
 
         public static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)

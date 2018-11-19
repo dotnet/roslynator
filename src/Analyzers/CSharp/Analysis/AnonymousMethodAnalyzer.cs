@@ -23,11 +23,6 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        private static DiagnosticDescriptor DiagnosticDescriptor
-        {
-            get { return DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut; }
-        }
-
         public override void Initialize(AnalysisContext context)
         {
             if (context == null)
@@ -35,7 +30,13 @@ namespace Roslynator.CSharp.Analysis
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeAnonymousMethod, SyntaxKind.AnonymousMethodExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethod))
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(AnalyzeAnonymousMethod, SyntaxKind.AnonymousMethodExpression);
+            });
         }
 
         private static void AnalyzeAnonymousMethod(SyntaxNodeAnalysisContext context)
@@ -54,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void FadeOut(SyntaxNodeAnalysisContext context, AnonymousMethodExpressionSyntax anonymousMethod)
         {
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptor, anonymousMethod.DelegateKeyword);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, anonymousMethod.DelegateKeyword);
 
             BlockSyntax block = anonymousMethod.Block;
 
@@ -67,10 +68,10 @@ namespace Roslynator.CSharp.Analysis
 
                 if (statement.IsKind(SyntaxKind.ReturnStatement, SyntaxKind.ExpressionStatement))
                 {
-                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptor, block);
+                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, block);
 
                     if (statement.IsKind(SyntaxKind.ReturnStatement))
-                        DiagnosticHelpers.ReportToken(context, DiagnosticDescriptor, ((ReturnStatementSyntax)statement).ReturnKeyword);
+                        DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseLambdaExpressionInsteadOfAnonymousMethodFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
                 }
             }
         }

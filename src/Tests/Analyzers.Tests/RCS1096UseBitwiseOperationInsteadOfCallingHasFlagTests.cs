@@ -187,5 +187,25 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        public async Task TestNoDiagnostic_ConditionalAccess()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    StringSplitOptions P { get; }
+
+    void M()
+    {
+        C c = null;
+
+        if (c?.P.HasFlag(StringSplitOptions.RemoveEmptyEntries) == true) { }
+    }
+}
+");
+        }
     }
 }

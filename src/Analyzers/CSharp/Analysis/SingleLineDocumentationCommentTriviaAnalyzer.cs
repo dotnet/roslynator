@@ -79,7 +79,8 @@ namespace Roslynator.CSharp.Analysis
                             }
                         case XmlElementKind.Summary:
                             {
-                                if (info.IsContentEmptyOrWhitespace)
+                                if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddSummaryToDocumentationComment)
+                                    && info.IsContentEmptyOrWhitespace)
                                 {
                                     DiagnosticHelpers.ReportDiagnostic(context,
                                         DiagnosticDescriptors.AddSummaryToDocumentationComment,
@@ -95,7 +96,8 @@ namespace Roslynator.CSharp.Analysis
                         case XmlElementKind.Returns:
                         case XmlElementKind.Value:
                             {
-                                if (info.IsContentEmptyOrWhitespace)
+                                if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnusedElementInDocumentationComment)
+                                    && info.IsContentEmptyOrWhitespace)
                                 {
                                     DiagnosticHelpers.ReportDiagnostic(context,
                                         DiagnosticDescriptors.UnusedElementInDocumentationComment,
@@ -120,7 +122,8 @@ namespace Roslynator.CSharp.Analysis
             if (!containsSummaryElement
                 && !containsInheritDoc
                 && !containsIncludeOrExclude
-                && !containsContentElement)
+                && !containsContentElement
+                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddSummaryElementToDocumentationComment))
             {
                 DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
