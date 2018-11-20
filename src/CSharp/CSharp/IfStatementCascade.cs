@@ -25,43 +25,10 @@ namespace Roslynator.CSharp
         /// </summary>
         public IfStatementSyntax IfStatement { get; }
 
-        private int Count
-        {
-            get
-            {
-                int count = 0;
-                foreach (IfStatementOrElseClause ifOrElse in this)
-                    count++;
-
-                return count;
-            }
-        }
-
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return (IfStatement != null) ? $"Count = {Count} {IfStatement}" : "Uninitialized"; }
-        }
-
-        public IfStatementOrElseClause First()
-        {
-            if (IfStatement == null)
-                throw new InvalidOperationException();
-
-            return IfStatement;
-        }
-
-        public IfStatementOrElseClause Last()
-        {
-            if (IfStatement == null)
-                throw new InvalidOperationException();
-
-            IfStatementOrElseClause last = default;
-
-            foreach (IfStatementOrElseClause ifOrElse in this)
-                last = ifOrElse;
-
-            return last;
+            get { return (IfStatement != null) ? $"Count = {IfStatement.GetCascadeInfo().Count} {IfStatement}" : "Uninitialized"; }
         }
 
         /// <summary>

@@ -126,7 +126,7 @@ namespace Roslynator.CSharp
                     if (statement.Kind() == SyntaxKind.IfStatement
                         && block.IsParentKind(SyntaxKind.IfStatement)
                         && ((IfStatementSyntax)block.Parent).Else != null
-                        && ((IfStatementSyntax)statement).AsCascade().Last().AsIf() != null)
+                        && ((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf)
                     {
                         return false;
                     }

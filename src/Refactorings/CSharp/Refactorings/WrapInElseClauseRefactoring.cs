@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ElseClauseSyntax elseClause = SyntaxFactory.ElseClause(newStatement).WithFormatterAnnotation();
 
-            IfStatementSyntax lastIfStatement = ifStatement.AsCascade().Last();
+            IfStatementSyntax lastIfStatement = ifStatement.GetCascadeInfo().Last;
 
             IfStatementSyntax newIfStatement = ifStatement.ReplaceNode(
                 lastIfStatement,

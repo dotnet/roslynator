@@ -909,6 +909,14 @@ namespace Roslynator.CSharp
 
             return new IfStatementCascade(ifStatement);
         }
+
+        internal static IfStatementCascadeInfo GetCascadeInfo(this IfStatementSyntax ifStatement)
+        {
+            if (ifStatement == null)
+                throw new ArgumentNullException(nameof(ifStatement));
+
+            return new IfStatementCascadeInfo(ifStatement);
+        }
         #endregion IfStatementSyntax
 
         #region IEnumerable<T>
@@ -2007,6 +2015,18 @@ namespace Roslynator.CSharp
         public static bool ContainsDefaultLabel(this SwitchSectionSyntax switchSection)
         {
             return switchSection?.Labels.Any(f => f.IsKind(SyntaxKind.DefaultSwitchLabel)) == true;
+        }
+
+        internal static SyntaxList<StatementSyntax> GetStatements(this SwitchSectionSyntax switchSection)
+        {
+            SyntaxList<StatementSyntax> statements = switchSection.Statements;
+
+            if (statements.SingleOrDefault(shouldThrow: false) is BlockSyntax block)
+            {
+                return block.Statements;
+            }
+
+            return statements;
         }
         #endregion SwitchSectionSyntax
 
