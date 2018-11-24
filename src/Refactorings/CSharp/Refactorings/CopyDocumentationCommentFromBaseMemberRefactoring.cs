@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Documentation;
+using Roslynator.Documentation;
 using static Roslynator.CSharp.Documentation.DocumentationCommentGenerator;
 
 namespace Roslynator.CSharp.Refactorings
@@ -109,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            SyntaxTrivia commentTrivia = data.GetDocumentationCommentTrivia(semanticModel, memberDeclaration.SpanStart);
+            SyntaxTrivia commentTrivia = DocumentationCommentTriviaFactory.Parse(data.RawXml, semanticModel, memberDeclaration.SpanStart);
 
             MemberDeclarationSyntax newMemberDeclaration = memberDeclaration.WithDocumentationComment(commentTrivia, indent: true);
 

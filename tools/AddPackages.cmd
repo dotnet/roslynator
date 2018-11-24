@@ -5,6 +5,7 @@ dotnet add "..\src\analyzers.codefixes\analyzers.codefixes.csproj" package Rosly
 dotnet add "..\src\codefixes\codefixes.csproj" package Roslynator.Analyzers
 dotnet add "..\src\common\common.csproj" package Roslynator.Analyzers
 dotnet add "..\src\common.workspaces\common.workspaces.csproj" package Roslynator.Analyzers
+dotnet add "..\src\core\core.csproj" package Roslynator.Analyzers
 dotnet add "..\src\csharp\csharp.csproj" package Roslynator.Analyzers
 dotnet add "..\src\csharp.workspaces\csharp.workspaces.csproj" package Roslynator.Analyzers
 dotnet add "..\src\refactorings\refactorings.csproj" package Roslynator.Analyzers

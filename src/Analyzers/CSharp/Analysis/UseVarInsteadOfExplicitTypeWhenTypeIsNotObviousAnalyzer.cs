@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var variableDeclaration = (VariableDeclarationSyntax)context.Node;
 
-            if (TypeAnalysis.IsExplicitThatCanBeImplicit(variableDeclaration, context.SemanticModel, TypeAppearance.NotObvious, context.CancellationToken))
+            if (CSharpTypeAnalysis.IsExplicitThatCanBeImplicit(variableDeclaration, context.SemanticModel, TypeAppearance.NotObvious, context.CancellationToken))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var declarationExpression = (DeclarationExpressionSyntax)context.Node;
 
-            if (TypeAnalysis.IsExplicitThatCanBeImplicit(declarationExpression, context.SemanticModel, context.CancellationToken))
+            if (CSharpTypeAnalysis.IsExplicitThatCanBeImplicit(declarationExpression, context.SemanticModel, context.CancellationToken))
             {
                 context.ReportDiagnostic(
                     DiagnosticDescriptors.UseVarInsteadOfExplicitTypeWhenTypeIsNotObvious,

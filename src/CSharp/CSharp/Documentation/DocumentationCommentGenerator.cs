@@ -12,6 +12,7 @@ using System.Xml;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Documentation;
 using Roslynator.Text;
 
 namespace Roslynator.CSharp.Documentation

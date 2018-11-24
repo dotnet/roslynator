@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Documentation;
+using Roslynator.Documentation;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -27,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (data.Success)
                 {
-                    SyntaxTrivia comment = data.GetDocumentationCommentTrivia(semanticModel, memberDeclaration.SpanStart);
+                    SyntaxTrivia comment = DocumentationCommentTriviaFactory.Parse(data.RawXml, semanticModel, memberDeclaration.SpanStart);
 
                     newNode = memberDeclaration.WithDocumentationComment(comment, indent: true);
                 }

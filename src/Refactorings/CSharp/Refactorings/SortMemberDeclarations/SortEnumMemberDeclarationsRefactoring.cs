@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Comparers;
 using Roslynator.CSharp.Comparers;
 
 namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations

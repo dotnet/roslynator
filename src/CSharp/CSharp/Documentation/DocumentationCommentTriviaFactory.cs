@@ -9,40 +9,20 @@ using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp;
 using Roslynator.Text;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Documentation
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct DocumentationCommentData
+    internal static class DocumentationCommentTriviaFactory
     {
         private static readonly Regex _commentedEmptyLineRegex = new Regex(@"^///\s*(\r?\n|$)", RegexOptions.Multiline);
 
-        internal DocumentationCommentData(string rawXml, DocumentationCommentOrigin origin)
+        public static SyntaxTrivia Parse(string xml, SemanticModel semanticModel, int position)
         {
-            RawXml = rawXml;
-            Origin = origin;
-        }
-
-        public string RawXml { get; }
-
-        public DocumentationCommentOrigin Origin { get; }
-
-        public bool Success
-        {
-            get { return !string.IsNullOrEmpty(RawXml); }
-        }
-
-        [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        private string DebuggerDisplay
-        {
-            get { return (Success) ? $"{Origin} {RawXml}" : "Uninitalized"; }
-        }
-
-        public SyntaxTrivia GetDocumentationCommentTrivia(SemanticModel semanticModel, int position)
-        {
-            string triviaText = AddSlashes(RawXml.TrimEnd());
+            string triviaText = AddSlashes(xml.TrimEnd());
 
             SyntaxTrivia trivia = ParseLeadingTrivia(triviaText).Single();
 

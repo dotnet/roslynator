@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
         {
             var forEachStatement = (ForEachStatementSyntax)context.Node;
 
-            TypeAnalysis analysis = TypeAnalysis.AnalyzeType(forEachStatement, context.SemanticModel);
+            TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(forEachStatement, context.SemanticModel);
 
             if (analysis.IsExplicit
                 && analysis.SupportsImplicit)

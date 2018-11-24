@@ -19,6 +19,7 @@ set _analyzersDir=..\src\Analyzers.CodeFixes\bin\Debug\netstandard1.3\
   "%_analyzersDir%Roslynator.Common.Workspaces.dll" ^
   "%_analyzersDir%Roslynator.CSharp.Analyzers.CodeFixes.dll" ^
   "%_analyzersDir%Roslynator.CSharp.Analyzers.dll" ^
+  "%_analyzersDir%Roslynator.Core.dll" ^
   "%_analyzersDir%Roslynator.CSharp.dll" ^
   "%_analyzersDir%Roslynator.CSharp.Workspaces.dll" ^
  --ignore-analyzer-references

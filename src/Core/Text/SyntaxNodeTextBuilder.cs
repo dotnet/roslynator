@@ -4,7 +4,6 @@ using System;
 using System.Diagnostics;
 using System.Text;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.Text
@@ -37,7 +36,7 @@ namespace Roslynator.Text
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return $"{Node.Kind()} {ToString()}"; }
+            get { return ToString(); }
         }
 
         public override string ToString()

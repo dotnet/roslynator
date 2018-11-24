@@ -2,7 +2,7 @@
 
 using System;
 
-namespace Roslynator.CSharp
+namespace Roslynator
 {
     [Flags]
     internal enum TypeAnalysisFlags

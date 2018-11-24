@@ -4,7 +4,6 @@ using System;
 using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Roslynator.CSharp;
 
 namespace Roslynator.Helpers
 {
@@ -131,10 +130,30 @@ namespace Roslynator.Helpers
                     return typeSymbol.Name.Substring(1);
                 }
             }
-            else if (typeSymbol.IsAnonymousType
-                || CSharpFacts.IsPredefinedType(typeSymbol.SpecialType))
+            else if (typeSymbol.IsAnonymousType)
             {
                 return null;
+            }
+
+            switch (typeSymbol.SpecialType)
+            {
+                case SpecialType.System_Object:
+                case SpecialType.System_Boolean:
+                case SpecialType.System_Char:
+                case SpecialType.System_SByte:
+                case SpecialType.System_Byte:
+                case SpecialType.System_Int16:
+                case SpecialType.System_UInt16:
+                case SpecialType.System_Int32:
+                case SpecialType.System_UInt32:
+                case SpecialType.System_Int64:
+                case SpecialType.System_UInt64:
+                case SpecialType.System_Decimal:
+                case SpecialType.System_Single:
+                case SpecialType.System_Double:
+                case SpecialType.System_String:
+                case SpecialType.System_Void:
+                    return null;
             }
 
             return typeSymbol.Name;

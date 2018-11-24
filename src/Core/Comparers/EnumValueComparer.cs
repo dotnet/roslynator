@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.CSharp.Comparers
+namespace Roslynator.Comparers
 {
     internal static class EnumValueComparer
     {

@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
                 root,
                 context.Span,
                 out SyntaxNode node,
-                predicate: OverriddenSymbolInfo.CanCreate))
+                predicate: CSharpOverriddenSymbolInfo.CanCreate))
             {
                 return;
             }
@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            OverriddenSymbolInfo overrideInfo = OverriddenSymbolInfo.Create(node, semanticModel, context.CancellationToken);
+            OverriddenSymbolInfo overrideInfo = CSharpOverriddenSymbolInfo.Create(node, semanticModel, context.CancellationToken);
 
             if (!overrideInfo.Success)
                 return;

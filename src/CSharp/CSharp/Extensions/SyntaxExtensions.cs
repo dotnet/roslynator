@@ -14,6 +14,7 @@ using Roslynator.CSharp.Documentation;
 using Roslynator.CSharp.Syntax;
 using Roslynator.CSharp.SyntaxRewriters;
 using Roslynator.CSharp.SyntaxWalkers;
+using Roslynator.Documentation;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -1344,7 +1345,7 @@ namespace Roslynator.CSharp
 
                 if (data.Success)
                 {
-                    SyntaxTrivia comment = data.GetDocumentationCommentTrivia(semanticModel, member.SpanStart);
+                    SyntaxTrivia comment = DocumentationCommentTriviaFactory.Parse(data.RawXml, semanticModel, member.SpanStart);
 
                     return member.WithDocumentationComment(comment, indent: true);
                 }

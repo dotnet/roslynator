@@ -5,6 +5,7 @@ dotnet remove "..\src\analyzers.codefixes\analyzers.codefixes.csproj" package Ro
 dotnet remove "..\src\codefixes\codefixes.csproj" package Roslynator.Analyzers
 dotnet remove "..\src\common\common.csproj" package Roslynator.Analyzers
 dotnet remove "..\src\common.workspaces\common.workspaces.csproj" package Roslynator.Analyzers
+dotnet remove "..\src\core\core.csproj" package Roslynator.Analyzers
 dotnet remove "..\src\csharp\csharp.csproj" package Roslynator.Analyzers
 dotnet remove "..\src\csharp.workspaces\csharp.workspaces.csproj" package Roslynator.Analyzers
 dotnet remove "..\src\refactorings\refactorings.csproj" package Roslynator.Analyzers

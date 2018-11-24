@@ -11,7 +11,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Comparers;
+using Roslynator.Comparers;
 using Roslynator.CSharp.Refactorings;
 using static Roslynator.CSharp.CSharpFactory;
 

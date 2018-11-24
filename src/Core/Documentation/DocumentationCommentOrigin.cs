@@ -1,11 +1,11 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.CSharp
+namespace Roslynator.Documentation
 {
-    internal enum TypeAppearance
+    internal enum DocumentationCommentOrigin
     {
         None = 0,
-        Obvious = 1,
-        NotObvious = 2,
+        BaseMember = 1,
+        InterfaceMember = 2,
     }
 }

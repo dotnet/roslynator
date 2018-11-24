@@ -3,6 +3,7 @@
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Documentation;
 
 namespace Roslynator.CSharp.Documentation
 {
