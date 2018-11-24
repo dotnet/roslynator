@@ -23,7 +23,7 @@
     <PackageVersion>1.0.0-rc4</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
-    <Description>This library extends functionality of Microsoft.CodeAnalysis.CSharp
+    <Description>This library extends functionality of package Microsoft.CodeAnalysis.CSharp
 
 Commonly Used Types:
 Roslynator.CSharp.CSharpFactory
@@ -44,6 +44,10 @@ Roslynator.NameGenerator</Description>
   <ItemGroup>
     <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.0.0-beta2" PrivateAssets="All" />
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
   </ItemGroup>
 
 </Project>

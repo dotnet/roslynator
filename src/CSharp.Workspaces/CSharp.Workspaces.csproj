@@ -23,7 +23,7 @@
     <PackageVersion>1.0.0-rc4</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
-    <Description>This library extends functionality of Microsoft.CodeAnalysis.CSharp.Workspaces
+    <Description>This library extends functionality of package Microsoft.CodeAnalysis.CSharp.Workspaces
 
 Commonly Used Types:
 Roslynator.CSharp.CSharpFactory

@@ -11,6 +11,13 @@ if errorlevel 1 (
  exit
 )
 
+dotnet test -c Debug --no-build "..\src\Tests\Core.Tests\Core.Tests.csproj"
+
+if errorlevel 1 (
+ pause
+ exit
+)
+
 dotnet test -c Debug --no-build "..\src\Tests\CSharp.Tests\CSharp.Tests.csproj"
 
 if errorlevel 1 (

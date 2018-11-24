@@ -168,10 +168,7 @@ namespace Roslynator.CodeGeneration.Markdown
                     TableRow("Property", "Value"),
                     TableRow("Id", analyzer.Id),
                     TableRow("Category", analyzer.Category),
-                    TableRow("Default Severity", analyzer.DefaultSeverity),
-                    TableRow("Enabled by Default", CheckboxOrHyphen(analyzer.IsEnabledByDefault)),
-                    TableRow("Supports Fade-Out", CheckboxOrHyphen(analyzer.SupportsFadeOut)),
-                    TableRow("Supports Fade-Out Analyzer", CheckboxOrHyphen(analyzer.SupportsFadeOutAnalyzer))),
+                    TableRow("Severity", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None")),
                 CreateSummary(analyzer.Summary),
                 Samples(),
                 CreateRemarks(analyzer.Remarks),
@@ -253,14 +250,14 @@ namespace Roslynator.CodeGeneration.Markdown
                 Heading2("Roslynator Analyzers"),
                 Link("Search Analyzers", "http://pihrt.net/Roslynator/Analyzers"),
                 Table(
-                    TableRow("Id", "Title", "Category", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
+                    TableRow("Id", "Title", "Category", "Severity"),
                     analyzers.OrderBy(f => f.Id, comparer).Select(f =>
                     {
                         return TableRow(
                             f.Id,
                             Link(f.Title.TrimEnd('.'), $"../../docs/analyzers/{f.Id}.md"),
                             f.Category,
-                            CheckboxOrHyphen(f.IsEnabledByDefault));
+                            (f.IsEnabledByDefault) ? f.DefaultSeverity : "None");
                     })));
 
             document.AddFootnote();
@@ -317,7 +314,7 @@ namespace Roslynator.CodeGeneration.Markdown
             MDocument document = Document(
                 Heading2("Roslynator Analyzers by Category"),
                 Table(
-                    TableRow("Category", "Title", "Id", TableColumn(HorizontalAlignment.Center, "Enabled by Default")),
+                    TableRow("Category", "Title", "Id", "Severity"),
                     GetRows()));
 
             document.AddFootnote();
@@ -336,7 +333,7 @@ namespace Roslynator.CodeGeneration.Markdown
                             grouping.Key,
                             Link(analyzer.Title.TrimEnd('.'), $"../../docs/analyzers/{analyzer.Id}.md"),
                             analyzer.Id,
-                            CheckboxOrHyphen(analyzer.IsEnabledByDefault));
+                            (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None");
                     }
                 }
             }

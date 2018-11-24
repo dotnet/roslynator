@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Roslynator.CSharp.Documentation
+namespace Roslynator.Documentation
 {
     internal class DocumentationCommentGeneratorSettings
     {

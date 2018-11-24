@@ -33,29 +33,19 @@ namespace Roslynator.CSharp.Analysis
 
         public static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
-            if (context.Node.ContainsDiagnostics)
-                return;
-
             var ifStatement = (IfStatementSyntax)context.Node;
 
             if (ifStatement.IsSimpleIf())
                 return;
 
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(ifStatement);
+
             if (!statementsInfo.Success)
                 return;
 
-            int index = statementsInfo.IndexOf(ifStatement);
+            ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, ifStatement);
 
-            ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, index);
-
-            if (returnStatement == null)
-                return;
-
-            if (returnStatement.ContainsDiagnostics)
-                return;
-
-            ExpressionSyntax expression = returnStatement.Expression;
+            ExpressionSyntax expression = returnStatement?.Expression;
 
             if (expression == null)
                 return;
@@ -71,12 +61,20 @@ namespace Roslynator.CSharp.Analysis
 
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
+            if (symbol == null)
+                return;
+
             if (!IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Parent, semanticModel, cancellationToken))
                 return;
 
             foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
             {
-                if (!IsSymbolAssignedInLastStatement(ifOrElse, symbol, semanticModel, cancellationToken))
+                StatementSyntax statement = ifOrElse.Statement;
+
+                if (statement.IsKind(SyntaxKind.Block))
+                    statement = ((BlockSyntax)statement).Statements.LastOrDefault();
+
+                if (!IsSymbolAssignedInStatement(symbol, statement, semanticModel, cancellationToken))
                     return;
             }
 
@@ -85,9 +83,6 @@ namespace Roslynator.CSharp.Analysis
 
         public static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
         {
-            if (context.Node.ContainsDiagnostics)
-                return;
-
             var switchStatement = (SwitchStatementSyntax)context.Node;
 
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(switchStatement);
@@ -95,19 +90,11 @@ namespace Roslynator.CSharp.Analysis
             if (!statementsInfo.Success)
                 return;
 
-            int index = statementsInfo.IndexOf(switchStatement);
+            ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, switchStatement);
 
-            ReturnStatementSyntax returnStatement = FindReturnStatementBelow(statementsInfo.Statements, index);
-
-            if (returnStatement == null)
-                return;
-
-            ExpressionSyntax expression = returnStatement.Expression;
+            ExpressionSyntax expression = returnStatement?.Expression;
 
             if (expression == null)
-                return;
-
-            if (expression.ContainsDiagnostics)
                 return;
 
             if (switchStatement.SpanOrTrailingTriviaContainsDirectives())
@@ -121,37 +108,39 @@ namespace Roslynator.CSharp.Analysis
 
             ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
 
+            if (symbol == null)
+                return;
+
             if (!IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(symbol, statementsInfo.Parent, semanticModel, cancellationToken))
                 return;
 
-            if (!switchStatement
-                .Sections
-                .All(section => IsValueAssignedInLastStatement(section, symbol, semanticModel, cancellationToken)))
+            foreach (SwitchSectionSyntax section in switchStatement.Sections)
             {
-                return;
+                SyntaxList<StatementSyntax> statements = section.GetStatements();
+
+                if (statements.Count <= 1)
+                    return;
+
+                if (!statements.Last().IsKind(SyntaxKind.BreakStatement))
+                    return;
+
+                if (!IsSymbolAssignedInStatement(symbol, statements[statements.Count - 2], semanticModel, cancellationToken))
+                    return;
             }
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReturnInsteadOfAssignment, switchStatement);
         }
 
-        internal static ReturnStatementSyntax FindReturnStatementBelow(SyntaxList<StatementSyntax> statements, int i)
+        internal static ReturnStatementSyntax FindReturnStatementBelow(SyntaxList<StatementSyntax> statements, StatementSyntax statement)
         {
-            int count = statements.Count;
+            int index = statements.IndexOf(statement);
 
-            i++;
-
-            while (i <= count - 1)
+            if (index < statements.Count - 1)
             {
-                if (!statements[i].IsKind(SyntaxKind.LocalFunctionStatement))
-                    break;
+                StatementSyntax nextStatement = statements[index + 1];
 
-                i++;
-            }
-
-            if (i <= count - 1
-                && statements[i].IsKind(SyntaxKind.ReturnStatement))
-            {
-                return (ReturnStatementSyntax)statements[i];
+                if (nextStatement.IsKind(SyntaxKind.ReturnStatement))
+                    return (ReturnStatementSyntax)nextStatement;
             }
 
             return null;
@@ -159,7 +148,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static bool IsLocalDeclaredInScopeOrNonRefOrOutParameterOfEnclosingSymbol(ISymbol symbol, SyntaxNode containingNode, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
-            switch (symbol?.Kind)
+            switch (symbol.Kind)
             {
                 case SymbolKind.Local:
                     {
@@ -193,64 +182,12 @@ namespace Roslynator.CSharp.Analysis
             return false;
         }
 
-        private static bool IsSymbolAssignedInLastStatement(in IfStatementOrElseClause ifOrElse, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            StatementSyntax statement = GetLastStatementOrDefault(ifOrElse.Statement);
-
-            return IsSymbolAssignedInStatement(symbol, statement, semanticModel, cancellationToken);
-        }
-
-        private static bool IsValueAssignedInLastStatement(SwitchSectionSyntax switchSection, ISymbol symbol, SemanticModel semanticModel, CancellationToken cancellationToken)
-        {
-            StatementSyntax statement = GetLastStatementBeforeBreakStatementOrDefault(switchSection);
-
-            return IsSymbolAssignedInStatement(symbol, statement, semanticModel, cancellationToken);
-        }
-
         private static bool IsSymbolAssignedInStatement(ISymbol symbol, StatementSyntax statement, SemanticModel semanticModel, CancellationToken cancellationToken)
         {
             SimpleAssignmentStatementInfo assignmentInfo = SyntaxInfo.SimpleAssignmentStatementInfo(statement);
 
             return assignmentInfo.Success
-                && symbol.Equals(semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken));
-        }
-
-        internal static StatementSyntax GetLastStatementOrDefault(StatementSyntax statement)
-        {
-            if (statement?.Kind() == SyntaxKind.Block)
-            {
-                return ((BlockSyntax)statement).Statements.LastOrDefault();
-            }
-            else
-            {
-                return statement;
-            }
-        }
-
-        internal static StatementSyntax GetLastStatementBeforeBreakStatementOrDefault(SwitchSectionSyntax switchSection)
-        {
-            SyntaxList<StatementSyntax> statements = GetStatements(switchSection);
-
-            if (statements.Count > 1
-                && statements.Last().IsKind(SyntaxKind.BreakStatement))
-            {
-                return statements[statements.Count - 2];
-            }
-
-            return null;
-        }
-
-        internal static SyntaxList<StatementSyntax> GetStatements(SwitchSectionSyntax switchSection)
-        {
-            SyntaxList<StatementSyntax> statements = switchSection.Statements;
-
-            if (statements.Count == 1
-                && statements[0].IsKind(SyntaxKind.Block))
-            {
-                return ((BlockSyntax)statements[0]).Statements;
-            }
-
-            return statements;
+                && semanticModel.GetSymbol(assignmentInfo.Left, cancellationToken)?.Equals(symbol) == true;
         }
     }
 }

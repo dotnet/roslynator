@@ -13,6 +13,9 @@ rem dotnet nuget push "%_filePath%" -k %_apiKey% -s %_source%
 
 set _version=1.0.0-rc4
 
+set _filePath=..\src\Core\bin\Release\Roslynator.Core.%_version%.nupkg
+rem dotnet nuget push "%_filePath%" -k %_apiKey% -s %_source%
+
 set _filePath=..\src\CSharp\bin\Release\Roslynator.CSharp.%_version%.nupkg
 rem dotnet nuget push "%_filePath%" -k %_apiKey% -s %_source%
 

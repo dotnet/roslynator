@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            TypeAnalysis analysis = TypeAnalysis.AnalyzeType(forEachStatement, semanticModel);
+            TypeAnalysis analysis = CSharpTypeAnalysis.AnalyzeType(forEachStatement, semanticModel);
 
             if (analysis.IsExplicit)
             {

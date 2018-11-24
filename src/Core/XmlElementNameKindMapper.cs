@@ -3,9 +3,8 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Diagnostics;
 
-namespace Roslynator.CSharp
+namespace Roslynator
 {
     internal static class XmlElementNameKindMapper
     {

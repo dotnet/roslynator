@@ -181,7 +181,7 @@ namespace Roslynator.CSharp.Refactorings
                                 {
                                     return kind != SyntaxKind.IfStatement
                                         || ((IfStatementSyntax)parent).Else == null
-                                        || ((IfStatementSyntax)statement).AsCascade().Last().AsIf() == null;
+                                        || !((IfStatementSyntax)statement).GetCascadeInfo().EndsWithIf;
                                 }
                             default:
                                 {

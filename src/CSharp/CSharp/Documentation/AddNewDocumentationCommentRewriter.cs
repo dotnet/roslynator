@@ -3,6 +3,7 @@
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.Documentation;
 using static Roslynator.CSharp.SyntaxAccessibility;
 
 namespace Roslynator.CSharp.Documentation
