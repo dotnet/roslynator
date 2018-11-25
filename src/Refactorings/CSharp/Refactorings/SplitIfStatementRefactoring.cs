@@ -18,25 +18,34 @@ namespace Roslynator.CSharp.Refactorings
         {
             SimpleIfStatementInfo simpleIf = SyntaxInfo.SimpleIfStatementInfo(ifStatement);
 
-            if (!simpleIf.Success)
-                return;
-
-            if (simpleIf.Condition.Kind() != SyntaxKind.LogicalOrExpression)
-                return;
-
-            context.RegisterRefactoring(
-                "Split if",
-                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken),
-                RefactoringIdentifiers.SplitIfStatement);
+            if (simpleIf.Success)
+            {
+                if (simpleIf.Condition.IsKind(SyntaxKind.LogicalOrExpression))
+                {
+                    context.RegisterRefactoring(
+                        "Split if",
+                        ct => SplitSimpleIfAsync(context.Document, ifStatement, ct),
+                        RefactoringIdentifiers.SplitIfStatement);
+                }
+            }
+            else if (ifStatement.Parent.IsKind(SyntaxKind.ElseClause)
+                    && ifStatement.Else == null
+                    && ifStatement.Condition.IsKind(SyntaxKind.LogicalOrExpression))
+            {
+                context.RegisterRefactoring(
+                    "Split if",
+                    ct => SplitLastElseIfAsync(context.Document, ifStatement, ct),
+                    RefactoringIdentifiers.SplitIfStatement);
+            }
         }
 
-        private static Task<Document> RefactorAsync(
+        private static Task<Document> SplitSimpleIfAsync(
             Document document,
             IfStatementSyntax ifStatement,
             CancellationToken cancellationToken)
         {
-            StatementSyntax statement = ifStatement.Statement.WithoutTrivia();
             ExpressionSyntax condition = ifStatement.Condition;
+            StatementSyntax statement = ifStatement.Statement.WithoutTrivia();
 
             List<IfStatementSyntax> ifStatements = SyntaxInfo.BinaryExpressionInfo(condition)
                 .AsChain()
@@ -56,6 +65,34 @@ namespace Roslynator.CSharp.Refactorings
             {
                 return document.ReplaceNodeAsync(ifStatement, ifStatements, cancellationToken);
             }
+        }
+
+        private static Task<Document> SplitLastElseIfAsync(
+            Document document,
+            IfStatementSyntax ifStatement,
+            CancellationToken cancellationToken)
+        {
+            ExpressionSyntax condition = ifStatement.Condition;
+            StatementSyntax statement = ifStatement.Statement.WithoutTrivia();
+
+            IfStatementSyntax newIfStatement = ifStatement;
+
+            ElseClauseSyntax elseClause = null;
+
+            ExpressionChain.Reversed.Enumerator en = SyntaxInfo.BinaryExpressionInfo(condition).AsChain().Reverse().GetEnumerator();
+
+            while (en.MoveNext())
+            {
+                newIfStatement = IfStatement(en.Current.TrimTrivia(), statement, elseClause);
+
+                elseClause = ElseClause(newIfStatement);
+            }
+
+            newIfStatement = newIfStatement
+                .WithTriviaFrom(ifStatement)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(ifStatement, newIfStatement, cancellationToken);
         }
     }
 }

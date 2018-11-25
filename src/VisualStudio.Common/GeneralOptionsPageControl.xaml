@@ -12,9 +12,14 @@
     </Style>
   </UserControl.Resources>
   <Grid>
-    <StackPanel Orientation="Vertical" Margin="0,15,0,0">
-      <CheckBox IsChecked="{Binding PrefixFieldIdentifierWithUnderscore}">Prefix field identifier with underscore</CheckBox>
-      <CheckBox IsChecked="{Binding UseConfigFile}">Use config file</CheckBox>
-    </StackPanel>
+    <DockPanel Focusable="false" Margin="0,15,0,0">
+      <TextBlock DockPanel.Dock="Right" Margin="0,0,10,0">
+        <Hyperlink NavigateUri="http://pihrt.net/roslynator/donate" RequestNavigate="Hyperlink_RequestNavigate">
+          Donate
+        </Hyperlink>
+      </TextBlock>
+      <CheckBox DockPanel.Dock="Top" IsChecked="{Binding PrefixFieldIdentifierWithUnderscore}">Prefix field identifier with underscore</CheckBox>
+      <CheckBox DockPanel.Dock="Top" IsChecked="{Binding UseConfigFile}">Use config file</CheckBox>
+    </DockPanel>
   </Grid>
 </UserControl>
