@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
         public override string RefactoringId { get; } = RefactoringIdentifiers.SplitIfStatement;
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
-        public async Task Test_LogicalOr()
+        public async Task Test_SimpleIf()
         {
             await VerifyRefactoringAsync(@"
 class C
@@ -47,7 +47,7 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
-        public async Task Test_LogicalOr2()
+        public async Task Test_SimpleIf2()
         {
             await VerifyRefactoringAsync(@"
 class C
@@ -96,7 +96,7 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
-        public async Task Test_LogicalOr_EmbeddedStatement()
+        public async Task Test_SimpleIf_EmbeddedStatement()
         {
             await VerifyRefactoringAsync(@"
 class C
@@ -137,7 +137,95 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
-        public async Task TestNoRefactoring_SimpleCondition()
+        public async Task Test_LastElseIf()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    bool M(bool x, bool y)
+    {
+        if (x)
+        {
+        }
+        else [||]if (x || y)
+        {
+            return true;
+        }
+
+        return false;
+    }
+}
+", @"
+class C
+{
+    bool M(bool x, bool y)
+    {
+        if (x)
+        {
+        }
+        else if (x)
+        {
+            return true;
+        }
+        else if (y)
+        {
+            return true;
+        }
+
+        return false;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        public async Task Test_LastElseIf2()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    bool M(bool a, bool b, bool c, bool d, bool e)
+    {
+        if (a)
+        {
+        }
+        else [||]if (b || c || d && e)
+        {
+            return true;
+        } // x
+
+        return false;
+    }
+}
+", @"
+class C
+{
+    bool M(bool a, bool b, bool c, bool d, bool e)
+    {
+        if (a)
+        {
+        }
+        else if (b)
+        {
+            return true;
+        }
+        else if (c)
+        {
+            return true;
+        }
+        else if (d && e)
+        {
+            return true;
+        } // x
+
+        return false;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.SplitIfStatement)]
+        public async Task TestNoRefactoring_SimpleIf_SimpleCondition()
         {
             await VerifyNoRefactoringAsync(@"
 class C

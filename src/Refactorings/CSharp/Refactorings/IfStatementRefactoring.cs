@@ -72,10 +72,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             SyntaxToken ifKeyword = ifStatement.IfKeyword;
 
-            if (ifStatement.IsTopmostIf()
-                && (context.Span.IsEmptyAndContainedInSpan(ifKeyword) || context.Span.IsBetweenSpans(ifStatement)))
+            bool isTopmostIf = ifStatement.IsTopmostIf();
+
+            if (context.Span.IsEmptyAndContainedInSpan(ifKeyword)
+                || context.Span.IsBetweenSpans(ifStatement))
             {
-                if (context.IsAnyRefactoringEnabled(
+                if (isTopmostIf
+                    && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
                     RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf,
                     RefactoringIdentifiers.SimplifyIf))
@@ -99,18 +102,23 @@ namespace Roslynator.CSharp.Refactorings
                 }
 
                 if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.InvertIf, RefactoringIdentifiers.InvertIfElse)
-                    & context.Span.IsEmptyAndContainedInSpan(ifKeyword))
+                    && isTopmostIf
+                    && context.Span.IsEmptyAndContainedInSpan(ifKeyword))
                 {
                     InvertIfRefactoring.ComputeRefactoring(context, ifStatement);
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch))
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch)
+                    && isTopmostIf)
+                {
                     await ReplaceIfWithSwitchRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
+                }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfStatement))
                     SplitIfStatementRefactoring.ComputeRefactoring(context, ifStatement);
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfWithParentIf)
+                    && isTopmostIf
                     && context.Span.IsEmptyAndContainedInSpan(ifKeyword))
                 {
                     MergeIfWithParentIfRefactoring.ComputeRefactoring(context, ifStatement);
