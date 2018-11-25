@@ -3,14 +3,10 @@
   <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
     <Rule Id="RCS1001" Action="Info" /> <!-- Add braces (when expression spans over multiple lines). -->
     <Rule Id="RCS1002" Action="None" /> <!-- Remove braces. -->
-    <Rule Id="RCS1002FadeOut" Action="None" />
     <Rule Id="RCS1003" Action="Info" /> <!-- Add braces to if-else (when expression spans over multiple lines). -->
     <Rule Id="RCS1004" Action="None" /> <!-- Remove braces from if-else. -->
-    <Rule Id="RCS1004FadeOut" Action="None" />
     <Rule Id="RCS1005" Action="Hidden" /> <!-- Simplify nested using statement. -->
-    <Rule Id="RCS1005FadeOut" Action="Hidden" />
     <Rule Id="RCS1006" Action="Hidden" /> <!-- Merge else clause with nested if statement. -->
-    <Rule Id="RCS1006FadeOut" Action="Hidden" />
     <Rule Id="RCS1007" Action="None" /> <!-- Add braces. -->
     <Rule Id="RCS1008" Action="None" /> <!-- Use explicit type instead of 'var' (when the type is not obvious). -->
     <Rule Id="RCS1009" Action="None" /> <!-- Use explicit type instead of 'var' (foreach variable). -->
@@ -19,17 +15,13 @@
     <Rule Id="RCS1013" Action="None" /> <!-- Use predefined type. -->
     <Rule Id="RCS1014" Action="None" /> <!-- Avoid implicitly-typed array. -->
     <Rule Id="RCS1015" Action="Info" /> <!-- Use nameof operator. -->
-    <Rule Id="RCS1015FadeOut" Action="Info" />
     <Rule Id="RCS1016" Action="None" /> <!-- Use expression-bodied member. -->
-    <Rule Id="RCS1016FadeOut" Action="None" />
     <Rule Id="RCS1017" Action="None" /> <!-- Avoid multiline expression body. -->
     <Rule Id="RCS1018" Action="Info" /> <!-- Add default access modifier. -->
     <Rule Id="RCS1019" Action="None" /> <!-- Reorder modifiers. -->
     <Rule Id="RCS1020" Action="Info" /> <!-- Simplify Nullable<T> to T?. -->
     <Rule Id="RCS1021" Action="Info" /> <!-- Simplify lambda expression. -->
-    <Rule Id="RCS1021FadeOut" Action="Info" />
     <Rule Id="RCS1022" Action="None" /> <!-- Simplify lambda expression parameter list. -->
-    <Rule Id="RCS1022FadeOut" Action="None" />
     <Rule Id="RCS1023" Action="None" /> <!-- Format empty block. -->
     <Rule Id="RCS1024" Action="None" /> <!-- Format accessor list. -->
     <Rule Id="RCS1025" Action="None" /> <!-- Add new line before enum member. -->
@@ -39,9 +31,7 @@
     <Rule Id="RCS1029" Action="Info" /> <!-- Format binary operator on next line. -->
     <Rule Id="RCS1030" Action="None" /> <!-- Add empty line after embedded statement. -->
     <Rule Id="RCS1031" Action="Info" /> <!-- Remove redundant braces. -->
-    <Rule Id="RCS1031FadeOut" Action="Info" />
     <Rule Id="RCS1032" Action="Info" /> <!-- Remove redundant parentheses. -->
-    <Rule Id="RCS1032FadeOut" Action="Info" />
     <Rule Id="RCS1033" Action="Info" /> <!-- Remove redundant boolean literal. -->
     <Rule Id="RCS1034" Action="Hidden" /> <!-- Remove redundant 'sealed' modifier. -->
     <Rule Id="RCS1035" Action="None" /> <!-- Remove redundant comma in initializer. -->
@@ -57,27 +47,20 @@
     <Rule Id="RCS1045" Action="None" /> <!-- Rename private field according to camel case with underscore. -->
     <Rule Id="RCS1046" Action="None" /> <!-- Asynchronous method name should end with 'Async'. -->
     <Rule Id="RCS1047" Action="Info" /> <!-- Non-asynchronous method name should not end with 'Async'. -->
-    <Rule Id="RCS1047FadeOut" Action="Info" />
     <Rule Id="RCS1048" Action="Info" /> <!-- Use lambda expression instead of anonymous method. -->
-    <Rule Id="RCS1048FadeOut" Action="Info" />
     <Rule Id="RCS1049" Action="Info" /> <!-- Simplify boolean comparison. -->
-    <Rule Id="RCS1049FadeOut" Action="Info" />
     <Rule Id="RCS1050" Action="None" /> <!-- Add argument list to object creation expression. -->
     <Rule Id="RCS1051" Action="None" /> <!-- Parenthesize condition in conditional expression. -->
     <Rule Id="RCS1052" Action="None" /> <!-- Declare each attribute separately. -->
     <Rule Id="RCS1053" Action="None" /> <!-- Replace foreach statement with for statement. -->
-    <Rule Id="RCS1053FadeOut" Action="None" />
     <Rule Id="RCS1054" Action="Hidden" /> <!-- Merge local declaration with return statement. -->
-    <Rule Id="RCS1054FadeOut" Action="Hidden" />
     <Rule Id="RCS1055" Action="Hidden" /> <!-- Avoid semicolon at the end of declaration. -->
     <Rule Id="RCS1056" Action="None" /> <!-- Avoid usage of using alias directive. -->
     <Rule Id="RCS1057" Action="Info" /> <!-- Add empty line between declarations. -->
     <Rule Id="RCS1058" Action="Info" /> <!-- Use compound assignment. -->
-    <Rule Id="RCS1058FadeOut" Action="Info" />
     <Rule Id="RCS1059" Action="Warning" /> <!-- Avoid locking on publicly accessible instance. -->
     <Rule Id="RCS1060" Action="None" /> <!-- Declare each type in separate file. -->
     <Rule Id="RCS1061" Action="Hidden" /> <!-- Merge if statement with nested if statement. -->
-    <Rule Id="RCS1061FadeOut" Action="Hidden" />
     <Rule Id="RCS1062" Action="Hidden" /> <!-- Avoid interpolated string with no interpolation. -->
     <Rule Id="RCS1063" Action="Info" /> <!-- Avoid usage of do statement to create an infinite loop. -->
     <Rule Id="RCS1064" Action="None" /> <!-- Avoid usage of for statement to create an infinite loop. -->
@@ -90,7 +73,6 @@
     <Rule Id="RCS1071" Action="Hidden" /> <!-- Remove redundant base constructor call. -->
     <Rule Id="RCS1072" Action="Info" /> <!-- Remove empty namespace declaration. -->
     <Rule Id="RCS1073" Action="Info" /> <!-- Replace if statement with return statement. -->
-    <Rule Id="RCS1073FadeOut" Action="Info" />
     <Rule Id="RCS1074" Action="Hidden" /> <!-- Remove redundant constructor. -->
     <Rule Id="RCS1075" Action="Warning" /> <!-- Avoid empty catch clause that catches System.Exception. -->
     <Rule Id="RCS1076" Action="Hidden" /> <!-- Format declaration braces. -->
@@ -103,15 +85,12 @@
     <Rule Id="RCS1083" Action="Warning" /> <!-- Call 'Enumerable.Any' instead of 'Enumerable.Count'. -->
     <Rule Id="RCS1084" Action="Info" /> <!-- Use coalesce expression instead of conditional expression. -->
     <Rule Id="RCS1085" Action="Info" /> <!-- Use auto-implemented property. -->
-    <Rule Id="RCS1085FadeOut" Action="Info" />
     <Rule Id="RCS1086" Action="None" /> <!-- Use linefeed as newline. -->
     <Rule Id="RCS1087" Action="None" /> <!-- Use carriage return + linefeed as newline. -->
     <Rule Id="RCS1088" Action="None" /> <!-- Use space(s) instead of tab. -->
     <Rule Id="RCS1089" Action="Info" /> <!-- Use - -/++ operator instead of assignment. -->
-    <Rule Id="RCS1089FadeOut" Action="Info" />
     <Rule Id="RCS1090" Action="Info" /> <!-- Call 'ConfigureAwait(false)'. -->
     <Rule Id="RCS1091" Action="Hidden" /> <!-- Remove empty region. -->
-    <Rule Id="RCS1091FadeOut" Action="Hidden" />
     <Rule Id="RCS1092" Action="None" /> <!-- Add empty line before 'while' keyword in 'do' statement. -->
     <Rule Id="RCS1093" Action="Info" /> <!-- Remove file with no code. -->
     <Rule Id="RCS1094" Action="None" /> <!-- Declare using directive on top level. -->
@@ -133,10 +112,8 @@
     <Rule Id="RCS1110" Action="Info" /> <!-- Declare type inside namespace. -->
     <Rule Id="RCS1111" Action="None" /> <!-- Add braces to switch section with multiple statements. -->
     <Rule Id="RCS1112" Action="Info" /> <!-- Combine 'Enumerable.Where' method chain. -->
-    <Rule Id="RCS1112FadeOut" Action="Info" />
     <Rule Id="RCS1113" Action="Info" /> <!-- Use 'string.IsNullOrEmpty' method. -->
     <Rule Id="RCS1114" Action="Info" /> <!-- Remove redundant delegate creation. -->
-    <Rule Id="RCS1114FadeOut" Action="Info" />
     <Rule Id="RCS1115" Action="Hidden" /> <!-- Replace yield/return statement with expression statement. -->
     <Rule Id="RCS1116" Action="Hidden" /> <!-- Add break statement to switch section. -->
     <Rule Id="RCS1117" Action="Hidden" /> <!-- Add return statement that returns default value. -->
@@ -147,11 +124,9 @@
     <Rule Id="RCS1122" Action="None" /> <!-- Add missing semicolon. -->
     <Rule Id="RCS1123" Action="Info" /> <!-- Add parentheses according to operator precedence. -->
     <Rule Id="RCS1124" Action="Hidden" /> <!-- Inline local variable. -->
-    <Rule Id="RCS1124FadeOut" Action="Hidden" />
     <Rule Id="RCS1125" Action="Hidden" /> <!-- Mark member as static. -->
     <Rule Id="RCS1126" Action="None" /> <!-- Add braces to if-else. -->
     <Rule Id="RCS1127" Action="Info" /> <!-- Merge local declaration with assignment. -->
-    <Rule Id="RCS1127FadeOut" Action="Info" />
     <Rule Id="RCS1128" Action="Info" /> <!-- Use coalesce expression. -->
     <Rule Id="RCS1129" Action="Hidden" /> <!-- Remove redundant field initalization. -->
     <Rule Id="RCS1130" Action="Info" /> <!-- Bitwise operation on enum without Flags attribute. -->
@@ -199,7 +174,6 @@
     <Rule Id="RCS1172" Action="Warning" /> <!-- Use 'is' operator instead of 'as' operator. -->
     <Rule Id="RCS1173" Action="Info" /> <!-- Use coalesce expression instead of if. -->
     <Rule Id="RCS1174" Action="None" /> <!-- Remove redundant async/await. -->
-    <Rule Id="RCS1174FadeOut" Action="None" />
     <Rule Id="RCS1175" Action="Info" /> <!-- Unused this parameter. -->
     <Rule Id="RCS1176" Action="None" /> <!-- Use 'var' instead of explicit type (when the type is not obvious). -->
     <Rule Id="RCS1177" Action="None" /> <!-- Use 'var' instead of explicit type (in foreach). -->
@@ -233,7 +207,6 @@
     <Rule Id="RCS1205" Action="Info" /> <!-- Reorder named arguments according to the order of parameters. -->
     <Rule Id="RCS1206" Action="Info" /> <!-- Use conditional access instead of conditional expression. -->
     <Rule Id="RCS1207" Action="Hidden" /> <!-- Use method group instead of anonymous function. -->
-    <Rule Id="RCS1207FadeOut" Action="Hidden" />
     <Rule Id="RCS1208" Action="None" /> <!-- Reduce if nesting. -->
     <Rule Id="RCS1209" Action="Info" /> <!-- Reorder type parameter constraints. -->
     <Rule Id="RCS1210" Action="Warning" /> <!-- Return Task.FromResult instead of returning null. -->
@@ -241,11 +214,9 @@
     <Rule Id="RCS1212" Action="Info" /> <!-- Remove redundant assignment. -->
     <Rule Id="RCS1213" Action="Info" /> <!-- Remove unused member declaration. -->
     <Rule Id="RCS1214" Action="Info" /> <!-- Unnecessary interpolated string. -->
-    <Rule Id="RCS1214FadeOut" Action="Info" />
     <Rule Id="RCS1215" Action="Warning" /> <!-- Expression is always equal to true/false. -->
     <Rule Id="RCS1216" Action="Info" /> <!-- Unnecessary unsafe context. -->
     <Rule Id="RCS1217" Action="Hidden" /> <!-- Replace interpolated string with concatenation. -->
-    <Rule Id="RCS1217FadeOut" Action="Hidden" />
     <Rule Id="RCS1218" Action="Info" /> <!-- Simplify code branching. -->
     <Rule Id="RCS1219" Action="None" /> <!-- Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'. -->
     <Rule Id="RCS1220" Action="Info" /> <!-- Use pattern matching instead of combination of 'is' operator and cast operator. -->
