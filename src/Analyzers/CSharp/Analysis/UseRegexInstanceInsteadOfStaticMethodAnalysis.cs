@@ -90,17 +90,5 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
         }
-
-        private readonly struct ArgumentListPair
-        {
-            public ArgumentListPair(ArgumentListSyntax argumentList1, ArgumentListSyntax argumentList2)
-            {
-                ArgumentList1 = argumentList1;
-                ArgumentList2 = argumentList2;
-            }
-
-            public ArgumentListSyntax ArgumentList1 { get; }
-            public ArgumentListSyntax ArgumentList2 { get; }
-        }
     }
 }
