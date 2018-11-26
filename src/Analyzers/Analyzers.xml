@@ -5072,4 +5072,29 @@ public string Foo()
       </Link>
     </Links>
   </Analyzer>
+  <Analyzer Identifier="UnnecessaryUsageOfEnumerator">
+    <Id>RCS1230</Id>
+    <Title>Unnecessary usage of enumerator.</Title>
+    <MessageFormat>Unnecessary usage of enumerator.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[using (var en = items.GetEnumerator())
+{
+    while (en.MoveNext())
+    {
+        yield return en.Current;
+    }
+}]]></Before>
+        <After><![CDATA[foreach (var item in items)
+{
+    yield return en.Current;
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

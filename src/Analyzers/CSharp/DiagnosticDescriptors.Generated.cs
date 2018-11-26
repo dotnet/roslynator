@@ -2507,5 +2507,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseAsyncAwait}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1230</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryUsageOfEnumerator = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator, 
+            title:              "Unnecessary usage of enumerator.", 
+            messageFormat:      "Unnecessary usage of enumerator.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator}", 
+            customTags:         Array.Empty<string>());
+
     }
 }
