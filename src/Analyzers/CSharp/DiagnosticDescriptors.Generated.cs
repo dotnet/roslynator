@@ -2519,5 +2519,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryUsageOfEnumerator}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1231</summary>
+        public static readonly DiagnosticDescriptor MakeParameterRefReadOnly = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.MakeParameterRefReadOnly, 
+            title:              "Make parameter ref read-only.", 
+            messageFormat:      "Make parameter ref read-only.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MakeParameterRefReadOnly}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

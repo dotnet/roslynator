@@ -5083,7 +5083,7 @@ public string Foo()
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[using (var en = items.GetEnumerator())
+        <Before><![CDATA[using (var en = items.GetEnumerator()) // [|Id|]
 {
     while (en.MoveNext())
     {
@@ -5093,6 +5093,33 @@ public string Foo()
         <After><![CDATA[foreach (var item in items)
 {
     yield return en.Current;
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="MakeParameterRefReadOnly">
+    <Id>RCS1231</Id>
+    <Title>Make parameter ref read-only.</Title>
+    <MessageFormat>Make parameter ref read-only.</MessageFormat>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[readonly struct C
+{
+    void M(C c) // [|Id|]
+    {
+    }
+}]]></Before>
+        <After><![CDATA[readonly struct C
+{
+    void M(in C c)
+    {
+    }
 }]]></After>
       </Sample>
     </Samples>
