@@ -208,6 +208,8 @@
 | RCS1227 | [Validate arguments correctly](../../docs/analyzers/RCS1227.md) | Design | Info |
 | RCS1228 | [Unused element in documentation comment](../../docs/analyzers/RCS1228.md) | Readability | Hidden |
 | RCS1229 | [Use async/await when necessary](../../docs/analyzers/RCS1229.md) | Usage | Info |
+| RCS1230 | [Unnecessary usage of enumerator](../../docs/analyzers/RCS1230.md) | Readability | Info |
+| RCS1231 | [Make parameter ref read-only](../../docs/analyzers/RCS1231.md) | Performance | Info |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
