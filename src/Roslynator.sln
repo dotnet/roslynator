@@ -21,8 +21,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\text\ReleaseCheckList.txt = ..\text\ReleaseCheckList.txt
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddCodeFileHeader", "Tools\AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp", "CSharp\CSharp.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Refactorings", "Refactorings\Refactorings.csproj", "{3AD7B124-7B99-440D-84A1-858BE5AE268B}"
@@ -96,20 +94,29 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Documentation", "Documentat
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommandLine", "CommandLine\CommandLine.csproj", "{A865E4D9-30C3-4CC8-A1AB-A897A7A1DA0C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFixes.FixAll", "CodeFixes.FixAll\CodeFixes.FixAll.csproj", "{02400C27-6E98-4840-A75C-0635C99B8814}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "CLI", "CLI", "{A16068FE-9E6C-45D2-8114-CC189600AFA2}"
 	ProjectSection(SolutionItems) = preProject
+		..\docs\cli\analyze-assembly-command.md = ..\docs\cli\analyze-assembly-command.md
+		..\docs\cli\analyze-command.md = ..\docs\cli\analyze-command.md
 		..\docs\cli\fix-command.md = ..\docs\cli\fix-command.md
+		..\docs\cli\format-command.md = ..\docs\cli\format-command.md
 		..\docs\cli\generate-declarations-command.md = ..\docs\cli\generate-declarations-command.md
 		..\docs\cli\generate-doc-command.md = ..\docs\cli\generate-doc-command.md
 		..\docs\cli\generate-doc-root-command.md = ..\docs\cli\generate-doc-root-command.md
+		..\docs\cli\list-vs-command.md = ..\docs\cli\list-vs-command.md
+		..\docs\cli\lloc-command.md = ..\docs\cli\lloc-command.md
+		..\docs\cli\loc-command.md = ..\docs\cli\loc-command.md
 		..\docs\cli\README.md = ..\docs\cli\README.md
+		..\docs\cli\sln-list-command.md = ..\docs\cli\sln-list-command.md
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Core", "Workspaces.Core\Workspaces.Core.csproj", "{4FD3D777-11FC-4FF9-985B-2756E39F7AD7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{59C3841C-DF61-493B-88AF-477357698477}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "Tests\Core.Tests\Core.Tests.csproj", "{73ABB10A-2252-46F4-B65D-D27FA8560EB6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualBasic", "VisualBasic\VisualBasic.csproj", "{A0C4C70C-8249-49D7-BF72-D942B7B79D47}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -117,8 +124,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{28B7D00B-A1EA-491D-873D-235406A77C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28B7D00B-A1EA-491D-873D-235406A77C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -220,10 +225,8 @@ Global
 		{BE5E7831-F687-47E6-BC60-969BDEA93EAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A865E4D9-30C3-4CC8-A1AB-A897A7A1DA0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A865E4D9-30C3-4CC8-A1AB-A897A7A1DA0C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02400C27-6E98-4840-A75C-0635C99B8814}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{02400C27-6E98-4840-A75C-0635C99B8814}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{02400C27-6E98-4840-A75C-0635C99B8814}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{02400C27-6E98-4840-A75C-0635C99B8814}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FD3D777-11FC-4FF9-985B-2756E39F7AD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FD3D777-11FC-4FF9-985B-2756E39F7AD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{59C3841C-DF61-493B-88AF-477357698477}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{59C3841C-DF61-493B-88AF-477357698477}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{59C3841C-DF61-493B-88AF-477357698477}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -232,12 +235,13 @@ Global
 		{73ABB10A-2252-46F4-B65D-D27FA8560EB6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73ABB10A-2252-46F4-B65D-D27FA8560EB6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73ABB10A-2252-46F4-B65D-D27FA8560EB6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A0C4C70C-8249-49D7-BF72-D942B7B79D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A0C4C70C-8249-49D7-BF72-D942B7B79D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{28B7D00B-A1EA-491D-873D-235406A77C3C} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{44582CE6-29B1-4982-B485-C0285AA0A591} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{4AD2A192-847E-4942-8A72-D99C5602D5A7} = {087B51E1-CD20-42E4-9CBF-CB2D779FC7D3}

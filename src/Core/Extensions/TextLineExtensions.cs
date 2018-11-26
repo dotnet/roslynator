@@ -8,8 +8,11 @@ namespace Roslynator
     {
         public static bool IsEmptyOrWhiteSpace(this TextLine textLine)
         {
-            TextSpan span = textLine.Span;
+            return IsEmptyOrWhiteSpace(textLine, textLine.Span);
+        }
 
+        public static bool IsEmptyOrWhiteSpace(this TextLine textLine, TextSpan span)
+        {
             for (int i = span.Start; i < span.End; i++)
             {
                 if (!char.IsWhiteSpace(textLine.Text[i]))

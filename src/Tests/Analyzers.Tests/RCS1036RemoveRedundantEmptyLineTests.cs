@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new RemoveRedundantEmptyLineAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new RemoveTriviaCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new WhitespaceTriviaCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantEmptyLine)]
         public async Task Test_ObjectInitializer()

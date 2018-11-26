@@ -24,7 +24,7 @@ namespace Roslynator.Documentation
         public DocumentationModel(
             Compilation compilation,
             IEnumerable<IAssemblySymbol> assemblies,
-            DocumentationVisibility visibility = DocumentationVisibility.Publicly,
+            Visibility visibility = Visibility.Public,
             IEnumerable<string> additionalXmlDocumentationPaths = null)
         {
             Compilation = compilation;
@@ -42,11 +42,11 @@ namespace Roslynator.Documentation
             {
                 switch (visibility)
                 {
-                    case DocumentationVisibility.Publicly:
+                    case Visibility.Public:
                         return f => f.IsPubliclyVisible();
-                    case DocumentationVisibility.PubliclyOrInternally:
+                    case Visibility.Internal:
                         return f => f.IsPubliclyOrInternallyVisible();
-                    case DocumentationVisibility.All:
+                    case Visibility.Private:
                         return _ => true;
                     default:
                         throw new ArgumentException($"Unknown enum value '{visibility}'.", nameof(visibility));
@@ -77,7 +77,7 @@ namespace Roslynator.Documentation
             get { return Assemblies.SelectMany(f => f.GetTypes(typeSymbol => IsVisible(typeSymbol))); }
         }
 
-        public DocumentationVisibility Visibility { get; }
+        public Visibility Visibility { get; }
 
         public bool IsVisible(ISymbol symbol) => _isVisible(symbol);
 

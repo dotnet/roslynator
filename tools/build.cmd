@@ -16,7 +16,6 @@ if errorlevel 1 (
  exit
 )
 
-dotnet "..\src\Tools\AddCodeFileHeader\bin\Release\netcoreapp2.0\AddCodeFileHeader.dll" "..\src"
 "..\src\Tools\MetadataGenerator\bin\Release\net461\Roslynator.MetadataGenerator.exe" "..\src"
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
 dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "2.0.0.1"

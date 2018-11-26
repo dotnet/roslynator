@@ -525,14 +525,63 @@ namespace Roslynator
         {
             do
             {
-                if (symbol.DeclaredAccessibility == Accessibility.Private)
+                if (symbol.DeclaredAccessibility.Is(
+                    Accessibility.NotApplicable,
+                    Accessibility.Private))
+                {
                     return false;
+                }
 
                 symbol = symbol.ContainingType;
 
             } while (symbol != null);
 
             return true;
+        }
+
+        //TODO: make public
+        internal static Visibility GetVisibility(this ISymbol symbol)
+        {
+            var visibility = Visibility.Public;
+
+            do
+            {
+                switch (symbol.DeclaredAccessibility)
+                {
+                    case Accessibility.Public:
+                    case Accessibility.Protected:
+                    case Accessibility.ProtectedOrInternal:
+                        {
+                            break;
+                        }
+                    case Accessibility.Internal:
+                    case Accessibility.ProtectedAndInternal:
+                        {
+                            if (visibility == Visibility.Public)
+                                visibility = Visibility.Internal;
+
+                            break;
+                        }
+                    case Accessibility.Private:
+                        {
+                            visibility = Visibility.Private;
+                            break;
+                        }
+                    case Accessibility.NotApplicable:
+                        {
+                            return Visibility.NotApplicable;
+                        }
+                    default:
+                        {
+                            throw new InvalidOperationException($"Unknown accessibility '{symbol.DeclaredAccessibility}'.");
+                        }
+                }
+
+                symbol = symbol.ContainingType;
+
+            } while (symbol != null);
+
+            return visibility;
         }
 
         internal static bool HasMetadataName(this ISymbol symbol, in MetadataName metadataName)

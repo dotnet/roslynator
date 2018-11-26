@@ -9,7 +9,7 @@
     <Version>0.1.0.0</Version>
     <AssemblyName>Roslynator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>CommandLine.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>CommandLine.snk</AssemblyOriginatorKeyFile>
@@ -21,9 +21,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="docs\**" />
+    <EmbeddedResource Remove="docs\**" />
+    <None Remove="docs\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <TrimFilesRootFiles Include="System.Runtime.InteropServices.RuntimeInformation.dll" />
     <TrimFilesRootFiles Include="System.Diagnostics.Tracing.dll" />
     <TrimFilesRootFiles Include="System.Composition.Convention.dll" />
+    <TrimFilesRootFiles Include="Roslynator.Core.dll" />
+    <TrimFilesRootFiles Include="Roslynator.Workspaces.Core.dll" />
+    <TrimFilesRootFiles Include="Roslynator.CSharp.dll" />
+    <TrimFilesRootFiles Include="Roslynator.VisualBasic.dll" />
+    <TrimFilesRootFiles Include="Roslynator.Common.dll" />
+    <TrimFilesRootFiles Include="Roslynator.Common.Workspaces.dll" />
+    <TrimFilesRootFiles Include="Roslynator.CSharp.Workspaces.dll" />
+    <TrimFilesRootFiles Include="Roslynator.CSharp.Analyzers.dll" />
+    <TrimFilesRootFiles Include="Roslynator.CSharp.Analyzers.CodeFixes.dll" />
+    <TrimFilesRootFiles Include="Roslynator.CSharp.CodeFixes.dll" />
   </ItemGroup>
 
   <PropertyGroup>
@@ -39,16 +55,26 @@
 
   <ItemGroup>
     <PackageReference Include="CommandLineParser" Version="2.3.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.9.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="2.9.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="2.9.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="2.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="2.10.0" />
     <PackageReference Include="Microsoft.Build.Locator" Version="1.0.31" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSharp\CSharp.csproj" />
+    <ProjectReference Include="..\VisualBasic\VisualBasic.csproj" />
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
+    <ProjectReference Include="..\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj" />
+    <ProjectReference Include="..\CodeFixes\CodeFixes.csproj" />
     <ProjectReference Include="..\Documentation\Documentation.csproj" />
-    <ProjectReference Include="..\CodeFixes.FixAll\CodeFixes.FixAll.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="format.ruleset">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
