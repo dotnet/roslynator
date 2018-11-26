@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RuleSet Name="Format Ruleset" ToolsVersion="15.0">
+  <Rules AnalyzerId="Roslynator.CSharp.Analyzers" RuleNamespace="Roslynator.CSharp.Analyzers">
+    <Rule Id="RCS1023" Action="Hidden" /> <!-- Format empty block. -->
+    <Rule Id="RCS1024" Action="Hidden" /> <!-- Format accessor list. -->
+    <Rule Id="RCS1025" Action="Hidden" /> <!-- Add new line before enum member. -->
+    <Rule Id="RCS1026" Action="Hidden" /> <!-- Add new line before statement. -->
+    <Rule Id="RCS1027" Action="Hidden" /> <!-- Add new line before embedded statement. -->
+    <Rule Id="RCS1028" Action="Hidden" /> <!-- Add new line after switch label. -->
+    <Rule Id="RCS1029" Action="Hidden" /> <!-- Format binary operator on next line. -->
+    <Rule Id="RCS1030" Action="Hidden" /> <!-- Add empty line after embedded statement. -->
+    <Rule Id="RCS1036" Action="Hidden" /> <!-- Remove redundant empty line. -->
+    <Rule Id="RCS1057" Action="Hidden" /> <!-- Add empty line between declarations. -->
+    <Rule Id="RCS1076" Action="Hidden" /> <!-- Format declaration braces. -->
+    <Rule Id="RCS1086" Action="Hidden" /> <!-- Use linefeed as newline. -->
+    <Rule Id="RCS1087" Action="Hidden" /> <!-- Use carriage return + linefeed as newline. -->
+    <Rule Id="RCS1092" Action="Hidden" /> <!-- Add empty line before 'while' keyword in 'do' statement. -->
+    <Rule Id="RCS1153" Action="Hidden" /> <!-- Add empty line after closing brace. -->
+    <Rule Id="RCS1184" Action="Hidden" /> <!-- Format conditional expression (format ? and : on next line). -->
+    <Rule Id="RCS1185" Action="Hidden" /> <!-- Format single-line block. -->
+  </Rules>
+</RuleSet>

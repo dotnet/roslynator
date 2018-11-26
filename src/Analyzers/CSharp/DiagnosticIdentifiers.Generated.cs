@@ -212,5 +212,7 @@ namespace Roslynator.CSharp
         public const string ValidateArgumentsCorrectly = "RCS1227";
         public const string UnusedElementInDocumentationComment = "RCS1228";
         public const string UseAsyncAwait = "RCS1229";
+        public const string UnnecessaryUsageOfEnumerator = "RCS1230";
+        public const string MakeParameterRefReadOnly = "RCS1231";
     }
 }

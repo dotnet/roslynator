@@ -9,8 +9,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\global.ruleset = ..\global.ruleset
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AddCodeFileHeader", "AddCodeFileHeader\AddCodeFileHeader.csproj", "{28B7D00B-A1EA-491D-873D-235406A77C3C}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp", "..\CSharp\CSharp.csproj", "{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Refactorings", "..\Refactorings\Refactorings.csproj", "{3AD7B124-7B99-440D-84A1-858BE5AE268B}"
@@ -49,9 +47,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{28B7D00B-A1EA-491D-873D-235406A77C3C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{28B7D00B-A1EA-491D-873D-235406A77C3C}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{28B7D00B-A1EA-491D-873D-235406A77C3C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{34A3E42E-2254-4EE7-A152-EEDB18E3D7E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -118,7 +113,6 @@ Global
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{28B7D00B-A1EA-491D-873D-235406A77C3C} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{44582CE6-29B1-4982-B485-C0285AA0A591} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{BCCA00EB-08E2-4B22-BECF-10864A6BB456} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}
 		{7F6F6533-E406-4225-A435-DEE22C717F48} = {CC69BDBB-35E9-43A9-9397-4B2832270BB8}

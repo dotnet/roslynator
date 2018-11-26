@@ -46,22 +46,5 @@ namespace Roslynator.CSharp.Refactorings
 
             return document.ReplaceNodeAsync(logicalOr, newNode, cancellationToken);
         }
-
-        private readonly struct ExpressionPair
-        {
-            public ExpressionPair(ExpressionSyntax expression, ExpressionSyntax invertedExpression)
-            {
-                Expression = expression;
-                InvertedExpression = invertedExpression;
-            }
-
-            public bool IsValid
-            {
-                get { return Expression != null && InvertedExpression != null; }
-            }
-
-            public ExpressionSyntax Expression { get; }
-            public ExpressionSyntax InvertedExpression { get; }
-        }
     }
 }

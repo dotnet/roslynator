@@ -76,18 +76,13 @@ namespace Roslynator.CodeGeneration.Xml
                 {
                     yield return CreateRuleElement(analyzer);
                     yield return new XComment($" {analyzer.Title} ");
-
-                    if (analyzer.SupportsFadeOutAnalyzer)
-                    {
-                        yield return CreateRuleElement(analyzer, isFadeOut: true);
-                    }
                 }
             }
 
-            XElement CreateRuleElement(AnalyzerDescriptor analyzer, bool isFadeOut = false)
+            XElement CreateRuleElement(AnalyzerDescriptor analyzer)
             {
                 return new XElement("Rule",
-                    new XAttribute("Id", analyzer.Id + ((isFadeOut) ? "FadeOut" : "")),
+                    new XAttribute("Id", analyzer.Id),
                     new XAttribute("Action", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None"));
             }
         }

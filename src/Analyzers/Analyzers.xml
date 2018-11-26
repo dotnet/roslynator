@@ -5072,4 +5072,56 @@ public string Foo()
       </Link>
     </Links>
   </Analyzer>
+  <Analyzer Identifier="UnnecessaryUsageOfEnumerator">
+    <Id>RCS1230</Id>
+    <Title>Unnecessary usage of enumerator.</Title>
+    <MessageFormat>Unnecessary usage of enumerator.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[using (var en = items.GetEnumerator()) // [|Id|]
+{
+    while (en.MoveNext())
+    {
+        yield return en.Current;
+    }
+}]]></Before>
+        <After><![CDATA[foreach (var item in items)
+{
+    yield return en.Current;
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="MakeParameterRefReadOnly">
+    <Id>RCS1231</Id>
+    <Title>Make parameter ref read-only.</Title>
+    <MessageFormat>Make parameter ref read-only.</MessageFormat>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[readonly struct C
+{
+    void M(C c) // [|Id|]
+    {
+    }
+}]]></Before>
+        <After><![CDATA[readonly struct C
+{
+    void M(in C c)
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

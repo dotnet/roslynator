@@ -27,24 +27,21 @@ roslynator generate-doc-root
 
 ### Required Options
 
-**`-a|--assemblies`** `<ASSEMBLIES-TO-DOCUMENT>`
+**`-a|--assemblies`** `<ASSEMBLIES>`
 
 Defines one or more assemblies that should be used as a source for the documentation.
 
-**`-h|--heading`** `<ROOT-FILE-HEADING>`
+**`-h|--heading`** `<ROOT_FILE_HEADING>`
 
 Defines a heading of the root documentation file.
 
-**`-o|--output`** `<OUTPUT-DIRECTORY>`
+**`-o|--output`** `<OUTPUT_DIRECTORY>`
 
 Defines a path for the output directory.
 
-**`-r|--references`** `<ASSEMBLY-REFERENCE> <ASSEMBLY-REFERENCES-FILE>`
+**`-r|--references`** `<ASSEMBLY_REFERENCE | ASSEMBLY_REFERENCES_FILE>`
 
-Defines one or more values where each value can be:
-
-* Path to assembly file.
-* Path to a file that contains a list of all assemblies. Each assembly must be on separate line.
+Defines one or more paths to assembly or a file that contains a list of all assemblies. Each assembly must be on separate line.
 
 ### Optional Options
 
@@ -52,13 +49,13 @@ Defines one or more values where each value can be:
 
 Defines a depth of a documentation. Default value is `member`.
 
-**`[--ignored-names]`** `<FULLY-QUALIFIED-METADATA-NAMES-TO-IGNORE>`
+**`[--ignored-names]`** `<FULLY_QUALIFIED_METADATA_NAME>`
 
 Defines a list of metadata names that should be excluded from a documentation. Namespace of type names can be specified.
 
-**`[--ignored-parts]`** `{content | namespaces | classes | static-classes | structs | interfaces | enums | delegates | other}`
+**`[--ignored-parts]`** `{content namespaces classes static-classes structs interfaces enums delegates other}`
 
-Defines parts of a root documentation that should be excluded. No part is excluded by default.
+Defines parts of a root documentation that should be excluded.
 
 **`[--no-class-hierarchy]`**
 
@@ -76,7 +73,7 @@ Indicates whether symbols contained in `System` namespace should be ordered as a
 
 Indicates whether a containing namespace should be omitted when displaying type name.
 
-**`[--root-directory-url]`**
+**`[--root-directory-url]`** <ROOT_DIRECTORY_URL>
 
 Defines a relative url to the documentation root directory.
 
@@ -84,9 +81,9 @@ Defines a relative url to the documentation root directory.
 
 Indicates whether a link should lead to the top of the documentation content.
 
-**`[--visibility]`** `{publicly|publicly-or-internally|all}`
+**`[--visibility]`** `{public|internal|private}`
 
-Defines a visibility of a type or a member. Default value is `publicly`.
+Defines a visibility of a type or a member. Default value is `public`.
 
 ## See Also
 
