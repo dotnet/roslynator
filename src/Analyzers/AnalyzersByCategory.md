@@ -59,6 +59,7 @@
 | Naming | [Rename private field according to camel case with underscore](../../docs/analyzers/RCS1045.md) | RCS1045 | None |
 | Performance | [Avoid unnecessary boxing of value type](../../docs/analyzers/RCS1198.md) | RCS1198 | None |
 | Performance | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | RCS1219 | None |
+| Performance | [Make parameter ref read-only](../../docs/analyzers/RCS1231.md) | RCS1231 | Info |
 | Performance | [Optimize LINQ method call](../../docs/analyzers/RCS1077.md) | RCS1077 | Info |
 | Performance | [Optimize StringBuilder.Append/AppendLine call](../../docs/analyzers/RCS1197.md) | RCS1197 | Info |
 | Performance | [Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md) | RCS1096 | Info |
@@ -84,6 +85,7 @@
 | Readability | [Simplify code branching](../../docs/analyzers/RCS1218.md) | RCS1218 | Info |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | Info |
 | Readability | [Split variable declaration](../../docs/analyzers/RCS1081.md) | RCS1081 | None |
+| Readability | [Unnecessary usage of enumerator](../../docs/analyzers/RCS1230.md) | RCS1230 | Info |
 | Readability | [Unused element in documentation comment](../../docs/analyzers/RCS1228.md) | RCS1228 | Hidden |
 | Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | None |
 | Readability | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | RCS1008 | None |

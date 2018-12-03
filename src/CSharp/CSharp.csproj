@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.8</Version>
+    <Version>1.0.0.9</Version>
     <AssemblyName>Roslynator.CSharp</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
@@ -20,7 +20,7 @@
 
   <PropertyGroup>
     <PackageId>Roslynator.CSharp</PackageId>
-    <PackageVersion>1.0.0-rc4</PackageVersion>
+    <PackageVersion>1.0.0-rc5</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
     <Description>This library extends functionality of package Microsoft.CodeAnalysis.CSharp
@@ -32,12 +32,12 @@ Roslynator.CSharp.SyntaxInfo
 Roslynator.NameGenerator</Description>
     <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</PackageLicenseUrl>
-    <PackageProjectUrl>http://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
     <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;Analyzer;Refactoring;Productivity;CodeAnalysis;C#;CSharp</PackageTags>
-    <RepositoryUrl>http://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 

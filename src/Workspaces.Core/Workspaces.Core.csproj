@@ -5,14 +5,21 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.8</Version>
+    <Version>1.0.0.9</Version>
     <AssemblyName>Roslynator.Workspaces.Core</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Workspaces.Core.snk</AssemblyOriginatorKeyFile>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
     <IsPackable>false</IsPackable>
+    <Authors>Josef Pihrt</Authors>
+    <Company></Company>
+    <Description>This library extends functionality of package Microsoft.CodeAnalysis.Workspaces.Common</Description>
+    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

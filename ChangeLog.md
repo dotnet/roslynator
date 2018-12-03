@@ -1,3 +1,10 @@
+### 2.0.1 (2018-11-26)
+
+#### Analyzers
+
+* Add analyzer [UnnecessaryUsageOfEnumerator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1230.md) (RCS1230)
+* Add analyzer [MakeParameterRefReadOnly](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1231.md) (RCS1231)
+
 ### 2.0.0 (2018-10-14)
 
 #### New Features

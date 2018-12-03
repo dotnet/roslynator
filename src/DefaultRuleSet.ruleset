@@ -229,5 +229,7 @@
     <Rule Id="RCS1227" Action="Info" /> <!-- Validate arguments correctly. -->
     <Rule Id="RCS1228" Action="Hidden" /> <!-- Unused element in documentation comment. -->
     <Rule Id="RCS1229" Action="Info" /> <!-- Use async/await when necessary. -->
+    <Rule Id="RCS1230" Action="Info" /> <!-- Unnecessary usage of enumerator. -->
+    <Rule Id="RCS1231" Action="Info" /> <!-- Make parameter ref read-only. -->
   </Rules>
 </RuleSet>
