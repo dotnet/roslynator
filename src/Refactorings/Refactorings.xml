@@ -845,17 +845,31 @@ if (y)
     </Syntaxes>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = (condition) ? "a" : "b";
-{
-}]]></Before>
+        <Before><![CDATA[string s = (x) ? "a" : "b";]]></Before>
         <After><![CDATA[string s;
-if (condition)
+if (x)
 {
     s = "a";
 }
 else
 {
     s = "b";
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[string s = (x) ? "a" : (y) ? "b" : "c";]]></Before>
+        <After><![CDATA[string s;
+if (x)
+{
+    s = "a";
+}
+else if (y)
+{
+    s = "b";
+}
+else
+{
+    s = "c";
 }]]></After>
       </Sample>
     </Samples>

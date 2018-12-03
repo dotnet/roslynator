@@ -72,6 +72,40 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)]
+        public async Task Test_LocalDeclaration_Recursive()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M(bool f, bool f2, string x, string y, string z)
+    {
+        string s = [||](f) ? x : ((f2) ? y : z);
+    }
+}
+", @"
+class C
+{
+    void M(bool f, bool f2, string x, string y, string z)
+    {
+        string s;
+        if (f)
+        {
+            s = x;
+        }
+        else if (f2)
+        {
+            s = y;
+        }
+        else
+        {
+            s = z;
+        }
+    }
+}
+", equivalenceKey: ReplaceConditionalExpressionWithIfElseRefactoring.RecursiveEquivalenceKey);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)]
         public async Task Test_SimpleAssignment()
         {
             await VerifyRefactoringAsync(@"
@@ -136,6 +170,41 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)]
+        public async Task Test_SimpleAssignment_Recursive()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M(bool f, bool f2, string x, string y, string z)
+    {
+        string s = null;
+        s = [||](f) ? x : ((f2) ? y :z);
+    }
+}
+", @"
+class C
+{
+    void M(bool f, bool f2, string x, string y, string z)
+    {
+        string s = null;
+        if (f)
+        {
+            s = x;
+        }
+        else if (f2)
+        {
+            s = y;
+        }
+        else
+        {
+            s = z;
+        }
+    }
+}
+", equivalenceKey: ReplaceConditionalExpressionWithIfElseRefactoring.RecursiveEquivalenceKey);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)]
         public async Task Test_ReturnStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -193,6 +262,43 @@ class C
     }
 }
 ", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)]
+        public async Task Test_ReturnStatement_Recursive()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    string M(bool f, bool f2, bool f3)
+    {
+        return [||](f) ? ""a"" : ((f2) ? ""b"" : (f3) ? ""c"" : ""d"");
+    }
+}
+", @"
+class C
+{
+    string M(bool f, bool f2, bool f3)
+    {
+        if (f)
+        {
+            return ""a"";
+        }
+        else if (f2)
+        {
+            return ""b"";
+        }
+        else if (f3)
+        {
+            return ""c"";
+        }
+        else
+        {
+            return ""d"";
+        }
+    }
+}
+", equivalenceKey: ReplaceConditionalExpressionWithIfElseRefactoring.RecursiveEquivalenceKey);
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)]
@@ -261,6 +367,47 @@ class C
     }
 }
 ", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse)]
+        public async Task Test_YieldReturnStatement_Recursive()
+        {
+            await VerifyRefactoringAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<string> M(bool f, bool f2, bool f3)
+    {
+        yield return [||](f) ? ""a"" : ((f2) ? ""b"" : (f3) ? ""c"" : ""d"");
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<string> M(bool f, bool f2, bool f3)
+    {
+        if (f)
+        {
+            yield return ""a"";
+        }
+        else if (f2)
+        {
+            yield return ""b"";
+        }
+        else if (f3)
+        {
+            yield return ""c"";
+        }
+        else
+        {
+            yield return ""d"";
+        }
+    }
+}
+", equivalenceKey: ReplaceConditionalExpressionWithIfElseRefactoring.RecursiveEquivalenceKey);
         }
     }
 }
