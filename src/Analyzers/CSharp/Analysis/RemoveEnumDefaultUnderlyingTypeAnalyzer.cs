@@ -31,10 +31,14 @@ namespace Roslynator.CSharp.Analysis
         {
             var enumDeclaration = (EnumDeclarationSyntax)context.Node;
 
-            TypeSyntax type = enumDeclaration.BaseList?.Types.SingleOrDefault(shouldThrow: false)?.Type;
+            TypeSyntax type = enumDeclaration
+                .BaseList?
+                .Types
+                .SingleOrDefault(shouldThrow: false)?
+                .Type;
 
-            if (type != null
-                && context.SemanticModel.GetTypeSymbol(type, context.CancellationToken).SpecialType == SpecialType.System_Int32)
+            if (type?.IsMissing == false
+                && context.SemanticModel.GetTypeSymbol(type, context.CancellationToken)?.SpecialType == SpecialType.System_Int32)
             {
                 context.ReportDiagnostic(DiagnosticDescriptors.RemoveEnumDefaultUnderlyingType, type);
             }
