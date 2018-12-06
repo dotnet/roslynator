@@ -233,6 +233,12 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(semanticModel, returnStatement.SpanStart);
 
+                                    if (expression.IsKind(SyntaxKind.DefaultExpression)
+                                        && context.Document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))
+                                    {
+                                        expression = CSharpFactory.DefaultLiteralExpression().WithTriviaFrom(expression);
+                                    }
+
                                     ReturnStatementSyntax newNode = returnStatement.WithExpression(expression);
 
                                     return context.Document.ReplaceNodeAsync(returnStatement, newNode, cancellationToken);
