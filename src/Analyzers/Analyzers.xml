@@ -5092,7 +5092,7 @@ public string Foo()
 }]]></Before>
         <After><![CDATA[foreach (var item in items)
 {
-    yield return en.Current;
+    yield return item;
 }]]></After>
       </Sample>
     </Samples>
