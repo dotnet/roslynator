@@ -133,7 +133,7 @@ namespace Roslynator.CSharp
                 if (value == null)
                     return NullLiteralExpression();
 
-                IFieldSymbol fieldSymbol = typeSymbol.FindFieldWithConstantValue(value);
+                IFieldSymbol fieldSymbol = FindFieldWithConstantValue();
 
                 TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format);
 
@@ -154,6 +154,25 @@ namespace Roslynator.CSharp
             }
 
             return LiteralExpression(value);
+
+            IFieldSymbol FindFieldWithConstantValue()
+            {
+                foreach (ISymbol symbol in typeSymbol.GetMembers())
+                {
+                    if (symbol.Kind == SymbolKind.Field)
+                    {
+                        var fieldSymbol = (IFieldSymbol)symbol;
+
+                        if (fieldSymbol.HasConstantValue
+                            && object.Equals(fieldSymbol.ConstantValue, value))
+                        {
+                            return fieldSymbol;
+                        }
+                    }
+                }
+
+                return null;
+            }
         }
         #endregion IParameterSymbol
 
@@ -265,7 +284,7 @@ namespace Roslynator.CSharp
 
             if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Enum)
             {
-                IFieldSymbol fieldSymbol = typeSymbol.FindFieldWithConstantValue(0);
+                IFieldSymbol fieldSymbol = CSharpUtility.FindEnumDefaultField((INamedTypeSymbol)typeSymbol);
 
                 if (fieldSymbol != null)
                 {

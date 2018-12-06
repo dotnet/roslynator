@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            IFieldSymbol fieldSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison").FindFieldWithConstantValue(0);
+            IFieldSymbol fieldSymbol = CSharpUtility.FindEnumDefaultField(semanticModel.GetTypeByMetadataName("System.StringComparison"));
 
             ExpressionSyntax newNode = SimpleMemberInvocationExpression(
                 StringType(),

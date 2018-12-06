@@ -14,7 +14,7 @@ namespace Roslynator.Documentation
         {
             ImmutableArray<EnumFieldInfo> fields = GetFields(enumType);
 
-            ulong valueAsULong = GetValueAsUInt64(value, enumType);
+            ulong valueAsULong = SymbolUtility.GetEnumValueAsUInt64(value, enumType);
 
             if (!enumType.HasAttribute(MetadataNames.System_FlagsAttribute)
                 || valueAsULong == 0)
@@ -68,7 +68,7 @@ namespace Roslynator.Documentation
 
         public static ImmutableArray<EnumFieldInfo> GetMinimalConstituentFields(IFieldSymbol fieldSymbol, ImmutableArray<EnumFieldInfo> fields)
         {
-            ulong value = GetValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType);
+            ulong value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType);
 
             return GetMinimalConstituentFields(value, fields);
         }
@@ -122,7 +122,7 @@ namespace Roslynator.Documentation
                     var fieldSymbol = (IFieldSymbol)member;
 
                     if (fieldSymbol.HasConstantValue)
-                        builder.Add(new EnumFieldInfo(fieldSymbol, GetValueAsUInt64(fieldSymbol.ConstantValue, enumType)));
+                        builder.Add(new EnumFieldInfo(fieldSymbol, SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumType)));
                 }
             }
 
@@ -163,31 +163,6 @@ namespace Roslynator.Documentation
             }
 
             return default;
-        }
-
-        public static ulong GetValueAsUInt64(object value, INamedTypeSymbol enumType)
-        {
-            switch (enumType.EnumUnderlyingType.SpecialType)
-            {
-                case SpecialType.System_SByte:
-                    return (ulong)(sbyte)value;
-                case SpecialType.System_Byte:
-                    return (byte)value;
-                case SpecialType.System_Int16:
-                    return (ulong)(short)value;
-                case SpecialType.System_UInt16:
-                    return (ushort)value;
-                case SpecialType.System_Int32:
-                    return (ulong)(int)value;
-                case SpecialType.System_UInt32:
-                    return (uint)value;
-                case SpecialType.System_Int64:
-                    return (ulong)(long)value;
-                case SpecialType.System_UInt64:
-                    return (ulong)value;
-                default:
-                    throw new InvalidOperationException();
-            }
         }
 
         private class EnumFieldInfoComparer : IComparer<EnumFieldInfo>

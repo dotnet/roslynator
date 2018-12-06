@@ -637,5 +637,30 @@ namespace Roslynator.CSharp
                 SyntaxKind.MemberBindingExpression,
                 SyntaxKind.InvocationExpression));
         }
+
+        internal static IFieldSymbol FindEnumDefaultField(INamedTypeSymbol enumSymbol)
+        {
+            if (enumSymbol == null)
+                throw new ArgumentNullException(nameof(enumSymbol));
+
+            if (enumSymbol.EnumUnderlyingType == null)
+                throw new ArgumentException($"'{enumSymbol}' is not an enumeration.", nameof(enumSymbol));
+
+            foreach (ISymbol symbol in enumSymbol.GetMembers())
+            {
+                if (symbol.Kind == SymbolKind.Field)
+                {
+                    var fieldSymbol = (IFieldSymbol)symbol;
+
+                    if (fieldSymbol.HasConstantValue
+                        && SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol) == 0)
+                    {
+                        return fieldSymbol;
+                    }
+                }
+            }
+
+            return default(IFieldSymbol);
+        }
     }
 }
