@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                 if (member.ContainsDiagnostics)
                     continue;
 
-                if (member.ContainsDirectives)
+                if (member.ContainsUnbalancedIfElseDirectives(member.Span))
                     continue;
 
                 switch (member.Kind())

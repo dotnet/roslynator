@@ -531,6 +531,15 @@ namespace Roslynator.CSharp
 
             return null;
         }
+
+        internal static bool IsIfElseDirective(this DirectiveTriviaSyntax directiveTrivia)
+        {
+            return directiveTrivia.IsKind(
+                SyntaxKind.IfDirectiveTrivia,
+                SyntaxKind.ElseDirectiveTrivia,
+                SyntaxKind.ElifDirectiveTrivia,
+                SyntaxKind.EndIfDirectiveTrivia);
+        }
         #endregion DirectiveTriviaSyntax
 
         #region DocumentationCommentTriviaSyntax
@@ -3134,27 +3143,30 @@ namespace Roslynator.CSharp
             return IncreaseIndentation(trivia);
         }
 
-        //TODO: make public
         internal static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node)
         {
+            return ContainsUnbalancedIfElseDirectives(node, node.FullSpan);
+        }
+
+        //TODO: make public
+        internal static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node, TextSpan span)
+        {
+            if (node == null)
+                throw new ArgumentNullException(nameof(node));
+
+            if (!node.FullSpan.Contains(span))
+                throw new ArgumentOutOfRangeException(nameof(span));
+
             if (node.ContainsDirectives)
             {
-                DirectiveTriviaSyntax first = node.GetFirstDirective(f => f.IsKind(
-                    SyntaxKind.IfDirectiveTrivia,
-                    SyntaxKind.ElseDirectiveTrivia,
-                    SyntaxKind.ElifDirectiveTrivia,
-                    SyntaxKind.EndIfDirectiveTrivia));
+                DirectiveTriviaSyntax first = node.GetFirstDirective(span, IsIfElseDirective);
 
                 if (first != null)
                 {
                     if (!first.IsKind(SyntaxKind.IfDirectiveTrivia))
                         return true;
 
-                    DirectiveTriviaSyntax last = node.GetLastDirective(f => f.IsKind(
-                        SyntaxKind.IfDirectiveTrivia,
-                        SyntaxKind.ElseDirectiveTrivia,
-                        SyntaxKind.ElifDirectiveTrivia,
-                        SyntaxKind.EndIfDirectiveTrivia));
+                    DirectiveTriviaSyntax last = node.GetLastDirective(span, IsIfElseDirective);
 
                     if (last == first)
                         return true;
@@ -3171,7 +3183,7 @@ namespace Roslynator.CSharp
                         if (d == null)
                             return true;
 
-                        if (!d.FullSpan.OverlapsWith(node.FullSpan))
+                        if (!d.FullSpan.OverlapsWith(span))
                             return true;
                     }
                     while (d != last);
@@ -3179,6 +3191,49 @@ namespace Roslynator.CSharp
             }
 
             return false;
+        }
+
+        //TODO: make public
+        internal static DirectiveTriviaSyntax GetFirstDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool> predicate = null)
+        {
+            DirectiveTriviaSyntax directive = node.GetFirstDirective(predicate);
+
+            if (directive == null)
+                return null;
+
+            while (!directive.FullSpan.OverlapsWith(span))
+            {
+                directive = directive.GetNextDirective(predicate);
+
+                if (directive == null)
+                    return null;
+
+                if (!node.FullSpan.Contains(directive.FullSpan))
+                    return null;
+            }
+
+            return directive;
+        }
+
+        internal static DirectiveTriviaSyntax GetLastDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool> predicate = null)
+        {
+            DirectiveTriviaSyntax directive = node.GetLastDirective(predicate);
+
+            if (directive == null)
+                return null;
+
+            while (!directive.FullSpan.OverlapsWith(span))
+            {
+                directive = directive.GetPreviousDirective(predicate);
+
+                if (directive == null)
+                    return null;
+
+                if (!node.FullSpan.Contains(directive.FullSpan))
+                    return null;
+            }
+
+            return directive;
         }
         #endregion SyntaxNode
 
