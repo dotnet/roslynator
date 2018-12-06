@@ -14,26 +14,24 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class ChangeTypeAccordingToInitializerRefactoring
     {
-        public static void ComputeCodeFix(
+        public static CodeFixRegistrationResult ComputeCodeFix(
              CodeFixContext context,
              Diagnostic diagnostic,
              ExpressionSyntax expression,
              SemanticModel semanticModel)
         {
             if (!(expression.Parent is EqualsValueClauseSyntax equalsValueClause))
-                return;
+                return default;
 
             switch (equalsValueClause.Parent)
             {
                 case VariableDeclaratorSyntax variableDeclarator:
                     {
-                        ComputeCodeFix(context, diagnostic, expression, variableDeclarator, semanticModel);
-                        break;
+                        return ComputeCodeFix(context, diagnostic, expression, variableDeclarator, semanticModel);
                     }
                 case PropertyDeclarationSyntax propertyDeclaration:
                     {
-                        ComputeCodeFix(context, diagnostic, expression, propertyDeclaration, semanticModel);
-                        break;
+                        return ComputeCodeFix(context, diagnostic, expression, propertyDeclaration, semanticModel);
                     }
                 default:
                     {
@@ -41,9 +39,11 @@ namespace Roslynator.CSharp.Refactorings
                         break;
                     }
             }
+
+            return default;
         }
 
-        private static void ComputeCodeFix(
+        private static CodeFixRegistrationResult ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             ExpressionSyntax expression,
@@ -51,12 +51,12 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel)
         {
             if (!(variableDeclarator.Parent is VariableDeclarationSyntax variableDeclaration))
-                return;
+                return default;
 
             TypeSyntax type = variableDeclaration.Type;
 
             if (type == null)
-                return;
+                return default;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
@@ -64,21 +64,34 @@ namespace Roslynator.CSharp.Refactorings
                 && fieldDeclaration.Modifiers.Contains(SyntaxKind.ConstKeyword)
                 && typeSymbol?.SupportsConstantValue() != true)
             {
-                return;
+                return default;
             }
+
+            CodeFixRegistrationResult result = default;
+            CodeFixRegistrationResult result2 = default;
 
             if (typeSymbol?.SupportsExplicitDeclaration() == true)
             {
-                CodeFixRegistrator.ChangeType(context, diagnostic, type, typeSymbol, semanticModel, CodeFixIdentifiers.ChangeTypeAccordingToInitializer);
+                result2 = CodeFixRegistrator.ChangeType(context, diagnostic, type, typeSymbol, semanticModel, CodeFixIdentifiers.ChangeTypeAccordingToInitializer);
 
-                ComputeChangeTypeAndAddAwait(context, diagnostic, variableDeclaration, type, expression, typeSymbol, semanticModel);
+                result = result.CombineWith(result2);
+
+                result2 = ComputeChangeTypeAndAddAwait(context, diagnostic, variableDeclaration, type, expression, typeSymbol, semanticModel);
+
+                result = result.CombineWith(result2);
             }
 
             if (variableDeclaration.IsParentKind(SyntaxKind.LocalDeclarationStatement, SyntaxKind.UsingStatement))
-                CodeFixRegistrator.ChangeTypeToVar(context, diagnostic, type, CodeFixIdentifiers.ChangeTypeToVar);
+            {
+                result2 = CodeFixRegistrator.ChangeTypeToVar(context, diagnostic, type, CodeFixIdentifiers.ChangeTypeToVar);
+
+                result = result.CombineWith(result2);
+            }
+
+            return result;
         }
 
-        private static void ComputeChangeTypeAndAddAwait(
+        private static CodeFixRegistrationResult ComputeChangeTypeAndAddAwait(
             CodeFixContext context,
             Diagnostic diagnostic,
             VariableDeclarationSyntax variableDeclaration,
@@ -88,23 +101,23 @@ namespace Roslynator.CSharp.Refactorings
             SemanticModel semanticModel)
         {
             if (!typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
-                return;
+                return default;
 
             if (!(semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol))
-                return;
+                return default;
 
             if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
-                return;
+                return default;
 
             SyntaxNode node = GetSyntax();
 
             if (node == null)
-                return;
+                return default;
 
             SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody();
 
             if (bodyOrExpressionBody == null)
-                return;
+                return default;
 
             foreach (SyntaxNode descendant in bodyOrExpressionBody.DescendantNodes())
             {
@@ -117,7 +130,7 @@ namespace Roslynator.CSharp.Refactorings
                         .WalkDownParentheses()
                         .IsKind(SyntaxKind.AwaitExpression) == false)
                     {
-                        return;
+                        return default;
                     }
                 }
             }
@@ -130,6 +143,8 @@ namespace Roslynator.CSharp.Refactorings
                 EquivalenceKey.Create(diagnostic, CodeFixIdentifiers.ChangeTypeAccordingToInitializer, "AddAwait"));
 
             context.RegisterCodeFix(codeAction, diagnostic);
+
+            return new CodeFixRegistrationResult(true);
 
             SyntaxNode GetSyntax()
             {
@@ -190,7 +205,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, cancellationToken);
         }
 
-        private static void ComputeCodeFix(
+        private static CodeFixRegistrationResult ComputeCodeFix(
             CodeFixContext context,
             Diagnostic diagnostic,
             ExpressionSyntax expression,
@@ -200,22 +215,22 @@ namespace Roslynator.CSharp.Refactorings
             TypeSyntax type = propertyDeclaration.Type;
 
             if (type == null)
-                return;
+                return default;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
             if (typeSymbol?.SupportsExplicitDeclaration() != true)
-                return;
+                return default;
 
             ISymbol symbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, context.CancellationToken);
 
             if (symbol?.IsOverride != false)
-                return;
+                return default;
 
             if (symbol.ImplementsInterfaceMember())
-                return;
+                return default;
 
-            CodeFixRegistrator.ChangeType(context, diagnostic, type, typeSymbol, semanticModel, CodeFixIdentifiers.ChangeTypeAccordingToInitializer);
+            return CodeFixRegistrator.ChangeType(context, diagnostic, type, typeSymbol, semanticModel, CodeFixIdentifiers.ChangeTypeAccordingToInitializer);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
@@ -419,7 +420,11 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                                ChangeTypeAccordingToInitializerRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+                                CodeFixRegistrationResult result = ChangeTypeAccordingToInitializerRefactoring.ComputeCodeFix(context, diagnostic, expression, semanticModel);
+
+                                if (!result.Success)
+                                    RemoveAssignmentOfVoidExpression(context, diagnostic, expression, semanticModel);
+
                                 break;
                             }
 
@@ -621,6 +626,44 @@ namespace Roslynator.CSharp.CodeFixes
 
                 return root.ReplaceNode(nodeToRemove, newNode);
             }
+        }
+
+        private static void RemoveAssignmentOfVoidExpression(
+            CodeFixContext context,
+            Diagnostic diagnostic,
+            ExpressionSyntax expression,
+            SemanticModel semanticModel)
+        {
+            if (!(expression.Parent is AssignmentExpressionSyntax assignmentExpression))
+                return;
+
+            if (expression != assignmentExpression.Right)
+                return;
+
+            if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))
+                return;
+
+            ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
+
+            if (typeSymbol?.SpecialType != SpecialType.System_Void)
+                return;
+
+            Document document = context.Document;
+
+            CodeAction codeAction = CodeAction.Create(
+                "Remove assignment",
+                ct =>
+                {
+                    ExpressionStatementSyntax newNode = expressionStatement
+                        .WithExpression(expression)
+                        .PrependToLeadingTrivia(expressionStatement.GetLeadingTrivia())
+                        .WithFormatterAnnotation();
+
+                    return document.ReplaceNodeAsync(expressionStatement, newNode, ct);
+                },
+                EquivalenceKey.Create(diagnostic, "RemoveAssignment"));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }
