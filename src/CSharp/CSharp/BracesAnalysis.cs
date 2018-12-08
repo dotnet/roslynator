@@ -118,6 +118,12 @@ namespace Roslynator.CSharp
                 {
                     var block = (BlockSyntax)statement;
 
+                    if (!block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace())
+                        return false;
+
+                    if (!block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
+                        return false;
+
                     statement = block.Statements.SingleOrDefault(shouldThrow: false);
 
                     if (statement == null)

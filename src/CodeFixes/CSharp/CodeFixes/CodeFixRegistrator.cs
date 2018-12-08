@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.CodeFixes
 {
     internal static class CodeFixRegistrator
     {
-        public static void ChangeType(
+        public static CodeFixRegistrationResult ChangeType(
             CodeFixContext context,
             Diagnostic diagnostic,
             TypeSyntax type,
@@ -39,9 +39,11 @@ namespace Roslynator.CSharp.CodeFixes
                 EquivalenceKey.Create(diagnostic, additionalKey));
 
             context.RegisterCodeFix(codeAction, diagnostic);
+
+            return new CodeFixRegistrationResult(true);
         }
 
-        public static void ChangeTypeToVar(
+        public static CodeFixRegistrationResult ChangeTypeToVar(
             CodeFixContext context,
             Diagnostic diagnostic,
             TypeSyntax type,
@@ -60,6 +62,8 @@ namespace Roslynator.CSharp.CodeFixes
                 EquivalenceKey.Create(diagnostic, additionalKey));
 
             context.RegisterCodeFix(codeAction, diagnostic);
+
+            return new CodeFixRegistrationResult(true);
         }
 
         public static void AddCastExpression(

@@ -1705,25 +1705,6 @@ namespace Roslynator
             return false;
         }
 
-        internal static IFieldSymbol FindFieldWithConstantValue(this ITypeSymbol typeSymbol, object value)
-        {
-            foreach (ISymbol symbol in typeSymbol.GetMembers())
-            {
-                if (symbol.Kind == SymbolKind.Field)
-                {
-                    var fieldSymbol = (IFieldSymbol)symbol;
-
-                    if (fieldSymbol.HasConstantValue
-                        && object.Equals(fieldSymbol.ConstantValue, value))
-                    {
-                        return fieldSymbol;
-                    }
-                }
-            }
-
-            return null;
-        }
-
         internal static bool EqualsOrInheritsFromTaskOfT(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task_T) == true;

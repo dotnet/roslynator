@@ -134,5 +134,49 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+        public async Task TestNoDiagnostic_CommentAboveStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        if (f)
+        {
+            // x
+            M();
+        }
+        else
+            M();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveBracesFromIfElse)]
+        public async Task TestNoDiagnostic_CommentBelowStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        if (f)
+        {
+            M();
+            // x
+        }
+        else
+            M();
+    }
+}
+");
+        }
     }
 }

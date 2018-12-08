@@ -14,7 +14,7 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static bool CanRefactor(RefactoringContext context, ExpressionSyntax expression)
         {
-            if (AreParenthesesRedundantOrInvalid(expression)
+            if (CanRefactor(expression)
                 && !expression.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
             {
                 try
@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Refactorings
             return false;
         }
 
-        private static bool AreParenthesesRedundantOrInvalid(SyntaxNode node)
+        private static bool CanRefactor(SyntaxNode node)
         {
             switch (node.Kind())
             {
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                             case SyntaxKind.PropertyDeclaration:
                             case SyntaxKind.EventDeclaration:
                             case SyntaxKind.IndexerDeclaration:
-                                return true;
+                                return false;
                         }
 
                         break;
