@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -88,11 +89,17 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodDeclaration.ContainsDiagnostics)
                 return;
 
-            if (methodDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+            if (!methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration,  SyntaxKind.StructDeclaration))
                 return;
 
-            if (methodDeclaration.Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
+            if (methodDeclaration.Modifiers.ContainsAny(
+                SyntaxKind.AbstractKeyword,
+                SyntaxKind.VirtualKeyword,
+                SyntaxKind.OverrideKeyword,
+                SyntaxKind.PartialKeyword))
+            {
                 return;
+            }
 
             ParameterInfo parameterInfo = SyntaxInfo.ParameterInfo(methodDeclaration);
 
@@ -116,18 +123,18 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                 return;
 
-            Dictionary<string, NodeSymbolInfo> unusedNodes = FindUnusedNodes(context, parameterInfo);
+            UnusedParameterWalker walker = UnusedParameterWalker.GetInstance(context.SemanticModel, context.CancellationToken);
 
-            if (unusedNodes.Count == 0)
-                return;
+            FindUnusedNodes(parameterInfo, walker);
 
-            if (IsReferencedAsMethodGroup(context, methodDeclaration))
-                return;
+            if (walker.Nodes.Count > 0
+                && !IsReferencedAsMethodGroup(methodDeclaration, methodSymbol, context.SemanticModel, context.CancellationToken))
+            {
+                foreach (KeyValuePair<string, NodeSymbolInfo> kvp in walker.Nodes)
+                    ReportDiagnostic(context, kvp.Value.Node);
+            }
 
-            foreach (KeyValuePair<string, NodeSymbolInfo> kvp in unusedNodes)
-                ReportDiagnostic(context, kvp.Value.Node);
-
-            unusedNodes.Clear();
+            UnusedParameterWalker.Free(walker);
         }
 
         public static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
@@ -173,7 +180,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (indexerDeclaration.ContainsDiagnostics)
                 return;
 
-            if (indexerDeclaration.IsParentKind(SyntaxKind.InterfaceDeclaration))
+            if (!indexerDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
                 return;
 
             if (indexerDeclaration.Modifiers.ContainsAny(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword, SyntaxKind.OverrideKeyword))
@@ -292,18 +299,18 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         private static void Analyze(SyntaxNodeAnalysisContext context, in ParameterInfo parameterInfo, bool isIndexer = false)
         {
-            Dictionary<string, NodeSymbolInfo> unusedNodes = FindUnusedNodes(context, parameterInfo, isIndexer);
+            UnusedParameterWalker walker = UnusedParameterWalker.GetInstance(context.SemanticModel, context.CancellationToken, isIndexer);
 
-            foreach (KeyValuePair<string, NodeSymbolInfo> kvp in unusedNodes)
+            FindUnusedNodes(parameterInfo, walker);
+
+            foreach (KeyValuePair<string, NodeSymbolInfo> kvp in walker.Nodes)
                 ReportDiagnostic(context, kvp.Value.Node);
 
-            unusedNodes.Clear();
+            UnusedParameterWalker.Free(walker);
         }
 
-        private static Dictionary<string, NodeSymbolInfo> FindUnusedNodes(SyntaxNodeAnalysisContext context, in ParameterInfo parameterInfo, bool isIndexer = false)
+        private static void FindUnusedNodes(in ParameterInfo parameterInfo, UnusedParameterWalker walker)
         {
-            UnusedParameterWalker walker = UnusedParameterWalkerCache.GetInstance(context.SemanticModel, context.CancellationToken, isIndexer);
-
             if (parameterInfo.Parameter != null
                 && !StringUtility.IsOneOrManyUnderscores(parameterInfo.Parameter.Identifier.ValueText))
             {
@@ -324,12 +331,8 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
                 walker.IsAnyTypeParameter = true;
             }
 
-            if (walker.Nodes.Count == 0)
-                return walker.Nodes;
-
-            walker.Visit(parameterInfo.Node);
-
-            return UnusedParameterWalkerCache.GetNodesAndFree(walker);
+            if (walker.Nodes.Count > 0)
+                walker.Visit(parameterInfo.Node);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node)
@@ -356,65 +359,55 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
         }
 
         //XPERF:
-        private static bool IsReferencedAsMethodGroup(SyntaxNodeAnalysisContext context, MethodDeclarationSyntax methodDeclaration)
+        private static bool IsReferencedAsMethodGroup(
+            MethodDeclarationSyntax methodDeclaration,
+            IMethodSymbol methodSymbol,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken)
         {
-            ISymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
             string methodName = methodSymbol.Name;
 
-            foreach (SyntaxReference syntaxReference in methodSymbol.ContainingType.DeclaringSyntaxReferences)
+            var typeDeclaration = (TypeDeclarationSyntax)methodDeclaration.Parent;
+
+            foreach (SyntaxNode node in typeDeclaration.DescendantNodes())
             {
-                SyntaxNode typeDeclaration = syntaxReference.GetSyntax(context.CancellationToken);
-
-                SemanticModel semanticModel = null;
-
-                foreach (SyntaxNode node in typeDeclaration.DescendantNodes())
+                if (node.IsKind(SyntaxKind.IdentifierName))
                 {
-                    if (node.IsKind(SyntaxKind.IdentifierName))
+                    var identifierName = (IdentifierNameSyntax)node;
+
+                    if (string.Equals(methodName, identifierName.Identifier.ValueText, StringComparison.Ordinal)
+                        && !IsInvoked(identifierName)
+                        && semanticModel.GetSymbol(identifierName, cancellationToken)?.Equals(methodSymbol) == true)
                     {
-                        var identifierName = (IdentifierNameSyntax)node;
-
-                        if (string.Equals(methodName, identifierName.Identifier.ValueText, StringComparison.Ordinal)
-                            && !IsInvoked(identifierName))
-                        {
-                            if (semanticModel == null)
-                            {
-                                semanticModel = (context.SemanticModel.SyntaxTree == typeDeclaration.SyntaxTree)
-                                    ? context.SemanticModel
-                                    : context.Compilation.GetSemanticModel(typeDeclaration.SyntaxTree);
-                            }
-
-                            if (methodSymbol.Equals(semanticModel.GetSymbol(identifierName, context.CancellationToken)))
-                                return true;
-                        }
+                        return true;
                     }
                 }
             }
 
             return false;
-        }
 
-        private static bool IsInvoked(IdentifierNameSyntax identifierName)
-        {
-            SyntaxNode parent = identifierName.Parent;
-
-            switch (parent.Kind())
+            bool IsInvoked(IdentifierNameSyntax identifierName)
             {
-                case SyntaxKind.InvocationExpression:
-                    {
-                        return true;
-                    }
-                case SyntaxKind.SimpleMemberAccessExpression:
-                case SyntaxKind.MemberBindingExpression:
-                    {
-                        if (parent.IsParentKind(SyntaxKind.InvocationExpression))
+                SyntaxNode parent = identifierName.Parent;
+
+                switch (parent.Kind())
+                {
+                    case SyntaxKind.InvocationExpression:
+                        {
                             return true;
+                        }
+                    case SyntaxKind.SimpleMemberAccessExpression:
+                    case SyntaxKind.MemberBindingExpression:
+                        {
+                            if (parent.IsParentKind(SyntaxKind.InvocationExpression))
+                                return true;
 
-                        break;
-                    }
+                            break;
+                        }
+                }
+
+                return false;
             }
-
-            return false;
         }
 
         private static bool ContainsOnlyThrowNewExpression(CSharpSyntaxNode node)

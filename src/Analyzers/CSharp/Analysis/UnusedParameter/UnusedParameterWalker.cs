@@ -12,6 +12,9 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 {
     internal class UnusedParameterWalker : CSharpSyntaxNodeWalker
     {
+        [ThreadStatic]
+        private static UnusedParameterWalker _cachedInstance;
+
         private static readonly StringComparer _ordinalComparer = StringComparer.Ordinal;
 
         private bool _isEmpty;
@@ -26,10 +29,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         public bool IsAnyTypeParameter { get; set; }
 
-        protected override bool ShouldVisit
-        {
-            get { return !_isEmpty; }
-        }
+        protected override bool ShouldVisit => !_isEmpty;
 
         public void SetValues(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
         {
@@ -40,11 +40,6 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             CancellationToken = cancellationToken;
             IsIndexer = isIndexer;
             IsAnyTypeParameter = false;
-        }
-
-        public void Clear()
-        {
-            SetValues(default(SemanticModel), default(CancellationToken));
         }
 
         public void AddParameter(ParameterSyntax parameter)
@@ -197,6 +192,30 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             {
                 base.VisitTypeParameterConstraintClause(node);
             }
+        }
+
+        public static UnusedParameterWalker GetInstance(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
+        {
+            UnusedParameterWalker walker = _cachedInstance;
+
+            if (walker != null)
+            {
+                _cachedInstance = null;
+            }
+            else
+            {
+                walker = new UnusedParameterWalker();
+            }
+
+            walker.SetValues(semanticModel, cancellationToken, isIndexer);
+
+            return walker;
+        }
+
+        public static void Free(UnusedParameterWalker walker)
+        {
+            walker.SetValues(default(SemanticModel), default(CancellationToken));
+            _cachedInstance = walker;
         }
     }
 }
