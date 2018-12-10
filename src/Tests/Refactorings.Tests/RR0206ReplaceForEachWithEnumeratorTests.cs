@@ -139,6 +139,53 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
+        public async Task TestCodeRefactoring_WithoutUsing_EmbeddedStatement()
+        {
+            await VerifyRefactoringAsync(
+@"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        SyntaxList<SyntaxNode> nodes;
+
+        if (f)
+            [||]foreach (SyntaxNode node in nodes)
+            {
+                SyntaxNode x = node;
+            }
+    }
+}
+",
+@"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        SyntaxList<SyntaxNode> nodes;
+
+        if (f)
+        {
+            var en = nodes.GetEnumerator();
+            while (en.MoveNext())
+            {
+                SyntaxNode x = en.Current;
+            }
+        }
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
         public async Task TestNoCodeRefactoring_InvalidSpan()
         {
             await VerifyNoRefactoringAsync(
