@@ -3,7 +3,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -37,7 +36,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(objectCreation, context.CancellationToken);
 
-                        ComputeRefactoring(context, "Replace object creation with default value", typeSymbol, localDeclarationStatement, value, semanticModel);
+                        ComputeRefactoring(context, "Replace object creation with default value", typeSymbol, localDeclarationStatement, value);
                         break;
                     }
                 case ArrayCreationExpressionSyntax arrayCreation:
@@ -46,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(arrayCreation, context.CancellationToken);
 
-                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value, semanticModel);
+                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value);
                         break;
                     }
                 case ImplicitArrayCreationExpressionSyntax implicitArrayCreation:
@@ -55,7 +54,7 @@ namespace Roslynator.CSharp.Refactorings
 
                         ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(implicitArrayCreation, context.CancellationToken);
 
-                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value, semanticModel);
+                        ComputeRefactoring(context, "Replace array creation with default value", typeSymbol, localDeclarationStatement, value);
                         break;
                     }
             }
@@ -66,14 +65,13 @@ namespace Roslynator.CSharp.Refactorings
             string title,
             ITypeSymbol typeSymbol,
             LocalDeclarationStatementSyntax localDeclarationStatement,
-            ExpressionSyntax value,
-            SemanticModel semanticModel)
+            ExpressionSyntax value)
         {
             if (typeSymbol?.SupportsExplicitDeclaration() == true)
             {
                 context.RegisterRefactoring(
                     title,
-                    cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, semanticModel, cancellationToken),
+                    cancellationToken => RefactorAsync(context.Document, localDeclarationStatement, value, typeSymbol, cancellationToken),
                     RefactoringIdentifiers.ReplaceObjectCreationWithDefaultValue);
             }
         }
@@ -83,25 +81,21 @@ namespace Roslynator.CSharp.Refactorings
             LocalDeclarationStatementSyntax localDeclarationStatement,
             ExpressionSyntax value,
             ITypeSymbol typeSymbol,
-            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            int position = localDeclarationStatement.SpanStart;
-
-            ExpressionSyntax defaultValue = typeSymbol.GetDefaultValueSyntax(semanticModel, position);
+            ExpressionSyntax defaultValue = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
 
             LocalDeclarationStatementSyntax newNode = localDeclarationStatement.ReplaceNode(
                 value,
                 defaultValue.WithTriviaFrom(value));
 
-            TypeSyntax oldType = newNode.Declaration.Type;
-
-            if (oldType.IsVar
-                && !defaultValue.IsKind(SyntaxKind.DefaultExpression, SyntaxKind.SimpleMemberAccessExpression))
+            if (defaultValue is LiteralExpressionSyntax)
             {
-                TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, position);
+                TypeSyntax oldType = newNode.Declaration.Type;
 
-                newNode = newNode.ReplaceNode(oldType, type.WithTriviaFrom(oldType));
+                TypeSyntax type = typeSymbol.ToTypeSyntax().WithSimplifierAnnotation().WithTriviaFrom(oldType);
+
+                newNode = newNode.ReplaceNode(oldType, type);
             }
 
             return document.ReplaceNodeAsync(localDeclarationStatement, newNode, cancellationToken);

@@ -144,7 +144,6 @@ namespace Roslynator.CSharp.CodeFixes
                                                 diagnostic,
                                                 expression,
                                                 typeSymbol,
-                                                semanticModel,
                                                 CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue);
                                         }
                                     }

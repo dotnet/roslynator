@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -218,96 +217,6 @@ namespace Roslynator.CSharp
         {
             if (!typeSymbol.SupportsExplicitDeclaration())
                 throw new ArgumentException($"Type '{typeSymbol.ToDisplayString()}' does not support explicit declaration.", nameof(typeSymbol));
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="ExpressionSyntax"/> that represents default value of the specified type symbol.
-        /// </summary>
-        /// <param name="typeSymbol"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public static ExpressionSyntax GetDefaultValueSyntax(this ITypeSymbol typeSymbol, TypeSyntax type)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (type == null)
-                throw new ArgumentNullException(nameof(type));
-
-            return GetDefaultValueSyntaxImpl(typeSymbol, type, default(SemanticModel), -1, default(SymbolDisplayFormat));
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="ExpressionSyntax"/> that represents default value of the specified type symbol.
-        /// </summary>
-        /// <param name="typeSymbol"></param>
-        /// <param name="semanticModel"></param>
-        /// <param name="position"></param>
-        /// <param name="format"></param>
-        /// <returns></returns>
-        public static ExpressionSyntax GetDefaultValueSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            return GetDefaultValueSyntaxImpl(typeSymbol, default(TypeSyntax), semanticModel, position, format);
-        }
-
-        // https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/default-values-table
-        private static ExpressionSyntax GetDefaultValueSyntaxImpl(ITypeSymbol typeSymbol, TypeSyntax type, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
-        {
-            switch (typeSymbol.SpecialType)
-            {
-                case SpecialType.System_Boolean:
-                    return FalseLiteralExpression();
-                case SpecialType.System_Char:
-                    return CharacterLiteralExpression('\0');
-                case SpecialType.System_SByte:
-                case SpecialType.System_Byte:
-                case SpecialType.System_Int16:
-                case SpecialType.System_UInt16:
-                case SpecialType.System_Int32:
-                case SpecialType.System_UInt32:
-                case SpecialType.System_Int64:
-                case SpecialType.System_UInt64:
-                case SpecialType.System_Decimal:
-                case SpecialType.System_Single:
-                case SpecialType.System_Double:
-                    return NumericLiteralExpression(0);
-            }
-
-            if (typeSymbol.IsNullableType())
-                return NullLiteralExpression();
-
-            if (typeSymbol.BaseType?.SpecialType == SpecialType.System_Enum)
-            {
-                IFieldSymbol fieldSymbol = CSharpUtility.FindEnumDefaultField((INamedTypeSymbol)typeSymbol);
-
-                if (fieldSymbol != null)
-                {
-                    type = type ?? (typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format));
-
-                    Debug.Assert(type != null);
-
-                    return SimpleMemberAccessExpression(type, IdentifierName(fieldSymbol.Name));
-                }
-                else
-                {
-                    return NumericLiteralExpression(0);
-                }
-            }
-
-            if (typeSymbol.IsReferenceType)
-                return NullLiteralExpression();
-
-            type = type ?? (typeSymbol.ToMinimalTypeSyntax(semanticModel, position, format));
-
-            Debug.Assert(type != null);
-
-            return DefaultExpression(type);
         }
 
         /// <summary>

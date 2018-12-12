@@ -111,7 +111,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 var methodSymbol = semanticModel.GetSymbol(anonymousFunction, context.CancellationToken) as IMethodSymbol;
 
                                 if (methodSymbol?.IsErrorType() == false)
-                                    ComputeCodeFix(context, diagnostic, methodSymbol.ReturnType, body, semanticModel);
+                                    ComputeCodeFix(context, diagnostic, methodSymbol.ReturnType, body);
                             }
 
                             return;
@@ -132,7 +132,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                ComputeCodeFix(context, diagnostic, typeSymbol, body, semanticModel);
+                ComputeCodeFix(context, diagnostic, typeSymbol, body);
             }
         }
 
@@ -140,8 +140,7 @@ namespace Roslynator.CSharp.CodeFixes
             CodeFixContext context,
             Diagnostic diagnostic,
             ITypeSymbol typeSymbol,
-            BlockSyntax body,
-            SemanticModel semanticModel)
+            BlockSyntax body)
         {
             if (typeSymbol?.IsErrorType() == false
                 && !typeSymbol.IsVoid()
@@ -149,7 +148,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 CodeAction codeAction = CodeAction.Create(
                     "Add return statement that returns default value",
-                    cancellationToken => RefactorAsync(context.Document, body, typeSymbol, semanticModel, cancellationToken),
+                    cancellationToken => RefactorAsync(context.Document, body, typeSymbol, cancellationToken),
                     GetEquivalenceKey(diagnostic));
 
                 context.RegisterCodeFix(codeAction, diagnostic);
@@ -160,12 +159,9 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             BlockSyntax body,
             ITypeSymbol typeSymbol,
-            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            int position = body.OpenBraceToken.FullSpan.End;
-
-            ExpressionSyntax returnExpression = typeSymbol.GetDefaultValueSyntax(semanticModel, position);
+            ExpressionSyntax returnExpression = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
 
             ReturnStatementSyntax returnStatement = SyntaxFactory.ReturnStatement(returnExpression);
 

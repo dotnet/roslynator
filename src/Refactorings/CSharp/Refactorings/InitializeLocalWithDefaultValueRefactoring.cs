@@ -54,10 +54,7 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            VariableDeclaratorSyntax newDeclarator = GetNewDeclarator(
-                declarator,
-                localDeclaration.Declaration.Type.WithoutTrivia(),
-                typeSymbol);
+            VariableDeclaratorSyntax newDeclarator = GetNewDeclarator(localDeclaration.Declaration.Type.WithoutTrivia());
 
             LocalDeclarationStatementSyntax newNode = localDeclaration.ReplaceNode(declarator, newDeclarator);
 
@@ -68,28 +65,25 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken);
-        }
 
-        private static VariableDeclaratorSyntax GetNewDeclarator(
-            VariableDeclaratorSyntax declarator,
-            TypeSyntax type,
-            ITypeSymbol typeSymbol)
-        {
-            ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(type);
-
-            EqualsValueClauseSyntax initializer = declarator.Initializer;
-            EqualsValueClauseSyntax newInitializer = EqualsValueClause(value);
-
-            if (initializer?.IsMissing != false)
+            VariableDeclaratorSyntax GetNewDeclarator(TypeSyntax type)
             {
-                return declarator
-                    .WithIdentifier(declarator.Identifier.WithoutTrailingTrivia())
-                    .WithInitializer(newInitializer.WithTrailingTrivia(declarator.Identifier.TrailingTrivia));
-            }
-            else
-            {
-                return declarator
-                    .WithInitializer(newInitializer.WithTriviaFrom(initializer.EqualsToken));
+                ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), type);
+
+                EqualsValueClauseSyntax initializer = declarator.Initializer;
+                EqualsValueClauseSyntax newInitializer = EqualsValueClause(value);
+
+                if (initializer?.IsMissing != false)
+                {
+                    return declarator
+                        .WithIdentifier(declarator.Identifier.WithoutTrailingTrivia())
+                        .WithInitializer(newInitializer.WithTrailingTrivia(declarator.Identifier.TrailingTrivia));
+                }
+                else
+                {
+                    return declarator
+                        .WithInitializer(newInitializer.WithTriviaFrom(initializer.EqualsToken));
+                }
             }
         }
     }

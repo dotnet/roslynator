@@ -154,7 +154,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (CSharpFacts.IsSimpleType(typeSymbol.SpecialType)
                                 || typeSymbol.ContainsMember<IMethodSymbol>(WellKnownMemberNames.EqualityOperatorName))
                             {
-                                ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(semanticModel, binaryExpression.Right.SpanStart);
+                                ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(context.Document.GetDefaultSyntaxOptions());
 
                                 title = $"Replace 'null' with '{expression}'";
                             }

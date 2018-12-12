@@ -104,9 +104,7 @@ namespace Roslynator.CSharp.CodeFixes
                 && type.IsNullableType()
                 && ((INamedTypeSymbol)type).TypeArguments[0].Equals(convertedType))
             {
-                ExpressionSyntax defaultValue = (document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))
-                    ? DefaultLiteralExpression()
-                    : convertedType.GetDefaultValueSyntax(semanticModel, conditionalAccessExpression.SpanStart);
+                ExpressionSyntax defaultValue = convertedType.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions());
 
                 ExpressionSyntax coalesceExpression = CoalesceExpression(conditionalAccessExpression.WithoutTrivia(), defaultValue)
                     .WithTriviaFrom(conditionalAccessExpression)

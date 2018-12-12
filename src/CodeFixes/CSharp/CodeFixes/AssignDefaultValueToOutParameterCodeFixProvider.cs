@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     ExpressionStatementSyntax expressionStatement = SimpleAssignmentStatement(
                         IdentifierName(f.Name),
-                        f.Type.GetDefaultValueSyntax(semanticModel, bodyOrExpressionBody.Span.End));
+                        f.Type.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions()));
 
                     return expressionStatement.WithFormatterAnnotation();
                 });
