@@ -114,6 +114,11 @@ namespace Roslynator.CSharp.Syntax
             return XmlElementNameKindMapper.GetKindOrDefault(LocalName);
         }
 
+        internal bool IsElementKind(XmlElementKind kind)
+        {
+            return XmlElementNameKindMapper.GetKindOrDefault(LocalName) == kind;
+        }
+
         internal static XmlElementInfo Create(XmlNodeSyntax node)
         {
             switch (node)

@@ -1821,6 +1821,28 @@ namespace Roslynator.CSharp
                 }
             }
         }
+
+        internal static int IndexOf(this SeparatedSyntaxList<ParameterSyntax> parameters, string name)
+        {
+            for (int i = 0; i < parameters.Count; i++)
+            {
+                if (string.Equals(parameters[i].Identifier.ValueText, name, StringComparison.Ordinal))
+                    return i;
+            }
+
+            return -1;
+        }
+
+        internal static int IndexOf(this SeparatedSyntaxList<TypeParameterSyntax> typeParameters, string name)
+        {
+            for (int i = 0; i < typeParameters.Count; i++)
+            {
+                if (string.Equals(typeParameters[i].Identifier.ValueText, name, StringComparison.Ordinal))
+                    return i;
+            }
+
+            return -1;
+        }
         #endregion SeparatedSyntaxList<T>
 
         #region StatementSyntax
@@ -4215,6 +4237,32 @@ namespace Roslynator.CSharp
         internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName, StringComparison comparison = StringComparison.Ordinal)
         {
             return xmlElement.StartTag?.Name?.IsLocalName(localName, comparison) == true;
+        }
+
+        internal static string GetAttributeValue(this XmlElementSyntax element, string attributeName)
+        {
+            XmlElementStartTagSyntax startTag = element.StartTag;
+
+            if (startTag != null)
+            {
+                foreach (XmlAttributeSyntax attribute in startTag.Attributes)
+                {
+                    if (attribute.IsKind(SyntaxKind.XmlNameAttribute))
+                    {
+                        var nameAttribute = (XmlNameAttributeSyntax)attribute;
+
+                        if (nameAttribute.Name?.LocalName.ValueText == attributeName)
+                        {
+                            IdentifierNameSyntax identifierName = nameAttribute.Identifier;
+
+                            if (identifierName != null)
+                                return identifierName.Identifier.ValueText;
+                        }
+                    }
+                }
+            }
+
+            return null;
         }
         #endregion XmlElementSyntax
 

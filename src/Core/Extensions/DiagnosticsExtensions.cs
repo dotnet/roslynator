@@ -172,6 +172,18 @@ namespace Roslynator
         #endregion SymbolAnalysisContext
 
         #region SyntaxNodeAnalysisContext
+        internal static void ReportDiagnosticIfNotSuppressed(
+            this SyntaxNodeAnalysisContext context,
+            DiagnosticDescriptor descriptor,
+            SyntaxNode node,
+            params object[] messageArgs)
+        {
+            if (context.IsAnalyzerSuppressed(descriptor))
+                return;
+
+            ReportDiagnostic(context, descriptor, node, messageArgs);
+        }
+
         /// <summary>
         /// Report a <see cref="Diagnostic"/> about a <see cref="SyntaxNode"/>.
         /// </summary>
@@ -498,5 +510,59 @@ namespace Roslynator
             context.CancellationToken.ThrowIfCancellationRequested();
         }
         #endregion SyntaxTreeAnalysisContext
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("AnalyzerPerformance", "RS1012:Start action has no registered actions.", Justification = "<Pending>")]
+        internal static bool IsAnalyzerSuppressed(this CompilationStartAnalysisContext context, DiagnosticDescriptor descriptor)
+        {
+            return IsAnalyzerSuppressed(context.Compilation, descriptor);
+        }
+
+        internal static bool IsAnalyzerSuppressed(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor)
+        {
+            return IsAnalyzerSuppressed(context.Compilation, descriptor);
+        }
+
+        internal static bool IsAnalyzerSuppressed(this Compilation compilation, DiagnosticDescriptor descriptor)
+        {
+            ReportDiagnostic reportDiagnostic = compilation
+                .Options
+                .SpecificDiagnosticOptions
+                .GetValueOrDefault(descriptor.Id);
+
+            switch (reportDiagnostic)
+            {
+                case Microsoft.CodeAnalysis.ReportDiagnostic.Default:
+                    return !descriptor.IsEnabledByDefault;
+                case Microsoft.CodeAnalysis.ReportDiagnostic.Suppress:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("AnalyzerPerformance", "RS1012:Start action has no registered actions.", Justification = "<Pending>")]
+        internal static bool AreAnalyzersSuppressed(this CompilationStartAnalysisContext context, ImmutableArray<DiagnosticDescriptor> descriptors)
+        {
+            foreach (DiagnosticDescriptor descriptor in descriptors)
+            {
+                if (!context.IsAnalyzerSuppressed(descriptor))
+                    return false;
+            }
+
+            return true;
+        }
+
+        internal static bool AreAnalyzersSuppressed(this CompilationStartAnalysisContext context, DiagnosticDescriptor descriptor1, DiagnosticDescriptor descriptor2)
+        {
+            return IsAnalyzerSuppressed(context, descriptor1)
+                && IsAnalyzerSuppressed(context, descriptor2);
+        }
+
+        internal static bool AreAnalyzersSuppressed(this CompilationStartAnalysisContext context, DiagnosticDescriptor descriptor1, DiagnosticDescriptor descriptor2, DiagnosticDescriptor descriptor3)
+        {
+            return IsAnalyzerSuppressed(context, descriptor1)
+                && IsAnalyzerSuppressed(context, descriptor2)
+                && IsAnalyzerSuppressed(context, descriptor3);
+        }
     }
 }

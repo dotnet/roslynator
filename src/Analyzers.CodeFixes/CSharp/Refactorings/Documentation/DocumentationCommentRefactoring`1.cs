@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Analysis.Documentation;
 
-namespace Roslynator.CSharp.Refactorings.DocumentationComment
+namespace Roslynator.CSharp.Refactorings.Documentation
 {
     internal abstract class DocumentationCommentRefactoring<TNode> where TNode : SyntaxNode
     {
@@ -190,7 +190,7 @@ namespace Roslynator.CSharp.Refactorings.DocumentationComment
 
             foreach (XmlElementSyntax element in comment.Elements(ElementKind))
             {
-                string name = DocumentationCommentAnalysis.GetAttributeValue(element, "name");
+                string name = element.GetAttributeValue("name");
 
                 if (!dic.ContainsKey(name))
                     dic.Add(name, element);
