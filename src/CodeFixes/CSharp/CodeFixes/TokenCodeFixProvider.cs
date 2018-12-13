@@ -231,7 +231,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 "Return default value",
                                 cancellationToken =>
                                 {
-                                    ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(semanticModel, returnStatement.SpanStart);
+                                    ExpressionSyntax expression = typeSymbol.GetDefaultValueSyntax(context.Document.GetDefaultSyntaxOptions());
 
                                     if (expression.IsKind(SyntaxKind.DefaultExpression)
                                         && context.Document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))
@@ -451,7 +451,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 "Add default value",
                                 cancellationToken =>
                                 {
-                                    ExpressionSyntax defaultValue = typeSymbol.GetDefaultValueSyntax(semanticModel, parameter.SpanStart);
+                                    ExpressionSyntax defaultValue = typeSymbol.GetDefaultValueSyntax(context.Document.GetDefaultSyntaxOptions());
 
                                     ParameterSyntax newParameter = parameter
                                         .WithDefault(EqualsValueClause(defaultValue).WithTrailingTrivia(parameter.GetTrailingTrivia()))

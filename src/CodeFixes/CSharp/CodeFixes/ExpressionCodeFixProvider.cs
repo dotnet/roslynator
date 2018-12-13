@@ -104,9 +104,7 @@ namespace Roslynator.CSharp.CodeFixes
                                             "Use coalesce expression",
                                             cancellationToken =>
                                             {
-                                                ExpressionSyntax defaultValue = (context.Document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))
-                                                    ? DefaultLiteralExpression()
-                                                    : convertedType.GetDefaultValueSyntax(semanticModel, expression.SpanStart);
+                                                ExpressionSyntax defaultValue = convertedType.GetDefaultValueSyntax(context.Document.GetDefaultSyntaxOptions());
 
                                                 ExpressionSyntax newNode = CoalesceExpression(expression.WithoutTrivia(), defaultValue)
                                                     .WithTriviaFrom(expression)

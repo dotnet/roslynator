@@ -37,7 +37,9 @@ enum E
 {
     A = 0,
     [|B = 1,
+
     C,
+
     D = 4|]
 }
 ", @"
@@ -45,7 +47,9 @@ enum E
 {
     A = 0,
     B,
+
     C,
+
     D
 }
 ", equivalenceKey: RefactoringId);

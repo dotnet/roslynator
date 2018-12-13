@@ -10,7 +10,7 @@ using System.Runtime.Serialization;
 
 namespace Roslynator.CSharp.Analyzers.Tests
 {
-    public static partial class UnusedParameter
+    public static class UnusedParameter
     {
         private static void ExtensionMethod(this Foo foo, object parameter)
         {
@@ -162,26 +162,6 @@ namespace Roslynator.CSharp.Analyzers.Tests
             public static explicit operator Foo2(string value)
             {
                 throw new NotImplementedException();
-            }
-        }
-
-        private partial class FooPartial : Foo
-        {
-            public FooPartial(object parameter) : base(parameter) { }
-
-            public override void Bar2(object parameter) { }
-
-            public override void Bar3(object parameter) { }
-
-            partial void BarPartial<T>(object parameter);
-
-            private void Method(object parameter)
-            {
-                Action<object> action = Method;
-            }
-
-            private void Method2(object parameter)
-            {
             }
         }
 

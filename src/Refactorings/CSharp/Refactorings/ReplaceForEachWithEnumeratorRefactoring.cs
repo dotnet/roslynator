@@ -82,6 +82,13 @@ namespace Roslynator.CSharp.Refactorings
 
                 var newStatements = new StatementSyntax[] { localDeclaration, whileStatement.WithFormatterAnnotation() };
 
+                if (forEachStatement.IsEmbedded())
+                {
+                    BlockSyntax block = Block(newStatements).WithFormatterAnnotation();
+
+                    return await document.ReplaceNodeAsync(forEachStatement, block, cancellationToken).ConfigureAwait(false);
+                }
+
                 return await document.ReplaceNodeAsync(forEachStatement, newStatements, cancellationToken).ConfigureAwait(false);
             }
         }

@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                 Identifier(localName).WithRenameAnnotation(),
                 expression);
 
-            InvocationExpressionSyntax newExpression = CreateTaskFromResultExpression(conditionalAccess, semanticModel, cancellationToken);
+            InvocationExpressionSyntax newExpression = CreateTaskFromResultExpression(document, conditionalAccess, semanticModel, cancellationToken);
 
             IfStatementSyntax ifStatement = IfStatement(
                 CSharpSnippets.NotEqualsToNull(IdentifierName(localName)),
@@ -141,12 +141,13 @@ namespace Roslynator.CSharp.Refactorings
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
 
-            ExpressionSyntax newExpression = CreateTaskFromResultExpression(expression, semanticModel, cancellationToken);
+            ExpressionSyntax newExpression = CreateTaskFromResultExpression(document, expression, semanticModel, cancellationToken);
 
             return await document.ReplaceNodeAsync(expression, newExpression, cancellationToken).ConfigureAwait(false);
         }
 
         private static InvocationExpressionSyntax CreateTaskFromResultExpression(
+            Document document,
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -159,7 +160,7 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax type = typeArgument.ToMinimalTypeSyntax(semanticModel, position);
 
-            ExpressionSyntax defaultValue = typeArgument.GetDefaultValueSyntax(type);
+            ExpressionSyntax defaultValue = typeArgument.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), type);
 
             SimpleNameSyntax name;
 

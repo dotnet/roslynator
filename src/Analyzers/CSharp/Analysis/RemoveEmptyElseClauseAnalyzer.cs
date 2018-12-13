@@ -41,6 +41,16 @@ namespace Roslynator.CSharp.Analysis
             if (block.Statements.Any())
                 return;
 
+            IfStatementSyntax topmostIf = elseClause.GetTopmostIf();
+
+            if (topmostIf.IsParentKind(SyntaxKind.IfStatement))
+            {
+                var parentIf = (IfStatementSyntax)topmostIf.Parent;
+
+                if (parentIf.Else != null)
+                    return;
+            }
+
             if (!elseClause.ElseKeyword.TrailingTrivia.IsEmptyOrWhitespace())
                 return;
 

@@ -120,6 +120,18 @@ namespace Roslynator
         #endregion SymbolAnalysisContext
 
         #region SyntaxNodeAnalysisContext
+        public static void ReportDiagnosticIfNotSuppressed(
+            SyntaxNodeAnalysisContext context,
+            DiagnosticDescriptor descriptor,
+            SyntaxNode node,
+            params object[] messageArgs)
+        {
+            if (context.IsAnalyzerSuppressed(descriptor))
+                return;
+
+            ReportDiagnostic(context, descriptor, node, messageArgs);
+        }
+
         public static void ReportDiagnostic(
             SyntaxNodeAnalysisContext context,
             DiagnosticDescriptor descriptor,

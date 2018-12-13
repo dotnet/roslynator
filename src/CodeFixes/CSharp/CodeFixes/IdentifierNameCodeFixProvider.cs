@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
 
-                                    ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
+                                    ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), variableDeclaration.Type.WithoutTrivia());
 
                                     if (value.IsKind(SyntaxKind.DefaultExpression)
                                         && document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))
