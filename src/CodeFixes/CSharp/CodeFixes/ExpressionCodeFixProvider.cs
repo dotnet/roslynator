@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
@@ -33,7 +32,8 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.ResultOfExpressionIsAlwaysConstantSinceValueIsNeverEqualToNull,
                     CompilerDiagnosticIdentifiers.CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType,
                     CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement,
-                    CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType);
+                    CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType,
+                    CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer);
             }
         }
 
@@ -467,6 +467,56 @@ namespace Roslynator.CSharp.CodeFixes
                                     context.RegisterCodeFix(codeAction, diagnostic);
                                 }
                             }
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstModifier))
+                                return;
+
+                            if (!expression.IsKind(SyntaxKind.IdentifierName))
+                                return;
+
+                            if (!expression.IsParentKind(SyntaxKind.SimpleAssignmentExpression))
+                                return;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(expression, context.CancellationToken);
+
+                            if (symbolInfo.CandidateReason != CandidateReason.NotAVariable)
+                                return;
+
+                            if (!(symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is ILocalSymbol localSymbol))
+                                return;
+
+                            if (!localSymbol.IsConst)
+                                return;
+
+                            SyntaxNode node = localSymbol.GetSyntaxOrDefault(context.CancellationToken);
+
+                            if (!node.IsKind(SyntaxKind.VariableDeclarator))
+                                return;
+
+                            node = node.Parent;
+
+                            if (!node.IsKind(SyntaxKind.VariableDeclaration))
+                                return;
+
+                            node = node.Parent;
+
+                            if (!node.IsKind(SyntaxKind.LocalDeclarationStatement))
+                                return;
+
+                            var localDeclaration = (LocalDeclarationStatementSyntax)node;
+
+                            SyntaxToken constModifier = localDeclaration.Modifiers.Find(SyntaxKind.ConstKeyword);
+
+                            if (!constModifier.IsKind(SyntaxKind.ConstKeyword))
+                                return;
+
+                            ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, localDeclaration, constModifier);
 
                             break;
                         }
