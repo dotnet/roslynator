@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
             if (!Settings.IsEnabled(CodeFixIdentifiers.AddArgumentList)
-                && !Settings.IsEnabled(CodeFixIdentifiers.ReorderModifiers)
+                && !Settings.IsEnabled(CodeFixIdentifiers.OrderModifiers)
                 && !Settings.IsEnabled(CodeFixIdentifiers.ReplaceNullLiteralExpressionWithDefaultValue)
                 && !Settings.IsEnabled(CodeFixIdentifiers.ReturnDefaultValue)
                 && !Settings.IsEnabled(CodeFixIdentifiers.AddMissingType)
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.PartialModifierCanOnlyAppearImmediatelyBeforeClassStructInterfaceOrVoid:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.ReorderModifiers))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.OrderModifiers))
                                 break;
 
                             ModifiersCodeFixRegistrator.MoveModifier(context, diagnostic, token.Parent, token);

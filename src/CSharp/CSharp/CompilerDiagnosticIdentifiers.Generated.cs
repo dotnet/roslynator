@@ -31,6 +31,7 @@ namespace Roslynator.CSharp
         public const string ObjectOfTypeConvertibleToTypeIsRequired = "CS0126";
         public const string SinceMethodReturnsVoidReturnKeywordMustNotBeFollowedByObjectExpression = "CS0127";
         public const string LocalVariableOrFunctionIsAlreadyDefinedInThisScope = "CS0128";
+        public const string LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer = "CS0131";
         public const string StaticConstructorMustBeParameterless = "CS0132";
         public const string ExpressionBeingAssignedMustBeConstant = "CS0133";
         public const string LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter = "CS0136";

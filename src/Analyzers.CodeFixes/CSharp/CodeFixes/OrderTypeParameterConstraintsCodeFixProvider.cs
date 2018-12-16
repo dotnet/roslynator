@@ -1,20 +1,51 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
+using System.Composition;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
+using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CodeFixes;
 using Roslynator.CSharp.Analysis;
 using Roslynator.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings
+namespace Roslynator.CSharp.CodeFixes
 {
-    internal static class ReorderTypeParameterConstraintsRefactoring
+    [ExportCodeFixProvider(LanguageNames.CSharp, Name = nameof(OrderTypeParameterConstraintsCodeFixProvider))]
+    [Shared]
+    public class OrderTypeParameterConstraintsCodeFixProvider : BaseCodeFixProvider
     {
-        public static Task<Document> RefactorAsync(
-            Document document,
-            SyntaxNode node,
-            CancellationToken cancellationToken)
+        public sealed override ImmutableArray<string> FixableDiagnosticIds
+        {
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.OrderTypeParameterConstraints); }
+        }
+
+        public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
+        {
+            SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
+
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f is MemberDeclarationSyntax || f.IsKind(SyntaxKind.LocalFunctionStatement)))
+                return;
+
+            foreach (Diagnostic diagnostic in context.Diagnostics)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Order constraints",
+                    ct => RefactorAsync(context.Document, node, ct),
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
+        }
+
+        private static Task<Document> RefactorAsync(
+        Document document,
+        SyntaxNode node,
+        CancellationToken cancellationToken)
         {
             GenericInfo genericInfo = SyntaxInfo.GenericInfo(node);
 
@@ -35,7 +66,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 string name = typeParameters[i].Identifier.ValueText;
 
-                int index = ReorderTypeParameterConstraintsAnalyzer.IndexOf(constraintClauses, name);
+                int index = OrderTypeParameterConstraintsAnalyzer.IndexOf(constraintClauses, name);
 
                 if (index != -1)
                 {

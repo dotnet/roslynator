@@ -2,13 +2,15 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Diagnostics;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -18,7 +20,7 @@ namespace Roslynator.CSharp.CodeFixes
     {
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
-            get { return ImmutableArray.Create(DiagnosticIdentifiers.ReorderNamedArguments); }
+            get { return ImmutableArray.Create(DiagnosticIdentifiers.OrderNamedArguments); }
         }
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
@@ -32,17 +34,11 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 switch (diagnostic.Id)
                 {
-                    case DiagnosticIdentifiers.ReorderNamedArguments:
+                    case DiagnosticIdentifiers.OrderNamedArguments:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Reorder arguments",
-                                cancellationToken =>
-                                {
-                                    return ReorderNamedArgumentsRefactoring.RefactorAsync(
-                                        context.Document,
-                                        baseArgumentList,
-                                        cancellationToken);
-                                },
+                                "Order arguments",
+                                ct => OrderNamedArgumentsAsync(context.Document, baseArgumentList, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -50,6 +46,45 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static async Task<Document> OrderNamedArgumentsAsync(
+            Document document,
+            BaseArgumentListSyntax argumentList,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            ImmutableArray<IParameterSymbol> parameters = semanticModel
+                .GetSymbol(argumentList.Parent, cancellationToken)
+                .ParametersOrDefault();
+
+            SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
+
+            int firstIndex = OrderNamedArgumentsAnalyzer.IndexOfFirstFixableParameter(argumentList, arguments, semanticModel, cancellationToken);
+
+            SeparatedSyntaxList<ArgumentSyntax> newArguments = arguments;
+
+            for (int i = firstIndex; i < arguments.Count; i++)
+            {
+                IParameterSymbol parameter = parameters[i];
+
+                int index = arguments.IndexOf(f => f.NameColon?.Name.Identifier.ValueText == parameter.Name);
+
+                Debug.Assert(index != -1, parameter.Name);
+
+                if (index != -1
+                    && index != i)
+                {
+                    newArguments = newArguments.ReplaceAt(i, arguments[index]);
+                }
+            }
+
+            BaseArgumentListSyntax newNode = argumentList
+                .WithArguments(newArguments)
+                .WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(argumentList, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

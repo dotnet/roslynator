@@ -226,15 +226,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1019</summary>
-        public static readonly DiagnosticDescriptor ReorderModifiers = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReorderModifiers, 
-            title:              "Reorder modifiers.", 
-            messageFormat:      "Reorder modifiers.", 
+        public static readonly DiagnosticDescriptor OrderModifiers = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderModifiers, 
+            title:              "Order modifiers.", 
+            messageFormat:      "Order modifiers.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReorderModifiers}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderModifiers}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1020</summary>
@@ -2202,15 +2202,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1205</summary>
-        public static readonly DiagnosticDescriptor ReorderNamedArguments = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReorderNamedArguments, 
-            title:              "Reorder named arguments according to the order of parameters.", 
-            messageFormat:      "Reorder named arguments according to the order of parameters.", 
+        public static readonly DiagnosticDescriptor OrderNamedArguments = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderNamedArguments, 
+            title:              "Order named arguments according to the order of parameters.", 
+            messageFormat:      "Order named arguments according to the order of parameters.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReorderNamedArguments}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderNamedArguments}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1206</summary>
@@ -2252,15 +2252,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1209</summary>
-        public static readonly DiagnosticDescriptor ReorderTypeParameterConstraints = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReorderTypeParameterConstraints, 
-            title:              "Reorder type parameter constraints.", 
-            messageFormat:      "Reorder type parameter constraints.", 
+        public static readonly DiagnosticDescriptor OrderTypeParameterConstraints = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderTypeParameterConstraints, 
+            title:              "Order type parameter constraints.", 
+            messageFormat:      "Order type parameter constraints.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReorderTypeParameterConstraints}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderTypeParameterConstraints}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1210</summary>

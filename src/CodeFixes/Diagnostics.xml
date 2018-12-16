@@ -176,6 +176,13 @@
     Message="A local variable or function named '{0}' is already defined in this scope"
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0128" />
   <Diagnostic
+    Id="CS0131"
+    Identifier="LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer"
+    Severity="Error"
+    Title="The left-hand side of an assignment must be a variable, property or indexer."
+    Message="The left-hand side of an assignment must be a variable, property or indexer"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0131" />
+  <Diagnostic
     Id="CS0132"
     Identifier="StaticConstructorMustBeParameterless"
     Severity="Error"
