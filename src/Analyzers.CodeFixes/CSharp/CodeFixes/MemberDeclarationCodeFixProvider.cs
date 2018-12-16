@@ -3,6 +3,8 @@
 using System;
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -11,6 +13,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
+using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -28,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.AddDefaultAccessModifier,
                     DiagnosticIdentifiers.RemoveRedundantSealedModifier,
                     DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
-                    DiagnosticIdentifiers.ReorderModifiers,
+                    DiagnosticIdentifiers.OrderModifiers,
                     DiagnosticIdentifiers.MarkFieldAsReadOnly,
                     DiagnosticIdentifiers.UseConstantInsteadOfField,
                     DiagnosticIdentifiers.UseReadOnlyAutoProperty,
@@ -97,11 +100,11 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ReorderModifiers:
+                    case DiagnosticIdentifiers.OrderModifiers:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Reorder modifiers",
-                                cancellationToken => ReorderModifiersRefactoring.RefactorAsync(context.Document, memberDeclaration, cancellationToken),
+                                "Order modifiers",
+                                ct => OrderModifiersAsync(context.Document, memberDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -171,6 +174,23 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+        }
+
+        private static Task<Document> OrderModifiersAsync(
+            Document document,
+            MemberDeclarationSyntax declaration,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            ModifierListInfo info = SyntaxInfo.ModifierListInfo(declaration);
+
+            SyntaxTokenList modifiers = info.Modifiers;
+
+            SyntaxToken[] newModifiers = modifiers.OrderBy(f => f, ModifierComparer.Default).ToArray();
+
+            for (int i = 0; i < modifiers.Count; i++)
+                newModifiers[i] = newModifiers[i].WithTriviaFrom(modifiers[i]);
+
+            return document.ReplaceModifiersAsync(info, newModifiers, cancellationToken);
         }
     }
 }

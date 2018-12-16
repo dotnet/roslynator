@@ -389,10 +389,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReorderModifiers">
+  <Analyzer Identifier="OrderModifiers">
     <Id>RCS1019</Id>
-    <Title>Reorder modifiers.</Title>
-    <MessageFormat>Reorder modifiers.</MessageFormat>
+    <Title>Order modifiers.</Title>
+    <MessageFormat>Order modifiers.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>false</IsEnabledByDefault>
@@ -4323,10 +4323,10 @@ public class FooAttribute : Attribute
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReorderNamedArguments">
+  <Analyzer Identifier="OrderNamedArguments">
     <Id>RCS1205</Id>
-    <Title>Reorder named arguments according to the order of parameters.</Title>
-    <MessageFormat>Reorder named arguments according to the order of parameters.</MessageFormat>
+    <Title>Order named arguments according to the order of parameters.</Title>
+    <MessageFormat>Order named arguments according to the order of parameters.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -4445,10 +4445,10 @@ Foo3();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReorderTypeParameterConstraints">
+  <Analyzer Identifier="OrderTypeParameterConstraints">
     <Id>RCS1209</Id>
-    <Title>Reorder type parameter constraints.</Title>
-    <MessageFormat>Reorder type parameter constraints.</MessageFormat>
+    <Title>Order type parameter constraints.</Title>
+    <MessageFormat>Order type parameter constraints.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

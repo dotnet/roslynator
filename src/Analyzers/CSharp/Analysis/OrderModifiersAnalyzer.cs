@@ -10,11 +10,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReorderModifiersAnalyzer : BaseDiagnosticAnalyzer
+    public class OrderModifiersAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ReorderModifiers); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.OrderModifiers); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -151,7 +151,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             context.ReportDiagnostic(
-                DiagnosticDescriptors.ReorderModifiers,
+                DiagnosticDescriptors.OrderModifiers,
                 Location.Create(context.Node.SyntaxTree, modifiers.Span));
         }
     }

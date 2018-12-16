@@ -25,7 +25,7 @@ namespace Roslynator.CSharp
         public const string UseExpressionBodiedMember = "RCS1016";
         public const string AvoidMultilineExpressionBody = "RCS1017";
         public const string AddDefaultAccessModifier = "RCS1018";
-        public const string ReorderModifiers = "RCS1019";
+        public const string OrderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
         public const string SimplifyLambdaExpression = "RCS1021";
         public const string FormatEmptyBlock = "RCS1023";
@@ -187,11 +187,11 @@ namespace Roslynator.CSharp
         public const string AvoidNullReferenceException = "RCS1202";
         public const string UseAttributeUsageAttribute = "RCS1203";
         public const string UseEventArgsEmpty = "RCS1204";
-        public const string ReorderNamedArguments = "RCS1205";
+        public const string OrderNamedArguments = "RCS1205";
         public const string UseConditionalAccessInsteadOfConditionalExpression = "RCS1206";
         public const string UseMethodGroupInsteadOfAnonymousFunction = "RCS1207";
         public const string ReduceIfNesting = "RCS1208";
-        public const string ReorderTypeParameterConstraints = "RCS1209";
+        public const string OrderTypeParameterConstraints = "RCS1209";
         public const string ReturnTaskInsteadOfNull = "RCS1210";
         public const string RemoveUnnecessaryElseClause = "RCS1211";
         public const string RemoveRedundantAssignment = "RCS1212";

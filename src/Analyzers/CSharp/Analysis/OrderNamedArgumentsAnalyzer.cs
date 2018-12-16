@@ -13,11 +13,11 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReorderNamedArgumentsAnalyzer : BaseDiagnosticAnalyzer
+    public class OrderNamedArgumentsAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ReorderNamedArguments); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.OrderNamedArguments); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -52,7 +52,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             context.ReportDiagnostic(
-                DiagnosticDescriptors.ReorderNamedArguments,
+                DiagnosticDescriptors.OrderNamedArguments,
                 Location.Create(argumentList.SyntaxTree, span));
         }
 

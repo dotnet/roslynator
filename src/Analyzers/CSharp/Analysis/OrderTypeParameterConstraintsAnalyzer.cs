@@ -11,11 +11,11 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReorderTypeParameterConstraintsAnalyzer : BaseDiagnosticAnalyzer
+    public class OrderTypeParameterConstraintsAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.ReorderTypeParameterConstraints); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.OrderTypeParameterConstraints); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             context.ReportDiagnostic(
-                DiagnosticDescriptors.ReorderTypeParameterConstraints,
+                DiagnosticDescriptors.OrderTypeParameterConstraints,
                 genericInfo.ConstraintClauses.First());
         }
 
