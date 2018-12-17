@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
@@ -10,24 +8,26 @@ namespace Roslynator.Documentation
 {
     internal static class EnumUtility
     {
-        public static OneOrMany<EnumFieldInfo> GetConstituentFields(object value, INamedTypeSymbol enumType)
+        public static OneOrMany<EnumFieldSymbolInfo> GetConstituentFields(object value, INamedTypeSymbol enumType)
         {
-            ImmutableArray<EnumFieldInfo> fields = GetFields(enumType);
+            EnumSymbolInfo enumInfo = EnumSymbolInfo.Create(enumType);
 
-            ulong valueAsULong = SymbolUtility.GetEnumValueAsUInt64(value, enumType);
+            ulong convertedValue = SymbolUtility.GetEnumValueAsUInt64(value, enumType);
 
             if (!enumType.HasAttribute(MetadataNames.System_FlagsAttribute)
-                || valueAsULong == 0)
+                || convertedValue == 0)
             {
-                return OneOrMany.Create(FindField(fields, valueAsULong));
+                return OneOrMany.Create(FindField(enumInfo, convertedValue));
             }
 
-            return GetConstituentFields(valueAsULong, fields);
+            return GetConstituentFields(convertedValue, enumInfo);
         }
 
-        public static OneOrMany<EnumFieldInfo> GetConstituentFields(ulong value, ImmutableArray<EnumFieldInfo> fields)
+        public static OneOrMany<EnumFieldSymbolInfo> GetConstituentFields(ulong value, in EnumSymbolInfo enumInfo)
         {
-            ImmutableArray<EnumFieldInfo>.Builder builder = null;
+            ImmutableArray<EnumFieldSymbolInfo> fields = enumInfo.Fields;
+
+            ImmutableArray<EnumFieldSymbolInfo>.Builder builder = null;
 
             ulong result = value;
 
@@ -43,7 +43,7 @@ namespace Roslynator.Documentation
                         if (result == val)
                             return OneOrMany.Create(fields[i]);
 
-                        builder = ImmutableArray.CreateBuilder<EnumFieldInfo>();
+                        builder = ImmutableArray.CreateBuilder<EnumFieldSymbolInfo>();
                     }
 
                     builder.Add(fields[i]);
@@ -66,16 +66,26 @@ namespace Roslynator.Documentation
             return default;
         }
 
-        public static ImmutableArray<EnumFieldInfo> GetMinimalConstituentFields(IFieldSymbol fieldSymbol, ImmutableArray<EnumFieldInfo> fields)
+        public static ImmutableArray<EnumFieldSymbolInfo> GetMinimalConstituentFields(IFieldSymbol fieldSymbol, in EnumSymbolInfo enumInfo)
         {
-            ulong value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, fieldSymbol.ContainingType);
+            if (!fieldSymbol.HasConstantValue)
+                return ImmutableArray<EnumFieldSymbolInfo>.Empty;
 
-            return GetMinimalConstituentFields(value, fields);
+            ulong value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumInfo.Symbol);
+
+            return GetMinimalConstituentFields(value, enumInfo);
         }
 
-        public static ImmutableArray<EnumFieldInfo> GetMinimalConstituentFields(ulong value, ImmutableArray<EnumFieldInfo> fields)
+        public static ImmutableArray<EnumFieldSymbolInfo> GetMinimalConstituentFields(ulong value, in EnumSymbolInfo enumInfo)
         {
-            ImmutableArray<EnumFieldInfo>.Builder builder = null;
+            Debug.Assert(value > 0, value.ToString());
+
+            if (value == 0)
+                return ImmutableArray<EnumFieldSymbolInfo>.Empty;
+
+            ImmutableArray<EnumFieldSymbolInfo> fields = enumInfo.Fields;
+
+            ImmutableArray<EnumFieldSymbolInfo>.Builder builder = null;
 
             ulong result = value;
 
@@ -87,7 +97,7 @@ namespace Roslynator.Documentation
                     && val != value
                     && (result & val) == val)
                 {
-                    (builder ?? (builder = ImmutableArray.CreateBuilder<EnumFieldInfo>())).Add(fields[i]);
+                    (builder ?? (builder = ImmutableArray.CreateBuilder<EnumFieldSymbolInfo>())).Add(fields[i]);
 
                     result -= val;
 
@@ -106,33 +116,13 @@ namespace Roslynator.Documentation
                 return builder.ToImmutableArray();
             }
 
-            return default;
+            return ImmutableArray<EnumFieldSymbolInfo>.Empty;
         }
 
-        public static ImmutableArray<EnumFieldInfo> GetFields(INamedTypeSymbol enumType)
+        private static EnumFieldSymbolInfo FindField(in EnumSymbolInfo enumInfo, ulong value)
         {
-            ImmutableArray<ISymbol> members = enumType.GetMembers();
+            ImmutableArray<EnumFieldSymbolInfo> fields = enumInfo.Fields;
 
-            ImmutableArray<EnumFieldInfo>.Builder builder = ImmutableArray.CreateBuilder<EnumFieldInfo>(members.Length);
-
-            foreach (ISymbol member in members)
-            {
-                if (member.Kind == SymbolKind.Field)
-                {
-                    var fieldSymbol = (IFieldSymbol)member;
-
-                    if (fieldSymbol.HasConstantValue)
-                        builder.Add(new EnumFieldInfo(fieldSymbol, SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumType)));
-                }
-            }
-
-            builder.Sort(EnumFieldInfoComparer.Instance);
-
-            return builder.ToImmutableArray();
-        }
-
-        private static EnumFieldInfo FindField(ImmutableArray<EnumFieldInfo> fields, ulong value)
-        {
             int start = 0;
             int end = fields.Length - 1;
 
@@ -163,21 +153,6 @@ namespace Roslynator.Documentation
             }
 
             return default;
-        }
-
-        private class EnumFieldInfoComparer : IComparer<EnumFieldInfo>
-        {
-            public static EnumFieldInfoComparer Instance { get; } = new EnumFieldInfoComparer();
-
-            public int Compare(EnumFieldInfo x, EnumFieldInfo y)
-            {
-                int result = x.Value.CompareTo(y.Value);
-
-                if (result != 0)
-                    return result;
-
-                return string.CompareOrdinal(y.Name, x.Name);
-            }
         }
     }
 }

@@ -1684,15 +1684,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1161</summary>
-        public static readonly DiagnosticDescriptor EnumMemberShouldDeclareExplicitValue = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue, 
-            title:              "Enum member should declare explicit value.", 
-            messageFormat:      "Enum member should declare explicit value.", 
+        public static readonly DiagnosticDescriptor EnumShouldDeclareExplicitValues = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.EnumShouldDeclareExplicitValues, 
+            title:              "Enum should declare explicit values.", 
+            messageFormat:      "Enum should declare explicit values.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.EnumShouldDeclareExplicitValues}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1162</summary>

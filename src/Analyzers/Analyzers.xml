@@ -3388,10 +3388,10 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="EnumMemberShouldDeclareExplicitValue">
+  <Analyzer Identifier="EnumShouldDeclareExplicitValues">
     <Id>RCS1161</Id>
-    <Title>Enum member should declare explicit value.</Title>
-    <MessageFormat>Enum member should declare explicit value.</MessageFormat>
+    <Title>Enum should declare explicit values.</Title>
+    <MessageFormat>Enum should declare explicit values.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -3399,9 +3399,9 @@ public delegate void FooEventHandler(object sender, FooEventArgs args);]]></Befo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo
+        <Before><![CDATA[public enum Foo // [|Id|]
 {
-    A, // [|Id|]
+    A,
     B,
     C,
 }]]></Before>

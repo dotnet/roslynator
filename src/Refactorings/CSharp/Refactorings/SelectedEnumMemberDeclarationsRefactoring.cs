@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveEnumMemberValue))
-                RemoveEnumMemberValueRefactoring.ComputeRefactoring(context, selection);
+                RemoveEnumMemberValueRefactoring.ComputeRefactoring(context, enumDeclaration, selection);
         }
     }
 }

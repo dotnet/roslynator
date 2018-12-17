@@ -1611,6 +1611,11 @@ namespace Roslynator.CSharp
                 Literal(value));
         }
 
+        internal static LiteralExpressionSyntax NumericLiteralExpression(ulong value, SpecialType numericType)
+        {
+            return LiteralExpression(ConvertHelpers.Convert(value, numericType));
+        }
+
         public static LiteralExpressionSyntax TrueLiteralExpression()
         {
             return SyntaxFactory.LiteralExpression(SyntaxKind.TrueLiteralExpression);
