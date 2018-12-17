@@ -141,10 +141,30 @@ enum [|Foo|] : sbyte
     E,
     F,
     G,
-    H,
-    I,
+    H
 }
 ", @"
+using System;
+
+[Flags]
+enum Foo : sbyte
+{
+    A = 0,
+    B = 1,
+    C = 2,
+    D = 4,
+    E = 8,
+    F = 16,
+    G = 32,
+    H = 64
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+        public async Task Test_Flags_SByte_MaxValue()
+        {
+            await VerifyNoFixAsync(@"
 using System;
 
 [Flags]

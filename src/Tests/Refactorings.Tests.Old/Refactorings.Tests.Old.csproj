@@ -7,7 +7,7 @@
   <PropertyGroup>
     <AssemblyName>Roslynator.CSharp.Refactorings.Tests</AssemblyName>
     <RootNamespace>Roslynator.CSharp.Refactorings.Tests</RootNamespace>
-    <CodeAnalysisRuleSet>..\RefactoringsTests.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\tests.ruleset</CodeAnalysisRuleSet>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable> 

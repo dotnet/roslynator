@@ -53,9 +53,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGeneration", "Tools\Cod
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Workspaces", "CSharp.Workspaces\CSharp.Workspaces.csproj", "{56DA29A3-C179-471C-9941-42426EEB84D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.TestLibrary", "Tests\Tests.TestLibrary\Tests.TestLibrary.csproj", "{B26059E8-E5D8-415F-AF7C-210750DB4CB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestLibrary", "Tests\TestLibrary\TestLibrary.csproj", "{B26059E8-E5D8-415F-AF7C-210750DB4CB0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests.TestConsole", "Tests\Tests.TestConsole\Tests.TestConsole.csproj", "{09B4373A-8AA6-48CF-804C-E209CC12BC5C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "Tests\TestConsole\TestConsole.csproj", "{09B4373A-8AA6-48CF-804C-E209CC12BC5C}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Workspaces", "Common.Workspaces\Common.Workspaces.csproj", "{D6B3FAF2-C92D-4B2D-82DF-D6B3DD7F4107}"
 EndProject
@@ -67,13 +67,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LogParser", "Tools\LogParse
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzers.Tests", "Tests\Analyzers.Tests\Analyzers.Tests.csproj", "{6472154E-A2AD-45DC-9656-DFB5D3D09AAB}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Test", "Test", "{A1DB0C05-3710-4B69-955F-2F46E330591B}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A1DB0C05-3710-4B69-955F-2F46E330591B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Refactorings.Tests", "Tests\Refactorings.Tests\Refactorings.Tests.csproj", "{B2E65325-8B4A-46D1-9726-0B1AF9BF26EC}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeFixes.Tests", "Tests\CodeFixes.Tests\CodeFixes.Tests.csproj", "{BD31315B-B89B-43F7-994D-EBE6FFC2D89B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Tests", "Tests\Tests\Tests.csproj", "{306D8762-6A4E-4957-ABE6-5C30E13BD95F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFramework.Core", "Tests\TestFramework.Core\TestFramework.Core.csproj", "{306D8762-6A4E-4957-ABE6-5C30E13BD95F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Tests", "Tests\CSharp.Tests\CSharp.Tests.csproj", "{9960FC47-14B1-492F-918C-114FDB75790E}"
 EndProject
@@ -117,6 +117,10 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core.Tests", "Tests\Core.Tests\Core.Tests.csproj", "{73ABB10A-2252-46F4-B65D-D27FA8560EB6}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualBasic", "VisualBasic\VisualBasic.csproj", "{A0C4C70C-8249-49D7-BF72-D942B7B79D47}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFramework.CSharp", "Tests\TestFramework.CSharp\TestFramework.CSharp.csproj", "{29F9EF2D-2927-418A-9E45-26807E0FB5D1}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFramework.VisualBasic", "Tests\TestFramework.VisualBasic\TestFramework.VisualBasic.csproj", "{CAAD056C-08A2-4132-9652-1BBBDC5D6C22}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -237,6 +241,14 @@ Global
 		{73ABB10A-2252-46F4-B65D-D27FA8560EB6}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A0C4C70C-8249-49D7-BF72-D942B7B79D47}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A0C4C70C-8249-49D7-BF72-D942B7B79D47}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F9EF2D-2927-418A-9E45-26807E0FB5D1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{29F9EF2D-2927-418A-9E45-26807E0FB5D1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{29F9EF2D-2927-418A-9E45-26807E0FB5D1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{29F9EF2D-2927-418A-9E45-26807E0FB5D1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAAD056C-08A2-4132-9652-1BBBDC5D6C22}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAAD056C-08A2-4132-9652-1BBBDC5D6C22}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAAD056C-08A2-4132-9652-1BBBDC5D6C22}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAAD056C-08A2-4132-9652-1BBBDC5D6C22}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -265,6 +277,8 @@ Global
 		{97FBDF71-F240-48F2-B29A-E6B27597E38B} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 		{A16068FE-9E6C-45D2-8114-CC189600AFA2} = {228E25E1-FDE6-40C1-98AF-8E636D174D94}
 		{73ABB10A-2252-46F4-B65D-D27FA8560EB6} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
+		{29F9EF2D-2927-418A-9E45-26807E0FB5D1} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
+		{CAAD056C-08A2-4132-9652-1BBBDC5D6C22} = {A1DB0C05-3710-4B69-955F-2F46E330591B}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D1943010-8F47-4798-9A3D-97BC24CF1AC4}

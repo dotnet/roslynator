@@ -310,8 +310,7 @@ namespace A.B
         }
     }
 }
-",
-RefactoringId, additionalSources: new string[] { @"
+", additionalSources: new string[] { @"
 namespace A.B
 {
     class C2
@@ -327,7 +326,7 @@ namespace A.B
         public const string K3 = @""x"";
     }
 }
-", });
+", }, equivalenceKey: RefactoringId);
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineConstantValue)]
