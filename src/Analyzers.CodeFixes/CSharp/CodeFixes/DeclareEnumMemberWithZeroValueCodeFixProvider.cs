@@ -2,13 +2,16 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -21,10 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
             get { return ImmutableArray.Create(DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue); }
         }
 
-        public override FixAllProvider GetFixAllProvider()
-        {
-            return null;
-        }
+        public override FixAllProvider GetFixAllProvider() => null;
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
@@ -35,10 +35,32 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Declare enum member with zero value",
-                cancellationToken => DeclareEnumMemberWithZeroValueRefactoring.RefactorAsync(context.Document, enumDeclaration, cancellationToken),
+                ct => RefactorAsync(context.Document, enumDeclaration, ct),
                 GetEquivalenceKey(DiagnosticIdentifiers.DeclareEnumMemberWithZeroValue));
 
             context.RegisterCodeFix(codeAction, context.Diagnostics);
+        }
+
+        private static async Task<Document> RefactorAsync(
+            Document document,
+            EnumDeclarationSyntax enumDeclaration,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken);
+
+            string name = NameGenerator.Default.EnsureUniqueMemberName("None", symbol);
+
+            EnumMemberDeclarationSyntax enumMember = EnumMemberDeclaration(
+                Identifier(name).WithRenameAnnotation(),
+                NumericLiteralExpression(0));
+
+            enumMember = enumMember.WithTrailingTrivia(NewLine());
+
+            EnumDeclarationSyntax newNode = enumDeclaration.WithMembers(enumDeclaration.Members.Insert(0, enumMember));
+
+            return await document.ReplaceNodeAsync(enumDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }

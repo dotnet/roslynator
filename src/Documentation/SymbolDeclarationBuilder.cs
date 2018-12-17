@@ -431,9 +431,9 @@ namespace Roslynator.Documentation
                         }
                     case TypedConstantKind.Enum:
                         {
-                            OneOrMany<EnumFieldInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
+                            OneOrMany<EnumFieldSymbolInfo> oneOrMany = EnumUtility.GetConstituentFields(typedConstant.Value, (INamedTypeSymbol)typedConstant.Type);
 
-                            OneOrMany<EnumFieldInfo>.Enumerator en = oneOrMany.GetEnumerator();
+                            OneOrMany<EnumFieldSymbolInfo>.Enumerator en = oneOrMany.GetEnumerator();
 
                             if (en.MoveNext())
                             {

@@ -847,15 +847,15 @@ namespace Roslynator.Documentation
                 {
                     bool hasCombinedValue = false;
 
-                    ImmutableArray<EnumFieldInfo> fieldInfos = default;
+                    EnumSymbolInfo enumInfo = default;
 
                     if (containingType.HasAttribute(MetadataNames.System_FlagsAttribute))
                     {
-                        fieldInfos = EnumUtility.GetFields(containingType);
+                        enumInfo = EnumSymbolInfo.Create(containingType);
 
                         foreach (IFieldSymbol field in fields)
                         {
-                            if (!EnumUtility.GetMinimalConstituentFields(field, fieldInfos).IsDefault)
+                            if (EnumUtility.GetMinimalConstituentFields(field, enumInfo).Any())
                             {
                                 hasCombinedValue = true;
                                 break;
@@ -889,16 +889,16 @@ namespace Roslynator.Documentation
                         {
                             WriteStartTableCell();
 
-                            ImmutableArray<EnumFieldInfo> constitiuentFields = EnumUtility.GetMinimalConstituentFields(en.Current, fieldInfos);
+                            ImmutableArray<EnumFieldSymbolInfo> constituentFields = EnumUtility.GetMinimalConstituentFields(en.Current, enumInfo);
 
-                            if (!constitiuentFields.IsDefault)
+                            if (constituentFields.Any())
                             {
-                                WriteString(constitiuentFields[0].Name);
+                                WriteString(constituentFields[0].Name);
 
-                                for (int i = 1; i < constitiuentFields.Length; i++)
+                                for (int i = 1; i < constituentFields.Length; i++)
                                 {
                                     WriteString(" | ");
-                                    WriteString(constitiuentFields[i].Name);
+                                    WriteString(constituentFields[i].Name);
                                 }
                             }
 
@@ -1372,7 +1372,7 @@ namespace Roslynator.Documentation
 
                 if (fieldSymbol.Type.TypeKind == TypeKind.Enum)
                 {
-                    OneOrMany<EnumFieldInfo>.Enumerator en = EnumUtility.GetConstituentFields(fieldSymbol.ConstantValue, (INamedTypeSymbol)fieldSymbol.Type).GetEnumerator();
+                    OneOrMany<EnumFieldSymbolInfo>.Enumerator en = EnumUtility.GetConstituentFields(fieldSymbol.ConstantValue, fieldSymbol.ContainingType).GetEnumerator();
 
                     if (en.MoveNext())
                     {

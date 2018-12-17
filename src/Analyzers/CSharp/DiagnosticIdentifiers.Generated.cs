@@ -144,7 +144,7 @@ namespace Roslynator.CSharp
         public const string StaticMemberInGenericTypeShouldUseTypeParameter = "RCS1158";
         public const string UseGenericEventHandler = "RCS1159";
         public const string AbstractTypeShouldNotHavePublicConstructors = "RCS1160";
-        public const string EnumMemberShouldDeclareExplicitValue = "RCS1161";
+        public const string EnumShouldDeclareExplicitValues = "RCS1161";
         public const string AvoidChainOfAssignments = "RCS1162";
         public const string UnusedParameter = "RCS1163";
         public const string UnusedTypeParameter = "RCS1164";

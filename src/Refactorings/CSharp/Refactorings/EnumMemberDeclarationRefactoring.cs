@@ -2,7 +2,6 @@
 
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
@@ -11,19 +10,21 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringAsync(RefactoringContext context, EnumMemberDeclarationSyntax enumMemberDeclaration)
         {
-            if (context.Span.IsEmptyAndContainedInSpan(enumMemberDeclaration))
+            if (context.Span.IsEmpty
+                && enumMemberDeclaration.Parent is EnumDeclarationSyntax enumDeclaration)
             {
-                SyntaxNode parent = enumMemberDeclaration.Parent;
-
-                if (parent?.Kind() == SyntaxKind.EnumDeclaration)
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumValues))
                 {
-                    var enumDeclaration = (EnumDeclarationSyntax)parent;
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumValues))
-                        await GenerateEnumValuesRefactoring.ComputeRefactoringAsync(context, enumDeclaration).ConfigureAwait(false);
+                    GenerateEnumValuesRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
+                }
 
-                    if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumMember))
-                        await GenerateEnumMemberRefactoring.ComputeRefactoringAsync(context, enumDeclaration).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.GenerateEnumMember))
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    GenerateEnumMemberRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
                 }
             }
         }
