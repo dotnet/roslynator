@@ -9,7 +9,7 @@
     <ReleaseNotes>http://github.com/JosefPihrt/Roslynator/blob/master/ChangeLog.md</ReleaseNotes>
     <Icon>Roslynator.ico</Icon>
     <PreviewImage>RoslynatorPreview.png</PreviewImage>
-    <Tags>Roslyn,Refactoring,CodeAnalysis,C#,CSharp,Productivity</Tags>
+    <Tags>roslyn,refactoring,c#,csharp,productivity</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Version="[15.0,16.0)" Id="Microsoft.VisualStudio.Community" />

@@ -1,0 +1,13 @@
+﻿{
+  "$schema": "http://json.schemastore.org/vsix-publish",
+  "categories": [ "coding", "other" ],
+  "identity": {
+    "internalName": "Roslynator2017"
+  },
+  "overview": "Overview.md",
+  "priceCategory": "free",
+  "publisher": "josefpihrt",
+  "private": false,
+  "qna": true,
+  "repo": "https://github.com/JosefPihrt/Roslynator"
+}
