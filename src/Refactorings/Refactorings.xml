@@ -543,6 +543,33 @@ if (y)
     <Syntaxes>
       <Syntax>selected if statements</Syntax>
     </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[bool condition1 = false;
+bool condition2 = false;
+
+if (condition1)
+{
+    return false;
+}
+
+if (condition2)
+{
+    return false;
+}
+
+return true;]]></Before>
+        <After><![CDATA[bool condition1 = false;
+bool condition2 = false;
+
+if (condition1 || condition2)
+{
+    return false;
+}
+
+return true;]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0076" Identifier="MergeInterpolationIntoInterpolatedString" Title="Merge interpolation into interpolated string" IsObsolete="true">
     <Syntaxes>
