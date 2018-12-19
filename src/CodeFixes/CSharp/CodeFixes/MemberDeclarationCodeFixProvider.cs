@@ -13,6 +13,8 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.SyntaxRewriters;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -40,7 +42,19 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.OnlyClassTypesCanContainDestructors,
                     CompilerDiagnosticIdentifiers.StructsCannotContainExplicitParameterlessConstructors,
                     CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass,
-                    CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember);
+                    CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember,
+                    CompilerDiagnosticIdentifiers.MethodsWithVariableArgumentsAreNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.ArgumentTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.ReturnTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.TypeOfVariableIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.IdentifierDifferingOnlyInCaseIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.IdentifierIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.BaseTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.ArraysAsAttributeArgumentsIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant,
+                    CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant);
             }
         }
 
@@ -54,7 +68,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration)
                 && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RenameDestructorToMatchClassName)
-                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RenameTupleElement))
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.RenameTupleElement)
+                && !Settings.IsCodeFixEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
             {
                 return;
             }
@@ -386,6 +401,30 @@ namespace Roslynator.CSharp.CodeFixes
 
                             break;
                         }
+                    case CompilerDiagnosticIdentifiers.MethodsWithVariableArgumentsAreNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.ArgumentTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.ReturnTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.TypeOfVariableIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.IdentifierDifferingOnlyInCaseIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.IdentifierIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.BaseTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.ArraysAsAttributeArgumentsIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant:
+                    case CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant:
+                        {
+                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
+                                break;
+
+                            CodeAction codeAction = CodeAction.Create(
+                                $"Mark {CSharpFacts.GetTitle(memberDeclaration)} as non-CLS-compliant",
+                                ct => MarkDeclarationAsNonCLSCompliantAsync(context.Document, memberDeclaration, ct),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
                 }
             }
         }
@@ -449,6 +488,21 @@ namespace Roslynator.CSharp.CodeFixes
             newNode = newNode.WithAccessorList(newAccessorList);
 
             return document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken);
+        }
+
+        private static Task<Document> MarkDeclarationAsNonCLSCompliantAsync(
+            Document document,
+            MemberDeclarationSyntax memberDeclaration,
+            CancellationToken cancellationToken)
+        {
+            AttributeListSyntax attributeList = AttributeList(
+                Attribute(
+                    ParseName("global::System.CLSCompliantAttribute").WithSimplifierAnnotation(),
+                    AttributeArgument(FalseLiteralExpression()))).WithFormatterAnnotation();
+
+            MemberDeclarationSyntax newMemberDeclaration = SyntaxManipulation.AddAttributeLists(memberDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+
+            return document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken);
         }
     }
 }

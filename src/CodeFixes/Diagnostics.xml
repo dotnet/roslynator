@@ -1016,6 +1016,90 @@
     Message="Since '{0}' is an async method that returns 'Task', a return keyword must not be followed by an object expression. Did you intend to return 'Task&lt;T&gt;'?"
     HelpUrl="" />
   <Diagnostic
+    Id="CS3000"
+    Identifier="MethodsWithVariableArgumentsAreNotCLSCompliant"
+    Severity="Warning"
+    Title="Methods with variable arguments are not CLS-compliant."
+    Message="Methods with variable arguments are not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3000" />
+  <Diagnostic
+    Id="CS3001"
+    Identifier="ArgumentTypeIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Argument type 'type' is not CLS-compliant."
+    Message="Argument type '{0}' is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3001" />
+  <Diagnostic
+    Id="CS3002"
+    Identifier="ReturnTypeIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Return type of 'method' is not CLS-compliant."
+    Message="Return type of '{0}' is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3002" />
+  <Diagnostic
+    Id="CS3003"
+    Identifier="TypeOfVariableIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Type of 'variable' is not CLS-compliant."
+    Message="Type of '{0}' is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/cs-cz/dotnet/csharp/language-reference/compiler-messages/cs3003" />
+  <Diagnostic
+    Id="CS3005"
+    Identifier="IdentifierDifferingOnlyInCaseIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Identifier 'identifier' differing only in case is not CLS-compliant."
+    Message="Identifier '{0}' differing only in case is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3005" />
+  <Diagnostic
+    Id="CS3006"
+    Identifier="OverloadedMethodDifferingOnlyInRefOrOutOrInArrayRankIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Overloaded method 'method' differing only in ref or out, or in array rank, is not CLS-compliant."
+    Message="Overloaded method '{0}' differing only in ref or out, or in array rank, is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3006" />
+  <Diagnostic
+    Id="CS3007"
+    Identifier="OverloadedMethodDifferingOnlyByUnnamedArrayTypesIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Overloaded method 'method' differing only by unnamed array types is not CLS-compliant."
+    Message="Overloaded method '{0}' differing only by unnamed array types is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/cs-cz/dotnet/csharp/language-reference/compiler-messages/cs3007" />
+  <Diagnostic
+    Id="CS3008"
+    Identifier="IdentifierIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Identifier 'identifier' is not CLS-compliant."
+    Message="Identifier '{0}' is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3008" />
+  <Diagnostic
+    Id="CS3009"
+    Identifier="BaseTypeIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Base type 'type' is not CLS-compliant."
+    Message="'{0}': base type '{1}' is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/cs-cz/dotnet/csharp/language-reference/compiler-messages/cs3009" />
+  <Diagnostic
+    Id="CS3016"
+    Identifier="ArraysAsAttributeArgumentsIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Arrays as attribute arguments is not CLS-compliant."
+    Message="Arrays as attribute arguments is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3016" />
+  <Diagnostic
+    Id="CS3024"
+    Identifier="ConstraintTypeIsNotCLSCompliant"
+    Severity="Warning"
+    Title="Constraint type 'type' is not CLS-compliant."
+    Message="Constraint type '{0}' is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/cs-cz/dotnet/csharp/misc/compiler-warning-cs3024" />
+  <Diagnostic
+    Id="CS3027"
+    Identifier="TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant"
+    Severity="Warning"
+    Title="'type_1' is not CLS-compliant because base interface 'type_2' is not CLS-compliant."
+    Message="'{0}' is not CLS-compliant because base interface '{1}' is not CLS-compliant"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs3027" />
+  <Diagnostic
     Id="CS8050"
     Identifier="OnlyAutoImplementedPropertiesCanHaveInitializers"
     Severity="Error"
