@@ -622,4 +622,20 @@
       <Id>CS1750</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0112" Identifier="MarkDeclarationAsNonCLSCompliant" Title="Mark declaration as non-CLS-compliant">
+    <FixableDiagnosticIds>
+      <Id>CS3000</Id>
+      <Id>CS3001</Id>
+      <Id>CS3002</Id>
+      <Id>CS3003</Id>
+      <Id>CS3005</Id>
+      <Id>CS3006</Id>
+      <Id>CS3007</Id>
+      <Id>CS3008</Id>
+      <Id>CS3009</Id>
+      <Id>CS3016</Id>
+      <Id>CS3024</Id>
+      <Id>CS3027</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

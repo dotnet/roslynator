@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.ChangeParameterType;
+        = CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -132,6 +132,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RemoveParameter, "Remove parameter (fixes CS0136)", IsEnabled(CodeFixIdentifiers.RemoveParameter)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.RenameTupleElement, "Rename tuple element to match overridden member (fixes CS8139)", IsEnabled(CodeFixIdentifiers.RenameTupleElement)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeParameterType, "Change parameter type (fixes CS1750)", IsEnabled(CodeFixIdentifiers.ChangeParameterType)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant, "Mark declaration as non-CLS-compliant (fixes CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027)", IsEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant)));
         }
     }
 }

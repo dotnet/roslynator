@@ -221,12 +221,10 @@ namespace Roslynator.CSharp
             bool keepDocumentationCommentOnTop,
             params AttributeListSyntax[] attributeLists)
         {
-            return AddAttributeLists(
+            return SyntaxManipulation.AddAttributeLists(
                 classDeclaration,
                 keepDocumentationCommentOnTop,
-                attributeLists,
-                withAttributeLists: (f, g) => f.WithAttributeLists(g),
-                addAttributeLists: (f, g) => f.AddAttributeLists(g));
+                attributeLists);
         }
         #endregion ClassDeclarationSyntax
 
@@ -1076,12 +1074,10 @@ namespace Roslynator.CSharp
             bool keepDocumentationCommentOnTop,
             params AttributeListSyntax[] attributeLists)
         {
-            return AddAttributeLists(
+            return SyntaxManipulation.AddAttributeLists(
                 interfaceDeclaration,
                 keepDocumentationCommentOnTop,
-                attributeLists,
-                withAttributeLists: (f, g) => f.WithAttributeLists(g),
-                addAttributeLists: (f, g) => f.AddAttributeLists(g));
+                attributeLists);
         }
         #endregion InterfaceDeclarationSyntax
 
@@ -2029,12 +2025,10 @@ namespace Roslynator.CSharp
             bool keepDocumentationCommentOnTop,
             params AttributeListSyntax[] attributeLists)
         {
-            return AddAttributeLists(
+            return SyntaxManipulation.AddAttributeLists(
                 structDeclaration,
                 keepDocumentationCommentOnTop,
-                attributeLists,
-                withAttributeLists: (f, g) => f.WithAttributeLists(g),
-                addAttributeLists: (f, g) => f.AddAttributeLists(g));
+                attributeLists);
         }
         #endregion StructDeclarationSyntax
 
@@ -4089,41 +4083,6 @@ namespace Roslynator.CSharp
                         return typeDeclaration;
                     }
             }
-        }
-
-        private static T AddAttributeLists<T>(
-            this T typeDeclaration,
-            bool keepDocumentationCommentOnTop,
-            AttributeListSyntax[] attributeLists,
-            Func<T, SyntaxList<AttributeListSyntax>, T> withAttributeLists,
-            Func<T, AttributeListSyntax[], T> addAttributeLists) where T : TypeDeclarationSyntax
-        {
-            if (attributeLists == null)
-                throw new ArgumentNullException(nameof(attributeLists));
-
-            if (typeDeclaration == null)
-                throw new ArgumentNullException(nameof(typeDeclaration));
-
-            if (keepDocumentationCommentOnTop
-                && !typeDeclaration.AttributeLists.Any()
-                && attributeLists.Length > 0)
-            {
-                SyntaxTriviaList leadingTrivia = typeDeclaration.GetLeadingTrivia();
-
-                for (int i = 0; i < leadingTrivia.Count; i++)
-                {
-                    if (leadingTrivia[i].IsDocumentationCommentTrivia())
-                    {
-                        attributeLists[0] = attributeLists[0].PrependToLeadingTrivia(leadingTrivia.Take(i + 1));
-
-                        typeDeclaration = typeDeclaration.WithLeadingTrivia(leadingTrivia.Skip(i + 1));
-
-                        return withAttributeLists(typeDeclaration, List(attributeLists));
-                    }
-                }
-            }
-
-            return addAttributeLists(typeDeclaration, attributeLists);
         }
         #endregion TypeDeclarationSyntax
 
