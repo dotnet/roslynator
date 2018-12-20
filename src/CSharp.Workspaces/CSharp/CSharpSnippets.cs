@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -137,43 +136,39 @@ namespace Roslynator.CSharp
             return ReturnStatement(FalseLiteralExpression());
         }
 
-        public static ThrowExpressionSyntax ThrowNewNotImplementedExceptionExpression(SemanticModel semanticModel, int position)
+        public static ThrowExpressionSyntax ThrowNewNotImplementedExceptionExpression()
         {
-            return ThrowNewExceptionExpression("System.NotImplementedException", semanticModel, position);
+            return ThrowNewExpression("global::System.NotImplementedException");
         }
 
-        public static ThrowStatementSyntax ThrowNewNotImplementedExceptionStatement(SemanticModel semanticModel, int position)
+        public static ThrowStatementSyntax ThrowNewNotImplementedExceptionStatement()
         {
-            return ThrowNewExceptionStatement("System.NotImplementedException", semanticModel, position);
+            return ThrowNewStatement("global::System.NotImplementedException");
         }
 
-        private static ThrowExpressionSyntax ThrowNewExceptionExpression(string fullyQualifiedMetadataName, SemanticModel semanticModel, int position)
+        public static ThrowExpressionSyntax ThrowNewNotSupportedExceptionExpression()
         {
-            INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName);
-
-            return ThrowNewExceptionExpression(exceptionSymbol, semanticModel, position);
+            return ThrowNewExpression("global::System.NotSupportedException");
         }
 
-        private static ThrowExpressionSyntax ThrowNewExceptionExpression(INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, int position)
+        public static ThrowStatementSyntax ThrowNewNotSupportedExceptionStatement()
+        {
+            return ThrowNewStatement("global::System.NotSupportedException");
+        }
+
+        private static ThrowExpressionSyntax ThrowNewExpression(string exceptionTypeName)
         {
             return ThrowExpression(
                 ObjectCreationExpression(
-                    exceptionSymbol.ToMinimalTypeSyntax(semanticModel, position),
+                    ParseTypeName(exceptionTypeName).WithSimplifierAnnotation(),
                     ArgumentList()));
         }
 
-        private static ThrowStatementSyntax ThrowNewExceptionStatement(string fullyQualifiedMetadataName, SemanticModel semanticModel, int position)
-        {
-            INamedTypeSymbol exceptionSymbol = semanticModel.GetTypeByMetadataName(fullyQualifiedMetadataName);
-
-            return ThrowNewExceptionStatement(exceptionSymbol, semanticModel, position);
-        }
-
-        private static ThrowStatementSyntax ThrowNewExceptionStatement(INamedTypeSymbol exceptionSymbol, SemanticModel semanticModel, int position)
+        private static ThrowStatementSyntax ThrowNewStatement(string exceptionTypeName)
         {
             return ThrowStatement(
                 ObjectCreationExpression(
-                    exceptionSymbol.ToMinimalTypeSyntax(semanticModel, position),
+                    ParseTypeName(exceptionTypeName).WithSimplifierAnnotation(),
                     ArgumentList()));
         }
     }

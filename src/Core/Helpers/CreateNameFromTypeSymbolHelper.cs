@@ -83,7 +83,10 @@ namespace Roslynator.Helpers
                         if (typeArguments.Length == 1
                             && namedTypeSymbol.Implements(SpecialType.System_Collections_IEnumerable, allInterfaces: true))
                         {
-                            return typeArguments[0];
+                            ITypeSymbol typeArgument = typeArguments[0];
+
+                            if (ValidateTypeArgumentName(typeArgument.Name))
+                                return typeArgument;
                         }
 
                         break;
@@ -91,6 +94,20 @@ namespace Roslynator.Helpers
             }
 
             return typeSymbol;
+
+            bool ValidateTypeArgumentName(string name)
+            {
+                if (name.Length <= 1)
+                    return false;
+
+                for (int i = 1; i < name.Length; i++)
+                {
+                    if (char.IsDigit(name[i]))
+                        return false;
+                }
+
+                return true;
+            }
         }
 
         private static bool UsePlural(ITypeSymbol typeSymbol)

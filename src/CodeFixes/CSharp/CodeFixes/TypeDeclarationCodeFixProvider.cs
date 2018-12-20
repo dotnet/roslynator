@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, typeDeclaration.Identifier.SpanStart);
 
-                                    MethodDeclarationSyntax methodDeclaration = ObjectEqualsMethodDeclaration(type, semanticModel, typeDeclaration.OpenBraceToken.Span.End);
+                                    MethodDeclarationSyntax methodDeclaration = ObjectEqualsMethodDeclaration(type);
 
                                     TypeDeclarationSyntax newNode = MemberDeclarationInserter.Default.Insert(typeDeclaration, methodDeclaration);
 
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            MethodDeclarationSyntax methodDeclaration = ObjectGetHashCodeMethodDeclaration(semanticModel, typeDeclaration.CloseBraceToken.Span.End);
+                            MethodDeclarationSyntax methodDeclaration = ObjectGetHashCodeMethodDeclaration();
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Override object.GetHashCode",
@@ -107,8 +107,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         private static MethodDeclarationSyntax ObjectEqualsMethodDeclaration(
             TypeSyntax type,
-            SemanticModel semanticModel,
-            int position,
             string parameterName = "obj",
             string localName = "other")
         {
@@ -124,17 +122,17 @@ namespace Roslynator.CSharp.CodeFixes
                             DeclarationPattern(
                                 type,
                                 SingleVariableDesignation(Identifier(localName))))),
-                    ThrowNewNotImplementedExceptionStatement(semanticModel, position)));
+                    ThrowNewNotImplementedExceptionStatement()));
         }
 
-        private static MethodDeclarationSyntax ObjectGetHashCodeMethodDeclaration(SemanticModel semanticModel, int position)
+        private static MethodDeclarationSyntax ObjectGetHashCodeMethodDeclaration()
         {
             return MethodDeclaration(
                 Modifiers.Public_Override(),
                 IntType(),
                 Identifier("GetHashCode"),
                 ParameterList(),
-                Block(ThrowNewNotImplementedExceptionStatement(semanticModel, position)));
+                Block(ThrowNewNotImplementedExceptionStatement()));
         }
     }
 }
