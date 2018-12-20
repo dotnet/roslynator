@@ -2533,5 +2533,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MakeParameterRefReadOnly}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1232</summary>
+        public static readonly DiagnosticDescriptor OrderElementsInDocumentationComment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderElementsInDocumentationComment, 
+            title:              "Order elements in documentation comment.", 
+            messageFormat:      "Order elements in documentation comment.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderElementsInDocumentationComment}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

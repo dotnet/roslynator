@@ -5124,4 +5124,39 @@ public string Foo()
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="OrderElementsInDocumentationComment">
+    <Id>RCS1232</Id>
+    <Title>Order elements in documentation comment.</Title>
+    <MessageFormat>Order elements in documentation comment.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C
+{
+    /// <summary></summary>
+    /// <param name="p3"></param> [|Id|]
+    /// <param name="p2"></param>
+    /// <param name="p1"></param>
+    void M(object p1, object p2, object p3)
+    {
+    }
+}]]></Before>
+        <After><![CDATA[class C
+{
+    /// <summary></summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
+    /// <param name="p3"></param>
+    void M(object p1, object p2, object p3)
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
