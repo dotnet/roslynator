@@ -111,7 +111,9 @@ namespace Roslynator.CSharp.Refactorings
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceIfWithSwitch)
                     && isTopmostIf)
                 {
-                    await ReplaceIfWithSwitchRefactoring.ComputeRefactoringAsync(context, ifStatement).ConfigureAwait(false);
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ReplaceIfWithSwitchRefactoring.ComputeRefactoring(context, ifStatement, semanticModel);
                 }
 
                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.SplitIfStatement))
