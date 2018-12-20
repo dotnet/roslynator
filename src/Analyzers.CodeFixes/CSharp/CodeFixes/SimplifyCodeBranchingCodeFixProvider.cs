@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Diagnostics;
@@ -20,8 +21,6 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class SimplifyCodeBranchingCodeFixProvider : BaseCodeFixProvider
     {
-        private const string Title = "Simplify code branching";
-
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(DiagnosticIdentifiers.SimplifyCodeBranching); }
@@ -36,9 +35,11 @@ namespace Roslynator.CSharp.CodeFixes
 
             Diagnostic diagnostic = context.Diagnostics[0];
 
+            Document document = context.Document;
+
             CodeAction codeAction = CodeAction.Create(
-                Title,
-                cancellationToken => RefactorAsync(context.Document, ifStatement, cancellationToken),
+                "Simplify code branching",
+                ct => RefactorAsync(document, ifStatement, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
@@ -115,85 +116,107 @@ namespace Roslynator.CSharp.CodeFixes
             }
             else
             {
-                var block = (BlockSyntax)ifStatement.Parent;
+                StatementSyntax statement = ifStatement.SingleNonBlockStatementOrDefault();
 
-                SyntaxList<StatementSyntax> statements = block.Statements;
-
-                BlockSyntax newBlock = block.WithStatements(statements.Remove(ifStatement));
-
-                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-                ExpressionSyntax newCondition = Inverter.LogicallyNegate(condition, semanticModel, cancellationToken);
-
-                SyntaxNode newNode = block.Parent;
-
-                switch (block.Parent)
+                if (statement.Kind() == SyntaxKind.BreakStatement)
                 {
-                    case WhileStatementSyntax whileStatement:
-                        {
-                            cancellationToken.ThrowIfCancellationRequested();
+                    var block = (BlockSyntax)ifStatement.Parent;
 
-                            if (statements.IsFirst(ifStatement))
-                            {
-                                newNode = whileStatement.Update(
-                                    whileStatement.WhileKeyword,
-                                    whileStatement.OpenParenToken,
-                                    newCondition,
-                                    whileStatement.CloseParenToken,
-                                    newBlock);
-                            }
-                            else
-                            {
-                                newNode = DoStatement(
-                                    Token(whileStatement.WhileKeyword.LeadingTrivia, SyntaxKind.DoKeyword, whileStatement.CloseParenToken.TrailingTrivia),
-                                    newBlock.WithoutTrailingTrivia(),
-                                    Token(SyntaxKind.WhileKeyword),
-                                    OpenParenToken(),
-                                    newCondition,
-                                    CloseParenToken(),
-                                    SemicolonToken().WithTrailingTrivia(newBlock.GetTrailingTrivia()));
-                            }
+                    SyntaxList<StatementSyntax> statements = block.Statements;
 
-                            break;
-                        }
-                    case DoStatementSyntax doStatement:
-                        {
-                            cancellationToken.ThrowIfCancellationRequested();
+                    BlockSyntax newBlock = block.WithStatements(statements.Remove(ifStatement));
 
-                            if (statements.IsLast(ifStatement))
-                            {
-                                newNode = doStatement.Update(
-                                    doStatement.DoKeyword,
-                                    newBlock,
-                                    doStatement.WhileKeyword,
-                                    doStatement.OpenParenToken,
-                                    newCondition,
-                                    doStatement.CloseParenToken,
-                                    doStatement.SemicolonToken);
-                            }
-                            else
-                            {
-                                newNode = WhileStatement(
-                                    Token(doStatement.DoKeyword.LeadingTrivia, SyntaxKind.WhileKeyword, SyntaxTriviaList.Empty),
-                                    OpenParenToken(),
-                                    newCondition,
-                                    Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, doStatement.DoKeyword.TrailingTrivia),
-                                    newBlock.WithTrailingTrivia(doStatement.GetTrailingTrivia()));
-                            }
+                    SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                            break;
-                        }
-                    default:
-                        {
-                            Debug.Fail(block.Parent.Kind().ToString());
-                            break;
-                        }
+                    ExpressionSyntax newCondition = Inverter.LogicallyNegate(condition, semanticModel, cancellationToken);
+
+                    SyntaxNode newNode = block.Parent;
+
+                    switch (block.Parent)
+                    {
+                        case WhileStatementSyntax whileStatement:
+                            {
+                                cancellationToken.ThrowIfCancellationRequested();
+
+                                if (statements.IsFirst(ifStatement))
+                                {
+                                    newNode = whileStatement.Update(
+                                        whileStatement.WhileKeyword,
+                                        whileStatement.OpenParenToken,
+                                        newCondition,
+                                        whileStatement.CloseParenToken,
+                                        newBlock);
+                                }
+                                else
+                                {
+                                    newNode = DoStatement(
+                                        Token(whileStatement.WhileKeyword.LeadingTrivia, SyntaxKind.DoKeyword, whileStatement.CloseParenToken.TrailingTrivia),
+                                        newBlock.WithoutTrailingTrivia(),
+                                        Token(SyntaxKind.WhileKeyword),
+                                        OpenParenToken(),
+                                        newCondition,
+                                        CloseParenToken(),
+                                        SemicolonToken().WithTrailingTrivia(newBlock.GetTrailingTrivia()));
+                                }
+
+                                break;
+                            }
+                        case DoStatementSyntax doStatement:
+                            {
+                                cancellationToken.ThrowIfCancellationRequested();
+
+                                if (statements.IsLast(ifStatement))
+                                {
+                                    newNode = doStatement.Update(
+                                        doStatement.DoKeyword,
+                                        newBlock,
+                                        doStatement.WhileKeyword,
+                                        doStatement.OpenParenToken,
+                                        newCondition,
+                                        doStatement.CloseParenToken,
+                                        doStatement.SemicolonToken);
+                                }
+                                else
+                                {
+                                    newNode = WhileStatement(
+                                        Token(doStatement.DoKeyword.LeadingTrivia, SyntaxKind.WhileKeyword, SyntaxTriviaList.Empty),
+                                        OpenParenToken(),
+                                        newCondition,
+                                        Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, doStatement.DoKeyword.TrailingTrivia),
+                                        newBlock.WithTrailingTrivia(doStatement.GetTrailingTrivia()));
+                                }
+
+                                break;
+                            }
+                        default:
+                            {
+                                Debug.Fail(block.Parent.Kind().ToString());
+                                break;
+                            }
+                    }
+
+                    newNode = newNode.WithFormatterAnnotation();
+
+                    return await document.ReplaceNodeAsync(block.Parent, newNode, cancellationToken).ConfigureAwait(false);
                 }
+                else if (statement.Kind() == SyntaxKind.DoStatement)
+                {
+                    var doStatement = (DoStatementSyntax)statement;
 
-                newNode = newNode.WithFormatterAnnotation();
+                    WhileStatementSyntax whileStatement = WhileStatement(
+                        Token(ifStatement.GetLeadingTrivia(), SyntaxKind.WhileKeyword, SyntaxTriviaList.Empty),
+                        OpenParenToken(),
+                        doStatement.Condition,
+                        Token(SyntaxTriviaList.Empty, SyntaxKind.CloseParenToken, doStatement.DoKeyword.TrailingTrivia),
+                        doStatement.Statement.WithTrailingTrivia(ifStatement.GetTrailingTrivia()));
 
-                return await document.ReplaceNodeAsync(block.Parent, newNode, cancellationToken).ConfigureAwait(false);
+                    whileStatement = whileStatement.WithFormatterAnnotation();
+
+                    return await document.ReplaceNodeAsync(ifStatement, whileStatement, cancellationToken).ConfigureAwait(false);
+                }
             }
+
+            throw new InvalidOperationException();
         }
     }
 }
