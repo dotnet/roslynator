@@ -1,0 +1,36 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.3</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>1.0.0.9</Version>
+    <AssemblyName>Roslynator.VisualBasic.Workspaces</AssemblyName>
+    <RootNamespace>Roslynator</RootNamespace>
+    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>VisualBasic.Workspaces.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IsPackable>false</IsPackable>
+    <Authors>Josef Pihrt</Authors>
+    <Company></Company>
+    <Description>This library extends functionality of package Microsoft.CodeAnalysis.VisualBasic.Workspaces</Description>
+    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" Version="2.0.0-beta2" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="2.3.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\VisualBasic\VisualBasic.csproj" />
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
+  </ItemGroup>
+
+</Project>

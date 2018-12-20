@@ -8,11 +8,12 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
-    public abstract class CodeAnalysisOptions
+    internal abstract class CodeAnalysisOptions
     {
-        protected CodeAnalysisOptions(
+        internal CodeAnalysisOptions(
             DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
             bool ignoreAnalyzerReferences = false,
+            bool concurrentAnalysis = true,
             IEnumerable<string> supportedDiagnosticIds = null,
             IEnumerable<string> ignoredDiagnosticIds = null,
             IEnumerable<string> projectNames = null,
@@ -33,6 +34,7 @@ namespace Roslynator
 
             SeverityLevel = severityLevel;
             IgnoreAnalyzerReferences = ignoreAnalyzerReferences;
+            ConcurrentAnalysis = concurrentAnalysis;
             SupportedDiagnosticIds = supportedDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
             IgnoredDiagnosticIds = ignoredDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
             ProjectNames = projectNames?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
@@ -43,6 +45,8 @@ namespace Roslynator
         public DiagnosticSeverity SeverityLevel { get; }
 
         public bool IgnoreAnalyzerReferences { get; }
+
+        public bool ConcurrentAnalysis { get; }
 
         public ImmutableHashSet<string> SupportedDiagnosticIds { get; }
 
@@ -68,8 +72,7 @@ namespace Roslynator
 
         internal bool IsSupportedProject(Project project)
         {
-            if (SyntaxFactsService.IsSupportedLanguage(project.Language)
-                && (Language == null || Language == project.Language))
+            if (Language == null || Language == project.Language)
             {
                 return (ProjectNames.Count > 0)
                     ? ProjectNames.Contains(project.Name)

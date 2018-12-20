@@ -1,29 +1,42 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
+    <TargetFramework>netstandard1.3</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <Version>1.0.0.9</Version>
     <AssemblyName>Roslynator.Workspaces.Core</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
+    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>Workspaces.Core.snk</AssemblyOriginatorKeyFile>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
-    <LangVersion>latest</LangVersion>
+    <LangVersion>7.2</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DocumentationFile>bin\Release\netstandard1.3\Roslynator.Workspaces.Core.xml</DocumentationFile>
   </PropertyGroup>
 
   <PropertyGroup>
-    <IsPackable>false</IsPackable>
+    <PackageId>Roslynator.Workspaces.Core</PackageId>
+    <PackageVersion>1.0.0-rc5</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
-    <Description>This library extends functionality of package Microsoft.CodeAnalysis.Workspaces.Common</Description>
+    <Description>This library extends functionality of package Microsoft.CodeAnalysis.Workspaces.Common.</Description>
     <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <PackageLicenseUrl>https://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <PackageTags>Roslyn;CodeAnalysis</PackageTags>
+    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="2.10.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.Common" Version="2.3.0" />
   </ItemGroup>
 
   <ItemGroup>

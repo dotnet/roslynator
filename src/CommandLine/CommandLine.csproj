@@ -37,6 +37,7 @@
     <TrimFilesRootFiles Include="Roslynator.Common.dll" />
     <TrimFilesRootFiles Include="Roslynator.Common.Workspaces.dll" />
     <TrimFilesRootFiles Include="Roslynator.CSharp.Workspaces.dll" />
+    <TrimFilesRootFiles Include="Roslynator.VisualBasic.Workspaces.dll" />
     <TrimFilesRootFiles Include="Roslynator.CSharp.Analyzers.dll" />
     <TrimFilesRootFiles Include="Roslynator.CSharp.Analyzers.CodeFixes.dll" />
     <TrimFilesRootFiles Include="Roslynator.CSharp.CodeFixes.dll" />
@@ -63,7 +64,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
+    <ProjectReference Include="..\VisualBasic.Workspaces\VisualBasic.Workspaces.csproj" />
     <ProjectReference Include="..\VisualBasic\VisualBasic.csproj" />
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
     <ProjectReference Include="..\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj" />

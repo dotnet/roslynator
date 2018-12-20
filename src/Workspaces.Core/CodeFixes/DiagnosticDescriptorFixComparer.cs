@@ -33,21 +33,22 @@ namespace Roslynator.CodeFixes
             if (y == null)
                 return 1;
 
-            bool hasFixAll2 = FixersById[y.Id].Any(f => f.HasFixAllProvider(FixAllScope.Project));
-
-            if (FixersById[x.Id].Any(f => f.HasFixAllProvider(FixAllScope.Project)))
+            if (HasFixAll(x))
             {
-                if (!hasFixAll2)
-                {
+                if (!HasFixAll(y))
                     return -1;
-                }
             }
-            else if (hasFixAll2)
+            else if (HasFixAll(y))
             {
                 return 1;
             }
 
             return DiagnosticCountByDescriptor[y].CompareTo(DiagnosticCountByDescriptor[x]);
+        }
+
+        private bool HasFixAll(DiagnosticDescriptor descriptor)
+        {
+            return FixersById[descriptor.Id].Any(f => f.HasFixAllProvider(FixAllScope.Project));
         }
     }
 }

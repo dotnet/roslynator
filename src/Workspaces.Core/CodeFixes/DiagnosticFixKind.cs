@@ -4,9 +4,9 @@ namespace Roslynator.CodeFixes
 {
     internal enum DiagnosticFixKind
     {
-        NotFixed = 0,
-        Fixed = 1,
-        PartiallyFixed = 2,
+        Success = 0,
+        PartiallyFixed = 1,
+        NotFixed = 2,
         MultipleFixers = 3,
         CompilerError = 4
     }

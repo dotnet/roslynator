@@ -7,12 +7,12 @@ namespace Roslynator.FindSymbols
         None = 0,
         Class = 1,
         Delegate = 2,
-        Enum = 4,
-        Event = 8,
-        Field = 16,
-        Interface = 32,
-        Method = 64,
-        Property = 128,
-        Struct = 256,
+        Enum = 3,
+        Event = 4,
+        Field = 5,
+        Interface = 6,
+        Method = 7,
+        Property = 8,
+        Struct = 9
     }
 }

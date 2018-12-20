@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.Diagnostics
 {
-    public class CodeAnalyzerOptions : CodeAnalysisOptions
+    internal class CodeAnalyzerOptions : CodeAnalysisOptions
     {
         public static CodeAnalyzerOptions Default { get; } = new CodeAnalyzerOptions();
 
@@ -14,18 +14,27 @@ namespace Roslynator.Diagnostics
             bool ignoreCompilerDiagnostics = false,
             bool reportNotConfigurable = false,
             bool reportSuppressedDiagnostics = false,
-            bool executionTime = false,
+            bool logAnalyzerExecutionTime = false,
+            bool concurrentAnalysis = true,
             DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
             IEnumerable<string> supportedDiagnosticIds = null,
             IEnumerable<string> ignoredDiagnosticIds = null,
             IEnumerable<string> projectNames = null,
             IEnumerable<string> ignoredProjectNames = null,
-            string language = null) : base(severityLevel, ignoreAnalyzerReferences, supportedDiagnosticIds, ignoredDiagnosticIds, projectNames, ignoredProjectNames, language)
+            string language = null) : base(
+                severityLevel: severityLevel,
+                ignoreAnalyzerReferences: ignoreAnalyzerReferences,
+                concurrentAnalysis: concurrentAnalysis,
+                supportedDiagnosticIds: supportedDiagnosticIds,
+                ignoredDiagnosticIds: ignoredDiagnosticIds,
+                projectNames: projectNames,
+                ignoredProjectNames: ignoredProjectNames,
+                language: language)
         {
             IgnoreCompilerDiagnostics = ignoreCompilerDiagnostics;
             ReportNotConfigurable = reportNotConfigurable;
             ReportSuppressedDiagnostics = reportSuppressedDiagnostics;
-            ExecutionTime = executionTime;
+            LogAnalyzerExecutionTime = logAnalyzerExecutionTime;
         }
 
         public bool IgnoreCompilerDiagnostics { get; }
@@ -34,6 +43,6 @@ namespace Roslynator.Diagnostics
 
         public bool ReportSuppressedDiagnostics { get; }
 
-        public bool ExecutionTime { get; }
+        public bool LogAnalyzerExecutionTime { get; }
     }
 }

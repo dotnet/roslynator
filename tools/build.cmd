@@ -83,18 +83,22 @@ if errorlevel 1 (
 del /Q "..\src\Analyzers.CodeFixes\bin\Release\Roslynator.Analyzers.*.nupkg"
 del /Q "..\src\CodeFixes\bin\Release\Roslynator.CodeFixes.*.nupkg"
 del /Q "..\src\Core\bin\Release\Roslynator.Core.*.nupkg"
+del /Q "..\src\Workspaces.Core\bin\Release\Roslynator.Workspaces.Core.*.nupkg"
 del /Q "..\src\CSharp\bin\Release\Roslynator.CSharp.*.nupkg"
 del /Q "..\src\CSharp.Workspaces\bin\Release\Roslynator.CSharp.Workspaces.*.nupkg"
 
 dotnet pack -c Release --no-build -v normal "..\src\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\CodeFixes\CodeFixes.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\Core\Core.csproj"
+dotnet pack -c Release --no-build -v normal "..\src\Workspaces.Core\Workspaces.Core.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\CSharp\CSharp.csproj"
 dotnet pack -c Release --no-build -v normal "..\src\CSharp.Workspaces\CSharp.Workspaces.csproj"
 
-ren "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.vsix" "Roslynator.VisualStudio.%_version%.vsix"
+del /Q "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.*.vsix"
+ren    "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.vsix" "Roslynator.VisualStudio.%_version%.vsix"
 
-ren "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.vsix" "Roslynator.VisualStudio.Refactorings.%_version%.vsix"
+del /Q "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.*.vsix"
+ren    "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.vsix" "Roslynator.VisualStudio.Refactorings.%_version%.vsix"
 
 echo OK
 pause

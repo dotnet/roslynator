@@ -31,6 +31,7 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
     <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
   </ItemGroup>
 
 </Project>

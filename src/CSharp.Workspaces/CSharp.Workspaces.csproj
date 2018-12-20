@@ -49,6 +49,7 @@ Roslynator.NameGenerator</Description>
 
   <ItemGroup>
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
   </ItemGroup>
 
   <Import Project="GenerateDocumentation.targets" />
