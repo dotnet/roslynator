@@ -18,7 +18,8 @@ namespace Roslynator.CSharp.Refactorings
 
         public static void ComputeRefactoring(
             RefactoringContext context,
-            EnumDeclarationSyntax enumDeclaration)
+            EnumDeclarationSyntax enumDeclaration,
+            SemanticModel semanticModel)
         {
             SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
 
@@ -28,38 +29,81 @@ namespace Roslynator.CSharp.Refactorings
             if (members.All(f => f.EqualsValue?.Value == null))
                 return;
 
+            INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, context.CancellationToken);
+
+            bool isFlags = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
+
+            if (!AreNewValuesDifferentFromExistingValues())
+                return;
+
             Document document = context.Document;
 
             context.RegisterRefactoring(
                 "Declare explicit values (overwrite existing values)",
-                ct => RefactorAsync(document, enumDeclaration, cancellationToken: ct),
+                ct => RefactorAsync(document, enumDeclaration, enumSymbol, semanticModel, ct),
                 EquivalenceKey);
+
+            bool AreNewValuesDifferentFromExistingValues()
+            {
+                ulong value = 0;
+
+                foreach (EnumMemberDeclarationSyntax member in enumDeclaration.Members)
+                {
+                    IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(member, context.CancellationToken);
+
+                    EnumFieldSymbolInfo fieldSymbolInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
+
+                    if (!fieldSymbolInfo.HasValue)
+                        return true;
+
+                    if (isFlags
+                        && fieldSymbolInfo.HasCompositeValue())
+                    {
+                        continue;
+                    }
+
+                    if (value != fieldSymbolInfo.Value)
+                        return true;
+
+                    if (isFlags)
+                    {
+                        value = (value == 0) ? 1 : value * 2;
+                    }
+                    else
+                    {
+                        value++;
+                    }
+
+                    if (!ConvertHelpers.CanConvert(value, enumSymbol.EnumUnderlyingType.SpecialType))
+                        return false;
+                }
+
+                return false;
+            }
         }
 
-        private static async Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             EnumDeclarationSyntax enumDeclaration,
+            INamedTypeSymbol enumSymbol,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
-
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
-
-            INamedTypeSymbol enumSymbol = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken);
-
             ulong value = 0;
 
+            SpecialType numericType = enumSymbol.EnumUnderlyingType.SpecialType;
+
             IEnumerable<EnumMemberDeclarationSyntax> newMembers = (enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute))
-                ? members.Select(CreateNewFlagsMember)
-                : members.Select(CreateNewMember);
+                ? enumDeclaration.Members.Select(CreateNewFlagsMember)
+                : enumDeclaration.Members.Select(CreateNewMember);
 
             EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.WithMembers(newMembers.ToSeparatedSyntaxList());
 
-            return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
+            return document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken);
 
             EnumMemberDeclarationSyntax CreateNewFlagsMember(EnumMemberDeclarationSyntax enumMember)
             {
-                if (!ConvertHelpers.CanConvert(value, enumSymbol.EnumUnderlyingType.SpecialType))
+                if (!ConvertHelpers.CanConvert(value, numericType))
                     return enumMember;
 
                 IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
@@ -70,28 +114,36 @@ namespace Roslynator.CSharp.Refactorings
                     return enumMember;
                 }
 
-                EqualsValueClauseSyntax equalsValue = EqualsValueClause(NumericLiteralExpression(value, enumSymbol.EnumUnderlyingType.SpecialType));
+                EnumMemberDeclarationSyntax newEnumMember = CreateNewEnumMember(enumMember, value, numericType);
 
                 value = (value == 0) ? 1 : value * 2;
 
-                return enumMember
-                    .WithEqualsValue(equalsValue)
-                    .WithFormatterAnnotation();
+                return newEnumMember;
             }
 
             EnumMemberDeclarationSyntax CreateNewMember(EnumMemberDeclarationSyntax enumMember)
             {
-                if (!ConvertHelpers.CanConvert(value, enumSymbol.EnumUnderlyingType.SpecialType))
+                if (!ConvertHelpers.CanConvert(value, numericType))
                     return enumMember;
 
-                EqualsValueClauseSyntax equalsValue = EqualsValueClause(NumericLiteralExpression(value, enumSymbol.EnumUnderlyingType.SpecialType));
+                EnumMemberDeclarationSyntax newEnumMember = CreateNewEnumMember(enumMember, value, numericType);
 
                 value++;
 
-                return enumMember
-                    .WithEqualsValue(equalsValue)
-                    .WithFormatterAnnotation();
+                return newEnumMember;
             }
+        }
+
+        private static EnumMemberDeclarationSyntax CreateNewEnumMember(
+            EnumMemberDeclarationSyntax enumMember,
+            ulong value,
+            SpecialType numericType)
+        {
+            EqualsValueClauseSyntax equalsValue = EqualsValueClause(
+                Token(TriviaList(ElasticSpace), SyntaxKind.EqualsToken, TriviaList(ElasticSpace)),
+                NumericLiteralExpression(value, numericType));
+
+            return enumMember.WithEqualsValue(equalsValue);
         }
     }
 }
