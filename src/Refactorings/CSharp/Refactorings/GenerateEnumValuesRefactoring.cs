@@ -88,11 +88,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         valuesList.Add(optional.Value);
 
-                        EqualsValueClauseSyntax equalsValue = EqualsValueClause(CSharpFactory.NumericLiteralExpression(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType));
+                        EqualsValueClauseSyntax equalsValue = EqualsValueClause(
+                            Token(TriviaList(ElasticSpace), SyntaxKind.EqualsToken, TriviaList(ElasticSpace)),
+                            CSharpFactory.NumericLiteralExpression(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType));
 
-                        EnumMemberDeclarationSyntax newMember = members[i]
-                            .WithEqualsValue(equalsValue)
-                            .WithFormatterAnnotation();
+                        EnumMemberDeclarationSyntax newMember = members[i].WithEqualsValue(equalsValue);
 
                         members = members.ReplaceAt(i, newMember);
                     }

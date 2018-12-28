@@ -30,7 +30,11 @@ namespace Roslynator.CSharp.Refactorings
                 }
 
                 if (enumDeclaration.Identifier.Span.Contains(context.Span))
-                    GenerateAllEnumValuesRefactoring.ComputeRefactoring(context, enumDeclaration);
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    GenerateAllEnumValuesRefactoring.ComputeRefactoring(context, enumDeclaration, semanticModel);
+                }
             }
 
             await SelectedEnumMemberDeclarationsRefactoring.ComputeRefactoringAsync(context, enumDeclaration).ConfigureAwait(false);

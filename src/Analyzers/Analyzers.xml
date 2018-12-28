@@ -4703,10 +4703,10 @@ string y = $"{x}{x}{x}"; // [|Id|]]]></Before>
 }
 else
 {
-  Foo();
+  M();
 }]]></Before><After><![CDATA[if (!x)
 {
-  Foo();
+  M();
 }]]></After>
       </Sample>
       <Sample>
@@ -4714,7 +4714,7 @@ else
 {
   if (x)  // [|Id|]
   {
-    Foo();
+    M();
   }
   else
   {
@@ -4723,7 +4723,7 @@ else
 }]]></Before>
         <After><![CDATA[while (x)
 {
-  Foo();
+  M();
 }]]></After>
       </Sample>
       <Sample>
@@ -4734,30 +4734,43 @@ else
     break;
   }
 
-  Foo();
+  M();
 }]]></Before>
         <After><![CDATA[while (!x)
 {
-  Foo();
+  M();
       
 }]]></After>
       </Sample>
       <Sample>
         <Before><![CDATA[do
 {
-  Foo();
+  M();
 
   if (x)  // [|Id|]
   {
     break;
   }
   
-} while (true)]]></Before>
+} while (true);]]></Before>
         <After><![CDATA[do
 {
-  Foo();
+  M();
 
-} while (!x)]]></After>
+} while (!x);]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (x)
+{
+  do
+  {
+    M();
+  }
+  while (x);]]></Before>
+        <After><![CDATA[while (x)
+{
+  M();
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -5118,6 +5131,41 @@ public string Foo()
         <After><![CDATA[readonly struct C
 {
     void M(in C c)
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="OrderElementsInDocumentationComment">
+    <Id>RCS1232</Id>
+    <Title>Order elements in documentation comment.</Title>
+    <MessageFormat>Order elements in documentation comment.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[class C
+{
+    /// <summary></summary>
+    /// <param name="p3"></param> [|Id|]
+    /// <param name="p2"></param>
+    /// <param name="p1"></param>
+    void M(object p1, object p2, object p3)
+    {
+    }
+}]]></Before>
+        <After><![CDATA[class C
+{
+    /// <summary></summary>
+    /// <param name="p1"></param>
+    /// <param name="p2"></param>
+    /// <param name="p3"></param>
+    void M(object p1, object p2, object p3)
     {
     }
 }]]></After>

@@ -70,6 +70,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string GenerateEventInvokingMethod = Prefix + "0058";
         public const string GeneratePropertyForDebuggerDisplayAttribute = Prefix + "0204";
         public const string GenerateSwitchSections = Prefix + "0059";
+        public const string ImplementCustomEnumerator = Prefix + "0210";
         public const string ImplementIEquatableOfT = Prefix + "0179";
         public const string InitializeFieldFromConstructor = Prefix + "0197";
         public const string InitializeLocalWithDefaultValue = Prefix + "0060";

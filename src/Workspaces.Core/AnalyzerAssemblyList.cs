@@ -27,18 +27,10 @@ namespace Roslynator
             return _analyzerAssemblies.ContainsKey(fullName);
         }
 
-        internal void LoadFrom(IEnumerable<string> paths, bool loadAnalyzers = true, bool loadFixers = true)
+        public void AddRange(IEnumerable<AnalyzerAssembly> analyzerAssemblies)
         {
-            foreach (string path in paths)
-                LoadFrom(path, loadAnalyzers: loadAnalyzers, loadFixers: loadFixers);
-        }
-
-        internal void LoadFrom(string path, bool loadAnalyzers = true, bool loadFixers = true)
-        {
-            foreach ((string filePath, AnalyzerAssembly analyzerAssembly) in AnalyzerAssembly.LoadFrom(path, loadAnalyzers: loadAnalyzers, loadFixers: loadFixers))
-            {
+            foreach (AnalyzerAssembly analyzerAssembly in analyzerAssemblies)
                 Add(analyzerAssembly);
-            }
         }
 
         public bool Add(AnalyzerAssembly analyzerAssembly)

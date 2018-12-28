@@ -214,5 +214,6 @@ namespace Roslynator.CSharp
         public const string UseAsyncAwait = "RCS1229";
         public const string UnnecessaryUsageOfEnumerator = "RCS1230";
         public const string MakeParameterRefReadOnly = "RCS1231";
+        public const string OrderElementsInDocumentationComment = "RCS1232";
     }
 }

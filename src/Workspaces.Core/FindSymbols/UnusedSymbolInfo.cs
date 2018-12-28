@@ -8,7 +8,7 @@ namespace Roslynator.FindSymbols
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct UnusedSymbolInfo
     {
-        public UnusedSymbolInfo(ISymbol symbol, string id, ProjectId projectId)
+        internal UnusedSymbolInfo(ISymbol symbol, string id, ProjectId projectId)
         {
             Symbol = symbol;
             Id = id;
@@ -21,15 +21,10 @@ namespace Roslynator.FindSymbols
 
         public ProjectId ProjectId { get; }
 
-        public UnusedSymbolKind Kind
-        {
-            get { return (Symbol != null) ? UnusedSymbolFinder.GetUnusedSymbolKind(Symbol) : UnusedSymbolKind.None; }
-        }
-
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return $"{Kind} {Symbol?.ToDisplayString(SymbolDisplayFormats.Test)}"; }
+            get { return (Symbol != null) ? $"{UnusedSymbolFinder.GetUnusedSymbolKind(Symbol)} {Symbol.ToDisplayString(SymbolDisplayFormats.Test)}" : "Uninitialized"; }
         }
     }
 }

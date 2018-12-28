@@ -38,6 +38,14 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ImplementIEquatableOfT))
                 await ImplementIEquatableOfTRefactoring.ComputeRefactoringAsync(context, classDeclaration).ConfigureAwait(false);
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ImplementCustomEnumerator)
+                && context.Span.IsEmptyAndContainedInSpan(classDeclaration.Identifier))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                ImplementCustomEnumeratorRefactoring.ComputeRefactoring(context, classDeclaration, semanticModel);
+            }
+
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.SortMemberDeclarations)
                 && classDeclaration.BracesSpan().Contains(context.Span))
             {

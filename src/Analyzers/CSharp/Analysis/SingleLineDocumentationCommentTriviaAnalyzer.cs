@@ -20,7 +20,8 @@ namespace Roslynator.CSharp.Analysis
             DiagnosticDescriptors.AddSummaryElementToDocumentationComment,
             DiagnosticDescriptors.AddParamElementToDocumentationComment,
             DiagnosticDescriptors.AddTypeParamElementToDocumentationComment,
-            DiagnosticDescriptors.UnusedElementInDocumentationComment);
+            DiagnosticDescriptors.UnusedElementInDocumentationComment,
+            DiagnosticDescriptors.OrderElementsInDocumentationComment);
 
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -136,10 +137,12 @@ namespace Roslynator.CSharp.Analysis
             SyntaxNode parent = documentationComment.ParentTrivia.Token.Parent;
 
             bool unusedElement = !context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnusedElementInDocumentationComment);
+            bool orderParams = !context.IsAnalyzerSuppressed(DiagnosticDescriptors.OrderElementsInDocumentationComment);
             bool addParam = !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddParamElementToDocumentationComment);
             bool addTypeParam = !context.IsAnalyzerSuppressed(DiagnosticDescriptors.AddTypeParamElementToDocumentationComment);
 
             if (addParam
+                || orderParams
                 || unusedElement)
             {
                 SeparatedSyntaxList<ParameterSyntax> parameters = ParameterListInfo.Create(parent).Parameters;
@@ -157,13 +160,14 @@ namespace Roslynator.CSharp.Analysis
                     }
                 }
 
-                if (unusedElement)
+                if (orderParams || unusedElement)
                 {
-                    Analyze(context, content, parameters, XmlElementKind.Param, (nodes, name) => nodes.IndexOf(name));
+                    Analyze(context, documentationComment.Content, parameters, XmlElementKind.Param, (nodes, name) => nodes.IndexOf(name));
                 }
             }
 
             if (addTypeParam
+                || orderParams
                 || unusedElement)
             {
                 SeparatedSyntaxList<TypeParameterSyntax> typeParameters = TypeParameterListInfo.Create(parent).Parameters;
@@ -181,9 +185,9 @@ namespace Roslynator.CSharp.Analysis
                     }
                 }
 
-                if (unusedElement)
+                if (orderParams || unusedElement)
                 {
-                    Analyze(context, content, typeParameters, XmlElementKind.TypeParam, (nodes, name) => nodes.IndexOf(name));
+                    Analyze(context, documentationComment.Content, typeParameters, XmlElementKind.TypeParam, (nodes, name) => nodes.IndexOf(name));
                 }
             }
         }
@@ -245,6 +249,10 @@ namespace Roslynator.CSharp.Analysis
             XmlElementKind kind,
             Func<SeparatedSyntaxList<TNode>, string, int> indexOf) where TNode : SyntaxNode
         {
+            XmlElementSyntax firstElement = null;
+
+            int firstIndex = -1;
+
             for (int i = 0; i < xmlNodes.Count; i++)
             {
                 XmlElementInfo elementInfo = SyntaxInfo.XmlElementInfo(xmlNodes[i]);
@@ -253,19 +261,38 @@ namespace Roslynator.CSharp.Analysis
                     continue;
 
                 if (!elementInfo.IsElementKind(kind))
+                {
+                    firstIndex = -1;
                     continue;
+                }
 
                 var element = (XmlElementSyntax)elementInfo.Element;
 
                 string name = element.GetAttributeValue("name");
 
                 if (name == null)
+                {
+                    firstIndex = -1;
                     continue;
+                }
 
                 int index = indexOf(nodes, name);
 
                 if (index == -1)
+                {
                     ReportUnusedElement(context, element, i, xmlNodes);
+                }
+                else if (index < firstIndex)
+                {
+                    context.ReportDiagnosticIfNotSuppressed(DiagnosticDescriptors.OrderElementsInDocumentationComment, firstElement);
+                    return;
+                }
+                else
+                {
+                    firstElement = element;
+                }
+
+                firstIndex = index;
             }
         }
 

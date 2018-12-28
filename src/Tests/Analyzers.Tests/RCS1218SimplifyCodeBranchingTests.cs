@@ -573,6 +573,42 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyCodeBranching)]
+        public async Task Test_IfThatContainsOnlyDo()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        [|if (f)
+        {
+            do
+            {
+                M();
+            }
+            while (f);
+        }|]
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        bool f = false;
+
+        while (f)
+        {
+            M();
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyCodeBranching)]
         public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -1074,6 +1110,30 @@ class C
     }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1525"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyCodeBranching)]
+        public async Task TestNoDiagnostic_IfThatContainsOnlyDo_ConditionsAreNotEquivalent()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false;
+        bool f2 = false;
+
+        if (f)
+        {
+            do
+            {
+                M();
+            }
+            while (f2);
+        }
+    }
+}
+");
         }
     }
 }

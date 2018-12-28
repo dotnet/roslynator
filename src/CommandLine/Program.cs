@@ -23,6 +23,7 @@ using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine
 {
+    //TODO: banner/ruleset add, change, remove
     internal static class Program
     {
         private static readonly Encoding _defaultEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
@@ -123,14 +124,14 @@ namespace Roslynator.CommandLine
             if (!options.TryGetLanguage(out string language))
                 return 1;
 
-            var executor = new FixCommandExecutor(
+            var command = new FixCommand(
                 options: options,
                 severityLevel: severityLevel,
                 diagnosticFixMap: diagnosticFixMap?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty,
                 diagnosticFixerMap: diagnosticFixerMap?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty,
                 language: language);
 
-            CommandResult result = await executor.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
@@ -143,9 +144,9 @@ namespace Roslynator.CommandLine
             if (!options.TryGetLanguage(out string language))
                 return 1;
 
-            var executor = new AnalyzeCommandExecutor(options, severityLevel, language);
+            var command = new AnalyzeCommand(options, severityLevel, language);
 
-            CommandResult result = await executor.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
@@ -160,9 +161,9 @@ namespace Roslynator.CommandLine
                 return 1;
             }
 
-            var executor = new AnalyzeAssemblyCommandExecutor(language);
+            var command = new AnalyzeAssemblyCommand(language);
 
-            CommandResult result = executor.Execute(options);
+            CommandResult result = command.Execute(options);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
@@ -178,9 +179,9 @@ namespace Roslynator.CommandLine
             if (!options.TryGetVisibility(Visibility.Internal, out Visibility visibility))
                 return 1;
 
-            var executor = new AnalyzeUnusedCommandExecutor(options, visibility, unusedSymbolKinds, language);
+            var command = new AnalyzeUnusedCommand(options, visibility, unusedSymbolKinds, language);
 
-            CommandResult result = await executor.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
@@ -200,7 +201,7 @@ namespace Roslynator.CommandLine
                 return 1;
             }
 
-            var executor = new FormatCommandExecutor(options, language);
+            var command = new FormatCommand(options, language);
 
             IEnumerable<string> properties = options.Properties;
 
@@ -211,7 +212,7 @@ namespace Roslynator.CommandLine
                 properties = properties.Concat(new string[] { $"CodeAnalysisRuleSet={ruleSetPath}" });
             }
 
-            CommandResult result = await executor.ExecuteAsync(options.Path, options.MSBuildPath, properties);
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
@@ -221,18 +222,18 @@ namespace Roslynator.CommandLine
             if (!options.TryGetLanguage(out string language))
                 return 1;
 
-            var executor = new SlnListCommandExecutor(options, language);
+            var command = new SlnListCommand(options, language);
 
-            CommandResult result = await executor.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
 
         private static int ListMSBuild(ListVisualStudioCommandLineOptions options)
         {
-            var executor = new ListVisualStudioCommandExecutor(options);
+            var command = new ListVisualStudioCommand(options);
 
-            CommandResult result = executor.Execute();
+            CommandResult result = command.Execute();
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
@@ -242,9 +243,9 @@ namespace Roslynator.CommandLine
             if (!options.TryGetLanguage(out string language))
                 return 1;
 
-            var executor = new PhysicalLinesOfCodeCommandExecutor(options, language);
+            var command = new PhysicalLinesOfCodeCommand(options, language);
 
-            CommandResult result = await executor.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
@@ -254,9 +255,9 @@ namespace Roslynator.CommandLine
             if (!options.TryGetLanguage(out string language))
                 return 1;
 
-            var executor = new LogicalLinesOfCodeCommandExecutor(options, language);
+            var command = new LogicalLinesOfCodeCommand(options, language);
 
-            CommandResult result = await executor.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }

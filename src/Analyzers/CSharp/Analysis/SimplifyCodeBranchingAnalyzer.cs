@@ -33,7 +33,9 @@ namespace Roslynator.CSharp.Analysis
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            if (ifStatement.Condition?.WalkDownParentheses().IsMissing != false)
+            ExpressionSyntax condition = ifStatement.Condition?.WalkDownParentheses();
+
+            if (condition?.IsMissing != false)
                 return;
 
             StatementSyntax statement = ifStatement.Statement;
@@ -62,6 +64,19 @@ namespace Roslynator.CSharp.Analysis
                 else if (IsFixableSimpleIfInsideWhileOrDo(ifStatement, context.SemanticModel, context.CancellationToken))
                 {
                     DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
+                }
+                else
+                {
+                    if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
+                        return;
+
+                    if (!(ifStatement.SingleNonBlockStatementOrDefault() is DoStatementSyntax doStatement))
+                        return;
+
+                    if (!CSharpFactory.AreEquivalent(condition, doStatement.Condition?.WalkDownParentheses()))
+                        return;
+
+                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
                 }
             }
         }

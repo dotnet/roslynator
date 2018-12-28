@@ -88,5 +88,39 @@ enum Foo
 }
 ", equivalenceKey: GenerateAllEnumValuesRefactoring.EquivalenceKey);
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
+        public async Task TestNoRefactoring()
+        {
+            await VerifyNoRefactoringAsync(@"
+enum [||]Foo
+{
+    None = 0,
+    A = 1,
+    B = 2,
+    C = 3,
+    D = 4,
+}
+", equivalenceKey: GenerateAllEnumValuesRefactoring.EquivalenceKey);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.GenerateEnumValues)]
+        public async Task TestNoRefactoring_Flags()
+        {
+            await VerifyNoRefactoringAsync(@"
+using System;
+
+[Flags]
+enum [||]Foo
+{
+    None = 0,
+    A = 1,
+    B = 2,
+    AB = A | B,
+    C = 4,
+    D = 8,
+}
+", equivalenceKey: GenerateAllEnumValuesRefactoring.EquivalenceKey);
+        }
     }
 }

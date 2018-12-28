@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (f.IsKind(SyntaxKind.FieldDeclaration, SyntaxKind.VariableDeclarator))
                             return f.WithAdditionalAnnotations(_removeAnnotation);
 
-                        return newValue;
+                        return newValue.WithTriviaFrom(f);
                     });
 
                 SyntaxNode nodeToRemove = newRoot.GetAnnotatedNodes(_removeAnnotation).FirstOrDefault();

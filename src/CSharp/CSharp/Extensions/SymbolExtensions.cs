@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -19,6 +20,8 @@ namespace Roslynator.CSharp
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
+
+        private static SymbolDisplayFormat IsReadOnlyStructSymbolDisplayFormat { get; } = new SymbolDisplayFormat(kindOptions: SymbolDisplayKindOptions.IncludeTypeKeyword);
 
         #region INamespaceOrTypeSymbol
         /// <summary>
@@ -258,6 +261,15 @@ namespace Roslynator.CSharp
 
             return CSharpFacts.SupportsPrefixOrPostfixUnaryOperator(typeSymbol.SpecialType)
                 || typeSymbol.TypeKind == TypeKind.Enum;
+        }
+
+        //TODO: make public
+        internal static bool IsReadOnlyStruct(this ITypeSymbol type)
+        {
+            return type.TypeKind == TypeKind.Struct
+                && type
+                    .ToDisplayParts(IsReadOnlyStructSymbolDisplayFormat)
+                    .Any(f => f.Kind == SymbolDisplayPartKind.Keyword && f.ToString() == "readonly");
         }
         #endregion ITypeSymbol
     }
