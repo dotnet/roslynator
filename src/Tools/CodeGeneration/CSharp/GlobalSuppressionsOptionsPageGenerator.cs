@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CodeGeneration.CSharp
 {
-    public static class AnalyzersOptionsPageGenerator
+    public static class GlobalSuppressionsOptionsPageGenerator
     {
         public static CompilationUnitSyntax Generate(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
         {
@@ -22,7 +22,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     "Roslynator.VisualStudio",
                     ClassDeclaration(
                         Modifiers.Public_Partial(),
-                        "AnalyzersOptionsPage",
+                        "GlobalSuppressionsOptionsPage",
                         CreateMembers(analyzers, comparer).ToSyntaxList())));
         }
 

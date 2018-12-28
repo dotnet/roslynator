@@ -9,11 +9,9 @@ namespace Roslynator.VisualStudio
 {
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [Guid("9851B486-A654-4F6A-B1BA-9E1071DCCA25")]
-    public partial class AnalyzersOptionsPage : BaseOptionsPage
+    public partial class GlobalSuppressionsOptionsPage : BaseOptionsPage
     {
-        private const string AnalyzerCategory = "Analyzer";
-
-        public AnalyzersOptionsPage()
+        public GlobalSuppressionsOptionsPage()
         {
             Control.DefaultSortDirection = ListSortDirection.Descending;
             Control.CheckBoxColumnHeaderText = "Suppressed";
@@ -21,7 +19,6 @@ namespace Roslynator.VisualStudio
                 "It is highly recommended to use standard tool such as ruleset to disable the analyzer.";
         }
 
-        [Category(AnalyzerCategory)]
         [Browsable(false)]
         public string SuppressedAnalyzers
         {

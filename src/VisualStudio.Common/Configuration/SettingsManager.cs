@@ -37,9 +37,9 @@ namespace Roslynator.Configuration
             UpdateVisualStudioSettings(VisualStudioSettings.CodeFixes, codeFixOptionsPage.GetDisabledItems());
         }
 
-        public void UpdateVisualStudioSettings(AnalyzersOptionsPage analyzersOptionsPage)
+        public void UpdateVisualStudioSettings(GlobalSuppressionsOptionsPage globalSuppressionsOptionsPage)
         {
-            UpdateVisualStudioSettings(VisualStudioSettings.Analyzers, analyzersOptionsPage.GetDisabledItems());
+            UpdateVisualStudioSettings(VisualStudioSettings.Analyzers, globalSuppressionsOptionsPage.GetDisabledItems());
         }
 
         public static void UpdateVisualStudioSettings(Dictionary<string, bool> values, IEnumerable<string> disabledItems)

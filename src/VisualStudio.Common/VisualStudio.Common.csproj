@@ -116,7 +116,7 @@
     <Compile Include="BaseOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="AnalyzersOptionsPage.cs">
+    <Compile Include="GlobalSuppressionsOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GeneralOptionsPage.cs">
@@ -137,8 +137,7 @@
     <Compile Include="BaseOptionsPageControl.xaml.cs">
       <DependentUpon>BaseOptionsPageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="AnalyzersOptionsPage.Generated.cs">
+    <Compile Include="GlobalSuppressionsOptionsPage.Generated.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="XElementExtensions.cs" />
