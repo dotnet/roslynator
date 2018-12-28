@@ -414,7 +414,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant:
                     case CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
                                 break;
 
                             CodeAction codeAction = CodeAction.Create(

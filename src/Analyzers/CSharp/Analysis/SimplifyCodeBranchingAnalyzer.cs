@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
                     if (!CSharpFactory.AreEquivalent(condition, doStatement.Condition?.WalkDownParentheses()))
                         return;
 
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
                 }
             }
         }

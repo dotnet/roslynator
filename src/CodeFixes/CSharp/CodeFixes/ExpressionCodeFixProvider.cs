@@ -472,7 +472,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstModifier))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveConstModifier))
                                 return;
 
                             if (!expression.IsKind(SyntaxKind.IdentifierName))
