@@ -99,10 +99,9 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ## How to Suppress a Diagnostic
 
-If you want to disable an analyzer completely you have use a rule set.
-But if you want to suppress a diagnostic you have to use either `SuppressMessageAttribute` or `#pragma warning` preprocessor directive.
+> Note: If you want to disable an analyzer completely you have use a rule set.
 
-### Add `SuppressMessageAttribute` to Containing Declaration
+### Suppress Diagnostic for a Declaration
 
 ```csharp
 [SuppressMessage("Readability", "RCS1008", Justification = "<Pending>")]
@@ -111,8 +110,6 @@ void M()
     var x = Foo(); // no RCS1008 here
 }
 ```
-
-### Add `SuppressMessageAttribute` to Assembly
 
 ```csharp
 
@@ -127,13 +124,19 @@ class C
 }
 ```
 
-### Add `#pragma warning` Preprocessor Directive
+ Suppress Diagnostic for Selected Lines
 
 ```csharp
 #pragma warning disable RCS1008
 var x = Foo(); // no RCS1008 here
 #pragma warning restore RCS1008
 ```
+
+### Suppress Diagnostic Globally
+
+Go to Visual Studio Tools > Options > Roslynator > Global Suppressions
+
+![Global Suppressions](/images/GlobalSuppressionsOptions.png)
 
 ## See Also
 
