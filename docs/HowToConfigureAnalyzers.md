@@ -104,9 +104,9 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 ### Suppress Diagnostic for a Declaration
 
 ```csharp
-[SuppressMessage("Readability", "RCS1008", Justification = "<Pending>")]
 class C
 {
+    [SuppressMessage("Readability", "RCS1008", Justification = "<Pending>")]
     void M()
     {
         var x = Foo(); // no RCS1008 here
