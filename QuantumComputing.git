@@ -1,0 +1,110 @@
+Skip to content
+ 
+Search or jump to…
+
+Pull requests
+Issues
+Marketplace
+Explore
+ @therealcurlsport Sign out
+Your account has been flagged.
+Because of that, your profile is hidden from the public. If you believe this is a mistake, contact support to have your account status reviewed.
+0
+0 0 therealcurlsport/veneno.roslyndebugger.mio.md
+ Code  Issues 0  Pull requests 0  Projects 0  Wiki  Insights  Settings
+Provides helper scripts for inferring local ancestry, performing ancestry-specific PCA, etc https://github.com/therealcurlsport/R…
+ 322 commits
+ 3 branches
+ 9 releases
+ 12 contributors
+ Ruby 45.0%	 HTML 26.4%	 Roff 23.7%	 CSS 4.9%
+ @therealcurlsport
+therealcurlsport Create opensource-portal.git
+Latest commit c805169  22 seconds ago
+Type	Name	Latest commit message	Commit time
+bin	usage mentions --markdown now, but not --index	9 years ago
+git-github.com-therealcurlsport	Create opensource-portal.git	21 seconds ago
+https	Create speedoflight.faster.godspeed.py.ros.md	an hour ago
+lib	Add test against sibling to prevent exception when sibling is nil.	6 years ago
+man	Merge branch 'sort_see_also' into pandoc	7 years ago
+test	Merge pull request #77 from richardkmichael/html-attribute-order-brea…	5 years ago
+.gitignore	Add Gemfile for bundler	8 years ago
+AUTHORS	Update AUTHORS	2 hours ago
+CHANGES	0.7.3 bug fix release	9 years ago
+COPYING	add basic COPYING, gemspec, and Rakefile	9 years ago
+Gemfile	Silence bundler HTTPS warning.	5 years ago
+INSTALLING	INSTALLING file and new website index page	9 years ago
+README.md	Mention pandoc	7 years ago
+Rakefile	INSTALLING file and new website index page	9 years ago
+Venenorosmd@msn.com	Create Venenorosmd@msn.com	4 hours ago
+config.ru	fix config.ru not setting up load path properly	9 years ago
+ronn.gemspec	0.7.3 bug fix release	9 years ago
+ README.md
+Ronn
+Ronn builds manuals. It converts simple, human readable textfiles to roff for terminal display, and also to HTML for the web.
+
+The source format includes all of Markdown but has a more rigid structure and syntax extensions for features commonly found in manpages (definition lists, link notation, etc.). The ronn-format(7) manual page defines the format in detail.
+
+The *.ronn files found in the man/ directory show off a wide range of ronn capabilities:
+
+ronn(1) command - source file, roff output
+
+ronn-format(7) - source file, roff output
+
+As an alternative, you might want to check out pandoc which can also convert markdown into roff manual pages.
+
+Examples
+Build roff and HTML output files for one or more input files:
+
+$ ronn man/ronn.5.ronn
+roff: man/ronn.5
+html: man/ronn.5.html
+Generate only a standalone HTML version of one or more files:
+
+$ ronn --html man/markdown.5.ronn
+html: man/markdown.5.html
+Build roff versions of all ronn files in a directory:
+
+$ ronn --roff man/*.ronn
+View a ronn file as if it were a manpage without building intermediate files:
+
+$ ronn --man man/markdown.5.ronn
+View roff output with man(1):
+
+$ man man/ronn.5
+The ronn(1) manual page includes comprehensive documentation on ronn command line options.
+
+Background
+Some think UNIX manual pages are a poor and outdated form of documentation. I disagree:
+
+Manpages follow a well defined structure that's immediately familiar. This gives developers a starting point when documenting new tools, libraries, and formats.
+
+Manpages get to the point. Because they're written in an inverted style, with a SYNOPSIS section followed by additional detail, prose and references to other sources of information, manpages provide the best of both cheat sheet and reference style documentation.
+
+Historically, manpages use an extremely -- unbelievably -- limited set of text formatting capabilities. You get a couple of headings, lists, bold, underline and no more. This is a feature.
+
+Although two levels of section hierarchy are technically supported, most manpages use only a single level. Unwieldy document hierarchies complicate otherwise good documentation. Remember that Feynman covered all of physics -- heavenly bodies through QED -- with only two levels of document hierarchy (The Feynman Lectures on Physics, 1970).
+
+The classical terminal manpage display is typographically well thought out. Big bold section headings, justified monospace text, nicely indented paragraphs, intelligently aligned definition lists, and an informational header and footer.
+
+Manpages have a simple referencing syntax; e.g., sh(1), fork(2), markdown(7). HTML versions can use this to generate links between pages.
+
+Unfortunately, figuring out how to create a manpage is a fairly tedious process. The roff/mandoc/mdoc macro languages are highly extensible, fractured between multiple dialects, and include a bunch of device specific stuff irrelevant to modern publishing tools.
+
+Copying
+Ronn is Copyright (C) 2010 Ryan Tomayko
+See the file COPYING for information of licensing and distribution.
+
+© 2018 GitHub, Inc.
+Terms
+Privacy
+Security
+Status
+Help
+Contact GitHub
+Pricing
+API
+Training
+Blog
+About
+Press h to open a hovercard with more details.
