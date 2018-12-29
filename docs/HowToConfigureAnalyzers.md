@@ -105,9 +105,12 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ```csharp
 [SuppressMessage("Readability", "RCS1008", Justification = "<Pending>")]
-void M()
+class C
 {
-    var x = Foo(); // no RCS1008 here
+    void M()
+    {
+        var x = Foo(); // no RCS1008 here
+    }
 }
 ```
 
@@ -124,7 +127,7 @@ class C
 }
 ```
 
- Suppress Diagnostic for Selected Lines
+### Suppress Diagnostic for Selected Lines
 
 ```csharp
 #pragma warning disable RCS1008
