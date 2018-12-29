@@ -186,6 +186,7 @@ namespace Roslynator
         [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
         [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
         [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
         public struct Enumerator
         {
             private readonly SeparatedSyntaxListSelection<TNode> _selection;

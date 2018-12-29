@@ -8,7 +8,7 @@
     <Version>1.0.0.9</Version>
     <AssemblyName>Roslynator.VisualBasic</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>VisualBasic.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.2</LangVersion>
