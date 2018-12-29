@@ -115,7 +115,6 @@ class C
 ```
 
 ```csharp
-
 [assembly: SuppressMessage("Readability", "RCS1008", Justification = "<Pending>", Scope = "member", Target = "~M:C.M")]
 
 class C
@@ -130,9 +129,15 @@ class C
 ### Suppress Diagnostic for Selected Lines
 
 ```csharp
+class C
+{
+    void M()
+    {
 #pragma warning disable RCS1008
-var x = Foo(); // no RCS1008 here
+        var x = Foo(); // no RCS1008 here
 #pragma warning restore RCS1008
+    }
+}
 ```
 
 ### Suppress Diagnostic Globally
