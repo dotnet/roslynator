@@ -16,6 +16,83 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class OptimizeLinqMethodCallAnalysis
     {
+        public static void AnalyzeAny(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            bool isLogicalNot = false;
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
+
+            if (expression.IsParentKind(SyntaxKind.LogicalNotExpression))
+            {
+                isLogicalNot = true;
+                expression = (ExpressionSyntax)expression.Parent;
+
+                expression = expression.WalkUpParentheses();
+            }
+
+            if (!expression.IsParentKind(SyntaxKind.ConditionalExpression))
+                return;
+
+            if (expression.Parent.ContainsDiagnostics)
+                return;
+
+            var conditionalExpression = (ConditionalExpressionSyntax)expression.Parent;
+
+            if (conditionalExpression.Condition != expression)
+                return;
+
+            ExpressionSyntax firstExpression = (isLogicalNot)
+                ? conditionalExpression.WhenFalse?.WalkDownParentheses()
+                : conditionalExpression.WhenTrue?.WalkDownParentheses();
+
+            if (!firstExpression.IsKind(SyntaxKind.InvocationExpression))
+                return;
+
+            ExpressionSyntax secondExpression = (isLogicalNot)
+                ? conditionalExpression.WhenTrue?.WalkDownParentheses()
+                : conditionalExpression.WhenFalse?.WalkDownParentheses();
+
+            if (secondExpression == null)
+                return;
+
+            SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo((InvocationExpressionSyntax)firstExpression);
+
+            if (invocationInfo2.NameText != "First")
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            ExtensionMethodSymbolInfo extensionMethodSymbolInfo = semanticModel.GetExtensionMethodInfo(invocationExpression, cancellationToken);
+
+            if (extensionMethodSymbolInfo.Symbol == null)
+                return;
+
+            if (!extensionMethodSymbolInfo.IsReduced)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(extensionMethodSymbolInfo.Symbol, "Any"))
+                return;
+
+            IMethodSymbol methodSymbol2 = semanticModel.GetExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol2 == null)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol2, "First"))
+                return;
+
+            if (!SyntaxFactory.AreEquivalent(invocationInfo.Expression, invocationInfo2.Expression, topLevel: false))
+                return;
+
+            if (!semanticModel.IsDefaultValue(extensionMethodSymbolInfo.ReducedSymbol.TypeArguments[0], secondExpression, cancellationToken))
+                return;
+
+            Report(context, conditionalExpression);
+        }
+
         public static void AnalyzeWhere(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
         {
             SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);

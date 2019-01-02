@@ -40,7 +40,8 @@ namespace Roslynator.CSharp.CodeFixes
                 SyntaxKind.InvocationExpression,
                 SyntaxKind.EqualsExpression,
                 SyntaxKind.NotEqualsExpression,
-                SyntaxKind.IsPatternExpression)))
+                SyntaxKind.IsPatternExpression,
+                SyntaxKind.ConditionalExpression)))
             {
                 return;
             }
@@ -202,6 +203,15 @@ namespace Roslynator.CSharp.CodeFixes
                             return;
                         }
                 }
+            }
+            else if (kind == SyntaxKind.ConditionalExpression)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Call 'FirstOrDefault' instead of ?:",
+                    ct => CallFirstOrDeafultInsteadOfConditionalExpressionAsync(document, (ConditionalExpressionSyntax)node, ct),
+                    GetEquivalenceKey(diagnostic, "CallFirstOrDefaultInsteadOfConditionalExpression"));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
             }
             else if (kind.Is(
                 SyntaxKind.EqualsExpression,
@@ -475,6 +485,30 @@ namespace Roslynator.CSharp.CodeFixes
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+        }
+
+        private static Task<Document> CallFirstOrDeafultInsteadOfConditionalExpressionAsync(
+            Document document,
+            ConditionalExpressionSyntax conditionalExpression,
+            CancellationToken cancellationToken)
+        {
+            ExpressionSyntax expression = conditionalExpression.Condition.WalkDownParentheses();
+
+            if (expression.IsKind(SyntaxKind.LogicalNotExpression))
+            {
+                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+
+                expression = logicalNot.Operand.WalkDownParentheses();
+            }
+
+            SimpleMemberInvocationExpressionInfo invocationInfo = SimpleMemberInvocationExpressionInfo(expression);
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression, "FirstOrDefault")
+                .WithTriviaFrom(conditionalExpression);
+
+            return document.ReplaceNodeAsync(conditionalExpression, newInvocationExpression, cancellationToken);
         }
     }
 }

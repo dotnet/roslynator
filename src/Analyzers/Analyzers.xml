@@ -1736,7 +1736,8 @@ catch (Exception ex) // [|Id|]
       <Sample>
         <Before><![CDATA[var x = list.First(); // [|Id|]]]></Before>
         <After><![CDATA[var x = list[0];]]></After>
-      </Sample>      <Sample>
+      </Sample>
+      <Sample>
         <Before><![CDATA[if (enumerable.Count() != 0) // [|Id|]
 {
 }]]></Before>
@@ -1767,6 +1768,10 @@ object x = stack.First(); // [|Id|]]]></Before>
         <After><![CDATA[var queue = new Queue<object>();
 // ...
 object x = items.Peek();]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[enumerable.Any() ? enumerable.First() : default // [|Id|]]]></Before>
+        <After><![CDATA[enumerable.FirstOrDefault()]]></After>
       </Sample>
     </Samples>
   </Analyzer>

@@ -750,6 +750,110 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_CallFirstOrDefaultInsteadOfConditionalExpression_ReferenceType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        IEnumerable<string> x = null;
+
+        s = [|x.Any() ? x.First() : null|];
+        s = [|(x.Any()) ? x.First() : null|];
+        s = [|x.Any() ? x.First() : default|];
+        s = [|x.Any() ? x.First() : default(string)|];
+
+        s = [|!x.Any() ? null : x.First()|];
+        s = [|!(x.Any()) ? null : x.First()|];
+        s = [|(!(x.Any())) ? null : x.First()|];
+        s = [|(!x.Any()) ? null : x.First()|];
+        s = [|!x.Any() ? default : x.First()|];
+        s = [|!x.Any() ? default(string) : x.First()|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        IEnumerable<string> x = null;
+
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+        s = x.FirstOrDefault();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_CallFirstOrDefaultInsteadOfConditionalExpression_ValueType()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int i = 0;
+
+        IEnumerable<int> x = null;
+
+        i = [|x.Any() ? x.First() : 0|];
+        i = [|x.Any() ? x.First() : default|];
+        i = [|x.Any() ? x.First() : default(int)|];
+
+        i = [|!x.Any() ? 0 : x.First()|];
+        i = [|!x.Any() ? default : x.First()|];
+        i = [|!x.Any() ? default(int) : x.First()|];
+    }
+}
+", @"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int i = 0;
+
+        IEnumerable<int> x = null;
+
+        i = x.FirstOrDefault();
+        i = x.FirstOrDefault();
+        i = x.FirstOrDefault();
+
+        i = x.FirstOrDefault();
+        i = x.FirstOrDefault();
+        i = x.FirstOrDefault();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         public async Task TestNoDiagnostic_CallOfTypeInsteadOfWhereAndCast()
         {
             await VerifyNoDiagnosticAsync(@"
