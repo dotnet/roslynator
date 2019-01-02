@@ -45,7 +45,6 @@ class C
     int M()
     {
         bool f = false;
-        // x
         if (f)
         {
             return 2;
@@ -55,7 +54,7 @@ class C
             return 3;
         }
 
-        return 1;
+        return 1; // x
     }
 }
 ");
@@ -82,7 +81,7 @@ class C
             x = 3;
         }|]
 
-        return x;
+        return x; // 1
     }
 }
 ", @"
@@ -102,7 +101,105 @@ class C
             return 3;
         }
 
-        return 1;
+        return 1; // 1
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        public async Task Test_SwitchStatement()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    int M()
+    {
+        string s = null;
+        int x = 1; // x
+        [|switch (s)
+        {
+            case ""a"":
+                {
+                    x = 2;
+                    break;
+                }
+            case ""b"":
+                x = 3;
+                break;
+        }|]
+
+        return x;
+    }
+}
+", @"
+class C
+{
+    int M()
+    {
+        string s = null;
+        switch (s)
+        {
+            case ""a"":
+                {
+                    return 2;
+                }
+            case ""b"":
+                return 3;
+        }
+
+        return 1; // x
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        public async Task Test_SwitchStatement2()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    int M()
+    {
+        string s = null;
+
+        // x
+        int x = 1;
+        [|switch (s)
+        {
+            case ""a"":
+                {
+                    x = 2;
+                    break;
+                }
+            case ""b"":
+                x = 3;
+                break;
+        }|]
+
+        return x; // 1
+    }
+}
+", @"
+class C
+{
+    int M()
+    {
+        string s = null;
+
+        // x
+        switch (s)
+        {
+            case ""a"":
+                {
+                    return 2;
+                }
+            case ""b"":
+                return 3;
+        }
+
+        return 1; // 1
     }
 }
 ");

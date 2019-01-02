@@ -23,6 +23,8 @@ namespace Roslynator.CSharp.CodeFixes
     [Shared]
     public class UseReturnInsteadOfAssignmentCodeFixProvider : BaseCodeFixProvider
     {
+        private const string Title = "Use return instead of assignment";
+
         public sealed override ImmutableArray<string> FixableDiagnosticIds
         {
             get { return ImmutableArray.Create(DiagnosticIdentifiers.UseReturnInsteadOfAssignment); }
@@ -35,27 +37,27 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement, predicate: f => f.IsKind(SyntaxKind.IfStatement, SyntaxKind.SwitchStatement)))
                 return;
 
+            Document document = context.Document;
+
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            const string title = "Use return instead of assignment";
-
-            switch (statement.Kind())
+            switch (statement)
             {
-                case SyntaxKind.IfStatement:
+                case IfStatementSyntax ifStatement:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            title,
-                            ct => RefactorAsync(context.Document, (IfStatementSyntax)statement, ct),
+                            Title,
+                            ct => RefactorAsync(document, ifStatement, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case SyntaxKind.SwitchStatement:
+                case SwitchStatementSyntax switchStatement:
                     {
                         CodeAction codeAction = CodeAction.Create(
-                            title,
-                            ct => RefactorAsync(context.Document, (SwitchStatementSyntax)statement, ct),
+                            Title,
+                            ct => RefactorAsync(document, switchStatement, ct),
                             GetEquivalenceKey(diagnostic));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
@@ -158,54 +160,71 @@ namespace Roslynator.CSharp.CodeFixes
             bool removeReturnStatement,
             CancellationToken cancellationToken) where TStatement : StatementSyntax
         {
-            int index = statementsInfo.IndexOf(statement);
+            int statementIndex = statementsInfo.IndexOf(statement);
 
-            var returnStatement = (ReturnStatementSyntax)statementsInfo[index + 1];
+            var returnStatement = (ReturnStatementSyntax)statementsInfo[statementIndex + 1];
 
-            ExpressionSyntax expression = returnStatement.Expression;
-            ExpressionSyntax newExpression = null;
+            ExpressionSyntax returnExpression = returnStatement.Expression;
+            ExpressionSyntax newReturnExpression = null;
+            SyntaxTriviaList newTrailingTrivia = default;
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            ISymbol symbol = semanticModel.GetSymbol(expression, cancellationToken);
+            ISymbol symbol = semanticModel.GetSymbol(returnExpression, cancellationToken);
 
             if (symbol.Kind == SymbolKind.Local
-                && index > 0)
+                && statementIndex > 0
+                && statementsInfo[statementIndex - 1] is LocalDeclarationStatementSyntax localDeclarationStatement
+                && !localDeclarationStatement.ContainsDiagnostics
+                && !localDeclarationStatement.SpanOrTrailingTriviaContainsDirectives()
+                && !statement.GetLeadingTrivia().Any(f => f.IsDirective))
             {
-                var localDeclarationStatement = statementsInfo[index - 1] as LocalDeclarationStatementSyntax;
+                SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = localDeclarationStatement.Declaration.Variables;
 
-                if (localDeclarationStatement?.ContainsDiagnostics == false
-                    && !localDeclarationStatement.SpanOrTrailingTriviaContainsDirectives()
-                    && !statement.GetLeadingTrivia().Any(f => f.IsDirective))
+                VariableDeclaratorSyntax declarator = declarators.FirstOrDefault(f => semanticModel.GetDeclaredSymbol(f, cancellationToken)?.Equals(symbol) == true);
+
+                if (declarator != null)
                 {
-                    SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = localDeclarationStatement.Declaration.Variables;
+                    ExpressionSyntax value = declarator.Initializer?.Value;
 
-                    VariableDeclaratorSyntax declarator = declarators.FirstOrDefault(f => semanticModel.GetDeclaredSymbol(f, cancellationToken)?.Equals(symbol) == true);
-
-                    if (declarator != null)
+                    if (removeReturnStatement || value != null)
                     {
-                        ExpressionSyntax value = declarator.Initializer?.Value;
+                        IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, document.Solution(), cancellationToken).ConfigureAwait(false);
 
-                        if (removeReturnStatement || value != null)
+                        if (referencedSymbols.First().Locations.Count() == count + 1)
                         {
-                            IEnumerable<ReferencedSymbol> referencedSymbols = await SymbolFinder.FindReferencesAsync(symbol, document.Solution(), cancellationToken).ConfigureAwait(false);
+                            newReturnExpression = value;
 
-                            if (referencedSymbols.First().Locations.Count() == count + 1)
+                            if (declarators.Count == 1)
                             {
-                                newExpression = value;
-
-                                if (declarators.Count == 1)
+                                if (!removeReturnStatement
+                                    && returnStatement.GetTrailingTrivia().IsEmptyOrWhitespace())
                                 {
-                                    statementsInfo = statementsInfo.RemoveNode(localDeclarationStatement, SyntaxRemover.GetRemoveOptions(localDeclarationStatement));
-                                    index--;
-                                }
-                                else
-                                {
-                                    statementsInfo = statementsInfo.ReplaceNode(localDeclarationStatement, localDeclarationStatement.RemoveNode(declarator, SyntaxRemover.GetRemoveOptions(declarator)));
+                                    SyntaxTriviaList trailingTrivia = localDeclarationStatement.GetTrailingTrivia();
+
+                                    if (trailingTrivia
+                                        .SkipWhile(f => f.IsWhitespaceTrivia())
+                                        .FirstOrDefault()
+                                        .IsKind(SyntaxKind.SingleLineCommentTrivia))
+                                    {
+                                        newTrailingTrivia = trailingTrivia;
+                                    }
                                 }
 
-                                returnStatement = (ReturnStatementSyntax)statementsInfo[index + 1];
+                                SyntaxRemoveOptions removeOptions = SyntaxRemover.GetRemoveOptions(localDeclarationStatement);
+
+                                if (newTrailingTrivia.Any())
+                                    removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+
+                                statementsInfo = statementsInfo.RemoveNode(localDeclarationStatement, removeOptions);
+                                statementIndex--;
                             }
+                            else
+                            {
+                                statementsInfo = statementsInfo.ReplaceNode(localDeclarationStatement, localDeclarationStatement.RemoveNode(declarator, SyntaxRemover.GetRemoveOptions(declarator)));
+                            }
+
+                            returnStatement = (ReturnStatementSyntax)statementsInfo[statementIndex + 1];
                         }
                     }
                 }
@@ -215,12 +234,17 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 statementsInfo = statementsInfo.RemoveNode(returnStatement, SyntaxRemover.GetRemoveOptions(returnStatement));
             }
-            else if (newExpression != null)
+            else if (newReturnExpression != null)
             {
-                statementsInfo = statementsInfo.ReplaceNode(returnStatement, returnStatement.WithExpression(newExpression.WithTriviaFrom(expression)));
+                ReturnStatementSyntax newReturnStatement = returnStatement.WithExpression(newReturnExpression.WithTriviaFrom(returnExpression));
+
+                if (newTrailingTrivia.Any())
+                    newReturnStatement = newReturnStatement.WithTrailingTrivia(newTrailingTrivia);
+
+                statementsInfo = statementsInfo.ReplaceNode(returnStatement, newReturnStatement);
             }
 
-            StatementSyntax oldNode = statementsInfo[index];
+            StatementSyntax oldNode = statementsInfo[statementIndex];
 
             TStatement newNode = createNewStatement((TStatement)oldNode).WithFormatterAnnotation();
 
