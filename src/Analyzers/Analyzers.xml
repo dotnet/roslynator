@@ -1417,10 +1417,9 @@ while (true);]]></Before>
         <Before><![CDATA[while (true) // [|Id|]
 {
 }]]></Before>
-        <After><![CDATA[do
+        <After><![CDATA[for (;;)
 {
-}
-while (true);]]></After>
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -1736,7 +1735,8 @@ catch (Exception ex) // [|Id|]
       <Sample>
         <Before><![CDATA[var x = list.First(); // [|Id|]]]></Before>
         <After><![CDATA[var x = list[0];]]></After>
-      </Sample>      <Sample>
+      </Sample>
+      <Sample>
         <Before><![CDATA[if (enumerable.Count() != 0) // [|Id|]
 {
 }]]></Before>
@@ -1767,6 +1767,10 @@ object x = stack.First(); // [|Id|]]]></Before>
         <After><![CDATA[var queue = new Queue<object>();
 // ...
 object x = items.Peek();]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[enumerable.Any() ? enumerable.First() : default // [|Id|]]]></Before>
+        <After><![CDATA[enumerable.FirstOrDefault()]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -5168,6 +5172,54 @@ public string Foo()
     void M(object p1, object p2, object p3)
     {
     }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UseShortCircuitingOperator">
+    <Id>RCS1233</Id>
+    <Title>Use short-circuiting operator.</Title>
+    <MessageFormat>Use short-circuiting operator.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[boolExpr1 & boolExpr2 [|Id|]]]></Before>
+        <After><![CDATA[boolExpr1 && boolExpr2]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[boolExpr1 | boolExpr2 [|Id|]]]></Before>
+        <After><![CDATA[boolExpr1 || boolExpr2]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="DuplicateEnumValue">
+    <Id>RCS1234</Id>
+    <Title>Duplicate enum value.</Title>
+    <MessageFormat>Duplicate enum value.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[enum E
+{
+    A = 1,
+    B = 2,
+    C = 2, [|Id|]
+}]]></Before>
+        <After><![CDATA[enum E
+{
+    A = 1,
+    B = 2,
+    C = B,
 }]]></After>
       </Sample>
     </Samples>

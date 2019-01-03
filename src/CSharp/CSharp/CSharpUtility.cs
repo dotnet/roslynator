@@ -662,5 +662,32 @@ namespace Roslynator.CSharp
 
             return default(IFieldSymbol);
         }
+
+        public static TypeSyntax GetTypeOrReturnType(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)node).ReturnType;
+                case SyntaxKind.OperatorDeclaration:
+                    return ((OperatorDeclarationSyntax)node).ReturnType;
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return ((ConversionOperatorDeclarationSyntax)node).Type;
+                case SyntaxKind.PropertyDeclaration:
+                    return ((PropertyDeclarationSyntax)node).Type;
+                case SyntaxKind.IndexerDeclaration:
+                    return ((IndexerDeclarationSyntax)node).Type;
+                case SyntaxKind.FieldDeclaration:
+                    return ((FieldDeclarationSyntax)node).Declaration.Type;
+                case SyntaxKind.EventDeclaration:
+                    return ((EventDeclarationSyntax)node).Type;
+                case SyntaxKind.EventFieldDeclaration:
+                    return ((EventFieldDeclarationSyntax)node).Declaration.Type;
+                case SyntaxKind.LocalFunctionStatement:
+                    return ((LocalFunctionStatementSyntax)node).ReturnType;
+                default:
+                    return null;
+            }
+        }
     }
 }

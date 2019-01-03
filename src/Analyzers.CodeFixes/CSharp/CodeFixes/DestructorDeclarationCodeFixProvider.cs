@@ -34,10 +34,11 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case DiagnosticIdentifiers.RemoveEmptyDestructor:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove empty destructor",
-                                cancellationToken => RemoveEmptyDestructorRefactoring.RefactorAsync(context.Document, destructor, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+                            CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
+                                context.Document,
+                                destructor,
+                                title: "Remove empty destructor",
+                                equivalenceKey: GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

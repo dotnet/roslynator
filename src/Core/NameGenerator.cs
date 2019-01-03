@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Roslynator.Helpers;
@@ -13,6 +14,7 @@ namespace Roslynator
     /// <summary>
     /// Provides methods to obtain an unique identifier.
     /// </summary>
+    [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
     public abstract class NameGenerator
     {
         internal static StringComparer OrdinalComparer { get; } = StringComparer.Ordinal;

@@ -81,7 +81,10 @@ namespace Roslynator.CSharp.Analysis
                                         UseCountOrLengthPropertyInsteadOfAnyMethodAnalysis.Analyze(context, invocationInfo);
 
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                    {
                                         OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeAny(context, invocationInfo);
+                                    }
 
                                     break;
                                 }

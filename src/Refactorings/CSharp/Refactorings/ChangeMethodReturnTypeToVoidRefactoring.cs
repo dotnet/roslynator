@@ -97,9 +97,11 @@ namespace Roslynator.CSharp.Refactorings
             if (!analysis.ReturnStatements.All(f => (f as ReturnStatementSyntax)?.Expression == null))
                 return;
 
+            Document document = context.Document;
+
             context.RegisterRefactoring(
                 "Change return type to 'void'",
-                ct => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, returnType, CSharpFactory.VoidType(), ct),
+                ct => document.ReplaceNodeAsync(returnType, CSharpFactory.VoidType().WithTriviaFrom(returnType), ct),
                 RefactoringIdentifiers.ChangeMethodReturnTypeToVoid);
         }
     }

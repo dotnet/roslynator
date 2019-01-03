@@ -3,21 +3,23 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
     internal readonly struct EnumSymbolInfo
     {
-        private EnumSymbolInfo(INamedTypeSymbol symbol, ImmutableArray<EnumFieldSymbolInfo> fields)
+        private EnumSymbolInfo(ImmutableArray<EnumFieldSymbolInfo> fields)
         {
-            Symbol = symbol;
             Fields = fields;
         }
 
-        public INamedTypeSymbol Symbol { get; }
+        public INamedTypeSymbol Symbol => (!Fields.IsDefault) ? Fields.FirstOrDefault().Symbol?.ContainingType : default;
 
         public ImmutableArray<EnumFieldSymbolInfo> Fields { get; }
+
+        public bool IsDefault => Fields.IsDefault;
 
         public bool Contains(ulong value)
         {
@@ -104,7 +106,7 @@ namespace Roslynator
 
             fields.Sort(EnumFieldSymbolInfoComparer.Instance);
 
-            enumInfo = new EnumSymbolInfo(symbol, fields.ToImmutableArray());
+            enumInfo = new EnumSymbolInfo(fields.ToImmutableArray());
 
             return true;
         }

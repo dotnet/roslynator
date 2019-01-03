@@ -284,7 +284,7 @@ namespace Roslynator.CSharp.Analysis
                 }
                 else if (index < firstIndex)
                 {
-                    context.ReportDiagnosticIfNotSuppressed(DiagnosticDescriptors.OrderElementsInDocumentationComment, firstElement);
+                    ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.OrderElementsInDocumentationComment, firstElement);
                     return;
                 }
                 else

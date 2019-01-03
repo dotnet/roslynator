@@ -8,7 +8,7 @@
     <Version>1.0.0.9</Version>
     <AssemblyName>Roslynator.CSharp</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>CSharp.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.2</LangVersion>

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
@@ -55,9 +56,6 @@ namespace Roslynator.CSharp.Refactorings
 
             TypeSyntax type = variableDeclaration.Type;
 
-            if (type == null)
-                return default;
-
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(expression, context.CancellationToken);
 
             if ((variableDeclaration.Parent is FieldDeclarationSyntax fieldDeclaration)
@@ -76,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 result = result.CombineWith(result2);
 
-                result2 = ComputeChangeTypeAndAddAwait(context, diagnostic, variableDeclaration, type, expression, typeSymbol, semanticModel);
+                result2 = ComputeChangeTypeAndAddAwait();
 
                 result = result.CombineWith(result2);
             }
@@ -89,120 +87,31 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             return result;
-        }
 
-        private static CodeFixRegistrationResult ComputeChangeTypeAndAddAwait(
-            CodeFixContext context,
-            Diagnostic diagnostic,
-            VariableDeclarationSyntax variableDeclaration,
-            TypeSyntax type,
-            ExpressionSyntax expression,
-            ITypeSymbol typeSymbol,
-            SemanticModel semanticModel)
-        {
-            if (!typeSymbol.OriginalDefinition.EqualsOrInheritsFromTaskOfT())
-                return default;
-
-            if (!(semanticModel.GetEnclosingSymbol(variableDeclaration.SpanStart, context.CancellationToken) is IMethodSymbol methodSymbol))
-                return default;
-
-            if (!methodSymbol.MethodKind.Is(MethodKind.Ordinary, MethodKind.LocalFunction))
-                return default;
-
-            SyntaxNode node = GetSyntax();
-
-            if (node == null)
-                return default;
-
-            SyntaxNode bodyOrExpressionBody = GetBodyOrExpressionBody();
-
-            if (bodyOrExpressionBody == null)
-                return default;
-
-            foreach (SyntaxNode descendant in bodyOrExpressionBody.DescendantNodes())
+            CodeFixRegistrationResult ComputeChangeTypeAndAddAwait()
             {
-                if (descendant.IsKind(SyntaxKind.ReturnStatement))
-                {
-                    var returnStatement = (ReturnStatementSyntax)descendant;
+                Func<CancellationToken, Task<Document>> createChangedDocument = DocumentRefactoringFactory.ChangeTypeAndAddAwait(
+                    context.Document,
+                    variableDeclaration,
+                    variableDeclarator,
+                    typeSymbol,
+                    semanticModel,
+                    context.CancellationToken);
 
-                    if (returnStatement
-                        .Expression?
-                        .WalkDownParentheses()
-                        .IsKind(SyntaxKind.AwaitExpression) == false)
-                    {
-                        return default;
-                    }
-                }
+                if (createChangedDocument == null)
+                    return default;
+
+                ITypeSymbol typeArgument = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
+
+                CodeAction codeAction = CodeAction.Create(
+                    $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeArgument, semanticModel, variableDeclaration.Type.SpanStart)}' and add await",
+                    createChangedDocument,
+                    EquivalenceKey.Create(diagnostic, CodeFixIdentifiers.ChangeTypeAccordingToInitializer, "AddAwait"));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+
+                return new CodeFixRegistrationResult(true);
             }
-
-            ITypeSymbol typeArgument = ((INamedTypeSymbol)typeSymbol).TypeArguments[0];
-
-            CodeAction codeAction = CodeAction.Create(
-                $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeArgument, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)}' and add await",
-                cancellationToken => ChangeTypeAndAddAwait(context.Document, node, variableDeclaration, type, expression, typeArgument, semanticModel, cancellationToken),
-                EquivalenceKey.Create(diagnostic, CodeFixIdentifiers.ChangeTypeAccordingToInitializer, "AddAwait"));
-
-            context.RegisterCodeFix(codeAction, diagnostic);
-
-            return new CodeFixRegistrationResult(true);
-
-            SyntaxNode GetSyntax()
-            {
-                foreach (SyntaxReference syntaxReference in methodSymbol.DeclaringSyntaxReferences)
-                {
-                    SyntaxNode syntax = syntaxReference.GetSyntax(context.CancellationToken);
-
-                    if (syntax.Contains(variableDeclaration))
-                        return syntax;
-                }
-
-                return null;
-            }
-
-            SyntaxNode GetBodyOrExpressionBody()
-            {
-                switch (node.Kind())
-                {
-                    case SyntaxKind.MethodDeclaration:
-                        return ((MethodDeclarationSyntax)node).BodyOrExpressionBody();
-                    case SyntaxKind.LocalFunctionStatement:
-                        return ((LocalFunctionStatementSyntax)node).BodyOrExpressionBody();
-                }
-
-                Debug.Fail(node.Kind().ToString());
-
-                return null;
-            }
-        }
-
-        private static Task<Document> ChangeTypeAndAddAwait(
-            Document document,
-            SyntaxNode declaration,
-            VariableDeclarationSyntax variableDeclaration,
-            TypeSyntax type,
-            ExpressionSyntax expression,
-            ITypeSymbol newTypeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            AwaitExpressionSyntax newExpression = SyntaxFactory.AwaitExpression(expression).WithTriviaFrom(expression);
-
-            VariableDeclarationSyntax newVariableDeclaration = variableDeclaration.ReplaceNode(expression, newExpression);
-
-            TypeSyntax newType = newTypeSymbol.ToMinimalTypeSyntax(semanticModel, type.SpanStart).WithTriviaFrom(type);
-
-            newVariableDeclaration = newVariableDeclaration.WithType(newType);
-
-            if (!SyntaxInfo.ModifierListInfo(declaration).IsAsync)
-            {
-                SyntaxNode newDeclaration = declaration
-                    .ReplaceNode(variableDeclaration, newVariableDeclaration)
-                    .InsertModifier(SyntaxKind.AsyncKeyword);
-
-                return document.ReplaceNodeAsync(declaration, newDeclaration, cancellationToken);
-            }
-
-            return document.ReplaceNodeAsync(variableDeclaration, newVariableDeclaration, cancellationToken);
         }
 
         private static CodeFixRegistrationResult ComputeCodeFix(

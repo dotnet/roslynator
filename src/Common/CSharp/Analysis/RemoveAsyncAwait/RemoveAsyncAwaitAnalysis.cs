@@ -12,9 +12,27 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
 {
-    internal static class RemoveAsyncAwaitAnalysis
+    internal readonly struct RemoveAsyncAwaitAnalysis
     {
-        public static RemoveAsyncAwaitResult Analyze(
+        private RemoveAsyncAwaitAnalysis(RemoveAsyncAwaitWalker walker)
+        {
+            Walker = walker;
+            AwaitExpression = null;
+        }
+
+        private RemoveAsyncAwaitAnalysis(AwaitExpressionSyntax awaitExpression)
+        {
+            AwaitExpression = awaitExpression;
+            Walker = null;
+        }
+
+        public bool Success => AwaitExpression != null || Walker?.AwaitExpressions.Count > 0;
+
+        public AwaitExpressionSyntax AwaitExpression { get; }
+
+        public RemoveAsyncAwaitWalker Walker { get; }
+
+        public static RemoveAsyncAwaitAnalysis Create(
             MethodDeclarationSyntax methodDeclaration,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
@@ -36,7 +54,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             return default;
         }
 
-        public static RemoveAsyncAwaitResult Analyze(
+        public static RemoveAsyncAwaitAnalysis Create(
             LocalFunctionStatementSyntax localFunction,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
@@ -58,7 +76,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             return default;
         }
 
-        public static RemoveAsyncAwaitResult Analyze(
+        public static RemoveAsyncAwaitAnalysis Create(
             AnonymousMethodExpressionSyntax anonymousMethod,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
@@ -71,7 +89,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             return AnalyzeMethodBody(anonymousMethod, block, semanticModel, cancellationToken);
         }
 
-        private static RemoveAsyncAwaitResult AnalyzeExpressionBody(
+        private static RemoveAsyncAwaitAnalysis AnalyzeExpressionBody(
             SyntaxNode node,
             ArrowExpressionClauseSyntax expressionBody,
             SemanticModel semanticModel,
@@ -90,10 +108,10 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             if (ContainsAwaitExpression(awaitExpression.Expression))
                 return default;
 
-            return new RemoveAsyncAwaitResult(awaitExpression);
+            return new RemoveAsyncAwaitAnalysis(awaitExpression);
         }
 
-        public static RemoveAsyncAwaitResult Analyze(
+        public static RemoveAsyncAwaitAnalysis Create(
             LambdaExpressionSyntax lambda,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default)
@@ -116,7 +134,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                         if (!ContainsAwaitExpression(awaitExpression.Expression)
                             && VerifyTypes(lambda, awaitExpression, semanticModel, cancellationToken))
                         {
-                            return new RemoveAsyncAwaitResult(awaitExpression);
+                            return new RemoveAsyncAwaitAnalysis(awaitExpression);
                         }
 
                         break;
@@ -140,7 +158,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             return result;
         }
 
-        private static RemoveAsyncAwaitResult AnalyzeMethodBody(
+        private static RemoveAsyncAwaitAnalysis AnalyzeMethodBody(
             SyntaxNode node,
             BlockSyntax body,
             SemanticModel semanticModel,
@@ -171,7 +189,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                         if (awaitExpressions.Count == 1)
                         {
                             if (VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
-                                return new RemoveAsyncAwaitResult(walker);
+                                return new RemoveAsyncAwaitAnalysis(walker);
                         }
                         else if (awaitExpressions.Count > 1)
                         {
@@ -184,7 +202,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                                         if (VerifyIfStatement((IfStatementSyntax)prevStatement, awaitExpressions.Count - 1, endsWithElse: false)
                                             && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                                         {
-                                            return new RemoveAsyncAwaitResult(walker);
+                                            return new RemoveAsyncAwaitAnalysis(walker);
                                         }
 
                                         break;
@@ -194,7 +212,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                                         if (VerifySwitchStatement((SwitchStatementSyntax)prevStatement, awaitExpressions.Count - 1, containsDefaultSection: false)
                                             && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                                         {
-                                            return new RemoveAsyncAwaitResult(walker);
+                                            return new RemoveAsyncAwaitAnalysis(walker);
                                         }
 
                                         break;
@@ -216,7 +234,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                             && VerifyIfStatement((IfStatementSyntax)statement, awaitExpressions.Count, endsWithElse: true)
                             && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                         {
-                            return new RemoveAsyncAwaitResult(walker);
+                            return new RemoveAsyncAwaitAnalysis(walker);
                         }
 
                         RemoveAsyncAwaitWalker.Free(walker);
@@ -234,7 +252,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                             && VerifySwitchStatement((SwitchStatementSyntax)statement, awaitExpressions.Count, containsDefaultSection: true)
                             && VerifyTypes(node, awaitExpressions, semanticModel, cancellationToken))
                         {
-                            return new RemoveAsyncAwaitResult(walker);
+                            return new RemoveAsyncAwaitAnalysis(walker);
                         }
 
                         RemoveAsyncAwaitWalker.Free(walker);

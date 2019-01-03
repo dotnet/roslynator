@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword, additionalKey: nameof(SyntaxKind.NewKeyword));
 
                             if (Settings.IsEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
-                                CodeFixRegistrator.RemoveMember(context, diagnostic, memberDeclaration);
+                                CodeFixRegistrator.RemoveMemberDeclaration(context, diagnostic, memberDeclaration);
 
                             break;
                         }
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, memberDeclaration, SyntaxKind.NewKeyword, additionalKey: nameof(SyntaxKind.NewKeyword));
 
                             if (Settings.IsEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
-                                CodeFixRegistrator.RemoveMember(context, diagnostic, memberDeclaration);
+                                CodeFixRegistrator.RemoveMemberDeclaration(context, diagnostic, memberDeclaration);
 
                             break;
                         }
