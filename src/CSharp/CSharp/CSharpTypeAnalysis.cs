@@ -13,42 +13,42 @@ namespace Roslynator.CSharp
         public static TypeAnalysis AnalyzeType(
             VariableDeclarationSyntax variableDeclaration,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             TypeSyntax type = variableDeclaration.Type;
 
             Debug.Assert(type != null);
 
             if (type == null)
-                return TypeAnalysisFlags.None;
+                return default;
 
             SeparatedSyntaxList<VariableDeclaratorSyntax> variables = variableDeclaration.Variables;
 
             Debug.Assert(variables.Any());
 
             if (!variables.Any())
-                return TypeAnalysisFlags.None;
+                return default;
 
             if (variableDeclaration.IsParentKind(SyntaxKind.FieldDeclaration, SyntaxKind.EventFieldDeclaration))
-                return TypeAnalysisFlags.None;
+                return default;
 
             ExpressionSyntax expression = variables[0].Initializer?.Value?.WalkDownParentheses();
 
             if (expression == null)
-                return TypeAnalysisFlags.None;
+                return default;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, cancellationToken);
 
             if (typeSymbol == null)
-                return TypeAnalysisFlags.None;
+                return default;
 
             SymbolKind kind = typeSymbol.Kind;
 
             if (kind == SymbolKind.ErrorType)
-                return TypeAnalysisFlags.None;
+                return default;
 
             if (kind == SymbolKind.DynamicType)
-                return TypeAnalysisFlags.Dynamic;
+                return new TypeAnalysis(typeSymbol, TypeAnalysisFlags.Dynamic);
 
             var flags = TypeAnalysisFlags.None;
 
@@ -97,13 +97,13 @@ namespace Roslynator.CSharp
                     }
             }
 
-            return flags;
+            return new TypeAnalysis(typeSymbol, flags);
         }
 
         public static bool IsImplicitThatCanBeExplicit(
             VariableDeclarationSyntax variableDeclaration,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return IsImplicitThatCanBeExplicit(variableDeclaration, semanticModel, TypeAppearance.None, cancellationToken);
         }
@@ -112,7 +112,7 @@ namespace Roslynator.CSharp
             VariableDeclarationSyntax variableDeclaration,
             SemanticModel semanticModel,
             TypeAppearance typeAppearance,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             TypeSyntax type = variableDeclaration.Type;
 
@@ -166,7 +166,7 @@ namespace Roslynator.CSharp
         public static bool IsExplicitThatCanBeImplicit(
             VariableDeclarationSyntax variableDeclaration,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             return IsExplicitThatCanBeImplicit(variableDeclaration, semanticModel, TypeAppearance.None, cancellationToken);
         }
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp
             VariableDeclarationSyntax variableDeclaration,
             SemanticModel semanticModel,
             TypeAppearance typeAppearance,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             TypeSyntax type = variableDeclaration.Type;
 
@@ -270,33 +270,33 @@ namespace Roslynator.CSharp
         public static TypeAnalysis AnalyzeType(
             DeclarationExpressionSyntax declarationExpression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             TypeSyntax type = declarationExpression.Type;
 
             if (type == null)
-                return TypeAnalysisFlags.None;
+                return default;
 
             if (!(declarationExpression.Designation is SingleVariableDesignationSyntax singleVariableDesignation))
-                return TypeAnalysisFlags.None;
+                return default;
 
             if (!(semanticModel.GetDeclaredSymbol(singleVariableDesignation, cancellationToken) is ILocalSymbol localSymbol))
-                return TypeAnalysisFlags.None;
+                return default;
 
             ITypeSymbol typeSymbol = localSymbol.Type;
 
             Debug.Assert(typeSymbol != null);
 
             if (typeSymbol == null)
-                return TypeAnalysisFlags.None;
+                return default;
 
             SymbolKind kind = typeSymbol.Kind;
 
             if (kind == SymbolKind.ErrorType)
-                return TypeAnalysisFlags.None;
+                return default;
 
             if (kind == SymbolKind.DynamicType)
-                return TypeAnalysisFlags.Dynamic;
+                return new TypeAnalysis(typeSymbol, TypeAnalysisFlags.Dynamic);
 
             var flags = TypeAnalysisFlags.None;
 
@@ -313,13 +313,13 @@ namespace Roslynator.CSharp
                 flags |= TypeAnalysisFlags.SupportsImplicit;
             }
 
-            return flags;
+            return new TypeAnalysis(typeSymbol, flags);
         }
 
         public static bool IsImplicitThatCanBeExplicit(
             DeclarationExpressionSyntax declarationExpression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             TypeSyntax type = declarationExpression.Type;
 
@@ -353,7 +353,7 @@ namespace Roslynator.CSharp
         public static bool IsExplicitThatCanBeImplicit(
             DeclarationExpressionSyntax declarationExpression,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             TypeSyntax type = declarationExpression.Type;
 
@@ -389,22 +389,22 @@ namespace Roslynator.CSharp
             Debug.Assert(type != null);
 
             if (type == null)
-                return TypeAnalysisFlags.None;
+                return default;
 
             ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
 
             ITypeSymbol typeSymbol = info.ElementType;
 
             if (typeSymbol == null)
-                return TypeAnalysisFlags.None;
+                return default;
 
             SymbolKind kind = typeSymbol.Kind;
 
             if (kind == SymbolKind.ErrorType)
-                return TypeAnalysisFlags.None;
+                return default;
 
             if (kind == SymbolKind.DynamicType)
-                return TypeAnalysisFlags.Dynamic;
+                return new TypeAnalysis(typeSymbol, TypeAnalysisFlags.Dynamic);
 
             var flags = TypeAnalysisFlags.None;
 
@@ -423,7 +423,7 @@ namespace Roslynator.CSharp
                     flags |= TypeAnalysisFlags.SupportsImplicit;
             }
 
-            return flags;
+            return new TypeAnalysis(typeSymbol, flags);
         }
 
         public static bool IsImplicitThatCanBeExplicit(ForEachStatementSyntax forEachStatement, SemanticModel semanticModel)

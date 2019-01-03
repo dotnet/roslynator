@@ -63,10 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.RemoveRedundantOverridingMember:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Remove {CSharpFacts.GetTitle(memberDeclaration)}",
-                                cancellationToken => context.Document.RemoveMemberAsync(memberDeclaration, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+                            CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(context.Document, memberDeclaration, equivalenceKey: GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

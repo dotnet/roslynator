@@ -43,16 +43,13 @@ namespace Roslynator.CSharp.Refactorings
                             {
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
                                 {
-                                    context.RegisterRefactoring(
-                                        "Remove " + CSharpFacts.GetTitle(member),
-                                        cancellationToken => context.Document.RemoveMemberAsync(member, cancellationToken),
-                                        RefactoringIdentifiers.RemoveMember);
+                                    context.RegisterRefactoring(CodeActionFactory.RemoveMemberDeclaration(context.Document, member, equivalenceKey: RefactoringIdentifiers.RemoveMember));
                                 }
 
                                 if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))
                                 {
                                     context.RegisterRefactoring(
-                                        "Duplicate " + CSharpFacts.GetTitle(member),
+                                        $"Duplicate {CSharpFacts.GetTitle(member)}",
                                         cancellationToken => DuplicateMemberDeclarationRefactoring.RefactorAsync(context.Document, member, cancellationToken),
                                         RefactoringIdentifiers.DuplicateMember);
                                 }

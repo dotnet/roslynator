@@ -8,18 +8,18 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
-namespace Roslynator.CSharp.CodeFixes
+namespace Roslynator.CSharp.Refactorings
 {
-    internal static class RemoveAsyncAwaitCodeFix
+    internal static class RemoveAsyncAwait
     {
         public static async Task<Document> RefactorAsync(
             Document document,
-            SyntaxToken token,
-            CancellationToken cancellationToken)
+            SyntaxToken asyncKeyword,
+            CancellationToken cancellationToken = default)
         {
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode node = token.Parent;
+            SyntaxNode node = asyncKeyword.Parent;
 
             var remover = new AwaitRemover(semanticModel, cancellationToken);
 
@@ -83,9 +83,11 @@ namespace Roslynator.CSharp.CodeFixes
                                 .WithBody((CSharpSyntaxNode)remover.Visit(anonymousMethod.Body))
                                 .WithAsyncKeyword(GetMissingAsyncKeyword(anonymousMethod.AsyncKeyword));
                         }
+                    default:
+                        {
+                            throw new InvalidOperationException();
+                        }
                 }
-
-                throw new InvalidOperationException();
             }
         }
 

@@ -8,7 +8,6 @@ using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -36,12 +35,9 @@ namespace Roslynator.CSharp.CodeFixes
 
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
-                CodeAction codeAction = CodeAction.Create(
-                    "Change type to 'var'",
-                    cancellationToken => ChangeTypeRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken),
-                    GetEquivalenceKey(diagnostic));
+                CodeAction codeAction = CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: GetEquivalenceKey(diagnostic));
 
-                context.RegisterCodeFix(codeAction, context.Diagnostics);
+                context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
     }

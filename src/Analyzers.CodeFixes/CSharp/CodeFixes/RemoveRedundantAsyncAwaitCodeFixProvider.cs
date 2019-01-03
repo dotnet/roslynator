@@ -32,10 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             Diagnostic diagnostic = context.Diagnostics[0];
 
-            CodeAction codeAction = CodeAction.Create(
-                "Remove async/await",
-                ct => RemoveAsyncAwaitCodeFix.RefactorAsync(context.Document, token, ct),
-                GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeActionFactory.RemoveAsyncAwait(context.Document, token, equivalenceKey: GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
         }

@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -29,18 +27,17 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ForEachStatementSyntax forEachStatement))
                 return;
 
+            Diagnostic diagnostic = context.Diagnostics[0];
+
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
             TypeSyntax type = forEachStatement.Type;
 
             ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-            CodeAction codeAction = CodeAction.Create(
-                $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)}'",
-                cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
-                GetEquivalenceKey(DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarInForEach));
+            CodeAction codeAction = CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
 
-            context.RegisterCodeFix(codeAction, context.Diagnostics);
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

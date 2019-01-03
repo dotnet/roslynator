@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             ITypeSymbol typeSymbol = methodSymbol.OverriddenMethod.ReturnType;
 
-                            CodeFixRegistrator.ChangeMemberDeclarationType(context, diagnostic, memberDeclaration, typeSymbol, semanticModel);
+                            CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, memberDeclaration, typeSymbol, semanticModel);
 
                             break;
                         }
@@ -183,7 +183,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                             }
 
-                            CodeFixRegistrator.ChangeMemberDeclarationType(context, diagnostic, memberDeclaration, typeSymbol, semanticModel);
+                            CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, memberDeclaration, typeSymbol, semanticModel);
 
                             break;
                         }
@@ -275,7 +275,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
                                 break;
 
-                            CodeFixRegistrator.RemoveMember(context, diagnostic, memberDeclaration);
+                            CodeFixRegistrator.RemoveMemberDeclaration(context, diagnostic, memberDeclaration);
                             break;
                         }
                     case CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass:

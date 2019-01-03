@@ -75,10 +75,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (analysis.SupportsImplicit
                     && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
                 {
-                    context.RegisterRefactoring(
-                        "Change type to 'var'",
-                        cancellationToken => ChangeTypeRefactoring.ChangeTypeToVarAsync(context.Document, type, cancellationToken),
-                        RefactoringIdentifiers.ChangeExplicitTypeToVar);
+                    context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: RefactoringIdentifiers.ChangeExplicitTypeToVar));
                 }
             }
             else if (analysis.SupportsExplicit
@@ -86,10 +83,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 ITypeSymbol typeSymbol = semanticModel.GetTypeSymbol(type, context.CancellationToken);
 
-                context.RegisterRefactoring(
-                    $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)}'",
-                    cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
-                    RefactoringIdentifiers.ChangeVarToExplicitType);
+                context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeVarToExplicitType));
             }
         }
 
