@@ -1353,7 +1353,7 @@ i--;]]></After>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0173" Identifier="WrapInElseClause" Title="Wrap in else clause">
+  <Refactoring Id="RR0173" Identifier="WrapInElseClause" Title="Wrap in else clause" IsObsolete="true">
     <Syntaxes>
       <Syntax>statement</Syntax>
     </Syntaxes>
@@ -2102,4 +2102,41 @@ class C<T> : IEnumerable<T>
       </Sample>
     </Samples>
   </Refactoring>
-</Refactorings>
+  <Refactoring Id="RR0211" Identifier="ConvertStatementsToIfElse" Title="Convert statements to if-else">
+    <Syntaxes>
+      <Syntax>selected statements (first statement must be 'if' statement)</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+    return 1;
+
+if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+
+return 0;]]></Before>
+        <After><![CDATA[if (x)
+{
+    return 1;
+}
+else if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+else
+{
+    return 0;
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring></Refactorings>

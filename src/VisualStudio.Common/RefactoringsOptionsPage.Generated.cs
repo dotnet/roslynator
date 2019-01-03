@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.ImplementCustomEnumerator;
+        = RefactoringIdentifiers.ConvertStatementsToIfElse;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
             settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
@@ -197,7 +197,6 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod, "Use lambda expression instead of anonymous method", IsEnabled(RefactoringIdentifiers.UseLambdaExpressionInsteadOfAnonymousMethod)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral, "Use string.Empty instead of \"\"", IsEnabled(RefactoringIdentifiers.UseStringEmptyInsteadOfEmptyStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInCondition, "Wrap in condition", IsEnabled(RefactoringIdentifiers.WrapInCondition)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInElseClause, "Wrap in else clause", IsEnabled(RefactoringIdentifiers.WrapInElseClause)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInIfDirective, "Wrap in #if directive", IsEnabled(RefactoringIdentifiers.WrapInIfDirective)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInRegion, "Wrap in region", IsEnabled(RefactoringIdentifiers.WrapInRegion)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.WrapInTryCatch, "Wrap in try-catch", IsEnabled(RefactoringIdentifiers.WrapInTryCatch)));
@@ -235,6 +234,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.AddTagToDocumentationComment, "Add tag to documentation comment", IsEnabled(RefactoringIdentifiers.AddTagToDocumentationComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveAsyncAwait, "Remove async/await", IsEnabled(RefactoringIdentifiers.RemoveAsyncAwait)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ImplementCustomEnumerator, "Implement custom enumerator", IsEnabled(RefactoringIdentifiers.ImplementCustomEnumerator)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertStatementsToIfElse, "Convert statements to if-else", IsEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)));
         }
     }
 }

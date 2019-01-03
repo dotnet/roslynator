@@ -14,6 +14,7 @@ namespace Roslynator.CSharp.Refactorings
             return context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInUsingStatement)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.CollapseToInitializer)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.MergeLocalDeclarations)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch)
@@ -21,8 +22,7 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInElseClause);
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor);
         }
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
@@ -38,6 +38,9 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.MergeIfStatements))
                 MergeIfStatementsRefactoring.ComputeRefactorings(context, selectedStatements);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse))
+                ConvertStatementsToIfElseRefactoring.ComputeRefactorings(context, selectedStatements);
 
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
@@ -73,9 +76,6 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor))
                 await ReplaceWhileWithForRefactoring.ComputeRefactoringAsync(context, selectedStatements).ConfigureAwait(false);
-
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInElseClause))
-                WrapInElseClauseRefactoring.ComputeRefactoring(context, selectedStatements);
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition))
             {

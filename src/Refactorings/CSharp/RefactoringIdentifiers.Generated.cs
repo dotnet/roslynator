@@ -39,6 +39,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string CollapseToInitializer = Prefix + "0026";
         public const string CommentOutMember = Prefix + "0027";
         public const string CommentOutStatement = Prefix + "0028";
+        public const string ConvertStatementsToIfElse = Prefix + "0211";
         public const string CopyDocumentationCommentFromBaseMember = Prefix + "0029";
         public const string DuplicateArgument = Prefix + "0030";
         public const string DuplicateMember = Prefix + "0031";
@@ -203,7 +204,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseStringBuilderInsteadOfConcatenation = Prefix + "0182";
         public const string UseStringEmptyInsteadOfEmptyStringLiteral = Prefix + "0171";
         public const string WrapInCondition = Prefix + "0172";
-        public const string WrapInElseClause = Prefix + "0173";
         public const string WrapInIfDirective = Prefix + "0174";
         public const string WrapInRegion = Prefix + "0175";
         public const string WrapInTryCatch = Prefix + "0176";
