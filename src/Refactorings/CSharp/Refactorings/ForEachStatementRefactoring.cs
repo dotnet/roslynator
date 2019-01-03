@@ -15,7 +15,8 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.ChangeExplicitTypeToVar,
-                RefactoringIdentifiers.ChangeVarToExplicitType))
+                RefactoringIdentifiers.ChangeVarToExplicitType,
+                RefactoringIdentifiers.ChangeTypeAccordingToExpression))
             {
                 await ChangeTypeAsync(context, forEachStatement).ConfigureAwait(false);
             }
@@ -77,6 +78,12 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: RefactoringIdentifiers.ChangeExplicitTypeToVar));
                 }
+
+                if (!forEachStatement.ContainsDiagnostics
+                    && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                {
+                    ChangeTypeAccordingToExpression(context, forEachStatement, semanticModel);
+                }
             }
             else if (analysis.SupportsExplicit
                 && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeVarToExplicitType))
@@ -85,6 +92,29 @@ namespace Roslynator.CSharp.Refactorings
 
                 context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeVarToExplicitType));
             }
+        }
+
+        private static void ChangeTypeAccordingToExpression(
+            RefactoringContext context,
+            ForEachStatementSyntax forEachStatement,
+            SemanticModel semanticModel)
+        {
+            ForEachStatementInfo info = semanticModel.GetForEachStatementInfo(forEachStatement);
+
+            ITypeSymbol elementType = info.ElementType;
+
+            if (elementType?.IsErrorType() != false)
+                return;
+
+            Conversion conversion = info.ElementConversion;
+
+            if (conversion.IsIdentity)
+                return;
+
+            if (!conversion.IsImplicit)
+                return;
+
+            context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, forEachStatement.Type, elementType, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeTypeAccordingToExpression));
         }
 
         internal static async Task RenameIdentifierAccordingToTypeNameAsync(

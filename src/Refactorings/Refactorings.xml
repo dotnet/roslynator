@@ -132,16 +132,18 @@
       <Syntax>local function</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression" IsObsolete="true">
+  <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
     <Span>type</Span>
-    <Images>
-      <Image>ChangeTypeAccordingToExpression</Image>
-      <Image>ChangeForEachTypeAccordingToExpression</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[IEnumerable<object> items = new List<object>();]]></Before>
+        <After><![CDATA[List<object> items = new List<object>();]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0023" Identifier="ChangeVarToExplicitType" Title="Change 'var' to explicit type">
     <Syntaxes>

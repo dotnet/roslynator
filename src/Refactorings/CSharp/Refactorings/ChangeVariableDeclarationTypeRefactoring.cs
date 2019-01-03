@@ -18,7 +18,8 @@ namespace Roslynator.CSharp.Refactorings
             if (type?.Span.Contains(context.Span) == true
                 && context.IsAnyRefactoringEnabled(
                     RefactoringIdentifiers.ChangeExplicitTypeToVar,
-                    RefactoringIdentifiers.ChangeVarToExplicitType))
+                    RefactoringIdentifiers.ChangeVarToExplicitType,
+                    RefactoringIdentifiers.ChangeTypeAccordingToExpression))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -30,6 +31,12 @@ namespace Roslynator.CSharp.Refactorings
                         && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeExplicitTypeToVar))
                     {
                         context.RegisterRefactoring(CodeActionFactory.ChangeTypeToVar(context.Document, type, equivalenceKey: RefactoringIdentifiers.ChangeExplicitTypeToVar));
+                    }
+
+                    if (!variableDeclaration.ContainsDiagnostics
+                        && context.IsRefactoringEnabled(RefactoringIdentifiers.ChangeTypeAccordingToExpression))
+                    {
+                        ChangeTypeAccordingToExpression(context, variableDeclaration, analysis.Symbol, semanticModel);
                     }
                 }
                 else if (analysis.SupportsExplicit
@@ -64,6 +71,36 @@ namespace Roslynator.CSharp.Refactorings
                     context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeVarToExplicitType));
                 }
             }
+        }
+
+        private static void ChangeTypeAccordingToExpression(
+           RefactoringContext context,
+           VariableDeclarationSyntax variableDeclaration,
+           ITypeSymbol typeSymbol,
+           SemanticModel semanticModel)
+        {
+            foreach (VariableDeclaratorSyntax variableDeclarator in variableDeclaration.Variables)
+            {
+                ExpressionSyntax value = variableDeclarator.Initializer?.Value;
+
+                if (value == null)
+                    return;
+
+                Conversion conversion = semanticModel.ClassifyConversion(value, typeSymbol);
+
+                if (conversion.IsIdentity)
+                    return;
+
+                if (!conversion.IsImplicit)
+                    return;
+            }
+
+            ITypeSymbol newTypeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables.First().Initializer.Value, context.CancellationToken);
+
+            if (newTypeSymbol == null)
+                return;
+
+            context.RegisterRefactoring(CodeActionFactory.ChangeType(context.Document, variableDeclaration.Type, newTypeSymbol, semanticModel, equivalenceKey: RefactoringIdentifiers.ChangeTypeAccordingToExpression));
         }
     }
 }
