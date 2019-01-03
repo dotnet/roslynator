@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
 
             var span = new TextSpan(type.Span.End, 1);
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AddArgumentListToObjectCreation,
                 Location.Create(objectCreationExpression.SyntaxTree, span));
         }

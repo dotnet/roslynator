@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
+using static Roslynator.DiagnosticHelpers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -92,7 +93,7 @@ namespace Roslynator.CSharp.Analysis
                         case XmlElementKind.Summary:
                             {
                                 if (info.IsContentEmptyOrWhitespace)
-                                    context.ReportDiagnosticIfNotSuppressed(DiagnosticDescriptors.AddSummaryToDocumentationComment, info.Element);
+                                    ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.AddSummaryToDocumentationComment, info.Element);
 
                                 containsSummaryElement = true;
                                 break;
@@ -130,7 +131,7 @@ namespace Roslynator.CSharp.Analysis
             if (!containsSummaryElement
                 && !containsContentElement)
             {
-                context.ReportDiagnosticIfNotSuppressed(DiagnosticDescriptors.AddSummaryElementToDocumentationComment, documentationComment);
+                ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.AddSummaryElementToDocumentationComment, documentationComment);
             }
 
             SyntaxNode parent = documentationComment.ParentTrivia.Token.Parent;
@@ -153,7 +154,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (IsMissing(documentationComment, parameter))
                         {
-                            context.ReportDiagnostic(DiagnosticDescriptors.AddParamElementToDocumentationComment, documentationComment);
+                            ReportDiagnostic(context, DiagnosticDescriptors.AddParamElementToDocumentationComment, documentationComment);
                             break;
                         }
                     }
@@ -178,7 +179,7 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (IsMissing(documentationComment, typeParameter))
                         {
-                            context.ReportDiagnostic(DiagnosticDescriptors.AddTypeParamElementToDocumentationComment, documentationComment);
+                            ReportDiagnostic(context, DiagnosticDescriptors.AddTypeParamElementToDocumentationComment, documentationComment);
                             break;
                         }
                     }
@@ -283,7 +284,7 @@ namespace Roslynator.CSharp.Analysis
                 }
                 else if (index < firstIndex)
                 {
-                    context.ReportDiagnosticIfNotSuppressed(DiagnosticDescriptors.OrderElementsInDocumentationComment, firstElement);
+                    ReportDiagnosticIfNotSuppressed(context, DiagnosticDescriptors.OrderElementsInDocumentationComment, firstElement);
                     return;
                 }
                 else
@@ -304,7 +305,7 @@ namespace Roslynator.CSharp.Analysis
             if (context.IsAnalyzerSuppressed(DiagnosticDescriptors.UnusedElementInDocumentationComment))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UnusedElementInDocumentationComment, xmlNode);
+            ReportDiagnostic(context, DiagnosticDescriptors.UnusedElementInDocumentationComment, xmlNode);
 
             if (index > 0
                 && xmlNodes[index - 1] is XmlTextSyntax xmlText)
@@ -318,7 +319,7 @@ namespace Roslynator.CSharp.Analysis
                         SyntaxTrivia trivia = tokens[0].LeadingTrivia.SingleOrDefault(shouldThrow: false);
 
                         if (trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
-                            context.ReportDiagnostic(DiagnosticDescriptors.UnusedElementInDocumentationCommentFadeOut, trivia);
+                            ReportDiagnostic(context, DiagnosticDescriptors.UnusedElementInDocumentationCommentFadeOut, trivia);
                     }
                 }
                 else if (tokens.Count == 2)
@@ -329,7 +330,7 @@ namespace Roslynator.CSharp.Analysis
                         SyntaxTrivia trivia = tokens[1].LeadingTrivia.SingleOrDefault(shouldThrow: false);
 
                         if (trivia.IsKind(SyntaxKind.DocumentationCommentExteriorTrivia))
-                            context.ReportDiagnostic(DiagnosticDescriptors.UnusedElementInDocumentationCommentFadeOut, trivia);
+                            ReportDiagnostic(context, DiagnosticDescriptors.UnusedElementInDocumentationCommentFadeOut, trivia);
                     }
                 }
             }

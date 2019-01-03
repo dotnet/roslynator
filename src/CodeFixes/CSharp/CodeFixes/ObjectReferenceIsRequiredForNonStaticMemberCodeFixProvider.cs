@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.AddStaticModifier,
                 CodeFixIdentifiers.MakeMemberNonStatic))
             {
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     if (SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic)
                     {
-                        if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeMemberNonStatic))
+                        if (Settings.IsEnabled(CodeFixIdentifiers.MakeMemberNonStatic))
                         {
                             ModifiersCodeFixRegistrator.RemoveModifier(
                             context,
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixes
                             additionalKey: CodeFixIdentifiers.MakeMemberNonStatic);
                         }
 
-                        if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier))
+                        if (Settings.IsEnabled(CodeFixIdentifiers.AddStaticModifier))
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.CodeFixes
                 }
                 else if (parent is ConstructorInitializerSyntax)
                 {
-                    if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddStaticModifier))
+                    if (Settings.IsEnabled(CodeFixIdentifiers.AddStaticModifier))
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

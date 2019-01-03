@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
             if (!conversion.IsIdentity)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantAsOperator,
                 Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(binaryExpression.OperatorToken.SpanStart, info.Type.Span.End)));
         }

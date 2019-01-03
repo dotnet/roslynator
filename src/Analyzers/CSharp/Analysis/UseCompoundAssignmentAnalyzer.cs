@@ -66,8 +66,8 @@ namespace Roslynator.CSharp.Analysis
 
             var binaryExpression = (BinaryExpressionSyntax)right;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseCompoundAssignment, assignmentExpression, GetCompoundAssignmentOperatorText(binaryExpression));
-            context.ReportNode(DiagnosticDescriptors.UseCompoundAssignmentFadeOut, binaryExpression.Left);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCompoundAssignment, assignmentExpression, GetCompoundAssignmentOperatorText(binaryExpression));
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseCompoundAssignmentFadeOut, binaryExpression.Left);
         }
 
         private static bool CanBeReplacedWithCompoundAssignment(SyntaxKind kind)

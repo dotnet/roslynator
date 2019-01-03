@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
             Debug.Assert(!token.IsMissing);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantCommaInInitializer, token);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantCommaInInitializer, token);
         }
     }
 }

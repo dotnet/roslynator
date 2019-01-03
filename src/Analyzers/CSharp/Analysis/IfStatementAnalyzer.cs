@@ -77,7 +77,7 @@ namespace Roslynator.CSharp.Analysis
                     case IfAnalysisKind.IfReturnToReturnWithCoalesceExpression:
                         {
                             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf))
-                                context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf, ifStatement);
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCoalesceExpressionInsteadOfIf, ifStatement);
 
                             break;
                         }
@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Analysis
                     case IfAnalysisKind.IfReturnToReturnWithExpression:
                         {
                             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement))
-                                context.ReportDiagnostic(DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement, ifStatement);
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement, ifStatement);
 
                             break;
                         }
@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis
                     case IfAnalysisKind.IfElseToAssignmentWithCondition:
                         {
                             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.ReplaceIfStatementWithAssignment))
-                                context.ReportDiagnostic(DiagnosticDescriptors.ReplaceIfStatementWithAssignment, ifStatement);
+                                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceIfStatementWithAssignment, ifStatement);
 
                             break;
                         }

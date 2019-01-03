@@ -164,11 +164,6 @@ namespace Roslynator
                 properties: properties,
                 messageArgs: messageArgs));
         }
-
-        internal static void ThrowIfCancellationRequested(this SymbolAnalysisContext context)
-        {
-            context.CancellationToken.ThrowIfCancellationRequested();
-        }
         #endregion SymbolAnalysisContext
 
         #region SyntaxNodeAnalysisContext
@@ -334,23 +329,6 @@ namespace Roslynator
                 properties: properties,
                 messageArgs: messageArgs));
         }
-
-        internal static void ReportToken(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxToken token, params object[] messageArgs)
-        {
-            if (!token.IsMissing)
-                context.ReportDiagnostic(descriptor, token, messageArgs);
-        }
-
-        internal static void ReportNode(this SyntaxNodeAnalysisContext context, DiagnosticDescriptor descriptor, SyntaxNode node, params object[] messageArgs)
-        {
-            if (!node.IsMissing)
-                context.ReportDiagnostic(descriptor, node, messageArgs);
-        }
-
-        internal static void ThrowIfCancellationRequested(this SyntaxNodeAnalysisContext context)
-        {
-            context.CancellationToken.ThrowIfCancellationRequested();
-        }
         #endregion SyntaxNodeAnalysisContext
 
         #region SyntaxTreeAnalysisContext
@@ -503,11 +481,6 @@ namespace Roslynator
                 additionalLocations: additionalLocations,
                 properties: properties,
                 messageArgs: messageArgs));
-        }
-
-        internal static void ThrowIfCancellationRequested(this SyntaxTreeAnalysisContext context)
-        {
-            context.CancellationToken.ThrowIfCancellationRequested();
         }
         #endregion SyntaxTreeAnalysisContext
 

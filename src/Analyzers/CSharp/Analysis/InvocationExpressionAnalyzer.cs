@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.Analysis
                                         if (!invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
                                             && UseElementAccessAnalysis.IsFixableFirst(invocationInfo, context.SemanticModel, context.CancellationToken))
                                         {
-                                            context.ReportDiagnostic(DiagnosticDescriptors.OptimizeLinqMethodCall, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
+                                            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeLinqMethodCall, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
                                         }
 
                                         OptimizeLinqMethodCallAnalysis.AnalyzeWhere(context, invocationInfo);
@@ -210,7 +210,7 @@ namespace Roslynator.CSharp.Analysis
                                         && !invocationInfo.Expression.IsKind(SyntaxKind.InvocationExpression)
                                         && UseElementAccessAnalysis.IsFixableElementAt(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.OptimizeLinqMethodCall, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeLinqMethodCall, Location.Create(invocation.SyntaxTree, TextSpan.FromBounds(invocationInfo.Name.SpanStart, invocationInfo.ArgumentList.Span.End)));
                                     }
 
                                     break;
@@ -233,7 +233,7 @@ namespace Roslynator.CSharp.Analysis
                                             .OriginalDefinition
                                             .SpecialType == SpecialType.System_Nullable_T)
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, invocationInfo.Name);
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCoalesceExpression, invocationInfo.Name);
                                     }
 
                                     break;
@@ -251,7 +251,7 @@ namespace Roslynator.CSharp.Analysis
                                         && !invocation.SpanContainsDirectives()
                                         && UseBitwiseOperationInsteadOfCallingHasFlagAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
                                     {
-                                        context.ReportDiagnostic(DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation);
+                                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag, invocation);
                                     }
 
                                     break;
@@ -402,7 +402,7 @@ namespace Roslynator.CSharp.Analysis
             if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseMethodChaining)
                 && UseMethodChainingAnalysis.IsFixable(invocationInfo, context.SemanticModel, context.CancellationToken))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.UseMethodChaining, invocationInfo.InvocationExpression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseMethodChaining, invocationInfo.InvocationExpression);
             }
         }
     }

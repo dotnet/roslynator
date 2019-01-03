@@ -53,12 +53,12 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.RemoveBraces)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveBracesFromIfElse, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveBracesFromIfElse, ifStatement);
 
             foreach (IfStatementOrElseClause ifOrElse in ifStatement.AsCascade())
             {
                 if (ifOrElse.Statement is BlockSyntax block)
-                    context.ReportBraces(DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut, block);
+                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.RemoveBracesFromIfElseFadeOut, block);
             }
         }
     }

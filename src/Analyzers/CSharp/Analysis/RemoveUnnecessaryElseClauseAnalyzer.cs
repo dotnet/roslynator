@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
             if (!IsFixable(elseClause))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveUnnecessaryElseClause, elseClause.ElseKeyword);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnnecessaryElseClause, elseClause.ElseKeyword);
         }
 
         public static bool IsFixable(ElseClauseSyntax elseClause)

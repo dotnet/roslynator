@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (!modifiers.Contains(SyntaxKind.StaticKeyword))
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.AddStaticModifierToAllPartialClassDeclarations,
                         classDeclaration.Identifier);
                 }

@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
                     && label.Keyword.TrailingTrivia.IsEmptyOrWhitespace()
                     && label.ColonToken.LeadingTrivia.IsEmptyOrWhitespace())
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.RemoveUnnecessaryCaseLabel, label);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveUnnecessaryCaseLabel, label);
                 }
             }
         }

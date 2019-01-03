@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Analysis
             if (!block.SyntaxTree.IsSingleLineSpan(TextSpan.FromBounds(openBrace.SpanStart, closeBrace.Span.End), context.CancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.FormatSingleLineBlock, block);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.FormatSingleLineBlock, block);
         }
     }
 }

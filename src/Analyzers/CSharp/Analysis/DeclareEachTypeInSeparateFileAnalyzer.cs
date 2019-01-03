@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
             if (token == default(SyntaxToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.DeclareEachTypeInSeparateFile, token);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEachTypeInSeparateFile, token);
         }
 
         private static bool ContainsSingleNamespaceWithSingleNonNamespaceMember(SyntaxList<MemberDeclarationSyntax> members)

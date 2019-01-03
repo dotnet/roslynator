@@ -38,7 +38,7 @@ namespace Roslynator.Configuration
 
                 if (name == "General")
                 {
-                    LoadPrefixFieldIdentifierWithUnderscore(child, settings);
+                    LoadGeneral(child, settings);
                 }
                 else if (name == "Refactorings")
                 {
@@ -48,10 +48,14 @@ namespace Roslynator.Configuration
                 {
                     LoadCodeFixes(child, settings);
                 }
+                else if (name == "Analyzers")
+                {
+                    LoadAnalyzers(child, settings);
+                }
             }
         }
 
-        private static void LoadPrefixFieldIdentifierWithUnderscore(XElement parent, ConfigFileSettings settings)
+        private static void LoadGeneral(XElement parent, ConfigFileSettings settings)
         {
             XElement element = parent.Element("PrefixFieldIdentifierWithUnderscore");
 
@@ -65,30 +69,36 @@ namespace Roslynator.Configuration
         private static void LoadRefactorings(XElement element, ConfigFileSettings settings)
         {
             foreach (XElement child in element.Elements("Refactoring"))
-                LoadRefactoring(child, settings);
-        }
-
-        private static void LoadRefactoring(XElement element, ConfigFileSettings settings)
-        {
-            if (element.TryGetAttributeValueAsString("Id", out string id)
-                && element.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
             {
-                settings.Refactorings[id] = isEnabled;
+                if (child.TryGetAttributeValueAsString("Id", out string id)
+                    && child.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
+                {
+                    settings.Refactorings[id] = isEnabled;
+                }
             }
         }
 
         private static void LoadCodeFixes(XElement element, ConfigFileSettings settings)
         {
             foreach (XElement child in element.Elements("CodeFix"))
-                LoadCodeFix(child, settings);
+            {
+                if (child.TryGetAttributeValueAsString("Id", out string id)
+                    && child.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
+                {
+                    settings.CodeFixes[id] = isEnabled;
+                }
+            }
         }
 
-        private static void LoadCodeFix(XElement element, ConfigFileSettings settings)
+        private static void LoadAnalyzers(XElement element, ConfigFileSettings settings)
         {
-            if (element.TryGetAttributeValueAsString("Id", out string id)
-                && element.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
+            foreach (XElement child in element.Elements("Analyzer"))
             {
-                settings.CodeFixes[id] = isEnabled;
+                if (child.TryGetAttributeValueAsString("Id", out string id)
+                    && child.TryGetAttributeValueAsBoolean("IsSuppressed", out bool isSuppressed))
+                {
+                    settings.Analyzers[id] = isSuppressed;
+                }
             }
         }
     }

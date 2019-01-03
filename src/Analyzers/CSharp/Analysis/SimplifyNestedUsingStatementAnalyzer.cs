@@ -57,9 +57,9 @@ namespace Roslynator.CSharp.Analysis
 
             var block = (BlockSyntax)usingStatement.Statement;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyNestedUsingStatement, block);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyNestedUsingStatement, block);
 
-            context.ReportBraces(DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut, block);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.SimplifyNestedUsingStatementFadeOut, block);
         }
 
         public static bool ContainsEmbeddableUsingStatement(UsingStatementSyntax usingStatement)

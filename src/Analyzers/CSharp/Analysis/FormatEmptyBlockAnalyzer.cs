@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
             if (closeBrace.LeadingTrivia.Any())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.FormatEmptyBlock, block);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.FormatEmptyBlock, block);
         }
     }
 }

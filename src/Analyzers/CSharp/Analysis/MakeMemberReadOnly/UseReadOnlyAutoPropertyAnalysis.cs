@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                 AccessorDeclarationSyntax setter = node.Setter();
 
                 if (!setter.SpanContainsDirectives())
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseReadOnlyAutoProperty, setter);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReadOnlyAutoProperty, setter);
             }
         }
     }

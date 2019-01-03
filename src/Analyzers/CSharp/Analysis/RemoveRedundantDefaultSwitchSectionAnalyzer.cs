@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection, defaultSection);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantDefaultSwitchSection, defaultSection);
         }
 
         private static bool ContainsOnlyBreakStatement(SwitchSectionSyntax switchSection)

@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.Analysis
             if (!trivia.IsEndOfLineTrivia())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement, trivia);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddEmptyLineAfterEmbeddedStatement, trivia);
         }
     }
 }

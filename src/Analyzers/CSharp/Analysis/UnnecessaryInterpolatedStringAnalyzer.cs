@@ -85,12 +85,12 @@ namespace Roslynator.CSharp.Analysis
             if (!isNonNullStringExpression)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryInterpolatedString, interpolatedString);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryInterpolatedString, interpolatedString);
 
-            context.ReportToken(DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringStartToken);
-            context.ReportToken(DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.OpenBraceToken);
-            context.ReportToken(DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.CloseBraceToken);
-            context.ReportToken(DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringEndToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringStartToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.OpenBraceToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolation.CloseBraceToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UnnecessaryInterpolatedStringFadeOut, interpolatedString.StringEndToken);
         }
     }
 }

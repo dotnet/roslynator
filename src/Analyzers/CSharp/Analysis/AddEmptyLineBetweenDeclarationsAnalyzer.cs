@@ -140,7 +140,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (tree.GetLineCount(TextSpan.FromBounds(commaToken.Span.End, end), context.CancellationToken) == 2)
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
                         lastTrailingTrivia);
                 }
@@ -213,7 +213,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (tree.GetLineCount(TextSpan.FromBounds(prevMember.Span.End, end), context.CancellationToken) == 2)
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.AddEmptyLineBetweenDeclarations,
                         lastTrailingTrivia);
                 }

@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.FalseLiteralExpression:
                 case SyntaxKind.LogicalNotExpression:
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
                         break;
                     }
                 case SyntaxKind.EqualsExpression:
@@ -56,7 +56,7 @@ namespace Roslynator.CSharp.Analysis
                             return;
                         }
 
-                        context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
                         break;
                     }
             }
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Analysis
             if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithPredicate(methodSymbol))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLogicalNegation, parent);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, parent);
         }
 
         internal static ExpressionSyntax GetReturnExpression(CSharpSyntaxNode node)

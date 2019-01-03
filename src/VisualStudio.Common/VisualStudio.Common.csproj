@@ -116,6 +116,9 @@
     <Compile Include="BaseOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
+    <Compile Include="GlobalSuppressionsOptionsPage.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="GeneralOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -134,7 +137,9 @@
     <Compile Include="BaseOptionsPageControl.xaml.cs">
       <DependentUpon>BaseOptionsPageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="GlobalSuppressionsOptionsPage.Generated.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="XElementExtensions.cs" />
     <Compile Include="TypeConverters\YesNoConverter.cs" />
     <Compile Include="TypeConverters\EnabledDisabledConverter.cs" />
@@ -153,6 +158,10 @@
     <None Include="VisualStudio.Common.snk" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Analyzers\Analyzers.csproj">
+      <Project>{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}</Project>
+      <Name>Analyzers</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CodeFixes\CodeFixes.csproj">
       <Project>{9C9EF15B-2CB0-485E-BB48-90F670F6A3D8}</Project>
       <Name>CodeFixes</Name>

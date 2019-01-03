@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis
 
             Debug.Assert(expression.Kind() == SyntaxKind.IdentifierName, expression.Kind().ToString());
 
-            context.ReportDiagnostic(DiagnosticDescriptors.CallDebugFailInsteadOfDebugAssert, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallDebugFailInsteadOfDebugAssert, expression);
 
             bool ContainsFailMethod()
             {

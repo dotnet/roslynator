@@ -144,27 +144,27 @@ namespace Roslynator.CSharp.Refactorings
 
         public bool IsRefactoringEnabled(string identifier)
         {
-            return Settings.IsRefactoringEnabled(identifier);
+            return Settings.IsEnabled(identifier);
         }
 
         public bool IsAnyRefactoringEnabled(string identifier1, string identifier2)
         {
-            return Settings.IsAnyRefactoringEnabled(identifier1, identifier2);
+            return Settings.IsAnyEnabled(identifier1, identifier2);
         }
 
         public bool IsAnyRefactoringEnabled(string identifier1, string identifier2, string identifier3)
         {
-            return Settings.IsAnyRefactoringEnabled(identifier1, identifier2, identifier3);
+            return Settings.IsAnyEnabled(identifier1, identifier2, identifier3);
         }
 
         public bool IsAnyRefactoringEnabled(string identifier1, string identifier2, string identifier3, string identifier4)
         {
-            return Settings.IsAnyRefactoringEnabled(identifier1, identifier2, identifier3, identifier4);
+            return Settings.IsAnyEnabled(identifier1, identifier2, identifier3, identifier4);
         }
 
         public bool IsAnyRefactoringEnabled(string identifier1, string identifier2, string identifier3, string identifier4, string identifier5)
         {
-            return Settings.IsAnyRefactoringEnabled(identifier1, identifier2, identifier3, identifier4, identifier5);
+            return Settings.IsAnyEnabled(identifier1, identifier2, identifier3, identifier4, identifier5);
         }
 
         public async Task ComputeRefactoringsAsync()

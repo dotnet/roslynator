@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceAsExpressionWithCastExpression))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.ReplaceAsExpressionWithCastExpression))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);

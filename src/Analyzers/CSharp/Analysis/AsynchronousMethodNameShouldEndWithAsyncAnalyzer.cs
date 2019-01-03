@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             if (methodDeclaration.Body?.Statements.Any() == false)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
         }
     }
 }

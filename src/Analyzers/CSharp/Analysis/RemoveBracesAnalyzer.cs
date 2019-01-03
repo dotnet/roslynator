@@ -207,9 +207,9 @@ namespace Roslynator.CSharp.Analysis
 
             string title = CSharpFacts.GetTitle(block.Parent);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveBraces, block, title);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveBraces, block, title);
 
-            context.ReportBraces(DiagnosticDescriptors.RemoveBracesFadeOut, block, title);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.RemoveBracesFadeOut, block, title);
         }
     }
 }

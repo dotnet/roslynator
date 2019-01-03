@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Analysis
             }
 
             if (IsFixable(body))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseAsyncAwait, methodDeclaration.Identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAsyncAwait, methodDeclaration.Identifier);
         }
 
         private static void AnalyzeLocalFunctionStatement(SyntaxNodeAnalysisContext context)
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Analysis
             }
 
             if (IsFixable(body))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseAsyncAwait, localFunction.Identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAsyncAwait, localFunction.Identifier);
         }
 
         private static void AnalyzeSimpleLambdaExpression(SyntaxNodeAnalysisContext context)
@@ -105,7 +105,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             if (IsFixable(body))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseAsyncAwait, simpleLambda);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAsyncAwait, simpleLambda);
         }
 
         private static void AnalyzeParenthesizedLambdaExpression(SyntaxNodeAnalysisContext context)
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             if (IsFixable(body))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseAsyncAwait, parenthesizedLambda);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAsyncAwait, parenthesizedLambda);
         }
 
         private static void AnalyzeAnonymousMethodExpression(SyntaxNodeAnalysisContext context)
@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             if (IsFixable(body))
-                context.ReportDiagnostic(DiagnosticDescriptors.UseAsyncAwait, anonymousMethod);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAsyncAwait, anonymousMethod);
         }
 
         private static bool IsFixable(BlockSyntax body)

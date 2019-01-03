@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!statement.IsKind(SyntaxKind.Block, SyntaxKind.EmptyStatement)
                     && statement.GetSpanStartLine() == previousEndLine)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.AddNewLineBeforeStatement, statement);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddNewLineBeforeStatement, statement);
                 }
 
                 previousEndLine = statement.GetSpanEndLine();

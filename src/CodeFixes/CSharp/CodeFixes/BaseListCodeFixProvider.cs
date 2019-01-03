@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface,
                 CodeFixIdentifiers.MakeClassNonStatic,
                 CodeFixIdentifiers.RemoveBaseList))
@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!(baseList.Parent is ClassDeclarationSyntax classDeclaration))
                                 break;
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeClassNonStatic))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.MakeClassNonStatic))
                             {
                                 ModifiersCodeFixRegistrator.RemoveModifier(
                                     context,
@@ -96,7 +96,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     additionalKey: CodeFixIdentifiers.MakeClassNonStatic);
                             }
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveBaseList))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveBaseList))
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Remove base list",

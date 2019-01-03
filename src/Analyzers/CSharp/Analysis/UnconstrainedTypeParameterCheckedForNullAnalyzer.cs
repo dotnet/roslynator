@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Analysis
                 && IsUnconstrainedTypeParameter(context.SemanticModel.GetTypeSymbol(nullCheck.Expression, context.CancellationToken))
                 && !binaryExpression.SpanContainsDirectives())
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.UnconstrainedTypeParameterCheckedForNull, binaryExpression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnconstrainedTypeParameterCheckedForNull, binaryExpression);
             }
         }
 

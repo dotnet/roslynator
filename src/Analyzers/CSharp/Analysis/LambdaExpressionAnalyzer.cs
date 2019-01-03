@@ -52,16 +52,16 @@ namespace Roslynator.CSharp.Analysis
 
             CSharpSyntaxNode body = lambda.Body;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyLambdaExpression, body);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLambdaExpression, body);
 
             var block = (BlockSyntax)body;
 
-            context.ReportBraces(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, block);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, block);
 
             StatementSyntax statement = block.Statements[0];
 
             if (statement.Kind() == SyntaxKind.ReturnStatement)
-                context.ReportToken(DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.SimplifyLambdaExpressionFadeOut, ((ReturnStatementSyntax)statement).ReturnKeyword);
         }
     }
 }

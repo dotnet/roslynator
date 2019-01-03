@@ -65,7 +65,7 @@ namespace Roslynator.CSharp.Analysis
                 {
                     var classDeclaration = (ClassDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
 
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseAttributeUsageAttribute, classDeclaration.Identifier);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAttributeUsageAttribute, classDeclaration.Identifier);
 
                     return;
                 }

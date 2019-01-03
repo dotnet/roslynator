@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
             {
                 if (context.SemanticModel.GetTypeInfo(info.WhenFalse, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
                 }
             }
             else
@@ -60,13 +60,13 @@ namespace Roslynator.CSharp.Analysis
                 {
                     if (context.SemanticModel.GetTypeInfo(info.WhenTrue, context.CancellationToken).ConvertedType?.SpecialType == SpecialType.System_Boolean)
                     {
-                        context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
                     }
                 }
                 else if (trueKind == SyntaxKind.FalseLiteralExpression
                     && falseKind == SyntaxKind.TrueLiteralExpression)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyConditionalExpression, conditionalExpression);
                 }
             }
         }

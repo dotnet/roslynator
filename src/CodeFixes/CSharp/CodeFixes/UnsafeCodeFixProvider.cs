@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.WrapInUnsafeStatement,
                 CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
             {
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fStatement = true;
 
-                                    if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.WrapInUnsafeStatement))
+                                    if (!Settings.IsEnabled(CodeFixIdentifiers.WrapInUnsafeStatement))
                                         continue;
 
                                     var statement = (StatementSyntax)ancestor;
@@ -92,7 +92,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fMemberDeclaration = true;
 
-                                    if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
+                                    if (!Settings.IsEnabled(CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
                                         continue;
 
                                     if (!CSharpFacts.CanHaveModifiers(ancestor.Kind()))

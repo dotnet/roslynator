@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
                         if (typeSymbol?.IsErrorType() == false
                             && semanticModel.IsDefaultValue(typeSymbol, value, cancellationToken))
                         {
-                            context.ReportDiagnostic(
+                            DiagnosticHelpers.ReportDiagnostic(context,
                                 DiagnosticDescriptors.RemoveRedundantFieldInitialization,
                                 initializer);
                         }

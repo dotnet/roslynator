@@ -23,14 +23,14 @@ namespace Roslynator.CSharp.Analysis
             if (binaryExpression.SpanContainsDirectives())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyBooleanComparison, binaryExpression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyBooleanComparison, binaryExpression);
 
             if (!fadeOut)
                 return;
 
             DiagnosticDescriptor fadeOutDescriptor = DiagnosticDescriptors.SimplifyBooleanComparisonFadeOut;
 
-            context.ReportToken(fadeOutDescriptor, binaryExpression.OperatorToken);
+            DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, binaryExpression.OperatorToken);
 
             switch (binaryExpression.Kind())
             {
@@ -38,17 +38,17 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (left.IsKind(SyntaxKind.FalseLiteralExpression))
                         {
-                            context.ReportNode(fadeOutDescriptor, left);
+                            DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, left);
 
                             if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                                context.ReportToken(fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
+                                DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                         }
                         else if (right.IsKind(SyntaxKind.FalseLiteralExpression))
                         {
-                            context.ReportNode(fadeOutDescriptor, right);
+                            DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, right);
 
                             if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                                context.ReportToken(fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                                DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
                         }
 
                         break;
@@ -57,17 +57,17 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (left.IsKind(SyntaxKind.TrueLiteralExpression))
                         {
-                            context.ReportNode(fadeOutDescriptor, left);
+                            DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, left);
 
                             if (right.IsKind(SyntaxKind.LogicalNotExpression))
-                                context.ReportToken(fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
+                                DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)right).OperatorToken);
                         }
                         else if (right.IsKind(SyntaxKind.TrueLiteralExpression))
                         {
-                            context.ReportNode(fadeOutDescriptor, right);
+                            DiagnosticHelpers.ReportNode(context, fadeOutDescriptor, right);
 
                             if (left.IsKind(SyntaxKind.LogicalNotExpression))
-                                context.ReportToken(fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
+                                DiagnosticHelpers.ReportToken(context, fadeOutDescriptor, ((PrefixUnaryExpressionSyntax)left).OperatorToken);
                         }
 
                         break;

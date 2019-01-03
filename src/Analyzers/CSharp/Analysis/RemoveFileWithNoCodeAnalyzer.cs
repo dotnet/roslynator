@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (!GeneratedCodeUtility.IsGeneratedCodeFile(syntaxTree.FilePath))
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.RemoveFileWithNoCode,
                         Location.Create(syntaxTree, default(TextSpan)));
                 }

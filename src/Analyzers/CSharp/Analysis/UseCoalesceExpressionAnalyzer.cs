@@ -86,7 +86,7 @@ namespace Roslynator.CSharp.Analysis
                     && !ifStatement.GetLeadingTrivia().Any(f => f.IsDirective)
                     && CanUseCoalesceExpression(previousStatement, nullCheck.Expression))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseCoalesceExpression, previousStatement);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseCoalesceExpression, previousStatement);
                 }
             }
 
@@ -115,7 +115,7 @@ namespace Roslynator.CSharp.Analysis
             if (nextStatement.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.InlineLazyInitialization, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.InlineLazyInitialization, ifStatement);
 
             bool IsPartOfLazyInitialization()
             {

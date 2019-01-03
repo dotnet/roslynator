@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
             if (!isAbstract)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AbstractTypeShouldNotHavePublicConstructors, constructorDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AbstractTypeShouldNotHavePublicConstructors, constructorDeclaration.Identifier);
         }
     }
 }

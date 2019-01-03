@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, lastParameter);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, lastParameter);
         }
 
         public static void AnalyzePropertySymbol(SymbolAnalysisContext context)
@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
             if (lastParameter.Modifiers.Contains(SyntaxKind.ParamsKeyword) == lastParameterSymbol.IsParams)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, lastParameter);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OverridingMemberCannotChangeParamsModifier, lastParameter);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.DefineObjectEquals,
                 CodeFixIdentifiers.DefineObjectGetHashCode))
             {
@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectEquals:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.DefineObjectEquals))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.DefineObjectEquals))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.TypeDefinesEqualityOperatorButDoesNotOverrideObjectGetHashCode:
                     case CompilerDiagnosticIdentifiers.TypeOverridesObjectEqualsButDoesNotOverrideObjectGetHashCode:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.DefineObjectGetHashCode))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.DefineObjectGetHashCode))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

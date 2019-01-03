@@ -124,7 +124,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, lambda);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, lambda);
 
             FadeOut(context, parameter, null, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
@@ -220,7 +220,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, lambda);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, lambda);
 
             FadeOut(context, null, parameterList, lambda.Body as BlockSyntax, argumentList, lambda.ArrowToken, memberAccessExpression);
         }
@@ -319,7 +319,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, anonymousMethod);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction, anonymousMethod);
 
             FadeOut(context, null, parameterList, anonymousMethod.Block, argumentList, anonymousMethod.DelegateKeyword, memberAccessExpression);
         }
@@ -528,29 +528,29 @@ namespace Roslynator.CSharp.Analysis
             MemberAccessExpressionSyntax memberAccessExpression)
         {
             if (parameter != null)
-                context.ReportNode(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, parameter);
+                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, parameter);
 
             if (parameterList != null)
-                context.ReportNode(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, parameterList);
+                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, parameterList);
 
             if (!arrowTokenOrDelegateKeyword.IsKind(SyntaxKind.None))
-                context.ReportToken(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, arrowTokenOrDelegateKeyword);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, arrowTokenOrDelegateKeyword);
 
             if (block != null)
             {
-                context.ReportBraces(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, block);
+                CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, block);
 
                 if (block.Statements.SingleOrDefault(shouldThrow: false) is ReturnStatementSyntax returnStatement)
-                    context.ReportToken(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, returnStatement.ReturnKeyword);
+                    DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, returnStatement.ReturnKeyword);
             }
 
             if (memberAccessExpression != null)
             {
-                context.ReportNode(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, memberAccessExpression.Expression);
-                context.ReportToken(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, memberAccessExpression.OperatorToken);
+                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, memberAccessExpression.Expression);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, memberAccessExpression.OperatorToken);
             }
 
-            context.ReportNode(DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, argumentList);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunctionFadeOut, argumentList);
         }
     }
 }

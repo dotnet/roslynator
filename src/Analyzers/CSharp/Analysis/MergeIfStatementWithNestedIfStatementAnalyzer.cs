@@ -73,16 +73,16 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, IfStatementSyntax ifStatement, IfStatementSyntax nestedIf)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatement, ifStatement);
 
-            context.ReportToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.IfKeyword);
-            context.ReportToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.OpenParenToken);
-            context.ReportToken(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.CloseParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.IfKeyword);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.OpenParenToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, nestedIf.CloseParenToken);
 
             if (ifStatement.Statement.IsKind(SyntaxKind.Block)
                 && nestedIf.Statement.IsKind(SyntaxKind.Block))
             {
-                context.ReportBraces(DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, (BlockSyntax)nestedIf.Statement);
+                CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.MergeIfStatementWithNestedIfStatementFadeOut, (BlockSyntax)nestedIf.Statement);
             }
         }
 

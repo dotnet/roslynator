@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.Analysis
             if (!typeSymbol.Equals(exceptionSymbol))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ThrowingOfNewNotImplementedException,
                 expression);
         }

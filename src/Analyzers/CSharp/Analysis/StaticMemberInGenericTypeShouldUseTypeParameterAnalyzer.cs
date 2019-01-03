@@ -206,7 +206,7 @@ namespace Roslynator.CSharp.Analysis
             if (identifier.Kind() == SyntaxKind.None)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                DiagnosticDescriptors.StaticMemberInGenericTypeShouldUseTypeParameter,
                identifier);
         }

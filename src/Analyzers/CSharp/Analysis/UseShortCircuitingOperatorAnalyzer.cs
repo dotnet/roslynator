@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseShortCircuitingOperator, binaryExpression.OperatorToken);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseShortCircuitingOperator, binaryExpression.OperatorToken);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Generic;
 using Roslynator.CodeFixes;
 using Roslynator.VisualStudio;
 
@@ -28,18 +29,25 @@ namespace Roslynator.Configuration
 
         public void UpdateVisualStudioSettings(RefactoringsOptionsPage refactoringsOptionsPage)
         {
-            VisualStudioSettings.Refactorings.Clear();
-
-            foreach (string id in refactoringsOptionsPage.GetDisabledItems())
-                VisualStudioSettings.Refactorings[id] = false;
+            UpdateVisualStudioSettings(VisualStudioSettings.Refactorings, refactoringsOptionsPage.GetDisabledItems());
         }
 
         public void UpdateVisualStudioSettings(CodeFixesOptionsPage codeFixOptionsPage)
         {
-            VisualStudioSettings.CodeFixes.Clear();
+            UpdateVisualStudioSettings(VisualStudioSettings.CodeFixes, codeFixOptionsPage.GetDisabledItems());
+        }
 
-            foreach (string id in codeFixOptionsPage.GetDisabledItems())
-                VisualStudioSettings.CodeFixes[id] = false;
+        public void UpdateVisualStudioSettings(GlobalSuppressionsOptionsPage globalSuppressionsOptionsPage)
+        {
+            UpdateVisualStudioSettings(VisualStudioSettings.Analyzers, globalSuppressionsOptionsPage.GetDisabledItems());
+        }
+
+        public static void UpdateVisualStudioSettings(Dictionary<string, bool> values, IEnumerable<string> disabledItems)
+        {
+            values.Clear();
+
+            foreach (string id in disabledItems)
+                values[id] = false;
         }
 
         internal void ApplyTo(RefactoringSettings settings)
@@ -53,6 +61,16 @@ namespace Roslynator.Configuration
         }
 
         public void ApplyTo(CodeFixSettings settings)
+        {
+            settings.Reset();
+
+            VisualStudioSettings.ApplyTo(settings);
+
+            if (UseConfigFile)
+                ConfigFileSettings?.ApplyTo(settings);
+        }
+
+        public void ApplyTo(AnalyzerSettings settings)
         {
             settings.Reset();
 

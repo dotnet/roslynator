@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis
 
             var classDeclaration = (ClassDeclarationSyntax)namedTypeSymbol.GetSyntax(context.CancellationToken);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.MakeClassSealed, classDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeClassSealed, classDeclaration.Identifier);
         }
 
         private static bool ContainsDerivedType(

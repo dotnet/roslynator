@@ -25,7 +25,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.FixMemberAccessName,
                 CodeFixIdentifiers.RemoveAwaitKeyword))
             {
@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         Debug.Assert(expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.GenericName), expression.Kind().ToString());
 
-                                        if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.FixMemberAccessName))
+                                        if (!Settings.IsEnabled(CodeFixIdentifiers.FixMemberAccessName))
                                             break;
 
                                         if (!simpleName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
@@ -66,7 +66,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 case MemberBindingExpressionSyntax memberBindingExpression:
                                     {
-                                        if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.FixMemberAccessName))
+                                        if (!Settings.IsEnabled(CodeFixIdentifiers.FixMemberAccessName))
                                             break;
 
                                         if (!(memberBindingExpression.Parent is ConditionalAccessExpressionSyntax conditionalAccessExpression))
@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 case AwaitExpressionSyntax awaitExpression:
                                     {
-                                        if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveAwaitKeyword))
+                                        if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveAwaitKeyword))
                                             break;
 
                                         CodeAction codeAction = CodeAction.Create(

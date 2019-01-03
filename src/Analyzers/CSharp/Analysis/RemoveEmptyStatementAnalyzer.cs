@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             if (CSharpFacts.CanHaveEmbeddedStatement(kind))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyStatement, emptyStatement);
         }
     }
 }

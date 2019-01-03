@@ -103,16 +103,16 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.MergeLocalDeclarationWithAssignment, localInfo.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergeLocalDeclarationWithAssignment, localInfo.Identifier);
 
             if (value != null)
             {
-                context.ReportNode(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, localInfo.Initializer);
-                context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignmentInfo.OperatorToken);
+                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, localInfo.Initializer);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignmentInfo.OperatorToken);
             }
 
-            context.ReportToken(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, localDeclaration.SemicolonToken);
-            context.ReportNode(DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignmentInfo.Left);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, localDeclaration.SemicolonToken);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.MergeLocalDeclarationWithAssignmentFadeOut, assignmentInfo.Left);
         }
 
         private static bool IsReferenced(

@@ -85,9 +85,9 @@ namespace Roslynator.CSharp.Analysis
 
             ReportDiagnostic(context, assignment, operatorText);
 
-            context.ReportToken(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.OperatorToken, operatorText);
-            context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryLeft, operatorText);
-            context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryRight, operatorText);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.OperatorToken, operatorText);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryLeft, operatorText);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, binaryRight, operatorText);
         }
 
         public static void AnalyzeAddAssignmentExpression(SyntaxNodeAnalysisContext context)
@@ -127,13 +127,13 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxToken operatorToken = assignment.OperatorToken;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)), operatorText);
-            context.ReportNode(DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.Right, operatorText);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, Location.Create(assignment.SyntaxTree, new TextSpan(operatorToken.SpanStart, 1)), operatorText);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignmentFadeOut, assignment.Right, operatorText);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AssignmentExpressionSyntax assignment, string operatorText)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.UsePostfixUnaryOperatorInsteadOfAssignment,
                 assignment,
                 operatorText);

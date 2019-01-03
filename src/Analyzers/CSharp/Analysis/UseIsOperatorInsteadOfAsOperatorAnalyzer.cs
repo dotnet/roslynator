@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.Analysis
             if (!asExpressionInfo.Success)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseIsOperatorInsteadOfAsOperator, node);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseIsOperatorInsteadOfAsOperator, node);
         }
     }
 }

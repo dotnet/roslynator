@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AvoidLockingOnPubliclyAccessibleInstance,
                 expression,
                 expression.ToString());

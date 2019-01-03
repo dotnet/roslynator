@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Analysis
                     && expression2 != null
                     && AreEquivalent(expression1, expression2))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.SimplifyBooleanExpression, logicalAnd);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyBooleanExpression, logicalAnd);
                 }
             }
         }

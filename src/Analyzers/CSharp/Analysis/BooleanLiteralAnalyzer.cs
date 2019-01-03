@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
             ExpressionSyntax condition = forStatement.Condition;
 
             if (condition?.Kind() == SyntaxKind.TrueLiteralExpression)
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition, condition.ToString());
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantBooleanLiteral, condition, condition.ToString());
         }
 
         private static void AnalyzeEqualsExpression(SyntaxNodeAnalysisContext context)

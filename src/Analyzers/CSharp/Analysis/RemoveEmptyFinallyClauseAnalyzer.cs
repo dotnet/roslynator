@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
             if (!block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyFinallyClause, finallyClause);
         }
     }
 }

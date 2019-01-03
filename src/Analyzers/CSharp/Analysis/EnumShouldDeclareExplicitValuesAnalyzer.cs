@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Analysis
                 if (enumMember.EqualsValue == null
                     && context.SemanticModel.GetDeclaredSymbol(enumMember, context.CancellationToken)?.HasConstantValue == true)
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.EnumShouldDeclareExplicitValues, enumDeclaration.Identifier);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.EnumShouldDeclareExplicitValues, enumDeclaration.Identifier);
                     break;
                 }
             }

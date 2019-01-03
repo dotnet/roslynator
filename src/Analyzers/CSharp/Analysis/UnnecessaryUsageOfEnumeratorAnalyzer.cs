@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (isFixable == true)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.UnnecessaryUsageOfEnumerator, usingStatement.UsingKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UnnecessaryUsageOfEnumerator, usingStatement.UsingKeyword);
             }
         }
     }

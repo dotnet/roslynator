@@ -13,12 +13,7 @@ namespace Roslynator.VisualStudio
     {
         private bool _isActive;
 
-        private readonly BaseOptionsPageControl _control = new BaseOptionsPageControl();
-
-        protected override UIElement Child
-        {
-            get { return _control; }
-        }
+        protected override UIElement Child => Control;
 
         [Browsable(false)]
         public string LastMaxId { get; set; }
@@ -28,6 +23,8 @@ namespace Roslynator.VisualStudio
         protected abstract string MaxId { get; }
 
         protected HashSet<string> DisabledItems { get; } = new HashSet<string>();
+
+        protected BaseOptionsPageControl Control { get; } = new BaseOptionsPageControl();
 
         protected abstract void Fill(ICollection<BaseModel> codeFixes);
 
@@ -76,7 +73,7 @@ namespace Roslynator.VisualStudio
 
             if (!_isActive)
             {
-                Fill(_control.Items);
+                Fill(Control.Items);
                 _isActive = true;
             }
         }
@@ -90,11 +87,16 @@ namespace Roslynator.VisualStudio
         {
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                foreach (BaseModel item in _control.Items)
-                    SetIsEnabled(item.Id, item.Enabled);
+                OnApply();
             }
 
             base.OnApply(e);
+        }
+
+        protected virtual void OnApply()
+        {
+            foreach (BaseModel item in Control.Items)
+                SetIsEnabled(item.Id, item.Enabled);
         }
 
         protected void SetIsEnabled(string id, bool isEnabled)

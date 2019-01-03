@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
                     .DescendantTrivia(span)
                     .All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.SplitVariableDeclaration, variableDeclaration);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SplitVariableDeclaration, variableDeclaration);
                 }
             }
         }

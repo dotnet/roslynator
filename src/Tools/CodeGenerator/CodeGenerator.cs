@@ -58,6 +58,10 @@ namespace Roslynator.CodeGeneration
                 CodeFixesOptionsPageGenerator.Generate(CodeFixes, Comparer));
 
             WriteCompilationUnit(
+                @"VisualStudio.Common\GlobalSuppressionsOptionsPage.Generated.cs",
+                GlobalSuppressionsOptionsPageGenerator.Generate(Analyzers.Where(f => !f.IsObsolete), Comparer));
+
+            WriteCompilationUnit(
                 @"CSharp\CSharp\CompilerDiagnosticIdentifiers.Generated.cs",
                 CompilerDiagnosticIdentifiersGenerator.Generate(CompilerDiagnostics, Comparer));
 

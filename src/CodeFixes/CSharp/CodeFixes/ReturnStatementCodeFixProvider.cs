@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.UseYieldReturnInsteadOfReturn,
                 CodeFixIdentifiers.RemoveReturnKeyword,
                 CodeFixIdentifiers.RemoveReturnExpression,
@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CannotReturnValueFromIterator:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
                                 break;
 
                             ExpressionSyntax expression = returnStatement.Expression;
@@ -120,12 +120,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
                             {
                                 ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, returnStatement.Expression, semanticModel);
                             }
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveReturnExpression))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveReturnExpression))
                             {
                                 ISymbol symbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
 
@@ -153,7 +153,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveReturnKeyword))
+                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveReturnKeyword))
                             {
                                 ExpressionSyntax expression = returnStatement.Expression;
 

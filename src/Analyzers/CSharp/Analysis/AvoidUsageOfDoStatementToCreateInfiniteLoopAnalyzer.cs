@@ -33,7 +33,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (doStatement.Condition?.Kind() == SyntaxKind.TrueLiteralExpression)
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.AvoidUsageOfDoStatementToCreateInfiniteLoop,
                     doStatement.DoKeyword);
             }

@@ -21,66 +21,80 @@ namespace Roslynator.VisualStudio
             DataContext = this;
         }
 
+        public string CheckBoxColumnHeaderText { get; set; } = "Enabled";
+
+        public string Comment { get; set; }
+
+        public ListSortDirection DefaultSortDirection { get; set; }
+
         public ObservableCollection<BaseModel> Items { get; } = new ObservableCollection<BaseModel>();
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
-        {
-            if (e.OriginalSource is GridViewColumnHeader clickedHeader)
-            {
-                ListSortDirection direction;
-
-                if (clickedHeader.Role != GridViewColumnHeaderRole.Padding)
                 {
-                    if (clickedHeader != _lastClickedHeader)
-                    {
-                        direction = ListSortDirection.Ascending;
-                    }
-                    else if (_lastDirection == ListSortDirection.Ascending)
-                    {
-                        direction = ListSortDirection.Descending;
-                    }
-                    else
-                    {
-                        direction = ListSortDirection.Ascending;
-                    }
+            if (!(e.OriginalSource is GridViewColumnHeader clickedHeader))
+                return;
 
-                    var propertyName = clickedHeader.Column.Header as string;
+            if (clickedHeader.Role == GridViewColumnHeaderRole.Padding)
+                return;
 
-                    Sort(propertyName, direction);
+            ListSortDirection direction;
 
-                    if (direction == ListSortDirection.Ascending)
-                    {
-                        clickedHeader.Column.HeaderTemplate = Resources["gridViewHeaderArrowUpTemplate"] as DataTemplate;
-                    }
-                    else
-                    {
-                        clickedHeader.Column.HeaderTemplate = Resources["gridViewHeaderArrowDownTemplate"] as DataTemplate;
-                    }
-
-                    if (_lastClickedHeader != null
-                        && _lastClickedHeader != clickedHeader)
-                    {
-                        _lastClickedHeader.Column.HeaderTemplate = null;
-                    }
-
-                    _lastClickedHeader = clickedHeader;
-                    _lastDirection = direction;
-                }
+            if (clickedHeader != _lastClickedHeader)
+            {
+                direction = ListSortDirection.Ascending;
             }
+            else if (_lastDirection == ListSortDirection.Ascending)
+            {
+                direction = ListSortDirection.Descending;
+            }
+            else
+            {
+                direction = ListSortDirection.Ascending;
+            }
+
+            Sort(clickedHeader, direction);
         }
 
-        private void Sort(string propertyName, ListSortDirection direction)
+        private void Sort(GridViewColumnHeader columnHeader, ListSortDirection direction)
         {
             ICollectionView dataView = CollectionViewSource.GetDefaultView(lsvItems.ItemsSource);
+            SortDescriptionCollection sortDescriptions = dataView.SortDescriptions;
 
-            var sortDescription = new SortDescription(propertyName, direction);
+            sortDescriptions.Clear();
 
-            dataView.SortDescriptions.Clear();
-            dataView.SortDescriptions.Add(sortDescription);
+            if (columnHeader == checkBoxGridViewColumnHeader)
+            {
+                sortDescriptions.Add(new SortDescription("Enabled", direction));
+                sortDescriptions.Add(new SortDescription("Id", ListSortDirection.Ascending));
+            }
+            else
+            {
+                string propertyName = columnHeader.Content.ToString();
+                sortDescriptions.Add(new SortDescription(propertyName, direction));
+            }
+
             dataView.Refresh();
+
+            if (direction == ListSortDirection.Ascending)
+            {
+                columnHeader.Column.HeaderTemplate = Resources["gridViewHeaderArrowUpTemplate"] as DataTemplate;
+            }
+            else
+            {
+                columnHeader.Column.HeaderTemplate = Resources["gridViewHeaderArrowDownTemplate"] as DataTemplate;
+            }
+
+            if (_lastClickedHeader != null
+                && _lastClickedHeader != columnHeader)
+            {
+                _lastClickedHeader.Column.HeaderTemplate = null;
+            }
+
+            _lastClickedHeader = columnHeader;
+            _lastDirection = direction;
         }
 
-        private bool FilterRefactorings(object item)
+        private bool FilterItems(object item)
         {
             string s = tbxFilter.Text;
 
@@ -88,34 +102,40 @@ namespace Roslynator.VisualStudio
             {
                 s = s.Trim();
 
-                var refactoring = (BaseModel)item;
+                var model = (BaseModel)item;
 
-                return refactoring.Id.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1
-                    || refactoring.Title.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1;
+                return model.Id.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1
+                    || model.Title.IndexOf(s, StringComparison.CurrentCultureIgnoreCase) != -1;
             }
 
             return true;
         }
 
-        private void EnableAllButton_Click(object sender, RoutedEventArgs e)
+        private void UncheckAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (BaseModel refactoring in Items)
-                refactoring.Enabled = true;
+            foreach (BaseModel model in Items)
+                model.Enabled = false;
         }
 
-        private void DisableAllButton_Click(object sender, RoutedEventArgs e)
+        private void CheckAllButton_Click(object sender, RoutedEventArgs e)
         {
-            foreach (BaseModel refactoring in Items)
-                refactoring.Enabled = false;
+            foreach (BaseModel model in Items)
+                model.Enabled = true;
         }
 
         private void FilterTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var view = (CollectionView)CollectionViewSource.GetDefaultView(lsvItems.ItemsSource);
 
-            view.Filter = view.Filter ?? FilterRefactorings;
+            view.Filter = view.Filter ?? FilterItems;
 
             view.Refresh();
+        }
+
+        private void ListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (_lastClickedHeader == null)
+                Sort(checkBoxGridViewColumnHeader, DefaultSortDirection);
         }
     }
 }
