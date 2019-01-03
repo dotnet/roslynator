@@ -1417,10 +1417,9 @@ while (true);]]></Before>
         <Before><![CDATA[while (true) // [|Id|]
 {
 }]]></Before>
-        <After><![CDATA[do
+        <After><![CDATA[for (;;)
 {
-}
-while (true);]]></After>
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>
