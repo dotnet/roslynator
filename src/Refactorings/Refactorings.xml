@@ -458,10 +458,45 @@ if (y)
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0059" Identifier="GenerateSwitchSections" Title="Generate switch sections">
+  <Refactoring Id="RR0059" Identifier="AddMissingCases" Title="Add missing cases to switch statement">
     <Syntaxes>
-      <Syntax>switch statement (that is empty or contains only default section)</Syntax>
+      <Syntax>switch statement</Syntax>
     </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[switch (dayOfWeek)
+{
+    case DayOfWeek.Sunday:
+        break;
+    case DayOfWeek.Monday:
+        break;
+    case DayOfWeek.Tuesday:
+        break;
+    case DayOfWeek.Wednesday:
+        break;
+    case DayOfWeek.Thursday:
+        break;
+}
+]]></Before>
+        <After><![CDATA[switch (dayOfWeek)
+{
+    case DayOfWeek.Sunday:
+        break;
+    case DayOfWeek.Monday:
+        break;
+    case DayOfWeek.Tuesday:
+        break;
+    case DayOfWeek.Wednesday:
+        break;
+    case DayOfWeek.Thursday:
+        break;
+    case DayOfWeek.Friday:
+        break;
+    case DayOfWeek.Saturday:
+        break;
+}]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0060" Identifier="InitializeLocalWithDefaultValue" Title="Initialize local with default value">
     <Syntaxes>

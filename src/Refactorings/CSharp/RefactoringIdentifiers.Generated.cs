@@ -19,6 +19,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string AddIdentifierToParameter = Prefix + "0012";
         public const string AddIdentifierToVariableDeclaration = Prefix + "0010";
         public const string AddMemberToInterface = Prefix + "0195";
+        public const string AddMissingCases = Prefix + "0059";
         public const string AddParameterNameToArgument = Prefix + "0011";
         public const string AddTagToDocumentationComment = Prefix + "0208";
         public const string AddTypeParameter = Prefix + "0178";
@@ -70,7 +71,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string GenerateEnumValues = Prefix + "0057";
         public const string GenerateEventInvokingMethod = Prefix + "0058";
         public const string GeneratePropertyForDebuggerDisplayAttribute = Prefix + "0204";
-        public const string GenerateSwitchSections = Prefix + "0059";
         public const string ImplementCustomEnumerator = Prefix + "0210";
         public const string ImplementIEquatableOfT = Prefix + "0179";
         public const string InitializeFieldFromConstructor = Prefix + "0197";
