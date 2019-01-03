@@ -5176,4 +5176,25 @@ public string Foo()
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="UseShortCircuitingOperator">
+    <Id>RCS1233</Id>
+    <Title>Use short-circuiting operator.</Title>
+    <MessageFormat>Use short-circuiting operator.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[boolExpr1 & boolExpr2 [|Id|]]]></Before>
+        <After><![CDATA[boolExpr1 && boolExpr2]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[boolExpr1 | boolExpr2 [|Id|]]]></Before>
+        <After><![CDATA[boolExpr1 || boolExpr2]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

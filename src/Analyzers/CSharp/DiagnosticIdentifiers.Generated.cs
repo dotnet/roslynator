@@ -215,5 +215,6 @@ namespace Roslynator.CSharp
         public const string UnnecessaryUsageOfEnumerator = "RCS1230";
         public const string MakeParameterRefReadOnly = "RCS1231";
         public const string OrderElementsInDocumentationComment = "RCS1232";
+        public const string UseShortCircuitingOperator = "RCS1233";
     }
 }
