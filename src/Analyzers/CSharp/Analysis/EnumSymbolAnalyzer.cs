@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class FlagsAnalyzer : BaseDiagnosticAnalyzer
+    public class EnumSymbolAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -21,7 +21,8 @@ namespace Roslynator.CSharp.Analysis
                 return ImmutableArray.Create(
                     DiagnosticDescriptors.DeclareEnumMemberWithZeroValue,
                     DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag,
-                    DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames);
+                    DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames,
+                    DiagnosticDescriptors.DuplicateEnumValue);
             }
         }
 
@@ -45,12 +46,12 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol.TypeKind != TypeKind.Enum)
                 return;
 
-            if (!typeSymbol.HasAttribute(MetadataNames.System_FlagsAttribute))
-                return;
+            bool isFlags = typeSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
 
             ImmutableArray<ISymbol> members = default;
 
-            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.DeclareEnumMemberWithZeroValue))
+            if (isFlags
+                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.DeclareEnumMemberWithZeroValue))
             {
                 members = typeSymbol.GetMembers();
 
@@ -64,7 +65,8 @@ namespace Roslynator.CSharp.Analysis
 
             EnumSymbolInfo enumInfo = default;
 
-            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag))
+            if (isFlags
+                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag))
             {
                 enumInfo = EnumSymbolInfo.Create(typeSymbol);
 
@@ -84,7 +86,8 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames))
+            if (isFlags
+                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames))
             {
                 if (members.IsDefault)
                     members = typeSymbol.GetMembers();
@@ -112,7 +115,7 @@ namespace Roslynator.CSharp.Analysis
                                 .DescendantNodes()
                                 .Any(f => f.IsKind(SyntaxKind.NumericLiteralExpression))))
                     {
-                        if (enumInfo.Symbol == null)
+                        if (enumInfo.IsDefault)
                         {
                             enumInfo = EnumSymbolInfo.Create(typeSymbol);
 
@@ -124,6 +127,89 @@ namespace Roslynator.CSharp.Analysis
 
                         if (values?.Count > 1)
                             context.ReportDiagnostic(DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames, expression);
+                    }
+                }
+            }
+
+            if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.DuplicateEnumValue))
+            {
+                if (enumInfo.IsDefault)
+                    enumInfo = EnumSymbolInfo.Create(typeSymbol);
+
+                ImmutableArray<EnumFieldSymbolInfo> fields = enumInfo.Fields;
+
+                if (fields.Length > 1)
+                {
+                    EnumFieldSymbolInfo symbolInfo1 = fields[0];
+                    EnumFieldSymbolInfo symbolInfo2 = default;
+
+                    for (int i = 1; i < fields.Length; i++, symbolInfo1 = symbolInfo2)
+                    {
+                        symbolInfo2 = fields[i];
+
+                        if (!symbolInfo1.HasValue
+                            || !symbolInfo2.HasValue
+                            || symbolInfo1.Value != symbolInfo2.Value)
+                        {
+                            continue;
+                        }
+
+                        var enumMember1 = (EnumMemberDeclarationSyntax)symbolInfo1.Symbol.GetSyntax(context.CancellationToken);
+
+                        if (enumMember1 == null)
+                            continue;
+
+                        var enumMember2 = (EnumMemberDeclarationSyntax)symbolInfo2.Symbol.GetSyntax(context.CancellationToken);
+
+                        if (enumMember2 == null)
+                            continue;
+
+                        ExpressionSyntax value1 = enumMember1.EqualsValue?.Value?.WalkDownParentheses();
+                        ExpressionSyntax value2 = enumMember2.EqualsValue?.Value?.WalkDownParentheses();
+
+                        if (value1 == null)
+                        {
+                            if (value2 != null)
+                            {
+                                ReportDuplicateValue(context, enumMember1);
+                            }
+                        }
+                        else if (value2 == null)
+                        {
+                            ReportDuplicateValue(context, enumMember2);
+                        }
+                        else
+                        {
+                            SyntaxKind kind1 = value1.Kind();
+                            SyntaxKind kind2 = value2.Kind();
+
+                            if (kind1 == SyntaxKind.NumericLiteralExpression)
+                            {
+                                if (kind2 == SyntaxKind.NumericLiteralExpression)
+                                {
+                                    var enumDeclaration = (EnumDeclarationSyntax)enumMember1.Parent;
+                                    SeparatedSyntaxList<EnumMemberDeclarationSyntax> enumMembers = enumDeclaration.Members;
+
+                                    if (enumMembers.IndexOf(enumMember1) < enumMembers.IndexOf(enumMember2))
+                                    {
+                                        ReportDuplicateValue(context, value2);
+                                    }
+                                    else
+                                    {
+                                        ReportDuplicateValue(context, value1);
+                                    }
+                                }
+                                else if (!string.Equals((value2 as IdentifierNameSyntax)?.Identifier.ValueText, enumMember1.Identifier.ValueText, StringComparison.Ordinal))
+                                {
+                                    ReportDuplicateValue(context, value1);
+                                }
+                            }
+                            else if (kind2 == SyntaxKind.NumericLiteralExpression
+                                && !string.Equals((value1 as IdentifierNameSyntax)?.Identifier.ValueText, enumMember2.Identifier.ValueText, StringComparison.Ordinal))
+                            {
+                                ReportDuplicateValue(context, value2);
+                            }
+                        }
                     }
                 }
             }
@@ -159,6 +245,11 @@ namespace Roslynator.CSharp.Analysis
                 enumMember.GetLocation(),
                 ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>("Value", value) }),
                 value);
+        }
+
+        private static void ReportDuplicateValue(SymbolAnalysisContext context, SyntaxNode node)
+        {
+            context.ReportDiagnostic(DiagnosticDescriptors.DuplicateEnumValue, node);
         }
     }
 }

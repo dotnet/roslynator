@@ -2557,5 +2557,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseShortCircuitingOperator}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1234</summary>
+        public static readonly DiagnosticDescriptor DuplicateEnumValue = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.DuplicateEnumValue, 
+            title:              "Duplicate enum value.", 
+            messageFormat:      "Duplicate enum value.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.DuplicateEnumValue}", 
+            customTags:         Array.Empty<string>());
+
     }
 }
