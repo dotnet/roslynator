@@ -59,7 +59,7 @@
     <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.10.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="2.10.0" />
     <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="2.10.0" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.0.31" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.1.2" />
     <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
   </ItemGroup>
 

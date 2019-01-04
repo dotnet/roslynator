@@ -26,7 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="xunit" Version="2.4.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="2.10.0" />
   </ItemGroup>
 
