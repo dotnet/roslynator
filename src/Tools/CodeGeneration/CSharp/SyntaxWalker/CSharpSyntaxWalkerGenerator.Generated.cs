@@ -115,9 +115,11 @@ namespace Roslynator.CodeGeneration.CSharp
                     switch (propertySymbol.Name)
                     {
                         case "NameColon":
-                        case "RefOrOutKeyword":
+                        case "RefKindKeyword":
                         case "Expression":
                             return true;
+                        case "RefOrOutKeyword":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.Name}'");
                     }
@@ -652,9 +654,11 @@ namespace Roslynator.CodeGeneration.CSharp
                 {
                     switch (propertySymbol.Name)
                     {
-                        case "RefOrOutKeyword":
+                        case "RefKindKeyword":
                         case "Type":
                             return true;
+                        case "RefOrOutKeyword":
+                            return false;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.Name}'");
                     }
@@ -2114,7 +2118,8 @@ namespace Roslynator.CodeGeneration.CSharp
                     switch (propertySymbol.Name)
                     {
                         case "RefKeyword":
-                        case "Type":
+                        case "ReadOnlyKeyword":
+                            case "Type":
                             return true;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.Name}'");
@@ -2257,6 +2262,7 @@ namespace Roslynator.CodeGeneration.CSharp
                     {
                         case "StackAllocKeyword":
                         case "Type":
+                        case "Initializer":
                             return true;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.Name}'");
@@ -2808,6 +2814,20 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "ReturnOrBreakKeyword":
                         case "Expression":
                         case "SemicolonToken":
+                            return true;
+                        default:
+                            throw new InvalidOperationException($"Unrecognized property '{propertySymbol.Name}'");
+                    }
+                }
+
+                case "ImplicitStackAllocArrayCreationExpressionSyntax":
+                {
+                    switch (propertySymbol.Name)
+                    {
+                        case "StackAllocKeyword":
+                        case "OpenBracketToken":
+                        case "CloseBracketToken":
+                        case "Initializer":
                             return true;
                         default:
                             throw new InvalidOperationException($"Unrecognized property '{propertySymbol.Name}'");

@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
 {
     internal abstract class CSharpSyntaxNodeWalker : CSharpSyntaxWalker
     {
-        protected CSharpSyntaxNodeWalker(): base (depth: SyntaxWalkerDepth.Node)
+        protected CSharpSyntaxNodeWalker(): base(depth: SyntaxWalkerDepth.Node)
         {
         }
 
@@ -1893,6 +1893,20 @@ namespace Roslynator.CSharp.SyntaxWalkers
             }
         }
 
+        public override void VisitImplicitStackAllocArrayCreationExpression(ImplicitStackAllocArrayCreationExpressionSyntax node)
+        {
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            InitializerExpressionSyntax initializer = node.Initializer;
+            if (initializer != null)
+            {
+                VisitInitializerExpression(initializer);
+            }
+        }
+
         public override void VisitIncompleteMember(IncompleteMemberSyntax node)
         {
             foreach (AttributeListSyntax attributeList in node.AttributeLists)
@@ -3333,6 +3347,17 @@ namespace Roslynator.CSharp.SyntaxWalkers
             {
                 VisitType(type);
             }
+
+            if (!ShouldVisit)
+            {
+                return;
+            }
+
+            InitializerExpressionSyntax initializer = node.Initializer;
+            if (initializer != null)
+            {
+                VisitInitializerExpression(initializer);
+            }
         }
 
         public override void VisitStructDeclaration(StructDeclarationSyntax node)
@@ -4193,6 +4218,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
                     break;
                 case SyntaxKind.ImplicitElementAccess:
                     VisitImplicitElementAccess((ImplicitElementAccessSyntax)node);
+                    break;
+                case SyntaxKind.ImplicitStackAllocArrayCreationExpression:
+                    VisitImplicitStackAllocArrayCreationExpression((ImplicitStackAllocArrayCreationExpressionSyntax)node);
                     break;
                 case SyntaxKind.ArrayInitializerExpression:
                 case SyntaxKind.CollectionInitializerExpression:

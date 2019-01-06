@@ -501,6 +501,7 @@ namespace Roslynator.CSharp.Tests
                     case SyntaxKind.RefExpression:
                     case SyntaxKind.RefType:
                     case SyntaxKind.ThrowExpression:
+                    case SyntaxKind.ImplicitStackAllocArrayCreationExpression:
                         {
                             break;
                         }

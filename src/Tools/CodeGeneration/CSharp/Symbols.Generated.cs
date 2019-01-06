@@ -613,6 +613,12 @@ namespace Roslynator.CodeGeneration.CSharp
                     break;
                 }
 
+                case "ImplicitStackAllocArrayCreationExpressionSyntax":
+                {
+                    yield return SyntaxKind.ImplicitStackAllocArrayCreationExpression;
+                    break;
+                }
+
                 case "IncompleteMemberSyntax":
                 {
                     yield return SyntaxKind.IncompleteMember;
