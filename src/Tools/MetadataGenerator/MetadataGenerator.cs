@@ -35,7 +35,7 @@ namespace Roslynator.CodeGeneration
                 @"Analyzers\AnalyzersByCategory.md",
                 MarkdownGenerator.CreateAnalyzersByCategoryMarkdown(Analyzers.Where(f => !f.IsObsolete), Comparer));
 
-            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().Single();
+            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 15);
 
             MSBuildLocator.RegisterInstance(instance);
 
