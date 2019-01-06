@@ -99,6 +99,10 @@ namespace Roslynator.CommandLine
                     (GenerateDocRootCommandLineOptions options) => GenerateDocRoot(options),
                     _ => 1);
             }
+            catch (Exception ex)
+            {
+                WriteLine(ex.ToString());
+            }
             finally
             {
                 Out?.Dispose();
@@ -108,6 +112,8 @@ namespace Roslynator.CommandLine
                     Console.ReadKey();
 #endif
             }
+
+            return 1;
         }
 
         private static async Task<int> FixAsync(FixCommandLineOptions options)
