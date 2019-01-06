@@ -1,6 +1,6 @@
 @echo off
 
-set _vsixPublisherExe="C:\Program Files\Microsoft Visual Studio\2017\Community\VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe"
+set _vsixPublisherExe="C:\Program Files\Microsoft Visual Studio\2019\Preview\VSSDK\VisualStudioIntegration\Tools\Bin\VsixPublisher.exe"
 
 set /p _version=Enter version:
 
