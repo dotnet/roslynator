@@ -30,7 +30,7 @@ namespace Roslynator.VisualStudio
         public ObservableCollection<BaseModel> Items { get; } = new ObservableCollection<BaseModel>();
 
         private void GridViewColumnHeader_Click(object sender, RoutedEventArgs e)
-                {
+        {
             if (!(e.OriginalSource is GridViewColumnHeader clickedHeader))
                 return;
 
