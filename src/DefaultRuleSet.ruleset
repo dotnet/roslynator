@@ -18,7 +18,7 @@
     <Rule Id="RCS1016" Action="None" /> <!-- Use expression-bodied member. -->
     <Rule Id="RCS1017" Action="None" /> <!-- Avoid multiline expression body. -->
     <Rule Id="RCS1018" Action="Info" /> <!-- Add default access modifier. -->
-    <Rule Id="RCS1019" Action="None" /> <!-- Reorder modifiers. -->
+    <Rule Id="RCS1019" Action="None" /> <!-- Order modifiers. -->
     <Rule Id="RCS1020" Action="Info" /> <!-- Simplify Nullable<T> to T?. -->
     <Rule Id="RCS1021" Action="Info" /> <!-- Simplify lambda expression. -->
     <Rule Id="RCS1022" Action="None" /> <!-- Simplify lambda expression parameter list. -->
@@ -160,7 +160,7 @@
     <Rule Id="RCS1158" Action="Info" /> <!-- Static member in generic type should use a type parameter. -->
     <Rule Id="RCS1159" Action="Info" /> <!-- Use EventHandler<T>. -->
     <Rule Id="RCS1160" Action="Info" /> <!-- Abstract type should not have public constructors. -->
-    <Rule Id="RCS1161" Action="Hidden" /> <!-- Enum member should declare explicit value. -->
+    <Rule Id="RCS1161" Action="Hidden" /> <!-- Enum should declare explicit values. -->
     <Rule Id="RCS1162" Action="None" /> <!-- Avoid chain of assignments. -->
     <Rule Id="RCS1163" Action="Info" /> <!-- Unused parameter. -->
     <Rule Id="RCS1164" Action="Info" /> <!-- Unused type parameter. -->
@@ -204,11 +204,11 @@
     <Rule Id="RCS1202" Action="Info" /> <!-- Avoid NullReferenceException. -->
     <Rule Id="RCS1203" Action="Warning" /> <!-- Use AttributeUsageAttribute. -->
     <Rule Id="RCS1204" Action="Info" /> <!-- Use EventArgs.Empty. -->
-    <Rule Id="RCS1205" Action="Info" /> <!-- Reorder named arguments according to the order of parameters. -->
+    <Rule Id="RCS1205" Action="Info" /> <!-- Order named arguments according to the order of parameters. -->
     <Rule Id="RCS1206" Action="Info" /> <!-- Use conditional access instead of conditional expression. -->
     <Rule Id="RCS1207" Action="Hidden" /> <!-- Use method group instead of anonymous function. -->
     <Rule Id="RCS1208" Action="None" /> <!-- Reduce if nesting. -->
-    <Rule Id="RCS1209" Action="Info" /> <!-- Reorder type parameter constraints. -->
+    <Rule Id="RCS1209" Action="Info" /> <!-- Order type parameter constraints. -->
     <Rule Id="RCS1210" Action="Warning" /> <!-- Return Task.FromResult instead of returning null. -->
     <Rule Id="RCS1211" Action="Hidden" /> <!-- Remove unnecessary else clause. -->
     <Rule Id="RCS1212" Action="Info" /> <!-- Remove redundant assignment. -->
@@ -231,5 +231,8 @@
     <Rule Id="RCS1229" Action="Info" /> <!-- Use async/await when necessary. -->
     <Rule Id="RCS1230" Action="Info" /> <!-- Unnecessary usage of enumerator. -->
     <Rule Id="RCS1231" Action="Info" /> <!-- Make parameter ref read-only. -->
+    <Rule Id="RCS1232" Action="Info" /> <!-- Order elements in documentation comment. -->
+    <Rule Id="RCS1233" Action="Info" /> <!-- Use short-circuiting operator. -->
+    <Rule Id="RCS1234" Action="Info" /> <!-- Duplicate enum value. -->
   </Rules>
 </RuleSet>

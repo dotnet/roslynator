@@ -1,3 +1,29 @@
+### 2.0.2 (2019-01-06)
+
+* First release of Roslynator 2019 (for Visual Studio 2019)
+
+#### New Features
+
+* Support global suppression of diagnostics.
+  * Go to Visual Studio Tools > Options > Roslynator > Global Suppressions
+
+#### Analyzers
+
+* Add analyzer [OrderElementsInDocumentationComment](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1232.md) (RCS1232)
+* Add analyzer [UseShortCircuitingOperator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1233.md) (RCS1233)
+* Add analyzer [DuplicateEnumValue](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1234.md) (RCS1234)
+
+#### Refactorings
+
+* Refactoring [ReplaceConditionalExpressionWithIfElse](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0120.md) (RR0120) can be applied recursively.
+* Add refactoring [ChangeTypeAccordingToExpression](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0022.md)  (RR0022)
+* Add refactoring [ImplementCustomEnumerator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0210.md)  (RR0210)
+* Add refactoring [ConvertStatementsToIfElse](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0211.md)  (RR0211)
+
+#### Code Fixes
+
+* Add code fix for CS0029, CS0131, CS0621, CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027.
+
 ### 2.0.1 (2018-11-26)
 
 #### Analyzers

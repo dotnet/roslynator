@@ -76,11 +76,13 @@
 | Readability | [Declare enum value as combination of names](../../docs/analyzers/RCS1191.md) | RCS1191 | Info |
 | Readability | [Declare using directive on top level](../../docs/analyzers/RCS1094.md) | RCS1094 | None |
 | Readability | [Default label should be the last label in a switch section](../../docs/analyzers/RCS1099.md) | RCS1099 | Info |
-| Readability | [Enum member should declare explicit value](../../docs/analyzers/RCS1161.md) | RCS1161 | Hidden |
+| Readability | [Duplicate enum value](../../docs/analyzers/RCS1234.md) | RCS1234 | Info |
+| Readability | [Enum should declare explicit values](../../docs/analyzers/RCS1161.md) | RCS1161 | Hidden |
 | Readability | [Merge preprocessor directives](../../docs/analyzers/RCS1222.md) | RCS1222 | Info |
-| Readability | [Reorder modifiers](../../docs/analyzers/RCS1019.md) | RCS1019 | None |
-| Readability | [Reorder named arguments according to the order of parameters](../../docs/analyzers/RCS1205.md) | RCS1205 | Info |
-| Readability | [Reorder type parameter constraints](../../docs/analyzers/RCS1209.md) | RCS1209 | Info |
+| Readability | [Order elements in documentation comment](../../docs/analyzers/RCS1232.md) | RCS1232 | Info |
+| Readability | [Order modifiers](../../docs/analyzers/RCS1019.md) | RCS1019 | None |
+| Readability | [Order named arguments according to the order of parameters](../../docs/analyzers/RCS1205.md) | RCS1205 | Info |
+| Readability | [Order type parameter constraints](../../docs/analyzers/RCS1209.md) | RCS1209 | Info |
 | Readability | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | RCS1217 | Hidden |
 | Readability | [Simplify code branching](../../docs/analyzers/RCS1218.md) | RCS1218 | Info |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | Info |
@@ -204,6 +206,7 @@
 | Usage | [Use pattern matching instead of combination of 'is' operator and cast operator](../../docs/analyzers/RCS1220.md) | RCS1220 | Info |
 | Usage | [Use predefined type](../../docs/analyzers/RCS1013.md) | RCS1013 | None |
 | Usage | [Use Regex instance instead of static method](../../docs/analyzers/RCS1186.md) | RCS1186 | Hidden |
+| Usage | [Use short-circuiting operator](../../docs/analyzers/RCS1233.md) | RCS1233 | Info |
 | Usage | [Use 'string.IsNullOrEmpty' method](../../docs/analyzers/RCS1113.md) | RCS1113 | Info |
 | Usage | [Use string.Length instead of comparison with empty string](../../docs/analyzers/RCS1156.md) | RCS1156 | Info |
 | Usage | [Use StringComparison when comparing strings](../../docs/analyzers/RCS1155.md) | RCS1155 | Warning |

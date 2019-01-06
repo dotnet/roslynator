@@ -61,7 +61,7 @@
       <Refactoring Id="RR0056" IsEnabled="true" /> <!-- GenerateEnumMember -->
       <Refactoring Id="RR0057" IsEnabled="true" /> <!-- GenerateEnumValues -->
       <Refactoring Id="RR0058" IsEnabled="true" /> <!-- GenerateEventInvokingMethod -->
-      <Refactoring Id="RR0059" IsEnabled="true" /> <!-- GenerateSwitchSections -->
+      <Refactoring Id="RR0059" IsEnabled="true" /> <!-- AddMissingCases -->
       <Refactoring Id="RR0060" IsEnabled="true" /> <!-- InitializeLocalWithDefaultValue -->
       <Refactoring Id="RR0061" IsEnabled="true" /> <!-- InlineAliasExpression -->
       <Refactoring Id="RR0062" IsEnabled="true" /> <!-- InlineMethod -->
@@ -208,6 +208,8 @@
       <Refactoring Id="RR0207" IsEnabled="true" /> <!-- SortCaseLabels -->
       <Refactoring Id="RR0208" IsEnabled="true" /> <!-- AddTagToDocumentationComment -->
       <Refactoring Id="RR0209" IsEnabled="true" /> <!-- RemoveAsyncAwait -->
+      <Refactoring Id="RR0210" IsEnabled="true" /> <!-- ImplementCustomEnumerator -->
+      <Refactoring Id="RR0211" IsEnabled="true" /> <!-- ConvertStatementsToIfElse -->
     </Refactorings>
     <CodeFixes>
       <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
@@ -252,7 +254,7 @@
       <CodeFix Id="RCF0042" IsEnabled="true" /> <!-- MakeMemberNonStatic (fixes CS0120) -->
       <CodeFix Id="RCF0043" IsEnabled="true" /> <!-- RemoveConstraintClauses (fixes CS0080) -->
       <CodeFix Id="RCF0044" IsEnabled="true" /> <!-- AddTypeArgument (fixes CS0305) -->
-      <CodeFix Id="RCF0045" IsEnabled="true" /> <!-- RemoveConstModifier (fixes CS0133) -->
+      <CodeFix Id="RCF0045" IsEnabled="true" /> <!-- RemoveConstModifier (fixes CS0131, CS0133) -->
       <CodeFix Id="RCF0046" IsEnabled="true" /> <!-- RemoveEmptySwitchStatement (fixes CS1522) -->
       <CodeFix Id="RCF0047" IsEnabled="true" /> <!-- IntroduceLocalVariable (fixes CS0201) -->
       <CodeFix Id="RCF0048" IsEnabled="true" /> <!-- UseExplicitTypeInsteadOfVar (fixes CS0819, CS0822) -->
@@ -261,7 +263,7 @@
       <CodeFix Id="RCF0051" IsEnabled="true" /> <!-- MakeContainingDeclarationUnsafe (fixes CS0214) -->
       <CodeFix Id="RCF0052" IsEnabled="false" /> <!-- RemoveReturnKeyword (fixes CS0127, CS1997) -->
       <CodeFix Id="RCF0053" IsEnabled="true" /> <!-- RemoveParametersFromStaticConstructor (fixes CS0132) -->
-      <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- ReorderModifiers (fixes CS0267) -->
+      <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- OrderModifiers (fixes CS0267) -->
       <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0115, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994) -->
       <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114, CS0541, CS0525, CS0567, CS0568, CS0575) -->
       <CodeFix Id="RCF0057" IsEnabled="false" /> <!-- RemoveReturnExpression (fixes CS0127, CS1997) -->
@@ -319,6 +321,7 @@
       <CodeFix Id="RCF0109" IsEnabled="true" /> <!-- RemoveParameter (fixes CS0136) -->
       <CodeFix Id="RCF0110" IsEnabled="true" /> <!-- RenameTupleElement (fixes CS8139) -->
       <CodeFix Id="RCF0111" IsEnabled="true" /> <!-- ChangeParameterType (fixes CS1750) -->
+      <CodeFix Id="RCF0112" IsEnabled="true" /> <!-- MarkDeclarationAsNonCLSCompliant (fixes CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

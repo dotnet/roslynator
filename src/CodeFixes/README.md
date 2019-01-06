@@ -27,6 +27,7 @@
 | [CS0126](../../docs/cs/CS0126.md) | An object of a type convertible to 'type' is required\. |
 | [CS0127](../../docs/cs/CS0127.md) | Since 'function' returns void, a return keyword must not be followed by an object expression\. |
 | [CS0128](../../docs/cs/CS0128.md) | A local variable named 'variable' is already defined in this scope\. |
+| [CS0131](../../docs/cs/CS0131.md) | The left\-hand side of an assignment must be a variable, property or indexer\. |
 | [CS0132](../../docs/cs/CS0132.md) | 'constructor': a static constructor must be parameterless\. |
 | [CS0133](../../docs/cs/CS0133.md) | The expression being assigned to 'variable' must be constant\. |
 | [CS0136](../../docs/cs/CS0136.md) | A local variable named 'var' cannot be declared in this scope because it would give a different meaning to 'var', which is already used in a 'parent or current/child' scope to denote something else\. |
@@ -146,6 +147,18 @@
 | [CS1988](../../docs/cs/CS1988.md) | Async methods cannot have ref or out parameters\. |
 | [CS1994](../../docs/cs/CS1994.md) | The 'async' modifier can only be used in methods that have a body\. |
 | [CS1997](../../docs/cs/CS1997.md) | Since 'RemoveReturnKeywordOrReturnExpression\.FooAsync\(\)' is an async method that returns 'Task', a return keyword must not be followed by an object expression\. Did you intend to return 'Task\<T>>'? |
+| [CS3000](../../docs/cs/CS3000.md) | Methods with variable arguments are not CLS\-compliant\. |
+| [CS3001](../../docs/cs/CS3001.md) | Argument type 'type' is not CLS\-compliant\. |
+| [CS3002](../../docs/cs/CS3002.md) | Return type of 'method' is not CLS\-compliant\. |
+| [CS3003](../../docs/cs/CS3003.md) | Type of 'variable' is not CLS\-compliant\. |
+| [CS3005](../../docs/cs/CS3005.md) | Identifier 'identifier' differing only in case is not CLS\-compliant\. |
+| [CS3006](../../docs/cs/CS3006.md) | Overloaded method 'method' differing only in ref or out, or in array rank, is not CLS\-compliant\. |
+| [CS3007](../../docs/cs/CS3007.md) | Overloaded method 'method' differing only by unnamed array types is not CLS\-compliant\. |
+| [CS3008](../../docs/cs/CS3008.md) | Identifier 'identifier' is not CLS\-compliant\. |
+| [CS3009](../../docs/cs/CS3009.md) | Base type 'type' is not CLS\-compliant\. |
+| [CS3016](../../docs/cs/CS3016.md) | Arrays as attribute arguments is not CLS\-compliant\. |
+| [CS3024](../../docs/cs/CS3024.md) | Constraint type 'type' is not CLS\-compliant\. |
+| [CS3027](../../docs/cs/CS3027.md) | 'type\_1' is not CLS\-compliant because base interface 'type\_2' is not CLS\-compliant\. |
 | [CS8050](../../docs/cs/CS8050.md) | Only auto\-implemented properties can have initializers\. |
 | [CS8070](../../docs/cs/CS8070.md) | Control cannot fall out of switch from final case label \('default'\)\. |
 | [CS8112](../../docs/cs/CS8112.md) | 'function' is a local function and must therefore always have a body\. |
