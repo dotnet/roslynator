@@ -13,10 +13,5 @@ cls
  -publishManifest "..\src\VisualStudio\source.extension.vsixmanifest" ^
  -personalAccessToken %_personalAccessToken%
 
-%_vsixPublisherExe% publish ^
- -payload "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.%_version%.vsix" ^
- -publishManifest "..\src\VisualStudio.Refactorings\source.extension.vsixmanifest" ^
- -personalAccessToken %_personalAccessToken%
-
 echo OK
 pause

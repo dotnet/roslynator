@@ -97,8 +97,5 @@ dotnet pack -c Release --no-build -v normal "..\src\CSharp.Workspaces\CSharp.Wor
 del /Q "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.*.vsix"
 ren    "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.vsix" "Roslynator.VisualStudio.%_version%.vsix"
 
-del /Q "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.*.vsix"
-ren    "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.vsix" "Roslynator.VisualStudio.Refactorings.%_version%.vsix"
-
 echo OK
 pause
