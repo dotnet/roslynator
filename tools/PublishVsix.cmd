@@ -10,12 +10,12 @@ cls
 
 %_vsixPublisherExe% publish ^
  -payload "..\src\VisualStudio\bin\Release\Roslynator.VisualStudio.%_version%.vsix" ^
- -publishManifest "..\src\VisualStudio\source.extension.vsixmanifest" ^
+ -publishManifest "..\src\VisualStudio\manifest.json" ^
  -personalAccessToken %_personalAccessToken%
 
 %_vsixPublisherExe% publish ^
  -payload "..\src\VisualStudio.Refactorings\bin\Release\Roslynator.VisualStudio.Refactorings.%_version%.vsix" ^
- -publishManifest "..\src\VisualStudio.Refactorings\source.extension.vsixmanifest" ^
+ -publishManifest "..\src\VisualStudio.Refactorings\manifest.json" ^
  -personalAccessToken %_personalAccessToken%
 
 echo OK
