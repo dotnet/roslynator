@@ -22,6 +22,7 @@ namespace Roslynator.Tests
                 .AddProject(DefaultProjectName, DefaultProjectName, Language)
                 .WithMetadataReferences(ImmutableArray.Create(
                     CorLibReference,
+                    CreateFromAssemblyName("netstandard.dll"),
                     CreateFromAssemblyName("System.Core.dll"),
                     CreateFromAssemblyName("System.Linq.dll"),
                     CreateFromAssemblyName("System.Linq.Expressions.dll"),
