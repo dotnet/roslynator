@@ -2139,4 +2139,5 @@ else
 }]]></After>
       </Sample>
     </Samples>
-  </Refactoring></Refactorings>
+  </Refactoring>
+</Refactorings>

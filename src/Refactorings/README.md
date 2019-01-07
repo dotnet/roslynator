@@ -15,6 +15,7 @@
 | RR0012 | [Add identifier to parameter](../../docs/refactorings/RR0012.md) | \- |
 | RR0010 | [Add identifier to variable declaration](../../docs/refactorings/RR0010.md) | \- |
 | RR0195 | [Add member to interface](../../docs/refactorings/RR0195.md) | &#x2713; |
+| RR0059 | [Add missing cases to switch statement](../../docs/refactorings/RR0059.md) | &#x2713; |
 | RR0011 | [Add parameter name to argument](../../docs/refactorings/RR0011.md) | &#x2713; |
 | RR0208 | [Add tag to documentation comment](../../docs/refactorings/RR0208.md) | &#x2713; |
 | RR0178 | [Add type parameter](../../docs/refactorings/RR0178.md) | &#x2713; |
@@ -27,12 +28,14 @@
 | RR0186 | [Change accessibility](../../docs/refactorings/RR0186.md) | &#x2713; |
 | RR0018 | [Change explicit type to 'var'](../../docs/refactorings/RR0018.md) | &#x2713; |
 | RR0021 | [Change method return type to 'void'](../../docs/refactorings/RR0021.md) | &#x2713; |
+| RR0022 | [Change type according to expression](../../docs/refactorings/RR0022.md) | &#x2713; |
 | RR0023 | [Change 'var' to explicit type](../../docs/refactorings/RR0023.md) | &#x2713; |
 | RR0024 | [Check expression for null](../../docs/refactorings/RR0024.md) | &#x2713; |
 | RR0025 | [Check parameter for null](../../docs/refactorings/RR0025.md) | &#x2713; |
 | RR0026 | [Collapse to initalizer](../../docs/refactorings/RR0026.md) | &#x2713; |
 | RR0027 | [Comment out member](../../docs/refactorings/RR0027.md) | &#x2713; |
 | RR0028 | [Comment out statement](../../docs/refactorings/RR0028.md) | &#x2713; |
+| RR0211 | [Convert statements to if-else](../../docs/refactorings/RR0211.md) | &#x2713; |
 | RR0029 | [Copy documentation comment from base member](../../docs/refactorings/RR0029.md) | &#x2713; |
 | RR0030 | [Duplicate argument](../../docs/refactorings/RR0030.md) | &#x2713; |
 | RR0031 | [Duplicate member](../../docs/refactorings/RR0031.md) | &#x2713; |
@@ -65,7 +68,7 @@
 | RR0057 | [Generate enum values](../../docs/refactorings/RR0057.md) | &#x2713; |
 | RR0058 | [Generate event invoking method](../../docs/refactorings/RR0058.md) | &#x2713; |
 | RR0204 | [Generate property for DebuggerDisplay attribute](../../docs/refactorings/RR0204.md) | &#x2713; |
-| RR0059 | [Generate switch sections](../../docs/refactorings/RR0059.md) | &#x2713; |
+| RR0210 | [Implement custom enumerator](../../docs/refactorings/RR0210.md) | &#x2713; |
 | RR0179 | [Implement IEquatable\<T>](../../docs/refactorings/RR0179.md) | &#x2713; |
 | RR0197 | [Initialize field from constructor](../../docs/refactorings/RR0197.md) | &#x2713; |
 | RR0060 | [Initialize local with default value](../../docs/refactorings/RR0060.md) | &#x2713; |
@@ -198,7 +201,6 @@
 | RR0182 | [Use StringBuilder instead of concatenation](../../docs/refactorings/RR0182.md) | &#x2713; |
 | RR0174 | [Wrap in #if directive](../../docs/refactorings/RR0174.md) | &#x2713; |
 | RR0172 | [Wrap in condition](../../docs/refactorings/RR0172.md) | &#x2713; |
-| RR0173 | [Wrap in else clause](../../docs/refactorings/RR0173.md) | &#x2713; |
 | RR0175 | [Wrap in region](../../docs/refactorings/RR0175.md) | &#x2713; |
 | RR0176 | [Wrap in try-catch](../../docs/refactorings/RR0176.md) | &#x2713; |
 | RR0177 | [Wrap in using statement](../../docs/refactorings/RR0177.md) | &#x2713; |

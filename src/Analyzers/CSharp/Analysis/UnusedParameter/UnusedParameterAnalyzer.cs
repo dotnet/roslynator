@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodDeclaration.ContainsDiagnostics)
                 return;
 
-            if (!methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration,  SyntaxKind.StructDeclaration))
+            if (!methodDeclaration.IsParentKind(SyntaxKind.ClassDeclaration, SyntaxKind.StructDeclaration))
                 return;
 
             if (methodDeclaration.Modifiers.ContainsAny(
