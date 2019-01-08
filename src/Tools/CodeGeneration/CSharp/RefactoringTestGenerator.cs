@@ -12,6 +12,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             string s = _sourceTemplate
                 .Replace("$ClassName$", className)
+                .Replace("$Id$", refactoring.Id)
                 .Replace("$Identifier$", refactoring.Identifier);
 
             return ParseCompilationUnit(s);
@@ -25,16 +26,10 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
+    //TODO: Add tests for $Id$
     public class $ClassName$ : AbstractCSharpCodeRefactoringVerifier
     {
-        public $ClassName$()
-        {
-            Options = base.Options;
-        }
-
         public override string RefactoringId { get; } = RefactoringIdentifiers.$Identifier$;
-
-        public override CodeVerificationOptions Options { get; }
 
         //[Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.$Identifier$)]
         public async Task Test()
