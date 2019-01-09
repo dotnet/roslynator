@@ -96,13 +96,14 @@ namespace Roslynator.CommandLine
                 batchSize: Options.BatchSize,
                 format: Options.Format);
 
-            IEnumerable<string> analyzerAssemblies = Options.AnalyzerAssemblies;
+            IEnumerable<AnalyzerAssembly> analyzerAssemblies = Options.AnalyzerAssemblies
+                .SelectMany(path => AnalyzerAssemblyLoader.LoadFrom(path).Select(info => info.AnalyzerAssembly));
 
             if (Options.UseRoslynatorAnalyzers)
-                analyzerAssemblies = analyzerAssemblies.Concat(RoslynatorAnalyzersAssemblies);
+                analyzerAssemblies = analyzerAssemblies.Concat(AnalyzerAssemblyLoader.LoadFiles(RoslynatorAnalyzersAssemblies));
 
             if (Options.UseRoslynatorCodeFixes)
-                analyzerAssemblies = analyzerAssemblies.Concat(RoslynatorCodeFixesAssemblies);
+                analyzerAssemblies = analyzerAssemblies.Concat(AnalyzerAssemblyLoader.LoadFiles(RoslynatorCodeFixesAssemblies));
 
             CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
@@ -111,7 +112,7 @@ namespace Roslynator.CommandLine
 
         internal static async Task<CommandResult> FixAsync(
             ProjectOrSolution projectOrSolution,
-            IEnumerable<string> analyzerAssemblies,
+            IEnumerable<AnalyzerAssembly> analyzerAssemblies,
             CodeFixerOptions codeFixerOptions,
             IFormatProvider formatProvider = null,
             CancellationToken cancellationToken = default)
@@ -143,7 +144,7 @@ namespace Roslynator.CommandLine
             {
                 return new CodeFixer(
                     solution,
-                    analyzerAssemblies: AnalyzerAssemblyLoader.LoadFiles(analyzerAssemblies),
+                    analyzerAssemblies: analyzerAssemblies,
                     formatProvider: formatProvider,
                     options: codeFixerOptions);
             }
