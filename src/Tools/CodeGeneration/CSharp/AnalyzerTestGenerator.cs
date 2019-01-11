@@ -12,6 +12,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             string s = _sourceTemplate
                 .Replace("$ClassName$", className)
+                .Replace("$Id$", analyzer.Id)
                 .Replace("$Identifier$", analyzer.Identifier);
 
             return ParseCompilationUnit(s);
@@ -28,20 +29,14 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
+    //TODO: Add tests for $Id$
     public class $ClassName$ : AbstractCSharpCodeFixVerifier
     {
-        public $ClassName$()
-        {
-            Options = base.Options;
-        }
-
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.$Identifier$;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new $Identifier$Analyzer();
 
         public override CodeFixProvider FixProvider { get; } = new $Identifier$CodeFixProvider();
-
-        public override CodeVerificationOptions Options { get; }
 
         //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.$Identifier$)]
         public async Task Test()
@@ -53,11 +48,11 @@ using System.Linq;
 using System.Threading.Tasks;
 
 class C
+{
+    void M()
     {
-        void M()
-        {
-        }
     }
+}
 "", @""
 "");
         }

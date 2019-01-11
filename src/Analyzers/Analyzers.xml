@@ -1255,6 +1255,7 @@ public enum FooEnum
 }]]></After>
       </Sample>
     </Samples>
+    <Remarks>This analyzer does not enforce an empty line between two single-line declaration.</Remarks>
   </Analyzer>
   <Analyzer Identifier="UseCompoundAssignment">
     <Id>RCS1058</Id>
