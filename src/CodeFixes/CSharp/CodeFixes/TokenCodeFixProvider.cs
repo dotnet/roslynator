@@ -110,15 +110,6 @@ namespace Roslynator.CSharp.CodeFixes
                                         }
                                     }
                                 }
-
-                                if (Settings.IsEnabled(CodeFixIdentifiers.AddArgumentList))
-                                {
-                                    break;
-                                }
-
-                                if (Settings.IsEnabled(CodeFixIdentifiers.RemoveConditionalAccess))
-                                {
-                                }
                             }
 
                             break;
