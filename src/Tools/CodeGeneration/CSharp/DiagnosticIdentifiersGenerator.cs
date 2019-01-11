@@ -12,11 +12,15 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class DiagnosticIdentifiersGenerator
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<AnalyzerDescriptor> analyzers, bool obsolete, IComparer<string> comparer)
+        public static CompilationUnitSyntax Generate(
+            IEnumerable<AnalyzerDescriptor> analyzers,
+            bool obsolete,
+            IComparer<string> comparer,
+            string @namespace)
         {
             return CompilationUnit(
                 UsingDirectives("System"),
-                NamespaceDeclaration("Roslynator.CSharp",
+                NamespaceDeclaration(@namespace,
                     ClassDeclaration(
                         Modifiers.Public_Static_Partial(),
                         "DiagnosticIdentifiers",

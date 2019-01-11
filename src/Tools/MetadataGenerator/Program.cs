@@ -1,17 +1,25 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
-using System.Xml.Linq;
-using Roslynator.CSharp.Refactorings;
+using Microsoft.Build.Locator;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.MSBuild;
+using Roslynator.CodeGeneration.Markdown;
+using Roslynator.CodeGeneration.Xml;
+using Roslynator.Metadata;
+using Roslynator.Utilities;
 
 namespace Roslynator.CodeGeneration
 {
     internal static class Program
     {
+        private static readonly UTF8Encoding _utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
         private static async Task Main(string[] args)
         {
             if (args == null || args.Length == 0)
@@ -23,61 +31,136 @@ namespace Roslynator.CodeGeneration
 #endif
             }
 
-            string dirPath = args[0];
+            string rootPath = args[0];
 
             StringComparer comparer = StringComparer.InvariantCulture;
 
-            SortRefactoringsAndAddMissingIds(Path.Combine(dirPath, @"Refactorings\Refactorings.xml"), comparer);
+            var metadata = new RoslynatorMetadata(rootPath);
 
-            var generator = new MetadataGenerator(dirPath, comparer);
+            ImmutableArray<AnalyzerDescriptor> analyzers = metadata.Analyzers;
+            ImmutableArray<RefactoringDescriptor> refactorings = metadata.Refactorings;
+            ImmutableArray<CodeFixDescriptor> codeFixes = metadata.CodeFixes;
+            ImmutableArray<CompilerDiagnosticDescriptor> compilerDiagnostics = metadata.CompilerDiagnostics;
 
-            await generator.GenerateAsync().ConfigureAwait(false);
+            WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers);
 
-            generator.FindFilesToDelete();
+            WriteAnalyzersByCategory(@"Analyzers\AnalyzersByCategory.md", analyzers);
 
-            generator.FindMissingSamples();
-        }
+            VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 15);
 
-        public static void SortRefactoringsAndAddMissingIds(string filePath, IComparer<string> comparer)
-        {
-            XDocument doc = XDocument.Load(filePath, LoadOptions.PreserveWhitespace);
+            MSBuildLocator.RegisterInstance(instance);
 
-            XElement root = doc.Root;
-
-            IEnumerable<XElement> newElements = root
-                .Elements()
-                .OrderBy(f => f.Attribute("Identifier").Value, comparer);
-
-            if (newElements.Any(f => f.Attribute("Id") == null))
+            using (MSBuildWorkspace workspace = MSBuildWorkspace.Create())
             {
-                int maxValue = newElements.Where(f => f.Attribute("Id") != null)
-                    .Select(f => int.Parse(f.Attribute("Id").Value.Substring(2)))
-                    .DefaultIfEmpty()
-                    .Max();
+                workspace.WorkspaceFailed += (o, e) => Console.WriteLine(e.Diagnostic.Message);
 
-                int idNumber = maxValue + 1;
+                string solutionPath = Path.Combine(rootPath, "Roslynator.sln");
 
-                newElements = newElements.Select(f =>
-                {
-                    if (f.Attribute("Id") != null)
-                    {
-                        return f;
-                    }
-                    else
-                    {
-                        string id = RefactoringIdentifiers.Prefix + idNumber.ToString().PadLeft(4, '0');
-                        f.ReplaceAttributes(new XAttribute("Id", id), f.Attributes());
-                        idNumber++;
-                        return f;
-                    }
-                });
+                Console.WriteLine($"Loading solution '{solutionPath}'");
+
+                Solution solution = await workspace.OpenSolutionAsync(solutionPath).ConfigureAwait(false);
+
+                Console.WriteLine($"Finished loading solution '{solutionPath}'");
+
+                RoslynatorInfo roslynatorInfo = await RoslynatorInfo.Create(solution).ConfigureAwait(false);
+
+                IOrderedEnumerable<SourceFile> sourceFiles = analyzers
+                    .Select(f => new SourceFile(f.Id, roslynatorInfo.GetAnalyzerFilesAsync(f.Identifier).Result))
+                    .Concat(refactorings
+                        .Select(f => new SourceFile(f.Id, roslynatorInfo.GetRefactoringFilesAsync(f.Identifier).Result)))
+                    .OrderBy(f => f.Id);
+
+                MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
             }
 
-            newElements = newElements.OrderBy(f => f.Attribute("Id").Value, comparer);
+            foreach (RefactoringDescriptor refactoring in refactorings)
+            {
+                WriteAllText(
+                    $@"..\docs\refactorings\{refactoring.Id}.md",
+                    MarkdownGenerator.CreateRefactoringMarkdown(refactoring, Array.Empty<string>()),
+                    fileMustExists: false);
+            }
 
-            root.ReplaceAll(newElements);
+            foreach (CompilerDiagnosticDescriptor diagnostic in compilerDiagnostics)
+            {
+                WriteAllText(
+                    $@"..\docs\cs\{diagnostic.Id}.md",
+                    MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, codeFixes, comparer, Array.Empty<string>()),
+                    fileMustExists: false);
+            }
 
-            doc.Save(filePath);
+            WriteAllText(
+                @"..\docs\refactorings\Refactorings.md",
+                MarkdownGenerator.CreateRefactoringsMarkdown(refactorings, comparer));
+
+            WriteAllText(
+                @"Refactorings\README.md",
+                MarkdownGenerator.CreateRefactoringsReadMe(refactorings.Where(f => !f.IsObsolete), comparer));
+
+            WriteAllText(
+                @"CodeFixes\README.md",
+                MarkdownGenerator.CreateCodeFixesReadMe(compilerDiagnostics, comparer));
+
+            WriteAllText(
+                "DefaultConfigFile.xml",
+                XmlGenerator.CreateDefaultConfigFile(refactorings, codeFixes));
+
+            WriteAllText(
+                "DefaultRuleSet.ruleset",
+                XmlGenerator.CreateDefaultRuleSet(analyzers));
+
+            // find files to delete
+            foreach (string path in Directory.EnumerateFiles(GetPath(@"..\docs\refactorings")))
+            {
+                if (Path.GetFileName(path) != "Refactorings.md"
+                    && !refactorings.Any(f => f.Id == Path.GetFileNameWithoutExtension(path)))
+                {
+                    Console.WriteLine($"FILE TO DELETE: {path}");
+                }
+            }
+
+            // find missing samples
+            foreach (RefactoringDescriptor refactoring in refactorings)
+            {
+                if (refactoring.Samples.Count == 0)
+                {
+                    foreach (ImageDescriptor image in refactoring.ImagesOrDefaultImage())
+                    {
+                        string imagePath = Path.Combine(GetPath(@"..\images\refactorings"), image.Name + ".png");
+
+                        if (!File.Exists(imagePath))
+                            Console.WriteLine($"MISSING SAMPLE: {imagePath}");
+                    }
+                }
+            }
+
+            void WriteAnalyzersReadMe(string path, ImmutableArray<AnalyzerDescriptor> descriptors)
+            {
+                WriteAllText(
+                    path,
+                    MarkdownGenerator.CreateAnalyzersReadMe(descriptors.Where(f => !f.IsObsolete), comparer));
+            }
+
+            void WriteAnalyzersByCategory(string path, ImmutableArray<AnalyzerDescriptor> descriptors)
+            {
+                WriteAllText(
+                    path,
+                    MarkdownGenerator.CreateAnalyzersByCategoryMarkdown(descriptors.Where(f => !f.IsObsolete), comparer));
+            }
+
+            void WriteAllText(string relativePath, string content, bool onlyIfChanges = true, bool fileMustExists = true)
+            {
+                string path = GetPath(relativePath);
+
+                Encoding encoding = (Path.GetExtension(path) == ".md") ? _utf8NoBom : Encoding.UTF8;
+
+                FileHelper.WriteAllText(path, content, encoding, onlyIfChanges, fileMustExists);
+            }
+
+            string GetPath(string path)
+            {
+                return Path.Combine(rootPath, path);
+            }
         }
     }
 }
