@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -127,7 +128,13 @@ namespace Roslynator.CommandLine
 
                 WriteLine($"Fix '{project.Name}'", ConsoleColor.Cyan, Verbosity.Minimal);
 
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
                 await codeFixer.FixProjectAsync(project, cancellationToken);
+
+                stopwatch.Stop();
+
+                WriteLine($"Done fixing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
             }
             else
             {

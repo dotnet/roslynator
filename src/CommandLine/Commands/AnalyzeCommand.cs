@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -78,7 +79,13 @@ namespace Roslynator.CommandLine
 
                 WriteLine($"Analyze '{project.Name}'", ConsoleColor.Cyan, Verbosity.Minimal);
 
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
                 ProjectAnalysisResult result = await codeAnalyzer.AnalyzeProjectAsync(project, cancellationToken);
+
+                stopwatch.Stop();
+
+                WriteLine($"Done analyzing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
 
                 if (Options.Output != null
                     && result.Diagnostics.Any())
