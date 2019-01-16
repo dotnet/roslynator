@@ -4226,6 +4226,27 @@ namespace Roslynator.CSharp
         #endregion XmlElementSyntax
 
         #region XmlEmptyElementSyntax
+        internal static string GetAttributeValue(this XmlEmptyElementSyntax element, string attributeName)
+        {
+            foreach (XmlAttributeSyntax attribute in element.Attributes)
+            {
+                if (attribute.IsKind(SyntaxKind.XmlNameAttribute))
+                {
+                    var nameAttribute = (XmlNameAttributeSyntax)attribute;
+
+                    if (nameAttribute.Name?.LocalName.ValueText == attributeName)
+                    {
+                        IdentifierNameSyntax identifierName = nameAttribute.Identifier;
+
+                        if (identifierName != null)
+                            return identifierName.Identifier.ValueText;
+                    }
+                }
+            }
+
+            return null;
+        }
+
         internal static bool IsElementKind(this XmlEmptyElementSyntax xmlElement, XmlElementKind elementKind)
         {
             return GetElementKind(xmlElement) == elementKind;
