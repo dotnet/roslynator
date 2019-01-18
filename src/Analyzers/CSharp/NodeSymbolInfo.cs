@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Analysis.UnusedMember
+namespace Roslynator.CSharp
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     internal readonly struct NodeSymbolInfo
