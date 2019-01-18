@@ -19,9 +19,9 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
         public Collection<NodeSymbolInfo> Nodes { get; } = new Collection<NodeSymbolInfo>();
 
-        public SemanticModel SemanticModel { get; private set; }
+        public SemanticModel SemanticModel { get; set; }
 
-        public CancellationToken CancellationToken { get; private set; }
+        public CancellationToken CancellationToken { get; set; }
 
         public bool IsAnyNodeConst { get; private set; }
 
@@ -32,21 +32,16 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             get { return !_isEmpty; }
         }
 
-        public void SetValues(SemanticModel semanticModel, CancellationToken cancellationToken)
+        public void Reset()
         {
             _isEmpty = false;
             _containingMethodSymbol = null;
 
             Nodes.Clear();
-            SemanticModel = semanticModel;
-            CancellationToken = cancellationToken;
+            SemanticModel = null;
+            CancellationToken = default;
             IsAnyNodeConst = false;
             IsAnyNodeDelegate = false;
-        }
-
-        public void Clear()
-        {
-            SetValues(default(SemanticModel), default(CancellationToken));
         }
 
         public void AddDelegate(string name, SyntaxNode node)
