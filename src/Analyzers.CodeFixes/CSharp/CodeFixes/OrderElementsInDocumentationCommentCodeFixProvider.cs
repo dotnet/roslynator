@@ -12,6 +12,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Syntax;
+using Microsoft.CodeAnalysis.CSharp;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -28,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
-            if (!TryFindFirstAncestorOrSelf(root, context.Span, out XmlElementSyntax xmlElement, findInsideTrivia: true))
+            if (!TryFindFirstAncestorOrSelf(root, context.Span, out XmlNodeSyntax xmlNode, findInsideTrivia: true))
                 return;
 
             Diagnostic diagnostic = context.Diagnostics[0];
@@ -37,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             CodeAction codeAction = CodeAction.Create(
                 "Order elements",
-                ct => OrderElementsAsync(document, xmlElement, ct),
+                ct => OrderElementsAsync(document, xmlNode, ct),
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
@@ -45,16 +46,16 @@ namespace Roslynator.CSharp.CodeFixes
 
         private static Task<Document> OrderElementsAsync(
             Document document,
-            XmlElementSyntax xmlElement,
+            XmlNodeSyntax xmlNode,
             CancellationToken cancellationToken)
         {
-            var documentationComment = (DocumentationCommentTriviaSyntax)xmlElement.Parent;
+            var documentationComment = (DocumentationCommentTriviaSyntax)xmlNode.Parent;
 
             SyntaxList<XmlNodeSyntax> content = documentationComment.Content;
 
-            MemberDeclarationSyntax memberDeclaration = xmlElement.FirstAncestor<MemberDeclarationSyntax>();
+            MemberDeclarationSyntax memberDeclaration = xmlNode.FirstAncestor<MemberDeclarationSyntax>();
 
-            int firstIndex = content.IndexOf(xmlElement);
+            int firstIndex = content.IndexOf(xmlNode);
 
             SyntaxList<XmlNodeSyntax> newContent = GetNewContent();
 
@@ -64,7 +65,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxList<XmlNodeSyntax> GetNewContent()
             {
-                switch (SyntaxInfo.XmlElementInfo(xmlElement).GetElementKind())
+                switch (SyntaxInfo.XmlElementInfo(xmlNode).GetElementKind())
                 {
                     case XmlElementKind.Param:
                         {
@@ -103,12 +104,13 @@ namespace Roslynator.CSharp.CodeFixes
 
                 if (elementInfo.Success)
                 {
-                    if (!elementInfo.IsEmptyElement
-                        && elementInfo.IsElementKind(kind))
+                    if (elementInfo.IsElementKind(kind))
                     {
-                        var element = (XmlElementSyntax)elementInfo.Element;
+                        XmlNodeSyntax element = elementInfo.Element;
 
-                        string value = element.GetAttributeValue("name");
+                        string value = (element.IsKind(SyntaxKind.XmlElement))
+                            ? ((XmlElementSyntax)element).GetAttributeValue("name")
+                            : ((XmlEmptyElementSyntax)element).GetAttributeValue("name");
 
                         if (value != null)
                         {

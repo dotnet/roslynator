@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Workspaces", "CSharp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{8783ECCC-696E-435A-8F60-98FC23920289}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Core", "Workspaces.Core\Workspaces.Core.csproj", "{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -31,6 +33,10 @@ Global
 		{8783ECCC-696E-435A-8F60-98FC23920289}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8783ECCC-696E-435A-8F60-98FC23920289}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8783ECCC-696E-435A-8F60-98FC23920289}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A6AA72AA-5313-4718-AEFE-3D2E68B9145B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

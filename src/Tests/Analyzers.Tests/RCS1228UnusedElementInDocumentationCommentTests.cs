@@ -228,6 +228,25 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task Test_ParamElement_Empty()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    /// <summary></summary>
+    /// [|<param name=""p"" />|]
+    void M(object p1, object p2) => M(p1, p2);
+}
+", @"
+class C
+{
+    /// <summary></summary>
+    void M(object p1, object p2) => M(p1, p2);
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
         public async Task Test_TypeParamElement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -261,6 +280,25 @@ class C
 {
     /// <summary></summary>
     void M() => M();
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedElementInDocumentationComment)]
+        public async Task Test_TypeParamElement_Empty()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    /// <summary></summary>
+    /// [|<typeparam name=""T"" />|]
+    void M<T1, T2>() => M<T1, T2>();
+}
+", @"
+class C
+{
+    /// <summary></summary>
+    void M<T1, T2>() => M<T1, T2>();
 }
 ");
         }

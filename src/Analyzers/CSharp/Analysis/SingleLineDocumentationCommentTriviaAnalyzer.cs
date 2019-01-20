@@ -249,7 +249,7 @@ namespace Roslynator.CSharp.Analysis
             XmlElementKind kind,
             Func<SeparatedSyntaxList<TNode>, string, int> indexOf) where TNode : SyntaxNode
         {
-            XmlElementSyntax firstElement = null;
+            XmlNodeSyntax firstElement = null;
 
             int firstIndex = -1;
 
@@ -266,9 +266,11 @@ namespace Roslynator.CSharp.Analysis
                     continue;
                 }
 
-                var element = (XmlElementSyntax)elementInfo.Element;
+                XmlNodeSyntax element = elementInfo.Element;
 
-                string name = element.GetAttributeValue("name");
+                string name = (element.IsKind(SyntaxKind.XmlElement))
+                    ? ((XmlElementSyntax)element).GetAttributeValue("name")
+                    : ((XmlEmptyElementSyntax)element).GetAttributeValue("name");
 
                 if (name == null)
                 {
