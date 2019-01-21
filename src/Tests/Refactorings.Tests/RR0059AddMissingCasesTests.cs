@@ -255,6 +255,60 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
+        public async Task Test_TwoFieldsWithSameValue()
+        {
+            await VerifyRefactoringAsync(@"
+enum E
+{
+    A = 0,
+    B = 1,
+    C = 2,
+    D = 2
+}
+
+class C
+{
+    void M()
+    {
+        var e = E.A;
+
+        [||]switch (e)
+        {
+            case E.A:
+                break;
+        }
+    }
+}
+", @"
+enum E
+{
+    A = 0,
+    B = 1,
+    C = 2,
+    D = 2
+}
+
+class C
+{
+    void M()
+    {
+        var e = E.A;
+
+        switch (e)
+        {
+            case E.A:
+                break;
+            case E.B:
+                break;
+            case E.C:
+                break;
+        }
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddMissingCases)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"

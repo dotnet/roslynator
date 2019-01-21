@@ -60,7 +60,12 @@ namespace Roslynator.CSharp.Refactorings
                             var fieldSymbol = (IFieldSymbol)member;
 
                             if (fieldSymbol.HasConstantValue)
-                                fieldsToValue.Add(fieldSymbol.ConstantValue, fieldSymbol);
+                            {
+                                object constantValue = fieldSymbol.ConstantValue;
+
+                                if (!fieldsToValue.ContainsKey(constantValue))
+                                    fieldsToValue.Add(constantValue, fieldSymbol);
+                            }
                         }
                     }
 
