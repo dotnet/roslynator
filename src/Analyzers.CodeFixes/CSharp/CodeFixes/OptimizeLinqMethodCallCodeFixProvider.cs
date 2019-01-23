@@ -61,9 +61,11 @@ namespace Roslynator.CSharp.CodeFixes
                 if (diagnostic.Properties.TryGetValue("Name", out string name)
                     && name == "SimplifyLinqMethodChain")
                 {
+                    SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
                     CodeAction codeAction = CodeAction.Create(
-                        $"Combine 'Where' and '{invocationInfo.NameText}'",
-                        ct => CallInsteadOfWhereAsync(document, invocationInfo, ct),
+                        $"Combine '{invocationInfo2.NameText}' and '{invocationInfo.NameText}'",
+                        ct => SimplifyLinqMethodChainAsync(document, invocationInfo, ct),
                         GetEquivalenceKey(diagnostic, "SimplifyLinqMethodChain"));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
@@ -264,7 +266,7 @@ namespace Roslynator.CSharp.CodeFixes
             return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newNode, cancellationToken);
         }
 
-        private static Task<Document> CallInsteadOfWhereAsync(
+        private static Task<Document> SimplifyLinqMethodChainAsync(
             Document document,
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             CancellationToken cancellationToken = default(CancellationToken))
