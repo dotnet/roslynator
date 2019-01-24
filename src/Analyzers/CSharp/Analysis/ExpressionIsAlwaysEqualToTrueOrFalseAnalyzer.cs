@@ -155,22 +155,29 @@ namespace Roslynator.CSharp.Analysis
                         case "Count":
                         case "Length":
                             {
-                                var symbol = semanticModel.GetSymbol(left, cancellationToken) as IPropertySymbol;
-
-                                INamedTypeSymbol containingType = symbol.ContainingType;
-
-                                if (containingType != null)
+                                if (semanticModel.GetSymbol(left, cancellationToken) is IPropertySymbol propertySymbol)
                                 {
-                                    if (containingType.SpecialType.Is(
-                                        SpecialType.System_String,
-                                        SpecialType.System_Array,
-                                        SpecialType.System_Collections_Generic_ICollection_T))
-                                    {
-                                        return true;
-                                    }
+                                    INamedTypeSymbol containingType = propertySymbol.ContainingType?.OriginalDefinition;
 
-                                    if (containingType?.Implements(SpecialType.System_Collections_Generic_ICollection_T, allInterfaces: true) == true)
-                                        return true;
+                                    if (containingType != null)
+                                    {
+                                        if (containingType.SpecialType.Is(
+                                            SpecialType.System_String,
+                                            SpecialType.System_Array,
+                                            SpecialType.System_Collections_Generic_ICollection_T,
+                                            SpecialType.System_Collections_Generic_IReadOnlyCollection_T))
+                                        {
+                                            return true;
+                                        }
+
+                                        if (containingType.ImplementsAny(
+                                            SpecialType.System_Collections_Generic_ICollection_T,
+                                            SpecialType.System_Collections_Generic_IReadOnlyCollection_T,
+                                            allInterfaces: true))
+                                        {
+                                            return true;
+                                        }
+                                    }
                                 }
 
                                 break;
