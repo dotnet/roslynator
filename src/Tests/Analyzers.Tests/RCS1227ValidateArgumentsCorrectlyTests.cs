@@ -54,8 +54,9 @@ class C
         if (p2 == null)
             throw new ArgumentNullException(nameof(p2));
 
-        return MIterator();
-        IEnumerable<string> MIterator()
+        return M2();
+
+        IEnumerable<string> M2()
         {
             string s = null;
             yield return s;

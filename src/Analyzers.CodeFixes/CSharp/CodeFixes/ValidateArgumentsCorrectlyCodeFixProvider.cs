@@ -63,9 +63,6 @@ namespace Roslynator.CSharp.CodeFixes
 
             string name = methodDeclaration.Identifier.ValueText;
 
-            if (!name.EndsWith("Iterator", StringComparison.Ordinal))
-                name += "Iterator";
-
             name = NameGenerator.Default.EnsureUniqueLocalName(name, semanticModel, statement.SpanStart, cancellationToken: cancellationToken);
 
             SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
@@ -90,7 +87,7 @@ namespace Roslynator.CSharp.CodeFixes
             ReturnStatementSyntax returnStatement = ReturnStatement(
                 Token(SyntaxKind.ReturnKeyword).WithLeadingTrivia(statement.GetLeadingTrivia()),
                 InvocationExpression(IdentifierName(name)),
-                SemicolonToken());
+                Token(SyntaxTriviaList.Empty, SyntaxKind.SemicolonToken, TriviaList(NewLine(), NewLine())));
 
             SyntaxList<StatementSyntax> newStatements = statements.ReplaceRange(
                 index,
