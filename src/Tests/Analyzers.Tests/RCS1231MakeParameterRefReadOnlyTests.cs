@@ -111,5 +111,20 @@ readonly struct C
 }
 ");
         }
+
+        [Fact]
+        public async Task TestNoDiagnostic_DuplicateParameterName()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+readonly struct C
+{
+    void M(C c, C c)
+    {
+    }
+}
+", options: Options.AddAllowedCompilerDiagnosticId("CS0100"));
+        }
     }
 }

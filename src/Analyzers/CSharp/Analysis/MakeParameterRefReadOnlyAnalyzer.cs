@@ -119,6 +119,12 @@ namespace Roslynator.CSharp.Analysis
                             walker = SyntaxWalker.GetInstance();
                         }
 
+                        if (walker.Parameters.ContainsKey(parameter.Name))
+                        {
+                            SyntaxWalker.Free(walker);
+                            return;
+                        }
+
                         walker.Parameters.Add(parameter.Name, parameter);
                     }
                 }
