@@ -995,7 +995,7 @@ namespace Roslynator.CSharp
         /// Returns true if a declaration of the specified type can have virtual, abstract or override modifier.
         /// </summary>
         /// <param name="kind"></param>
-        internal static bool IsVirtualDeclaration(SyntaxKind kind)
+        internal static bool CanBeVirtualDeclaration(SyntaxKind kind)
         {
             switch (kind)
             {
