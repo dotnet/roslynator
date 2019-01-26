@@ -142,7 +142,7 @@ namespace Roslynator.CSharp.Refactorings
 
             for (int i = 0; i < contents.Count; i++)
             {
-                (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments) = RefactoringUtility.ConvertInterpolatedStringToStringBuilderMethod(contents[i], isVerbatim);
+                (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments) = SyntaxRefactorings.ConvertInterpolatedStringToStringBuilderMethod(contents[i], isVerbatim);
 
                 if (i == contents.Count - 1
                     && isAppendLine
