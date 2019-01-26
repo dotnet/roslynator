@@ -6,6 +6,7 @@ using System.Collections.Immutable;
 using System.Text;
 using System.Text.RegularExpressions;
 using Microsoft.CodeAnalysis;
+using Roslynator.Text;
 
 namespace Roslynator.Documentation
 {

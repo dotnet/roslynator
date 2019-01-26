@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Text;
+using Roslynator.Text;
 
 namespace Roslynator.Documentation
 {
