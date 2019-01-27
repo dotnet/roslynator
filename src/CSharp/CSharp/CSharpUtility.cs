@@ -689,5 +689,32 @@ namespace Roslynator.CSharp
                     return null;
             }
         }
+
+        public static bool ContainsOutArgumentWithLocal(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            foreach (SyntaxNode node in expression.DescendantNodes())
+            {
+                if (node.Kind() == SyntaxKind.Argument)
+                {
+                    var argument = (ArgumentSyntax)node;
+
+                    if (argument.RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword)
+                    {
+                        ExpressionSyntax argumentExpression = argument.Expression;
+
+                        if (argumentExpression?.IsMissing == false
+                            && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.Kind == SymbolKind.Local)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

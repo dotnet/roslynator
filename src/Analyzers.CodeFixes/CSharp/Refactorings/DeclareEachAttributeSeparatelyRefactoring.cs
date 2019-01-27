@@ -17,7 +17,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             return document.ReplaceNodeAsync(
                 attributeList,
-                RefactoringUtility.SplitAttributes(attributeList).Select(f => f.WithFormatterAnnotation()),
+                SyntaxRefactorings.SplitAttributes(attributeList).Select(f => f.WithFormatterAnnotation()),
                 cancellationToken);
         }
     }

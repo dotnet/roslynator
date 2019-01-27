@@ -79,7 +79,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Swap operands",
-                                cancellationToken => CommonRefactorings.SwapBinaryOperandsAsync(document, binaryExpression, cancellationToken),
+                                cancellationToken => DocumentRefactorings.SwapBinaryOperandsAsync(document, binaryExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

@@ -16,9 +16,9 @@ namespace Roslynator.CSharp.Refactorings.Documentation
 {
     internal abstract class DocumentationCommentRefactoring<TNode> where TNode : SyntaxNode
     {
-        public abstract XmlElementKind ElementKind { get; }
+        public abstract XmlTag Tag { get; }
 
-        public abstract bool ShouldBeBefore(XmlElementKind elementKind);
+        public abstract bool ShouldBeBefore(XmlTag tag);
 
         public abstract string GetName(TNode node);
 
@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings.Documentation
             int start = comment.FullSpan.Start;
             int startIndex = 0;
 
-            string elementName = XmlElementNameKindMapper.GetName(ElementKind);
+            string elementName = XmlTagMapper.GetName(Tag);
 
             foreach (IGrouping<int, ElementInfo<TNode>> grouping in elementInfos
                 .OrderBy(f => f.InsertIndex)
@@ -188,7 +188,7 @@ namespace Roslynator.CSharp.Refactorings.Documentation
         {
             var dic = new Dictionary<string, XmlElementSyntax>();
 
-            foreach (XmlElementSyntax element in comment.Elements(ElementKind))
+            foreach (XmlElementSyntax element in comment.Elements(Tag))
             {
                 string name = element.GetAttributeValue("name");
 
@@ -209,10 +209,10 @@ namespace Roslynator.CSharp.Refactorings.Documentation
                 {
                     var xmlElement = (XmlElementSyntax)content[i];
 
-                    XmlElementKind elementKind = xmlElement.GetElementKind();
+                    XmlTag tag = xmlElement.GetTag();
 
-                    if (elementKind == ElementKind
-                        || ShouldBeBefore(elementKind))
+                    if (tag == Tag
+                        || ShouldBeBefore(tag))
                     {
                         return content[i].FullSpan.End;
                     }

@@ -133,6 +133,114 @@ class C
 ");
         }
 
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_SelectAndMin()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int min = Enumerable.Empty<int>().[|Select(f => f).Min()|];
+    }
+}
+", @"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int min = Enumerable.Empty<int>().Min(f => f);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_SelectAndMax()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int max = Enumerable.Empty<int>().[|Select(f => f).Max()|];
+    }
+}
+", @"
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int max = Enumerable.Empty<int>().Max(f => f);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_SelectAndMin_ImmutableArray()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Immutable;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int min = ImmutableArray.Create<int>().[|Select(f => f).Min()|];
+    }
+}
+", @"
+using System.Collections.Immutable;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int min = ImmutableArray.Create<int>().Min(f => f);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
+        public async Task Test_SelectAndMax_ImmutableArray()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Collections.Immutable;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int max = ImmutableArray.Create<int>().[|Select(f => f).Max()|];
+    }
+}
+", @"
+using System.Collections.Immutable;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        int max = ImmutableArray.Create<int>().Max(f => f);
+    }
+}
+");
+        }
+
         [Theory, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeLinqMethodCall)]
         [InlineData("Where(f => f is object).Cast<object>()", "OfType<object>()")]
         [InlineData("Where((f) => f is object).Cast<object>()", "OfType<object>()")]

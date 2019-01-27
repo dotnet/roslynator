@@ -65,19 +65,19 @@ namespace Roslynator.CSharp.CodeFixes
 
             SyntaxList<XmlNodeSyntax> GetNewContent()
             {
-                switch (SyntaxInfo.XmlElementInfo(xmlNode).GetElementKind())
+                switch (SyntaxInfo.XmlElementInfo(xmlNode).GetTag())
                 {
-                    case XmlElementKind.Param:
+                    case XmlTag.Param:
                         {
                             SeparatedSyntaxList<ParameterSyntax> parameters = ParameterListInfo.Create(memberDeclaration).Parameters;
 
-                            return SortElements(parameters, content, firstIndex, XmlElementKind.Param, (nodes, name) => nodes.IndexOf(name));
+                            return SortElements(parameters, content, firstIndex, XmlTag.Param, (nodes, name) => nodes.IndexOf(name));
                         }
-                    case XmlElementKind.TypeParam:
+                    case XmlTag.TypeParam:
                         {
                             SeparatedSyntaxList<TypeParameterSyntax> typeParameters = TypeParameterListInfo.Create(memberDeclaration).Parameters;
 
-                            return SortElements(typeParameters, content, firstIndex, XmlElementKind.TypeParam, (nodes, name) => nodes.IndexOf(name));
+                            return SortElements(typeParameters, content, firstIndex, XmlTag.TypeParam, (nodes, name) => nodes.IndexOf(name));
                         }
                     default:
                         {
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
             SeparatedSyntaxList<TNode> nodes,
             SyntaxList<XmlNodeSyntax> content,
             int firstIndex,
-            XmlElementKind kind,
+            XmlTag tag,
             Func<SeparatedSyntaxList<TNode>, string, int> indexOf) where TNode : SyntaxNode
         {
             var xmlNodes = new List<XmlNodeSyntax>();
@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                 if (elementInfo.Success)
                 {
-                    if (elementInfo.IsElementKind(kind))
+                    if (elementInfo.HasTag(tag))
                     {
                         XmlNodeSyntax element = elementInfo.Element;
 

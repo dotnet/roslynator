@@ -167,7 +167,7 @@ namespace Roslynator.CSharp.Analysis
                 if (typeSymbol?.IsErrorType() == false
                     && (typeSymbol.IsReferenceType || typeSymbol.IsValueType)
                     && semanticModel.IsDefaultValue(typeSymbol, whenNull, cancellationToken)
-                    && !RefactoringUtility.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
+                    && !CSharpUtility.ContainsOutArgumentWithLocal(whenNotNull, semanticModel, cancellationToken)
                     && !conditionalExpressionInfo.ConditionalExpression.IsInExpressionTree(semanticModel, cancellationToken))
                 {
                     DiagnosticHelpers.ReportDiagnostic(

@@ -42,6 +42,14 @@ namespace Roslynator.CSharp.Syntax
         public ExpressionSyntax Right { get; }
 
         /// <summary>
+        /// The operator of the binary expression.
+        /// </summary>
+        public SyntaxToken OperatorToken
+        {
+            get { return BinaryExpression?.OperatorToken ?? default; }
+        }
+
+        /// <summary>
         /// The kind of the binary expression.
         /// </summary>
         public SyntaxKind Kind

@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Refactorings
 
                     for (int j = 0; j < contents.Count; j++)
                     {
-                        (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments) = RefactoringUtility.ConvertInterpolatedStringToStringBuilderMethod(contents[j], isVerbatim);
+                        (SyntaxKind contentKind, string methodName, ImmutableArray<ArgumentSyntax> arguments) = SyntaxRefactorings.ConvertInterpolatedStringToStringBuilderMethod(contents[j], isVerbatim);
 
                         newInvocation = SimpleMemberInvocationExpression(
                             newInvocation ?? stringBuilderName,

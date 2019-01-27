@@ -1706,8 +1706,12 @@ catch (Exception ex) // [|Id|]
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool x = items.Where(f => Foo(f)).Any(); // [|Id|]]]></Before>
-        <After><![CDATA[bool x = items.Any(f => Foo(f));]]></After>
+        <Before><![CDATA[bool any = items.Where(predicate).Any(); // [|Id|]]]></Before>
+        <After><![CDATA[bool any = items.Any(predicate);]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[int max = items.Select(selector).Max(); // [|Id|]]]></Before>
+        <After><![CDATA[int max = items.Max(selector);]]></After>
       </Sample>
       <Sample>
         <Before><![CDATA[IEnumerable<Foo> x = items.Where(f => f is Foo).Cast<Foo>(); // [|Id|]]]></Before>

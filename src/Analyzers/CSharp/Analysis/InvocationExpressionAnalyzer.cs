@@ -124,6 +124,14 @@ namespace Roslynator.CSharp.Analysis
 
                                     break;
                                 }
+                            case "Max":
+                            case "Min":
+                                {
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeLinqMethodCall))
+                                        OptimizeLinqMethodCallAnalysis.AnalyzeSelectAndMinOrMax(context, invocationInfo);
+
+                                    break;
+                                }
                             case "ToString":
                                 {
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveRedundantToStringCall))

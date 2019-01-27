@@ -178,7 +178,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ValidateRightExpression(right, binaryExpressionKind, semanticModel, cancellationToken))
                 return false;
 
-            if (RefactoringUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
+            if (CSharpUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
                 return false;
 
             ExpressionSyntax e = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType, semanticModel, cancellationToken);
