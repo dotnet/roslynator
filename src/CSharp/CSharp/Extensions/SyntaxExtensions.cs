@@ -588,7 +588,7 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal static IEnumerable<XmlElementSyntax> Elements(this DocumentationCommentTriviaSyntax documentationComment, XmlElementKind elementKind)
+        internal static IEnumerable<XmlElementSyntax> Elements(this DocumentationCommentTriviaSyntax documentationComment, XmlTag tag)
         {
             foreach (XmlNodeSyntax node in documentationComment.Content)
             {
@@ -596,7 +596,7 @@ namespace Roslynator.CSharp
                 {
                     var xmlElement = (XmlElementSyntax)node;
 
-                    if (xmlElement.IsElementKind(elementKind))
+                    if (xmlElement.HasTag(tag))
                         yield return xmlElement;
                 }
             }
@@ -4183,14 +4183,14 @@ namespace Roslynator.CSharp
         #endregion WhileStatementSyntax
 
         #region XmlElementSyntax
-        internal static bool IsElementKind(this XmlElementSyntax xmlElement, XmlElementKind elementKind)
+        internal static bool HasTag(this XmlElementSyntax xmlElement, XmlTag tag)
         {
-            return GetElementKind(xmlElement) == elementKind;
+            return GetTag(xmlElement) == tag;
         }
 
-        internal static XmlElementKind GetElementKind(this XmlElementSyntax xmlElement)
+        internal static XmlTag GetTag(this XmlElementSyntax xmlElement)
         {
-            return XmlElementNameKindMapper.GetKindOrDefault(xmlElement.StartTag?.Name?.LocalName.ValueText);
+            return XmlTagMapper.GetTagOrDefault(xmlElement.StartTag?.Name?.LocalName.ValueText);
         }
 
         internal static bool IsLocalName(this XmlElementSyntax xmlElement, string localName, StringComparison comparison = StringComparison.Ordinal)
@@ -4247,14 +4247,14 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        internal static bool IsElementKind(this XmlEmptyElementSyntax xmlElement, XmlElementKind elementKind)
+        internal static bool HasTag(this XmlEmptyElementSyntax xmlElement, XmlTag tag)
         {
-            return GetElementKind(xmlElement) == elementKind;
+            return GetTag(xmlElement) == tag;
         }
 
-        internal static XmlElementKind GetElementKind(this XmlEmptyElementSyntax xmlElement)
+        internal static XmlTag GetTag(this XmlEmptyElementSyntax xmlElement)
         {
-            return XmlElementNameKindMapper.GetKindOrDefault(xmlElement.Name?.LocalName.ValueText);
+            return XmlTagMapper.GetTagOrDefault(xmlElement.Name?.LocalName.ValueText);
         }
 
         internal static bool IsLocalName(this XmlEmptyElementSyntax xmlEmptyElement, string localName, StringComparison comparison = StringComparison.Ordinal)

@@ -1,14 +1,17 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-namespace Roslynator.Documentation
+namespace Roslynator
 {
-    internal static class WellKnownTags
+    internal static class WellKnownXmlTags
     {
         public const string C = "c";
         public const string Code = "code";
+        public const string Content = "content";
         public const string Example = "example";
         public const string Exception = "exception";
+        public const string Exclude = "exclude";
         public const string Include = "include";
+        public const string InheritDoc = "inheritdoc";
         public const string List = "list";
         public const string Para = "para";
         public const string Param = "param";

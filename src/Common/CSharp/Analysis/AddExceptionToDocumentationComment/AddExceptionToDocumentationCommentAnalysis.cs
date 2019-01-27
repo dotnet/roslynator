@@ -94,21 +94,21 @@ namespace Roslynator.CSharp.Analysis.AddExceptionToDocumentationComment
                 XmlElementInfo info = SyntaxInfo.XmlElementInfo(node);
                 if (info.Success)
                 {
-                    switch (info.GetElementKind())
+                    switch (info.GetTag())
                     {
-                        case XmlElementKind.Include:
-                        case XmlElementKind.Exclude:
+                        case XmlTag.Include:
+                        case XmlTag.Exclude:
                             {
                                 if (isFirst)
                                     containsIncludeOrExclude = true;
 
                                 break;
                             }
-                        case XmlElementKind.InheritDoc:
+                        case XmlTag.InheritDoc:
                             {
                                 return false;
                             }
-                        case XmlElementKind.Exception:
+                        case XmlTag.Exception:
                             {
                                 if (!containsException)
                                 {

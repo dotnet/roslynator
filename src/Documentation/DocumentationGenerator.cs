@@ -482,7 +482,7 @@ namespace Roslynator.Documentation
                             }
                         case NamespaceDocumentationParts.Summary:
                             {
-                                xmlDocumentation?.Element(WellKnownTags.Summary)?.WriteContentTo(writer);
+                                xmlDocumentation?.Element(WellKnownXmlTags.Summary)?.WriteContentTo(writer);
                                 break;
                             }
                         case NamespaceDocumentationParts.Examples:
@@ -568,11 +568,11 @@ namespace Roslynator.Documentation
                             }
                         case NamespaceDocumentationParts.Examples:
                             {
-                                return xmlDocumentation?.HasElement(WellKnownTags.Example) == true;
+                                return xmlDocumentation?.HasElement(WellKnownXmlTags.Example) == true;
                             }
                         case NamespaceDocumentationParts.Remarks:
                             {
-                                return xmlDocumentation?.HasElement(WellKnownTags.Remarks) == true;
+                                return xmlDocumentation?.HasElement(WellKnownXmlTags.Remarks) == true;
                             }
                         case NamespaceDocumentationParts.Classes:
                             {
@@ -596,7 +596,7 @@ namespace Roslynator.Documentation
                             }
                         case NamespaceDocumentationParts.SeeAlso:
                             {
-                                return xmlDocumentation?.Elements(WellKnownTags.SeeAlso).Any() == true;
+                                return xmlDocumentation?.Elements(WellKnownXmlTags.SeeAlso).Any() == true;
                             }
                         default:
                             {
@@ -972,11 +972,11 @@ namespace Roslynator.Documentation
                         }
                     case TypeDocumentationParts.Examples:
                         {
-                            return xmlDocumentation?.HasElement(WellKnownTags.Example) == true;
+                            return xmlDocumentation?.HasElement(WellKnownXmlTags.Example) == true;
                         }
                     case TypeDocumentationParts.Remarks:
                         {
-                            return xmlDocumentation?.HasElement(WellKnownTags.Remarks) == true;
+                            return xmlDocumentation?.HasElement(WellKnownXmlTags.Remarks) == true;
                         }
                     case TypeDocumentationParts.Constructors:
                         {
@@ -1043,7 +1043,7 @@ namespace Roslynator.Documentation
                         }
                     case TypeDocumentationParts.SeeAlso:
                         {
-                            return xmlDocumentation?.Elements(WellKnownTags.SeeAlso).Any() == true;
+                            return xmlDocumentation?.Elements(WellKnownXmlTags.SeeAlso).Any() == true;
                         }
                     default:
                         {

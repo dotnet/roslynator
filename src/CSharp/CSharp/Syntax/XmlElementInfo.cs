@@ -109,14 +109,14 @@ namespace Roslynator.CSharp.Syntax
             get { return SyntaxInfoHelpers.ToDebugString(Success, this, Element); }
         }
 
-        internal XmlElementKind GetElementKind()
+        internal XmlTag GetTag()
         {
-            return XmlElementNameKindMapper.GetKindOrDefault(LocalName);
+            return XmlTagMapper.GetTagOrDefault(LocalName);
         }
 
-        internal bool IsElementKind(XmlElementKind kind)
+        internal bool HasTag(XmlTag tag)
         {
-            return XmlElementNameKindMapper.GetKindOrDefault(LocalName) == kind;
+            return XmlTagMapper.GetTagOrDefault(LocalName) == tag;
         }
 
         internal static XmlElementInfo Create(XmlNodeSyntax node)
