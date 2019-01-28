@@ -69,13 +69,13 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case XmlTag.Param:
                         {
-                            SeparatedSyntaxList<ParameterSyntax> parameters = ParameterListInfo.Create(memberDeclaration).Parameters;
+                            SeparatedSyntaxList<ParameterSyntax> parameters = CSharpUtility.GetParameters(memberDeclaration);
 
                             return SortElements(parameters, content, firstIndex, XmlTag.Param, (nodes, name) => nodes.IndexOf(name));
                         }
                     case XmlTag.TypeParam:
                         {
-                            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = TypeParameterListInfo.Create(memberDeclaration).Parameters;
+                            SeparatedSyntaxList<TypeParameterSyntax> typeParameters = CSharpUtility.GetTypeParameters(memberDeclaration);
 
                             return SortElements(typeParameters, content, firstIndex, XmlTag.TypeParam, (nodes, name) => nodes.IndexOf(name));
                         }

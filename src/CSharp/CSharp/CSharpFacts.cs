@@ -1028,5 +1028,38 @@ namespace Roslynator.CSharp
                     return false;
             }
         }
+
+        internal static bool HasParameterList(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        internal static bool HasTypeParameterList(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
+                    return true;
+                default:
+                    return false;
+            }
+        }
     }
 }
