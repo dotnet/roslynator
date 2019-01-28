@@ -12,10 +12,6 @@ namespace Roslynator.CSharp
 {
     internal static class CSharpUtility
     {
-        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
-
         public static string GetCountOrLengthPropertyName(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
@@ -218,34 +214,6 @@ namespace Roslynator.CSharp
             }
 
             return false;
-        }
-
-        public static NameSyntax EnsureFullyQualifiedName(
-            NameSyntax name,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
-
-            if (symbol != null)
-            {
-                if (semanticModel.GetAliasInfo(name, cancellationToken) != null
-                    || !symbol.ContainingNamespace.IsGlobalNamespace)
-                {
-                    SymbolKind kind = symbol.Kind;
-
-                    if (kind == SymbolKind.Namespace)
-                    {
-                        return SyntaxFactory.ParseName(symbol.ToString()).WithTriviaFrom(name);
-                    }
-                    else if (kind == SymbolKind.NamedType)
-                    {
-                        return (NameSyntax)((INamedTypeSymbol)symbol).ToTypeSyntax(_symbolDisplayFormat).WithTriviaFrom(name);
-                    }
-                }
-            }
-
-            return name;
         }
 
         public static bool IsNameOfExpression(
