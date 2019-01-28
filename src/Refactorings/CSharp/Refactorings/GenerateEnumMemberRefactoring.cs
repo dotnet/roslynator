@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Refactorings
             if (value != null)
                 equalsValue = EqualsValueClause(CSharpFactory.NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType));
 
-            string name = NameGenerator.Default.EnsureUniqueMemberName(DefaultNames.EnumMember, enumSymbol);
+            string name = NameGenerator.Default.EnsureUniqueEnumMemberName(DefaultNames.EnumMember, enumSymbol);
 
             SyntaxToken identifier = Identifier(name).WithRenameAnnotation();
 

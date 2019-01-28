@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Refactorings
                     continue;
                 }
 
-                methodName = NameGenerator.Default.EnsureUniqueMemberName(methodName, containingType);
+                methodName = NameGenerator.Default.EnsureUniqueName(methodName, containingType.GetMembers());
 
                 context.RegisterRefactoring(
                     $"Generate '{methodName}' method",

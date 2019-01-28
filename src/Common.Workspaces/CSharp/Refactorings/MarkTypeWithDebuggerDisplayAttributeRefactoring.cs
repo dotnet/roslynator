@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            string propertyName = NameGenerator.Default.EnsureUniqueMemberName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, position, cancellationToken: cancellationToken);
+            string propertyName = NameGenerator.Default.EnsureUniqueName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, position);
 
             AttributeListSyntax attributeList = AttributeList(
                 Attribute(

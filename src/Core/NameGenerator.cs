@@ -48,6 +48,26 @@ namespace Roslynator
         public abstract string EnsureUniqueName(string baseName, ImmutableArray<ISymbol> symbols, bool isCaseSensitive = true);
 
         /// <summary>
+        /// Returns a name that will be unique at the specified position.
+        /// </summary>
+        /// <param name="baseName"></param>
+        /// <param name="semanticModel"></param>
+        /// <param name="position"></param>
+        /// <param name="isCaseSensitive"></param>
+        /// <returns></returns>
+        public string EnsureUniqueName(
+            string baseName,
+            SemanticModel semanticModel,
+            int position,
+            bool isCaseSensitive = true)
+        {
+            if (semanticModel == null)
+                throw new ArgumentNullException(nameof(semanticModel));
+
+            return EnsureUniqueName(baseName, semanticModel.LookupSymbols(position), isCaseSensitive);
+        }
+
+        /// <summary>
         /// Returns a member name that will be unique at the specified position.
         /// </summary>
         /// <param name="baseName"></param>
@@ -56,6 +76,7 @@ namespace Roslynator
         /// <param name="isCaseSensitive"></param>
         /// <param name="cancellationToken"></param>
         /// <returns></returns>
+        [Obsolete("This member is obsolete.")]
         public string EnsureUniqueMemberName(
             string baseName,
             SemanticModel semanticModel,
@@ -70,7 +91,7 @@ namespace Roslynator
 
             if (containingType != null)
             {
-                return EnsureUniqueMemberName(baseName, containingType, isCaseSensitive);
+                return EnsureUniqueName(baseName, containingType.GetMembers(), isCaseSensitive);
             }
             else
             {
@@ -78,6 +99,7 @@ namespace Roslynator
             }
         }
 
+        [Obsolete("This member is obsolete.")]
         public string EnsureUniqueMemberName(
             string baseName,
             INamedTypeSymbol typeSymbol,
@@ -87,6 +109,27 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             return EnsureUniqueName(baseName, typeSymbol.GetMembers(), isCaseSensitive);
+        }
+
+        /// <summary>
+        /// Returns unique enum member name for a specified enum type.
+        /// </summary>
+        /// <param name="baseName"></param>
+        /// <param name="enumType"></param>
+        /// <param name="isCaseSensitive"></param>
+        /// <returns></returns>
+        public string EnsureUniqueEnumMemberName(
+            string baseName,
+            INamedTypeSymbol enumType,
+            bool isCaseSensitive = true)
+        {
+            if (enumType == null)
+                throw new ArgumentNullException(nameof(enumType));
+
+            if (enumType.TypeKind != TypeKind.Enum)
+                throw new ArgumentException("Symbol must be an enumeration.", nameof(enumType));
+
+            return EnsureUniqueName(baseName, enumType.GetMembers(), isCaseSensitive);
         }
 
         /// <summary>

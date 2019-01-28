@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Refactorings
             if (IsValueDefined(enumSymbol, optionalValue))
                 return;
 
-            string name = NameGenerator.Default.EnsureUniqueMemberName(
+            string name = NameGenerator.Default.EnsureUniqueEnumMemberName(
                 string.Concat(selectedMembers.Select(f => f.Identifier.ValueText)),
                 enumSymbol);
 
