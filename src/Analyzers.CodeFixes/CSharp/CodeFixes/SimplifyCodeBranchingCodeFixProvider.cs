@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                ExpressionSyntax newCondition = Inverter.LogicallyNegate(condition, semanticModel, cancellationToken);
+                ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken);
 
                 StatementSyntax statement = elseClause.Statement;
 
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                    ExpressionSyntax newCondition = Inverter.LogicallyNegate(condition, semanticModel, cancellationToken);
+                    ExpressionSyntax newCondition = SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken);
 
                     SyntaxNode newNode = block.Parent;
 

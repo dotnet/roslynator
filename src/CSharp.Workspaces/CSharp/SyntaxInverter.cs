@@ -11,22 +11,45 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp
 {
-    internal static class Inverter
+    /// <summary>
+    /// Provides static methods for syntax inversion.
+    /// </summary>
+    public static class SyntaxInverter
     {
-        public static ExpressionSyntax LogicallyNegate(
+        /// <summary>
+        /// Returns new expression that represents logical inversion of the specified expression.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static ExpressionSyntax LogicallyInvert(
             ExpressionSyntax expression,
-            SemanticModel semanticModel = null,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return LogicallyInvert(expression, semanticModel: null, cancellationToken);
+        }
+
+        /// <summary>
+        /// Returns new expression that represents logical inversion of the specified expression.
+        /// </summary>
+        /// <param name="expression"></param>
+        /// <param name="semanticModel"></param>
+        /// <param name="cancellationToken"></param>
+        /// <returns></returns>
+        public static ExpressionSyntax LogicallyInvert(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             if (expression == null)
                 throw new ArgumentNullException(nameof(expression));
 
-            ExpressionSyntax newExpression = LogicallyNegateImpl(expression, semanticModel, cancellationToken);
+            ExpressionSyntax newExpression = LogicallyInvertImpl(expression, semanticModel, cancellationToken);
 
             return newExpression.WithTriviaFrom(expression);
         }
 
-        private static ParenthesizedExpressionSyntax LogicallyNegateAndParenthesize(
+        private static ParenthesizedExpressionSyntax LogicallyInvertAndParenthesize(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -34,10 +57,10 @@ namespace Roslynator.CSharp
             if (expression == null)
                 return null;
 
-            return LogicallyNegateImpl(expression, semanticModel, cancellationToken).Parenthesize();
+            return LogicallyInvertImpl(expression, semanticModel, cancellationToken).Parenthesize();
         }
 
-        private static ExpressionSyntax LogicallyNegateImpl(
+        private static ExpressionSyntax LogicallyInvertImpl(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -76,7 +99,7 @@ namespace Roslynator.CSharp
                 case SyntaxKind.GreaterThanOrEqualExpression:
                     {
                         return (semanticModel != null)
-                            ? InvertLessThanGreaterThan((BinaryExpressionSyntax)expression, semanticModel, cancellationToken)
+                            ? InvertLessThanOrGreaterThan((BinaryExpressionSyntax)expression, semanticModel, cancellationToken)
                             : DefaultInvert(expression);
                     }
                 case SyntaxKind.IsExpression:
@@ -142,7 +165,7 @@ namespace Roslynator.CSharp
                         if (expression2.IsMissing)
                             return parenthesizedExpression;
 
-                        ExpressionSyntax newExpression = LogicallyNegateImpl(expression2, semanticModel, cancellationToken);
+                        ExpressionSyntax newExpression = LogicallyInvertImpl(expression2, semanticModel, cancellationToken);
 
                         newExpression = newExpression.WithTriviaFrom(expression2);
 
@@ -154,12 +177,12 @@ namespace Roslynator.CSharp
                     }
             }
 
-            Debug.Fail($"Logical negation of unknown kind '{expression.Kind()}'");
+            Debug.Fail($"Logical inversion of unknown kind '{expression.Kind()}'");
 
             return DefaultInvert(expression);
         }
 
-        private static ExpressionSyntax InvertLessThanGreaterThan(
+        private static ExpressionSyntax InvertLessThanOrGreaterThan(
             BinaryExpressionSyntax binaryExpression,
             SemanticModel semanticModel,
             CancellationToken cancellationToken)
@@ -314,9 +337,9 @@ namespace Roslynator.CSharp
 
             SyntaxKind kind = InvertBinaryExpressionKind(binaryExpression.Kind());
 
-            left = LogicallyNegateAndParenthesize(left, semanticModel, cancellationToken);
+            left = LogicallyInvertAndParenthesize(left, semanticModel, cancellationToken);
 
-            right = LogicallyNegateAndParenthesize(right, semanticModel, cancellationToken);
+            right = LogicallyInvertAndParenthesize(right, semanticModel, cancellationToken);
 
             BinaryExpressionSyntax newBinaryExpression = BinaryExpression(
                 kind,
@@ -367,12 +390,12 @@ namespace Roslynator.CSharp
 
             if (whenTrue?.IsKind(SyntaxKind.ThrowExpression) == false)
             {
-                whenTrue = LogicallyNegateAndParenthesize(whenTrue, semanticModel, cancellationToken);
+                whenTrue = LogicallyInvertAndParenthesize(whenTrue, semanticModel, cancellationToken);
             }
 
             if (whenFalse?.IsKind(SyntaxKind.ThrowExpression) == false)
             {
-                whenFalse = LogicallyNegateAndParenthesize(whenFalse, semanticModel, cancellationToken);
+                whenFalse = LogicallyInvertAndParenthesize(whenFalse, semanticModel, cancellationToken);
             }
 
             ConditionalExpressionSyntax newConditionalExpression = conditionalExpression.Update(

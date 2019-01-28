@@ -51,12 +51,12 @@ namespace Roslynator.CSharp.Refactorings
                     if (semanticModel.GetTypeInfo(operand, cancellationToken).ConvertedType.IsNullableOf(SpecialType.System_Boolean))
                     {
                         return binaryExpression
-                            .WithLeft(Inverter.LogicallyNegate(left, semanticModel, cancellationToken))
+                            .WithLeft(SyntaxInverter.LogicallyInvert(left, semanticModel, cancellationToken))
                             .WithRight(operand.WithTriviaFrom(right));
                     }
                 }
 
-                return Inverter.LogicallyNegate(right, semanticModel, cancellationToken)
+                return SyntaxInverter.LogicallyInvert(right, semanticModel, cancellationToken)
                     .WithLeadingTrivia(leadingTrivia);
             }
             else if (CSharpFacts.IsBooleanLiteralExpression(right.Kind()))
@@ -73,11 +73,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         return binaryExpression
                             .WithLeft(operand.WithTriviaFrom(left))
-                            .WithRight(Inverter.LogicallyNegate(right, semanticModel, cancellationToken));
+                            .WithRight(SyntaxInverter.LogicallyInvert(right, semanticModel, cancellationToken));
                     }
                 }
 
-                return Inverter.LogicallyNegate(left, semanticModel, cancellationToken)
+                return SyntaxInverter.LogicallyInvert(left, semanticModel, cancellationToken)
                     .WithTrailingTrivia(trailingTrivia);
             }
 
