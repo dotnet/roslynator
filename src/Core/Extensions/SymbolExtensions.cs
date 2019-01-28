@@ -1225,19 +1225,38 @@ namespace Roslynator
                 && namedTypeSymbol.TypeArguments[0] == typeArgument;
         }
 
-        //TODO: make public
-        internal static TSymbol FindMember<TSymbol>(
+        /// <summary>
+        /// Searches for a member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members.
+        /// </summary>
+        /// <typeparam name="TSymbol"></typeparam>
+        /// <param name="typeSymbol"></param>
+        /// <param name="predicate"></param>
+        /// <param name="includeBaseTypes"></param>
+        /// <returns></returns>
+        public static TSymbol FindMember<TSymbol>(
             this INamedTypeSymbol typeSymbol,
-            Func<TSymbol, bool> predicate = null,
+            Func<TSymbol, bool> predicate,
             bool includeBaseTypes = false) where TSymbol : ISymbol
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
             return FindMemberImpl(typeSymbol, name: null, predicate, includeBaseTypes);
         }
 
-        internal static TSymbol FindMember<TSymbol>(
+        /// <summary>
+        /// Searches for a member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
+        /// </summary>
+        /// <typeparam name="TSymbol"></typeparam>
+        /// <param name="typeSymbol"></param>
+        /// <param name="name"></param>
+        /// <param name="predicate"></param>
+        /// <param name="includeBaseTypes"></param>
+        /// <returns></returns>
+        public static TSymbol FindMember<TSymbol>(
             this INamedTypeSymbol typeSymbol,
             string name,
             Func<TSymbol, bool> predicate = null,
@@ -1278,19 +1297,36 @@ namespace Roslynator
             return default;
         }
 
-        //TODO: make public
-        internal static INamedTypeSymbol FindTypeMember(
+        /// <summary>
+        /// Searches for a type member that matches the conditions defined by the specified predicate and returns the first occurrence within the type's members.
+        /// </summary>
+        /// <param name="typeSymbol"></param>
+        /// <param name="predicate"></param>
+        /// <param name="includeBaseTypes"></param>
+        /// <returns></returns>
+        public static INamedTypeSymbol FindTypeMember(
             this INamedTypeSymbol typeSymbol,
-            Func<INamedTypeSymbol, bool> predicate = null,
+            Func<INamedTypeSymbol, bool> predicate,
             bool includeBaseTypes = false)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
+            if (predicate == null)
+                throw new ArgumentNullException(nameof(predicate));
+
             return FindTypeMemberImpl(typeSymbol, name: null, arity: null, predicate, includeBaseTypes);
         }
 
-        internal static INamedTypeSymbol FindTypeMember(
+        /// <summary>
+        /// Searches for a type member that has the specified name and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
+        /// </summary>
+        /// <param name="typeSymbol"></param>
+        /// <param name="name"></param>
+        /// <param name="predicate"></param>
+        /// <param name="includeBaseTypes"></param>
+        /// <returns></returns>
+        public static INamedTypeSymbol FindTypeMember(
             this INamedTypeSymbol typeSymbol,
             string name,
             Func<INamedTypeSymbol, bool> predicate = null,
@@ -1305,7 +1341,16 @@ namespace Roslynator
             return FindTypeMemberImpl(typeSymbol, name, arity: null, predicate, includeBaseTypes);
         }
 
-        internal static INamedTypeSymbol FindTypeMember(
+        /// <summary>
+        /// Searches for a type member that has the specified name, arity and matches the conditions defined by the specified predicate, if any, and returns the first occurrence within the type's members.
+        /// </summary>
+        /// <param name="typeSymbol"></param>
+        /// <param name="name"></param>
+        /// <param name="arity"></param>
+        /// <param name="predicate"></param>
+        /// <param name="includeBaseTypes"></param>
+        /// <returns></returns>
+        public static INamedTypeSymbol FindTypeMember(
             this INamedTypeSymbol typeSymbol,
             string name,
             int arity,
@@ -1865,12 +1910,12 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
+        internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            return ContainsMemberImpl(typeSymbol.GetMembers(), predicate);
+            return FindMember(typeSymbol, predicate) != null;
         }
 
         /// <summary>
@@ -1881,37 +1926,12 @@ namespace Roslynator
         /// <param name="name"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
+        internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
-            return ContainsMemberImpl(typeSymbol.GetMembers(name), predicate);
-        }
-
-        private static bool ContainsMemberImpl<TSymbol>(ImmutableArray<ISymbol> members, Func<TSymbol, bool> predicate) where TSymbol : ISymbol
-        {
-            if (predicate != null)
-            {
-                foreach (ISymbol symbol in members)
-                {
-                    if (symbol is TSymbol tsymbol
-                        && predicate(tsymbol))
-                    {
-                        return true;
-                    }
-                }
-            }
-            else
-            {
-                foreach (ISymbol symbol in members)
-                {
-                    if (symbol is TSymbol tsymbol)
-                        return true;
-                }
-            }
-
-            return false;
+            return FindMember(typeSymbol, name, predicate) != null;
         }
 
         internal static bool EqualsOrInheritsFromTaskOfT(this ITypeSymbol typeSymbol)
