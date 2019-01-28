@@ -96,14 +96,16 @@ namespace Roslynator.CSharp
 
 #pragma warning disable CS1591
 
-        public static bool operator ==(in IfStatementCascade info1, in IfStatementCascade info2)
+#pragma warning disable CS1591
+
+        public static bool operator ==(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
         {
-            return info1.Equals(info2);
+            return cascade1.Equals(cascade2);
         }
 
-        public static bool operator !=(in IfStatementCascade info1, in IfStatementCascade info2)
+        public static bool operator !=(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
         {
-            return !(info1 == info2);
+            return !(cascade1 == cascade2);
         }
 
         [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]

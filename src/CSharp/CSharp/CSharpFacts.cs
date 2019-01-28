@@ -798,7 +798,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        //TODO: make public
         /// <summary>
         /// Returns true if a syntax of the specified kind is a statement (which includes <see cref="SyntaxKind.Block"/>).
         /// </summary>

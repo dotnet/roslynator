@@ -138,6 +138,12 @@ namespace Roslynator.CSharp
         #endregion BaseArgumentListSyntax
 
         #region BinaryExpressionSyntax
+        /// <summary>
+        /// Returns <see cref="ExpressionChain"/> that enables to enumerate expressions of a binary expression.
+        /// </summary>
+        /// <param name="binaryExpression"></param>
+        /// <param name="span"></param>
+        /// <returns></returns>
         public static ExpressionChain AsChain(this BinaryExpressionSyntax binaryExpression, TextSpan? span = null)
         {
             return new ExpressionChain(binaryExpression, span);
@@ -216,6 +222,7 @@ namespace Roslynator.CSharp
         /// <param name="keepDocumentationCommentOnTop">If the declaration has no attribute lists and has a documentation comment the specified attribute lists will be inserted after the documentation comment.</param>
         /// <param name="attributeLists"></param>
         /// <returns></returns>
+        [Obsolete("This method is obsolete.")]
         public static ClassDeclarationSyntax AddAttributeLists(
             this ClassDeclarationSyntax classDeclaration,
             bool keepDocumentationCommentOnTop,
@@ -426,8 +433,12 @@ namespace Roslynator.CSharp
         #endregion DestructorDeclarationSyntax
 
         #region DirectiveTriviaSyntax
-        //TODO: make public
-        internal static DirectiveTriviaSyntax GetNextRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
+        /// <summary>
+        /// Returns the next related directive.
+        /// </summary>
+        /// <param name="directiveTrivia"></param>
+        /// <returns></returns>
+        public static DirectiveTriviaSyntax GetNextRelatedDirective(this DirectiveTriviaSyntax directiveTrivia)
         {
             DirectiveTriviaSyntax d = directiveTrivia;
 
@@ -1065,6 +1076,7 @@ namespace Roslynator.CSharp
         /// <param name="keepDocumentationCommentOnTop">If the declaration has no attribute lists and has a documentation comment the specified attribute lists will be inserted after the documentation comment.</param>
         /// <param name="attributeLists"></param>
         /// <returns></returns>
+        [Obsolete("This method is obsolete.")]
         public static InterfaceDeclarationSyntax AddAttributeLists(
             this InterfaceDeclarationSyntax interfaceDeclaration,
             bool keepDocumentationCommentOnTop,
@@ -1772,7 +1784,6 @@ namespace Roslynator.CSharp
             return ReplaceRange(list, index, count, Empty.ReadOnlyList<TNode>());
         }
 
-        //TODO: make public
         internal static SeparatedSyntaxList<TNode> TrimTrivia<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
             int count = list.Count;
@@ -1900,7 +1911,6 @@ namespace Roslynator.CSharp
             return statements.Any();
         }
 
-        //TODO: make public GetContainingList(StatementSyntax)
         internal static SyntaxList<StatementSyntax> GetContainingList(this StatementSyntax statement)
         {
             if (!TryGetContainingList(statement, out SyntaxList<StatementSyntax> list))
@@ -2016,6 +2026,7 @@ namespace Roslynator.CSharp
         /// <param name="keepDocumentationCommentOnTop">If the declaration has no attribute lists and has a documentation comment the specified attribute lists will be inserted after the documentation comment.</param>
         /// <param name="attributeLists"></param>
         /// <returns></returns>
+        [Obsolete("This method is obsolete.")]
         public static StructDeclarationSyntax AddAttributeLists(
             this StructDeclarationSyntax structDeclaration,
             bool keepDocumentationCommentOnTop,
@@ -2332,7 +2343,6 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        //TODO: make public
         internal static SyntaxList<TNode> TrimTrivia<TNode>(this SyntaxList<TNode> list) where TNode : SyntaxNode
         {
             int count = list.Count;
@@ -3160,7 +3170,6 @@ namespace Roslynator.CSharp
             return ContainsUnbalancedIfElseDirectives(node, node.FullSpan);
         }
 
-        //TODO: make public
         internal static bool ContainsUnbalancedIfElseDirectives(this SyntaxNode node, TextSpan span)
         {
             if (node == null)
@@ -3205,8 +3214,14 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        //TODO: make public
-        internal static DirectiveTriviaSyntax GetFirstDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool> predicate = null)
+        /// <summary>
+        /// Gets the first directive of the tree rooted by this node.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="span"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static DirectiveTriviaSyntax GetFirstDirective(this SyntaxNode node, TextSpan span, Func<DirectiveTriviaSyntax, bool> predicate = null)
         {
             DirectiveTriviaSyntax directive = node.GetFirstDirective(predicate);
 

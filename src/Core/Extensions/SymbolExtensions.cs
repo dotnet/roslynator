@@ -555,7 +555,6 @@ namespace Roslynator
             return true;
         }
 
-        //TODO: make public
         internal static Visibility GetVisibility(this ISymbol symbol)
         {
             var visibility = Visibility.Public;
@@ -613,7 +612,6 @@ namespace Roslynator
         #endregion ISymbol
 
         #region IAssemblySymbol
-        //TODO: make public
         internal static ImmutableArray<INamedTypeSymbol> GetTypes(this IAssemblySymbol assemblySymbol, Func<INamedTypeSymbol, bool> predicate = null)
         {
             ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>();
@@ -640,7 +638,7 @@ namespace Roslynator
             }
         }
         #endregion IAssemblySymbol
-
+        
         #region IEventSymbol
         internal static IEventSymbol BaseOverriddenEvent(this IEventSymbol eventSymbol)
         {
