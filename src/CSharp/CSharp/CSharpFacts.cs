@@ -779,6 +779,25 @@ namespace Roslynator.CSharp
             }
         }
 
+        /// <summary>
+        /// Returns true if a syntax of the specified kind is #if, #else, #elif or #endif directive.
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static bool IsIfElseDirective(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.IfDirectiveTrivia:
+                case SyntaxKind.ElseDirectiveTrivia:
+                case SyntaxKind.ElifDirectiveTrivia:
+                case SyntaxKind.EndIfDirectiveTrivia:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         //TODO: make public
         /// <summary>
         /// Returns true if a syntax of the specified kind is a statement (which includes <see cref="SyntaxKind.Block"/>).

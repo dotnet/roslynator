@@ -529,15 +529,6 @@ namespace Roslynator.CSharp
 
             return null;
         }
-
-        internal static bool IsIfElseDirective(this DirectiveTriviaSyntax directiveTrivia)
-        {
-            return directiveTrivia.IsKind(
-                SyntaxKind.IfDirectiveTrivia,
-                SyntaxKind.ElseDirectiveTrivia,
-                SyntaxKind.ElifDirectiveTrivia,
-                SyntaxKind.EndIfDirectiveTrivia);
-        }
         #endregion DirectiveTriviaSyntax
 
         #region DocumentationCommentTriviaSyntax
@@ -3175,14 +3166,14 @@ namespace Roslynator.CSharp
 
             if (node.ContainsDirectives)
             {
-                DirectiveTriviaSyntax first = node.GetFirstDirective(span, IsIfElseDirective);
+                DirectiveTriviaSyntax first = node.GetFirstDirective(span, f => CSharpFacts.IsIfElseDirective(f.Kind()));
 
                 if (first != null)
                 {
                     if (!first.IsKind(SyntaxKind.IfDirectiveTrivia))
                         return true;
 
-                    DirectiveTriviaSyntax last = node.GetLastDirective(span, IsIfElseDirective);
+                    DirectiveTriviaSyntax last = node.GetLastDirective(span,f => CSharpFacts.IsIfElseDirective(f.Kind()));
 
                     if (last == first)
                         return true;
