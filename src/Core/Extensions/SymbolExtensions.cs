@@ -365,15 +365,20 @@ namespace Roslynator
             return null;
         }
 
-        //TODO: make public
-        internal static AttributeData GetAttribute(this ISymbol symbol, in MetadataName metadataName)
+        /// <summary>
+        /// Returns the attribute for the symbol that matches the specified name, or null if the symbol does not have the specified attribute.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="attributeName"></param>
+        /// <returns></returns>
+        public static AttributeData GetAttribute(this ISymbol symbol, in MetadataName attributeName)
         {
             if (symbol == null)
                 throw new ArgumentNullException(nameof(symbol));
 
             foreach (AttributeData attributeData in symbol.GetAttributes())
             {
-                if (attributeData.AttributeClass.HasMetadataName(metadataName))
+                if (attributeData.AttributeClass.HasMetadataName(attributeName))
                     return attributeData;
             }
 
@@ -418,23 +423,34 @@ namespace Roslynator
             return false;
         }
 
-        //TODO: make public
-        internal static bool HasAttribute(this ISymbol symbol, in MetadataName metadataName)
+        /// <summary>
+        /// Returns true if the symbol has attribute with the specified name.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="attributeName"></param>
+        /// <returns></returns>
+        public static bool HasAttribute(this ISymbol symbol, in MetadataName attributeName)
         {
-            return GetAttribute(symbol, metadataName) != null;
+            return GetAttribute(symbol, attributeName) != null;
         }
 
-        //TODO: make public
-        internal static bool HasAttribute(this ITypeSymbol typeSymbol, in MetadataName metadataName, bool includeBaseTypes)
+        /// <summary>
+        /// Returns true if the type symbol has attribute with the specified name.
+        /// </summary>
+        /// <param name="typeSymbol"></param>
+        /// <param name="attributeName"></param>
+        /// <param name="includeBaseTypes"></param>
+        /// <returns></returns>
+        public static bool HasAttribute(this ITypeSymbol typeSymbol, in MetadataName attributeName, bool includeBaseTypes)
         {
             if (!includeBaseTypes)
-                return HasAttribute(typeSymbol, metadataName);
+                return HasAttribute(typeSymbol, attributeName);
 
             ITypeSymbol t = typeSymbol;
 
             do
             {
-                if (t.HasAttribute(metadataName))
+                if (t.HasAttribute(attributeName))
                     return true;
 
                 t = t.BaseType;
@@ -584,7 +600,13 @@ namespace Roslynator
             return visibility;
         }
 
-        internal static bool HasMetadataName(this ISymbol symbol, in MetadataName metadataName)
+        /// <summary>
+        /// Returns true if a symbol has the specified <see cref="MetadataName"/>.
+        /// </summary>
+        /// <param name="symbol"></param>
+        /// <param name="metadataName"></param>
+        /// <returns></returns>
+        public static bool HasMetadataName(this ISymbol symbol, in MetadataName metadataName)
         {
             return metadataName.Equals(symbol);
         }
@@ -1571,15 +1593,21 @@ namespace Roslynator
             return false;
         }
 
-        //TODO: make public
-        internal static bool Implements(this ITypeSymbol typeSymbol, in MetadataName metadataName, bool allInterfaces = false)
+        /// <summary>
+        /// Returns true if the type implements specified interface name.
+        /// </summary>
+        /// <param name="typeSymbol"></param>
+        /// <param name="interfaceName"></param>
+        /// <param name="allInterfaces"></param>
+        /// <returns></returns>
+        public static bool Implements(this ITypeSymbol typeSymbol, in MetadataName interfaceName, bool allInterfaces = false)
         {
             if (typeSymbol == null)
                 throw new ArgumentNullException(nameof(typeSymbol));
 
             foreach (INamedTypeSymbol interfaceSymbol in typeSymbol.GetInterfaces(allInterfaces))
             {
-                if (interfaceSymbol.HasMetadataName(metadataName))
+                if (interfaceSymbol.HasMetadataName(interfaceName))
                     return true;
             }
 
@@ -1706,8 +1734,14 @@ namespace Roslynator
             return false;
         }
 
-        //TODO: make public
-        internal static bool InheritsFrom(this ITypeSymbol type, in MetadataName metadataName, bool includeInterfaces = false)
+        /// <summary>
+        /// Returns true if the type inherits from a type with the specified name.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="baseTypeName"></param>
+        /// <param name="includeInterfaces"></param>
+        /// <returns></returns>
+        public static bool InheritsFrom(this ITypeSymbol type, in MetadataName baseTypeName, bool includeInterfaces = false)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
@@ -1716,7 +1750,7 @@ namespace Roslynator
 
             while (baseType != null)
             {
-                if (baseType.HasMetadataName(metadataName))
+                if (baseType.HasMetadataName(baseTypeName))
                     return true;
 
                 baseType = baseType.BaseType;
@@ -1726,7 +1760,7 @@ namespace Roslynator
             {
                 foreach (INamedTypeSymbol interfaceType in type.AllInterfaces)
                 {
-                    if (interfaceType.HasMetadataName(metadataName))
+                    if (interfaceType.HasMetadataName(baseTypeName))
                         return true;
                 }
             }
@@ -1750,14 +1784,20 @@ namespace Roslynator
                 || InheritsFrom(type, baseType, includeInterfaces);
         }
 
-        //TODO: make public
-        internal static bool EqualsOrInheritsFrom(this ITypeSymbol type, in MetadataName metadataName, bool includeInterfaces = false)
+        /// <summary>
+        /// Returns true if the type is equal or inherits from a type wit the specified name.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="baseTypeName"></param>
+        /// <param name="includeInterfaces"></param>
+        /// <returns></returns>
+        public static bool EqualsOrInheritsFrom(this ITypeSymbol type, in MetadataName baseTypeName, bool includeInterfaces = false)
         {
             if (type == null)
                 throw new ArgumentNullException(nameof(type));
 
-            return type.HasMetadataName(metadataName)
-                || InheritsFrom(type, metadataName, includeInterfaces);
+            return type.HasMetadataName(baseTypeName)
+                || InheritsFrom(type, baseTypeName, includeInterfaces);
         }
 
         /// <summary>

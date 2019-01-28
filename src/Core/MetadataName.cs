@@ -9,9 +9,21 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
+    /// <summary>
+    /// Represents fully qualified metadata name of a symbol.
+    /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct MetadataName : IEquatable<MetadataName>
+    public readonly struct MetadataName : IEquatable<MetadataName>
     {
+        internal static int PlusHashCode = GetHashCode("+");
+
+        internal static int DotHashCode = GetHashCode(".");
+
+        /// <summary>
+        /// Initializes a new instance of <see cref="MetadataName"/>.
+        /// </summary>
+        /// <param name="containingNamespaces"></param>
+        /// <param name="name"></param>
         public MetadataName(IEnumerable<string> containingNamespaces, string name)
             : this(containingNamespaces, Array.Empty<string>(), name)
         {
@@ -23,6 +35,12 @@ namespace Roslynator
             ContainingNamespaces = containingNamespaces.ToImmutableArray();
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MetadataName"/>.
+        /// </summary>
+        /// <param name="containingNamespaces"></param>
+        /// <param name="containingTypes"></param>
+        /// <param name="name"></param>
         public MetadataName(IEnumerable<string> containingNamespaces, IEnumerable<string> containingTypes, string name)
         {
             if (containingNamespaces == null)
@@ -36,11 +54,22 @@ namespace Roslynator
             ContainingNamespaces = containingNamespaces.ToImmutableArray();
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MetadataName"/>.
+        /// </summary>
+        /// <param name="containingNamespaces"></param>
+        /// <param name="name"></param>
         public MetadataName(ImmutableArray<string> containingNamespaces, string name)
             : this(containingNamespaces, ImmutableArray<string>.Empty, name)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="MetadataName"/>.
+        /// </summary>
+        /// <param name="containingNamespaces"></param>
+        /// <param name="containingTypes"></param>
+        /// <param name="name"></param>
         public MetadataName(ImmutableArray<string> containingNamespaces, ImmutableArray<string> containingTypes, string name)
         {
             if (containingNamespaces.IsDefault)
@@ -54,12 +83,24 @@ namespace Roslynator
             ContainingNamespaces = containingNamespaces;
         }
 
+        /// <summary>
+        /// Gets metadata names of containing namespaces
+        /// </summary>
         public ImmutableArray<string> ContainingNamespaces { get; }
 
+        /// <summary>
+        /// Get metadata names of containing types.
+        /// </summary>
         public ImmutableArray<string> ContainingTypes { get; }
 
+        /// <summary>
+        /// Get metadata name.
+        /// </summary>
         public string Name { get; }
 
+        /// <summary>
+        /// Determines whether this struct was initialized with an actual names.
+        /// </summary>
         public bool IsDefault
         {
             get { return Name == null; }
@@ -71,6 +112,10 @@ namespace Roslynator
             get { return ToString(); }
         }
 
+        /// <summary>
+        /// Returns the fully qualified metadata name.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return ToString(SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
@@ -121,6 +166,11 @@ namespace Roslynator
             throw new ArgumentException($"Unknown enum value '{typeQualificationStyle}'.", nameof(typeQualificationStyle));
         }
 
+        /// <summary>
+        /// Indicates whether this instance and a specified object are equal.
+        /// </summary>
+        /// <param name="obj">The object to compare with the current instance.</param>
+        /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
         public override bool Equals(object obj)
         {
             return obj is MetadataName other
@@ -167,6 +217,11 @@ namespace Roslynator
             return containingNamespace?.IsGlobalNamespace == true;
         }
 
+        /// <summary>
+        /// Indicates whether this instance and a specified <see cref="MetadataName"/> are equal.
+        /// </summary>
+        /// <param name="other"></param>
+        /// <returns></returns>
         public bool Equals(MetadataName other)
         {
             if (IsDefault)
@@ -187,16 +242,75 @@ namespace Roslynator
             return true;
         }
 
+        /// <summary>
+        /// Returns the hash code for this instance.
+        /// </summary>
+        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
         public override int GetHashCode()
         {
             if (IsDefault)
                 return 0;
 
-            return Hash.Combine(Hash.CombineValues(ContainingNamespaces, StringComparer.Ordinal),
-                Hash.Combine(Hash.CombineValues(ContainingTypes, StringComparer.Ordinal),
-                Hash.Create(Name)));
+            int hashCode = Hash.Create(GetHashCode(Name));
+
+            ImmutableArray<string>.Enumerator en = ContainingTypes.GetEnumerator();
+
+            if (en.MoveNext())
+            {
+                while (true)
+                {
+                    hashCode = Combine(en.Current);
+
+                    if (en.MoveNext())
+                    {
+                        hashCode = Hash.Combine(PlusHashCode, hashCode);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            en = ContainingNamespaces.GetEnumerator();
+
+            if (en.MoveNext())
+            {
+                while (true)
+                {
+                    hashCode = Combine(en.Current);
+
+                    if (en.MoveNext())
+                    {
+                        hashCode = Hash.Combine(DotHashCode, hashCode);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return hashCode;
+
+            int Combine(string name)
+            {
+                return Hash.Combine(GetHashCode(name), hashCode);
+            }
         }
 
+        internal static int GetHashCode(string name)
+        {
+            return StringComparer.Ordinal.GetHashCode(name);
+        }
+
+        /// <summary>
+        /// Parses <see cref="MetadataName"/>.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentNullException"><paramref name="name"/> is <c>null</c>.</exception>
+        /// <exception cref="ArgumentException"><paramref name="name"/> is empty or invalid.</exception>
         public static MetadataName Parse(string name)
         {
             if (name == null)
@@ -289,14 +403,14 @@ namespace Roslynator
                 name.Substring(prevIndex, length - prevIndex));
         }
 
-        public static bool operator ==(in MetadataName info1, in MetadataName info2)
+        public static bool operator ==(in MetadataName metadataName1, in MetadataName metadataName2)
         {
-            return info1.Equals(info2);
+            return metadataName1.Equals(metadataName2);
         }
 
-        public static bool operator !=(in MetadataName info1, in MetadataName info2)
+        public static bool operator !=(in MetadataName metadataName1, in MetadataName metadataName2)
         {
-            return !(info1 == info2);
+            return !(metadataName1 == metadataName2);
         }
     }
 }
