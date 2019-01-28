@@ -909,7 +909,12 @@ namespace Roslynator.CSharp
             return new IfStatementCascade(ifStatement);
         }
 
-        internal static IfStatementCascadeInfo GetCascadeInfo(this IfStatementSyntax ifStatement)
+        /// <summary>
+        /// Returns <see cref="IfStatementCascadeInfo"/> that summarizes information about if-else cascade.
+        /// </summary>
+        /// <param name="ifStatement"></param>
+        /// <returns></returns>
+        public static IfStatementCascadeInfo GetCascadeInfo(this IfStatementSyntax ifStatement)
         {
             if (ifStatement == null)
                 throw new ArgumentNullException(nameof(ifStatement));

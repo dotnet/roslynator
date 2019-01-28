@@ -28,7 +28,7 @@ namespace Roslynator.CSharp
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return (IfStatement != null) ? $"Count = {IfStatement.GetCascadeInfo().Count} {IfStatement}" : "Uninitialized"; }
+            get { return IfStatement?.ToString() ?? "Uninitialized"; }
         }
 
         /// <summary>
@@ -93,6 +93,8 @@ namespace Roslynator.CSharp
         {
             return EqualityComparer<IfStatementSyntax>.Default.GetHashCode(IfStatement);
         }
+
+#pragma warning disable CS1591
 
         public static bool operator ==(in IfStatementCascade info1, in IfStatementCascade info2)
         {
