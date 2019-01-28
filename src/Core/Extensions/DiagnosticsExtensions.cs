@@ -484,6 +484,55 @@ namespace Roslynator
         }
         #endregion SyntaxTreeAnalysisContext
 
+        internal static ReportDiagnostic ToReportDiagnostic(this DiagnosticSeverity diagnosticSeverity)
+        {
+            switch (diagnosticSeverity)
+            {
+                case DiagnosticSeverity.Hidden:
+                    return Microsoft.CodeAnalysis.ReportDiagnostic.Hidden;
+                case DiagnosticSeverity.Info:
+                    return Microsoft.CodeAnalysis.ReportDiagnostic.Info;
+                case DiagnosticSeverity.Warning:
+                    return Microsoft.CodeAnalysis.ReportDiagnostic.Warn;
+                case DiagnosticSeverity.Error:
+                    return Microsoft.CodeAnalysis.ReportDiagnostic.Error;
+                default:
+                    throw new ArgumentException($"Unknown value '{diagnosticSeverity}'.", nameof(diagnosticSeverity));
+            }
+        }
+
+        internal static DiagnosticSeverity ToDiagnosticSeverity(this ReportDiagnostic reportDiagnostic)
+        {
+            switch (reportDiagnostic)
+            {
+                case Microsoft.CodeAnalysis.ReportDiagnostic.Error:
+                    return DiagnosticSeverity.Error;
+                case Microsoft.CodeAnalysis.ReportDiagnostic.Warn:
+                    return DiagnosticSeverity.Warning;
+                case Microsoft.CodeAnalysis.ReportDiagnostic.Info:
+                    return DiagnosticSeverity.Info;
+                case Microsoft.CodeAnalysis.ReportDiagnostic.Hidden:
+                    return DiagnosticSeverity.Hidden;
+                default:
+                    throw new ArgumentException($"Unknown value '{reportDiagnostic}'.", nameof(reportDiagnostic));
+            }
+        }
+
+        internal static bool IsAnalyzerExceptionDiagnostic(this Diagnostic diagnostic)
+        {
+            if (diagnostic.Id == "AD0001"
+                || diagnostic.Id == "AD0002")
+            {
+                foreach (string tag in diagnostic.Descriptor.CustomTags)
+                {
+                    if (tag == WellKnownDiagnosticTags.AnalyzerException)
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
         internal static bool IsAnalyzerSuppressed(this SymbolAnalysisContext context, DiagnosticDescriptor descriptor)
         {
             return context.Compilation.IsAnalyzerSuppressed(descriptor);

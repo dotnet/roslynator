@@ -590,6 +590,35 @@ namespace Roslynator
         }
         #endregion ISymbol
 
+        #region IAssemblySymbol
+        //TODO: make public
+        internal static ImmutableArray<INamedTypeSymbol> GetTypes(this IAssemblySymbol assemblySymbol, Func<INamedTypeSymbol, bool> predicate = null)
+        {
+            ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>();
+
+            GetTypes(assemblySymbol.GlobalNamespace);
+
+            return builder.ToImmutableArray();
+
+            void GetTypes(INamespaceOrTypeSymbol namespaceOrTypeSymbol)
+            {
+                if (namespaceOrTypeSymbol is INamedTypeSymbol namedTypeSymbol
+                    && (predicate == null || predicate(namedTypeSymbol)))
+                {
+                    builder.Add(namedTypeSymbol);
+                }
+
+                foreach (ISymbol memberSymbol in namespaceOrTypeSymbol.GetMembers())
+                {
+                    if (memberSymbol is INamespaceOrTypeSymbol namespaceOrTypeSymbol2)
+                    {
+                        GetTypes(namespaceOrTypeSymbol2);
+                    }
+                }
+            }
+        }
+        #endregion IAssemblySymbol
+
         #region IEventSymbol
         internal static IEventSymbol BaseOverriddenEvent(this IEventSymbol eventSymbol)
         {
