@@ -33,13 +33,13 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeDeclaration is ClassDeclarationSyntax classDeclaration)
             {
-                newTypeDeclaration = SyntaxManipulation.AddAttributeLists(classDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+                newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(classDeclaration, keepDocumentationCommentOnTop: true, attributeList);
             }
             else
             {
                 var structDeclaration = (StructDeclarationSyntax)typeDeclaration;
 
-                newTypeDeclaration = SyntaxManipulation.AddAttributeLists(structDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+                newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(structDeclaration, keepDocumentationCommentOnTop: true, attributeList);
             }
 
             newTypeDeclaration = MemberDeclarationInserter.Default.Insert(newTypeDeclaration, propertyDeclaration);

@@ -228,7 +228,7 @@ namespace Roslynator.CSharp
             bool keepDocumentationCommentOnTop,
             params AttributeListSyntax[] attributeLists)
         {
-            return SyntaxManipulation.AddAttributeLists(
+            return SyntaxRefactorings.AddAttributeLists(
                 classDeclaration,
                 keepDocumentationCommentOnTop,
                 attributeLists);
@@ -1082,7 +1082,7 @@ namespace Roslynator.CSharp
             bool keepDocumentationCommentOnTop,
             params AttributeListSyntax[] attributeLists)
         {
-            return SyntaxManipulation.AddAttributeLists(
+            return SyntaxRefactorings.AddAttributeLists(
                 interfaceDeclaration,
                 keepDocumentationCommentOnTop,
                 attributeLists);
@@ -2032,7 +2032,7 @@ namespace Roslynator.CSharp
             bool keepDocumentationCommentOnTop,
             params AttributeListSyntax[] attributeLists)
         {
-            return SyntaxManipulation.AddAttributeLists(
+            return SyntaxRefactorings.AddAttributeLists(
                 structDeclaration,
                 keepDocumentationCommentOnTop,
                 attributeLists);
@@ -2958,7 +2958,7 @@ namespace Roslynator.CSharp
 
         internal static TRoot RemoveNode<TRoot>(this TRoot root, SyntaxNode node) where TRoot : SyntaxNode
         {
-            return SyntaxRemover.RemoveNode(root, node);
+            return SyntaxRefactorings.RemoveNode(root, node);
         }
 
         internal static TNode RemoveStatement<TNode>(this TNode node, StatementSyntax statement) where TNode : SyntaxNode
@@ -3019,7 +3019,7 @@ namespace Roslynator.CSharp
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return SyntaxRemover.RemoveTrivia(node, span);
+            return SyntaxRefactorings.RemoveTrivia(node, span);
         }
 
         /// <summary>
@@ -3034,7 +3034,7 @@ namespace Roslynator.CSharp
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return SyntaxRemover.RemoveWhitespace(node, span);
+            return SyntaxRefactorings.RemoveWhitespace(node, span);
         }
 
         /// <summary>

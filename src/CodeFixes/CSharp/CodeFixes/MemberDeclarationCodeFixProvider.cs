@@ -500,7 +500,7 @@ namespace Roslynator.CSharp.CodeFixes
                     ParseName("global::System.CLSCompliantAttribute").WithSimplifierAnnotation(),
                     AttributeArgument(FalseLiteralExpression()))).WithFormatterAnnotation();
 
-            MemberDeclarationSyntax newMemberDeclaration = SyntaxManipulation.AddAttributeLists(memberDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+            MemberDeclarationSyntax newMemberDeclaration = SyntaxRefactorings.AddAttributeLists(memberDeclaration, keepDocumentationCommentOnTop: true, attributeList);
 
             return document.ReplaceNodeAsync(memberDeclaration, newMemberDeclaration, cancellationToken);
         }

@@ -55,7 +55,7 @@ namespace Roslynator.CSharp
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return document.RemoveNodeAsync(node, SyntaxRemover.GetRemoveOptions(node), cancellationToken);
+            return document.RemoveNodeAsync(node, SyntaxRefactorings.GetRemoveOptions(node), cancellationToken);
         }
 
         /// <summary>
@@ -84,37 +84,37 @@ namespace Roslynator.CSharp
                     {
                         var compilationUnit = (CompilationUnitSyntax)parent;
 
-                        return document.ReplaceNodeAsync(compilationUnit, SyntaxRemover.RemoveMember(compilationUnit, member), cancellationToken);
+                        return document.ReplaceNodeAsync(compilationUnit, SyntaxRefactorings.RemoveMember(compilationUnit, member), cancellationToken);
                     }
                 case SyntaxKind.NamespaceDeclaration:
                     {
                         var namespaceDeclaration = (NamespaceDeclarationSyntax)parent;
 
-                        return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRemover.RemoveMember(namespaceDeclaration, member), cancellationToken);
+                        return document.ReplaceNodeAsync(namespaceDeclaration, SyntaxRefactorings.RemoveMember(namespaceDeclaration, member), cancellationToken);
                     }
                 case SyntaxKind.ClassDeclaration:
                     {
                         var classDeclaration = (ClassDeclarationSyntax)parent;
 
-                        return document.ReplaceNodeAsync(classDeclaration, SyntaxRemover.RemoveMember(classDeclaration, member), cancellationToken);
+                        return document.ReplaceNodeAsync(classDeclaration, SyntaxRefactorings.RemoveMember(classDeclaration, member), cancellationToken);
                     }
                 case SyntaxKind.StructDeclaration:
                     {
                         var structDeclaration = (StructDeclarationSyntax)parent;
 
-                        return document.ReplaceNodeAsync(structDeclaration, SyntaxRemover.RemoveMember(structDeclaration, member), cancellationToken);
+                        return document.ReplaceNodeAsync(structDeclaration, SyntaxRefactorings.RemoveMember(structDeclaration, member), cancellationToken);
                     }
                 case SyntaxKind.InterfaceDeclaration:
                     {
                         var interfaceDeclaration = (InterfaceDeclarationSyntax)parent;
 
-                        return document.ReplaceNodeAsync(interfaceDeclaration, SyntaxRemover.RemoveMember(interfaceDeclaration, member), cancellationToken);
+                        return document.ReplaceNodeAsync(interfaceDeclaration, SyntaxRefactorings.RemoveMember(interfaceDeclaration, member), cancellationToken);
                     }
                 default:
                     {
                         Debug.Assert(parent == null, parent.Kind().ToString());
 
-                        return document.RemoveNodeAsync(member, SyntaxRemover.DefaultRemoveOptions, cancellationToken);
+                        return document.RemoveNodeAsync(member, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
                     }
             }
         }
@@ -150,7 +150,7 @@ namespace Roslynator.CSharp
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newRoot = SyntaxRemover.RemoveComments(root, kinds)
+            SyntaxNode newRoot = SyntaxRefactorings.RemoveComments(root, kinds)
                 .WithFormatterAnnotation();
 
             return document.WithSyntaxRoot(newRoot);
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newRoot = SyntaxRemover.RemoveComments(root, span, kinds)
+            SyntaxNode newRoot = SyntaxRefactorings.RemoveComments(root, span, kinds)
                 .WithFormatterAnnotation();
 
             return document.WithSyntaxRoot(newRoot);
@@ -198,7 +198,7 @@ namespace Roslynator.CSharp
 
             SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode newRoot = SyntaxRemover.RemoveTrivia(root, span);
+            SyntaxNode newRoot = SyntaxRefactorings.RemoveTrivia(root, span);
 
             return document.WithSyntaxRoot(newRoot);
         }
@@ -392,7 +392,7 @@ namespace Roslynator.CSharp
             CancellationToken cancellationToken = default(CancellationToken))
         {
             SyntaxNode node = documentationComment.ParentTrivia.Token.Parent;
-            SyntaxNode newNode = SyntaxRemover.RemoveSingleLineDocumentationComment(node, documentationComment);
+            SyntaxNode newNode = SyntaxRefactorings.RemoveSingleLineDocumentationComment(node, documentationComment);
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
