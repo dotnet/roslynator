@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -18,8 +16,6 @@ namespace Roslynator.CommandLine
 {
     internal class AnalyzeCommand : MSBuildWorkspaceCommand
     {
-        private static ImmutableArray<string> _roslynatorAnalyzersAssemblies;
-
         public AnalyzeCommand(AnalyzeCommandLineOptions options, DiagnosticSeverity severityLevel, string language) : base(language)
         {
             Options = options;
@@ -29,19 +25,6 @@ namespace Roslynator.CommandLine
         public AnalyzeCommandLineOptions Options { get; }
 
         public DiagnosticSeverity SeverityLevel { get; }
-
-        public static ImmutableArray<string> RoslynatorAnalyzersAssemblies
-        {
-            get
-            {
-                if (_roslynatorAnalyzersAssemblies.IsDefault)
-                {
-                    _roslynatorAnalyzersAssemblies = ImmutableArray.Create(Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Roslynator.CSharp.Analyzers.dll"));
-                }
-
-                return _roslynatorAnalyzersAssemblies;
-            }
-        }
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
@@ -62,9 +45,6 @@ namespace Roslynator.CommandLine
 
             IEnumerable<AnalyzerAssembly> analyzerAssemblies = Options.AnalyzerAssemblies
                 .SelectMany(path => AnalyzerAssemblyLoader.LoadFrom(path, loadFixers: false).Select(info => info.AnalyzerAssembly));
-
-            if (Options.UseRoslynatorAnalyzers)
-                analyzerAssemblies = analyzerAssemblies.Concat(AnalyzerAssemblyLoader.LoadFiles(RoslynatorAnalyzersAssemblies, loadFixers: false));
 
             CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 

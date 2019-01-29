@@ -51,7 +51,7 @@ namespace Roslynator.CommandLine
 
                 return await FixCommand.FixAsync(
                     projectOrSolution,
-                    AnalyzerAssemblyLoader.LoadFiles(FixCommand.RoslynatorAnalyzersAssemblies),
+                    RoslynatorAnalyzerAssemblies.AnalyzersAndCodeFixes,
                     codeFixerOptions,
                     culture,
                     cancellationToken);

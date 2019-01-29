@@ -52,9 +52,5 @@ namespace Roslynator.CommandLine
             HelpText = "Defines maximum numbers of fixing iterations.",
             MetaValue = "<MAX_ITERATIONS>")]
         public int MaxIterations { get; set; }
-
-        [Option(longName: "use-roslynator-code-fixes",
-            HelpText = "Indicates whether code analysis should use code fixes from nuget package Roslynator.CodeFixes.")]
-        public bool UseRoslynatorCodeFixes { get; set; }
     }
 }
