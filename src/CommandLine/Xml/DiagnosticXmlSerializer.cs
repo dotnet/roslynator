@@ -12,7 +12,7 @@ using Microsoft.CodeAnalysis.Text;
 using Roslynator.Diagnostics;
 using static Roslynator.Logger;
 
-namespace Roslynator.CommandLine
+namespace Roslynator.CommandLine.Xml
 {
     internal static class DiagnosticXmlSerializer
     {
@@ -24,9 +24,9 @@ namespace Roslynator.CommandLine
         {
             XElement summary = CreateSummary(result.GetAllDiagnostics(), formatProvider);
 
-            XElement projects = SerializeProjectAnalysisResult(result, project, formatProvider);
+            XElement projectElement = SerializeProjectAnalysisResult(result, project, formatProvider);
 
-            SerializeDocument(filePath, summary, projects);
+            SerializeDocument(filePath, summary, projectElement);
         }
 
         public static void Serialize(
@@ -37,11 +37,11 @@ namespace Roslynator.CommandLine
         {
             XElement summary = CreateSummary(results.SelectMany(f => f.GetAllDiagnostics()), formatProvider);
 
-            IEnumerable<XElement> projects = results
+            IEnumerable<XElement> projectElements = results
                 .Where(f => f.Diagnostics.Any())
                 .Select(result => SerializeProjectAnalysisResult(result, solution.GetProject(result.ProjectId), formatProvider));
 
-            SerializeDocument(filePath, summary, projects);
+            SerializeDocument(filePath, summary, projectElements);
         }
 
         private static XElement SerializeProjectAnalysisResult(
@@ -110,7 +110,7 @@ namespace Roslynator.CommandLine
                     summary,
                     new XElement("Projects", projects))));
 
-            WriteLine($"Save diagnostics to '{filePath}'", ConsoleColor.DarkGray, Verbosity.Detailed);
+            WriteLine($"Save code analysis to '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
             using (var fileStream = new FileStream(filePath, FileMode.Create))
             using (XmlWriter xmlWriter = XmlWriter.Create(fileStream, new XmlWriterSettings() { Indent = true, CloseOutput = false }))

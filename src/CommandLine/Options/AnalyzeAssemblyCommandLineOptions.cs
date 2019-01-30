@@ -28,6 +28,11 @@ namespace Roslynator.CommandLine
         [Option(longName: "no-fixers")]
         public bool NoFixers { get; set; }
 
+        [Option(longName: "output",
+            HelpText = "Defines path to file that will store reported diagnostics in XML format.",
+            MetaValue = "<OUTPUT_FILE>")]
+        public string Output { get; set; }
+
         internal IEnumerable<string> GetPaths()
         {
             yield return Path;

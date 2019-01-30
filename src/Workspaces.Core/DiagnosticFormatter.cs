@@ -1,9 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
@@ -13,22 +10,6 @@ namespace Roslynator
 {
     internal static class DiagnosticFormatter
     {
-        public static IEnumerable<(Diagnostic diagnostic, string message)> FormatDiagnostics(
-            ImmutableArray<Diagnostic> diagnostics,
-            string baseDirectoryPath = null,
-            IFormatProvider formatProvider = null)
-        {
-            foreach (Diagnostic diagnostic in diagnostics
-                .OrderBy(f => f.Id)
-                .ThenBy(f => f.Location.SourceTree.FilePath)
-                .ThenBy(f => f.Location.SourceSpan.Start))
-            {
-                string message = FormatDiagnostic(diagnostic, baseDirectoryPath, formatProvider);
-
-                yield return (diagnostic, message);
-            }
-        }
-
         public static string FormatDiagnostic(
             Diagnostic diagnostic,
             string baseDirectoryPath = null,

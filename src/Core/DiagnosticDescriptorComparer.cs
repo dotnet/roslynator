@@ -11,6 +11,8 @@ namespace Roslynator
     {
         public static DiagnosticDescriptorComparer Id { get; } = new DiagnosticDescriptorIdComparer();
 
+        public static DiagnosticDescriptorComparer IdPrefix { get; } = new DiagnosticDescriptorIdPrefixComparer();
+
         public abstract int Compare(DiagnosticDescriptor x, DiagnosticDescriptor y);
 
         public abstract bool Equals(DiagnosticDescriptor x, DiagnosticDescriptor y);
@@ -34,10 +36,7 @@ namespace Roslynator
                 return Compare(a, b);
             }
 
-            if (x is IComparable comparable)
-                return comparable.CompareTo(y);
-
-            throw new ArgumentException("An object must implement IComparable.", nameof(x));
+            throw new ArgumentException("", nameof(x));
         }
 
         new public bool Equals(object x, object y)
@@ -57,18 +56,18 @@ namespace Roslynator
                 return Equals(a, b);
             }
 
-            return x.Equals(y);
+            throw new ArgumentException("", nameof(x));
         }
 
         public int GetHashCode(object obj)
         {
             if (obj == null)
-                throw new ArgumentNullException(nameof(obj));
+                return 0;
 
             if (obj is DiagnosticDescriptor descriptor)
                 return GetHashCode(descriptor);
 
-            return obj.GetHashCode();
+            throw new ArgumentException("", nameof(obj));
         }
 
         private class DiagnosticDescriptorIdComparer : DiagnosticDescriptorComparer
@@ -84,7 +83,7 @@ namespace Roslynator
                 if (y == null)
                     return 1;
 
-                return string.Compare(x.Id, y.Id, StringComparison.Ordinal);
+                return string.CompareOrdinal(x.Id, y.Id);
             }
 
             public override bool Equals(DiagnosticDescriptor x, DiagnosticDescriptor y)
@@ -104,9 +103,27 @@ namespace Roslynator
             public override int GetHashCode(DiagnosticDescriptor obj)
             {
                 if (obj == null)
-                    throw new ArgumentNullException(nameof(obj));
+                    return 0;
 
                 return StringComparer.Ordinal.GetHashCode(obj.Id);
+            }
+        }
+
+        private class DiagnosticDescriptorIdPrefixComparer : DiagnosticDescriptorComparer
+        {
+            public override int Compare(DiagnosticDescriptor x, DiagnosticDescriptor y)
+            {
+                return DiagnosticIdComparer.Prefix.Compare(x?.Id, y?.Id);
+            }
+
+            public override bool Equals(DiagnosticDescriptor x, DiagnosticDescriptor y)
+            {
+                return DiagnosticIdComparer.Prefix.Equals(x?.Id, y?.Id);
+            }
+
+            public override int GetHashCode(DiagnosticDescriptor obj)
+            {
+                return DiagnosticIdComparer.Prefix.GetHashCode(obj?.Id);
             }
         }
     }
