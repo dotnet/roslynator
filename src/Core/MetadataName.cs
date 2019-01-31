@@ -305,7 +305,7 @@ namespace Roslynator
         }
 
         /// <summary>
-        /// Parses <see cref="MetadataName"/>.
+        /// Converts the string representation of a fully qualified metadata name to its <see cref="MetadataName"/> equivalent.
         /// </summary>
         /// <param name="name"></param>
         /// <returns></returns>
@@ -313,13 +313,42 @@ namespace Roslynator
         /// <exception cref="ArgumentException"><paramref name="name"/> is empty or invalid.</exception>
         public static MetadataName Parse(string name)
         {
+            return Parse(name, shouldThrow: true);
+        }
+
+        /// <summary>
+        /// Converts the string representation of a fully qualified metadata name to its <see cref="MetadataName"/> equivalent.
+        /// A return value indicates whether the parsing succeeded.
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="metadataName"></param>
+        /// <returns></returns>
+        public static bool TryParse(string name, out MetadataName metadataName)
+        {
+            metadataName = Parse(name, shouldThrow: false);
+
+            return !metadataName.IsDefault;
+        }
+
+        private static MetadataName Parse(string name, bool shouldThrow)
+        {
             if (name == null)
-                throw new ArgumentNullException(nameof(name));
+            {
+                if (shouldThrow)
+                    throw new ArgumentNullException(nameof(name));
+
+                return default;
+            }
 
             int length = name.Length;
 
             if (length == 0)
-                throw new ArgumentException("Name cannot be empty.", nameof(name));
+            {
+                if (shouldThrow)
+                    throw new ArgumentException("Name cannot be empty.", nameof(name));
+
+                return default;
+            }
 
             string containingType = null;
 
@@ -336,7 +365,10 @@ namespace Roslynator
                         || i == prevIndex
                         || i == length - 1)
                     {
-                        throw new ArgumentException("Name is invalid.", nameof(name));
+                        if (shouldThrow)
+                            throw new ArgumentException("Name is invalid.", nameof(name));
+
+                        return default;
                     }
 
                     containingNamespaceCount++;
@@ -349,7 +381,10 @@ namespace Roslynator
                     if (i == prevIndex
                         || i == length - 1)
                     {
-                        throw new ArgumentException("Name is invalid.", nameof(name));
+                        if (shouldThrow)
+                            throw new ArgumentException("Name is invalid.", nameof(name));
+
+                        return default;
                     }
 
                     containingTypeCount++;
