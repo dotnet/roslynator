@@ -54,6 +54,11 @@ namespace Roslynator.CSharp.Refactorings
             get { return Project.Solution; }
         }
 
+        public Workspace Workspace
+        {
+            get { return Solution.Workspace; }
+        }
+
         public TextSpan Span
         {
             get { return UnderlyingContext.Span; }
