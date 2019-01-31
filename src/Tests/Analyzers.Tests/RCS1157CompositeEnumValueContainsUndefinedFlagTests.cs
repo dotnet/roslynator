@@ -73,5 +73,19 @@ enum Foo
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
+        public async Task TestNoDiagnostic_NegativeValue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+[Flags]
+public enum E
+{
+    A = 1 << 31
+}
+");
+        }
     }
 }
