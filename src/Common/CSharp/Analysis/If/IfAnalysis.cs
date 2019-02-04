@@ -39,14 +39,6 @@ namespace Roslynator.CSharp.Analysis.If
 
         public static ImmutableArray<IfAnalysis> Analyze(
             IfStatementSyntax ifStatement,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return Analyze(ifStatement, DefaultOptions, semanticModel, cancellationToken);
-        }
-
-        public static ImmutableArray<IfAnalysis> Analyze(
-            IfStatementSyntax ifStatement,
             IfAnalysisOptions options,
             SemanticModel semanticModel,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -366,14 +358,6 @@ namespace Roslynator.CSharp.Analysis.If
 
                 return null;
             }
-        }
-
-        public static ImmutableArray<IfAnalysis> Analyze(
-            StatementListSelection selectedStatements,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            return Analyze(selectedStatements, DefaultOptions, semanticModel, cancellationToken);
         }
 
         public static ImmutableArray<IfAnalysis> Analyze(

@@ -9,8 +9,6 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 {
     internal abstract class ExtractConditionRefactoring<TStatement> where TStatement : StatementSyntax
     {
-        public abstract SyntaxKind StatementKind { get; }
-
         public abstract string Title { get; }
 
         public abstract StatementSyntax GetStatement(TStatement statement);

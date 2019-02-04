@@ -62,16 +62,6 @@ namespace Roslynator.Documentation
 
         public IEnumerable<MetadataReference> References => Compilation.References;
 
-        internal IEnumerable<INamespaceSymbol> Namespaces
-        {
-            get
-            {
-                return Types
-                    .Select(f => f.ContainingNamespace)
-                    .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance);
-            }
-        }
-
         public IEnumerable<INamedTypeSymbol> Types
         {
             get { return Assemblies.SelectMany(f => f.GetTypes(typeSymbol => IsVisible(typeSymbol))); }

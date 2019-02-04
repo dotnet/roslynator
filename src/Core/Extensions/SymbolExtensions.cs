@@ -660,26 +660,6 @@ namespace Roslynator
                 overriddenEvent = symbol;
             }
         }
-
-        internal static IEnumerable<IEventSymbol> OverriddenEvents(this IEventSymbol eventSymbol)
-        {
-            if (eventSymbol == null)
-                throw new ArgumentNullException(nameof(eventSymbol));
-
-            return OverriddenEventsIterator();
-
-            IEnumerable<IEventSymbol> OverriddenEventsIterator()
-            {
-                IEventSymbol overriddenEvent = eventSymbol.OverriddenEvent;
-
-                while (overriddenEvent != null)
-                {
-                    yield return overriddenEvent;
-
-                    overriddenEvent = overriddenEvent.OverriddenEvent;
-                }
-            }
-        }
         #endregion IEventSymbol
 
         #region IFieldSymbol
@@ -1014,26 +994,6 @@ namespace Roslynator
             }
         }
 
-        internal static IEnumerable<IMethodSymbol> OverriddenMethods(this IMethodSymbol methodSymbol)
-        {
-            if (methodSymbol == null)
-                throw new ArgumentNullException(nameof(methodSymbol));
-
-            return OverriddenMethodsIterator();
-
-            IEnumerable<IMethodSymbol> OverriddenMethodsIterator()
-            {
-                IMethodSymbol overriddenMethod = methodSymbol.OverriddenMethod;
-
-                while (overriddenMethod != null)
-                {
-                    yield return overriddenMethod;
-
-                    overriddenMethod = overriddenMethod.OverriddenMethod;
-                }
-            }
-        }
-
         /// <summary>
         /// If this method is a reduced extension method, returns the definition of extension method from which this was reduced. Otherwise, returns this symbol.
         /// </summary>
@@ -1174,26 +1134,6 @@ namespace Roslynator
                     return overriddenProperty;
 
                 overriddenProperty = symbol;
-            }
-        }
-
-        internal static IEnumerable<IPropertySymbol> OverriddenProperties(this IPropertySymbol propertySymbol)
-        {
-            if (propertySymbol == null)
-                throw new ArgumentNullException(nameof(propertySymbol));
-
-            return OverriddenPropertiesIterator();
-
-            IEnumerable<IPropertySymbol> OverriddenPropertiesIterator()
-            {
-                IPropertySymbol overriddenProperty = propertySymbol.OverriddenProperty;
-
-                while (overriddenProperty != null)
-                {
-                    yield return overriddenProperty;
-
-                    overriddenProperty = overriddenProperty.OverriddenProperty;
-                }
             }
         }
         #endregion IPropertySymbol
@@ -1406,27 +1346,6 @@ namespace Roslynator
             return null;
         }
         #endregion INamedTypeSymbol
-
-        #region INamespaceSymbol
-        internal static IEnumerable<INamespaceSymbol> ContainingNamespacesAndSelf(this INamespaceSymbol @namespace)
-        {
-            if (@namespace == null)
-                throw new ArgumentNullException(nameof(@namespace));
-
-            return ContainingNamespacesAndSelfIterator();
-
-            IEnumerable<INamespaceSymbol> ContainingNamespacesAndSelfIterator()
-            {
-                do
-                {
-                    yield return @namespace;
-
-                    @namespace = @namespace.ContainingNamespace;
-
-                } while (@namespace != null);
-            }
-        }
-        #endregion INamespaceSymbol
 
         #region ITypeSymbol
         /// <summary>
@@ -1655,12 +1574,6 @@ namespace Roslynator
             }
 
             return false;
-        }
-
-        internal static bool IsEnumWithFlags(this ITypeSymbol typeSymbol)
-        {
-            return typeSymbol?.TypeKind == TypeKind.Enum
-                && typeSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
         }
 
         /// <summary>

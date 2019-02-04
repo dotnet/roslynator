@@ -187,26 +187,6 @@ namespace Roslynator
             return EnsureUniqueName(baseName, symbols, isCaseSensitive);
         }
 
-        internal static bool IsUniqueMemberName(
-            string name,
-            SemanticModel semanticModel,
-            int position,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
-
-            Debug.Assert(containingType != null);
-
-            if (containingType == null)
-                return true;
-
-            return IsUniqueName(name, containingType.GetMembers(), isCaseSensitive);
-        }
-
         /// <summary>
         /// Returns true if the name is not contained in the specified list. <see cref="ISymbol.Name"/> is used to compare names.
         /// </summary>

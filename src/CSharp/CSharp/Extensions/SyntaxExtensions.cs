@@ -1505,18 +1505,6 @@ namespace Roslynator.CSharp
         {
             return parameter?.Modifiers.Contains(SyntaxKind.ParamsKeyword) == true;
         }
-
-        internal static SeparatedSyntaxList<ParameterSyntax> GetContainingList(this ParameterSyntax parameter)
-        {
-            if (parameter?.Parent is ParameterListSyntax parameterList)
-            {
-                return parameterList.Parameters;
-            }
-            else
-            {
-                return default(SeparatedSyntaxList<ParameterSyntax>);
-            }
-        }
         #endregion ParameterSyntax
 
         #region PropertyDeclarationSyntax
@@ -1909,14 +1897,6 @@ namespace Roslynator.CSharp
             statements = SyntaxInfo.StatementListInfo(statement).Statements;
 
             return statements.Any();
-        }
-
-        internal static SyntaxList<StatementSyntax> GetContainingList(this StatementSyntax statement)
-        {
-            if (!TryGetContainingList(statement, out SyntaxList<StatementSyntax> list))
-                throw new ArgumentException("Statement is not contained in a list.", nameof(statement));
-
-            return list;
         }
 
         internal static StatementSyntax SingleNonBlockStatementOrDefault(this StatementSyntax statement, bool recursive = false)
@@ -2380,16 +2360,6 @@ namespace Roslynator.CSharp
                     }
                 }
             }
-        }
-
-        internal static IEnumerable<DirectiveTriviaSyntax> DescendantRegionDirectives(this SyntaxNode node)
-        {
-            return DescendantPreprocessorDirectives(node, predicate: f => f.IsKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia));
-        }
-
-        internal static IEnumerable<DirectiveTriviaSyntax> DescendantRegionDirectives(this SyntaxNode node, TextSpan span)
-        {
-            return DescendantPreprocessorDirectives(node, span, predicate: f => f.IsKind(SyntaxKind.RegionDirectiveTrivia, SyntaxKind.EndRegionDirectiveTrivia));
         }
 
         /// <summary>
@@ -2984,14 +2954,6 @@ namespace Roslynator.CSharp
                 .RemoveModifier(modifierKind2);
         }
 
-        internal static TNode RemoveModifiers<TNode>(this TNode node, SyntaxKind modifierKind1, SyntaxKind modifierKind2, SyntaxKind modifierKind3) where TNode : SyntaxNode
-        {
-            return node
-                .RemoveModifier(modifierKind1)
-                .RemoveModifier(modifierKind2)
-                .RemoveModifier(modifierKind3);
-        }
-
         internal static TNode RemoveModifier<TNode>(this TNode node, SyntaxToken modifier) where TNode : SyntaxNode
         {
             return ModifierList.Remove(node, modifier);
@@ -3000,11 +2962,6 @@ namespace Roslynator.CSharp
         internal static TNode InsertModifier<TNode>(this TNode node, SyntaxKind modifierKind, IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
         {
             return ModifierList.Insert(node, modifierKind, comparer);
-        }
-
-        internal static TNode InsertModifier<TNode>(this TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null) where TNode : SyntaxNode
-        {
-            return ModifierList.Insert(node, modifier, comparer);
         }
 
         /// <summary>
@@ -3677,20 +3634,6 @@ namespace Roslynator.CSharp
             return default(SyntaxToken);
         }
 
-        internal static SyntaxTokenList Replace(this SyntaxTokenList tokens, SyntaxKind kind, SyntaxToken newToken)
-        {
-            int i = 0;
-            foreach (SyntaxToken token in tokens)
-            {
-                if (token.Kind() == kind)
-                    return tokens.ReplaceAt(i, newToken.WithTriviaFrom(token));
-
-                i++;
-            }
-
-            return tokens;
-        }
-
         internal static SyntaxTokenList Replace(this SyntaxTokenList tokens, SyntaxKind kind, SyntaxKind newKind)
         {
             int i = 0;
@@ -4096,44 +4039,6 @@ namespace Roslynator.CSharp
             }
         }
         #endregion TypeDeclarationSyntax
-
-        #region TypeParameterConstraintClauseSyntax
-        internal static SyntaxList<TypeParameterConstraintClauseSyntax> GetContainingList(this TypeParameterConstraintClauseSyntax constraintClause)
-        {
-            SyntaxNode parent = constraintClause.Parent;
-
-            switch (parent?.Kind())
-            {
-                case SyntaxKind.ClassDeclaration:
-                    return ((ClassDeclarationSyntax)parent).ConstraintClauses;
-                case SyntaxKind.DelegateDeclaration:
-                    return ((DelegateDeclarationSyntax)parent).ConstraintClauses;
-                case SyntaxKind.InterfaceDeclaration:
-                    return ((InterfaceDeclarationSyntax)parent).ConstraintClauses;
-                case SyntaxKind.LocalFunctionStatement:
-                    return ((LocalFunctionStatementSyntax)parent).ConstraintClauses;
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)parent).ConstraintClauses;
-                case SyntaxKind.StructDeclaration:
-                    return ((StructDeclarationSyntax)parent).ConstraintClauses;
-            }
-
-            return default(SyntaxList<TypeParameterConstraintClauseSyntax>);
-        }
-        #endregion TypeParameterConstraintClauseSyntax
-
-        #region TypeParameterListSyntax
-        internal static TypeParameterSyntax GetTypeParameterByName(this TypeParameterListSyntax typeParameterList, string name)
-        {
-            foreach (TypeParameterSyntax typeParameter in typeParameterList.Parameters)
-            {
-                if (string.Equals(typeParameter.Identifier.ValueText, name, StringComparison.Ordinal))
-                    return typeParameter;
-            }
-
-            return null;
-        }
-        #endregion TypeParameterListSyntax
 
         #region TypeSyntax
         /// <summary>

@@ -8,11 +8,6 @@ namespace Roslynator
 {
     internal static class PathUtilities
     {
-        internal static string TrimStart(Document document, Project project, bool trimLeadingDirectorySeparator = true)
-        {
-            return TrimStart(document.FilePath, Path.GetDirectoryName(project.FilePath), trimLeadingDirectorySeparator: trimLeadingDirectorySeparator);
-        }
-
         internal static string TrimStart(string path, string basePath, bool trimLeadingDirectorySeparator = true)
         {
             if (basePath != null)

@@ -516,12 +516,6 @@ namespace Roslynator.CSharp
 
         private readonly struct StringLiteralParserResult
         {
-            private StringLiteralParserResult(string text, bool success)
-            {
-                Text = text;
-                Success = success;
-            }
-
             public StringLiteralParserResult(string text)
             {
                 Text = text;

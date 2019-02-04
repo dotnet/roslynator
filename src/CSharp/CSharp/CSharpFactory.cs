@@ -2064,31 +2064,5 @@ namespace Roslynator.CSharp
             return AreEquivalent(node1, node2, disregardTrivia: disregardTrivia, topLevel: topLevel)
                 && AreEquivalent(node1, node3, disregardTrivia: disregardTrivia, topLevel: topLevel);
         }
-
-        internal static bool AreEquivalent<TNode>(
-            IList<TNode> first,
-            IList<TNode> second,
-            bool disregardTrivia = true,
-            bool topLevel = false) where TNode : SyntaxNode
-        {
-            if (first == null)
-                throw new ArgumentNullException(nameof(first));
-
-            if (second == null)
-                throw new ArgumentNullException(nameof(second));
-
-            int count = first.Count;
-
-            if (count != second.Count)
-                return false;
-
-            for (int i = 0; i < count; i++)
-            {
-                if (!AreEquivalent(first[i], second[i], disregardTrivia: disregardTrivia, topLevel: topLevel))
-                    return false;
-            }
-
-            return true;
-        }
     }
 }

@@ -38,11 +38,6 @@ namespace Roslynator.CSharp.Syntax
             get { return Token.Value; }
         }
 
-        public string GetPrefix()
-        {
-            return Text.Remove(2);
-        }
-
         public string GetSuffix()
         {
             int startIndex = 0;

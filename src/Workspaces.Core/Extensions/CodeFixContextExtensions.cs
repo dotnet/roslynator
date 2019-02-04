@@ -11,26 +11,6 @@ namespace Roslynator
 {
     internal static class CodeFixContextExtensions
     {
-        public static void RegisterCodeFix(
-            this CodeFixContext context,
-            string title,
-            Func<CancellationToken, Task<Document>> createChangedDocument,
-            string equivalenceKey,
-            Diagnostic diagnostic)
-        {
-            context.RegisterCodeFix(CodeAction.Create(title, createChangedDocument, equivalenceKey), diagnostic);
-        }
-
-        public static void RegisterCodeFix(
-            this CodeFixContext context,
-            string title,
-            Func<CancellationToken, Task<Solution>> createChangedSolution,
-            string equivalenceKey,
-            Diagnostic diagnostic)
-        {
-            context.RegisterCodeFix(CodeAction.Create(title, createChangedSolution, equivalenceKey), diagnostic);
-        }
-
         public static Task<SyntaxNode> GetSyntaxRootAsync(this CodeFixContext context)
         {
             return context.Document.GetSyntaxRootAsync(context.CancellationToken);

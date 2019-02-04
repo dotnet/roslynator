@@ -8,11 +8,6 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
     internal abstract class ExtractConditionFromIfRefactoring
         : ExtractConditionRefactoring<IfStatementSyntax>
     {
-        public override SyntaxKind StatementKind
-        {
-            get { return SyntaxKind.IfStatement; }
-        }
-
         public override StatementSyntax GetStatement(IfStatementSyntax statement)
         {
             return statement.Statement;

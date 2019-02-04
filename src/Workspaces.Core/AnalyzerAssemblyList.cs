@@ -20,8 +20,6 @@ namespace Roslynator
             _analyzerAssemblies = new Dictionary<string, AnalyzerAssembly>();
         }
 
-        public int Count => _analyzerAssemblies.Count;
-
         internal bool ContainsAssembly(string fullName)
         {
             return _analyzerAssemblies.ContainsKey(fullName);

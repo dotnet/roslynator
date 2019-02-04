@@ -40,11 +40,6 @@ namespace Roslynator
                 });
         }
 
-        public static bool TryGetTag(string name, out XmlTag tag)
-        {
-            return _map.TryGetValue(name, out tag);
-        }
-
         public static XmlTag GetTagOrDefault(string name)
         {
             if (_map.TryGetValue(name, out XmlTag kind))

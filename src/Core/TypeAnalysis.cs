@@ -34,11 +34,6 @@ namespace Roslynator
             return (Flags & flags) != 0;
         }
 
-        public bool All(TypeAnalysisFlags flags)
-        {
-            return (Flags & flags) != flags;
-        }
-
         public override bool Equals(object obj)
         {
             return obj is TypeAnalysis other && Equals(other);

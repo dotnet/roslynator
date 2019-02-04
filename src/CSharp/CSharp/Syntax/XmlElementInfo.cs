@@ -151,12 +151,6 @@ namespace Roslynator.CSharp.Syntax
             return string.Equals(LocalName, localName, comparison);
         }
 
-        internal bool IsLocalName(string localName1, string localName2, StringComparison comparison = StringComparison.Ordinal)
-        {
-            return IsLocalName(localName1, comparison)
-                || IsLocalName(localName2, comparison);
-        }
-
         /// <summary>
         /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
         /// </summary>

@@ -29,11 +29,6 @@ namespace Roslynator.CSharp.Refactorings
 
         public RefactoringSettings Settings { get; }
 
-        public bool SupportsSemanticModel
-        {
-            get { return Document.SupportsSemanticModel; }
-        }
-
         public CancellationToken CancellationToken
         {
             get { return UnderlyingContext.CancellationToken; }

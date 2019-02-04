@@ -246,23 +246,6 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        public static bool IsPropertyOfNullableOfT(
-            IdentifierNameSyntax identifierName,
-            string name,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (identifierName == null)
-                return false;
-
-            if (!string.Equals(identifierName.Identifier.ValueText, name, StringComparison.Ordinal))
-                return false;
-
-            ISymbol symbol = semanticModel.GetSymbol(identifierName, cancellationToken);
-
-            return SymbolUtility.IsPropertyOfNullableOfT(symbol, name);
-        }
-
         public static bool IsStringConcatenation(BinaryExpressionSyntax addExpression, SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
         {
             return addExpression.Kind() == SyntaxKind.AddExpression
@@ -316,21 +299,6 @@ namespace Roslynator.CSharp
             return semanticModel.GetTypeInfo(expression, cancellationToken)
                 .Type?
                 .SpecialType == SpecialType.System_String;
-        }
-
-        public static bool IsBooleanExpression(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (expression == null)
-                return false;
-
-            return CSharpFacts.IsBooleanExpression(expression.WalkDownParentheses().Kind())
-                || semanticModel
-                    .GetTypeInfo(expression, cancellationToken)
-                    .ConvertedType?
-                    .SpecialType == SpecialType.System_Boolean;
         }
 
         public static SyntaxToken GetIdentifier(SyntaxNode node)

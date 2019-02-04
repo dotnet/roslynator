@@ -134,22 +134,6 @@ namespace Roslynator.CSharp.Syntax
             return Statements.GetEnumerator();
         }
 
-        internal static StatementListInfo Create(BlockSyntax block)
-        {
-            if (block == null)
-                return default;
-
-            return new StatementListInfo(block);
-        }
-
-        internal static StatementListInfo Create(SwitchSectionSyntax switchSection)
-        {
-            if (switchSection == null)
-                return default;
-
-            return new StatementListInfo(switchSection);
-        }
-
         internal static StatementListInfo Create(StatementSyntax statement)
         {
             if (statement == null)

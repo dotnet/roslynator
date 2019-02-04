@@ -835,11 +835,6 @@ namespace Roslynator
             return TextSpan.FromBounds(node.Span.End, node.FullSpan.End);
         }
 
-        internal static TNode WithAdditionalAnnotationsIf<TNode>(this TNode node, bool condition, params SyntaxAnnotation[] annotations) where TNode : SyntaxNode
-        {
-            return (condition) ? node.WithAdditionalAnnotations(annotations) : node;
-        }
-
         /// <summary>
         /// Searches a list of descendant nodes in prefix document order and returns first descendant of type <typeparamref name="TNode"/>.
         /// </summary>
@@ -1407,26 +1402,6 @@ namespace Roslynator
                 throw new ArgumentException("Trivia is not contained in a list.", nameof(trivia));
 
             return list;
-        }
-
-        internal static int GetSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).StartLine();
-        }
-
-        internal static int GetFullSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).StartLine();
-        }
-
-        internal static int GetSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).EndLine();
-        }
-
-        internal static int GetFullSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).EndLine();
         }
 
         internal static TextSpan LeadingTriviaSpan(this SyntaxTrivia trivia)

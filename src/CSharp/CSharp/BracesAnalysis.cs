@@ -27,11 +27,6 @@ namespace Roslynator.CSharp
             return (Flags & flags) != 0;
         }
 
-        public bool All(BracesAnalysisFlags flags)
-        {
-            return (Flags & flags) != flags;
-        }
-
         public static BracesAnalysis AnalyzeBraces(SwitchSectionSyntax switchSection)
         {
             SyntaxList<StatementSyntax> statements = switchSection.Statements;

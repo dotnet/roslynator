@@ -8,8 +8,6 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class AddBracesToSwitchSectionAnalysis
     {
-        public const string Title = "Add braces to section";
-
         public static bool CanAddBraces(SwitchSectionSyntax section)
         {
             SyntaxList<StatementSyntax> statements = section.Statements;

@@ -12,39 +12,6 @@ namespace Roslynator.Documentation
 {
     internal static class SymbolExtensions
     {
-        public static bool HidesBaseSymbol(this ISymbol symbol)
-        {
-            if (!symbol.IsOverride)
-            {
-                switch (symbol.Kind)
-                {
-                    case SymbolKind.Event:
-                    case SymbolKind.Field:
-                    case SymbolKind.Method:
-                    case SymbolKind.Property:
-                    case SymbolKind.NamedType:
-                        {
-                            INamedTypeSymbol baseType = symbol.ContainingType?.BaseType;
-
-                            while (baseType != null)
-                            {
-                                foreach (ISymbol member in baseType.GetMembers(symbol.Name))
-                                {
-                                    if (MemberSymbolEqualityComparer.Instance.Equals(symbol, member))
-                                        return true;
-                                }
-
-                                baseType = baseType.BaseType;
-                            }
-
-                            break;
-                        }
-                }
-            }
-
-            return false;
-        }
-
         public static ImmutableArray<ISymbol> GetMembers(this INamedTypeSymbol typeSymbol, Func<ISymbol, bool> predicate, bool includeInherited = false)
         {
             if (includeInherited)

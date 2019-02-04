@@ -8,8 +8,6 @@ namespace Roslynator
 {
     internal abstract class DiagnosticIdComparer : IComparer<string>, IEqualityComparer<string>, IComparer, IEqualityComparer
     {
-        public static DiagnosticIdComparer Default { get; } = new DefaultComparer();
-
         public static DiagnosticIdComparer Prefix { get; } = new DiagnosticIdPrefixComparer();
 
         public abstract int Compare(string x, string y);
@@ -67,45 +65,6 @@ namespace Roslynator
                 return GetHashCode(descriptor);
 
             throw new ArgumentException("", nameof(obj));
-        }
-
-        private class DefaultComparer : DiagnosticIdComparer
-        {
-            public override int Compare(string x, string y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return 0;
-
-                if (x == null)
-                    return -1;
-
-                if (y == null)
-                    return 1;
-
-                return string.CompareOrdinal(x, y);
-            }
-
-            public override bool Equals(string x, string y)
-            {
-                if (object.ReferenceEquals(x, y))
-                    return true;
-
-                if (x == null)
-                    return false;
-
-                if (y == null)
-                    return false;
-
-                return string.Equals(x, y, StringComparison.Ordinal);
-            }
-
-            public override int GetHashCode(string obj)
-            {
-                if (obj == null)
-                    throw new ArgumentNullException(nameof(obj));
-
-                return StringComparer.Ordinal.GetHashCode(obj);
-            }
         }
 
         private class DiagnosticIdPrefixComparer : DiagnosticIdComparer

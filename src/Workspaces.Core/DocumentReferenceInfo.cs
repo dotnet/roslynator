@@ -14,17 +14,10 @@ namespace Roslynator
             References = references;
         }
 
-        public static DocumentReferenceInfo Default { get; } = new DocumentReferenceInfo(null, null, ImmutableArray<SyntaxNode>.Empty);
-
         public Document Document { get; }
 
         public SyntaxNode Root { get; }
 
         public ImmutableArray<SyntaxNode> References { get; }
-
-        public SyntaxTree SyntaxTree
-        {
-            get { return Root?.SyntaxTree; }
-        }
     }
 }
