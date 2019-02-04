@@ -9,9 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp.Documentation;
 using Roslynator.CSharp.Syntax;
-using Roslynator.Documentation;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp
@@ -456,45 +454,5 @@ namespace Roslynator.CSharp
         {
             return document.ReplaceNodeAsync(modifiersInfo.Parent, modifiersInfo.WithModifiers(newModifiers).Parent, cancellationToken);
         }
-
-        internal static async Task<Document> AddNewDocumentationCommentsAsync(
-            this Document document,
-            DocumentationCommentGeneratorSettings settings = null,
-            bool skipNamespaceDeclaration = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var rewriter = new AddNewDocumentationCommentRewriter(settings, skipNamespaceDeclaration);
-
-            SyntaxNode newRoot = rewriter.Visit(root);
-
-            return document.WithSyntaxRoot(newRoot);
         }
-
-        internal static async Task<Document> AddBaseOrNewDocumentationCommentsAsync(
-            this Document document,
-            SemanticModel semanticModel,
-            DocumentationCommentGeneratorSettings settings = null,
-            bool skipNamespaceDeclaration = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (document == null)
-                throw new ArgumentNullException(nameof(document));
-
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            var rewriter = new AddBaseOrNewDocumentationCommentRewriter(semanticModel, settings, skipNamespaceDeclaration, cancellationToken);
-
-            SyntaxNode newRoot = rewriter.Visit(root);
-
-            return document.WithSyntaxRoot(newRoot);
-        }
-    }
 }
