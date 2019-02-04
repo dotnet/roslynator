@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax newExpression = CreateTaskFromResultExpression(document, conditionalAccess, semanticModel, cancellationToken);
 
             IfStatementSyntax ifStatement = IfStatement(
-                CSharpSnippets.NotEqualsToNull(IdentifierName(localName)),
+                NotEqualsExpression(IdentifierName(localName), NullLiteralExpression()),
                 Block(ReturnStatement(conditionalAccess.RemoveOperatorToken())),
                 ElseClause(Block(ReturnStatement(newExpression))));
 

@@ -11,25 +11,42 @@ namespace Roslynator.CSharp
         private static TypeSyntax _intType;
         private static TypeSyntax _stringType;
         private static TypeSyntax _objectType;
+        private static TypeSyntax _notImplementedException;
+        private static TypeSyntax _notSupportedException;
 
         public static TypeSyntax BoolType()
         {
-            return _boolType ?? (_boolType = ParseTypeName("global::System.Boolean").WithSimplifierAnnotation());
+            return _boolType ?? (_boolType = Parse("System.Boolean"));
         }
 
         public static TypeSyntax IntType()
         {
-            return _intType ?? (_intType = ParseTypeName("global::System.Int32").WithSimplifierAnnotation());
+            return _intType ?? (_intType = Parse("System.Int32"));
         }
 
         public static TypeSyntax StringType()
         {
-            return _stringType ?? (_stringType = ParseTypeName("global::System.String").WithSimplifierAnnotation());
+            return _stringType ?? (_stringType = Parse("System.String"));
         }
 
         public static TypeSyntax ObjectType()
         {
-            return _objectType ?? (_objectType = ParseTypeName("global::System.Object").WithSimplifierAnnotation());
+            return _objectType ?? (_objectType = Parse("System.Object"));
+        }
+
+        public static TypeSyntax NotImplementedException()
+        {
+            return _notImplementedException ?? (_notImplementedException = Parse("System.NotImplementedException"));
+        }
+
+        public static TypeSyntax NotSupportedException()
+        {
+            return _notSupportedException ?? (_notSupportedException = Parse("System.NotSupportedException"));
+        }
+
+        private static TypeSyntax Parse(string typeName)
+        {
+            return ParseTypeName($"global::{typeName}").WithSimplifierAnnotation();
         }
     }
 }

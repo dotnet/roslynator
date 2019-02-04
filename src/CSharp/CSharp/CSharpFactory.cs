@@ -1110,6 +1110,11 @@ namespace Roslynator.CSharp
                 expressionBody,
                 SemicolonToken());
         }
+
+        internal static ThrowStatementSyntax ThrowNewStatement(TypeSyntax exceptionType)
+        {
+            return ThrowStatement(ObjectCreationExpression(exceptionType, ArgumentList()));
+        }
         #endregion Statement
 
         #region BinaryExpression
@@ -1802,6 +1807,11 @@ namespace Roslynator.CSharp
         public static CheckedExpressionSyntax UncheckedExpression(SyntaxToken openParenToken, ExpressionSyntax expression, SyntaxToken closeParenToken)
         {
             return SyntaxFactory.CheckedExpression(SyntaxKind.UncheckedExpression, Token(SyntaxKind.UncheckedKeyword), openParenToken, expression, closeParenToken);
+        }
+
+        internal static ThrowExpressionSyntax ThrowNewExpression(TypeSyntax exceptionType)
+        {
+            return ThrowExpression(ObjectCreationExpression(exceptionType, ArgumentList()));
         }
         #endregion Expression
 
