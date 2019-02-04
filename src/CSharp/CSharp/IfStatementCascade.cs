@@ -96,8 +96,6 @@ namespace Roslynator.CSharp
 
 #pragma warning disable CS1591
 
-#pragma warning disable CS1591
-
         public static bool operator ==(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
         {
             return cascade1.Equals(cascade2);

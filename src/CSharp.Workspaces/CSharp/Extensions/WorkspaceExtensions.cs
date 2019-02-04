@@ -454,5 +454,5 @@ namespace Roslynator.CSharp
         {
             return document.ReplaceNodeAsync(modifiersInfo.Parent, modifiersInfo.WithModifiers(newModifiers).Parent, cancellationToken);
         }
-        }
+    }
 }

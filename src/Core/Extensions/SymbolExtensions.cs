@@ -638,7 +638,7 @@ namespace Roslynator
             }
         }
         #endregion IAssemblySymbol
-        
+
         #region IEventSymbol
         internal static IEventSymbol BaseOverriddenEvent(this IEventSymbol eventSymbol)
         {

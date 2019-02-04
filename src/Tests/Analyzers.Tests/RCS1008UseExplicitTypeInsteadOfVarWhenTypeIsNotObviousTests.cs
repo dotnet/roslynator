@@ -102,7 +102,7 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious)]
-        internal async Task TestNoDiagnostic()
+        public async Task TestNoDiagnostic()
         {
             await VerifyNoDiagnosticAsync(@"
 using System;

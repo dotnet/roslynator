@@ -9,6 +9,7 @@ using Roslynator.Metadata;
 
 namespace Roslynator.CodeGeneration.Html
 {
+    [Obsolete]
     internal static class HtmlGenerator
     {
         private static StringComparer StringComparer { get; } = StringComparer.CurrentCulture;

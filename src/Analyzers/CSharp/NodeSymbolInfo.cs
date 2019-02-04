@@ -24,7 +24,7 @@ namespace Roslynator.CSharp
         public ISymbol Symbol { get; }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
-        public string DebuggerDisplay
+        private string DebuggerDisplay
         {
             get { return $"{Node.Kind()} {Name}"; }
         }

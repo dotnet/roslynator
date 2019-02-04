@@ -3144,7 +3144,7 @@ namespace Roslynator.CSharp
                     if (!first.IsKind(SyntaxKind.IfDirectiveTrivia))
                         return true;
 
-                    DirectiveTriviaSyntax last = node.GetLastDirective(span,f => CSharpFacts.IsIfElseDirective(f.Kind()));
+                    DirectiveTriviaSyntax last = node.GetLastDirective(span, f => CSharpFacts.IsIfElseDirective(f.Kind()));
 
                     if (last == first)
                         return true;
