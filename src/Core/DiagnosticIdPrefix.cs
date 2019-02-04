@@ -113,6 +113,14 @@ namespace Roslynator
                         {
                             return VB;
                         }
+                        else if (HasPrefix(VSSDK))
+                        {
+                            return VSSDK;
+                        }
+                        else if (HasPrefix(VSTHRD))
+                        {
+                            return VSTHRD;
+                        }
 
                         break;
                     }

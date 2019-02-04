@@ -18,6 +18,8 @@ namespace Roslynator
         public const string RS = nameof(RS);
         public const string U2U = nameof(U2U);
         public const string VB = nameof(VB);
+        public const string VSSDK = nameof(VSSDK);
+        public const string VSTHRD = nameof(VSTHRD);
         public const string xUnit = nameof(xUnit);
     }
 }
