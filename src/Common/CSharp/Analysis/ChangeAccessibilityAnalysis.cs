@@ -28,11 +28,6 @@ namespace Roslynator.CSharp.Analysis
             Accessibility.Protected,
             Accessibility.Private);
 
-        public static string GetTitle(Accessibility accessibility)
-        {
-            return $"Change accessibility to '{SyntaxFacts.GetText(accessibility)}'";
-        }
-
         public static Accessibilities GetValidAccessibilities(
             MemberDeclarationListSelection selectedMembers,
             SemanticModel semanticModel,

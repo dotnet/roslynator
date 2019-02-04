@@ -160,11 +160,6 @@ namespace Roslynator.CSharp
             return token.WithAdditionalAnnotations(_navigationAnnotationArray);
         }
 
-        internal static SyntaxToken WithFormatterAndSimplifierAnnotation(this SyntaxToken token)
-        {
-            return token.WithAdditionalAnnotations(_formatterAndSimplifierAnnotationArray);
-        }
-
         /// <summary>
         /// Adds "rename" annotation to the specified token, creating a new token of the same type with the "rename" annotation on it.
         /// "Rename" annotation is specified by <see cref="RenameAnnotation.Kind"/>.

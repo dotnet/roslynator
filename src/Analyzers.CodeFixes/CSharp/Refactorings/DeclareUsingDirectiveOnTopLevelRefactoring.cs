@@ -4,12 +4,17 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class DeclareUsingDirectiveOnTopLevelRefactoring
     {
+        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
+            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
+            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
+
         public static async Task<Document> RefactorAsync(
             Document document,
             NamespaceDeclarationSyntax namespaceDeclaration,
@@ -43,11 +48,36 @@ namespace Roslynator.CSharp.Refactorings
         {
             NameSyntax name = usingDirective.Name;
 
-            NameSyntax newName = CSharpUtility.EnsureFullyQualifiedName(name, semanticModel, cancellationToken);
+            NameSyntax newName = EnsureFullyQualifiedName();
 
             newName = newName.WithTriviaFrom(name);
 
             return usingDirective.WithName(newName).WithFormatterAnnotation();
+
+            NameSyntax EnsureFullyQualifiedName()
+            {
+                ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
+
+                if (symbol != null)
+                {
+                    if (semanticModel.GetAliasInfo(name, cancellationToken) != null
+                        || !symbol.ContainingNamespace.IsGlobalNamespace)
+                    {
+                        SymbolKind kind = symbol.Kind;
+
+                        if (kind == SymbolKind.Namespace)
+                        {
+                            return SyntaxFactory.ParseName(symbol.ToString()).WithTriviaFrom(name);
+                        }
+                        else if (kind == SymbolKind.NamedType)
+                        {
+                            return (NameSyntax)((INamedTypeSymbol)symbol).ToTypeSyntax(_symbolDisplayFormat).WithTriviaFrom(name);
+                        }
+                    }
+                }
+
+                return name;
+            }
         }
     }
 }

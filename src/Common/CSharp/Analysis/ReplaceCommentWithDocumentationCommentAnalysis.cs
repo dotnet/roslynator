@@ -9,8 +9,6 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class ReplaceCommentWithDocumentationCommentAnalysis
     {
-        public const string Title = "Replace comment with documentation comment";
-
         public static TextSpan GetFixableSpan(SyntaxTrivia trivia)
         {
             if (trivia.Kind() != SyntaxKind.SingleLineCommentTrivia)

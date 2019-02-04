@@ -20,6 +20,13 @@ namespace Roslynator.Text
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="TextLineCollectionSelection"/>.
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <param name="span"></param>
+        /// <param name="firstIndex"></param>
+        /// <param name="lastIndex"></param>
         protected TextLineCollectionSelection(TextLineCollection lines, TextSpan span, int firstIndex, int lastIndex)
         {
             if (firstIndex < 0)

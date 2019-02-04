@@ -35,35 +35,6 @@ namespace Roslynator.CSharp.SyntaxWalkers
             get { return !Result; }
         }
 
-        public static bool ContainsReference(
-            SyntaxNode node,
-            ISymbol symbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            bool result = false;
-            ContainsLocalOrParameterReferenceWalker walker = null;
-
-            try
-            {
-                walker = GetInstance(
-                    symbol,
-                    semanticModel,
-                    cancellationToken);
-
-                walker.Visit(node);
-
-                result = walker.Result;
-            }
-            finally
-            {
-                if (walker != null)
-                    Free(walker);
-            }
-
-            return result;
-        }
-
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
             CancellationToken.ThrowIfCancellationRequested();

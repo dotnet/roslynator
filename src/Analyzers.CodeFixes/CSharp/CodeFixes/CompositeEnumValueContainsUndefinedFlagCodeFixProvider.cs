@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             INamedTypeSymbol symbol = semanticModel.GetDeclaredSymbol(enumDeclaration, cancellationToken);
 
-            string name = NameGenerator.Default.EnsureUniqueMemberName(DefaultNames.EnumMember, symbol);
+            string name = NameGenerator.Default.EnsureUniqueEnumMemberName(DefaultNames.EnumMember, symbol);
 
             EnumMemberDeclarationSyntax enumMember = EnumMemberDeclaration(
                 Identifier(name).WithRenameAnnotation(),

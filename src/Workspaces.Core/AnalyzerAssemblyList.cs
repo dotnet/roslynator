@@ -20,8 +20,6 @@ namespace Roslynator
             _analyzerAssemblies = new Dictionary<string, AnalyzerAssembly>();
         }
 
-        public int Count => _analyzerAssemblies.Count;
-
         internal bool ContainsAssembly(string fullName)
         {
             return _analyzerAssemblies.ContainsKey(fullName);
@@ -76,7 +74,7 @@ namespace Roslynator
         private static IEnumerable<DiagnosticAnalyzer> GetAnalyzers(IEnumerable<AnalyzerAssembly> analyzerAssemblies, string language)
         {
             return analyzerAssemblies
-                .SelectMany(f => f.Analyzers)
+                .SelectMany(f => f.AnalyzersByLanguage)
                 .Where(f => f.Key == language)
                 .SelectMany(f => f.Value);
         }
@@ -94,7 +92,7 @@ namespace Roslynator
         private static IEnumerable<CodeFixProvider> GetFixers(IEnumerable<AnalyzerAssembly> analyzerAssemblies, string language)
         {
             return analyzerAssemblies
-                .SelectMany(f => f.Fixers)
+                .SelectMany(f => f.FixersByLanguage)
                 .Where(f => f.Key == language)
                 .SelectMany(f => f.Value);
         }

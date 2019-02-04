@@ -142,7 +142,6 @@
     </Compile>
     <Compile Include="XElementExtensions.cs" />
     <Compile Include="TypeConverters\YesNoConverter.cs" />
-    <Compile Include="TypeConverters\EnabledDisabledConverter.cs" />
     <Compile Include="TypeConverters\TrueFalseConverter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RefactoringsOptionsPage.cs">

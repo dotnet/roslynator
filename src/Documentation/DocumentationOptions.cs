@@ -27,7 +27,7 @@ namespace Roslynator.Documentation
             bool includeMemberImplements = DefaultValues.IncludeMemberImplements,
             bool includeMemberConstantValue = DefaultValues.IncludeMemberConstantValue,
             bool includeInheritedInterfaceMembers = DefaultValues.IncludeInheritedInterfaceMembers,
-            bool includeAllDerivedTypes = DefaultValues.IncludeInheritedInterfaceMembers,
+            bool includeAllDerivedTypes = DefaultValues.IncludeAllDerivedTypes,
             bool includeAttributeArguments = DefaultValues.IncludeAttributeArguments,
             bool includeInheritedAttributes = DefaultValues.IncludeInheritedAttributes,
             bool omitIEnumerable = DefaultValues.OmitIEnumerable,

@@ -37,10 +37,6 @@ namespace Roslynator.CommandLine
             MetaValue = "<DIAGNOSTIC_ID>")]
         public IEnumerable<string> SupportedDiagnostics { get; set; }
 
-        [Option(longName: "use-roslynator-analyzers",
-            HelpText = "Indicates whether code analysis should use analyzers from nuget package Roslynator.Analyzers.")]
-        public bool UseRoslynatorAnalyzers { get; set; }
-
         internal bool TryGetDiagnosticSeverity(DiagnosticSeverity defaultValue, out DiagnosticSeverity value)
         {
             if (SeverityLevel != null)

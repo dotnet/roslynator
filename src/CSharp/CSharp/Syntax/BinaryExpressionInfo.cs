@@ -91,6 +91,10 @@ namespace Roslynator.CSharp.Syntax
             }
         }
 
+        /// <summary>
+        /// Returns <see cref="ExpressionChain"/> that enables to enumerate expressions of a binary expression.
+        /// </summary>
+        /// <returns></returns>
         public ExpressionChain AsChain()
         {
             return new ExpressionChain(BinaryExpression);

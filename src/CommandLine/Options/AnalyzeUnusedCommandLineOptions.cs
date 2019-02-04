@@ -6,7 +6,7 @@ using CommandLine;
 
 namespace Roslynator.CommandLine
 {
-    //TODO: Remove
+    //TODO: Remove, IgnoreAttributes
 #if DEBUG
     [Verb("analyze-unused", HelpText = "Finds unused symbols in the specified project or solution.")]
 #endif

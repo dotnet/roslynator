@@ -211,7 +211,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 }
 
-                                SyntaxRemoveOptions removeOptions = SyntaxRemover.GetRemoveOptions(localDeclarationStatement);
+                                SyntaxRemoveOptions removeOptions = SyntaxRefactorings.GetRemoveOptions(localDeclarationStatement);
 
                                 if (newTrailingTrivia.Any())
                                     removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
@@ -221,7 +221,7 @@ namespace Roslynator.CSharp.CodeFixes
                             }
                             else
                             {
-                                statementsInfo = statementsInfo.ReplaceNode(localDeclarationStatement, localDeclarationStatement.RemoveNode(declarator, SyntaxRemover.GetRemoveOptions(declarator)));
+                                statementsInfo = statementsInfo.ReplaceNode(localDeclarationStatement, localDeclarationStatement.RemoveNode(declarator, SyntaxRefactorings.GetRemoveOptions(declarator)));
                             }
 
                             returnStatement = (ReturnStatementSyntax)statementsInfo[statementIndex + 1];
@@ -232,7 +232,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             if (removeReturnStatement)
             {
-                statementsInfo = statementsInfo.RemoveNode(returnStatement, SyntaxRemover.GetRemoveOptions(returnStatement));
+                statementsInfo = statementsInfo.RemoveNode(returnStatement, SyntaxRefactorings.GetRemoveOptions(returnStatement));
             }
             else if (newReturnExpression != null)
             {

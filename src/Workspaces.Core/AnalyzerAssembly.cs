@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
@@ -16,28 +17,45 @@ namespace Roslynator
     {
         private AnalyzerAssembly(
             Assembly assembly,
-            ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzers,
-            ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> fixers)
+            ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> analyzersByLanguage,
+            ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> fixersByLanguage)
         {
             Assembly = assembly;
-            Analyzers = analyzers;
-            Fixers = fixers;
+
+            AnalyzersByLanguage = analyzersByLanguage;
+            FixersByLanguage = fixersByLanguage;
         }
 
         public Assembly Assembly { get; }
 
-        public string FullName => Assembly.FullName;
+        internal string FullName => Assembly.FullName;
 
-        public ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> Analyzers { get; }
+        public bool HasAnalyzers => AnalyzersByLanguage.Count > 0;
 
-        public ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> Fixers { get; }
+        public bool HasFixers => FixersByLanguage.Count > 0;
 
-        internal bool IsEmpty => Analyzers.Count == 0 && Fixers.Count == 0;
+        internal bool IsEmpty => !HasAnalyzers && !HasFixers;
+
+        public ImmutableDictionary<string, ImmutableArray<DiagnosticAnalyzer>> AnalyzersByLanguage { get; }
+
+        public ImmutableDictionary<string, ImmutableArray<CodeFixProvider>> FixersByLanguage { get; }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay => FullName;
 
-        public AssemblyName GetName() => Assembly.GetName();
+        internal IEnumerable<DiagnosticAnalyzer> GetAnalyzers()
+        {
+            return AnalyzersByLanguage
+                .SelectMany(f => f.Value)
+                .Distinct();
+        }
+
+        internal IEnumerable<CodeFixProvider> GetFixers()
+        {
+            return FixersByLanguage
+                .SelectMany(f => f.Value)
+                .Distinct();
+        }
 
         public static AnalyzerAssembly Load(
             Assembly analyzerAssembly,

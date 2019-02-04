@@ -234,19 +234,6 @@ namespace Roslynator
                 && typeArguments[1].Equals(parameter2);
         }
 
-        public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, ITypeSymbol parameter3)
-        {
-            if (!symbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Func_T3))
-                return false;
-
-            ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
-
-            return typeArguments.Length == 3
-                && typeArguments[0].Equals(parameter1)
-                && typeArguments[1].Equals(parameter2)
-                && typeArguments[2].Equals(parameter3);
-        }
-
         public static bool IsPredicateFunc(ISymbol symbol, ITypeSymbol parameter)
         {
             if (!symbol.HasMetadataName(MetadataNames.System_Func_T2))

@@ -25,7 +25,6 @@ roslynator analyze <PROJECT|SOLUTION>
 [--report-suppressed-diagnostics]
 [--severity-level]
 [--supported-diagnostics]
-[--use-roslynator-analyzers]
 [-v|--verbosity]
 ```
 
@@ -105,10 +104,6 @@ Defines minimally required severity for a diagnostic. Default value is `info`.
 **`--supported-diagnostics`** <DIAGNOSTIC_ID>
 
 Defines diagnostics that should be reported.
-
-**`--use-roslynator-analyzers`**
-
-Indicates whether code analysis should use analyzers from nuget package [Roslynator.Analyzers](https://nuget.org/packages/Roslynator.Analyzers).
 
 **`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
 

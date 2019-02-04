@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Refactorings.Documentation
 
         protected override SeparatedSyntaxList<ParameterSyntax> GetSyntaxList(SyntaxNode node)
         {
-            return ParameterListInfo.Create(node).Parameters;
+            return CSharpUtility.GetParameters(node);
         }
     }
 }

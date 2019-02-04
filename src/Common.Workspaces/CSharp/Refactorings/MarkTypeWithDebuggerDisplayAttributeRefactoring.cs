@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-            string propertyName = NameGenerator.Default.EnsureUniqueMemberName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, position, cancellationToken: cancellationToken);
+            string propertyName = NameGenerator.Default.EnsureUniqueName(DefaultNames.DebuggerDisplayPropertyName, semanticModel, position);
 
             AttributeListSyntax attributeList = AttributeList(
                 Attribute(
@@ -33,13 +33,13 @@ namespace Roslynator.CSharp.Refactorings
 
             if (typeDeclaration is ClassDeclarationSyntax classDeclaration)
             {
-                newTypeDeclaration = SyntaxManipulation.AddAttributeLists(classDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+                newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(classDeclaration, keepDocumentationCommentOnTop: true, attributeList);
             }
             else
             {
                 var structDeclaration = (StructDeclarationSyntax)typeDeclaration;
 
-                newTypeDeclaration = SyntaxManipulation.AddAttributeLists(structDeclaration, keepDocumentationCommentOnTop: true, attributeList);
+                newTypeDeclaration = SyntaxRefactorings.AddAttributeLists(structDeclaration, keepDocumentationCommentOnTop: true, attributeList);
             }
 
             newTypeDeclaration = MemberDeclarationInserter.Default.Insert(newTypeDeclaration, propertyDeclaration);

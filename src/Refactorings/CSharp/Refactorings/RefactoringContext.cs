@@ -29,11 +29,6 @@ namespace Roslynator.CSharp.Refactorings
 
         public RefactoringSettings Settings { get; }
 
-        public bool SupportsSemanticModel
-        {
-            get { return Document.SupportsSemanticModel; }
-        }
-
         public CancellationToken CancellationToken
         {
             get { return UnderlyingContext.CancellationToken; }
@@ -52,6 +47,11 @@ namespace Roslynator.CSharp.Refactorings
         public Solution Solution
         {
             get { return Project.Solution; }
+        }
+
+        public Workspace Workspace
+        {
+            get { return Solution.Workspace; }
         }
 
         public TextSpan Span

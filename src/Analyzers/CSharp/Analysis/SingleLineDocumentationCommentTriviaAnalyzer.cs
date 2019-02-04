@@ -145,7 +145,7 @@ namespace Roslynator.CSharp.Analysis
                 || orderParams
                 || unusedElement)
             {
-                SeparatedSyntaxList<ParameterSyntax> parameters = ParameterListInfo.Create(parent).Parameters;
+                SeparatedSyntaxList<ParameterSyntax> parameters = CSharpUtility.GetParameters((CSharpFacts.HasParameterList(parent.Kind())) ? parent : parent.Parent);
 
                 if (addParam
                     && parameters.Any())
@@ -170,7 +170,7 @@ namespace Roslynator.CSharp.Analysis
                 || orderParams
                 || unusedElement)
             {
-                SeparatedSyntaxList<TypeParameterSyntax> typeParameters = TypeParameterListInfo.Create(parent).Parameters;
+                SeparatedSyntaxList<TypeParameterSyntax> typeParameters = CSharpUtility.GetTypeParameters((CSharpFacts.HasTypeParameterList(parent.Kind())) ? parent : parent.Parent);
 
                 if (addTypeParam
                     && typeParameters.Any())

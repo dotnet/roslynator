@@ -18,8 +18,6 @@ namespace Roslynator.CodeMetrics
             IgnoreBlockBoundary = ignoreBlockBoundary;
         }
 
-        public static CodeMetricsOptions Default { get; } = new CodeMetricsOptions();
-
         public bool IncludeGeneratedCode { get; }
 
         public bool IncludeWhitespace { get; }

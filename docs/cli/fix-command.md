@@ -29,8 +29,6 @@ roslynator fix <PROJECT|SOLUTION>
 [-p|--properties]
 [--severity-level]
 [--supported-diagnostics]
-[--use-roslynator-analyzers]
-[--use-roslynator-code-fixes]
 [-v|--verbosity]
 ```
 
@@ -128,14 +126,6 @@ Defines one or more MSBuild properties.
 **`--severity-level`** `{hidden|info|warning|error}`
 
 Defines minimally required severity for a diagnostic. Default value is `info`.
-
-**`--use-roslynator-analyzers`**
-
-Indicates whether code analysis should use analyzers and code fixes from nuget package [Roslynator.Analyzers](https://nuget.org/packages/Roslynator.Analyzers).
-
-**`--use-roslynator-code-fixes`**
-
-Indicates whether code analysis should use code fixes from nuget package [Roslynator.CodeFixes](https://nuget.org/packages/Roslynator.CodeFixes).
 
 **`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
 

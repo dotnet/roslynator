@@ -57,7 +57,7 @@ namespace Roslynator.CodeFixes
                     else if (options.DiagnosticFixerMap.IsEmpty
                         || !options.DiagnosticFixerMap.ContainsKey(descriptor.Id))
                     {
-                        WriteMultipleFixersSummary(descriptor.Id, fixer, fixers[i]);
+                        LogHelpers.WriteMultipleFixersSummary(descriptor.Id, fixer, fixers[i]);
                         return new DiagnosticFix(null, fixer, fixers[i]);
                     }
                 }
@@ -156,7 +156,7 @@ namespace Roslynator.CodeFixes
                 }
 
                 WriteLine($"  Fixer '{fixer.GetType().FullName}' registered no action for diagnostic '{descriptor.Id}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
-                WriteDiagnostics(diagnostics, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: formatProvider, indentation: "    ", maxCount: 10, verbosity: Verbosity.Diagnostic);
+                LogHelpers.WriteDiagnostics(diagnostics, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: formatProvider, indentation: "    ", maxCount: 10, verbosity: Verbosity.Diagnostic);
             }
 
             return null;
@@ -185,7 +185,7 @@ namespace Roslynator.CodeFixes
             if (action == null)
             {
                 WriteLine($"  Fixer '{fixer.GetType().FullName}' registered no action for diagnostic '{diagnostic.Id}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
-                WriteDiagnostic(diagnostic, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: formatProvider, indentation: "    ", verbosity: Verbosity.Diagnostic);
+                LogHelpers.WriteDiagnostic(diagnostic, baseDirectoryPath: Path.GetDirectoryName(project.FilePath), formatProvider: formatProvider, indentation: "    ", verbosity: Verbosity.Diagnostic);
             }
 
             return action;

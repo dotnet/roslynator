@@ -22,8 +22,6 @@ namespace Roslynator
 
         public string Name => Symbol?.Name;
 
-        public bool IsDefault => Symbol == null;
-
         public static EnumFieldSymbolInfo Create(IFieldSymbol fieldSymbol)
         {
             if (fieldSymbol == null)

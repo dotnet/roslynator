@@ -24,11 +24,6 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             get { return _name ?? (_name = StringUtility.ToCamelCase(ParameterName, PrefixFieldIdentifierWithUnderscore)); }
         }
 
-        public override SyntaxKind Kind
-        {
-            get { return SyntaxKind.FieldDeclaration; }
-        }
-
         public override MemberDeclarationSyntax CreateDeclaration()
         {
             return FieldDeclaration(Modifiers.Private_ReadOnly(), Type, Name);

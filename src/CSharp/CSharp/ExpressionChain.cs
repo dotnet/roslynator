@@ -60,21 +60,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal int Count
-        {
-            get
-            {
-                int count = 0;
-
-                Enumerator en = GetEnumerator();
-
-                while (en.MoveNext())
-                    count++;
-
-                return count;
-            }
-        }
-
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {

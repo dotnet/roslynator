@@ -5,9 +5,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -18,9 +16,6 @@ namespace Roslynator.CommandLine
 {
     internal class FixCommand : MSBuildWorkspaceCommand
     {
-        private static ImmutableArray<string> _roslynatorAnalyzersAssemblies;
-        private static ImmutableArray<string> _roslynatorCodeFixesAssemblies;
-
         public FixCommand(
             FixCommandLineOptions options,
             DiagnosticSeverity severityLevel,
@@ -32,39 +27,6 @@ namespace Roslynator.CommandLine
             SeverityLevel = severityLevel;
             DiagnosticFixMap = diagnosticFixMap;
             DiagnosticFixerMap = diagnosticFixerMap;
-        }
-
-        public static ImmutableArray<string> RoslynatorAnalyzersAssemblies
-        {
-            get
-            {
-                if (_roslynatorAnalyzersAssemblies.IsDefault)
-                {
-                    _roslynatorAnalyzersAssemblies = ImmutableArray.CreateRange(new string[]
-                    {
-                        Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Roslynator.CSharp.Analyzers.dll"),
-                        Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Roslynator.CSharp.Analyzers.CodeFixes.dll"),
-                    });
-                }
-
-                return _roslynatorAnalyzersAssemblies;
-            }
-        }
-
-        public static ImmutableArray<string> RoslynatorCodeFixesAssemblies
-        {
-            get
-            {
-                if (_roslynatorCodeFixesAssemblies.IsDefault)
-                {
-                    _roslynatorCodeFixesAssemblies = ImmutableArray.CreateRange(new string[]
-                    {
-                        Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "Roslynator.CSharp.CodeFixes.dll"),
-                    });
-                }
-
-                return _roslynatorCodeFixesAssemblies;
-            }
         }
 
         public FixCommandLineOptions Options { get; }
@@ -99,12 +61,6 @@ namespace Roslynator.CommandLine
 
             IEnumerable<AnalyzerAssembly> analyzerAssemblies = Options.AnalyzerAssemblies
                 .SelectMany(path => AnalyzerAssemblyLoader.LoadFrom(path).Select(info => info.AnalyzerAssembly));
-
-            if (Options.UseRoslynatorAnalyzers)
-                analyzerAssemblies = analyzerAssemblies.Concat(AnalyzerAssemblyLoader.LoadFiles(RoslynatorAnalyzersAssemblies));
-
-            if (Options.UseRoslynatorCodeFixes)
-                analyzerAssemblies = analyzerAssemblies.Concat(AnalyzerAssemblyLoader.LoadFiles(RoslynatorCodeFixesAssemblies));
 
             CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 

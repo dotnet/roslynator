@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
-namespace Roslynator.Documentation
+namespace Roslynator
 {
     internal static class OneOrMany
     {

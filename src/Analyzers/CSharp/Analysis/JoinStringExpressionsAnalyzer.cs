@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
 
             foreach (ExpressionSyntax expression in addExpression.AsChain().Reverse())
             {
-                context.ThrowIfCancellationRequested();
+                context.CancellationToken.ThrowIfCancellationRequested();
 
                 switch (expression.Kind())
                 {

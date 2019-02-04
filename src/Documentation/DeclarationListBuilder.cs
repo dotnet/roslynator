@@ -46,8 +46,6 @@ namespace Roslynator.Documentation
 
         public DeclarationListOptions Options { get; }
 
-        public int Length => StringBuilder.Length;
-
         internal HashSet<INamespaceSymbol> Namespaces { get; } = new HashSet<INamespaceSymbol>(MetadataNameEqualityComparer<INamespaceSymbol>.Instance);
 
         public IComparer<INamespaceSymbol> NamespaceComparer { get; }
@@ -690,11 +688,6 @@ namespace Roslynator.Documentation
             Append(symbol.ToDisplayParts(format));
         }
 
-        public void Append(INamedTypeSymbol symbol, SymbolDisplayFormat format, SymbolDisplayTypeDeclarationOptions typeDeclarationOptions = SymbolDisplayTypeDeclarationOptions.None)
-        {
-            Append(symbol.ToDisplayParts(format, typeDeclarationOptions));
-        }
-
         private void Append(ImmutableArray<SymbolDisplayPart> parts)
         {
             foreach (SymbolDisplayPart part in parts)
@@ -750,24 +743,6 @@ namespace Roslynator.Documentation
         {
             CheckPendingIndentation();
             StringBuilder.Append(value);
-        }
-
-        public void Append(char value)
-        {
-            CheckPendingIndentation();
-            StringBuilder.Append(value);
-        }
-
-        public void Append(object value)
-        {
-            CheckPendingIndentation();
-            StringBuilder.Append(value);
-        }
-
-        public void Append(char value, int repeatCount)
-        {
-            CheckPendingIndentation();
-            StringBuilder.Append(value, repeatCount);
         }
 
         public void AppendLine()

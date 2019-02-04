@@ -51,7 +51,7 @@ namespace Roslynator.CommandLine
 
                 return await FixCommand.FixAsync(
                     projectOrSolution,
-                    AnalyzerAssemblyLoader.LoadFiles(FixCommand.RoslynatorAnalyzersAssemblies),
+                    RoslynatorAnalyzerAssemblies.AnalyzersAndCodeFixes,
                     codeFixerOptions,
                     culture,
                     cancellationToken);
@@ -99,7 +99,7 @@ namespace Roslynator.CommandLine
                 if (formattedDocuments.Any())
                 {
                     changedDocuments.Add(formattedDocuments);
-                    WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
+                    LogHelpers.WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
                 }
 
                 WriteLine($"  Done analyzing '{project.Name}'", Verbosity.Normal);
@@ -146,7 +146,7 @@ namespace Roslynator.CommandLine
 
             ImmutableArray<DocumentId> formattedDocuments = await CodeFormatter.GetFormattedDocumentsAsync(project, newProject, syntaxFacts);
 
-            WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
+            LogHelpers.WriteFormattedDocuments(formattedDocuments, project, solutionDirectory);
 
             if (formattedDocuments.Length > 0)
             {

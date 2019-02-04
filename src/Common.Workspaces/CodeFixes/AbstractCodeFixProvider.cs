@@ -134,23 +134,6 @@ namespace Roslynator.CodeFixes
             {
                 Debug.Assert(value != null, $"{nameof(value)} is null");
             }
-
-            [Conditional("DEBUG")]
-            public static void HasNotAnnotation(SyntaxNode node, SyntaxAnnotation annotation)
-            {
-                Debug.Assert(!node.HasAnnotation(annotation), GetAnnotationMessage(nameof(node), annotation));
-            }
-
-            [Conditional("DEBUG")]
-            public static void HasNotAnnotation(SyntaxToken token, SyntaxAnnotation annotation)
-            {
-                Debug.Assert(!token.HasAnnotation(annotation), GetAnnotationMessage(nameof(token), annotation));
-            }
-
-            private static string GetAnnotationMessage(string name, SyntaxAnnotation annotation)
-            {
-                return $"{name} contains annotation - Kind: {annotation.Kind}, Data: {annotation.Data}";
-            }
         }
     }
 }

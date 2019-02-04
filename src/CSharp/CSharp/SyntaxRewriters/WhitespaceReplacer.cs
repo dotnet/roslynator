@@ -8,8 +8,6 @@ namespace Roslynator.CSharp.SyntaxRewriters
 {
     internal class WhitespaceReplacer : CSharpSyntaxRewriter
     {
-        public static SyntaxTrivia DefaultReplacement { get; } = CSharpFactory.EmptyWhitespace();
-
         public SyntaxTrivia Replacement { get; }
 
         public TextSpan? Span { get; }

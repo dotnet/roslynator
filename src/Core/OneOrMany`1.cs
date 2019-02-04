@@ -6,9 +6,8 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
 
-namespace Roslynator.Documentation
+namespace Roslynator
 {
-    //XTODO: move to core
     internal readonly struct OneOrMany<T> : IReadOnlyList<T>, IEquatable<OneOrMany<T>>
     {
         private readonly State _state;

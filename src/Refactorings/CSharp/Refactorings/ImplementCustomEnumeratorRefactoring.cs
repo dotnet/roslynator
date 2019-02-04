@@ -9,7 +9,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
-using static Roslynator.CSharp.CSharpSnippets;
 using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.Refactorings
@@ -126,14 +125,14 @@ namespace Roslynator.CSharp.Refactorings
                 Identifier("Current"),
                 AccessorList(
                     GetAccessorDeclaration(
-                        Block(ThrowNewNotImplementedExceptionStatement()))));
+                        Block(ThrowNewStatement(NotImplementedException())))));
 
             yield return MethodDeclaration(
                 Modifiers.Public(),
                 BoolType(),
                 Identifier("MoveNext"),
                 ParameterList(),
-                Block(ThrowNewNotImplementedExceptionStatement()));
+                Block(ThrowNewStatement(NotImplementedException())));
 
             yield return MethodDeclaration(
                 Modifiers.Public(),
@@ -142,21 +141,21 @@ namespace Roslynator.CSharp.Refactorings
                 ParameterList(),
                 Block(
                     SimpleAssignmentStatement(IdentifierName("_index"), NumericLiteralExpression(-1)),
-                    ThrowNewNotImplementedExceptionStatement()));
+                    ThrowNewStatement(NotImplementedException())));
 
             yield return MethodDeclaration(
                 Modifiers.Public_Override(),
                 BoolType(),
                 Identifier("Equals"),
                 ParameterList(Parameter(ObjectType(), "obj")),
-                Block(ThrowNewNotSupportedExceptionStatement()));
+                Block(ThrowNewStatement(NotSupportedException())));
 
             yield return MethodDeclaration(
                 Modifiers.Public_Override(),
                 IntType(),
                 Identifier("GetHashCode"),
                 ParameterList(),
-                Block(ThrowNewNotSupportedExceptionStatement()));
+                Block(ThrowNewStatement(NotSupportedException())));
         }
 
         private static IEnumerable<MemberDeclarationSyntax> CreateEnumeratorImplMembers(

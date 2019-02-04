@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.Refactorings.Documentation
 
         protected override SeparatedSyntaxList<TypeParameterSyntax> GetSyntaxList(SyntaxNode node)
         {
-            return TypeParameterListInfo.Create(node).Parameters;
+            return CSharpUtility.GetTypeParameters(node);
         }
     }
 }

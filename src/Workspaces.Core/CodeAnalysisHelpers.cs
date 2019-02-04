@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator
 {
-    internal static class CodeAnalysisUtilities
+    internal static class CodeAnalysisHelpers
     {
         public static ImmutableArray<DiagnosticAnalyzer> GetAnalyzers(
             Project project,

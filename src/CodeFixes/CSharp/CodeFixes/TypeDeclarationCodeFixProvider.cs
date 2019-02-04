@@ -11,7 +11,6 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
-using static Roslynator.CSharp.CSharpSnippets;
 using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -116,13 +115,15 @@ namespace Roslynator.CSharp.CodeFixes
                 Identifier("Equals"),
                 ParameterList(Parameter(ObjectType(), parameterName)),
                 Block(
-                    IfNotReturnFalse(
-                        IsPatternExpression(
-                            IdentifierName(parameterName),
-                            DeclarationPattern(
-                                type,
-                                SingleVariableDesignation(Identifier(localName))))),
-                    ThrowNewNotImplementedExceptionStatement()));
+                    IfStatement(
+                        LogicalNotExpression(
+                            IsPatternExpression(
+                                IdentifierName(parameterName),
+                                DeclarationPattern(
+                                    type,
+                                    SingleVariableDesignation(Identifier(localName)))).Parenthesize()),
+                        Block(ReturnStatement(FalseLiteralExpression()))),
+                    ThrowNewStatement(NotImplementedException())));
         }
 
         private static MethodDeclarationSyntax ObjectGetHashCodeMethodDeclaration()
@@ -132,7 +133,7 @@ namespace Roslynator.CSharp.CodeFixes
                 IntType(),
                 Identifier("GetHashCode"),
                 ParameterList(),
-                Block(ThrowNewNotImplementedExceptionStatement()));
+                Block(ThrowNewStatement(NotImplementedException())));
         }
     }
 }

@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.Refactorings
             if (typeParameterList.Parameters.Count == 1)
                 node = typeParameterList;
 
-            SyntaxRemoveOptions options = SyntaxRemover.DefaultRemoveOptions;
+            SyntaxRemoveOptions options = SyntaxRefactorings.DefaultRemoveOptions;
 
             if (node.GetLeadingTrivia().All(f => f.IsWhitespaceTrivia()))
                 options &= ~SyntaxRemoveOptions.KeepLeadingTrivia;

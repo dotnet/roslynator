@@ -75,6 +75,7 @@ namespace Roslynator.CSharp.Analysis
                 for (int i = 0; i < fields.Length; i++)
                 {
                     if (fields[i].HasValue
+                        && ConvertHelpers.CanConvert(fields[i].Value, typeSymbol.EnumUnderlyingType.SpecialType)
                         && fields[i].HasCompositeValue())
                     {
                         foreach (ulong value in (fields[i].DecomposeValue()))
