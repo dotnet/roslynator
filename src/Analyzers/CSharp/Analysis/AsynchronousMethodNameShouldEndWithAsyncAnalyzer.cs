@@ -37,6 +37,9 @@ namespace Roslynator.CSharp.Analysis
             if (methodDeclaration.Identifier.ValueText.EndsWith("Async", StringComparison.Ordinal))
                 return;
 
+            if (methodDeclaration.Body?.Statements.Any() == false)
+                return;
+
             IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
             if (methodSymbol?.IsAsync != true)
@@ -45,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
                 return;
 
-            if (methodDeclaration.Body?.Statements.Any() == false)
+            if (SymbolUtility.CanBeEntryPoint(methodSymbol))
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
