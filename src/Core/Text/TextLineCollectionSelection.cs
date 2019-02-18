@@ -20,6 +20,13 @@ namespace Roslynator.Text
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of <see cref="TextLineCollectionSelection"/>.
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <param name="span"></param>
+        /// <param name="firstIndex"></param>
+        /// <param name="lastIndex"></param>
         protected TextLineCollectionSelection(TextLineCollection lines, TextSpan span, int firstIndex, int lastIndex)
         {
             if (firstIndex < 0)
@@ -180,6 +187,7 @@ namespace Roslynator.Text
         [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
         [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
         [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
         public struct Enumerator
         {
             private readonly TextLineCollectionSelection _selection;

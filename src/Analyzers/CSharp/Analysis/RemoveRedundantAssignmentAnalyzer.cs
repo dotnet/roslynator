@@ -71,7 +71,7 @@ namespace Roslynator.CSharp.Analysis
             if (!IsFixableSymbol(symbol))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantAssignment, assignment);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAssignment, assignment);
         }
 
         private static bool IsFixableSymbol(ISymbol symbol)

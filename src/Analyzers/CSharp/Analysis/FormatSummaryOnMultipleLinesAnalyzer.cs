@@ -39,7 +39,7 @@ namespace Roslynator.CSharp.Analysis
                 && summaryElement.EndTag?.IsMissing == false
                 && summaryElement.IsSingleLine(includeExteriorTrivia: false, trim: false))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.FormatDocumentationSummaryOnMultipleLines,
                     summaryElement);
             }

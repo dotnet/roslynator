@@ -180,8 +180,8 @@ namespace Roslynator.CSharp.Analysis
                 if (accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
                 {
                     ReportDiagnostic(context, accessorList, expression);
-                    context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessor.Keyword);
-                    context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, body);
+                    DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessor.Keyword);
+                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, body);
                 }
 
                 return;
@@ -202,22 +202,22 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, BlockSyntax block, ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.UseExpressionBodiedMember, block);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseExpressionBodiedMember, block);
 
             if (expression.Parent is ReturnStatementSyntax returnStatement)
-                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, returnStatement.ReturnKeyword);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, returnStatement.ReturnKeyword);
 
-            context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, block);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, block);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, AccessorListSyntax accessorList, ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.UseExpressionBodiedMember, accessorList);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseExpressionBodiedMember, accessorList);
 
             if (expression.Parent is ReturnStatementSyntax returnStatement)
-                context.ReportToken(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, returnStatement.ReturnKeyword);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, returnStatement.ReturnKeyword);
 
-            context.ReportBraces(DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessorList);
+            CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.UseExpressionBodiedMemberFadeOut, accessorList);
         }
     }
 }

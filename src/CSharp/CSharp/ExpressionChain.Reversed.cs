@@ -17,6 +17,7 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Enables to enumerate expressions of <see cref="ExpressionChain"/> in a reversed order.
         /// </summary>
+        [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
         public readonly struct Reversed : IEquatable<Reversed>, IEnumerable<ExpressionSyntax>
         {
             private readonly ExpressionChain _chain;
@@ -117,6 +118,7 @@ namespace Roslynator.CSharp
             [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
             [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
             [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
+            [SuppressMessage("Usage", "RCS1223:Mark publicly visible type with DebuggerDisplay attribute.", Justification = "<Pending>")]
             public struct Enumerator
             {
                 private ExpressionChain _chain;

@@ -16,33 +16,39 @@ namespace Roslynator.Configuration
 
         public Dictionary<string, bool> CodeFixes { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
+        public Dictionary<string, bool> Analyzers { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
+
         public virtual void Update(Settings settings)
         {
             PrefixFieldIdentifierWithUnderscore = settings.PrefixFieldIdentifierWithUnderscore;
 
-            Refactorings.Clear();
+            Update(Refactorings, settings.Refactorings);
+            Update(CodeFixes, settings.CodeFixes);
+            Update(Analyzers, settings.Analyzers);
 
-            foreach (KeyValuePair<string, bool> kvp in settings.Refactorings)
-                Refactorings[kvp.Key] = kvp.Value;
+            void Update(Dictionary<string, bool> values, Dictionary<string, bool> newValues)
+            {
+                values.Clear();
 
-            CodeFixes.Clear();
-
-            foreach (KeyValuePair<string, bool> kvp in settings.CodeFixes)
-                CodeFixes[kvp.Key] = kvp.Value;
+                foreach (KeyValuePair<string, bool> kvp in newValues)
+                    values[kvp.Key] = kvp.Value;
+            }
         }
 
         public void ApplyTo(RefactoringSettings settings)
         {
             settings.PrefixFieldIdentifierWithUnderscore = PrefixFieldIdentifierWithUnderscore;
-
-            foreach (KeyValuePair<string, bool> kvp in Refactorings)
-                settings.SetRefactoring(kvp.Key, kvp.Value);
+            settings.Set(Refactorings);
         }
 
         public void ApplyTo(CodeFixSettings settings)
         {
-            foreach (KeyValuePair<string, bool> kvp in CodeFixes)
-                settings.SetCodeFix(kvp.Key, kvp.Value);
+            settings.Set(CodeFixes);
+        }
+
+        public void ApplyTo(AnalyzerSettings settings)
+        {
+            settings.Set(Analyzers);
         }
     }
 }

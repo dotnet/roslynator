@@ -184,7 +184,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax right = analysis.Right;
 
             if (analysis.Invert)
-                right = Inverter.LogicallyNegate(right, analysis.SemanticModel, cancellationToken);
+                right = SyntaxInverter.LogicallyInvert(right, analysis.SemanticModel, cancellationToken);
 
             ExpressionStatementSyntax newNode = SimpleAssignmentStatement(analysis.Left.WithoutTrivia(), right.WithoutTrivia())
                 .WithTriviaFrom(analysis.IfStatement)
@@ -324,7 +324,7 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax expression = analysis.Expression;
 
             if (analysis.Invert)
-                expression = Inverter.LogicallyNegate(expression, analysis.SemanticModel, cancellationToken);
+                expression = SyntaxInverter.LogicallyInvert(expression, analysis.SemanticModel, cancellationToken);
 
             StatementSyntax statement;
             if (analysis.IsYield)
@@ -492,11 +492,11 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return Inverter.LogicallyNegate(condition, semanticModel, cancellationToken);
+                                return SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken);
                             case SyntaxKind.FalseLiteralExpression:
                                 return expression2;
                             default:
-                                return LogicalAndExpression(Inverter.LogicallyNegate(condition, semanticModel, cancellationToken), expression2);
+                                return LogicalAndExpression(SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken), expression2);
                         }
                     }
                 default:
@@ -504,7 +504,7 @@ namespace Roslynator.CSharp.Refactorings
                         switch (expression2.Kind())
                         {
                             case SyntaxKind.TrueLiteralExpression:
-                                return LogicalOrExpression(Inverter.LogicallyNegate(condition, semanticModel, cancellationToken), expression1);
+                                return LogicalOrExpression(SyntaxInverter.LogicallyInvert(condition, semanticModel, cancellationToken), expression1);
                             case SyntaxKind.FalseLiteralExpression:
                                 return LogicalAndExpression(condition, expression1);
                             default:

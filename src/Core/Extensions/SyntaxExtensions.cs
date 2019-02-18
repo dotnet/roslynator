@@ -201,8 +201,13 @@ namespace Roslynator
             }
         }
 
-        //TODO: make public GetTrailingSeparator<TNode>(SeparatedSyntaxList<TNode>)
-        internal static SyntaxToken GetTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        /// <summary>
+        /// Returns the trailing separator, if any.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static SyntaxToken GetTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
             int count = list.Count;
 
@@ -215,8 +220,13 @@ namespace Roslynator
             return default;
         }
 
-        //TODO: make public HasTrailingSeparator<TNode>(SeparatedSyntaxList<TNode>)
-        internal static bool HasTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
+        /// <summary>
+        /// Returns true if the specified list contains trailing separator.
+        /// </summary>
+        /// <typeparam name="TNode"></typeparam>
+        /// <param name="list"></param>
+        /// <returns></returns>
+        public static bool HasTrailingSeparator<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
             int count = list.Count;
 
@@ -224,7 +234,6 @@ namespace Roslynator
                 && count == list.SeparatorCount;
         }
 
-        //TODO: make public ToString(SeparatedSyntaxList<TNode>, TextSpan)
         internal static string ToString<TNode>(this SeparatedSyntaxList<TNode> list, TextSpan span) where TNode : SyntaxNode
         {
             TextSpan listFullSpan = list.FullSpan;
@@ -250,7 +259,6 @@ namespace Roslynator
             }
         }
 
-        //TODO: make public
         internal static SyntaxTriviaList GetTrailingTrivia<TNode>(this SeparatedSyntaxList<TNode> list) where TNode : SyntaxNode
         {
             int count = list.Count;
@@ -492,7 +500,6 @@ namespace Roslynator
             }
         }
 
-        //TODO: make public ToString(SyntaxList<TNode>, TextSpan)
         internal static string ToString<TNode>(this SyntaxList<TNode> list, TextSpan span) where TNode : SyntaxNode
         {
             TextSpan listFullSpan = list.FullSpan;
@@ -784,7 +791,6 @@ namespace Roslynator
             return GetParent(node, ascendOutOfTrivia: ascendOutOfTrivia)?.FirstAncestorOrSelf(predicate, ascendOutOfTrivia: ascendOutOfTrivia);
         }
 
-        //TODO: make public ToString(SyntaxNode, TextSpan)
         internal static string ToString(this SyntaxNode node, TextSpan span)
         {
             if (node == null)
@@ -827,11 +833,6 @@ namespace Roslynator
                 throw new ArgumentNullException(nameof(node));
 
             return TextSpan.FromBounds(node.Span.End, node.FullSpan.End);
-        }
-
-        internal static TNode WithAdditionalAnnotationsIf<TNode>(this TNode node, bool condition, params SyntaxAnnotation[] annotations) where TNode : SyntaxNode
-        {
-            return (condition) ? node.WithAdditionalAnnotations(annotations) : node;
         }
 
         /// <summary>
@@ -1205,7 +1206,6 @@ namespace Roslynator
             return TextSpan.FromBounds(token.Span.End, token.FullSpan.End);
         }
 
-        //TODO: make public ToString(SyntaxToken, TextSpan)
         internal static string ToString(this SyntaxToken token, TextSpan span)
         {
             TextSpan tokenFullSpan = token.FullSpan;
@@ -1396,33 +1396,12 @@ namespace Roslynator
             return false;
         }
 
-        //TODO: make public GetContainingList(SyntaxTrivia)
         internal static SyntaxTriviaList GetContainingList(this SyntaxTrivia trivia)
         {
             if (!TryGetContainingList(trivia, out SyntaxTriviaList list))
                 throw new ArgumentException("Trivia is not contained in a list.", nameof(trivia));
 
             return list;
-        }
-
-        internal static int GetSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).StartLine();
-        }
-
-        internal static int GetFullSpanStartLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).StartLine();
-        }
-
-        internal static int GetSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.Span, cancellationToken).EndLine();
-        }
-
-        internal static int GetFullSpanEndLine(this SyntaxTrivia trivia, CancellationToken cancellationToken = default(CancellationToken))
-        {
-            return trivia.SyntaxTree.GetLineSpan(trivia.FullSpan, cancellationToken).EndLine();
         }
 
         internal static TextSpan LeadingTriviaSpan(this SyntaxTrivia trivia)

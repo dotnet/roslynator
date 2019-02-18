@@ -21,7 +21,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRedundantAssignment))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveRedundantAssignment))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.AssignmentMadeToSameVariable:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveRedundantAssignment))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveRedundantAssignment))
                                 break;
 
                             if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))

@@ -45,12 +45,12 @@ namespace Roslynator.CSharp.Analysis
                 if (endTrivia.Kind() != SyntaxKind.PreprocessingMessageTrivia
                     || !string.Equals(trivia.ToString(), endTrivia.ToString(), StringComparison.Ordinal))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.AddOrRemoveRegionName, endRegionDirective, "Add", "to");
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddOrRemoveRegionName, endRegionDirective, "Add", "to");
                 }
             }
             else if (endTrivia.Kind() == SyntaxKind.PreprocessingMessageTrivia)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AddOrRemoveRegionName, endRegionDirective, "Remove", "from");
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddOrRemoveRegionName, endRegionDirective, "Remove", "from");
             }
         }
     }

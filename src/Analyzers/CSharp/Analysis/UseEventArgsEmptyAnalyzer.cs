@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol?.HasMetadataName(MetadataNames.System_EventArgs) != true)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseEventArgsEmpty, objectCreation);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseEventArgsEmpty, objectCreation);
         }
     }
 }

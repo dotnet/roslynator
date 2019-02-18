@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Analysis
             if (!analysis.AddBraces)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddBracesToIfElseWhenExpressionSpansOverMultipleLines, ifStatement);
         }
     }
 }

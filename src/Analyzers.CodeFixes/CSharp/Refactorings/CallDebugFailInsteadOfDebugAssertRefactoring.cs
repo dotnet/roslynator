@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.Refactorings
                 arguments = arguments.RemoveAt(0);
             }
 
-            return RefactoringUtility.ChangeInvokedMethodName(invocation, "Fail")
+            return SyntaxRefactorings.ChangeInvokedMethodName(invocation, "Fail")
                 .WithArgumentList(argumentList.WithArguments(arguments));
         }
     }

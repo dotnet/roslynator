@@ -55,7 +55,7 @@ namespace Roslynator.CSharp.Analysis
             if (!TriviaWalker.ContainsOnlyWhitespaceOrEndOfLineTrivia(initializer, TextSpan.FromBounds(initializer.FullSpan.Start, initializer.Span.End)))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.FormatInitializerWithSingleExpressionOnSingleLine, initializer);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.FormatInitializerWithSingleExpressionOnSingleLine, initializer);
         }
     }
 }

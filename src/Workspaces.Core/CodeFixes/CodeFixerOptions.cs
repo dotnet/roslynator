@@ -1,15 +1,19 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CodeFixes
 {
-    public class CodeFixerOptions : CodeAnalysisOptions
+    internal class CodeFixerOptions : CodeAnalysisOptions
     {
         private ImmutableArray<string> _fileBannerLines;
+
+        private CompilationWithAnalyzersOptions _compilationWithAnalyzersOptions;
 
         public static CodeFixerOptions Default { get; } = new CodeFixerOptions();
 
@@ -17,6 +21,7 @@ namespace Roslynator.CodeFixes
             DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
             bool ignoreCompilerErrors = false,
             bool ignoreAnalyzerReferences = false,
+            bool concurrentAnalysis = true,
             IEnumerable<string> supportedDiagnosticIds = null,
             IEnumerable<string> ignoredDiagnosticIds = null,
             IEnumerable<string> ignoredCompilerDiagnosticIds = null,
@@ -29,7 +34,15 @@ namespace Roslynator.CodeFixes
             string language = null,
             int maxIterations = -1,
             int batchSize = -1,
-            bool format = false) : base(severityLevel, ignoreAnalyzerReferences, supportedDiagnosticIds, ignoredDiagnosticIds, projectNames, ignoredProjectNames, language)
+            bool format = false) : base(
+                severityLevel: severityLevel,
+                ignoreAnalyzerReferences: ignoreAnalyzerReferences,
+                concurrentAnalysis: concurrentAnalysis,
+                supportedDiagnosticIds: supportedDiagnosticIds,
+                ignoredDiagnosticIds: ignoredDiagnosticIds,
+                projectNames: projectNames,
+                ignoredProjectNames: ignoredProjectNames,
+                language: language)
         {
             IgnoreCompilerErrors = ignoreCompilerErrors;
             IgnoredCompilerDiagnosticIds = ignoredCompilerDiagnosticIds?.ToImmutableHashSet() ?? ImmutableHashSet<string>.Empty;
@@ -90,5 +103,18 @@ namespace Roslynator.CodeFixes
         public ImmutableDictionary<string, string> DiagnosticFixMap { get; }
 
         public ImmutableDictionary<string, string> DiagnosticFixerMap { get; }
+
+        internal CompilationWithAnalyzersOptions CompilationWithAnalyzersOptions
+        {
+            get
+            {
+                return _compilationWithAnalyzersOptions ?? (_compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
+                    options: default(AnalyzerOptions),
+                    onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
+                    concurrentAnalysis: ConcurrentAnalysis,
+                    logAnalyzerExecutionTime: false,
+                    reportSuppressedDiagnostics: false));
+            }
+        }
     }
 }

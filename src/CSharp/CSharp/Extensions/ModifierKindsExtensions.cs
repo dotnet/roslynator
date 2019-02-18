@@ -8,10 +8,5 @@ namespace Roslynator.CSharp
         {
             return (kinds & value) != 0;
         }
-
-        public static bool All(this ModifierKinds kinds, ModifierKinds value)
-        {
-            return (kinds & value) != value;
-        }
     }
 }

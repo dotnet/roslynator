@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             if (info.Condition.Kind() == SyntaxKind.ParenthesizedExpression)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.ParenthesizeConditionInConditionalExpression, info.Condition);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ParenthesizeConditionInConditionalExpression, info.Condition);
         }
     }
 }

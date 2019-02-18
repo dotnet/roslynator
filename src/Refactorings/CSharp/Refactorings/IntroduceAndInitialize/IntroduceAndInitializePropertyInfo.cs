@@ -23,11 +23,6 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             get { return _name ?? (_name = StringUtility.FirstCharToUpper(ParameterName)); }
         }
 
-        public override SyntaxKind Kind
-        {
-            get { return SyntaxKind.PropertyDeclaration; }
-        }
-
         public override MemberDeclarationSyntax CreateDeclaration()
         {
             return PropertyDeclaration(

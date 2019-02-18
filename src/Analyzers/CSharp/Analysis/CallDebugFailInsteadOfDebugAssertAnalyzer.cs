@@ -94,7 +94,7 @@ namespace Roslynator.CSharp.Analysis
 
             Debug.Assert(expression.Kind() == SyntaxKind.IdentifierName, expression.Kind().ToString());
 
-            context.ReportDiagnostic(DiagnosticDescriptors.CallDebugFailInsteadOfDebugAssert, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallDebugFailInsteadOfDebugAssert, expression);
 
             bool ContainsFailMethod()
             {
@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Analysis
                 arguments = arguments.RemoveAt(0);
             }
 
-            return RefactoringUtility.ChangeInvokedMethodName(invocation, "Fail")
+            return SyntaxRefactorings.ChangeInvokedMethodName(invocation, "Fail")
                 .WithArgumentList(argumentList.WithArguments(arguments));
         }
     }

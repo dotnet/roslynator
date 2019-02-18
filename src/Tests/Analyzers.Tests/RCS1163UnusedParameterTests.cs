@@ -60,5 +60,89 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task TestNoDiagnostic_PartialMethod()
+        {
+            await VerifyNoDiagnosticAsync(@"
+partial class C
+{
+    partial void M(object p);
+
+    partial void M(object p)
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task TestNoDiagnostic_MethodReferencedAsMethodGroup()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    private void M(object p)
+    {
+        Action<object> action = M;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UnusedParameter)]
+        public async Task TestNoDiagnostic_ContainsOnlyThrowNew()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    public C(object p)
+    {
+        throw new NotImplementedException();
+    }
+
+    public C(object p, object p2) => throw new NotImplementedException();
+
+    public string this[int index] => throw new NotImplementedException();
+
+    public string this[string index]
+    {
+        get { throw new NotImplementedException(); }
+        set { throw new NotImplementedException(); }
+    }
+
+    public string this[string index, string index2]
+    {
+        get => throw new NotImplementedException();
+        set => throw new NotImplementedException();
+    }
+
+    public void Bar(object p) { throw new NotImplementedException(); }
+
+    public object Bar(object p1, object p2) => throw new NotImplementedException();
+
+    /// <summary>
+    /// ...
+    /// </summary>
+    /// <param name=""p1""></param>
+    /// <param name=""p2""></param>
+    public void Bar2(object p1, object p2) { throw new NotImplementedException(); }
+
+    public static C operator +(C left, C right)
+    {
+        throw new NotImplementedException();
+    }
+
+    public static explicit operator C(string value)
+    {
+        throw new NotImplementedException();
+    }
+}
+");
+        }
     }
 }

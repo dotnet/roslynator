@@ -49,7 +49,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
-    <DeployExtension>False</DeployExtension>
+    <DeployExtension>True</DeployExtension>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -68,6 +68,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="manifest.json" />
     <None Include="packages.config" />
     <None Include="VisualStudio.snk" />
     <None Include="source.extension.vsixmanifest">
@@ -174,6 +175,10 @@
       <Project>{9c9ef15b-2cb0-485e-bb48-90f670f6a3d8}</Project>
       <Name>CodeFixes</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{961a50b8-2a25-4713-bd6d-623aa4cdd36c}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\CSharp\CSharp.csproj">
       <Project>{34a3e42e-2254-4ee7-a152-eedb18e3d7e3}</Project>
       <Name>CSharp</Name>
@@ -197,6 +202,10 @@
     <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj">
       <Project>{56da29a3-c179-471c-9941-42426eeb84d0}</Project>
       <Name>CSharp.Workspaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj">
+      <Project>{b5b2b192-390f-48f2-9858-5be753565728}</Project>
+      <Name>Workspaces.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

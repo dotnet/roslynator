@@ -154,7 +154,7 @@ namespace Roslynator.CSharp.Analysis
             if (location == null)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AddDefaultAccessModifier,
                 location,
                 ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(Accessibility), accessibility.ToString()) }));

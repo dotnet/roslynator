@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AssignDefaultValueToOutParameter))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.AssignDefaultValueToOutParameter))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -147,7 +147,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     ExpressionStatementSyntax expressionStatement = SimpleAssignmentStatement(
                         IdentifierName(f.Name),
-                        f.Type.GetDefaultValueSyntax(semanticModel, bodyOrExpressionBody.Span.End));
+                        f.Type.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions()));
 
                     return expressionStatement.WithFormatterAnnotation();
                 });

@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.Analysis
             var attributeArgumentList = (AttributeArgumentListSyntax)context.Node;
 
             if (!attributeArgumentList.Arguments.Any())
-                context.ReportDiagnostic(DiagnosticDescriptors.RemoveArgumentListFromAttribute, attributeArgumentList);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveArgumentListFromAttribute, attributeArgumentList);
         }
     }
 }

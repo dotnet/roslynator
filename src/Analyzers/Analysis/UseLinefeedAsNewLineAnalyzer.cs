@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
                     && textLine.Text[end] == '\r'
                     && textLine.Text[end + 1] == '\n')
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.UseLinefeedAsNewLine,
                         Location.Create(context.Tree, new TextSpan(end, 2)));
                 }

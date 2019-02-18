@@ -41,13 +41,13 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal IfStatementOrElseClause(IfStatementSyntax ifStatement)
+        public IfStatementOrElseClause(IfStatementSyntax ifStatement)
         {
             _ifStatement = ifStatement ?? throw new ArgumentNullException(nameof(ifStatement));
             _elseClause = null;
         }
 
-        internal IfStatementOrElseClause(ElseClauseSyntax elseClause)
+        public IfStatementOrElseClause(ElseClauseSyntax elseClause)
         {
             _elseClause = elseClause ?? throw new ArgumentNullException(nameof(elseClause));
             _ifStatement = null;

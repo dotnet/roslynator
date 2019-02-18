@@ -16,6 +16,7 @@ namespace Roslynator.CSharp.Refactorings
 
             return typeArgument != null
                 && context.Span.IsBetweenSpans(typeArgument)
+                && !typeArgument.IsKind(SyntaxKind.TupleType)
                 && IsTypeOrReturnType(name);
         }
 

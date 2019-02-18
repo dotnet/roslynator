@@ -132,16 +132,18 @@
       <Syntax>local function</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression" IsObsolete="true">
+  <Refactoring Id="RR0022" Identifier="ChangeTypeAccordingToExpression" Title="Change type according to expression">
     <Syntaxes>
       <Syntax>variable declaration</Syntax>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
     <Span>type</Span>
-    <Images>
-      <Image>ChangeTypeAccordingToExpression</Image>
-      <Image>ChangeForEachTypeAccordingToExpression</Image>
-    </Images>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[IEnumerable<object> items = new List<object>();]]></Before>
+        <After><![CDATA[List<object> items = new List<object>();]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0023" Identifier="ChangeVarToExplicitType" Title="Change 'var' to explicit type">
     <Syntaxes>
@@ -456,10 +458,45 @@ if (y)
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0059" Identifier="GenerateSwitchSections" Title="Generate switch sections">
+  <Refactoring Id="RR0059" Identifier="AddMissingCases" Title="Add missing cases to switch statement">
     <Syntaxes>
-      <Syntax>switch statement (that is empty or contains only default section)</Syntax>
+      <Syntax>switch statement</Syntax>
     </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[switch (dayOfWeek)
+{
+    case DayOfWeek.Sunday:
+        break;
+    case DayOfWeek.Monday:
+        break;
+    case DayOfWeek.Tuesday:
+        break;
+    case DayOfWeek.Wednesday:
+        break;
+    case DayOfWeek.Thursday:
+        break;
+}
+]]></Before>
+        <After><![CDATA[switch (dayOfWeek)
+{
+    case DayOfWeek.Sunday:
+        break;
+    case DayOfWeek.Monday:
+        break;
+    case DayOfWeek.Tuesday:
+        break;
+    case DayOfWeek.Wednesday:
+        break;
+    case DayOfWeek.Thursday:
+        break;
+    case DayOfWeek.Friday:
+        break;
+    case DayOfWeek.Saturday:
+        break;
+}]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0060" Identifier="InitializeLocalWithDefaultValue" Title="Initialize local with default value">
     <Syntaxes>
@@ -543,6 +580,33 @@ if (y)
     <Syntaxes>
       <Syntax>selected if statements</Syntax>
     </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[bool condition1 = false;
+bool condition2 = false;
+
+if (condition1)
+{
+    return false;
+}
+
+if (condition2)
+{
+    return false;
+}
+
+return true;]]></Before>
+        <After><![CDATA[bool condition1 = false;
+bool condition2 = false;
+
+if (condition1 || condition2)
+{
+    return false;
+}
+
+return true;]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0076" Identifier="MergeInterpolationIntoInterpolatedString" Title="Merge interpolation into interpolated string" IsObsolete="true">
     <Syntaxes>
@@ -1289,7 +1353,7 @@ i--;]]></After>
       <Syntax>selected statements</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0173" Identifier="WrapInElseClause" Title="Wrap in else clause">
+  <Refactoring Id="RR0173" Identifier="WrapInElseClause" Title="Wrap in else clause" IsObsolete="true">
     <Syntaxes>
       <Syntax>statement</Syntax>
     </Syntaxes>
@@ -1905,6 +1969,173 @@ public class Foo
     {
         return BarAsync();
     }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0210" Identifier="ImplementCustomEnumerator" Title="Implement custom enumerator">
+    <Syntaxes>
+      <Syntax>class that implements IEnumerable&lt;T&gt;</Syntax>
+    </Syntaxes>
+    <Span>identifier</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[using System;
+using System.Collections;
+using System.Collections.Generic;
+
+class C<T> : IEnumerable<T>
+{
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+}]]></Before>
+        <After><![CDATA[using System;
+using System.Collections;
+using System.Collections.Generic;
+
+class C<T> : IEnumerable<T>
+{
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Enumerator GetEnumerator()
+    {
+        return new Enumerator(this);
+    }
+
+    public struct Enumerator
+    {
+        private readonly C<T> _c;
+        private int _index;
+
+        internal Enumerator(C<T> c)
+        {
+            _c = c;
+            _index = -1;
+        }
+
+        public T Current
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool MoveNext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            _index = -1;
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    //TODO: IEnumerable.GetEnumerator() and IEnumerable<T>.GetEnumerator() should return instance of EnumeratorImpl.
+    private class EnumeratorImpl : IEnumerator<T>
+    {
+        private Enumerator _e;
+
+        internal EnumeratorImpl(C<T> c)
+        {
+            _e = new Enumerator(c);
+        }
+
+        public T Current
+        {
+            get
+            {
+                return _e.Current;
+            }
+        }
+
+        object IEnumerator.Current
+        {
+            get
+            {
+                return _e.Current;
+            }
+        }
+
+        public bool MoveNext()
+        {
+            return _e.MoveNext();
+        }
+
+        void IEnumerator.Reset()
+        {
+            _e.Reset();
+        }
+
+        void IDisposable.Dispose()
+        {
+        }
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0211" Identifier="ConvertStatementsToIfElse" Title="Convert statements to if-else">
+    <Syntaxes>
+      <Syntax>selected statements (first statement must be 'if' statement)</Syntax>
+    </Syntaxes>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (x)
+    return 1;
+
+if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+
+return 0;]]></Before>
+        <After><![CDATA[if (x)
+{
+    return 1;
+}
+else if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+else
+{
+    return 0;
 }]]></After>
       </Sample>
     </Samples>

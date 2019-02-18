@@ -138,11 +138,11 @@ namespace Roslynator.CSharp.Analysis
             if (!IsFixableBackingField(property, propertySymbol, fieldSymbol, semanticModel, cancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseAutoProperty, property.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseAutoProperty, property.Identifier);
 
             if (property.ExpressionBody != null)
             {
-                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
+                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseAutoPropertyFadeOut, property.ExpressionBody);
             }
             else
             {
@@ -163,22 +163,22 @@ namespace Roslynator.CSharp.Analysis
                     {
                         case ReturnStatementSyntax returnStatement:
                             {
-                                context.ReportToken(DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.ReturnKeyword);
-                                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.Expression);
+                                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.ReturnKeyword);
+                                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseAutoPropertyFadeOut, returnStatement.Expression);
                                 break;
                             }
                         case ExpressionStatementSyntax expressionStatement:
                             {
-                                context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, expressionStatement.Expression);
+                                DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseAutoPropertyFadeOut, expressionStatement.Expression);
                                 break;
                             }
                     }
 
-                    context.ReportBraces(DiagnosticDescriptors.UseAutoPropertyFadeOut, body);
+                    CSharpDiagnosticHelpers.ReportBraces(context, DiagnosticDescriptors.UseAutoPropertyFadeOut, body);
                 }
                 else
                 {
-                    context.ReportNode(DiagnosticDescriptors.UseAutoPropertyFadeOut, accessor.ExpressionBody);
+                    DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.UseAutoPropertyFadeOut, accessor.ExpressionBody);
                 }
             }
         }

@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
             if (!context.SemanticModel.IsDefaultValue(typeSymbol, value, context.CancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantAutoPropertyInitialization, value);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAutoPropertyInitialization, value);
         }
     }
 }

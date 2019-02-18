@@ -119,7 +119,7 @@ namespace Roslynator.CSharp.Analysis
                         continue;
                 }
 
-                context.ReportDiagnostic(DiagnosticDescriptors.MakeMethodExtensionMethod, methodDeclaration.Identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeMethodExtensionMethod, methodDeclaration.Identifier);
             }
         }
     }

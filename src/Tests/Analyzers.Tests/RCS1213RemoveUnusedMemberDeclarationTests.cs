@@ -67,6 +67,70 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task Test_Method_IfElsePreprocessorDirectives()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    private void [|M|]()
+    {
+#if DEBUG
+#else
+#endif
+    }
+}
+", @"
+class C
+{
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task Test_Method_PragmaPreprocessorDirectives()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+        private void [|M|]()
+        {
+        }
+
+#pragma warning disable IDE0001
+        private const int [|K|] = 0;
+}
+", @"
+class C
+{
+
+#pragma warning disable IDE0001
+        }
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task Test_Method_RegionPreprocessorDirectives()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    #region R
+    private void [|M|]()
+    {
+    #endregion R
+    }
+}
+", @"
+class C
+{
+    #region R
+    
+#endregion R
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
         public async Task TestNoDiagnostic_Property_AttributeArgument_NameOf()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -171,6 +235,24 @@ class C
     }
 
     public void M2() => M();
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task TestNoDiagnostic_UnbalancedPreprocessorDirectives()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+#if DEBUG
+    void M()
+#else
+    void M()
+#endif
+    {
+        M();
+    }
 }
 ");
         }

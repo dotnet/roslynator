@@ -123,7 +123,7 @@ class C
     void M()
     {
         var x = Enumerable.Empty<string>();
-        char y = x.ElementAtOrDefault(1)?.First() ?? default;
+        char y = x.ElementAtOrDefault(1)?.First() ?? '\0';
     }
 }
 ");
@@ -215,7 +215,7 @@ class C
     void M()
     {
         var x = Enumerable.Empty<string>();
-        char y = x.ElementAtOrDefault(1)?[0] ?? default;
+        char y = x.ElementAtOrDefault(1)?[0] ?? '\0';
     }
 }
 ");

@@ -2,7 +2,6 @@
 
 using System.Collections.Immutable;
 using System.Composition;
-using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -35,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeTypeOfLocalVariable))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeTypeOfLocalVariable))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -101,10 +100,14 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         INamedTypeSymbol typeSymbol = ConstructActionOrFunc(returnType, parameters, semanticModel);
 
-                        CodeAction codeAction = CodeAction.Create(
-                            $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, variableDeclarator.SpanStart, SymbolDisplayFormats.Default)}'",
-                            cancellationToken => RefactorAsync(context.Document, (VariableDeclarationSyntax)variableDeclarator.Parent, typeSymbol, semanticModel, cancellationToken),
-                            GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(typeSymbol, SymbolDisplayFormats.Default)));
+                        var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
+
+                        CodeAction codeAction = CodeActionFactory.ChangeType(
+                            context.Document,
+                            variableDeclaration.Type,
+                            typeSymbol,
+                            semanticModel,
+                            equivalenceKey: GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(typeSymbol)));
 
                         context.RegisterCodeFix(codeAction, diagnostic);
                     }
@@ -163,20 +166,6 @@ namespace Roslynator.CSharp.CodeFixes
 
                 return funcSymbol.Construct(typeArguments);
             }
-        }
-
-        private static Task<Document> RefactorAsync(
-            Document document,
-            VariableDeclarationSyntax variableDeclaration,
-            INamedTypeSymbol typeSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            TypeSyntax type = typeSymbol.ToMinimalTypeSyntax(semanticModel, variableDeclaration.SpanStart);
-
-            VariableDeclarationSyntax newNode = variableDeclaration.WithType(type.WithTriviaFrom(variableDeclaration.Type));
-
-            return document.ReplaceNodeAsync(variableDeclaration, newNode, cancellationToken);
         }
     }
 }

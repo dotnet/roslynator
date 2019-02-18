@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
             if (initializer.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyInitializer, initializer);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyInitializer, initializer);
         }
     }
 }

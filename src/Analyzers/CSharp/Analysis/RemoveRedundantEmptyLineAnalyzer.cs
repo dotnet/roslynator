@@ -280,7 +280,7 @@ namespace Roslynator.CSharp.Analysis
             if (!leadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(node1.SyntaxTree, TextSpan.FromBounds(node2.FullSpan.Start, trivia.Span.End)));
         }
@@ -324,7 +324,7 @@ namespace Roslynator.CSharp.Analysis
             if (!leadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(token.SyntaxTree, TextSpan.FromBounds(node.FullSpan.Start, trivia.Span.End)));
         }
@@ -448,7 +448,7 @@ namespace Roslynator.CSharp.Analysis
             if (span == null)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
@@ -474,7 +474,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsEmptyLastLineInDoStatement(node, braceLine, span.Value))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span.Value));
         }
@@ -500,7 +500,7 @@ namespace Roslynator.CSharp.Analysis
             if (span == null)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(tree, span.Value));
         }
@@ -594,7 +594,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TextSpan span)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantEmptyLine,
                 Location.Create(context.Node.SyntaxTree, span));
         }

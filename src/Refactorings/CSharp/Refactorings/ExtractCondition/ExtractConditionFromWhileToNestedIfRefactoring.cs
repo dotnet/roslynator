@@ -16,11 +16,6 @@ namespace Roslynator.CSharp.Refactorings.ExtractCondition
 
         public static ExtractConditionFromWhileToNestedIfRefactoring Instance { get; } = new ExtractConditionFromWhileToNestedIfRefactoring();
 
-        public override SyntaxKind StatementKind
-        {
-            get { return SyntaxKind.WhileStatement; }
-        }
-
         public override string Title
         {
             get { return "Extract condition to nested if"; }

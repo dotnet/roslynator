@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Diagnostics.Telemetry;
+using Roslynator.Host.Mef;
 using static Roslynator.Logger;
 
 namespace Roslynator.Diagnostics
@@ -21,39 +22,19 @@ namespace Roslynator.Diagnostics
 
         private readonly AnalyzerAssemblyList _analyzerReferences = new AnalyzerAssemblyList();
 
-        private static readonly TimeSpan _minimalExecutionTime = TimeSpan.FromMilliseconds(1);
-
-        private static readonly CompilationWithAnalyzersOptions _ignoreSuppressedDiagnosticsCompilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
-            options: default(AnalyzerOptions),
-            onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
-            concurrentAnalysis: true,
-            logAnalyzerExecutionTime: true,
-            reportSuppressedDiagnostics: false);
-
-        private static readonly CompilationWithAnalyzersOptions _reportSuppressedDiagnosticsCompilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
-            options: default(AnalyzerOptions),
-            onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
-            concurrentAnalysis: true,
-            logAnalyzerExecutionTime: true,
-            reportSuppressedDiagnostics: true);
+        internal static readonly TimeSpan MinimalExecutionTime = TimeSpan.FromMilliseconds(1);
 
         public CodeAnalyzer(
-            AbstractSyntaxFactsServiceFactory syntaxFactsFactory,
-            IEnumerable<string> analyzerAssemblies = null,
+            IEnumerable<AnalyzerAssembly> analyzerAssemblies = null,
             IFormatProvider formatProvider = null,
             CodeAnalyzerOptions options = null)
         {
-            SyntaxFactsFactory = syntaxFactsFactory;
+            if (analyzerAssemblies != null)
+                _analyzerAssemblies.AddRange(analyzerAssemblies);
 
             Options = options ?? CodeAnalyzerOptions.Default;
-
-            if (analyzerAssemblies != null)
-                _analyzerAssemblies.LoadFrom(analyzerAssemblies, loadFixers: false);
-
             FormatProvider = formatProvider;
         }
-
-        public AbstractSyntaxFactsServiceFactory SyntaxFactsFactory { get; }
 
         public CodeAnalyzerOptions Options { get; }
 
@@ -103,42 +84,7 @@ namespace Roslynator.Diagnostics
             stopwatch.Stop();
 
             if (results.Count > 0)
-            {
-                if (Options.ExecutionTime)
-                    WriteExecutionTime(results);
-
-                int totalCount = 0;
-
-                foreach (ProjectAnalysisResult result in results)
-                {
-                    IEnumerable<Diagnostic> diagnostics = result.Diagnostics
-                        .Where(f => !f.IsAnalyzerExceptionDiagnostic())
-                        .Concat(result.CompilerDiagnostics);
-
-                    totalCount += FilterDiagnostics(diagnostics, cancellationToken).Count();
-                }
-
-                if (totalCount > 0)
-                {
-                    WriteLine(Verbosity.Minimal);
-
-                    Dictionary<DiagnosticDescriptor, int> diagnosticsByDescriptor = results
-                        .SelectMany(f => FilterDiagnostics(f.Diagnostics.Concat(f.CompilerDiagnostics), cancellationToken))
-                        .GroupBy(f => f.Descriptor, DiagnosticDescriptorComparer.Id)
-                        .ToDictionary(f => f.Key, f => f.Count());
-
-                    int maxCountLength = Math.Max(totalCount.ToString().Length, diagnosticsByDescriptor.Max(f => f.Value.ToString().Length));
-                    int maxIdLength = diagnosticsByDescriptor.Max(f => f.Key.Id.Length);
-
-                    foreach (KeyValuePair<DiagnosticDescriptor, int> kvp in diagnosticsByDescriptor.OrderBy(f => f.Key.Id))
-                    {
-                        WriteLine($"{kvp.Value.ToString().PadLeft(maxCountLength)} {kvp.Key.Id.PadRight(maxIdLength)} {kvp.Key.Title}", Verbosity.Normal);
-                    }
-
-                    WriteLine($"{totalCount} {((totalCount == 1) ? "diagnostic" : "diagnostics")} found", ConsoleColor.Green, Verbosity.Minimal);
-                    WriteLine(Verbosity.Minimal);
-                }
-            }
+                WriteProjectAnalysisResults(results, cancellationToken);
 
             WriteLine($"Done analyzing solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
 
@@ -147,7 +93,7 @@ namespace Roslynator.Diagnostics
 
         public async Task<ProjectAnalysisResult> AnalyzeProjectAsync(Project project, CancellationToken cancellationToken = default)
         {
-            ImmutableArray<DiagnosticAnalyzer> analyzers = Utilities.GetAnalyzers(
+            ImmutableArray<DiagnosticAnalyzer> analyzers = CodeAnalysisHelpers.GetAnalyzers(
                 project: project,
                 analyzerAssemblies: _analyzerAssemblies,
                 analyzerReferences: _analyzerReferences,
@@ -156,10 +102,12 @@ namespace Roslynator.Diagnostics
             if (!analyzers.Any())
             {
                 WriteLine($"  No analyzers found to analyze '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
-                return default;
+
+                if (Options.IgnoreCompilerDiagnostics)
+                    return default;
             }
 
-            WriteUsedAnalyzers(analyzers, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+            LogHelpers.WriteUsedAnalyzers(analyzers, ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
             cancellationToken.ThrowIfCancellationRequested();
 
@@ -171,36 +119,43 @@ namespace Roslynator.Diagnostics
 
             compilerDiagnostics = FilterDiagnostics(compilerDiagnostics, cancellationToken).ToImmutableArray();
 
-            CompilationWithAnalyzersOptions compilationWithAnalyzersOptions = (Options.ReportSuppressedDiagnostics)
-                ? _reportSuppressedDiagnosticsCompilationWithAnalyzersOptions
-                : _ignoreSuppressedDiagnosticsCompilationWithAnalyzersOptions;
+            ImmutableArray<Diagnostic> diagnostics = ImmutableArray<Diagnostic>.Empty;
 
-            var compilationWithAnalyzers = new CompilationWithAnalyzers(compilation, analyzers, compilationWithAnalyzersOptions);
-
-            ImmutableArray<Diagnostic> diagnostics = default;
             ImmutableDictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo> telemetry = ImmutableDictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo>.Empty;
 
-            if (Options.ExecutionTime)
+            if (analyzers.Any())
             {
-                AnalysisResult analysisResult = await compilationWithAnalyzers.GetAnalysisResultAsync(cancellationToken).ConfigureAwait(false);
+                var compilationWithAnalyzersOptions = new CompilationWithAnalyzersOptions(
+                    options: default(AnalyzerOptions),
+                    onAnalyzerException: default(Action<Exception, DiagnosticAnalyzer, Diagnostic>),
+                    concurrentAnalysis: Options.ConcurrentAnalysis,
+                    logAnalyzerExecutionTime: Options.LogAnalyzerExecutionTime,
+                    reportSuppressedDiagnostics: Options.ReportSuppressedDiagnostics);
 
-                diagnostics = analysisResult.GetAllDiagnostics();
-                telemetry = analysisResult.AnalyzerTelemetryInfo;
-            }
-            else
-            {
-                diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken).ConfigureAwait(false);
+                var compilationWithAnalyzers = new CompilationWithAnalyzers(compilation, analyzers, compilationWithAnalyzersOptions);
+
+                if (Options.LogAnalyzerExecutionTime)
+                {
+                    AnalysisResult analysisResult = await compilationWithAnalyzers.GetAnalysisResultAsync(cancellationToken).ConfigureAwait(false);
+
+                    diagnostics = analysisResult.GetAllDiagnostics();
+                    telemetry = analysisResult.AnalyzerTelemetryInfo;
+                }
+                else
+                {
+                    diagnostics = await compilationWithAnalyzers.GetAnalyzerDiagnosticsAsync(cancellationToken).ConfigureAwait(false);
+                }
             }
 
             string projectDirectoryPath = Path.GetDirectoryName(project.FilePath);
 
-            WriteDiagnostics(FilterDiagnostics(diagnostics.Where(f => f.IsAnalyzerExceptionDiagnostic()), cancellationToken).ToImmutableArray(), baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Diagnostic);
+            LogHelpers.WriteDiagnostics(FilterDiagnostics(diagnostics.Where(f => f.IsAnalyzerExceptionDiagnostic()), cancellationToken).ToImmutableArray(), baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Diagnostic);
 
             diagnostics = FilterDiagnostics(diagnostics.Where(f => !f.IsAnalyzerExceptionDiagnostic()), cancellationToken).ToImmutableArray();
 
-            WriteDiagnostics(compilerDiagnostics, baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Normal);
+            LogHelpers.WriteDiagnostics(compilerDiagnostics, baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Normal);
 
-            WriteDiagnostics(diagnostics, baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Normal);
+            LogHelpers.WriteDiagnostics(diagnostics, baseDirectoryPath: projectDirectoryPath, formatProvider: FormatProvider, indentation: "  ", verbosity: Verbosity.Normal);
 
             return new ProjectAnalysisResult(project.Id, analyzers, compilerDiagnostics, diagnostics, telemetry);
         }
@@ -219,7 +174,7 @@ namespace Roslynator.Diagnostics
                         SyntaxTree tree = diagnostic.Location.SourceTree;
 
                         if (tree == null
-                            || !GeneratedCodeUtility.IsGeneratedCode(tree, f => SyntaxFactsFactory.GetService(tree.Options.Language).IsComment(f), cancellationToken))
+                            || !GeneratedCodeUtility.IsGeneratedCode(tree, f => MefWorkspaceServices.Default.GetService<ISyntaxFactsService>(tree.Options.Language).IsComment(f), cancellationToken))
                         {
                             yield return diagnostic;
                         }
@@ -232,32 +187,73 @@ namespace Roslynator.Diagnostics
             }
         }
 
-        private static void WriteExecutionTime(List<ProjectAnalysisResult> results)
+        private void WriteProjectAnalysisResults(
+            List<ProjectAnalysisResult> results,
+            CancellationToken cancellationToken)
         {
-            var telemetryInfos = new Dictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo>();
+            if (Options.LogAnalyzerExecutionTime)
+                WriteExecutionTime();
+
+            int totalCount = 0;
 
             foreach (ProjectAnalysisResult result in results)
             {
-                foreach (KeyValuePair<DiagnosticAnalyzer, AnalyzerTelemetryInfo> kvp in result.Telemetry)
-                {
-                    DiagnosticAnalyzer analyzer = kvp.Key;
+                IEnumerable<Diagnostic> diagnostics = result.Diagnostics
+                    .Where(f => !f.IsAnalyzerExceptionDiagnostic())
+                    .Concat(result.CompilerDiagnostics);
 
-                    if (!telemetryInfos.TryGetValue(analyzer, out AnalyzerTelemetryInfo telemetryInfo))
-                        telemetryInfo = new AnalyzerTelemetryInfo();
-
-                    telemetryInfo.Add(kvp.Value);
-
-                    telemetryInfos[analyzer] = telemetryInfo;
-                }
+                totalCount += FilterDiagnostics(diagnostics, cancellationToken).Count();
             }
 
-            WriteLine(Verbosity.Minimal);
-
-            foreach (KeyValuePair<DiagnosticAnalyzer, AnalyzerTelemetryInfo> kvp in telemetryInfos
-                .Where(f => f.Value.ExecutionTime >= _minimalExecutionTime)
-                .OrderByDescending(f => f.Value.ExecutionTime))
+            if (totalCount > 0)
             {
-                WriteLine($"{kvp.Value.ExecutionTime:mm\\:ss\\.fff} '{kvp.Key.GetType().FullName}'", Verbosity.Minimal);
+                WriteLine(Verbosity.Minimal);
+
+                Dictionary<DiagnosticDescriptor, int> diagnosticsByDescriptor = results
+                    .SelectMany(f => FilterDiagnostics(f.Diagnostics.Concat(f.CompilerDiagnostics), cancellationToken))
+                    .GroupBy(f => f.Descriptor, DiagnosticDescriptorComparer.Id)
+                    .ToDictionary(f => f.Key, f => f.Count());
+
+                int maxCountLength = Math.Max(totalCount.ToString().Length, diagnosticsByDescriptor.Max(f => f.Value.ToString().Length));
+                int maxIdLength = diagnosticsByDescriptor.Max(f => f.Key.Id.Length);
+
+                foreach (KeyValuePair<DiagnosticDescriptor, int> kvp in diagnosticsByDescriptor.OrderBy(f => f.Key.Id))
+                {
+                    WriteLine($"{kvp.Value.ToString().PadLeft(maxCountLength)} {kvp.Key.Id.PadRight(maxIdLength)} {kvp.Key.Title}", Verbosity.Normal);
+                }
+
+                WriteLine(Verbosity.Minimal);
+                WriteLine($"{totalCount} {((totalCount == 1) ? "diagnostic" : "diagnostics")} found", ConsoleColor.Green, Verbosity.Minimal);
+                WriteLine(Verbosity.Minimal);
+            }
+
+            void WriteExecutionTime()
+            {
+                var telemetryInfos = new Dictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo>();
+
+                foreach (ProjectAnalysisResult result in results)
+                {
+                    foreach (KeyValuePair<DiagnosticAnalyzer, AnalyzerTelemetryInfo> kvp in result.Telemetry)
+                    {
+                        DiagnosticAnalyzer analyzer = kvp.Key;
+
+                        if (!telemetryInfos.TryGetValue(analyzer, out AnalyzerTelemetryInfo telemetryInfo))
+                            telemetryInfo = new AnalyzerTelemetryInfo();
+
+                        telemetryInfo.Add(kvp.Value);
+
+                        telemetryInfos[analyzer] = telemetryInfo;
+                    }
+                }
+
+                WriteLine(Verbosity.Minimal);
+
+                foreach (KeyValuePair<DiagnosticAnalyzer, AnalyzerTelemetryInfo> kvp in telemetryInfos
+                    .Where(f => f.Value.ExecutionTime >= MinimalExecutionTime)
+                    .OrderByDescending(f => f.Value.ExecutionTime))
+                {
+                    WriteLine($"{kvp.Value.ExecutionTime:mm\\:ss\\.fff} '{kvp.Key.GetType().FullName}'", Verbosity.Minimal);
+                }
             }
         }
     }

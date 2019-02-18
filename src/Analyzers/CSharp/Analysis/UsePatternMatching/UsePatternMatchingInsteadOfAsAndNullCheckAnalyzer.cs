@@ -85,7 +85,7 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
                     return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UsePatternMatchingInsteadOfAsAndNullCheck, localInfo.Statement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UsePatternMatchingInsteadOfAsAndNullCheck, localInfo.Statement);
         }
     }
 }

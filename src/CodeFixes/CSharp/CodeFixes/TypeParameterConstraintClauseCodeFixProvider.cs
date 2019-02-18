@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.RemoveConstraintClauses,
                 CodeFixIdentifiers.CombineConstraintClauses))
             {
@@ -46,7 +46,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.ConstraintsAreNotAllowedOnNonGenericDeclarations:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.RemoveConstraintClauses))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveConstraintClauses))
                                 break;
 
                             GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);
@@ -69,7 +69,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.ConstraintClauseHasAlreadyBeenSpecified:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.CombineConstraintClauses))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.CombineConstraintClauses))
                                 break;
 
                             GenericInfo genericInfo = SyntaxInfo.GenericInfo(constraintClause);

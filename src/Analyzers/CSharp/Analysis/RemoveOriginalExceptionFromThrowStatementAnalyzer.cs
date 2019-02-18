@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
                 if (!symbol.Equals(expressionSymbol))
                     continue;
 
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
                     expression);
             }

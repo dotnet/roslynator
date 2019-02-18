@@ -24,7 +24,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -38,7 +38,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.BodyCannotBeIteratorBlockBecauseTypeIsNotIteratorInterfaceType:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
                                 break;
 
                             BlockSyntax body = (node is MethodDeclarationSyntax methodDeclaration)
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 if (ienumerableOfTSymbol == null)
                                     ienumerableOfTSymbol = semanticModel.GetTypeByMetadataName("System.Collections.Generic.IEnumerable`1");
 
-                                CodeFixRegistrator.ChangeReturnType(
+                                CodeFixRegistrator.ChangeTypeOrReturnType(
                                     context,
                                     diagnostic,
                                     node,

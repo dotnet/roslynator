@@ -54,15 +54,6 @@ namespace Roslynator.CodeGeneration.CSharp
             return IfStatement(LogicalNotExpression(IdentifierName("ShouldVisit")), Block(ReturnStatement()));
         }
 
-        public static IfStatementSyntax IfEqualsToNullStatement(string name, StatementSyntax statement)
-        {
-            return IfStatement(
-                EqualsExpression(
-                    IdentifierName(name),
-                    NullLiteralExpression()),
-                (statement.IsKind(SyntaxKind.Block)) ? statement : Block(statement));
-        }
-
         public static IfStatementSyntax IfNotEqualsToNullStatement(string name, StatementSyntax statement)
         {
             return IfStatement(

@@ -11,7 +11,6 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
 
         private RemoveRedundantReturnStatementAnalysis()
         {
-
         }
 
         public override bool IsFixable(ReturnStatementSyntax statement)

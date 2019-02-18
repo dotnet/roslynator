@@ -81,7 +81,7 @@ namespace Roslynator.CSharp.Analysis
             MakeClassStaticWalker.Free(walker);
 
             if (canBeMadeStatic)
-                context.ReportDiagnostic(DiagnosticDescriptors.MakeClassStatic, classDeclaration.Identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeClassStatic, classDeclaration.Identifier);
         }
 
         public static bool AnalyzeMembers(ImmutableArray<ISymbol> members)

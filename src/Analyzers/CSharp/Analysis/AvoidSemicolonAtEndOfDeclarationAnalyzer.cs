@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
 
@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.Analysis
             if (semicolon.Parent != null
                 && !semicolon.IsMissing)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidSemicolonAtEndOfDeclaration, semicolon);
             }
         }
     }

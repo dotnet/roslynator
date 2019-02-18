@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
@@ -151,20 +152,14 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol destinationType,
             SemanticModel semanticModel)
         {
-            string typeDisplayString = SymbolDisplay.ToDisplayString(destinationType, SymbolDisplayFormats.Default);
+            CodeAction codeAction = CodeActionFactory.AddCastExpression(
+                context.Document,
+                expression,
+                destinationType,
+                semanticModel,
+                equivalenceKey: EquivalenceKey.Join(RefactoringIdentifiers.AddCastExpression, SymbolDisplay.ToDisplayString(destinationType)));
 
-            context.RegisterRefactoring(
-                $"Cast to '{typeDisplayString}'",
-                cancellationToken =>
-                {
-                    return AddCastExpressionRefactoring.RefactorAsync(
-                        context.Document,
-                        expression,
-                        destinationType,
-                        semanticModel,
-                        cancellationToken);
-                },
-                EquivalenceKey.Join(RefactoringIdentifiers.AddCastExpression, typeDisplayString));
+            context.RegisterRefactoring(codeAction);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace Roslynator.CSharp.Analysis
             if (ifStatement.IsInExpressionTree(context.SemanticModel, context.CancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseConditionalAccess, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseConditionalAccess, ifStatement);
         }
 
         public static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.UseConditionalAccess,
                 Location.Create(binaryExpression.SyntaxTree, TextSpan.FromBounds(left.SpanStart, right.Span.End)));
 
@@ -178,7 +178,7 @@ namespace Roslynator.CSharp.Analysis
             if (!ValidateRightExpression(right, binaryExpressionKind, semanticModel, cancellationToken))
                 return false;
 
-            if (RefactoringUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
+            if (CSharpUtility.ContainsOutArgumentWithLocal(right, semanticModel, cancellationToken))
                 return false;
 
             ExpressionSyntax e = FindExpressionThatCanBeConditionallyAccessed(expression, right, isNullable: !typeSymbol.IsReferenceType, semanticModel, cancellationToken);

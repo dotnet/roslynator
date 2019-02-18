@@ -97,11 +97,11 @@ namespace Roslynator.CSharp.Analysis
             if (semanticModel.GetSymbol(expression, cancellationToken)?.Kind != SymbolKind.Method)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantDelegateCreation, right);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantDelegateCreation, right);
 
-            context.ReportToken(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
-            context.ReportNode(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);
-            context.ReportParentheses(DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.ArgumentList);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.NewKeyword);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.Type);
+            CSharpDiagnosticHelpers.ReportParentheses(context, DiagnosticDescriptors.RemoveRedundantDelegateCreationFadeOut, objectCreation.ArgumentList);
         }
     }
 }

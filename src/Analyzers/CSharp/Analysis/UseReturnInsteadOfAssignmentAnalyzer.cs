@@ -78,7 +78,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseReturnInsteadOfAssignment, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReturnInsteadOfAssignment, ifStatement);
         }
 
         public static void AnalyzeSwitchStatement(SyntaxNodeAnalysisContext context)
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseReturnInsteadOfAssignment, switchStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseReturnInsteadOfAssignment, switchStatement);
         }
 
         internal static ReturnStatementSyntax FindReturnStatementBelow(SyntaxList<StatementSyntax> statements, StatementSyntax statement)

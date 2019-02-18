@@ -36,7 +36,7 @@ namespace Roslynator.CSharp.Analysis
             if (assignment.Right is AssignmentExpressionSyntax
                 && !(assignment.Parent is AssignmentExpressionSyntax))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidChainOfAssignments, assignment);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidChainOfAssignments, assignment);
             }
         }
 
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis
             var equalsValue = (EqualsValueClauseSyntax)context.Node;
 
             if (equalsValue.Value is AssignmentExpressionSyntax)
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidChainOfAssignments, equalsValue);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidChainOfAssignments, equalsValue);
         }
     }
 }

@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Analysis
 
             var classDeclaration = (ClassDeclarationSyntax)symbol.GetSyntax(context.CancellationToken);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.ImplementExceptionConstructors, classDeclaration.Identifier);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ImplementExceptionConstructors, classDeclaration.Identifier);
         }
 
         private static bool IsSerializationConstructor(IMethodSymbol methodSymbol)

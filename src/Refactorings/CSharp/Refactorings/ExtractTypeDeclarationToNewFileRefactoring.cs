@@ -44,6 +44,7 @@ namespace Roslynator.CSharp.Refactorings
             if (identifier.Span.Contains(context.Span)
                 && memberDeclaration.IsParentKind(SyntaxKind.NamespaceDeclaration, SyntaxKind.CompilationUnit)
                 && context.IsRootCompilationUnit
+                && context.Workspace.Kind != WorkspaceKind.MiscellaneousFiles
                 && ExtractTypeDeclarationToNewDocumentRefactoring.GetNonNestedTypeDeclarations((CompilationUnitSyntax)context.Root).Skip(1).Any())
             {
                 context.RegisterRefactoring(

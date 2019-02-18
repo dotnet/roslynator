@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
             if (!UseConstantInsteadOfFieldAnalysis.IsFixable(fieldDeclaration, context.SemanticModel, onlyPrivate: true, cancellationToken: context.CancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseConstantInsteadOfField, fieldDeclaration);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseConstantInsteadOfField, fieldDeclaration);
         }
     }
 }

@@ -9,7 +9,7 @@ using Microsoft.CodeAnalysis.Diagnostics.Telemetry;
 
 namespace Roslynator.Diagnostics
 {
-    public class ProjectAnalysisResult
+    internal class ProjectAnalysisResult
     {
         internal ProjectAnalysisResult(
             ProjectId projectId,
@@ -34,8 +34,6 @@ namespace Roslynator.Diagnostics
         public ImmutableArray<Diagnostic> Diagnostics { get; }
 
         public ImmutableDictionary<DiagnosticAnalyzer, AnalyzerTelemetryInfo> Telemetry { get; }
-
-        public bool IsDefault => ProjectId == null;
 
         public IEnumerable<Diagnostic> GetAllDiagnostics()
         {

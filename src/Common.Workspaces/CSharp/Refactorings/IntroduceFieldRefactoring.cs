@@ -33,11 +33,10 @@ namespace Roslynator.CSharp.Refactorings
                 expressionStatement.SpanStart,
                 cancellationToken: cancellationToken);
 
-            name = NameGenerator.Default.EnsureUniqueMemberName(
+            name = NameGenerator.Default.EnsureUniqueName(
                 name,
                 semanticModel,
-                containingType.OpenBraceToken.Span.End,
-                cancellationToken: cancellationToken);
+                containingType.OpenBraceToken.Span.End);
 
             ExpressionSyntax expression = expressionStatement.Expression;
 

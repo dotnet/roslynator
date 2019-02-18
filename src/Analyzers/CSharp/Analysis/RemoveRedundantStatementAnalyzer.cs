@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.Analysis
             if (!RemoveRedundantStatementAnalysis.IsFixable(continueStatement))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantStatement, continueStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantStatement, continueStatement);
         }
 
         private static void AnalyzeReturnStatement(SyntaxNodeAnalysisContext context)
@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
             if (!RemoveRedundantStatementAnalysis.IsFixable(returnStatement))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantStatement, returnStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantStatement, returnStatement);
         }
 
         private static void AnalyzeYieldBreakStatement(SyntaxNodeAnalysisContext context)
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp.Analysis
             if (!RemoveRedundantStatementAnalysis.IsFixable(yieldBreakStatement))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveRedundantStatement, yieldBreakStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantStatement, yieldBreakStatement);
         }
     }
 }

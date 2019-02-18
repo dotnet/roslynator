@@ -313,16 +313,16 @@ namespace Roslynator.CSharp.Analysis
             in SingleLocalDeclarationStatementInfo localDeclarationInfo,
             ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.InlineLocalVariable, localDeclarationInfo.Statement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.InlineLocalVariable, localDeclarationInfo.Statement);
 
             foreach (SyntaxToken modifier in localDeclarationInfo.Modifiers)
-                context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, modifier);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, modifier);
 
-            context.ReportNode(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Type);
-            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Identifier);
-            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.EqualsToken);
-            context.ReportToken(DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.SemicolonToken);
-            context.ReportNode(DiagnosticDescriptors.InlineLocalVariableFadeOut, expression);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Type);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.Identifier);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.EqualsToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, localDeclarationInfo.SemicolonToken);
+            DiagnosticHelpers.ReportNode(context, DiagnosticDescriptors.InlineLocalVariableFadeOut, expression);
         }
     }
 }

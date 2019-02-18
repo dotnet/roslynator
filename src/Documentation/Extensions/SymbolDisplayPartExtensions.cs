@@ -22,25 +22,6 @@ namespace Roslynator.Documentation
                 && part.ToString() == text;
         }
 
-        internal static bool IsTypeNameOrMemberName(this SymbolDisplayPart part)
-        {
-            switch (part.Kind)
-            {
-                case SymbolDisplayPartKind.ClassName:
-                case SymbolDisplayPartKind.DelegateName:
-                case SymbolDisplayPartKind.EnumName:
-                case SymbolDisplayPartKind.EventName:
-                case SymbolDisplayPartKind.FieldName:
-                case SymbolDisplayPartKind.InterfaceName:
-                case SymbolDisplayPartKind.MethodName:
-                case SymbolDisplayPartKind.PropertyName:
-                case SymbolDisplayPartKind.StructName:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         internal static bool IsTypeName(this SymbolDisplayPart part)
         {
             switch (part.Kind)

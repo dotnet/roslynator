@@ -23,7 +23,8 @@ namespace Roslynator.Metadata
             string summary,
             string remarks,
             IEnumerable<SampleDescriptor> samples,
-            IEnumerable<LinkDescriptor> links)
+            IEnumerable<LinkDescriptor> links,
+            bool isDevelopment = false)
         {
             Id = id;
             Identifier = identifier;
@@ -39,6 +40,7 @@ namespace Roslynator.Metadata
             Remarks = remarks;
             Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
             Links = new ReadOnlyCollection<LinkDescriptor>(links?.ToArray() ?? Array.Empty<LinkDescriptor>());
+            IsDevelopment = isDevelopment;
         }
 
         public string Id { get; }
@@ -68,5 +70,7 @@ namespace Roslynator.Metadata
         public IReadOnlyList<SampleDescriptor> Samples { get; }
 
         public IReadOnlyList<LinkDescriptor> Links { get; }
+
+        public bool IsDevelopment { get; }
     }
 }

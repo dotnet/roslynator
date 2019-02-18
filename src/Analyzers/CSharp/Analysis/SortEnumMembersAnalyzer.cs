@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Analysis
                 && !enumDeclaration.ContainsDirectives(enumDeclaration.BracesSpan()))
             {
                 SyntaxToken identifier = enumDeclaration.Identifier;
-                context.ReportDiagnostic(DiagnosticDescriptors.SortEnumMembers, identifier, identifier);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SortEnumMembers, identifier, identifier);
             }
         }
 

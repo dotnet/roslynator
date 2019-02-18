@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using Microsoft.CodeAnalysis;
@@ -16,7 +17,107 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class OptimizeLinqMethodCallAnalysis
     {
+        public static void AnalyzeAny(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            bool isLogicalNot = false;
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            ExpressionSyntax expression = invocationExpression.WalkUpParentheses();
+
+            if (expression.IsParentKind(SyntaxKind.LogicalNotExpression))
+            {
+                isLogicalNot = true;
+                expression = (ExpressionSyntax)expression.Parent;
+
+                expression = expression.WalkUpParentheses();
+            }
+
+            if (!expression.IsParentKind(SyntaxKind.ConditionalExpression))
+                return;
+
+            if (expression.Parent.ContainsDiagnostics)
+                return;
+
+            var conditionalExpression = (ConditionalExpressionSyntax)expression.Parent;
+
+            if (conditionalExpression.Condition != expression)
+                return;
+
+            ExpressionSyntax firstExpression = (isLogicalNot)
+                ? conditionalExpression.WhenFalse?.WalkDownParentheses()
+                : conditionalExpression.WhenTrue?.WalkDownParentheses();
+
+            if (!firstExpression.IsKind(SyntaxKind.InvocationExpression))
+                return;
+
+            ExpressionSyntax secondExpression = (isLogicalNot)
+                ? conditionalExpression.WhenTrue?.WalkDownParentheses()
+                : conditionalExpression.WhenFalse?.WalkDownParentheses();
+
+            if (secondExpression == null)
+                return;
+
+            SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo((InvocationExpressionSyntax)firstExpression);
+
+            if (invocationInfo2.NameText != "First")
+                return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            ExtensionMethodSymbolInfo extensionMethodSymbolInfo = semanticModel.GetExtensionMethodInfo(invocationExpression, cancellationToken);
+
+            if (extensionMethodSymbolInfo.Symbol == null)
+                return;
+
+            if (!extensionMethodSymbolInfo.IsReduced)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(extensionMethodSymbolInfo.Symbol, "Any"))
+                return;
+
+            IMethodSymbol methodSymbol2 = semanticModel.GetExtensionMethodInfo(invocationInfo2.InvocationExpression, cancellationToken).Symbol;
+
+            if (methodSymbol2 == null)
+                return;
+
+            if (!SymbolUtility.IsLinqExtensionOfIEnumerableOfTWithoutParameters(methodSymbol2, "First"))
+                return;
+
+            if (!SyntaxFactory.AreEquivalent(invocationInfo.Expression, invocationInfo2.Expression, topLevel: false))
+                return;
+
+            if (!semanticModel.IsDefaultValue(extensionMethodSymbolInfo.ReducedSymbol.TypeArguments[0], secondExpression, cancellationToken))
+                return;
+
+            Report(context, conditionalExpression);
+        }
+
+        // items.Where(predicate).Any/Count/First/FirstOrDefault/Last/LastOrDefault/LongCount/Single/SingleOrDefault() >>> items.Any/Count/First/FirstOrDefault/Last/LastOrDefault/LongCount/Single/SingleOrDefault(predicate)
         public static void AnalyzeWhere(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            SimplifyLinqMethodChain(
+                context,
+                invocationInfo,
+                "Where");
+        }
+
+        // items.Select(selector).Min/Max() >>> items.Min/Max(selector)
+        public static void AnalyzeSelectAndMinOrMax(
+            SyntaxNodeAnalysisContext context,
+            in SimpleMemberInvocationExpressionInfo invocationInfo)
+        {
+            SimplifyLinqMethodChain(
+                context,
+                invocationInfo,
+                "Select");
+        }
+
+        private static void SimplifyLinqMethodChain(
+            SyntaxNodeAnalysisContext context,
+            in SimpleMemberInvocationExpressionInfo invocationInfo,
+            string methodName)
         {
             SimpleMemberInvocationExpressionInfo invocationInfo2 = SyntaxInfo.SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
 
@@ -26,7 +127,7 @@ namespace Roslynator.CSharp.Analysis
             if (invocationInfo2.Arguments.Count != 1)
                 return;
 
-            if (invocationInfo2.NameText != "Where")
+            if (invocationInfo2.NameText != methodName)
                 return;
 
             InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;
@@ -47,8 +148,28 @@ namespace Roslynator.CSharp.Analysis
             if (methodSymbol2 == null)
                 return;
 
-            if (!SymbolUtility.IsLinqWhere(methodSymbol2, allowImmutableArrayExtension: true))
-                return;
+            switch (methodName)
+            {
+                case "Where":
+                    {
+                        if (!SymbolUtility.IsLinqWhere(methodSymbol2, allowImmutableArrayExtension: true))
+                            return;
+
+                        break;
+                    }
+                case "Select":
+                    {
+                        if (!SymbolUtility.IsLinqSelect(methodSymbol2, allowImmutableArrayExtension: true))
+                            return;
+
+                        break;
+                    }
+                default:
+                    {
+                        Debug.Fail(methodName);
+                        return;
+                    }
+            }
 
             TextSpan span = TextSpan.FromBounds(invocationInfo2.Name.SpanStart, invocation.Span.End);
 
@@ -566,7 +687,7 @@ namespace Roslynator.CSharp.Analysis
                 ? ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { property.Value })
                 : ImmutableDictionary<string, string>.Empty;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 descriptor: DiagnosticDescriptors.OptimizeLinqMethodCall,
                 location: Location.Create(node.SyntaxTree, span),
                 properties: properties,

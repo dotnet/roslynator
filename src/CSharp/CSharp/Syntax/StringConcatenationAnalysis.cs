@@ -17,25 +17,13 @@ namespace Roslynator.CSharp.Syntax
 
         private StringConcatenationFlags Flags { get; }
 
-        public bool ContainsUnspecifiedExpression => (Flags & StringConcatenationFlags.ContainsUnspecifiedExpression) != 0;
-
         public bool ContainsNonStringLiteral => (Flags & StringConcatenationFlags.ContainsNonStringLiteral) != 0;
 
         public bool ContainsStringLiteral => (Flags & StringConcatenationFlags.ContainsStringLiteral) != 0;
 
-        public bool ContainsRegularStringLiteral => (Flags & StringConcatenationFlags.ContainsRegularStringLiteral) != 0;
-
-        public bool ContainsVerbatimStringLiteral => (Flags & StringConcatenationFlags.ContainsVerbatimStringLiteral) != 0;
-
         public bool ContainsInterpolatedString => (Flags & StringConcatenationFlags.ContainsInterpolatedString) != 0;
 
-        public bool ContainsRegularInterpolatedString => (Flags & StringConcatenationFlags.ContainsRegularInterpolatedString) != 0;
-
-        public bool ContainsVerbatimInterpolatedString => (Flags & StringConcatenationFlags.ContainsVerbatimInterpolatedString) != 0;
-
         public bool ContainsNonVerbatimExpression => (Flags & StringConcatenationFlags.ContainsNonVerbatimExpression) != 0;
-
-        public bool ContainsVerbatimExpression => (Flags & StringConcatenationFlags.ContainsVerbatimExpression) != 0;
 
         public static StringConcatenationAnalysis Create(in StringConcatenationExpressionInfo stringConcatenation)
         {

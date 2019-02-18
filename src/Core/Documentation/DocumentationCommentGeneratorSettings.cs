@@ -29,15 +29,6 @@ namespace Roslynator.Documentation
 
         public bool Returns { get; }
 
-        public DocumentationCommentGeneratorSettings WithSummary(IEnumerable<string> summary)
-        {
-            return new DocumentationCommentGeneratorSettings(
-                summary: summary,
-                indentation: Indentation,
-                singleLineSummary: SingleLineSummary,
-                returns: Returns);
-        }
-
         public DocumentationCommentGeneratorSettings WithIndentation(string indentation)
         {
             return new DocumentationCommentGeneratorSettings(
@@ -45,24 +36,6 @@ namespace Roslynator.Documentation
                 indentation: indentation,
                 singleLineSummary: SingleLineSummary,
                 returns: Returns);
-        }
-
-        public DocumentationCommentGeneratorSettings WithSingleLineSummary(bool singleLineSummary)
-        {
-            return new DocumentationCommentGeneratorSettings(
-                summary: Summary,
-                indentation: Indentation,
-                singleLineSummary: singleLineSummary,
-                returns: Returns);
-        }
-
-        public DocumentationCommentGeneratorSettings WithReturns(bool returns)
-        {
-            return new DocumentationCommentGeneratorSettings(
-                summary: Summary,
-                indentation: Indentation,
-                singleLineSummary: SingleLineSummary,
-                returns: returns);
         }
     }
 }

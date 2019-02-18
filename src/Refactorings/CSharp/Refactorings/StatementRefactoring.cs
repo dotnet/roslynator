@@ -50,10 +50,7 @@ namespace Roslynator.CSharp.Refactorings
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement)
                 && !isEmbedded)
             {
-                context.RegisterRefactoring(
-                    "Remove statement",
-                    cancellationToken => context.Document.RemoveStatementAsync(statement, cancellationToken),
-                    RefactoringIdentifiers.RemoveStatement);
+                context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, statement, "Remove statement", RefactoringIdentifiers.RemoveStatement));
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateStatement))

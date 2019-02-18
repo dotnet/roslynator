@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.UseExplicitTypeInsteadOfVar,
                 CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
             {
@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotHaveMultipleDeclarators:
                     case CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotBeConstant:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.UseExplicitTypeInsteadOfVar))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.UseExplicitTypeInsteadOfVar))
                                 return;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -74,10 +74,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (typeSymbol?.SupportsExplicitDeclaration() == true)
                             {
-                                CodeAction codeAction = CodeAction.Create(
-                                    $"Change type to '{SymbolDisplay.ToMinimalDisplayString(typeSymbol, semanticModel, type.SpanStart, SymbolDisplayFormats.Default)}'",
-                                    cancellationToken => ChangeTypeRefactoring.ChangeTypeAsync(context.Document, type, typeSymbol, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
+                                CodeAction codeAction = CodeActionFactory.ChangeType(context.Document, type, typeSymbol, semanticModel, equivalenceKey: GetEquivalenceKey(diagnostic));
 
                                 context.RegisterCodeFix(codeAction, diagnostic);
                             }
@@ -87,7 +84,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.LocalVariableOrFunctionIsAlreadyDefinedInThisScope:
                     case CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter:
                         {
-                            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
                                 return;
 
                             if (!(variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclaration))

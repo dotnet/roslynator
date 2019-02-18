@@ -23,16 +23,9 @@ namespace Roslynator.CSharp
             TNode node,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            TNode newNode = ToSingleLine(node);
+            TNode newNode = node.ReplaceWhitespace(ElasticSpace).WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
-        }
-
-        private static TNode ToSingleLine<TNode>(TNode node) where TNode : SyntaxNode
-        {
-            return node
-                .RemoveWhitespace(node.Span)
-                .WithFormatterAnnotation();
         }
 
         public static Task<Document> ToSingleLineAsync(

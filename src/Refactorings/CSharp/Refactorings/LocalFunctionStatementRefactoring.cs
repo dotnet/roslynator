@@ -21,10 +21,7 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveMember))
                         {
-                            context.RegisterRefactoring(
-                                "Remove local function",
-                                cancellationToken => context.Document.RemoveStatementAsync(localFunctionStatement, cancellationToken),
-                                RefactoringIdentifiers.RemoveMember);
+                            context.RegisterRefactoring(CodeActionFactory.RemoveStatement(context.Document, localFunctionStatement, equivalenceKey: RefactoringIdentifiers.RemoveMember));
                         }
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateMember))

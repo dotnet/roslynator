@@ -54,7 +54,7 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol?.IsValueType != true)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
 
             ExpressionSyntax GetObjectExpression()
             {
@@ -98,7 +98,7 @@ namespace Roslynator.CSharp.Analysis
             if (typeSymbol?.IsValueType != true)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidBoxingOfValueType, expression);
         }
     }
 }

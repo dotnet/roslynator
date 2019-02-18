@@ -52,14 +52,14 @@ namespace Roslynator.CSharp.Analysis
                 if (CSharpUtility.IsStringExpression(right, semanticModel, cancellationToken)
                     && !equalsExpression.IsInExpressionTree(semanticModel, cancellationToken))
                 {
-                    context.ReportDiagnostic(DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
+                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
                 }
             }
             else if (CSharpUtility.IsEmptyStringExpression(right, semanticModel, cancellationToken)
                 && CSharpUtility.IsStringExpression(left, semanticModel, cancellationToken)
                 && !equalsExpression.IsInExpressionTree(semanticModel, cancellationToken))
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseStringLengthInsteadOfComparisonWithEmptyString, equalsExpression);
             }
         }
     }

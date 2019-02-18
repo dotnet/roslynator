@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                 if (variablesCount == 1
                     || variablesCount == count)
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.MarkFieldAsReadOnly,
                         declaration.Parent);
                 }

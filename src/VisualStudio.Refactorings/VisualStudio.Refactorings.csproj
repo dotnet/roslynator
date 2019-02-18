@@ -68,6 +68,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="app.config" />
+    <None Include="manifest.json" />
     <None Include="packages.config" />
     <None Include="VisualStudio.Refactorings.snk" />
     <None Include="source.extension.vsixmanifest">

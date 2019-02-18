@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
             if (!AreEquivalent(expressions.InvertedExpression, expressions2.Expression))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseExclusiveOrOperator, context.Node);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseExclusiveOrOperator, context.Node);
         }
 
         private static ExpressionPair GetExpressionPair(BinaryExpressionSyntax logicalAnd)

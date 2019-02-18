@@ -48,7 +48,7 @@ namespace Roslynator.CSharp.Refactorings
             if (node.Kind() == SyntaxKind.VariableDeclarator)
                 node = node.Parent.Parent;
 
-            TypeSyntax type = GetTypeOrReturnType(node);
+            TypeSyntax type = CSharpUtility.GetTypeOrReturnType(node);
 
             if (type == null)
                 return;
@@ -204,25 +204,6 @@ namespace Roslynator.CSharp.Refactorings
             Debug.Fail(expression.ToString());
 
             return default((ISymbol, ITypeSymbol));
-        }
-
-        private static TypeSyntax GetTypeOrReturnType(SyntaxNode node)
-        {
-            switch (node.Kind())
-            {
-                case SyntaxKind.MethodDeclaration:
-                    return ((MethodDeclarationSyntax)node).ReturnType;
-                case SyntaxKind.PropertyDeclaration:
-                    return ((PropertyDeclarationSyntax)node).Type;
-                case SyntaxKind.IndexerDeclaration:
-                    return ((IndexerDeclarationSyntax)node).Type;
-                case SyntaxKind.LocalFunctionStatement:
-                    return ((LocalFunctionStatementSyntax)node).ReturnType;
-                case SyntaxKind.FieldDeclaration:
-                    return ((FieldDeclarationSyntax)node).Declaration.Type;
-                default:
-                    return null;
-            }
         }
 
         private static string GetText(SyntaxNode node)

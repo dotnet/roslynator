@@ -2,14 +2,16 @@
 
 using System;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
     [DebuggerDisplay("{Flags}")]
     internal readonly struct TypeAnalysis : IEquatable<TypeAnalysis>
     {
-        internal TypeAnalysis(TypeAnalysisFlags flags)
+        internal TypeAnalysis(ITypeSymbol symbol, TypeAnalysisFlags flags)
         {
+            Symbol = symbol;
             Flags = flags;
         }
 
@@ -23,16 +25,13 @@ namespace Roslynator
 
         public bool IsTypeObvious => Any(TypeAnalysisFlags.TypeObvious);
 
-        internal TypeAnalysisFlags Flags { get; }
+        public ITypeSymbol Symbol { get; }
+
+        public TypeAnalysisFlags Flags { get; }
 
         public bool Any(TypeAnalysisFlags flags)
         {
             return (Flags & flags) != 0;
-        }
-
-        public bool All(TypeAnalysisFlags flags)
-        {
-            return (Flags & flags) != flags;
         }
 
         public override bool Equals(object obj)
@@ -42,22 +41,12 @@ namespace Roslynator
 
         public bool Equals(TypeAnalysis other)
         {
-            return Flags == other.Flags;
+            return Symbol == other.Symbol;
         }
 
         public override int GetHashCode()
         {
-            return Flags.GetHashCode();
-        }
-
-        public static implicit operator TypeAnalysis(TypeAnalysisFlags value)
-        {
-            return new TypeAnalysis(value);
-        }
-
-        public static implicit operator TypeAnalysisFlags(in TypeAnalysis value)
-        {
-            return value.Flags;
+            return Symbol.GetHashCode();
         }
 
         public static bool operator ==(in TypeAnalysis analysis1, in TypeAnalysis analysis2)

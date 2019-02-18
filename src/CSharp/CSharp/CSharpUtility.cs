@@ -12,10 +12,6 @@ namespace Roslynator.CSharp
 {
     internal static class CSharpUtility
     {
-        private static readonly SymbolDisplayFormat _symbolDisplayFormat = new SymbolDisplayFormat(
-            genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
-            typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces);
-
         public static string GetCountOrLengthPropertyName(
             ExpressionSyntax expression,
             SemanticModel semanticModel,
@@ -220,34 +216,6 @@ namespace Roslynator.CSharp
             return false;
         }
 
-        public static NameSyntax EnsureFullyQualifiedName(
-            NameSyntax name,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ISymbol symbol = semanticModel.GetSymbol(name, cancellationToken);
-
-            if (symbol != null)
-            {
-                if (semanticModel.GetAliasInfo(name, cancellationToken) != null
-                    || !symbol.ContainingNamespace.IsGlobalNamespace)
-                {
-                    SymbolKind kind = symbol.Kind;
-
-                    if (kind == SymbolKind.Namespace)
-                    {
-                        return SyntaxFactory.ParseName(symbol.ToString()).WithTriviaFrom(name);
-                    }
-                    else if (kind == SymbolKind.NamedType)
-                    {
-                        return (NameSyntax)((INamedTypeSymbol)symbol).ToTypeSyntax(_symbolDisplayFormat).WithTriviaFrom(name);
-                    }
-                }
-            }
-
-            return name;
-        }
-
         public static bool IsNameOfExpression(
             SyntaxNode node,
             SemanticModel semanticModel,
@@ -276,23 +244,6 @@ namespace Roslynator.CSharp
             }
 
             return false;
-        }
-
-        public static bool IsPropertyOfNullableOfT(
-            IdentifierNameSyntax identifierName,
-            string name,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (identifierName == null)
-                return false;
-
-            if (!string.Equals(identifierName.Identifier.ValueText, name, StringComparison.Ordinal))
-                return false;
-
-            ISymbol symbol = semanticModel.GetSymbol(identifierName, cancellationToken);
-
-            return SymbolUtility.IsPropertyOfNullableOfT(symbol, name);
         }
 
         public static bool IsStringConcatenation(BinaryExpressionSyntax addExpression, SemanticModel semanticModel, CancellationToken cancellationToken = default(CancellationToken))
@@ -348,21 +299,6 @@ namespace Roslynator.CSharp
             return semanticModel.GetTypeInfo(expression, cancellationToken)
                 .Type?
                 .SpecialType == SpecialType.System_String;
-        }
-
-        public static bool IsBooleanExpression(
-            ExpressionSyntax expression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (expression == null)
-                return false;
-
-            return CSharpFacts.IsBooleanExpression(expression.WalkDownParentheses().Kind())
-                || semanticModel
-                    .GetTypeInfo(expression, cancellationToken)
-                    .ConvertedType?
-                    .SpecialType == SpecialType.System_Boolean;
         }
 
         public static SyntaxToken GetIdentifier(SyntaxNode node)
@@ -636,6 +572,139 @@ namespace Roslynator.CSharp
                 SyntaxKind.ElementAccessExpression,
                 SyntaxKind.MemberBindingExpression,
                 SyntaxKind.InvocationExpression));
+        }
+
+        internal static IFieldSymbol FindEnumDefaultField(INamedTypeSymbol enumSymbol)
+        {
+            if (enumSymbol == null)
+                throw new ArgumentNullException(nameof(enumSymbol));
+
+            if (enumSymbol.EnumUnderlyingType == null)
+                throw new ArgumentException($"'{enumSymbol}' is not an enumeration.", nameof(enumSymbol));
+
+            foreach (ISymbol symbol in enumSymbol.GetMembers())
+            {
+                if (symbol.Kind == SymbolKind.Field)
+                {
+                    var fieldSymbol = (IFieldSymbol)symbol;
+
+                    if (fieldSymbol.HasConstantValue
+                        && SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol) == 0)
+                    {
+                        return fieldSymbol;
+                    }
+                }
+            }
+
+            return default(IFieldSymbol);
+        }
+
+        public static TypeSyntax GetTypeOrReturnType(SyntaxNode node)
+        {
+            switch (node.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)node).ReturnType;
+                case SyntaxKind.OperatorDeclaration:
+                    return ((OperatorDeclarationSyntax)node).ReturnType;
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return ((ConversionOperatorDeclarationSyntax)node).Type;
+                case SyntaxKind.PropertyDeclaration:
+                    return ((PropertyDeclarationSyntax)node).Type;
+                case SyntaxKind.IndexerDeclaration:
+                    return ((IndexerDeclarationSyntax)node).Type;
+                case SyntaxKind.FieldDeclaration:
+                    return ((FieldDeclarationSyntax)node).Declaration.Type;
+                case SyntaxKind.EventDeclaration:
+                    return ((EventDeclarationSyntax)node).Type;
+                case SyntaxKind.EventFieldDeclaration:
+                    return ((EventFieldDeclarationSyntax)node).Declaration.Type;
+                case SyntaxKind.LocalFunctionStatement:
+                    return ((LocalFunctionStatementSyntax)node).ReturnType;
+                default:
+                    return null;
+            }
+        }
+
+        public static bool ContainsOutArgumentWithLocal(
+            ExpressionSyntax expression,
+            SemanticModel semanticModel,
+            CancellationToken cancellationToken = default(CancellationToken))
+        {
+            foreach (SyntaxNode node in expression.DescendantNodes())
+            {
+                if (node.Kind() == SyntaxKind.Argument)
+                {
+                    var argument = (ArgumentSyntax)node;
+
+                    if (argument.RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword)
+                    {
+                        ExpressionSyntax argumentExpression = argument.Expression;
+
+                        if (argumentExpression?.IsMissing == false
+                            && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.Kind == SymbolKind.Local)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static SeparatedSyntaxList<ParameterSyntax> GetParameters(SyntaxNode declaration)
+        {
+            return GetParameterList(declaration)?.Parameters ?? default;
+        }
+
+        public static BaseParameterListSyntax GetParameterList(SyntaxNode declaration)
+        {
+            switch (declaration.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)declaration).ParameterList;
+                case SyntaxKind.ConstructorDeclaration:
+                    return ((ConstructorDeclarationSyntax)declaration).ParameterList;
+                case SyntaxKind.OperatorDeclaration:
+                    return ((OperatorDeclarationSyntax)declaration).ParameterList;
+                case SyntaxKind.ConversionOperatorDeclaration:
+                    return ((ConversionOperatorDeclarationSyntax)declaration).ParameterList;
+                case SyntaxKind.DelegateDeclaration:
+                    return ((DelegateDeclarationSyntax)declaration).ParameterList;
+                case SyntaxKind.IndexerDeclaration:
+                    return ((IndexerDeclarationSyntax)declaration).ParameterList;
+                case SyntaxKind.LocalFunctionStatement:
+                    return ((LocalFunctionStatementSyntax)declaration).ParameterList;
+                default:
+                    return null;
+            }
+        }
+
+        public static SeparatedSyntaxList<TypeParameterSyntax> GetTypeParameters(SyntaxNode declaration)
+        {
+            return GetTypeParameterList(declaration)?.Parameters ?? default;
+        }
+
+        public static TypeParameterListSyntax GetTypeParameterList(SyntaxNode declaration)
+        {
+            switch (declaration.Kind())
+            {
+                case SyntaxKind.ClassDeclaration:
+                    return ((ClassDeclarationSyntax)declaration).TypeParameterList;
+                case SyntaxKind.InterfaceDeclaration:
+                    return ((InterfaceDeclarationSyntax)declaration).TypeParameterList;
+                case SyntaxKind.StructDeclaration:
+                    return ((StructDeclarationSyntax)declaration).TypeParameterList;
+                case SyntaxKind.MethodDeclaration:
+                    return ((MethodDeclarationSyntax)declaration).TypeParameterList;
+                case SyntaxKind.DelegateDeclaration:
+                    return ((DelegateDeclarationSyntax)declaration).TypeParameterList;
+                case SyntaxKind.LocalFunctionStatement:
+                    return ((LocalFunctionStatementSyntax)declaration).TypeParameterList;
+                default:
+                    return null;
+            }
         }
     }
 }

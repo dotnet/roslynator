@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -232,19 +233,6 @@ namespace Roslynator
             return typeArguments.Length == 2
                 && typeArguments[0].Equals(parameter1)
                 && typeArguments[1].Equals(parameter2);
-        }
-
-        public static bool IsFunc(ISymbol symbol, ITypeSymbol parameter1, ITypeSymbol parameter2, ITypeSymbol parameter3)
-        {
-            if (!symbol.OriginalDefinition.HasMetadataName(MetadataNames.System_Func_T3))
-                return false;
-
-            ImmutableArray<ITypeSymbol> typeArguments = ((INamedTypeSymbol)symbol).TypeArguments;
-
-            return typeArguments.Length == 3
-                && typeArguments[0].Equals(parameter1)
-                && typeArguments[1].Equals(parameter2)
-                && typeArguments[2].Equals(parameter3);
         }
 
         public static bool IsPredicateFunc(ISymbol symbol, ITypeSymbol parameter)
@@ -515,6 +503,65 @@ namespace Roslynator
             }
 
             return false;
+        }
+
+        // https://docs.microsoft.com/cs-cz/dotnet/csharp/programming-guide/main-and-command-args/
+        public static bool CanBeEntryPoint(IMethodSymbol methodSymbol)
+        {
+            if (methodSymbol.IsStatic
+                && string.Equals(methodSymbol.Name, "Main", StringComparison.Ordinal)
+                && methodSymbol.ContainingType?.TypeKind.Is(TypeKind.Class, TypeKind.Struct) == true
+                && !methodSymbol.TypeParameters.Any())
+            {
+                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                int length = parameters.Length;
+
+                if (length == 0)
+                    return true;
+
+                if (length == 1)
+                {
+                    IParameterSymbol parameter = parameters[0];
+
+                    ITypeSymbol type = parameter.Type;
+
+                    if (type.Kind == SymbolKind.ArrayType)
+                    {
+                        var arrayType = (IArrayTypeSymbol)type;
+
+                        if (arrayType.ElementType.SpecialType == SpecialType.System_String)
+                            return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public static ulong GetEnumValueAsUInt64(object value, INamedTypeSymbol enumType)
+        {
+            switch (enumType.EnumUnderlyingType.SpecialType)
+            {
+                case SpecialType.System_SByte:
+                    return (ulong)(sbyte)value;
+                case SpecialType.System_Byte:
+                    return (byte)value;
+                case SpecialType.System_Int16:
+                    return (ulong)(short)value;
+                case SpecialType.System_UInt16:
+                    return (ushort)value;
+                case SpecialType.System_Int32:
+                    return (ulong)(int)value;
+                case SpecialType.System_UInt32:
+                    return (uint)value;
+                case SpecialType.System_Int64:
+                    return (ulong)(long)value;
+                case SpecialType.System_UInt64:
+                    return (ulong)value;
+                default:
+                    throw new InvalidOperationException();
+            }
         }
     }
 }

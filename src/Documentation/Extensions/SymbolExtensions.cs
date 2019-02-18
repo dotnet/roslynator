@@ -12,66 +12,6 @@ namespace Roslynator.Documentation
 {
     internal static class SymbolExtensions
     {
-        public static bool HidesBaseSymbol(this ISymbol symbol)
-        {
-            if (!symbol.IsOverride)
-            {
-                switch (symbol.Kind)
-                {
-                    case SymbolKind.Event:
-                    case SymbolKind.Field:
-                    case SymbolKind.Method:
-                    case SymbolKind.Property:
-                    case SymbolKind.NamedType:
-                        {
-                            INamedTypeSymbol baseType = symbol.ContainingType?.BaseType;
-
-                            while (baseType != null)
-                            {
-                                foreach (ISymbol member in baseType.GetMembers(symbol.Name))
-                                {
-                                    if (MemberSymbolEqualityComparer.Instance.Equals(symbol, member))
-                                        return true;
-                                }
-
-                                baseType = baseType.BaseType;
-                            }
-
-                            break;
-                        }
-                }
-            }
-
-            return false;
-        }
-
-        //XTODO: move to core
-        public static ImmutableArray<INamedTypeSymbol> GetTypes(this IAssemblySymbol assemblySymbol, Func<INamedTypeSymbol, bool> predicate = null)
-        {
-            ImmutableArray<INamedTypeSymbol>.Builder builder = ImmutableArray.CreateBuilder<INamedTypeSymbol>();
-
-            GetTypes(assemblySymbol.GlobalNamespace);
-
-            return builder.ToImmutableArray();
-
-            void GetTypes(INamespaceOrTypeSymbol namespaceOrTypeSymbol)
-            {
-                if (namespaceOrTypeSymbol is INamedTypeSymbol namedTypeSymbol
-                    && (predicate == null || predicate(namedTypeSymbol)))
-                {
-                    builder.Add(namedTypeSymbol);
-                }
-
-                foreach (ISymbol memberSymbol in namespaceOrTypeSymbol.GetMembers())
-                {
-                    if (memberSymbol is INamespaceOrTypeSymbol namespaceOrTypeSymbol2)
-                    {
-                        GetTypes(namespaceOrTypeSymbol2);
-                    }
-                }
-            }
-        }
-
         public static ImmutableArray<ISymbol> GetMembers(this INamedTypeSymbol typeSymbol, Func<ISymbol, bool> predicate, bool includeInherited = false)
         {
             if (includeInherited)

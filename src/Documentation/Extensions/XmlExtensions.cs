@@ -40,16 +40,16 @@ namespace Roslynator.Documentation
                         }
                         else if (node is XElement e)
                         {
-                            switch (XmlElementNameKindMapper.GetKindOrDefault(e.Name.LocalName))
+                            switch (XmlTagMapper.GetTagOrDefault(e.Name.LocalName))
                             {
-                                case XmlElementKind.C:
+                                case XmlTag.C:
                                     {
                                         string value = e.Value;
                                         value = TextUtility.ToSingleLine(value);
                                         writer.WriteInlineCode(value);
                                         break;
                                     }
-                                case XmlElementKind.Code:
+                                case XmlTag.Code:
                                     {
                                         if (inlineOnly)
                                             break;
@@ -61,7 +61,7 @@ namespace Roslynator.Documentation
 
                                         break;
                                     }
-                                case XmlElementKind.List:
+                                case XmlTag.List:
                                     {
                                         if (inlineOnly)
                                             break;
@@ -97,7 +97,7 @@ namespace Roslynator.Documentation
 
                                         break;
                                     }
-                                case XmlElementKind.Para:
+                                case XmlTag.Para:
                                     {
                                         writer.WriteLine();
                                         writer.WriteLine();
@@ -106,7 +106,7 @@ namespace Roslynator.Documentation
                                         writer.WriteLine();
                                         break;
                                     }
-                                case XmlElementKind.ParamRef:
+                                case XmlTag.ParamRef:
                                     {
                                         string parameterName = e.Attribute("name")?.Value;
 
@@ -115,7 +115,7 @@ namespace Roslynator.Documentation
 
                                         break;
                                     }
-                                case XmlElementKind.See:
+                                case XmlTag.See:
                                     {
                                         string commentId = e.Attribute("cref")?.Value;
 
@@ -144,7 +144,7 @@ namespace Roslynator.Documentation
 
                                         break;
                                     }
-                                case XmlElementKind.TypeParamRef:
+                                case XmlTag.TypeParamRef:
                                     {
                                         string typeParameterName = e.Attribute("name")?.Value;
 
@@ -153,19 +153,19 @@ namespace Roslynator.Documentation
 
                                         break;
                                     }
-                                case XmlElementKind.Example:
-                                case XmlElementKind.Exception:
-                                case XmlElementKind.Exclude:
-                                case XmlElementKind.Include:
-                                case XmlElementKind.InheritDoc:
-                                case XmlElementKind.Param:
-                                case XmlElementKind.Permission:
-                                case XmlElementKind.Remarks:
-                                case XmlElementKind.Returns:
-                                case XmlElementKind.SeeAlso:
-                                case XmlElementKind.Summary:
-                                case XmlElementKind.TypeParam:
-                                case XmlElementKind.Value:
+                                case XmlTag.Example:
+                                case XmlTag.Exception:
+                                case XmlTag.Exclude:
+                                case XmlTag.Include:
+                                case XmlTag.InheritDoc:
+                                case XmlTag.Param:
+                                case XmlTag.Permission:
+                                case XmlTag.Remarks:
+                                case XmlTag.Returns:
+                                case XmlTag.SeeAlso:
+                                case XmlTag.Summary:
+                                case XmlTag.TypeParam:
+                                case XmlTag.Value:
                                     {
                                         break;
                                     }

@@ -49,7 +49,7 @@ namespace Roslynator.CSharp.Analysis
             if (!closeBrace.LeadingTrivia.IsEmptyOrWhitespace())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration, declaration);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyNamespaceDeclaration, declaration);
         }
     }
 }

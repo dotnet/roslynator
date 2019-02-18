@@ -779,7 +779,25 @@ namespace Roslynator.CSharp
             }
         }
 
-        //TODO: make public
+        /// <summary>
+        /// Returns true if a syntax of the specified kind is #if, #else, #elif or #endif directive.
+        /// </summary>
+        /// <param name="kind"></param>
+        /// <returns></returns>
+        public static bool IsIfElseDirective(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.IfDirectiveTrivia:
+                case SyntaxKind.ElseDirectiveTrivia:
+                case SyntaxKind.ElifDirectiveTrivia:
+                case SyntaxKind.EndIfDirectiveTrivia:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
         /// <summary>
         /// Returns true if a syntax of the specified kind is a statement (which includes <see cref="SyntaxKind.Block"/>).
         /// </summary>
@@ -995,7 +1013,7 @@ namespace Roslynator.CSharp
         /// Returns true if a declaration of the specified type can have virtual, abstract or override modifier.
         /// </summary>
         /// <param name="kind"></param>
-        internal static bool IsVirtualDeclaration(SyntaxKind kind)
+        internal static bool CanBeVirtualDeclaration(SyntaxKind kind)
         {
             switch (kind)
             {
@@ -1004,6 +1022,39 @@ namespace Roslynator.CSharp
                 case SyntaxKind.IndexerDeclaration:
                 case SyntaxKind.EventDeclaration:
                 case SyntaxKind.EventFieldDeclaration:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        internal static bool HasParameterList(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.ConstructorDeclaration:
+                case SyntaxKind.OperatorDeclaration:
+                case SyntaxKind.ConversionOperatorDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.IndexerDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
+                    return true;
+                default:
+                    return false;
+            }
+        }
+
+        internal static bool HasTypeParameterList(SyntaxKind kind)
+        {
+            switch (kind)
+            {
+                case SyntaxKind.ClassDeclaration:
+                case SyntaxKind.InterfaceDeclaration:
+                case SyntaxKind.StructDeclaration:
+                case SyntaxKind.MethodDeclaration:
+                case SyntaxKind.DelegateDeclaration:
+                case SyntaxKind.LocalFunctionStatement:
                     return true;
                 default:
                     return false;

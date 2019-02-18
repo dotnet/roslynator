@@ -347,6 +347,16 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="declaration"></param>
         /// <returns></returns>
+        public static MemberDeclarationListInfo MemberDeclarationListInfo(TypeDeclarationSyntax declaration)
+        {
+            return Syntax.MemberDeclarationListInfo.Create(declaration);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Syntax.MemberDeclarationListInfo"/> from the specified declaration.
+        /// </summary>
+        /// <param name="declaration"></param>
+        /// <returns></returns>
         public static MemberDeclarationListInfo MemberDeclarationListInfo(ClassDeclarationSyntax declaration)
         {
             return Syntax.MemberDeclarationListInfo.Create(declaration);
@@ -1003,16 +1013,6 @@ namespace Roslynator.CSharp
             return Syntax.StatementListInfo.Create(statement);
         }
 
-        internal static StatementListInfo StatementListInfo(BlockSyntax block)
-        {
-            return Syntax.StatementListInfo.Create(block);
-        }
-
-        internal static StatementListInfo StatementListInfo(SwitchSectionSyntax switchSection)
-        {
-            return Syntax.StatementListInfo.Create(switchSection);
-        }
-
         internal static StatementListInfo StatementListInfo(StatementListSelection selectedStatements)
         {
             return Syntax.StatementListInfo.Create(selectedStatements);
@@ -1097,16 +1097,6 @@ namespace Roslynator.CSharp
         internal static TypeParameterConstraintInfo TypeParameterConstraintInfo(TypeParameterConstraintSyntax constraint, bool allowMissing = false)
         {
             return Syntax.TypeParameterConstraintInfo.Create(constraint, allowMissing);
-        }
-
-        /// <summary>
-        /// Creates a new <see cref="Syntax.TypeParameterInfo"/> from the specified type parameter.
-        /// </summary>
-        /// <param name="typeParameter"></param>
-        /// <returns></returns>
-        internal static TypeParameterInfo TypeParameterInfo(TypeParameterSyntax typeParameter)
-        {
-            return Syntax.TypeParameterInfo.Create(typeParameter);
         }
 
         /// <summary>

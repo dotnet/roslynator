@@ -116,6 +116,10 @@ namespace Roslynator.CSharp.Syntax
             }
         }
 
+        /// <summary>
+        /// Returns <see cref="ExpressionChain"/> that enables to enumerate expressions of a string concatenation.
+        /// </summary>
+        /// <returns></returns>
         public ExpressionChain AsChain()
         {
             return _chain;

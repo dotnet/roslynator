@@ -226,15 +226,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1019</summary>
-        public static readonly DiagnosticDescriptor ReorderModifiers = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReorderModifiers, 
-            title:              "Reorder modifiers.", 
-            messageFormat:      "Reorder modifiers.", 
+        public static readonly DiagnosticDescriptor OrderModifiers = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderModifiers, 
+            title:              "Order modifiers.", 
+            messageFormat:      "Order modifiers.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: false, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReorderModifiers}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderModifiers}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1020</summary>
@@ -1684,15 +1684,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1161</summary>
-        public static readonly DiagnosticDescriptor EnumMemberShouldDeclareExplicitValue = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue, 
-            title:              "Enum member should declare explicit value.", 
-            messageFormat:      "Enum member should declare explicit value.", 
+        public static readonly DiagnosticDescriptor EnumShouldDeclareExplicitValues = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.EnumShouldDeclareExplicitValues, 
+            title:              "Enum should declare explicit values.", 
+            messageFormat:      "Enum should declare explicit values.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.EnumMemberShouldDeclareExplicitValue}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.EnumShouldDeclareExplicitValues}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1162</summary>
@@ -2202,15 +2202,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1205</summary>
-        public static readonly DiagnosticDescriptor ReorderNamedArguments = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReorderNamedArguments, 
-            title:              "Reorder named arguments according to the order of parameters.", 
-            messageFormat:      "Reorder named arguments according to the order of parameters.", 
+        public static readonly DiagnosticDescriptor OrderNamedArguments = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderNamedArguments, 
+            title:              "Order named arguments according to the order of parameters.", 
+            messageFormat:      "Order named arguments according to the order of parameters.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReorderNamedArguments}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderNamedArguments}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1206</summary>
@@ -2252,15 +2252,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1209</summary>
-        public static readonly DiagnosticDescriptor ReorderTypeParameterConstraints = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReorderTypeParameterConstraints, 
-            title:              "Reorder type parameter constraints.", 
-            messageFormat:      "Reorder type parameter constraints.", 
+        public static readonly DiagnosticDescriptor OrderTypeParameterConstraints = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderTypeParameterConstraints, 
+            title:              "Order type parameter constraints.", 
+            messageFormat:      "Order type parameter constraints.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReorderTypeParameterConstraints}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderTypeParameterConstraints}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1210</summary>
@@ -2493,7 +2493,9 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnusedElementInDocumentationComment}", 
-            customTags:         Array.Empty<string>());
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        public static readonly DiagnosticDescriptor UnusedElementInDocumentationCommentFadeOut = UnusedElementInDocumentationComment.CreateFadeOut();
 
         /// <summary>RCS1229</summary>
         public static readonly DiagnosticDescriptor UseAsyncAwait = new DiagnosticDescriptor(
@@ -2529,6 +2531,42 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MakeParameterRefReadOnly}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1232</summary>
+        public static readonly DiagnosticDescriptor OrderElementsInDocumentationComment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.OrderElementsInDocumentationComment, 
+            title:              "Order elements in documentation comment.", 
+            messageFormat:      "Order elements in documentation comment.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.OrderElementsInDocumentationComment}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1233</summary>
+        public static readonly DiagnosticDescriptor UseShortCircuitingOperator = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseShortCircuitingOperator, 
+            title:              "Use short-circuiting operator.", 
+            messageFormat:      "Use short-circuiting operator.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseShortCircuitingOperator}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1234</summary>
+        public static readonly DiagnosticDescriptor DuplicateEnumValue = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.DuplicateEnumValue, 
+            title:              "Duplicate enum value.", 
+            messageFormat:      "Duplicate enum value.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.DuplicateEnumValue}", 
             customTags:         Array.Empty<string>());
 
     }

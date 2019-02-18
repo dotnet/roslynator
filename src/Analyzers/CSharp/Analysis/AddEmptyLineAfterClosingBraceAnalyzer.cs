@@ -222,7 +222,7 @@ namespace Roslynator.CSharp.Analysis
 
                         if (trivia.IsEndOfLineTrivia())
                         {
-                            context.ReportDiagnostic(
+                            DiagnosticHelpers.ReportDiagnostic(context,
                                 DiagnosticDescriptors.AddEmptyLineAfterClosingBrace,
                                 trivia);
                         }

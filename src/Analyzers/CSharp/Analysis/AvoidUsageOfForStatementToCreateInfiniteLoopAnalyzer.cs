@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Analysis
                 && !forStatement.SecondSemicolonToken.ContainsDirectives
                 && !forStatement.CloseParenToken.ContainsDirectives)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop, forStatement.ForKeyword);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidUsageOfForStatementToCreateInfiniteLoop, forStatement.ForKeyword);
             }
         }
     }

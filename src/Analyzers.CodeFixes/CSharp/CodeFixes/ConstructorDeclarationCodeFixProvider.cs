@@ -50,10 +50,11 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case DiagnosticIdentifiers.RemoveRedundantConstructor:
                         {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove redundant constructor",
-                                cancellationToken => RemoveRedundantConstructorRefactoring.RefactorAsync(context.Document, constructor, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+                            CodeAction codeAction = CodeActionFactory.RemoveMemberDeclaration(
+                                context.Document,
+                                constructor,
+                                title: "Remove redundant constructor",
+                                equivalenceKey: GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;

@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>2.0.1.0</Version>
+    <Version>2.0.2.0</Version>
     <AssemblyName>Roslynator.CSharp.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp.CodeFixes</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Common\Common.csproj" />
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
     <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
   </ItemGroup>
 
 </Project>

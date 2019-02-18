@@ -58,7 +58,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsNestedDiagnostic(expression))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence, expression);
         }
 
         private static bool IsNestedDiagnostic(SyntaxNode node)

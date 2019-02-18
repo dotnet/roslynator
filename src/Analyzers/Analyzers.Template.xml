@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Analyzers>
-  <Analyzer Identifier="">
+  <Analyzer Identifier="" IsDevelopment="true">
     <Id>RCS</Id>
     <Title></Title>
     <MessageFormat></MessageFormat>

@@ -56,7 +56,7 @@ namespace Roslynator.CSharp
         public const string MakeContainingDeclarationUnsafe = Prefix + "0051";
         public const string RemoveReturnKeyword = Prefix + "0052";
         public const string RemoveParametersFromStaticConstructor = Prefix + "0053";
-        public const string ReorderModifiers = Prefix + "0054";
+        public const string OrderModifiers = Prefix + "0054";
         public const string RemoveInvalidModifier = Prefix + "0055";
         public const string RemoveMemberDeclaration = Prefix + "0056";
         public const string RemoveReturnExpression = Prefix + "0057";
@@ -114,5 +114,6 @@ namespace Roslynator.CSharp
         public const string RemoveParameter = Prefix + "0109";
         public const string RenameTupleElement = Prefix + "0110";
         public const string ChangeParameterType = Prefix + "0111";
+        public const string MarkDeclarationAsNonCLSCompliant = Prefix + "0112";
     }
 }

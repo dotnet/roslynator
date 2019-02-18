@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Refactorings>
-  <Refactoring Id="RR" Identifier="" Title="">
+  <Refactoring Id="RR" Identifier="" Title="" IsDevelopment="true">
     <Syntaxes>
       <Syntax></Syntax>
     </Syntaxes>

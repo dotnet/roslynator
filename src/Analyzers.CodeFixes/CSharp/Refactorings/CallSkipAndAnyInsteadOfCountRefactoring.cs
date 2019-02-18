@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
-using static Roslynator.CSharp.RefactoringUtility;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -108,7 +107,7 @@ namespace Roslynator.CSharp.Refactorings
             InvocationExpressionSyntax invocationExpression,
             ExpressionSyntax expression)
         {
-            InvocationExpressionSyntax newExpression = ChangeInvokedMethodName(invocationExpression, "Skip");
+            InvocationExpressionSyntax newExpression = SyntaxRefactorings.ChangeInvokedMethodName(invocationExpression, "Skip");
 
             newExpression = newExpression.AddArgumentListArguments(Argument(expression));
 

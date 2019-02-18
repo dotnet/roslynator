@@ -10,8 +10,6 @@ namespace Roslynator.CSharp.Analysis
 {
     internal static class UseBitwiseOperationInsteadOfCallingHasFlagAnalysis
     {
-        public const string Title = "Use bitwise operation instead of calling 'HasFlag'";
-
         public static bool IsFixable(
             InvocationExpressionSyntax invocation,
             SemanticModel semanticModel,

@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
             if (!namedTypeSymbol.IsNullableType())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyNullableOfT, genericName);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyNullableOfT, genericName);
         }
 
         public static void AnalyzeQualifiedName(SyntaxNodeAnalysisContext context)
@@ -84,7 +84,7 @@ namespace Roslynator.CSharp.Analysis
             if (!typeSymbol.IsNullableType())
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.SimplifyNullableOfT, qualifiedName);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyNullableOfT, qualifiedName);
         }
 
         private static bool IsWithinNameOfExpression(

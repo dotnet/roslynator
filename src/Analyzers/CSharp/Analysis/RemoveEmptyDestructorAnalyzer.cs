@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             if (destructor.Body?.Statements.Count != 0)
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyDestructor, destructor);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyDestructor, destructor);
         }
     }
 }

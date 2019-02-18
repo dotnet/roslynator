@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Analysis
 
             TypeSyntax type = GetTypeSyntax(node);
 
-            context.ReportDiagnostic(DiagnosticDescriptors.UseGenericEventHandler, type);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseGenericEventHandler, type);
         }
 
         private static TypeSyntax GetTypeSyntax(SyntaxNode node)

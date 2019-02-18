@@ -614,7 +614,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TextSpan span)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ReplaceCommentWithDocumentationComment,
                 Location.Create(context.Node.SyntaxTree, span));
         }

@@ -245,6 +245,7 @@
   </CodeFix>
   <CodeFix Id="RCF0045" Identifier="RemoveConstModifier" Title="Remove 'const' modifier">
     <FixableDiagnosticIds>
+      <Id>CS0131</Id>
       <Id>CS0133</Id>
     </FixableDiagnosticIds>
   </CodeFix>
@@ -290,7 +291,7 @@
       <Id>CS0132</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0054" Identifier="ReorderModifiers" Title="Reorder modifiers">
+  <CodeFix Id="RCF0054" Identifier="OrderModifiers" Title="Order modifiers">
     <FixableDiagnosticIds>
       <Id>CS0267</Id>
     </FixableDiagnosticIds>
@@ -619,6 +620,22 @@
   <CodeFix Id="RCF0111" Identifier="ChangeParameterType" Title="Change parameter type">
     <FixableDiagnosticIds>
       <Id>CS1750</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
+  <CodeFix Id="RCF0112" Identifier="MarkDeclarationAsNonCLSCompliant" Title="Mark declaration as non-CLS-compliant">
+    <FixableDiagnosticIds>
+      <Id>CS3000</Id>
+      <Id>CS3001</Id>
+      <Id>CS3002</Id>
+      <Id>CS3003</Id>
+      <Id>CS3005</Id>
+      <Id>CS3006</Id>
+      <Id>CS3007</Id>
+      <Id>CS3008</Id>
+      <Id>CS3009</Id>
+      <Id>CS3016</Id>
+      <Id>CS3024</Id>
+      <Id>CS3027</Id>
     </FixableDiagnosticIds>
   </CodeFix>
 </CodeFixes>

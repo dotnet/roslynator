@@ -76,7 +76,7 @@ namespace Roslynator.CSharp.Analysis.MarkLocalVariableAsConst
             if (!CanBeMarkedAsConst(localInfo.Variables, statements, index + 1))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.MarkLocalVariableAsConst, localInfo.Type);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MarkLocalVariableAsConst, localInfo.Type);
         }
 
         private static bool CanBeMarkedAsConst(

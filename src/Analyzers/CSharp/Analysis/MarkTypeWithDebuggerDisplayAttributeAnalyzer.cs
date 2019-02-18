@@ -82,7 +82,7 @@ namespace Roslynator.CSharp.Analysis
                 identifier = structDeclaration.Identifier;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MarkTypeWithDebuggerDisplayAttribute, identifier, identifier.ValueText);
         }
     }
 }

@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.9</Version>
+    <Version>1.0.0.10</Version>
     <AssemblyName>Roslynator.CSharp.Workspaces</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
-    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>CSharp.Workspaces.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.2</LangVersion>
@@ -49,6 +49,7 @@ Roslynator.NameGenerator</Description>
 
   <ItemGroup>
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
   </ItemGroup>
 
   <Import Project="GenerateDocumentation.targets" />

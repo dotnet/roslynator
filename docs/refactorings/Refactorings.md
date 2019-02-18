@@ -120,6 +120,50 @@ public interface IFoo
 }
 ```
 
+#### Add missing cases to switch statement \(RR0059\)
+
+* **Syntax**: switch statement
+
+#### Before
+
+```csharp
+switch (dayOfWeek)
+{
+    case DayOfWeek.Sunday:
+        break;
+    case DayOfWeek.Monday:
+        break;
+    case DayOfWeek.Tuesday:
+        break;
+    case DayOfWeek.Wednesday:
+        break;
+    case DayOfWeek.Thursday:
+        break;
+}
+```
+
+#### After
+
+```csharp
+switch (dayOfWeek)
+{
+    case DayOfWeek.Sunday:
+        break;
+    case DayOfWeek.Monday:
+        break;
+    case DayOfWeek.Tuesday:
+        break;
+    case DayOfWeek.Wednesday:
+        break;
+    case DayOfWeek.Thursday:
+        break;
+    case DayOfWeek.Friday:
+        break;
+    case DayOfWeek.Saturday:
+        break;
+}
+```
+
 #### Add parameter name to argument \(RR0011\)
 
 * **Syntax**: argument list
@@ -235,9 +279,18 @@ if (s.IndexOf("a", StringComparison.OrdinalIgnoreCase) != -1)
 
 * **Syntax**: variable declaration, foreach statement
 * **Span**: type
-![Change type according to expression](../../images/refactorings/ChangeTypeAccordingToExpression.png)
 
-![Change type according to expression](../../images/refactorings/ChangeForEachTypeAccordingToExpression.png)
+#### Before
+
+```csharp
+IEnumerable<object> items = new List<object>();
+```
+
+#### After
+
+```csharp
+List<object> items = new List<object>();
+```
 
 #### Change 'var' to explicit type \(RR0023\)
 
@@ -272,6 +325,49 @@ if (s.IndexOf("a", StringComparison.OrdinalIgnoreCase) != -1)
 * **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
 * **Span**: opening or closing brace
 ![Comment out statement](../../images/refactorings/CommentOutStatement.png)
+
+#### Convert statements to if\-else \(RR0211\)
+
+* **Syntax**: selected statements \(first statement must be 'if' statement\)
+
+#### Before
+
+```csharp
+if (x)
+    return 1;
+
+if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+
+return 0;
+```
+
+#### After
+
+```csharp
+if (x)
+{
+    return 1;
+}
+else if (y)
+{
+    return 2;
+}
+else if (z)
+{
+    return 3;
+}
+else
+{
+    return 0;
+}
+```
 
 #### Copy documentation comment from base member \(RR0029\)
 
@@ -565,10 +661,139 @@ public class Foo
 }
 ```
 
-#### Generate switch sections \(RR0059\)
+#### Implement custom enumerator \(RR0210\)
 
-* **Syntax**: switch statement \(that is empty or contains only default section\)
-![Generate switch sections](../../images/refactorings/GenerateSwitchSections.png)
+* **Syntax**: class that implements IEnumerable\<T>
+* **Span**: identifier
+
+#### Before
+
+```csharp
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+class C<T> : IEnumerable<T>
+{
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+}
+```
+
+#### After
+
+```csharp
+using System;
+using System.Collections;
+using System.Collections.Generic;
+
+class C<T> : IEnumerable<T>
+{
+    IEnumerator<T> IEnumerable<T>.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        throw new NotImplementedException();
+    }
+
+    public Enumerator GetEnumerator()
+    {
+        return new Enumerator(this);
+    }
+
+    public struct Enumerator
+    {
+        private readonly C<T> _c;
+        private int _index;
+
+        internal Enumerator(C<T> c)
+        {
+            _c = c;
+            _index = -1;
+        }
+
+        public T Current
+        {
+            get
+            {
+                throw new NotImplementedException();
+            }
+        }
+
+        public bool MoveNext()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void Reset()
+        {
+            _index = -1;
+            throw new NotImplementedException();
+        }
+
+        public override bool Equals(object obj)
+        {
+            throw new NotSupportedException();
+        }
+
+        public override int GetHashCode()
+        {
+            throw new NotSupportedException();
+        }
+    }
+
+    //TODO: IEnumerable.GetEnumerator() and IEnumerable<T>.GetEnumerator() should return instance of EnumeratorImpl.
+    private class EnumeratorImpl : IEnumerator<T>
+    {
+        private Enumerator _e;
+
+        internal EnumeratorImpl(C<T> c)
+        {
+            _e = new Enumerator(c);
+        }
+
+        public T Current
+        {
+            get
+            {
+                return _e.Current;
+            }
+        }
+
+        object IEnumerator.Current
+        {
+            get
+            {
+                return _e.Current;
+            }
+        }
+
+        public bool MoveNext()
+        {
+            return _e.MoveNext();
+        }
+
+        void IEnumerator.Reset()
+        {
+            _e.Reset();
+        }
+
+        void IDisposable.Dispose()
+        {
+        }
+    }
+}
+```
 
 #### Implement IEquatable\<T> \(RR0179\)
 
@@ -887,7 +1112,39 @@ int i = 0;
 #### Merge if statements \(RR0075\)
 
 * **Syntax**: selected if statements
-![Merge if statements](../../images/refactorings/MergeIfStatements.png)
+
+#### Before
+
+```csharp
+bool condition1 = false;
+bool condition2 = false;
+
+if (condition1)
+{
+    return false;
+}
+
+if (condition2)
+{
+    return false;
+}
+
+return true;
+```
+
+#### After
+
+```csharp
+bool condition1 = false;
+bool condition2 = false;
+
+if (condition1 || condition2)
+{
+    return false;
+}
+
+return true;
+```
 
 #### Merge if with parent if \(RR0196\)
 
@@ -1206,22 +1463,46 @@ public enum Foo
 #### Before
 
 ```csharp
-string s = (condition) ? "a" : "b";
-{
-}
+string s = (x) ? "a" : "b";
 ```
 
 #### After
 
 ```csharp
 string s;
-if (condition)
+if (x)
 {
     s = "a";
 }
 else
 {
     s = "b";
+}
+```
+
+- - -
+
+#### Before
+
+```csharp
+string s = (x) ? "a" : (y) ? "b" : "c";
+```
+
+#### After
+
+```csharp
+string s;
+if (x)
+{
+    s = "a";
+}
+else if (y)
+{
+    s = "b";
+}
+else
+{
+    s = "c";
 }
 ```
 

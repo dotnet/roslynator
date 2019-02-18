@@ -131,7 +131,7 @@ namespace Roslynator.CSharp.Analysis
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AvoidNullReferenceException,
                 Location.Create(expression.SyntaxTree, new TextSpan(expression.Span.End, 1)));
         }

@@ -53,7 +53,7 @@ namespace Roslynator.CSharp.Analysis
 
             foreach (ExpressionSyntax expression in addExpression.AsChain().Reverse())
             {
-                context.ThrowIfCancellationRequested();
+                context.CancellationToken.ThrowIfCancellationRequested();
 
                 switch (expression.Kind())
                 {
@@ -152,7 +152,7 @@ namespace Roslynator.CSharp.Analysis
             if (isVerbatim
                 || tree.IsSingleLineSpan(span, cancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.JoinStringExpressions,
                     Location.Create(tree, span));
             }

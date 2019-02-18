@@ -9,8 +9,6 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
-using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -18,48 +16,63 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, StatementListSelection selectedStatements)
         {
-            int count = 0;
+            if (selectedStatements.Count < 2)
+                return;
+
+            StatementSyntax statement = null;
 
             for (int i = 0; i < selectedStatements.Count; i++)
             {
-                if (!(selectedStatements[i] is IfStatementSyntax))
+                if (!(selectedStatements[i] is IfStatementSyntax ifStatement))
                     return;
 
-                count++;
+                if (!ifStatement.IsSimpleIf())
+                    return;
+
+                ExpressionSyntax condition = ifStatement.Condition;
+
+                if (condition?.IsMissing != false)
+                    return;
+
+                if (condition.WalkDownParentheses().IsKind(SyntaxKind.IsPatternExpression))
+                    return;
+
+                if (i == 0)
+                {
+                    statement = ifStatement.Statement;
+
+                    if (statement == null)
+                        return;
+                }
+                else if (!AreEquivalent(statement, ifStatement.Statement))
+                {
+                    return;
+                }
             }
 
-            if (count <= 1)
-                return;
+            Document document = context.Document;
 
             context.RegisterRefactoring(
                 "Merge if statements",
-                cancellationToken => RefactorAsync(context.Document, selectedStatements, cancellationToken),
+                ct => RefactorAsync(document, selectedStatements, ct),
                 RefactoringIdentifiers.MergeIfStatements);
         }
 
-        public static Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             StatementListSelection selectedStatements,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken)
         {
             ImmutableArray<IfStatementSyntax> ifStatements = selectedStatements.Cast<IfStatementSyntax>().ToImmutableArray();
 
-            IfStatementSyntax newIfStatement = IfStatement(
-                BinaryExpression(SyntaxKind.LogicalOrExpression, ifStatements.Select(f => f.Condition)),
-                Block(CreateStatements(ifStatements)));
-
-            SyntaxList<StatementSyntax> statements = selectedStatements.UnderlyingList;
-
-            int index = statements.IndexOf(ifStatements[0]);
-
-            SyntaxList<StatementSyntax> newStatements = statements.Replace(
+            SyntaxList<StatementSyntax> newStatements = selectedStatements.UnderlyingList.Replace(
                 ifStatements[0],
-                newIfStatement
+                ifStatements[0]
+                    .WithCondition(BinaryExpression(SyntaxKind.LogicalOrExpression, ifStatements.Select(f => f.Condition)))
                     .WithLeadingTrivia(ifStatements[0].GetLeadingTrivia())
                     .WithTrailingTrivia(ifStatements[ifStatements.Length - 1].GetTrailingTrivia()));
 
-            for (int i = 1; i < ifStatements.Length; i++)
-                newStatements = newStatements.RemoveAt(index + 1);
+            newStatements = newStatements.RemoveRange(selectedStatements.FirstIndex + 1, selectedStatements.Count - 1);
 
             return document.ReplaceStatementsAsync(SyntaxInfo.StatementListInfo(selectedStatements), newStatements, cancellationToken);
         }
@@ -91,38 +104,25 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static List<StatementSyntax> CreateStatements(ImmutableArray<IfStatementSyntax> ifStatements)
+        private static bool AreEquivalent(StatementSyntax statement1, StatementSyntax statement2)
         {
-            var newStatements = new List<StatementSyntax>();
+            if (statement1 == null)
+                return false;
 
-            List<StatementSyntax> previousStatements = null;
+            if (statement2 == null)
+                return false;
 
-            foreach (IfStatementSyntax ifStatement in ifStatements)
-            {
-                List<StatementSyntax> statements = GetStatementsFromIfStatement(ifStatement);
+            if (!(statement1 is BlockSyntax block1))
+                return CSharpFactory.AreEquivalent(statement1, statement2.SingleNonBlockStatementOrDefault());
 
-                if (previousStatements == null
-                    || !AreEquivalent(statements, previousStatements))
-                {
-                    newStatements.AddRange(statements);
-                }
+            SyntaxList<StatementSyntax> statements1 = block1.Statements;
 
-                previousStatements = statements;
-            }
+            if (!(statement2 is BlockSyntax block2))
+                return CSharpFactory.AreEquivalent(statement2, statement1.SingleNonBlockStatementOrDefault());
 
-            return newStatements;
-        }
+            SyntaxList<StatementSyntax> statements2 = block2.Statements;
 
-        private static List<StatementSyntax> GetStatementsFromIfStatement(IfStatementSyntax ifStatement)
-        {
-            if (ifStatement.Statement.IsKind(SyntaxKind.Block))
-            {
-                return ((BlockSyntax)ifStatement.Statement).Statements.ToList();
-            }
-            else
-            {
-                return new List<StatementSyntax>() { ifStatement.Statement };
-            }
+            return SyntaxFactory.AreEquivalent(statements1, statements2, topLevel: false);
         }
     }
 }

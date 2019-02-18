@@ -22,8 +22,6 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
 
         public abstract string Name { get; }
 
-        public abstract SyntaxKind Kind { get; }
-
         public TypeSyntax Type
         {
             get { return Parameter.Type?.WithoutTrivia(); }

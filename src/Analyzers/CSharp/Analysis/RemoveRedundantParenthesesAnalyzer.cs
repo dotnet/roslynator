@@ -192,13 +192,13 @@ namespace Roslynator.CSharp.Analysis
 
             void ReportDiagnostic()
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                    DiagnosticDescriptors.RemoveRedundantParentheses,
                    openParen.GetLocation(),
                    additionalLocations: ImmutableArray.Create(closeParen.GetLocation()));
 
-                context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
-                context.ReportToken(DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, openParen);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.RemoveRedundantParenthesesFadeOut, closeParen);
             }
         }
     }

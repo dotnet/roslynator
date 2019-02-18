@@ -50,6 +50,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualBasic", "VisualBasic\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{D46C9C4D-33D1-467F-96A3-CC05B30BABD0}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualBasic.Workspaces", "VisualBasic.Workspaces\VisualBasic.Workspaces.csproj", "{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -104,6 +106,10 @@ Global
 		{D46C9C4D-33D1-467F-96A3-CC05B30BABD0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D46C9C4D-33D1-467F-96A3-CC05B30BABD0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D46C9C4D-33D1-467F-96A3-CC05B30BABD0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

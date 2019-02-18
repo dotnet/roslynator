@@ -60,21 +60,6 @@ namespace Roslynator.CSharp
             }
         }
 
-        internal int Count
-        {
-            get
-            {
-                int count = 0;
-
-                Enumerator en = GetEnumerator();
-
-                while (en.MoveNext())
-                    count++;
-
-                return count;
-            }
-        }
-
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
@@ -179,6 +164,7 @@ namespace Roslynator.CSharp
         [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
         [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
         [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.", Justification = "<Pending>")]
         public struct Enumerator
         {
             private ExpressionChain _chain;

@@ -61,7 +61,7 @@ namespace Roslynator.CSharp.Analysis
             if (!CSharpUtility.IsEmptyStringExpression(firstArgument.Expression, semanticModel, cancellationToken))
                 return;
 
-            context.ReportDiagnostic(DiagnosticDescriptors.CallStringConcatInsteadOfStringJoin, invocationInfo.Name);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallStringConcatInsteadOfStringJoin, invocationInfo.Name);
         }
     }
 }

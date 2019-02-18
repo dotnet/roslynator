@@ -70,7 +70,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
-                newNode = CreateNewNode(conditionalExpression, Inverter.LogicallyNegate(info.Condition, semanticModel, cancellationToken));
+                newNode = CreateNewNode(conditionalExpression, SyntaxInverter.LogicallyInvert(info.Condition, semanticModel, cancellationToken));
             }
 
             newNode = newNode.Parenthesize();

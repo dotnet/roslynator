@@ -20,7 +20,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Swap operands",
-                    cancellationToken => CommonRefactorings.SwapBinaryOperandsAsync(context.Document, binaryExpression, cancellationToken),
+                    cancellationToken => DocumentRefactorings.SwapBinaryOperandsAsync(context.Document, binaryExpression, cancellationToken),
                     RefactoringIdentifiers.SwapBinaryOperands);
             }
 

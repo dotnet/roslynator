@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Analysis
             if (IsEnumWithoutFlags(binaryExpression.Left, flagsAttribute, context.SemanticModel, context.CancellationToken)
                 || IsEnumWithoutFlags(binaryExpression.Right, flagsAttribute, context.SemanticModel, context.CancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute,
                     binaryExpression);
             }
@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (IsEnumWithoutFlags(prefixUnaryExpression.Operand, flagsAttribute, context.SemanticModel, context.CancellationToken))
             {
-                context.ReportDiagnostic(
+                DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.BitwiseOperationOnEnumWithoutFlagsAttribute,
                     prefixUnaryExpression);
             }

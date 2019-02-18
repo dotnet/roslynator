@@ -77,19 +77,19 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenation, interpolatedString);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenation, interpolatedString);
 
-            context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringStartToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringStartToken);
 
             foreach (InterpolatedStringContentSyntax content in contents)
             {
                 var interpolation = (InterpolationSyntax)content;
 
-                context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.OpenBraceToken);
-                context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.CloseBraceToken);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.OpenBraceToken);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.CloseBraceToken);
             }
 
-            context.ReportToken(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringEndToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringEndToken);
         }
     }
 }

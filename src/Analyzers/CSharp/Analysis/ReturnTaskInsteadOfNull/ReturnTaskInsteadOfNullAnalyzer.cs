@@ -358,7 +358,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)
         {
-            context.ReportDiagnostic(DiagnosticDescriptors.ReturnTaskInsteadOfNull, expression);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReturnTaskInsteadOfNull, expression);
         }
     }
 }

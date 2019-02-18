@@ -110,6 +110,41 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
+        public async Task Test_ToSingleLine3()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    public C(int[] values)
+    {
+    }
+
+    C()
+    {
+        C[] c = { new C[|(new int[]
+        {
+            1,
+            2
+        })|]
+        };
+    }
+}
+", @"
+class C
+{
+    public C(int[] values)
+    {
+    }
+
+    C()
+    {
+        C[] c = { new C(new int[] { 1, 2 }) };
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.FormatArgumentList)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"

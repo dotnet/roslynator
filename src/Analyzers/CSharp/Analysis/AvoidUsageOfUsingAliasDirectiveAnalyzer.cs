@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
                 .GetSymbol(usingDirective.Name, context.CancellationToken)?
                 .IsKind(SymbolKind.Namespace, SymbolKind.NamedType) == true)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective, usingDirective);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective, usingDirective);
             }
         }
     }

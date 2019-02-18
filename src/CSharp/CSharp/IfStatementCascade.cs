@@ -28,7 +28,7 @@ namespace Roslynator.CSharp
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
         {
-            get { return (IfStatement != null) ? $"Count = {IfStatement.GetCascadeInfo().Count} {IfStatement}" : "Uninitialized"; }
+            get { return IfStatement?.ToString() ?? "Uninitialized"; }
         }
 
         /// <summary>
@@ -94,20 +94,22 @@ namespace Roslynator.CSharp
             return EqualityComparer<IfStatementSyntax>.Default.GetHashCode(IfStatement);
         }
 
-        public static bool operator ==(in IfStatementCascade info1, in IfStatementCascade info2)
+#pragma warning disable CS1591
+
+        public static bool operator ==(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
         {
-            return info1.Equals(info2);
+            return cascade1.Equals(cascade2);
         }
 
-        public static bool operator !=(in IfStatementCascade info1, in IfStatementCascade info2)
+        public static bool operator !=(in IfStatementCascade cascade1, in IfStatementCascade cascade2)
         {
-            return !(info1 == info2);
+            return !(cascade1 == cascade2);
         }
 
         [SuppressMessage("Design", "CA1034:Nested types should not be visible", Justification = "<Pending>")]
         [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
         [SuppressMessage("Usage", "CA2231:Overload operator equals on overriding value type Equals", Justification = "<Pending>")]
-        [SuppressMessage("Usage", "RCS1224:Use DebuggerDisplay attribute for publicly visible type.", Justification = "<Pending>")]
+        [SuppressMessage("Usage", "RCS1223:Use DebuggerDisplay attribute for publicly visible type.", Justification = "<Pending>")]
         public struct Enumerator
         {
             private IfStatementOrElseClause _ifOrElse;

@@ -91,7 +91,7 @@ namespace Roslynator.CSharp.Analysis
             if (!CheckDefaultValues(methodSymbol.Parameters, overriddenMethod.Parameters))
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantOverridingMember,
                 methodDeclaration,
                 CSharpFacts.GetTitle(methodDeclaration));
@@ -270,7 +270,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantOverridingMember,
                 propertyDeclaration,
                 CSharpFacts.GetTitle(propertyDeclaration));
@@ -401,7 +401,7 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveRedundantOverridingMember,
                 indexerDeclaration,
                 CSharpFacts.GetTitle(indexerDeclaration));

@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
             }
 
-            context.ReportDiagnostic(DiagnosticDescriptors.MergePreprocessorDirectives, directive);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MergePreprocessorDirectives, directive);
         }
 
         private static bool IsSuppressingThisAnalyzer(SeparatedSyntaxList<ExpressionSyntax> errorCodes)

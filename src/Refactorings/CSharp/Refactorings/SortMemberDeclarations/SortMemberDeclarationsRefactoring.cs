@@ -104,26 +104,6 @@ namespace Roslynator.CSharp.Refactorings.SortMemberDeclarations
             return document.ReplaceMembersAsync(info, newMembers, cancellationToken);
         }
 
-        public static async Task<Document> RefactorAsync(
-            Document document,
-            IComparer<MemberDeclarationSyntax> memberComparer,
-            IComparer<EnumMemberDeclarationSyntax> enumMemberComparer,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
-
-            if (root.IsKind(SyntaxKind.CompilationUnit))
-            {
-                var rewriter = new SortMemberDeclarationsRewriter(memberComparer, enumMemberComparer);
-
-                SyntaxNode newRoot = rewriter.VisitCompilationUnit((CompilationUnitSyntax)root);
-
-                return document.WithSyntaxRoot(newRoot);
-            }
-
-            return document;
-        }
-
         private static SyntaxKind GetSingleKindOrDefault(IReadOnlyList<MemberDeclarationSyntax> members)
         {
             SyntaxKind kind = members[0].Kind();

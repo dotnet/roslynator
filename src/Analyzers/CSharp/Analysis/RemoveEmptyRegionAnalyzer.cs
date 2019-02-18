@@ -51,13 +51,13 @@ namespace Roslynator.CSharp.Analysis
             if (!region.IsEmpty)
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.RemoveEmptyRegion,
                 regionDirective.GetLocation(),
                 additionalLocations: ImmutableArray.Create(region.EndDirective.GetLocation()));
 
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyRegionFadeOut, regionDirective.GetLocation());
-            context.ReportDiagnostic(DiagnosticDescriptors.RemoveEmptyRegionFadeOut, region.EndDirective.GetLocation());
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyRegionFadeOut, regionDirective.GetLocation());
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveEmptyRegionFadeOut, region.EndDirective.GetLocation());
         }
     }
 }

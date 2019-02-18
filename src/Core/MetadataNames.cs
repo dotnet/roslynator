@@ -8,6 +8,7 @@ namespace Roslynator
         public static readonly MetadataName System_ArgumentNullException = MetadataName.Parse("System.ArgumentNullException");
         public static readonly MetadataName System_AttributeUsageAttribute = MetadataName.Parse("System.AttributeUsageAttribute");
         public static readonly MetadataName System_Collections_Generic = MetadataName.Parse("System.Collections.Generic");
+        public static readonly MetadataName System_Collections_Generic_IEnumerable_T = MetadataName.Parse("System.Collections.Generic.IEnumerable`1");
         public static readonly MetadataName System_Collections_Generic_List_T = MetadataName.Parse("System.Collections.Generic.List`1");
         public static readonly MetadataName System_Collections_IDictionary = MetadataName.Parse("System.Collections.IDictionary");
         public static readonly MetadataName System_Collections_Immutable_ImmutableArray_T = MetadataName.Parse("System.Collections.Immutable.ImmutableArray`1");

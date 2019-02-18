@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyCodeFixEnabled(
+            if (!Settings.IsAnyEnabled(
                 CodeFixIdentifiers.InitializeLocalVariableWithDefaultValue,
                 CodeFixIdentifiers.AddVariableType))
             {
@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                                     var variableDeclaration = (VariableDeclarationSyntax)variableDeclarator.Parent;
 
-                                    ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(variableDeclaration.Type.WithoutTrivia());
+                                    ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), variableDeclaration.Type.WithoutTrivia());
 
                                     if (value.IsKind(SyntaxKind.DefaultExpression)
                                         && document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))

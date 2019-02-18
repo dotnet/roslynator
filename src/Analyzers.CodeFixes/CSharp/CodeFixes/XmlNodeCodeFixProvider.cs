@@ -80,7 +80,7 @@ namespace Roslynator.CSharp.CodeFixes
                 if (content[index + 1] is XmlTextSyntax xmlText2
                     && IsXmlTextBetweenLines(xmlText2))
                 {
-                    return document.RemoveNodesAsync(new XmlNodeSyntax[] { element, xmlText2 }, SyntaxRemover.DefaultRemoveOptions, cancellationToken);
+                    return document.RemoveNodesAsync(new XmlNodeSyntax[] { element, xmlText2 }, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
                 }
             }
             else if (index == 1)
@@ -97,13 +97,13 @@ namespace Roslynator.CSharp.CodeFixes
                 if (content[2] is XmlTextSyntax xmlText3
                     && IsXmlTextBetweenLines(xmlText3))
                 {
-                    return document.RemoveNodesAsync(new XmlNodeSyntax[] { element, xmlText3 }, SyntaxRemover.DefaultRemoveOptions, cancellationToken);
+                    return document.RemoveNodesAsync(new XmlNodeSyntax[] { element, xmlText3 }, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
                 }
             }
             else if (content[index - 1] is XmlTextSyntax xmlText
                 && IsXmlTextBetweenLines(xmlText))
             {
-                return document.RemoveNodesAsync(new XmlNodeSyntax[] { xmlText, element }, SyntaxRemover.DefaultRemoveOptions, cancellationToken);
+                return document.RemoveNodesAsync(new XmlNodeSyntax[] { xmlText, element }, SyntaxRefactorings.DefaultRemoveOptions, cancellationToken);
             }
 
             return document.RemoveNodeAsync(element, cancellationToken);

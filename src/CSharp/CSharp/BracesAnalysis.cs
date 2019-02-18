@@ -27,11 +27,6 @@ namespace Roslynator.CSharp
             return (Flags & flags) != 0;
         }
 
-        public bool All(BracesAnalysisFlags flags)
-        {
-            return (Flags & flags) != flags;
-        }
-
         public static BracesAnalysis AnalyzeBraces(SwitchSectionSyntax switchSection)
         {
             SyntaxList<StatementSyntax> statements = switchSection.Statements;
@@ -117,6 +112,12 @@ namespace Roslynator.CSharp
                 if (statement.Kind() == SyntaxKind.Block)
                 {
                     var block = (BlockSyntax)statement;
+
+                    if (!block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace())
+                        return false;
+
+                    if (!block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
+                        return false;
 
                     statement = block.Statements.SingleOrDefault(shouldThrow: false);
 

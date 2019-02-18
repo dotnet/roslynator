@@ -65,29 +65,27 @@ namespace Roslynator.CSharp.Refactorings
             ITypeSymbol typeSymbol,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            ParameterSyntax newParameter = GetNewParameter(parameter, typeSymbol);
+            ParameterSyntax newParameter = GetNewParameter();
 
             return document.ReplaceNodeAsync(parameter, newParameter, cancellationToken);
-        }
 
-        private static ParameterSyntax GetNewParameter(
-            ParameterSyntax parameter,
-            ITypeSymbol typeSymbol)
-        {
-            ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(parameter.Type.WithoutTrivia());
-
-            EqualsValueClauseSyntax @default = EqualsValueClause(value);
-
-            if (parameter.Default == null || parameter.IsMissing)
+            ParameterSyntax GetNewParameter()
             {
-                return parameter
-                    .WithIdentifier(parameter.Identifier.WithoutTrailingTrivia())
-                    .WithDefault(@default.WithTrailingTrivia(parameter.Identifier.TrailingTrivia));
-            }
-            else
-            {
-                return parameter
-                    .WithDefault(@default.WithTriviaFrom(parameter.Default.EqualsToken));
+                ExpressionSyntax value = typeSymbol.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), parameter.Type.WithoutTrivia());
+
+                EqualsValueClauseSyntax @default = EqualsValueClause(value);
+
+                if (parameter.Default == null || parameter.IsMissing)
+                {
+                    return parameter
+                        .WithIdentifier(parameter.Identifier.WithoutTrailingTrivia())
+                        .WithDefault(@default.WithTrailingTrivia(parameter.Identifier.TrailingTrivia));
+                }
+                else
+                {
+                    return parameter
+                        .WithDefault(@default.WithTriviaFrom(parameter.Default.EqualsToken));
+                }
             }
         }
     }

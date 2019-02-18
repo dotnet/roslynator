@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (identifier != default(SyntaxToken))
                 {
-                    context.ReportDiagnostic(
+                    DiagnosticHelpers.ReportDiagnostic(context,
                         DiagnosticDescriptors.DeclareTypeInsideNamespace,
                         identifier,
                         identifier.ValueText);

@@ -30,7 +30,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.AddBreakStatementToSwitchSection))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.AddBreakStatementToSwitchSection))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);

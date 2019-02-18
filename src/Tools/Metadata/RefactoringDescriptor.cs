@@ -22,7 +22,8 @@ namespace Roslynator.Metadata
             IEnumerable<SyntaxDescriptor> syntaxes,
             IEnumerable<ImageDescriptor> images,
             IEnumerable<SampleDescriptor> samples,
-            IEnumerable<LinkDescriptor> links)
+            IEnumerable<LinkDescriptor> links,
+            bool isDevelopment = false)
         {
             Id = id;
             Identifier = identifier;
@@ -36,6 +37,7 @@ namespace Roslynator.Metadata
             Images = new ReadOnlyCollection<ImageDescriptor>(images?.ToArray() ?? Array.Empty<ImageDescriptor>());
             Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
             Links = new ReadOnlyCollection<LinkDescriptor>(links?.ToArray() ?? Array.Empty<LinkDescriptor>());
+            IsDevelopment = isDevelopment;
         }
 
         public string Id { get; }
@@ -61,6 +63,8 @@ namespace Roslynator.Metadata
         public IReadOnlyList<SampleDescriptor> Samples { get; }
 
         public IReadOnlyList<LinkDescriptor> Links { get; }
+
+        public bool IsDevelopment { get; }
 
         public IEnumerable<ImageDescriptor> ImagesOrDefaultImage()
         {

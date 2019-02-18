@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsCodeFixEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
+            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -52,14 +52,14 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 INamedTypeSymbol taskSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task");
 
-                CodeFixRegistrator.ChangeReturnType(context, diagnostic, node, taskSymbol, semanticModel, "Task");
+                CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, node, taskSymbol, semanticModel, "Task");
             }
 
             if (containsReturnAwait)
             {
                 typeSymbol = semanticModel.GetTypeByMetadataName("System.Threading.Tasks.Task`1").Construct(typeSymbol);
 
-                CodeFixRegistrator.ChangeReturnType(context, diagnostic, node, typeSymbol, semanticModel, "TaskOfT");
+                CodeFixRegistrator.ChangeTypeOrReturnType(context, diagnostic, node, typeSymbol, semanticModel, "TaskOfT");
             }
         }
 

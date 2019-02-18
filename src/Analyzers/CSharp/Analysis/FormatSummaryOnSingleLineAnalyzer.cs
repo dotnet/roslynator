@@ -73,7 +73,7 @@ namespace Roslynator.CSharp.Analysis
 
                         if (match.Success)
                         {
-                            context.ReportDiagnostic(
+                            DiagnosticHelpers.ReportDiagnostic(context,
                                 DiagnosticDescriptors.FormatDocumentationSummaryOnSingleLine,
                                 summaryElement);
                         }

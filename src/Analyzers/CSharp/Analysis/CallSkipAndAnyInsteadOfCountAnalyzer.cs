@@ -100,7 +100,7 @@ namespace Roslynator.CSharp.Analysis
 
             void ReportDiagnostic(SyntaxNode node)
             {
-                context.ReportDiagnostic(DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, node);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallSkipAndAnyInsteadOfCount, node);
             }
         }
     }

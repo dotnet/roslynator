@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
             if (!arrayTypeSymbol.ElementType.SupportsExplicitDeclaration())
                 return;
 
-            context.ReportDiagnostic(
+            DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.AvoidImplicitlyTypedArray,
                 Location.Create(expression.SyntaxTree, TextSpan.FromBounds(expression.NewKeyword.SpanStart, expression.CloseBracketToken.Span.End)));
         }

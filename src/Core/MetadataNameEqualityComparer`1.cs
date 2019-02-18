@@ -4,17 +4,24 @@ using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
+#pragma warning disable RCS1223
+
 namespace Roslynator
 {
-    internal sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSymbol> where TSymbol : ISymbol
+    /// <summary>
+    /// Provides equality comparison for <typeparamref name="TSymbol"/> by comparing <see cref="ISymbol.MetadataName"/>,
+    /// metadata name of <see cref="ISymbol.ContainingType"/>(s) and metadata name of <see cref="ISymbol.ContainingNamespace"/>(s).
+    /// </summary>
+    /// <typeparam name="TSymbol"></typeparam>
+    public sealed class MetadataNameEqualityComparer<TSymbol> : EqualityComparer<TSymbol> where TSymbol : ISymbol
     {
-        private static readonly int _plusHashCode = GetHashCode("+");
-        private static readonly int _dotHashCode = GetHashCode(".");
-
-        internal MetadataNameEqualityComparer()
+        private MetadataNameEqualityComparer()
         {
         }
 
+        /// <summary>
+        /// Get the instance of <see cref="MetadataNameEqualityComparer{TSymbol}"/> for the specified <typeparamref name="TSymbol"/>.
+        /// </summary>
         public static MetadataNameEqualityComparer<TSymbol> Instance { get; } = (MetadataNameEqualityComparer<TSymbol>)GetInstance();
 
         private static object GetInstance()
@@ -97,6 +104,12 @@ namespace Roslynator
             throw new InvalidOperationException();
         }
 
+        /// <summary>
+        /// When overridden in a derived class, determines whether two objects of type <typeparamref name="TSymbol" /> are equal.
+        /// </summary>
+        /// <returns>true if the specified objects are equal; otherwise, false.</returns>
+        /// <param name="x">The first object to compare.</param>
+        /// <param name="y">The second object to compare.</param>
         public override bool Equals(TSymbol x, TSymbol y)
         {
             if (object.ReferenceEquals(x, y))
@@ -150,26 +163,35 @@ namespace Roslynator
             return true;
         }
 
+        /// <summary>
+        /// Serves as a hash function for the specified symbol.
+        /// </summary>
+        /// <returns>A hash code for the specified symbol.</returns>
+        /// <param name="obj">The symbol for which to get a hash code.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="obj"/> is <c>null</c>.</exception>
         public override int GetHashCode(TSymbol obj)
         {
+            if (obj == null)
+                throw new ArgumentNullException(nameof(obj));
+
             if (Default.Equals(obj, default(TSymbol)))
                 return 0;
 
-            int hashCode = Hash.Create(GetHashCode(obj.MetadataName));
+            int hashCode = Hash.Create(MetadataName.GetHashCode(obj.MetadataName));
 
             INamedTypeSymbol t = obj.ContainingType;
 
             if (t != null)
             {
-                hashCode = Combine(t, hashCode);
+                hashCode = Combine(t);
 
                 t = t.ContainingType;
 
                 while (t != null)
                 {
-                    hashCode = Hash.Combine(_plusHashCode, hashCode);
+                    hashCode = Hash.Combine(MetadataName.PlusHashCode, hashCode);
 
-                    hashCode = Combine(t, hashCode);
+                    hashCode = Combine(t);
 
                     t = t.ContainingType;
                 }
@@ -179,31 +201,26 @@ namespace Roslynator
 
             if (n != null)
             {
-                hashCode = Combine(n, hashCode);
+                hashCode = Combine(n);
 
                 n = n.ContainingNamespace;
 
                 while (n != null)
                 {
-                    hashCode = Hash.Combine(_dotHashCode, hashCode);
+                    hashCode = Hash.Combine(MetadataName.DotHashCode, hashCode);
 
-                    hashCode = Combine(n, hashCode);
+                    hashCode = Combine(n);
 
                     n = n.ContainingNamespace;
                 }
             }
 
             return hashCode;
-        }
 
-        private static int Combine(ISymbol symbol, int hashCode)
-        {
-            return Hash.Combine(GetHashCode(symbol.MetadataName), hashCode);
-        }
-
-        private static int GetHashCode(string s)
-        {
-            return StringComparer.Ordinal.GetHashCode(s);
+            int Combine(ISymbol symbol)
+            {
+                return Hash.Combine(MetadataName.GetHashCode(symbol.MetadataName), hashCode);
+            }
         }
     }
 }

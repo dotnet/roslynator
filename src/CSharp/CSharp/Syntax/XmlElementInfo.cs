@@ -109,9 +109,14 @@ namespace Roslynator.CSharp.Syntax
             get { return SyntaxInfoHelpers.ToDebugString(Success, this, Element); }
         }
 
-        internal XmlElementKind GetElementKind()
+        internal XmlTag GetTag()
         {
-            return XmlElementNameKindMapper.GetKindOrDefault(LocalName);
+            return XmlTagMapper.GetTagOrDefault(LocalName);
+        }
+
+        internal bool HasTag(XmlTag tag)
+        {
+            return XmlTagMapper.GetTagOrDefault(LocalName) == tag;
         }
 
         internal static XmlElementInfo Create(XmlNodeSyntax node)
@@ -144,12 +149,6 @@ namespace Roslynator.CSharp.Syntax
         internal bool IsLocalName(string localName, StringComparison comparison = StringComparison.Ordinal)
         {
             return string.Equals(LocalName, localName, comparison);
-        }
-
-        internal bool IsLocalName(string localName1, string localName2, StringComparison comparison = StringComparison.Ordinal)
-        {
-            return IsLocalName(localName1, comparison)
-                || IsLocalName(localName2, comparison);
         }
 
         /// <summary>

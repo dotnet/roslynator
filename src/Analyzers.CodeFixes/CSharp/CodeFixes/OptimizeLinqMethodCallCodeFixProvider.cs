@@ -18,7 +18,7 @@ using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
-using static Roslynator.CSharp.RefactoringUtility;
+using static Roslynator.CSharp.SyntaxRefactorings;
 using static Roslynator.CSharp.SyntaxInfo;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -40,7 +40,8 @@ namespace Roslynator.CSharp.CodeFixes
                 SyntaxKind.InvocationExpression,
                 SyntaxKind.EqualsExpression,
                 SyntaxKind.NotEqualsExpression,
-                SyntaxKind.IsPatternExpression)))
+                SyntaxKind.IsPatternExpression,
+                SyntaxKind.ConditionalExpression)))
             {
                 return;
             }
@@ -60,9 +61,11 @@ namespace Roslynator.CSharp.CodeFixes
                 if (diagnostic.Properties.TryGetValue("Name", out string name)
                     && name == "SimplifyLinqMethodChain")
                 {
+                    SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
+
                     CodeAction codeAction = CodeAction.Create(
-                        $"Combine 'Where' and '{invocationInfo.NameText}'",
-                        ct => CallInsteadOfWhereAsync(document, invocationInfo, ct),
+                        $"Combine '{invocationInfo2.NameText}' and '{invocationInfo.NameText}'",
+                        ct => SimplifyLinqMethodChainAsync(document, invocationInfo, ct),
                         GetEquivalenceKey(diagnostic, "SimplifyLinqMethodChain"));
 
                     context.RegisterCodeFix(codeAction, diagnostic);
@@ -203,6 +206,15 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                 }
             }
+            else if (kind == SyntaxKind.ConditionalExpression)
+            {
+                CodeAction codeAction = CodeAction.Create(
+                    "Call 'FirstOrDefault' instead of ?:",
+                    ct => CallFirstOrDeafultInsteadOfConditionalExpressionAsync(document, (ConditionalExpressionSyntax)node, ct),
+                    GetEquivalenceKey(diagnostic, "CallFirstOrDefaultInsteadOfConditionalExpression"));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
+            }
             else if (kind.Is(
                 SyntaxKind.EqualsExpression,
                 SyntaxKind.NotEqualsExpression,
@@ -254,7 +266,7 @@ namespace Roslynator.CSharp.CodeFixes
             return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newNode, cancellationToken);
         }
 
-        private static Task<Document> CallInsteadOfWhereAsync(
+        private static Task<Document> SimplifyLinqMethodChainAsync(
             Document document,
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -475,6 +487,30 @@ namespace Roslynator.CSharp.CodeFixes
                 .WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(binaryExpression, newNode, cancellationToken);
+        }
+
+        private static Task<Document> CallFirstOrDeafultInsteadOfConditionalExpressionAsync(
+            Document document,
+            ConditionalExpressionSyntax conditionalExpression,
+            CancellationToken cancellationToken)
+        {
+            ExpressionSyntax expression = conditionalExpression.Condition.WalkDownParentheses();
+
+            if (expression.IsKind(SyntaxKind.LogicalNotExpression))
+            {
+                var logicalNot = (PrefixUnaryExpressionSyntax)expression;
+
+                expression = logicalNot.Operand.WalkDownParentheses();
+            }
+
+            SimpleMemberInvocationExpressionInfo invocationInfo = SimpleMemberInvocationExpressionInfo(expression);
+
+            InvocationExpressionSyntax invocationExpression = invocationInfo.InvocationExpression;
+
+            InvocationExpressionSyntax newInvocationExpression = ChangeInvokedMethodName(invocationExpression, "FirstOrDefault")
+                .WithTriviaFrom(conditionalExpression);
+
+            return document.ReplaceNodeAsync(conditionalExpression, newInvocationExpression, cancellationToken);
         }
     }
 }
