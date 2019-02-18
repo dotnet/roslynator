@@ -217,5 +217,7 @@ namespace Roslynator.CSharp
         public const string OrderElementsInDocumentationComment = "RCS1232";
         public const string UseShortCircuitingOperator = "RCS1233";
         public const string DuplicateEnumValue = "RCS1234";
+        public const string UseEnumFieldInsteadOfCastNumericLiteral = "RCS1235";
+        public const string NumericLiteralOutOfEnumRange = "RCS1236";
     }
 }
