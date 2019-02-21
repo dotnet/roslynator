@@ -57,14 +57,17 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             if (propertySymbol.ContainingType?.Equals(enclosingType) != true)
                 return null;
 
-            if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+            if (!node.IsParentKind(SyntaxKind.MemberBindingExpression))
             {
-                if (((MemberAccessExpressionSyntax)node.Parent).Expression.IsKind(SyntaxKind.ThisExpression))
+                if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+                {
+                    if (((MemberAccessExpressionSyntax)node.Parent).Expression.IsKind(SyntaxKind.ThisExpression))
+                        return propertySymbol;
+                }
+                else
+                {
                     return propertySymbol;
-            }
-            else
-            {
-                return propertySymbol;
+                }
             }
 
             return null;

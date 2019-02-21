@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -498,6 +499,40 @@ namespace Roslynator
                     case SpecialType.System_Single:
                     case SpecialType.System_Double:
                         return true;
+                }
+            }
+
+            return false;
+        }
+
+        // https://docs.microsoft.com/cs-cz/dotnet/csharp/programming-guide/main-and-command-args/
+        public static bool CanBeEntryPoint(IMethodSymbol methodSymbol)
+        {
+            if (methodSymbol.IsStatic
+                && string.Equals(methodSymbol.Name, "Main", StringComparison.Ordinal)
+                && methodSymbol.ContainingType?.TypeKind.Is(TypeKind.Class, TypeKind.Struct) == true
+                && !methodSymbol.TypeParameters.Any())
+            {
+                ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                int length = parameters.Length;
+
+                if (length == 0)
+                    return true;
+
+                if (length == 1)
+                {
+                    IParameterSymbol parameter = parameters[0];
+
+                    ITypeSymbol type = parameter.Type;
+
+                    if (type.Kind == SymbolKind.ArrayType)
+                    {
+                        var arrayType = (IArrayTypeSymbol)type;
+
+                        if (arrayType.ElementType.SpecialType == SpecialType.System_String)
+                            return true;
+                    }
                 }
             }
 

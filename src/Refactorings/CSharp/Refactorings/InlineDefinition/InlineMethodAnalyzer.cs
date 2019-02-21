@@ -62,7 +62,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 {
                     ExpressionSyntax expression = node.Expression;
 
-                    if (expression != null)
+                    if (!expression.IsKind(SyntaxKind.MemberBindingExpression))
                     {
                         if (!expression.IsKind(SyntaxKind.SimpleMemberAccessExpression)
                             || ((MemberAccessExpressionSyntax)expression).Expression.IsKind(SyntaxKind.ThisExpression))

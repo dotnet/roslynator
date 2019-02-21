@@ -133,24 +133,24 @@ namespace Roslynator
             return accessibility.Is(Accessibility.Protected, Accessibility.ProtectedAndInternal, Accessibility.ProtectedOrInternal);
         }
 
-        internal static Accessibilities GetAccessibilities(this Accessibility accessibility)
+        internal static AccessibilityFilter GetAccessibilityFilter(this Accessibility accessibility)
         {
             switch (accessibility)
             {
                 case Accessibility.NotApplicable:
-                    return Accessibilities.None;
+                    return AccessibilityFilter.None;
                 case Accessibility.Private:
-                    return Accessibilities.Private;
+                    return AccessibilityFilter.Private;
                 case Accessibility.ProtectedAndInternal:
-                    return Accessibilities.ProtectedAndInternal;
+                    return AccessibilityFilter.ProtectedAndInternal;
                 case Accessibility.Protected:
-                    return Accessibilities.Protected;
+                    return AccessibilityFilter.Protected;
                 case Accessibility.Internal:
-                    return Accessibilities.Internal;
+                    return AccessibilityFilter.Internal;
                 case Accessibility.ProtectedOrInternal:
-                    return Accessibilities.ProtectedOrInternal;
+                    return AccessibilityFilter.ProtectedOrInternal;
                 case Accessibility.Public:
-                    return Accessibilities.Public;
+                    return AccessibilityFilter.Public;
                 default:
                     throw new ArgumentException("", nameof(accessibility));
             }

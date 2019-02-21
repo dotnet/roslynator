@@ -30,7 +30,7 @@ class C
     {
     }
 }
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId, nameof(Accessibilities.Public)));
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId, nameof(AccessibilityFilter.Public)));
         }
 
         [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.VirtualOrAbstractMembersCannotBePrivate)]

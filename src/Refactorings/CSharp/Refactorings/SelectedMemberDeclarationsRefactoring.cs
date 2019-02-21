@@ -27,9 +27,9 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                Accessibilities validAccessibilities = ChangeAccessibilityAnalysis.GetValidAccessibilities(selectedMembers, semanticModel, context.CancellationToken);
+                AccessibilityFilter validAccessibilities = ChangeAccessibilityAnalysis.GetValidAccessibilityFilter(selectedMembers, semanticModel, context.CancellationToken);
 
-                if (validAccessibilities != Accessibilities.None)
+                if (validAccessibilities != AccessibilityFilter.None)
                 {
                     bool canHaveMultipleDeclarations = CanHaveMultipleDeclarations();
 
@@ -58,9 +58,9 @@ namespace Roslynator.CSharp.Refactorings
                 AddEmptyLineBetweenDeclarationsRefactoring.ComputeRefactoring(context, selectedMembers);
             }
 
-            void TryRegisterRefactoring(Accessibilities accessibilities, Accessibility accessibility, bool canHaveMultipleDeclarations)
+            void TryRegisterRefactoring(AccessibilityFilter accessibilities, Accessibility accessibility, bool canHaveMultipleDeclarations)
             {
-                if ((accessibilities & accessibility.GetAccessibilities()) != 0)
+                if ((accessibilities & accessibility.GetAccessibilityFilter()) != 0)
                 {
                     if (canHaveMultipleDeclarations)
                     {

@@ -41,6 +41,13 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 if (parent is MemberDeclarationSyntax memberDeclaration)
                 {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    ISymbol symbol = semanticModel.GetSymbol(node, context.CancellationToken);
+
+                    if (symbol?.IsErrorType() != false)
+                        return;
+
                     Debug.Assert(SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic, memberDeclaration.ToString());
 
                     if (SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic)
@@ -57,11 +64,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
 
                         if (Settings.IsEnabled(CodeFixIdentifiers.AddStaticModifier))
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
                             AddStaticModifier(context, diagnostic, node, semanticModel);
-                        }
                     }
 
                     return;
