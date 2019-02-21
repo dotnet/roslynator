@@ -29,22 +29,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static bool CanRefactor(SyntaxNode node)
         {
-            if (node == null)
-                return false;
-
-            if (!node.IsKind(
-                SyntaxKind.LogicalAndExpression,
-                SyntaxKind.LogicalOrExpression,
-                SyntaxKind.BitwiseAndExpression,
-                SyntaxKind.BitwiseOrExpression))
-            {
-                return false;
-            }
-
-            var binaryExpression = (BinaryExpressionSyntax)node;
-
-            return binaryExpression.Left?.IsMissing == false
-                && binaryExpression.Right?.IsMissing == false;
+            return node.IsKind(SyntaxKind.LogicalAndExpression, SyntaxKind.LogicalOrExpression)
+                && SyntaxInfo.BinaryExpressionInfo((BinaryExpressionSyntax)node).Success;
         }
 
         private static BinaryExpressionSyntax GetBinaryExpression(BinaryExpressionSyntax binaryExpression, TextSpan span)
