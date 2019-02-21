@@ -63,7 +63,7 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                (count == 1) ? "Remove enum value" : "Remove enum values",
+                (count == 1) ? "Remove explicit value" : "Remove explicit values",
                 ct => RefactorAsync(context.Document, enumDeclaration, members, keepCompositeValue: true, ct),
                 RefactoringIdentifiers.RemoveEnumMemberValue);
         }
