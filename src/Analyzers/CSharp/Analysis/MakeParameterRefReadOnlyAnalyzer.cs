@@ -145,6 +145,24 @@ namespace Roslynator.CSharp.Analysis
                 walker.VisitArrowExpressionClause((ArrowExpressionClauseSyntax)bodyOrExpressionBody);
             }
 
+            switch (declaration.Kind())
+            {
+                case SyntaxKind.MethodDeclaration:
+                    {
+                        if (MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(declaration.Parent, methodSymbol, semanticModel, cancellationToken))
+                            return;
+
+                        break;
+                    }
+                case SyntaxKind.LocalFunctionStatement:
+                    {
+                        if (MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(declaration.FirstAncestor<MemberDeclarationSyntax>(), methodSymbol, semanticModel, cancellationToken))
+                            return;
+
+                        break;
+                    }
+            }
+
             foreach (KeyValuePair<string, IParameterSymbol> kvp in walker.Parameters)
             {
                 if (kvp.Value.GetSyntaxOrDefault(cancellationToken) is ParameterSyntax parameter)

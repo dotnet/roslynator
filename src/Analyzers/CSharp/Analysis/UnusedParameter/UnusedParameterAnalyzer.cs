@@ -4,12 +4,12 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis.UnusedParameter
 {
@@ -128,7 +128,7 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             FindUnusedNodes(parameterInfo, walker);
 
             if (walker.Nodes.Count > 0
-                && !IsReferencedAsMethodGroup(methodDeclaration, methodSymbol, context.SemanticModel, context.CancellationToken))
+                && !MethodReferencedAsMethodGroupWalker.IsReferencedAsMethodGroup(methodDeclaration, methodSymbol, context.SemanticModel, context.CancellationToken))
             {
                 foreach (KeyValuePair<string, NodeSymbolInfo> kvp in walker.Nodes)
                     ReportDiagnostic(context, kvp.Value.Node);
@@ -355,58 +355,6 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             else
             {
                 Debug.Fail(node.ToString());
-            }
-        }
-
-        //XPERF:
-        private static bool IsReferencedAsMethodGroup(
-            MethodDeclarationSyntax methodDeclaration,
-            IMethodSymbol methodSymbol,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken)
-        {
-            string methodName = methodSymbol.Name;
-
-            var typeDeclaration = (TypeDeclarationSyntax)methodDeclaration.Parent;
-
-            foreach (SyntaxNode node in typeDeclaration.DescendantNodes())
-            {
-                if (node.IsKind(SyntaxKind.IdentifierName))
-                {
-                    var identifierName = (IdentifierNameSyntax)node;
-
-                    if (string.Equals(methodName, identifierName.Identifier.ValueText, StringComparison.Ordinal)
-                        && !IsInvoked(identifierName)
-                        && semanticModel.GetSymbol(identifierName, cancellationToken)?.Equals(methodSymbol) == true)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
-
-            bool IsInvoked(IdentifierNameSyntax identifierName)
-            {
-                SyntaxNode parent = identifierName.Parent;
-
-                switch (parent.Kind())
-                {
-                    case SyntaxKind.InvocationExpression:
-                        {
-                            return true;
-                        }
-                    case SyntaxKind.SimpleMemberAccessExpression:
-                    case SyntaxKind.MemberBindingExpression:
-                        {
-                            if (parent.IsParentKind(SyntaxKind.InvocationExpression))
-                                return true;
-
-                            break;
-                        }
-                }
-
-                return false;
             }
         }
 
