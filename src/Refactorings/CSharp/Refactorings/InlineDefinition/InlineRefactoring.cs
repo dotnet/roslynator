@@ -249,7 +249,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                                 replacementMap.Add(identifierName, typeArguments[typeParameter.Ordinal].ToMinimalTypeSyntax(DeclarationSemanticModel, identifierName.SpanStart));
                         }
                         else if (symbol.IsStatic
-                            && !identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
+                            && !identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.QualifiedName))
                         {
                             INamedTypeSymbol containingType = symbol.ContainingType;
 
