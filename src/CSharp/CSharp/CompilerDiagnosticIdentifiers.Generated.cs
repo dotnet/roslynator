@@ -116,6 +116,7 @@ namespace Roslynator.CSharp
         public const string SemicolonExpected = "CS1002";
         public const string SyntaxErrorCharExpected = "CS1003";
         public const string DuplicateModifier = "CS1004";
+        public const string TooManyCharactersInCharacterLiteral = "CS1012";
         public const string EmbeddedStatementCannotBeDeclarationOrLabeledStatement = "CS1023";
         public const string TypeExpected = "CS1031";
         public const string StaticClassesCannotContainProtectedMembers = "CS1057";
