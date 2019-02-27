@@ -336,13 +336,13 @@ namespace Roslynator.Tests
                 int expectedLine = expected.Line;
 
                 if (actualLine != expectedLine)
-                    Assert.True(false, $"Diagnostic expected to {startOrEnd} on line {expectedLine}, actual: {actualLine}{GetMessage()}");
+                    Assert.True(false, $"Diagnostic expected to {startOrEnd} on line {expectedLine + 1}, actual: {actualLine + 1}{GetMessage()}");
 
                 int actualCharacter = actual.Character;
                 int expectedCharacter = expected.Character;
 
                 if (actualCharacter != expectedCharacter)
-                    Assert.True(false, $"Diagnostic expected to {startOrEnd} at column {expectedCharacter}, actual: {actualCharacter}{GetMessage()}");
+                    Assert.True(false, $"Diagnostic expected to {startOrEnd} at column {expectedCharacter + 1}, actual: {actualCharacter + 1}{GetMessage()}");
             }
 
             string GetMessage()
