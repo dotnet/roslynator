@@ -187,20 +187,23 @@ namespace Roslynator.CSharp.CodeFixes
         {
             bool isFlags = enumSymbol.HasAttribute(MetadataNames.System_FlagsAttribute);
 
-            List<ulong> valuesList = values.ToList();
+            List<ulong> reservedValues = values.ToList();
 
-            SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = enumDeclaration.Members
-                .Select(enumMember =>
+            SeparatedSyntaxList<EnumMemberDeclarationSyntax> members = enumDeclaration.Members;
+
+            SeparatedSyntaxList<EnumMemberDeclarationSyntax> newMembers = members;
+
+            for (int i = 0; i < members.Count; i++)
+            {
+                if (members[i].EqualsValue == null)
                 {
-                    if (enumMember.EqualsValue != null)
-                        return enumMember;
-
-                    IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(enumMember, cancellationToken);
+                    IFieldSymbol fieldSymbol = semanticModel.GetDeclaredSymbol(members[i], cancellationToken);
 
                     ulong? value = null;
+
                     if (isFlags)
                     {
-                        Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(valuesList);
+                        Optional<ulong> optional = FlagsUtility<ulong>.Instance.GetUniquePowerOfTwo(reservedValues);
 
                         if (optional.HasValue
                             && ConvertHelpers.CanConvert(optional.Value, enumSymbol.EnumUnderlyingType.SpecialType))
@@ -213,16 +216,18 @@ namespace Roslynator.CSharp.CodeFixes
                         value = SymbolUtility.GetEnumValueAsUInt64(fieldSymbol.ConstantValue, enumSymbol);
                     }
 
-                    if (value == null)
-                        return enumMember;
+                    if (value != null)
+                    {
+                        reservedValues.Add(value.Value);
 
-                    valuesList.Add(value.Value);
+                        EqualsValueClauseSyntax equalsValue = EqualsValueClause(NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType));
 
-                    EqualsValueClauseSyntax equalsValue = EqualsValueClause(NumericLiteralExpression(value.Value, enumSymbol.EnumUnderlyingType.SpecialType));
+                        EnumMemberDeclarationSyntax newMember = members[i].WithEqualsValue(equalsValue);
 
-                    return enumMember.WithEqualsValue(equalsValue);
-                })
-                .ToSeparatedSyntaxList();
+                        newMembers = newMembers.ReplaceAt(i, newMember);
+                    }
+                }
+            }
 
             EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.WithMembers(newMembers);
 

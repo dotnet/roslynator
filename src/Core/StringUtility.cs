@@ -300,5 +300,60 @@ namespace Roslynator
                 || (ch >= 'a' && ch <= 'f')
                 || (ch >= 'A' && ch <= 'F');
         }
+
+        public static string ReplaceDoubleBracesWithSingleBrace(string s)
+        {
+            int i = 0;
+
+            if (!FindNextIndex())
+                return s;
+
+            var sb = new StringBuilder(s.Length);
+
+            int prevIndex = 0;
+
+            while (true)
+            {
+                sb.Append(s, prevIndex, i - prevIndex);
+                sb.Append(s[i]);
+                i++;
+                i++;
+
+                prevIndex = i;
+
+                if (!FindNextIndex())
+                {
+                    sb.Append(s, prevIndex, s.Length - prevIndex);
+                    return sb.ToString();
+                }
+            }
+
+            bool FindNextIndex()
+            {
+                while (i < s.Length)
+                {
+                    if (s[i] == '{')
+                    {
+                        if (i < s.Length - 1
+                            && s[i + 1] == '{')
+                        {
+                            return true;
+                        }
+                    }
+                    else if (s[i] == '}')
+                    {
+                        if (i < s.Length - 1
+                            && s[i + 1] == '}')
+                        {
+                            return true;
+                        }
+                    }
+
+                    i++;
+                }
+
+                return false;
+            }
+        }
     }
 }

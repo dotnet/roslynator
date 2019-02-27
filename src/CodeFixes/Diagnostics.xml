@@ -771,6 +771,13 @@
     Message="Duplicate '{0}' modifier"
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1004" />
   <Diagnostic
+    Id="CS1012"
+    Identifier="TooManyCharactersInCharacterLiteral"
+    Severity="Error"
+    Title="Too many characters in character literal."
+    Message="Too many characters in character literal"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs1012" />
+  <Diagnostic
     Id="CS1023"
     Identifier="EmbeddedStatementCannotBeDeclarationOrLabeledStatement"
     Severity="Error"

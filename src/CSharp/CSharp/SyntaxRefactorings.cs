@@ -447,5 +447,44 @@ namespace Roslynator.CSharp
                         simpleName.GetTrailingTrivia()));
             }
         }
+
+        public static LiteralExpressionSyntax ReplaceStringLiteralWithCharacterLiteral(LiteralExpressionSyntax literalExpression)
+        {
+            return (LiteralExpressionSyntax)ParseExpression($"'{GetCharacterLiteralText()}'")
+                .WithTriviaFrom(literalExpression);
+
+            string GetCharacterLiteralText()
+            {
+                string s = literalExpression.Token.ValueText;
+
+                switch (s[0])
+                {
+                    case '\'':
+                        return @"\'";
+                    case '\"':
+                        return @"\""";
+                    case '\\':
+                        return @"\\";
+                    case '\0':
+                        return @"\0";
+                    case '\a':
+                        return @"\a";
+                    case '\b':
+                        return @"\b";
+                    case '\f':
+                        return @"\f";
+                    case '\n':
+                        return @"\n";
+                    case '\r':
+                        return @"\r";
+                    case '\t':
+                        return @"\t";
+                    case '\v':
+                        return @"\v";
+                    default:
+                        return s;
+                }
+            }
+        }
     }
 }

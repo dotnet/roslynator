@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override CodeFixProvider FixProvider { get; } = new EnumDeclarationCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
-        public async Task Test()
+        public async Task Test_AllValues()
         {
             await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
@@ -34,13 +34,33 @@ enum Foo
     A = 0,
     B = 1,
     C = 2,
-    D = 3
+    D = 3,
 }
 ");
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
-        public async Task Test2()
+        public async Task Test_WithComments()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+enum [|Foo|]
+{
+    A, //a
+    B, //b
+    C, //c
+}
+", @"
+enum Foo
+{
+    A = 0, //a
+    B = 1, //b
+    C = 2, //c
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.EnumShouldDeclareExplicitValues)]
+        public async Task Test_SomeValues()
         {
             await VerifyDiagnosticAndFixAsync(@"
 enum [|Foo|]
@@ -60,7 +80,7 @@ enum Foo
     B = 2,
     C = 3,
     D = 4,
-    E = 5
+    E = 5,
 }
 ");
         }
@@ -88,7 +108,7 @@ enum Foo
     A = 0,
     B = 1,
     C = 2,
-    D = 4
+    D = 4,
 }
 ");
         }

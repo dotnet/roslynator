@@ -638,4 +638,9 @@
       <Id>CS3027</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0113" Identifier="ReplaceCharacterLiteralWithStringLiteral" Title="Replace character literal with string literal">
+    <FixableDiagnosticIds>
+      <Id>CS1012</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>
