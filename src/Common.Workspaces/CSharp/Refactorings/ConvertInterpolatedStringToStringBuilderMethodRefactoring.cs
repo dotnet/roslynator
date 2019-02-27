@@ -66,6 +66,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         string text = interpolatedStringText.TextToken.Text;
 
+                        text = StringUtility.ReplaceDoubleBracesWithSingleBrace(text);
+
                         text = (isVerbatim)
                             ? "@\"" + text + "\""
                             : "\"" + text + "\"";
