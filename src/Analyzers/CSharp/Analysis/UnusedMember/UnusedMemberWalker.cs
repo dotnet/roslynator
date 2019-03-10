@@ -120,6 +120,10 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             RemoveNodeAt(i);
                         }
                     }
+                    else if (symbolInfo.CandidateReason == CandidateReason.LateBound)
+                    {
+                        RemoveNodeAt(i);
+                    }
                     else if (symbolInfo.CandidateReason == CandidateReason.MemberGroup)
                     {
                         ImmutableArray<ISymbol> candidateSymbols = symbolInfo.CandidateSymbols;
