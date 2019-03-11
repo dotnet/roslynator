@@ -72,6 +72,20 @@ namespace Roslynator.CSharp.Analysis
             if (qualifiedName.IsParentKind(SyntaxKind.UsingDirective, SyntaxKind.QualifiedCref))
                 return;
 
+            if (!qualifiedName.Right.IsKind(SyntaxKind.GenericName))
+                return;
+
+            var genericName = (GenericNameSyntax)qualifiedName.Right;
+
+            if (genericName
+                .TypeArgumentList?
+                .Arguments
+                .SingleOrDefault(shouldThrow: false)?
+                .IsKind(SyntaxKind.OmittedTypeArgument) != false)
+            {
+                return;
+            }
+
             if (IsWithinNameOfExpression(qualifiedName, context.SemanticModel, context.CancellationToken))
                 return;
 
