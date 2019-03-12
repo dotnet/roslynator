@@ -72,7 +72,7 @@ namespace Roslynator.CodeGeneration.CSharp
 
                     Debug.Assert(sections.Any());
 
-                    sections = sections.Add(DefaultSwitchSection(ThrowNewInvalidOperationException(ParseExpression(@"$""Unrecognized property '{propertySymbol.Name}'"""))));
+                    sections = sections.Add(DefaultSwitchSection(ThrowNewInvalidOperationException(ParseExpression(@"$""Unrecognized property '{propertySymbol.ContainingType.Name}.{propertySymbol.Name}'"""))));
 
                     yield return SwitchSection(
                         CaseSwitchLabel(StringLiteralExpression(typeSymbol.Name)),

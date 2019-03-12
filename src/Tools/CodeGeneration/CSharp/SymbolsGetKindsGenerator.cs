@@ -55,7 +55,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 ParameterList(Parameter(IdentifierName("INamedTypeSymbol"), "syntaxSymbol")),
                 Block(
                     SwitchStatement(
-                        SimpleMemberAccessExpression(IdentifierName("syntaxSymbol"), IdentifierName("Name")),
+                        SimpleMemberAccessExpression(IdentifierName("syntaxSymbol"), IdentifierName("Name")).Parenthesize(),
                         GenerateSections().ToSyntaxList())));
 
             foreach (string enumName in enumNames)
@@ -202,6 +202,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                 yield return SyntaxKind.OrAssignmentExpression;
                                 yield return SyntaxKind.LeftShiftAssignmentExpression;
                                 yield return SyntaxKind.RightShiftAssignmentExpression;
+                                yield return SyntaxKind.CoalesceAssignmentExpression;
                                 break;
                             }
 
@@ -482,6 +483,12 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "DiscardDesignationSyntax":
                             {
                                 yield return SyntaxKind.DiscardDesignation;
+                                break;
+                            }
+
+                        case "DiscardPatternSyntax":
+                            {
+                                yield return SyntaxKind.DiscardPattern;
                                 break;
                             }
 
@@ -909,6 +916,12 @@ namespace Roslynator.CodeGeneration.CSharp
                                 break;
                             }
 
+                        case "NullableDirectiveTriviaSyntax":
+                            {
+                                yield return SyntaxKind.NullableDirectiveTrivia;
+                                break;
+                            }
+
                         case "NullableTypeSyntax":
                             {
                                 yield return SyntaxKind.NullableType;
@@ -994,10 +1007,17 @@ namespace Roslynator.CodeGeneration.CSharp
                                 break;
                             }
 
+                        case "PositionalPatternClauseSyntax":
+                            {
+                                yield return SyntaxKind.PositionalPatternClause;
+                                break;
+                            }
+
                         case "PostfixUnaryExpressionSyntax":
                             {
                                 yield return SyntaxKind.PostDecrementExpression;
                                 yield return SyntaxKind.PostIncrementExpression;
+                                yield return SyntaxKind.SuppressNullableWarningExpression;
                                 break;
                             }
 
@@ -1029,12 +1049,19 @@ namespace Roslynator.CodeGeneration.CSharp
                                 yield return SyntaxKind.PreDecrementExpression;
                                 yield return SyntaxKind.AddressOfExpression;
                                 yield return SyntaxKind.PointerIndirectionExpression;
+                                yield return SyntaxKind.IndexExpression;
                                 break;
                             }
 
                         case "PropertyDeclarationSyntax":
                             {
                                 yield return SyntaxKind.PropertyDeclaration;
+                                break;
+                            }
+
+                        case "PropertyPatternClauseSyntax":
+                            {
+                                yield return SyntaxKind.PropertyPatternClause;
                                 break;
                             }
 
@@ -1065,6 +1092,18 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "QueryExpressionSyntax":
                             {
                                 yield return SyntaxKind.QueryExpression;
+                                break;
+                            }
+
+                        case "RangeExpressionSyntax":
+                            {
+                                yield return SyntaxKind.RangeExpression;
+                                break;
+                            }
+
+                        case "RecursivePatternSyntax":
+                            {
+                                yield return SyntaxKind.RecursivePattern;
                                 break;
                             }
 
@@ -1161,6 +1200,24 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "StructDeclarationSyntax":
                             {
                                 yield return SyntaxKind.StructDeclaration;
+                                break;
+                            }
+
+                        case "SubpatternSyntax":
+                            {
+                                yield return SyntaxKind.Subpattern;
+                                break;
+                            }
+
+                        case "SwitchExpressionSyntax":
+                            {
+                                yield return SyntaxKind.SwitchExpression;
+                                break;
+                            }
+
+                        case "SwitchExpressionArmSyntax":
+                            {
+                                yield return SyntaxKind.SwitchExpressionArm;
                                 break;
                             }
 
@@ -1293,6 +1350,12 @@ namespace Roslynator.CodeGeneration.CSharp
                         case "VariableDeclaratorSyntax":
                             {
                                 yield return SyntaxKind.VariableDeclarator;
+                                break;
+                            }
+
+                        case "VarPatternSyntax":
+                            {
+                                yield return SyntaxKind.VarPattern;
                                 break;
                             }
 
