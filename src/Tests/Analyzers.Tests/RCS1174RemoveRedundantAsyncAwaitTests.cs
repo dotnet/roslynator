@@ -486,15 +486,15 @@ class C
 {
     [|async|] Task<object> GetAsync()
     {
-        bool f = false;
+        string s = null;
 
-        switch (f)
+        switch (s)
         {
-            case true:
+            case ""a"":
                 {
                     return await GetAsync();
                 }
-            case false:
+            case ""b"":
                 {
                     return await GetAsync();
                 }
@@ -512,15 +512,15 @@ class C
 {
     Task<object> GetAsync()
     {
-        bool f = false;
+        string s = null;
 
-        switch (f)
+        switch (s)
         {
-            case true:
+            case ""a"":
                 {
                     return GetAsync();
                 }
-            case false:
+            case ""b"":
                 {
                     return GetAsync();
                 }
@@ -830,15 +830,15 @@ class C
 
     async Task<object> SwitchWithDefaultAsync()
     {
-        bool f = false;
+        string s = null;
 
-        switch (f)
+        switch (s)
         {
-            case true:
+            case ""a"":
                 {
                     return await GetAsync();
                 }
-            case false:
+            case ""b"":
                 {
                     return await GetAsync();
                 }
@@ -933,15 +933,15 @@ class C
 
     async Task<object> SwitchWithoutDefaultAsync()
     {
-        bool f = false;
+        string s = null;
 
-        switch (f)
+        switch (s)
         {
-            case true:
+            case ""a"":
                 {
                     return await GetAsync(await GetAsync());
                 }
-            case false:
+            case ""b"":
                 {
                     return await GetAsync(await GetAsync());
                 }
@@ -952,15 +952,15 @@ class C
 
     async Task<object> SwitchWithDefaultAsync()
     {
-        bool f = false;
+        string s = null;
 
-        switch (f)
+        switch (s)
         {
-            case true:
+            case ""a"":
                 {
                     return await GetAsync(await GetAsync());
                 }
-            case false:
+            case ""b"":
                 {
                     return await GetAsync(await GetAsync());
                 }
