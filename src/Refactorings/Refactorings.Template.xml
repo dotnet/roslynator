@@ -5,11 +5,19 @@
       <Syntax></Syntax>
     </Syntaxes>
     <Span></Span>
+    <Summary></Summary>
     <Samples>
       <Sample>
         <Before><![CDATA[]]></Before>
         <After><![CDATA[]]></After>
       </Sample>
     </Samples>
+    <Remarks></Remarks>
+    <Links>
+      <Link>
+        <Url></Url>
+        <Text></Text>
+      </Link>
+    </Links>
   </Refactoring>
 </Refactorings>

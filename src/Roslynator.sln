@@ -87,6 +87,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentat
 		..\docs\HowToCustomizeRulesForProject.md = ..\docs\HowToCustomizeRulesForProject.md
 		..\docs\HowToFixAllDiagnostics.md = ..\docs\HowToFixAllDiagnostics.md
 		..\docs\HowToGenerateDocumentation.md = ..\docs\HowToGenerateDocumentation.md
+		..\docs\HowToUpdateDocumentation.md = ..\docs\HowToUpdateDocumentation.md
 		..\docs\RoslynatorForVisualStudioCode.md = ..\docs\RoslynatorForVisualStudioCode.md
 	EndProjectSection
 EndProject

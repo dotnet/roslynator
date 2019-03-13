@@ -74,6 +74,8 @@ Please read the [tutorial](docs/RoslynatorForVisualStudioCode.md) how to install
 * [How to Fix All Diagnostics in a Solution](docs/HowToFixAllDiagnostics.md)
 * [How to Generate API Documentation](docs/HowToGenerateDocumentation.md)
 
+Would you like to improve Roslynator documentation? Please see [how to update documentation](docs/HowToUpdateDocumentation.md).
+
 ## Other Projects
 
 * [Snippetica](https://github.com/JosefPihrt/Snippetica) - A collection of snippets for C++, C#, HTML, JSON, Markdown, VB, XAML and XML

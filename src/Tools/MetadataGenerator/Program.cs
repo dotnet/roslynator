@@ -73,6 +73,14 @@ namespace Roslynator.CodeGeneration
                 MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
             }
 
+            foreach (AnalyzerDescriptor analyzer in analyzers)
+            {
+                WriteAllText(
+                    $@"..\docs\analyzers\{analyzer.Id}.md",
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, Array.Empty<string>()),
+                    fileMustExists: false);
+            }
+
             foreach (RefactoringDescriptor refactoring in refactorings)
             {
                 WriteAllText(
