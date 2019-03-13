@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.ReplaceCharacterLiteralWithStringLiteral;
+        = CodeFixIdentifiers.MakeFieldWritable;
         protected override void Fill(ICollection<BaseModel> codeFixes)
         {
             codeFixes.Clear();
@@ -134,6 +134,7 @@ namespace Roslynator.VisualStudio
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ChangeParameterType, "Change parameter type (fixes CS1750)", IsEnabled(CodeFixIdentifiers.ChangeParameterType)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant, "Mark declaration as non-CLS-compliant (fixes CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027)", IsEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant)));
             codeFixes.Add(new BaseModel(CodeFixIdentifiers.ReplaceCharacterLiteralWithStringLiteral, "Replace character literal with string literal (fixes CS1012)", IsEnabled(CodeFixIdentifiers.ReplaceCharacterLiteralWithStringLiteral)));
+            codeFixes.Add(new BaseModel(CodeFixIdentifiers.MakeFieldWritable, "Make field writable (fixes CS0191, CS0192)", IsEnabled(CodeFixIdentifiers.MakeFieldWritable)));
         }
     }
 }
