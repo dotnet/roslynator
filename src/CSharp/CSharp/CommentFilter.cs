@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
     /// Specifies C# comments.
     /// </summary>
     [Flags]
-    public enum CommentKinds
+    public enum CommentFilter
     {
 
         /// <summary>

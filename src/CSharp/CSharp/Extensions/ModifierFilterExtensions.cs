@@ -2,11 +2,11 @@
 
 namespace Roslynator.CSharp
 {
-    internal static class ModifierKindsExtensions
+    internal static class ModifierFilterExtensions
     {
-        public static bool Any(this ModifierKinds kinds, ModifierKinds value)
+        public static bool Any(this ModifierFilter modifierFilter, ModifierFilter value)
         {
-            return (kinds & value) != 0;
+            return (modifierFilter & value) != 0;
         }
     }
 }

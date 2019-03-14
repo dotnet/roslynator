@@ -212,20 +212,20 @@ namespace Roslynator.CSharp
             return node.RemoveNode(documentationComment, SyntaxRemoveOptions.KeepNoTrivia);
         }
 
-        public static TNode RemoveComments<TNode>(TNode node, CommentKinds kinds) where TNode : SyntaxNode
+        public static TNode RemoveComments<TNode>(TNode node, CommentFilter comments) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            return RemoveComments(node, node.FullSpan, kinds);
+            return RemoveComments(node, node.FullSpan, comments);
         }
 
-        public static TNode RemoveComments<TNode>(TNode node, TextSpan span, CommentKinds kinds) where TNode : SyntaxNode
+        public static TNode RemoveComments<TNode>(TNode node, TextSpan span, CommentFilter comments) where TNode : SyntaxNode
         {
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            var remover = new CommentRemover(node, kinds, span);
+            var remover = new CommentRemover(node, comments, span);
 
             return (TNode)remover.Visit(node);
         }

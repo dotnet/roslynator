@@ -8,7 +8,7 @@ namespace Roslynator.CSharp
     /// Specifies C# modifier.
     /// </summary>
     [Flags]
-    public enum ModifierKinds
+    public enum ModifierFilter
     {
         /// <summary>
         /// None modifier.
