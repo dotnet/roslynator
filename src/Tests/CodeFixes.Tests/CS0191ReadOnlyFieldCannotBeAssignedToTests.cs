@@ -37,23 +37,5 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
-
-        //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo)]
-        public async Task TestNoFix()
-        {
-            await VerifyNoFixAsync(@"
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-class C
-{
-    void M()
-    {
-    }
-}
-", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
-        }
     }
 }
