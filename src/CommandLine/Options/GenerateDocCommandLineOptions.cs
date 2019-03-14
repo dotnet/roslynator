@@ -15,22 +15,22 @@ namespace Roslynator.CommandLine
             MetaValue = "<XML_DOCUMENTATION_FILE>")]
         public IEnumerable<string> AdditionalXmlDocumentation { get; set; }
 
-        [Option(longName: "ignored-member-parts",
+        [Option(longName: ParameterNames.IgnoredMemberParts,
             HelpText = "Defines parts of a member documentation that should be excluded. Allowed values are overloads, containing-type, containing-assembly, obsolete-message, summary, declaration, type-parameters, parameters, return-value, implements, attributes, exceptions, examples, remarks and see-also.",
             MetaValue = "<IGNORED_MEMBER_PARTS>")]
         public IEnumerable<string> IgnoredMemberParts { get; set; }
 
-        [Option(longName: "ignored-namespace-parts",
+        [Option(longName: ParameterNames.IgnoredNamespaceParts,
             HelpText = "Defines parts of a namespace documentation that should be excluded. Allowed values are content, containing-namespace, summary, examples, remarks, classes, structs, interfaces, enums, delegates and see-also.",
             MetaValue = "<IGNORED_MEMBER_PARTS>")]
         public IEnumerable<string> IgnoredNamespaceParts { get; set; }
 
-        [Option(longName: "ignored-root-parts",
+        [Option(longName: ParameterNames.IgnoredRootParts,
             HelpText = "Defines parts of a root documentation that should be excluded. Allowed values are content, namespaces, classes, static-classes, structs, interfaces, enums, delegates and other.",
             MetaValue = "<IGNORED_ROOT_PARTS>")]
         public IEnumerable<string> IgnoredRootParts { get; set; }
 
-        [Option(longName: "ignored-type-parts",
+        [Option(longName: ParameterNames.IgnoredTypeParts,
             HelpText = "Defines parts of a type documentation that should be excluded. Allowed values are content, containing-namespace, containing-assembly, obsolete-message, summary, declaration, type-parameters, parameters, return-value, inheritance, attributes, derived, implements, examples, remarks, constructors, fields, indexers, properties, methods, operators, events, explicit-interface-implementations, extension-methods, classes, structs, interfaces, enums, delegates and see-also.",
             MetaValue = "<IGNORED_TYPE_PARTS>")]
         public IEnumerable<string> IgnoredTypeParts { get; set; }
@@ -75,7 +75,7 @@ namespace Roslynator.CommandLine
             HelpText = "Indicates whether attribute arguments should be omitted when displaying an attribute.")]
         public bool OmitAttributeArguments { get; set; }
 
-        [Option(longName: "omit-containing-namespace-parts",
+        [Option(longName: ParameterNames.OmitContainingNamespaceParts,
             HelpText = "Defines parts that that should by displayed without containing namespace. Allowed values are root, containing-type, return-type, base-type, attribute, derived-type, implemented-interface, implemented-member, exception, see-also and all.",
             MetaValue = "<OMIT_CONTAINING_NAMESPACE_PARTS>")]
         public IEnumerable<string> OmitContainingNamespaceParts { get; set; }

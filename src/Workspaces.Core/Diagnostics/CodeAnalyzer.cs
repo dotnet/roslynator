@@ -40,7 +40,10 @@ namespace Roslynator.Diagnostics
 
         public IFormatProvider FormatProvider { get; }
 
-        public async Task<ImmutableArray<ProjectAnalysisResult>> AnalyzeSolutionAsync(Solution solution, CancellationToken cancellationToken = default)
+        public async Task<ImmutableArray<ProjectAnalysisResult>> AnalyzeSolutionAsync(
+            Solution solution,
+            Func<Project, bool> predicate,
+            CancellationToken cancellationToken = default)
         {
             foreach (string id in Options.IgnoredDiagnosticIds.OrderBy(f => f))
                 WriteLine($"Ignore diagnostic '{id}'", Verbosity.Diagnostic);
@@ -64,7 +67,7 @@ namespace Roslynator.Diagnostics
 
                 Project project = solution.GetProject(projectIds[i]);
 
-                if (Options.IsSupportedProject(project))
+                if (predicate == null || predicate(project))
                 {
                     WriteLine($"Analyze '{project.Name}' {$"{i + 1}/{projectIds.Length}"}", Verbosity.Minimal);
 

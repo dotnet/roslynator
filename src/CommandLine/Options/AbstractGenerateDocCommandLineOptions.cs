@@ -2,18 +2,11 @@
 
 using System.Collections.Generic;
 using CommandLine;
-using Roslynator.Documentation;
 
 namespace Roslynator.CommandLine
 {
-    public abstract class AbstractGenerateDocCommandLineOptions : AbstractCommandLineOptions
+    public abstract class AbstractGenerateDocCommandLineOptions : MSBuildCommandLineOptions
     {
-        [Option(shortName: 'a', longName: "assemblies",
-            Required = true,
-            HelpText = "Defines one or more assemblies that should be used as a source for the documentation.",
-            MetaValue = "<ASSEMBLY>")]
-        public IEnumerable<string> Assemblies { get; set; }
-
         [Option(shortName: 'h', longName: "heading",
             Required = true,
             HelpText = "Defines a heading of the root documentation file.",
@@ -24,19 +17,12 @@ namespace Roslynator.CommandLine
             Required = true,
             HelpText = "Defines a path for the output directory.",
             MetaValue = "<OUTPUT_DIRECTORY>")]
-        public string OutputPath { get; set; }
+        public string Output { get; set; }
 
-        [Option(shortName: 'r', longName: "references",
-            Required = true,
-            HelpText = "Defines one or more paths to assembly or a file that contains a list of all assemblies. Each assembly must be on separate line.",
-            MetaValue = "<ASSEMBLY_REFERENCE | ASSEMBLY_REFERENCES_FILE>")]
-        public IEnumerable<string> References { get; set; }
-
-        [Option(longName: "depth",
-            Default = DocumentationOptions.DefaultValues.Depth,
+        [Option(longName: ParameterNames.Depth,
             HelpText = "Defines a depth of a documentation. Allowed values are member, type or namespace. Default value is member.",
             MetaValue = "<DEPTH>")]
-        public DocumentationDepth Depth { get; set; }
+        public string Depth { get; set; }
 
         [Option(longName: "ignored-names",
             HelpText = "Defines a list of metadata names that should be excluded from a documentation. Namespace of type names can be specified.",
@@ -59,7 +45,7 @@ namespace Roslynator.CommandLine
             HelpText = "Indicates whether a link should lead to the top of the documentation content.")]
         public bool ScrollToContent { get; set; }
 
-        [Option(longName: "visibility",
+        [Option(longName: ParameterNames.Visibility,
             Default = nameof(Roslynator.Visibility.Public),
             HelpText = "Defines a visibility of a type or a member. Allowed values are public, internal or private. Default value is public.",
             MetaValue = "<VISIBILITY>")]

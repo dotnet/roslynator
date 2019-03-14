@@ -56,7 +56,7 @@ namespace Roslynator.Documentation
              kindOptions: SymbolDisplayKindOptions.IncludeNamespaceKeyword);
 
         public static SymbolDisplayFormat FullDeclaration { get; } = Default.Update(
-             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
+             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,
              genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters
                 | SymbolDisplayGenericsOptions.IncludeTypeConstraints
                 | SymbolDisplayGenericsOptions.IncludeVariance,
@@ -81,6 +81,9 @@ namespace Roslynator.Documentation
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers
             );
 
+        public static SymbolDisplayFormat ExplicitImplementationFullDeclaration { get; } = FullDeclaration.Update(
+             memberOptions: FullDeclaration.MemberOptions & ~SymbolDisplayMemberOptions.IncludeAccessibility);
+
         public static SymbolDisplayFormat SimpleDeclaration { get; } = Default.Update(
             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameOnly,
             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters,
@@ -88,25 +91,6 @@ namespace Roslynator.Documentation
                 | SymbolDisplayMemberOptions.IncludeParameters,
             delegateStyle: SymbolDisplayDelegateStyle.NameAndParameters,
             parameterOptions: SymbolDisplayParameterOptions.IncludeType);
-
-        public static SymbolDisplayFormat SortDeclarationList { get; } = Default.Update(
-             typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypes,
-             genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters
-                | SymbolDisplayGenericsOptions.IncludeTypeConstraints
-                | SymbolDisplayGenericsOptions.IncludeVariance,
-             memberOptions: SymbolDisplayMemberOptions.IncludeParameters
-                | SymbolDisplayMemberOptions.IncludeConstantValue
-                | SymbolDisplayMemberOptions.IncludeRef,
-             delegateStyle: SymbolDisplayDelegateStyle.NameAndParameters,
-             extensionMethodStyle: SymbolDisplayExtensionMethodStyle.StaticMethod,
-             parameterOptions: SymbolDisplayParameterOptions.IncludeExtensionThis
-                | SymbolDisplayParameterOptions.IncludeParamsRefOut
-                | SymbolDisplayParameterOptions.IncludeType
-                | SymbolDisplayParameterOptions.IncludeName
-                | SymbolDisplayParameterOptions.IncludeDefaultValue,
-             propertyStyle: SymbolDisplayPropertyStyle.NameOnly,
-             miscellaneousOptions: SymbolDisplayMiscellaneousOptions.UseSpecialTypes
-        );
 
         public static SymbolDisplayFormat ExplicitImplementationFullName { get; } = Default.Update(
              typeQualificationStyle: SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces,

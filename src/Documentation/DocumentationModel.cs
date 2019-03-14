@@ -1,17 +1,22 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
+using Roslynator.FindSymbols;
 
 namespace Roslynator.Documentation
 {
     public sealed class DocumentationModel
     {
-        private readonly Func<ISymbol, bool> _isVisible;
+        private ImmutableDictionary<string, CultureInfo> _cultures = ImmutableDictionary<string, CultureInfo>.Empty;
+
+        private ImmutableDictionary<IAssemblySymbol, Compilation> _compilationMap;
 
         private readonly Dictionary<ISymbol, SymbolDocumentationData> _symbolData;
 
@@ -21,55 +26,83 @@ namespace Roslynator.Documentation
 
         private ImmutableArray<XmlDocumentation> _additionalXmlDocumentations;
 
-        public DocumentationModel(
+        internal DocumentationModel(
             Compilation compilation,
             IEnumerable<IAssemblySymbol> assemblies,
-            Visibility visibility = Visibility.Public,
+            SymbolFilterOptions filter,
             IEnumerable<string> additionalXmlDocumentationPaths = null)
         {
-            Compilation = compilation;
+            Compilations = ImmutableArray.Create(compilation);
             Assemblies = ImmutableArray.CreateRange(assemblies);
-            Visibility = visibility;
+            Filter = filter;
 
-            _isVisible = GetIsVisible();
             _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
             _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
 
             if (additionalXmlDocumentationPaths != null)
                 _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
-
-            Func<ISymbol, bool> GetIsVisible()
-            {
-                switch (visibility)
-                {
-                    case Visibility.Public:
-                        return f => f.IsPubliclyVisible();
-                    case Visibility.Internal:
-                        return f => f.IsPubliclyOrInternallyVisible();
-                    case Visibility.Private:
-                        return _ => true;
-                    default:
-                        throw new ArgumentException($"Unknown enum value '{visibility}'.", nameof(visibility));
-                }
-            }
         }
 
-        public Compilation Compilation { get; }
+        internal DocumentationModel(
+            IEnumerable<Compilation> compilations,
+            SymbolFilterOptions filter,
+            IEnumerable<string> additionalXmlDocumentationPaths = null)
+        {
+            Compilations = compilations.ToImmutableArray();
+            Assemblies = compilations.Select(f => f.Assembly).ToImmutableArray();
+            Filter = filter;
+
+            _symbolData = new Dictionary<ISymbol, SymbolDocumentationData>();
+            _xmlDocumentations = new Dictionary<IAssemblySymbol, XmlDocumentation>();
+
+            if (additionalXmlDocumentationPaths != null)
+                _additionalXmlDocumentationPaths = additionalXmlDocumentationPaths.ToImmutableArray();
+        }
+
+        public ImmutableArray<Compilation> Compilations { get; }
 
         public ImmutableArray<IAssemblySymbol> Assemblies { get; }
-
-        public string Language => Compilation.Language;
-
-        public IEnumerable<MetadataReference> References => Compilation.References;
 
         public IEnumerable<INamedTypeSymbol> Types
         {
             get { return Assemblies.SelectMany(f => f.GetTypes(typeSymbol => IsVisible(typeSymbol))); }
         }
 
-        public Visibility Visibility { get; }
+        internal SymbolFilterOptions Filter { get; }
 
-        public bool IsVisible(ISymbol symbol) => _isVisible(symbol);
+        public bool IsVisible(ISymbol symbol) => Filter.IsMatch(symbol);
+
+        public IEnumerable<INamedTypeSymbol> GetDerivedTypes(INamedTypeSymbol typeSymbol)
+        {
+            if (typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface)
+                && !typeSymbol.IsStatic)
+            {
+                foreach (INamedTypeSymbol symbol in Types)
+                {
+                    if (symbol.BaseType?.OriginalDefinition.Equals(typeSymbol) == true)
+                        yield return symbol;
+
+                    foreach (INamedTypeSymbol interfaceSymbol in symbol.Interfaces)
+                    {
+                        if (interfaceSymbol.OriginalDefinition.Equals(typeSymbol))
+                            yield return symbol;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<INamedTypeSymbol> GetAllDerivedTypes(INamedTypeSymbol typeSymbol)
+        {
+            if (typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Interface)
+                && !typeSymbol.IsStatic)
+            {
+                foreach (INamedTypeSymbol symbol in Types)
+                {
+                    if (symbol.InheritsFrom(typeSymbol, includeInterfaces: true))
+                        yield return symbol;
+                }
+            }
+        }
 
         public IEnumerable<IMethodSymbol> GetExtensionMethods()
         {
@@ -203,7 +236,7 @@ namespace Roslynator.Documentation
                 return (TypeDocumentationModel)data.Model;
             }
 
-            var typeModel = new TypeDocumentationModel(typeSymbol, this);
+            var typeModel = new TypeDocumentationModel(typeSymbol, Filter);
 
             _symbolData[typeSymbol] = data.WithModel(typeModel);
 
@@ -212,12 +245,34 @@ namespace Roslynator.Documentation
 
         internal ISymbol GetFirstSymbolForDeclarationId(string id)
         {
-            return DocumentationCommentId.GetFirstSymbolForDeclarationId(id, Compilation);
+            if (Compilations.Length == 1)
+                return DocumentationCommentId.GetFirstSymbolForDeclarationId(id, Compilations[0]);
+
+            foreach (Compilation compilation in Compilations)
+            {
+                ISymbol symbol = DocumentationCommentId.GetFirstSymbolForDeclarationId(id, compilation);
+
+                if (symbol != null)
+                    return symbol;
+            }
+
+            return null;
         }
 
         internal ISymbol GetFirstSymbolForReferenceId(string id)
         {
-            return DocumentationCommentId.GetFirstSymbolForReferenceId(id, Compilation);
+            if (Compilations.Length == 1)
+                return DocumentationCommentId.GetFirstSymbolForReferenceId(id, Compilations[0]);
+
+            foreach (Compilation compilation in Compilations)
+            {
+                ISymbol symbol = DocumentationCommentId.GetFirstSymbolForReferenceId(id, compilation);
+
+                if (symbol != null)
+                    return symbol;
+            }
+
+            return null;
         }
 
         public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string preferredCultureName = null)
@@ -239,6 +294,28 @@ namespace Roslynator.Documentation
 
                 if (xmlDocumentation != null)
                 {
+                    _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
+                    return xmlDocumentation;
+                }
+
+                CultureInfo preferredCulture = null;
+
+                if (preferredCultureName != null
+                    && !_cultures.TryGetValue(preferredCultureName, out preferredCulture))
+                {
+                    preferredCulture = ImmutableInterlocked.GetOrAdd(ref _cultures, preferredCultureName, f => new CultureInfo(f));
+                }
+
+                string xml = symbol.GetDocumentationCommentXml(preferredCulture: preferredCulture, expandIncludes: true);
+
+                if (!string.IsNullOrEmpty(xml))
+                {
+                    xml = XmlDocumentation.Unindent(xml);
+
+                    XElement element = XElement.Parse(xml, LoadOptions.PreserveWhitespace);
+
+                    xmlDocumentation = new SymbolXmlDocumentation(symbol, element);
+
                     _symbolData[symbol] = data.WithXmlDocumentation(xmlDocumentation);
                     return xmlDocumentation;
                 }
@@ -288,33 +365,38 @@ namespace Roslynator.Documentation
             {
                 if (Assemblies.Contains(assembly))
                 {
-                    var reference = Compilation.GetMetadataReference(assembly) as PortableExecutableReference;
+                    Compilation compilation = FindCompilation(assembly);
 
-                    string path = reference.FilePath;
+                    MetadataReference metadataReference = compilation.GetMetadataReference(assembly);
 
-                    if (preferredCultureName != null)
+                    if (metadataReference is PortableExecutableReference portableExecutableReference)
                     {
-                        path = Path.GetDirectoryName(path);
+                        string path = portableExecutableReference.FilePath;
 
-                        path = Path.Combine(path, preferredCultureName);
-
-                        if (Directory.Exists(path))
+                        if (preferredCultureName != null)
                         {
-                            string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(reference.FilePath), "xml");
+                            path = Path.GetDirectoryName(path);
 
-                            path = Path.Combine(path, fileName);
+                            path = Path.Combine(path, preferredCultureName);
+
+                            if (Directory.Exists(path))
+                            {
+                                string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(path), "xml");
+
+                                path = Path.Combine(path, fileName);
+
+                                if (File.Exists(path))
+                                    xmlDocumentation = XmlDocumentation.Load(path);
+                            }
+                        }
+
+                        if (xmlDocumentation == null)
+                        {
+                            path = Path.ChangeExtension(path, "xml");
 
                             if (File.Exists(path))
                                 xmlDocumentation = XmlDocumentation.Load(path);
                         }
-                    }
-
-                    if (xmlDocumentation == null)
-                    {
-                        path = Path.ChangeExtension(reference.FilePath, "xml");
-
-                        if (File.Exists(path))
-                            xmlDocumentation = XmlDocumentation.Load(path);
                     }
                 }
 
@@ -322,6 +404,17 @@ namespace Roslynator.Documentation
             }
 
             return xmlDocumentation;
+        }
+
+        private Compilation FindCompilation(IAssemblySymbol assembly)
+        {
+            if (Compilations.Length == 1)
+                return Compilations[0];
+
+            if (_compilationMap == null)
+                Interlocked.CompareExchange(ref _compilationMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f), null);
+
+            return _compilationMap[assembly];
         }
 
         private readonly struct SymbolDocumentationData

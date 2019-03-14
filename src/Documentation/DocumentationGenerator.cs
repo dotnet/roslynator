@@ -257,10 +257,6 @@ namespace Roslynator.Documentation
 
             IEnumerable<INamedTypeSymbol> typeSymbols = DocumentationModel.Types.Where(f => !Options.ShouldBeIgnored(f));
 
-            IEnumerable<INamespaceSymbol> namespaceSymbols = typeSymbols
-                .Select(f => f.ContainingNamespace)
-                .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance);
-
             foreach (RootDocumentationParts part in EnabledAndSortedRootParts)
             {
                 switch (part)
@@ -277,6 +273,10 @@ namespace Roslynator.Documentation
                         }
                     case RootDocumentationParts.Namespaces:
                         {
+                            IEnumerable<INamespaceSymbol> namespaceSymbols = typeSymbols
+                                .Select(f => f.ContainingNamespace)
+                                .Distinct(MetadataNameEqualityComparer<INamespaceSymbol>.Instance);
+
                             writer.WriteList(namespaceSymbols, Resources.NamespacesTitle, 2, SymbolDisplayFormats.TypeNameAndContainingTypesAndNamespaces);
                             break;
                         }
@@ -286,7 +286,7 @@ namespace Roslynator.Documentation
                             {
                                 if (typeSymbols.Any(f => !f.IsStatic && f.TypeKind == TypeKind.Class))
                                 {
-                                    INamedTypeSymbol objectType = DocumentationModel.Compilation.ObjectType;
+                                    INamedTypeSymbol objectType = DocumentationModel.Compilations[0].ObjectType;
 
                                     IEnumerable<INamedTypeSymbol> instanceClasses = typeSymbols.Where(f => !f.IsStatic && f.TypeKind == TypeKind.Class);
 
@@ -710,8 +710,8 @@ namespace Roslynator.Documentation
             if (EnabledAndSortedTypeParts.Contains(TypeDocumentationParts.Derived))
             {
                 derivedTypes = (Options.IncludeAllDerivedTypes)
-                    ? typeModel.GetAllDerivedTypes().ToImmutableArray()
-                    : typeModel.GetDerivedTypes().ToImmutableArray();
+                    ? DocumentationModel.GetAllDerivedTypes(typeSymbol).ToImmutableArray()
+                    : DocumentationModel.GetDerivedTypes(typeSymbol).ToImmutableArray();
             }
 
             bool includeInherited = typeModel.TypeKind != TypeKind.Interface || Options.IncludeInheritedInterfaceMembers;
@@ -880,7 +880,7 @@ namespace Roslynator.Documentation
                             }
                         case TypeDocumentationParts.ExtensionMethods:
                             {
-                                writer.WriteExtensionMethods(typeModel.GetExtensionMethods());
+                                writer.WriteExtensionMethods(DocumentationModel.GetExtensionMethods(typeSymbol));
                                 break;
                             }
                         case TypeDocumentationParts.Classes:
@@ -1019,7 +1019,7 @@ namespace Roslynator.Documentation
                         }
                     case TypeDocumentationParts.ExtensionMethods:
                         {
-                            return typeModel.GetExtensionMethods().Any();
+                            return DocumentationModel.GetExtensionMethods(typeSymbol).Any();
                         }
                     case TypeDocumentationParts.Classes:
                         {

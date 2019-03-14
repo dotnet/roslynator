@@ -10,7 +10,7 @@
 * [format](format-command.md)
 * [generate-doc](generate-doc-command.md)
 * [generate-doc-root](generate-doc-root-command.md)
-* [generate-declarations](generate-declarations-command.md)
+* [list-symbols](list-symbols-command.md)
 * [loc](loc-command.md)
 * [lloc](lloc-command.md)
 

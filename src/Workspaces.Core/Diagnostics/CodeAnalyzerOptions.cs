@@ -18,18 +18,12 @@ namespace Roslynator.Diagnostics
             bool concurrentAnalysis = true,
             DiagnosticSeverity severityLevel = DiagnosticSeverity.Info,
             IEnumerable<string> supportedDiagnosticIds = null,
-            IEnumerable<string> ignoredDiagnosticIds = null,
-            IEnumerable<string> projectNames = null,
-            IEnumerable<string> ignoredProjectNames = null,
-            string language = null) : base(
+            IEnumerable<string> ignoredDiagnosticIds = null) : base(
                 severityLevel: severityLevel,
                 ignoreAnalyzerReferences: ignoreAnalyzerReferences,
                 concurrentAnalysis: concurrentAnalysis,
                 supportedDiagnosticIds: supportedDiagnosticIds,
-                ignoredDiagnosticIds: ignoredDiagnosticIds,
-                projectNames: projectNames,
-                ignoredProjectNames: ignoredProjectNames,
-                language: language)
+                ignoredDiagnosticIds: ignoredDiagnosticIds)
         {
             IgnoreCompilerDiagnostics = ignoreCompilerDiagnostics;
             ReportNotConfigurable = reportNotConfigurable;

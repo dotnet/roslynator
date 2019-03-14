@@ -6,23 +6,26 @@ Generates documentation files from specified assemblies.
 ## Synopsis
 
 ```
-roslynator generate-doc
--a|--assemblies
+roslynator generate-doc <PROJECT|SOLUTION>
 -h|--heading
 -o|--output
--r|--references
 [--additional-xml-documentation]
 [--depth]
+[--file-log]
+[--file-log-verbosity]
 [--ignored-member-parts]
 [--ignored-names]
 [--ignored-namespace-parts]
+[--ignored-projects]
 [--ignored-root-parts]
 [--ignored-type-parts]
 [--include-all-derived-types]
 [--include-ienumerable]
 [--include-inherited-interface-members]
 [--inheritance-style]
+[--language]
 [--max-derived-types]
+[--msbuild-path]
 [--no-class-hierarchy]
 [--no-delete]
 [--no-format-base-list]
@@ -37,17 +40,22 @@ roslynator generate-doc
 [--omit-member-inherited-from]
 [--omit-member-overrides]
 [--preferred-culture]
+[--projects]
+[-p|--properties]
 [--scroll-to-content]
+[-v|--verbosity]
 [--visibility]
 ```
+
+## Arguments
+
+**`PROJECT|SOLUTION`**
+
+The project or solution to analyze.
 
 ## Options
 
 ### Required Options
-
-**`-a|--assemblies`** `<ASSEMBLIES>`
-
-Defines one or more assemblies that should be used as a source for the documentation.
 
 **`-h|--heading`** `<ROOT_FILE_HEADING>`
 
@@ -56,10 +64,6 @@ Defines a heading of the root documentation file.
 **`-o|--output`** `<OUTPUT_DIRECTORY>`
 
 Defines a path for the output directory.
-
-**`-r|--references`** `<ASSEMBLY_REFERENCE | ASSEMBLY_REFERENCES_FILE>`
-
-Defines one or more paths to assembly or a file that contains a list of all assemblies. Each assembly must be on separate line.
 
 ### Optional Options
 
@@ -82,6 +86,10 @@ Defines a list of metadata names that should be excluded from a documentation. N
 **`[--ignored-namespace-parts]`** `{content containing-namespace summary examples remarks classes structs interfaces enums delegates see-also}`
 
 Defines parts of a namespace documentation that should be excluded.
+
+**`--ignored-projects`** <PROJECT_NAME>
+
+Defines projects that should be skipped.
 
 **`[--ignored-root-parts]`** `{content namespaces classes static-classes structs interfaces enums delegates other}`
 
@@ -107,9 +115,17 @@ Indicates whether inherited interface members should be displayed in a list of m
 
 Defines a style of a type inheritance. Default value is `horizontal`.
 
+**`--language`** `{cs[harp]|v[isual-]b[asic])}`
+
+Defines project language.
+
 **`[--max-derived-types]`** <MAX_DERIVED_TYPES>
 
 Defines maximum number derived types that should be displayed. Default value is `5`.
+
+**`--msbuild-path`** <MSBUILD_PATH>
+
+Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
 
 **`[--no-class-hierarchy]`**
 
@@ -169,9 +185,21 @@ Indicates whether an overridden member should be omitted.
 
 Defines culture that should be used when searching for xml documentation files.
 
+**`--projects`** <PROJECT_NAME>
+
+Defines projects that should be analyzed.
+
+**`-p|--properties`** `<NAME=VALUE>`
+
+Defines one or more MSBuild properties.
+
 **`[--scroll-to-content]`**
 
 Indicates whether a link should lead to the top of the documentation content.
+
+**`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
+
+Defines the amount of information to display in the log.
 
 **`[--visibility]`** `{public|internal|private}`
 

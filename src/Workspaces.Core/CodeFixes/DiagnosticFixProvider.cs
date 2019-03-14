@@ -103,9 +103,7 @@ namespace Roslynator.CodeFixes
 
             var multipleFixesInfos = new HashSet<MultipleFixesInfo>();
 
-            CodeAction action = null;
-
-            options.DiagnosticFixMap.TryGetValue(descriptor.Id, out string equivalenceKey);
+            options.DiagnosticFixMap.TryGetValue(descriptor.Id, out ImmutableArray<string> equivalenceKeys);
 
             foreach (Diagnostic diagnostic in diagnostics)
             {
@@ -119,40 +117,38 @@ namespace Roslynator.CodeFixes
                 if (document == null)
                     continue;
 
-                CodeAction fixCandidate = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos, options, cancellationToken).ConfigureAwait(false);
+                CodeAction fix = await GetFixAsync(diagnostic, fixer, document, multipleFixesInfos, options, cancellationToken).ConfigureAwait(false);
 
-                if (fixCandidate == null)
+                if (fix == null)
                     continue;
 
-                if (equivalenceKey != null
-                    && equivalenceKey != fixCandidate.EquivalenceKey)
+                if (!equivalenceKeys.IsDefault
+                    && !equivalenceKeys.Contains(fix.EquivalenceKey, StringComparer.Ordinal))
                 {
-                    break;
+                    continue;
                 }
-
-                action = fixCandidate;
 
                 var fixAllContext = new FixAllContext(
                     document,
                     fixer,
                     FixAllScope.Project,
-                    action.EquivalenceKey,
+                    fix.EquivalenceKey,
                     new string[] { descriptor.Id },
                     new FixAllDiagnosticProvider(diagnostics),
                     cancellationToken);
 
-                CodeAction fix = await fixAllProvider.GetFixAsync(fixAllContext).ConfigureAwait(false);
+                CodeAction fixAll = await fixAllProvider.GetFixAsync(fixAllContext).ConfigureAwait(false);
 
-                if (fix != null)
+                if (fixAll != null)
                 {
                     WriteLine($"  CodeFixProvider: '{fixer.GetType().FullName}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
-                    if (!string.IsNullOrEmpty(action.EquivalenceKey))
-                        WriteLine($"  EquivalenceKey:  '{action.EquivalenceKey}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                    if (!string.IsNullOrEmpty(fix.EquivalenceKey))
+                        WriteLine($"  EquivalenceKey:  '{fix.EquivalenceKey}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
                     WriteLine($"  FixAllProvider:  '{fixAllProvider.GetType().FullName}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
-                    return fix;
+                    return fixAll;
                 }
 
                 WriteLine($"  Fixer '{fixer.GetType().FullName}' registered no action for diagnostic '{descriptor.Id}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
