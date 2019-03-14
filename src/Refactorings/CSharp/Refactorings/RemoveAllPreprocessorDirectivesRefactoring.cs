@@ -10,7 +10,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Remove all directives",
-                    cancellationToken => context.Document.RemovePreprocessorDirectivesAsync(PreprocessorDirectiveKinds.All, cancellationToken),
+                    cancellationToken => context.Document.RemovePreprocessorDirectivesAsync(PreprocessorDirectiveFilter.All, cancellationToken),
                     RefactoringIdentifiers.RemoveAllPreprocessorDirectives);
             }
         }

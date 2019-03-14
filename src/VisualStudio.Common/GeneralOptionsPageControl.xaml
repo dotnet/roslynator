@@ -10,8 +10,13 @@
     <Style TargetType="{x:Type CheckBox}">
       <Setter Property="Margin" Value="0,5,0,0" />
     </Style>
-  </UserControl.Resources>
-  <Grid>
+    <Style TargetType="Button">
+      <Setter Property="MinWidth" Value="75"/>
+      <Setter Property="MinHeight" Value="25"/>
+      <Setter Property="Margin" Value="0,5,5,5"/>
+      <Setter Property="Padding" Value="5"/>
+    </Style>
+    </UserControl.Resources>
     <DockPanel Focusable="false" Margin="0,15,0,0">
       <TextBlock DockPanel.Dock="Right" Margin="0,0,10,0">
         <Hyperlink NavigateUri="http://pihrt.net/roslynator/donate" RequestNavigate="Hyperlink_RequestNavigate">
@@ -20,6 +25,9 @@
       </TextBlock>
       <CheckBox DockPanel.Dock="Top" IsChecked="{Binding PrefixFieldIdentifierWithUnderscore}">Prefix field identifier with underscore</CheckBox>
       <CheckBox DockPanel.Dock="Top" IsChecked="{Binding UseConfigFile}">Use config file</CheckBox>
+      <WrapPanel DockPanel.Dock="Bottom" Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Left">
+        <Button Content="Export options" Click="ExportOptionsButton_Click" />
+        <Button Content="Import options" Click="ImportOptionsButton_Click" />
+      </WrapPanel>
     </DockPanel>
-  </Grid>
 </UserControl>

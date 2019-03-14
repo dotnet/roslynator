@@ -1,8 +1,10 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Immutable;
 using System.Linq;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
@@ -22,6 +24,99 @@ namespace Roslynator.CSharp
                 | SymbolDisplayMiscellaneousOptions.EscapeKeywordIdentifiers);
 
         private static SymbolDisplayFormat IsReadOnlyStructSymbolDisplayFormat { get; } = new SymbolDisplayFormat(kindOptions: SymbolDisplayKindOptions.IncludeTypeKeyword);
+
+        #region INamedTypeSymbol
+        internal static string ToDisplayString(this INamedTypeSymbol typeSymbol, SymbolDisplayFormat format, SymbolDisplayTypeDeclarationOptions typeDeclarationOptions)
+        {
+            return typeSymbol.ToDisplayParts(format, typeDeclarationOptions).ToDisplayString();
+        }
+
+        internal static ImmutableArray<SymbolDisplayPart> ToDisplayParts(this INamedTypeSymbol typeSymbol, SymbolDisplayFormat format, SymbolDisplayTypeDeclarationOptions typeDeclarationOptions)
+        {
+            if (typeDeclarationOptions == SymbolDisplayTypeDeclarationOptions.None)
+                return typeSymbol.ToDisplayParts(format);
+
+            ImmutableArray<SymbolDisplayPart> parts = typeSymbol.ToDisplayParts(format);
+
+            ImmutableArray<SymbolDisplayPart>.Builder builder = ImmutableArray.CreateBuilder<SymbolDisplayPart>(parts.Length);
+
+            if ((typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.IncludeAccessibility) != 0)
+            {
+                switch (typeSymbol.DeclaredAccessibility)
+                {
+                    case Accessibility.Public:
+                        {
+                            AddKeyword(SyntaxKind.PublicKeyword);
+                            break;
+                        }
+                    case Accessibility.ProtectedOrInternal:
+                        {
+                            AddKeyword(SyntaxKind.ProtectedKeyword);
+                            AddKeyword(SyntaxKind.InternalKeyword);
+                            break;
+                        }
+                    case Accessibility.Internal:
+                        {
+                            AddKeyword(SyntaxKind.InternalKeyword);
+                            break;
+                        }
+                    case Accessibility.Protected:
+                        {
+                            AddKeyword(SyntaxKind.ProtectedKeyword);
+                            break;
+                        }
+                    case Accessibility.ProtectedAndInternal:
+                        {
+                            AddKeyword(SyntaxKind.PrivateKeyword);
+                            AddKeyword(SyntaxKind.ProtectedKeyword);
+                            break;
+                        }
+                    case Accessibility.Private:
+                        {
+                            AddKeyword(SyntaxKind.PrivateKeyword);
+                            break;
+                        }
+                    default:
+                        {
+                            throw new InvalidOperationException();
+                        }
+                }
+            }
+
+            if ((typeDeclarationOptions & SymbolDisplayTypeDeclarationOptions.IncludeModifiers) != 0)
+            {
+                if (typeSymbol.IsStatic)
+                    AddKeyword(SyntaxKind.StaticKeyword);
+
+                if (typeSymbol.IsSealed
+                    && !typeSymbol.TypeKind.Is(TypeKind.Struct, TypeKind.Enum, TypeKind.Delegate))
+                {
+                    AddKeyword(SyntaxKind.SealedKeyword);
+                }
+
+                if (typeSymbol.IsAbstract
+                    && typeSymbol.TypeKind != TypeKind.Interface)
+                {
+                    AddKeyword(SyntaxKind.AbstractKeyword);
+                }
+            }
+
+            builder.AddRange(parts);
+
+            return builder.ToImmutableArray();
+
+            void AddKeyword(SyntaxKind kind)
+            {
+                builder.Add(SymbolDisplayPartFactory.Keyword(SyntaxFacts.GetText(kind)));
+                AddSpace();
+            }
+
+            void AddSpace()
+            {
+                builder.Add(SymbolDisplayPartFactory.Space());
+            }
+        }
+        #endregion INamedTypeSymbol
 
         #region INamespaceOrTypeSymbol
         /// <summary>

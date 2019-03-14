@@ -8,36 +8,20 @@
 ```xml
 <Target Name="GenerateDocumentation" AfterTargets="RoslynatorInitialize" Condition=" '$(Configuration)' == 'Release'">
 
-  <PropertyGroup>
-
-    <!-- One or more assembly paths you want generator documentation for, for example: A.dll B.dll -->
-    <RoslynatorAssemblies>&quot;$(TargetPath)&quot;</RoslynatorAssemblies>
-
-    <!-- A file that will contain all assembly references -->
-    <RoslynatorAssemblyReferencesFile>$(TargetDir)Roslynator.assemblyreferences</RoslynatorAssemblyReferencesFile>
-
-    <RoslynatorAssemblyReferences>&quot;$(RoslynatorAssemblyReferencesFile)&quot; &quot;$(TargetPath)&quot;</RoslynatorAssemblyReferences>
-
-  </PropertyGroup>
-
-    <!-- Save assembly references to a file -->
-    <WriteLinesToFile File="$(RoslynatorAssemblyReferencesFile)" Lines="@(_ResolveAssemblyReferenceResolvedFiles)" Overwrite="true" Encoding="Unicode" />
-
-    <!-- Execute 'doc' command. This command will generate documentation files from specified assemblies -->
-  <Exec Command="$(RoslynatorExe) generate-doc ^
-    -a $(RoslynatorAssemblies) ^
-    -r $(RoslynatorAssemblyReferences) ^
+    <!-- Execute 'generate-doc' command. This command will generate documentation files -->
+  <Exec Command="$(RoslynatorExe) generate-doc &quot;$(SolutionPath)&quot; ^
+    --msbuild-path &quot;$(MSBuildBinPath)&quot; ^
     -o &quot;$(SolutionDir)docs&quot; ^
     -h &quot;API Reference&quot;"
         LogStandardErrorAsError="true" ConsoleToMSBuild="true">
     <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
   </Exec>
 
-    <!-- Execute 'declarations' command. This command will generate a single file that contains all declarations from specified assemblies -->
-  <Exec Command="$(RoslynatorExe) generate-declarations ^
-    -a $(RoslynatorAssemblies) ^
-    -r $(RoslynatorAssemblyReferences) ^
-    -o &quot;$(SolutionDir)docs\api.cs&quot;"
+    <!-- Execute 'list-symbols' command. This command will generate list of symbol definitions -->
+  <Exec Command="$(RoslynatorExe) list-symbols &quot;$(SolutionPath)&quot; ^
+    --msbuild-path &quot;$(MSBuildBinPath)&quot; ^
+    --output &quot;$(SolutionDir)docs\api.cs&quot; ^
+	--visibility public"
         LogStandardErrorAsError="true" ConsoleToMSBuild="true">
     <Output TaskParameter="ConsoleOutput" PropertyName="OutputOfExec" />
   </Exec>
@@ -49,7 +33,7 @@
 
 * [`generate-doc`](cli/generate-doc-command.md)
 * [`generate-doc-root`](cli/generate-doc-root-command.md)
-* [`generate-declarations`](cli/generate-declarations-command.md)
+* [`list-symbols`](cli/list-symbols-command.md)
 
 3) Build solution in **Release** configuration
 

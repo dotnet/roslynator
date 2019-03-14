@@ -1,7 +1,9 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Collections.Immutable;
 using System.IO;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Xml;
 using System.Xml.Linq;
 using Microsoft.CodeAnalysis;
@@ -16,6 +18,7 @@ namespace Roslynator.Documentation
 
         private readonly XDocument _document;
         private readonly XElement _membersElement;
+        private ImmutableDictionary<string, XElement> _elementsById;
 
         private XmlDocumentation(XDocument document)
         {
@@ -27,6 +30,15 @@ namespace Roslynator.Documentation
         {
             string rawXml = File.ReadAllText(filePath);
 
+            rawXml = Unindent(rawXml);
+
+            XDocument document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
+
+            return new XmlDocumentation(document);
+        }
+
+        public static string Unindent(string rawXml)
+        {
             string s = "";
 
             using (var sr = new StringReader(rawXml))
@@ -63,9 +75,7 @@ namespace Roslynator.Documentation
                     : Regex.Replace(rawXml, "(?<=\n)" + s.Substring(index), "");
             }
 
-            XDocument document = XDocument.Parse(rawXml, LoadOptions.PreserveWhitespace);
-
-            return new XmlDocumentation(document);
+            return rawXml;
         }
 
         public SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol)
@@ -75,15 +85,22 @@ namespace Roslynator.Documentation
 
         internal SymbolXmlDocumentation GetXmlDocumentation(ISymbol symbol, string commentId)
         {
-            foreach (XElement element in _membersElement.Elements())
+            if (_elementsById == null)
             {
-                if (element.Attribute("name")?.Value == commentId)
-                {
-                    return new SymbolXmlDocumentation(symbol, commentId, element);
-                }
+                Interlocked.CompareExchange(ref _elementsById, LoadElements(), null);
+            }
+
+            if (_elementsById.TryGetValue(commentId, out XElement element))
+            {
+                return new SymbolXmlDocumentation(symbol, element);
             }
 
             return null;
+
+            ImmutableDictionary<string, XElement> LoadElements()
+            {
+                return _membersElement.Elements().ToImmutableDictionary(f => f.Attribute("name").Value, f => f);
+            }
         }
     }
 }

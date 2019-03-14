@@ -11,8 +11,6 @@ namespace Roslynator.VisualStudio
 {
     public abstract class BaseOptionsPage : UIElementDialogPage
     {
-        private bool _isActive;
-
         protected override UIElement Child => Control;
 
         [Browsable(false)]
@@ -24,9 +22,20 @@ namespace Roslynator.VisualStudio
 
         protected HashSet<string> DisabledItems { get; } = new HashSet<string>();
 
-        protected BaseOptionsPageControl Control { get; } = new BaseOptionsPageControl();
+        internal BaseOptionsPageControl Control { get; } = new BaseOptionsPageControl();
 
-        protected abstract void Fill(ICollection<BaseModel> codeFixes);
+        public bool IsLoaded { get; private set; }
+
+        protected abstract void Fill(ICollection<BaseModel> items);
+
+        public void Load()
+        {
+            if (!IsLoaded)
+            {
+                Fill(Control.Items);
+                IsLoaded = true;
+            }
+        }
 
         internal IEnumerable<string> GetDisabledItems()
         {
@@ -71,16 +80,12 @@ namespace Roslynator.VisualStudio
         {
             base.OnActivate(e);
 
-            if (!_isActive)
-            {
-                Fill(Control.Items);
-                _isActive = true;
-            }
+            Load();
         }
 
         protected override void OnClosed(EventArgs e)
         {
-            _isActive = false;
+            IsLoaded = false;
         }
 
         protected override void OnApply(PageApplyEventArgs e)

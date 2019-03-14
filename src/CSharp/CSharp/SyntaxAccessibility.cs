@@ -427,10 +427,10 @@ namespace Roslynator.CSharp
                     {
                         var eventDeclaration = (EventDeclarationSyntax)node;
 
-                        ModifierKinds kinds = SyntaxInfo.ModifierListInfo(eventDeclaration).GetKinds();
+                        ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventDeclaration).GetFilter();
 
-                        return (ignoreOverride || !kinds.Any(ModifierKinds.Override))
-                            && (accessibility != Accessibility.Private || !kinds.Any(ModifierKinds.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node)
                             && CheckAccessorAccessibility(eventDeclaration.AccessorList);
                     }
@@ -438,10 +438,10 @@ namespace Roslynator.CSharp
                     {
                         var indexerDeclaration = (IndexerDeclarationSyntax)node;
 
-                        ModifierKinds kinds = SyntaxInfo.ModifierListInfo(indexerDeclaration).GetKinds();
+                        ModifierFilter filter = SyntaxInfo.ModifierListInfo(indexerDeclaration).GetFilter();
 
-                        return (ignoreOverride || !kinds.Any(ModifierKinds.Override))
-                            && (accessibility != Accessibility.Private || !kinds.Any(ModifierKinds.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node)
                             && CheckAccessorAccessibility(indexerDeclaration.AccessorList);
                     }
@@ -449,10 +449,10 @@ namespace Roslynator.CSharp
                     {
                         var propertyDeclaration = (PropertyDeclarationSyntax)node;
 
-                        ModifierKinds kinds = SyntaxInfo.ModifierListInfo(propertyDeclaration).GetKinds();
+                        ModifierFilter filter = SyntaxInfo.ModifierListInfo(propertyDeclaration).GetFilter();
 
-                        return (ignoreOverride || !kinds.Any(ModifierKinds.Override))
-                            && (accessibility != Accessibility.Private || !kinds.Any(ModifierKinds.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node)
                             && CheckAccessorAccessibility(propertyDeclaration.AccessorList);
                     }
@@ -460,20 +460,20 @@ namespace Roslynator.CSharp
                     {
                         var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                        ModifierKinds kinds = SyntaxInfo.ModifierListInfo(methodDeclaration).GetKinds();
+                        ModifierFilter filter = SyntaxInfo.ModifierListInfo(methodDeclaration).GetFilter();
 
-                        return (ignoreOverride || !kinds.Any(ModifierKinds.Override))
-                            && (accessibility != Accessibility.Private || !kinds.Any(ModifierKinds.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node);
                     }
                 case SyntaxKind.EventFieldDeclaration:
                     {
                         var eventFieldDeclaration = (EventFieldDeclarationSyntax)node;
 
-                        ModifierKinds kinds = SyntaxInfo.ModifierListInfo(eventFieldDeclaration).GetKinds();
+                        ModifierFilter filter = SyntaxInfo.ModifierListInfo(eventFieldDeclaration).GetFilter();
 
-                        return (ignoreOverride || !kinds.Any(ModifierKinds.Override))
-                            && (accessibility != Accessibility.Private || !kinds.Any(ModifierKinds.AbstractVirtualOverride))
+                        return (ignoreOverride || !filter.Any(ModifierFilter.Override))
+                            && (accessibility != Accessibility.Private || !filter.Any(ModifierFilter.AbstractVirtualOverride))
                             && CheckProtectedInStaticOrSealedClass(node);
                     }
                 case SyntaxKind.ConstructorDeclaration:

@@ -48,7 +48,7 @@ namespace Roslynator.CodeFixes
 
         private Solution CurrentSolution => Workspace.CurrentSolution;
 
-        public async Task FixSolutionAsync(CancellationToken cancellationToken = default)
+        public async Task FixSolutionAsync(Func<Project, bool> predicate, CancellationToken cancellationToken = default)
         {
             foreach (string id in Options.IgnoredCompilerDiagnosticIds.OrderBy(f => f))
                 WriteLine($"Ignore compiler diagnostic '{id}'", Verbosity.Diagnostic);
@@ -73,7 +73,7 @@ namespace Roslynator.CodeFixes
 
                 Project project = CurrentSolution.GetProject(projects[i]);
 
-                if (Options.IsSupportedProject(project))
+                if (predicate == null || predicate(project))
                 {
                     WriteLine($"Fix '{project.Name}' {$"{i + 1}/{projects.Length}"}", ConsoleColor.Cyan, Verbosity.Minimal);
 

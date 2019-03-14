@@ -3,25 +3,30 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Build.Locator;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.MSBuild;
-using Roslynator.Host.Mef;
 using static Roslynator.Logger;
 
 namespace Roslynator.CommandLine
 {
     internal abstract class MSBuildWorkspaceCommand
     {
-        protected MSBuildWorkspaceCommand(string language)
+        protected MSBuildWorkspaceCommand(in ProjectFilter projectFilter)
         {
-            Language = language;
+            ProjectFilter = projectFilter;
         }
 
-        public string Language { get; }
+        public string Language
+        {
+            get { return ProjectFilter.Language; }
+        }
+
+        public ProjectFilter ProjectFilter { get; }
 
         public abstract Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default);
 
@@ -57,7 +62,32 @@ namespace Roslynator.CommandLine
                     ProjectOrSolution projectOrSolution = await OpenProjectOrSolutionAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
 
                     if (projectOrSolution != default)
+                    {
+                        Solution solution = projectOrSolution.AsSolution();
+
+                        if (solution != null)
+                        {
+                            foreach (string name in ProjectFilter.Names)
+                            {
+                                if (!solution.ContainsProject(name))
+                                {
+                                    WriteLine($"Project '{name}' does not exist.", Verbosity.Quiet);
+                                    return CommandResult.Fail;
+                                }
+                            }
+
+                            foreach (string name in ProjectFilter.IgnoredNames)
+                            {
+                                if (!solution.ContainsProject(name))
+                                {
+                                    WriteLine($"Project '{name}' does not exist.", Verbosity.Quiet);
+                                    return CommandResult.Fail;
+                                }
+                            }
+                        }
+
                         return await ExecuteAsync(projectOrSolution, cancellationToken);
+                    }
                 }
                 catch (OperationCanceledException ex)
                 {
@@ -136,7 +166,7 @@ namespace Roslynator.CommandLine
                 if (ex is FileNotFoundException
                     || ex is InvalidOperationException)
                 {
-                    WriteLine(ex.ToString(), ConsoleColor.Red, Verbosity.Minimal);
+                    WriteLine(ex.ToString(), Verbosity.Quiet);
                     return default;
                 }
                 else
@@ -152,21 +182,14 @@ namespace Roslynator.CommandLine
             {
                 MSBuildLocator.RegisterMSBuildPath(msbuildPath);
             }
+            else if (TryGetSingleInstance(out VisualStudioInstance instance))
+            {
+                MSBuildLocator.RegisterInstance(instance);
+                msbuildPath = instance.MSBuildPath;
+            }
             else
             {
-                VisualStudioInstance instance;
-
-                try
-                {
-                    instance = MSBuildLocator.RegisterDefaults();
-                }
-                catch (InvalidOperationException)
-                {
-                    WriteLine("MSBuild location not found. Use option '--msbuild-path' to specify MSBuild location", ConsoleColor.Red, Verbosity.Quiet);
-                    return null;
-                }
-
-                msbuildPath = instance.MSBuildPath;
+                return null;
             }
 
             WriteLine($"MSBuild location is '{msbuildPath}'", Verbosity.Diagnostic);
@@ -184,23 +207,52 @@ namespace Roslynator.CommandLine
             return MSBuildWorkspace.Create(properties);
         }
 
+        private static bool TryGetSingleInstance(out VisualStudioInstance instance)
+        {
+            using (IEnumerator<VisualStudioInstance> en = MSBuildLocator.QueryVisualStudioInstances().GetEnumerator())
+            {
+                if (!en.MoveNext())
+                {
+                    WriteLine($"MSBuild location not found. Use option '--{ParameterNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
+                    instance = null;
+                    return false;
+                }
+
+                VisualStudioInstance firstInstance = en.Current;
+
+                if (en.MoveNext())
+                {
+                    WriteLine("Multiple MSBuild locations found:", Verbosity.Quiet);
+
+                    WriteLine($"  {firstInstance.MSBuildPath}", Verbosity.Quiet);
+
+                    do
+                    {
+                        WriteLine($"  {en.Current.MSBuildPath}", Verbosity.Quiet);
+                    }
+                    while (en.MoveNext());
+
+                    WriteLine($"Use option '--{ParameterNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
+                    instance = null;
+                    return false;
+                }
+
+                instance = firstInstance;
+                return true;
+            }
+        }
+
         private protected IEnumerable<Project> FilterProjects(
             Solution solution,
-            MSBuildCommandLineOptions options,
             Func<Solution, ImmutableArray<ProjectId>> getProjects = null)
         {
-            ImmutableHashSet<string> projectNames = options.GetProjectNames();
-
-            ImmutableHashSet<string> ignoredProjectNames = options.GetIgnoredProjectNames();
-
             Workspace workspace = solution.Workspace;
 
             foreach (ProjectId projectId in (getProjects != null) ? getProjects(solution) : solution.ProjectIds)
             {
                 Project project = workspace.CurrentSolution.GetProject(projectId);
 
-                if ((Language == null || Language == project.Language)
-                    && ((projectNames.Count > 0) ? projectNames.Contains(project.Name) : !ignoredProjectNames.Contains(project.Name)))
+                if (ProjectFilter.IsMatch(project))
                 {
                     yield return project;
                 }
@@ -209,6 +261,52 @@ namespace Roslynator.CommandLine
                     WriteLine($"  Skip '{project.Name}'", ConsoleColor.DarkGray, Verbosity.Normal);
                 }
             }
+        }
+
+        private protected async Task<ImmutableArray<Compilation>> GetCompilationsAsync(
+            ProjectOrSolution projectOrSolution,
+            CancellationToken cancellationToken)
+        {
+            ImmutableArray<Compilation>.Builder compilations = ImmutableArray.CreateBuilder<Compilation>();
+
+            if (projectOrSolution.IsProject)
+            {
+                Project project = projectOrSolution.AsProject();
+
+                WriteLine($"Compile '{project.Name}'", Verbosity.Minimal);
+
+                Compilation compilation = await project.GetCompilationAsync(cancellationToken);
+
+                compilations.Add(compilation);
+            }
+            else
+            {
+                Solution solution = projectOrSolution.AsSolution();
+
+                WriteLine($"Compile solution '{solution.FilePath}'", Verbosity.Minimal);
+
+                Stopwatch stopwatch = Stopwatch.StartNew();
+
+                foreach (Project project in FilterProjects(solution, s => s
+                    .GetProjectDependencyGraph()
+                    .GetTopologicallySortedProjects(cancellationToken)
+                    .ToImmutableArray()))
+                {
+                    cancellationToken.ThrowIfCancellationRequested();
+
+                    WriteLine($"  Compile '{project.Name}'", Verbosity.Minimal);
+
+                    Compilation compilation = await project.GetCompilationAsync(cancellationToken);
+
+                    compilations.Add(compilation);
+                }
+
+                stopwatch.Stop();
+
+                WriteLine($"Done compiling solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+            }
+
+            return compilations.ToImmutableArray();
         }
 
         protected class ConsoleProgressReporter : IProgress<ProjectLoadProgress>

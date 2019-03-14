@@ -5,7 +5,7 @@ using CommandLine;
 
 namespace Roslynator.CommandLine
 {
-    //TODO: NoConcurrent, RemoveEmptyFolders
+    // NoConcurrent, RemoveEmptyFolders, RemoveUnusedSymbols
     [Verb("fix", HelpText = "Fixes diagnostics in the specified project or solution.")]
     public class FixCommandLineOptions : AbstractAnalyzeCommandLineOptions
     {

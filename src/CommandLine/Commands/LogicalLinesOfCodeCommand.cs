@@ -16,7 +16,7 @@ namespace Roslynator.CommandLine
 {
     internal class LogicalLinesOfCodeCommand : AbstractLinesOfCodeCommand
     {
-        public LogicalLinesOfCodeCommand(LogicalLinesOfCodeCommandLineOptions options, string language) : base(language)
+        public LogicalLinesOfCodeCommand(LogicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
         }
@@ -77,7 +77,7 @@ namespace Roslynator.CommandLine
         {
             WriteLine($"Count logical lines for solution '{solution.FilePath}'", ConsoleColor.Cyan, Verbosity.Minimal);
 
-            IEnumerable<Project> projects = FilterProjects(solution, Options);
+            IEnumerable<Project> projects = FilterProjects(solution);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 

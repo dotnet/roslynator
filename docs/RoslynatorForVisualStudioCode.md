@@ -17,6 +17,7 @@
 4. Copy selected libraries to a directory of your choice (for example **C://lib/roslynator**)
 
    * **Roslynator.Core.dll** (required)
+   * **Roslynator.Workspaces.Core.dll** (required)
    * **Roslynator.Common.dll** (required)
    * **Roslynator.Common.Workspaces.dll** (required)
    * **Roslynator.CSharp.dll** (required)

@@ -643,4 +643,10 @@
       <Id>CS1012</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0114" Identifier="MakeFieldWritable" Title="Make field writable">
+    <FixableDiagnosticIds>
+      <Id>CS0191</Id>
+      <Id>CS0192</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

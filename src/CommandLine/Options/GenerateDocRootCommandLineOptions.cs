@@ -17,7 +17,7 @@ namespace Roslynator.CommandLine
             MetaValue = "<IGNORED_PARTS>")]
         public IEnumerable<string> IgnoredParts { get; set; }
 
-        [Option(longName: "root-directory-url",
+        [Option(longName: ParameterNames.RootDirectoryUrl,
             HelpText = "Defines a relative url to the documentation root directory.",
             MetaValue = "<ROOT_DIRECTORY_URL>")]
         public string RootDirectoryUrl { get; set; }

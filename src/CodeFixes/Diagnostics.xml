@@ -274,6 +274,13 @@
     Message="The out parameter '{0}' must be assigned to before control leaves the current method"
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0177" />
   <Diagnostic
+    Id="CS0191"
+    Identifier="ReadOnlyFieldCannotBeAssignedTo"
+    Severity="Error"
+    Title="A readonly field cannot be assigned to (except in a constructor or a variable initializer)."
+    Message="A readonly field cannot be assigned to (except in a constructor or a variable initializer)"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0191" />
+  <Diagnostic
     Id="CS0192"
     Identifier="ReadOnlyFieldCannotBePassedAsRefOrOutValue"
     Severity="Error"

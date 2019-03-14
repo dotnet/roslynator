@@ -20,7 +20,7 @@ namespace Roslynator.CommandLine
 {
     internal class FormatCommand : MSBuildWorkspaceCommand
     {
-        public FormatCommand(FormatCommandLineOptions options, string language) : base(language)
+        public FormatCommand(FormatCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
         }
@@ -41,18 +41,18 @@ namespace Roslynator.CommandLine
                     ignoreCompilerErrors: true,
                     ignoreAnalyzerReferences: true,
                     supportedDiagnosticIds: supportedDiagnosticIds,
-                    projectNames: Options.Projects,
-                    ignoredProjectNames: Options.IgnoredProjects,
-                    language: Language,
                     batchSize: 1000,
                     format: true);
 
                 CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
 
+                var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
+
                 return await FixCommand.FixAsync(
                     projectOrSolution,
                     RoslynatorAnalyzerAssemblies.AnalyzersAndCodeFixes,
                     codeFixerOptions,
+                    projectFilter,
                     culture,
                     cancellationToken);
             }
@@ -86,7 +86,7 @@ namespace Roslynator.CommandLine
 
             var changedDocuments = new ConcurrentBag<ImmutableArray<DocumentId>>();
 
-            Parallel.ForEach(FilterProjects(solution, Options), project =>
+            Parallel.ForEach(FilterProjects(solution), project =>
             {
                 WriteLine($"  Analyze '{project.Name}'", Verbosity.Minimal);
 

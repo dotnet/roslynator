@@ -2,6 +2,7 @@
 
 using System.Collections.Immutable;
 using System.Composition;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -33,7 +34,8 @@ namespace Roslynator.CSharp.CodeFixes
                     CompilerDiagnosticIdentifiers.CannotConvertNullToTypeParameterBecauseItCouldBeNonNullableValueType,
                     CompilerDiagnosticIdentifiers.OnlyAssignmentCallIncrementDecrementAndNewObjectExpressionsCanBeUsedAsStatement,
                     CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType,
-                    CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer);
+                    CompilerDiagnosticIdentifiers.LeftHandSideOfAssignmentMustBeVariablePropertyOrIndexer,
+                    CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo);
             }
         }
 
@@ -57,7 +59,8 @@ namespace Roslynator.CSharp.CodeFixes
                 && !Settings.IsEnabled(CodeFixIdentifiers.ChangeTypeAccordingToInitializer)
                 && !Settings.IsEnabled(CodeFixIdentifiers.ReplaceYieldReturnWithForEach)
                 && !Settings.IsEnabled(CodeFixIdentifiers.ReplaceComparisonWithAssignment)
-                && !Settings.IsEnabled(CodeFixIdentifiers.RemoveParentheses))
+                && !Settings.IsEnabled(CodeFixIdentifiers.RemoveParentheses)
+                && !Settings.IsEnabled(CodeFixIdentifiers.MakeFieldWritable))
             {
                 return;
             }
@@ -517,6 +520,49 @@ namespace Roslynator.CSharp.CodeFixes
                                 return;
 
                             ModifiersCodeFixRegistrator.RemoveModifier(context, diagnostic, localDeclaration, constModifier);
+
+                            break;
+                        }
+                    case CompilerDiagnosticIdentifiers.ReadOnlyFieldCannotBeAssignedTo:
+                        {
+                            if (!Settings.IsEnabled(CodeFixIdentifiers.MakeFieldWritable))
+                                break;
+
+                            SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(expression.Parent);
+
+                            if (!simpleAssignment.Success)
+                                return;
+
+                            if (simpleAssignment.Left != expression)
+                                return;
+
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(expression, context.CancellationToken);
+
+                            if (symbolInfo.CandidateReason != CandidateReason.NotAVariable)
+                                return;
+
+                            if (!(symbolInfo.CandidateSymbols.SingleOrDefault(shouldThrow: false) is IFieldSymbol fieldSymbol))
+                                return;
+
+                            if (fieldSymbol.DeclaredAccessibility != Accessibility.Private)
+                                return;
+
+                            if (!(fieldSymbol.GetSyntax().Parent.Parent is FieldDeclarationSyntax fieldDeclaration))
+                                return;
+
+                            TypeDeclarationSyntax containingTypeDeclaration = fieldDeclaration.FirstAncestor<TypeDeclarationSyntax>();
+
+                            if (!expression.Ancestors().Any(f => f == containingTypeDeclaration))
+                                return;
+
+                            ModifiersCodeFixRegistrator.RemoveModifier(
+                                context,
+                                diagnostic,
+                                fieldDeclaration,
+                                SyntaxKind.ReadOnlyKeyword,
+                                title: $"Make '{fieldSymbol.Name}' writable");
 
                             break;
                         }

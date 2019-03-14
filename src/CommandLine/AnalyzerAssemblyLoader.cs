@@ -56,17 +56,19 @@ namespace Roslynator.CommandLine
                                 break;
                             }
                         }
-                        catch (IOException)
+                        catch (Exception ex)
                         {
-                            continue;
-                        }
-                        catch (SecurityException)
-                        {
-                            continue;
-                        }
-                        catch (UnauthorizedAccessException)
-                        {
-                            continue;
+                            if (ex is IOException
+                                || ex is SecurityException
+                                || ex is UnauthorizedAccessException)
+                            {
+                                WriteLine(ex.Message, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                                continue;
+                            }
+                            else
+                            {
+                                throw;
+                            }
                         }
 
                         if (analyzerAssembly?.IsEmpty == false)

@@ -34,6 +34,12 @@ namespace Roslynator
             Writer.Write(value);
         }
 
+        public void Write(char value, Verbosity verbosity)
+        {
+            if (ShouldWrite(verbosity))
+                Write(value);
+        }
+
         public override void Write(char[] buffer)
         {
             Writer.Write(buffer);
@@ -81,7 +87,7 @@ namespace Roslynator
 
         public void Write(string value, Verbosity verbosity)
         {
-            WriteIf(verbosity <= Verbosity, value);
+            WriteIf(ShouldWrite(verbosity), value);
         }
 
         public void WriteIf(bool condition, string value)
@@ -127,7 +133,7 @@ namespace Roslynator
 
         public void WriteLine(Verbosity verbosity)
         {
-            WriteLineIf(verbosity <= Verbosity);
+            WriteLineIf(ShouldWrite(verbosity));
         }
 
         public void WriteLineIf(bool condition)
@@ -193,7 +199,7 @@ namespace Roslynator
 
         public void WriteLine(string value, Verbosity verbosity)
         {
-            WriteLineIf(verbosity <= Verbosity, value);
+            WriteLineIf(ShouldWrite(verbosity), value);
         }
 
         public void WriteLineIf(bool condition, string value)
@@ -238,6 +244,11 @@ namespace Roslynator
                 Writer.Dispose();
 
             base.Dispose(disposing);
+        }
+
+        public bool ShouldWrite(Verbosity verbosity)
+        {
+            return verbosity <= Verbosity;
         }
     }
 }

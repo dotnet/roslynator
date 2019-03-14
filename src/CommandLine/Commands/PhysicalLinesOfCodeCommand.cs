@@ -16,7 +16,7 @@ namespace Roslynator.CommandLine
 {
     internal class PhysicalLinesOfCodeCommand : AbstractLinesOfCodeCommand
     {
-        public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, string language) : base(language)
+        public PhysicalLinesOfCodeCommand(PhysicalLinesOfCodeCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
         }
@@ -83,7 +83,7 @@ namespace Roslynator.CommandLine
         {
             WriteLine($"Count lines for solution '{solution.FilePath}'", ConsoleColor.Cyan, Verbosity.Minimal);
 
-            IEnumerable<Project> projects = FilterProjects(solution, Options);
+            IEnumerable<Project> projects = FilterProjects(solution);
 
             Stopwatch stopwatch = Stopwatch.StartNew();
 

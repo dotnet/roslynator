@@ -18,7 +18,7 @@ namespace Roslynator.Configuration
 
         public Settings VisualStudioSettings { get; } = new Settings();
 
-        public ConfigFileSettings ConfigFileSettings { get; set; }
+        public Settings ConfigFileSettings { get; set; }
 
         public void UpdateVisualStudioSettings(GeneralOptionsPage generalOptionsPage)
         {
@@ -29,55 +29,80 @@ namespace Roslynator.Configuration
 
         public void UpdateVisualStudioSettings(RefactoringsOptionsPage refactoringsOptionsPage)
         {
-            UpdateVisualStudioSettings(VisualStudioSettings.Refactorings, refactoringsOptionsPage.GetDisabledItems());
+            VisualStudioSettings.Refactorings.Clear();
+
+            foreach (string id in refactoringsOptionsPage.GetDisabledItems())
+                VisualStudioSettings.Refactorings[id] = false;
         }
 
         public void UpdateVisualStudioSettings(CodeFixesOptionsPage codeFixOptionsPage)
         {
-            UpdateVisualStudioSettings(VisualStudioSettings.CodeFixes, codeFixOptionsPage.GetDisabledItems());
+            VisualStudioSettings.CodeFixes.Clear();
+
+            foreach (string id in codeFixOptionsPage.GetDisabledItems())
+                VisualStudioSettings.CodeFixes[id] = false;
         }
 
         public void UpdateVisualStudioSettings(GlobalSuppressionsOptionsPage globalSuppressionsOptionsPage)
         {
-            UpdateVisualStudioSettings(VisualStudioSettings.Analyzers, globalSuppressionsOptionsPage.GetDisabledItems());
+            VisualStudioSettings.GlobalSuppressions.Clear();
+
+            foreach (string id in globalSuppressionsOptionsPage.GetDisabledItems())
+                VisualStudioSettings.GlobalSuppressions.Add(id);
         }
 
-        public static void UpdateVisualStudioSettings(Dictionary<string, bool> values, IEnumerable<string> disabledItems)
+        public void ApplyTo(AnalyzerSettings analyzerSettings)
         {
-            values.Clear();
+            analyzerSettings.Reset();
 
-            foreach (string id in disabledItems)
-                values[id] = false;
-        }
-
-        internal void ApplyTo(RefactoringSettings settings)
-        {
-            settings.Reset();
-
-            VisualStudioSettings.ApplyTo(settings);
+            Apply(VisualStudioSettings);
 
             if (UseConfigFile)
-                ConfigFileSettings?.ApplyTo(settings);
+                Apply(ConfigFileSettings);
+
+            void Apply(Settings settings)
+            {
+                if (settings != null)
+                {
+                    foreach (string id in settings.GlobalSuppressions)
+                        analyzerSettings.Disable(id);
+                }
+            }
         }
 
-        public void ApplyTo(CodeFixSettings settings)
+        internal void ApplyTo(RefactoringSettings refactoringSettings)
         {
-            settings.Reset();
+            refactoringSettings.Reset();
 
-            VisualStudioSettings.ApplyTo(settings);
+            Apply(VisualStudioSettings);
 
             if (UseConfigFile)
-                ConfigFileSettings?.ApplyTo(settings);
+                Apply(ConfigFileSettings);
+
+            void Apply(Settings settings)
+            {
+                if (settings != null)
+                {
+                    refactoringSettings.PrefixFieldIdentifierWithUnderscore = settings.PrefixFieldIdentifierWithUnderscore;
+                    refactoringSettings.Set(settings.Refactorings);
+                }
+            }
         }
 
-        public void ApplyTo(AnalyzerSettings settings)
+        public void ApplyTo(CodeFixSettings codeFixSettings)
         {
-            settings.Reset();
+            codeFixSettings.Reset();
 
-            VisualStudioSettings.ApplyTo(settings);
+            Apply(VisualStudioSettings);
 
             if (UseConfigFile)
-                ConfigFileSettings?.ApplyTo(settings);
+                Apply(ConfigFileSettings);
+
+            void Apply(Settings settings)
+            {
+                if (settings != null)
+                    codeFixSettings.Set(settings.CodeFixes);
+            }
         }
     }
 }

@@ -65,9 +65,6 @@ namespace Roslynator
             if (typeof(TSymbol) == typeof(INamedTypeSymbol))
                 return new MetadataNameEqualityComparer<INamedTypeSymbol>();
 
-            if (typeof(TSymbol) == typeof(ISymbol))
-                return new MetadataNameEqualityComparer<ISymbol>();
-
             if (typeof(TSymbol) == typeof(INamespaceOrTypeSymbol))
                 return new MetadataNameEqualityComparer<INamespaceOrTypeSymbol>();
 
@@ -107,9 +104,9 @@ namespace Roslynator
         /// <summary>
         /// When overridden in a derived class, determines whether two objects of type <typeparamref name="TSymbol" /> are equal.
         /// </summary>
-        /// <returns>true if the specified objects are equal; otherwise, false.</returns>
         /// <param name="x">The first object to compare.</param>
         /// <param name="y">The second object to compare.</param>
+        /// <returns>true if the specified objects are equal; otherwise, false.</returns>
         public override bool Equals(TSymbol x, TSymbol y)
         {
             if (object.ReferenceEquals(x, y))
@@ -166,8 +163,8 @@ namespace Roslynator
         /// <summary>
         /// Serves as a hash function for the specified symbol.
         /// </summary>
-        /// <returns>A hash code for the specified symbol.</returns>
         /// <param name="obj">The symbol for which to get a hash code.</param>
+        /// <returns>A hash code for the specified symbol.</returns>
         /// <exception cref="ArgumentNullException"><paramref name="obj"/> is <c>null</c>.</exception>
         public override int GetHashCode(TSymbol obj)
         {

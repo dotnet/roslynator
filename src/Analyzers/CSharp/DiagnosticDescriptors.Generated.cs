@@ -2528,7 +2528,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Make parameter ref read-only.", 
             category:           DiagnosticCategories.Performance, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.MakeParameterRefReadOnly}", 
             customTags:         Array.Empty<string>());

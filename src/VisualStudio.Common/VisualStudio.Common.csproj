@@ -125,7 +125,6 @@
     <Compile Include="GeneralOptionsPageControl.xaml.cs">
       <DependentUpon>GeneralOptionsPageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\ConfigFileSettings.cs" />
     <Compile Include="Configuration\Settings.cs" />
     <Compile Include="Configuration\SettingsManager.cs" />
     <Compile Include="CodeFixesOptionsPage.cs">

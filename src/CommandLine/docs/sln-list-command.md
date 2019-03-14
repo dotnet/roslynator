@@ -35,9 +35,7 @@ Defines project language.
 
 **`--msbuild-path`** <MSBUILD_PATH>
 
-Defines a path to MSBuild.
-
-*Note: First found instance of MSBuild will be used if the path to MSBuild is not specified.*
+Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
 
 **`--projects`** <PROJECT_NAME>
 

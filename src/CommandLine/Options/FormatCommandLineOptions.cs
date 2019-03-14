@@ -32,7 +32,7 @@ namespace Roslynator.CommandLine
         public bool EmptyLineBetweenDeclarations { get; set; }
 
         [Option(longName: "end-of-line",
-            HelpText = "Defines end of line character(s). Allowed values are lf or crlf",
+            HelpText = "Defines end of line character(s). Allowed values are lf or crlf.",
             MetaValue = "<END_OF_LINE>")]
         public string EndOfLine { get; set; }
 

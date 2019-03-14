@@ -15,7 +15,7 @@ namespace Roslynator.CommandLine
 {
     internal abstract class AbstractLinesOfCodeCommand : MSBuildWorkspaceCommand
     {
-        protected AbstractLinesOfCodeCommand(string language) : base(language)
+        protected AbstractLinesOfCodeCommand(in ProjectFilter projectFilter) : base(projectFilter)
         {
         }
 

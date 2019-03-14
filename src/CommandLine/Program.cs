@@ -8,16 +8,15 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using CommandLine;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.CodeFixes;
+using Roslynator.CSharp;
 using Roslynator.Diagnostics;
 using Roslynator.Documentation;
-using Roslynator.Documentation.Markdown;
-using static Roslynator.CommandLine.DocumentationHelpers;
+using Roslynator.FindSymbols;
 using static Roslynator.CommandLine.ParseHelpers;
 using static Roslynator.Logger;
 
@@ -26,8 +25,6 @@ namespace Roslynator.CommandLine
     //TODO: banner/ruleset add, change, remove
     internal static class Program
     {
-        private static readonly Encoding _defaultEncoding = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
-
         private static int Main(string[] args)
         {
             WriteLine($"Roslynator Command Line Tool version {typeof(Program).GetTypeInfo().Assembly.GetName().Version}", Verbosity.Quiet);
@@ -36,19 +33,20 @@ namespace Roslynator.CommandLine
 
             try
             {
-                ParserResult<object> parserResult = Parser.Default.ParseArguments<FixCommandLineOptions,
-                    AnalyzeCommandLineOptions,
+                ParserResult<object> parserResult = Parser.Default.ParseArguments<
 #if DEBUG
                     AnalyzeAssemblyCommandLineOptions,
-                    AnalyzeUnusedCommandLineOptions,
-#endif
-                    FormatCommandLineOptions,
+                    FindSymbolsCommandLineOptions,
                     SlnListCommandLineOptions,
                     ListVisualStudioCommandLineOptions,
+#endif
+                    FixCommandLineOptions,
+                    AnalyzeCommandLineOptions,
+                    ListSymbolsCommandLineOptions,
+                    FormatCommandLineOptions,
                     PhysicalLinesOfCodeCommandLineOptions,
                     LogicalLinesOfCodeCommandLineOptions,
                     GenerateDocCommandLineOptions,
-                    GenerateDeclarationsCommandLineOptions,
                     GenerateDocRootCommandLineOptions>(args);
 
                 bool verbosityParsed = false;
@@ -83,20 +81,20 @@ namespace Roslynator.CommandLine
                     return 1;
 
                 return parserResult.MapResult(
-                    (FixCommandLineOptions options) => FixAsync(options).Result,
-                    (AnalyzeCommandLineOptions options) => AnalyzeAsync(options).Result,
 #if DEBUG
                     (AnalyzeAssemblyCommandLineOptions options) => AnalyzeAssembly(options),
-                    (AnalyzeUnusedCommandLineOptions options) => AnalyzeUnusedAsync(options).Result,
-#endif
-                    (FormatCommandLineOptions options) => FormatAsync(options).Result,
+                    (FindSymbolsCommandLineOptions options) => FindSymbolsAsync(options).Result,
                     (SlnListCommandLineOptions options) => SlnListAsync(options).Result,
-                    (ListVisualStudioCommandLineOptions options) => ListMSBuild(options),
+                    (ListVisualStudioCommandLineOptions options) => ListVisualStudio(options),
+#endif
+                    (FixCommandLineOptions options) => FixAsync(options).Result,
+                    (AnalyzeCommandLineOptions options) => AnalyzeAsync(options).Result,
+                    (ListSymbolsCommandLineOptions options) => ListSymbolsAsync(options).Result,
+                    (FormatCommandLineOptions options) => FormatAsync(options).Result,
                     (PhysicalLinesOfCodeCommandLineOptions options) => PhysicalLinesOfCodeAsync(options).Result,
                     (LogicalLinesOfCodeCommandLineOptions options) => LogicalLinesOrCodeAsync(options).Result,
-                    (GenerateDocCommandLineOptions options) => GenerateDoc(options),
-                    (GenerateDeclarationsCommandLineOptions options) => GenerateDeclarations(options),
-                    (GenerateDocRootCommandLineOptions options) => GenerateDocRoot(options),
+                    (GenerateDocCommandLineOptions options) => GenerateDocAsync(options).Result,
+                    (GenerateDocRootCommandLineOptions options) => GenerateDocRootAsync(options).Result,
                     _ => 1);
             }
             catch (Exception ex)
@@ -118,24 +116,24 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> FixAsync(FixCommandLineOptions options)
         {
-            if (!options.TryGetDiagnosticSeverity(CodeFixerOptions.Default.SeverityLevel, out DiagnosticSeverity severityLevel))
+            if (!options.TryParseDiagnosticSeverity(CodeFixerOptions.Default.SeverityLevel, out DiagnosticSeverity severityLevel))
                 return 1;
 
-            if (!TryParseKeyValuePairs(options.DiagnosticFixMap, out Dictionary<string, string> diagnosticFixMap))
+            if (!TryParseKeyValuePairs(options.DiagnosticFixMap, out List<KeyValuePair<string, string>> diagnosticFixMap))
                 return 1;
 
-            if (!TryParseKeyValuePairs(options.DiagnosticFixerMap, out Dictionary<string, string> diagnosticFixerMap))
+            if (!TryParseKeyValuePairs(options.DiagnosticFixerMap, out List<KeyValuePair<string, string>> diagnosticFixerMap))
                 return 1;
 
-            if (!options.TryGetLanguage(out string language))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
             var command = new FixCommand(
                 options: options,
                 severityLevel: severityLevel,
-                diagnosticFixMap: diagnosticFixMap?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty,
-                diagnosticFixerMap: diagnosticFixerMap?.ToImmutableDictionary() ?? ImmutableDictionary<string, string>.Empty,
-                language: language);
+                diagnosticFixMap: diagnosticFixMap,
+                diagnosticFixerMap: diagnosticFixerMap,
+                projectFilter: projectFilter);
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
@@ -144,13 +142,13 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> AnalyzeAsync(AnalyzeCommandLineOptions options)
         {
-            if (!options.TryGetDiagnosticSeverity(CodeAnalyzerOptions.Default.SeverityLevel, out DiagnosticSeverity severityLevel))
+            if (!options.TryParseDiagnosticSeverity(CodeAnalyzerOptions.Default.SeverityLevel, out DiagnosticSeverity severityLevel))
                 return 1;
 
-            if (!options.TryGetLanguage(out string language))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
-            var command = new AnalyzeCommand(options, severityLevel, language);
+            var command = new AnalyzeCommand(options, severityLevel, projectFilter);
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
@@ -174,27 +172,129 @@ namespace Roslynator.CommandLine
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
 
-        private static async Task<int> AnalyzeUnusedAsync(AnalyzeUnusedCommandLineOptions options)
+        private static async Task<int> FindSymbolsAsync(FindSymbolsCommandLineOptions options)
         {
-            if (!options.TryGetLanguage(out string language))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
-            if (!options.TryGetScope(UnusedSymbolKinds.TypeOrMember, out UnusedSymbolKinds unusedSymbolKinds))
+            if (!TryParseOptionValueAsEnumFlags(options.SymbolGroups, ParameterNames.SymbolGroups, out SymbolGroupFilter symbolGroups, SymbolFinderOptions.Default.SymbolGroups))
                 return 1;
 
-            if (!options.TryGetVisibility(Visibility.Internal, out Visibility visibility))
+            if (!TryParseOptionValueAsEnumFlags(options.Visibility, ParameterNames.Visibility, out VisibilityFilter visibility, SymbolFinderOptions.Default.Visibility))
                 return 1;
 
-            var command = new AnalyzeUnusedCommand(options, visibility, unusedSymbolKinds, language);
+            if (!TryParseMetadataNames(options.WithAttributes, out ImmutableArray<MetadataName> withAttributes))
+                return 1;
+
+            if (!TryParseMetadataNames(options.WithoutAttributes, out ImmutableArray<MetadataName> withoutAttributes))
+                return 1;
+
+            if (!TryParseOptionValueAsEnumFlags(options.WithFlags, ParameterNames.WithFlags, out SymbolFlags withFlags, SymbolFlags.None))
+                return 1;
+
+            if (!TryParseOptionValueAsEnumFlags(options.WithoutFlags, ParameterNames.WithoutFlags, out SymbolFlags withoutFlags, SymbolFlags.None))
+                return 1;
+
+            ImmutableArray<SymbolFilterRule>.Builder rules = ImmutableArray.CreateBuilder<SymbolFilterRule>();
+
+            if (withAttributes.Any())
+                rules.Add(new WithAttributeFilterRule(withAttributes));
+
+            if (withoutAttributes.Any())
+                rules.Add(new WithoutAttributeFilterRule(withoutAttributes));
+
+            if (withFlags != SymbolFlags.None)
+                rules.AddRange(SymbolFilterRuleFactory.FromFlags(withFlags));
+
+            if (withoutFlags != SymbolFlags.None)
+                rules.AddRange(SymbolFilterRuleFactory.FromFlags(withoutFlags, invert: true));
+
+            var symbolFinderOptions = new SymbolFinderOptions(
+                visibility: visibility,
+                symbolGroups: symbolGroups,
+                rules: rules,
+                ignoreGeneratedCode: options.IgnoreGeneratedCode,
+                unusedOnly: options.UnusedOnly);
+
+            var command = new FindSymbolsCommand(
+                options: options,
+                symbolFinderOptions: symbolFinderOptions,
+                projectFilter: projectFilter);
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
 
+        private static async Task<int> ListSymbolsAsync(ListSymbolsCommandLineOptions options)
+        {
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
+                return 1;
+
+            if (!TryParseOptionValueAsEnum(options.Depth, ParameterNames.Depth, out DocumentationDepth depth, DocumentationDepth.Member))
+                return 1;
+
+            if (!TryParseOptionValueAsEnumFlags(options.Format, ParameterNames.Format, out SymbolDefinitionFormatOptions formatOptions))
+                return 1;
+
+            if (!TryParseMetadataNames(options.IgnoredAttributes, out ImmutableArray<MetadataName> ignoredAttributes))
+                return 1;
+
+            if (!TryParseMetadataNames(options.IgnoredSymbols, out ImmutableArray<MetadataName> ignoredSymbols))
+                return 1;
+
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, ParameterNames.IgnoredParts, out SymbolDefinitionPartFilter ignoredParts))
+                return 1;
+
+            if (!TryParseOptionValueAsEnum(options.Layout, ParameterNames.Layout, out SymbolDefinitionListLayout layout, SymbolDefinitionListLayout.NamespaceList))
+                return 1;
+
+            if (!TryParseOptionValueAsEnumFlags(options.Visibility, ParameterNames.Visibility, out VisibilityFilter visibilityFilter, SymbolFilterOptions.Default.Visibility))
+                return 1;
+
+            ImmutableArray<SymbolFilterRule> rules = (ignoredSymbols.Any())
+                ? ImmutableArray.Create<SymbolFilterRule>(new IgnoredNameSymbolFilterRule(ignoredSymbols))
+                : ImmutableArray<SymbolFilterRule>.Empty;
+
+            ImmutableArray<AttributeFilterRule> attributeRules = ImmutableArray.Create<AttributeFilterRule>(new IgnoredAttributeNameFilterRule(ignoredAttributes.AddRange(DocumentationFilterOptions.IgnoredAttributes)));
+
+            var symbolFilterOptions = new SymbolFilterOptions(
+                visibility: visibilityFilter,
+                symbolGroups: GetSymbolGroupFilter(),
+                rules: rules,
+                attributeRules: attributeRules);
+
+            var command = new ListSymbolsCommand(
+                options: options,
+                symbolFilterOptions: symbolFilterOptions,
+                formatOptions: formatOptions,
+                layout: layout,
+                ignoredParts: ignoredParts,
+                projectFilter: projectFilter);
+
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
+
+            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
+
+            SymbolGroupFilter GetSymbolGroupFilter()
+            {
+                switch (depth)
+                {
+                    case DocumentationDepth.Member:
+                        return SymbolGroupFilter.TypeOrMember;
+                    case DocumentationDepth.Type:
+                        return SymbolGroupFilter.Type;
+                    case DocumentationDepth.Namespace:
+                        return SymbolGroupFilter.None;
+                    default:
+                        throw new InvalidOperationException();
+                }
+            }
+        }
+
         private static async Task<int> FormatAsync(FormatCommandLineOptions options)
         {
-            if (!options.TryGetLanguage(out string language))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
             string endOfLine = options.EndOfLine;
@@ -207,7 +307,7 @@ namespace Roslynator.CommandLine
                 return 1;
             }
 
-            var command = new FormatCommand(options, language);
+            var command = new FormatCommand(options, projectFilter);
 
             IEnumerable<string> properties = options.Properties;
 
@@ -225,17 +325,17 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> SlnListAsync(SlnListCommandLineOptions options)
         {
-            if (!options.TryGetLanguage(out string language))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
-            var command = new SlnListCommand(options, language);
+            var command = new SlnListCommand(options, projectFilter);
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
 
-        private static int ListMSBuild(ListVisualStudioCommandLineOptions options)
+        private static int ListVisualStudio(ListVisualStudioCommandLineOptions options)
         {
             var command = new ListVisualStudioCommand(options);
 
@@ -246,10 +346,10 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> PhysicalLinesOfCodeAsync(PhysicalLinesOfCodeCommandLineOptions options)
         {
-            if (!options.TryGetLanguage(out string language))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
-            var command = new PhysicalLinesOfCodeCommand(options, language);
+            var command = new PhysicalLinesOfCodeCommand(options, projectFilter);
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
@@ -258,227 +358,88 @@ namespace Roslynator.CommandLine
 
         private static async Task<int> LogicalLinesOrCodeAsync(LogicalLinesOfCodeCommandLineOptions options)
         {
-            if (!options.TryGetLanguage(out string language))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
-            var command = new LogicalLinesOfCodeCommand(options, language);
+            var command = new LogicalLinesOfCodeCommand(options, projectFilter);
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
 
-        private static int GenerateDoc(GenerateDocCommandLineOptions options)
+        private static async Task<int> GenerateDocAsync(GenerateDocCommandLineOptions options)
         {
             if (options.MaxDerivedTypes < 0)
             {
-                WriteLine("Maximum number of derived items must be equal or greater than 0.", ConsoleColor.Red, Verbosity.Quiet);
+                WriteLine("Maximum number of derived items must be equal or greater than 0.", Verbosity.Quiet);
                 return 1;
             }
 
-            if (!TryParseIgnoredRootParts(options.IgnoredRootParts, out RootDocumentationParts ignoredRootParts))
+            if (!TryParseOptionValueAsEnum(options.Depth, ParameterNames.Depth, out DocumentationDepth depth, DocumentationOptions.Default.Depth))
                 return 1;
 
-            if (!TryParseIgnoredNamespaceParts(options.IgnoredNamespaceParts, out NamespaceDocumentationParts ignoredNamespaceParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredRootParts, ParameterNames.IgnoredRootParts, out RootDocumentationParts ignoredRootParts, DocumentationOptions.Default.IgnoredRootParts))
                 return 1;
 
-            if (!TryParseIgnoredTypeParts(options.IgnoredTypeParts, out TypeDocumentationParts ignoredTypeParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredNamespaceParts, ParameterNames.IgnoredNamespaceParts, out NamespaceDocumentationParts ignoredNamespaceParts, DocumentationOptions.Default.IgnoredNamespaceParts))
                 return 1;
 
-            if (!TryParseIgnoredMemberParts(options.IgnoredMemberParts, out MemberDocumentationParts ignoredMemberParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredTypeParts, ParameterNames.IgnoredTypeParts, out TypeDocumentationParts ignoredTypeParts, DocumentationOptions.Default.IgnoredTypeParts))
                 return 1;
 
-            if (!TryParseOmitContainingNamespaceParts(options.OmitContainingNamespaceParts, out OmitContainingNamespaceParts omitContainingNamespaceParts))
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredMemberParts, ParameterNames.IgnoredMemberParts, out MemberDocumentationParts ignoredMemberParts, DocumentationOptions.Default.IgnoredMemberParts))
                 return 1;
 
-            if (!TryParseVisibility(options.Visibility, out Visibility visibility))
+            if (!TryParseOptionValueAsEnumFlags(options.OmitContainingNamespaceParts, ParameterNames.OmitContainingNamespaceParts, out OmitContainingNamespaceParts omitContainingNamespaceParts, DocumentationOptions.Default.OmitContainingNamespaceParts))
                 return 1;
 
-            DocumentationModel documentationModel = CreateDocumentationModel(options.References, options.Assemblies, visibility, options.AdditionalXmlDocumentation);
-
-            if (documentationModel == null)
+            if (!TryParseOptionValueAsEnum(options.Visibility, ParameterNames.Visibility, out Visibility visibility))
                 return 1;
 
-            var documentationOptions = new DocumentationOptions(
-                ignoredNames: options.IgnoredNames,
-                preferredCultureName: options.PreferredCulture,
-                maxDerivedTypes: options.MaxDerivedTypes,
-                includeClassHierarchy: !options.NoClassHierarchy,
-                placeSystemNamespaceFirst: !options.NoPrecedenceForSystem,
-                formatDeclarationBaseList: !options.NoFormatBaseList,
-                formatDeclarationConstraints: !options.NoFormatConstraints,
-                markObsolete: !options.NoMarkObsolete,
-                includeMemberInheritedFrom: !options.OmitMemberInheritedFrom,
-                includeMemberOverrides: !options.OmitMemberOverrides,
-                includeMemberImplements: !options.OmitMemberImplements,
-                includeMemberConstantValue: !options.OmitMemberConstantValue,
-                includeInheritedInterfaceMembers: options.IncludeInheritedInterfaceMembers,
-                includeAllDerivedTypes: options.IncludeAllDerivedTypes,
-                includeAttributeArguments: !options.OmitAttributeArguments,
-                includeInheritedAttributes: !options.OmitInheritedAttributes,
-                omitIEnumerable: !options.IncludeIEnumerable,
-                depth: options.Depth,
-                inheritanceStyle: options.InheritanceStyle,
-                ignoredRootParts: ignoredRootParts,
-                ignoredNamespaceParts: ignoredNamespaceParts,
-                ignoredTypeParts: ignoredTypeParts,
-                ignoredMemberParts: ignoredMemberParts,
-                omitContainingNamespaceParts: omitContainingNamespaceParts,
-                scrollToContent: options.ScrollToContent);
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
+                return 1;
 
-            var generator = new MarkdownDocumentationGenerator(documentationModel, WellKnownUrlProviders.GitHub, documentationOptions);
+            var command = new GenerateDocCommand(
+                options,
+                depth,
+                ignoredRootParts,
+                ignoredNamespaceParts,
+                ignoredTypeParts,
+                ignoredMemberParts,
+                omitContainingNamespaceParts,
+                visibility,
+                projectFilter);
 
-            string directoryPath = options.OutputPath;
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            if (!options.NoDelete
-                && Directory.Exists(directoryPath))
-            {
-                try
-                {
-                    Directory.Delete(directoryPath, recursive: true);
-                }
-                catch (IOException ex)
-                {
-                    WriteLine(ex.ToString(), ConsoleColor.Red, Verbosity.Quiet);
-                    return 1;
-                }
-            }
-
-            var cts = new CancellationTokenSource();
-            Console.CancelKeyPress += (sender, e) =>
-            {
-                e.Cancel = true;
-                cts.Cancel();
-            };
-
-            CancellationToken cancellationToken = cts.Token;
-
-            WriteLine($"Documentation is being generated to '{options.OutputPath}'", Verbosity.Minimal);
-
-            foreach (DocumentationGeneratorResult documentationFile in generator.Generate(heading: options.Heading, cancellationToken))
-            {
-                string path = Path.Combine(directoryPath, documentationFile.FilePath);
-
-                Directory.CreateDirectory(Path.GetDirectoryName(path));
-
-                WriteLine($"  Save '{path}'", ConsoleColor.DarkGray, Verbosity.Detailed);
-
-                File.WriteAllText(path, documentationFile.Content, _defaultEncoding);
-            }
-
-            WriteLine($"Documentation successfully generated to '{options.OutputPath}'.", Verbosity.Minimal);
-
-            return 0;
+            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
 
-        private static int GenerateDeclarations(GenerateDeclarationsCommandLineOptions options)
+        private static async Task<int> GenerateDocRootAsync(GenerateDocRootCommandLineOptions options)
         {
-            if (!TryParseIgnoredDeclarationListParts(options.IgnoredParts, out DeclarationListParts ignoredParts))
+            if (!TryParseOptionValueAsEnum(options.Visibility, ParameterNames.Visibility, out Visibility visibility))
                 return 1;
 
-            if (!TryParseVisibility(options.Visibility, out Visibility visibility))
+            if (!TryParseOptionValueAsEnum(options.Depth, ParameterNames.Depth, out DocumentationDepth depth, DocumentationOptions.Default.Depth))
                 return 1;
 
-            DocumentationModel documentationModel = CreateDocumentationModel(options.References, options.Assemblies, visibility, options.AdditionalXmlDocumentation);
-
-            if (documentationModel == null)
+            if (!TryParseOptionValueAsEnumFlags(options.IgnoredParts, ParameterNames.IgnoredRootParts, out RootDocumentationParts ignoredParts, DocumentationOptions.Default.IgnoredRootParts))
                 return 1;
 
-            var declarationListOptions = new DeclarationListOptions(
-                ignoredNames: options.IgnoredNames,
-                indent: !options.NoIndent,
-                indentChars: options.IndentChars,
-                nestNamespaces: options.NestNamespaces,
-                newLineBeforeOpenBrace: !options.NoNewLineBeforeOpenBrace,
-                emptyLineBetweenMembers: options.EmptyLineBetweenMembers,
-                formatBaseList: options.FormatBaseList,
-                formatConstraints: options.FormatConstraints,
-                formatParameters: options.FormatParameters,
-                splitAttributes: !options.MergeAttributes,
-                includeAttributeArguments: !options.OmitAttributeArguments,
-                omitIEnumerable: !options.IncludeIEnumerable,
-                useDefaultLiteral: !options.NoDefaultLiteral,
-                fullyQualifiedNames: options.FullyQualifiedNames,
-                depth: options.Depth,
-                ignoredParts: ignoredParts);
-
-            var cts = new CancellationTokenSource();
-            Console.CancelKeyPress += (sender, e) =>
-            {
-                e.Cancel = true;
-                cts.Cancel();
-            };
-
-            CancellationToken cancellationToken = cts.Token;
-
-            WriteLine($"Declaration list is being generated to '{options.OutputPath}'.", Verbosity.Minimal);
-
-            Task<string> task = DeclarationListGenerator.GenerateAsync(
-                documentationModel,
-                declarationListOptions,
-                namespaceComparer: NamespaceSymbolComparer.GetInstance(systemNamespaceFirst: !options.NoPrecedenceForSystem),
-                cancellationToken: cancellationToken);
-
-            string content = task.Result;
-
-            string path = options.OutputPath;
-
-            Directory.CreateDirectory(Path.GetDirectoryName(path));
-            File.WriteAllText(path, content, Encoding.UTF8);
-
-            WriteLine($"Declaration list successfully generated to '{options.OutputPath}'.", Verbosity.Minimal);
-
-            return 0;
-        }
-
-        private static int GenerateDocRoot(GenerateDocRootCommandLineOptions options)
-        {
-            if (!TryParseVisibility(options.Visibility, out Visibility visibility))
+            if (!options.TryGetProjectFilter(out ProjectFilter projectFilter))
                 return 1;
 
-            DocumentationModel documentationModel = CreateDocumentationModel(options.References, options.Assemblies, visibility);
+            var command = new GenerateDocRootCommand(
+                options,
+                depth,
+                ignoredParts,
+                visibility,
+                projectFilter);
 
-            if (documentationModel == null)
-                return 1;
+            CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, options.Properties);
 
-            if (!TryParseIgnoredRootParts(options.IgnoredParts, out RootDocumentationParts ignoredParts))
-                return 1;
-
-            var documentationOptions = new DocumentationOptions(
-                ignoredNames: options.IgnoredNames,
-                rootDirectoryUrl: options.RootDirectoryUrl,
-                includeClassHierarchy: !options.NoClassHierarchy,
-                placeSystemNamespaceFirst: !options.NoPrecedenceForSystem,
-                markObsolete: !options.NoMarkObsolete,
-                depth: options.Depth,
-                ignoredRootParts: ignoredParts,
-                omitContainingNamespaceParts: (options.OmitContainingNamespace) ? OmitContainingNamespaceParts.Root : OmitContainingNamespaceParts.None,
-                scrollToContent: options.ScrollToContent);
-
-            var generator = new MarkdownDocumentationGenerator(documentationModel, WellKnownUrlProviders.GitHub, documentationOptions);
-
-            string path = options.OutputPath;
-
-            WriteLine($"Documentation root is being generated to '{path}'.", Verbosity.Minimal);
-
-            string heading = options.Heading;
-
-            if (string.IsNullOrEmpty(heading))
-            {
-                string fileName = Path.GetFileName(options.OutputPath);
-
-                heading = (fileName.EndsWith(".dll", StringComparison.Ordinal))
-                    ? Path.GetFileNameWithoutExtension(fileName)
-                    : fileName;
-            }
-
-            DocumentationGeneratorResult result = generator.GenerateRoot(heading);
-
-            File.WriteAllText(path, result.Content, _defaultEncoding);
-
-            WriteLine($"Documentation root successfully generated to '{path}'.", Verbosity.Minimal);
-
-            return 0;
+            return (result.Kind == CommandResultKind.Success) ? 0 : 1;
         }
     }
 }

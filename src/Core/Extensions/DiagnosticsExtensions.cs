@@ -81,7 +81,7 @@ namespace Roslynator
         /// Report a <see cref="Diagnostic"/> about a <see cref="ISymbol"/>.
         /// </summary>
         /// <param name="context"></param>
-        /// <param name="descriptor">A <see cref="DiagnosticDescriptor"/> describing the diagnostic.</param>
+        /// <param name="descriptor"></param>
         /// <param name="location"></param>
         /// <param name="messageArgs"></param>
         public static void ReportDiagnostic(

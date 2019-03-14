@@ -65,7 +65,7 @@ namespace Roslynator.Documentation
             if (includeContainingNamespace)
             {
                 return items
-                    .OrderBy(f => selector(f).ContainingNamespace, NamespaceSymbolComparer.GetInstance(systemNamespaceFirst))
+                    .OrderBy(f => selector(f).ContainingNamespace, (systemNamespaceFirst) ? SymbolDefinitionComparer.SystemFirst.NamespaceComparer : SymbolDefinitionComparer.Default.NamespaceComparer)
                     .ThenBy(f => selector(f).ToDisplayString(format, additionalOptions));
             }
             else

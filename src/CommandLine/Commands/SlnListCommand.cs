@@ -15,7 +15,7 @@ namespace Roslynator.CommandLine
 {
     internal class SlnListCommand : MSBuildWorkspaceCommand
     {
-        public SlnListCommand(SlnListCommandLineOptions options, string language) : base(language)
+        public SlnListCommand(SlnListCommandLineOptions options, in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
         }
@@ -35,7 +35,7 @@ namespace Roslynator.CommandLine
         {
             if (!string.Equals(Path.GetExtension(path), ".sln", StringComparison.OrdinalIgnoreCase))
             {
-                WriteLine($"File is not a solution file: '{path}'.", ConsoleColor.Red, Verbosity.Minimal);
+                WriteLine($"File is not a solution file: '{path}'.", Verbosity.Quiet);
                 return CommandResult.Fail;
             }
 
