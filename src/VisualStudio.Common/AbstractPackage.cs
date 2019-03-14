@@ -21,11 +21,36 @@ namespace Roslynator.VisualStudio
     {
         private FileSystemWatcher _watcher;
 
+        internal static AbstractPackage Instance { get; private set; }
+
         private string SolutionDirectoryPath { get; set; }
+
         private string ConfigFilePath { get; set; }
+
+        public GeneralOptionsPage GeneralOptionsPage
+        {
+            get { return (GeneralOptionsPage)GetDialogPage(typeof(GeneralOptionsPage)); }
+        }
+
+        public RefactoringsOptionsPage RefactoringsOptionsPage
+        {
+            get { return (RefactoringsOptionsPage)GetDialogPage(typeof(RefactoringsOptionsPage)); }
+        }
+
+        public CodeFixesOptionsPage CodeFixesOptionsPage
+        {
+            get { return (CodeFixesOptionsPage)GetDialogPage(typeof(CodeFixesOptionsPage)); }
+        }
+
+        public GlobalSuppressionsOptionsPage GlobalSuppressionsOptionsPage
+        {
+            get { return (GlobalSuppressionsOptionsPage)GetDialogPage(typeof(GlobalSuppressionsOptionsPage)); }
+        }
 
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
         {
+            Instance = this;
+
             await base.InitializeAsync(cancellationToken, progress);
 
             await JoinableTaskFactory.SwitchToMainThreadAsync(cancellationToken);
@@ -48,10 +73,10 @@ namespace Roslynator.VisualStudio
 
         public void InitializeSettings()
         {
-            var generalOptionsPage = (GeneralOptionsPage)GetDialogPage(typeof(GeneralOptionsPage));
-            var refactoringsOptionsPage = (RefactoringsOptionsPage)GetDialogPage(typeof(RefactoringsOptionsPage));
-            var codeFixesOptionsPage = (CodeFixesOptionsPage)GetDialogPage(typeof(CodeFixesOptionsPage));
-            var globalSuppressionsOptionsPage = (GlobalSuppressionsOptionsPage)GetDialogPage(typeof(GlobalSuppressionsOptionsPage));
+            GeneralOptionsPage generalOptionsPage = GeneralOptionsPage;
+            RefactoringsOptionsPage refactoringsOptionsPage = RefactoringsOptionsPage;
+            CodeFixesOptionsPage codeFixesOptionsPage = CodeFixesOptionsPage;
+            GlobalSuppressionsOptionsPage globalSuppressionsOptionsPage = GlobalSuppressionsOptionsPage;
 
             Version currentVersion = typeof(GeneralOptionsPage).Assembly.GetName().Version;
 
@@ -81,7 +106,7 @@ namespace Roslynator.VisualStudio
                 && !string.IsNullOrEmpty(solutionFileName))
             {
                 SolutionDirectoryPath = Path.GetDirectoryName(solutionFileName);
-                ConfigFilePath = Path.Combine(SolutionDirectoryPath, ConfigFileSettings.FileName);
+                ConfigFilePath = Path.Combine(SolutionDirectoryPath, Settings.ConfigFileName);
             }
 
             UpdateSettings();
@@ -108,14 +133,14 @@ namespace Roslynator.VisualStudio
             SettingsManager.Instance.ApplyTo(CodeFixSettings.Current);
             SettingsManager.Instance.ApplyTo(AnalyzerSettings.Current);
 
-            ConfigFileSettings LoadConfigFileSettings()
+            Settings LoadConfigFileSettings()
             {
                 if (!File.Exists(ConfigFilePath))
                     return null;
 
                 try
                 {
-                    return ConfigFileSettings.Load(ConfigFilePath);
+                    return Settings.Load(ConfigFilePath);
                 }
                 catch (IOException)
                 {
@@ -136,7 +161,7 @@ namespace Roslynator.VisualStudio
             if (!Directory.Exists(SolutionDirectoryPath))
                 return;
 
-            _watcher = new FileSystemWatcher(SolutionDirectoryPath, ConfigFileSettings.FileName)
+            _watcher = new FileSystemWatcher(SolutionDirectoryPath, Settings.ConfigFileName)
             {
                 EnableRaisingEvents = true,
                 IncludeSubdirectories = false,
@@ -145,6 +170,13 @@ namespace Roslynator.VisualStudio
             _watcher.Changed += (object sender, FileSystemEventArgs e) => UpdateSettings();
             _watcher.Created += (object sender, FileSystemEventArgs e) => UpdateSettings();
             _watcher.Deleted += (object sender, FileSystemEventArgs e) => UpdateSettings();
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            Instance = null;
+
+            base.Dispose(disposing);
         }
     }
 }
