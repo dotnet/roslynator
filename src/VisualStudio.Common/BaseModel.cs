@@ -10,16 +10,26 @@ namespace Roslynator.VisualStudio
     {
         private bool _enabled;
 
-        public BaseModel(string id, string title, bool enabled)
+        public BaseModel(string name, string title, bool enabled = false)
         {
-            Id = id;
+            Name = name;
             Title = title;
             Enabled = enabled;
         }
 
-        public string Id { get; }
+        public string Name { get; }
 
         public string Title { get; }
+
+        public virtual string Id
+        {
+            get { return Name; }
+        }
+
+        public virtual string NameToolTip
+        {
+            get { return null; }
+        }
 
         public bool Enabled
         {

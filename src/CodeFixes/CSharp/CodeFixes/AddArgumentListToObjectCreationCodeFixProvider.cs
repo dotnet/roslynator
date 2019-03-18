@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddArgumentList))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddArgumentList))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -32,38 +34,28 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, new TextSpan(context.Span.Start - 1, 0), out ObjectCreationExpressionSyntax objectCreation))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            ISymbol symbol = semanticModel.GetSymbol(objectCreation.Type, context.CancellationToken);
+
+            if (symbol?.IsErrorType() != false)
+                return;
+
+            CodeAction codeAction = CodeAction.Create(
+                "Add argument list",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.NewExpressionRequiresParenthesesOrBracketsOrBracesAfterType:
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    ObjectCreationExpressionSyntax newNode = objectCreation.Update(
+                        objectCreation.NewKeyword,
+                        objectCreation.Type.WithoutTrailingTrivia(),
+                        SyntaxFactory.ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
+                        objectCreation.Initializer);
 
-                            ISymbol symbol = semanticModel.GetSymbol(objectCreation.Type, context.CancellationToken);
+                    return context.Document.ReplaceNodeAsync(objectCreation, newNode, cancellationToken);
+                },
+                GetEquivalenceKey(diagnostic));
 
-                            if (symbol?.IsErrorType() != false)
-                                break;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add argument list",
-                                cancellationToken =>
-                                {
-                                    ObjectCreationExpressionSyntax newNode = objectCreation.Update(
-                                        objectCreation.NewKeyword,
-                                        objectCreation.Type.WithoutTrailingTrivia(),
-                                        SyntaxFactory.ArgumentList().WithTrailingTrivia(objectCreation.Type.GetTrailingTrivia()),
-                                        objectCreation.Initializer);
-
-                                    return context.Document.ReplaceNodeAsync(objectCreation, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

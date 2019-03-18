@@ -21,7 +21,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveUnusedLabel))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveUnusedLabel))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -29,17 +31,7 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out LabeledStatementSyntax labeledStatement))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.LabelHasNotBeenReferenced:
-                        {
-                            CodeFixRegistrator.RemoveStatement(context, diagnostic, labeledStatement, title: "Remove unused label");
-                            break;
-                        }
-                }
-            }
+            CodeFixRegistrator.RemoveStatement(context, diagnostic, labeledStatement, title: "Remove unused label");
         }
     }
 }

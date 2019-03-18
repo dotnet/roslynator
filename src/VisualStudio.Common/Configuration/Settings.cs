@@ -2,11 +2,15 @@
 
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
+using Roslynator.CodeFixes;
+using Roslynator.CSharp;
 
 namespace Roslynator.Configuration
 {
@@ -31,11 +35,11 @@ namespace Roslynator.Configuration
 
             PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
 
-            void Initialize(Dictionary<string, bool> dic, IEnumerable<KeyValuePair<string, bool>> values)
+            void Initialize<T>(Dictionary<T, bool> dic, IEnumerable<KeyValuePair<T, bool>> values)
             {
                 if (values != null)
                 {
-                    foreach (KeyValuePair<string, bool> kvp in values)
+                    foreach (KeyValuePair<T, bool> kvp in values)
                         dic.Add(kvp.Key, kvp.Value);
                 }
             }
@@ -43,7 +47,7 @@ namespace Roslynator.Configuration
 
         public Dictionary<string, bool> Refactorings { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
-        public Dictionary<string, bool> CodeFixes { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
+        public Dictionary<string, bool> CodeFixes { get; } = new Dictionary<string, bool>();
 
         public HashSet<string> GlobalSuppressions { get; } = new HashSet<string>(StringComparer.Ordinal);
 
@@ -125,7 +129,30 @@ namespace Roslynator.Configuration
                 if (child.TryGetAttributeValueAsString("Id", out string id)
                     && child.TryGetAttributeValueAsBoolean("IsEnabled", out bool isEnabled))
                 {
-                    settings.CodeFixes[id] = isEnabled;
+                    if (id.Contains("."))
+                    {
+                        settings.CodeFixes[id] = isEnabled;
+                    }
+                    else if (id.StartsWith(CodeFixIdentifiers.Prefix, StringComparison.Ordinal))
+                    {
+                        if (CodeFixMap.CodeFixDescriptorsById.TryGetValue(id, out CodeFixDescriptor codeFixDescriptor))
+                        {
+                            foreach (string compilerDiagnosticId in codeFixDescriptor.FixableDiagnosticIds)
+                                settings.CodeFixes[$"{compilerDiagnosticId}.{codeFixDescriptor.Id}"] = isEnabled;
+                        }
+                    }
+                    else if (id.StartsWith("CS", StringComparison.Ordinal))
+                    {
+                        if (CodeFixMap.CodeFixDescriptorsByCompilerDiagnosticId.TryGetValue(id, out ReadOnlyCollection<CodeFixDescriptor> codeFixDescriptors))
+                        {
+                            foreach (CodeFixDescriptor codeFixDescriptor in codeFixDescriptors)
+                                settings.CodeFixes[$"{id}.{codeFixDescriptor.Id}"] = isEnabled;
+                        }
+                    }
+                    else
+                    {
+                        Debug.Fail(id);
+                    }
                 }
             }
         }
@@ -143,45 +170,42 @@ namespace Roslynator.Configuration
 
         public void Save(string path)
         {
-            var doc = new XDocument(
-                new XElement("Roslynator",
-                    new XElement("Settings",
-                        new XElement("General",
-                            new XElement("PrefixFieldIdentifierWithUnderscore", PrefixFieldIdentifierWithUnderscore)),
-                        new XElement("Refactorings",
-                            Refactorings
-                                .Where(f => !f.Value)
-                                .OrderBy(f => f.Key)
-                                .Select(f =>
-                                {
-                                    return new XNode[] {
-                                        new XElement("Refactoring",
-                                        new XAttribute("Id", f.Key),
-                                        new XAttribute("IsEnabled", f.Value)),
-                                    };
-                                })
-                        ),
-                        new XElement("CodeFixes",
-                            CodeFixes
-                                .Where(f => !f.Value)
-                                .OrderBy(f => f.Key)
-                                .Select(f =>
-                                {
-                                    return new XNode[] {
-                                        new XElement("CodeFix",
-                                        new XAttribute("Id", f.Key),
-                                        new XAttribute("IsEnabled", f.Value)),
-                                    };
-                                })
-                        ),
-                        new XElement("GlobalSuppressions",
-                            GlobalSuppressions
-                                .OrderBy(f => f)
-                                .Select(f => new XElement("GlobalSuppression", new XAttribute("Id", f)))
-                        )
-                    )
-                )
-            );
+            var settings = new XElement("Settings",
+                new XElement("General",
+                    new XElement("PrefixFieldIdentifierWithUnderscore", PrefixFieldIdentifierWithUnderscore)));
+
+            if (Refactorings.Any(f => !f.Value))
+            {
+                settings.Add(
+                    new XElement("Refactorings",
+                        Refactorings
+                            .Where(f => !f.Value)
+                            .OrderBy(f => f.Key)
+                            .Select(f => new XElement("Refactoring", new XAttribute("Id", f.Key), new XAttribute("IsEnabled", f.Value)))
+                    ));
+            }
+
+            if (CodeFixes.Any(f => !f.Value))
+            {
+                settings.Add(
+                    new XElement("CodeFixes",
+                        CodeFixes
+                            .Where(f => !f.Value)
+                            .OrderBy(f => f.Key)
+                            .Select(f => new XElement("CodeFix", new XAttribute("Id", f.Key), new XAttribute("IsEnabled", f.Value)))
+                    ));
+            }
+
+            if (GlobalSuppressions.Count > 0)
+            {
+                settings.Add(
+                    new XElement("GlobalSuppressions",
+                        GlobalSuppressions
+                            .OrderBy(f => f)
+                            .Select(f => new XElement("GlobalSuppression", new XAttribute("Id", f)))));
+            }
+
+            var doc = new XDocument(new XElement("Roslynator", settings));
 
             var xmlWriterSettings = new XmlWriterSettings()
             {

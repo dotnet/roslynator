@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveYieldKeyword))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveYieldKeyword))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -31,37 +33,27 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out YieldStatementSyntax yieldStatement))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            CodeAction codeAction = CodeAction.Create(
+                "Remove 'yield'",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.YieldStatementCannotBeUsedInsideAnonymousMethodOrLambdaExpression:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove 'yield'",
-                                cancellationToken =>
-                                {
-                                    SyntaxToken yieldKeyword = yieldStatement.YieldKeyword;
-                                    SyntaxToken returnKeyword = yieldStatement.ReturnOrBreakKeyword;
+                    SyntaxToken yieldKeyword = yieldStatement.YieldKeyword;
+                    SyntaxToken returnKeyword = yieldStatement.ReturnOrBreakKeyword;
 
-                                    SyntaxTriviaList leadingTrivia = yieldKeyword.LeadingTrivia
-                                        .AddRange(yieldKeyword.TrailingTrivia.EmptyIfWhitespace())
-                                        .AddRange(returnKeyword.LeadingTrivia.EmptyIfWhitespace());
+                    SyntaxTriviaList leadingTrivia = yieldKeyword.LeadingTrivia
+                        .AddRange(yieldKeyword.TrailingTrivia.EmptyIfWhitespace())
+                        .AddRange(returnKeyword.LeadingTrivia.EmptyIfWhitespace());
 
-                                    ReturnStatementSyntax newNode = ReturnStatement(
-                                        returnKeyword.WithLeadingTrivia(leadingTrivia),
-                                        yieldStatement.Expression,
-                                        yieldStatement.SemicolonToken);
+                    ReturnStatementSyntax newNode = ReturnStatement(
+                        returnKeyword.WithLeadingTrivia(leadingTrivia),
+                        yieldStatement.Expression,
+                        yieldStatement.SemicolonToken);
 
-                                    return context.Document.ReplaceNodeAsync(yieldStatement, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                    return context.Document.ReplaceNodeAsync(yieldStatement, newNode, cancellationToken);
+                },
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

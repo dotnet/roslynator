@@ -34,7 +34,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeTypeOfLocalVariable))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeOfLocalVariable))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -45,39 +47,26 @@ namespace Roslynator.CSharp.CodeFixes
             if (!(node is VariableDeclaratorSyntax variableDeclarator))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
+                return;
+
+            ExpressionSyntax value = variableDeclarator.Initializer?.Value;
+
+            if (value == null)
+                return;
+
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(value, context.CancellationToken);
+
+            if (symbolInfo.Symbol != null)
             {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.CannotAssignMethodGroupToImplicitlyTypedVariable:
-                    case CompilerDiagnosticIdentifiers.NoOverloadMatchesDelegate:
-                    case CompilerDiagnosticIdentifiers.MethodHasWrongReturnType:
-                        {
-                            if (!variableDeclarator.IsParentKind(SyntaxKind.VariableDeclaration))
-                                break;
-
-                            ExpressionSyntax value = variableDeclarator.Initializer?.Value;
-
-                            if (value == null)
-                                break;
-
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-                            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(value, context.CancellationToken);
-
-                            if (symbolInfo.Symbol != null)
-                            {
-                                ComputeCodeFix(context, diagnostic, variableDeclarator, symbolInfo.Symbol, semanticModel);
-                            }
-                            else
-                            {
-                                foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
-                                    ComputeCodeFix(context, diagnostic, variableDeclarator, candidateSymbol, semanticModel);
-                            }
-
-                            break;
-                        }
-                }
+                ComputeCodeFix(context, diagnostic, variableDeclarator, symbolInfo.Symbol, semanticModel);
+            }
+            else
+            {
+                foreach (ISymbol candidateSymbol in symbolInfo.CandidateSymbols)
+                    ComputeCodeFix(context, diagnostic, variableDeclarator, candidateSymbol, semanticModel);
             }
         }
 

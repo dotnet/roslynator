@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.ReplaceElementAccessWithInvocation))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceElementAccessWithInvocation))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -32,39 +34,29 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ElementAccessExpressionSyntax elementAccess))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.CannotApplyIndexingToExpression:
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            BracketedArgumentListSyntax argumentList = elementAccess.ArgumentList;
+            BracketedArgumentListSyntax argumentList = elementAccess.ArgumentList;
 
-                            SyntaxToken openBracket = argumentList.OpenBracketToken;
-                            SyntaxToken closeBracket = argumentList.CloseBracketToken;
+            SyntaxToken openBracket = argumentList.OpenBracketToken;
+            SyntaxToken closeBracket = argumentList.CloseBracketToken;
 
-                            InvocationExpressionSyntax invocationExpression = InvocationExpression(
-                                elementAccess.Expression,
-                                ArgumentList(
-                                    Token(openBracket.LeadingTrivia, SyntaxKind.OpenParenToken, openBracket.TrailingTrivia),
-                                    argumentList.Arguments,
-                                    Token(closeBracket.LeadingTrivia, SyntaxKind.CloseParenToken, closeBracket.TrailingTrivia)));
+            InvocationExpressionSyntax invocationExpression = InvocationExpression(
+                elementAccess.Expression,
+                ArgumentList(
+                    Token(openBracket.LeadingTrivia, SyntaxKind.OpenParenToken, openBracket.TrailingTrivia),
+                    argumentList.Arguments,
+                    Token(closeBracket.LeadingTrivia, SyntaxKind.CloseParenToken, closeBracket.TrailingTrivia)));
 
-                            if (semanticModel.GetSpeculativeMethodSymbol(elementAccess.SpanStart, invocationExpression) == null)
-                                break;
+            if (semanticModel.GetSpeculativeMethodSymbol(elementAccess.SpanStart, invocationExpression) == null)
+                return;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Replace [] with ()",
-                                cancellationToken => context.Document.ReplaceNodeAsync(elementAccess, invocationExpression, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeAction.Create(
+                "Replace [] with ()",
+                cancellationToken => context.Document.ReplaceNodeAsync(elementAccess, invocationExpression, cancellationToken),
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

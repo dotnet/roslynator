@@ -23,13 +23,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.WrapInUnsafeStatement,
-                CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindNode(root, context.Span, out SyntaxNode node))
@@ -57,7 +50,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fStatement = true;
 
-                                    if (!Settings.IsEnabled(CodeFixIdentifiers.WrapInUnsafeStatement))
+                                    if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.WrapInUnsafeStatement))
                                         continue;
 
                                     var statement = (StatementSyntax)ancestor;
@@ -92,7 +85,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 {
                                     fMemberDeclaration = true;
 
-                                    if (!Settings.IsEnabled(CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
+                                    if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeContainingDeclarationUnsafe))
                                         continue;
 
                                     if (!CSharpFacts.CanHaveModifiers(ancestor.Kind()))

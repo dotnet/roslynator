@@ -30,7 +30,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddBreakStatementToSwitchSection))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddBreakStatementToSwitchSection))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -38,23 +40,12 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out SwitchSectionSyntax switchSection))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.ControlCannotFallThroughFromOneCaseLabelToAnother:
-                    case CompilerDiagnosticIdentifiers.ControlCannotFallOutOfSwitchFromFinalCaseLabel:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add break statement",
-                                cancellationToken => RefactorAsync(context.Document, switchSection, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeAction.Create(
+                "Add break statement",
+                cancellationToken => RefactorAsync(context.Document, switchSection, cancellationToken),
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         public static Task<Document> RefactorAsync(

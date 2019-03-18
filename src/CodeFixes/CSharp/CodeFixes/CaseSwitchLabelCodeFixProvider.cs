@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveSwitchLabel))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveSwitchLabel))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -32,25 +34,15 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out CaseSwitchLabelSyntax caseSwitchLabel))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.SwitchStatementContainsMultipleCasesWithSameLabelValue:
-                        {
-                            if (!(caseSwitchLabel.Parent.Parent is SwitchStatementSyntax switchStatement))
-                                break;
+            if (!(caseSwitchLabel.Parent.Parent is SwitchStatementSyntax switchStatement))
+                return;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove duplicate cases",
-                                cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken),
-                                EquivalenceKey.Create(diagnostic));
+            CodeAction codeAction = CodeAction.Create(
+                "Remove duplicate cases",
+                cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken),
+                EquivalenceKey.Create(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private static async Task<Document> RefactorAsync(

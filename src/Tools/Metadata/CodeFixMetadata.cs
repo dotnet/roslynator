@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Roslynator.Metadata
 {
-    public class CodeFixDescriptor
+    public class CodeFixMetadata
     {
-        public CodeFixDescriptor(
+        public CodeFixMetadata(
             string id,
             string identifier,
             string title,

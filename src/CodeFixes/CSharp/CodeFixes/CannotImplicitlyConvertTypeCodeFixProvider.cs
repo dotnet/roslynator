@@ -24,13 +24,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral,
-                CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             SyntaxNode node = root.FindNode(context.Span, getInnermostNodeForTie: true);
@@ -41,7 +34,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CannotImplicitlyConvertType:
                         {
-                            if (Settings.IsEnabled(CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceStringLiteralWithCharacterLiteral)
                                 && node?.Kind() == SyntaxKind.StringLiteralExpression)
                             {
                                 var literalExpression = (LiteralExpressionSyntax)node;
@@ -62,7 +55,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn)
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseYieldReturnInsteadOfReturn)
                                 && node.IsParentKind(SyntaxKind.ReturnStatement))
                             {
                                 var returnStatement = (ReturnStatementSyntax)node.Parent;

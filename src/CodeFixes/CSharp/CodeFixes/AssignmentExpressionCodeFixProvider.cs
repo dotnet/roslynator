@@ -21,7 +21,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveRedundantAssignment))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveRedundantAssignment))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -29,23 +31,10 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out AssignmentExpressionSyntax assignmentExpression))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.AssignmentMadeToSameVariable:
-                        {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveRedundantAssignment))
-                                break;
+            if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))
+                return;
 
-                            if (!(assignmentExpression.Parent is ExpressionStatementSyntax expressionStatement))
-                                break;
-
-                            CodeFixRegistrator.RemoveStatement(context, diagnostic, expressionStatement, title: "Remove assignment");
-                            break;
-                        }
-                }
-            }
+            CodeFixRegistrator.RemoveStatement(context, diagnostic, expressionStatement, title: "Remove assignment");
         }
     }
 }

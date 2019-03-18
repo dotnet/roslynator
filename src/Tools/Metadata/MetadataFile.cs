@@ -105,18 +105,18 @@ namespace Roslynator.Metadata
                .Select(f => new LinkDescriptor(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
         }
 
-        public static ImmutableArray<CodeFixDescriptor> ReadAllCodeFixes(string filePath)
+        public static ImmutableArray<CodeFixMetadata> ReadAllCodeFixes(string filePath)
         {
             return ImmutableArray.CreateRange(ReadCodeFixes(filePath));
         }
 
-        public static IEnumerable<CodeFixDescriptor> ReadCodeFixes(string filePath)
+        public static IEnumerable<CodeFixMetadata> ReadCodeFixes(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
 
             foreach (XElement element in doc.Root.Elements())
             {
-                yield return new CodeFixDescriptor(
+                yield return new CodeFixMetadata(
                     element.Attribute("Id").Value,
                     element.Attribute("Identifier").Value,
                     element.Attribute("Title").Value,
@@ -128,18 +128,18 @@ namespace Roslynator.Metadata
             }
         }
 
-        public static ImmutableArray<CompilerDiagnosticDescriptor> ReadAllCompilerDiagnostics(string filePath)
+        public static ImmutableArray<CompilerDiagnosticMetadata> ReadAllCompilerDiagnostics(string filePath)
         {
             return ImmutableArray.CreateRange(ReadCompilerDiagnostics(filePath));
         }
 
-        public static IEnumerable<CompilerDiagnosticDescriptor> ReadCompilerDiagnostics(string filePath)
+        public static IEnumerable<CompilerDiagnosticMetadata> ReadCompilerDiagnostics(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
 
             foreach (XElement element in doc.Root.Elements("Diagnostic"))
             {
-                yield return new CompilerDiagnosticDescriptor(
+                yield return new CompilerDiagnosticMetadata(
                     element.Attribute("Id").Value,
                     element.Attribute("Identifier").Value,
                     element.Attribute("Title").Value,
@@ -149,7 +149,7 @@ namespace Roslynator.Metadata
             }
         }
 
-        public static void SaveCompilerDiagnostics(IEnumerable<CompilerDiagnosticDescriptor> diagnostics, string path)
+        public static void SaveCompilerDiagnostics(IEnumerable<CompilerDiagnosticMetadata> diagnostics, string path)
         {
             var doc = new XDocument(
                 new XElement("Diagnostics",
@@ -161,7 +161,7 @@ namespace Roslynator.Metadata
                             new XAttribute("Identifier", f.Identifier),
                             new XAttribute("Severity", f.Severity ?? ""),
                             new XAttribute("Title", f.Title),
-                            new XAttribute("Message", f.Message ?? ""),
+                            new XAttribute("Message", f.MessageFormat ?? ""),
                             new XAttribute("HelpUrl", f.HelpUrl ?? "")
                             );
                     })));

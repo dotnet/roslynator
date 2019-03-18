@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddComparisonWithBooleanLiteral))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddComparisonWithBooleanLiteral))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -31,23 +33,12 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindNode(root, context.Span, out BinaryExpressionSyntax binaryExpression))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands:
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            bool success = RegisterCodeFix(context, binaryExpression.Left, diagnostic, semanticModel);
+            bool success = RegisterCodeFix(context, binaryExpression.Left, diagnostic, semanticModel);
 
-                            if (!success)
-                                RegisterCodeFix(context, binaryExpression.Right, diagnostic, semanticModel);
-
-                            break;
-                        }
-                }
-            }
+            if (!success)
+                RegisterCodeFix(context, binaryExpression.Right, diagnostic, semanticModel);
         }
 
         private bool RegisterCodeFix(

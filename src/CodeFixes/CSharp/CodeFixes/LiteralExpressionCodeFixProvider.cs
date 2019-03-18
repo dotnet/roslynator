@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.ReplaceCharacterLiteralWithStringLiteral))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceCharacterLiteralWithStringLiteral))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -31,35 +33,24 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out LiteralExpressionSyntax literalExpression))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            string text = literalExpression.Token.Text;
+
+            if (text.Length > 2
+                && text[0] == '\''
+                && text[text.Length - 1] == '\'')
             {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.TooManyCharactersInCharacterLiteral:
-                        {
-                            string text = literalExpression.Token.Text;
+                CodeAction codeAction = CodeAction.Create(
+                    "Replace character literal with string literal",
+                    ct =>
+                    {
+                        ExpressionSyntax newExpression = ParseExpression("\"" + text.Substring(1, text.Length - 2) + "\"")
+                            .WithTriviaFrom(literalExpression);
 
-                            if (text.Length > 2
-                                && text[0] == '\''
-                                && text[text.Length - 1] == '\'')
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Replace character literal with string literal",
-                                    ct =>
-                                    {
-                                        ExpressionSyntax newExpression = ParseExpression("\"" + text.Substring(1, text.Length - 2) + "\"")
-                                            .WithTriviaFrom(literalExpression);
+                        return context.Document.ReplaceNodeAsync(literalExpression, newExpression, ct);
+                    },
+                    GetEquivalenceKey(diagnostic));
 
-                                        return context.Document.ReplaceNodeAsync(literalExpression, newExpression, ct);
-                                    },
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-
-                            break;
-                        }
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
     }

@@ -100,8 +100,8 @@ namespace Roslynator.VisualStudio
 
         protected virtual void OnApply()
         {
-            foreach (BaseModel item in Control.Items)
-                SetIsEnabled(item.Id, item.Enabled);
+            foreach (BaseModel model in Control.Items)
+                SetIsEnabled(model.Id, model.Enabled);
         }
 
         protected void SetIsEnabled(string id, bool isEnabled)

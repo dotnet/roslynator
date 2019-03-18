@@ -34,7 +34,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveImplementationFromAbstractMember))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveImplementationFromAbstractMember))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -42,27 +44,15 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f is MemberDeclarationSyntax || f is AccessorDeclarationSyntax))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.EventInInterfaceCannotHaveAddOrRemoveAccessors:
-                    case CompilerDiagnosticIdentifiers.MemberCannotDeclareBodyBecauseItIsMarkedAbstract:
-                    case CompilerDiagnosticIdentifiers.InterfaceMembersCannotHaveDefinition:
-                        {
-                            if (node.IsKind(SyntaxKind.AddAccessorDeclaration, SyntaxKind.RemoveAccessorDeclaration))
-                                node = node.Parent.Parent;
+            if (node.IsKind(SyntaxKind.AddAccessorDeclaration, SyntaxKind.RemoveAccessorDeclaration))
+                node = node.Parent.Parent;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                (node.IsKind(SyntaxKind.EventDeclaration)) ? "Remove accessor" : "Remove body",
-                                cancellationToken => RefactorAsync(context.Document, node, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeAction.Create(
+                (node.IsKind(SyntaxKind.EventDeclaration)) ? "Remove accessor" : "Remove body",
+                cancellationToken => RefactorAsync(context.Document, node, cancellationToken),
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private static Task<Document> RefactorAsync(

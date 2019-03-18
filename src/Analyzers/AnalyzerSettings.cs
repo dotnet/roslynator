@@ -2,7 +2,7 @@
 
 namespace Roslynator
 {
-    public sealed class AnalyzerSettings : CodeAnalysisSettings
+    public sealed class AnalyzerSettings : CodeAnalysisSettings<string>
     {
         public static AnalyzerSettings Current { get; } = new AnalyzerSettings();
     }

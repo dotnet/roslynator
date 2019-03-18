@@ -25,7 +25,7 @@ namespace Roslynator.CodeGeneration
 
             ImmutableArray<AnalyzerDescriptor> analyzers = metadata.Analyzers;
             ImmutableArray<RefactoringDescriptor> refactorings = metadata.Refactorings;
-            ImmutableArray<CompilerDiagnosticDescriptor> compilerDiagnostics = metadata.CompilerDiagnostics;
+            ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
             foreach (string id in args.Skip(1))
             {
@@ -63,7 +63,7 @@ namespace Roslynator.CodeGeneration
                 }
                 else if (_codeFixIdRegex.IsMatch(id))
                 {
-                    CompilerDiagnosticDescriptor compilerDiagnostic = compilerDiagnostics.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
+                    CompilerDiagnosticMetadata compilerDiagnostic = compilerDiagnostics.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
                     if (compilerDiagnostic == null)
                     {

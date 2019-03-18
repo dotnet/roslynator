@@ -30,14 +30,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface,
-                CodeFixIdentifiers.MakeClassNonStatic,
-                CodeFixIdentifiers.RemoveBaseList))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseListSyntax baseList))
@@ -52,6 +44,9 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.BaseClassMustComeBeforeAnyInterface:
                         {
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MoveBaseClassBeforeAnyInterface))
+                                return;
+
                             SeparatedSyntaxList<BaseTypeSyntax> types = baseList.Types;
 
                             if (types.Count > 1)
@@ -85,7 +80,7 @@ namespace Roslynator.CSharp.CodeFixes
                             if (!(baseList.Parent is ClassDeclarationSyntax classDeclaration))
                                 break;
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.MakeClassNonStatic))
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeClassNonStatic))
                             {
                                 ModifiersCodeFixRegistrator.RemoveModifier(
                                     context,
@@ -96,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     additionalKey: CodeFixIdentifiers.MakeClassNonStatic);
                             }
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveBaseList))
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveBaseList))
                             {
                                 CodeAction codeAction = CodeAction.Create(
                                     "Remove base list",

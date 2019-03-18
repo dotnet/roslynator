@@ -21,7 +21,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddCastExpression))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddCastExpression))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -29,39 +31,29 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConditionalExpressionSyntax conditionalExpression))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.TypeOfConditionalExpressionCannotBeDetermined:
-                        {
-                            ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
+            ExpressionSyntax whenTrue = conditionalExpression.WhenTrue;
 
-                            ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
+            ExpressionSyntax whenFalse = conditionalExpression.WhenFalse;
 
-                            if (whenTrue?.IsMissing != false)
-                                break;
+            if (whenTrue?.IsMissing != false)
+                return;
 
-                            if (whenFalse?.IsMissing != false)
-                                break;
+            if (whenFalse?.IsMissing != false)
+                return;
 
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            ITypeSymbol falseType = semanticModel.GetTypeSymbol(whenFalse, context.CancellationToken);
+            ITypeSymbol falseType = semanticModel.GetTypeSymbol(whenFalse, context.CancellationToken);
 
-                            if (falseType?.IsErrorType() != false)
-                                break;
+            if (falseType?.IsErrorType() != false)
+                return;
 
-                            ITypeSymbol destinationType = FindDestinationType(whenTrue, falseType.BaseType, semanticModel);
+            ITypeSymbol destinationType = FindDestinationType(whenTrue, falseType.BaseType, semanticModel);
 
-                            if (destinationType == null)
-                                break;
+            if (destinationType == null)
+                return;
 
-                            CodeFixRegistrator.AddCastExpression(context, diagnostic, whenTrue, destinationType, semanticModel);
-                            break;
-                        }
-                }
-            }
+            CodeFixRegistrator.AddCastExpression(context, diagnostic, whenTrue, destinationType, semanticModel);
         }
 
         private static ITypeSymbol FindDestinationType(ExpressionSyntax expression, ITypeSymbol type, SemanticModel semanticModel)

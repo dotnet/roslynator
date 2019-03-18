@@ -101,7 +101,15 @@ namespace Roslynator.Configuration
             void Apply(Settings settings)
             {
                 if (settings != null)
-                    codeFixSettings.Set(settings.CodeFixes);
+                {
+                    foreach (KeyValuePair<string, bool> kvp in settings.CodeFixes)
+                    {
+                        if (CodeFixIdentifier.TryParse(kvp.Key, out CodeFixIdentifier codeFixIdentifier))
+                        {
+                            codeFixSettings.Set(codeFixIdentifier, kvp.Value);
+                        }
+                    }
+                }
             }
         }
     }

@@ -97,7 +97,7 @@ namespace Roslynator.VisualStudio
             }
             else
             {
-                globalSuppressions = package.GlobalSuppressionsOptionsPage.SuppressedAnalyzers.Split(_separator, StringSplitOptions.RemoveEmptyEntries);
+                globalSuppressions = package.GlobalSuppressionsOptionsPage.GetDisabledItems();
             }
 
             IEnumerable<string> disabledRefactorings = null;
@@ -112,7 +112,7 @@ namespace Roslynator.VisualStudio
             }
             else
             {
-                disabledRefactorings = package.RefactoringsOptionsPage.DisabledRefactorings.Split(_separator, StringSplitOptions.RemoveEmptyEntries);
+                disabledRefactorings = package.RefactoringsOptionsPage.GetDisabledItems();
             }
 
             IEnumerable<string> disabledCodeFixes = null;
@@ -127,7 +127,7 @@ namespace Roslynator.VisualStudio
             }
             else
             {
-                disabledCodeFixes = package.CodeFixesOptionsPage.DisabledCodeFixes.Split(_separator, StringSplitOptions.RemoveEmptyEntries);
+                disabledCodeFixes = package.CodeFixesOptionsPage.GetDisabledItems();
             }
 
             var settings = new Settings(

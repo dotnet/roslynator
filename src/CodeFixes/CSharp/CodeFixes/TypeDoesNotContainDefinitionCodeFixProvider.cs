@@ -25,13 +25,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.FixMemberAccessName,
-                CodeFixIdentifiers.RemoveAwaitKeyword))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ExpressionSyntax expression))
@@ -49,7 +42,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         Debug.Assert(expression.IsKind(SyntaxKind.IdentifierName, SyntaxKind.GenericName), expression.Kind().ToString());
 
-                                        if (!Settings.IsEnabled(CodeFixIdentifiers.FixMemberAccessName))
+                                        if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.FixMemberAccessName))
                                             break;
 
                                         if (!simpleName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression))
@@ -66,7 +59,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 case MemberBindingExpressionSyntax memberBindingExpression:
                                     {
-                                        if (!Settings.IsEnabled(CodeFixIdentifiers.FixMemberAccessName))
+                                        if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.FixMemberAccessName))
                                             break;
 
                                         if (!(memberBindingExpression.Parent is ConditionalAccessExpressionSyntax conditionalAccessExpression))
@@ -78,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 case AwaitExpressionSyntax awaitExpression:
                                     {
-                                        if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveAwaitKeyword))
+                                        if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAwaitKeyword))
                                             break;
 
                                         CodeAction codeAction = CodeAction.Create(

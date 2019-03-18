@@ -2,8 +2,13 @@
 
 namespace Roslynator.CodeFixes
 {
-    public sealed class CodeFixSettings : CodeAnalysisSettings
+    public sealed class CodeFixSettings : CodeAnalysisSettings<CodeFixIdentifier>
     {
+        public bool IsEnabled(string compilerDiagnosticId, string codeFixId)
+        {
+            return IsEnabled(new CodeFixIdentifier(compilerDiagnosticId, codeFixId));
+        }
+
         public static CodeFixSettings Current { get; } = new CodeFixSettings();
     }
 }

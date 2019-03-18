@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveDuplicateAttribute))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDuplicateAttribute))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -31,41 +33,30 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeSyntax attribute))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            SyntaxNode parent = attribute.Parent;
+
+            if (parent.IsKind(SyntaxKind.AttributeList))
             {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.DuplicateAttribute:
+                var attributeList = (AttributeListSyntax)parent;
+
+                CodeAction codeAction = CodeAction.Create(
+                    "Remove duplicate attribute",
+                    cancellationToken =>
+                    {
+                        SeparatedSyntaxList<AttributeSyntax> attributes = attributeList.Attributes;
+
+                        if (attributes.Count == 1)
                         {
-                            SyntaxNode parent = attribute.Parent;
-
-                            if (parent.IsKind(SyntaxKind.AttributeList))
-                            {
-                                var attributeList = (AttributeListSyntax)parent;
-
-                                CodeAction codeAction = CodeAction.Create(
-                                    "Remove duplicate attribute",
-                                    cancellationToken =>
-                                    {
-                                        SeparatedSyntaxList<AttributeSyntax> attributes = attributeList.Attributes;
-
-                                        if (attributes.Count == 1)
-                                        {
-                                            return context.Document.RemoveNodeAsync(attributeList, SyntaxRemoveOptions.KeepUnbalancedDirectives, cancellationToken);
-                                        }
-                                        else
-                                        {
-                                            return context.Document.RemoveNodeAsync(attribute, SyntaxRemoveOptions.KeepUnbalancedDirectives, cancellationToken);
-                                        }
-                                    },
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-
-                            break;
+                            return context.Document.RemoveNodeAsync(attributeList, SyntaxRemoveOptions.KeepUnbalancedDirectives, cancellationToken);
                         }
-                }
+                        else
+                        {
+                            return context.Document.RemoveNodeAsync(attribute, SyntaxRemoveOptions.KeepUnbalancedDirectives, cancellationToken);
+                        }
+                    },
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
     }

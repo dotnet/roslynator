@@ -60,20 +60,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddDocumentationComment)
-                && !Settings.IsEnabled(CodeFixIdentifiers.ChangeMethodReturnType)
-                && !Settings.IsEnabled(CodeFixIdentifiers.MemberTypeMustMatchOverriddenMemberType)
-                && !Settings.IsEnabled(CodeFixIdentifiers.AddPartialModifier)
-                && !Settings.IsEnabled(CodeFixIdentifiers.MakeContainingClassAbstract)
-                && !Settings.IsEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor)
-                && !Settings.IsEnabled(CodeFixIdentifiers.RemoveMemberDeclaration)
-                && !Settings.IsEnabled(CodeFixIdentifiers.RenameDestructorToMatchClassName)
-                && !Settings.IsEnabled(CodeFixIdentifiers.RenameTupleElement)
-                && !Settings.IsEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out MemberDeclarationSyntax memberDeclaration))
@@ -85,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.MissingXmlCommentForPubliclyVisibleTypeOrMember:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.AddDocumentationComment))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddDocumentationComment))
                                 break;
 
                             CodeAction codeAction = CodeAction.Create(
@@ -105,7 +91,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.MethodReturnTypeMustMatchOverriddenMethodReturnType:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -120,7 +106,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.PartialMethodsMustHaveVoidReturnType:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeMethodReturnType))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMethodReturnType))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -148,7 +134,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.MemberTypeMustMatchOverriddenMemberType))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MemberTypeMustMatchOverriddenMemberType))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -190,7 +176,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.MissingPartialModifier:
                     case CompilerDiagnosticIdentifiers.PartialMethodMustBeDeclaredInPartialClassOrPartialStruct:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.AddPartialModifier))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddPartialModifier))
                                 break;
 
                             SyntaxNode node = null;
@@ -223,7 +209,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.MemberIsAbstractButItIsContainedInNonAbstractClass:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.MakeContainingClassAbstract))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeContainingClassAbstract))
                                 break;
 
                             if (!memberDeclaration.IsParentKind(SyntaxKind.ClassDeclaration))
@@ -240,7 +226,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.StaticConstructorMustBeParameterless:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveParametersFromStaticConstructor))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveParametersFromStaticConstructor))
                                 break;
 
                             var constructorDeclaration = (ConstructorDeclarationSyntax)memberDeclaration;
@@ -272,7 +258,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.OnlyClassTypesCanContainDestructors:
                     case CompilerDiagnosticIdentifiers.StructsCannotContainExplicitParameterlessConstructors:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveMemberDeclaration))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveMemberDeclaration))
                                 break;
 
                             CodeFixRegistrator.RemoveMemberDeclaration(context, diagnostic, memberDeclaration);
@@ -280,7 +266,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.NameOfDestructorMustMatchNameOfClass:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.RenameDestructorToMatchClassName))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RenameDestructorToMatchClassName))
                                 break;
 
                             if (!(memberDeclaration is DestructorDeclarationSyntax destructorDeclaration))
@@ -307,7 +293,7 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.CannotChangeTupleElementNameWhenOverridingInheritedMember:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.RenameTupleElement))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RenameTupleElement))
                                 break;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -414,7 +400,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.ConstraintTypeIsNotCLSCompliant:
                     case CompilerDiagnosticIdentifiers.TypeIsNotCLSCompliantBecauseBaseInterfaceIsNotCLSCompliant:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MarkDeclarationAsNonCLSCompliant))
                                 break;
 
                             CodeAction codeAction = CodeAction.Create(

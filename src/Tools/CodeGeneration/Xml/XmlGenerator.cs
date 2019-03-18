@@ -14,7 +14,7 @@ namespace Roslynator.CodeGeneration.Xml
     {
         public static string CreateDefaultConfigFile(
             IEnumerable<RefactoringDescriptor> refactorings,
-            IEnumerable<CodeFixDescriptor> codeFixes)
+            IEnumerable<CodeFixMetadata> codeFixes)
         {
             var doc = new XDocument(
                 new XElement("Roslynator",

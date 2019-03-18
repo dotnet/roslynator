@@ -28,7 +28,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveUnreachableCode))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveUnreachableCode))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -36,61 +38,50 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            Debug.Assert(context.Span.Start == statement.SpanStart, statement.ToString());
+
+            if (context.Span.Start != statement.SpanStart)
+                return;
+
+            CodeAction codeAction = CreateCodeActionForIfElse(context.Document, diagnostic, statement.Parent);
+
+            if (codeAction != null)
             {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.UnreachableCodeDetected:
+                context.RegisterCodeFix(codeAction, diagnostic);
+                return;
+            }
+
+            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
+            if (statementsInfo.Success)
+            {
+                codeAction = CodeAction.Create(
+                    Title,
+                    cancellationToken =>
+                    {
+                        SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
+
+                        int index = statements.IndexOf(statement);
+
+                        if (index == statements.Count - 1)
                         {
-                            Debug.Assert(context.Span.Start == statement.SpanStart, statement.ToString());
-
-                            if (context.Span.Start != statement.SpanStart)
-                                break;
-
-                            CodeAction codeAction = CreateCodeActionForIfElse(context.Document, diagnostic, statement.Parent);
-
-                            if (codeAction != null)
-                            {
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                                break;
-                            }
-
-                            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(statement);
-                            if (statementsInfo.Success)
-                            {
-                                codeAction = CodeAction.Create(
-                                    Title,
-                                    cancellationToken =>
-                                    {
-                                        SyntaxList<StatementSyntax> statements = statementsInfo.Statements;
-
-                                        int index = statements.IndexOf(statement);
-
-                                        if (index == statements.Count - 1)
-                                        {
-                                            return context.Document.RemoveStatementAsync(statement, cancellationToken);
-                                        }
-                                        else
-                                        {
-                                            SyntaxRemoveOptions removeOptions = SyntaxRefactorings.DefaultRemoveOptions;
-
-                                            if (statement.GetLeadingTrivia().IsEmptyOrWhitespace())
-                                                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
-
-                                            if (statements.Last().GetTrailingTrivia().IsEmptyOrWhitespace())
-                                                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
-
-                                            return context.Document.RemoveNodesAsync(statements.Skip(index), removeOptions, cancellationToken);
-                                        }
-                                    },
-                                    GetEquivalenceKey(diagnostic));
-
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-
-                            break;
+                            return context.Document.RemoveStatementAsync(statement, cancellationToken);
                         }
-                }
+                        else
+                        {
+                            SyntaxRemoveOptions removeOptions = SyntaxRefactorings.DefaultRemoveOptions;
+
+                            if (statement.GetLeadingTrivia().IsEmptyOrWhitespace())
+                                removeOptions &= ~SyntaxRemoveOptions.KeepLeadingTrivia;
+
+                            if (statements.Last().GetTrailingTrivia().IsEmptyOrWhitespace())
+                                removeOptions &= ~SyntaxRemoveOptions.KeepTrailingTrivia;
+
+                            return context.Document.RemoveNodesAsync(statements.Skip(index), removeOptions, cancellationToken);
+                        }
+                    },
+                    GetEquivalenceKey(diagnostic));
+
+                context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
 

@@ -8,7 +8,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class CodeFixTestGenerator
     {
-        public static CompilationUnitSyntax Generate(CompilerDiagnosticDescriptor compilerDiagnostic, string className)
+        public static CompilationUnitSyntax Generate(CompilerDiagnosticMetadata compilerDiagnostic, string className)
         {
             string s = _sourceTemplate
                 .Replace("$ClassName$", className)

@@ -30,7 +30,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.SynchronizeAccessibility))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.SynchronizeAccessibility))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -57,7 +59,7 @@ namespace Roslynator.CSharp.CodeFixes
                         cancellationToken => ChangeAccessibilityRefactoring.RefactorAsync(context.Solution(), memberDeclarations, accessibility, cancellationToken),
                         GetEquivalenceKey(CompilerDiagnosticIdentifiers.PartialDeclarationsHaveConfictingAccessibilityModifiers, accessibility.ToString()));
 
-                    context.RegisterCodeFix(codeAction, context.Diagnostics);
+                    context.RegisterCodeFix(codeAction, diagnostic);
                 }
             }
         }

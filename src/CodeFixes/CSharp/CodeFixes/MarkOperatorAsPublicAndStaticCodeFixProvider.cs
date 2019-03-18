@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.MarkOperatorAsPublicAndStatic))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MarkOperatorAsPublicAndStatic))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -32,53 +34,43 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out MemberDeclarationSyntax memberDeclaration))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            ModifierListInfo info = SyntaxInfo.ModifierListInfo(memberDeclaration);
+
+            string title = "Add ";
+
+            if (info.ExplicitAccessibility == Accessibility.Public)
             {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.UserDefinedOperatorMustBeDeclaredStaticAndPublic:
-                        {
-                            ModifierListInfo info = SyntaxInfo.ModifierListInfo(memberDeclaration);
-
-                            string title = "Add ";
-
-                            if (info.ExplicitAccessibility == Accessibility.Public)
-                            {
-                                title += "modifier 'static'";
-                            }
-                            else if (info.IsStatic)
-                            {
-                                title += "modifier 'public'";
-                            }
-                            else
-                            {
-                                title += "modifiers 'public static'";
-                            }
-
-                            CodeAction codeAction = CodeAction.Create(
-                                title,
-                                cancellationToken =>
-                                {
-                                    SyntaxNode newNode = memberDeclaration;
-
-                                    if (info.Modifiers.ContainsAny(SyntaxKind.InternalKeyword, SyntaxKind.ProtectedKeyword, SyntaxKind.PrivateKeyword))
-                                        newNode = SyntaxAccessibility.WithoutExplicitAccessibility(newNode);
-
-                                    if (!info.Modifiers.Contains(SyntaxKind.PublicKeyword))
-                                        newNode = ModifierList.Insert(newNode, SyntaxKind.PublicKeyword);
-
-                                    if (!info.IsStatic)
-                                        newNode = ModifierList.Insert(newNode, SyntaxKind.StaticKeyword);
-
-                                    return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
-                                },
-                                base.GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
+                title += "modifier 'static'";
             }
+            else if (info.IsStatic)
+            {
+                title += "modifier 'public'";
+            }
+            else
+            {
+                title += "modifiers 'public static'";
+            }
+
+            CodeAction codeAction = CodeAction.Create(
+                title,
+                cancellationToken =>
+                {
+                    SyntaxNode newNode = memberDeclaration;
+
+                    if (info.Modifiers.ContainsAny(SyntaxKind.InternalKeyword, SyntaxKind.ProtectedKeyword, SyntaxKind.PrivateKeyword))
+                        newNode = SyntaxAccessibility.WithoutExplicitAccessibility(newNode);
+
+                    if (!info.Modifiers.Contains(SyntaxKind.PublicKeyword))
+                        newNode = ModifierList.Insert(newNode, SyntaxKind.PublicKeyword);
+
+                    if (!info.IsStatic)
+                        newNode = ModifierList.Insert(newNode, SyntaxKind.StaticKeyword);
+
+                    return context.Document.ReplaceNodeAsync(memberDeclaration, newNode, cancellationToken);
+                },
+                base.GetEquivalenceKey(diagnostic));
+
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

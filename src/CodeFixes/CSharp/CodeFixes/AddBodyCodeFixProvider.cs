@@ -33,7 +33,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddBody))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddBody))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -47,29 +49,17 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
             }
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.PartialMethodMayNotHaveMultipleDefiningDeclarations:
-                    case CompilerDiagnosticIdentifiers.MemberMustDeclareBodyBecauseItIsNotMarkedAbstractExternOrPartial:
-                    case CompilerDiagnosticIdentifiers.LocalFunctionMustAlwaysHaveBody:
-                        {
-                            Func<CancellationToken, Task<Document>> createChangedDocument = GetCreateChangedDocument(context, node);
+            Func<CancellationToken, Task<Document>> createChangedDocument = GetCreateChangedDocument(context, node);
 
-                            if (createChangedDocument == null)
-                                break;
+            if (createChangedDocument == null)
+                return;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add body",
-                                createChangedDocument,
-                                GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddBody));
+            CodeAction codeAction = CodeAction.Create(
+                "Add body",
+                createChangedDocument,
+                GetEquivalenceKey(diagnostic, CodeFixIdentifiers.AddBody));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private static Func<CancellationToken, Task<Document>> GetCreateChangedDocument(CodeFixContext context, SyntaxNode node)
