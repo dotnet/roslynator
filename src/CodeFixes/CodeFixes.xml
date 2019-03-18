@@ -154,7 +154,7 @@
   </CodeFix>
   <CodeFix Id="RCF0029" Identifier="ChangeAccessibility" Title="Change accessibility">
     <FixableDiagnosticIds>
-      <Id>CS0261</Id>
+      <Id>CS0621</Id>
       <Id>CS0442</Id>
       <Id>CS0507</Id>
       <Id>CS0628</Id>
@@ -604,7 +604,7 @@
   </CodeFix>
   <CodeFix Id="RCF0108" Identifier="RemoveParentheses" Title="Remove parentheses">
     <FixableDiagnosticIds>
-      <Id>CS0210</Id>
+      <Id>CS0201</Id>
     </FixableDiagnosticIds>
   </CodeFix>
   <CodeFix Id="RCF0109" Identifier="RemoveParameter" Title="Remove parameter">

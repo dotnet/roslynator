@@ -2,20 +2,20 @@
 
 namespace Roslynator.Metadata
 {
-    public class CompilerDiagnosticDescriptor
+    public class CompilerDiagnosticMetadata
     {
-        public CompilerDiagnosticDescriptor(
+        public CompilerDiagnosticMetadata(
             string id,
             string identifier,
             string title,
-            string message,
+            string messageFormat,
             string severity,
             string helpUrl)
         {
             Id = id;
             Identifier = identifier;
             Title = title;
-            Message = message;
+            MessageFormat = messageFormat;
             Severity = severity;
             HelpUrl = helpUrl;
         }
@@ -26,7 +26,7 @@ namespace Roslynator.Metadata
 
         public string Title { get; }
 
-        public string Message { get; }
+        public string MessageFormat { get; }
 
         public string Severity { get; }
 

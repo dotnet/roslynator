@@ -24,7 +24,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.ReplaceStructWithClass))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceStructWithClass))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -32,32 +34,22 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out BaseTypeSyntax baseType))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.TypeInInterfaceListIsNotInterface:
-                        {
-                            SyntaxNode parent = baseType.Parent;
+            SyntaxNode parent = baseType.Parent;
 
-                            if (parent.Kind() != SyntaxKind.BaseList)
-                                break;
+            if (parent.Kind() != SyntaxKind.BaseList)
+                return;
 
-                            parent = parent.Parent;
+            parent = parent.Parent;
 
-                            if (!(parent is StructDeclarationSyntax structDeclaration))
-                                break;
+            if (!(parent is StructDeclarationSyntax structDeclaration))
+                return;
 
-                            CodeAction codeAction = CodeAction.Create(
-                                "Replace 'struct' with 'class'",
-                                cancellationToken => context.Document.ReplaceNodeAsync(structDeclaration, ClassDeclaration(structDeclaration), cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeAction.Create(
+                "Replace 'struct' with 'class'",
+                cancellationToken => context.Document.ReplaceNodeAsync(structDeclaration, ClassDeclaration(structDeclaration), cancellationToken),
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

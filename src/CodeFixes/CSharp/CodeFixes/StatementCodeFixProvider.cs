@@ -28,14 +28,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.RemoveEmptySwitchStatement,
-                CodeFixIdentifiers.RemoveJumpStatement,
-                CodeFixIdentifiers.ReplaceBreakWithContinue))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
@@ -47,7 +39,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.EmptySwitchBlock:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveEmptySwitchStatement))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveEmptySwitchStatement))
                                 break;
 
                             if (!(statement is SwitchStatementSyntax switchStatement))
@@ -58,10 +50,10 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.NoEnclosingLoopOutOfWhichToBreakOrContinue:
                         {
-                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveJumpStatement))
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveJumpStatement))
                                 CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.ReplaceBreakWithContinue)
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceBreakWithContinue)
                                 && statement.Kind() == SyntaxKind.BreakStatement)
                             {
                                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -92,10 +84,10 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveJumpStatement))
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveJumpStatement))
                                 CodeFixRegistrator.RemoveStatement(context, diagnostic, statement);
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.ReplaceBreakWithContinue)
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceBreakWithContinue)
                                 && statement.Kind() == SyntaxKind.BreakStatement)
                             {
                                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);

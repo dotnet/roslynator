@@ -25,7 +25,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddTypeArgument))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddTypeArgument))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -36,45 +38,34 @@ namespace Roslynator.CSharp.CodeFixes
             if (!type.IsKind(SyntaxKind.IdentifierName))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(type, context.CancellationToken);
+
+            foreach (ISymbol symbol in symbolInfo.CandidateSymbols)
             {
-                switch (diagnostic.Id)
+                if (symbol is INamedTypeSymbol namedTypeSymbol)
                 {
-                    case CompilerDiagnosticIdentifiers.UsingGenericTypeRequiresNumberOfTypeArguments:
-                        {
-                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                    ImmutableArray<ITypeParameterSymbol> typeParameters = namedTypeSymbol.TypeParameters;
 
-                            SymbolInfo symbolInfo = semanticModel.GetSymbolInfo(type, context.CancellationToken);
-
-                            foreach (ISymbol symbol in symbolInfo.CandidateSymbols)
+                    if (typeParameters.Any())
+                    {
+                        CodeAction codeAction = CodeAction.Create(
+                            GetTitle(typeParameters),
+                            cancellationToken =>
                             {
-                                if (symbol is INamedTypeSymbol namedTypeSymbol)
-                                {
-                                    ImmutableArray<ITypeParameterSymbol> typeParameters = namedTypeSymbol.TypeParameters;
+                                SeparatedSyntaxList<TypeSyntax> typeArguments = CreateTypeArguments(typeParameters, type.SpanStart, semanticModel).ToSeparatedSyntaxList();
 
-                                    if (typeParameters.Any())
-                                    {
-                                        CodeAction codeAction = CodeAction.Create(
-                                            GetTitle(typeParameters),
-                                            cancellationToken =>
-                                            {
-                                                SeparatedSyntaxList<TypeSyntax> typeArguments = CreateTypeArguments(typeParameters, type.SpanStart, semanticModel).ToSeparatedSyntaxList();
+                                var identifierName = (IdentifierNameSyntax)type;
 
-                                                var identifierName = (IdentifierNameSyntax)type;
+                                GenericNameSyntax newNode = SyntaxFactory.GenericName(identifierName.Identifier, SyntaxFactory.TypeArgumentList(typeArguments));
 
-                                                GenericNameSyntax newNode = SyntaxFactory.GenericName(identifierName.Identifier, SyntaxFactory.TypeArgumentList(typeArguments));
+                                return context.Document.ReplaceNodeAsync(type, newNode, cancellationToken);
+                            },
+                            GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(namedTypeSymbol, SymbolDisplayFormats.Default)));
 
-                                                return context.Document.ReplaceNodeAsync(type, newNode, cancellationToken);
-                                            },
-                                            GetEquivalenceKey(diagnostic, SymbolDisplay.ToDisplayString(namedTypeSymbol, SymbolDisplayFormats.Default)));
-
-                                        context.RegisterCodeFix(codeAction, diagnostic);
-                                    }
-                                }
-                            }
-
-                            break;
-                        }
+                        context.RegisterCodeFix(codeAction, diagnostic);
+                    }
                 }
             }
         }

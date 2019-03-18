@@ -12,7 +12,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class CodeFixIdentifiersGenerator
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<CodeFixDescriptor> codeFixes, IComparer<string> comparer)
+        public static CompilationUnitSyntax Generate(IEnumerable<CodeFixMetadata> codeFixes, IComparer<string> comparer)
         {
             return CompilationUnit(
                 UsingDirectives(),

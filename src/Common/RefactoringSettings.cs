@@ -2,7 +2,7 @@
 
 namespace Roslynator
 {
-    public sealed class RefactoringSettings : CodeAnalysisSettings
+    public sealed class RefactoringSettings : CodeAnalysisSettings<string>
     {
         public static RefactoringSettings Current { get; } = new RefactoringSettings();
 

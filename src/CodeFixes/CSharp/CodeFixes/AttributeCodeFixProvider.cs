@@ -27,7 +27,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveAttribute))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveAttribute))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -35,37 +37,26 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out AttributeSyntax attribute))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            CodeAction codeAction = CodeAction.Create(
+                $"Remove attribute '{attribute.Name}'",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.AttributeIsNotValidOnThisDeclarationType:
-                    case CompilerDiagnosticIdentifiers.AttributeIsOnlyValidOnMethodsOrAttributeClasses:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Remove attribute '{attribute.Name}'",
-                                cancellationToken =>
-                                {
-                                    var attributeList = (AttributeListSyntax)attribute.Parent;
+                    var attributeList = (AttributeListSyntax)attribute.Parent;
 
-                                    SeparatedSyntaxList<AttributeSyntax> attributes = attributeList.Attributes;
+                    SeparatedSyntaxList<AttributeSyntax> attributes = attributeList.Attributes;
 
-                                    if (attributes.Count == 1)
-                                    {
-                                        return context.Document.RemoveNodeAsync(attributeList, cancellationToken);
-                                    }
-                                    else
-                                    {
-                                        return context.Document.RemoveNodeAsync(attribute, cancellationToken);
-                                    }
-                                },
-                                GetEquivalenceKey(diagnostic));
+                    if (attributes.Count == 1)
+                    {
+                        return context.Document.RemoveNodeAsync(attributeList, cancellationToken);
+                    }
+                    else
+                    {
+                        return context.Document.RemoveNodeAsync(attribute, cancellationToken);
+                    }
+                },
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

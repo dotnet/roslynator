@@ -26,7 +26,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.ExtractDeclarationFromUsingStatement))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ExtractDeclarationFromUsingStatement))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -37,22 +39,12 @@ namespace Roslynator.CSharp.CodeFixes
             if (usingStatement.ContainsDiagnostics)
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.TypeUsedInUsingStatementMustBeImplicitlyConvertibleToIDisposable:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Extract declaration from using statement",
-                                cancellationToken => RefactorAsync(context.Document, usingStatement, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
+            CodeAction codeAction = CodeAction.Create(
+                "Extract declaration from using statement",
+                cancellationToken => RefactorAsync(context.Document, usingStatement, cancellationToken),
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         public static Task<Document> RefactorAsync(

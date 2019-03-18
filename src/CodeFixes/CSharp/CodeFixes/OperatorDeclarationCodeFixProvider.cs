@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.DefineMatchingOperator))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.DefineMatchingOperator))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -31,42 +33,32 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out OperatorDeclarationSyntax operatorDeclaration))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            SyntaxToken token = operatorDeclaration.OperatorToken;
+
+            SyntaxKind matchingKind = GetMatchingOperatorToken(token);
+
+            if (matchingKind == SyntaxKind.None)
+                return;
+
+            SyntaxToken newToken = SyntaxFactory.Token(token.LeadingTrivia, matchingKind, token.TrailingTrivia);
+
+            if (operatorDeclaration.BodyOrExpressionBody() == null)
+                return;
+
+            if (!(operatorDeclaration.Parent is TypeDeclarationSyntax typeDeclaration))
+                return;
+
+            CodeAction codeAction = CodeAction.Create(
+                $"Generate {newToken} operator",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.OperatorRequiresMatchingOperatorToAlsoBeDefined:
-                        {
-                            SyntaxToken token = operatorDeclaration.OperatorToken;
+                    OperatorDeclarationSyntax newNode = operatorDeclaration.WithOperatorToken(newToken);
 
-                            SyntaxKind matchingKind = GetMatchingOperatorToken(token);
+                    return context.Document.InsertNodeAfterAsync(operatorDeclaration, newNode, cancellationToken);
+                },
+                EquivalenceKey.Create(diagnostic));
 
-                            if (matchingKind == SyntaxKind.None)
-                                break;
-
-                            SyntaxToken newToken = SyntaxFactory.Token(token.LeadingTrivia, matchingKind, token.TrailingTrivia);
-
-                            if (operatorDeclaration.BodyOrExpressionBody() == null)
-                                break;
-
-                            if (!(operatorDeclaration.Parent is TypeDeclarationSyntax typeDeclaration))
-                                break;
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Generate {newToken} operator",
-                                cancellationToken =>
-                                {
-                                    OperatorDeclarationSyntax newNode = operatorDeclaration.WithOperatorToken(newToken);
-
-                                    return context.Document.InsertNodeAfterAsync(operatorDeclaration, newNode, cancellationToken);
-                                },
-                                EquivalenceKey.Create(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
 
         private static SyntaxKind GetMatchingOperatorToken(SyntaxToken operatorToken)

@@ -51,8 +51,14 @@
               Loaded="ListView_Loaded">
       <ListView.View>
         <GridView>
-          <GridViewColumn Header="Id" DisplayMemberBinding="{Binding Path=Id}"></GridViewColumn>
-          <GridViewColumn Header="Title" DisplayMemberBinding="{Binding Path=Title}" Width="300"></GridViewColumn>
+          <GridViewColumn Header="{Binding NameColumnHeaderText}">
+            <GridViewColumn.CellTemplate>
+              <DataTemplate>
+                <TextBlock Text="{Binding Path=Name}" ToolTip="{Binding Path=NameToolTip}" />
+              </DataTemplate>
+            </GridViewColumn.CellTemplate>
+          </GridViewColumn>
+          <GridViewColumn Header="{Binding TitleColumnHeaderText}" DisplayMemberBinding="{Binding Path=Title}" Width="300"></GridViewColumn>
           <GridViewColumn>
             <GridViewColumn.Header>
               <GridViewColumnHeader x:Name="checkBoxGridViewColumnHeader" Content="{Binding CheckBoxColumnHeaderText}"></GridViewColumnHeader>

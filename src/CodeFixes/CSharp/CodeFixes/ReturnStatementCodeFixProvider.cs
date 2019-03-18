@@ -30,15 +30,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.UseYieldReturnInsteadOfReturn,
-                CodeFixIdentifiers.RemoveReturnKeyword,
-                CodeFixIdentifiers.RemoveReturnExpression,
-                CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ReturnStatementSyntax returnStatement))
@@ -50,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.CannotReturnValueFromIterator:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseYieldReturnInsteadOfReturn))
                                 break;
 
                             ExpressionSyntax expression = returnStatement.Expression;
@@ -120,12 +111,12 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeMemberTypeAccordingToReturnExpression))
                             {
                                 ChangeMemberTypeRefactoring.ComputeCodeFix(context, diagnostic, returnStatement.Expression, semanticModel);
                             }
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveReturnExpression))
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveReturnExpression))
                             {
                                 ISymbol symbol = semanticModel.GetEnclosingSymbol(returnStatement.SpanStart, context.CancellationToken);
 
@@ -153,7 +144,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 }
                             }
 
-                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveReturnKeyword))
+                            if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveReturnKeyword))
                             {
                                 ExpressionSyntax expression = returnStatement.Expression;
 

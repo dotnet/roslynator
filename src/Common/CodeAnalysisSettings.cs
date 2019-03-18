@@ -5,94 +5,94 @@ using System.Diagnostics;
 
 namespace Roslynator
 {
-    public class CodeAnalysisSettings
+    public class CodeAnalysisSettings<T>
     {
         public CodeAnalysisSettings()
         {
-            Disabled = new IdentifierSet();
+            Disabled = new HashSet<T>();
         }
 
-        public IdentifierSet Disabled { get; }
+        public HashSet<T> Disabled { get; }
 
         public virtual void Reset()
         {
             Disabled.Clear();
         }
 
-        public bool IsEnabled(string id)
+        public bool IsEnabled(T item)
         {
-            return !Disabled.Contains(id);
+            return !Disabled.Contains(item);
         }
 
-        public bool IsAnyEnabled(string id, string id2)
+        public bool IsAnyEnabled(T item, T item2)
         {
-            return IsEnabled(id)
-                || IsEnabled(id2);
+            return IsEnabled(item)
+                || IsEnabled(item2);
         }
 
-        public bool IsAnyEnabled(string id, string id2, string id3)
+        public bool IsAnyEnabled(T item, T item2, T item3)
         {
-            return IsEnabled(id)
-                || IsEnabled(id2)
-                || IsEnabled(id3);
+            return IsEnabled(item)
+                || IsEnabled(item2)
+                || IsEnabled(item3);
         }
 
-        public bool IsAnyEnabled(string id, string id2, string id3, string id4)
+        public bool IsAnyEnabled(T item, T item2, T item3, T item4)
         {
-            return IsEnabled(id)
-                || IsEnabled(id2)
-                || IsEnabled(id3)
-                || IsEnabled(id4);
+            return IsEnabled(item)
+                || IsEnabled(item2)
+                || IsEnabled(item3)
+                || IsEnabled(item4);
         }
 
-        public bool IsAnyEnabled(string id, string id2, string id3, string id4, string id5)
+        public bool IsAnyEnabled(T item, T item2, T item3, T item4, T item5)
         {
-            return IsEnabled(id)
-                || IsEnabled(id2)
-                || IsEnabled(id3)
-                || IsEnabled(id4)
-                || IsEnabled(id5);
+            return IsEnabled(item)
+                || IsEnabled(item2)
+                || IsEnabled(item3)
+                || IsEnabled(item4)
+                || IsEnabled(item5);
         }
 
-        public bool IsAnyEnabled(string id, string id2, string id3, string id4, string id5, string id6)
+        public bool IsAnyEnabled(T item, T item2, T item3, T item4, T item5, T item6)
         {
-            return IsEnabled(id)
-                || IsEnabled(id2)
-                || IsEnabled(id3)
-                || IsEnabled(id4)
-                || IsEnabled(id5)
-                || IsEnabled(id6);
+            return IsEnabled(item)
+                || IsEnabled(item2)
+                || IsEnabled(item3)
+                || IsEnabled(item4)
+                || IsEnabled(item5)
+                || IsEnabled(item6);
         }
 
-        public void Disable(string id)
+        public void Disable(T item)
         {
-            Debug.WriteLineIf(Disabled.Add(id), $"{id} disabled");
+            Debug.WriteLineIf(Disabled.Add(item), $"{item} disabled");
 
-            Disabled.Add(id);
+            Disabled.Add(item);
         }
 
-        public void Enable(string id)
+        public void Enable(T item)
         {
-            Debug.WriteLineIf(Disabled.Remove(id), $"{id} enabled");
+            Debug.WriteLineIf(Disabled.Remove(item), $"{item} enabled");
 
-            Disabled.Remove(id);
+            Disabled.Remove(item);
         }
 
-        public void Set(string id, bool isEnabled)
+        public void Set(T item, bool isEnabled)
         {
             if (isEnabled)
             {
-                Enable(id);
+                Enable(item);
             }
             else
             {
-                Disable(id);
+                Disable(item);
             }
         }
 
-        public void Set(Dictionary<string, bool> values)
+        public void Set(Dictionary<T, bool> values)
         {
-            foreach (KeyValuePair<string, bool> kvp in values)
+            foreach (KeyValuePair<T, bool> kvp in values)
                 Set(kvp.Key, kvp.Value);
         }
     }

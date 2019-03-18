@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveTypeParameter))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveTypeParameter))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -31,39 +33,29 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out TypeParameterSyntax typeParameter))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            string name = typeParameter.Identifier.ValueText;
+
+            if (string.IsNullOrEmpty(name))
+                return;
+
+            CodeAction codeAction = CodeAction.Create(
+                $"Remove type parameter '{name}'",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.TypeParameterHasSameNameAsTypeParameterFromOuterType:
-                        {
-                            string name = typeParameter.Identifier.ValueText;
+                    GenericInfo genericInfo = SyntaxInfo.GenericInfo(typeParameter);
 
-                            if (string.IsNullOrEmpty(name))
-                                return;
+                    GenericInfo newGenericInfo = genericInfo.RemoveTypeParameter(typeParameter);
 
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Remove type parameter '{name}'",
-                                cancellationToken =>
-                                {
-                                    GenericInfo genericInfo = SyntaxInfo.GenericInfo(typeParameter);
+                    TypeParameterConstraintClauseSyntax constraintClause = genericInfo.FindConstraintClause(name);
 
-                                    GenericInfo newGenericInfo = genericInfo.RemoveTypeParameter(typeParameter);
+                    if (constraintClause != null)
+                        newGenericInfo = newGenericInfo.RemoveConstraintClause(constraintClause);
 
-                                    TypeParameterConstraintClauseSyntax constraintClause = genericInfo.FindConstraintClause(name);
+                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, cancellationToken);
+                },
+                GetEquivalenceKey(diagnostic));
 
-                                    if (constraintClause != null)
-                                        newGenericInfo = newGenericInfo.RemoveConstraintClause(constraintClause);
-
-                                    return context.Document.ReplaceNodeAsync(genericInfo.Node, newGenericInfo.Node, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveParameter))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveParameter))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -43,27 +45,15 @@ namespace Roslynator.CSharp.CodeFixes
 
             var parameter = (ParameterSyntax)node;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
+            if (parameter.IsParentKind(SyntaxKind.ParameterList)
+                && parameter.Parent.IsParentKind(SyntaxKind.LocalFunctionStatement))
             {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter:
-                        {
-                            if (Settings.IsEnabled(CodeFixIdentifiers.RemoveParameter)
-                                && parameter.IsParentKind(SyntaxKind.ParameterList)
-                                && parameter.Parent.IsParentKind(SyntaxKind.LocalFunctionStatement))
-                            {
-                                CodeAction codeAction = CodeAction.Create(
-                                    $"Remove parameter '{parameter.Identifier.ValueText}'",
-                                    cancellationToken => context.Document.RemoveNodeAsync(parameter, cancellationToken),
-                                    GetEquivalenceKey(diagnostic));
+                CodeAction codeAction = CodeAction.Create(
+                    $"Remove parameter '{parameter.Identifier.ValueText}'",
+                    cancellationToken => context.Document.RemoveNodeAsync(parameter, cancellationToken),
+                    GetEquivalenceKey(diagnostic));
 
-                                context.RegisterCodeFix(codeAction, diagnostic);
-                            }
-
-                            break;
-                        }
-                }
+                context.RegisterCodeFix(codeAction, diagnostic);
             }
         }
     }

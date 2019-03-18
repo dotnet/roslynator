@@ -20,7 +20,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveDuplicateModifier))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDuplicateModifier))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -28,23 +30,12 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindToken(root, context.Span.Start, out SyntaxToken token))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
-                {
-                    case CompilerDiagnosticIdentifiers.DuplicateModifier:
-                        {
-                            ModifiersCodeFixRegistrator.RemoveModifier(
-                                context,
-                                diagnostic,
-                                token.Parent,
-                                token,
-                                additionalKey: CodeFixIdentifiers.RemoveDuplicateModifier);
-
-                            break;
-                        }
-                }
-            }
+            ModifiersCodeFixRegistrator.RemoveModifier(
+                context,
+                diagnostic,
+                token.Parent,
+                token,
+                additionalKey: CodeFixIdentifiers.RemoveDuplicateModifier);
         }
     }
 }

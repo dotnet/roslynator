@@ -29,13 +29,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.ChangeTypeOfParamsParameter,
-                CodeFixIdentifiers.RemoveDefaultValueFromParameter))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ParameterSyntax parameter))
@@ -47,7 +40,7 @@ namespace Roslynator.CSharp.CodeFixes
                 {
                     case CompilerDiagnosticIdentifiers.ParamsParameterMustBeSingleDimensionalArray:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.ChangeTypeOfParamsParameter))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ChangeTypeOfParamsParameter))
                                 break;
 
                             TypeSyntax type = parameter.Type;
@@ -78,7 +71,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForParameterArray:
                     case CompilerDiagnosticIdentifiers.CannotSpecifyDefaultValueForThisParameter:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveDefaultValueFromParameter))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveDefaultValueFromParameter))
                                 break;
 
                             EqualsValueClauseSyntax defaultValue = parameter.Default;

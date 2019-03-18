@@ -19,8 +19,8 @@ namespace Roslynator.CodeGeneration
 
         private ImmutableArray<AnalyzerDescriptor> _analyzers;
         private ImmutableArray<RefactoringDescriptor> _refactorings;
-        private ImmutableArray<CodeFixDescriptor> _codeFixes;
-        private ImmutableArray<CompilerDiagnosticDescriptor> _compilerDiagnostics;
+        private ImmutableArray<CodeFixMetadata> _codeFixes;
+        private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
 
         public ImmutableArray<AnalyzerDescriptor> Analyzers
         {
@@ -44,7 +44,7 @@ namespace Roslynator.CodeGeneration
             }
         }
 
-        public ImmutableArray<CodeFixDescriptor> CodeFixes
+        public ImmutableArray<CodeFixMetadata> CodeFixes
         {
             get
             {
@@ -55,7 +55,7 @@ namespace Roslynator.CodeGeneration
             }
         }
 
-        public ImmutableArray<CompilerDiagnosticDescriptor> CompilerDiagnostics
+        public ImmutableArray<CompilerDiagnosticMetadata> CompilerDiagnostics
         {
             get
             {

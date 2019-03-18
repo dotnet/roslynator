@@ -23,7 +23,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddBracesToDeclarationOrLabeledStatement))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddBracesToDeclarationOrLabeledStatement))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -31,27 +33,17 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out StatementSyntax statement))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            CodeAction codeAction = CodeAction.Create(
+                "Add braces",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.EmbeddedStatementCannotBeDeclarationOrLabeledStatement:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Add braces",
-                                cancellationToken =>
-                                {
-                                    BlockSyntax block = SyntaxFactory.Block(statement).WithFormatterAnnotation();
+                    BlockSyntax block = SyntaxFactory.Block(statement).WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(statement, block, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                    return context.Document.ReplaceNodeAsync(statement, block, cancellationToken);
+                },
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }

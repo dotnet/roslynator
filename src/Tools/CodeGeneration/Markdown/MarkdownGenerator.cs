@@ -222,7 +222,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        public static string CreateCompilerDiagnosticMarkdown(CompilerDiagnosticDescriptor diagnostic, IEnumerable<CodeFixDescriptor> codeFixes, IComparer<string> comparer, IEnumerable<string> filePaths)
+        public static string CreateCompilerDiagnosticMarkdown(CompilerDiagnosticMetadata diagnostic, IEnumerable<CodeFixMetadata> codeFixes, IComparer<string> comparer, IEnumerable<string> filePaths)
         {
             MDocument document = Document(
                 Heading1(diagnostic.Id),
@@ -285,7 +285,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString();
         }
 
-        public static string CreateCodeFixesReadMe(IEnumerable<CompilerDiagnosticDescriptor> diagnostics, IComparer<string> comparer)
+        public static string CreateCodeFixesReadMe(IEnumerable<CompilerDiagnosticMetadata> diagnostics, IComparer<string> comparer)
         {
             MDocument document = Document(
                 Heading2("Compiler Diagnostics Fixable with Roslynator"),
@@ -299,7 +299,7 @@ namespace Roslynator.CodeGeneration.Markdown
 
             IEnumerable<MTableRow> GetRows()
             {
-                foreach (CompilerDiagnosticDescriptor diagnostic in diagnostics
+                foreach (CompilerDiagnosticMetadata diagnostic in diagnostics
                     .OrderBy(f => f.Id, comparer))
                 {
                     yield return TableRow(

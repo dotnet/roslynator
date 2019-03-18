@@ -12,7 +12,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class CompilerDiagnosticIdentifiersGenerator
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<CompilerDiagnosticDescriptor> descriptors, IComparer<string> comparer)
+        public static CompilationUnitSyntax Generate(IEnumerable<CompilerDiagnosticMetadata> descriptors, IComparer<string> comparer)
         {
             return CompilationUnit(
                 UsingDirectives(),

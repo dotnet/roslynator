@@ -32,13 +32,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.UseExplicitTypeInsteadOfVar,
-                CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out SyntaxNode node, predicate: f => f.IsKind(
@@ -63,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotHaveMultipleDeclarators:
                     case CompilerDiagnosticIdentifiers.ImplicitlyTypedVariablesCannotBeConstant:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.UseExplicitTypeInsteadOfVar))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.UseExplicitTypeInsteadOfVar))
                                 return;
 
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
@@ -84,7 +77,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case CompilerDiagnosticIdentifiers.LocalVariableOrFunctionIsAlreadyDefinedInThisScope:
                     case CompilerDiagnosticIdentifiers.LocalOrParameterCannotBeDeclaredInThisScopeBecauseThatNameIsUsedInEnclosingScopeToDefineLocalOrParameter:
                         {
-                            if (!Settings.IsEnabled(CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
+                            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.ReplaceVariableDeclarationWithAssignment))
                                 return;
 
                             if (!(variableDeclaration.Parent is LocalDeclarationStatementSyntax localDeclaration))

@@ -29,7 +29,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AddReturnStatementThatReturnsDefaultValue))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddReturnStatementThatReturnsDefaultValue))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -37,8 +39,6 @@ namespace Roslynator.CSharp.CodeFixes
             SyntaxNode node = root.FindNode(context.Span, getInnermostNodeForTie: true);
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
-            Diagnostic diagnostic = context.Diagnostics[0];
 
             foreach (SyntaxNode ancestor in node.AncestorsAndSelf())
             {

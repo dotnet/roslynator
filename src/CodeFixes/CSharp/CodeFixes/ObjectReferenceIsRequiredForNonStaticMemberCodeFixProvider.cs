@@ -23,13 +23,6 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsAnyEnabled(
-                CodeFixIdentifiers.AddStaticModifier,
-                CodeFixIdentifiers.MakeMemberNonStatic))
-            {
-                return;
-            }
-
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
 
             if (!TryFindNode(root, context.Span, out SyntaxNode node))
@@ -52,7 +45,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                     if (SyntaxInfo.ModifierListInfo(memberDeclaration).IsStatic)
                     {
-                        if (Settings.IsEnabled(CodeFixIdentifiers.MakeMemberNonStatic))
+                        if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.MakeMemberNonStatic))
                         {
                             ModifiersCodeFixRegistrator.RemoveModifier(
                             context,
@@ -63,7 +56,7 @@ namespace Roslynator.CSharp.CodeFixes
                             additionalKey: CodeFixIdentifiers.MakeMemberNonStatic);
                         }
 
-                        if (Settings.IsEnabled(CodeFixIdentifiers.AddStaticModifier))
+                        if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))
                             AddStaticModifier(context, diagnostic, node, semanticModel);
                     }
 
@@ -71,7 +64,7 @@ namespace Roslynator.CSharp.CodeFixes
                 }
                 else if (parent is ConstructorInitializerSyntax)
                 {
-                    if (Settings.IsEnabled(CodeFixIdentifiers.AddStaticModifier))
+                    if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier))
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

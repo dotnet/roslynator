@@ -31,7 +31,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.AssignDefaultValueToOutParameter))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AssignDefaultValueToOutParameter))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -44,8 +46,6 @@ namespace Roslynator.CSharp.CodeFixes
             {
                 return;
             }
-
-            Diagnostic diagnostic = context.Diagnostics[0];
 
             StatementSyntax statement = null;
 

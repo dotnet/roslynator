@@ -22,7 +22,9 @@ namespace Roslynator.CSharp.CodeFixes
 
         public sealed override async Task RegisterCodeFixesAsync(CodeFixContext context)
         {
-            if (!Settings.IsEnabled(CodeFixIdentifiers.RemoveArgumentList))
+            Diagnostic diagnostic = context.Diagnostics[0];
+
+            if (!Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.RemoveArgumentList))
                 return;
 
             SyntaxNode root = await context.GetSyntaxRootAsync().ConfigureAwait(false);
@@ -30,29 +32,19 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out InvocationExpressionSyntax invocationExpression))
                 return;
 
-            foreach (Diagnostic diagnostic in context.Diagnostics)
-            {
-                switch (diagnostic.Id)
+            CodeAction codeAction = CodeAction.Create(
+                "Remove argument list",
+                cancellationToken =>
                 {
-                    case CompilerDiagnosticIdentifiers.NonInvocableMemberCannotBeUsedLikeMethod:
-                        {
-                            CodeAction codeAction = CodeAction.Create(
-                                "Remove argument list",
-                                cancellationToken =>
-                                {
-                                    ExpressionSyntax newNode = invocationExpression.Expression
-                                            .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
-                                            .WithFormatterAnnotation();
+                    ExpressionSyntax newNode = invocationExpression.Expression
+                            .AppendToTrailingTrivia(invocationExpression.ArgumentList.GetTrailingTrivia())
+                            .WithFormatterAnnotation();
 
-                                    return context.Document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
-                                },
-                                GetEquivalenceKey(diagnostic));
+                    return context.Document.ReplaceNodeAsync(invocationExpression, newNode, cancellationToken);
+                },
+                GetEquivalenceKey(diagnostic));
 
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                }
-            }
+            context.RegisterCodeFix(codeAction, diagnostic);
         }
     }
 }
