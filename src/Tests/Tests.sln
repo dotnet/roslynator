@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestLibrary", "TestLibrary\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestConsole", "TestConsole\TestConsole.csproj", "{09B4373A-8AA6-48CF-804C-E209CC12BC5C}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Workspaces", "..\Common.Workspaces\Common.Workspaces.csproj", "{D6B3FAF2-C92D-4B2D-82DF-D6B3DD7F4107}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Common", "..\Workspaces.Common\Workspaces.Common.csproj", "{D6B3FAF2-C92D-4B2D-82DF-D6B3DD7F4107}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzers.CodeFixes", "..\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj", "{3B0653F4-919D-4049-84A8-B1CC173415D7}"
 EndProject

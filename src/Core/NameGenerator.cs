@@ -68,50 +68,6 @@ namespace Roslynator
         }
 
         /// <summary>
-        /// Returns a member name that will be unique at the specified position.
-        /// </summary>
-        /// <param name="baseName"></param>
-        /// <param name="semanticModel"></param>
-        /// <param name="position"></param>
-        /// <param name="isCaseSensitive"></param>
-        /// <param name="cancellationToken"></param>
-        /// <returns></returns>
-        [Obsolete("This member is obsolete.")]
-        public string EnsureUniqueMemberName(
-            string baseName,
-            SemanticModel semanticModel,
-            int position,
-            bool isCaseSensitive = true,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (semanticModel == null)
-                throw new ArgumentNullException(nameof(semanticModel));
-
-            INamedTypeSymbol containingType = semanticModel.GetEnclosingNamedType(position, cancellationToken);
-
-            if (containingType != null)
-            {
-                return EnsureUniqueName(baseName, containingType.GetMembers(), isCaseSensitive);
-            }
-            else
-            {
-                return EnsureUniqueName(baseName, semanticModel.LookupSymbols(position), isCaseSensitive);
-            }
-        }
-
-        [Obsolete("This member is obsolete.")]
-        public string EnsureUniqueMemberName(
-            string baseName,
-            INamedTypeSymbol typeSymbol,
-            bool isCaseSensitive = true)
-        {
-            if (typeSymbol == null)
-                throw new ArgumentNullException(nameof(typeSymbol));
-
-            return EnsureUniqueName(baseName, typeSymbol.GetMembers(), isCaseSensitive);
-        }
-
-        /// <summary>
         /// Returns unique enum member name for a specified enum type.
         /// </summary>
         /// <param name="baseName"></param>

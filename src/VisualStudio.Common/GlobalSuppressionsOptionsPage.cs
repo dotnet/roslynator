@@ -16,7 +16,8 @@ namespace Roslynator.VisualStudio
             Control.DefaultSortDirection = ListSortDirection.Descending;
             Control.CheckBoxColumnHeaderText = "Suppressed";
             Control.Comment = "IMPORTANT: This option suppresses diagnostics but it does not disable the analyzer. " +
-                "It is highly recommended to use standard tool such as ruleset to disable the analyzer.";
+                "It is highly recommended to use standard tool such as ruleset to disable the analyzer.\r\n\r\n" +
+                "Global suppressions are not supported when full solution analysis is enabled!";
         }
 
         [Browsable(false)]

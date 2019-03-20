@@ -6,11 +6,11 @@
 
   <PropertyGroup>
     <Version>2.0.2.0</Version>
-    <AssemblyName>Roslynator.Common.Workspaces</AssemblyName>
+    <AssemblyName>Roslynator.Workspaces.Common</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Common.Workspaces.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>Workspaces.Common.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 
