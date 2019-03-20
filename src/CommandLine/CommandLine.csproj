@@ -35,7 +35,7 @@
     <TrimFilesRootFiles Include="Roslynator.CSharp.dll" />
     <TrimFilesRootFiles Include="Roslynator.VisualBasic.dll" />
     <TrimFilesRootFiles Include="Roslynator.Common.dll" />
-    <TrimFilesRootFiles Include="Roslynator.Common.Workspaces.dll" />
+    <TrimFilesRootFiles Include="Roslynator.Workspaces.Common.dll" />
     <TrimFilesRootFiles Include="Roslynator.CSharp.Workspaces.dll" />
     <TrimFilesRootFiles Include="Roslynator.VisualBasic.Workspaces.dll" />
     <TrimFilesRootFiles Include="Roslynator.CSharp.Analyzers.dll" />

@@ -33,7 +33,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeGeneration", "CodeGener
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CSharp.Workspaces", "..\CSharp.Workspaces\CSharp.Workspaces.csproj", "{56DA29A3-C179-471C-9941-42426EEB84D0}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Common.Workspaces", "..\Common.Workspaces\Common.Workspaces.csproj", "{D6B3FAF2-C92D-4B2D-82DF-D6B3DD7F4107}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Common", "..\Workspaces.Common\Workspaces.Common.csproj", "{D6B3FAF2-C92D-4B2D-82DF-D6B3DD7F4107}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzers.CodeFixes", "..\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj", "{3B0653F4-919D-4049-84A8-B1CC173415D7}"
 EndProject

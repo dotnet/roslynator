@@ -19,7 +19,7 @@
    * **Roslynator.Core.dll** (required)
    * **Roslynator.Workspaces.Core.dll** (required)
    * **Roslynator.Common.dll** (required)
-   * **Roslynator.Common.Workspaces.dll** (required)
+   * **Roslynator.Workspaces.Common.dll** (required)
    * **Roslynator.CSharp.dll** (required)
    * **Roslynator.CSharp.Workspaces.dll** (required)
    * **Roslynator.CSharp.CodeFixes.dll** (contains code fixes for compiler diagnostics)

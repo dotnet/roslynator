@@ -36,7 +36,7 @@ namespace VersionUpdater
             UpdateVersionInCsProj(@"..\src\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj", version);
             UpdateVersionInCsProj(@"..\src\CodeFixes\CodeFixes.csproj", version);
             UpdateVersionInCsProj(@"..\src\Common\Common.csproj", version);
-            UpdateVersionInCsProj(@"..\src\Common.Workspaces\Common.Workspaces.csproj", version);
+            UpdateVersionInCsProj(@"..\src\Workspaces.Common\Workspaces.Common.csproj", version);
             UpdateVersionInCsProj(@"..\src\Refactorings\Refactorings.csproj", version);
 
             UpdateVersionInAssemblyInfo(@"..\src\VisualStudio\Properties\AssemblyInfo.cs", version);
