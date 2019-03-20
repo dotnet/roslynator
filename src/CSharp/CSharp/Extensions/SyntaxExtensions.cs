@@ -214,25 +214,6 @@ namespace Roslynator.CSharp
                 classDeclaration.OpenBraceToken.SpanStart,
                 classDeclaration.CloseBraceToken.Span.End);
         }
-
-        /// <summary>
-        /// Creates a new class declaration with the specified attribute lists added.
-        /// </summary>
-        /// <param name="classDeclaration"></param>
-        /// <param name="keepDocumentationCommentOnTop">If the declaration has no attribute lists and has a documentation comment the specified attribute lists will be inserted after the documentation comment.</param>
-        /// <param name="attributeLists"></param>
-        /// <returns></returns>
-        [Obsolete("This method is obsolete.")]
-        public static ClassDeclarationSyntax AddAttributeLists(
-            this ClassDeclarationSyntax classDeclaration,
-            bool keepDocumentationCommentOnTop,
-            params AttributeListSyntax[] attributeLists)
-        {
-            return SyntaxRefactorings.AddAttributeLists(
-                classDeclaration,
-                keepDocumentationCommentOnTop,
-                attributeLists);
-        }
         #endregion ClassDeclarationSyntax
 
         #region CommonForEachStatementSyntax
@@ -1067,25 +1048,6 @@ namespace Roslynator.CSharp
                 throw new ArgumentNullException(nameof(interfaceDeclaration));
 
             return interfaceDeclaration.WithMembers(List(members));
-        }
-
-        /// <summary>
-        /// Creates a new interface declaration with the specified attribute lists added.
-        /// </summary>
-        /// <param name="interfaceDeclaration"></param>
-        /// <param name="keepDocumentationCommentOnTop">If the declaration has no attribute lists and has a documentation comment the specified attribute lists will be inserted after the documentation comment.</param>
-        /// <param name="attributeLists"></param>
-        /// <returns></returns>
-        [Obsolete("This method is obsolete.")]
-        public static InterfaceDeclarationSyntax AddAttributeLists(
-            this InterfaceDeclarationSyntax interfaceDeclaration,
-            bool keepDocumentationCommentOnTop,
-            params AttributeListSyntax[] attributeLists)
-        {
-            return SyntaxRefactorings.AddAttributeLists(
-                interfaceDeclaration,
-                keepDocumentationCommentOnTop,
-                attributeLists);
         }
         #endregion InterfaceDeclarationSyntax
 
@@ -1997,25 +1959,6 @@ namespace Roslynator.CSharp
             return TextSpan.FromBounds(
                 structDeclaration.OpenBraceToken.SpanStart,
                 structDeclaration.CloseBraceToken.Span.End);
-        }
-
-        /// <summary>
-        /// Creates a new struct declaration with the specified attribute lists added.
-        /// </summary>
-        /// <param name="structDeclaration"></param>
-        /// <param name="keepDocumentationCommentOnTop">If the declaration has no attribute lists and has a documentation comment the specified attribute lists will be inserted after the documentation comment.</param>
-        /// <param name="attributeLists"></param>
-        /// <returns></returns>
-        [Obsolete("This method is obsolete.")]
-        public static StructDeclarationSyntax AddAttributeLists(
-            this StructDeclarationSyntax structDeclaration,
-            bool keepDocumentationCommentOnTop,
-            params AttributeListSyntax[] attributeLists)
-        {
-            return SyntaxRefactorings.AddAttributeLists(
-                structDeclaration,
-                keepDocumentationCommentOnTop,
-                attributeLists);
         }
         #endregion StructDeclarationSyntax
 
