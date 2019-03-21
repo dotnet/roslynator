@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0085PromoteLocalToParameterTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0085PromoteLocalToParameterTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.PromoteLocalToParameter;
 

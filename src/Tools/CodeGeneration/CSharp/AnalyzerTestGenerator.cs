@@ -30,7 +30,7 @@ using Xunit;
 namespace Roslynator.CSharp.Analysis.Tests
 {
     //TODO: Add tests for $Id$
-    public class $ClassName$ : AbstractCSharpCodeFixVerifier
+    public class $ClassName$ : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.$Identifier$;
 

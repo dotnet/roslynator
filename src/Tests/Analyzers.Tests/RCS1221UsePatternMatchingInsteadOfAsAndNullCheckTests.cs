@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1221UsePatternMatchingInsteadOfAsAndNullCheckTests : AbstractCSharpCodeFixVerifier
+    public class RCS1221UsePatternMatchingInsteadOfAsAndNullCheckTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UsePatternMatchingInsteadOfAsAndNullCheck;
 

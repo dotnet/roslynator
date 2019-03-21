@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1096UseBitwiseOperationInsteadOfCallingHasFlagTests : AbstractCSharpCodeFixVerifier
+    public class RCS1096UseBitwiseOperationInsteadOfCallingHasFlagTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseBitwiseOperationInsteadOfCallingHasFlag;
 

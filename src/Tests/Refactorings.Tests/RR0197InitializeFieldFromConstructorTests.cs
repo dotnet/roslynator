@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0197InitializeFieldFromConstructorTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0197InitializeFieldFromConstructorTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.InitializeFieldFromConstructor;
 

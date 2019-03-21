@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1154SortEnumMembersTests : AbstractCSharpCodeFixVerifier
+    public class RCS1154SortEnumMembersTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SortEnumMembers;
 

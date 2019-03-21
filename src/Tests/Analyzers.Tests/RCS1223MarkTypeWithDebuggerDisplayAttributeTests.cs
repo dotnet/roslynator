@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpCodeFixVerifier
+    public class RCS1223MarkTypeWithDebuggerDisplayAttributeTests : AbstractCSharpFixVerifier
     {
         private readonly CodeVerificationOptions _options;
 

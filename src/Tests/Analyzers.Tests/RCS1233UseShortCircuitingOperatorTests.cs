@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1233UseShortCircuitingOperatorTests : AbstractCSharpCodeFixVerifier
+    public class RCS1233UseShortCircuitingOperatorTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseShortCircuitingOperator;
 

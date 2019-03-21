@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1183FormatInitializerWithSingleExpressionOnSingleLineTests : AbstractCSharpCodeFixVerifier
+    public class RCS1183FormatInitializerWithSingleExpressionOnSingleLineTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.FormatInitializerWithSingleExpressionOnSingleLine;
 

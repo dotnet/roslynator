@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0207SortCaseLabelsTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0207SortCaseLabelsTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.SortCaseLabels;
 

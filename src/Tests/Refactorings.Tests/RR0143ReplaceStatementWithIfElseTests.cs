@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0143ReplaceStatementWithIfElseTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0143ReplaceStatementWithIfElseTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceStatementWithIfElse;
 

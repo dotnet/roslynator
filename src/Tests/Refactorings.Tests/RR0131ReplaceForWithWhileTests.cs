@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0131ReplaceForWithWhileTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0131ReplaceForWithWhileTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceForWithWhile;
 

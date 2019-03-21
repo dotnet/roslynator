@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1016UseExpressionBodiedMemberTests : AbstractCSharpCodeFixVerifier
+    public class RCS1016UseExpressionBodiedMemberTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseExpressionBodiedMember;
 

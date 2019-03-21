@@ -10,7 +10,7 @@ using Roslynator.CSharp.Analysis.UnusedMember;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1213RemoveUnusedMemberDeclarationTests : AbstractCSharpCodeFixVerifier
+    public class RCS1213RemoveUnusedMemberDeclarationTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveUnusedMemberDeclaration;
 

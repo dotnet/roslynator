@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0208AddTagToDocumentationCommentTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0208AddTagToDocumentationCommentTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.AddTagToDocumentationComment;
 

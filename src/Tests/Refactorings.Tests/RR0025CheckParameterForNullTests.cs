@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0025CheckParameterForNullTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0025CheckParameterForNullTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.CheckParameterForNull;
 

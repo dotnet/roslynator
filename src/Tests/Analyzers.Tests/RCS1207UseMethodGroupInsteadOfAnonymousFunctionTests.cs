@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1207UseMethodGroupInsteadOfAnonymousFunctionTests : AbstractCSharpCodeFixVerifier
+    public class RCS1207UseMethodGroupInsteadOfAnonymousFunctionTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseMethodGroupInsteadOfAnonymousFunction;
 

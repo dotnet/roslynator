@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0062InlineMethodTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0062InlineMethodTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.InlineMethod;
 

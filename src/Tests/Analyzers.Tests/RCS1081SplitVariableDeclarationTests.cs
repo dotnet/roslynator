@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1081SplitVariableDeclarationTests : AbstractCSharpCodeFixVerifier
+    public class RCS1081SplitVariableDeclarationTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SplitVariableDeclaration;
 

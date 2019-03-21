@@ -11,7 +11,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1124InlineLocalVariableTests : AbstractCSharpCodeFixVerifier
+    public class RCS1124InlineLocalVariableTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.InlineLocalVariable;
 

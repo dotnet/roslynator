@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1187UseConstantInsteadOfFieldTests : AbstractCSharpCodeFixVerifier
+    public class RCS1187UseConstantInsteadOfFieldTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseConstantInsteadOfField;
 

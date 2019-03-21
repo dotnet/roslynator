@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1194ImplementExceptionConstructorsTests : AbstractCSharpCodeFixVerifier
+    public class RCS1194ImplementExceptionConstructorsTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ImplementExceptionConstructors;
 

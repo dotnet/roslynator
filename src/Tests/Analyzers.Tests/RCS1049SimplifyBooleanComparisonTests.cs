@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1049SimplifyBooleanComparisonTests : AbstractCSharpCodeFixVerifier
+    public class RCS1049SimplifyBooleanComparisonTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyBooleanComparison;
 

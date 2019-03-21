@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1157CompositeEnumValueContainsUndefinedFlagTests : AbstractCSharpCodeFixVerifier
+    public class RCS1157CompositeEnumValueContainsUndefinedFlagTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag;
 

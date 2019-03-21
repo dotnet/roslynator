@@ -4,7 +4,7 @@ using Roslynator.Tests;
 
 namespace Roslynator.VisualBasic.Tests
 {
-    public abstract class VisualBasicCodeRefactoringVerifier : RefactoringVerifier
+    public abstract class VisualBasicRefactoringVerifier : RefactoringVerifier
     {
         public override CodeVerificationOptions Options => VisualBasicCodeVerificationOptions.Default;
 

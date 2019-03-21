@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1077OptimizeLinqMethodCallTests : AbstractCSharpCodeFixVerifier
+    public class RCS1077OptimizeLinqMethodCallTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.OptimizeLinqMethodCall;
 

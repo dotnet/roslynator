@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1198AvoidBoxingOfValueTypeTests : AbstractCSharpCodeFixVerifier
+    public class RCS1198AvoidBoxingOfValueTypeTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AvoidBoxingOfValueType;
 

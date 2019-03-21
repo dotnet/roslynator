@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1103ReplaceIfStatementWithAssignmentTests : AbstractCSharpCodeFixVerifier
+    public class RCS1103ReplaceIfStatementWithAssignmentTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ReplaceIfStatementWithAssignment;
 

@@ -27,7 +27,7 @@ using Xunit;
 namespace Roslynator.CSharp.Refactorings.Tests
 {
     //TODO: Add tests for $Id$
-    public class $ClassName$ : AbstractCSharpCodeRefactoringVerifier
+    public class $ClassName$ : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.$Identifier$;
 

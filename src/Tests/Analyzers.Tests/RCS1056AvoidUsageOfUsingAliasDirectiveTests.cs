@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1056AvoidUsageOfUsingAliasDirectiveTests : AbstractCSharpCodeFixVerifier
+    public class RCS1056AvoidUsageOfUsingAliasDirectiveTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AvoidUsageOfUsingAliasDirective;
 

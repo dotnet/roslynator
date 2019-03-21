@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1202AvoidNullReferenceExceptionTests2 : AbstractCSharpCodeFixVerifier
+    public class RCS1202AvoidNullReferenceExceptionTests2 : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AvoidNullReferenceException;
 

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1076FormatDeclarationBracesTests : AbstractCSharpCodeFixVerifier
+    public class RCS1076FormatDeclarationBracesTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.FormatDeclarationBraces;
 

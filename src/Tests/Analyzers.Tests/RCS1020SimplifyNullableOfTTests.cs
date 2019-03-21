@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1020SimplifyNullableOfTTests : AbstractCSharpCodeFixVerifier
+    public class RCS1020SimplifyNullableOfTTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.SimplifyNullableOfT;
 

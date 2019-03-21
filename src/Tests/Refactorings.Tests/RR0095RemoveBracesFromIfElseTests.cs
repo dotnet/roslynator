@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0095RemoveBracesFromIfElseTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0095RemoveBracesFromIfElseTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveBracesFromIfElse;
 
