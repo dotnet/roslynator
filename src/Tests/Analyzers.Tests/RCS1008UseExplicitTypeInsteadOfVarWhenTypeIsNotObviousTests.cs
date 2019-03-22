@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1008UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousTests : AbstractCSharpCodeFixVerifier
+    public class RCS1008UseExplicitTypeInsteadOfVarWhenTypeIsNotObviousTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseExplicitTypeInsteadOfVarWhenTypeIsNotObvious;
 

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1128UseCoalesceExpressionTests : AbstractCSharpCodeFixVerifier
+    public class RCS1128UseCoalesceExpressionTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseCoalesceExpression;
 

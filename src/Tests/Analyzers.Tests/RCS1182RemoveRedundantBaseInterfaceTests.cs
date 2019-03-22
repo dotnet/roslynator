@@ -10,7 +10,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1182RemoveRedundantBaseInterfaceTests : AbstractCSharpCodeFixVerifier
+    public class RCS1182RemoveRedundantBaseInterfaceTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantBaseInterface;
 

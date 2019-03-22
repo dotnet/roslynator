@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0022ChangeTypeAccordingToExpressionTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0022ChangeTypeAccordingToExpressionTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeTypeAccordingToExpression;
 

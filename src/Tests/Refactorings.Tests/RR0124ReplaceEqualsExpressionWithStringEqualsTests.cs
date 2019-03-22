@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0124ReplaceEqualsExpressionWithStringEqualsTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0124ReplaceEqualsExpressionWithStringEqualsTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceEqualsExpressionWithStringEquals;
 

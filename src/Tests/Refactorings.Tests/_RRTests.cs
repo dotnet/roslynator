@@ -7,16 +7,9 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RRTests : AbstractCSharpCodeRefactoringVerifier
+    public class RRTests : AbstractCSharpRefactoringVerifier
     {
-        public RRTests()
-        {
-            Options = base.Options;
-        }
-
         public override string RefactoringId { get; } = RefactoringIdentifiers.AddBraces;
-
-        public override CodeVerificationOptions Options { get; }
 
         //[Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.AddBraces)]
         public async Task Test()

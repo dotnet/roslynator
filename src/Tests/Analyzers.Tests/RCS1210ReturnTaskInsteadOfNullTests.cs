@@ -10,7 +10,7 @@ using Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1210ReturnTaskInsteadOfNullTests : AbstractCSharpCodeFixVerifier
+    public class RCS1210ReturnTaskInsteadOfNullTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ReturnTaskInsteadOfNull;
 

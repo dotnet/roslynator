@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0059AddMissingCasesTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0059AddMissingCasesTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.AddMissingCases;
 

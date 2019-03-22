@@ -10,20 +10,13 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCSTests : AbstractCSharpCodeFixVerifier
+    public class RCSTests : AbstractCSharpFixVerifier
     {
-        public RCSTests()
-        {
-            Options = base.Options;
-        }
-
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddBracesWhenExpressionSpansOverMultipleLines;
 
         public override DiagnosticAnalyzer Analyzer { get; }
 
         public override CodeFixProvider FixProvider { get; }
-
-        public override CodeVerificationOptions Options { get; }
 
         //[Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AddBracesWhenExpressionSpansOverMultipleLines)]
         public async Task Test()

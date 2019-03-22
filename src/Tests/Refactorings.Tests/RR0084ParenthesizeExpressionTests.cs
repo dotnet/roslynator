@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0084ParenthesizeExpressionTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0084ParenthesizeExpressionTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ParenthesizeExpression;
 

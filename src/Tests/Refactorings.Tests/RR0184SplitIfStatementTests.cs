@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0184SplitIfStatementTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0184SplitIfStatementTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.SplitIfStatement;
 

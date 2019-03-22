@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1231MakeParameterRefReadOnlyTests : AbstractCSharpCodeFixVerifier
+    public class RCS1231MakeParameterRefReadOnlyTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.MakeParameterRefReadOnly;
 

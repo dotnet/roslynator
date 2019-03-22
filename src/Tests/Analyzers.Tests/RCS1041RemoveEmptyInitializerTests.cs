@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1041RemoveEmptyInitializerTests : AbstractCSharpCodeFixVerifier
+    public class RCS1041RemoveEmptyInitializerTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveEmptyInitializer;
 

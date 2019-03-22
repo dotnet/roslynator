@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1123AddParenthesesAccordingToOperatorPrecedenceTests : AbstractCSharpCodeFixVerifier
+    public class RCS1123AddParenthesesAccordingToOperatorPrecedenceTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AddParenthesesAccordingToOperatorPrecedence;
 

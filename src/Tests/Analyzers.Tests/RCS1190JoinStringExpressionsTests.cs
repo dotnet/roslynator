@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1190JoinStringExpressionsTests : AbstractCSharpCodeFixVerifier
+    public class RCS1190JoinStringExpressionsTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.JoinStringExpressions;
 

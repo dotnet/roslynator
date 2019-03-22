@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0044ExtractGenericTypeTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0044ExtractGenericTypeTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ExtractGenericType;
 

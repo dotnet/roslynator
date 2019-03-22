@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1230UnnecessaryUsageOfEnumeratorTests : AbstractCSharpCodeFixVerifier
+    public class RCS1230UnnecessaryUsageOfEnumeratorTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UnnecessaryUsageOfEnumerator;
 

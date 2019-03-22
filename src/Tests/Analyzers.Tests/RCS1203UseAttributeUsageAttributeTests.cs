@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1203UseAttributeUsageAttributeTests : AbstractCSharpCodeFixVerifier
+    public class RCS1203UseAttributeUsageAttributeTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseAttributeUsageAttribute;
 

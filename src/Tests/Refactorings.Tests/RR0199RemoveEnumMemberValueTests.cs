@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0199RemoveEnumMemberValueTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0199RemoveEnumMemberValueTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.RemoveEnumMemberValue;
 

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1107RemoveRedundantStringToCharArrayCallTests : AbstractCSharpCodeFixVerifier
+    public class RCS1107RemoveRedundantStringToCharArrayCallTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantStringToCharArrayCall;
 

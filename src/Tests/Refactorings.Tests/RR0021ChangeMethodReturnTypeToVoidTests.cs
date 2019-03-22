@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0021ChangeMethodReturnTypeToVoidTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0021ChangeMethodReturnTypeToVoidTests : AbstractCSharpRefactoringVerifier
     {
         private readonly CodeVerificationOptions _options;
 

@@ -9,16 +9,9 @@ namespace Roslynator.CSharp.CodeFixes.Tests
 {
     public class CSTests : AbstractCSharpCompilerDiagnosticFixVerifier
     {
-        public CSTests()
-        {
-            Options = base.Options;
-        }
-
         public override string DiagnosticId { get; } = CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands;
 
         public override CodeFixProvider FixProvider { get; }
-
-        public override CodeVerificationOptions Options { get; }
 
         //[Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.OperatorCannotBeAppliedToOperands)]
         public async Task Test()

@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1085UseAutoPropertyTests : AbstractCSharpCodeFixVerifier
+    public class RCS1085UseAutoPropertyTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseAutoProperty;
 

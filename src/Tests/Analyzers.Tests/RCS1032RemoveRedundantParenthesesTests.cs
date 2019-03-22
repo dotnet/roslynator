@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1032RemoveRedundantParenthesesTests : AbstractCSharpCodeFixVerifier
+    public class RCS1032RemoveRedundantParenthesesTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.RemoveRedundantParentheses;
 

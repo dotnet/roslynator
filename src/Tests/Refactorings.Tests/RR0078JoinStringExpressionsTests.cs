@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0078JoinStringExpressionsTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0078JoinStringExpressionsTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.JoinStringExpressions;
 

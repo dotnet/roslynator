@@ -4,7 +4,7 @@ using Roslynator.Tests;
 
 namespace Roslynator.VisualBasic.Tests
 {
-    public abstract class VisualBasicCodeFixVerifier : FixVerifier
+    public abstract class VisualBasicFixVerifier : FixVerifier
     {
         public override CodeVerificationOptions Options => VisualBasicCodeVerificationOptions.Default;
 

@@ -7,7 +7,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0189InvertIfTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0189InvertIfTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.InvertIf;
 

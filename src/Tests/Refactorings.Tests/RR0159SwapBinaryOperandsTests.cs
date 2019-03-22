@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0159SwapBinaryOperandsTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0159SwapBinaryOperandsTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.SwapBinaryOperands;
 

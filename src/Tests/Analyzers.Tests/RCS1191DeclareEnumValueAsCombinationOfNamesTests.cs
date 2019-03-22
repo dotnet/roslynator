@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1191DeclareEnumValueAsCombinationOfNamesTests : AbstractCSharpCodeFixVerifier
+    public class RCS1191DeclareEnumValueAsCombinationOfNamesTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames;
 

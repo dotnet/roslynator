@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1014AvoidImplicitlyTypedArrayTests : AbstractCSharpCodeFixVerifier
+    public class RCS1014AvoidImplicitlyTypedArrayTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AvoidImplicitlyTypedArray;
 

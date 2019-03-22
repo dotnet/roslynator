@@ -5,7 +5,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0051FormatExpressionChainTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0051FormatExpressionChainTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.FormatExpressionChain;
 

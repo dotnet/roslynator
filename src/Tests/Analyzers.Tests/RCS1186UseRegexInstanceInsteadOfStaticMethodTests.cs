@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1186UseRegexInstanceInsteadOfStaticMethodTests : AbstractCSharpCodeFixVerifier
+    public class RCS1186UseRegexInstanceInsteadOfStaticMethodTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseRegexInstanceInsteadOfStaticMethod;
 

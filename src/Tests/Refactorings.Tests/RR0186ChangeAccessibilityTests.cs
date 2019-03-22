@@ -6,7 +6,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0186ChangeAccessibilityTests : AbstractCSharpCodeRefactoringVerifier
+    public class RR0186ChangeAccessibilityTests : AbstractCSharpRefactoringVerifier
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ChangeAccessibility;
 
