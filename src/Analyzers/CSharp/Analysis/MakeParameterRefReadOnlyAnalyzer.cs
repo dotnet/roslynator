@@ -84,6 +84,9 @@ namespace Roslynator.CSharp.Analysis
             ParameterListSyntax parameterList,
             CSharpSyntaxNode bodyOrExpressionBody)
         {
+            if (((CSharpCompilation)context.Compilation).LanguageVersion <= LanguageVersion.CSharp7_1)
+                return;
+
             if (parameterList == null)
                 return;
 

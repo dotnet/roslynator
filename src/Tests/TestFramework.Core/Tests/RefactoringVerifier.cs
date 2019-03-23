@@ -133,7 +133,7 @@ namespace Roslynator.Tests
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution);
+                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
 
                 Document document = WorkspaceFactory.AddDocument(project, source, additionalSources ?? Array.Empty<string>());
 
@@ -224,7 +224,7 @@ namespace Roslynator.Tests
 
             using (Workspace workspace = new AdhocWorkspace())
             {
-                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution);
+                Project project = WorkspaceFactory.AddProject(workspace.CurrentSolution, options);
 
                 Document document = WorkspaceFactory.AddDocument(project, source);
 
