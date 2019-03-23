@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.VisualBasic;
 using Roslynator.Tests;
 
 namespace Roslynator.VisualBasic.Tests
@@ -13,10 +14,14 @@ namespace Roslynator.VisualBasic.Tests
             bool allowNewCompilerDiagnostics = false,
             bool enableDiagnosticsDisabledByDefault = true,
             DiagnosticSeverity maxAllowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
-            IEnumerable<string> allowedCompilerDiagnosticIds = null)
+            IEnumerable<string> allowedCompilerDiagnosticIds = null,
+            LanguageVersion languageVersion = LanguageVersion.Latest)
             : base(allowNewCompilerDiagnostics, enableDiagnosticsDisabledByDefault, maxAllowedCompilerDiagnosticSeverity, allowedCompilerDiagnosticIds)
         {
+            LanguageVersion = languageVersion;
         }
+
+        public LanguageVersion LanguageVersion { get; }
 
         //TODO: Allowed compiler diagnostic IDs for Visual Basic
         public static VisualBasicCodeVerificationOptions Default { get; } = new VisualBasicCodeVerificationOptions();
@@ -40,7 +45,18 @@ namespace Roslynator.VisualBasic.Tests
                 allowNewCompilerDiagnostics: AllowNewCompilerDiagnostics,
                 enableDiagnosticsDisabledByDefault: EnableDiagnosticsDisabledByDefault,
                 maxAllowedCompilerDiagnosticSeverity: MaxAllowedCompilerDiagnosticSeverity,
-                allowedCompilerDiagnosticIds: allowedCompilerDiagnosticIds);
+                allowedCompilerDiagnosticIds: allowedCompilerDiagnosticIds,
+                languageVersion: LanguageVersion);
+        }
+
+        public VisualBasicCodeVerificationOptions WithLanguageOptions(LanguageVersion languageVersion)
+        {
+            return new VisualBasicCodeVerificationOptions(
+                allowNewCompilerDiagnostics: AllowNewCompilerDiagnostics,
+                enableDiagnosticsDisabledByDefault: EnableDiagnosticsDisabledByDefault,
+                maxAllowedCompilerDiagnosticSeverity: MaxAllowedCompilerDiagnosticSeverity,
+                allowedCompilerDiagnosticIds: AllowedCompilerDiagnosticIds,
+                languageVersion: languageVersion);
         }
     }
 }

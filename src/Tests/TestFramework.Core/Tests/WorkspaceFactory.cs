@@ -16,7 +16,7 @@ namespace Roslynator.Tests
 
         public virtual string DefaultProjectName => "TestProject";
 
-        public virtual Project AddProject(Solution solution)
+        public virtual Project AddProject(Solution solution, CodeVerificationOptions options = null)
         {
             return solution
                 .AddProject(DefaultProjectName, DefaultProjectName, Language)

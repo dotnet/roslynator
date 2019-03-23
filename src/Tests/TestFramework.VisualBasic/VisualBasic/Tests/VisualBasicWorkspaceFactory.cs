@@ -14,9 +14,9 @@ namespace Roslynator.VisualBasic.Tests
 
         public override string DefaultDocumentName => "Test.vb";
 
-        public override Project AddProject(Solution solution)
+        public override Project AddProject(Solution solution, CodeVerificationOptions options = null)
         {
-            Project project = base.AddProject(solution);
+            Project project = base.AddProject(solution, options);
 
             var compilationOptions = (VisualBasicCompilationOptions)project.CompilationOptions;
 
@@ -25,8 +25,12 @@ namespace Roslynator.VisualBasic.Tests
 
             var parseOptions = (VisualBasicParseOptions)project.ParseOptions;
 
+            VisualBasicCodeVerificationOptions visualBasicOptions = (options != null)
+                ? ((VisualBasicCodeVerificationOptions)options)
+                : VisualBasicCodeVerificationOptions.Default;
+
             VisualBasicParseOptions newParseOptions = parseOptions
-                .WithLanguageVersion(LanguageVersion.Latest);
+                .WithLanguageVersion(visualBasicOptions.LanguageVersion);
 
             return project
                 .WithCompilationOptions(newCompilationOptions)

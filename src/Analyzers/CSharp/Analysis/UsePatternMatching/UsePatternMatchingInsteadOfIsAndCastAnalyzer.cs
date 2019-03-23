@@ -31,6 +31,9 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
         public static void AnalyzeIsExpression(SyntaxNodeAnalysisContext context)
         {
+            if (((CSharpCompilation)context.Compilation).LanguageVersion <= LanguageVersion.CSharp7)
+                return;
+
             var isExpression = (BinaryExpressionSyntax)context.Node;
 
             IsExpressionInfo isExpressionInfo = SyntaxInfo.IsExpressionInfo(isExpression);
