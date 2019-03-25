@@ -11,7 +11,7 @@
     <AssemblyName>Roslynator.Tests.TestConsole</AssemblyName>
     <RootNamespace>Roslynator.Tests.TestConsole</RootNamespace>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Tests.TestConsole.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

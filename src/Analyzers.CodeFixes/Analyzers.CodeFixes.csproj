@@ -10,7 +10,7 @@
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Analyzers.CodeFixes.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.2</LangVersion>
     <NuspecFile>Roslynator.Analyzers.nuspec</NuspecFile> 
     <NuspecProperties>configuration=$(Configuration)</NuspecProperties>

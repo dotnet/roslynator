@@ -9,7 +9,7 @@
     <RootNamespace>Roslynator.CSharp.Workspaces.Tests</RootNamespace>
     <CodeAnalysisRuleSet>..\tests.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>CSharp.Workspaces.Tests.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>
     <IsPackable>false</IsPackable>
     <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
