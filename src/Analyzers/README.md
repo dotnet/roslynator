@@ -209,7 +209,7 @@
 | RCS1228 | [Unused element in documentation comment](../../docs/analyzers/RCS1228.md) | Readability | Hidden |
 | RCS1229 | [Use async/await when necessary](../../docs/analyzers/RCS1229.md) | Usage | Info |
 | RCS1230 | [Unnecessary usage of enumerator](../../docs/analyzers/RCS1230.md) | Readability | Info |
-| RCS1231 | [Make parameter ref read-only](../../docs/analyzers/RCS1231.md) | Performance | Info |
+| RCS1231 | [Make parameter ref read-only](../../docs/analyzers/RCS1231.md) | Performance | None |
 | RCS1232 | [Order elements in documentation comment](../../docs/analyzers/RCS1232.md) | Readability | Info |
 | RCS1233 | [Use short-circuiting operator](../../docs/analyzers/RCS1233.md) | Usage | Info |
 | RCS1234 | [Duplicate enum value](../../docs/analyzers/RCS1234.md) | Readability | Info |

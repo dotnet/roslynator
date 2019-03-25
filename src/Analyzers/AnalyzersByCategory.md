@@ -59,7 +59,7 @@
 | Naming | [Rename private field according to camel case with underscore](../../docs/analyzers/RCS1045.md) | RCS1045 | None |
 | Performance | [Avoid unnecessary boxing of value type](../../docs/analyzers/RCS1198.md) | RCS1198 | None |
 | Performance | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | RCS1219 | None |
-| Performance | [Make parameter ref read-only](../../docs/analyzers/RCS1231.md) | RCS1231 | Info |
+| Performance | [Make parameter ref read-only](../../docs/analyzers/RCS1231.md) | RCS1231 | None |
 | Performance | [Optimize LINQ method call](../../docs/analyzers/RCS1077.md) | RCS1077 | Info |
 | Performance | [Optimize StringBuilder.Append/AppendLine call](../../docs/analyzers/RCS1197.md) | RCS1197 | Info |
 | Performance | [Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md) | RCS1096 | Info |
