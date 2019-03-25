@@ -17,7 +17,7 @@
     <copyright>Copyright (c) 2016-2018 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
-    <repository type="git" url="http://github.com/JosefPihrt/Roslynator.git" />
+    <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />
   </metadata>
   <files>
     <file src="bin\$Configuration$\netstandard1.3\Roslynator*.dll" target="analyzers\dotnet\cs" />
