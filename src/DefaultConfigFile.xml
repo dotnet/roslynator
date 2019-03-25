@@ -239,7 +239,7 @@
       <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddBody (fixes CS0501, CS0756, CS8112) -->
       <CodeFix Id="RCF0027" IsEnabled="true" /> <!-- RemoveRefModifier (fixes CS0192, CS1615, CS1988, CS1623) -->
       <CodeFix Id="RCF0028" IsEnabled="true" /> <!-- RemoveRedundantAssignment (fixes CS1717) -->
-      <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0261, CS0442, CS0507, CS0628, CS1057, CS1527) -->
+      <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0621, CS0442, CS0507, CS0628, CS1057, CS1527) -->
       <CodeFix Id="RCF0030" IsEnabled="true" /> <!-- ChangeTypeOfParamsParameter (fixes CS0225) -->
       <CodeFix Id="RCF0031" IsEnabled="true" /> <!-- UseUncheckedExpression (fixes CS0221) -->
       <CodeFix Id="RCF0032" IsEnabled="true" /> <!-- RemoveImplementationFromAbstractMember (fixes CS0069, CS0500, CS0531) -->
@@ -317,11 +317,13 @@
       <CodeFix Id="RCF0105" IsEnabled="true" /> <!-- RemoveBaseList (fixes CS0713, CS0714) -->
       <CodeFix Id="RCF0106" IsEnabled="true" /> <!-- AddDefaultValueToParameter (fixes CS1737) -->
       <CodeFix Id="RCF0107" IsEnabled="true" /> <!-- AddMissingComma (fixes CS1003) -->
-      <CodeFix Id="RCF0108" IsEnabled="true" /> <!-- RemoveParentheses (fixes CS0210) -->
+      <CodeFix Id="RCF0108" IsEnabled="true" /> <!-- RemoveParentheses (fixes CS0201) -->
       <CodeFix Id="RCF0109" IsEnabled="true" /> <!-- RemoveParameter (fixes CS0136) -->
       <CodeFix Id="RCF0110" IsEnabled="true" /> <!-- RenameTupleElement (fixes CS8139) -->
       <CodeFix Id="RCF0111" IsEnabled="true" /> <!-- ChangeParameterType (fixes CS1750) -->
       <CodeFix Id="RCF0112" IsEnabled="true" /> <!-- MarkDeclarationAsNonCLSCompliant (fixes CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027) -->
+      <CodeFix Id="RCF0113" IsEnabled="true" /> <!-- ReplaceCharacterLiteralWithStringLiteral (fixes CS1012) -->
+      <CodeFix Id="RCF0114" IsEnabled="true" /> <!-- MakeFieldWritable (fixes CS0191, CS0192) -->
     </CodeFixes>
   </Settings>
 </Roslynator>

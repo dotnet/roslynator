@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pihrtsoft")]
 [assembly: AssemblyProduct("Roslynator.VisualStudio")]
-[assembly: AssemblyCopyright("Copyright (c) 2016-2017 Josef Pihrt")]
+[assembly: AssemblyCopyright("Copyright (c) 2016-2019 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -31,6 +31,6 @@ using System.Runtime.InteropServices;
 //      Build Number
 //      Revision
 //
-[assembly: AssemblyVersion("2.0.2.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
 //[assembly: AssemblyFileVersion("1.0.0.0")]
 [assembly: NeutralResourcesLanguage("en-US")]

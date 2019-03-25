@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata minClientVersion="2.8">
     <id>Roslynator.Analyzers</id>
-    <version>2.0.0</version>
+    <version>2.1.0-rc</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
@@ -14,10 +14,10 @@
   - This package cannot be used with Visual Studio 2015.
   - This package is dependent on Microsoft.CodeAnalysis.CSharp.Workspaces 2.3.0.</description>
     <summary>A collection of 190+ analyzers for C#, powered by Roslyn.</summary>
-    <copyright>Copyright (c) 2016-2018 Josef Pihrt</copyright>
+    <copyright>Copyright (c) 2016-2019 Josef Pihrt</copyright>
     <tags>Roslyn Analyzer Refactoring Productivity CodeAnalysis C# CSharp</tags>
     <developmentDependency>true</developmentDependency>
-    <repository type="git" url="http://github.com/JosefPihrt/Roslynator.git" />
+    <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />
   </metadata>
   <files>
     <file src="bin\$Configuration$\netstandard1.3\Roslynator*.dll" target="analyzers\dotnet\cs" />

@@ -9,7 +9,7 @@
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\..\global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>TestFramework.Core.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 

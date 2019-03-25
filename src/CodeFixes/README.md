@@ -41,6 +41,7 @@
 | [CS0168](../../docs/cs/CS0168.md) | The variable 'var' is declared but never used\. |
 | [CS0173](../../docs/cs/CS0173.md) | Type of conditional expression cannot be determined because there is no implicit conversion between 'class1' and 'class2'\. |
 | [CS0177](../../docs/cs/CS0177.md) | The out parameter 'parameter' must be assigned to before control leaves the current method\. |
+| [CS0191](../../docs/cs/CS0191.md) | A readonly field cannot be assigned to \(except in a constructor or a variable initializer\)\. |
 | [CS0192](../../docs/cs/CS0192.md) | Readonly field 'name' cannot be used as ref or out value \(except in a constructor\)\. |
 | [CS0201](../../docs/cs/CS0201.md) | Only assignment, call, increment, decrement, and new object expressions can be used as a statement\. |
 | [CS0214](../../docs/cs/CS0214.md) | Pointers and fixed size buffers may only be used in an unsafe context\. |
@@ -112,6 +113,7 @@
 | [CS1002](../../docs/cs/CS1002.md) | ; expected\. |
 | [CS1003](../../docs/cs/CS1003.md) | Syntax error, 'char' expected\. |
 | [CS1004](../../docs/cs/CS1004.md) | Duplicate 'modifier' modifier\. |
+| [CS1012](../../docs/cs/CS1012.md) | Too many characters in character literal\. |
 | [CS1023](../../docs/cs/CS1023.md) | Embedded statement cannot be a declaration or labeled statement\. |
 | [CS1031](../../docs/cs/CS1031.md) | Type expected\. |
 | [CS1057](../../docs/cs/CS1057.md) | 'member': static classes cannot contain protected members\. |

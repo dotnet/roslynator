@@ -230,7 +230,7 @@
     <Rule Id="RCS1228" Action="Hidden" /> <!-- Unused element in documentation comment. -->
     <Rule Id="RCS1229" Action="Info" /> <!-- Use async/await when necessary. -->
     <Rule Id="RCS1230" Action="Info" /> <!-- Unnecessary usage of enumerator. -->
-    <Rule Id="RCS1231" Action="Info" /> <!-- Make parameter ref read-only. -->
+    <Rule Id="RCS1231" Action="None" /> <!-- Make parameter ref read-only. -->
     <Rule Id="RCS1232" Action="Info" /> <!-- Order elements in documentation comment. -->
     <Rule Id="RCS1233" Action="Info" /> <!-- Use short-circuiting operator. -->
     <Rule Id="RCS1234" Action="Info" /> <!-- Duplicate enum value. -->

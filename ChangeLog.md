@@ -1,3 +1,15 @@
+### 2.1.0 (2019-03-25)
+
+* Export/import Visual Studio options.
+
+#### Analyzers
+
+* Disable analyzer [MakeParameterRefReadOnly](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1231.md) by default.
+
+#### Code Fixes
+
+* Add code fixes for CS0191, CS0192, CS1012.
+
 ### 2.0.2 (2019-01-06)
 
 * First release of Roslynator 2019 (for Visual Studio 2019)

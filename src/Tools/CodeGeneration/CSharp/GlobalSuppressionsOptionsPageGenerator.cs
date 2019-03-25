@@ -33,7 +33,7 @@ namespace Roslynator.CodeGeneration.CSharp
                 PredefinedStringType(),
                 Identifier("MaxId"),
                 AccessorList(AutoGetAccessorDeclaration()),
-                ParseExpression($"DiagnosticIdentifiers.{analyzers.OrderBy(f => f.Id, comparer).Last().Identifier}"));
+                ParseExpression($"\"{analyzers.OrderBy(f => f.Id, comparer).Last().Id}\""));
 
             yield return MethodDeclaration(
                 Modifiers.Protected_Override(),
@@ -47,7 +47,7 @@ namespace Roslynator.CodeGeneration.CSharp
                             .Select(analyzer =>
                             {
                                 return ExpressionStatement(
-                                    ParseExpression($"analyzers.Add(new BaseModel(DiagnosticIdentifiers.{analyzer.Identifier}, \"{StringUtility.EscapeQuote(analyzer.Title)}\", !IsEnabled(DiagnosticIdentifiers.{analyzer.Identifier})))"));
+                                    ParseExpression($"analyzers.Add(new BaseModel(\"{analyzer.Id}\", \"{StringUtility.EscapeQuote(analyzer.Title)}\", !IsEnabled(\"{analyzer.Id}\")))"));
                             }))));
         }
     }

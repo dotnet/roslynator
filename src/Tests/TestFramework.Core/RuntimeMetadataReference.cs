@@ -3,6 +3,7 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
@@ -12,6 +13,34 @@ namespace Roslynator
         internal static readonly MetadataReference CorLibReference = MetadataReference.CreateFromFile(typeof(object).Assembly.Location);
 
         private static readonly ImmutableDictionary<string, string> _assemblyMap = GetTrustedPlatformAssemblies();
+        private static ImmutableArray<MetadataReference> _defaultProjectReferences;
+
+        internal static ImmutableArray<MetadataReference> DefaultProjectReferences
+        {
+            get
+            {
+                if (_defaultProjectReferences.IsDefault)
+                    ImmutableInterlocked.InterlockedInitialize(ref _defaultProjectReferences, Create());
+
+                return _defaultProjectReferences;
+
+                ImmutableArray<MetadataReference> Create()
+                {
+                    return ImmutableArray.Create(
+                        CorLibReference,
+                        CreateFromAssemblyName("System.Core.dll"),
+                        CreateFromAssemblyName("System.Linq.dll"),
+                        CreateFromAssemblyName("System.Linq.Expressions.dll"),
+                        CreateFromAssemblyName("System.Runtime.Serialization.Formatters.dll"),
+                        CreateFromAssemblyName("System.Runtime.dll"),
+                        CreateFromAssemblyName("System.Collections.dll"),
+                        CreateFromAssemblyName("System.Collections.Immutable.dll"),
+                        CreateFromAssemblyName("System.Text.RegularExpressions.dll"),
+                        CreateFromAssemblyName("Microsoft.CodeAnalysis.dll"),
+                        CreateFromAssemblyName("Microsoft.CodeAnalysis.CSharp.dll"));
+                }
+            }
+        }
 
         private static ImmutableDictionary<string, string> GetTrustedPlatformAssemblies()
         {

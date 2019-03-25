@@ -5,13 +5,13 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.1.0.1</Version>
+    <Version>0.1.0.2</Version>
     <AssemblyName>Roslynator.Documentation</AssemblyName>
     <RootNamespace>Roslynator.Documentation</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
     <LangVersion>latest</LangVersion>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Documentation.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
 
   <ItemGroup>

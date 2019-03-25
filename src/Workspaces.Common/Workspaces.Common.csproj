@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>2.0.2.0</Version>
+    <Version>2.1.0.0</Version>
     <AssemblyName>Roslynator.Workspaces.Common</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Workspaces.Common.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.2</LangVersion>
   </PropertyGroup>
 

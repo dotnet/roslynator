@@ -5,12 +5,12 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>2.0.2.0</Version>
+    <Version>2.1.0.0</Version>
     <AssemblyName>Roslynator.CSharp.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
     <SignAssembly>true</SignAssembly>
-    <AssemblyOriginatorKeyFile>Analyzers.CodeFixes.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
     <LangVersion>7.2</LangVersion>
     <NuspecFile>Roslynator.Analyzers.nuspec</NuspecFile> 
     <NuspecProperties>configuration=$(Configuration)</NuspecProperties>

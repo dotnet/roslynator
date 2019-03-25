@@ -18,7 +18,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>VisualStudio.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -70,7 +70,6 @@
     <None Include="app.config" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
-    <None Include="VisualStudio.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>

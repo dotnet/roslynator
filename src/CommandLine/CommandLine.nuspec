@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Roslynator.CommandLine</id>
-    <version>0.1.0-beta2</version>
+    <version>0.1.0-rc</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <licenseUrl>https://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Command line tool for Roslynator</description>
     <summary>Command line tool for Roslynator</summary>
-    <copyright>Copyright (c) 2017-2018 Josef Pihrt</copyright>
+    <copyright>Copyright (c) 2017-2019 Josef Pihrt</copyright>
     <tags>CLI Roslyn C# CSharp VB VisualBasic</tags>
     <developmentDependency>true</developmentDependency>
     <repository type="git" url="https://github.com/JosefPihrt/Roslynator.git" />

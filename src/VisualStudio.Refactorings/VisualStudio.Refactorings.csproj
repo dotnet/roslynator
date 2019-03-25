@@ -18,7 +18,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>VisualStudio.Refactorings.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -70,7 +70,6 @@
     <None Include="app.config" />
     <None Include="manifest.json" />
     <None Include="packages.config" />
-    <None Include="VisualStudio.Refactorings.snk" />
     <None Include="source.extension.vsixmanifest">
       <SubType>Designer</SubType>
     </None>
@@ -91,6 +90,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj">
+      <Project>{59c3841c-df61-493b-88af-477357698477}</Project>
+      <Name>Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Workspaces.Common\Workspaces.Common.csproj">
       <Project>{d6b3faf2-c92d-4b2d-82df-d6b3dd7f4107}</Project>
       <Name>Workspaces.Common</Name>
@@ -120,6 +123,10 @@
     <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj">
       <Project>{56da29a3-c179-471c-9941-42426eeb84d0}</Project>
       <Name>CSharp.Workspaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj">
+      <Project>{4fd3d777-11fc-4ff9-985b-2756e39f7ad7}</Project>
+      <Name>Workspaces.Core</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

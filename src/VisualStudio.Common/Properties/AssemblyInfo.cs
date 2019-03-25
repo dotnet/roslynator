@@ -7,12 +7,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Roslynator.VisualStudio.Core")]
+[assembly: AssemblyTitle("Roslynator.VisualStudio.Common")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pihrtsoft")]
-[assembly: AssemblyProduct("Roslynator.VisualStudio.Core")]
-[assembly: AssemblyCopyright("Copyright (c) 2016-2017 Josef Pihrt")]
+[assembly: AssemblyProduct("Roslynator.VisualStudio.Common")]
+[assembly: AssemblyCopyright("Copyright (c) 2016-2019 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -24,8 +24,8 @@ using System.Runtime.InteropServices;
 // The following GUID is for the ID of the typelib if this project is exposed to COM
 [assembly: Guid("4ad2a192-847e-4942-8a72-d99c5602d5a7")]
 
-[assembly: InternalsVisibleTo("Roslynator.VisualStudio, PublicKey=002400000480000094000000060200000024000052534131000400000100010049b46f501cfd620281084cad58c70bfeff5ae2b2a341774f94c56f3184ba9d52a47f3de211de98ce5e7d6986b81e2a373bbe622ad3f3f1d175bf6d582191fccb43b361701c35ec5fa917ce151f271be3027cd76d9c94c08e9c73f7f0887eff31e0c9370ed0689edb906fa494c2a43ec22d330f473f6e33018ed821d1ab5333b9")]
-[assembly: InternalsVisibleTo("Roslynator.VisualStudio.Refactorings, PublicKey=00240000048000009400000006020000002400005253413100040000010001009fd9b32c91985e6a72b452d0e396f63c6dfbe1a2d9d2f9f97ee2a9ec85386ba835ced804004d15950125a423dedeecae5676dc22d56963d8176e558d1055e4761daaa2a7b8bf0703069ee212516277db9346629dd87f56da3aef0360740c19ec1274e8d86e745d55146d251aa2e43c42eea156ced86b47a1c043cf1c607050ef")]
+[assembly: InternalsVisibleTo("Roslynator.VisualStudio, PublicKey=0024000004800000940000000602000000240000525341310004000001000100210d5b6f3c65a00eae9029987a6d96e933ad41e84f0f447947051509fef1e08dab5e32e0beb94d592ab6973d9b282e5ed4249cf4fb450021108d737135980252e825a9ee61318dd72550baf9171c9743e646541dbac74bc99e8506343ef87b25b6b93572ed764cdb83ed5b32b91946965a2897b1355d6188e788546ed0b285a2")]
+[assembly: InternalsVisibleTo("Roslynator.VisualStudio.Refactorings, PublicKey=0024000004800000940000000602000000240000525341310004000001000100210d5b6f3c65a00eae9029987a6d96e933ad41e84f0f447947051509fef1e08dab5e32e0beb94d592ab6973d9b282e5ed4249cf4fb450021108d737135980252e825a9ee61318dd72550baf9171c9743e646541dbac74bc99e8506343ef87b25b6b93572ed764cdb83ed5b32b91946965a2897b1355d6188e788546ed0b285a2")]
 
 // Version information for an assembly consists of the following four values:
 //
@@ -36,5 +36,5 @@ using System.Runtime.InteropServices;
 //
 // You can specify all the values or you can default the Build and Revision Numbers 
 // by using the '*' as shown below:
-[assembly: AssemblyVersion("2.0.2.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
 //[assembly: AssemblyFileVersion("1.0.0.0")]

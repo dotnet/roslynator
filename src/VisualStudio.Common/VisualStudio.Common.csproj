@@ -36,7 +36,7 @@
     <SignAssembly>true</SignAssembly>
   </PropertyGroup>
   <PropertyGroup>
-    <AssemblyOriginatorKeyFile>VisualStudio.Common.snk</AssemblyOriginatorKeyFile>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="EnvDTE, Version=8.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
@@ -263,13 +263,8 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
-    <None Include="VisualStudio.Common.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Analyzers\Analyzers.csproj">
-      <Project>{2F2B32B2-31D8-4D52-A05F-0D909BD07EBE}</Project>
-      <Name>Analyzers</Name>
-    </ProjectReference>
     <ProjectReference Include="..\CodeFixes\CodeFixes.csproj">
       <Project>{9C9EF15B-2CB0-485E-BB48-90F670F6A3D8}</Project>
       <Name>CodeFixes</Name>
