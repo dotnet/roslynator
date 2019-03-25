@@ -12,7 +12,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Pihrtsoft")]
 [assembly: AssemblyProduct("VisualStudio.Refactorings")]
-[assembly: AssemblyCopyright("Copyright (c) 2016-2017 Josef Pihrt")]
+[assembly: AssemblyCopyright("Copyright (c) 2016-2019 Josef Pihrt")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
