@@ -189,5 +189,35 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        public async Task TestNoDiagnostic_NoParameters()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<string> M()
+    {
+        string s = null;
+        yield return s;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        public async Task TestNoDiagnostic_NoMethodBody()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+
+abstract class C
+{
+    protected abstract IEnumerable<string> M();
+}
+");
+        }
     }
 }
