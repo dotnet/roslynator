@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ExpressionSyntax newNode = invocationExpression.Expression;
 
-            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             var methodSymbol = (IMethodSymbol)semanticModel.GetSymbol(invocationExpression, cancellationToken);
 

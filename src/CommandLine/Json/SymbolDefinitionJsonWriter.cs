@@ -413,7 +413,7 @@ namespace Roslynator.Documentation.Json
                     foreach (TypeHierarchyItem child in item.Children())
                     {
                         WriteTypeSeparator();
-                        WriteTypeHierarchyItem(child);
+                        WriteTypeHierarchyItem(child, cancellationToken);
                     }
 
                     WriteEndHierarchyTypes();
