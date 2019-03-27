@@ -50,7 +50,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyElseClause)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveEmptyFinallyClause)]
         public async Task TestNoDiagnostic_NonEmptyFinally()
         {
             await VerifyNoDiagnosticAsync(@"
