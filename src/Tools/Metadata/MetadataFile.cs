@@ -19,12 +19,12 @@ namespace Roslynator.Metadata
             return (value != null) ? _lfWithoutCr.Replace(value, "\r\n") : null;
         }
 
-        public static ImmutableArray<AnalyzerDescriptor> ReadAllAnalyzers(string filePath)
+        public static ImmutableArray<AnalyzerMetadata> ReadAllAnalyzers(string filePath)
         {
             return ImmutableArray.CreateRange(ReadAnalyzers(filePath));
         }
 
-        public static IEnumerable<AnalyzerDescriptor> ReadAnalyzers(string filePath)
+        public static IEnumerable<AnalyzerMetadata> ReadAnalyzers(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
 
@@ -32,7 +32,7 @@ namespace Roslynator.Metadata
             {
                 string id = element.Element("Id").Value;
 
-                yield return new AnalyzerDescriptor(
+                yield return new AnalyzerMetadata(
                     id,
                     element.Attribute("Identifier").Value,
                     element.Element("Title").Value,
@@ -45,24 +45,24 @@ namespace Roslynator.Metadata
                     bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value),
                     element.Element("Summary")?.Value.NormalizeNewLine(),
                     element.Element("Remarks")?.Value.NormalizeNewLine(),
-                    LoadSamples(element)?.Select(f => new SampleDescriptor(f.Before.Replace("[|Id|]", id), f.After)),
+                    LoadSamples(element)?.Select(f => new SampleMetadata(f.Before.Replace("[|Id|]", id), f.After)),
                     LoadLinks(element),
                     element.AttributeValueAsBooleanOrDefault("IsDevelopment"));
             }
         }
 
-        public static ImmutableArray<RefactoringDescriptor> ReadAllRefactorings(string filePath)
+        public static ImmutableArray<RefactoringMetadata> ReadAllRefactorings(string filePath)
         {
             return ImmutableArray.CreateRange(ReadRefactorings(filePath));
         }
 
-        public static IEnumerable<RefactoringDescriptor> ReadRefactorings(string filePath)
+        public static IEnumerable<RefactoringMetadata> ReadRefactorings(string filePath)
         {
             XDocument doc = XDocument.Load(filePath);
 
             foreach (XElement element in doc.Root.Elements())
             {
-                yield return new RefactoringDescriptor(
+                yield return new RefactoringMetadata(
                     element.Attribute("Id")?.Value,
                     element.Attribute("Identifier").Value,
                     element.Attribute("Title").Value,
@@ -73,7 +73,7 @@ namespace Roslynator.Metadata
                     element.Element("Remarks")?.Value.NormalizeNewLine(),
                     element.Element("Syntaxes")
                         .Elements("Syntax")
-                        .Select(f => new SyntaxDescriptor(f.Value)),
+                        .Select(f => new SyntaxMetadata(f.Value)),
                     LoadImages(element),
                     LoadSamples(element),
                     LoadLinks(element),
@@ -81,28 +81,28 @@ namespace Roslynator.Metadata
             }
         }
 
-        private static IEnumerable<ImageDescriptor> LoadImages(XElement element)
+        private static IEnumerable<ImageMetadata> LoadImages(XElement element)
         {
             return element
                 .Element("Images")?
                 .Elements("Image")
-                .Select(f => new ImageDescriptor(f.Value));
+                .Select(f => new ImageMetadata(f.Value));
         }
 
-        private static IEnumerable<SampleDescriptor> LoadSamples(XElement element)
+        private static IEnumerable<SampleMetadata> LoadSamples(XElement element)
         {
             return element
                 .Element("Samples")?
                 .Elements("Sample")
-                .Select(f => new SampleDescriptor(f.Element("Before").Value.NormalizeNewLine(), f.Element("After")?.Value.NormalizeNewLine()));
+                .Select(f => new SampleMetadata(f.Element("Before").Value.NormalizeNewLine(), f.Element("After")?.Value.NormalizeNewLine()));
         }
 
-        private static IEnumerable<LinkDescriptor> LoadLinks(XElement element)
+        private static IEnumerable<LinkMetadata> LoadLinks(XElement element)
         {
             return element
                 .Element("Links")?
                .Elements("Link")
-               .Select(f => new LinkDescriptor(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
+               .Select(f => new LinkMetadata(f.Element("Url").Value, f.Element("Text")?.Value, f.Element("Title")?.Value));
         }
 
         public static ImmutableArray<CodeFixMetadata> ReadAllCodeFixes(string filePath)

@@ -13,7 +13,7 @@ namespace Roslynator.CodeGeneration.CSharp
     public static class DiagnosticIdentifiersGenerator
     {
         public static CompilationUnitSyntax Generate(
-            IEnumerable<AnalyzerDescriptor> analyzers,
+            IEnumerable<AnalyzerMetadata> analyzers,
             bool obsolete,
             IComparer<string> comparer,
             string @namespace)

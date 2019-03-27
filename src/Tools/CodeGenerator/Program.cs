@@ -29,8 +29,8 @@ namespace Roslynator.CodeGeneration
 
             var metadata = new RoslynatorMetadata(rootPath);
 
-            ImmutableArray<AnalyzerDescriptor> analyzers = metadata.Analyzers;
-            ImmutableArray<RefactoringDescriptor> refactorings = metadata.Refactorings;
+            ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
+            ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
@@ -46,7 +46,7 @@ namespace Roslynator.CodeGeneration
                 @"VisualStudio.Common\RefactoringsOptionsPage.Generated.cs",
                 RefactoringsOptionsPageGenerator.Generate(refactorings.Where(f => !f.IsObsolete), comparer));
 
-            WriteDiagnostics(@"Analyzers\CSharp", analyzers, @namespace: "Roslynator.CSharp");
+            WriteDiagnostics(@"Analyzers\CSharp", @namespace: "Roslynator.CSharp");
 
             WriteCompilationUnit(
                 @"CodeFixes\CSharp\CompilerDiagnosticDescriptors.Generated.cs",
@@ -85,23 +85,23 @@ namespace Roslynator.CodeGeneration
             Console.WriteLine($"number of code fixes: {codeFixes.Length}");
             Console.WriteLine($"number of fixable compiler diagnostics: {codeFixes.SelectMany(f => f.FixableDiagnosticIds).Distinct().Count()}");
 
-            void WriteDiagnostics(string dirPath, ImmutableArray<AnalyzerDescriptor> descriptors, string @namespace)
+            void WriteDiagnostics(string dirPath, string @namespace)
             {
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "DiagnosticDescriptors.Generated.cs"),
-                    DiagnosticDescriptorsGenerator.Generate(descriptors, obsolete: false, comparer: comparer, @namespace: @namespace), normalizeWhitespace: false);
+                    DiagnosticDescriptorsGenerator.Generate(analyzers, obsolete: false, comparer: comparer, @namespace: @namespace), normalizeWhitespace: false);
 
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "DiagnosticDescriptors.Deprecated.Generated.cs"),
-                    DiagnosticDescriptorsGenerator.Generate(descriptors, obsolete: true, comparer: comparer, @namespace: @namespace), normalizeWhitespace: false);
+                    DiagnosticDescriptorsGenerator.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace), normalizeWhitespace: false);
 
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "DiagnosticIdentifiers.Generated.cs"),
-                    DiagnosticIdentifiersGenerator.Generate(descriptors, obsolete: false, comparer: comparer, @namespace: @namespace));
+                    DiagnosticIdentifiersGenerator.Generate(analyzers, obsolete: false, comparer: comparer, @namespace: @namespace));
 
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "DiagnosticIdentifiers.Deprecated.Generated.cs"),
-                    DiagnosticIdentifiersGenerator.Generate(descriptors, obsolete: true, comparer: comparer, @namespace: @namespace));
+                    DiagnosticIdentifiersGenerator.Generate(analyzers, obsolete: true, comparer: comparer, @namespace: @namespace));
             }
 
             void WriteCompilationUnit(

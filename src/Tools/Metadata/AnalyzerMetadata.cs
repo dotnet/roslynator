@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace Roslynator.Metadata
 {
-    public class AnalyzerDescriptor
+    public class AnalyzerMetadata
     {
-        public AnalyzerDescriptor(
+        public AnalyzerMetadata(
             string id,
             string identifier,
             string title,
@@ -22,8 +22,8 @@ namespace Roslynator.Metadata
             bool supportsFadeOutAnalyzer,
             string summary,
             string remarks,
-            IEnumerable<SampleDescriptor> samples,
-            IEnumerable<LinkDescriptor> links,
+            IEnumerable<SampleMetadata> samples,
+            IEnumerable<LinkMetadata> links,
             bool isDevelopment = false)
         {
             Id = id;
@@ -38,8 +38,8 @@ namespace Roslynator.Metadata
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
             Summary = summary;
             Remarks = remarks;
-            Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
-            Links = new ReadOnlyCollection<LinkDescriptor>(links?.ToArray() ?? Array.Empty<LinkDescriptor>());
+            Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
+            Links = new ReadOnlyCollection<LinkMetadata>(links?.ToArray() ?? Array.Empty<LinkMetadata>());
             IsDevelopment = isDevelopment;
         }
 
@@ -67,9 +67,9 @@ namespace Roslynator.Metadata
 
         public string Remarks { get; }
 
-        public IReadOnlyList<SampleDescriptor> Samples { get; }
+        public IReadOnlyList<SampleMetadata> Samples { get; }
 
-        public IReadOnlyList<LinkDescriptor> Links { get; }
+        public IReadOnlyList<LinkMetadata> Links { get; }
 
         public bool IsDevelopment { get; }
     }

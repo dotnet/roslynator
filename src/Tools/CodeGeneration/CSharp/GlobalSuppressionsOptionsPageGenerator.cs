@@ -12,7 +12,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class GlobalSuppressionsOptionsPageGenerator
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
+        public static CompilationUnitSyntax Generate(IEnumerable<AnalyzerMetadata> analyzers, IComparer<string> comparer)
         {
             return CompilationUnit(
                 UsingDirectives(
@@ -26,7 +26,7 @@ namespace Roslynator.CodeGeneration.CSharp
                         CreateMembers(analyzers, comparer).ToSyntaxList())));
         }
 
-        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
+        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<AnalyzerMetadata> analyzers, IComparer<string> comparer)
         {
             yield return PropertyDeclaration(
                 Modifiers.Protected_Override(),

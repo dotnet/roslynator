@@ -37,8 +37,8 @@ namespace Roslynator.CodeGeneration
 
             var metadata = new RoslynatorMetadata(rootPath);
 
-            ImmutableArray<AnalyzerDescriptor> analyzers = metadata.Analyzers;
-            ImmutableArray<RefactoringDescriptor> refactorings = metadata.Refactorings;
+            ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
+            ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
@@ -73,7 +73,7 @@ namespace Roslynator.CodeGeneration
                 MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
             }
 
-            foreach (AnalyzerDescriptor analyzer in analyzers)
+            foreach (AnalyzerMetadata analyzer in analyzers)
             {
                 WriteAllText(
                     $@"..\docs\analyzers\{analyzer.Id}.md",
@@ -81,7 +81,7 @@ namespace Roslynator.CodeGeneration
                     fileMustExists: false);
             }
 
-            foreach (RefactoringDescriptor refactoring in refactorings)
+            foreach (RefactoringMetadata refactoring in refactorings)
             {
                 WriteAllText(
                     $@"..\docs\refactorings\{refactoring.Id}.md",
@@ -128,11 +128,11 @@ namespace Roslynator.CodeGeneration
             }
 
             // find missing samples
-            foreach (RefactoringDescriptor refactoring in refactorings)
+            foreach (RefactoringMetadata refactoring in refactorings)
             {
                 if (refactoring.Samples.Count == 0)
                 {
-                    foreach (ImageDescriptor image in refactoring.ImagesOrDefaultImage())
+                    foreach (ImageMetadata image in refactoring.ImagesOrDefaultImage())
                     {
                         string imagePath = Path.Combine(GetPath(@"..\images\refactorings"), image.Name + ".png");
 
@@ -142,14 +142,14 @@ namespace Roslynator.CodeGeneration
                 }
             }
 
-            void WriteAnalyzersReadMe(string path, ImmutableArray<AnalyzerDescriptor> descriptors)
+            void WriteAnalyzersReadMe(string path, ImmutableArray<AnalyzerMetadata> descriptors)
             {
                 WriteAllText(
                     path,
                     MarkdownGenerator.CreateAnalyzersReadMe(descriptors.Where(f => !f.IsObsolete), comparer));
             }
 
-            void WriteAnalyzersByCategory(string path, ImmutableArray<AnalyzerDescriptor> descriptors)
+            void WriteAnalyzersByCategory(string path, ImmutableArray<AnalyzerMetadata> descriptors)
             {
                 WriteAllText(
                     path,
