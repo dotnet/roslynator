@@ -5,17 +5,19 @@ using System.Diagnostics.CodeAnalysis;
 namespace Roslynator.Metadata
 {
     [SuppressMessage("Performance", "CA1815:Override equals and operator equals on value types", Justification = "<Pending>")]
-    public readonly struct SampleDescriptor
+    public readonly struct LinkMetadata
     {
-        public SampleDescriptor(string before, string after)
+        public LinkMetadata(string url, string text = null, string title = null)
         {
-            Before = before;
-
-            After = after;
+            Url = url;
+            Text = text;
+            Title = title;
         }
 
-        public string Before { get; }
+        public string Url { get; }
 
-        public string After { get; }
+        public string Text { get; }
+
+        public string Title { get; }
     }
 }

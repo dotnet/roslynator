@@ -14,7 +14,7 @@ namespace Roslynator.CodeGeneration.Html
     {
         private static StringComparer StringComparer { get; } = StringComparer.CurrentCulture;
 
-        public static string CreateRoslynatorRefactoringsDescription(IEnumerable<RefactoringDescriptor> refactorings)
+        public static string CreateRoslynatorRefactoringsDescription(IEnumerable<RefactoringMetadata> refactorings)
         {
             using (var sw = new StringWriter())
             {
@@ -27,7 +27,7 @@ namespace Roslynator.CodeGeneration.Html
             }
         }
 
-        public static string CreateRoslynatorDescription(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings)
+        public static string CreateRoslynatorDescription(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings)
         {
             using (var sw = new StringWriter())
             {
@@ -41,30 +41,30 @@ namespace Roslynator.CodeGeneration.Html
             }
         }
 
-        private static void WriteRefactorings(XmlWriter writer, IEnumerable<RefactoringDescriptor> refactorings)
+        private static void WriteRefactorings(XmlWriter writer, IEnumerable<RefactoringMetadata> refactorings)
         {
             writer.WriteElementString("h3", "List of Refactorings");
             writer.WriteStartElement("ul");
 
-            foreach (RefactoringDescriptor info in refactorings.OrderBy(f => f.Title, StringComparer))
+            foreach (RefactoringMetadata info in refactorings.OrderBy(f => f.Title, StringComparer))
                 WriteRefactoring(writer, info);
 
             writer.WriteEndElement();
         }
 
-        private static void WriteAnalyzers(XmlWriter writer, IEnumerable<AnalyzerDescriptor> analyzers)
+        private static void WriteAnalyzers(XmlWriter writer, IEnumerable<AnalyzerMetadata> analyzers)
         {
             writer.WriteElementString("h3", "List of Analyzers");
 
             writer.WriteStartElement("ul");
 
-            foreach (AnalyzerDescriptor analyzer in analyzers.OrderBy(f => f.Id, StringComparer))
+            foreach (AnalyzerMetadata analyzer in analyzers.OrderBy(f => f.Id, StringComparer))
                 WriteAnalyzer(writer, analyzer);
 
             writer.WriteEndElement();
         }
 
-        private static void WriteRefactoring(XmlWriter writer, RefactoringDescriptor refactoring)
+        private static void WriteRefactoring(XmlWriter writer, RefactoringMetadata refactoring)
         {
             string href = $"http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/{refactoring.Id}.md";
             writer.WriteStartElement("li");
@@ -75,7 +75,7 @@ namespace Roslynator.CodeGeneration.Html
             writer.WriteEndElement();
         }
 
-        private static void WriteAnalyzer(XmlWriter writer, AnalyzerDescriptor analyzer)
+        private static void WriteAnalyzer(XmlWriter writer, AnalyzerMetadata analyzer)
         {
             writer.WriteElementString("li", $"{analyzer.Id} - {analyzer.Title}");
         }

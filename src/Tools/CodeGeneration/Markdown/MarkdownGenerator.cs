@@ -19,7 +19,7 @@ namespace Roslynator.CodeGeneration.Markdown
             document.Add(NewLine, Italic("(Generated with ", Link("DotMarkdown", "http://github.com/JosefPihrt/DotMarkdown"), ")"));
         }
 
-        public static string CreateReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
+        public static string CreateReadMe(IEnumerable<AnalyzerMetadata> analyzers, IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
         {
             MDocument document = Document(
                 Heading3("List of Analyzers"),
@@ -38,7 +38,7 @@ namespace Roslynator.CodeGeneration.Markdown
                 + document;
         }
 
-        public static string CreateRefactoringsMarkdown(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
+        public static string CreateRefactoringsMarkdown(IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
         {
             MDocument document = Document(
                 Heading2("Roslynator Refactorings"),
@@ -50,7 +50,7 @@ namespace Roslynator.CodeGeneration.Markdown
 
             IEnumerable<object> GetRefactorings()
             {
-                foreach (RefactoringDescriptor refactoring in refactorings.OrderBy(f => f.Title, comparer))
+                foreach (RefactoringMetadata refactoring in refactorings.OrderBy(f => f.Title, comparer))
                 {
                     yield return Heading4($"{refactoring.Title} ({refactoring.Id})");
                     yield return BulletItem(Bold("Syntax"), ": ", string.Join(", ", refactoring.Syntaxes.Select(f => f.Name)));
@@ -64,7 +64,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static IEnumerable<object> GetRefactoringSamples(RefactoringDescriptor refactoring)
+        private static IEnumerable<object> GetRefactoringSamples(RefactoringMetadata refactoring)
         {
             if (refactoring.Samples.Count > 0)
             {
@@ -75,7 +75,7 @@ namespace Roslynator.CodeGeneration.Markdown
             {
                 bool isFirst = true;
 
-                foreach (ImageDescriptor image in refactoring.Images)
+                foreach (ImageMetadata image in refactoring.Images)
                 {
                     if (!isFirst)
                         yield return NewLine;
@@ -96,11 +96,11 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static IEnumerable<MElement> GetSamples(IEnumerable<SampleDescriptor> samples, MHeading beforeHeader, MHeading afterHeader)
+        private static IEnumerable<MElement> GetSamples(IEnumerable<SampleMetadata> samples, MHeading beforeHeader, MHeading afterHeader)
         {
             bool isFirst = true;
 
-            foreach (SampleDescriptor sample in samples)
+            foreach (SampleMetadata sample in samples)
             {
                 if (!isFirst)
                 {
@@ -122,7 +122,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static MElement CreateLink(in LinkDescriptor link)
+        private static MElement CreateLink(in LinkMetadata link)
         {
             if (string.IsNullOrEmpty(link.Text))
             {
@@ -134,7 +134,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        public static string CreateRefactoringMarkdown(RefactoringDescriptor refactoring, IEnumerable<string> filePaths)
+        public static string CreateRefactoringMarkdown(RefactoringMetadata refactoring, IEnumerable<string> filePaths)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -158,7 +158,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(format);
         }
 
-        public static string CreateAnalyzerMarkdown(AnalyzerDescriptor analyzer, IEnumerable<string> filePaths)
+        public static string CreateAnalyzerMarkdown(AnalyzerMetadata analyzer, IEnumerable<string> filePaths)
         {
             var format = new MarkdownFormat(tableOptions: MarkdownFormat.Default.TableOptions | TableOptions.FormatContent);
 
@@ -183,7 +183,7 @@ namespace Roslynator.CodeGeneration.Markdown
 
             IEnumerable<MElement> Samples()
             {
-                IReadOnlyList<SampleDescriptor> samples = analyzer.Samples;
+                IReadOnlyList<SampleMetadata> samples = analyzer.Samples;
 
                 if (samples.Count > 0)
                 {
@@ -244,7 +244,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString(MarkdownFormat.Default.WithTableOptions(MarkdownFormat.Default.TableOptions | TableOptions.FormatContent));
         }
 
-        public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
+        public static string CreateAnalyzersReadMe(IEnumerable<AnalyzerMetadata> analyzers, IComparer<string> comparer)
         {
             MDocument document = Document(
                 Heading2("Roslynator Analyzers"),
@@ -265,7 +265,7 @@ namespace Roslynator.CodeGeneration.Markdown
             return document.ToString();
         }
 
-        public static string CreateRefactoringsReadMe(IEnumerable<RefactoringDescriptor> refactorings, IComparer<string> comparer)
+        public static string CreateRefactoringsReadMe(IEnumerable<RefactoringMetadata> refactorings, IComparer<string> comparer)
         {
             MDocument document = Document(
                 Heading2("Roslynator Refactorings"),
@@ -309,7 +309,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        public static string CreateAnalyzersByCategoryMarkdown(IEnumerable<AnalyzerDescriptor> analyzers, IComparer<string> comparer)
+        public static string CreateAnalyzersByCategoryMarkdown(IEnumerable<AnalyzerMetadata> analyzers, IComparer<string> comparer)
         {
             MDocument document = Document(
                 Heading2("Roslynator Analyzers by Category"),
@@ -323,11 +323,11 @@ namespace Roslynator.CodeGeneration.Markdown
 
             IEnumerable<MTableRow> GetRows()
             {
-                foreach (IGrouping<string, AnalyzerDescriptor> grouping in analyzers
+                foreach (IGrouping<string, AnalyzerMetadata> grouping in analyzers
                     .GroupBy(f => MarkdownEscaper.Escape(f.Category))
                     .OrderBy(f => f.Key, comparer))
                 {
-                    foreach (AnalyzerDescriptor analyzer in grouping.OrderBy(f => f.Title, comparer))
+                    foreach (AnalyzerMetadata analyzer in grouping.OrderBy(f => f.Title, comparer))
                     {
                         yield return TableRow(
                             grouping.Key,
@@ -357,7 +357,7 @@ namespace Roslynator.CodeGeneration.Markdown
             }
         }
 
-        private static MImage RefactoringImage(RefactoringDescriptor refactoring, string fileName)
+        private static MImage RefactoringImage(RefactoringMetadata refactoring, string fileName)
         {
             return Image(refactoring.Title, $"../../images/refactorings/{fileName}.png");
         }

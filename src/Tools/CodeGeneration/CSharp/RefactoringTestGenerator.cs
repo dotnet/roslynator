@@ -8,7 +8,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class RefactoringTestGenerator
     {
-        public static CompilationUnitSyntax Generate(RefactoringDescriptor refactoring, string className)
+        public static CompilationUnitSyntax Generate(RefactoringMetadata refactoring, string className)
         {
             string s = _sourceTemplate
                 .Replace("$ClassName$", className)

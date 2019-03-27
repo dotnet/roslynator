@@ -2,9 +2,9 @@
 
 namespace Roslynator.Metadata
 {
-    public class ImageDescriptor
+    public class ImageMetadata
     {
-        public ImageDescriptor(string name)
+        public ImageMetadata(string name)
         {
             Name = name;
         }

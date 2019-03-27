@@ -23,15 +23,15 @@ namespace Roslynator.CodeGeneration
 
             var metadata = new RoslynatorMetadata(rootPath);
 
-            ImmutableArray<AnalyzerDescriptor> analyzers = metadata.Analyzers;
-            ImmutableArray<RefactoringDescriptor> refactorings = metadata.Refactorings;
+            ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
+            ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
             foreach (string id in args.Skip(1))
             {
                 if (_analyzerIdRegex.IsMatch(id))
                 {
-                    AnalyzerDescriptor analyzer = analyzers.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
+                    AnalyzerMetadata analyzer = analyzers.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
                     if (analyzer == null)
                     {
@@ -47,7 +47,7 @@ namespace Roslynator.CodeGeneration
                 }
                 else if (_refactoringIdRegex.IsMatch(id))
                 {
-                    RefactoringDescriptor refactoring = refactorings.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
+                    RefactoringMetadata refactoring = refactorings.FirstOrDefault(f => string.Equals(f.Id, id, StringComparison.OrdinalIgnoreCase));
 
                     if (refactoring == null)
                     {

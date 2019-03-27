@@ -8,9 +8,9 @@ using System.Text.RegularExpressions;
 
 namespace Roslynator.Metadata
 {
-    public class RefactoringDescriptor
+    public class RefactoringMetadata
     {
-        public RefactoringDescriptor(
+        public RefactoringMetadata(
             string id,
             string identifier,
             string title,
@@ -19,10 +19,10 @@ namespace Roslynator.Metadata
             string span,
             string summary,
             string remarks,
-            IEnumerable<SyntaxDescriptor> syntaxes,
-            IEnumerable<ImageDescriptor> images,
-            IEnumerable<SampleDescriptor> samples,
-            IEnumerable<LinkDescriptor> links,
+            IEnumerable<SyntaxMetadata> syntaxes,
+            IEnumerable<ImageMetadata> images,
+            IEnumerable<SampleMetadata> samples,
+            IEnumerable<LinkMetadata> links,
             bool isDevelopment = false)
         {
             Id = id;
@@ -33,10 +33,10 @@ namespace Roslynator.Metadata
             Span = span;
             Summary = summary;
             Remarks = remarks;
-            Syntaxes = new ReadOnlyCollection<SyntaxDescriptor>(syntaxes?.ToArray() ?? Array.Empty<SyntaxDescriptor>());
-            Images = new ReadOnlyCollection<ImageDescriptor>(images?.ToArray() ?? Array.Empty<ImageDescriptor>());
-            Samples = new ReadOnlyCollection<SampleDescriptor>(samples?.ToArray() ?? Array.Empty<SampleDescriptor>());
-            Links = new ReadOnlyCollection<LinkDescriptor>(links?.ToArray() ?? Array.Empty<LinkDescriptor>());
+            Syntaxes = new ReadOnlyCollection<SyntaxMetadata>(syntaxes?.ToArray() ?? Array.Empty<SyntaxMetadata>());
+            Images = new ReadOnlyCollection<ImageMetadata>(images?.ToArray() ?? Array.Empty<ImageMetadata>());
+            Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
+            Links = new ReadOnlyCollection<LinkMetadata>(links?.ToArray() ?? Array.Empty<LinkMetadata>());
             IsDevelopment = isDevelopment;
         }
 
@@ -56,26 +56,26 @@ namespace Roslynator.Metadata
 
         public bool IsObsolete { get; }
 
-        public IReadOnlyList<SyntaxDescriptor> Syntaxes { get; }
+        public IReadOnlyList<SyntaxMetadata> Syntaxes { get; }
 
-        public IReadOnlyList<ImageDescriptor> Images { get; }
+        public IReadOnlyList<ImageMetadata> Images { get; }
 
-        public IReadOnlyList<SampleDescriptor> Samples { get; }
+        public IReadOnlyList<SampleMetadata> Samples { get; }
 
-        public IReadOnlyList<LinkDescriptor> Links { get; }
+        public IReadOnlyList<LinkMetadata> Links { get; }
 
         public bool IsDevelopment { get; }
 
-        public IEnumerable<ImageDescriptor> ImagesOrDefaultImage()
+        public IEnumerable<ImageMetadata> ImagesOrDefaultImage()
         {
             if (Images.Count > 0)
             {
-                foreach (ImageDescriptor image in Images)
+                foreach (ImageMetadata image in Images)
                     yield return image;
             }
             else
             {
-                yield return new ImageDescriptor(Identifier);
+                yield return new ImageMetadata(Identifier);
             }
         }
 

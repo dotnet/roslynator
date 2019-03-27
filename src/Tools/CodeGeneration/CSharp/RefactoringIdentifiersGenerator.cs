@@ -13,7 +13,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class RefactoringIdentifiersGenerator
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<RefactoringDescriptor> refactorings, bool obsolete, IComparer<string> comparer)
+        public static CompilationUnitSyntax Generate(IEnumerable<RefactoringMetadata> refactorings, bool obsolete, IComparer<string> comparer)
         {
             return CompilationUnit(
                 UsingDirectives("System"),

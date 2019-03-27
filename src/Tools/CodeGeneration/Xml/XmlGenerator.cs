@@ -13,7 +13,7 @@ namespace Roslynator.CodeGeneration.Xml
     public static class XmlGenerator
     {
         public static string CreateDefaultConfigFile(
-            IEnumerable<RefactoringDescriptor> refactorings,
+            IEnumerable<RefactoringMetadata> refactorings,
             IEnumerable<CodeFixMetadata> codeFixes)
         {
             var doc = new XDocument(
@@ -54,7 +54,7 @@ namespace Roslynator.CodeGeneration.Xml
             return WriteDocument(doc, _regexForDefaultConfigFile);
         }
 
-        public static string CreateDefaultRuleSet(IEnumerable<AnalyzerDescriptor> analyzers)
+        public static string CreateDefaultRuleSet(IEnumerable<AnalyzerMetadata> analyzers)
         {
             var doc = new XDocument(
                 new XElement("RuleSet",
@@ -72,14 +72,14 @@ namespace Roslynator.CodeGeneration.Xml
 
             IEnumerable<XNode> CreateRuleElements()
             {
-                foreach (AnalyzerDescriptor analyzer in analyzers.OrderBy(f => f.Id))
+                foreach (AnalyzerMetadata analyzer in analyzers.OrderBy(f => f.Id))
                 {
                     yield return CreateRuleElement(analyzer);
                     yield return new XComment($" {analyzer.Title} ");
                 }
             }
 
-            XElement CreateRuleElement(AnalyzerDescriptor analyzer)
+            XElement CreateRuleElement(AnalyzerMetadata analyzer)
             {
                 return new XElement("Rule",
                     new XAttribute("Id", analyzer.Id),
