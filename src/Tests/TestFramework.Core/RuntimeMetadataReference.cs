@@ -28,6 +28,7 @@ namespace Roslynator
                 {
                     return ImmutableArray.Create(
                         CorLibReference,
+                        CreateFromAssemblyName("netstandard.dll"),
                         CreateFromAssemblyName("System.Core.dll"),
                         CreateFromAssemblyName("System.Linq.dll"),
                         CreateFromAssemblyName("System.Linq.Expressions.dll"),

@@ -21,7 +21,6 @@ namespace Roslynator.Tests
             return solution
                 .AddProject(DefaultProjectName, DefaultProjectName, Language)
                 .WithMetadataReferences(DefaultProjectReferences);
-                    CreateFromAssemblyName("netstandard.dll"),
         }
 
         public Document AddDocument(Project project, string source, params string[] additionalSources)
