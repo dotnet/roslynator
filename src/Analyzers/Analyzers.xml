@@ -295,6 +295,7 @@ foreach (var item in items) // [|Id|]
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[public void Foo(object parameter)
@@ -324,6 +325,7 @@ foreach (var item in items) // [|Id|]
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[public object Foo()
@@ -3105,6 +3107,7 @@ string s2 = s as string; // [|Id|]]]></Before>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[if (s != null && s.StartsWith("a")) // [|Id|]
@@ -4371,6 +4374,7 @@ public class FooAttribute : Attribute
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[var x = new Foo();
@@ -4812,6 +4816,7 @@ else
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>7.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[if (x is T && Foo((T)x)) // [|Id|]
@@ -4832,6 +4837,7 @@ else
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>7.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[var y = x as Foo; // [|Id|]
@@ -5128,6 +5134,7 @@ public string Foo()
     <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>7.2</MinLanguageVersion>
     <Summary></Summary>
     <Samples>
       <Sample>

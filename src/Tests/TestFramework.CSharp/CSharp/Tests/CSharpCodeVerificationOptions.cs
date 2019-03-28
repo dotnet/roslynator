@@ -11,6 +11,7 @@ namespace Roslynator.CSharp.Tests
 {
     public class CSharpCodeVerificationOptions : CodeVerificationOptions
     {
+        private static CSharpCodeVerificationOptions _defaultWithCSharp5;
         private static CSharpCodeVerificationOptions _defaultWithCSharp6;
 
         public CSharpCodeVerificationOptions(
@@ -38,6 +39,19 @@ namespace Roslynator.CSharp.Tests
             "CS8019", // Unnecessary using directive
             "CS8321" // The local function is declared but never used
         ));
+
+        internal static CSharpCodeVerificationOptions DefaultWithCSharp5
+        {
+            get
+            {
+                if (_defaultWithCSharp5 == null)
+                    Interlocked.CompareExchange(ref _defaultWithCSharp5, LoadDefaultOptionsWithCSharp5(), null);
+
+                return _defaultWithCSharp5;
+
+                CSharpCodeVerificationOptions LoadDefaultOptionsWithCSharp5() => Default.WithLanguageVersion(LanguageVersion.CSharp5);
+            }
+        }
 
         internal static CSharpCodeVerificationOptions DefaultWithCSharp6
         {

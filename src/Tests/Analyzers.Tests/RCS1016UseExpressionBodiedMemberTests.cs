@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.CSharp.Tests;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
@@ -740,6 +741,20 @@ class C
     string _f;
 }
 ");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
+        public async Task TestNoDiagnostic_LanguageVersion()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    string M()
+    {
+        return null;
+    }
+}
+", options: CSharpCodeVerificationOptions.DefaultWithCSharp5);
         }
     }
 }

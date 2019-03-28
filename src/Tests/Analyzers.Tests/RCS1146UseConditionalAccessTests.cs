@@ -5,6 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.CSharp.Tests;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
@@ -814,6 +815,25 @@ unsafe class C
     }
 }
 ");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseConditionalAccess)]
+        public async Task TestNoDiagnostic_LanguageVersion()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        C x = null;
+
+        if (x != null)
+        {
+            x.M();
+        }
+    }
+}
+", options: CSharpCodeVerificationOptions.DefaultWithCSharp5);
         }
     }
 }
