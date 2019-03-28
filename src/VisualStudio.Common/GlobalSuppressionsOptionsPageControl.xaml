@@ -1,0 +1,26 @@
+﻿<UserControl x:Class="Roslynator.VisualStudio.GlobalSuppressionsOptionsPageControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Roslynator.VisualStudio"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+  <UserControl.Resources>
+    <Style TargetType="Button">
+      <Setter Property="MinWidth" Value="75"/>
+      <Setter Property="MinHeight" Value="25"/>
+      <Setter Property="Margin" Value="0,5,5,5"/>
+      <Setter Property="Padding" Value="5"/>
+    </Style>
+  </UserControl.Resources>
+  <DockPanel Focusable="false" Margin="0,10,0,0">
+    <WrapPanel DockPanel.Dock="Left">
+      <TextBlock TextWrapping="WrapWithOverflow">
+      "Global Suppressions" feature has been deprecated in Roslynator 2019.
+      For replacement, please see file "roslynator.ruleset" located in the extension directory.
+      </TextBlock>
+      <Button Content="Open location" Click="OpenLocation_Click" />
+    </WrapPanel>
+  </DockPanel>
+</UserControl>

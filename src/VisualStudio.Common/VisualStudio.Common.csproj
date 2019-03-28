@@ -249,8 +249,8 @@
     <Compile Include="BaseOptionsPageControl.xaml.cs">
       <DependentUpon>BaseOptionsPageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressionsOptionsPage.Generated.cs">
-      <SubType>Component</SubType>
+    <Compile Include="GlobalSuppressionsOptionsPageControl.xaml.cs">
+      <DependentUpon>GlobalSuppressionsOptionsPageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="XElementExtensions.cs" />
     <Compile Include="TypeConverters\YesNoConverter.cs" />
@@ -293,6 +293,10 @@
     <Page Include="BaseOptionsPageControl.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="GlobalSuppressionsOptionsPageControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>

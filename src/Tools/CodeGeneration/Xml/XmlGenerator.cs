@@ -20,7 +20,7 @@ namespace Roslynator.CodeGeneration.Xml
                 new XElement("Roslynator",
                     new XElement("Settings",
                         new XElement("General",
-                            new XElement("PrefixFieldIdentifierWithUnderscore", new XAttribute("IsEnabled", true))),
+                            new XElement("PrefixFieldIdentifierWithUnderscore", true)),
                         new XElement("Refactorings",
                             refactorings
                                 .OrderBy(f => f.Id)
@@ -58,8 +58,8 @@ namespace Roslynator.CodeGeneration.Xml
         {
             var doc = new XDocument(
                 new XElement("RuleSet",
-                    new XAttribute("Name", "Default RuleSet"),
-                    new XAttribute("ToolsVersion", "15.0"),
+                    new XAttribute("Name", "Default Rules"),
+                    new XAttribute("ToolsVersion", "16.0"),
                     new XElement("Rules",
                         new XAttribute("AnalyzerId", "Roslynator.CSharp.Analyzers"),
                         new XAttribute("RuleNamespace", "Roslynator.CSharp.Analyzers"),
@@ -104,7 +104,10 @@ namespace Roslynator.CodeGeneration.Xml
 
                 string s = sw.ToString();
 
-                return regex.Replace(s, "${grp} ${comment}");
+                if (regex != null)
+                    return regex.Replace(s, "${grp} ${comment}");
+
+                return s;
             }
         }
 

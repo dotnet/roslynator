@@ -17,8 +17,6 @@ namespace Roslynator.VisualStudio
 {
     public partial class GeneralOptionsPageControl : UserControl, INotifyPropertyChanged
     {
-        private static readonly char[] _separator = new char[] { ',' };
-
         private bool _prefixFieldIdentifierWithUnderscore;
         private bool _useConfigFile;
 
@@ -83,22 +81,7 @@ namespace Roslynator.VisualStudio
             if (dialog.ShowDialog() != true)
                 return;
 
-            IEnumerable<string> globalSuppressions = null;
-
             AbstractPackage package = AbstractPackage.Instance;
-
-            if (package.GlobalSuppressionsOptionsPage.IsLoaded)
-            {
-                globalSuppressions = package.GlobalSuppressionsOptionsPage
-                    .Control
-                    .Items
-                    .Where(f => f.Enabled)
-                    .Select(f => f.Id);
-            }
-            else
-            {
-                globalSuppressions = package.GlobalSuppressionsOptionsPage.GetDisabledItems();
-            }
 
             IEnumerable<string> disabledRefactorings = null;
 
@@ -133,7 +116,6 @@ namespace Roslynator.VisualStudio
             var settings = new Settings(
                 refactorings: disabledRefactorings.Select(f => new KeyValuePair<string, bool>(f, false)),
                 codeFixes: disabledCodeFixes.Select(f => new KeyValuePair<string, bool>(f, false)),
-                globalSuppressions: globalSuppressions,
                 prefixFieldIdentifierWithUnderscore: PrefixFieldIdentifierWithUnderscore);
 
             try
@@ -189,14 +171,10 @@ namespace Roslynator.VisualStudio
 
             AbstractPackage package = AbstractPackage.Instance;
 
-            package.GlobalSuppressionsOptionsPage.Load();
             package.RefactoringsOptionsPage.Load();
             package.CodeFixesOptionsPage.Load();
 
             PrefixFieldIdentifierWithUnderscore = settings.PrefixFieldIdentifierWithUnderscore;
-
-            foreach (BaseModel model in package.GlobalSuppressionsOptionsPage.Control.Items)
-                model.Enabled = settings.GlobalSuppressions.Contains(model.Id);
 
             Update(package.RefactoringsOptionsPage, settings.Refactorings);
             Update(package.CodeFixesOptionsPage, settings.CodeFixes);

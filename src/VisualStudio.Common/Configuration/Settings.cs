@@ -21,17 +21,10 @@ namespace Roslynator.Configuration
         public Settings(
             IEnumerable<KeyValuePair<string, bool>> refactorings = null,
             IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
-            IEnumerable<string> globalSuppressions = null,
             bool prefixFieldIdentifierWithUnderscore = true)
         {
             Initialize(Refactorings, refactorings);
             Initialize(CodeFixes, codeFixes);
-
-            if (globalSuppressions != null)
-            {
-                foreach (string kvp in globalSuppressions)
-                    GlobalSuppressions.Add(kvp);
-            }
 
             PrefixFieldIdentifierWithUnderscore = prefixFieldIdentifierWithUnderscore;
 
@@ -48,8 +41,6 @@ namespace Roslynator.Configuration
         public Dictionary<string, bool> Refactorings { get; } = new Dictionary<string, bool>(StringComparer.Ordinal);
 
         public Dictionary<string, bool> CodeFixes { get; } = new Dictionary<string, bool>();
-
-        public HashSet<string> GlobalSuppressions { get; } = new HashSet<string>(StringComparer.Ordinal);
 
         public bool PrefixFieldIdentifierWithUnderscore { get; set; }
 
@@ -92,10 +83,6 @@ namespace Roslynator.Configuration
                 else if (name == "CodeFixes")
                 {
                     LoadCodeFixes(child, settings);
-                }
-                else if (name == "GlobalSuppressions")
-                {
-                    LoadGlobalSuppressions(child, settings);
                 }
             }
         }
@@ -157,17 +144,6 @@ namespace Roslynator.Configuration
             }
         }
 
-        private static void LoadGlobalSuppressions(XElement element, Settings settings)
-        {
-            foreach (XElement child in element.Elements("GlobalSuppression"))
-            {
-                if (child.TryGetAttributeValueAsString("Id", out string id))
-                {
-                    settings.GlobalSuppressions.Add(id);
-                }
-            }
-        }
-
         public void Save(string path)
         {
             var settings = new XElement("Settings",
@@ -194,15 +170,6 @@ namespace Roslynator.Configuration
                             .OrderBy(f => f.Key)
                             .Select(f => new XElement("CodeFix", new XAttribute("Id", f.Key), new XAttribute("IsEnabled", f.Value)))
                     ));
-            }
-
-            if (GlobalSuppressions.Count > 0)
-            {
-                settings.Add(
-                    new XElement("GlobalSuppressions",
-                        GlobalSuppressions
-                            .OrderBy(f => f)
-                            .Select(f => new XElement("GlobalSuppression", new XAttribute("Id", f)))));
             }
 
             var doc = new XDocument(new XElement("Roslynator", settings));

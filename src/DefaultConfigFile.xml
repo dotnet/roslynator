@@ -2,7 +2,7 @@
 <Roslynator>
   <Settings>
     <General>
-      <PrefixFieldIdentifierWithUnderscore IsEnabled="true" />
+      <PrefixFieldIdentifierWithUnderscore>true</PrefixFieldIdentifierWithUnderscore>
     </General>
     <Refactorings>
       <Refactoring Id="RR0002" IsEnabled="true" /> <!-- AddBraces -->

@@ -43,33 +43,6 @@ namespace Roslynator.Configuration
                 VisualStudioSettings.CodeFixes[id] = false;
         }
 
-        public void UpdateVisualStudioSettings(GlobalSuppressionsOptionsPage globalSuppressionsOptionsPage)
-        {
-            VisualStudioSettings.GlobalSuppressions.Clear();
-
-            foreach (string id in globalSuppressionsOptionsPage.GetDisabledItems())
-                VisualStudioSettings.GlobalSuppressions.Add(id);
-        }
-
-        public void ApplyTo(AnalyzerSettings analyzerSettings)
-        {
-            analyzerSettings.Reset();
-
-            Apply(VisualStudioSettings);
-
-            if (UseConfigFile)
-                Apply(ConfigFileSettings);
-
-            void Apply(Settings settings)
-            {
-                if (settings != null)
-                {
-                    foreach (string id in settings.GlobalSuppressions)
-                        analyzerSettings.Disable(id);
-                }
-            }
-        }
-
         internal void ApplyTo(RefactoringSettings refactoringSettings)
         {
             refactoringSettings.Reset();

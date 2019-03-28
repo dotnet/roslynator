@@ -39,7 +39,7 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 
 ## How to Configure a Rule Set
 
-### Old csproj format (.NET Framework)
+### Configure Rule Set for Old Project Format (.NET Framework)
 
 #### 1) Create Your Own Rule Set File
 
@@ -73,7 +73,7 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
 ![Code Analysis Settings](/images/CodeAnalysisSettings.png)
 
 
-### New csproj format (.NET Core, .NET Standard)
+### Configure Rule Set for New Project Format (.NET Core, .NET Standard)
 
 #### 1) Add New Rule Set File to Your Solution
 
@@ -96,6 +96,20 @@ Rule set is typically stored in a file with extension **ruleset** and it has fol
   <CodeAnalysisRuleSet>relative_or_absolute_path_to_ruleset_file</CodeAnalysisRuleSet>
 </PropertyGroup>
 ```
+
+## How to Change Default Configuration of Analyzers
+
+Roslynator 2019 adds capability to:
+ 1) Enable/disable analyzer(s) by DEFAULT.
+ 2) Change DEFAULT severity (action) of the analyzer(s).
+
+Default configuration is stored in `%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudio\2019\roslynator.ruleset`.
+
+Before first use, it is necessary to copy `roslynator.ruleset` from the directory where Roslynator 2019 is installed
+to the location where the configuration is stored.
+ 
+IMPORTANT: Default configuration is applied once when analyzers are loaded.
+Therefore, it may be necessary to restart Visual Studio for changes to take effect.
 
 ## How to Suppress a Diagnostic
 
@@ -140,7 +154,7 @@ class C
 }
 ```
 
-### Suppress Diagnostic Globally
+### Suppress Diagnostic Globally (Roslynator 2017 only)
 
 Go to Visual Studio Tools > Options > Roslynator > Global Suppressions
 
