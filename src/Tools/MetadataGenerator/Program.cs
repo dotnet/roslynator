@@ -14,6 +14,8 @@ using Roslynator.CodeGeneration.Xml;
 using Roslynator.Metadata;
 using Roslynator.Utilities;
 
+#pragma warning disable CS1998 // Async method lacks 'await' operators and will run synchronously
+
 namespace Roslynator.CodeGeneration
 {
     internal static class Program
@@ -45,7 +47,7 @@ namespace Roslynator.CodeGeneration
             WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers);
 
             WriteAnalyzersByCategory(@"Analyzers\AnalyzersByCategory.md", analyzers);
-
+#if !DEBUG
             VisualStudioInstance instance = MSBuildLocator.QueryVisualStudioInstances().First(f => f.Version.Major == 15);
 
             MSBuildLocator.RegisterInstance(instance);
@@ -72,7 +74,7 @@ namespace Roslynator.CodeGeneration
 
                 MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
             }
-
+#endif
             foreach (AnalyzerMetadata analyzer in analyzers)
             {
                 WriteAllText(
