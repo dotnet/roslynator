@@ -8,12 +8,10 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceAnyWithAllOrAllWithAnyRefactoring
+    internal static class InvertLinqMethodCallRefactoring
     {
-        public static async Task ComputeRefactoringAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
+        public static void ComputeRefactoring(RefactoringContext context, InvocationExpressionSyntax invocation, SemanticModel semanticModel)
         {
-            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
-
             if (!ComputeRefactoring(context, invocation, semanticModel, "Any", "All"))
                 ComputeRefactoring(context, invocation, semanticModel, "All", "Any");
         }
@@ -39,9 +37,9 @@ namespace Roslynator.CSharp.Refactorings
                 return false;
 
             context.RegisterRefactoring(
-                $"Replace '{fromMethodName}' with '{toMethodName}'",
+                $"Invert '{fromMethodName}'",
                 ct => RefactorAsync(context.Document, invocation, toMethodName, expression, ct),
-                RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny);
+                RefactoringIdentifiers.InvertLinqMethodCall);
 
             return true;
         }
