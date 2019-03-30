@@ -2,9 +2,7 @@
 
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Xml;
-using System.Xml.Linq;
 using Roslynator.Metadata;
 using Roslynator.Utilities;
 
@@ -16,108 +14,119 @@ namespace Roslynator.CodeGeneration.Xml
             IEnumerable<RefactoringMetadata> refactorings,
             IEnumerable<CodeFixMetadata> codeFixes)
         {
-            var doc = new XDocument(
-                new XElement("Roslynator",
-                    new XElement("Settings",
-                        new XElement("General",
-                            new XElement("PrefixFieldIdentifierWithUnderscore", new XAttribute("IsEnabled", true))),
-                        new XElement("Refactorings",
-                            refactorings
-                                .OrderBy(f => f.Id)
-                                .Select(f =>
-                                {
-                                    return new XNode[] {
-                                        new XElement("Refactoring",
-                                        new XAttribute("Id", f.Id),
-                                        new XAttribute("IsEnabled", f.IsEnabledByDefault)),
-                                        new XComment($" {f.Identifier} ")
-                                    };
-                                })
-                        ),
-                        new XElement("CodeFixes",
-                            codeFixes
-                                .OrderBy(f => f.Id)
-                                .Select(f =>
-                                {
-                                    return new XNode[] {
-                                        new XElement("CodeFix",
-                                        new XAttribute("Id", f.Id),
-                                        new XAttribute("IsEnabled", f.IsEnabledByDefault)),
-                                        new XComment($" {f.Identifier} (fixes {string.Join(", ", f.FixableDiagnosticIds)}) ")
-                                    };
-                                })
-                        )
-                    )
-                )
-            );
+            using (var stringWriter = new Utf8StringWriter())
+            {
+                using (XmlWriter writer = XmlWriter.Create(stringWriter, new XmlWriterSettings() { Indent = true, IndentChars = "  " }))
+                {
+                    string newLineChars = writer.Settings.NewLineChars;
+                    string indentChars = writer.Settings.IndentChars;
 
-            return WriteDocument(doc, _regexForDefaultConfigFile);
+                    writer.WriteStartDocument();
+
+                    writer.WriteStartElement("Roslynator");
+                    writer.WriteStartElement("Settings");
+
+                    writer.WriteStartElement("General");
+                    writer.WriteElementString("PrefixFieldIdentifierWithUnderscore", "true");
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("Refactorings");
+
+                    foreach (RefactoringMetadata refactoring in refactorings.OrderBy(f => f.Id))
+                    {
+                        writer.WriteWhitespace(newLineChars);
+                        writer.WriteWhitespace(indentChars);
+                        writer.WriteWhitespace(indentChars);
+                        writer.WriteStartElement("Refactoring");
+                        writer.WriteAttributeString("Id", refactoring.Id);
+                        writer.WriteAttributeString("IsEnabled", (refactoring.IsEnabledByDefault) ? "true" : "false");
+                        writer.WriteEndElement();
+
+                        writer.WriteWhitespace(" ");
+                        writer.WriteComment($" {refactoring.Title} ");
+                    }
+
+                    writer.WriteWhitespace(newLineChars);
+                    writer.WriteWhitespace(indentChars);
+                    writer.WriteEndElement();
+
+                    writer.WriteStartElement("CodeFixes");
+
+                    foreach (CodeFixMetadata codeFix in codeFixes.OrderBy(f => f.Id))
+                    {
+                        writer.WriteWhitespace(newLineChars);
+                        writer.WriteWhitespace(indentChars);
+                        writer.WriteWhitespace(indentChars);
+                        writer.WriteStartElement("CodeFix");
+                        writer.WriteAttributeString("Id", codeFix.Id);
+                        writer.WriteAttributeString("IsEnabled", (codeFix.IsEnabledByDefault) ? "true" : "false");
+                        writer.WriteEndElement();
+
+                        writer.WriteWhitespace(" ");
+                        writer.WriteComment($" {codeFix.Title} (fixes {string.Join(", ", codeFix.FixableDiagnosticIds)}) ");
+                    }
+
+                    writer.WriteWhitespace(newLineChars);
+                    writer.WriteWhitespace(indentChars);
+                    writer.WriteEndElement();
+                }
+
+                return stringWriter.ToString();
+            }
         }
 
         public static string CreateDefaultRuleSet(IEnumerable<AnalyzerMetadata> analyzers)
         {
-            var doc = new XDocument(
-                new XElement("RuleSet",
-                    new XAttribute("Name", "Default RuleSet"),
-                    new XAttribute("ToolsVersion", "15.0"),
-                    new XElement("Rules",
-                        new XAttribute("AnalyzerId", "Roslynator.CSharp.Analyzers"),
-                        new XAttribute("RuleNamespace", "Roslynator.CSharp.Analyzers"),
-                        CreateRuleElements()
-                    )
-                )
-            );
-
-            return WriteDocument(doc, _regexForDefaultRuleSet);
-
-            IEnumerable<XNode> CreateRuleElements()
+            using (var stringWriter = new Utf8StringWriter())
             {
-                foreach (AnalyzerMetadata analyzer in analyzers.OrderBy(f => f.Id))
+                using (XmlWriter writer = XmlWriter.Create(stringWriter, new XmlWriterSettings() { Indent = true, IndentChars = "  " }))
                 {
-                    yield return CreateRuleElement(analyzer);
-                    yield return new XComment($" {analyzer.Title} ");
+                    string newLineChars = writer.Settings.NewLineChars;
+                    string indentChars = writer.Settings.IndentChars;
+
+                    writer.WriteStartDocument();
+
+                    writer.WriteStartElement("RuleSet");
+                    writer.WriteAttributeString("Name", "Default Rules");
+                    writer.WriteAttributeString("ToolsVersion", "15.0");
+
+                    writer.WriteStartElement("Rules");
+                    writer.WriteAttributeString("AnalyzerId", "Roslynator.CSharp.Analyzers");
+                    writer.WriteAttributeString("RuleNamespace", "Roslynator.CSharp.Analyzers");
+
+                    foreach (AnalyzerMetadata analyzer in analyzers.OrderBy(f => f.Id))
+                    {
+                        writer.WriteWhitespace(newLineChars);
+                        writer.WriteWhitespace(indentChars);
+                        writer.WriteWhitespace(indentChars);
+                        writer.WriteStartElement("Rule");
+                        writer.WriteAttributeString("Id", analyzer.Id);
+                        writer.WriteAttributeString("Action", GetAction(analyzer));
+                        writer.WriteEndElement();
+
+                        string title = analyzer.Title;
+
+                        if (!string.IsNullOrEmpty(title))
+                        {
+                            writer.WriteWhitespace(" ");
+                            writer.WriteComment($" {title} ");
+                        }
+                    }
+
+                    writer.WriteWhitespace(newLineChars);
+                    writer.WriteWhitespace(indentChars);
+                    writer.WriteEndElement();
                 }
+
+                return stringWriter.ToString();
             }
 
-            XElement CreateRuleElement(AnalyzerMetadata analyzer)
+            string GetAction(AnalyzerMetadata analyzer)
             {
-                return new XElement("Rule",
-                    new XAttribute("Id", analyzer.Id),
-                    new XAttribute("Action", (analyzer.IsEnabledByDefault) ? analyzer.DefaultSeverity : "None"));
-            }
-        }
-
-        private static string WriteDocument(XDocument doc, Regex regex)
-        {
-            var xmlWriterSettings = new XmlWriterSettings()
-            {
-                OmitXmlDeclaration = false,
-                NewLineChars = "\r\n",
-                IndentChars = "  ",
-                Indent = true
-            };
-
-            using (var sw = new Utf8StringWriter())
-            {
-                using (XmlWriter xmlWriter = XmlWriter.Create(sw, xmlWriterSettings))
-                    doc.WriteTo(xmlWriter);
-
-                string s = sw.ToString();
-
-                return regex.Replace(s, "${grp} ${comment}");
+                return (analyzer.IsEnabledByDefault)
+                    ? analyzer.DefaultSeverity
+                    : "None";
             }
         }
-
-        private static readonly Regex _regexForDefaultConfigFile = new Regex(@"
-            (?<grp><(Refactoring|CodeFix)\ Id=""(RR|RCF)[0-9]{4}""\ IsEnabled=""(true|false)""\ />)
-            \s+
-            (?<comment><!--\ [a-zA-Z0-9 (),]+\ -->)
-            ", RegexOptions.IgnorePatternWhitespace);
-
-        private static readonly Regex _regexForDefaultRuleSet = new Regex(@"
-            (?<grp><Rule\ Id=""RCS[0-9]{4}(FadeOut)?""\ Action=""\w+""\ />)
-            \s+
-            (?<comment><!--\ .+?\ -->)
-            ", RegexOptions.IgnorePatternWhitespace);
     }
 }

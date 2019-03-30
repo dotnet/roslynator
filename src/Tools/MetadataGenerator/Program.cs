@@ -116,7 +116,7 @@ namespace Roslynator.CodeGeneration
                 XmlGenerator.CreateDefaultConfigFile(refactorings, codeFixes));
 
             WriteAllText(
-                "DefaultRuleSet.ruleset",
+                "default.ruleset",
                 XmlGenerator.CreateDefaultRuleSet(analyzers));
 
             // find files to delete

@@ -2,328 +2,328 @@
 <Roslynator>
   <Settings>
     <General>
-      <PrefixFieldIdentifierWithUnderscore IsEnabled="true" />
+      <PrefixFieldIdentifierWithUnderscore>true</PrefixFieldIdentifierWithUnderscore>
     </General>
     <Refactorings>
-      <Refactoring Id="RR0002" IsEnabled="true" /> <!-- AddBraces -->
-      <Refactoring Id="RR0003" IsEnabled="true" /> <!-- AddBracesToIfElse -->
-      <Refactoring Id="RR0004" IsEnabled="true" /> <!-- AddBracesToSwitchSection -->
-      <Refactoring Id="RR0005" IsEnabled="true" /> <!-- AddBracesToSwitchSections -->
-      <Refactoring Id="RR0006" IsEnabled="true" /> <!-- AddCastExpression -->
-      <Refactoring Id="RR0007" IsEnabled="true" /> <!-- AddDefaultValueToParameter -->
-      <Refactoring Id="RR0008" IsEnabled="true" /> <!-- AddDefaultValueToReturnStatement -->
-      <Refactoring Id="RR0009" IsEnabled="true" /> <!-- AddExceptionToDocumentationComment -->
-      <Refactoring Id="RR0010" IsEnabled="false" /> <!-- AddIdentifierToVariableDeclaration -->
-      <Refactoring Id="RR0011" IsEnabled="true" /> <!-- AddParameterNameToArgument -->
-      <Refactoring Id="RR0012" IsEnabled="false" /> <!-- AddIdentifierToParameter -->
-      <Refactoring Id="RR0013" IsEnabled="true" /> <!-- AddUsingDirective -->
-      <Refactoring Id="RR0014" IsEnabled="true" /> <!-- AddUsingStaticDirective -->
-      <Refactoring Id="RR0015" IsEnabled="true" /> <!-- CallConfigureAwait -->
-      <Refactoring Id="RR0016" IsEnabled="true" /> <!-- CallExtensionMethodAsInstanceMethod -->
-      <Refactoring Id="RR0017" IsEnabled="true" /> <!-- CallToMethod -->
-      <Refactoring Id="RR0018" IsEnabled="true" /> <!-- ChangeExplicitTypeToVar -->
-      <Refactoring Id="RR0019" IsEnabled="true" /> <!-- ChangeMemberTypeAccordingToReturnExpression -->
-      <Refactoring Id="RR0020" IsEnabled="true" /> <!-- ChangeMemberTypeAccordingToYieldReturnExpression -->
-      <Refactoring Id="RR0021" IsEnabled="true" /> <!-- ChangeMethodReturnTypeToVoid -->
-      <Refactoring Id="RR0022" IsEnabled="true" /> <!-- ChangeTypeAccordingToExpression -->
-      <Refactoring Id="RR0023" IsEnabled="true" /> <!-- ChangeVarToExplicitType -->
-      <Refactoring Id="RR0024" IsEnabled="true" /> <!-- CheckExpressionForNull -->
-      <Refactoring Id="RR0025" IsEnabled="true" /> <!-- CheckParameterForNull -->
-      <Refactoring Id="RR0026" IsEnabled="true" /> <!-- CollapseToInitializer -->
-      <Refactoring Id="RR0027" IsEnabled="true" /> <!-- CommentOutMember -->
-      <Refactoring Id="RR0028" IsEnabled="true" /> <!-- CommentOutStatement -->
-      <Refactoring Id="RR0029" IsEnabled="true" /> <!-- CopyDocumentationCommentFromBaseMember -->
-      <Refactoring Id="RR0030" IsEnabled="true" /> <!-- DuplicateArgument -->
-      <Refactoring Id="RR0031" IsEnabled="true" /> <!-- DuplicateMember -->
-      <Refactoring Id="RR0032" IsEnabled="true" /> <!-- DuplicateParameter -->
-      <Refactoring Id="RR0033" IsEnabled="true" /> <!-- DuplicateStatement -->
-      <Refactoring Id="RR0034" IsEnabled="true" /> <!-- ExpandCompoundAssignmentOperator -->
-      <Refactoring Id="RR0035" IsEnabled="true" /> <!-- ExpandCoalesceExpression -->
-      <Refactoring Id="RR0036" IsEnabled="true" /> <!-- ExpandEvent -->
-      <Refactoring Id="RR0037" IsEnabled="true" /> <!-- ExpandExpressionBody -->
-      <Refactoring Id="RR0038" IsEnabled="true" /> <!-- ExpandInitializer -->
-      <Refactoring Id="RR0039" IsEnabled="true" /> <!-- ExpandLambdaExpressionBody -->
-      <Refactoring Id="RR0040" IsEnabled="true" /> <!-- ExpandProperty -->
-      <Refactoring Id="RR0041" IsEnabled="true" /> <!-- ExpandPropertyAndAddBackingField -->
-      <Refactoring Id="RR0043" IsEnabled="true" /> <!-- ExtractExpressionFromCondition -->
-      <Refactoring Id="RR0044" IsEnabled="true" /> <!-- ExtractGenericType -->
-      <Refactoring Id="RR0045" IsEnabled="true" /> <!-- ExtractStatement -->
-      <Refactoring Id="RR0046" IsEnabled="true" /> <!-- ExtractTypeDeclarationToNewFile -->
-      <Refactoring Id="RR0047" IsEnabled="true" /> <!-- FormatAccessorBraces -->
-      <Refactoring Id="RR0048" IsEnabled="true" /> <!-- FormatArgumentList -->
-      <Refactoring Id="RR0049" IsEnabled="true" /> <!-- FormatBinaryExpression -->
-      <Refactoring Id="RR0050" IsEnabled="true" /> <!-- FormatConditionalExpression -->
-      <Refactoring Id="RR0051" IsEnabled="true" /> <!-- FormatExpressionChain -->
-      <Refactoring Id="RR0052" IsEnabled="true" /> <!-- FormatInitializer -->
-      <Refactoring Id="RR0053" IsEnabled="true" /> <!-- FormatParameterList -->
-      <Refactoring Id="RR0054" IsEnabled="true" /> <!-- GenerateBaseConstructors -->
-      <Refactoring Id="RR0055" IsEnabled="true" /> <!-- GenerateCombinedEnumMember -->
-      <Refactoring Id="RR0056" IsEnabled="true" /> <!-- GenerateEnumMember -->
-      <Refactoring Id="RR0057" IsEnabled="true" /> <!-- GenerateEnumValues -->
-      <Refactoring Id="RR0058" IsEnabled="true" /> <!-- GenerateEventInvokingMethod -->
-      <Refactoring Id="RR0059" IsEnabled="true" /> <!-- AddMissingCases -->
-      <Refactoring Id="RR0060" IsEnabled="true" /> <!-- InitializeLocalWithDefaultValue -->
-      <Refactoring Id="RR0061" IsEnabled="true" /> <!-- InlineAliasExpression -->
-      <Refactoring Id="RR0062" IsEnabled="true" /> <!-- InlineMethod -->
-      <Refactoring Id="RR0063" IsEnabled="true" /> <!-- InsertStringInterpolation -->
-      <Refactoring Id="RR0064" IsEnabled="true" /> <!-- IntroduceAndInitializeField -->
-      <Refactoring Id="RR0065" IsEnabled="true" /> <!-- IntroduceAndInitializeProperty -->
-      <Refactoring Id="RR0066" IsEnabled="false" /> <!-- IntroduceConstructor -->
-      <Refactoring Id="RR0067" IsEnabled="true" /> <!-- IntroduceFieldToLockOn -->
-      <Refactoring Id="RR0068" IsEnabled="true" /> <!-- IntroduceLocalVariable -->
-      <Refactoring Id="RR0069" IsEnabled="true" /> <!-- MakeMemberAbstract -->
-      <Refactoring Id="RR0070" IsEnabled="true" /> <!-- MakeMemberVirtual -->
-      <Refactoring Id="RR0073" IsEnabled="true" /> <!-- MergeAssignmentExpressionWithReturnStatement -->
-      <Refactoring Id="RR0074" IsEnabled="true" /> <!-- MergeAttributes -->
-      <Refactoring Id="RR0075" IsEnabled="true" /> <!-- MergeIfStatements -->
-      <Refactoring Id="RR0076" IsEnabled="true" /> <!-- MergeInterpolationIntoInterpolatedString -->
-      <Refactoring Id="RR0077" IsEnabled="true" /> <!-- MergeLocalDeclarations -->
-      <Refactoring Id="RR0078" IsEnabled="true" /> <!-- JoinStringExpressions -->
-      <Refactoring Id="RR0079" IsEnabled="true" /> <!-- InvertBinaryExpression -->
-      <Refactoring Id="RR0080" IsEnabled="true" /> <!-- InvertBooleanLiteral -->
-      <Refactoring Id="RR0081" IsEnabled="true" /> <!-- InvertIsExpression -->
-      <Refactoring Id="RR0082" IsEnabled="true" /> <!-- InvertOperator -->
-      <Refactoring Id="RR0083" IsEnabled="true" /> <!-- NotifyPropertyChanged -->
-      <Refactoring Id="RR0084" IsEnabled="true" /> <!-- ParenthesizeExpression -->
-      <Refactoring Id="RR0085" IsEnabled="true" /> <!-- PromoteLocalToParameter -->
-      <Refactoring Id="RR0086" IsEnabled="true" /> <!-- RemoveAllComments -->
-      <Refactoring Id="RR0087" IsEnabled="true" /> <!-- RemoveAllCommentsExceptDocumentationComments -->
-      <Refactoring Id="RR0088" IsEnabled="false" /> <!-- RemoveAllDocumentationComments -->
-      <Refactoring Id="RR0089" IsEnabled="true" /> <!-- RemoveAllMemberDeclarations -->
-      <Refactoring Id="RR0090" IsEnabled="true" /> <!-- RemoveAllPreprocessorDirectives -->
-      <Refactoring Id="RR0091" IsEnabled="true" /> <!-- RemoveAllRegionDirectives -->
-      <Refactoring Id="RR0092" IsEnabled="true" /> <!-- RemoveAllStatements -->
-      <Refactoring Id="RR0093" IsEnabled="true" /> <!-- RemoveAllSwitchSections -->
-      <Refactoring Id="RR0094" IsEnabled="true" /> <!-- RemoveBraces -->
-      <Refactoring Id="RR0095" IsEnabled="true" /> <!-- RemoveBracesFromIfElse -->
-      <Refactoring Id="RR0096" IsEnabled="true" /> <!-- RemoveBracesFromSwitchSection -->
-      <Refactoring Id="RR0097" IsEnabled="true" /> <!-- RemoveBracesFromSwitchSections -->
-      <Refactoring Id="RR0098" IsEnabled="true" /> <!-- RemoveComment -->
-      <Refactoring Id="RR0099" IsEnabled="true" /> <!-- RemoveConditionFromLastElse -->
-      <Refactoring Id="RR0100" IsEnabled="true" /> <!-- RemoveDirectiveAndRelatedDirectives -->
-      <Refactoring Id="RR0101" IsEnabled="true" /> <!-- RemoveEmptyLines -->
-      <Refactoring Id="RR0102" IsEnabled="true" /> <!-- RemoveInterpolation -->
-      <Refactoring Id="RR0103" IsEnabled="true" /> <!-- RemoveMember -->
-      <Refactoring Id="RR0104" IsEnabled="true" /> <!-- RemoveMemberDeclarations -->
-      <Refactoring Id="RR0105" IsEnabled="true" /> <!-- RemoveParameterNameFromArgument -->
-      <Refactoring Id="RR0106" IsEnabled="true" /> <!-- RemoveParentheses -->
-      <Refactoring Id="RR0107" IsEnabled="true" /> <!-- RemovePropertyInitializer -->
-      <Refactoring Id="RR0108" IsEnabled="true" /> <!-- RemoveRegion -->
-      <Refactoring Id="RR0109" IsEnabled="true" /> <!-- RemoveStatement -->
-      <Refactoring Id="RR0110" IsEnabled="true" /> <!-- RemoveStatementsFromSwitchSections -->
-      <Refactoring Id="RR0111" IsEnabled="true" /> <!-- RenameBackingFieldAccordingToPropertyName -->
-      <Refactoring Id="RR0112" IsEnabled="true" /> <!-- RenameIdentifierAccordingToTypeName -->
-      <Refactoring Id="RR0113" IsEnabled="true" /> <!-- RenameMethodAccordingToTypeName -->
-      <Refactoring Id="RR0114" IsEnabled="true" /> <!-- RenameParameterAccordingToTypeName -->
-      <Refactoring Id="RR0115" IsEnabled="true" /> <!-- RenamePropertyAccordingToTypeName -->
-      <Refactoring Id="RR0116" IsEnabled="true" /> <!-- ReplaceAnyWithAllOrAllWithAny -->
-      <Refactoring Id="RR0117" IsEnabled="true" /> <!-- ReplaceAsWithCast -->
-      <Refactoring Id="RR0118" IsEnabled="true" /> <!-- ReplaceCastWithAs -->
-      <Refactoring Id="RR0119" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithExpression -->
-      <Refactoring Id="RR0120" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithIfElse -->
-      <Refactoring Id="RR0121" IsEnabled="true" /> <!-- ReplaceConstantWithField -->
-      <Refactoring Id="RR0123" IsEnabled="true" /> <!-- ReplaceDoWithWhile -->
-      <Refactoring Id="RR0124" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringEquals -->
-      <Refactoring Id="RR0125" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrEmpty -->
-      <Refactoring Id="RR0126" IsEnabled="true" /> <!-- ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace -->
-      <Refactoring Id="RR0127" IsEnabled="true" /> <!-- InlineConstantValue -->
-      <Refactoring Id="RR0128" IsEnabled="true" /> <!-- UseConstantInsteadOfField -->
-      <Refactoring Id="RR0129" IsEnabled="true" /> <!-- ReplaceForEachWithFor -->
-      <Refactoring Id="RR0130" IsEnabled="true" /> <!-- ReplaceForWithForEach -->
-      <Refactoring Id="RR0131" IsEnabled="true" /> <!-- ReplaceForWithWhile -->
-      <Refactoring Id="RR0132" IsEnabled="true" /> <!-- ReplaceHexadecimalLiteralWithDecimalLiteral -->
-      <Refactoring Id="RR0133" IsEnabled="true" /> <!-- ReplaceIfWithSwitch -->
-      <Refactoring Id="RR0134" IsEnabled="true" /> <!-- InvertPrefixOrPostfixUnaryOperator -->
-      <Refactoring Id="RR0135" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithInterpolationExpression -->
-      <Refactoring Id="RR0136" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithStringLiteral -->
-      <Refactoring Id="RR0137" IsEnabled="true" /> <!-- ReplaceMethodGroupWithLambda -->
-      <Refactoring Id="RR0138" IsEnabled="false" /> <!-- ReplaceMethodWithProperty -->
-      <Refactoring Id="RR0139" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultExpression -->
-      <Refactoring Id="RR0140" IsEnabled="true" /> <!-- ReplacePrefixOperatorWithPostfixOperator -->
-      <Refactoring Id="RR0141" IsEnabled="true" /> <!-- ReplacePropertyWithMethod -->
-      <Refactoring Id="RR0142" IsEnabled="true" /> <!-- ReplaceRegularStringLiteralWithVerbatimStringLiteral -->
-      <Refactoring Id="RR0143" IsEnabled="true" /> <!-- ReplaceStatementWithIfElse -->
-      <Refactoring Id="RR0144" IsEnabled="true" /> <!-- CallIndexOfInsteadOfContains -->
-      <Refactoring Id="RR0145" IsEnabled="true" /> <!-- ReplaceStringFormatWithInterpolatedString -->
-      <Refactoring Id="RR0147" IsEnabled="true" /> <!-- ReplaceSwitchWithIf -->
-      <Refactoring Id="RR0148" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiteral -->
-      <Refactoring Id="RR0149" IsEnabled="true" /> <!-- ReplaceVerbatimStringLiteralWithRegularStringLiterals -->
-      <Refactoring Id="RR0150" IsEnabled="true" /> <!-- ReplaceWhileWithDo -->
-      <Refactoring Id="RR0151" IsEnabled="true" /> <!-- ReplaceWhileWithFor -->
-      <Refactoring Id="RR0152" IsEnabled="true" /> <!-- ReverseForLoop -->
-      <Refactoring Id="RR0153" IsEnabled="true" /> <!-- SimplifyIf -->
-      <Refactoring Id="RR0154" IsEnabled="true" /> <!-- SimplifyLambdaExpression -->
-      <Refactoring Id="RR0155" IsEnabled="true" /> <!-- SortMemberDeclarations -->
-      <Refactoring Id="RR0156" IsEnabled="true" /> <!-- SplitAttributes -->
-      <Refactoring Id="RR0157" IsEnabled="true" /> <!-- SplitSwitchLabels -->
-      <Refactoring Id="RR0158" IsEnabled="true" /> <!-- SplitVariableDeclaration -->
-      <Refactoring Id="RR0159" IsEnabled="true" /> <!-- SwapBinaryOperands -->
-      <Refactoring Id="RR0160" IsEnabled="true" /> <!-- InvertConditionalExpression -->
-      <Refactoring Id="RR0161" IsEnabled="true" /> <!-- SwapMemberDeclarations -->
-      <Refactoring Id="RR0162" IsEnabled="true" /> <!-- InvertIfElse -->
-      <Refactoring Id="RR0163" IsEnabled="true" /> <!-- UncommentSingleLineComment -->
-      <Refactoring Id="RR0164" IsEnabled="true" /> <!-- UseBitwiseOperationInsteadOfCallingHasFlag -->
-      <Refactoring Id="RR0165" IsEnabled="true" /> <!-- UseCoalesceExpressionInsteadOfIf -->
-      <Refactoring Id="RR0166" IsEnabled="true" /> <!-- UseConditionalExpressionInsteadOfIf -->
-      <Refactoring Id="RR0167" IsEnabled="true" /> <!-- UseElementAccessInsteadOfEnumerableMethod -->
-      <Refactoring Id="RR0168" IsEnabled="true" /> <!-- UseEmptyStringLiteralInsteadOfStringEmpty -->
-      <Refactoring Id="RR0169" IsEnabled="true" /> <!-- UseExpressionBodiedMember -->
-      <Refactoring Id="RR0170" IsEnabled="true" /> <!-- UseLambdaExpressionInsteadOfAnonymousMethod -->
-      <Refactoring Id="RR0171" IsEnabled="false" /> <!-- UseStringEmptyInsteadOfEmptyStringLiteral -->
-      <Refactoring Id="RR0172" IsEnabled="true" /> <!-- WrapInCondition -->
-      <Refactoring Id="RR0173" IsEnabled="true" /> <!-- WrapInElseClause -->
-      <Refactoring Id="RR0174" IsEnabled="true" /> <!-- WrapInIfDirective -->
-      <Refactoring Id="RR0175" IsEnabled="true" /> <!-- WrapInRegion -->
-      <Refactoring Id="RR0176" IsEnabled="true" /> <!-- WrapInTryCatch -->
-      <Refactoring Id="RR0177" IsEnabled="true" /> <!-- WrapInUsingStatement -->
-      <Refactoring Id="RR0178" IsEnabled="true" /> <!-- AddTypeParameter -->
-      <Refactoring Id="RR0179" IsEnabled="true" /> <!-- ImplementIEquatableOfT -->
-      <Refactoring Id="RR0180" IsEnabled="true" /> <!-- InlineUsingStatic -->
-      <Refactoring Id="RR0181" IsEnabled="true" /> <!-- InlineConstant -->
-      <Refactoring Id="RR0182" IsEnabled="true" /> <!-- UseStringBuilderInsteadOfConcatenation -->
-      <Refactoring Id="RR0183" IsEnabled="true" /> <!-- UseListInsteadOfYield -->
-      <Refactoring Id="RR0184" IsEnabled="true" /> <!-- SplitIfStatement -->
-      <Refactoring Id="RR0185" IsEnabled="true" /> <!-- ReplaceObjectCreationWithDefaultValue -->
-      <Refactoring Id="RR0186" IsEnabled="true" /> <!-- ChangeAccessibility -->
-      <Refactoring Id="RR0187" IsEnabled="true" /> <!-- FormatConstraintClauses -->
-      <Refactoring Id="RR0188" IsEnabled="false" /> <!-- ReplaceForEachWithForAndReverseLoop -->
-      <Refactoring Id="RR0189" IsEnabled="true" /> <!-- InvertIf -->
-      <Refactoring Id="RR0190" IsEnabled="true" /> <!-- SplitIfElse -->
-      <Refactoring Id="RR0191" IsEnabled="true" /> <!-- UseCSharp6DictionaryInitializer -->
-      <Refactoring Id="RR0192" IsEnabled="true" /> <!-- ReplaceCommentWithDocumentationComment -->
-      <Refactoring Id="RR0193" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithConcatenation -->
-      <Refactoring Id="RR0194" IsEnabled="true" /> <!-- SplitDeclarationAndInitialization -->
-      <Refactoring Id="RR0195" IsEnabled="true" /> <!-- AddMemberToInterface -->
-      <Refactoring Id="RR0196" IsEnabled="true" /> <!-- MergeIfWithParentIf -->
-      <Refactoring Id="RR0197" IsEnabled="true" /> <!-- InitializeFieldFromConstructor -->
-      <Refactoring Id="RR0198" IsEnabled="true" /> <!-- InlineProperty -->
-      <Refactoring Id="RR0199" IsEnabled="true" /> <!-- RemoveEnumMemberValue -->
-      <Refactoring Id="RR0200" IsEnabled="true" /> <!-- UncommentMultiLineComment -->
-      <Refactoring Id="RR0201" IsEnabled="true" /> <!-- ReplaceInterpolatedStringWithStringFormat -->
-      <Refactoring Id="RR0202" IsEnabled="true" /> <!-- MoveUnsafeContextToContainingDeclaration -->
-      <Refactoring Id="RR0203" IsEnabled="true" /> <!-- ExtractEventHandlerMethod -->
-      <Refactoring Id="RR0204" IsEnabled="true" /> <!-- GeneratePropertyForDebuggerDisplayAttribute -->
-      <Refactoring Id="RR0205" IsEnabled="true" /> <!-- AddEmptyLineBetweenDeclarations -->
-      <Refactoring Id="RR0206" IsEnabled="true" /> <!-- ReplaceForEachWithEnumerator -->
-      <Refactoring Id="RR0207" IsEnabled="true" /> <!-- SortCaseLabels -->
-      <Refactoring Id="RR0208" IsEnabled="true" /> <!-- AddTagToDocumentationComment -->
-      <Refactoring Id="RR0209" IsEnabled="true" /> <!-- RemoveAsyncAwait -->
-      <Refactoring Id="RR0210" IsEnabled="true" /> <!-- ImplementCustomEnumerator -->
-      <Refactoring Id="RR0211" IsEnabled="true" /> <!-- ConvertStatementsToIfElse -->
-    </Refactorings>
+    <Refactoring Id="RR0002" IsEnabled="true" /> <!-- Add braces -->
+    <Refactoring Id="RR0003" IsEnabled="true" /> <!-- Add braces to if-else -->
+    <Refactoring Id="RR0004" IsEnabled="true" /> <!-- Add braces to switch section -->
+    <Refactoring Id="RR0005" IsEnabled="true" /> <!-- Add braces to switch sections -->
+    <Refactoring Id="RR0006" IsEnabled="true" /> <!-- Add cast expression -->
+    <Refactoring Id="RR0007" IsEnabled="true" /> <!-- Add default value to parameter -->
+    <Refactoring Id="RR0008" IsEnabled="true" /> <!-- Add default value to return statement -->
+    <Refactoring Id="RR0009" IsEnabled="true" /> <!-- Add exception to documentation comment -->
+    <Refactoring Id="RR0010" IsEnabled="false" /> <!-- Add identifier to variable declaration -->
+    <Refactoring Id="RR0011" IsEnabled="true" /> <!-- Add parameter name to argument -->
+    <Refactoring Id="RR0012" IsEnabled="false" /> <!-- Add identifier to parameter -->
+    <Refactoring Id="RR0013" IsEnabled="true" /> <!-- Add using directive -->
+    <Refactoring Id="RR0014" IsEnabled="true" /> <!-- Add using static directive -->
+    <Refactoring Id="RR0015" IsEnabled="true" /> <!-- Call 'ConfigureAwait(false)' -->
+    <Refactoring Id="RR0016" IsEnabled="true" /> <!-- Call extension method as instance method -->
+    <Refactoring Id="RR0017" IsEnabled="true" /> <!-- Call 'To...' method (ToString, ToArray, ToList) -->
+    <Refactoring Id="RR0018" IsEnabled="true" /> <!-- Change explicit type to 'var' -->
+    <Refactoring Id="RR0019" IsEnabled="true" /> <!-- Change method/property/indexer type according to return expression -->
+    <Refactoring Id="RR0020" IsEnabled="true" /> <!-- Change method/property/indexer type according to yield return expression -->
+    <Refactoring Id="RR0021" IsEnabled="true" /> <!-- Change method return type to 'void' -->
+    <Refactoring Id="RR0022" IsEnabled="true" /> <!-- Change type according to expression -->
+    <Refactoring Id="RR0023" IsEnabled="true" /> <!-- Change 'var' to explicit type -->
+    <Refactoring Id="RR0024" IsEnabled="true" /> <!-- Check expression for null -->
+    <Refactoring Id="RR0025" IsEnabled="true" /> <!-- Check parameter for null -->
+    <Refactoring Id="RR0026" IsEnabled="true" /> <!-- Collapse to initalizer -->
+    <Refactoring Id="RR0027" IsEnabled="true" /> <!-- Comment out member -->
+    <Refactoring Id="RR0028" IsEnabled="true" /> <!-- Comment out statement -->
+    <Refactoring Id="RR0029" IsEnabled="true" /> <!-- Copy documentation comment from base member -->
+    <Refactoring Id="RR0030" IsEnabled="true" /> <!-- Duplicate argument -->
+    <Refactoring Id="RR0031" IsEnabled="true" /> <!-- Duplicate member -->
+    <Refactoring Id="RR0032" IsEnabled="true" /> <!-- Duplicate parameter -->
+    <Refactoring Id="RR0033" IsEnabled="true" /> <!-- Duplicate statement -->
+    <Refactoring Id="RR0034" IsEnabled="true" /> <!-- Expand compound assignment operator -->
+    <Refactoring Id="RR0035" IsEnabled="true" /> <!-- Expand coalesce expression -->
+    <Refactoring Id="RR0036" IsEnabled="true" /> <!-- Expand event -->
+    <Refactoring Id="RR0037" IsEnabled="true" /> <!-- Expand expression body -->
+    <Refactoring Id="RR0038" IsEnabled="true" /> <!-- Expand initializer -->
+    <Refactoring Id="RR0039" IsEnabled="true" /> <!-- Expand lambda expression body -->
+    <Refactoring Id="RR0040" IsEnabled="true" /> <!-- Expand property -->
+    <Refactoring Id="RR0041" IsEnabled="true" /> <!-- Expand property and add backing field -->
+    <Refactoring Id="RR0043" IsEnabled="true" /> <!-- Extract expression from condition -->
+    <Refactoring Id="RR0044" IsEnabled="true" /> <!-- Extract generic type -->
+    <Refactoring Id="RR0045" IsEnabled="true" /> <!-- Extract statement(s) -->
+    <Refactoring Id="RR0046" IsEnabled="true" /> <!-- Extract type declaration to a new file -->
+    <Refactoring Id="RR0047" IsEnabled="true" /> <!-- Format accessor braces -->
+    <Refactoring Id="RR0048" IsEnabled="true" /> <!-- Format argument list -->
+    <Refactoring Id="RR0049" IsEnabled="true" /> <!-- Format binary expression -->
+    <Refactoring Id="RR0050" IsEnabled="true" /> <!-- Format conditional expression -->
+    <Refactoring Id="RR0051" IsEnabled="true" /> <!-- Format expression chain -->
+    <Refactoring Id="RR0052" IsEnabled="true" /> <!-- Format initializer -->
+    <Refactoring Id="RR0053" IsEnabled="true" /> <!-- Format parameter list -->
+    <Refactoring Id="RR0054" IsEnabled="true" /> <!-- Generate base constructors -->
+    <Refactoring Id="RR0055" IsEnabled="true" /> <!-- Generate combined enum member -->
+    <Refactoring Id="RR0056" IsEnabled="true" /> <!-- Generate enum member -->
+    <Refactoring Id="RR0057" IsEnabled="true" /> <!-- Generate enum values -->
+    <Refactoring Id="RR0058" IsEnabled="true" /> <!-- Generate event invoking method -->
+    <Refactoring Id="RR0059" IsEnabled="true" /> <!-- Add missing cases to switch statement -->
+    <Refactoring Id="RR0060" IsEnabled="true" /> <!-- Initialize local with default value -->
+    <Refactoring Id="RR0061" IsEnabled="true" /> <!-- Inline alias expression -->
+    <Refactoring Id="RR0062" IsEnabled="true" /> <!-- Inline method -->
+    <Refactoring Id="RR0063" IsEnabled="true" /> <!-- Insert string interpolation -->
+    <Refactoring Id="RR0064" IsEnabled="true" /> <!-- Introduce and initialize field -->
+    <Refactoring Id="RR0065" IsEnabled="true" /> <!-- Introduce and initialize property -->
+    <Refactoring Id="RR0066" IsEnabled="false" /> <!-- Introduce constructor -->
+    <Refactoring Id="RR0067" IsEnabled="true" /> <!-- Introduce field to lock on -->
+    <Refactoring Id="RR0068" IsEnabled="true" /> <!-- Introduce local variable -->
+    <Refactoring Id="RR0069" IsEnabled="true" /> <!-- Make member abstract -->
+    <Refactoring Id="RR0070" IsEnabled="true" /> <!-- Make member virtual -->
+    <Refactoring Id="RR0073" IsEnabled="true" /> <!-- Merge assignment expression with return statement -->
+    <Refactoring Id="RR0074" IsEnabled="true" /> <!-- Merge attributes -->
+    <Refactoring Id="RR0075" IsEnabled="true" /> <!-- Merge if statements -->
+    <Refactoring Id="RR0076" IsEnabled="true" /> <!-- Merge interpolation into interpolated string -->
+    <Refactoring Id="RR0077" IsEnabled="true" /> <!-- Merge local declarations -->
+    <Refactoring Id="RR0078" IsEnabled="true" /> <!-- Join string expressions -->
+    <Refactoring Id="RR0079" IsEnabled="true" /> <!-- Invert binary expression -->
+    <Refactoring Id="RR0080" IsEnabled="true" /> <!-- Invert boolean literal -->
+    <Refactoring Id="RR0081" IsEnabled="true" /> <!-- Invert is expression -->
+    <Refactoring Id="RR0082" IsEnabled="true" /> <!-- Invert operator -->
+    <Refactoring Id="RR0083" IsEnabled="true" /> <!-- Notify property changed -->
+    <Refactoring Id="RR0084" IsEnabled="true" /> <!-- Parenthesize expression -->
+    <Refactoring Id="RR0085" IsEnabled="true" /> <!-- Promote local to parameter -->
+    <Refactoring Id="RR0086" IsEnabled="true" /> <!-- Remove all comments -->
+    <Refactoring Id="RR0087" IsEnabled="true" /> <!-- Remove all comments (except documentation comments) -->
+    <Refactoring Id="RR0088" IsEnabled="false" /> <!-- Remove all documentation comments -->
+    <Refactoring Id="RR0089" IsEnabled="true" /> <!-- Remove all member declarations -->
+    <Refactoring Id="RR0090" IsEnabled="true" /> <!-- Remove all preprocessor directives -->
+    <Refactoring Id="RR0091" IsEnabled="true" /> <!-- Remove all region directives -->
+    <Refactoring Id="RR0092" IsEnabled="true" /> <!-- Remove all statements -->
+    <Refactoring Id="RR0093" IsEnabled="true" /> <!-- Remove all switch sections -->
+    <Refactoring Id="RR0094" IsEnabled="true" /> <!-- Remove braces -->
+    <Refactoring Id="RR0095" IsEnabled="true" /> <!-- Remove braces from if-else -->
+    <Refactoring Id="RR0096" IsEnabled="true" /> <!-- Remove braces from switch section -->
+    <Refactoring Id="RR0097" IsEnabled="true" /> <!-- Remove braces from switch sections -->
+    <Refactoring Id="RR0098" IsEnabled="true" /> <!-- Remove comment -->
+    <Refactoring Id="RR0099" IsEnabled="true" /> <!-- Remove condition from last else clause -->
+    <Refactoring Id="RR0100" IsEnabled="true" /> <!-- Remove directive and related directives -->
+    <Refactoring Id="RR0101" IsEnabled="true" /> <!-- Remove empty lines -->
+    <Refactoring Id="RR0102" IsEnabled="true" /> <!-- Remove interpolation -->
+    <Refactoring Id="RR0103" IsEnabled="true" /> <!-- Remove member -->
+    <Refactoring Id="RR0104" IsEnabled="true" /> <!-- Remove member declarations above/below -->
+    <Refactoring Id="RR0105" IsEnabled="true" /> <!-- Remove parameter name from argument -->
+    <Refactoring Id="RR0106" IsEnabled="true" /> <!-- Remove parentheses -->
+    <Refactoring Id="RR0107" IsEnabled="true" /> <!-- Remove property initializer -->
+    <Refactoring Id="RR0108" IsEnabled="true" /> <!-- Remove region -->
+    <Refactoring Id="RR0109" IsEnabled="true" /> <!-- Remove statement -->
+    <Refactoring Id="RR0110" IsEnabled="true" /> <!-- Remove statements from switch sections -->
+    <Refactoring Id="RR0111" IsEnabled="true" /> <!-- Rename backing field according to property name -->
+    <Refactoring Id="RR0112" IsEnabled="true" /> <!-- Rename identifier according to type name -->
+    <Refactoring Id="RR0113" IsEnabled="true" /> <!-- Rename method according to type name -->
+    <Refactoring Id="RR0114" IsEnabled="true" /> <!-- Rename parameter according to its type name -->
+    <Refactoring Id="RR0115" IsEnabled="true" /> <!-- Rename property according to type name -->
+    <Refactoring Id="RR0116" IsEnabled="true" /> <!-- Replace Any with All (or All with Any) -->
+    <Refactoring Id="RR0117" IsEnabled="true" /> <!-- Replace as expression with cast expression -->
+    <Refactoring Id="RR0118" IsEnabled="true" /> <!-- Replace cast expression with as expression -->
+    <Refactoring Id="RR0119" IsEnabled="true" /> <!-- Replace conditional expression with expression -->
+    <Refactoring Id="RR0120" IsEnabled="true" /> <!-- Replace ?: with if-else -->
+    <Refactoring Id="RR0121" IsEnabled="true" /> <!-- Replace constant with field -->
+    <Refactoring Id="RR0123" IsEnabled="true" /> <!-- Replace do statement with while statement -->
+    <Refactoring Id="RR0124" IsEnabled="true" /> <!-- Replace equals expression with string.Equals -->
+    <Refactoring Id="RR0125" IsEnabled="true" /> <!-- Replace equals expression with string.IsNullOrEmpty -->
+    <Refactoring Id="RR0126" IsEnabled="true" /> <!-- Replace equals expression with string.IsNullOrWhiteSpace -->
+    <Refactoring Id="RR0127" IsEnabled="true" /> <!-- Inline constant value -->
+    <Refactoring Id="RR0128" IsEnabled="true" /> <!-- Use constant instead of field -->
+    <Refactoring Id="RR0129" IsEnabled="true" /> <!-- Replace foreach statement with for statement -->
+    <Refactoring Id="RR0130" IsEnabled="true" /> <!-- Replace for statement with foreach statement -->
+    <Refactoring Id="RR0131" IsEnabled="true" /> <!-- Replace for statement with while statement -->
+    <Refactoring Id="RR0132" IsEnabled="true" /> <!-- Replace hexadecimal literal with decimal literal -->
+    <Refactoring Id="RR0133" IsEnabled="true" /> <!-- Replace if with switch -->
+    <Refactoring Id="RR0134" IsEnabled="true" /> <!-- Invert prefix/postfix unary operator -->
+    <Refactoring Id="RR0135" IsEnabled="true" /> <!-- Replace interpolated string with interpolation expression -->
+    <Refactoring Id="RR0136" IsEnabled="true" /> <!-- Replace interpolated string with string literal -->
+    <Refactoring Id="RR0137" IsEnabled="true" /> <!-- Replace method group with lambda -->
+    <Refactoring Id="RR0138" IsEnabled="false" /> <!-- Replace method with property -->
+    <Refactoring Id="RR0139" IsEnabled="true" /> <!-- Replace null literal expression with default expression -->
+    <Refactoring Id="RR0140" IsEnabled="true" /> <!-- Replace prefix operator to postfix operator -->
+    <Refactoring Id="RR0141" IsEnabled="true" /> <!-- Replace property with method -->
+    <Refactoring Id="RR0142" IsEnabled="true" /> <!-- Replace regular string literal with verbatim string literal -->
+    <Refactoring Id="RR0143" IsEnabled="true" /> <!-- Replace (yield) return statement with if-else -->
+    <Refactoring Id="RR0144" IsEnabled="true" /> <!-- Call string.IndexOf instead of string.Contains -->
+    <Refactoring Id="RR0145" IsEnabled="true" /> <!-- Replace string.Format with interpolated string -->
+    <Refactoring Id="RR0147" IsEnabled="true" /> <!-- Replace switch with if -->
+    <Refactoring Id="RR0148" IsEnabled="true" /> <!-- Replace verbatim string literal with regular string literal -->
+    <Refactoring Id="RR0149" IsEnabled="true" /> <!-- Replace verbatim string literal with regular string literals -->
+    <Refactoring Id="RR0150" IsEnabled="true" /> <!-- Replace while statement with do statement -->
+    <Refactoring Id="RR0151" IsEnabled="true" /> <!-- Replace while statement with for statement -->
+    <Refactoring Id="RR0152" IsEnabled="true" /> <!-- Reverse for loop -->
+    <Refactoring Id="RR0153" IsEnabled="true" /> <!-- Simplify if -->
+    <Refactoring Id="RR0154" IsEnabled="true" /> <!-- Simplify lambda expression -->
+    <Refactoring Id="RR0155" IsEnabled="true" /> <!-- Sort member declarations -->
+    <Refactoring Id="RR0156" IsEnabled="true" /> <!-- Split attributes -->
+    <Refactoring Id="RR0157" IsEnabled="true" /> <!-- Split switch labels -->
+    <Refactoring Id="RR0158" IsEnabled="true" /> <!-- Split variable declaration -->
+    <Refactoring Id="RR0159" IsEnabled="true" /> <!-- Swap binary operands -->
+    <Refactoring Id="RR0160" IsEnabled="true" /> <!-- Invert conditional expression -->
+    <Refactoring Id="RR0161" IsEnabled="true" /> <!-- Swap member declarations -->
+    <Refactoring Id="RR0162" IsEnabled="true" /> <!-- Invert if-else -->
+    <Refactoring Id="RR0163" IsEnabled="true" /> <!-- Uncomment single-line comment -->
+    <Refactoring Id="RR0164" IsEnabled="true" /> <!-- Use bitwise operation instead of calling 'HasFlag' -->
+    <Refactoring Id="RR0165" IsEnabled="true" /> <!-- Use coalesce expression instead of if -->
+    <Refactoring Id="RR0166" IsEnabled="true" /> <!-- Use conditional expression instead of if -->
+    <Refactoring Id="RR0167" IsEnabled="true" /> <!-- Use element access instead of 'First/Last'ElementAt' method -->
+    <Refactoring Id="RR0168" IsEnabled="true" /> <!-- Use "" instead of string.Empty -->
+    <Refactoring Id="RR0169" IsEnabled="true" /> <!-- Use expression-bodied member -->
+    <Refactoring Id="RR0170" IsEnabled="true" /> <!-- Use lambda expression instead of anonymous method -->
+    <Refactoring Id="RR0171" IsEnabled="false" /> <!-- Use string.Empty instead of "" -->
+    <Refactoring Id="RR0172" IsEnabled="true" /> <!-- Wrap in condition -->
+    <Refactoring Id="RR0173" IsEnabled="true" /> <!-- Wrap in else clause -->
+    <Refactoring Id="RR0174" IsEnabled="true" /> <!-- Wrap in #if directive -->
+    <Refactoring Id="RR0175" IsEnabled="true" /> <!-- Wrap in region -->
+    <Refactoring Id="RR0176" IsEnabled="true" /> <!-- Wrap in try-catch -->
+    <Refactoring Id="RR0177" IsEnabled="true" /> <!-- Wrap in using statement -->
+    <Refactoring Id="RR0178" IsEnabled="true" /> <!-- Add type parameter -->
+    <Refactoring Id="RR0179" IsEnabled="true" /> <!-- Implement IEquatable<T> -->
+    <Refactoring Id="RR0180" IsEnabled="true" /> <!-- Inline using static -->
+    <Refactoring Id="RR0181" IsEnabled="true" /> <!-- Inline constant -->
+    <Refactoring Id="RR0182" IsEnabled="true" /> <!-- Use StringBuilder instead of concatenation -->
+    <Refactoring Id="RR0183" IsEnabled="true" /> <!-- Use List<T> instead of yield -->
+    <Refactoring Id="RR0184" IsEnabled="true" /> <!-- Split if statement -->
+    <Refactoring Id="RR0185" IsEnabled="true" /> <!-- Replace object creation with default value -->
+    <Refactoring Id="RR0186" IsEnabled="true" /> <!-- Change accessibility -->
+    <Refactoring Id="RR0187" IsEnabled="true" /> <!-- Format constraint clauses -->
+    <Refactoring Id="RR0188" IsEnabled="false" /> <!-- Replace foreach with for and reverse loop -->
+    <Refactoring Id="RR0189" IsEnabled="true" /> <!-- Invert if -->
+    <Refactoring Id="RR0190" IsEnabled="true" /> <!-- Split if-else -->
+    <Refactoring Id="RR0191" IsEnabled="true" /> <!-- Use C# 6.0 dictionary initializer -->
+    <Refactoring Id="RR0192" IsEnabled="true" /> <!-- Replace comment with documentation comment -->
+    <Refactoring Id="RR0193" IsEnabled="true" /> <!-- Replace interpolated string with concatenation -->
+    <Refactoring Id="RR0194" IsEnabled="true" /> <!-- Split declaration and initialization -->
+    <Refactoring Id="RR0195" IsEnabled="true" /> <!-- Add member to interface -->
+    <Refactoring Id="RR0196" IsEnabled="true" /> <!-- Merge if with parent if -->
+    <Refactoring Id="RR0197" IsEnabled="true" /> <!-- Initialize field from constructor -->
+    <Refactoring Id="RR0198" IsEnabled="true" /> <!-- Inline property -->
+    <Refactoring Id="RR0199" IsEnabled="true" /> <!-- Remove enum member value(s) -->
+    <Refactoring Id="RR0200" IsEnabled="true" /> <!-- Uncomment multi-line comment -->
+    <Refactoring Id="RR0201" IsEnabled="true" /> <!-- Replace interpolated string with string.Format -->
+    <Refactoring Id="RR0202" IsEnabled="true" /> <!-- Move unsafe context to containing declaration -->
+    <Refactoring Id="RR0203" IsEnabled="true" /> <!-- Extract event handler method -->
+    <Refactoring Id="RR0204" IsEnabled="true" /> <!-- Generate property for DebuggerDisplay attribute -->
+    <Refactoring Id="RR0205" IsEnabled="true" /> <!-- Add empty line between declarations -->
+    <Refactoring Id="RR0206" IsEnabled="true" /> <!-- Replace foreach with enumerator -->
+    <Refactoring Id="RR0207" IsEnabled="true" /> <!-- Sort case labels -->
+    <Refactoring Id="RR0208" IsEnabled="true" /> <!-- Add tag to documentation comment -->
+    <Refactoring Id="RR0209" IsEnabled="true" /> <!-- Remove async/await -->
+    <Refactoring Id="RR0210" IsEnabled="true" /> <!-- Implement custom enumerator -->
+    <Refactoring Id="RR0211" IsEnabled="true" /> <!-- Convert statements to if-else -->
+  </Refactorings>
     <CodeFixes>
-      <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- RemoveUnusedVariable (fixes CS0168, CS0219) -->
-      <CodeFix Id="RCF0002" IsEnabled="true" /> <!-- AddBreakStatementToSwitchSection (fixes CS0163, CS8070) -->
-      <CodeFix Id="RCF0003" IsEnabled="true" /> <!-- CreateSingletonArray (fixes CS0266) -->
-      <CodeFix Id="RCF0004" IsEnabled="true" /> <!-- AddOutModifierToArgument (fixes CS1620) -->
-      <CodeFix Id="RCF0005" IsEnabled="true" /> <!-- MoveBaseClassBeforeAnyInterface (fixes CS1722) -->
-      <CodeFix Id="RCF0006" IsEnabled="true" /> <!-- AddOverrideModifier (fixes CS0114) -->
-      <CodeFix Id="RCF0007" IsEnabled="true" /> <!-- AddNewModifier (fixes CS0114) -->
-      <CodeFix Id="RCF0008" IsEnabled="true" /> <!-- ExtractDeclarationFromUsingStatement (fixes CS1674) -->
-      <CodeFix Id="RCF0009" IsEnabled="true" /> <!-- AddBracesToDeclarationOrLabeledStatement (fixes CS1023) -->
-      <CodeFix Id="RCF0010" IsEnabled="true" /> <!-- MarkOperatorAsPublicAndStatic (fixes CS0558) -->
-      <CodeFix Id="RCF0011" IsEnabled="true" /> <!-- RemoveDuplicateModifier (fixes CS1004) -->
-      <CodeFix Id="RCF0012" IsEnabled="true" /> <!-- RemoveDuplicateAttribute (fixes CS0579) -->
-      <CodeFix Id="RCF0013" IsEnabled="true" /> <!-- RemoveNewModifier (fixes CS0109) -->
-      <CodeFix Id="RCF0014" IsEnabled="true" /> <!-- RemoveUnusedLabel (fixes CS0164) -->
-      <CodeFix Id="RCF0016" IsEnabled="true" /> <!-- AddDocumentationComment (fixes CS1591) -->
-      <CodeFix Id="RCF0017" IsEnabled="true" /> <!-- RemoveUnreachableCode (fixes CS0162) -->
-      <CodeFix Id="RCF0018" IsEnabled="true" /> <!-- ChangeMethodReturnType (fixes CS0508, CS0766, CS1624, CS1983) -->
-      <CodeFix Id="RCF0019" IsEnabled="true" /> <!-- MemberTypeMustMatchOverriddenMemberType (fixes CS1715) -->
-      <CodeFix Id="RCF0020" IsEnabled="true" /> <!-- AddReturnStatementThatReturnsDefaultValue (fixes CS0161, CS1643) -->
-      <CodeFix Id="RCF0021" IsEnabled="true" /> <!-- UseYieldReturnInsteadOfReturn (fixes CS0029, CS1622) -->
-      <CodeFix Id="RCF0022" IsEnabled="true" /> <!-- ReplaceStringLiteralWithCharacterLiteral (fixes CS0029) -->
-      <CodeFix Id="RCF0023" IsEnabled="true" /> <!-- AddComparisonWithBooleanLiteral (fixes CS0019, CS0266) -->
-      <CodeFix Id="RCF0024" IsEnabled="true" /> <!-- RemovePropertyOrFieldInitializer (fixes CS0573, CS8050) -->
-      <CodeFix Id="RCF0025" IsEnabled="true" /> <!-- AddPartialModifier (fixes CS0101, CS0102, CS0260, CS0751) -->
-      <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- AddBody (fixes CS0501, CS0756, CS8112) -->
-      <CodeFix Id="RCF0027" IsEnabled="true" /> <!-- RemoveRefModifier (fixes CS0192, CS1615, CS1988, CS1623) -->
-      <CodeFix Id="RCF0028" IsEnabled="true" /> <!-- RemoveRedundantAssignment (fixes CS1717) -->
-      <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- ChangeAccessibility (fixes CS0621, CS0442, CS0507, CS0628, CS1057, CS1527) -->
-      <CodeFix Id="RCF0030" IsEnabled="true" /> <!-- ChangeTypeOfParamsParameter (fixes CS0225) -->
-      <CodeFix Id="RCF0031" IsEnabled="true" /> <!-- UseUncheckedExpression (fixes CS0221) -->
-      <CodeFix Id="RCF0032" IsEnabled="true" /> <!-- RemoveImplementationFromAbstractMember (fixes CS0069, CS0500, CS0531) -->
-      <CodeFix Id="RCF0033" IsEnabled="true" /> <!-- AddStaticModifier (fixes CS0708, CS0710, CS1105, CS1106) -->
-      <CodeFix Id="RCF0034" IsEnabled="true" /> <!-- MakeContainingClassAbstract (fixes CS0513) -->
-      <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- SynchronizeAccessibility (fixes CS0262) -->
-      <CodeFix Id="RCF0037" IsEnabled="true" /> <!-- RemoveArgumentList (fixes CS1955) -->
-      <CodeFix Id="RCF0038" IsEnabled="true" /> <!-- FixMemberAccessName (fixes CS1061) -->
-      <CodeFix Id="RCF0039" IsEnabled="true" /> <!-- AddArgumentList (fixes CS0023, CS0119, CS0428, CS0201, CS1526) -->
-      <CodeFix Id="RCF0040" IsEnabled="true" /> <!-- InitializeLocalVariableWithDefaultValue (fixes CS0165) -->
-      <CodeFix Id="RCF0041" IsEnabled="true" /> <!-- ChangeTypeOfLocalVariable (fixes CS0123, CS0407, CS0815) -->
-      <CodeFix Id="RCF0042" IsEnabled="true" /> <!-- MakeMemberNonStatic (fixes CS0120) -->
-      <CodeFix Id="RCF0043" IsEnabled="true" /> <!-- RemoveConstraintClauses (fixes CS0080) -->
-      <CodeFix Id="RCF0044" IsEnabled="true" /> <!-- AddTypeArgument (fixes CS0305) -->
-      <CodeFix Id="RCF0045" IsEnabled="true" /> <!-- RemoveConstModifier (fixes CS0131, CS0133) -->
-      <CodeFix Id="RCF0046" IsEnabled="true" /> <!-- RemoveEmptySwitchStatement (fixes CS1522) -->
-      <CodeFix Id="RCF0047" IsEnabled="true" /> <!-- IntroduceLocalVariable (fixes CS0201) -->
-      <CodeFix Id="RCF0048" IsEnabled="true" /> <!-- UseExplicitTypeInsteadOfVar (fixes CS0819, CS0822) -->
-      <CodeFix Id="RCF0049" IsEnabled="true" /> <!-- RemoveAwaitKeyword (fixes CS1061) -->
-      <CodeFix Id="RCF0050" IsEnabled="true" /> <!-- WrapInUnsafeStatement (fixes CS0214) -->
-      <CodeFix Id="RCF0051" IsEnabled="true" /> <!-- MakeContainingDeclarationUnsafe (fixes CS0214) -->
-      <CodeFix Id="RCF0052" IsEnabled="false" /> <!-- RemoveReturnKeyword (fixes CS0127, CS1997) -->
-      <CodeFix Id="RCF0053" IsEnabled="true" /> <!-- RemoveParametersFromStaticConstructor (fixes CS0132) -->
-      <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- OrderModifiers (fixes CS0267) -->
-      <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- RemoveInvalidModifier (fixes CS0107, CS0112, CS0115, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994) -->
-      <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- RemoveMemberDeclaration (fixes CS0114, CS0541, CS0525, CS0567, CS0568, CS0575) -->
-      <CodeFix Id="RCF0057" IsEnabled="false" /> <!-- RemoveReturnExpression (fixes CS0127, CS1997) -->
-      <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- ReplaceNullLiteralExpressionWithDefaultValue (fixes CS0037, CS0403, CS1503, CS1750) -->
-      <CodeFix Id="RCF0059" IsEnabled="true" /> <!-- ReplaceVariableDeclarationWithAssignment (fixes CS0128, CS0136) -->
-      <CodeFix Id="RCF0060" IsEnabled="true" /> <!-- RemoveThisModifier (fixes CS1100, CS1105, CS1106) -->
-      <CodeFix Id="RCF0061" IsEnabled="true" /> <!-- RemoveTypeParameter (fixes CS0693) -->
-      <CodeFix Id="RCF0062" IsEnabled="true" /> <!-- MakeContainingClassNonStatic (fixes CS0708, CS0710) -->
-      <CodeFix Id="RCF0063" IsEnabled="true" /> <!-- AddCastExpression (fixes CS0173) -->
-      <CodeFix Id="RCF0064" IsEnabled="true" /> <!-- MoveConstraint (fixes CS0401, CS0449) -->
-      <CodeFix Id="RCF0065" IsEnabled="true" /> <!-- RemoveConstraint (fixes CS0405, CS0450, CS0451, CS0714) -->
-      <CodeFix Id="RCF0066" IsEnabled="true" /> <!-- CombineConstraintClauses (fixes CS0409) -->
-      <CodeFix Id="RCF0067" IsEnabled="true" /> <!-- AssignDefaultValueToOutParameter (fixes CS0177) -->
-      <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- MakeClassNonStatic (fixes CS0713, CS0714, CS0718) -->
-      <CodeFix Id="RCF0069" IsEnabled="true" /> <!-- RemoveYieldKeyword (fixes CS1621) -->
-      <CodeFix Id="RCF0070" IsEnabled="true" /> <!-- RemoveOutModifier (fixes CS0192, CS1988, CS1623) -->
-      <CodeFix Id="RCF0071" IsEnabled="true" /> <!-- RemoveAttribute (fixes CS0592, CS1689) -->
-      <CodeFix Id="RCF0072" IsEnabled="true" /> <!-- RemoveJumpStatement (fixes CS0139) -->
-      <CodeFix Id="RCF0073" IsEnabled="true" /> <!-- UseCoalesceExpression (fixes CS0266) -->
-      <CodeFix Id="RCF0074" IsEnabled="true" /> <!-- ReplaceAsExpressionWithCastExpression (fixes CS0077) -->
-      <CodeFix Id="RCF0075" IsEnabled="true" /> <!-- RemoveConditionThatIsAlwaysEqualToTrueOrFalse (fixes CS0472) -->
-      <CodeFix Id="RCF0076" IsEnabled="true" /> <!-- IntroduceField (fixes CS0201) -->
-      <CodeFix Id="RCF0077" IsEnabled="true" /> <!-- ReplaceElementAccessWithInvocation (fixes CS0021) -->
-      <CodeFix Id="RCF0078" IsEnabled="true" /> <!-- AddVariableType (fixes CS0103) -->
-      <CodeFix Id="RCF0079" IsEnabled="true" /> <!-- ReplaceBreakWithContinue (fixes CS0139) -->
-      <CodeFix Id="RCF0080" IsEnabled="true" /> <!-- ChangeMemberTypeAccordingToReturnExpression (fixes CS0029, CS0127, CS0201, CS0266, CS1997) -->
-      <CodeFix Id="RCF0081" IsEnabled="true" /> <!-- ReturnDefaultValue (fixes CS0126) -->
-      <CodeFix Id="RCF0082" IsEnabled="true" /> <!-- DefineMatchingOperator (fixes CS0216) -->
-      <CodeFix Id="RCF0083" IsEnabled="true" /> <!-- DefineObjectEquals (fixes CS0660) -->
-      <CodeFix Id="RCF0084" IsEnabled="true" /> <!-- DefineObjectGetHashCode (fixes CS0659, CS0661) -->
-      <CodeFix Id="RCF0085" IsEnabled="true" /> <!-- ChangeArrayType (fixes CS0246) -->
-      <CodeFix Id="RCF0086" IsEnabled="true" /> <!-- AddMissingType (fixes CS1031) -->
-      <CodeFix Id="RCF0087" IsEnabled="true" /> <!-- ReplaceConditionalExpressionWithIfElse (fixes CS0201) -->
-      <CodeFix Id="RCF0088" IsEnabled="true" /> <!-- RemoveSemicolon (fixes CS1597) -->
-      <CodeFix Id="RCF0089" IsEnabled="true" /> <!-- RemoveConditionalAccess (fixes CS0023) -->
-      <CodeFix Id="RCF0090" IsEnabled="true" /> <!-- ChangeTypeAccordingToInitializer (fixes CS0029) -->
-      <CodeFix Id="RCF0091" IsEnabled="true" /> <!-- ChangeForEachType (fixes CS0030) -->
-      <CodeFix Id="RCF0092" IsEnabled="true" /> <!-- ChangeTypeToVar (fixes CS0029, CS0030) -->
-      <CodeFix Id="RCF0093" IsEnabled="true" /> <!-- RemoveDefaultValueFromParameter (fixes CS1751, CS1743) -->
-      <CodeFix Id="RCF0094" IsEnabled="true" /> <!-- ReplaceConstantWithField (fixes CS0133) -->
-      <CodeFix Id="RCF0095" IsEnabled="true" /> <!-- ReplaceStructWithClass (fixes CS0527) -->
-      <CodeFix Id="RCF0096" IsEnabled="true" /> <!-- ReplaceYieldReturnWithForEach (fixes CS0029) -->
-      <CodeFix Id="RCF0097" IsEnabled="true" /> <!-- ReplaceComparisonWithAssignment (fixes CS0201) -->
-      <CodeFix Id="RCF0098" IsEnabled="true" /> <!-- AddModifierAbstract (fixes CS0501) -->
-      <CodeFix Id="RCF0099" IsEnabled="true" /> <!-- MakeMemberReadOnly (fixes CS8340) -->
-      <CodeFix Id="RCF0100" IsEnabled="true" /> <!-- RemoveSealedModifier (fixes CS0238) -->
-      <CodeFix Id="RCF0101" IsEnabled="true" /> <!-- RemoveVirtualModifier (fixes CS0549) -->
-      <CodeFix Id="RCF0102" IsEnabled="true" /> <!-- MakeContainingClassUnsealed (fixes CS0549) -->
-      <CodeFix Id="RCF0103" IsEnabled="true" /> <!-- RemoveSwitchLabel (fixes CS0152) -->
-      <CodeFix Id="RCF0104" IsEnabled="true" /> <!-- RenameDestructorToMatchClassName (fixes CS0574) -->
-      <CodeFix Id="RCF0105" IsEnabled="true" /> <!-- RemoveBaseList (fixes CS0713, CS0714) -->
-      <CodeFix Id="RCF0106" IsEnabled="true" /> <!-- AddDefaultValueToParameter (fixes CS1737) -->
-      <CodeFix Id="RCF0107" IsEnabled="true" /> <!-- AddMissingComma (fixes CS1003) -->
-      <CodeFix Id="RCF0108" IsEnabled="true" /> <!-- RemoveParentheses (fixes CS0201) -->
-      <CodeFix Id="RCF0109" IsEnabled="true" /> <!-- RemoveParameter (fixes CS0136) -->
-      <CodeFix Id="RCF0110" IsEnabled="true" /> <!-- RenameTupleElement (fixes CS8139) -->
-      <CodeFix Id="RCF0111" IsEnabled="true" /> <!-- ChangeParameterType (fixes CS1750) -->
-      <CodeFix Id="RCF0112" IsEnabled="true" /> <!-- MarkDeclarationAsNonCLSCompliant (fixes CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027) -->
-      <CodeFix Id="RCF0113" IsEnabled="true" /> <!-- ReplaceCharacterLiteralWithStringLiteral (fixes CS1012) -->
-      <CodeFix Id="RCF0114" IsEnabled="true" /> <!-- MakeFieldWritable (fixes CS0191, CS0192) -->
-    </CodeFixes>
+    <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- Remove unused variable (fixes CS0168, CS0219) -->
+    <CodeFix Id="RCF0002" IsEnabled="true" /> <!-- Add break statement to switch section (fixes CS0163, CS8070) -->
+    <CodeFix Id="RCF0003" IsEnabled="true" /> <!-- Create singleton array (fixes CS0266) -->
+    <CodeFix Id="RCF0004" IsEnabled="true" /> <!-- Add 'out' modifier to argument (fixes CS1620) -->
+    <CodeFix Id="RCF0005" IsEnabled="true" /> <!-- Base base class before any interface (fixes CS1722) -->
+    <CodeFix Id="RCF0006" IsEnabled="true" /> <!-- Add 'override' modifier (fixes CS0114) -->
+    <CodeFix Id="RCF0007" IsEnabled="true" /> <!-- Add 'new' modifier (fixes CS0114) -->
+    <CodeFix Id="RCF0008" IsEnabled="true" /> <!-- Extract declaration from using statement (fixes CS1674) -->
+    <CodeFix Id="RCF0009" IsEnabled="true" /> <!-- Add braces to declaration or labeled statement (fixes CS1023) -->
+    <CodeFix Id="RCF0010" IsEnabled="true" /> <!-- Mark operator as 'public' and 'static' (fixes CS0558) -->
+    <CodeFix Id="RCF0011" IsEnabled="true" /> <!-- Remove duplicate modifier (fixes CS1004) -->
+    <CodeFix Id="RCF0012" IsEnabled="true" /> <!-- Remove duplicate attribute (fixes CS0579) -->
+    <CodeFix Id="RCF0013" IsEnabled="true" /> <!-- Remove new modifier (fixes CS0109) -->
+    <CodeFix Id="RCF0014" IsEnabled="true" /> <!-- Remove unused label (fixes CS0164) -->
+    <CodeFix Id="RCF0016" IsEnabled="true" /> <!-- Add documentation comment (fixes CS1591) -->
+    <CodeFix Id="RCF0017" IsEnabled="true" /> <!-- Unreachable code detected (fixes CS0162) -->
+    <CodeFix Id="RCF0018" IsEnabled="true" /> <!-- Change method return type (fixes CS0508, CS0766, CS1624, CS1983) -->
+    <CodeFix Id="RCF0019" IsEnabled="true" /> <!-- Member type must match overridden member type (fixes CS1715) -->
+    <CodeFix Id="RCF0020" IsEnabled="true" /> <!-- Add return statement that returns default value (fixes CS0161, CS1643) -->
+    <CodeFix Id="RCF0021" IsEnabled="true" /> <!-- Use yield return instead of return (fixes CS0029, CS1622) -->
+    <CodeFix Id="RCF0022" IsEnabled="true" /> <!-- Replace string literal with character literal (fixes CS0029) -->
+    <CodeFix Id="RCF0023" IsEnabled="true" /> <!-- Add comparison with boolean literal (fixes CS0019, CS0266) -->
+    <CodeFix Id="RCF0024" IsEnabled="true" /> <!-- Remove property or field initializer (fixes CS0573, CS8050) -->
+    <CodeFix Id="RCF0025" IsEnabled="true" /> <!-- Add 'partial' modifier (fixes CS0101, CS0102, CS0260, CS0751) -->
+    <CodeFix Id="RCF0026" IsEnabled="true" /> <!-- Add body (fixes CS0501, CS0756, CS8112) -->
+    <CodeFix Id="RCF0027" IsEnabled="true" /> <!-- Remove 'ref' modifier (fixes CS0192, CS1615, CS1988, CS1623) -->
+    <CodeFix Id="RCF0028" IsEnabled="true" /> <!-- Remove redundant assignment (fixes CS1717) -->
+    <CodeFix Id="RCF0029" IsEnabled="true" /> <!-- Change accessibility (fixes CS0621, CS0442, CS0507, CS0628, CS1057, CS1527) -->
+    <CodeFix Id="RCF0030" IsEnabled="true" /> <!-- Change type of 'params' parameter (fixes CS0225) -->
+    <CodeFix Id="RCF0031" IsEnabled="true" /> <!-- Use unchecked expression (fixes CS0221) -->
+    <CodeFix Id="RCF0032" IsEnabled="true" /> <!-- Remove implementation from abstract member (fixes CS0069, CS0500, CS0531) -->
+    <CodeFix Id="RCF0033" IsEnabled="true" /> <!-- Add 'static' modifier (fixes CS0708, CS0710, CS1105, CS1106) -->
+    <CodeFix Id="RCF0034" IsEnabled="true" /> <!-- Make containing class abstract (fixes CS0513) -->
+    <CodeFix Id="RCF0036" IsEnabled="true" /> <!-- Synchronize accessibility (fixes CS0262) -->
+    <CodeFix Id="RCF0037" IsEnabled="true" /> <!-- Remove argument list (fixes CS1955) -->
+    <CodeFix Id="RCF0038" IsEnabled="true" /> <!-- Fix member access name (fixes CS1061) -->
+    <CodeFix Id="RCF0039" IsEnabled="true" /> <!-- Add argument list (fixes CS0023, CS0119, CS0428, CS0201, CS1526) -->
+    <CodeFix Id="RCF0040" IsEnabled="true" /> <!-- Initialize local variable with default value (fixes CS0165) -->
+    <CodeFix Id="RCF0041" IsEnabled="true" /> <!-- Change type of local variable (fixes CS0123, CS0407, CS0815) -->
+    <CodeFix Id="RCF0042" IsEnabled="true" /> <!-- Make member non-static (fixes CS0120) -->
+    <CodeFix Id="RCF0043" IsEnabled="true" /> <!-- Remove constraint clauses (fixes CS0080) -->
+    <CodeFix Id="RCF0044" IsEnabled="true" /> <!-- Add type argument (fixes CS0305) -->
+    <CodeFix Id="RCF0045" IsEnabled="true" /> <!-- Remove 'const' modifier (fixes CS0131, CS0133) -->
+    <CodeFix Id="RCF0046" IsEnabled="true" /> <!-- Remove empty switch statement (fixes CS1522) -->
+    <CodeFix Id="RCF0047" IsEnabled="true" /> <!-- Introduce local variable (fixes CS0201) -->
+    <CodeFix Id="RCF0048" IsEnabled="true" /> <!-- Use explicit type instead of 'var' (fixes CS0819, CS0822) -->
+    <CodeFix Id="RCF0049" IsEnabled="true" /> <!-- Remove 'await' keyword (fixes CS1061) -->
+    <CodeFix Id="RCF0050" IsEnabled="true" /> <!-- Wrap in unsafe statement (fixes CS0214) -->
+    <CodeFix Id="RCF0051" IsEnabled="true" /> <!-- Make containing declaration unsafe (fixes CS0214) -->
+    <CodeFix Id="RCF0052" IsEnabled="false" /> <!-- Remove 'return' keyword (fixes CS0127, CS1997) -->
+    <CodeFix Id="RCF0053" IsEnabled="true" /> <!-- Remove parameters from static constructor (fixes CS0132) -->
+    <CodeFix Id="RCF0054" IsEnabled="true" /> <!-- Order modifiers (fixes CS0267) -->
+    <CodeFix Id="RCF0055" IsEnabled="true" /> <!-- Remove invalid modifier (fixes CS0107, CS0112, CS0115, CS0275, CS0441, CS0515, CS0678, CS0750, CS0753, CS0759, CS1609, CS1994) -->
+    <CodeFix Id="RCF0056" IsEnabled="true" /> <!-- Remove member declaration (fixes CS0114, CS0541, CS0525, CS0567, CS0568, CS0575) -->
+    <CodeFix Id="RCF0057" IsEnabled="false" /> <!-- Remove return expression (fixes CS0127, CS1997) -->
+    <CodeFix Id="RCF0058" IsEnabled="true" /> <!-- Replace 'null' with default value (fixes CS0037, CS0403, CS1503, CS1750) -->
+    <CodeFix Id="RCF0059" IsEnabled="true" /> <!-- Replace variable declaration with assignment (fixes CS0128, CS0136) -->
+    <CodeFix Id="RCF0060" IsEnabled="true" /> <!-- Remove 'this' modifier (fixes CS1100, CS1105, CS1106) -->
+    <CodeFix Id="RCF0061" IsEnabled="true" /> <!-- Remove type parameter (fixes CS0693) -->
+    <CodeFix Id="RCF0062" IsEnabled="true" /> <!-- Make containing class non-static (fixes CS0708, CS0710) -->
+    <CodeFix Id="RCF0063" IsEnabled="true" /> <!-- Add cast expression (fixes CS0173) -->
+    <CodeFix Id="RCF0064" IsEnabled="true" /> <!-- Move constraint (fixes CS0401, CS0449) -->
+    <CodeFix Id="RCF0065" IsEnabled="true" /> <!-- Remove constraint (fixes CS0405, CS0450, CS0451, CS0714) -->
+    <CodeFix Id="RCF0066" IsEnabled="true" /> <!-- Combine constraint clauses (fixes CS0409) -->
+    <CodeFix Id="RCF0067" IsEnabled="true" /> <!-- Assign default value to 'out' parameter (fixes CS0177) -->
+    <CodeFix Id="RCF0068" IsEnabled="true" /> <!-- Make class non-static (fixes CS0713, CS0714, CS0718) -->
+    <CodeFix Id="RCF0069" IsEnabled="true" /> <!-- Remove 'yield' keyword (fixes CS1621) -->
+    <CodeFix Id="RCF0070" IsEnabled="true" /> <!-- Remove 'out' modifier (fixes CS0192, CS1988, CS1623) -->
+    <CodeFix Id="RCF0071" IsEnabled="true" /> <!-- Remove attribute (fixes CS0592, CS1689) -->
+    <CodeFix Id="RCF0072" IsEnabled="true" /> <!-- Remove jump statement (fixes CS0139) -->
+    <CodeFix Id="RCF0073" IsEnabled="true" /> <!-- Use coalesce expression (fixes CS0266) -->
+    <CodeFix Id="RCF0074" IsEnabled="true" /> <!-- Replace as expression with cast expression (fixes CS0077) -->
+    <CodeFix Id="RCF0075" IsEnabled="true" /> <!-- Remove condition that is always equal to true/false (fixes CS0472) -->
+    <CodeFix Id="RCF0076" IsEnabled="true" /> <!-- Introduce field (fixes CS0201) -->
+    <CodeFix Id="RCF0077" IsEnabled="true" /> <!-- Replace element access with invocation (fixes CS0021) -->
+    <CodeFix Id="RCF0078" IsEnabled="true" /> <!-- Add variable type (fixes CS0103) -->
+    <CodeFix Id="RCF0079" IsEnabled="true" /> <!-- Replace 'break' with 'continue' (fixes CS0139) -->
+    <CodeFix Id="RCF0080" IsEnabled="true" /> <!-- Change member type according to return expression (fixes CS0029, CS0127, CS0201, CS0266, CS1997) -->
+    <CodeFix Id="RCF0081" IsEnabled="true" /> <!-- Return default value (fixes CS0126) -->
+    <CodeFix Id="RCF0082" IsEnabled="true" /> <!-- Define matching operator (fixes CS0216) -->
+    <CodeFix Id="RCF0083" IsEnabled="true" /> <!-- Define object.Equals (fixes CS0660) -->
+    <CodeFix Id="RCF0084" IsEnabled="true" /> <!-- Define object.GetHashCode (fixes CS0659, CS0661) -->
+    <CodeFix Id="RCF0085" IsEnabled="true" /> <!-- Change array type (fixes CS0246) -->
+    <CodeFix Id="RCF0086" IsEnabled="true" /> <!-- Add missing type (fixes CS1031) -->
+    <CodeFix Id="RCF0087" IsEnabled="true" /> <!-- Replace conditional expression with if-else (fixes CS0201) -->
+    <CodeFix Id="RCF0088" IsEnabled="true" /> <!-- Remove semicolon (fixes CS1597) -->
+    <CodeFix Id="RCF0089" IsEnabled="true" /> <!-- Remove conditional access (fixes CS0023) -->
+    <CodeFix Id="RCF0090" IsEnabled="true" /> <!-- Change type according to initializer (fixes CS0029) -->
+    <CodeFix Id="RCF0091" IsEnabled="true" /> <!-- Change foreach type (fixes CS0030) -->
+    <CodeFix Id="RCF0092" IsEnabled="true" /> <!-- Change type to var (fixes CS0029, CS0030) -->
+    <CodeFix Id="RCF0093" IsEnabled="true" /> <!-- Remove default value from parameter (fixes CS1751, CS1743) -->
+    <CodeFix Id="RCF0094" IsEnabled="true" /> <!-- Replace constant with field (fixes CS0133) -->
+    <CodeFix Id="RCF0095" IsEnabled="true" /> <!-- Replace struct with class (fixes CS0527) -->
+    <CodeFix Id="RCF0096" IsEnabled="true" /> <!-- Replace yield return with foreach (fixes CS0029) -->
+    <CodeFix Id="RCF0097" IsEnabled="true" /> <!-- Replace comparison with assignment (fixes CS0201) -->
+    <CodeFix Id="RCF0098" IsEnabled="true" /> <!-- Add modifier 'abstract' (fixes CS0501) -->
+    <CodeFix Id="RCF0099" IsEnabled="true" /> <!-- Make member read-only' (fixes CS8340) -->
+    <CodeFix Id="RCF0100" IsEnabled="true" /> <!-- Remove 'sealed' modifier (fixes CS0238) -->
+    <CodeFix Id="RCF0101" IsEnabled="true" /> <!-- Remove 'virtual' modifier (fixes CS0549) -->
+    <CodeFix Id="RCF0102" IsEnabled="true" /> <!-- Make containing class unsealed (fixes CS0549) -->
+    <CodeFix Id="RCF0103" IsEnabled="true" /> <!-- Remove switch label (fixes CS0152) -->
+    <CodeFix Id="RCF0104" IsEnabled="true" /> <!-- Rename destructor to match class name (fixes CS0574) -->
+    <CodeFix Id="RCF0105" IsEnabled="true" /> <!-- Remove base list (fixes CS0713, CS0714) -->
+    <CodeFix Id="RCF0106" IsEnabled="true" /> <!-- Add default value to parameter (fixes CS1737) -->
+    <CodeFix Id="RCF0107" IsEnabled="true" /> <!-- Add missing comma (fixes CS1003) -->
+    <CodeFix Id="RCF0108" IsEnabled="true" /> <!-- Remove parentheses (fixes CS0201) -->
+    <CodeFix Id="RCF0109" IsEnabled="true" /> <!-- Remove parameter (fixes CS0136) -->
+    <CodeFix Id="RCF0110" IsEnabled="true" /> <!-- Rename tuple element to match overridden member (fixes CS8139) -->
+    <CodeFix Id="RCF0111" IsEnabled="true" /> <!-- Change parameter type (fixes CS1750) -->
+    <CodeFix Id="RCF0112" IsEnabled="true" /> <!-- Mark declaration as non-CLS-compliant (fixes CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027) -->
+    <CodeFix Id="RCF0113" IsEnabled="true" /> <!-- Replace character literal with string literal (fixes CS1012) -->
+    <CodeFix Id="RCF0114" IsEnabled="true" /> <!-- Make field writable (fixes CS0191, CS0192) -->
+  </CodeFixes>
   </Settings>
 </Roslynator>
