@@ -2058,10 +2058,10 @@ if (y && x)
 string s = null;
 ```
 
-#### UncommentSingleLineComment \(RR0163\)
+#### Uncomment single\-line comment \(RR0163\)
 
 * **Syntax**: single\-line comment\(s\)
-![UncommentSingleLineComment](../../images/refactorings/UncommentSingleLineComment.png)
+![Uncomment single-line comment](../../images/refactorings/UncommentSingleLineComment.png)
 
 #### Use "" instead of string\.Empty \(RR0168\)
 

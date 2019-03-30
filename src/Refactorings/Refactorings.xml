@@ -1295,7 +1295,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>if keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="UncommentSingleLineComment">
+  <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="Uncomment single-line comment">
     <Syntaxes>
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>

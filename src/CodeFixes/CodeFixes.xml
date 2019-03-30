@@ -192,7 +192,7 @@
       <Id>CS0513</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0036" Identifier="SynchronizeAccessibility" Title="SynchronizeAccessibility">
+  <CodeFix Id="RCF0036" Identifier="SynchronizeAccessibility" Title="Synchronize accessibility">
     <FixableDiagnosticIds>
       <Id>CS0262</Id>
     </FixableDiagnosticIds>
@@ -576,7 +576,7 @@
       <Id>CS0549</Id>
     </FixableDiagnosticIds>
   </CodeFix>
-  <CodeFix Id="RCF0103" Identifier="RemoveSwitchLabel" Title="RemoveSwitchLabel">
+  <CodeFix Id="RCF0103" Identifier="RemoveSwitchLabel" Title="Remove switch label">
     <FixableDiagnosticIds>
       <Id>CS0152</Id>
     </FixableDiagnosticIds>
