@@ -137,8 +137,11 @@ namespace Roslynator.CSharp.Analysis
                                     if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.RemoveRedundantToStringCall))
                                         RemoveRedundantToStringCallAnalysis.Analyze(context, invocationInfo);
 
-                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseNameOfOperator))
+                                    if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseNameOfOperator)
+                                        && ((CSharpCompilation)context.Compilation).LanguageVersion >= LanguageVersion.CSharp6)
+                                    {
                                         UseNameOfOperatorAnalyzer.Analyze(context, invocationInfo);
+                                    }
 
                                     break;
                                 }

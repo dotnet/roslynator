@@ -261,7 +261,7 @@ namespace Roslynator.CSharp
         /// <summary>RCF0036 (fixes CS0262)</summary>
         public static readonly CodeFixDescriptor SynchronizeAccessibility = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.SynchronizeAccessibility, 
-            title:              "SynchronizeAccessibility", 
+            title:              "Synchronize accessibility", 
             isEnabledByDefault: true, 
             "CS0262");
 
@@ -779,7 +779,7 @@ namespace Roslynator.CSharp
         /// <summary>RCF0103 (fixes CS0152)</summary>
         public static readonly CodeFixDescriptor RemoveSwitchLabel = new CodeFixDescriptor(
             id:                 CodeFixIdentifiers.RemoveSwitchLabel, 
-            title:              "RemoveSwitchLabel", 
+            title:              "Remove switch label", 
             isEnabledByDefault: true, 
             "CS0152");
 

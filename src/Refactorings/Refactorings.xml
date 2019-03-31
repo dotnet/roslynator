@@ -878,9 +878,9 @@ return true;]]></After>
       <Syntax>property identifier</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0116" Identifier="ReplaceAnyWithAllOrAllWithAny" Title="Replace Any with All (or All with Any)">
+  <Refactoring Id="RR0116" Identifier="InvertLinqMethodCall" Title="Invert LINQ method call">
     <Syntaxes>
-      <Syntax>Any(Func&lt;T, bool&gt; or All(Func&lt;T, bool&gt; from System.Linq.Enumerable namespace</Syntax>
+      <Syntax>System.Linq.Enumerable.Any(Func&lt;T, bool&gt;) or System.Linq.Enumerable.All(Func&lt;T, bool&gt;)</Syntax>
     </Syntaxes>
     <Span>method name</Span>
   </Refactoring>
@@ -1295,7 +1295,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>if keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="UncommentSingleLineComment">
+  <Refactoring Id="RR0163" Identifier="UncommentSingleLineComment" Title="Uncomment single-line comment">
     <Syntaxes>
       <Syntax>single-line comment(s)</Syntax>
     </Syntaxes>

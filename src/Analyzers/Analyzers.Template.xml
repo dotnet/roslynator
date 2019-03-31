@@ -9,6 +9,7 @@
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion></MinLanguageVersion>
     <Summary></Summary>
     <Samples>
       <Sample>

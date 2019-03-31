@@ -28,6 +28,17 @@ namespace Roslynator.CSharp
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
 
+        public static Task<Document> ToSingleLineAsync<TNode>(
+            Document document,
+            TNode node,
+            TextSpan span,
+            CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
+        {
+            TNode newNode = node.ReplaceWhitespace(ElasticSpace, span).WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(node, newNode, cancellationToken);
+        }
+
         public static Task<Document> ToSingleLineAsync(
             Document document,
             InitializerExpressionSyntax initializer,

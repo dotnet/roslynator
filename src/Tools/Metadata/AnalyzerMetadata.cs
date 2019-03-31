@@ -20,6 +20,7 @@ namespace Roslynator.Metadata
             bool isObsolete,
             bool supportsFadeOut,
             bool supportsFadeOutAnalyzer,
+            string minLanguageVersion,
             string summary,
             string remarks,
             IEnumerable<SampleMetadata> samples,
@@ -36,6 +37,7 @@ namespace Roslynator.Metadata
             IsObsolete = isObsolete;
             SupportsFadeOut = supportsFadeOut;
             SupportsFadeOutAnalyzer = supportsFadeOutAnalyzer;
+            MinLanguageVersion = minLanguageVersion;
             Summary = summary;
             Remarks = remarks;
             Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
@@ -62,6 +64,8 @@ namespace Roslynator.Metadata
         public bool SupportsFadeOut { get; }
 
         public bool SupportsFadeOutAnalyzer { get; }
+
+        public string MinLanguageVersion { get; }
 
         public string Summary { get; }
 

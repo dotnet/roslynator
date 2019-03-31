@@ -22,6 +22,7 @@ To update documentation it is necessary to edit [Analyzers.xml](../src/Analyzers
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut> <!-- true if analyzer will fade some tokens -->
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer> <!-- if true, RCSXXXXFadeOut analyzer will be generated -->
+    <MinLanguageVersion>0.0</MinLanguageVersion> <!-- optional section that specified minimal language version -->
     <Summary>Summary</Summary> <!-- optional section that contains raw markdown -->
     <Samples> 
       <Sample>

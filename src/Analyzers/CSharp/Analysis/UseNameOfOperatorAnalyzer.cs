@@ -38,6 +38,9 @@ namespace Roslynator.CSharp.Analysis
                 if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.UseNameOfOperator))
                     return;
 
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp6)
+                    return;
+
                 startContext.RegisterSyntaxNodeAction(AnalyzeArgument, SyntaxKind.Argument);
             });
         }

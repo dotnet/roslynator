@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.CodeAnalysis.Text;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -49,7 +50,8 @@ namespace Roslynator.CSharp.Refactorings
                             "Format initializer on a single line",
                             cancellationToken => SyntaxFormatter.ToSingleLineAsync(
                                 context.Document,
-                                initializer,
+                                initializer.Parent,
+                                TextSpan.FromBounds(initializer.OpenBraceToken.GetPreviousToken().Span.End, initializer.CloseBraceToken.Span.End),
                                 cancellationToken),
                             RefactoringIdentifiers.FormatInitializer);
                     }

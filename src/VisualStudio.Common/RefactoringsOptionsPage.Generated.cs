@@ -142,7 +142,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenameMethodAccordingToTypeName, "Rename method according to type name", IsEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenameParameterAccordingToTypeName, "Rename parameter according to its type name", IsEnabled(RefactoringIdentifiers.RenameParameterAccordingToTypeName)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RenamePropertyAccordingToTypeName, "Rename property according to type name", IsEnabled(RefactoringIdentifiers.RenamePropertyAccordingToTypeName)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny, "Replace Any with All (or All with Any)", IsEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertLinqMethodCall, "Invert LINQ method call", IsEnabled(RefactoringIdentifiers.InvertLinqMethodCall)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceAsWithCast, "Replace as expression with cast expression", IsEnabled(RefactoringIdentifiers.ReplaceAsWithCast)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceCastWithAs, "Replace cast expression with as expression", IsEnabled(RefactoringIdentifiers.ReplaceCastWithAs)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression, "Replace conditional expression with expression", IsEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithExpression)));
@@ -187,7 +187,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertConditionalExpression, "Invert conditional expression", IsEnabled(RefactoringIdentifiers.InvertConditionalExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SwapMemberDeclarations, "Swap member declarations", IsEnabled(RefactoringIdentifiers.SwapMemberDeclarations)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.InvertIfElse, "Invert if-else", IsEnabled(RefactoringIdentifiers.InvertIfElse)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentSingleLineComment, "UncommentSingleLineComment", IsEnabled(RefactoringIdentifiers.UncommentSingleLineComment)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.UncommentSingleLineComment, "Uncomment single-line comment", IsEnabled(RefactoringIdentifiers.UncommentSingleLineComment)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag, "Use bitwise operation instead of calling 'HasFlag'", IsEnabled(RefactoringIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf, "Use coalesce expression instead of if", IsEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf, "Use conditional expression instead of if", IsEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)));

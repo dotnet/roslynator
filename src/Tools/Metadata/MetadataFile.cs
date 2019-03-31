@@ -43,6 +43,7 @@ namespace Roslynator.Metadata
                     element.AttributeValueAsBooleanOrDefault("IsObsolete"),
                     bool.Parse(element.Element("SupportsFadeOut").Value),
                     bool.Parse(element.Element("SupportsFadeOutAnalyzer").Value),
+                    element.Element("MinLanguageVersion")?.Value,
                     element.Element("Summary")?.Value.NormalizeNewLine(),
                     element.Element("Remarks")?.Value.NormalizeNewLine(),
                     LoadSamples(element)?.Select(f => new SampleMetadata(f.Before.Replace("[|Id|]", id), f.After)),

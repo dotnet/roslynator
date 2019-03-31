@@ -26,14 +26,17 @@ namespace Roslynator.CSharp.Analysis.UsePatternMatching
 
             base.Initialize(context);
 
-            context.RegisterSyntaxNodeAction(AnalyzeIsExpression, SyntaxKind.IsExpression);
+            context.RegisterCompilationStartAction(startContext =>
+            {
+                if (((CSharpCompilation)startContext.Compilation).LanguageVersion < LanguageVersion.CSharp7)
+                    return;
+
+                startContext.RegisterSyntaxNodeAction(AnalyzeIsExpression, SyntaxKind.IsExpression);
+            });
         }
 
         public static void AnalyzeIsExpression(SyntaxNodeAnalysisContext context)
         {
-            if (((CSharpCompilation)context.Compilation).LanguageVersion <= LanguageVersion.CSharp7)
-                return;
-
             var isExpression = (BinaryExpressionSyntax)context.Node;
 
             IsExpressionInfo isExpressionInfo = SyntaxInfo.IsExpressionInfo(isExpression);

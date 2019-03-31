@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod,
-                RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny,
+                RefactoringIdentifiers.InvertLinqMethodCall,
                 RefactoringIdentifiers.CallExtensionMethodAsInstanceMethod,
                 RefactoringIdentifiers.CallIndexOfInsteadOfContains))
             {
@@ -30,8 +30,11 @@ namespace Roslynator.CSharp.Refactorings
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseElementAccessInsteadOfEnumerableMethod))
                             await UseElementAccessRefactoring.ComputeRefactoringsAsync(context, invocationExpression).ConfigureAwait(false);
 
-                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceAnyWithAllOrAllWithAny))
-                            await ReplaceAnyWithAllOrAllWithAnyRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
+                        if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertLinqMethodCall))
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+                            InvertLinqMethodCallRefactoring.ComputeRefactoring(context, invocationExpression, semanticModel);
+                        }
 
                         if (context.IsRefactoringEnabled(RefactoringIdentifiers.CallIndexOfInsteadOfContains))
                             await CallIndexOfInsteadOfContainsRefactoring.ComputeRefactoringAsync(context, invocationExpression).ConfigureAwait(false);
