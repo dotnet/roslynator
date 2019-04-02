@@ -19,6 +19,7 @@
       <TextBlock TextWrapping="WrapWithOverflow">
       "Global Suppressions" feature has been deprecated in Roslynator 2019.
       For replacement, please see file "roslynator.ruleset" located in the extension directory.
+      Please note that Visual Studio must be restarted to activate changes in this file.
       </TextBlock>
       <Button Content="Open location" Click="OpenLocation_Click" />
     </WrapPanel>

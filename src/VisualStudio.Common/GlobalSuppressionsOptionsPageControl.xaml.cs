@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using Roslynator.CSharp;
 using System.ComponentModel;
 
 namespace Roslynator.VisualStudio
@@ -20,30 +19,27 @@ namespace Roslynator.VisualStudio
 
         private void OpenLocation_Click(object sender, RoutedEventArgs e)
         {
-            string appDataFolder = Path.Combine(
-                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), 
+            string appDataFolderPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
                 @"JosefPihrt\Roslynator\VisualStudio\2019");
-            string ruleSetPath = Path.Combine(appDataFolder, "roslynator.ruleset");
+
+            string ruleSetPath = Path.Combine(appDataFolderPath, "roslynator.ruleset");
 
             if (!File.Exists(ruleSetPath))
             {
                 try
                 {
-                    string defaultRulesetFileName = GetDefaultRulesetFileName();
-                    if (defaultRulesetFileName != null && File.Exists(defaultRulesetFileName))
+                    string defaultRuleSetFileName = GetDefaultRulesetFileName();
+                    if (File.Exists(defaultRuleSetFileName))
                     {
-                        if (!Directory.Exists(appDataFolder))
-                        {
-                            Directory.CreateDirectory(appDataFolder);
-                        }
-                        File.Copy(defaultRulesetFileName, ruleSetPath);
+                        Directory.CreateDirectory(appDataFolderPath);
+
+                        File.Copy(defaultRuleSetFileName, ruleSetPath);
                     }
                 }
                 catch (Exception ex)
                 {
-                    if (ex is InvalidOperationException
-                        || ex is FileNotFoundException
-                        || ex is Win32Exception)
+                    if (ex is IOException || ex is UnauthorizedAccessException)
                     {
                         MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
                     }
@@ -86,10 +82,9 @@ namespace Roslynator.VisualStudio
                 string assemblyDirPath = Path.GetDirectoryName(assemblyPath);
 
                 if (!string.IsNullOrEmpty(assemblyDirPath))
-                {
-                    return  Path.Combine(assemblyDirPath, "roslynator.ruleset");
-                }
+                    return Path.Combine(assemblyDirPath, "roslynator.ruleset");
             }
+
             return null;
         }
     }
