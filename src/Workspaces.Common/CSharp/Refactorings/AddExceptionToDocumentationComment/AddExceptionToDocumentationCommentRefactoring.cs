@@ -253,7 +253,7 @@ namespace Roslynator.CSharp.Refactorings.AddExceptionToDocumentationComment
             AddExceptionToDocumentationCommentAnalysisResult analysis,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             var memberDeclaration = (MemberDeclarationSyntax)await analysis.DeclarationSymbol
                 .GetSyntaxAsync(cancellationToken)

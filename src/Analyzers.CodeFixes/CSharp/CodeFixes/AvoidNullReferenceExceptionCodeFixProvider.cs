@@ -93,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             var conditionalAccessExpression = (ConditionalAccessExpressionSyntax)root.FindNode(span, getInnermostNodeForTie: true);
 
-            SemanticModel semanticModel = await newDocument.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await newDocument.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             TypeInfo typeInfo = semanticModel.GetTypeInfo(conditionalAccessExpression, cancellationToken);
 

@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                     .WithModifiers(TokenList(Token(SyntaxKind.ConstKeyword).WithLeadingTrivia(newNode.GetLeadingTrivia())));
             }
 
-            return await document.ReplaceNodeAsync(localDeclaration, newNode).ConfigureAwait(false);
+            return await document.ReplaceNodeAsync(localDeclaration, newNode, cancellationToken).ConfigureAwait(false);
         }
     }
 }
