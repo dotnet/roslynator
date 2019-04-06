@@ -1019,11 +1019,11 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a new <see cref="Syntax.StatementListInfo"/> from the specified statement.
         /// </summary>
-        /// <param name="statement"></param>
+        /// <param name="statementInList"></param>
         /// <returns></returns>
-        public static StatementListInfo StatementListInfo(StatementSyntax statement)
+        public static StatementListInfo StatementListInfo(StatementSyntax statementInList)
         {
-            return Syntax.StatementListInfo.Create(statement);
+            return Syntax.StatementListInfo.Create(statementInList);
         }
 
         internal static StatementListInfo StatementListInfo(StatementListSelection selectedStatements)
