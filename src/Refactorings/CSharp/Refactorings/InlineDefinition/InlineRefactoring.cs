@@ -277,23 +277,27 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                 }
                 else if (symbolMap != null)
                 {
-                    if (kind.Is(
-                        SyntaxKind.VariableDeclarator,
-                        SyntaxKind.SingleVariableDesignation,
-                        SyntaxKind.Parameter,
-                        SyntaxKind.TypeParameter,
-                        SyntaxKind.ForEachStatement,
-                        SyntaxKind.ForEachVariableStatement))
+                    switch (kind)
                     {
-                        ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, CancellationToken);
+                        case SyntaxKind.VariableDeclarator:
+                        case SyntaxKind.SingleVariableDesignation:
+                        case SyntaxKind.Parameter:
+                        case SyntaxKind.TypeParameter:
+                        case SyntaxKind.ForEachStatement:
+                        case SyntaxKind.ForEachVariableStatement:
+                            {
+                                ISymbol symbol = DeclarationSemanticModel.GetDeclaredSymbol(descendant, CancellationToken);
 
-                        Debug.Assert(symbol != null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
+                                Debug.Assert(symbol != null || (descendant as ForEachVariableStatementSyntax)?.Variable?.Kind() == SyntaxKind.TupleExpression, kind.ToString());
 
-                        if (symbol != null
-                            && symbolMap.TryGetValue(symbol, out string name))
-                        {
-                            replacementMap.Add(descendant, name);
-                        }
+                                if (symbol != null
+                                    && symbolMap.TryGetValue(symbol, out string name))
+                                {
+                                    replacementMap.Add(descendant, name);
+                                }
+
+                                break;
+                            }
                     }
                 }
             }
