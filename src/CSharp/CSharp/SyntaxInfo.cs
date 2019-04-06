@@ -940,6 +940,19 @@ namespace Roslynator.CSharp
         }
 
         /// <summary>
+        /// Creates a new <see cref="Syntax.SingleLocalDeclarationStatementInfo"/> from the specified statement.
+        /// </summary>
+        /// <param name="statement"></param>
+        /// <param name="allowMissing"></param>
+        /// <returns></returns>
+        public static SingleLocalDeclarationStatementInfo SingleLocalDeclarationStatementInfo(
+            StatementSyntax statement,
+            bool allowMissing = false)
+        {
+            return Syntax.SingleLocalDeclarationStatementInfo.Create(statement, allowMissing);
+        }
+
+        /// <summary>
         /// Creates a new <see cref="Syntax.SingleLocalDeclarationStatementInfo"/> from the specified local declaration statement.
         /// </summary>
         /// <param name="localDeclarationStatement"></param>
