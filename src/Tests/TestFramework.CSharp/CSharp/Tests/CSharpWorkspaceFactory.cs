@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.Tests;
@@ -31,7 +32,8 @@ namespace Roslynator.CSharp.Tests
                 : CSharpCodeVerificationOptions.Default;
 
             CSharpParseOptions newParseOptions = parseOptions
-                .WithLanguageVersion(csharpOptions.LanguageVersion);
+                .WithLanguageVersion(csharpOptions.LanguageVersion)
+                .WithPreprocessorSymbols(parseOptions.PreprocessorSymbolNames.Concat(new string[] { "DEBUG" }));
 
             return project
                 .WithCompilationOptions(newCompilationOptions)

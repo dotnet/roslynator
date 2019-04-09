@@ -100,11 +100,11 @@ class C
 
         if ((f)
 #if DEBUG
-                ? true
-            : false;
-#else
                 ? false
                 : true) { }
+#else
+                ? true
+                : false;
 #endif
     }
 }
