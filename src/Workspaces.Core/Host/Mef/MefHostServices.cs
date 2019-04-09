@@ -78,10 +78,12 @@ namespace Roslynator.Host.Mef
 
             IEnumerable<string> GetAssemblyNames()
             {
-                Version assemblyVersion = typeof(MefHostServices).GetTypeInfo().Assembly.GetName().Version;
+                AssemblyName assemblyName = typeof(MefHostServices).GetTypeInfo().Assembly.GetName();
+                Version assemblyVersion = assemblyName.Version;
+                string publicKeyToken = assemblyName.GetPublicKeyToken().Aggregate("", (s, b) => s + b.ToString("x2"));
 
-                yield return $"Roslynator.CSharp.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken=ec3f0c29a7973f23";
-                yield return $"Roslynator.VisualBasic.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken=59e9c6ae3cea4cef";
+                yield return $"Roslynator.CSharp.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";
+                yield return $"Roslynator.VisualBasic.Workspaces, Version={assemblyVersion}, Culture=neutral, PublicKeyToken={publicKeyToken}";
             }
         }
 
