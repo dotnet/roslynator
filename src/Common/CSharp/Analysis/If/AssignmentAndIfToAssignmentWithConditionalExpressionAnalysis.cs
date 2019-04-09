@@ -5,9 +5,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Analysis.If
 {
-    internal sealed class AssignmentAndIfElseToAssignmentWithConditionalExpressionAnalysis : ToAssignmentWithConditionalExpressionAnalysis<ExpressionStatementSyntax>
+    internal sealed class AssignmentAndIfToAssignmentWithConditionalExpressionAnalysis : ToAssignmentWithConditionalExpressionAnalysis<ExpressionStatementSyntax>
     {
-        internal AssignmentAndIfElseToAssignmentWithConditionalExpressionAnalysis(
+        internal AssignmentAndIfToAssignmentWithConditionalExpressionAnalysis(
             ExpressionStatementSyntax statement,
             ExpressionSyntax right,
             IfStatementSyntax ifStatement,
@@ -15,14 +15,14 @@ namespace Roslynator.CSharp.Analysis.If
             ExpressionSyntax whenFalse,
             SemanticModel semanticModel) : base(statement, ifStatement, whenTrue, whenFalse, semanticModel)
         {
-            Left = right;
+            Right = right;
         }
 
-        public ExpressionSyntax Left { get; }
+        public ExpressionSyntax Right { get; }
 
         public override IfAnalysisKind Kind
         {
-            get { return IfAnalysisKind.AssignmentAndIfElseToAssignmentWithConditionalExpression; }
+            get { return IfAnalysisKind.AssignmentAndIfToAssignmentWithConditionalExpression; }
         }
     }
 }

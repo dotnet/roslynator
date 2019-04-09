@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
                 case IfAnalysisKind.IfReturnToReturnWithCoalesceExpression:
                     return RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf;
                 case IfAnalysisKind.IfElseToAssignmentWithConditionalExpression:
-                case IfAnalysisKind.AssignmentAndIfElseToAssignmentWithConditionalExpression:
+                case IfAnalysisKind.AssignmentAndIfToAssignmentWithConditionalExpression:
                 case IfAnalysisKind.LocalDeclarationAndIfElseAssignmentWithConditionalExpression:
                 case IfAnalysisKind.IfElseToReturnWithConditionalExpression:
                 case IfAnalysisKind.IfElseToYieldReturnWithConditionalExpression:

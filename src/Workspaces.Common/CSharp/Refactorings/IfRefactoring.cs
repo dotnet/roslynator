@@ -29,13 +29,13 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         return IfElseToAssignmentWithConditionalExpressionAsync(document, (IfElseToAssignmentWithConditionalExpressionAnalysis)ifAnalysis, cancellationToken);
                     }
-                case IfAnalysisKind.AssignmentAndIfElseToAssignmentWithConditionalExpression:
+                case IfAnalysisKind.AssignmentAndIfToAssignmentWithConditionalExpression:
                     {
-                        var analysis = (AssignmentAndIfElseToAssignmentWithConditionalExpressionAnalysis)ifAnalysis;
+                        var analysis = (AssignmentAndIfToAssignmentWithConditionalExpressionAnalysis)ifAnalysis;
 
                         ConditionalExpressionSyntax conditionalExpression = CreateConditionalExpression(analysis.IfStatement.Condition, analysis.WhenTrue, analysis.WhenFalse);
 
-                        ExpressionStatementSyntax newStatement = analysis.Statement.ReplaceNode(analysis.Left, conditionalExpression);
+                        ExpressionStatementSyntax newStatement = analysis.Statement.ReplaceNode(analysis.Right, conditionalExpression);
 
                         return ToAssignmentWithConditionalExpressionAsync(document, analysis, newStatement, cancellationToken);
                     }

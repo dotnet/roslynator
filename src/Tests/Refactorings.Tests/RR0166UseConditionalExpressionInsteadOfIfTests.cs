@@ -56,6 +56,32 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
+        public async Task Test_AssignmentAndIfToAssignmentWithConditionalExpression()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+    void M(bool f, string x, string y, string z)
+    {
+[|        z = y;
+        if (f)
+        {
+            z = x;
+        }|]
+    }
+}
+", @"
+class C
+{
+    void M(bool f, string x, string y, string z)
+    {
+        z = (f) ? x : y;
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)]
         public async Task Test_LocalDeclarationAndIfElseToAssignmentWithConditionalExpression()
         {
             await VerifyRefactoringAsync(@"
