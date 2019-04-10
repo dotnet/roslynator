@@ -563,5 +563,42 @@ namespace Roslynator
                     throw new InvalidOperationException();
             }
         }
+
+        public static IMethodSymbol FindMethodThatRaisePropertyChanged(INamedTypeSymbol typeSymbol, int position, SemanticModel semanticModel)
+        {
+            do
+            {
+                IMethodSymbol methodSymbol = FindMethod(typeSymbol.GetMembers("RaisePropertyChanged"))
+                    ?? FindMethod(typeSymbol.GetMembers("OnPropertyChanged"));
+
+                if (methodSymbol != null)
+                    return methodSymbol;
+
+                typeSymbol = typeSymbol.BaseType;
+            }
+            while (typeSymbol != null
+                && typeSymbol.SpecialType != SpecialType.System_Object);
+
+            return null;
+
+            IMethodSymbol FindMethod(ImmutableArray<ISymbol> symbols)
+            {
+                foreach (ISymbol symbol in symbols)
+                {
+                    if (symbol.Kind == SymbolKind.Method)
+                    {
+                        var methodSymbol = (IMethodSymbol)symbol;
+
+                        if (methodSymbol.Parameters.SingleOrDefault(shouldThrow: false)?.Type.SpecialType == SpecialType.System_String
+                            && semanticModel.IsAccessible(position, methodSymbol))
+                        {
+                            return methodSymbol;
+                        }
+                    }
+                }
+
+                return null;
+            }
+        }
     }
 }

@@ -25,14 +25,21 @@ namespace Roslynator.CSharp
             {
                 case CSharpLanguageFeature.Unknown:
                     return false;
+                case CSharpLanguageFeature.NameOf:
+                    return SupportsLanguageVersion(document, LanguageVersion.CSharp6);
                 case CSharpLanguageFeature.AsyncMain:
                 case CSharpLanguageFeature.DefaultLiteral:
                 case CSharpLanguageFeature.InferredTupleElementNames:
                 case CSharpLanguageFeature.PatternMatchingWithGenerics:
-                    return ((CSharpParseOptions)document.Project.ParseOptions).LanguageVersion >= LanguageVersion.CSharp7_1;
+                    return SupportsLanguageVersion(document, LanguageVersion.CSharp7_1);
             }
 
             throw new ArgumentException($"Unknown enum value '{feature}'.", nameof(feature));
+        }
+
+        internal static bool SupportsLanguageVersion(this Document document, LanguageVersion languageVersion)
+        {
+            return ((CSharpParseOptions)document.Project.ParseOptions).LanguageVersion >= languageVersion;
         }
 
         internal static DefaultSyntaxOptions GetDefaultSyntaxOptions(this Document document, DefaultSyntaxOptions options = DefaultSyntaxOptions.None)

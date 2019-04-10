@@ -656,9 +656,9 @@ return true;]]></After>
       <Syntax>&gt;=</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0083" Identifier="NotifyPropertyChanged" Title="Notify property changed">
+  <Refactoring Id="RR0083" Identifier="NotifyWhenPropertyChange" Title="Notify when property change">
     <Syntaxes>
-      <Syntax>property in class/struct that implements INotifyPropertyChanged</Syntax>
+      <Syntax>property in class/struct that implements System.ComponentModel.INotifyPropertyChanged</Syntax>
     </Syntaxes>
     <Span>setter</Span>
   </Refactoring>

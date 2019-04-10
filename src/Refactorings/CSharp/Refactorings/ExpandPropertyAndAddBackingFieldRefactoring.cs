@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings
             Document document,
             PropertyDeclarationSyntax propertyDeclaration,
             bool prefixIdentifierWithUnderscore = true,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             string fieldName = StringUtility.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
@@ -31,106 +31,158 @@ namespace Roslynator.CSharp.Refactorings
                 semanticModel,
                 propertyDeclaration.SpanStart);
 
-            FieldDeclarationSyntax fieldDeclaration = CreateBackingField(propertyDeclaration, fieldName)
-                .WithFormatterAnnotation();
+            FieldDeclarationSyntax fieldDeclaration = FieldDeclaration(
+                (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword)) ? Modifiers.Private_Static() : Modifiers.Private(),
+                propertyDeclaration.Type,
+                fieldName,
+                propertyDeclaration.Initializer).WithFormatterAnnotation();
 
-            PropertyDeclarationSyntax newPropertyDeclaration = ExpandPropertyAndAddBackingField(propertyDeclaration, fieldName);
+            IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-            newPropertyDeclaration = newPropertyDeclaration
-                .WithModifiers(newPropertyDeclaration.Modifiers.Replace(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword))
+            PropertyDeclarationSyntax newPropertyDeclaration = ExpandAccessors(document, propertyDeclaration, propertySymbol, fieldName, semanticModel)
+                .WithModifiers(propertyDeclaration.Modifiers.Replace(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword))
                 .WithTriviaFrom(propertyDeclaration)
                 .WithFormatterAnnotation();
 
-            MemberDeclarationListInfo info = SyntaxInfo.MemberDeclarationListInfo(propertyDeclaration.Parent);
+            MemberDeclarationListInfo membersInfo = SyntaxInfo.MemberDeclarationListInfo(propertyDeclaration.Parent);
 
-            SyntaxList<MemberDeclarationSyntax> members = info.Members;
+            SyntaxList<MemberDeclarationSyntax> members = membersInfo.Members;
 
-            int propertyIndex = info.IndexOf(propertyDeclaration);
+            int propertyIndex = membersInfo.IndexOf(propertyDeclaration);
 
-            if (IsReadOnlyAutoProperty(propertyDeclaration))
+            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
+
+            if (accessorList?.Getter()?.IsAutoImplemented() == true
+                && accessorList.Setter() == null)
             {
-                IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
-
                 ImmutableArray<SyntaxNode> nodes = await SyntaxFinder.FindReferencesAsync(propertySymbol, document, cancellationToken: cancellationToken).ConfigureAwait(false);
 
                 IdentifierNameSyntax newNode = IdentifierName(fieldName);
 
-                SyntaxNode newParent = info.Parent.ReplaceNodes(nodes, (f, _) =>
+                SyntaxNode newParent = membersInfo.Parent.ReplaceNodes(nodes, (node, _) =>
                 {
-                    if (f.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
-                        && ((MemberAccessExpressionSyntax)f.Parent).Expression.IsKind(SyntaxKind.BaseExpression))
+                    if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                        && ((MemberAccessExpressionSyntax)node.Parent).Expression.IsKind(SyntaxKind.BaseExpression))
                     {
-                        return f;
+                        return node;
                     }
 
-                    return newNode.WithTriviaFrom(f);
+                    return newNode.WithTriviaFrom(node);
                 });
 
-                MemberDeclarationListInfo newInfo = SyntaxInfo.MemberDeclarationListInfo(newParent);
+                MemberDeclarationListInfo newMembersInfo = SyntaxInfo.MemberDeclarationListInfo(newParent);
 
-                members = newInfo.Members;
+                members = newMembersInfo.Members;
             }
 
             SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(propertyIndex, newPropertyDeclaration);
 
             newMembers = MemberDeclarationInserter.Default.Insert(newMembers, fieldDeclaration);
 
-            return await document.ReplaceMembersAsync(info, newMembers, cancellationToken).ConfigureAwait(false);
+            return await document.ReplaceMembersAsync(membersInfo, newMembers, cancellationToken).ConfigureAwait(false);
         }
 
-        private static bool IsReadOnlyAutoProperty(PropertyDeclarationSyntax propertyDeclaration)
-        {
-            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
-
-            return accessorList?.Getter()?.IsAutoImplemented() == true
-                && accessorList.Setter() == null;
-        }
-
-        private static PropertyDeclarationSyntax ExpandPropertyAndAddBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
+        private static PropertyDeclarationSyntax ExpandAccessors(
+            Document document,
+            PropertyDeclarationSyntax propertyDeclaration,
+            IPropertySymbol propertySymbol,
+            string fieldName,
+            SemanticModel semanticModel)
         {
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
             if (getter != null)
             {
-                AccessorDeclarationSyntax newGetter = getter
-                    .WithBody(Block(ReturnStatement(IdentifierName(name))))
-                    .WithSemicolonToken(default(SyntaxToken));
+                AccessorDeclarationSyntax newGetter = getter.Update(
+                    getter.AttributeLists,
+                    getter.Modifiers,
+                    getter.Keyword,
+                    Block(ReturnStatement(IdentifierName(fieldName))),
+                    default(SyntaxToken));
 
                 propertyDeclaration = propertyDeclaration
-                    .ReplaceNode(getter, newGetter)
+                    .ReplaceNode(getter, newGetter.RemoveWhitespace())
                     .WithInitializer(null)
-                    .WithSemicolonToken(default(SyntaxToken));
+                    .WithSemicolonToken(default);
             }
 
             AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
 
+            AccessorDeclarationSyntax newSetter = null;
+
             if (setter != null)
             {
-                AccessorDeclarationSyntax newSetter = setter
-                    .WithBody(Block(
-                        SimpleAssignmentStatement(
-                                IdentifierName(name),
-                                IdentifierName("value"))))
-                    .WithSemicolonToken(default(SyntaxToken));
+                newSetter = ExpandSetter();
 
                 propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
             }
 
-            AccessorListSyntax accessorList = propertyDeclaration.AccessorList
-                .RemoveWhitespace()
-                .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
+            if (newSetter?.Body.Statements.First().Kind() != SyntaxKind.IfStatement)
+            {
+                AccessorListSyntax newAccessorList = propertyDeclaration.AccessorList
+                    .RemoveWhitespace()
+                    .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
 
-            return propertyDeclaration
-                .WithAccessorList(accessorList);
-        }
+                propertyDeclaration = propertyDeclaration.WithAccessorList(newAccessorList);
+            }
 
-        private static FieldDeclarationSyntax CreateBackingField(PropertyDeclarationSyntax propertyDeclaration, string name)
-        {
-            return FieldDeclaration(
-                (propertyDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword)) ? Modifiers.Private_Static() : Modifiers.Private(),
-                propertyDeclaration.Type,
-                name,
-                propertyDeclaration.Initializer);
+            return propertyDeclaration;
+
+            AccessorDeclarationSyntax ExpandSetter()
+            {
+                BlockSyntax body = null;
+
+                INamedTypeSymbol containingType = propertySymbol.ContainingType;
+
+                if (containingType?.Implements(MetadataNames.System_ComponentModel_INotifyPropertyChanged, allInterfaces: true) == true)
+                {
+                    IMethodSymbol methodSymbol = SymbolUtility.FindMethodThatRaisePropertyChanged(containingType, setter.SpanStart, semanticModel);
+
+                    if (methodSymbol != null)
+                    {
+                        string propertyName = propertyDeclaration.Identifier.ValueText;
+
+                        ExpressionSyntax argumentExpression;
+                        if (document.SupportsLanguageFeature(CSharpLanguageFeature.NameOf))
+                        {
+                            argumentExpression = NameOfExpression(propertyName);
+                        }
+                        else
+                        {
+                            argumentExpression = StringLiteralExpression(propertyName);
+                        }
+
+                        body = Block(
+                            IfStatement(
+                                NotEqualsExpression(
+                                    IdentifierName(fieldName),
+                                    IdentifierName("value")),
+                                Block(
+                                    SimpleAssignmentStatement(
+                                        IdentifierName(fieldName),
+                                        IdentifierName("value")),
+                                    ExpressionStatement(
+                                        InvocationExpression(
+                                            IdentifierName(methodSymbol.Name),
+                                            ArgumentList(Argument(argumentExpression)))))));
+                    }
+                }
+
+                if (body == null)
+                {
+                    body = Block(
+                       SimpleAssignmentStatement(
+                           IdentifierName(fieldName),
+                           IdentifierName("value")));
+                }
+
+                return setter.Update(
+                    setter.AttributeLists,
+                    setter.Modifiers,
+                    setter.Keyword,
+                    body,
+                    default(SyntaxToken));
+            }
         }
     }
 }
