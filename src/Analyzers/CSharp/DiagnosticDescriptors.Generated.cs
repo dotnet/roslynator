@@ -2569,5 +2569,28 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.DuplicateEnumValue}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1235</summary>
+        public static readonly DiagnosticDescriptor UseEnumFieldInsteadOfCastNumericLiteral = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseEnumFieldInsteadOfCastNumericLiteral,
+            title:              "Use enumeration member instead of casting numeric literal value.",
+            messageFormat:      "Use enumeration member instead of casting numeric literal value.",
+            category:           DiagnosticCategories.Design,
+            defaultSeverity:    DiagnosticSeverity.Info,
+            isEnabledByDefault: true,
+            description:        null,
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseEnumFieldInsteadOfCastNumericLiteral}",
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1236</summary>
+        public static readonly DiagnosticDescriptor NumericLiteralOutOfEnumRange = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.NumericLiteralOutOfEnumRange,
+            title:              "Value is not defined in enumeration.",
+            messageFormat:      "Value is not defined in enumeration.",
+            category:           DiagnosticCategories.Design,
+            defaultSeverity:    DiagnosticSeverity.Warning,
+            isEnabledByDefault: true,
+            description:        null,
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.NumericLiteralOutOfEnumRange}",
+            customTags:         Array.Empty<string>());
     }
 }
