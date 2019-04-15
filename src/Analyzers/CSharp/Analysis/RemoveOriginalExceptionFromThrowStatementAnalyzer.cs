@@ -32,11 +32,6 @@ namespace Roslynator.CSharp.Analysis
         {
             var catchClause = (CatchClauseSyntax)context.Node;
 
-            BlockSyntax block = catchClause.Block;
-
-            if (block == null)
-                return;
-
             CatchDeclarationSyntax declaration = catchClause.Declaration;
 
             if (declaration == null)
@@ -51,7 +46,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             //XPERF: SyntaxWalker
-            foreach (SyntaxNode node in block.DescendantNodes(descendIntoChildren: f => f.Kind() != SyntaxKind.CatchClause))
+            foreach (SyntaxNode node in catchClause.Block.DescendantNodes(descendIntoChildren: f => f.Kind() != SyntaxKind.CatchClause))
             {
                 if (node.Kind() != SyntaxKind.ThrowStatement)
                     continue;
