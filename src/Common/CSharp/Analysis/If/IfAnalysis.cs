@@ -479,34 +479,56 @@ namespace Roslynator.CSharp.Analysis.If
             if (!assignment.Success)
                 return Empty;
 
-            ElseClauseSyntax elseClause = ifStatement.Else;
-
-            if (elseClause?.Statement?.IsKind(SyntaxKind.IfStatement) != false)
-                return Empty;
-
             SimpleAssignmentStatementInfo assignment1 = SyntaxInfo.SimpleAssignmentStatementInfo(ifStatement.SingleNonBlockStatementOrDefault());
 
             if (!assignment1.Success)
                 return Empty;
 
-            SimpleAssignmentStatementInfo assignment2 = SyntaxInfo.SimpleAssignmentStatementInfo(elseClause.SingleNonBlockStatementOrDefault());
+            ElseClauseSyntax elseClause = ifStatement.Else;
 
-            if (!assignment2.Success)
-                return Empty;
+            ExpressionSyntax whenFalse;
 
-            if (!AreEquivalent(assignment1.Left, assignment2.Left, assignment.Left))
-                return Empty;
+            if (elseClause != null)
+            {
+                if (elseClause.Statement.IsKind(SyntaxKind.IfStatement))
+                    return Empty;
+
+                SimpleAssignmentStatementInfo assignment2 = SyntaxInfo.SimpleAssignmentStatementInfo(elseClause.SingleNonBlockStatementOrDefault());
+
+                if (!assignment2.Success)
+                    return Empty;
+
+                whenFalse = assignment2.Right;
+
+                if (!AreEquivalent(assignment1.Left, assignment2.Left, assignment.Left))
+                    return Empty;
+            }
+            else
+            {
+                whenFalse = assignment.Right;
+
+                if (!AreEquivalent(assignment1.Left, assignment.Left))
+                    return Empty;
+            }
 
             if (!options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))
                 return Empty;
 
-            if (IsNullLiteralConvertedToNullableOfT(assignment1.Right, semanticModel, cancellationToken)
-                || IsNullLiteralConvertedToNullableOfT(assignment2.Right, semanticModel, cancellationToken))
+            ExpressionSyntax whenTrue = assignment1.Right;
+
+            if (IsNullLiteralConvertedToNullableOfT(whenTrue, semanticModel, cancellationToken)
+                || IsNullLiteralConvertedToNullableOfT(whenFalse, semanticModel, cancellationToken))
             {
                 return Empty;
             }
 
-            return new AssignmentAndIfElseToAssignmentWithConditionalExpressionAnalysis(expressionStatement, assignment.Right, ifStatement, assignment1.Right, assignment2.Right, semanticModel).ToImmutableArray();
+            return new AssignmentAndIfToAssignmentWithConditionalExpressionAnalysis(
+                expressionStatement,
+                assignment.Right,
+                ifStatement,
+                whenTrue,
+                whenFalse,
+                semanticModel).ToImmutableArray();
         }
 
         private static ImmutableArray<IfAnalysis> Analyze(

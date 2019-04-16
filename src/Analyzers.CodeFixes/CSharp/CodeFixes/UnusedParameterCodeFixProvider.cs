@@ -60,7 +60,7 @@ namespace Roslynator.CSharp.CodeFixes
             AnonymousFunctionExpressionSyntax anonymousFunction,
             CancellationToken cancellationToken)
         {
-            SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             IParameterSymbol parameterSymbol = semanticModel.GetDeclaredSymbol(parameter, cancellationToken);
 
@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.CodeFixes
 
             string newName = NameGenerators.UnderscoreSuffix.EnsureUniqueParameterName("_", anonymousFunctionSymbol, semanticModel, cancellationToken: cancellationToken);
 
-            DocumentOptionSet options = await document.GetOptionsAsync().ConfigureAwait(false);
+            DocumentOptionSet options = await document.GetOptionsAsync(cancellationToken).ConfigureAwait(false);
 
             return await Renamer.RenameSymbolAsync(document.Solution(), parameterSymbol, newName, options, cancellationToken).ConfigureAwait(false);
         }

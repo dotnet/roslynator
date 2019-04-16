@@ -1111,6 +1111,20 @@ namespace Roslynator.CSharp
                 SemicolonToken());
         }
 
+        public static ForStatementSyntax ForStatement(
+            VariableDeclarationSyntax declaration,
+            ExpressionSyntax condition,
+            ExpressionSyntax incrementor,
+            StatementSyntax statement)
+        {
+            return SyntaxFactory.ForStatement(
+                declaration: declaration,
+                initializers: default(SeparatedSyntaxList<ExpressionSyntax>),
+                condition: condition,
+                incrementors: SingletonSeparatedList(incrementor),
+                statement: statement);
+        }
+
         internal static ThrowStatementSyntax ThrowNewStatement(TypeSyntax exceptionType)
         {
             return ThrowStatement(ObjectCreationExpression(exceptionType, ArgumentList()));

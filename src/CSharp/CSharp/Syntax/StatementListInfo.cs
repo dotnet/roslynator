@@ -134,12 +134,12 @@ namespace Roslynator.CSharp.Syntax
             return Statements.GetEnumerator();
         }
 
-        internal static StatementListInfo Create(StatementSyntax statement)
+        internal static StatementListInfo Create(StatementSyntax statementInList)
         {
-            if (statement == null)
+            if (statementInList == null)
                 return default;
 
-            SyntaxNode parent = statement.Parent;
+            SyntaxNode parent = statementInList.Parent;
 
             switch (parent?.Kind())
             {

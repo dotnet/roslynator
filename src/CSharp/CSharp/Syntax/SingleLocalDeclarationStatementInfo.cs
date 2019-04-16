@@ -121,6 +121,16 @@ namespace Roslynator.CSharp.Syntax
         }
 
         internal static SingleLocalDeclarationStatementInfo Create(
+            StatementSyntax statement,
+            bool allowMissing = false)
+        {
+            if (!statement.IsKind(SyntaxKind.LocalDeclarationStatement))
+                return default;
+
+            return Create((LocalDeclarationStatementSyntax)statement, allowMissing);
+        }
+
+        internal static SingleLocalDeclarationStatementInfo Create(
             LocalDeclarationStatementSyntax localDeclarationStatement,
             bool allowMissing = false)
         {

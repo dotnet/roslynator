@@ -11,99 +11,90 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class NotifyPropertyChangedRefactoring
+    internal static class NotifyWhenPropertyChangeRefactoring
     {
-        public static async Task<bool> CanRefactorAsync(
+        public static async Task ComputeRefactoringAsync(
             RefactoringContext context,
             PropertyDeclarationSyntax property)
         {
             AccessorDeclarationSyntax setter = property.Setter();
 
             if (setter == null)
-                return false;
+                return;
 
-            BlockSyntax body = setter.Body;
+            ExpressionSyntax expression = GetExpression();
 
-            if (body != null)
-            {
-                if (body.Statements.SingleOrDefault(shouldThrow: false) is ExpressionStatementSyntax expressionStatement)
-                {
-                    ExpressionSyntax expression = expressionStatement.Expression;
+            if (expression == null)
+                return;
 
-                    return expression != null
-                        && await CanRefactorAsync(context, property, expression).ConfigureAwait(false);
-                }
-            }
-            else
-            {
-                ArrowExpressionClauseSyntax expressionBody = setter.ExpressionBody;
-
-                if (expressionBody != null)
-                {
-                    ExpressionSyntax expression = expressionBody.Expression;
-
-                    return expression != null
-                        && await CanRefactorAsync(context, property, expression).ConfigureAwait(false);
-                }
-            }
-
-            return false;
-        }
-
-        private static async Task<bool> CanRefactorAsync(
-            RefactoringContext context,
-            PropertyDeclarationSyntax property,
-            ExpressionSyntax expression)
-        {
             SimpleAssignmentExpressionInfo simpleAssignment = SyntaxInfo.SimpleAssignmentExpressionInfo(expression);
 
             if (!simpleAssignment.Success)
-                return false;
+                return;
 
-            if (simpleAssignment.Left.Kind() != SyntaxKind.IdentifierName)
-                return false;
+            if (!simpleAssignment.Left.IsKind(SyntaxKind.IdentifierName))
+                return;
 
-            if (simpleAssignment.Right.Kind() != SyntaxKind.IdentifierName)
-                return false;
-
-            var identifierName = (IdentifierNameSyntax)simpleAssignment.Right;
+            if (!(simpleAssignment.Right is IdentifierNameSyntax identifierName))
+                return;
 
             if (identifierName.Identifier.ValueText != "value")
-                return false;
+                return;
 
             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-            return semanticModel
+            INamedTypeSymbol containingType = semanticModel
                 .GetDeclaredSymbol(property, context.CancellationToken)?
-                .ContainingType?
-                .Implements(MetadataNames.System_ComponentModel_INotifyPropertyChanged, allInterfaces: true) == true;
+                .ContainingType;
+
+            if (containingType == null)
+                return;
+
+            if (!containingType.Implements(MetadataNames.System_ComponentModel_INotifyPropertyChanged, allInterfaces: true))
+                return;
+
+            IMethodSymbol methodSymbol = SymbolUtility.FindMethodThatRaisePropertyChanged(containingType, expression.SpanStart, semanticModel);
+
+            if (methodSymbol == null)
+                return;
+
+            Document document = context.Document;
+
+            context.RegisterRefactoring(
+                "Notify when property change",
+                ct => RefactorAsync(document, property, methodSymbol.Name, ct),
+                RefactoringIdentifiers.NotifyWhenPropertyChange);
+
+            ExpressionSyntax GetExpression()
+            {
+                BlockSyntax body = setter.Body;
+
+                if (body != null)
+                {
+                    if (body.Statements.SingleOrDefault(shouldThrow: false) is ExpressionStatementSyntax expressionStatement)
+                        return expressionStatement.Expression;
+                }
+                else
+                {
+                    return setter.ExpressionBody?.Expression;
+                }
+
+                return null;
+            }
         }
 
-        public static Task<Document> RefactorAsync(
+        private static Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax property,
-            bool supportsCSharp6,
+            string methodName,
             CancellationToken cancellationToken = default(CancellationToken))
         {
             AccessorDeclarationSyntax setter = property.Setter();
 
-            AccessorDeclarationSyntax newSetter = CreateSetter(
-                GetBackingFieldIdentifierName(setter).WithoutTrivia(),
-                property.Identifier.ValueText,
-                supportsCSharp6);
+            string propertyName = property.Identifier.ValueText;
 
-            newSetter = newSetter
-                .WithTriviaFrom(property)
-                .WithFormatterAnnotation();
-
-            return document.ReplaceNodeAsync(setter, newSetter, cancellationToken);
-        }
-
-        private static AccessorDeclarationSyntax CreateSetter(IdentifierNameSyntax fieldIdentifierName, string propertyName, bool supportsCSharp6)
-        {
             ExpressionSyntax argumentExpression;
-
-            if (supportsCSharp6)
+            if (document.SupportsLanguageFeature(CSharpLanguageFeature.NameOf))
             {
                 argumentExpression = NameOfExpression(propertyName);
             }
@@ -112,20 +103,28 @@ namespace Roslynator.CSharp.Refactorings
                 argumentExpression = StringLiteralExpression(propertyName);
             }
 
-            return SetAccessorDeclaration(
+            IdentifierNameSyntax backingFieldName = GetBackingFieldIdentifierName(setter).WithoutTrivia();
+
+            AccessorDeclarationSyntax newSetter = SetAccessorDeclaration(
                 Block(
                     IfStatement(
                         NotEqualsExpression(
-                            fieldIdentifierName,
+                            backingFieldName,
                             IdentifierName("value")),
                         Block(
                             SimpleAssignmentStatement(
-                                fieldIdentifierName,
+                                backingFieldName,
                                 IdentifierName("value")),
                             ExpressionStatement(
                                 InvocationExpression(
-                                    IdentifierName("OnPropertyChanged"),
+                                    IdentifierName(methodName),
                                     ArgumentList(Argument(argumentExpression))))))));
+
+            newSetter = newSetter
+                .WithTriviaFrom(property)
+                .WithFormatterAnnotation();
+
+            return document.ReplaceNodeAsync(setter, newSetter, cancellationToken);
         }
 
         public static IdentifierNameSyntax GetBackingFieldIdentifierName(AccessorDeclarationSyntax accessor)

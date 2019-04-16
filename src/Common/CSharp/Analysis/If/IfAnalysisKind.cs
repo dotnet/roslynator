@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Analysis
         IfElseToAssignmentWithExpression,
         IfElseToAssignmentWithCondition,
 
-        AssignmentAndIfElseToAssignmentWithConditionalExpression,
+        AssignmentAndIfToAssignmentWithConditionalExpression,
         LocalDeclarationAndIfElseAssignmentWithConditionalExpression,
 
         IfElseToReturnWithCoalesceExpression,

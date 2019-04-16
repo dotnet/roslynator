@@ -16,7 +16,7 @@ namespace Roslynator.CSharp.Refactorings.WrapStatements
     {
         public async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
-            SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(selectedStatements.FirstOrDefault() as LocalDeclarationStatementSyntax);
+            SingleLocalDeclarationStatementInfo localInfo = SyntaxInfo.SingleLocalDeclarationStatementInfo(selectedStatements.FirstOrDefault());
 
             if (!localInfo.Success)
                 return;

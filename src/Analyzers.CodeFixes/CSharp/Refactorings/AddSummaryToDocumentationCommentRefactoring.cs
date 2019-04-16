@@ -7,7 +7,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CSharp;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -44,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings
                 textChange = new TextChange(new TextSpan(documentationComment.FullSpan.Start, 0), newText);
             }
 
-            return await document.WithTextChangeAsync(textChange).ConfigureAwait(false);
+            return await document.WithTextChangeAsync(textChange, cancellationToken).ConfigureAwait(false);
         }
 
         private static string CreateSummaryElement(string indent, string text = null)

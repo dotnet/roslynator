@@ -895,21 +895,6 @@ namespace Roslynator.CSharp
         }
 
         /// <summary>
-        /// Creates a new <see cref="Syntax.SimpleIfElseInfo"/> from the specified if statement.
-        /// </summary>
-        /// <param name="ifStatement"></param>
-        /// <param name="walkDownParentheses"></param>
-        /// <param name="allowMissing"></param>
-        /// <returns></returns>
-        public static SimpleIfElseInfo SimpleIfElseInfo(
-            IfStatementSyntax ifStatement,
-            bool walkDownParentheses = true,
-            bool allowMissing = false)
-        {
-            return Syntax.SimpleIfElseInfo.Create(ifStatement, walkDownParentheses, allowMissing);
-        }
-
-        /// <summary>
         /// Creates a new <see cref="Syntax.SimpleIfStatementInfo"/> from the specified node.
         /// </summary>
         /// <param name="node"></param>
@@ -937,6 +922,19 @@ namespace Roslynator.CSharp
             bool allowMissing = false)
         {
             return Syntax.SimpleIfStatementInfo.Create(ifStatement, walkDownParentheses, allowMissing);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Syntax.SingleLocalDeclarationStatementInfo"/> from the specified statement.
+        /// </summary>
+        /// <param name="statement"></param>
+        /// <param name="allowMissing"></param>
+        /// <returns></returns>
+        public static SingleLocalDeclarationStatementInfo SingleLocalDeclarationStatementInfo(
+            StatementSyntax statement,
+            bool allowMissing = false)
+        {
+            return Syntax.SingleLocalDeclarationStatementInfo.Create(statement, allowMissing);
         }
 
         /// <summary>
@@ -1006,11 +1004,11 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a new <see cref="Syntax.StatementListInfo"/> from the specified statement.
         /// </summary>
-        /// <param name="statement"></param>
+        /// <param name="statementInList"></param>
         /// <returns></returns>
-        public static StatementListInfo StatementListInfo(StatementSyntax statement)
+        public static StatementListInfo StatementListInfo(StatementSyntax statementInList)
         {
-            return Syntax.StatementListInfo.Create(statement);
+            return Syntax.StatementListInfo.Create(statementInList);
         }
 
         internal static StatementListInfo StatementListInfo(StatementListSelection selectedStatements)

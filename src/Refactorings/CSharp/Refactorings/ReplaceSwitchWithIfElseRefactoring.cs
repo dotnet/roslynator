@@ -97,7 +97,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 SyntaxList<StatementSyntax> statements = GetSectionStatements(sections[i]);
 
-                SemanticModel semanticModel = await document.GetSemanticModelAsync().ConfigureAwait(false);
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
                 IfStatementSyntax @if = IfStatement(
                     CreateCondition(switchStatement, sections[i], semanticModel),

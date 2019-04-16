@@ -67,6 +67,70 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        public async Task Test_PreprocessorDirectives()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<string> M(object p, object p2)
+    {
+        if (p == null)
+            throw new ArgumentNullException(nameof(p));
+
+        if (p2 == null)
+            throw new ArgumentNullException(nameof(p2));
+
+#if DEBUG
+#endif
+        [||]string s = null;
+        yield return s;
+    }
+}
+", @"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<string> M(object p, object p2)
+    {
+        if (p == null)
+            throw new ArgumentNullException(nameof(p));
+
+        if (p2 == null)
+            throw new ArgumentNullException(nameof(p2));
+
+        return M2();
+
+        IEnumerable<string> M2()
+        {
+#if DEBUG
+#endif
+            string s = null;
+            yield return s;
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        public async Task TestNoDiagnostic_NoStatement()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M(object p)
+    {
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
         public async Task TestNoDiagnostic_NoNullCheck()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -78,6 +142,48 @@ class C
     IEnumerable<string> M(object p)
     {
         string s = null;
+        yield return s;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        public async Task TestNoDiagnostic_NullChecksOnly()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    void M(object p, object p2)
+    {
+        if (p == null)
+            throw new ArgumentNullException(nameof(p));
+
+        if (p2 == null)
+            throw new ArgumentNullException(nameof(p2));
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ValidateArgumentsCorrectly)]
+        public async Task TestNoDiagnostic_IfElse_PreprocessorDirectives()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+using System.Collections.Generic;
+
+class C
+{
+    IEnumerable<string> M(object p, object p2)
+    {
+        if (p == null)
+            throw new ArgumentNullException(nameof(p));
+#if DEBUG
+        string s = null;
+#endif
         yield return s;
     }
 }

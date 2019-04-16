@@ -73,26 +73,24 @@ namespace Roslynator.CSharp.CodeFixes
 
             int lastIndex = localFunctionStatements.Count - 1;
 
-            localFunctionStatements[lastIndex] = localFunctionStatements[lastIndex].WithoutTrailingTrivia();
+            localFunctionStatements[0] = localFunctionStatements[0].TrimLeadingTrivia();
 
             LocalFunctionStatementSyntax localFunction = LocalFunctionStatement(
                 default(SyntaxTokenList),
                 methodDeclaration.ReturnType.WithoutTrivia(),
                 Identifier(name).WithRenameAnnotation(),
                 ParameterList(),
-                Block(localFunctionStatements).WithTrailingTrivia(statements.Last().GetTrailingTrivia()));
-
-            localFunction = localFunction.WithFormatterAnnotation();
+                Block(localFunctionStatements));
 
             ReturnStatementSyntax returnStatement = ReturnStatement(
-                Token(SyntaxKind.ReturnKeyword).WithLeadingTrivia(statement.GetLeadingTrivia()),
+                Token(TriviaList(NewLine()), SyntaxKind.ReturnKeyword, TriviaList()),
                 InvocationExpression(IdentifierName(name)),
                 Token(SyntaxTriviaList.Empty, SyntaxKind.SemicolonToken, TriviaList(NewLine(), NewLine())));
 
             SyntaxList<StatementSyntax> newStatements = statements.ReplaceRange(
                 index,
                 statements.Count - index,
-                new StatementSyntax[] { returnStatement, localFunction });
+                new StatementSyntax[] { returnStatement.WithFormatterAnnotation(), localFunction.WithFormatterAnnotation() });
 
             return await document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken).ConfigureAwait(false);
         }

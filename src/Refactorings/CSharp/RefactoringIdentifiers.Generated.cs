@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string MergeIfWithParentIf = Prefix + "0196";
         public const string MergeLocalDeclarations = Prefix + "0077";
         public const string MoveUnsafeContextToContainingDeclaration = Prefix + "0202";
-        public const string NotifyPropertyChanged = Prefix + "0083";
+        public const string NotifyWhenPropertyChange = Prefix + "0083";
         public const string ParenthesizeExpression = Prefix + "0084";
         public const string PromoteLocalToParameter = Prefix + "0085";
         public const string RemoveAllComments = Prefix + "0086";
