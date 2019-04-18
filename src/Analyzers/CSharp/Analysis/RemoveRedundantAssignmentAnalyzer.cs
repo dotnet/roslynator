@@ -46,10 +46,31 @@ namespace Roslynator.CSharp.Analysis
             if (!(assignmentInfo.Left is IdentifierNameSyntax identifierName))
                 return;
 
-            StatementSyntax nextStatement = assignmentInfo.Statement.NextStatement();
+            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(assignmentInfo.Statement);
 
-            if (nextStatement == null)
+            if (!statementsInfo.Success)
                 return;
+
+            int index = statementsInfo.IndexOf(assignmentInfo.Statement);
+
+            if (index == statementsInfo.Count - 1)
+                return;
+
+            if (index > 0)
+            {
+                StatementSyntax previousStatement = statementsInfo[index - 1];
+
+                SimpleAssignmentStatementInfo assignmentInfo2 = SyntaxInfo.SimpleAssignmentStatementInfo(previousStatement);
+
+                if (assignmentInfo2.Success
+                    && assignmentInfo2.Left is IdentifierNameSyntax identifierName2
+                    && string.Equals(identifierName.Identifier.ValueText, identifierName2.Identifier.ValueText, StringComparison.Ordinal))
+                {
+                    return;
+                }
+            }
+
+            StatementSyntax nextStatement = statementsInfo[index + 1];
 
             if (nextStatement.SpanOrLeadingTriviaContainsDirectives())
                 return;
@@ -57,10 +78,10 @@ namespace Roslynator.CSharp.Analysis
             if (!(nextStatement is ReturnStatementSyntax returnStatement))
                 return;
 
-            if (!(returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName2))
+            if (!(returnStatement.Expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName3))
                 return;
 
-            if (!string.Equals(identifierName.Identifier.ValueText, identifierName2.Identifier.ValueText, StringComparison.Ordinal))
+            if (!string.Equals(identifierName.Identifier.ValueText, identifierName3.Identifier.ValueText, StringComparison.Ordinal))
                 return;
 
             ISymbol symbol = context.SemanticModel.GetSymbol(identifierName, context.CancellationToken);
