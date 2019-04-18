@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.FalseLiteralExpression:
                 case SyntaxKind.LogicalNotExpression:
                     {
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
+                        ReportDiagnostic();
                         break;
                     }
                 case SyntaxKind.EqualsExpression:
@@ -51,14 +51,32 @@ namespace Roslynator.CSharp.Analysis
                         MemberDeclarationSyntax memberDeclaration = logicalNot.FirstAncestor<MemberDeclarationSyntax>();
 
                         if (memberDeclaration is OperatorDeclarationSyntax operatorDeclaration
-                            && operatorDeclaration.OperatorToken.Kind() == SyntaxKind.ExclamationEqualsToken)
+                            && operatorDeclaration.OperatorToken.IsKind(SyntaxKind.ExclamationEqualsToken))
                         {
                             return;
                         }
 
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
+                        ReportDiagnostic();
                         break;
                     }
+                case SyntaxKind.NotEqualsExpression:
+                    {
+                        MemberDeclarationSyntax memberDeclaration = logicalNot.FirstAncestor<MemberDeclarationSyntax>();
+
+                        if (memberDeclaration is OperatorDeclarationSyntax operatorDeclaration
+                            && operatorDeclaration.OperatorToken.IsKind(SyntaxKind.EqualsEqualsToken))
+                        {
+                            return;
+                        }
+
+                        ReportDiagnostic();
+                        break;
+                    }
+            }
+
+            void ReportDiagnostic()
+            {
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
             }
         }
 
