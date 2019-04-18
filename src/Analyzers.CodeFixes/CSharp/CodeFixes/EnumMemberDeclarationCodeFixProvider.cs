@@ -114,7 +114,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return f.Value.CompareTo(g.Value);
             });
 
-            ExpressionSyntax oldValue = enumMemberDeclaration.EqualsValue.Value;
+            ExpressionSyntax oldValue = enumMemberDeclaration.EqualsValue.Value.WalkDownParentheses();
 
             BinaryExpressionSyntax newValue = BitwiseOrExpression(CreateIdentifierName(values[0]), CreateIdentifierName(values[1]));
 
