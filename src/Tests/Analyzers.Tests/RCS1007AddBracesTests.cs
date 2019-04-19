@@ -26,9 +26,9 @@ class C
     void M(object x, object y)
     {
         if(true)
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -39,8 +39,8 @@ class C
         if(true)
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -56,13 +56,13 @@ class C
     void M(object x, object y)
     {
         if (x is string)
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
         else
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -73,14 +73,14 @@ class C
         if (x is string)
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
         else
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -96,15 +96,15 @@ class C
     void M(object x, object y, bool b)
     {
         if (b)
-          [|M(
-              x,
-              y,
-              b);|]
+            [|M(
+                x,
+                y,
+                b);|]
         else if (b)
-          [|M(
-              x,
-              y,
-              b);|]
+            [|M(
+                x,
+                y,
+                b);|]
     }
 }
 ", @"
@@ -115,16 +115,16 @@ class C
         if (b)
         {
             M(
-              x,
-              y,
-              b);
+                x,
+                y,
+                b);
         }
         else if (b)
         {
             M(
-              x,
-              y,
-              b);
+                x,
+                y,
+                b);
         }
     }
 }
@@ -140,20 +140,20 @@ class C
     void M(object x, object y, bool b)
     {
         if (b)
-          [|M(
-              x,
-              y,
-              b);|]
+            [|M(
+                x,
+                y,
+                b);|]
         else if (!b)
-          [|M(
-              x,
-              y,
-              b);|]
+            [|M(
+                x,
+                y,
+                b);|]
         else
-          [|M(
-              x,
-              y,
-              b);|]
+            [|M(
+                x,
+                y,
+                b);|]
     }
 }
 ", @"
@@ -164,23 +164,23 @@ class C
         if (b)
         {
             M(
-              x,
-              y,
-              b);
+                x,
+                y,
+                b);
         }
         else if (!b)
         {
             M(
-              x,
-              y,
-              b);
+                x,
+                y,
+                b);
         }
         else
         {
             M(
-              x,
-              y,
-              b);
+                x,
+                y,
+                b);
         }
     }
 }
@@ -200,9 +200,9 @@ class C
         IEnumerable<object> items = null;
 
         foreach (object item in items)
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -217,8 +217,8 @@ class C
         foreach (object item in items)
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -234,9 +234,9 @@ class C
     void M(object x, object y)
     {
         foreach ((string, string) item in new [] { ("""","""") })
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -247,8 +247,8 @@ class C
         foreach ((string, string) item in new [] { ("""","""") })
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -264,9 +264,9 @@ class C
     void M(object x, object y)
     {
         for (int i = 0; i < 1; i++)
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -277,8 +277,8 @@ class C
         for (int i = 0; i < 1; i++)
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -294,9 +294,9 @@ class C
     void M(object x, object y)
     {
         using (null)
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -307,8 +307,8 @@ class C
         using (null)
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -324,9 +324,9 @@ class C
     void M(object x, object y)
     {
         while (true)
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -337,8 +337,8 @@ class C
         while (true)
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -354,9 +354,9 @@ class C
     void M(object x, object y)
     {
         do
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
         while (false);
     }
 }
@@ -368,8 +368,8 @@ class C
         do
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
         while (false);
     }
@@ -386,9 +386,9 @@ class C
     void M(object x, object y)
     {
         lock (null)
-          [|M(
-              x,
-              y);|]
+            [|M(
+                x,
+                y);|]
     }
 }
 ", @"
@@ -399,8 +399,8 @@ class C
         lock (null)
         {
             M(
-              x,
-              y);
+                x,
+                y);
         }
     }
 }
@@ -419,9 +419,9 @@ class C
         {
             int[] a = new[] { 1 };
             fixed (int* i = a)
-              [|M(
-                  x,
-                  y);|]
+                [|M(
+                    x,
+                    y);|]
         }
     }
 }
@@ -436,8 +436,8 @@ class C
             fixed (int* i = a)
             {
                 M(
-                  x,
-                  y);
+                    x,
+                    y);
             }
         }
     }
