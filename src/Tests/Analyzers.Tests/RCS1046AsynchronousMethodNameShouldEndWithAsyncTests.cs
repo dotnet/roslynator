@@ -17,6 +17,30 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override CodeFixProvider FixProvider { get; }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+        public async Task Test()
+        {
+            await VerifyDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class B
+{
+    public virtual async Task [|Foo|]()
+    {
+        await Task.CompletedTask;
+    }
+}
+
+class C : B
+{
+    public override Task Foo()
+    {
+        return base.Foo();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
         public async Task TestNoDiagnostic_EntryPointMethod()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -28,7 +52,8 @@ class Program
     {
         await Task.CompletedTask;
     }
-}");
+}
+");
         }
     }
 }
