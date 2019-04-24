@@ -50,5 +50,13 @@ namespace Roslynator
         public static readonly MetadataName System_Threading_Tasks_ValueTask_T = MetadataName.Parse("System.Threading.Tasks.ValueTask`1");
         public static readonly MetadataName System_TimeSpan = MetadataName.Parse("System.TimeSpan");
         public static readonly MetadataName System_ValueType = MetadataName.Parse("System.ValueType");
+
+        public static class WinRT
+        {
+            public static readonly MetadataName Windows_Foundation_IAsyncAction = MetadataName.Parse("Windows.Foundation.IAsyncAction");
+            public static readonly MetadataName Windows_Foundation_IAsyncActionWithProgress_1 = MetadataName.Parse("Windows.Foundation.IAsyncActionWithProgress`1");
+            public static readonly MetadataName Windows_Foundation_IAsyncOperation_1 = MetadataName.Parse("Windows.Foundation.IAsyncOperation`1");
+            public static readonly MetadataName Windows_Foundation_IAsyncOperationWithProgress_2 = MetadataName.Parse("Windows.Foundation.IAsyncOperationWithProgress`2");
+        }
     }
 }

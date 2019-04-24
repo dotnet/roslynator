@@ -600,5 +600,62 @@ namespace Roslynator
                 return null;
             }
         }
+
+        public static bool IsAwaitable(ITypeSymbol typeSymbol, bool shouldCheckWindowsRuntimeTypes = false)
+        {
+            if (typeSymbol.Kind == SymbolKind.TypeParameter)
+            {
+                var typeParameterSymbol = (ITypeParameterSymbol)typeSymbol;
+
+                typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false);
+
+                if (typeSymbol == null)
+                    return false;
+            }
+
+            if (typeSymbol.IsTupleType)
+                return false;
+
+            if (typeSymbol.SpecialType != SpecialType.None)
+                return false;
+
+            if (!typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface))
+                return false;
+
+            if (!(typeSymbol is INamedTypeSymbol namedTypeSymbol))
+                return false;
+
+            INamedTypeSymbol originalDefinition = namedTypeSymbol.OriginalDefinition;
+
+            if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T))
+                return true;
+
+            if (namedTypeSymbol.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task))
+                return true;
+
+            if (shouldCheckWindowsRuntimeTypes)
+            {
+                if (namedTypeSymbol.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncAction))
+                    return true;
+
+                if (namedTypeSymbol.Implements(MetadataNames.WinRT.Windows_Foundation_IAsyncAction, allInterfaces: true))
+                    return true;
+
+                if (namedTypeSymbol.Arity > 0
+                    && namedTypeSymbol.TypeKind == TypeKind.Interface)
+                {
+                    if (originalDefinition.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncActionWithProgress_1))
+                        return true;
+
+                    if (originalDefinition.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncOperation_1))
+                        return true;
+
+                    if (originalDefinition.HasMetadataName(MetadataNames.WinRT.Windows_Foundation_IAsyncOperationWithProgress_2))
+                        return true;
+                }
+            }
+
+            return false;
+        }
     }
 }

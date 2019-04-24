@@ -12,21 +12,21 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new AsynchronousMethodNameShouldEndWithAsyncAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new AsyncSuffixAnalyzer();
 
         public override CodeFixProvider FixProvider { get; }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
-        public async Task Test()
+        public async Task Test_Task()
         {
             await VerifyDiagnosticAsync(@"
 using System.Threading.Tasks;
 
 class B
 {
-    public virtual async Task [|Foo|]()
+    public virtual Task [|Foo|]()
     {
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 }
 
@@ -35,6 +35,70 @@ class C : B
     public override Task Foo()
     {
         return base.Foo();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+        public async Task Test_Task_TypeParameter()
+        {
+            await VerifyDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    T [|Foo|]<T>() where T : Task
+    {
+        return default(T);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+        public async Task Test_TaskOfT()
+        {
+            await VerifyDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    Task<object> [|Foo|]()
+    {
+        return Task.FromResult(default(object));
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+        public async Task Test_TaskOfT_TypeParameter()
+        {
+            await VerifyDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    T [|Foo|]<T>() where T : Task<object>
+    {
+        return default(T);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AsynchronousMethodNameShouldEndWithAsync)]
+        public async Task Test_ValueTaskOfT()
+        {
+            await VerifyDiagnosticAsync(@"
+using System.Threading.Tasks;
+
+class C
+{
+    ValueTask<object> [|Foo|]()
+    {
+        return default(ValueTask<object>);
     }
 }
 ");
