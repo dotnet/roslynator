@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace Roslynator.CSharp.Syntax
 {
     [DebuggerDisplay("{Flags}")]
-    internal readonly struct StringConcatenationAnalysis : IEquatable<StringConcatenationAnalysis>
+    internal readonly struct StringConcatenationAnalysis
     {
         private StringConcatenationAnalysis(StringConcatenationFlags flags)
         {
@@ -62,31 +62,6 @@ namespace Roslynator.CSharp.Syntax
             }
 
             return new StringConcatenationAnalysis(flags);
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is StringConcatenationAnalysis other && Equals(other);
-        }
-
-        public bool Equals(StringConcatenationAnalysis other)
-        {
-            return Flags == other.Flags;
-        }
-
-        public override int GetHashCode()
-        {
-            return Flags.GetHashCode();
-        }
-
-        public static bool operator ==(in StringConcatenationAnalysis analysis1, in StringConcatenationAnalysis analysis2)
-        {
-            return analysis1.Equals(analysis2);
-        }
-
-        public static bool operator !=(in StringConcatenationAnalysis analysis1, in StringConcatenationAnalysis analysis2)
-        {
-            return !(analysis1 == analysis2);
         }
 
         [Flags]

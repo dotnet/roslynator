@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -13,7 +11,7 @@ namespace Roslynator.CSharp.Syntax
     /// Provides information about invocation expression in an expression statement.
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct SimpleMemberInvocationStatementInfo : IEquatable<SimpleMemberInvocationStatementInfo>
+    public readonly struct SimpleMemberInvocationStatementInfo
     {
         private readonly SimpleMemberInvocationExpressionInfo _info;
 
@@ -116,54 +114,6 @@ namespace Roslynator.CSharp.Syntax
             SimpleMemberInvocationExpressionInfo info = SimpleMemberInvocationExpressionInfo.Create(invocationExpression, allowMissing);
 
             return new SimpleMemberInvocationStatementInfo(info);
-        }
-
-        /// <summary>
-        /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return InvocationExpression?.Parent.ToString() ?? "";
-        }
-
-        /// <summary>
-        /// Determines whether this instance and a specified object are equal.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current instance. </param>
-        /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-        public override bool Equals(object obj)
-        {
-            return obj is SimpleMemberInvocationStatementInfo other && Equals(other);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-        public bool Equals(SimpleMemberInvocationStatementInfo other)
-        {
-            return EqualityComparer<SyntaxNode>.Default.Equals(InvocationExpression?.Parent, other.InvocationExpression?.Parent);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
-        public override int GetHashCode()
-        {
-            return EqualityComparer<SyntaxNode>.Default.GetHashCode(InvocationExpression?.Parent);
-        }
-
-        public static bool operator ==(in SimpleMemberInvocationStatementInfo info1, in SimpleMemberInvocationStatementInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in SimpleMemberInvocationStatementInfo info1, in SimpleMemberInvocationStatementInfo info2)
-        {
-            return !(info1 == info2);
         }
     }
 }

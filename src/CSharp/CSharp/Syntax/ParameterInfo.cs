@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,7 +9,7 @@ using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 namespace Roslynator.CSharp.Syntax
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct ParameterInfo : IEquatable<ParameterInfo>
+    internal readonly struct ParameterInfo
     {
         public ParameterInfo(ParameterSyntax parameter, CSharpSyntaxNode body)
         {
@@ -303,36 +301,6 @@ namespace Roslynator.CSharp.Syntax
             }
 
             return true;
-        }
-
-        public override string ToString()
-        {
-            return Node?.ToString() ?? "";
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is ParameterInfo other && Equals(other);
-        }
-
-        public bool Equals(ParameterInfo other)
-        {
-            return EqualityComparer<SyntaxNode>.Default.Equals(Node, other.Node);
-        }
-
-        public override int GetHashCode()
-        {
-            return EqualityComparer<SyntaxNode>.Default.GetHashCode(Node);
-        }
-
-        public static bool operator ==(in ParameterInfo info1, in ParameterInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in ParameterInfo info1, in ParameterInfo info2)
-        {
-            return !(info1 == info2);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Syntax
     /// Provides information about a list of statements.
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct StatementListInfo : IEquatable<StatementListInfo>, IReadOnlyList<StatementSyntax>
+    public readonly struct StatementListInfo : IReadOnlyList<StatementSyntax>
     {
         internal StatementListInfo(BlockSyntax block)
         {
@@ -108,8 +108,8 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// Gets the statement at the specified index in the list.
         /// </summary>
-        /// <returns>The statement at the specified index in the list.</returns>
         /// <param name="index">The zero-based index of the statement to get. </param>
+        /// <returns>The statement at the specified index in the list.</returns>
         public StatementSyntax this[int index]
         {
             get { return Statements[index]; }
@@ -128,7 +128,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// Gets the enumerator the list of statements.
         /// </summary>
-        /// <returns></returns>
         public SyntaxList<StatementSyntax>.Enumerator GetEnumerator()
         {
             return Statements.GetEnumerator();
@@ -161,7 +160,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="StatementListInfo"/> with the statements updated.
         /// </summary>
         /// <param name="statements"></param>
-        /// <returns></returns>
         public StatementListInfo WithStatements(IEnumerable<StatementSyntax> statements)
         {
             return WithStatements(List(statements));
@@ -171,7 +169,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="StatementListInfo"/> with the statements updated.
         /// </summary>
         /// <param name="statements"></param>
-        /// <returns></returns>
         public StatementListInfo WithStatements(SyntaxList<StatementSyntax> statements)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -189,7 +186,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="node"></param>
         /// <param name="options"></param>
-        /// <returns></returns>
         public StatementListInfo RemoveNode(SyntaxNode node, SyntaxRemoveOptions options)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -207,7 +203,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="oldNode"></param>
         /// <param name="newNode"></param>
-        /// <returns></returns>
         public StatementListInfo ReplaceNode(SyntaxNode oldNode, SyntaxNode newNode)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -224,7 +219,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="StatementListInfo"/> with the specified statement added at the end.
         /// </summary>
         /// <param name="statement"></param>
-        /// <returns></returns>
         public StatementListInfo Add(StatementSyntax statement)
         {
             return WithStatements(Statements.Add(statement));
@@ -234,7 +228,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="StatementListInfo"/> with the specified statements added at the end.
         /// </summary>
         /// <param name="statements"></param>
-        /// <returns></returns>
         public StatementListInfo AddRange(IEnumerable<StatementSyntax> statements)
         {
             return WithStatements(Statements.AddRange(statements));
@@ -243,7 +236,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// True if the list has at least one statement.
         /// </summary>
-        /// <returns></returns>
         public bool Any()
         {
             return Statements.Any();
@@ -252,7 +244,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The first statement in the list.
         /// </summary>
-        /// <returns></returns>
         public StatementSyntax First()
         {
             return Statements.First();
@@ -261,7 +252,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The first statement in the list or null if the list is empty.
         /// </summary>
-        /// <returns></returns>
         public StatementSyntax FirstOrDefault()
         {
             return Statements.FirstOrDefault();
@@ -271,7 +261,6 @@ namespace Roslynator.CSharp.Syntax
         /// Searches for a statement that matches the predicate and returns returns zero-based index of the first occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public int IndexOf(Func<StatementSyntax, bool> predicate)
         {
             return Statements.IndexOf(predicate);
@@ -281,7 +270,6 @@ namespace Roslynator.CSharp.Syntax
         /// The index of the statement in the list.
         /// </summary>
         /// <param name="statement"></param>
-        /// <returns></returns>
         public int IndexOf(StatementSyntax statement)
         {
             return Statements.IndexOf(statement);
@@ -292,7 +280,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="index"></param>
         /// <param name="statement"></param>
-        /// <returns></returns>
         public StatementListInfo Insert(int index, StatementSyntax statement)
         {
             return WithStatements(Statements.Insert(index, statement));
@@ -303,7 +290,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="index"></param>
         /// <param name="statements"></param>
-        /// <returns></returns>
         public StatementListInfo InsertRange(int index, IEnumerable<StatementSyntax> statements)
         {
             return WithStatements(Statements.InsertRange(index, statements));
@@ -312,7 +298,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The last statement in the list.
         /// </summary>
-        /// <returns></returns>
         public StatementSyntax Last()
         {
             return Statements.Last();
@@ -321,7 +306,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The last statement in the list or null if the list is empty.
         /// </summary>
-        /// <returns></returns>
         public StatementSyntax LastOrDefault()
         {
             return Statements.LastOrDefault();
@@ -331,7 +315,6 @@ namespace Roslynator.CSharp.Syntax
         /// Searches for a statement that matches the predicate and returns returns zero-based index of the last occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public int LastIndexOf(Func<StatementSyntax, bool> predicate)
         {
             return Statements.LastIndexOf(predicate);
@@ -341,7 +324,6 @@ namespace Roslynator.CSharp.Syntax
         /// Searches for a statement and returns zero-based index of the last occurrence in the list.
         /// </summary>
         /// <param name="statement"></param>
-        /// <returns></returns>
         public int LastIndexOf(StatementSyntax statement)
         {
             return Statements.LastIndexOf(statement);
@@ -351,7 +333,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="StatementListInfo"/> with the specified statement removed.
         /// </summary>
         /// <param name="statement"></param>
-        /// <returns></returns>
         public StatementListInfo Remove(StatementSyntax statement)
         {
             return WithStatements(Statements.Remove(statement));
@@ -361,7 +342,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="StatementListInfo"/> with the statement at the specified index removed.
         /// </summary>
         /// <param name="index"></param>
-        /// <returns></returns>
         public StatementListInfo RemoveAt(int index)
         {
             return WithStatements(Statements.RemoveAt(index));
@@ -372,7 +352,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="statementInList"></param>
         /// <param name="newStatement"></param>
-        /// <returns></returns>
         public StatementListInfo Replace(StatementSyntax statementInList, StatementSyntax newStatement)
         {
             return WithStatements(Statements.Replace(statementInList, newStatement));
@@ -383,7 +362,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="index"></param>
         /// <param name="newStatement"></param>
-        /// <returns></returns>
         public StatementListInfo ReplaceAt(int index, StatementSyntax newStatement)
         {
             return WithStatements(Statements.ReplaceAt(index, newStatement));
@@ -394,7 +372,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="statementInList"></param>
         /// <param name="newStatements"></param>
-        /// <returns></returns>
         public StatementListInfo ReplaceRange(StatementSyntax statementInList, IEnumerable<StatementSyntax> newStatements)
         {
             return WithStatements(Statements.ReplaceRange(statementInList, newStatements));
@@ -404,54 +381,6 @@ namespace Roslynator.CSharp.Syntax
         {
             if (Parent == null)
                 throw new InvalidOperationException($"{nameof(StatementListInfo)} is not initalized.");
-        }
-
-        /// <summary>
-        /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return Parent?.ToString() ?? "";
-        }
-
-        /// <summary>
-        /// Determines whether this instance and a specified object are equal.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current instance. </param>
-        /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-        public override bool Equals(object obj)
-        {
-            return obj is StatementListInfo other && Equals(other);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-        public bool Equals(StatementListInfo other)
-        {
-            return EqualityComparer<SyntaxNode>.Default.Equals(Parent, other.Parent);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
-        public override int GetHashCode()
-        {
-            return EqualityComparer<SyntaxNode>.Default.GetHashCode(Parent);
-        }
-
-        public static bool operator ==(in StatementListInfo info1, in StatementListInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in StatementListInfo info1, in StatementListInfo info2)
-        {
-            return !(info1 == info2);
         }
     }
 }

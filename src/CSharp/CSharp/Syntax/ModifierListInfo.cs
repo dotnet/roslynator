@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Syntax
     /// Provides information about modifier list.
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct ModifierListInfo : IEquatable<ModifierListInfo>
+    public readonly struct ModifierListInfo
     {
         internal ModifierListInfo(SyntaxNode parent, SyntaxTokenList modifiers)
         {
@@ -362,7 +362,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// Creates a new <see cref="ModifierListInfo"/> with accessibility modifiers removed.
         /// </summary>
-        /// <returns></returns>
         public ModifierListInfo WithoutExplicitAccessibility()
         {
             return WithExplicitAccessibility(Accessibility.NotApplicable);
@@ -373,7 +372,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="newAccessibility"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public ModifierListInfo WithExplicitAccessibility(Accessibility newAccessibility, IComparer<SyntaxKind> comparer = null)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -506,7 +504,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="ModifierListInfo"/> with the specified modifiers updated.
         /// </summary>
         /// <param name="modifiers"></param>
-        /// <returns></returns>
         public ModifierListInfo WithModifiers(SyntaxTokenList modifiers)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -645,7 +642,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// Gets the modifier filter.
         /// </summary>
-        /// <returns></returns>
         public ModifierFilter GetFilter()
         {
             var filter = ModifierFilter.None;
@@ -769,54 +765,6 @@ namespace Roslynator.CSharp.Syntax
         {
             if (Parent == null)
                 throw new InvalidOperationException($"{nameof(ModifierListInfo)} is not initalized.");
-        }
-
-        /// <summary>
-        /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return Parent?.ToString() ?? "";
-        }
-
-        /// <summary>
-        /// Determines whether this instance and a specified object are equal.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current instance. </param>
-        /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-        public override bool Equals(object obj)
-        {
-            return obj is ModifierListInfo other && Equals(other);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-        public bool Equals(ModifierListInfo other)
-        {
-            return EqualityComparer<SyntaxNode>.Default.Equals(Parent, other.Parent);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
-        public override int GetHashCode()
-        {
-            return EqualityComparer<SyntaxNode>.Default.GetHashCode(Parent);
-        }
-
-        public static bool operator ==(in ModifierListInfo info1, in ModifierListInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in ModifierListInfo info1, in ModifierListInfo info2)
-        {
-            return !(info1 == info2);
         }
     }
 }

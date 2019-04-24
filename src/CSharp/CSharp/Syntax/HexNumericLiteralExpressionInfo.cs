@@ -1,7 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -11,7 +10,7 @@ using static Roslynator.CSharp.Syntax.SyntaxInfoHelpers;
 namespace Roslynator.CSharp.Syntax
 {
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    internal readonly struct HexNumericLiteralExpressionInfo : IEquatable<HexNumericLiteralExpressionInfo>
+    internal readonly struct HexNumericLiteralExpressionInfo
     {
         private HexNumericLiteralExpressionInfo(LiteralExpressionSyntax literalExpression, SyntaxToken token)
         {
@@ -116,36 +115,6 @@ namespace Roslynator.CSharp.Syntax
                 return default;
 
             return new HexNumericLiteralExpressionInfo(literalExpression, token);
-        }
-
-        public override string ToString()
-        {
-            return LiteralExpression?.ToString() ?? "";
-        }
-
-        public override bool Equals(object obj)
-        {
-            return obj is HexNumericLiteralExpressionInfo other && Equals(other);
-        }
-
-        public bool Equals(HexNumericLiteralExpressionInfo other)
-        {
-            return EqualityComparer<LiteralExpressionSyntax>.Default.Equals(LiteralExpression, other.LiteralExpression);
-        }
-
-        public override int GetHashCode()
-        {
-            return EqualityComparer<LiteralExpressionSyntax>.Default.GetHashCode(LiteralExpression);
-        }
-
-        public static bool operator ==(in HexNumericLiteralExpressionInfo info1, in HexNumericLiteralExpressionInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in HexNumericLiteralExpressionInfo info1, in HexNumericLiteralExpressionInfo info2)
-        {
-            return !(info1 == info2);
         }
     }
 }
