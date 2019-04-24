@@ -74,7 +74,7 @@ namespace Roslynator.CodeGeneration.CSharp
         {
             MethodDeclarationSyntax methodDeclaration = base.CreateVisitAbstractSyntaxMethodDeclaration(metadataName);
 
-            if (metadataName != MetadataNames2.Microsoft_CodeAnalysis_CSharp_Syntax_BaseTypeSyntax)
+            if (metadataName != MetadataNames.CodeAnalysis.Microsoft_CodeAnalysis_CSharp_Syntax_BaseTypeSyntax)
             {
                 methodDeclaration = methodDeclaration.WithModifiers(Modifiers.Private());
             }
