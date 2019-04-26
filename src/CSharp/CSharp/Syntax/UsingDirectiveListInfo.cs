@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Syntax
     /// Provides information about a list of using directives.
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct UsingDirectiveListInfo : IEquatable<UsingDirectiveListInfo>, IReadOnlyList<UsingDirectiveSyntax>
+    public readonly struct UsingDirectiveListInfo : IReadOnlyList<UsingDirectiveSyntax>
     {
         internal UsingDirectiveListInfo(SyntaxNode parent, SyntaxList<UsingDirectiveSyntax> usings)
         {
@@ -58,8 +58,8 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// Gets the using directive at the specified index in the list.
         /// </summary>
-        /// <returns>The using directive at the specified index in the list.</returns>
         /// <param name="index">The zero-based index of the using directive to get. </param>
+        /// <returns>The using directive at the specified index in the list.</returns>
         public UsingDirectiveSyntax this[int index]
         {
             get { return Usings[index]; }
@@ -78,7 +78,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// Gets the enumerator for the list of usings.
         /// </summary>
-        /// <returns></returns>
         public SyntaxList<UsingDirectiveSyntax>.Enumerator GetEnumerator()
         {
             return Usings.GetEnumerator();
@@ -123,7 +122,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="UsingDirectiveListInfo"/> with the usings updated.
         /// </summary>
         /// <param name="usings"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo WithUsings(IEnumerable<UsingDirectiveSyntax> usings)
         {
             return WithUsings(List(usings));
@@ -133,7 +131,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="UsingDirectiveListInfo"/> with the usings updated.
         /// </summary>
         /// <param name="usings"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo WithUsings(SyntaxList<UsingDirectiveSyntax> usings)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -162,7 +159,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="node"></param>
         /// <param name="options"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo RemoveNode(SyntaxNode node, SyntaxRemoveOptions options)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -191,7 +187,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="oldNode"></param>
         /// <param name="newNode"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo ReplaceNode(SyntaxNode oldNode, SyntaxNode newNode)
         {
             ThrowInvalidOperationIfNotInitialized();
@@ -219,7 +214,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="UsingDirectiveListInfo"/> with the specified using directive added at the end.
         /// </summary>
         /// <param name="usingDirective"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo Add(UsingDirectiveSyntax usingDirective)
         {
             return WithUsings(Usings.Add(usingDirective));
@@ -229,7 +223,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="UsingDirectiveListInfo"/> with the specified usings added at the end.
         /// </summary>
         /// <param name="usings"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo AddRange(IEnumerable<UsingDirectiveSyntax> usings)
         {
             return WithUsings(Usings.AddRange(usings));
@@ -238,7 +231,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// True if the list has at least one using directive.
         /// </summary>
-        /// <returns></returns>
         public bool Any()
         {
             return Usings.Any();
@@ -247,7 +239,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The first using directive in the list.
         /// </summary>
-        /// <returns></returns>
         public UsingDirectiveSyntax First()
         {
             return Usings.First();
@@ -256,7 +247,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The first using directive in the list or null if the list is empty.
         /// </summary>
-        /// <returns></returns>
         public UsingDirectiveSyntax FirstOrDefault()
         {
             return Usings.FirstOrDefault();
@@ -266,7 +256,6 @@ namespace Roslynator.CSharp.Syntax
         /// Searches for an using directive that matches the predicate and returns returns zero-based index of the first occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public int IndexOf(Func<UsingDirectiveSyntax, bool> predicate)
         {
             return Usings.IndexOf(predicate);
@@ -276,7 +265,6 @@ namespace Roslynator.CSharp.Syntax
         /// The index of the using directive in the list.
         /// </summary>
         /// <param name="usingDirective"></param>
-        /// <returns></returns>
         public int IndexOf(UsingDirectiveSyntax usingDirective)
         {
             return Usings.IndexOf(usingDirective);
@@ -287,7 +275,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="index"></param>
         /// <param name="usingDirective"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo Insert(int index, UsingDirectiveSyntax usingDirective)
         {
             return WithUsings(Usings.Insert(index, usingDirective));
@@ -298,7 +285,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="index"></param>
         /// <param name="usings"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo InsertRange(int index, IEnumerable<UsingDirectiveSyntax> usings)
         {
             return WithUsings(Usings.InsertRange(index, usings));
@@ -307,7 +293,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The last using directive in the list.
         /// </summary>
-        /// <returns></returns>
         public UsingDirectiveSyntax Last()
         {
             return Usings.Last();
@@ -316,7 +301,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// The last using directive in the list or null if the list is empty.
         /// </summary>
-        /// <returns></returns>
         public UsingDirectiveSyntax LastOrDefault()
         {
             return Usings.LastOrDefault();
@@ -326,7 +310,6 @@ namespace Roslynator.CSharp.Syntax
         /// Searches for an using directive that matches the predicate and returns returns zero-based index of the last occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public int LastIndexOf(Func<UsingDirectiveSyntax, bool> predicate)
         {
             return Usings.LastIndexOf(predicate);
@@ -336,7 +319,6 @@ namespace Roslynator.CSharp.Syntax
         /// Searches for an using directive and returns zero-based index of the last occurrence in the list.
         /// </summary>
         /// <param name="usingDirective"></param>
-        /// <returns></returns>
         public int LastIndexOf(UsingDirectiveSyntax usingDirective)
         {
             return Usings.LastIndexOf(usingDirective);
@@ -346,7 +328,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="UsingDirectiveListInfo"/> with the specified using directive removed.
         /// </summary>
         /// <param name="usingDirective"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo Remove(UsingDirectiveSyntax usingDirective)
         {
             return WithUsings(Usings.Remove(usingDirective));
@@ -356,7 +337,6 @@ namespace Roslynator.CSharp.Syntax
         /// Creates a new <see cref="UsingDirectiveListInfo"/> with the using directive at the specified index removed.
         /// </summary>
         /// <param name="index"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo RemoveAt(int index)
         {
             return WithUsings(Usings.RemoveAt(index));
@@ -367,7 +347,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="usingInLine"></param>
         /// <param name="newUsingDirective"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo Replace(UsingDirectiveSyntax usingInLine, UsingDirectiveSyntax newUsingDirective)
         {
             return WithUsings(Usings.Replace(usingInLine, newUsingDirective));
@@ -378,7 +357,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="index"></param>
         /// <param name="newUsingDirective"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo ReplaceAt(int index, UsingDirectiveSyntax newUsingDirective)
         {
             return WithUsings(Usings.ReplaceAt(index, newUsingDirective));
@@ -389,7 +367,6 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         /// <param name="usingInLine"></param>
         /// <param name="newUsingDirectives"></param>
-        /// <returns></returns>
         public UsingDirectiveListInfo ReplaceRange(UsingDirectiveSyntax usingInLine, IEnumerable<UsingDirectiveSyntax> newUsingDirectives)
         {
             return WithUsings(Usings.ReplaceRange(usingInLine, newUsingDirectives));
@@ -399,54 +376,6 @@ namespace Roslynator.CSharp.Syntax
         {
             if (Parent == null)
                 throw new InvalidOperationException($"{nameof(UsingDirectiveListInfo)} is not initalized.");
-        }
-
-        /// <summary>
-        /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return Parent?.ToString() ?? "";
-        }
-
-        /// <summary>
-        /// Determines whether this instance and a specified object are equal.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current instance. </param>
-        /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-        public override bool Equals(object obj)
-        {
-            return obj is UsingDirectiveListInfo other && Equals(other);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-        public bool Equals(UsingDirectiveListInfo other)
-        {
-            return EqualityComparer<SyntaxNode>.Default.Equals(Parent, other.Parent);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
-        public override int GetHashCode()
-        {
-            return EqualityComparer<SyntaxNode>.Default.GetHashCode(Parent);
-        }
-
-        public static bool operator ==(in UsingDirectiveListInfo info1, in UsingDirectiveListInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in UsingDirectiveListInfo info1, in UsingDirectiveListInfo info2)
-        {
-            return !(info1 == info2);
         }
     }
 }

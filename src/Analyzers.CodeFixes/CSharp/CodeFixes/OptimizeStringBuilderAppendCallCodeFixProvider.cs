@@ -253,13 +253,35 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
 
-                        ArgumentListSyntax argumentList = ArgumentList(
-                            Argument(invocationInfo.Expression),
-                            arguments[0],
-                            arguments[1]
-                        );
+                        switch (arguments.Count)
+                        {
+                            case 1:
+                                {
+                                    ArgumentListSyntax argumentList = ArgumentList(
+                                        Argument(invocationInfo.Expression),
+                                        arguments[0],
+                                        Argument(
+                                            SubtractExpression(
+                                                SimpleMemberAccessExpression(invocationInfo.Expression, IdentifierName("Length")),
+                                                arguments[0].Expression)));
 
-                        return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
+                                    return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
+                                }
+                            case 2:
+                                {
+                                    ArgumentListSyntax argumentList = ArgumentList(
+                                        Argument(invocationInfo.Expression),
+                                        arguments[0],
+                                        arguments[1]
+                                    );
+
+                                    return CreateNewInvocationExpression(outerInvocationExpression, "Append", argumentList);
+                                }
+                            default:
+                                {
+                                    throw new InvalidOperationException();
+                                }
+                        }
                     }
                 case "Remove":
                     {

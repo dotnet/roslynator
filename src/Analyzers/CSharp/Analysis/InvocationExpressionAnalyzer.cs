@@ -396,6 +396,9 @@ namespace Roslynator.CSharp.Analysis
                         if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.OptimizeStringBuilderAppendCall))
                             OptimizeStringBuilderAppendCallAnalysis.Analyze(context, invocationInfo);
 
+                        if (!context.IsAnalyzerSuppressed(DiagnosticDescriptors.AvoidBoxingOfValueType))
+                            AvoidBoxingOfValueTypeAnalysis.Analyze(context, invocationInfo);
+
                         break;
                     }
                 case "Join":

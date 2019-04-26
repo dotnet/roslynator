@@ -1,7 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -14,7 +12,7 @@ namespace Roslynator.CSharp.Syntax
     /// Provides information about binary expression.
     /// </summary>
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
-    public readonly struct BinaryExpressionInfo : IEquatable<BinaryExpressionInfo>
+    public readonly struct BinaryExpressionInfo
     {
         internal BinaryExpressionInfo(
             BinaryExpressionSyntax binaryExpression,
@@ -74,7 +72,6 @@ namespace Roslynator.CSharp.Syntax
         /// <summary>
         /// Returns <see cref="ExpressionChain"/> that enables to enumerate expressions of a binary expression.
         /// </summary>
-        /// <returns></returns>
         public ExpressionChain AsChain()
         {
             return new ExpressionChain(BinaryExpression);
@@ -118,60 +115,6 @@ namespace Roslynator.CSharp.Syntax
                 return default;
 
             return new BinaryExpressionInfo(binaryExpression, left, right);
-        }
-
-        private void ThrowInvalidOperationIfNotInitialized()
-        {
-            if (BinaryExpression == null)
-                throw new InvalidOperationException($"{nameof(BinaryExpressionInfo)} is not initalized.");
-        }
-
-        /// <summary>
-        /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
-        /// </summary>
-        /// <returns></returns>
-        public override string ToString()
-        {
-            return BinaryExpression?.ToString() ?? "";
-        }
-
-        /// <summary>
-        /// Determines whether this instance and a specified object are equal.
-        /// </summary>
-        /// <param name="obj">The object to compare with the current instance. </param>
-        /// <returns>true if <paramref name="obj" /> and this instance are the same type and represent the same value; otherwise, false. </returns>
-        public override bool Equals(object obj)
-        {
-            return obj is BinaryExpressionInfo other && Equals(other);
-        }
-
-        /// <summary>
-        /// Determines whether this instance is equal to another object of the same type.
-        /// </summary>
-        /// <param name="other">An object to compare with this object.</param>
-        /// <returns>true if the current object is equal to the <paramref name="other" /> parameter; otherwise, false.</returns>
-        public bool Equals(BinaryExpressionInfo other)
-        {
-            return EqualityComparer<BinaryExpressionSyntax>.Default.Equals(BinaryExpression, other.BinaryExpression);
-        }
-
-        /// <summary>
-        /// Returns the hash code for this instance.
-        /// </summary>
-        /// <returns>A 32-bit signed integer that is the hash code for this instance.</returns>
-        public override int GetHashCode()
-        {
-            return EqualityComparer<BinaryExpressionSyntax>.Default.GetHashCode(BinaryExpression);
-        }
-
-        public static bool operator ==(in BinaryExpressionInfo info1, in BinaryExpressionInfo info2)
-        {
-            return info1.Equals(info2);
-        }
-
-        public static bool operator !=(in BinaryExpressionInfo info1, in BinaryExpressionInfo info2)
-        {
-            return !(info1 == info2);
         }
     }
 }

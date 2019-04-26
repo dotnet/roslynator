@@ -2833,6 +2833,22 @@ if (s == null)
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
+        <Before><![CDATA[if (x)
+{
+    // ...
+
+    return false; // [|Id|]
+}
+
+return false;]]></Before>
+        <After><![CDATA[if (x)
+{
+    // ...
+}
+
+return false;]]></After>
+      </Sample>
+      <Sample>
         <Before><![CDATA[public void Foo()
 {
     // ...

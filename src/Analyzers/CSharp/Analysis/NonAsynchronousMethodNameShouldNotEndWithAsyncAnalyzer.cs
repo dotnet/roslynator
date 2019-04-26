@@ -11,15 +11,14 @@ using Microsoft.CodeAnalysis.Text;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class NonAsynchronousMethodNameShouldNotEndWithAsyncAnalyzer : BaseDiagnosticAnalyzer
+    public class AsyncSuffixAnalyzer : BaseDiagnosticAnalyzer
     {
-        private const string AsyncSuffix = "Async";
-
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
+                    DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync,
                     DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
                     DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut);
             }
@@ -34,141 +33,62 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync))
+                if (startContext.AreAnalyzersSuppressed(DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync, DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync))
                     return;
-
-                INamedTypeSymbol taskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-
-                INamedTypeSymbol valueTaskType = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask`1");
-
-                var windowsRuntimeTypes = default(WindowsRuntimeAsyncTypes);
 
                 INamedTypeSymbol asyncAction = startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncAction");
 
-                if (asyncAction != null)
-                {
-                    windowsRuntimeTypes = new WindowsRuntimeAsyncTypes(
-                        asyncAction: asyncAction,
-                        asyncActionWithProgress: startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncActionWithProgress`1"),
-                        asyncOperation: startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncOperation`1"),
-                        asyncOperationWithProgress: startContext.Compilation.GetTypeByMetadataName("Windows.Foundation.IAsyncOperationWithProgress`2"));
-                }
+                bool shouldCheckWindowsRuntimeTypes = asyncAction != null;
 
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeMethodDeclaration(nodeContext, taskType, valueTaskType, windowsRuntimeTypes), SyntaxKind.MethodDeclaration);
+                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeMethodDeclaration(nodeContext, shouldCheckWindowsRuntimeTypes), SyntaxKind.MethodDeclaration);
             });
         }
 
-        private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskType, INamedTypeSymbol valueTaskType, WindowsRuntimeAsyncTypes windowsRuntimeAsyncTypes)
+        public static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context, bool shouldCheckWindowsRuntimeTypes)
         {
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            if (!methodDeclaration.Identifier.ValueText.EndsWith(AsyncSuffix, StringComparison.Ordinal))
+            if (methodDeclaration.Modifiers.Contains(SyntaxKind.OverrideKeyword))
                 return;
 
-            IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
-
-            if (methodSymbol == null)
-                return;
-
-            if (methodSymbol.IsAsync)
-                return;
-
-            if (!methodSymbol.Name.EndsWith(AsyncSuffix, StringComparison.Ordinal))
-                return;
-
-            ITypeSymbol typeSymbol = methodSymbol.ReturnType;
-
-            if (CanHaveAsyncSuffix())
-                return;
-
-            SyntaxToken identifier = methodDeclaration.Identifier;
-
-            DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
-                identifier);
-
-            DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
-                Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - AsyncSuffix.Length, identifier.Span.End)));
-
-            bool CanHaveAsyncSuffix()
+            if (methodDeclaration.Identifier.ValueText.EndsWith("Async", StringComparison.Ordinal))
             {
-                if (typeSymbol.Kind == SymbolKind.TypeParameter)
-                {
-                    var typeParameterSymbol = (ITypeParameterSymbol)typeSymbol;
+                IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-                    typeSymbol = typeParameterSymbol.ConstraintTypes.SingleOrDefault(f => f.TypeKind == TypeKind.Class, shouldThrow: false);
+                if (methodSymbol.IsAsync)
+                    return;
 
-                    if (typeSymbol == null)
-                        return false;
-                }
+                if (!methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
+                    return;
 
-                if (typeSymbol.IsTupleType)
-                    return false;
+                if (SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes))
+                    return;
 
-                if (typeSymbol.SpecialType != SpecialType.None)
-                    return false;
+                SyntaxToken identifier = methodDeclaration.Identifier;
 
-                if (!typeSymbol.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface))
-                    return false;
+                DiagnosticHelpers.ReportDiagnostic(context,
+                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsync,
+                    identifier);
 
-                if (!(typeSymbol is INamedTypeSymbol namedTypeSymbol))
-                    return false;
-
-                INamedTypeSymbol constructedFrom = namedTypeSymbol.ConstructedFrom;
-
-                if (constructedFrom.Equals(valueTaskType))
-                    return true;
-
-                if (namedTypeSymbol.EqualsOrInheritsFrom(taskType))
-                    return true;
-
-                INamedTypeSymbol asyncAction = windowsRuntimeAsyncTypes.IAsyncAction;
-
-                if (asyncAction != null)
-                {
-                    if (namedTypeSymbol.Equals(asyncAction))
-                        return true;
-
-                    if (namedTypeSymbol.Implements(asyncAction, allInterfaces: true))
-                        return true;
-
-                    if (namedTypeSymbol.Arity > 0
-                        && namedTypeSymbol.TypeKind == TypeKind.Interface)
-                    {
-                        if (constructedFrom.Equals(windowsRuntimeAsyncTypes.IAsyncActionWithProgress))
-                            return true;
-
-                        if (constructedFrom.Equals(windowsRuntimeAsyncTypes.IAsyncOperation))
-                            return true;
-
-                        if (constructedFrom.Equals(windowsRuntimeAsyncTypes.IAsyncOperationWithProgress))
-                            return true;
-                    }
-                }
-
-                return false;
+                DiagnosticHelpers.ReportDiagnostic(context,
+                    DiagnosticDescriptors.NonAsynchronousMethodNameShouldNotEndWithAsyncFadeOut,
+                    Location.Create(identifier.SyntaxTree, TextSpan.FromBounds(identifier.Span.End - 5, identifier.Span.End)));
             }
-        }
-
-        private readonly struct WindowsRuntimeAsyncTypes
-        {
-            public WindowsRuntimeAsyncTypes(
-                INamedTypeSymbol asyncAction,
-                INamedTypeSymbol asyncActionWithProgress,
-                INamedTypeSymbol asyncOperation,
-                INamedTypeSymbol asyncOperationWithProgress)
+            else
             {
-                IAsyncAction = asyncAction;
-                IAsyncActionWithProgress = asyncActionWithProgress;
-                IAsyncOperation = asyncOperation;
-                IAsyncOperationWithProgress = asyncOperationWithProgress;
-            }
+                IMethodSymbol methodSymbol = context.SemanticModel.GetDeclaredSymbol(methodDeclaration, context.CancellationToken);
 
-            public INamedTypeSymbol IAsyncAction { get; }
-            public INamedTypeSymbol IAsyncActionWithProgress { get; }
-            public INamedTypeSymbol IAsyncOperation { get; }
-            public INamedTypeSymbol IAsyncOperationWithProgress { get; }
+                if (methodSymbol.Name.EndsWith("Async", StringComparison.Ordinal))
+                    return;
+
+                if (SymbolUtility.CanBeEntryPoint(methodSymbol))
+                    return;
+
+                if (!SymbolUtility.IsAwaitable(methodSymbol.ReturnType, shouldCheckWindowsRuntimeTypes))
+                    return;
+
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.AsynchronousMethodNameShouldEndWithAsync, methodDeclaration.Identifier);
+            }
         }
     }
 }

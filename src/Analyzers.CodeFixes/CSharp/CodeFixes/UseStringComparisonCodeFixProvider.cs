@@ -95,10 +95,10 @@ namespace Roslynator.CSharp.CodeFixes
                         INamedTypeSymbol comparisonSymbol = semanticModel.GetTypeByMetadataName("System.StringComparison");
 
                         if (!invocationInfo2.NameText.EndsWith("Invariant", StringComparison.Ordinal)
-                            || !RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "InvariantCultureIgnoreCase"))
+                            || !RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "InvariantCultureIgnoreCase", semanticModel))
                         {
-                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "OrdinalIgnoreCase");
-                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "CurrentCultureIgnoreCase");
+                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "OrdinalIgnoreCase", semanticModel);
+                            RegisterCodeFix(context, diagnostic, invocationInfo, comparisonSymbol, "CurrentCultureIgnoreCase", semanticModel);
                         }
 
                         break;
@@ -157,14 +157,15 @@ namespace Roslynator.CSharp.CodeFixes
             Diagnostic diagnostic,
             SimpleMemberInvocationExpressionInfo invocationInfo,
             INamedTypeSymbol comparisonSymbol,
-            string comparisonName)
+            string comparisonName,
+            SemanticModel semanticModel)
         {
             if (!comparisonSymbol.ContainsMember<IFieldSymbol>(comparisonName))
                 return false;
 
             CodeAction codeAction = CodeAction.Create(
                 GetTitle(comparisonName),
-                cancellationToken => RefactorAsync(context.Document, invocationInfo, comparisonName, cancellationToken),
+                cancellationToken => RefactorAsync(context.Document, invocationInfo, comparisonName, semanticModel, cancellationToken),
                 GetEquivalenceKey(diagnostic, (comparisonName != "InvariantCultureIgnoreCase") ? comparisonName : null));
 
             context.RegisterCodeFix(codeAction, diagnostic);
@@ -180,6 +181,7 @@ namespace Roslynator.CSharp.CodeFixes
             Document document,
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             string comparisonName,
+            SemanticModel semanticModel,
             CancellationToken cancellationToken)
         {
             SeparatedSyntaxList<ArgumentSyntax> arguments = invocationInfo.Arguments;
@@ -205,9 +207,10 @@ namespace Roslynator.CSharp.CodeFixes
 
                 MemberAccessExpressionSyntax newMemberAccess = memberAccess.WithExpression(memberAccess2.Expression);
 
-                bool isContains = memberAccess.Name.Identifier.ValueText == "Contains";
+                bool useIndexOf = memberAccess.Name.Identifier.ValueText == "Contains"
+                    && !ExistsStringContainsWithStringComparison();
 
-                if (isContains)
+                if (useIndexOf)
                     newMemberAccess = newMemberAccess.WithName(newMemberAccess.Name.WithIdentifier(Identifier("IndexOf").WithTriviaFrom(newMemberAccess.Name.Identifier)));
 
                 ArgumentListSyntax newArgumentList = ArgumentList(
@@ -218,10 +221,37 @@ namespace Roslynator.CSharp.CodeFixes
                     .WithExpression(newMemberAccess)
                     .WithArgumentList(newArgumentList);
 
-                if (isContains)
+                if (useIndexOf)
                     newNode = GreaterThanOrEqualExpression(newNode.Parenthesize(), NumericLiteralExpression(0)).Parenthesize();
 
                 return document.ReplaceNodeAsync(invocation, newNode, cancellationToken);
+            }
+
+            bool ExistsStringContainsWithStringComparison()
+            {
+                foreach (ISymbol symbol in semanticModel
+                    .Compilation
+                    .GetSpecialType(SpecialType.System_String)
+                    .GetMembers("Contains"))
+                {
+                    if (!symbol.IsStatic
+                        && symbol.DeclaredAccessibility == Accessibility.Public
+                        && symbol.Kind == SymbolKind.Method)
+                    {
+                        var methodSymbol = (IMethodSymbol)symbol;
+
+                        ImmutableArray<IParameterSymbol> parameters = methodSymbol.Parameters;
+
+                        if (parameters.Length == 2
+                            && parameters[0].Type.SpecialType == SpecialType.System_String
+                            && parameters[1].Type.HasMetadataName(MetadataNames.System_StringComparison))
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+                return false;
             }
         }
 

@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
             StatementSyntax statement,
             CancellationToken cancellationToken)
         {
-            BlockSyntax block = SyntaxFactory.Block(statement).WithFormatterAnnotation();
+            BlockSyntax block = SyntaxFactory.Block(statement);
 
             return document.ReplaceNodeAsync(statement, block, cancellationToken);
         }

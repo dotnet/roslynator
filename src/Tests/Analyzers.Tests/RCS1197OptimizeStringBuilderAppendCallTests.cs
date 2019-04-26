@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Analysis.Tests
         public override CodeFixProvider FixProvider { get; } = new OptimizeStringBuilderAppendCallCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Substring()
+        public async Task Test_Substring_Int32_Int32()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
@@ -50,7 +50,39 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
-        public async Task Test_Substring_AppendLine()
+        public async Task Test_Substring_Int32()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+
+        sb.Append([|s.Substring(2)|]);
+    }
+}
+", @"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+
+        sb.Append(s, 2, s.Length - 2);
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+        public async Task Test_Substring_Int32_Int32_AppendLine()
         {
             await VerifyDiagnosticAndFixAsync(@"
 using System.Text;
@@ -76,6 +108,38 @@ class C
         var sb = new StringBuilder();
 
         sb.Append(s, 0, 2).AppendLine();
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.OptimizeStringBuilderAppendCall)]
+        public async Task Test_Substring_Int32_AppendLine()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+
+        sb.AppendLine([|s.Substring(2)|]);
+    }
+}
+", @"
+using System.Text;
+
+class C
+{
+    void M()
+    {
+        string s = null;
+        var sb = new StringBuilder();
+
+        sb.Append(s, 2, s.Length - 2).AppendLine();
     }
 }
 ");
@@ -731,11 +795,7 @@ class C
 
         var sb = new StringBuilder();
 
-        sb.Append(s.Substring(2));
-
         sb.Append(s.Remove(2, 3));
-
-        sb.AppendLine(s.Substring(2));
 
         sb.AppendLine(s.Remove(2, 3));
 

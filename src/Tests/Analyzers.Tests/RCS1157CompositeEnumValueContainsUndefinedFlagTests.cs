@@ -87,5 +87,19 @@ public enum E
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.CompositeEnumValueContainsUndefinedFlag)]
+        public async Task TestNoDiagnostic_MaxValue()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+[Flags]
+public enum E
+{
+    A = int.MaxValue
+}
+");
+        }
     }
 }
