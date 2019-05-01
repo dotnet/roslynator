@@ -26,6 +26,8 @@ namespace Roslynator
 
         public bool IsSolution => _solution != null;
 
+        public bool IsDefault => _project == null && _solution == null;
+
         public string FilePath => (IsProject) ? _project.FilePath : _solution?.FilePath;
 
         public VersionStamp Version => (IsProject) ? _project.Version : (_solution?.Version ?? default);
