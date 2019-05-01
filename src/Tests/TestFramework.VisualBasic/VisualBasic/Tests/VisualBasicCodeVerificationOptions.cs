@@ -11,20 +11,47 @@ namespace Roslynator.VisualBasic.Tests
     public class VisualBasicCodeVerificationOptions : CodeVerificationOptions
     {
         public VisualBasicCodeVerificationOptions(
+            VisualBasicParseOptions parseOptions = null,
+            VisualBasicCompilationOptions compilationOptions = null,
             bool allowNewCompilerDiagnostics = false,
             bool enableDiagnosticsDisabledByDefault = true,
             DiagnosticSeverity maxAllowedCompilerDiagnosticSeverity = DiagnosticSeverity.Info,
-            IEnumerable<string> allowedCompilerDiagnosticIds = null,
-            LanguageVersion languageVersion = LanguageVersion.Latest)
-            : base(allowNewCompilerDiagnostics, enableDiagnosticsDisabledByDefault, maxAllowedCompilerDiagnosticSeverity, allowedCompilerDiagnosticIds)
+            IEnumerable<string> allowedCompilerDiagnosticIds = null)
+            : base(parseOptions, compilationOptions, allowNewCompilerDiagnostics, enableDiagnosticsDisabledByDefault, maxAllowedCompilerDiagnosticSeverity, allowedCompilerDiagnosticIds)
         {
-            LanguageVersion = languageVersion;
+            ParseOptions = parseOptions;
+            CompilationOptions = compilationOptions;
         }
 
-        public LanguageVersion LanguageVersion { get; }
+        new public VisualBasicParseOptions ParseOptions { get; }
+
+        new public VisualBasicCompilationOptions CompilationOptions { get; }
 
         //TODO: Allowed compiler diagnostic IDs for Visual Basic
-        public static VisualBasicCodeVerificationOptions Default { get; } = new VisualBasicCodeVerificationOptions();
+        public static VisualBasicCodeVerificationOptions Default { get; } = CreateDefault();
+
+        private static VisualBasicCodeVerificationOptions CreateDefault()
+        {
+            VisualBasicParseOptions parseOptions = null;
+            VisualBasicCompilationOptions compilationOptions = null;
+
+            using (var workspace = new AdhocWorkspace())
+            {
+                Project project = workspace
+                    .CurrentSolution
+                    .AddProject("Temp", "Temp", LanguageNames.VisualBasic);
+
+                compilationOptions = ((VisualBasicCompilationOptions)project.CompilationOptions)
+                    .WithOutputKind(OutputKind.DynamicallyLinkedLibrary);
+
+                parseOptions = ((VisualBasicParseOptions)project.ParseOptions)
+                    .WithLanguageVersion(LanguageVersion.Latest);
+            }
+
+            return new VisualBasicCodeVerificationOptions(
+                parseOptions: parseOptions,
+                compilationOptions: compilationOptions);
+        }
 
         public override CodeVerificationOptions AddAllowedCompilerDiagnosticId(string diagnosticId)
         {
@@ -42,21 +69,34 @@ namespace Roslynator.VisualBasic.Tests
                 throw new ArgumentNullException(nameof(allowedCompilerDiagnosticIds));
 
             return new VisualBasicCodeVerificationOptions(
+                parseOptions: ParseOptions,
+                compilationOptions: CompilationOptions,
                 allowNewCompilerDiagnostics: AllowNewCompilerDiagnostics,
                 enableDiagnosticsDisabledByDefault: EnableDiagnosticsDisabledByDefault,
                 maxAllowedCompilerDiagnosticSeverity: MaxAllowedCompilerDiagnosticSeverity,
-                allowedCompilerDiagnosticIds: allowedCompilerDiagnosticIds,
-                languageVersion: LanguageVersion);
+                allowedCompilerDiagnosticIds: allowedCompilerDiagnosticIds);
         }
 
-        public VisualBasicCodeVerificationOptions WithLanguageOptions(LanguageVersion languageVersion)
+        public VisualBasicCodeVerificationOptions WithParseOptions(VisualBasicParseOptions parseOptions)
         {
             return new VisualBasicCodeVerificationOptions(
+                parseOptions: parseOptions,
+                compilationOptions: CompilationOptions,
                 allowNewCompilerDiagnostics: AllowNewCompilerDiagnostics,
                 enableDiagnosticsDisabledByDefault: EnableDiagnosticsDisabledByDefault,
                 maxAllowedCompilerDiagnosticSeverity: MaxAllowedCompilerDiagnosticSeverity,
-                allowedCompilerDiagnosticIds: AllowedCompilerDiagnosticIds,
-                languageVersion: languageVersion);
+                allowedCompilerDiagnosticIds: AllowedCompilerDiagnosticIds);
+        }
+
+        public VisualBasicCodeVerificationOptions WithCompilationOptions(VisualBasicCompilationOptions compilationOptions)
+        {
+            return new VisualBasicCodeVerificationOptions(
+                parseOptions: ParseOptions,
+                compilationOptions: compilationOptions,
+                allowNewCompilerDiagnostics: AllowNewCompilerDiagnostics,
+                enableDiagnosticsDisabledByDefault: EnableDiagnosticsDisabledByDefault,
+                maxAllowedCompilerDiagnosticSeverity: MaxAllowedCompilerDiagnosticSeverity,
+                allowedCompilerDiagnosticIds: AllowedCompilerDiagnosticIds);
         }
     }
 }

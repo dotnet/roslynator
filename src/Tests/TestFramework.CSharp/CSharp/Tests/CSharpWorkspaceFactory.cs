@@ -2,7 +2,6 @@
 
 using System.Linq;
 using Microsoft.CodeAnalysis;
-using Microsoft.CodeAnalysis.CSharp;
 using Roslynator.Tests;
 
 namespace Roslynator.CSharp.Tests
@@ -19,25 +18,12 @@ namespace Roslynator.CSharp.Tests
         {
             Project project = base.AddProject(solution, options);
 
-            var compilationOptions = (CSharpCompilationOptions)project.CompilationOptions;
-
-            CSharpCompilationOptions newCompilationOptions = compilationOptions
-                .WithAllowUnsafe(true)
-                .WithOutputKind(OutputKind.DynamicallyLinkedLibrary);
-
-            var parseOptions = (CSharpParseOptions)project.ParseOptions;
-
-            CSharpCodeVerificationOptions csharpOptions = (options != null)
-                ? ((CSharpCodeVerificationOptions)options)
-                : CSharpCodeVerificationOptions.Default;
-
-            CSharpParseOptions newParseOptions = parseOptions
-                .WithLanguageVersion(csharpOptions.LanguageVersion)
-                .WithPreprocessorSymbols(parseOptions.PreprocessorSymbolNames.Concat(new string[] { "DEBUG" }));
+            if (options == null)
+                options = CSharpCodeVerificationOptions.Default;
 
             return project
-                .WithCompilationOptions(newCompilationOptions)
-                .WithParseOptions(newParseOptions);
+                .WithCompilationOptions(options.CompilationOptions)
+                .WithParseOptions(options.ParseOptions);
         }
     }
 }
