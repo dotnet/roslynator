@@ -331,16 +331,16 @@ namespace Roslynator.CSharp.Refactorings
                         RefactoringIdentifiers.UncommentSingleLineComment);
                 }
 
-                if (IsRefactoringEnabled(RefactoringIdentifiers.ReplaceCommentWithDocumentationComment))
+                if (IsRefactoringEnabled(RefactoringIdentifiers.ConvertCommentToDocumentationComment))
                 {
-                    TextSpan fixableSpan = ReplaceCommentWithDocumentationCommentAnalysis.GetFixableSpan(trivia);
+                    TextSpan fixableSpan = ConvertCommentToDocumentationCommentAnalysis.GetFixableSpan(trivia);
 
                     if (!fixableSpan.IsEmpty)
                     {
                         RegisterRefactoring(
-                            ReplaceCommentWithDocumentationCommentRefactoring.Title,
-                            cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, cancellationToken),
-                            RefactoringIdentifiers.ReplaceCommentWithDocumentationComment);
+                            ConvertCommentToDocumentationCommentRefactoring.Title,
+                            cancellationToken => ConvertCommentToDocumentationCommentRefactoring.RefactorAsync(Document, (MemberDeclarationSyntax)trivia.Token.Parent, fixableSpan, cancellationToken),
+                            RefactoringIdentifiers.ConvertCommentToDocumentationComment);
                     }
                 }
             }

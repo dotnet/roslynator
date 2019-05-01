@@ -163,7 +163,7 @@ namespace Roslynator.CSharp
         public const string CallDebugFailInsteadOfDebugAssert = "RCS1178";
         public const string UseReturnInsteadOfAssignment = "RCS1179";
         public const string InlineLazyInitialization = "RCS1180";
-        public const string ReplaceCommentWithDocumentationComment = "RCS1181";
+        public const string ConvertCommentToDocumentationComment = "RCS1181";
         public const string RemoveRedundantBaseInterface = "RCS1182";
         public const string FormatInitializerWithSingleExpressionOnSingleLine = "RCS1183";
         public const string FormatConditionalExpression = "RCS1184";

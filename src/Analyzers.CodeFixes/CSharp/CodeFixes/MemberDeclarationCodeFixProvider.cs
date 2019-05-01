@@ -35,7 +35,7 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.MarkFieldAsReadOnly,
                     DiagnosticIdentifiers.UseConstantInsteadOfField,
                     DiagnosticIdentifiers.UseReadOnlyAutoProperty,
-                    DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment,
+                    DiagnosticIdentifiers.ConvertCommentToDocumentationComment,
                     DiagnosticIdentifiers.MakeMethodExtensionMethod);
             }
         }
@@ -140,11 +140,11 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment:
+                    case DiagnosticIdentifiers.ConvertCommentToDocumentationComment:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                ReplaceCommentWithDocumentationCommentRefactoring.Title,
-                                cancellationToken => ReplaceCommentWithDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, context.Span, cancellationToken),
+                                ConvertCommentToDocumentationCommentRefactoring.Title,
+                                cancellationToken => ConvertCommentToDocumentationCommentRefactoring.RefactorAsync(context.Document, memberDeclaration, context.Span, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

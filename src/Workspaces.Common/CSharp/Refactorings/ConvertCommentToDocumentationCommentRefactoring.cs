@@ -14,9 +14,9 @@ using Roslynator.Documentation;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceCommentWithDocumentationCommentRefactoring
+    internal static class ConvertCommentToDocumentationCommentRefactoring
     {
-        public const string Title = "Replace comment with documentation comment";
+        public const string Title = "Convert comment to documentation comment";
 
         private static readonly Regex _leadingSlashesRegex = new Regex(@"^//\s*");
 

@@ -3844,10 +3844,10 @@ items.Add(x);]]></Before>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReplaceCommentWithDocumentationComment">
+  <Analyzer Identifier="ConvertCommentToDocumentationComment">
     <Id>RCS1181</Id>
-    <Title>Replace comment with documentation comment.</Title>
-    <MessageFormat>Replace comment with documentation comment.</MessageFormat>
+    <Title>Convert comment to documentation comment.</Title>
+    <MessageFormat>Convert comment to documentation comment.</MessageFormat>
     <Category>General</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

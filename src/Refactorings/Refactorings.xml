@@ -1568,7 +1568,7 @@ return false;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0192" Identifier="ReplaceCommentWithDocumentationComment" Title="Replace comment with documentation comment">
+  <Refactoring Id="RR0192" Identifier="ConvertCommentToDocumentationComment" Title="Convert comment to documentation comment">
     <Syntaxes>
       <Syntax>single-line comment</Syntax>
     </Syntaxes>

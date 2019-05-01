@@ -173,7 +173,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1178", "Call Debug.Fail instead of Debug.Assert.", !IsEnabled("RCS1178")));
             analyzers.Add(new BaseModel("RCS1179", "Use return instead of assignment.", !IsEnabled("RCS1179")));
             analyzers.Add(new BaseModel("RCS1180", "Inline lazy initialization.", !IsEnabled("RCS1180")));
-            analyzers.Add(new BaseModel("RCS1181", "Replace comment with documentation comment.", !IsEnabled("RCS1181")));
+            analyzers.Add(new BaseModel("RCS1181", "Convert comment to documentation comment.", !IsEnabled("RCS1181")));
             analyzers.Add(new BaseModel("RCS1182", "Remove redundant base interface.", !IsEnabled("RCS1182")));
             analyzers.Add(new BaseModel("RCS1183", "Format initializer with single expression on single line.", !IsEnabled("RCS1183")));
             analyzers.Add(new BaseModel("RCS1184", "Format conditional expression (format ? and : on next line).", !IsEnabled("RCS1184")));

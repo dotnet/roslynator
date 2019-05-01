@@ -39,6 +39,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string CollapseToInitializer = Prefix + "0026";
         public const string CommentOutMember = Prefix + "0027";
         public const string CommentOutStatement = Prefix + "0028";
+        public const string ConvertCommentToDocumentationComment = Prefix + "0192";
         public const string ConvertStatementsToIfElse = Prefix + "0211";
         public const string CopyDocumentationCommentFromBaseMember = Prefix + "0029";
         public const string DuplicateArgument = Prefix + "0030";
@@ -143,7 +144,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string RenamePropertyAccordingToTypeName = Prefix + "0115";
         public const string ReplaceAsWithCast = Prefix + "0117";
         public const string ReplaceCastWithAs = Prefix + "0118";
-        public const string ReplaceCommentWithDocumentationComment = Prefix + "0192";
         public const string ReplaceConditionalExpressionWithExpression = Prefix + "0119";
         public const string ReplaceConditionalExpressionWithIfElse = Prefix + "0120";
         public const string ReplaceConstantWithField = Prefix + "0121";

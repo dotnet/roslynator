@@ -1914,15 +1914,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1181</summary>
-        public static readonly DiagnosticDescriptor ReplaceCommentWithDocumentationComment = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment, 
-            title:              "Replace comment with documentation comment.", 
-            messageFormat:      "Replace comment with documentation comment.", 
+        public static readonly DiagnosticDescriptor ConvertCommentToDocumentationComment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ConvertCommentToDocumentationComment, 
+            title:              "Convert comment to documentation comment.", 
+            messageFormat:      "Convert comment to documentation comment.", 
             category:           DiagnosticCategories.General, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ConvertCommentToDocumentationComment}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1182</summary>
