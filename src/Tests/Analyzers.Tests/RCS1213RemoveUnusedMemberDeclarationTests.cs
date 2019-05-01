@@ -278,5 +278,19 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveUnusedMemberDeclaration)]
+        public async Task TestNoDiagnostic_StructLayoutAttribute()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Runtime.InteropServices;
+
+[StructLayout(LayoutKind.Sequential)]
+struct S
+{
+    private int F;
+}
+");
+        }
     }
 }
