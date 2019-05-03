@@ -7,7 +7,7 @@ namespace Roslynator.CSharp
     /// <summary>
     /// A set of extension methods for enumerations.
     /// </summary>
-    public static class EnumExtensions
+    internal static class EnumExtensions
     {
         /// <summary>
         /// Returns true if the kind is one of the specified kinds.
