@@ -27,6 +27,9 @@ namespace Roslynator.CSharp.Refactorings
                     ReplaceSwitchWithIfElseRefactoring.ComputeRefactoring(context, switchStatement);
                 }
             }
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateSwitchSection))
+                DuplicateSwitchSectionRefactoring.ComputeRefactoring(context, switchStatement);
         }
     }
 }

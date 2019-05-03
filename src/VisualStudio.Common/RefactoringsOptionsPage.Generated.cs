@@ -20,7 +20,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = RefactoringIdentifiers.ConvertStatementsToIfElse;
+        = RefactoringIdentifiers.DuplicateSwitchSection;
         internal static void SetRefactoringsDisabledByDefault(RefactoringSettings settings)
         {
             settings.Disable(RefactoringIdentifiers.AddIdentifierToParameter);
@@ -235,6 +235,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.RemoveAsyncAwait, "Remove async/await", IsEnabled(RefactoringIdentifiers.RemoveAsyncAwait)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ImplementCustomEnumerator, "Implement custom enumerator", IsEnabled(RefactoringIdentifiers.ImplementCustomEnumerator)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertStatementsToIfElse, "Convert statements to if-else", IsEnabled(RefactoringIdentifiers.ConvertStatementsToIfElse)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.DuplicateSwitchSection, "Duplicate switch section", IsEnabled(RefactoringIdentifiers.DuplicateSwitchSection)));
         }
     }
 }

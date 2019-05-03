@@ -2140,4 +2140,50 @@ else
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0212" Identifier="DuplicateSwitchSection" Title="Duplicate switch section">
+    <Syntaxes>
+      <Syntax>switch section</Syntax>
+    </Syntaxes>
+    <Span>close brace or empty line after switch section</Span>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[switch (s)
+{
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    default:
+        {
+            break;
+        }
+}]]>
+        </Before>
+        <After>
+          <![CDATA[switch (s)
+{
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    default:
+        {
+            break;
+        }
+}]]>
+        </After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>
