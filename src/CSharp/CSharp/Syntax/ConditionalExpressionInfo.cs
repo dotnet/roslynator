@@ -77,25 +77,6 @@ namespace Roslynator.CSharp.Syntax
         }
 
         internal static ConditionalExpressionInfo Create(
-            SyntaxNode node,
-            bool walkDownParentheses = true,
-            bool allowMissing = false)
-        {
-            return CreateImpl(
-                Walk(node, walkDownParentheses) as ConditionalExpressionSyntax,
-                walkDownParentheses,
-                allowMissing);
-        }
-
-        internal static ConditionalExpressionInfo Create(
-            ConditionalExpressionSyntax conditionalExpression,
-            bool walkDownParentheses = true,
-            bool allowMissing = false)
-        {
-            return CreateImpl(conditionalExpression, walkDownParentheses, allowMissing);
-        }
-
-        private static ConditionalExpressionInfo CreateImpl(
             ConditionalExpressionSyntax conditionalExpression,
             bool walkDownParentheses = true,
             bool allowMissing = false)

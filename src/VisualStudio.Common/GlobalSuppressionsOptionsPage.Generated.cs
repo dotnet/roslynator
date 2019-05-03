@@ -14,7 +14,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = "RCS1234";
+        = "RCS1235";
         protected override void Fill(ICollection<BaseModel> analyzers)
         {
             analyzers.Clear();
@@ -144,7 +144,6 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1143", "Simplify coalesce expression.", !IsEnabled("RCS1143")));
             analyzers.Add(new BaseModel("RCS1145", "Remove redundant 'as' operator.", !IsEnabled("RCS1145")));
             analyzers.Add(new BaseModel("RCS1146", "Use conditional access.", !IsEnabled("RCS1146")));
-            analyzers.Add(new BaseModel("RCS1150", "Call string.Concat instead of string.Join.", !IsEnabled("RCS1150")));
             analyzers.Add(new BaseModel("RCS1151", "Remove redundant cast.", !IsEnabled("RCS1151")));
             analyzers.Add(new BaseModel("RCS1153", "Add empty line after closing brace.", !IsEnabled("RCS1153")));
             analyzers.Add(new BaseModel("RCS1154", "Sort enum members.", !IsEnabled("RCS1154")));
@@ -170,7 +169,6 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1175", "Unused this parameter.", !IsEnabled("RCS1175")));
             analyzers.Add(new BaseModel("RCS1176", "Use 'var' instead of explicit type (when the type is not obvious).", !IsEnabled("RCS1176")));
             analyzers.Add(new BaseModel("RCS1177", "Use 'var' instead of explicit type (in foreach).", !IsEnabled("RCS1177")));
-            analyzers.Add(new BaseModel("RCS1178", "Call Debug.Fail instead of Debug.Assert.", !IsEnabled("RCS1178")));
             analyzers.Add(new BaseModel("RCS1179", "Use return instead of assignment.", !IsEnabled("RCS1179")));
             analyzers.Add(new BaseModel("RCS1180", "Inline lazy initialization.", !IsEnabled("RCS1180")));
             analyzers.Add(new BaseModel("RCS1181", "Convert comment to documentation comment.", !IsEnabled("RCS1181")));
@@ -227,6 +225,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1232", "Order elements in documentation comment.", !IsEnabled("RCS1232")));
             analyzers.Add(new BaseModel("RCS1233", "Use short-circuiting operator.", !IsEnabled("RCS1233")));
             analyzers.Add(new BaseModel("RCS1234", "Duplicate enum value.", !IsEnabled("RCS1234")));
+            analyzers.Add(new BaseModel("RCS1235", "Optimize method call.", !IsEnabled("RCS1235")));
         }
     }
 }

@@ -3178,7 +3178,7 @@ string s2 = s as string; // [|Id|]]]></Before>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
   </Analyzer>
-  <Analyzer Identifier="CallStringConcatInsteadOfStringJoin">
+  <Analyzer Identifier="CallStringConcatInsteadOfStringJoin" IsObsolete="true">
     <Id>RCS1150</Id>
     <Title>Call string.Concat instead of string.Join.</Title>
     <MessageFormat>Call string.Concat instead of string.Join.</MessageFormat>
@@ -3770,7 +3770,7 @@ else
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="CallDebugFailInsteadOfDebugAssert">
+  <Analyzer Identifier="CallDebugFailInsteadOfDebugAssert" IsObsolete="true">
     <Id>RCS1178</Id>
     <Title>Call Debug.Fail instead of Debug.Assert.</Title>
     <MessageFormat>Call Debug.Fail instead of Debug.Assert.</MessageFormat>
@@ -5249,6 +5249,45 @@ public string Foo()
     B = 2,
     C = B,
 }]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="OptimizeMethodCall">
+    <Id>RCS1235</Id>
+    <Title>Optimize method call.</Title>
+    <MessageFormat>Optimize '{0}' call.</MessageFormat>
+    <Category>Performance</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[string.Compare(x, y, StringComparison.Ordinal) // [|Id|]]]></Before>
+        <After><![CDATA[string.CompareOrdinal(x, y)]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[string.Compare(x, y, StringComparison.CurrentCulture) == 0 // [|Id|]]]></Before>
+        <After><![CDATA[string.Equals(x, y, StringComparison.CurrentCulture)]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[string.Join("", x, z, y) // [|Id|]]]></Before>
+        <After><![CDATA[string.Concat(x, y, z)]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[Debug.Assert(false, "message"); // [|Id|]]]></Before>
+        <After><![CDATA[Debug.Fail("message");]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (dic.ContainsKey(key)) // [|Id|]
+{
+  dic[key] = value;
+}
+else
+{
+  dic.Add(key, value);
+}]]></Before>
+        <After><![CDATA[dic[key] = value;]]></After>
       </Sample>
     </Samples>
   </Analyzer>
