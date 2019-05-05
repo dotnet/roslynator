@@ -16,6 +16,7 @@ namespace Roslynator
         public const string RECS = nameof(RECS);
         public const string REVB = nameof(REVB);
         public const string RS = nameof(RS);
+        public const string SA = nameof(SA);
         public const string U2U = nameof(U2U);
         public const string VB = nameof(VB);
         public const string VSSDK = nameof(VSSDK);

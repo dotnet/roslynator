@@ -82,6 +82,9 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.DuplicateSwitchSection))
+                DuplicateSwitchSectionRefactoring.ComputeRefactoring(context, switchSection);
+
             bool IsContainedInCaseOrDefaultKeyword(TextSpan span)
             {
                 foreach (SwitchLabelSyntax label in switchSection.Labels)

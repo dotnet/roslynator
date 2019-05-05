@@ -11,6 +11,7 @@ namespace Roslynator
         public static readonly MetadataName System_Collections_Generic = MetadataName.Parse("System.Collections.Generic");
         public static readonly MetadataName System_Collections_Generic_IEnumerable_T = MetadataName.Parse("System.Collections.Generic.IEnumerable`1");
         public static readonly MetadataName System_Collections_Generic_List_T = MetadataName.Parse("System.Collections.Generic.List`1");
+        public static readonly MetadataName System_Collections_Generic_Dictionary_T2 = MetadataName.Parse("System.Collections.Generic.Dictionary`2");
         public static readonly MetadataName System_Collections_IDictionary = MetadataName.Parse("System.Collections.IDictionary");
         public static readonly MetadataName System_Collections_Immutable_ImmutableArray_T = MetadataName.Parse("System.Collections.Immutable.ImmutableArray`1");
         public static readonly MetadataName System_ComponentModel_INotifyPropertyChanged = MetadataName.Parse("System.ComponentModel.INotifyPropertyChanged");

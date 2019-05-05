@@ -73,5 +73,25 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.SyntaxErrorCharExpected)]
+        public async Task Test_MissingCommaBetweenEnumMembers()
+        {
+            await VerifyFixAsync(@"
+enum E
+{
+    A = 1
+    B = 2
+    C = 3
+}
+", @"
+enum E
+{
+    A = 1,
+    B = 2,
+    C = 3
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
     }
 }

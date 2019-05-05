@@ -29,31 +29,36 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             base.Initialize(context);
             context.EnableConcurrentExecution();
 
-            context.RegisterSyntaxNodeAction(AnalyzeClassDeclaration, SyntaxKind.ClassDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeStructDeclaration, SyntaxKind.StructDeclaration);
-        }
-
-        public static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
-        }
-
-        public static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
-        {
-            AnalyzeTypeDeclaration(context, (TypeDeclarationSyntax)context.Node);
+            context.RegisterSyntaxNodeAction(AnalyzeTypeDeclaration, SyntaxKind.ClassDeclaration);
+            context.RegisterSyntaxNodeAction(AnalyzeTypeDeclaration, SyntaxKind.StructDeclaration);
         }
 
         [SuppressMessage("Simplification", "RCS1180:Inline lazy initialization.", Justification = "<Pending>")]
-        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context, TypeDeclarationSyntax typeDeclaration)
+        private static void AnalyzeTypeDeclaration(SyntaxNodeAnalysisContext context)
         {
+            var typeDeclaration = (TypeDeclarationSyntax)context.Node;
+
             if (typeDeclaration.Modifiers.Contains(SyntaxKind.PartialKeyword))
                 return;
+
+            SemanticModel semanticModel = context.SemanticModel;
+            CancellationToken cancellationToken = context.CancellationToken;
+
+            ImmutableArray<AttributeData> attributes = default;
+
+            if (typeDeclaration.IsKind(SyntaxKind.StructDeclaration))
+            {
+                INamedTypeSymbol declarationSymbol = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken);
+
+                attributes = declarationSymbol.GetAttributes();
+
+                if (attributes.Any(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Runtime_InteropServices_StructLayoutAttribute)))
+                    return;
+            }
 
             SyntaxList<MemberDeclarationSyntax> members = typeDeclaration.Members;
 
             UnusedMemberWalker walker = null;
-            SemanticModel semanticModel = context.SemanticModel;
-            CancellationToken cancellationToken = context.CancellationToken;
 
             foreach (MemberDeclarationSyntax member in members)
             {
@@ -172,9 +177,11 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
             if (ShouldAnalyzeDebuggerDisplayAttribute()
                 && nodes.Any(f => f.CanBeInDebuggerDisplayAttribute))
             {
-                string value = semanticModel
-                    .GetDeclaredSymbol(typeDeclaration, cancellationToken)
-                    .GetAttribute(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute)?
+                if (attributes.IsDefault)
+                    attributes = semanticModel.GetDeclaredSymbol(typeDeclaration, cancellationToken).GetAttributes();
+
+                string value = attributes
+                    .FirstOrDefault(f => f.AttributeClass.HasMetadataName(MetadataNames.System_Diagnostics_DebuggerDisplayAttribute))?
                     .ConstructorArguments
                     .SingleOrDefault(shouldThrow: false)
                     .Value?

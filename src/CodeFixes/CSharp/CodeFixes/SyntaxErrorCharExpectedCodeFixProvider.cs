@@ -37,51 +37,76 @@ namespace Roslynator.CSharp.CodeFixes
             if (expression == null)
                 return;
 
-            if (!expression.IsParentKind(SyntaxKind.ArrayInitializerExpression))
-                return;
+            int position = -1;
 
-            var initializer = (InitializerExpressionSyntax)expression.Parent;
-
-            SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
-
-            int index = expressions.IndexOf(expression);
-
-            Debug.Assert(index > 0);
-
-            if (index <= 0)
-                return;
-
-            int newCommaIndex = expression.Span.End;
-
-            if (expressions.GetSeparator(index - 1).IsMissing)
+            switch (expression.Parent.Kind())
             {
-                newCommaIndex = expressions[index - 1].Span.End;
+                case SyntaxKind.ArrayInitializerExpression:
+                    {
+                        var initializer = (InitializerExpressionSyntax)expression.Parent;
+
+                        SeparatedSyntaxList<ExpressionSyntax> expressions = initializer.Expressions;
+
+                        position = FindMissingCommaPosition(expressions, expression);
+                        break;
+                    }
+                case SyntaxKind.EqualsValueClause:
+                    {
+                        var equalsValueClause = (EqualsValueClauseSyntax)expression.Parent;
+
+                        if (equalsValueClause.Parent is EnumMemberDeclarationSyntax enumMemberDeclaration)
+                        {
+                            var enumDeclaration = (EnumDeclarationSyntax)enumMemberDeclaration.Parent;
+
+                            position = FindMissingCommaPosition(enumDeclaration.Members, enumMemberDeclaration);
+                        }
+
+                        break;
+                    }
             }
-            else
-            {
-                Debug.Assert(index < expressions.Count - 1);
 
-                if (index == expressions.Count - 1)
-                    return;
-
-                Debug.Assert(expressions.GetSeparator(index).IsMissing);
-
-                if (!expressions.GetSeparator(index).IsMissing)
-                    return;
-
-                newCommaIndex = expression.Span.End;
-            }
+            if (position == -1)
+                return;
 
             CodeAction codeAction = CodeAction.Create(
                 "Add missing comma",
-                cancellationToken =>
+                ct =>
                 {
-                    var textChange = new TextChange(new TextSpan(newCommaIndex, 0), ",");
-                    return context.Document.WithTextChangeAsync(textChange, cancellationToken);
+                    var textChange = new TextChange(new TextSpan(position, 0), ",");
+                    return context.Document.WithTextChangeAsync(textChange, ct);
                 },
                 GetEquivalenceKey(diagnostic));
 
             context.RegisterCodeFix(codeAction, diagnostic);
+
+            int FindMissingCommaPosition<TNode>(SeparatedSyntaxList<TNode> nodes, TNode node) where TNode : SyntaxNode
+            {
+                int index = nodes.IndexOf(node);
+
+                Debug.Assert(index > 0);
+
+                if (index <= 0)
+                    return -1;
+
+                if (nodes.GetSeparator(index - 1).IsMissing)
+                {
+                    return nodes[index - 1].Span.End;
+                }
+                else
+                {
+                    Debug.Assert(index < nodes.Count - 1);
+
+                    if (index == nodes.Count - 1)
+                        return -1;
+
+                    Debug.Assert(nodes.GetSeparator(index).IsMissing);
+
+                    if (!nodes.GetSeparator(index).IsMissing)
+                        return -1;
+
+                    return node.Span.End;
+                }
+            }
         }
     }
 }

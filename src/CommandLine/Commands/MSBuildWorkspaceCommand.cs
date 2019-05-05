@@ -61,7 +61,7 @@ namespace Roslynator.CommandLine
 
                     ProjectOrSolution projectOrSolution = await OpenProjectOrSolutionAsync(path, workspace, ConsoleProgressReporter.Default, cancellationToken);
 
-                    if (projectOrSolution != default)
+                    if (!projectOrSolution.IsDefault)
                     {
                         Solution solution = projectOrSolution.AsSolution();
 

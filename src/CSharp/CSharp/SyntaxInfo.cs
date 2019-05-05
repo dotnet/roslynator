@@ -126,8 +126,8 @@ namespace Roslynator.CSharp
             bool walkDownParentheses = true,
             bool allowMissing = false)
         {
-            return Syntax.ConditionalExpressionInfo.Create(
-                node,
+            return ConditionalExpressionInfo(
+                node as ConditionalExpressionSyntax,
                 walkDownParentheses,
                 allowMissing);
         }
@@ -146,6 +146,42 @@ namespace Roslynator.CSharp
         {
             return Syntax.ConditionalExpressionInfo.Create(
                 conditionalExpression,
+                walkDownParentheses,
+                allowMissing);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Syntax.ConditionalStatementInfo"/> from the specified node.
+        /// </summary>
+        /// <param name="node"></param>
+        /// <param name="walkDownParentheses"></param>
+        /// <param name="allowMissing"></param>
+        /// <returns></returns>
+        internal static ConditionalStatementInfo ConditionalStatementInfo(
+            SyntaxNode node,
+            bool walkDownParentheses = true,
+            bool allowMissing = false)
+        {
+            return ConditionalStatementInfo(
+                node as IfStatementSyntax,
+                walkDownParentheses,
+                allowMissing);
+        }
+
+        /// <summary>
+        /// Creates a new <see cref="Syntax.ConditionalStatementInfo"/> from the specified 'if' statement.
+        /// </summary>
+        /// <param name="ifStatement"></param>
+        /// <param name="walkDownParentheses"></param>
+        /// <param name="allowMissing"></param>
+        /// <returns></returns>
+        internal static ConditionalStatementInfo ConditionalStatementInfo(
+            IfStatementSyntax ifStatement,
+            bool walkDownParentheses = true,
+            bool allowMissing = false)
+        {
+            return Syntax.ConditionalStatementInfo.Create(
+                ifStatement,
                 walkDownParentheses,
                 allowMissing);
         }

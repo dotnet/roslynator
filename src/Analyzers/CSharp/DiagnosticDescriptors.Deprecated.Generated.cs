@@ -286,6 +286,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor CallStringConcatInsteadOfStringJoin = Create(
+            id:                 DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin, 
+            title:              "Call string.Concat instead of string.Join.", 
+            messageFormat:      "Call string.Concat instead of string.Join.", 
+            category:           DiagnosticCategories.Simplification, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin, 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor MemberTypeMustMatchOverriddenMemberType = Create(
             id:                 DiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType, 
             title:              "Member type must match overriden member type.", 
@@ -307,6 +319,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers, 
+            customTags:         Array.Empty<string>());
+
+        [Obsolete("", error: true)]
+        internal static readonly DiagnosticDescriptor CallDebugFailInsteadOfDebugAssert = Create(
+            id:                 DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert, 
+            title:              "Call Debug.Fail instead of Debug.Assert.", 
+            messageFormat:      "Call Debug.Fail instead of Debug.Assert.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert, 
             customTags:         Array.Empty<string>());
 
     }

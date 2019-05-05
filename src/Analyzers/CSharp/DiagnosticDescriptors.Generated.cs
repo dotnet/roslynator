@@ -1563,18 +1563,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UseConditionalAccess, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1150</summary>
-        public static readonly DiagnosticDescriptor CallStringConcatInsteadOfStringJoin = Create(
-            id:                 DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin, 
-            title:              "Call string.Concat instead of string.Join.", 
-            messageFormat:      "Call string.Concat instead of string.Join.", 
-            category:           DiagnosticCategories.Simplification, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1151</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantCast = Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantCast, 
@@ -1877,18 +1865,6 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.UseVarInsteadOfExplicitTypeInForEach, 
             customTags:         Array.Empty<string>());
 
-        /// <summary>RCS1178</summary>
-        public static readonly DiagnosticDescriptor CallDebugFailInsteadOfDebugAssert = Create(
-            id:                 DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert, 
-            title:              "Call Debug.Fail instead of Debug.Assert.", 
-            messageFormat:      "Call Debug.Fail instead of Debug.Assert.", 
-            category:           DiagnosticCategories.Usage, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert, 
-            customTags:         Array.Empty<string>());
-
         /// <summary>RCS1179</summary>
         public static readonly DiagnosticDescriptor UseReturnInsteadOfAssignment = Create(
             id:                 DiagnosticIdentifiers.UseReturnInsteadOfAssignment, 
@@ -1914,15 +1890,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1181</summary>
-        public static readonly DiagnosticDescriptor ReplaceCommentWithDocumentationComment = Create(
-            id:                 DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment, 
-            title:              "Replace comment with documentation comment.", 
-            messageFormat:      "Replace comment with documentation comment.", 
+        public static readonly DiagnosticDescriptor ConvertCommentToDocumentationComment = Create(
+            id:                 DiagnosticIdentifiers.ConvertCommentToDocumentationComment, 
+            title:              "Convert comment to documentation comment.", 
+            messageFormat:      "Convert comment to documentation comment.", 
             category:           DiagnosticCategories.General, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ReplaceCommentWithDocumentationComment, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertCommentToDocumentationComment, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1182</summary>
@@ -2567,6 +2543,18 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.DuplicateEnumValue, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1235</summary>
+        public static readonly DiagnosticDescriptor OptimizeMethodCall = Create(
+            id:                 DiagnosticIdentifiers.OptimizeMethodCall, 
+            title:              "Optimize method call.", 
+            messageFormat:      "Optimize '{0}' call.", 
+            category:           DiagnosticCategories.Performance, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        DiagnosticIdentifiers.OptimizeMethodCall, 
             customTags:         Array.Empty<string>());
 
     }

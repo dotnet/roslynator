@@ -1568,7 +1568,7 @@ return false;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0192" Identifier="ReplaceCommentWithDocumentationComment" Title="Replace comment with documentation comment">
+  <Refactoring Id="RR0192" Identifier="ConvertCommentToDocumentationComment" Title="Convert comment to documentation comment">
     <Syntaxes>
       <Syntax>single-line comment</Syntax>
     </Syntaxes>
@@ -2137,6 +2137,52 @@ else
 {
     return 0;
 }]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0212" Identifier="DuplicateSwitchSection" Title="Duplicate switch section">
+    <Syntaxes>
+      <Syntax>switch section</Syntax>
+    </Syntaxes>
+    <Span>close brace or empty line after switch section</Span>
+    <Samples>
+      <Sample>
+        <Before>
+          <![CDATA[switch (s)
+{
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    default:
+        {
+            break;
+        }
+}]]>
+        </Before>
+        <After>
+          <![CDATA[switch (s)
+{
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    default:
+        {
+            break;
+        }
+}]]>
+        </After>
       </Sample>
     </Samples>
   </Refactoring>
