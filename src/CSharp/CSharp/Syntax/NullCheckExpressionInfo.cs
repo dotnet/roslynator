@@ -17,11 +17,11 @@ namespace Roslynator.CSharp.Syntax
     public readonly struct NullCheckExpressionInfo
     {
         private NullCheckExpressionInfo(
-            ExpressionSyntax containingExpression,
+            ExpressionSyntax nullCheckExpression,
             ExpressionSyntax expression,
             NullCheckStyles style)
         {
-            NullCheckExpression = containingExpression;
+            NullCheckExpression = nullCheckExpression;
             Expression = expression;
             Style = style;
         }
