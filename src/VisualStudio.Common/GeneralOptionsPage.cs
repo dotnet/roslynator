@@ -17,7 +17,6 @@ namespace Roslynator.VisualStudio
 
         public GeneralOptionsPage()
         {
-            PrefixFieldIdentifierWithUnderscore = true;
             UseConfigFile = true;
         }
 

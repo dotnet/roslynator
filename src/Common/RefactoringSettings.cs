@@ -6,11 +6,11 @@ namespace Roslynator
     {
         public static RefactoringSettings Current { get; } = new RefactoringSettings();
 
-        public bool PrefixFieldIdentifierWithUnderscore { get; set; } = true;
+        public bool PrefixFieldIdentifierWithUnderscore { get; set; }
 
         public override void Reset()
         {
-            PrefixFieldIdentifierWithUnderscore = true;
+            PrefixFieldIdentifierWithUnderscore = false;
             Disabled.Clear();
         }
     }
