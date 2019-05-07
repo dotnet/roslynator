@@ -122,6 +122,7 @@
     <Compile Include="GlobalSuppressionsOptionsPageControl.xaml.cs">
       <DependentUpon>GlobalSuppressionsOptionsPageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="RuleSetHelpers.cs" />
     <Compile Include="XElementExtensions.cs" />
     <Compile Include="TypeConverters\YesNoConverter.cs" />
     <Compile Include="TypeConverters\TrueFalseConverter.cs" />

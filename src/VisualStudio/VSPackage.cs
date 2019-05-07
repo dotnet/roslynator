@@ -2,8 +2,11 @@
 
 using System;
 using System.Runtime.InteropServices;
+using System.Threading;
 using Microsoft.VisualStudio;
 using Microsoft.VisualStudio.Shell;
+
+#pragma warning disable RCS1090
 
 namespace Roslynator.VisualStudio
 {
@@ -33,5 +36,11 @@ namespace Roslynator.VisualStudio
     [ProvideAutoLoad(VSConstants.UICONTEXT.SolutionOpening_string, PackageAutoLoadFlags.BackgroundLoad)]
     public sealed class VSPackage : AbstractPackage
     {
+        protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
+        {
+            await base.InitializeAsync(cancellationToken, progress);
+
+            RuleSetHelpers.EnsureRuleSetExistsInLocalAppData(showErrorMessage: true);
+        }
     }
 }

@@ -71,9 +71,6 @@
     <Content Include="roslynator.config">
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="roslynator.ruleset">
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <None Include="manifest.json" />
     <None Include="packages.config" />
     <None Include="source.extension.vsixmanifest">
