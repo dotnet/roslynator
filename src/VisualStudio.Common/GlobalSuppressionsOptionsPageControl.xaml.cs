@@ -1,9 +1,8 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using Roslynator.CSharp;
 using System.ComponentModel;
 
 namespace Roslynator.VisualStudio
@@ -20,39 +19,73 @@ namespace Roslynator.VisualStudio
 
         private void OpenLocation_Click(object sender, RoutedEventArgs e)
         {
-            string assemblyPath = typeof(GlobalSuppressionsOptionsPageControl).Assembly.Location;
+            string appDataFolderPath = Path.Combine(
+                Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),
+                @"JosefPihrt\Roslynator\VisualStudio\2019");
 
-            if (!string.IsNullOrEmpty(assemblyPath))
+            string ruleSetPath = Path.Combine(appDataFolderPath, "roslynator.ruleset");
+
+            if (!File.Exists(ruleSetPath))
             {
-                string assemblyDirPath = Path.GetDirectoryName(assemblyPath);
-
-                if (!string.IsNullOrEmpty(assemblyDirPath))
+                try
                 {
-                    string ruleSetPath = Path.Combine(assemblyDirPath, "roslynator.ruleset");
-
-                    try
+                    string defaultRuleSetFileName = GetDefaultRulesetFileName();
+                    if (File.Exists(defaultRuleSetFileName))
                     {
-                        string fileToSelect = (File.Exists(ruleSetPath)) ? ruleSetPath : assemblyPath;
+                        Directory.CreateDirectory(appDataFolderPath);
 
-                        Process.Start("explorer.exe", $"/select, \"{fileToSelect}\"");
+                        File.Copy(defaultRuleSetFileName, ruleSetPath);
                     }
-                    catch (Exception ex)
+                }
+                catch (Exception ex)
+                {
+                    if (ex is IOException || ex is UnauthorizedAccessException)
                     {
-                        if (ex is InvalidOperationException
-                            || ex is FileNotFoundException
-                            || ex is Win32Exception)
-                        {
-                            MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        else
-                        {
-                            throw;
-                        }
+                        MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        throw;
+                    }
+                }
+            }
+
+            if (File.Exists(ruleSetPath))
+            {
+                try
+                {
+                    Process.Start("explorer.exe", $"/select, \"{ruleSetPath}\"");
+                }
+                catch (Exception ex)
+                {
+                    if (ex is InvalidOperationException
+                        || ex is FileNotFoundException
+                        || ex is Win32Exception)
+                    {
+                        MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                    else
+                    {
+                        throw;
                     }
                 }
             }
 
             e.Handled = true;
+        }
+
+        private string GetDefaultRulesetFileName()
+        {
+            string assemblyPath = typeof(GlobalSuppressionsOptionsPageControl).Assembly.Location;
+            if (!string.IsNullOrEmpty(assemblyPath))
+            {
+                string assemblyDirPath = Path.GetDirectoryName(assemblyPath);
+
+                if (!string.IsNullOrEmpty(assemblyDirPath))
+                    return Path.Combine(assemblyDirPath, "roslynator.ruleset");
+            }
+
+            return null;
         }
     }
 }
