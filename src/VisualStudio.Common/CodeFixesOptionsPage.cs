@@ -2,7 +2,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -40,19 +39,13 @@ namespace Roslynator.VisualStudio
                         }
                         else if (id.StartsWith(CodeFixIdentifiers.Prefix, StringComparison.Ordinal))
                         {
-                            if (CodeFixMap.CodeFixDescriptorsById.TryGetValue(id, out CodeFixDescriptor codeFixDescriptor))
-                            {
-                                foreach (string compilerDiagnosticId in codeFixDescriptor.FixableDiagnosticIds)
-                                    DisabledItems.Add($"{compilerDiagnosticId}.{codeFixDescriptor.Id}");
-                            }
+                            foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
+                                DisabledItems.Add($"{compilerDiagnosticId}.{id}");
                         }
                         else if (id.StartsWith("CS", StringComparison.Ordinal))
                         {
-                            if (CodeFixMap.CodeFixDescriptorsByCompilerDiagnosticId.TryGetValue(id, out ReadOnlyCollection<CodeFixDescriptor> codeFixDescriptors))
-                            {
-                                foreach (CodeFixDescriptor codeFixDescriptor in codeFixDescriptors)
-                                    DisabledItems.Add($"{id}.{codeFixDescriptor.Id}");
-                            }
+                            foreach (string codeFixId in CodeFixMap.GetCodeFixIds(id))
+                                DisabledItems.Add($"{id}.{codeFixId}");
                         }
                         else
                         {
@@ -84,12 +77,15 @@ namespace Roslynator.VisualStudio
         {
             items.Clear();
 
-            foreach ((CodeFixDescriptor codeFixDescriptor, string compilerDiagnosticId) in CodeFixMap.CodeFixDescriptorsById
-                .SelectMany(kvp => kvp.Value.FixableDiagnosticIds.Select(compilerDiagnosticId => (codeFixDescriptor: kvp.Value, compilerDiagnosticId: compilerDiagnosticId)))
-                .OrderBy(f => f.compilerDiagnosticId)
-                .ThenBy(f => f.codeFixDescriptor.Id))
+            foreach (CompilerDiagnosticFix compilerDiagnosticFix in CodeFixMap.GetCompilerDiagnosticFixes()
+                .OrderBy(f => f.CompilerDiagnosticId)
+                .ThenBy(f => f.CodeFixId))
             {
-                var model = new CodeFixModel(compilerDiagnosticId, CodeFixMap.CompilerDiagnosticsById[compilerDiagnosticId].Title.ToString(), codeFixDescriptor.Id, codeFixDescriptor.Title);
+                var model = new CodeFixModel(
+                    compilerDiagnosticFix.CompilerDiagnosticId,
+                    compilerDiagnosticFix.CompilerDiagnosticTitle,
+                    compilerDiagnosticFix.CodeFixId,
+                    compilerDiagnosticFix.CodeFixTitle);
 
                 model.Enabled = IsEnabled(model.Id);
 

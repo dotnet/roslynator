@@ -2,14 +2,12 @@
 
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Xml.Linq;
-using Roslynator.CodeFixes;
 using Roslynator.CSharp;
 
 namespace Roslynator.Configuration
@@ -122,18 +120,16 @@ namespace Roslynator.Configuration
                     }
                     else if (id.StartsWith(CodeFixIdentifiers.Prefix, StringComparison.Ordinal))
                     {
-                        if (CodeFixMap.CodeFixDescriptorsById.TryGetValue(id, out CodeFixDescriptor codeFixDescriptor))
+                        foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
                         {
-                            foreach (string compilerDiagnosticId in codeFixDescriptor.FixableDiagnosticIds)
-                                settings.CodeFixes[$"{compilerDiagnosticId}.{codeFixDescriptor.Id}"] = isEnabled;
+                            settings.CodeFixes[$"{compilerDiagnosticId}.{id}"] = isEnabled;
                         }
                     }
                     else if (id.StartsWith("CS", StringComparison.Ordinal))
                     {
-                        if (CodeFixMap.CodeFixDescriptorsByCompilerDiagnosticId.TryGetValue(id, out ReadOnlyCollection<CodeFixDescriptor> codeFixDescriptors))
+                        foreach (string codeFixId in CodeFixMap.GetCodeFixIds(id))
                         {
-                            foreach (CodeFixDescriptor codeFixDescriptor in codeFixDescriptors)
-                                settings.CodeFixes[$"{id}.{codeFixDescriptor.Id}"] = isEnabled;
+                            settings.CodeFixes[$"{id}.{codeFixId}"] = isEnabled;
                         }
                     }
                     else
