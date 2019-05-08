@@ -1279,13 +1279,13 @@ namespace Roslynator
             Func<TSymbol, bool> predicate = null,
             bool includeBaseTypes = false) where TSymbol : ISymbol
         {
-            ImmutableArray<INamedTypeSymbol> members;
+            ImmutableArray<ISymbol> members;
 
             do
             {
                 members = (name != null)
-                    ? typeSymbol.GetTypeMembers(name)
-                    : typeSymbol.GetTypeMembers();
+                    ? typeSymbol.GetMembers(name)
+                    : typeSymbol.GetMembers();
 
                 TSymbol symbol = FindMemberImpl(members, predicate);
 

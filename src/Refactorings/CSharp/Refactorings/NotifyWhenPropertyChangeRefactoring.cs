@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
@@ -54,15 +55,16 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             IMethodSymbol methodSymbol = SymbolUtility.FindMethodThatRaisePropertyChanged(containingType, expression.SpanStart, semanticModel);
+            IEventSymbol propertyChangedEventSymbol = containingType.FindMember<IEventSymbol>("PropertyChanged");
 
-            if (methodSymbol == null)
+            if (methodSymbol == null && propertyChangedEventSymbol == null)
                 return;
 
             Document document = context.Document;
 
             context.RegisterRefactoring(
                 "Notify when property change",
-                ct => RefactorAsync(document, property, methodSymbol.Name, ct),
+                ct => RefactorAsync(document, property, methodSymbol, containingType, ct),
                 RefactoringIdentifiers.NotifyWhenPropertyChange);
 
             ExpressionSyntax GetExpression()
@@ -83,24 +85,29 @@ namespace Roslynator.CSharp.Refactorings
             }
         }
 
-        private static Task<Document> RefactorAsync(
+        private static async Task<Document> RefactorAsync(
             Document document,
             PropertyDeclarationSyntax property,
-            string methodName,
-            CancellationToken cancellationToken = default(CancellationToken))
+            IMethodSymbol method,
+            INamedTypeSymbol containingType,
+            CancellationToken cancellationToken = default)
         {
             AccessorDeclarationSyntax setter = property.Setter();
 
             string propertyName = property.Identifier.ValueText;
 
-            ExpressionSyntax argumentExpression;
-            if (document.SupportsLanguageFeature(CSharpLanguageFeature.NameOf))
+            ArgumentListSyntax argumentList;
+            if(method?.Parameters[0].HasAttribute(MetadataNames.System_Runtime_CompilerServices_CallerMemberNameAttribute) != false)
             {
-                argumentExpression = NameOfExpression(propertyName);
+                argumentList = ArgumentList();
+            }
+            else if (document.SupportsLanguageFeature(CSharpLanguageFeature.NameOf))
+            {
+                argumentList = ArgumentList(Argument(NameOfExpression(propertyName)));
             }
             else
             {
-                argumentExpression = StringLiteralExpression(propertyName);
+                argumentList = ArgumentList(Argument(StringLiteralExpression(propertyName)));
             }
 
             IdentifierNameSyntax backingFieldName = GetBackingFieldIdentifierName(setter).WithoutTrivia();
@@ -117,14 +124,65 @@ namespace Roslynator.CSharp.Refactorings
                                 IdentifierName("value")),
                             ExpressionStatement(
                                 InvocationExpression(
-                                    IdentifierName(methodName),
-                                    ArgumentList(Argument(argumentExpression))))))));
+                                    IdentifierName(method?.Name ?? "OnPropertyChanged"),
+                                    argumentList))))));
 
             newSetter = newSetter
                 .WithTriviaFrom(property)
                 .WithFormatterAnnotation();
 
-            return document.ReplaceNodeAsync(setter, newSetter, cancellationToken);
+            Document newDocument = await document.ReplaceNodeAsync(setter, newSetter, cancellationToken).ConfigureAwait(false);
+
+            if (method == null)
+            {
+                SyntaxNode syntaxRoot = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
+
+                SyntaxNode propertyChangedEventDeclaration =
+                    syntaxRoot.DescendantNodes()
+                    .OfType<ClassDeclarationSyntax>()
+                    .Single(c => GetFullName(c) == containingType.ToString())
+                    .ChildNodes()
+                    .OfType<EventFieldDeclarationSyntax>()
+                    .Single(node => node.DescendantNodes().OfType<VariableDeclaratorSyntax>().SingleOrDefault()?.Identifier.ValueText == "PropertyChanged");
+
+                MethodDeclarationSyntax onPropertyChangedDeclaration = MethodDeclaration(
+                    Modifiers.Protected(),
+                    VoidType(),
+                    Identifier("OnPropertyChanged"),
+                    ParameterList(
+                        Parameter(
+                            SingletonList(AttributeList(Attribute(IdentifierName("CallerMemberName")))),
+                            default,
+                            PredefinedStringType(),
+                            Identifier("propertyName"),
+                            EqualsValueClause(LiteralExpression(null)))),
+                    Block(
+                        ExpressionStatement(
+                            ConditionalAccessExpression(
+                                IdentifierName("PropertyChanged"),
+                                InvocationExpression(
+                                    MemberBindingExpression(
+                                        IdentifierName("Invoke")),
+                                    ArgumentList(
+                                        Argument(
+                                            ThisExpression()),
+                                        Argument(
+                                            ObjectCreationExpression(
+                                                    IdentifierName("PropertyChangedEventArgs"),
+                                                    ArgumentList(Argument(IdentifierName("propertyName")))))))))));
+
+                newDocument = await newDocument.InsertNodeAfterAsync(propertyChangedEventDeclaration, onPropertyChangedDeclaration, cancellationToken).ConfigureAwait(false);
+
+                var compilationUnitSyntax = await newDocument.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false) as CompilationUnitSyntax;
+                NameSyntax compilerServicesName = ParseName("System.Runtime.CompilerServices");
+                if(!compilationUnitSyntax.Usings.Any(u => u.Name.ToString() == compilerServicesName.ToString()))
+                {
+                    CompilationUnitSyntax newCompilationUnitSyntax = compilationUnitSyntax.AddUsings(UsingDirective(compilerServicesName));
+                    newDocument = await newDocument.ReplaceNodeAsync(compilationUnitSyntax, newCompilationUnitSyntax, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            return newDocument;
         }
 
         public static IdentifierNameSyntax GetBackingFieldIdentifierName(AccessorDeclarationSyntax accessor)
@@ -146,6 +204,32 @@ namespace Roslynator.CSharp.Refactorings
                 var assignment = (AssignmentExpressionSyntax)expressionBody.Expression;
 
                 return (IdentifierNameSyntax)assignment.Left;
+            }
+        }
+
+        private static string GetFullName(ClassDeclarationSyntax @class)
+        {
+            string fullName = @class.Identifier.ValueText;
+            SyntaxNode node = @class;
+            while(true)
+            {
+                switch (node.Parent)
+                {
+                    case NamespaceDeclarationSyntax @namespace:
+                        {
+                            fullName = $"{@namespace.Name}.{fullName}";
+                            break;
+                        }
+                    case ClassDeclarationSyntax outerClass:
+                        {
+                            fullName = $"{outerClass.Identifier.ValueText}.{fullName}";
+                            break;
+                        }
+                    default:
+                        return fullName;
+                }
+
+                node = node.Parent;
             }
         }
     }

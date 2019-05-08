@@ -35,6 +35,7 @@ namespace Roslynator
         public static readonly MetadataName System_ObsoleteAttribute = MetadataName.Parse("System.ObsoleteAttribute");
         public static readonly MetadataName System_Reflection = MetadataName.Parse("System.Reflection");
         public static readonly MetadataName System_Runtime_CompilerServices = MetadataName.Parse("System.Runtime.CompilerServices");
+        public static readonly MetadataName System_Runtime_CompilerServices_CallerMemberNameAttribute = MetadataName.Parse("System.Runtime.CompilerServices.CallerMemberNameAttribute");
         public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable = MetadataName.Parse("System.Runtime.CompilerServices.ConfiguredTaskAwaitable");
         public static readonly MetadataName System_Runtime_CompilerServices_ConfiguredTaskAwaitable_T = MetadataName.Parse("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1");
         public static readonly MetadataName System_Runtime_InteropServices_LayoutKind = MetadataName.Parse("System.Runtime.InteropServices.LayoutKind");
