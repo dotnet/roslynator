@@ -547,18 +547,22 @@ namespace Roslynator.CSharp
                     case SyntaxKind.ElementAccessExpression:
                     case SyntaxKind.InvocationExpression:
                         {
-                            prev = parent;
-                            continue;
+                            break;
                         }
                     case SyntaxKind.ConditionalAccessExpression:
                         {
-                            return ((ConditionalAccessExpressionSyntax)parent).WhenNotNull == prev;
+                            if (((ConditionalAccessExpressionSyntax)parent).WhenNotNull == prev)
+                                return true;
+
+                            break;
                         }
                     default:
                         {
                             return false;
                         }
                 }
+
+                prev = parent;
             }
 
             return false;
