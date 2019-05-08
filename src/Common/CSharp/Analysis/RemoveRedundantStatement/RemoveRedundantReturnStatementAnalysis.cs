@@ -42,7 +42,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
                             StatementSyntax nextStatement = ifStatement.NextStatement();
 
                             if (nextStatement.IsKind(SyntaxKind.ReturnStatement)
-                                && ((ReturnStatementSyntax)nextStatement).Expression.RawKind == expression.RawKind)
+                                && ((ReturnStatementSyntax)nextStatement).Expression?.RawKind == expression.RawKind)
                             {
                                 return true;
                             }
