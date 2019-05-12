@@ -35,12 +35,14 @@
 | RR0026 | [Collapse to initalizer](../../docs/refactorings/RR0026.md) | &#x2713; |
 | RR0027 | [Comment out member](../../docs/refactorings/RR0027.md) | &#x2713; |
 | RR0028 | [Comment out statement](../../docs/refactorings/RR0028.md) | &#x2713; |
+| RR0192 | [Convert comment to documentation comment](../../docs/refactorings/RR0192.md) | &#x2713; |
 | RR0211 | [Convert statements to if-else](../../docs/refactorings/RR0211.md) | &#x2713; |
 | RR0029 | [Copy documentation comment from base member](../../docs/refactorings/RR0029.md) | &#x2713; |
 | RR0030 | [Duplicate argument](../../docs/refactorings/RR0030.md) | &#x2713; |
 | RR0031 | [Duplicate member](../../docs/refactorings/RR0031.md) | &#x2713; |
 | RR0032 | [Duplicate parameter](../../docs/refactorings/RR0032.md) | &#x2713; |
 | RR0033 | [Duplicate statement](../../docs/refactorings/RR0033.md) | &#x2713; |
+| RR0212 | [Duplicate switch section](../../docs/refactorings/RR0212.md) | &#x2713; |
 | RR0035 | [Expand coalesce expression](../../docs/refactorings/RR0035.md) | &#x2713; |
 | RR0034 | [Expand compound assignment operator](../../docs/refactorings/RR0034.md) | &#x2713; |
 | RR0036 | [Expand event](../../docs/refactorings/RR0036.md) | &#x2713; |
@@ -90,6 +92,7 @@
 | RR0189 | [Invert if](../../docs/refactorings/RR0189.md) | &#x2713; |
 | RR0162 | [Invert if-else](../../docs/refactorings/RR0162.md) | &#x2713; |
 | RR0081 | [Invert is expression](../../docs/refactorings/RR0081.md) | &#x2713; |
+| RR0116 | [Invert LINQ method call](../../docs/refactorings/RR0116.md) | &#x2713; |
 | RR0082 | [Invert operator](../../docs/refactorings/RR0082.md) | &#x2713; |
 | RR0134 | [Invert prefix/postfix unary operator](../../docs/refactorings/RR0134.md) | &#x2713; |
 | RR0078 | [Join string expressions](../../docs/refactorings/RR0078.md) | &#x2713; |
@@ -101,7 +104,7 @@
 | RR0196 | [Merge if with parent if](../../docs/refactorings/RR0196.md) | &#x2713; |
 | RR0077 | [Merge local declarations](../../docs/refactorings/RR0077.md) | &#x2713; |
 | RR0202 | [Move unsafe context to containing declaration](../../docs/refactorings/RR0202.md) | &#x2713; |
-| RR0083 | [Notify property changed](../../docs/refactorings/RR0083.md) | &#x2713; |
+| RR0083 | [Notify when property change](../../docs/refactorings/RR0083.md) | &#x2713; |
 | RR0084 | [Parenthesize expression](../../docs/refactorings/RR0084.md) | &#x2713; |
 | RR0085 | [Promote local to parameter](../../docs/refactorings/RR0085.md) | &#x2713; |
 | RR0086 | [Remove all comments](../../docs/refactorings/RR0086.md) | &#x2713; |
@@ -138,10 +141,8 @@
 | RR0115 | [Rename property according to type name](../../docs/refactorings/RR0115.md) | &#x2713; |
 | RR0143 | [Replace (yield) return statement with if-else](../../docs/refactorings/RR0143.md) | &#x2713; |
 | RR0120 | [Replace ?: with if-else](../../docs/refactorings/RR0120.md) | &#x2713; |
-| RR0116 | [Replace Any with All (or All with Any)](../../docs/refactorings/RR0116.md) | &#x2713; |
 | RR0117 | [Replace as expression with cast expression](../../docs/refactorings/RR0117.md) | &#x2713; |
 | RR0118 | [Replace cast expression with as expression](../../docs/refactorings/RR0118.md) | &#x2713; |
-| RR0192 | [Replace comment with documentation comment](../../docs/refactorings/RR0192.md) | &#x2713; |
 | RR0119 | [Replace conditional expression with expression](../../docs/refactorings/RR0119.md) | &#x2713; |
 | RR0121 | [Replace constant with field](../../docs/refactorings/RR0121.md) | &#x2713; |
 | RR0123 | [Replace do statement with while statement](../../docs/refactorings/RR0123.md) | &#x2713; |

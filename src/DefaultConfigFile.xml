@@ -83,7 +83,7 @@
     <Refactoring Id="RR0080" IsEnabled="true" /> <!-- Invert boolean literal -->
     <Refactoring Id="RR0081" IsEnabled="true" /> <!-- Invert is expression -->
     <Refactoring Id="RR0082" IsEnabled="true" /> <!-- Invert operator -->
-    <Refactoring Id="RR0083" IsEnabled="true" /> <!-- Notify property changed -->
+    <Refactoring Id="RR0083" IsEnabled="true" /> <!-- Notify when property change -->
     <Refactoring Id="RR0084" IsEnabled="true" /> <!-- Parenthesize expression -->
     <Refactoring Id="RR0085" IsEnabled="true" /> <!-- Promote local to parameter -->
     <Refactoring Id="RR0086" IsEnabled="true" /> <!-- Remove all comments -->
@@ -116,7 +116,7 @@
     <Refactoring Id="RR0113" IsEnabled="true" /> <!-- Rename method according to type name -->
     <Refactoring Id="RR0114" IsEnabled="true" /> <!-- Rename parameter according to its type name -->
     <Refactoring Id="RR0115" IsEnabled="true" /> <!-- Rename property according to type name -->
-    <Refactoring Id="RR0116" IsEnabled="true" /> <!-- Replace Any with All (or All with Any) -->
+    <Refactoring Id="RR0116" IsEnabled="true" /> <!-- Invert LINQ method call -->
     <Refactoring Id="RR0117" IsEnabled="true" /> <!-- Replace as expression with cast expression -->
     <Refactoring Id="RR0118" IsEnabled="true" /> <!-- Replace cast expression with as expression -->
     <Refactoring Id="RR0119" IsEnabled="true" /> <!-- Replace conditional expression with expression -->
@@ -190,7 +190,7 @@
     <Refactoring Id="RR0189" IsEnabled="true" /> <!-- Invert if -->
     <Refactoring Id="RR0190" IsEnabled="true" /> <!-- Split if-else -->
     <Refactoring Id="RR0191" IsEnabled="true" /> <!-- Use C# 6.0 dictionary initializer -->
-    <Refactoring Id="RR0192" IsEnabled="true" /> <!-- Replace comment with documentation comment -->
+    <Refactoring Id="RR0192" IsEnabled="true" /> <!-- Convert comment to documentation comment -->
     <Refactoring Id="RR0193" IsEnabled="true" /> <!-- Replace interpolated string with concatenation -->
     <Refactoring Id="RR0194" IsEnabled="true" /> <!-- Split declaration and initialization -->
     <Refactoring Id="RR0195" IsEnabled="true" /> <!-- Add member to interface -->
@@ -210,6 +210,7 @@
     <Refactoring Id="RR0209" IsEnabled="true" /> <!-- Remove async/await -->
     <Refactoring Id="RR0210" IsEnabled="true" /> <!-- Implement custom enumerator -->
     <Refactoring Id="RR0211" IsEnabled="true" /> <!-- Convert statements to if-else -->
+    <Refactoring Id="RR0212" IsEnabled="true" /> <!-- Duplicate switch section -->
   </Refactorings>
     <CodeFixes>
     <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- Remove unused variable (fixes CS0168, CS0219) -->

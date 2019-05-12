@@ -22,7 +22,7 @@
     <Rule Id="RCS1020" Action="Info" /> <!-- Simplify Nullable<T> to T?. -->
     <Rule Id="RCS1021" Action="Info" /> <!-- Simplify lambda expression. -->
     <Rule Id="RCS1022" Action="None" /> <!-- Simplify lambda expression parameter list. -->
-    <Rule Id="RCS1023" Action="None" /> <!-- Format empty block. -->
+    <Rule Id="RCS1023" Action="Hidden" /> <!-- Format empty block. -->
     <Rule Id="RCS1024" Action="None" /> <!-- Format accessor list. -->
     <Rule Id="RCS1025" Action="None" /> <!-- Add new line before enum member. -->
     <Rule Id="RCS1026" Action="None" /> <!-- Add new line before statement. -->
@@ -167,7 +167,7 @@
     <Rule Id="RCS1165" Action="Hidden" /> <!-- Unconstrained type parameter checked for null. -->
     <Rule Id="RCS1166" Action="Info" /> <!-- Value type object is never equal to null. -->
     <Rule Id="RCS1167" Action="Hidden" /> <!-- Overriding member cannot change access modifiers. -->
-    <Rule Id="RCS1168" Action="Warning" /> <!-- Parameter name differs from base name. -->
+    <Rule Id="RCS1168" Action="Hidden" /> <!-- Parameter name differs from base name. -->
     <Rule Id="RCS1169" Action="Info" /> <!-- Mark field as read-only. -->
     <Rule Id="RCS1170" Action="Info" /> <!-- Use read-only auto-implemented property. -->
     <Rule Id="RCS1171" Action="Info" /> <!-- Simplify lazy initialization. -->
@@ -180,7 +180,7 @@
     <Rule Id="RCS1178" Action="Info" /> <!-- Call Debug.Fail instead of Debug.Assert. -->
     <Rule Id="RCS1179" Action="Info" /> <!-- Use return instead of assignment. -->
     <Rule Id="RCS1180" Action="Info" /> <!-- Inline lazy initialization. -->
-    <Rule Id="RCS1181" Action="Hidden" /> <!-- Replace comment with documentation comment. -->
+    <Rule Id="RCS1181" Action="Hidden" /> <!-- Convert comment to documentation comment. -->
     <Rule Id="RCS1182" Action="Hidden" /> <!-- Remove redundant base interface. -->
     <Rule Id="RCS1183" Action="Hidden" /> <!-- Format initializer with single expression on single line. -->
     <Rule Id="RCS1184" Action="None" /> <!-- Format conditional expression (format ? and : on next line). -->
@@ -234,5 +234,6 @@
     <Rule Id="RCS1232" Action="Info" /> <!-- Order elements in documentation comment. -->
     <Rule Id="RCS1233" Action="Info" /> <!-- Use short-circuiting operator. -->
     <Rule Id="RCS1234" Action="Info" /> <!-- Duplicate enum value. -->
+    <Rule Id="RCS1235" Action="Info" /> <!-- Optimize method call. -->
   </Rules>
 </RuleSet>
