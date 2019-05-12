@@ -3553,22 +3553,30 @@ if (x == null) // [|Id|]
     <Title>Parameter name differs from base name.</Title>
     <MessageFormat>Parameter name '{0}' differs from base name '{1}'.</MessageFormat>
     <Category>Maintainability</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public interface IFoo
+        <Before><![CDATA[interface IFoo
 {
     string Bar(object parameter);
 }
 
-public abstract class Foo : IFoo
+abstract class Foo : IFoo
 {
     public abstract string Bar(object value); // [|Id|]
 }]]></Before>
-        <After><![CDATA[public abstract string Bar(object parameter);]]></After>
+        <After><![CDATA[interface IFoo
+{
+    string Bar(object parameter);
+}
+
+abstract class Foo : IFoo
+{
+    public abstract string Bar(object parameter)
+};]]></After>
       </Sample>
     </Samples>
   </Analyzer>

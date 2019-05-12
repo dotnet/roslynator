@@ -1749,7 +1749,7 @@ namespace Roslynator.CSharp
             title:              "Parameter name differs from base name.", 
             messageFormat:      "Parameter name '{0}' differs from base name '{1}'.", 
             category:           DiagnosticCategories.Maintainability, 
-            defaultSeverity:    DiagnosticSeverity.Warning, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ParameterNameDiffersFromBase}", 
