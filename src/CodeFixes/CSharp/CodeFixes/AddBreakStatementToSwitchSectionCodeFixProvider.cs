@@ -41,7 +41,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Add break statement",
+                "Add break;",
                 cancellationToken => RefactorAsync(context.Document, switchSection, cancellationToken),
                 GetEquivalenceKey(diagnostic));
 
