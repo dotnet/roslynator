@@ -88,7 +88,7 @@ namespace Roslynator.CodeGeneration.Xml
 
                     writer.WriteStartElement("RuleSet");
                     writer.WriteAttributeString("Name", "Default Rules");
-                    writer.WriteAttributeString("ToolsVersion", "15.0");
+                    writer.WriteAttributeString("ToolsVersion", "16.0");
 
                     writer.WriteStartElement("Rules");
                     writer.WriteAttributeString("AnalyzerId", "Roslynator.CSharp.Analyzers");

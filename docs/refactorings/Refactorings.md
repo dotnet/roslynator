@@ -326,6 +326,30 @@ List<object> items = new List<object>();
 * **Span**: opening or closing brace
 ![Comment out statement](../../images/refactorings/CommentOutStatement.png)
 
+#### Convert comment to documentation comment \(RR0192\)
+
+* **Syntax**: single\-line comment
+
+#### Before
+
+```csharp
+// comment
+public class Foo
+{
+}
+```
+
+#### After
+
+```csharp
+/// <summary>
+/// comment
+/// </summary>
+public class Foo
+{
+}
+```
+
 #### Convert statements to if\-else \(RR0211\)
 
 * **Syntax**: selected statements \(first statement must be 'if' statement\)
@@ -397,6 +421,53 @@ else
 * **Syntax**: do statement, fixed statement, for statement, foreach statement, checked statement, if statement, lock statement, switch statement, try statement, unchecked statement, unsafe statement, using statement, while statement
 * **Span**: opening or closing brace
 ![Duplicate statement](../../images/refactorings/DuplicateStatement.png)
+
+#### Duplicate switch section \(RR0212\)
+
+* **Syntax**: switch section
+* **Span**: close brace or empty line after switch section
+
+#### Before
+
+```csharp
+switch (s)
+{
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    default:
+        {
+            break;
+        }
+}
+```
+
+#### After
+
+```csharp
+switch (s)
+{
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    case "a":
+        {
+            // ...
+
+            break;
+        }
+    default:
+        {
+            break;
+        }
+}
+```
 
 #### Expand coalesce expression \(RR0035\)
 
@@ -1035,6 +1106,12 @@ if (condition1)
 * **Span**: operator
 ![Invert is expression](../../images/refactorings/InvertIsExpression.png)
 
+#### Invert LINQ method call \(RR0116\)
+
+* **Syntax**: System\.Linq\.Enumerable\.Any\(Func\<T, bool>\) or System\.Linq\.Enumerable\.All\(Func\<T, bool>\)
+* **Span**: method name
+![Invert LINQ method call](../../images/refactorings/InvertLinqMethodCall.png)
+
 #### Invert operator \(RR0082\)
 
 * **Syntax**: \!=, &&, \|\|, \<, \<=, ==, >, >=
@@ -1213,11 +1290,11 @@ public unsafe class Foo
 }
 ```
 
-#### Notify property changed \(RR0083\)
+#### Notify when property change \(RR0083\)
 
-* **Syntax**: property in class/struct that implements INotifyPropertyChanged
+* **Syntax**: property in class/struct that implements System\.ComponentModel\.INotifyPropertyChanged
 * **Span**: setter
-![Notify property changed](../../images/refactorings/NotifyPropertyChanged.png)
+![Notify when property change](../../images/refactorings/NotifyWhenPropertyChange.png)
 
 #### Parenthesize expression \(RR0084\)
 
@@ -1506,12 +1583,6 @@ else
 }
 ```
 
-#### Replace Any with All \(or All with Any\) \(RR0116\)
-
-* **Syntax**: Any\(Func\<T, bool> or All\(Func\<T, bool> from System\.Linq\.Enumerable namespace
-* **Span**: method name
-![Replace Any with All (or All with Any)](../../images/refactorings/ReplaceAnyWithAllOrAllWithAny.png)
-
 #### Replace as expression with cast expression \(RR0117\)
 
 * **Syntax**: as expression
@@ -1521,30 +1592,6 @@ else
 
 * **Syntax**: cast expression
 ![Replace cast expression with as expression](../../images/refactorings/ReplaceCastWithAs.png)
-
-#### Replace comment with documentation comment \(RR0192\)
-
-* **Syntax**: single\-line comment
-
-#### Before
-
-```csharp
-// comment
-public class Foo
-{
-}
-```
-
-#### After
-
-```csharp
-/// <summary>
-/// comment
-/// </summary>
-public class Foo
-{
-}
-```
 
 #### Replace conditional expression with expression \(RR0119\)
 

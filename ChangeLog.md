@@ -1,3 +1,16 @@
+### 2.1.1 (2019-05-13)
+
+#### Analyzers
+
+* Add analyzer [OptimizeMethodCall](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1235.md) (RCS1235).
+  * Incorporate RCS1150 and RCS1178 into RCS1235.
+* Enable by default analyzer [FormatEmptyBlock](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1023.md) (RCS1023) and change default severity to 'Hidden'.
+* Change default severity of analyzer [ParameterNameDiffersFromBaseName](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1168.md) (RCS1168) to 'Hidden'.
+
+#### Refactorings
+
+* Add refactoring [DuplicateSwitchSection](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0214.md)  (RR0214)
+
 ### 2.1.0 (2019-03-25)
 
 * Export/import Visual Studio options.
