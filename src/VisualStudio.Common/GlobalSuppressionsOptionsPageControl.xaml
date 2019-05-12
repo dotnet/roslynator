@@ -16,10 +16,14 @@
   </UserControl.Resources>
   <DockPanel Focusable="false" Margin="0,10,0,0">
     <WrapPanel DockPanel.Dock="Left">
-      <TextBlock TextWrapping="WrapWithOverflow">
+      <TextBlock TextWrapping="WrapWithOverflow" Margin="0,10,0,10">
       "Global Suppressions" feature has been deprecated in Roslynator 2019.
-      For replacement, please see file "roslynator.ruleset" located in the extension directory.
-      Please note that Visual Studio must be restarted to activate changes in this file.
+      </TextBlock>
+      <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
+      Default configuration of analyzers can be changed by using ruleset file at the following location: "%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudio\2019\roslynator.ruleset"
+      </TextBlock>
+      <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
+      IMPORTANT: Visual Studio restart is required for changes to take effect.
       </TextBlock>
       <Button Content="Open location" Click="OpenLocation_Click" />
     </WrapPanel>
