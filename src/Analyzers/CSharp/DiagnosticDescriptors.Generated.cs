@@ -269,8 +269,8 @@ namespace Roslynator.CSharp
             title:              "Format empty block.", 
             messageFormat:      "Format empty block.", 
             category:           DiagnosticCategories.Formatting, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: false, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.FormatEmptyBlock}", 
             customTags:         Array.Empty<string>());

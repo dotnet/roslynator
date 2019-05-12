@@ -465,8 +465,8 @@ protected internal class Foo
     <Title>Format empty block.</Title>
     <MessageFormat>Format empty block.</MessageFormat>
     <Category>Formatting</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
