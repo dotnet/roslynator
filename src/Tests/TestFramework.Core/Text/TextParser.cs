@@ -13,7 +13,7 @@ namespace Roslynator.Tests.Text
     {
         public static TextParser Default { get; } = new DefaultTextParser();
 
-        public abstract TextParserResult GetSpans(string s, bool reverse = false);
+        public abstract TextParserResult GetSpans(string s, IComparer<LinePositionSpanInfo> comparer = null);
 
         public abstract (TextSpan span, string text) ReplaceEmptySpan(string s, string replacement);
 
@@ -26,7 +26,7 @@ namespace Roslynator.Tests.Text
             private const string OpenCloseTokens = OpenToken + CloseToken;
             private const int TokensLength = 4;
 
-            public override TextParserResult GetSpans(string s, bool reverse = false)
+            public override TextParserResult GetSpans(string s, IComparer<LinePositionSpanInfo> comparer = null)
             {
                 StringBuilder sb = StringBuilderCache.GetInstance(s.Length - TokensLength);
 
@@ -136,11 +136,7 @@ namespace Roslynator.Tests.Text
 
                 sb.Append(s, lastPos, s.Length - lastPos);
 
-                if (spans != null
-                    && reverse)
-                {
-                    spans.Reverse();
-                }
+                spans?.Sort(comparer ?? LinePositionSpanInfoComparer.Index);
 
                 return new TextParserResult(
                     StringBuilderCache.GetStringAndFree(sb),

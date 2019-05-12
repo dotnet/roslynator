@@ -236,8 +236,8 @@ namespace Roslynator.Tests
             int expectedCount = 0;
             int actualCount = 0;
 
-            using (IEnumerator<Diagnostic> expectedEnumerator = expectedDiagnostics.GetEnumerator())
-            using (IEnumerator<Diagnostic> actualEnumerator = actualDiagnostics.GetEnumerator())
+            using (IEnumerator<Diagnostic> expectedEnumerator = expectedDiagnostics.OrderBy(f => f, DiagnosticComparer.SpanStart).GetEnumerator())
+            using (IEnumerator<Diagnostic> actualEnumerator = actualDiagnostics.OrderBy(f => f, DiagnosticComparer.SpanStart).GetEnumerator())
             {
                 if (!expectedEnumerator.MoveNext())
                     throw new InvalidOperationException($"'{nameof(expectedDiagnostics)}' contains no elements.");
