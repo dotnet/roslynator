@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return;
 
             CodeAction codeAction = CodeAction.Create(
-                "Add new line",
+                "Add newline",
                 cancellationToken => AddNewLineBeforeStatementRefactoring.RefactorAsync(context.Document, statement, cancellationToken),
                 GetEquivalenceKey(DiagnosticIdentifiers.AddNewLineAfterSwitchLabel));
 

@@ -304,6 +304,29 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
+        public async Task TestNoDiagnostic_ConditionalAccess2()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    void M()
+    {
+        List<object> list = null;
+        list = list?.Select(f => M2(f))?.ToList();
+    }
+
+    object M2(object p)
+    {
+        return p;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseMethodGroupInsteadOfAnonymousFunction)]
         public async Task TestNoDiagnostic_DelegateInvoke()
         {
             await VerifyNoDiagnosticAsync(@"

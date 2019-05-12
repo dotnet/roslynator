@@ -465,15 +465,15 @@ protected internal class Foo
     <Title>Format empty block.</Title>
     <MessageFormat>Format empty block.</MessageFormat>
     <Category>Formatting</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public void Foo()
+        <Before><![CDATA[void Foo()
 { } // [|Id|]]]></Before>
-        <After><![CDATA[public void Foo()
+        <After><![CDATA[void Foo()
 {
 }]]></After>
       </Sample>
@@ -490,9 +490,9 @@ protected internal class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public string Foo { get { return _foo; } set { _foo = value; } } // [|Id|]]]></Before>
+        <Before><![CDATA[string Foo { get { return _foo; } set { _foo = value; } } // [|Id|]]]></Before>
         <After>
-          <![CDATA[public string Foo
+          <![CDATA[string Foo
 {
     get { return _foo; }
     set { _foo = value; }
@@ -511,8 +511,8 @@ protected internal class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public enum Foo { A, B, C, } // [|Id|]]]></Before>
-        <After><![CDATA[public enum Foo
+        <Before><![CDATA[enum Foo { A, B, C, } // [|Id|]]]></Before>
+        <After><![CDATA[enum Foo
 {
     A,
     B,
@@ -532,9 +532,9 @@ protected internal class Foo
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[string s = ""; Foo(s); // [|Id|]]]></Before>
-        <After><![CDATA[string s = "";
-Foo(s);]]></After>
+        <Before><![CDATA[Foo(); Bar(); // [|Id|]]]></Before>
+        <After><![CDATA[Foo();
+Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -549,8 +549,8 @@ Foo(s);]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[if (condition) Foo(); // [|Id|]]]></Before>
-        <After><![CDATA[if (condition)
+        <Before><![CDATA[if (x) Foo(); // [|Id|]]]></Before>
+        <After><![CDATA[if (x)
 {
     Foo();
 }]]></After>
@@ -568,12 +568,12 @@ Foo(s);]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[switch (s)
+        <Before><![CDATA[switch (x)
 {
     case "a": return Foo(); // [|Id|]
     case "b": return Bar();
 }]]></Before>
-        <After><![CDATA[switch (s)
+        <After><![CDATA[switch (x)
 {
     case "a":
         return Foo();
@@ -598,13 +598,11 @@ Foo(s);]]></After>
     y &&
     z)
 {
-
 }]]></Before>
         <After><![CDATA[if (x
     && y
     && z)
 {
-
 }]]></After>
       </Sample>
     </Samples>
@@ -622,13 +620,11 @@ Foo(s);]]></After>
       <Sample>
         <Before><![CDATA[if (x)
     Foo(); // [|Id|]
-if (y)
-    Bar();]]></Before>
+Bar();]]></Before>
         <After><![CDATA[if (x)
     Foo();
 
-if (y)
-    Bar();]]></After>
+Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -1192,25 +1188,25 @@ public class Foo
     <Samples>
       <Sample>
         <Before>
-      <![CDATA[public class Foo
+      <![CDATA[class Foo
 {
-    public void M1()
+    void M1()
     {
     } // [|Id|]
-    public void M2()
+    void M2()
     {
     } // [|Id|]
     /// <summary>
     /// ...
     /// </summary>
-    public void M3()
+    void M3()
     {
     } // [|Id|]
-    public string P1 { get; set; } // [|Id|]
+    string P1 { get; set; } // [|Id|]
     [Obsolete]
-    public string P2 { get; set; }
+    string P2 { get; set; }
 } // [|Id|]
-public enum FooEnum
+enum Bar
 {
     A = 0, // [|Id|]
     /// <summary>
@@ -1220,30 +1216,30 @@ public enum FooEnum
     [Obsolete]
     C = 2,
 }]]></Before>
-        <After><![CDATA[public class Foo
+        <After><![CDATA[class Foo
 {
-    public void M1()
+    void M1()
     {
     }
 
-    public void M2()
+    void M2()
     {
     }
 
     /// <summary>
     /// ...
     /// </summary>
-    public void M3()
+    void M3()
     {
     }
 
-    public string P1 { get; set; }
+    string P1 { get; set; }
 
     [Obsolete]
-    public string P2 { get; set; }
+    string P2 { get; set; }
 }
 
-public enum FooEnum
+enum Bar
 {
     A = 0,
 
@@ -1688,10 +1684,10 @@ catch (Exception ex) // [|Id|]
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public interface IFoo
+        <Before><![CDATA[interface IFoo
 { } // [|Id|]]]></Before>
         <After>
-          <![CDATA[public interface IFoo
+          <![CDATA[interface IFoo
 {
 }]]></After>
       </Sample>
@@ -2030,12 +2026,12 @@ public string Foo // [|Id|]
         <Before><![CDATA[do
 {
     Foo(); // [|Id|]
-} while (condition);]]></Before>
+} while (x);]]></Before>
         <After><![CDATA[do
 {
     Foo();
 
-} while (condition);]]></After>
+} while (x);]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -3237,19 +3233,15 @@ string s2 = s as string; // [|Id|]]]></Before>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[            if (x)
-            {
-            } // [|Id|]
-            if (y)
-            {
-            }]]></Before>
-        <After><![CDATA[            if (x)
-            {
-            }
+        <Before><![CDATA[if (x)
+{
+} // [|Id|]
+Foo();]]></Before>
+        <After><![CDATA[if (x)
+{
+}
 
-            if (y)
-            {
-            }]]></After>
+Foo();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -3561,22 +3553,30 @@ if (x == null) // [|Id|]
     <Title>Parameter name differs from base name.</Title>
     <MessageFormat>Parameter name '{0}' differs from base name '{1}'.</MessageFormat>
     <Category>Maintainability</Category>
-    <DefaultSeverity>Warning</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public interface IFoo
+        <Before><![CDATA[interface IFoo
 {
     string Bar(object parameter);
 }
 
-public abstract class Foo : IFoo
+abstract class Foo : IFoo
 {
     public abstract string Bar(object value); // [|Id|]
 }]]></Before>
-        <After><![CDATA[public abstract string Bar(object parameter);]]></After>
+        <After><![CDATA[interface IFoo
+{
+    string Bar(object parameter);
+}
+
+abstract class Foo : IFoo
+{
+    public abstract string Bar(object parameter)
+};]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -3925,12 +3925,12 @@ public string Value { get; }]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[bool x = (condition) ? // [|Id|]
-    a :
-    b;]]></Before>
-        <After><![CDATA[bool x = (condition)
-    ? a
-    : b;]]></After>
+        <Before><![CDATA[var y = (x) ? // [|Id|]
+Foo() :
+Bar();]]></Before>
+        <After><![CDATA[var y = (x)
+? Foo()
+: Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
@@ -3945,8 +3945,8 @@ public string Value { get; }]]></After>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
       <Sample>
-        <Before><![CDATA[public Foo() { Bar(); } // [|Id|]]]></Before>
-        <After><![CDATA[public Foo()
+        <Before><![CDATA[void Foo() { Bar(); } // [|Id|]]]></Before>
+        <After><![CDATA[void Foo()
 {
     Bar();
 }]]></After>
