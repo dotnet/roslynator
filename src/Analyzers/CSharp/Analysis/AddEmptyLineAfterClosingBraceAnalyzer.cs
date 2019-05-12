@@ -30,7 +30,8 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeBlock, SyntaxKind.Block);
             context.RegisterSyntaxNodeAction(AnalyzeWhileStatement, SyntaxKind.WhileStatement);
             context.RegisterSyntaxNodeAction(AnalyzeForStatement, SyntaxKind.ForStatement);
-            context.RegisterSyntaxNodeAction(AnalyzeForEachStatement, SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeCommonForEachStatement, SyntaxKind.ForEachStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeCommonForEachStatement, SyntaxKind.ForEachVariableStatement);
             context.RegisterSyntaxNodeAction(AnalyzeUsingStatement, SyntaxKind.UsingStatement);
             context.RegisterSyntaxNodeAction(AnalyzeFixedStatement, SyntaxKind.FixedStatement);
             context.RegisterSyntaxNodeAction(AnalyzeCheckedStatement, SyntaxKind.CheckedStatement);
@@ -40,6 +41,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
             context.RegisterSyntaxNodeAction(AnalyzeSwitchStatement, SyntaxKind.SwitchStatement);
             context.RegisterSyntaxNodeAction(AnalyzeTryStatement, SyntaxKind.TryStatement);
+            context.RegisterSyntaxNodeAction(AnalyzeElseClause, SyntaxKind.ElseClause);
         }
 
         private static void AnalyzeBlock(SyntaxNodeAnalysisContext context)
@@ -76,9 +78,9 @@ namespace Roslynator.CSharp.Analysis
             }
         }
 
-        private static void AnalyzeForEachStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeCommonForEachStatement(SyntaxNodeAnalysisContext context)
         {
-            var forEachStatement = (ForEachStatementSyntax)context.Node;
+            var forEachStatement = (CommonForEachStatementSyntax)context.Node;
 
             if (forEachStatement.IsParentKind(SyntaxKind.Block))
             {
@@ -183,6 +185,21 @@ namespace Roslynator.CSharp.Analysis
 
                     if (catchClause != null)
                         AnalyzeStatement(context, tryStatement, catchClause.Block);
+                }
+            }
+        }
+
+        private static void AnalyzeElseClause(SyntaxNodeAnalysisContext context)
+        {
+            var elseClause = (ElseClauseSyntax)context.Node;
+
+            if (elseClause.Statement?.Kind() == SyntaxKind.Block)
+            {
+                IfStatementSyntax ifStatement = elseClause.GetTopmostIf();
+
+                if (ifStatement.IsParentKind(SyntaxKind.Block))
+                {
+                    AnalyzeStatement(context, ifStatement, (BlockSyntax)elseClause.Statement);
                 }
             }
         }
