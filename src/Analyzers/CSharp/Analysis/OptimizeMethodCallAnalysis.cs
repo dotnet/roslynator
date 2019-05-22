@@ -257,7 +257,7 @@ namespace Roslynator.CSharp.Analysis
             if (!IsDictionaryAdd(methodSymbol2))
                 return;
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeMethodCall, ifStatement);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.OptimizeMethodCall, ifStatement, "Dictionary<TKey, TValue>.ContainsKey");
 
             IfStatementSyntax GetIfStatement()
             {
