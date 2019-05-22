@@ -873,5 +873,12 @@ namespace Roslynator.CSharp
             "CS0191", 
             "CS0192");
 
+        /// <summary>RCF0115 (fixes CS1061)</summary>
+        public static readonly CodeFixDescriptor ReplaceInvocationWithMemberAccessOrViceVersa = new CodeFixDescriptor(
+            id:                 CodeFixIdentifiers.ReplaceInvocationWithMemberAccessOrViceVersa, 
+            title:              "Replace invocation with member access or vice versa", 
+            isEnabledByDefault: true, 
+            "CS1061");
+
     }
 }
