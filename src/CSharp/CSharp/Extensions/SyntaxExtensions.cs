@@ -3858,7 +3858,7 @@ namespace Roslynator.CSharp
         }
 
         /// <summary>
-        /// Returns true if the list of either empty or contains only whitespace.
+        /// Returns true if the list of either empty or contains only whitespace (<see cref="SyntaxKind.WhitespaceTrivia"/> or <see cref="SyntaxKind.EndOfLineTrivia"/>).
         /// </summary>
         /// <param name="triviaList"></param>
         /// <returns></returns>
