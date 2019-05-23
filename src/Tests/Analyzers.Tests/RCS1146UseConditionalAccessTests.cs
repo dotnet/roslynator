@@ -447,6 +447,8 @@ class Foo
 
         if (x != null && x.P == null && f) { }
 
+        if (x != null && x.P is null && f) { }
+
         if (x != null && x.P == NullConst && f) { }
 
         if (x != null && x.P == s && f) { }
