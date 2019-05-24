@@ -150,7 +150,7 @@ namespace Roslynator.CSharp
         public const string UnconstrainedTypeParameterCheckedForNull = "RCS1165";
         public const string ValueTypeObjectIsNeverEqualToNull = "RCS1166";
         public const string ParameterNameDiffersFromBase = "RCS1168";
-        public const string MarkFieldAsReadOnly = "RCS1169";
+        public const string MakeFieldReadOnly = "RCS1169";
         public const string UseReadOnlyAutoProperty = "RCS1170";
         public const string SimplifyLazyInitialization = "RCS1171";
         public const string UseIsOperatorInsteadOfAsOperator = "RCS1172";

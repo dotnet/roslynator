@@ -160,7 +160,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1165", "Unconstrained type parameter checked for null.", !IsEnabled("RCS1165")));
             analyzers.Add(new BaseModel("RCS1166", "Value type object is never equal to null.", !IsEnabled("RCS1166")));
             analyzers.Add(new BaseModel("RCS1168", "Parameter name differs from base name.", !IsEnabled("RCS1168")));
-            analyzers.Add(new BaseModel("RCS1169", "Mark field as read-only.", !IsEnabled("RCS1169")));
+            analyzers.Add(new BaseModel("RCS1169", "Make field read-only.", !IsEnabled("RCS1169")));
             analyzers.Add(new BaseModel("RCS1170", "Use read-only auto-implemented property.", !IsEnabled("RCS1170")));
             analyzers.Add(new BaseModel("RCS1171", "Simplify lazy initialization.", !IsEnabled("RCS1171")));
             analyzers.Add(new BaseModel("RCS1172", "Use 'is' operator instead of 'as' operator.", !IsEnabled("RCS1172")));

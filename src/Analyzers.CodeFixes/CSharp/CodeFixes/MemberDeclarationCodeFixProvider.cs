@@ -32,7 +32,7 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.RemoveRedundantSealedModifier,
                     DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
                     DiagnosticIdentifiers.OrderModifiers,
-                    DiagnosticIdentifiers.MarkFieldAsReadOnly,
+                    DiagnosticIdentifiers.MakeFieldReadOnly,
                     DiagnosticIdentifiers.UseConstantInsteadOfField,
                     DiagnosticIdentifiers.UseReadOnlyAutoProperty,
                     DiagnosticIdentifiers.ConvertCommentToDocumentationComment,
@@ -107,15 +107,15 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.MarkFieldAsReadOnly:
+                    case DiagnosticIdentifiers.MakeFieldReadOnly:
                         {
                             var fieldDeclaration = (FieldDeclarationSyntax)memberDeclaration;
 
                             SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
 
                             string title = (declarators.Count == 1)
-                                ? $"Mark '{declarators[0].Identifier.ValueText}' as read-only"
-                                : "Mark fields as read-only";
+                                ? $"Make '{declarators[0].Identifier.ValueText}' read-only"
+                                : "Make fields read-only";
 
                             ModifiersCodeFixRegistrator.AddModifier(context, diagnostic, fieldDeclaration, SyntaxKind.ReadOnlyKeyword, title: title);
                             break;

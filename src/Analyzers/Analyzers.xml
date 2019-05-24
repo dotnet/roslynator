@@ -3580,10 +3580,10 @@ abstract class Foo : IFoo
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="MarkFieldAsReadOnly">
+  <Analyzer Identifier="MakeFieldReadOnly">
     <Id>RCS1169</Id>
-    <Title>Mark field as read-only.</Title>
-    <MessageFormat>Mark field as read-only.</MessageFormat>
+    <Title>Make field read-only.</Title>
+    <MessageFormat>Make field read-only.</MessageFormat>
     <Category>Design</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
