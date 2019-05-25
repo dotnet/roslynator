@@ -32,6 +32,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                     if (!propertySymbol.IsIndexer
                         && !propertySymbol.IsReadOnly
                         && !propertySymbol.IsImplicitlyDeclared
+                        && MakeMemberReadOnlyHelpers.ValidateType(propertySymbol.Type)
                         && propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty
                         && !propertySymbol.HasAttribute(MetadataNames.System_Runtime_Serialization_DataMemberAttribute))
                     {

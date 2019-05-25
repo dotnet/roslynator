@@ -8,11 +8,11 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class MarkFieldAsReadOnlyAnalyzer : BaseDiagnosticAnalyzer
+    public class MakeFieldReadOnlyAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.MarkFieldAsReadOnly); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.MakeFieldReadOnly); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
             base.Initialize(context);
 
             context.RegisterSymbolAction(
-                MarkFieldAsReadOnlyAnalysis.Instance.AnalyzeNamedType,
+                MakeFieldReadOnlyAnalysis.Instance.AnalyzeNamedType,
                 SymbolKind.NamedType);
         }
     }

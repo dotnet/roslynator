@@ -1756,15 +1756,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1169</summary>
-        public static readonly DiagnosticDescriptor MarkFieldAsReadOnly = Create(
-            id:                 DiagnosticIdentifiers.MarkFieldAsReadOnly, 
-            title:              "Mark field as read-only.", 
-            messageFormat:      "Mark field as read-only.", 
+        public static readonly DiagnosticDescriptor MakeFieldReadOnly = Create(
+            id:                 DiagnosticIdentifiers.MakeFieldReadOnly, 
+            title:              "Make field read-only.", 
+            messageFormat:      "Make field read-only.", 
             category:           DiagnosticCategories.Design, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.MarkFieldAsReadOnly, 
+            helpLinkUri:        DiagnosticIdentifiers.MakeFieldReadOnly, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1170</summary>

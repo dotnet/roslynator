@@ -286,12 +286,18 @@ namespace Roslynator.CSharp.Analysis
                                 .WalkDownParentheses()
                                 .Kind() == SyntaxKind.NullLiteralExpression;
                         }
+                    case SyntaxKind.IsPatternExpression:
+                        {
+                            var isPatternExpression = (IsPatternExpressionSyntax)expression;
+
+                            return !(isPatternExpression.Pattern is ConstantPatternSyntax constantPattern)
+                                || !constantPattern.Expression.WalkDownParentheses().IsKind(SyntaxKind.NullLiteralExpression);
+                        }
                     case SyntaxKind.SimpleMemberAccessExpression:
                     case SyntaxKind.InvocationExpression:
                     case SyntaxKind.ElementAccessExpression:
                     case SyntaxKind.LogicalNotExpression:
                     case SyntaxKind.IsExpression:
-                    case SyntaxKind.IsPatternExpression:
                     case SyntaxKind.AsExpression:
                         {
                             return true;

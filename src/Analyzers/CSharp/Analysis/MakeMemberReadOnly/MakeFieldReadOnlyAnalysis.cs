@@ -8,13 +8,13 @@ using Microsoft.CodeAnalysis.Diagnostics;
 
 namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 {
-    internal sealed class MarkFieldAsReadOnlyAnalysis : MakeMemberReadOnlyAnalysis
+    internal sealed class MakeFieldReadOnlyAnalysis : MakeMemberReadOnlyAnalysis
     {
-        private MarkFieldAsReadOnlyAnalysis()
+        private MakeFieldReadOnlyAnalysis()
         {
         }
 
-        public static MarkFieldAsReadOnlyAnalysis Instance { get; } = new MarkFieldAsReadOnlyAnalysis();
+        public static MakeFieldReadOnlyAnalysis Instance { get; } = new MakeFieldReadOnlyAnalysis();
 
         public override HashSet<ISymbol> GetAnalyzableSymbols(SymbolAnalysisContext context, INamedTypeSymbol containingType)
         {
@@ -31,9 +31,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                         && !fieldSymbol.IsReadOnly
                         && !fieldSymbol.IsVolatile
                         && !fieldSymbol.IsImplicitlyDeclared
-                        && (fieldSymbol.Type.IsReferenceType
-                            || CSharpFacts.IsSimpleType(fieldSymbol.Type.SpecialType)
-                            || fieldSymbol.Type.TypeKind == TypeKind.Enum))
+                        && MakeMemberReadOnlyHelpers.ValidateType(fieldSymbol.Type))
                     {
                         (analyzableFields ?? (analyzableFields = new HashSet<ISymbol>())).Add(fieldSymbol);
                     }
@@ -63,7 +61,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
                     || variablesCount == count)
                 {
                     DiagnosticHelpers.ReportDiagnostic(context,
-                        DiagnosticDescriptors.MarkFieldAsReadOnly,
+                        DiagnosticDescriptors.MakeFieldReadOnly,
                         declaration.Parent);
                 }
             }

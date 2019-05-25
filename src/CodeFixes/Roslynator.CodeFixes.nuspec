@@ -5,7 +5,7 @@
     <version>2.0.0</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
-    <licenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</licenseUrl>
+    <license type="expression">Apache-2.0</license>
     <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
     <iconUrl>http://pihrt.net/images/Roslynator.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>

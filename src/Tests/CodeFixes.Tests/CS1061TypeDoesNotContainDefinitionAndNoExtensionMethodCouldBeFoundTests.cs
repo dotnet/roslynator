@@ -141,5 +141,61 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        public async Task Test_ReplaceInvocationWithMemberAccess()
+        {
+            await VerifyFixAsync(@"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        var token = default(SyntaxToken);
+        var leadingTrivia = token.GetLeadingTrivia();
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        var token = default(SyntaxToken);
+        var leadingTrivia = token.LeadingTrivia;
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        public async Task Test_ReplaceMemberAccessWithInvocation()
+        {
+            await VerifyFixAsync(@"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        var node = default(SyntaxNode);
+        var leadingTrivia = node.LeadingTrivia;
+    }
+}
+", @"
+using Microsoft.CodeAnalysis;
+
+class C
+{
+    void M()
+    {
+        var node = default(SyntaxNode);
+        var leadingTrivia = node.GetLeadingTrivia();
+    }
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
     }
 }

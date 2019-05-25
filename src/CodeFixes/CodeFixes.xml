@@ -649,4 +649,9 @@
       <Id>CS0192</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0115" Identifier="ReplaceInvocationWithMemberAccessOrViceVersa" Title="Replace invocation with member access or vice versa">
+    <FixableDiagnosticIds>
+      <Id>CS1061</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

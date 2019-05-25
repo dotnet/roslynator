@@ -34,7 +34,7 @@ Roslynator.Documentation.DocumentationWriter
 Roslynator.Documentation.DocumentationGenerator</Description>
     <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
-    <PackageLicenseUrl>http://github.com/JosefPihrt/Roslynator/blob/master/LICENSE.txt</PackageLicenseUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
     <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
     <PackageReleaseNotes></PackageReleaseNotes>
