@@ -4,11 +4,11 @@ set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuil
 
 %_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Build /p:Configuration=Debug /v:m /m
 
-"..\src\CommandLine\bin\Debug\net461\roslynator" fix "..\src\Roslynator.sln" ^
+"..\src\CommandLine\bin\Debug\net472\roslynator" fix "..\src\Roslynator.sln" ^
  --msbuild-path %_msbuildPath% ^
  --analyzer-assemblies ^
-  "..\src\CommandLine\bin\Debug\net461\Roslynator.CSharp.Analyzers.dll" ^
-  "..\src\CommandLine\bin\Debug\net461\Roslynator.CSharp.Analyzers.CodeFixes.dll" ^
+  "..\src\CommandLine\bin\Debug\net472\Roslynator.CSharp.Analyzers.dll" ^
+  "..\src\CommandLine\bin\Debug\net472\Roslynator.CSharp.Analyzers.CodeFixes.dll" ^
  --format ^
  --verbosity d ^
  --file-log "roslynator.log" ^

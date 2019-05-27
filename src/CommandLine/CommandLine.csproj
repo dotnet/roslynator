@@ -1,12 +1,20 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net461</TargetFramework>
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' != true AND '$(RoslynatorCommandLine)' != true">
+    <TargetFrameworks>net472;netcoreapp2.1</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RoslynatorCommandLine)' == true">
+    <TargetFramework>net472</TargetFramework>
   </PropertyGroup>
 
   <PropertyGroup>
     <Version>0.1.0.2</Version>
+    <OutputType>Exe</OutputType>
     <AssemblyName>Roslynator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
     <CodeAnalysisRuleSet>CommandLine.ruleset</CodeAnalysisRuleSet>
@@ -16,34 +24,23 @@
     <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
   </PropertyGroup>
 
-  <PropertyGroup>
-    <TrimUnusedDependencies>true</TrimUnusedDependencies>
+  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>roslynator</ToolCommandName>
+    <PackageId>Roslynator.DotNet.Cli</PackageId>
+    <PackageVersion>0.1.0-rc</PackageVersion>
+    <Authors>Josef Pihrt</Authors>
+    <Description>.NET Core Global Tool for Roslynator</Description>
+    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
+    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
+    <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
+    <PackageTags>CLI;Roslyn;C#;CSharp</PackageTags>
+    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Compile Remove="docs\**" />
-    <EmbeddedResource Remove="docs\**" />
-    <None Remove="docs\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <TrimFilesRootFiles Include="System.Runtime.InteropServices.RuntimeInformation.dll" />
-    <TrimFilesRootFiles Include="System.Diagnostics.Tracing.dll" />
-    <TrimFilesRootFiles Include="System.Composition.Convention.dll" />
-    <TrimFilesRootFiles Include="Roslynator.Core.dll" />
-    <TrimFilesRootFiles Include="Roslynator.Workspaces.Core.dll" />
-    <TrimFilesRootFiles Include="Roslynator.CSharp.dll" />
-    <TrimFilesRootFiles Include="Roslynator.VisualBasic.dll" />
-    <TrimFilesRootFiles Include="Roslynator.Common.dll" />
-    <TrimFilesRootFiles Include="Roslynator.Workspaces.Common.dll" />
-    <TrimFilesRootFiles Include="Roslynator.CSharp.Workspaces.dll" />
-    <TrimFilesRootFiles Include="Roslynator.VisualBasic.Workspaces.dll" />
-    <TrimFilesRootFiles Include="Roslynator.CSharp.Analyzers.dll" />
-    <TrimFilesRootFiles Include="Roslynator.CSharp.Analyzers.CodeFixes.dll" />
-    <TrimFilesRootFiles Include="Roslynator.CSharp.CodeFixes.dll" />
-  </ItemGroup>
-
-  <PropertyGroup>
+  <PropertyGroup Condition="'$(RoslynatorCommandLine)' == true">
     <NuspecFile>CommandLine.nuspec</NuspecFile> 
     <IntermediatePackDir>$(MSBuildProjectDirectory)/bin/$(Configuration)/publish/</IntermediatePackDir>
     <PublishDir>$(IntermediatePackDir)$(TargetFramework)/</PublishDir>
@@ -51,17 +48,12 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="_._" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Include="CommandLineParser" Version="2.4.3" />
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.10.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="2.10.0" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="2.10.0" />
-    <PackageReference Include="Microsoft.Build.Locator" Version="1.1.2" />
-    <PackageReference Include="Microsoft.Packaging.Tools.Trimming" Version="1.1.0-preview1-26619-01" />
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.1" />
+    <PackageReference Include="CommandLineParser" Version="2.5.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="3.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.VisualBasic.Workspaces" Version="3.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Workspaces.MSBuild" Version="3.1.0" />
+    <PackageReference Include="Microsoft.Build.Locator" Version="1.2.2" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -76,6 +68,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="_._" />
     <None Update="format.ruleset">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>

@@ -22,7 +22,7 @@
     <file src="CommandLine.targets" target="build/net45/Roslynator.CommandLine.targets" />
     <file src="CommandLine.targets" target="build/netstandard1.0/Roslynator.CommandLine.targets" />
     <file src="Roslynator.targets" target="tools/" />
-    <file src="$publishDir$net461\format.ruleset" target="tools/net461/" />
-    <file src="$publishDir$net461\**\*" target="tools/net461/" exclude="**\*.pdb;**\*.xml" />
+    <file src="$publishDir$net472\format.ruleset" target="tools/net472/" />
+    <file src="$publishDir$net472\**\*" target="tools/net472/" exclude="**\*.pdb;**\*.xml" />
   </files>
 </package>
