@@ -69,7 +69,7 @@ namespace Roslynator.Host.Mef
             }
 
             if (!languageServices.HasServices)
-                throw new NotSupportedException($"This language '{languageName}' is not supported.");
+                throw new NotSupportedException($"The language '{languageName}' is not supported.");
 
             return languageServices;
         }
