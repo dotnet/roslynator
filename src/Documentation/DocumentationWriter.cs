@@ -1151,7 +1151,7 @@ namespace Roslynator.Documentation
             if (maxItems == 0)
                 return;
 
-            var nodes = new HashSet<INamedTypeSymbol>(types) { baseType };
+            var nodes = new HashSet<INamedTypeSymbol>(types, MetadataNameEqualityComparer<INamedTypeSymbol>.Instance) { baseType };
 
             foreach (INamedTypeSymbol type in types)
             {
@@ -1225,7 +1225,8 @@ namespace Roslynator.Documentation
                 level++;
 
                 using (List<INamedTypeSymbol>.Enumerator en = nodes
-                    .Where(f => f.BaseType?.OriginalDefinition == baseType.OriginalDefinition || f.Interfaces.Any(i => i.OriginalDefinition == baseType.OriginalDefinition))
+                    .Where(f => MetadataNameEqualityComparer<INamedTypeSymbol>.Instance.Equals(f.BaseType?.OriginalDefinition, baseType.OriginalDefinition)
+                        || f.Interfaces.Any(i => MetadataNameEqualityComparer<INamedTypeSymbol>.Instance.Equals(i.OriginalDefinition, baseType.OriginalDefinition)))
                     .Sort(systemNamespaceFirst: Options.PlaceSystemNamespaceFirst, includeContainingNamespace: includeContainingNamespace)
                     .ToList()
                     .GetEnumerator())

@@ -177,7 +177,7 @@ namespace Roslynator.Documentation
 
                 foreach (IAssemblySymbol assembly in Assemblies)
                 {
-                    if (type.ContainingAssembly == assembly)
+                    if (type.ContainingAssembly.Identity.Equals(assembly.Identity))
                         return null;
                 }
 
@@ -221,7 +221,7 @@ namespace Roslynator.Documentation
         {
             foreach (IAssemblySymbol assembly in Assemblies)
             {
-                if (symbol.ContainingAssembly == assembly)
+                if (symbol.ContainingAssembly.Identity.Equals(assembly.Identity))
                     return false;
             }
 
@@ -351,7 +351,7 @@ namespace Roslynator.Documentation
             {
                 foreach (IAssemblySymbol a in Assemblies)
                 {
-                    if (symbol.ContainingAssembly == a)
+                    if (symbol.ContainingAssembly.Identity.Equals(a.Identity))
                         return a;
                 }
 

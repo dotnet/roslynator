@@ -57,7 +57,7 @@ namespace Roslynator.Documentation
 
                 while (baseType != null)
                 {
-                    bool areInternalsVisible = typeSymbol.ContainingAssembly == baseType.ContainingAssembly
+                    bool areInternalsVisible = typeSymbol.ContainingAssembly.Identity.Equals(baseType.ContainingAssembly.Identity)
                         || baseType.ContainingAssembly.GivesAccessTo(typeSymbol.ContainingAssembly);
 
                     foreach (ISymbol symbol in baseType.GetMembers())
