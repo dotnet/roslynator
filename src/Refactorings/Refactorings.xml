@@ -883,6 +883,24 @@ return true;]]></After>
       <Syntax>System.Linq.Enumerable.Any(Func&lt;T, bool&gt;) or System.Linq.Enumerable.All(Func&lt;T, bool&gt;)</Syntax>
     </Syntaxes>
     <Span>method name</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[if (items.Any(predicate)
+{
+}]]></Before>
+        <After><![CDATA[if (items.All(!predicate)
+{
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[if (items.All(predicate)
+{
+}]]></Before>
+        <After><![CDATA[if (items.Any(!predicate)
+{
+}]]></After>
+      </Sample>
+    </Samples>
   </Refactoring>
   <Refactoring Id="RR0117" Identifier="ReplaceAsWithCast" Title="Replace as expression with cast expression">
     <Syntaxes>

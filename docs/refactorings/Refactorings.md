@@ -1110,7 +1110,40 @@ if (condition1)
 
 * **Syntax**: System\.Linq\.Enumerable\.Any\(Func\<T, bool>\) or System\.Linq\.Enumerable\.All\(Func\<T, bool>\)
 * **Span**: method name
-![Invert LINQ method call](../../images/refactorings/InvertLinqMethodCall.png)
+
+#### Before
+
+```csharp
+if (items.Any(predicate)
+{
+}
+```
+
+#### After
+
+```csharp
+if (items.All(!predicate)
+{
+}
+```
+
+- - -
+
+#### Before
+
+```csharp
+if (items.All(predicate)
+{
+}
+```
+
+#### After
+
+```csharp
+if (items.Any(!predicate)
+{
+}
+```
 
 #### Invert operator \(RR0082\)
 
