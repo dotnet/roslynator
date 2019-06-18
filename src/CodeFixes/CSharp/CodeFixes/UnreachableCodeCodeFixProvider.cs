@@ -93,7 +93,18 @@ namespace Roslynator.CSharp.CodeFixes
                     {
                         var ifStatement = (IfStatementSyntax)node;
 
-                        StatementSyntax statement = ifStatement.Else?.Statement;
+                        ElseClauseSyntax elseClause = ifStatement.Else;
+
+                        if (elseClause != null
+                            && ifStatement.IsParentKind(SyntaxKind.ElseClause))
+                        {
+                            return CodeAction.Create(
+                                Title,
+                                cz => document.ReplaceNodeAsync(ifStatement.Parent, elseClause, cz),
+                                GetEquivalenceKey(diagnostic));
+                        }
+
+                        StatementSyntax statement = elseClause?.Statement;
 
                         if (statement != null)
                         {
