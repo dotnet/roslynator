@@ -10,14 +10,9 @@ namespace Roslynator.Documentation
         None = 0,
         Content = 1,
         Namespaces = 2,
-        Classes = 4,
-        StaticClasses = 8,
-        Structs = 16,
-        Interfaces = 32,
-        Enums = 64,
-        Delegates = 128,
-        Types = Classes | StaticClasses | Structs | Interfaces | Enums | Delegates,
-        Other = 256,
-        All = Content | Namespaces | Types | Other
+        ClassHierarchy = 4,
+        Types = 8,
+        Other = 16,
+        All = int.MaxValue
     }
 }

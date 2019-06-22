@@ -2,62 +2,32 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 
 namespace Roslynator
 {
-    internal class SymbolDefinitionComparer : IComparer<ISymbol>
+    internal abstract class SymbolDefinitionComparer : IComparer<ISymbol>
     {
-        private IComparer<INamespaceSymbol> _namespaceComparer;
-        private IComparer<INamedTypeSymbol> _typeComparer;
-        private IComparer<ISymbol> _memberComparer;
-
         internal SymbolDefinitionComparer(SymbolDefinitionSortOptions options = SymbolDefinitionSortOptions.None)
         {
             Options = options;
         }
 
-        public static SymbolDefinitionComparer Default { get; } = new SymbolDefinitionComparer(SymbolDefinitionSortOptions.None);
+        public static SymbolDefinitionComparer Default { get; } = new DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions.None);
 
-        public static SymbolDefinitionComparer SystemFirst { get; } = new SymbolDefinitionComparer(SymbolDefinitionSortOptions.SystemFirst);
+        public static SymbolDefinitionComparer SystemFirst { get; } = new DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions.SystemFirst);
 
-        public static SymbolDefinitionComparer SystemFirstOmitContainingNamespace { get; } = new SymbolDefinitionComparer(SymbolDefinitionSortOptions.SystemFirst | SymbolDefinitionSortOptions.OmitContainingNamespace);
+        public static SymbolDefinitionComparer SystemFirstOmitContainingNamespace { get; } = new DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions.SystemFirst | SymbolDefinitionSortOptions.OmitContainingNamespace);
 
         public SymbolDefinitionSortOptions Options { get; }
 
-        public IComparer<INamespaceSymbol> NamespaceComparer
-        {
-            get
-            {
-                if (_namespaceComparer == null)
-                    Interlocked.CompareExchange(ref _namespaceComparer, CreateNamespaceComparer(), null);
+        public abstract IComparer<INamespaceSymbol> NamespaceComparer { get; }
 
-                return _namespaceComparer;
-            }
-        }
+        public abstract IComparer<INamedTypeSymbol> TypeComparer { get; }
 
-        public IComparer<INamedTypeSymbol> TypeComparer
-        {
-            get
-            {
-                if (_typeComparer == null)
-                    Interlocked.CompareExchange(ref _typeComparer, CreateTypeComparer(), null);
-
-                return _typeComparer;
-            }
-        }
-
-        public IComparer<ISymbol> MemberComparer
-        {
-            get
-            {
-                if (_memberComparer == null)
-                    Interlocked.CompareExchange(ref _memberComparer, CreateMemberComparer(), null);
-
-                return _memberComparer;
-            }
-        }
+        public abstract IComparer<ISymbol> MemberComparer { get; }
 
         public int Compare(ISymbol x, ISymbol y)
         {
@@ -136,7 +106,7 @@ namespace Roslynator
 
         private int CompareNamedTypeSymbol(INamedTypeSymbol typeSymbol1, INamedTypeSymbol typeSymbol2)
         {
-            int diff = NamespaceComparer.Compare(typeSymbol1.ContainingNamespace, typeSymbol2.ContainingNamespace);
+            int diff = CompareContainingNamespace(typeSymbol1, typeSymbol2);
 
             if (diff != 0)
                 return diff;
@@ -174,24 +144,77 @@ namespace Roslynator
             return 1;
         }
 
+        internal int CompareContainingNamespace(ISymbol x, ISymbol y)
+        {
+            Debug.Assert(x.Kind != SymbolKind.Namespace, x.Kind.ToString());
+            Debug.Assert(y.Kind != SymbolKind.Namespace, y.Kind.ToString());
+
+            return NamespaceComparer.Compare(x.ContainingNamespace, y.ContainingNamespace);
+        }
+
         public static int CompareName(ISymbol symbol1, ISymbol symbol2)
         {
-            return string.Compare(symbol1.Name, symbol2.Name, StringComparison.Ordinal);
+            return string.CompareOrdinal(symbol1.Name, symbol2.Name);
         }
 
-        protected virtual IComparer<INamespaceSymbol> CreateNamespaceComparer()
+        private class DefaultSymbolDefinitionComparer : SymbolDefinitionComparer
         {
-            return new NamespaceSymbolDefinitionComparer(this);
-        }
+            private IComparer<INamespaceSymbol> _namespaceComparer;
+            private IComparer<INamedTypeSymbol> _typeComparer;
+            private IComparer<ISymbol> _memberComparer;
 
-        protected virtual IComparer<INamedTypeSymbol> CreateTypeComparer()
-        {
-            return new NamedTypeSymbolDefinitionComparer(this);
-        }
+            internal DefaultSymbolDefinitionComparer(SymbolDefinitionSortOptions options = SymbolDefinitionSortOptions.None)
+                : base(options)
+            {
+            }
 
-        protected virtual IComparer<ISymbol> CreateMemberComparer()
-        {
-            return new MemberSymbolDefinitionComparer(this);
+            public override IComparer<INamespaceSymbol> NamespaceComparer
+            {
+                get
+                {
+                    if (_namespaceComparer == null)
+                        Interlocked.CompareExchange(ref _namespaceComparer, CreateNamespaceComparer(), null);
+
+                    return _namespaceComparer;
+
+                    IComparer<INamespaceSymbol> CreateNamespaceComparer()
+                    {
+                        return new NamespaceSymbolDefinitionComparer(this);
+                    }
+                }
+            }
+
+            public override IComparer<INamedTypeSymbol> TypeComparer
+            {
+                get
+                {
+                    if (_typeComparer == null)
+                        Interlocked.CompareExchange(ref _typeComparer, CreateTypeComparer(), null);
+
+                    return _typeComparer;
+
+                    IComparer<INamedTypeSymbol> CreateTypeComparer()
+                    {
+                        return new NamedTypeSymbolDefinitionComparer(this);
+                    }
+                }
+            }
+
+            public override IComparer<ISymbol> MemberComparer
+            {
+                get
+                {
+                    if (_memberComparer == null)
+                        Interlocked.CompareExchange(ref _memberComparer, CreateMemberComparer(), null);
+
+                    return _memberComparer;
+
+                    IComparer<ISymbol> CreateMemberComparer()
+                    {
+                        return new MemberSymbolDefinitionComparer(this);
+                    }
+                }
+            }
         }
     }
 }

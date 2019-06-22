@@ -132,6 +132,11 @@ namespace Roslynator.Documentation
                             yield return GetElementXml(element);
                             break;
                         }
+                    case "filterpriority":
+                    case "completionlist":
+                        {
+                            break;
+                        }
                     default:
                         {
                             Debug.Fail(element.Name.LocalName);

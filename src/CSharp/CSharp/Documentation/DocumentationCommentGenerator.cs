@@ -586,7 +586,7 @@ namespace Roslynator.CSharp.Documentation
                                     }
                                     catch (XmlException ex)
                                     {
-                                        Debug.Fail(ex.ToString());
+                                        Debug.Fail(symbol.ToDisplayString() + "\r\n\r\n" + ex.ToString());
                                         return null;
                                     }
                                 }

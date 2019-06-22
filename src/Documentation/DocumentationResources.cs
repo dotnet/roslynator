@@ -27,6 +27,7 @@ namespace Roslynator.Documentation
         public abstract string AttributesTitle { get; }
         public abstract string ClassesTitle { get; }
         public abstract string ClassTitle { get; }
+        public abstract string ClassHierarchyTitle { get; }
         public abstract string CombinationOfTitle { get; }
         public abstract string ConstructorsTitle { get; }
         public abstract string ConstructorTitle { get; }
@@ -82,6 +83,7 @@ namespace Roslynator.Documentation
         public abstract string ReturnValueTitle { get; }
         public abstract string SeeAllDerivedTypes { get; }
         public abstract string SeeAlsoTitle { get; }
+        public abstract string AppliesToTitle { get; }
         public abstract string StaticClassesTitle { get; }
         public abstract string StructsTitle { get; }
         public abstract string StructTitle { get; }
@@ -267,6 +269,8 @@ namespace Roslynator.Documentation
                     return DelegatesTitle;
                 case TypeDocumentationParts.SeeAlso:
                     return SeeAlsoTitle;
+                case TypeDocumentationParts.AppliesTo:
+                    return AppliesToTitle;
                 default:
                     throw new ArgumentException("", nameof(part));
             }
@@ -278,18 +282,8 @@ namespace Roslynator.Documentation
             {
                 case RootDocumentationParts.Namespaces:
                     return NamespacesTitle;
-                case RootDocumentationParts.Classes:
-                    return ClassesTitle;
-                case RootDocumentationParts.StaticClasses:
-                    return StaticClassesTitle;
-                case RootDocumentationParts.Structs:
-                    return StructsTitle;
-                case RootDocumentationParts.Interfaces:
-                    return InterfacesTitle;
-                case RootDocumentationParts.Enums:
-                    return EnumsTitle;
-                case RootDocumentationParts.Delegates:
-                    return DelegatesTitle;
+                case RootDocumentationParts.ClassHierarchy:
+                    return ClassHierarchyTitle;
                 case RootDocumentationParts.Other:
                     return OtherTitle;
                 default:
@@ -303,6 +297,7 @@ namespace Roslynator.Documentation
             public override string AttributesTitle { get; } = "Attributes";
             public override string ClassesTitle { get; } = "Classes";
             public override string ClassTitle { get; } = "Class";
+            public override string ClassHierarchyTitle { get; } = "Class Hierarchy";
             public override string CombinationOfTitle { get; } = "Combination of";
             public override string ConstructorsTitle { get; } = "Constructors";
             public override string ConstructorTitle { get; } = "Constructor";
@@ -358,6 +353,7 @@ namespace Roslynator.Documentation
             public override string ReturnValueTitle { get; } = "Return Value";
             public override string SeeAllDerivedTypes { get; } = "See all derived types";
             public override string SeeAlsoTitle { get; } = "See Also";
+            public override string AppliesToTitle { get; } = "Applies to";
             public override string StaticClassesTitle { get; } = "Static Classes";
             public override string StructsTitle { get; } = "Structs";
             public override string StructTitle { get; } = "Struct";

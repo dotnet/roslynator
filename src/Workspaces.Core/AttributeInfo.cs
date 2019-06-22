@@ -3,7 +3,7 @@
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 
-namespace Roslynator.Documentation
+namespace Roslynator
 {
     internal readonly struct AttributeInfo
     {

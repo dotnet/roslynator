@@ -19,6 +19,6 @@ namespace Roslynator.Documentation
         Enums = 256,
         Delegates = 512,
         SeeAlso = 1024,
-        All = Content | ContainingNamespace | Summary | Examples | Remarks | Classes | Structs | Interfaces | Enums | Delegates | SeeAlso
+        All = int.MaxValue
     }
 }

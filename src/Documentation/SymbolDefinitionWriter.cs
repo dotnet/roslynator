@@ -240,9 +240,6 @@ namespace Roslynator.Documentation
             if (Format.OmitIEnumerable)
                 options |= SymbolDisplayAdditionalOptions.OmitIEnumerable;
 
-            if (Format.PreferDefaultLiteral)
-                options |= SymbolDisplayAdditionalOptions.PreferDefaultLiteral;
-
             if (Format.Includes(SymbolDefinitionPartFilter.TrailingSemicolon))
                 options |= SymbolDisplayAdditionalOptions.IncludeTrailingSemicolon;
 
@@ -831,7 +828,9 @@ namespace Roslynator.Documentation
                             {
                                 while (true)
                                 {
-                                    WriteSymbol(en.Current.Symbol);
+                                    WriteSymbol(en.Current.Symbol.ContainingType);
+                                    Write(".");
+                                    Write(en.Current.Symbol.Name);
 
                                     if (en.MoveNext())
                                     {
@@ -902,11 +901,11 @@ namespace Roslynator.Documentation
 
             void WriteSymbol(ISymbol symbol)
             {
-                SymbolDisplayFormat f = (!Format.Includes(SymbolDefinitionPartFilter.ContainingNamespace))
-                    ? SymbolDefinitionDisplayFormats.TypeNameAndContainingTypesAndTypeParameters
-                    : SymbolDefinitionDisplayFormats.TypeNameAndContainingTypesAndNamespacesAndTypeParameters;
+                SymbolDisplayFormat format = (Format.Includes(SymbolDefinitionPartFilter.ContainingNamespace))
+                    ? TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_TypeParameters_SpecialTypes
+                    : TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters_SpecialTypes;
 
-                Write(symbol.ToDisplayParts(f));
+                this.WriteSymbol(symbol, format);
             }
         }
 
@@ -926,7 +925,7 @@ namespace Roslynator.Documentation
         {
             (int startIndex, int endIndex, ISymbol s) = SymbolDefinitionWriterHelpers.FindDefinitionName(symbol, parts);
 
-            Debug.Assert(startIndex >= 0, parts.ToDisplayString());
+            Debug.Assert(startIndex >= 0 || (symbol.IsKind(SymbolKind.Namespace) && ((INamespaceSymbol)symbol).IsGlobalNamespace), parts.ToDisplayString());
 
             if (startIndex >= 0)
             {
@@ -942,7 +941,7 @@ namespace Roslynator.Documentation
 
                     if (containingType != null)
                     {
-                        WriteParts(containingType, containingType.ToDisplayParts(SymbolDefinitionDisplayFormats.FullName));
+                        WriteParts(containingType, containingType.ToDisplayParts(TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_GlobalNamespace_TypeParameters));
                         Write(".");
                     }
                 }
@@ -959,24 +958,25 @@ namespace Roslynator.Documentation
             WriteParts(symbol, parts, startIndex, parts.Length - startIndex);
         }
 
-        protected virtual void WriteDefinitionName(ISymbol symbol)
+        protected virtual void WriteDefinitionName(ISymbol symbol, SymbolDisplayFormat format = null)
         {
-            SymbolDisplayFormat f;
+            if (format == null)
+            {
+                if (symbol.IsKind(SymbolKind.Namespace))
+                {
+                    format = TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces;
+                }
+                else if (symbol.IsKind(SymbolKind.NamedType))
+                {
+                    format = _typeDefinitionNameFormat;
+                }
+                else
+                {
+                    format = _memberDefinitionNameFormat;
+                }
+            }
 
-            if (symbol.IsKind(SymbolKind.Namespace))
-            {
-                f = SymbolDefinitionDisplayFormats.TypeNameAndContainingTypesAndNamespaces;
-            }
-            else if (symbol.IsKind(SymbolKind.NamedType))
-            {
-                f = _typeDefinitionNameFormat;
-            }
-            else
-            {
-                f = _memberDefinitionNameFormat;
-            }
-
-            Write(symbol.ToDisplayParts(f));
+            Write(symbol.ToDisplayParts(format));
         }
 
         protected void WriteParts(ISymbol symbol, ImmutableArray<SymbolDisplayPart> parts)
@@ -1009,7 +1009,7 @@ namespace Roslynator.Documentation
                         }
 
                         if (Peek(j).IsPunctuation(".")
-                            && Peek(j + 1).Kind == SymbolDisplayPartKind.FieldName)
+                            && Peek(j + 1).Kind == SymbolDisplayPartKind.EnumMemberName)
                         {
                             j += 2;
                         }
@@ -1061,16 +1061,16 @@ namespace Roslynator.Documentation
                 if (symbol.Kind == SymbolKind.Field
                     && symbol.ContainingType?.TypeKind == TypeKind.Enum)
                 {
-                    return SymbolDefinitionDisplayFormats.Default;
+                    return TypeSymbolDisplayFormats.Default;
                 }
 
                 if (symbol.IsKind(SymbolKind.Namespace)
                     || Format.Includes(SymbolDefinitionPartFilter.ContainingNamespace))
                 {
-                    return SymbolDefinitionDisplayFormats.TypeNameAndContainingTypesAndNamespaces;
+                    return TypeSymbolDisplayFormats.Name_ContainingTypes_Namespaces_SpecialTypes;
                 }
 
-                return SymbolDefinitionDisplayFormats.TypeNameAndContainingTypes;
+                return TypeSymbolDisplayFormats.Name_ContainingTypes_SpecialTypes;
             }
         }
 

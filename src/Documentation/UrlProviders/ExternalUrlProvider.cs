@@ -17,5 +17,9 @@ namespace Roslynator.Documentation
         public abstract DocumentationUrlInfo CreateUrl(ISymbol symbol);
 
         public abstract DocumentationUrlInfo CreateUrl(ImmutableArray<string> folders);
+
+        public abstract bool CanCreateUrl(ISymbol symbol);
+
+        public abstract bool CanCreateUrl(ImmutableArray<string> folders);
     }
 }

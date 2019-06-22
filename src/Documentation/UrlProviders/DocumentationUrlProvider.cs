@@ -46,6 +46,11 @@ namespace Roslynator.Documentation
             return default;
         }
 
+        public bool HasExternalUrl(ISymbol symbol)
+        {
+            return MicrosoftDocsUrlProvider.Instance.CanCreateUrl(symbol);
+        }
+
         internal static string GetUrl(string fileName, ImmutableArray<string> folders, char separator)
         {
             int capacity = fileName.Length + 1;

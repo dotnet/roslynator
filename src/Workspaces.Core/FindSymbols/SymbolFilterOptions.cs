@@ -235,10 +235,12 @@ namespace Roslynator.FindSymbols
 
         public virtual SymbolFilterReason GetReason(ISymbol symbol, AttributeData attribute)
         {
+            var attributeInfo = new AttributeInfo(symbol, attribute);
+
             foreach (AttributeFilterRule rule in AttributeRules)
             {
-                if (rule.IsApplicable(attribute)
-                    && !rule.IsMatch(attribute))
+                if (rule.IsApplicable(attributeInfo)
+                    && !rule.IsMatch(attributeInfo))
                 {
                     return rule.Reason;
                 }

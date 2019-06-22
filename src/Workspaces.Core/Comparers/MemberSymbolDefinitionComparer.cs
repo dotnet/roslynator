@@ -34,7 +34,7 @@ namespace Roslynator
 
             if ((SymbolComparer.Options & SymbolDefinitionSortOptions.OmitContainingNamespace) == 0)
             {
-                diff = SymbolComparer.NamespaceComparer.Compare(x.ContainingNamespace, y.ContainingNamespace);
+                diff = CompareContainingNamespace(x, y);
 
                 if (diff != 0)
                     return diff;
@@ -106,10 +106,15 @@ namespace Roslynator
                     }
             }
 
-            return SymbolDefinitionComparer.CompareName(x, y);
+            diff = SymbolDefinitionComparer.CompareName(x, y);
+
+            if (diff != 0)
+                return diff;
+
+            return CompareContainingNamespace(x, y);
         }
 
-        private static int CompareMethods(IMethodSymbol methodSymbol1, IMethodSymbol methodSymbol2)
+        private int CompareMethods(IMethodSymbol methodSymbol1, IMethodSymbol methodSymbol2)
         {
             int diff = SymbolDefinitionComparer.CompareName(methodSymbol1, methodSymbol2);
 
@@ -121,17 +126,27 @@ namespace Roslynator
             if (diff != 0)
                 return diff;
 
-            return CompareParameters(methodSymbol1.Parameters, methodSymbol2.Parameters);
+            diff = CompareParameters(methodSymbol1.Parameters, methodSymbol2.Parameters);
+
+            if (diff != 0)
+                return diff;
+
+            return CompareContainingNamespace(methodSymbol1, methodSymbol2);
         }
 
-        private static int CompareProperties(IPropertySymbol propertySymbol1, IPropertySymbol propertySymbol2)
+        private int CompareProperties(IPropertySymbol propertySymbol1, IPropertySymbol propertySymbol2)
         {
             int diff = SymbolDefinitionComparer.CompareName(propertySymbol1, propertySymbol2);
 
             if (diff != 0)
                 return diff;
 
-            return CompareParameters(propertySymbol1.Parameters, propertySymbol2.Parameters);
+            diff = CompareParameters(propertySymbol1.Parameters, propertySymbol2.Parameters);
+
+            if (diff != 0)
+                return diff;
+
+            return CompareContainingNamespace(propertySymbol1, propertySymbol2);
         }
 
         private int CompareExplicitImplementations<TSymbol>(ImmutableArray<TSymbol> x, ImmutableArray<TSymbol> y) where TSymbol : ISymbol
@@ -176,6 +191,11 @@ namespace Roslynator
                 return diff;
 
             return SymbolDefinitionComparer.CompareName(x, y);
+        }
+
+        private int CompareContainingNamespace(ISymbol x, ISymbol y)
+        {
+            return SymbolComparer.CompareContainingNamespace(x, y);
         }
     }
 }

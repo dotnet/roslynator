@@ -15,7 +15,7 @@ namespace Roslynator.Documentation
     {
         private ImmutableDictionary<string, CultureInfo> _cultures = ImmutableDictionary<string, CultureInfo>.Empty;
 
-        private ImmutableDictionary<IAssemblySymbol, Compilation> _compilationMap;
+        private ImmutableDictionary<IAssemblySymbol, MetadataReference> _assemblyToReferenceMap;
 
         private readonly Dictionary<ISymbol, SymbolDocumentationData> _symbolData;
 
@@ -86,7 +86,7 @@ namespace Roslynator.Documentation
                 return data.XmlDocumentation;
             }
 
-            IAssemblySymbol assembly = FindAssembly();
+            IAssemblySymbol assembly = symbol.ContainingAssembly;
 
             if (assembly != null)
             {
@@ -146,57 +146,41 @@ namespace Roslynator.Documentation
 
             _symbolData[symbol] = data.WithXmlDocumentation(SymbolXmlDocumentation.Default);
             return null;
-
-            IAssemblySymbol FindAssembly()
-            {
-                foreach (IAssemblySymbol a in Assemblies)
-                {
-                    if (symbol.ContainingAssembly.Identity.Equals(a.Identity))
-                        return a;
-                }
-
-                return null;
-            }
         }
 
         private XmlDocumentation GetXmlDocumentation(IAssemblySymbol assembly, string preferredCultureName = null)
         {
             if (!_xmlDocumentations.TryGetValue(assembly, out XmlDocumentation xmlDocumentation))
             {
-                if (Assemblies.Contains(assembly))
+                MetadataReference metadataReference = FindMetadataReference(assembly);
+
+                if (metadataReference is PortableExecutableReference portableExecutableReference)
                 {
-                    Compilation compilation = FindCompilation(assembly);
+                    string path = portableExecutableReference.FilePath;
 
-                    MetadataReference metadataReference = compilation.GetMetadataReference(assembly);
-
-                    if (metadataReference is PortableExecutableReference portableExecutableReference)
+                    if (preferredCultureName != null)
                     {
-                        string path = portableExecutableReference.FilePath;
+                        path = Path.GetDirectoryName(path);
 
-                        if (preferredCultureName != null)
+                        path = Path.Combine(path, preferredCultureName);
+
+                        if (Directory.Exists(path))
                         {
-                            path = Path.GetDirectoryName(path);
+                            string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(path), "xml");
 
-                            path = Path.Combine(path, preferredCultureName);
-
-                            if (Directory.Exists(path))
-                            {
-                                string fileName = Path.ChangeExtension(Path.GetFileNameWithoutExtension(path), "xml");
-
-                                path = Path.Combine(path, fileName);
-
-                                if (File.Exists(path))
-                                    xmlDocumentation = XmlDocumentation.Load(path);
-                            }
-                        }
-
-                        if (xmlDocumentation == null)
-                        {
-                            path = Path.ChangeExtension(path, "xml");
+                            path = Path.Combine(path, fileName);
 
                             if (File.Exists(path))
                                 xmlDocumentation = XmlDocumentation.Load(path);
                         }
+                    }
+
+                    if (xmlDocumentation == null)
+                    {
+                        path = Path.ChangeExtension(path, "xml");
+
+                        if (File.Exists(path))
+                            xmlDocumentation = XmlDocumentation.Load(path);
                     }
                 }
 
@@ -206,15 +190,26 @@ namespace Roslynator.Documentation
             return xmlDocumentation;
         }
 
-        private Compilation FindCompilation(IAssemblySymbol assembly)
+        private MetadataReference FindMetadataReference(IAssemblySymbol assembly)
         {
-            if (Compilations.Length == 1)
-                return Compilations[0];
+            if (_assemblyToReferenceMap == null)
+                Interlocked.CompareExchange(ref _assemblyToReferenceMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f.GetMetadataReference(f.Assembly)), null);
 
-            if (_compilationMap == null)
-                Interlocked.CompareExchange(ref _compilationMap, Compilations.ToImmutableDictionary(f => f.Assembly, f => f), null);
+            if (_assemblyToReferenceMap.TryGetValue(assembly, out MetadataReference metadataReference))
+                return metadataReference;
 
-            return _compilationMap[assembly];
+            foreach (Compilation compilation in Compilations)
+            {
+                foreach (MetadataReference externalReference in compilation.ExternalReferences)
+                {
+                    ISymbol assemblyOrModule = compilation.GetAssemblyOrModuleSymbol(externalReference);
+
+                    if (assembly == assemblyOrModule)
+                        return ImmutableInterlocked.GetOrAdd(ref _assemblyToReferenceMap, assembly, externalReference);
+                }
+            }
+
+            return null;
         }
 
         private readonly struct SymbolDocumentationData

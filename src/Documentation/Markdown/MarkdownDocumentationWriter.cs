@@ -141,7 +141,7 @@ namespace Roslynator.Documentation.Markdown
 
         public override void WriteLinkDestination(string name)
         {
-            WriteRaw($"<a name=\"{name}\"></a>");
+            WriteRaw($"<a id=\"{name}\"></a>");
         }
 
         public override string ToString()

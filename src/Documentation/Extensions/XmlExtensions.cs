@@ -133,7 +133,7 @@ namespace Roslynator.Documentation
 
                                             if (symbol != null)
                                             {
-                                                writer.WriteLink(symbol, SymbolDisplayFormats.TypeNameAndContainingTypesAndTypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
+                                                writer.WriteLink(symbol, TypeSymbolDisplayFormats.Name_ContainingTypes_TypeParameters, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName | SymbolDisplayAdditionalMemberOptions.UseOperatorName);
                                             }
                                             else
                                             {

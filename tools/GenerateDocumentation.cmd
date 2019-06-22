@@ -19,7 +19,6 @@ set _rootDirectoryUrl="../../docs/api/"
  --visibility public ^
  --depth member ^
  --ignored-parts containing-namespace assembly-attributes ^
- --ignored-attributes System.Runtime.CompilerServices.InternalsVisibleToAttribute ^
  --output "..\docs\api.txt"
 
 %_roslynatorExe% generate-doc-root "..\src\Core.sln" ^

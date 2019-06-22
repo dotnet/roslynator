@@ -30,7 +30,7 @@ namespace Roslynator
 
             if ((SymbolComparer.Options & SymbolDefinitionSortOptions.OmitContainingNamespace) == 0)
             {
-                diff = SymbolComparer.NamespaceComparer.Compare(x.ContainingNamespace, y.ContainingNamespace);
+                diff = SymbolComparer.CompareContainingNamespace(x, y);
 
                 if (diff != 0)
                     return diff;
@@ -60,7 +60,16 @@ namespace Roslynator
                     return diff;
 
                 if (count1 == 0)
-                    return (count2 == 0) ? 0 : -1;
+                {
+                    if (count2 == 0)
+                    {
+                        return SymbolComparer.CompareContainingNamespace(x, y);
+                    }
+                    else
+                    {
+                        return -1;
+                    }
+                }
 
                 if (count2 == 0)
                     return 1;

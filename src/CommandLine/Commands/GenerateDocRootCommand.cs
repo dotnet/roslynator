@@ -21,12 +21,14 @@ namespace Roslynator.CommandLine
             GenerateDocRootCommandLineOptions options,
             DocumentationDepth depth,
             RootDocumentationParts ignoredParts,
+            IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
             Depth = depth;
             IgnoredParts = ignoredParts;
+            IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
         }
 
@@ -35,6 +37,8 @@ namespace Roslynator.CommandLine
         public DocumentationDepth Depth { get; }
 
         public RootDocumentationParts IgnoredParts { get; }
+
+        public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
 
         public Visibility Visibility { get; }
 
@@ -45,12 +49,12 @@ namespace Roslynator.CommandLine
             var documentationOptions = new DocumentationOptions(
                 ignoredNames: Options.IgnoredNames,
                 rootDirectoryUrl: Options.RootDirectoryUrl,
-                includeClassHierarchy: !Options.NoClassHierarchy,
                 placeSystemNamespaceFirst: !Options.NoPrecedenceForSystem,
                 markObsolete: !Options.NoMarkObsolete,
                 depth: Depth,
                 ignoredRootParts: IgnoredParts,
-                omitContainingNamespaceParts: (Options.OmitContainingNamespace) ? OmitContainingNamespaceParts.Root : OmitContainingNamespaceParts.None,
+                includeContainingNamespaceFilter: IncludeContainingNamespaceFilter,
+                includeSystemNamespace: Options.IncludeSystemNamespace,
                 scrollToContent: Options.ScrollToContent);
 
             ImmutableArray<Compilation> compilations = await GetCompilationsAsync(projectOrSolution, cancellationToken);

@@ -203,8 +203,7 @@ namespace Roslynator.Documentation
 
                 j = i + 1;
 
-                if (!ReadNamespaces())
-                    continue;
+                ReadNamespaces();
 
                 if (symbol.IsKind(SymbolKind.Namespace))
                     return (i, j, parts[j].Symbol);
@@ -270,11 +269,10 @@ namespace Roslynator.Documentation
                                         {
                                             j += 2;
 
-                                            if (ReadNamespaces()
-                                                && ReadTypeNames())
-                                            {
+                                            ReadNamespaces();
+
+                                            if (ReadTypeNames())
                                                 return (i, j, symbol);
-                                            }
                                         }
                                     }
 
@@ -285,7 +283,7 @@ namespace Roslynator.Documentation
                 }
             }
 
-            Debug.Fail(parts.ToDisplayString());
+            Debug.Assert(symbol.IsKind(SymbolKind.Namespace) && ((INamespaceSymbol)symbol).IsGlobalNamespace, parts.ToDisplayString());
 
             return (-1, -1, null);
 
@@ -303,24 +301,22 @@ namespace Roslynator.Documentation
                 return default;
             }
 
-            bool ReadNamespaces()
+            void ReadNamespaces()
             {
-                if (Peek(j).Kind != SymbolDisplayPartKind.NamespaceName)
-                    return false;
-
-                j++;
-
-                while (Peek(j).IsPunctuation("."))
+                if (Peek(j).Kind == SymbolDisplayPartKind.NamespaceName)
                 {
                     j++;
 
-                    if (Peek(j).Kind != SymbolDisplayPartKind.NamespaceName)
-                        break;
+                    while (Peek(j).IsPunctuation("."))
+                    {
+                        j++;
 
-                    j++;
+                        if (Peek(j).Kind != SymbolDisplayPartKind.NamespaceName)
+                            break;
+
+                        j++;
+                    }
                 }
-
-                return true;
             }
 
             bool ReadTypeNames()
@@ -339,8 +335,11 @@ namespace Roslynator.Documentation
                 {
                     j++;
 
-                    if (!Peek(j).IsTypeName())
+                    if (!Peek(j).IsTypeName()
+                        || Peek(j).Symbol.IsKind(SymbolKind.Method))
+                    {
                         break;
+                    }
 
                     j++;
 

@@ -20,20 +20,20 @@ roslynator generate-doc <PROJECT|SOLUTION>
 [--ignored-root-parts]
 [--ignored-type-parts]
 [--include-all-derived-types]
+[--include-containing-namespace]
 [--include-ienumerable]
 [--include-inherited-interface-members]
+[--include-system-namespace]
 [--inheritance-style]
 [--language]
 [--max-derived-types]
 [--msbuild-path]
-[--no-class-hierarchy]
 [--no-delete]
 [--no-format-base-list]
 [--no-format-constraints]
 [--no-mark-obsolete]
 [--no-precedence-for-system]
 [--omit-attribute-arguments]
-[--omit-containing-namespace-parts]
 [--omit-inherited-attributes]
 [--omit-member-constant-value]
 [--omit-member-implements]
@@ -91,7 +91,7 @@ Defines parts of a namespace documentation that should be excluded.
 
 Defines projects that should be skipped.
 
-**`[--ignored-root-parts]`** `{content namespaces classes static-classes structs interfaces enums delegates other}`
+**`[--ignored-root-parts]`** `{content namespaces class-hierarchy types other}`
 
 Defines parts of a root documentation that should be excluded.
 
@@ -103,6 +103,10 @@ Defines parts of a type documentation that should be excluded.
 
 Indicates whether all derived types should be included in the list of derived types. By default only types that directly inherits from a specified type are displayed.
 
+**`[--include-containing-namespace]`** `{class-hierarchy containing-type parameter return-type base-type attribute derived-type implemented-interface implemented-member exception see-also all}`
+
+Defines parts of a documentation that should include containing namespace.
+
 **`[--include-ienumerable]`**
 
 Indicates whether interface `System.Collections.IEnumerable` should be included in a documentation if a type also implements interface `System.Collections.Generic.IEnumerable<T>`.
@@ -110,6 +114,10 @@ Indicates whether interface `System.Collections.IEnumerable` should be included 
 **`[--include-inherited-interface-members]`**
 
 Indicates whether inherited interface members should be displayed in a list of members.
+
+**`[--include-system-namespace]`**
+
+Indicates whether namespace should be included when a type is directly contained in namespace 'System'.
 
 **`[--inheritance-style]`** `{horizontal|vertical}`
 
@@ -126,10 +134,6 @@ Defines maximum number derived types that should be displayed. Default value is 
 **`--msbuild-path`** <MSBUILD_PATH>
 
 Defines a path to MSBuild. This option must be specified if there are multiple locations of MSBuild (usually multiple installations of Visual Studio).
-
-**`[--no-class-hierarchy]`**
-
-Indicates whether classes should be displayed as a list instead of hierarchy tree.
 
 **`[--no-delete]`**
 
@@ -154,12 +158,6 @@ Indicates whether symbols contained in `System` namespace should be ordered as a
 **`[--omit-attribute-arguments]`**
 
 Indicates whether attribute arguments should be omitted when displaying an attribute.
-
-**`[--omit-containing-namespace-parts]`** `{root containing-type return-type base-type attribute derived-type implemented-interface implemented-member exception see-also all}`
-
-Defines parts that that should by displayed without containing namespace.
-
-Indicates whether a containing namespace should be omitted when displaying type name.
 
 **`[--omit-inherited-attributes]`**
 

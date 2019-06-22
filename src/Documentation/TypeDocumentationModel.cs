@@ -317,61 +317,9 @@ namespace Roslynator.Documentation
             }
         }
 
-        public IEnumerable<ISymbol> GetExplicitInterfaceImplementations()
+        public IEnumerable<ISymbol> GetExplicitImplementations()
         {
-            if (TypeKind.Is(TypeKind.Delegate, TypeKind.Enum))
-                yield break;
-
-            foreach (ISymbol member in Symbol.GetMembers())
-            {
-                switch (member.Kind)
-                {
-                    case SymbolKind.Event:
-                        {
-                            var eventSymbol = (IEventSymbol)member;
-
-                            if (!eventSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
-                                yield return eventSymbol;
-
-                            break;
-                        }
-                    case SymbolKind.Method:
-                        {
-                            var methodSymbol = (IMethodSymbol)member;
-
-                            if (methodSymbol.MethodKind != MethodKind.ExplicitInterfaceImplementation)
-                                break;
-
-                            ImmutableArray<IMethodSymbol> explicitInterfaceImplementations = methodSymbol.ExplicitInterfaceImplementations;
-
-                            if (explicitInterfaceImplementations.IsDefaultOrEmpty)
-                                break;
-
-                            if (methodSymbol.MetadataName.EndsWith(".get_Item", StringComparison.Ordinal))
-                            {
-                                if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertyGet)
-                                    break;
-                            }
-                            else if (methodSymbol.MetadataName.EndsWith(".set_Item", StringComparison.Ordinal))
-                            {
-                                if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertySet)
-                                    break;
-                            }
-
-                            yield return methodSymbol;
-                            break;
-                        }
-                    case SymbolKind.Property:
-                        {
-                            var propertySymbol = (IPropertySymbol)member;
-
-                            if (!propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty)
-                                yield return propertySymbol;
-
-                            break;
-                        }
-                }
-            }
+            return Symbol.GetExplicitImplementations();
         }
 
         public IEnumerable<INamedTypeSymbol> GetImplementedInterfaces(bool omitIEnumerable = false)
@@ -446,7 +394,7 @@ namespace Roslynator.Documentation
 
                 if (IsEnabled(TypeDocumentationParts.ExplicitInterfaceImplementations))
                 {
-                    foreach (ISymbol result in GetExplicitInterfaceImplementations())
+                    foreach (ISymbol result in GetExplicitImplementations())
                         yield return result;
                 }
 

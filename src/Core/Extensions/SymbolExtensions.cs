@@ -658,6 +658,26 @@ namespace Roslynator
 
             return ImmutableArray<IParameterSymbol>.Empty;
         }
+
+        internal static INamespaceSymbol GetRootNamespace(this ISymbol symbol)
+        {
+            INamespaceSymbol n = symbol.ContainingNamespace;
+
+            if (n?.IsGlobalNamespace == false)
+            {
+                while (true)
+                {
+                    INamespaceSymbol n2 = n.ContainingNamespace;
+
+                    if (n2.IsGlobalNamespace)
+                        return n;
+
+                    n = n2;
+                }
+            }
+
+            return null;
+        }
         #endregion ISymbol
 
         #region IAssemblySymbol
@@ -1111,6 +1131,14 @@ namespace Roslynator
                 && parameters[1].Type.SpecialType == secondParameterType;
         }
         #endregion IMethodSymbol
+
+        #region INamespaceSymbol
+        internal static bool IsSystemNamespace(this INamespaceSymbol namespaceSymbol)
+        {
+            return string.Equals(namespaceSymbol.Name, "System", StringComparison.Ordinal)
+                && namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
+        }
+        #endregion INamespaceSymbol
 
         #region IParameterSymbol
         /// <summary>

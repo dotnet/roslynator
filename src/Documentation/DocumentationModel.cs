@@ -349,10 +349,17 @@ namespace Roslynator.Documentation
 
             IAssemblySymbol FindAssembly()
             {
-                foreach (IAssemblySymbol a in Assemblies)
+                IAssemblySymbol containingAssembly = symbol.ContainingAssembly;
+
+                if (containingAssembly != null)
                 {
-                    if (symbol.ContainingAssembly.Identity.Equals(a.Identity))
-                        return a;
+                    AssemblyIdentity identity = containingAssembly.Identity;
+
+                    foreach (IAssemblySymbol a in Assemblies)
+                    {
+                        if (identity.Equals(a.Identity))
+                            return a;
+                    }
                 }
 
                 return null;
