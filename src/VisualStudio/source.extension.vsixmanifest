@@ -10,7 +10,6 @@
     <Icon>Roslynator.ico</Icon>
     <PreviewImage>RoslynatorPreview.png</PreviewImage>
     <Tags>Roslyn;Refactoring;Analyzer;CodeAnalysis;C#;CSharp;Productivity;Diagnostic</Tags>
-    <Preview>true</Preview>
   </Metadata>
   <Installation>
     <InstallationTarget Version="[16.0,17.0)" Id="Microsoft.VisualStudio.Community" />
