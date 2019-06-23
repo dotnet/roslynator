@@ -45,7 +45,7 @@ namespace Roslynator.Documentation
                 if (explicitImplementation != null)
                 {
                     string name = explicitImplementation
-                        .ToDisplayParts(SymbolDisplayFormats.ExplicitImplementationFullName, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName)
+                        .ToDisplayParts(DocumentationDisplayFormats.ExplicitImplementationFullName, SymbolDisplayAdditionalMemberOptions.UseItemPropertyName)
                         .Where(part => part.Kind != SymbolDisplayPartKind.Space)
                         .Select(part => (part.IsPunctuation()) ? part.WithText("-") : part)
                         .ToImmutableArray()
@@ -116,37 +116,53 @@ namespace Roslynator.Documentation
 
         public override DocumentationUrlInfo CreateUrl(ImmutableArray<string> folders)
         {
-            switch (folders[0])
+            if (!CanCreateUrl(folders))
+                return default;
+
+            const string baseUrl = "https://docs.microsoft.com/en-us/dotnet/api/";
+
+            int capacity = baseUrl.Length;
+
+            foreach (string name in folders)
+                capacity += name.Length;
+
+            capacity += folders.Length - 1;
+
+            StringBuilder sb = StringBuilderCache.GetInstance(capacity);
+
+            sb.Append(baseUrl);
+
+            sb.Append(folders[0].ToLowerInvariant());
+
+            for (int i = 1; i < folders.Length; i++)
+            {
+                sb.Append(".");
+                sb.Append(folders[i].ToLowerInvariant());
+            }
+
+            return new DocumentationUrlInfo(StringBuilderCache.GetStringAndFree(sb), DocumentationUrlKind.External);
+        }
+
+        public override bool CanCreateUrl(ISymbol symbol)
+        {
+            return IsWellKnownRootNamespace(symbol.GetRootNamespace()?.Name);
+        }
+
+        public override bool CanCreateUrl(ImmutableArray<string> folders)
+        {
+            return IsWellKnownRootNamespace(folders.FirstOrDefault());
+        }
+
+        private static bool IsWellKnownRootNamespace(string name)
+        {
+            switch (name)
             {
                 case "System":
                 case "Microsoft":
-                    {
-                        const string baseUrl = "https://docs.microsoft.com/en-us/dotnet/api/";
-
-                        int capacity = baseUrl.Length;
-
-                        foreach (string name in folders)
-                            capacity += name.Length;
-
-                        capacity += folders.Length - 1;
-
-                        StringBuilder sb = StringBuilderCache.GetInstance(capacity);
-
-                        sb.Append(baseUrl);
-
-                        sb.Append(folders[0].ToLowerInvariant());
-
-                        for (int i = 1; i < folders.Length; i++)
-                        {
-                            sb.Append(".");
-                            sb.Append(folders[i].ToLowerInvariant());
-                        }
-
-                        return new DocumentationUrlInfo(StringBuilderCache.GetStringAndFree(sb), DocumentationUrlKind.External);
-                    }
+                    return true;
+                default:
+                    return false;
             }
-
-            return default;
         }
     }
 }

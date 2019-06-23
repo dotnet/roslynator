@@ -26,20 +26,12 @@ namespace Roslynator.Documentation
                     return 1;
                 case RootDocumentationParts.Namespaces:
                     return 2;
-                case RootDocumentationParts.Classes:
+                case RootDocumentationParts.ClassHierarchy:
                     return 3;
-                case RootDocumentationParts.StaticClasses:
+                case RootDocumentationParts.Types:
                     return 4;
-                case RootDocumentationParts.Structs:
-                    return 5;
-                case RootDocumentationParts.Interfaces:
-                    return 6;
-                case RootDocumentationParts.Enums:
-                    return 7;
-                case RootDocumentationParts.Delegates:
-                    return 8;
                 case RootDocumentationParts.Other:
-                    return 9;
+                    return 5;
             }
 
             Debug.Fail(part.ToString());

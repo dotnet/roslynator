@@ -29,10 +29,6 @@ namespace Roslynator.CommandLine
             MetaValue = "<FULLY_QUALIFIED_METADATA_NAME>")]
         public IEnumerable<string> IgnoredNames { get; set; }
 
-        [Option(longName: "no-class-hierarchy",
-            HelpText = "Indicates whether classes should be displayed as a list instead of hierarchy tree.")]
-        public bool NoClassHierarchy { get; set; }
-
         [Option(longName: "no-mark-obsolete",
             HelpText = "Indicates whether obsolete types and members should not be marked as '[deprecated]'.")]
         public bool NoMarkObsolete { get; set; }

@@ -14,7 +14,7 @@ namespace Roslynator.Documentation
             bool emptyLineBetweenMembers = DefaultValues.EmptyLineBetweenMembers,
             bool emptyLineBetweenMemberGroups = DefaultValues.EmptyLineBetweenMemberGroups,
             bool omitIEnumerable = DefaultValues.OmitIEnumerable,
-            bool preferDefaultLiteral = DefaultValues.PreferDefaultLiteral,
+            bool allowDefaultLiteral = DefaultValues.AllowDefaultLiteral,
             string indentChars = DefaultValues.IndentChars)
         {
             Layout = layout;
@@ -24,7 +24,7 @@ namespace Roslynator.Documentation
             EmptyLineBetweenMembers = emptyLineBetweenMembers;
             EmptyLineBetweenMemberGroups = emptyLineBetweenMemberGroups;
             OmitIEnumerable = omitIEnumerable;
-            PreferDefaultLiteral = preferDefaultLiteral;
+            AllowDefaultLiteral = allowDefaultLiteral;
             IndentChars = indentChars;
         }
 
@@ -44,7 +44,7 @@ namespace Roslynator.Documentation
 
         public bool OmitIEnumerable { get; }
 
-        public bool PreferDefaultLiteral { get; }
+        public bool AllowDefaultLiteral { get; }
 
         public string IndentChars { get; }
 
@@ -81,17 +81,27 @@ namespace Roslynator.Documentation
             if (!Includes(SymbolDefinitionPartFilter.ParameterDefaultValue))
                 parameterOptions &= ~SymbolDisplayParameterOptions.IncludeDefaultValue;
 
+            SymbolDisplayMiscellaneousOptions miscellaneousOptions = format.MiscellaneousOptions;
+
+            if (AllowDefaultLiteral)
+            {
+                miscellaneousOptions |= SymbolDisplayMiscellaneousOptions.AllowDefaultLiteral;
+            }
+            else
+            {
+                miscellaneousOptions &= ~SymbolDisplayMiscellaneousOptions.AllowDefaultLiteral;
+            }
+
             return format.Update(
                 genericsOptions: genericsOptions,
                 memberOptions: memberOptions,
-                parameterOptions: parameterOptions);
+                parameterOptions: parameterOptions,
+                miscellaneousOptions: miscellaneousOptions);
         }
 
         internal SymbolDisplayFormat GetFormat()
         {
-            return (Includes(SymbolDefinitionPartFilter.ContainingNamespace))
-                ? SymbolDefinitionDisplayFormats.TypeNameAndContainingTypesAndNamespacesAndTypeParameters
-                : SymbolDefinitionDisplayFormats.TypeNameAndContainingTypesAndTypeParameters;
+            return TypeSymbolDisplayFormats.GetFormat(includeNamespaces: Includes(SymbolDefinitionPartFilter.ContainingNamespace));
         }
 
         internal static class DefaultValues
@@ -105,7 +115,7 @@ namespace Roslynator.Documentation
             public const bool EmptyLineBetweenMemberGroups = true;
             public const bool EmptyLineBetweenMembers = false;
             public const bool OmitIEnumerable = true;
-            public const bool PreferDefaultLiteral = true;
+            public const bool AllowDefaultLiteral = true;
         }
     }
 }

@@ -8,7 +8,8 @@ namespace Roslynator.Documentation.Markdown
             DocumentationModel documentationModel,
             DocumentationUrlProvider urlProvider,
             DocumentationOptions options = null,
-            DocumentationResources resources = null) : base(documentationModel, urlProvider: urlProvider, options: options, resources: resources)
+            SourceReferenceProvider sourceReferenceProvider = null,
+            DocumentationResources resources = null) : base(documentationModel, urlProvider: urlProvider, options: options, sourceReferenceProvider: sourceReferenceProvider, resources: resources)
         {
         }
 

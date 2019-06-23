@@ -82,6 +82,8 @@ namespace Roslynator.Documentation
                     return 29;
                 case TypeDocumentationParts.SeeAlso:
                     return 30;
+                case TypeDocumentationParts.AppliesTo:
+                    return 31;
             }
 
             Debug.Fail(part.ToString());

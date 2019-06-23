@@ -14,7 +14,6 @@ Although Roslynator is free of charge, any [donation](https://www.paypal.com/cgi
 ## Related Products
 
 * Package [Roslynator.Analyzers](http://www.nuget.org/packages/Roslynator.Analyzers/) contains only analyzers.
-* Package [Roslynator.CodeFixes](http://www.nuget.org/packages/Roslynator.CodeFixes/) contains only code fixes for CS diagnostics.
 * Package [Roslynator.CSharp](http://www.nuget.org/packages/Roslynator.CSharp/) is a must-have for Roslyn-based development.
 * Package [Roslynator.CSharp.Workspaces](http://www.nuget.org/packages/Roslynator.CSharp.Workspaces/) is a must-have for Roslyn-based development.
 

@@ -120,9 +120,7 @@ namespace Roslynator.Documentation.Json
         public override void WriteNamespaceDefinition(INamespaceSymbol namespaceSymbol, SymbolDisplayFormat format = null)
         {
             WritePropertyName("namespace");
-
-            if (!namespaceSymbol.IsGlobalNamespace)
-                WriteDefinition(namespaceSymbol, format);
+            WriteDefinition(namespaceSymbol, format);
         }
 
         public override void WriteEndNamespace(INamespaceSymbol namespaceSymbol)
@@ -594,7 +592,7 @@ namespace Roslynator.Documentation.Json
                     try
                     {
                         ((IDisposable)_writer).Dispose();
-                        _definitionWriter.Dispose();
+                        _definitionWriter?.Dispose();
                     }
                     finally
                     {

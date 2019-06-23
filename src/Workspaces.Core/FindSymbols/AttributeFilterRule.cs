@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis;
 
 namespace Roslynator.FindSymbols
 {
-    internal abstract class AttributeFilterRule : FilterRule<AttributeData>
+    internal abstract class AttributeFilterRule : FilterRule<AttributeInfo>
     {
     }
 }

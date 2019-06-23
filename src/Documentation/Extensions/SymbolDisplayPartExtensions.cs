@@ -59,26 +59,6 @@ namespace Roslynator
             }
         }
 
-        internal static bool IsNamespaceOrTypeOrMemberName(this SymbolDisplayPart part)
-        {
-            switch (part.Kind)
-            {
-                case SymbolDisplayPartKind.NamespaceName:
-                case SymbolDisplayPartKind.ClassName:
-                case SymbolDisplayPartKind.DelegateName:
-                case SymbolDisplayPartKind.EnumName:
-                case SymbolDisplayPartKind.InterfaceName:
-                case SymbolDisplayPartKind.StructName:
-                case SymbolDisplayPartKind.EventName:
-                case SymbolDisplayPartKind.FieldName:
-                case SymbolDisplayPartKind.MethodName:
-                case SymbolDisplayPartKind.PropertyName:
-                    return true;
-                default:
-                    return false;
-            }
-        }
-
         internal static bool IsMemberName(this SymbolDisplayPart part)
         {
             switch (part.Kind)
@@ -86,8 +66,14 @@ namespace Roslynator
                 case SymbolDisplayPartKind.EventName:
                 case SymbolDisplayPartKind.FieldName:
                 case SymbolDisplayPartKind.MethodName:
+                case SymbolDisplayPartKind.ExtensionMethodName:
                 case SymbolDisplayPartKind.PropertyName:
+                case SymbolDisplayPartKind.EnumMemberName:
+                case SymbolDisplayPartKind.ConstantName:
                     return true;
+                case SymbolDisplayPartKind.ClassName:
+                case SymbolDisplayPartKind.StructName:
+                    return part.Symbol is IMethodSymbol methodSymbol && methodSymbol.MethodKind.Is(MethodKind.Constructor, MethodKind.Destructor);
                 default:
                     return false;
             }
@@ -116,6 +102,9 @@ namespace Roslynator
                 case SymbolDisplayPartKind.StructName:
                 case SymbolDisplayPartKind.TypeParameterName:
                 case SymbolDisplayPartKind.RangeVariableName:
+                case SymbolDisplayPartKind.ExtensionMethodName:
+                case SymbolDisplayPartKind.EnumMemberName:
+                case SymbolDisplayPartKind.ConstantName:
                     return true;
                 default:
                     return false;

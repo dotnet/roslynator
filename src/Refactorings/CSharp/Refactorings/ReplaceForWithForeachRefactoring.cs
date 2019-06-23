@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -43,8 +44,24 @@ namespace Roslynator.CSharp.Refactorings
                 nodes.Select(f => f.Parent.Parent.Parent),
                 (f, _) => identifierName.WithTriviaFrom(f));
 
+            TypeSyntax type = VarType();
+
+            if (semanticModel.GetTypeSymbol(expression, cancellationToken) is INamedTypeSymbol namedType
+                && !namedType.OriginalDefinition.Implements(SpecialType.System_Collections_Generic_IEnumerable_T, allInterfaces: true))
+            {
+                IPropertySymbol member = namedType.FindMember<IPropertySymbol>(
+                    "this[]",
+                    f => f.Parameters.SingleOrDefault(shouldThrow: false)?.Type.SpecialType == SpecialType.System_Int32,
+                    includeBaseTypes: true);
+
+                Debug.Assert(member != null, "");
+
+                if (member != null)
+                    type = member.Type.ToTypeSyntax().WithSimplifierAnnotation();
+            }
+
             ForEachStatementSyntax forEachStatement = ForEachStatement(
-                VarType(),
+                type,
                 Identifier(name).WithRenameAnnotation(),
                 expression,
                 newStatement);

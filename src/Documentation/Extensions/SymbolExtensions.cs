@@ -57,7 +57,7 @@ namespace Roslynator.Documentation
 
                 while (baseType != null)
                 {
-                    bool areInternalsVisible = typeSymbol.ContainingAssembly == baseType.ContainingAssembly
+                    bool areInternalsVisible = typeSymbol.ContainingAssembly.Identity.Equals(baseType.ContainingAssembly.Identity)
                         || baseType.ContainingAssembly.GivesAccessTo(typeSymbol.ContainingAssembly);
 
                     foreach (ISymbol symbol in baseType.GetMembers())
@@ -317,6 +317,67 @@ namespace Roslynator.Documentation
             return (attributes != null)
                 ? attributes.ToImmutableArray()
                 : ImmutableArray<AttributeInfo>.Empty;
+        }
+
+        public static IEnumerable<ISymbol> GetExplicitImplementations(this INamedTypeSymbol typeSymbol, bool includeAccessors = false)
+        {
+            if (!typeSymbol.TypeKind.Is(TypeKind.Delegate, TypeKind.Enum))
+            {
+                foreach (ISymbol member in typeSymbol.GetMembers())
+                {
+                    if (IsExplicitImplementation(member, includeAccessors))
+                        yield return member;
+                }
+            }
+        }
+
+        public static bool IsExplicitImplementation(this ISymbol symbol, bool includeAccessors = false)
+        {
+            switch (symbol.Kind)
+            {
+                case SymbolKind.Event:
+                    {
+                        var eventSymbol = (IEventSymbol)symbol;
+
+                        return !eventSymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty;
+                    }
+                case SymbolKind.Method:
+                    {
+                        var methodSymbol = (IMethodSymbol)symbol;
+
+                        if (methodSymbol.MethodKind != MethodKind.ExplicitInterfaceImplementation)
+                            return false;
+
+                        ImmutableArray<IMethodSymbol> explicitInterfaceImplementations = methodSymbol.ExplicitInterfaceImplementations;
+
+                        if (explicitInterfaceImplementations.IsDefaultOrEmpty)
+                            return false;
+
+                        if (!includeAccessors)
+                        {
+                            if (methodSymbol.MetadataName.EndsWith(".get_Item", StringComparison.Ordinal))
+                            {
+                                if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertyGet)
+                                    return false;
+                            }
+                            else if (methodSymbol.MetadataName.EndsWith(".set_Item", StringComparison.Ordinal))
+                            {
+                                if (explicitInterfaceImplementations[0].MethodKind == MethodKind.PropertySet)
+                                    return false;
+                            }
+                        }
+
+                        return true;
+                    }
+                case SymbolKind.Property:
+                    {
+                        var propertySymbol = (IPropertySymbol)symbol;
+
+                        return !propertySymbol.ExplicitInterfaceImplementations.IsDefaultOrEmpty;
+                    }
+            }
+
+            return false;
         }
     }
 }

@@ -92,7 +92,7 @@ Defines a path to MSBuild. This option must be specified if there are multiple l
 
 **`[-o|--output]`** `<OUTPUT_PATH>`
 
-Defines path to file(s) that will store a list of symbol definitions. Available data formats are XML ('xml' extension), JSON ('json' extension), Markdown ('md' extension) or plain text format.
+Defines path to file(s) that will store a list of symbol definitions.
 
 **`--projects`** <PROJECT_NAME>
 
@@ -104,7 +104,7 @@ Defines one or more MSBuild properties.
 
 **`--references`** <ASSEMBLY_FILE>
 
-Defines file name/path to assembly(ies) that should be included.
+Defines file name/path to assemblies that should be included.
 
 **`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
 

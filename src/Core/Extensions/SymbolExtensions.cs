@@ -658,6 +658,26 @@ namespace Roslynator
 
             return ImmutableArray<IParameterSymbol>.Empty;
         }
+
+        internal static INamespaceSymbol GetRootNamespace(this ISymbol symbol)
+        {
+            INamespaceSymbol n = symbol.ContainingNamespace;
+
+            if (n?.IsGlobalNamespace == false)
+            {
+                while (true)
+                {
+                    INamespaceSymbol n2 = n.ContainingNamespace;
+
+                    if (n2.IsGlobalNamespace)
+                        return n;
+
+                    n = n2;
+                }
+            }
+
+            return null;
+        }
         #endregion ISymbol
 
         #region IAssemblySymbol
@@ -1112,6 +1132,14 @@ namespace Roslynator
         }
         #endregion IMethodSymbol
 
+        #region INamespaceSymbol
+        internal static bool IsSystemNamespace(this INamespaceSymbol namespaceSymbol)
+        {
+            return string.Equals(namespaceSymbol.Name, "System", StringComparison.Ordinal)
+                && namespaceSymbol.ContainingNamespace.IsGlobalNamespace;
+        }
+        #endregion INamespaceSymbol
+
         #region IParameterSymbol
         /// <summary>
         /// Returns true if the parameter was declared as a parameter array that has a specified element type.
@@ -1279,13 +1307,13 @@ namespace Roslynator
             Func<TSymbol, bool> predicate = null,
             bool includeBaseTypes = false) where TSymbol : ISymbol
         {
-            ImmutableArray<INamedTypeSymbol> members;
+            ImmutableArray<ISymbol> members;
 
             do
             {
                 members = (name != null)
-                    ? typeSymbol.GetTypeMembers(name)
-                    : typeSymbol.GetTypeMembers();
+                    ? typeSymbol.GetMembers(name)
+                    : typeSymbol.GetMembers();
 
                 TSymbol symbol = FindMemberImpl(members, predicate);
 

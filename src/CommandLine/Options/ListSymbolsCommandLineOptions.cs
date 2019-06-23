@@ -57,14 +57,19 @@ namespace Roslynator.CommandLine
         public string Layout { get; set; }
 
         [Option(shortName: 'o', longName: "output",
-            HelpText = "Defines path to file(s) that will store a list of symbol definitions. Available data formats are XML ('xml' extension), JSON ('json' extension), Markdown ('md' extension) or plain text format.",
+            HelpText = "Defines path to file(s) that will store a list of symbol definitions.",
             MetaValue = "<OUTPUT_FILE>")]
         public IEnumerable<string> Output { get; set; }
 
         [Option(longName: "references",
-            HelpText = "Defines file name/path to assembly(ies) that should be included.",
+            HelpText = "Defines file name/path to assemblies that should be included.",
                 MetaValue = "<ASSEMBLY_FILE>")]
         public IEnumerable<string> References { get; set; }
+
+#if DEBUG
+        [Option(longName: "source-references")]
+        public string SourceReferences { get; set; }
+#endif
 
         [Option(longName: ParameterNames.Visibility,
             Default = nameof(Roslynator.Visibility.Private),

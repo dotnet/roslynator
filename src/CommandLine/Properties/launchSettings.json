@@ -1,8 +1,7 @@
 {
   "profiles": {
     "CommandLine": {
-      "commandName": "Project",
-      "commandLineArgs": "list-symbols \"..\\..\\..\\..\\Core.sln\" --msbuild-path \"C:\\Program Files\\Microsoft Visual Studio\\2017\\Community\\MSBuild\\15.0\\Bin\" --visibility public --documentation -v diag"
+      "commandName": "Project"
     }
   }
 }

@@ -146,11 +146,25 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
         public override void VisitGenericName(GenericNameSyntax node)
         {
             VisitSimpleName(node, node.Identifier.ValueText);
+
+            if (IsAnyNodeDelegate)
+                VisitTypeArgumentList(node.TypeArgumentList);
         }
 
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
             VisitSimpleName(node, node.Identifier.ValueText);
+        }
+
+        public override void VisitTypeArgumentList(TypeArgumentListSyntax node)
+        {
+            foreach (TypeSyntax type in node.Arguments)
+            {
+                if (!ShouldVisit)
+                    return;
+
+                VisitType(type);
+            }
         }
 
         protected override void VisitType(TypeSyntax node)

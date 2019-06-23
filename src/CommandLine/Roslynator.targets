@@ -1,7 +1,7 @@
 ﻿<Project>
   <Target Name="RoslynatorInitialize" AfterTargets="Build">
     <PropertyGroup>
-      <RoslynatorExe>"$(MSBuildThisFileDirectory)net461\Roslynator.exe"</RoslynatorExe>
+      <RoslynatorExe>"$(MSBuildThisFileDirectory)net472\Roslynator.exe"</RoslynatorExe>
     </PropertyGroup>
   </Target>
 </Project>

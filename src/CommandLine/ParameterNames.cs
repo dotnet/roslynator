@@ -12,9 +12,10 @@ namespace Roslynator.CommandLine
         public const string IgnoredProjects = "ignored-projects";
         public const string IgnoredRootParts = "ignored-root-parts";
         public const string IgnoredTypeParts = "ignored-type-parts";
+        public const string IncludeContainingNamespace = "include-containing-namespace";
+        public const string IncludeSystemNamespace = "include-system-namespace";
         public const string Layout = "layout";
         public const string MSBuildPath = "msbuild-path";
-        public const string OmitContainingNamespaceParts = "omit-containing-namespace-parts";
         public const string Projects = "projects";
         public const string RootDirectoryUrl = "root-directory-url";
         public const string SeverityLevel = "severity-level";
