@@ -76,7 +76,7 @@ namespace Roslynator.CSharp
 
             ExpressionSyntax CreateDefault()
             {
-                if ((options & DefaultSyntaxOptions.PreferDefaultLiteral) != 0)
+                if ((options & DefaultSyntaxOptions.AllowDefaultLiteral) != 0)
                     return DefaultLiteralExpression();
 
                 return DefaultExpression(GetTypeSyntax());
