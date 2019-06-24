@@ -1,6 +1,8 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -16,11 +18,39 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
         private bool _isInInstanceConstructor;
         private bool _isInStaticConstructor;
 
-        public HashSet<AssignedInfo> Assigned { get; private set; }
+        [ThreadStatic]
+        private static MakeMemberReadOnlyWalker _cachedInstance;
 
-        public void Clear()
+        public SemanticModel SemanticModel { get; set; }
+
+        public CancellationToken CancellationToken { get; set; }
+
+        public Dictionary<string, (SyntaxNode, ISymbol)> Symbols { get; } = new Dictionary<string, (SyntaxNode, ISymbol)>();
+
+        public static MakeMemberReadOnlyWalker GetInstance()
         {
-            Assigned?.Clear();
+            MakeMemberReadOnlyWalker walker = _cachedInstance;
+
+            if (walker != null)
+            {
+                _cachedInstance = null;
+                return walker;
+            }
+
+            return new MakeMemberReadOnlyWalker();
+        }
+
+        public static void Free(MakeMemberReadOnlyWalker walker)
+        {
+            walker.Clear();
+            _cachedInstance = walker;
+        }
+
+        private void Clear()
+        {
+            Symbols.Clear();
+            SemanticModel = null;
+            CancellationToken = default;
             _classOrStructDepth = 0;
             _localFunctionDepth = 0;
             _anonymousFunctionDepth = 0;
@@ -34,7 +64,7 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
             if (kind == SyntaxKind.IdentifierName)
             {
-                AddAssigned((IdentifierNameSyntax)expression);
+                AnalyzeAssigned((IdentifierNameSyntax)expression);
             }
             else if (kind == SyntaxKind.SimpleMemberAccessExpression)
             {
@@ -42,26 +72,29 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
                 if (memberAccessExpression.Name is IdentifierNameSyntax identifierName)
                 {
-                    AddAssigned(identifierName, isInInstanceConstructor: memberAccessExpression.Expression.IsKind(SyntaxKind.ThisExpression));
+                    AnalyzeAssigned(identifierName, isInInstanceConstructor: memberAccessExpression.Expression.IsKind(SyntaxKind.ThisExpression));
                 }
             }
         }
 
-        private void AddAssigned(IdentifierNameSyntax identifierName, bool isInInstanceConstructor = true)
+        private void AnalyzeAssigned(IdentifierNameSyntax identifierName, bool isInInstanceConstructor = true)
         {
-            AssignedInfo info;
-
-            if (_localFunctionDepth == 0
-                && _anonymousFunctionDepth == 0)
+            if (Symbols.TryGetValue(identifierName.Identifier.ValueText, out (SyntaxNode node, ISymbol symbol) nodeAndSymbol))
             {
-                info = new AssignedInfo(identifierName, isInInstanceConstructor && _isInInstanceConstructor, _isInStaticConstructor);
-            }
-            else
-            {
-                info = new AssignedInfo(identifierName);
-            }
+                ISymbol symbol = nodeAndSymbol.symbol;
 
-            (Assigned ?? (Assigned = new HashSet<AssignedInfo>())).Add(info);
+                if (_localFunctionDepth == 0
+                    && _anonymousFunctionDepth == 0
+                    && ((symbol.IsStatic) ? _isInStaticConstructor : isInInstanceConstructor && _isInInstanceConstructor))
+                {
+                    return;
+                }
+
+                ISymbol symbol2 = SemanticModel.GetSymbol(identifierName, CancellationToken)?.OriginalDefinition;
+
+                if (symbol.Equals(symbol2))
+                    Symbols.Remove(symbol.Name);
+            }
         }
 
         public override void VisitConstructorDeclaration(ConstructorDeclarationSyntax node)
