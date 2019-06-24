@@ -9,9 +9,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
-    internal class InlinePropertyRefactoring : InlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol>
+    internal class SingleInlinePropertyRefactoring : SingleInlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol>
     {
-        public InlinePropertyRefactoring(
+        public SingleInlinePropertyRefactoring(
             Document document,
             SyntaxNode node,
             INamedTypeSymbol nodeEnclosingType,
@@ -37,16 +37,6 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             node = GetNodeToReplace(node);
 
             return base.InlineAsync(node, expression, cancellationToken);
-        }
-
-        public override Task<Solution> InlineAndRemoveAsync(
-            SyntaxNode node,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            node = GetNodeToReplace(node);
-
-            return base.InlineAndRemoveAsync(node, expression, cancellationToken);
         }
 
         private static SyntaxNode GetNodeToReplace(SyntaxNode node)

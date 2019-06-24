@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Helpers;
+using Roslynator.CSharp.Refactorings.CSharp.Refactorings.InlineDefinition;
 
 namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
@@ -103,6 +104,11 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             InvocationExpressionSyntax node,
             IMethodSymbol symbol)
         {
+            return GetMethodParameterInfos(node, symbol);
+        }
+
+        public static ImmutableArray<ParameterInfo> GetMethodParameterInfos(InvocationExpressionSyntax node, IMethodSymbol symbol)
+        {
             bool isReduced = symbol.MethodKind == MethodKind.ReducedExtension;
 
             ImmutableArray<IParameterSymbol> parameters = symbol.Parameters;
@@ -159,7 +165,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     expression = SyntaxFactory.ParseExpression(nodeIncludingConditionalAccess.ToString().Remove(startIndex));
                 }
 
-                var parameterInfo = new ParameterInfo(symbol.ReducedFrom.Parameters[0], expression.TrimTrivia(), isThis: true);
+                var parameterInfo = new ParameterInfo(symbol.ReducedFrom.Parameters[0], expression, isThis: true);
 
                 (parameterInfos ?? (parameterInfos = new List<ParameterInfo>())).Add(parameterInfo);
             }
@@ -171,6 +177,11 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
         protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(MethodDeclarationSyntax declaration)
         {
+            return GetMethodDefinition(declaration);
+        }
+
+        public static (ExpressionSyntax, SyntaxList<StatementSyntax>) GetMethodDefinition(MethodDeclarationSyntax declaration)
+        {
             BlockSyntax body = declaration.Body;
 
             if (body == null)
@@ -179,7 +190,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             SyntaxList<StatementSyntax> statements = body.Statements;
 
             if (!statements.Any())
-                return (null, default(SyntaxList<StatementSyntax>));
+                return (default(ExpressionSyntax), default(SyntaxList<StatementSyntax>));
 
             switch (statements.SingleOrDefault(shouldThrow: false))
             {
@@ -190,12 +201,12 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             }
 
             if (!declaration.ReturnsVoid())
-                return (null, default(SyntaxList<StatementSyntax>));
+                return (default(ExpressionSyntax), default(SyntaxList<StatementSyntax>));
 
-            return (null, statements);
+            return (default(ExpressionSyntax), statements);
         }
 
-        protected override InlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol> CreateRefactoring(
+        protected override SingleInlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol> CreateSingleRefactoring(
             Document document,
             SyntaxNode node,
             INamedTypeSymbol nodeEnclosingType,
@@ -206,12 +217,25 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             SemanticModel declarationSemanticModel,
             CancellationToken cancellationToken)
         {
-            return new InlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
+            return new SingleInlineMethodRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
         }
 
         protected override string GetEquivalenceKey()
         {
             return RefactoringIdentifiers.InlineMethod;
+        }
+
+        protected override AllInlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol> CreateAllRefactoring(
+            IMethodSymbol symbol,
+            MethodDeclarationSyntax declaration,
+            SemanticModel declarationSemanticModel,
+            CancellationToken cancellationToken)
+        {
+            return new AllInlineMethodRefactoring(
+                symbol,
+                declaration,
+                declarationSemanticModel,
+                cancellationToken);
         }
     }
 }

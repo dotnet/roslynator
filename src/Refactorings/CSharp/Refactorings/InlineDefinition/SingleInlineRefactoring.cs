@@ -16,12 +16,12 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
-    internal abstract class InlineRefactoring<TNode, TDeclaration, TSymbol>
+    internal abstract class SingleInlineRefactoring<TNode, TDeclaration, TSymbol>
         where TNode : SyntaxNode
         where TDeclaration : MemberDeclarationSyntax
         where TSymbol : ISymbol
     {
-        protected InlineRefactoring(
+        protected SingleInlineRefactoring(
             Document document,
             SyntaxNode node,
             INamedTypeSymbol nodeEnclosingType,
@@ -75,36 +75,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             return Document.ReplaceNodeAsync(node, newExpression, cancellationToken);
         }
 
-        public virtual async Task<Solution> InlineAndRemoveAsync(
-            SyntaxNode node,
-            ExpressionSyntax expression,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (node.SyntaxTree == Declaration.SyntaxTree)
-            {
-                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
-
-                ExpressionSyntax newExpression = RewriteExpression(node, expression);
-
-                editor.ReplaceNode(node, newExpression);
-
-                editor.RemoveNode(Declaration);
-
-                return editor.GetChangedDocument().Solution();
-            }
-            else
-            {
-                Document newDocument = await InlineAsync(node, expression, cancellationToken).ConfigureAwait(false);
-
-                DocumentId documentId = Document.Solution().GetDocumentId(Declaration.SyntaxTree);
-
-                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(Declaration, cancellationToken).ConfigureAwait(false);
-
-                return newDocument.Solution();
-            }
-        }
-
-        private ParenthesizedExpressionSyntax RewriteExpression(SyntaxNode node, ExpressionSyntax expression)
+        public ParenthesizedExpressionSyntax RewriteExpression(SyntaxNode node, ExpressionSyntax expression)
         {
             return RewriteNode(expression)
                 .WithTriviaFrom(node)
@@ -117,12 +88,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             SyntaxList<StatementSyntax> statements,
             CancellationToken cancellationToken = default(CancellationToken))
         {
-            int count = statements.Count;
-
-            StatementSyntax[] newStatements = RewriteStatements(statements);
-
-            newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
-            newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
+            StatementSyntax[] newStatements = RewriteStatements(statements, expressionStatement.GetLeadingTrivia(), expressionStatement.GetTrailingTrivia());
 
             StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(expressionStatement);
 
@@ -138,58 +104,15 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             }
         }
 
-        public virtual async Task<Solution> InlineAndRemoveAsync(
-            ExpressionStatementSyntax expressionStatement,
-            SyntaxList<StatementSyntax> statements,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            if (expressionStatement.SyntaxTree == Declaration.SyntaxTree)
-            {
-                DocumentEditor editor = await DocumentEditor.CreateAsync(Document, cancellationToken).ConfigureAwait(false);
-
-                StatementSyntax[] newStatements = RewriteStatements(statements);
-
-                int count = statements.Count;
-
-                newStatements[0] = newStatements[0].WithLeadingTrivia(expressionStatement.GetLeadingTrivia());
-                newStatements[count - 1] = newStatements[count - 1].WithTrailingTrivia(expressionStatement.GetTrailingTrivia());
-
-                StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(expressionStatement);
-
-                if (statementsInfo.Success)
-                {
-                    StatementListInfo newStatementsInfo = statementsInfo.WithStatements(statementsInfo.Statements.ReplaceRange(expressionStatement, newStatements));
-
-                    editor.ReplaceNode(statementsInfo.Parent, newStatementsInfo.Parent);
-                }
-                else
-                {
-                    editor.ReplaceNode(expressionStatement, Block(newStatements));
-                }
-
-                editor.RemoveNode(Declaration);
-
-                return editor.GetChangedDocument().Solution();
-            }
-            else
-            {
-                Document newDocument = await InlineAsync(expressionStatement, statements, cancellationToken).ConfigureAwait(false);
-
-                DocumentId documentId = Document.Solution().GetDocumentId(Declaration.SyntaxTree);
-
-                newDocument = await newDocument.Solution().GetDocument(documentId).RemoveMemberAsync(Declaration, cancellationToken).ConfigureAwait(false);
-
-                return newDocument.Solution();
-            }
-        }
-
-        private StatementSyntax[] RewriteStatements(SyntaxList<StatementSyntax> statements)
+        public StatementSyntax[] RewriteStatements(SyntaxList<StatementSyntax> statements, SyntaxTriviaList leadingTrivia, SyntaxTriviaList trailingTrivia)
         {
             var newStatements = new StatementSyntax[statements.Count];
 
             for (int i = 0; i < statements.Count; i++)
                 newStatements[i] = RewriteNode(statements[i]).WithFormatterAnnotation();
 
+            newStatements[0] = newStatements[0].WithLeadingTrivia(leadingTrivia);
+            newStatements[statements.Count - 1] = newStatements[statements.Count - 1].WithTrailingTrivia(trailingTrivia);
             return newStatements;
         }
 
@@ -233,8 +156,19 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                                     {
                                         expression = parameterInfo.ParameterSymbol.GetDefaultValueMinimalSyntax(InvocationSemanticModel, Node.SpanStart);
                                     }
+                                    else if (parameterInfo.ParameterSymbol.Type.TypeKind == TypeKind.Delegate
+                                        && expression is AnonymousFunctionExpressionSyntax)
+                                    {
+                                        TypeSyntax parameterType =
+                                            parameterInfo.ParameterSymbol.Type.ToMinimalTypeSyntax(
+                                                InvocationSemanticModel,
+                                                Node.SpanStart);
+                                        expression =
+                                            CastExpression(parameterType, ParenthesizedExpression(expression));
+                                    }
 
                                     replacementMap.Add(identifierName, expression);
+
                                     break;
                                 }
                             }
@@ -246,7 +180,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                             ImmutableArray<ITypeSymbol> typeArguments = TypeArguments;
 
                             if (typeArguments.Length > typeParameter.Ordinal)
-                                replacementMap.Add(identifierName, typeArguments[typeParameter.Ordinal].ToMinimalTypeSyntax(DeclarationSemanticModel, identifierName.SpanStart));
+                                replacementMap.Add(identifierName, typeArguments[typeParameter.Ordinal].ToMinimalTypeSyntax(InvocationSemanticModel, Node.SpanStart));
                         }
                         else if (symbol.IsStatic
                             && !identifierName.IsParentKind(SyntaxKind.SimpleMemberAccessExpression, SyntaxKind.QualifiedName))

@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
-    internal class InlineMethodRefactoring : InlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol>
+    internal class SingleInlineMethodRefactoring : SingleInlineRefactoring<InvocationExpressionSyntax, MethodDeclarationSyntax, IMethodSymbol>
     {
-        public InlineMethodRefactoring(
+        public SingleInlineMethodRefactoring(
             Document document,
             SyntaxNode node,
             INamedTypeSymbol nodeEnclosingType,

@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings.CSharp.Refactorings.InlineDefinition;
 
 namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
@@ -66,24 +67,51 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     declarationSemanticModel = await document.GetSemanticModelAsync(context.CancellationToken).ConfigureAwait(false);
                 }
 
-                InlineRefactoring<TNode, TDeclaration, TSymbol> refactoring = CreateRefactoring(context.Document, nodeIncludingConditionalAccess, enclosingType, symbol, declaration, parameterInfos, semanticModel, declarationSemanticModel, context.CancellationToken);
+                SingleInlineRefactoring<TNode, TDeclaration, TSymbol> singleRefactoring =
+                    CreateSingleRefactoring(
+                        context.Document,
+                        nodeIncludingConditionalAccess,
+                        enclosingType,
+                        symbol,
+                        declaration,
+                        parameterInfos,
+                        semanticModel,
+                        declarationSemanticModel,
+                        context.CancellationToken);
+
+                AllInlineRefactoring<TNode, TDeclaration, TSymbol> allRefactoring =
+                    CreateAllRefactoring(
+                        symbol,
+                        declaration,
+                        declarationSemanticModel,
+                        context.CancellationToken);
 
                 string title = CSharpFacts.GetTitle(declaration);
 
                 if (expression != null)
                 {
-                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(nodeIncludingConditionalAccess, expression, cancellationToken), GetEquivalenceKey());
-
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(nodeIncludingConditionalAccess, expression, cancellationToken), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
+                    context.RegisterRefactoring(
+                        $"Inline {title}",
+                        cancellationToken =>
+                            singleRefactoring.InlineAsync(nodeIncludingConditionalAccess, expression, cancellationToken),
+                        GetEquivalenceKey());
                 }
                 else
                 {
                     var expressionStatement = (ExpressionStatementSyntax)nodeIncludingConditionalAccess.Parent;
 
-                    context.RegisterRefactoring($"Inline {title}", cancellationToken => refactoring.InlineAsync(expressionStatement, statements, cancellationToken), GetEquivalenceKey());
-
-                    context.RegisterRefactoring($"Inline and remove {title}", cancellationToken => refactoring.InlineAndRemoveAsync(expressionStatement, statements, cancellationToken), EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
+                    context.RegisterRefactoring(
+                        $"Inline {title}",
+                        cancellationToken =>
+                            singleRefactoring.InlineAsync(expressionStatement, statements, cancellationToken),
+                        GetEquivalenceKey());
                 }
+
+                context.RegisterRefactoring(
+                    $"Inline and remove {title}",
+                    cancellationToken =>
+                        allRefactoring.InlineAndRemoveAsync(context.Solution, cancellationToken),
+                    EquivalenceKey.Join(GetEquivalenceKey(), "Remove"));
             }
         }
 
@@ -99,7 +127,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
         protected abstract (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(TDeclaration declaration);
 
-        protected abstract InlineRefactoring<TNode, TDeclaration, TSymbol> CreateRefactoring(
+        protected abstract SingleInlineRefactoring<TNode, TDeclaration, TSymbol> CreateSingleRefactoring(
             Document document,
             SyntaxNode node,
             INamedTypeSymbol nodeEnclosingType,
@@ -107,6 +135,12 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             TDeclaration declaration,
             ImmutableArray<ParameterInfo> parameterInfos,
             SemanticModel nodeSemanticModel,
+            SemanticModel declarationSemanticModel,
+            CancellationToken cancellationToken);
+
+        protected abstract AllInlineRefactoring<TNode, TDeclaration, TSymbol> CreateAllRefactoring(
+            TSymbol symbol,
+            TDeclaration declaration,
             SemanticModel declarationSemanticModel,
             CancellationToken cancellationToken);
     }

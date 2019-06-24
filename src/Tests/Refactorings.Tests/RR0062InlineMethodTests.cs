@@ -82,5 +82,169 @@ class C
 }
 ", equivalenceKey: RefactoringId);
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod + ".Remove")]
+        public async Task TestInlineAndRemove()
+        {
+            await VerifyRefactoringAsync(@"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            [||]M2();
+        }
+
+        void M2()
+        {
+            var x = typeof(N.B);
+        }
+
+        object B => null;
+    }
+
+    static class B
+    {
+    }
+}", @"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            var x = typeof(N.B);
+        }
+
+        object B => null;
+    }
+
+    static class B
+    {
+    }
+}", equivalenceKey: EquivalenceKey.Join(RefactoringId, "Remove"));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod + ".Remove")]
+        public async Task TestInlineAllAndRemove()
+        {
+            await VerifyRefactoringAsync(@"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            [||]M3();
+        }
+
+        void M2()
+        {
+            M3();
+        }
+
+        void M3()
+        {
+            var x = typeof(N.B);
+        }
+
+        object B => null;
+    }
+
+    static class B
+    {
+    }
+}", @"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            var x = typeof(N.B);
+        }
+
+        void M2()
+        {
+            var x = typeof(N.B);
+        }
+
+        object B => null;
+    }
+
+    static class B
+    {
+    }
+}", equivalenceKey: EquivalenceKey.Join(RefactoringId, "Remove"));
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod + ".Remove")]
+        public async Task TestInlineAllAndWithoutRemove()
+        {
+            await VerifyRefactoringAsync(@"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            [||]M4();
+        }
+
+        void M2()
+        {
+            M4();
+        }
+
+        void M3()
+        {
+            System.Action a = this.M4;
+        }
+
+        void M4()
+        {
+            var x = typeof(N.B);
+        }
+
+        object B => null;
+    }
+
+    static class B
+    {
+    }
+}", @"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            var x = typeof(N.B);
+        }
+
+        void M2()
+        {
+            var x = typeof(N.B);
+        }
+
+        void M3()
+        {
+            System.Action a = this.M4;
+        }
+
+        void M4()
+        {
+            var x = typeof(N.B);
+        }
+
+        object B => null;
+    }
+
+    static class B
+    {
+    }
+}", equivalenceKey: EquivalenceKey.Join(RefactoringId, "Remove"));
+        }
     }
 }

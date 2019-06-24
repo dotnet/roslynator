@@ -8,6 +8,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
+using Roslynator.CSharp.Refactorings.CSharp.Refactorings.InlineDefinition;
 
 namespace Roslynator.CSharp.Refactorings.InlineDefinition
 {
@@ -94,6 +95,12 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
 
         protected override (ExpressionSyntax expression, SyntaxList<StatementSyntax> statements) GetExpressionOrStatements(PropertyDeclarationSyntax declaration)
         {
+            return GetPropertyDefinition(declaration);
+        }
+
+        public static (ExpressionSyntax, SyntaxList<StatementSyntax>) GetPropertyDefinition(
+            PropertyDeclarationSyntax declaration)
+        {
             ArrowExpressionClauseSyntax expressionBody = declaration.ExpressionBody;
 
             if (expressionBody != null)
@@ -102,7 +109,7 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             AccessorDeclarationSyntax accessor = declaration.AccessorList?.Accessors.SingleOrDefault(shouldThrow: false);
 
             if (accessor?.IsKind(SyntaxKind.GetAccessorDeclaration) != true)
-                return (null, default(SyntaxList<StatementSyntax>));
+                return (default(ExpressionSyntax), default(SyntaxList<StatementSyntax>));
 
             expressionBody = accessor.ExpressionBody;
 
@@ -117,10 +124,10 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
                     return (expressionStatement.Expression, default(SyntaxList<StatementSyntax>));
             }
 
-            return (null, default(SyntaxList<StatementSyntax>));
+            return (default(ExpressionSyntax), default(SyntaxList<StatementSyntax>));
         }
 
-        protected override InlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol> CreateRefactoring(
+        protected override SingleInlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol> CreateSingleRefactoring(
             Document document,
             SyntaxNode node,
             INamedTypeSymbol nodeEnclosingType,
@@ -131,12 +138,25 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             SemanticModel declarationSemanticModel,
             CancellationToken cancellationToken)
         {
-            return new InlinePropertyRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
+            return new SingleInlinePropertyRefactoring(document, node, nodeEnclosingType, symbol, declaration, parameterInfos, nodeSemanticModel, declarationSemanticModel, cancellationToken);
         }
 
         protected override string GetEquivalenceKey()
         {
             return RefactoringIdentifiers.InlineProperty;
+        }
+
+        protected override AllInlineRefactoring<IdentifierNameSyntax, PropertyDeclarationSyntax, IPropertySymbol> CreateAllRefactoring(
+            IPropertySymbol symbol,
+            PropertyDeclarationSyntax declaration,
+            SemanticModel declarationSemanticModel,
+            CancellationToken cancellationToken)
+        {
+            return new AllInlinePropertyRefactoring(
+                symbol,
+                declaration,
+                declarationSemanticModel,
+                cancellationToken);
         }
     }
 }
