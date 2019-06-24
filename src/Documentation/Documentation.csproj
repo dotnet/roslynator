@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.1.0.2</Version>
+    <Version>0.1.0.3</Version>
     <AssemblyName>Roslynator.Documentation</AssemblyName>
     <RootNamespace>Roslynator.Documentation</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
@@ -32,7 +32,7 @@
 Commonly Used Types:
 Roslynator.Documentation.DocumentationWriter
 Roslynator.Documentation.DocumentationGenerator</Description>
-    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://github.com/JosefPihrt/Roslynator</PackageProjectUrl>

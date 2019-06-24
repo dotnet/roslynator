@@ -325,6 +325,7 @@
     <CodeFix Id="RCF0112" IsEnabled="true" /> <!-- Mark declaration as non-CLS-compliant (fixes CS3000, CS3001, CS3002, CS3003, CS3005, CS3006, CS3007, CS3008, CS3009, CS3016, CS3024, CS3027) -->
     <CodeFix Id="RCF0113" IsEnabled="true" /> <!-- Replace character literal with string literal (fixes CS1012) -->
     <CodeFix Id="RCF0114" IsEnabled="true" /> <!-- Make field writable (fixes CS0191, CS0192) -->
+    <CodeFix Id="RCF0115" IsEnabled="true" /> <!-- Replace invocation with member access or vice versa (fixes CS1061) -->
   </CodeFixes>
   </Settings>
 </Roslynator>

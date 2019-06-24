@@ -168,7 +168,7 @@
     <Rule Id="RCS1166" Action="Info" /> <!-- Value type object is never equal to null. -->
     <Rule Id="RCS1167" Action="Hidden" /> <!-- Overriding member cannot change access modifiers. -->
     <Rule Id="RCS1168" Action="Hidden" /> <!-- Parameter name differs from base name. -->
-    <Rule Id="RCS1169" Action="Info" /> <!-- Mark field as read-only. -->
+    <Rule Id="RCS1169" Action="Info" /> <!-- Make field read-only. -->
     <Rule Id="RCS1170" Action="Info" /> <!-- Use read-only auto-implemented property. -->
     <Rule Id="RCS1171" Action="Info" /> <!-- Simplify lazy initialization. -->
     <Rule Id="RCS1172" Action="Warning" /> <!-- Use 'is' operator instead of 'as' operator. -->

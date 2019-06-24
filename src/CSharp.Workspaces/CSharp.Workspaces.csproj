@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>1.0.0.12</Version>
+    <Version>1.0.0.14</Version>
     <AssemblyName>Roslynator.CSharp.Workspaces</AssemblyName>
     <RootNamespace>Roslynator</RootNamespace>
     <CodeAnalysisRuleSet>..\api.ruleset</CodeAnalysisRuleSet>
@@ -20,7 +20,7 @@
 
   <PropertyGroup>
     <PackageId>Roslynator.CSharp.Workspaces</PackageId>
-    <PackageVersion>1.0.0-rc5</PackageVersion>
+    <PackageVersion>1.0.0</PackageVersion>
     <Authors>Josef Pihrt</Authors>
     <Company></Company>
     <Description>This library extends functionality of package Microsoft.CodeAnalysis.CSharp.Workspaces
@@ -30,7 +30,7 @@ Roslynator.CSharp.CSharpFactory
 Roslynator.CSharp.CSharpFacts
 Roslynator.CSharp.SyntaxInfo
 Roslynator.NameGenerator</Description>
-    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>

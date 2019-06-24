@@ -12,8 +12,8 @@
 | Design | [Implement exception constructors](../../docs/analyzers/RCS1194.md) | RCS1194 | Warning |
 | Design | [Make class sealed](../../docs/analyzers/RCS1225.md) | RCS1225 | Info |
 | Design | [Make class static](../../docs/analyzers/RCS1102.md) | RCS1102 | Warning |
+| Design | [Make field read-only](../../docs/analyzers/RCS1169.md) | RCS1169 | Info |
 | Design | [Make method an extension method](../../docs/analyzers/RCS1224.md) | RCS1224 | Info |
-| Design | [Mark field as read-only](../../docs/analyzers/RCS1169.md) | RCS1169 | Info |
 | Design | [Overriding member cannot change 'params' modifier](../../docs/analyzers/RCS1193.md) | RCS1193 | Warning |
 | Design | [Static member in generic type should use a type parameter](../../docs/analyzers/RCS1158.md) | RCS1158 | Info |
 | Design | [Use AttributeUsageAttribute](../../docs/analyzers/RCS1203.md) | RCS1203 | Warning |
