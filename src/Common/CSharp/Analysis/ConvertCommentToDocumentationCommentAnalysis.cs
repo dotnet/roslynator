@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -38,6 +39,8 @@ namespace Roslynator.CSharp.Analysis
             SyntaxTriviaList.Reversed.Enumerator en = leadingTrivia.Reverse().GetEnumerator();
 
             TextSpan span = default;
+            bool containsTaskListItem = false;
+            bool containsNonTaskListItem = false;
 
             while (en.MoveNext())
             {
@@ -59,7 +62,7 @@ namespace Roslynator.CSharp.Analysis
                             if (declaration.SyntaxTree.Options.DocumentationMode == DocumentationMode.None
                                 && en.Current.ToString().StartsWith("///"))
                             {
-                                break;
+                                return new LeadingAnalysis(default, true, containsTaskListItem, containsNonTaskListItem);
                             }
 
                             span = en.Current.Span;
@@ -68,6 +71,19 @@ namespace Roslynator.CSharp.Analysis
                         {
                             span = TextSpan.FromBounds(en.Current.SpanStart, span.End);
                         }
+
+                        if (!containsTaskListItem
+                            || !containsNonTaskListItem)
+                        {
+                            if (IsTaskListItem(en.Current))
+                            {
+                                containsTaskListItem = true;
+                            }
+                            else
+                            {
+                                containsNonTaskListItem = true;
+                            }
+                        }
                     }
                 }
                 else
@@ -75,7 +91,7 @@ namespace Roslynator.CSharp.Analysis
                     do
                     {
                         if (SyntaxFacts.IsDocumentationCommentTrivia(en.Current.Kind()))
-                            return new LeadingAnalysis(default, true);
+                            return new LeadingAnalysis(default, true, containsTaskListItem, containsNonTaskListItem);
 
                     } while (en.MoveNext());
 
@@ -83,35 +99,12 @@ namespace Roslynator.CSharp.Analysis
                 }
             }
 
-            return new LeadingAnalysis(span, false);
+            return new LeadingAnalysis(span, false, containsTaskListItem, containsNonTaskListItem);
         }
 
-        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxNode declaration)
+        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxNodeOrToken nodeOrToken)
         {
-            if (declaration == null)
-                return default;
-
-            return AnalyzeTrailingTrivia(declaration.GetTrailingTrivia());
-        }
-
-        public static TrailingAnalysis AnalyzeTrailingTrivia<TNode>(SyntaxList<TNode> nodes) where TNode : SyntaxNode
-        {
-            TNode node = nodes.FirstOrDefault();
-
-            if (node == null)
-                return default;
-
-            return AnalyzeTrailingTrivia(node.GetTrailingTrivia());
-        }
-
-        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxToken token)
-        {
-            return AnalyzeTrailingTrivia(token.TrailingTrivia);
-        }
-
-        public static TrailingAnalysis AnalyzeTrailingTrivia(SyntaxTriviaList trailingTrivia)
-        {
-            SyntaxTriviaList.Enumerator en = trailingTrivia.GetEnumerator();
+            SyntaxTriviaList.Enumerator en = nodeOrToken.GetTrailingTrivia().GetEnumerator();
 
             if (en.MoveNext())
             {
@@ -123,7 +116,9 @@ namespace Roslynator.CSharp.Analysis
                     {
                         if (en.Current.Kind() == SyntaxKind.SingleLineCommentTrivia)
                         {
-                            return new TrailingAnalysis(en.Current.Span, false);
+                            return (IsTaskListItem(en.Current))
+                                ? new TrailingAnalysis(default, false)
+                                : new TrailingAnalysis(en.Current.Span, false);
                         }
                         else
                         {
@@ -141,14 +136,16 @@ namespace Roslynator.CSharp.Analysis
                 }
                 else if (kind == SyntaxKind.SingleLineCommentTrivia)
                 {
-                    return new TrailingAnalysis(en.Current.Span, false);
+                    return (IsTaskListItem(en.Current))
+                        ? new TrailingAnalysis(default, false)
+                        : new TrailingAnalysis(en.Current.Span, false);
                 }
                 else
                 {
                     while (en.MoveNext())
                     {
                         if (en.Current.IsEndOfLineTrivia())
-                            return new TrailingAnalysis(default(TextSpan), true);
+                            return new TrailingAnalysis(default, true);
                     }
                 }
             }
@@ -156,17 +153,63 @@ namespace Roslynator.CSharp.Analysis
             return default;
         }
 
+        private static bool IsTaskListItem(SyntaxTrivia singleLineComment)
+        {
+            string s = singleLineComment.ToString();
+
+            int len = s.Length;
+
+            int i = 0;
+
+            while (i < len
+                && s[i] == '/')
+            {
+                i++;
+            }
+
+            while (i < len
+                && char.IsWhiteSpace(s[i]))
+            {
+                i++;
+            }
+
+            int startIndex = i;
+
+            while (i < len
+                && char.IsLetter(s[i]))
+            {
+                i++;
+            }
+
+            int length = i - startIndex;
+
+            if (length < 4)
+                return false;
+
+            return string.Compare(s, startIndex, "todo", 0, length, StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare(s, startIndex, "hack", 0, length, StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare(s, startIndex, "undone", 0, length, StringComparison.OrdinalIgnoreCase) == 0
+                || string.Compare(s, startIndex, "unresolvedmergeconflict", 0, length, StringComparison.OrdinalIgnoreCase) == 0;
+        }
+
         public readonly struct LeadingAnalysis
         {
-            public LeadingAnalysis(TextSpan span, bool hasDocumentationComment)
+            public LeadingAnalysis(
+                TextSpan span,
+                bool hasDocumentationComment,
+                bool containsTaskListItem,
+                bool containsNonTaskListItem)
             {
                 Span = span;
                 HasDocumentationComment = hasDocumentationComment;
+                ContainsTaskListItem = containsTaskListItem;
+                ContainsNonTaskListItem = containsNonTaskListItem;
             }
 
             public TextSpan Span { get; }
-
             public bool HasDocumentationComment { get; }
+            public bool ContainsTaskListItem { get; }
+            public bool ContainsNonTaskListItem { get; }
         }
 
         public readonly struct TrailingAnalysis
@@ -178,7 +221,6 @@ namespace Roslynator.CSharp.Analysis
             }
 
             public TextSpan Span { get; }
-
             public bool ContainsEndOfLine { get; }
         }
     }

@@ -32,7 +32,6 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeStructDeclaration, SyntaxKind.StructDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeInterfaceDeclaration, SyntaxKind.InterfaceDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeEnumDeclaration, SyntaxKind.EnumDeclaration);
-            context.RegisterSyntaxNodeAction(AnalyzeEnumMemberDeclaration, SyntaxKind.EnumMemberDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeDelegateDeclaration, SyntaxKind.DelegateDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeMethodDeclaration, SyntaxKind.MethodDeclaration);
             context.RegisterSyntaxNodeAction(AnalyzeConstructorDeclaration, SyntaxKind.ConstructorDeclaration);
@@ -48,568 +47,311 @@ namespace Roslynator.CSharp.Analysis
 
         private static void AnalyzeNamespaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var namespaceDeclaration = (NamespaceDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(namespaceDeclaration.Name);
+            TrailingAnalysis? analysis = AnalyzeTrailing(namespaceDeclaration.Name);
 
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeClassDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var classDeclaration = (ClassDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.Identifier);
+            TrailingAnalysis? analysis = AnalyzeTrailing(classDeclaration.Identifier)
+                ?? AnalyzeTrailing(classDeclaration.TypeParameterList)
+                ?? AnalyzeTrailing(classDeclaration.BaseList)
+                ?? AnalyzeTrailing(classDeclaration.ConstraintClauses);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.TypeParameterList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.BaseList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(classDeclaration.ConstraintClauses);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeStructDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var structDeclaration = (StructDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.Identifier);
+            TrailingAnalysis? analysis = AnalyzeTrailing(structDeclaration.Identifier)
+                ?? AnalyzeTrailing(structDeclaration.TypeParameterList)
+                ?? AnalyzeTrailing(structDeclaration.BaseList)
+                ?? AnalyzeTrailing(structDeclaration.ConstraintClauses);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.TypeParameterList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.BaseList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(structDeclaration.ConstraintClauses);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeInterfaceDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var interfaceDeclaration = (InterfaceDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.Identifier);
+            TrailingAnalysis? analysis = AnalyzeTrailing(interfaceDeclaration.Identifier)
+                ?? AnalyzeTrailing(interfaceDeclaration.TypeParameterList)
+                ?? AnalyzeTrailing(interfaceDeclaration.BaseList)
+                ?? AnalyzeTrailing(interfaceDeclaration.ConstraintClauses);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.TypeParameterList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.BaseList);
-
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(interfaceDeclaration.ConstraintClauses);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeEnumDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
-                return;
-
             var enumDeclaration = (EnumDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(enumDeclaration.Identifier);
+            AnalyzeEnumMembers(context, enumDeclaration.Members);
 
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            if (AnalyzeLeading(context))
+                return;
+
+            TrailingAnalysis? analysis = AnalyzeTrailing(enumDeclaration.Identifier);
+
+            ReportDiagnostic(context, analysis);
         }
 
-        private static void AnalyzeEnumMemberDeclaration(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeEnumMembers(SyntaxNodeAnalysisContext context, SeparatedSyntaxList<EnumMemberDeclarationSyntax> members)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
+            int count = members.Count;
+            int separatorCount = members.SeparatorCount;
 
-            if (!leadingAnalysis.Span.IsEmpty)
+            for (int i = 0; i < count; i++)
             {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
+                EnumMemberDeclarationSyntax enumMember = members[i];
+
+                if (AnalyzeLeading(context, enumMember))
+                    continue;
+
+                TrailingAnalysis? analysis = AnalyzeTrailing(enumMember);
+
+                if (analysis == null
+                    && (separatorCount == count || i < count - 1))
+                {
+                    analysis = AnalyzeTrailing(members.GetSeparator(i));
+                }
+
+                ReportDiagnostic(context, analysis);
             }
-
-            if (leadingAnalysis.HasDocumentationComment)
-                return;
-
-            var enumMemberDeclaration = (EnumMemberDeclarationSyntax)context.Node;
-
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(enumMemberDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
         }
 
         private static void AnalyzeDelegateDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var delegateDeclaration = (DelegateDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(delegateDeclaration);
+            TrailingAnalysis? analysis = AnalyzeTrailing(delegateDeclaration.ParameterList)
+                ?? AnalyzeTrailing(delegateDeclaration.ConstraintClauses)
+                ?? AnalyzeTrailing(delegateDeclaration);
 
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeMethodDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var methodDeclaration = (MethodDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(methodDeclaration.ParameterList);
+            TrailingAnalysis? analysis = AnalyzeTrailing(methodDeclaration.ParameterList)
+                ?? AnalyzeTrailing(methodDeclaration.ConstraintClauses)
+                ?? AnalyzeTrailing(methodDeclaration.ExpressionBody?.ArrowToken)
+                ?? AnalyzeTrailing(methodDeclaration);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-            {
-                trailingAnalysis = AnalyzeTrailingTrivia(methodDeclaration.ConstraintClauses);
-
-                if (trailingAnalysis.ContainsEndOfLine)
-                    return;
-
-                if (trailingAnalysis.Span.IsEmpty)
-                {
-                    ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
-
-                    if (expressionBody != null)
-                    {
-                        trailingAnalysis = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                        if (trailingAnalysis.ContainsEndOfLine)
-                            return;
-                    }
-                }
-            }
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(methodDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeConstructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var constructorDeclaration = (ConstructorDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(constructorDeclaration.ParameterList);
+            TrailingAnalysis? analysis = AnalyzeTrailing(constructorDeclaration.ParameterList)
+                ?? AnalyzeTrailing(constructorDeclaration.Initializer)
+                ?? AnalyzeTrailing(constructorDeclaration.ExpressionBody?.ArrowToken)
+                ?? AnalyzeTrailing(constructorDeclaration);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-            {
-                trailingAnalysis = AnalyzeTrailingTrivia(constructorDeclaration.Initializer);
-
-                if (trailingAnalysis.ContainsEndOfLine)
-                    return;
-
-                if (trailingAnalysis.Span.IsEmpty)
-                {
-                    ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
-
-                    if (expressionBody != null)
-                    {
-                        trailingAnalysis = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                        if (trailingAnalysis.ContainsEndOfLine)
-                            return;
-                    }
-                }
-            }
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(constructorDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeDestructorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var destructorDeclaration = (DestructorDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(destructorDeclaration.ParameterList);
+            TrailingAnalysis? analysis = AnalyzeTrailing(destructorDeclaration.ParameterList)
+                ?? AnalyzeTrailing(destructorDeclaration.ExpressionBody?.ArrowToken)
+                ?? AnalyzeTrailing(destructorDeclaration);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-            {
-                ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
-
-                if (expressionBody != null)
-                {
-                    trailingAnalysis = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                    if (trailingAnalysis.ContainsEndOfLine)
-                        return;
-                }
-            }
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(destructorDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var operatorDeclaration = (OperatorDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(operatorDeclaration.ParameterList);
+            TrailingAnalysis? analysis = AnalyzeTrailing(operatorDeclaration.ParameterList)
+                ?? AnalyzeTrailing(operatorDeclaration.ExpressionBody?.ArrowToken)
+                ?? AnalyzeTrailing(operatorDeclaration);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-            {
-                ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
-
-                if (expressionBody != null)
-                {
-                    trailingAnalysis = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                    if (trailingAnalysis.ContainsEndOfLine)
-                        return;
-                }
-            }
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(operatorDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeConversionOperatorDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(conversionOperatorDeclaration.ParameterList);
+            TrailingAnalysis? analysis = AnalyzeTrailing(conversionOperatorDeclaration.ParameterList)
+                ?? AnalyzeTrailing(conversionOperatorDeclaration.ExpressionBody?.ArrowToken)
+                ?? AnalyzeTrailing(conversionOperatorDeclaration);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-            {
-                ArrowExpressionClauseSyntax expressionBody = conversionOperatorDeclaration.ExpressionBody;
-
-                if (expressionBody != null)
-                {
-                    trailingAnalysis = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                    if (trailingAnalysis.ContainsEndOfLine)
-                        return;
-                }
-            }
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(conversionOperatorDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzePropertyDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var propertyDeclaration = (PropertyDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(propertyDeclaration.Identifier);
+            TrailingAnalysis? analysis = AnalyzeTrailing(propertyDeclaration.Identifier)
+                ?? AnalyzeTrailing(propertyDeclaration.ExpressionBody?.ArrowToken)
+                ?? AnalyzeTrailing(propertyDeclaration);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-            {
-                ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
-
-                if (expressionBody != null)
-                {
-                    trailingAnalysis = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                    if (trailingAnalysis.ContainsEndOfLine)
-                        return;
-                }
-            }
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(propertyDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeIndexerDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var indexerDeclaration = (IndexerDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(indexerDeclaration.ParameterList);
+            TrailingAnalysis? analysis = AnalyzeTrailing(indexerDeclaration.ParameterList)
+                ?? AnalyzeTrailing(indexerDeclaration.ExpressionBody?.ArrowToken)
+                ?? AnalyzeTrailing(indexerDeclaration);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
-
-            if (trailingAnalysis.Span.IsEmpty)
-            {
-                ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
-
-                if (expressionBody != null)
-                {
-                    trailingAnalysis = AnalyzeTrailingTrivia(expressionBody.ArrowToken);
-
-                    if (trailingAnalysis.ContainsEndOfLine)
-                        return;
-                }
-            }
-
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(indexerDeclaration);
-
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var fieldDeclaration = (FieldDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(fieldDeclaration);
+            TrailingAnalysis? analysis = AnalyzeTrailing(fieldDeclaration);
 
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeEventFieldDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var eventFieldDeclaration = (EventFieldDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(eventFieldDeclaration);
+            TrailingAnalysis? analysis = AnalyzeTrailing(eventFieldDeclaration);
 
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+            ReportDiagnostic(context, analysis);
         }
 
         private static void AnalyzeEventDeclaration(SyntaxNodeAnalysisContext context)
         {
-            LeadingAnalysis leadingAnalysis = AnalyzeLeadingTrivia(context.Node);
-
-            if (!leadingAnalysis.Span.IsEmpty)
-            {
-                ReportDiagnostic(context, leadingAnalysis.Span);
-                return;
-            }
-
-            if (leadingAnalysis.HasDocumentationComment)
+            if (AnalyzeLeading(context))
                 return;
 
             var eventDeclaration = (EventDeclarationSyntax)context.Node;
 
-            TrailingAnalysis trailingAnalysis = AnalyzeTrailingTrivia(eventDeclaration.Identifier);
+            TrailingAnalysis? analysis = AnalyzeTrailing(eventDeclaration.Identifier)
+                ?? AnalyzeTrailing(eventDeclaration.AccessorList);
 
-            if (trailingAnalysis.ContainsEndOfLine)
-                return;
+            ReportDiagnostic(context, analysis);
+        }
 
-            if (trailingAnalysis.Span.IsEmpty)
-                trailingAnalysis = AnalyzeTrailingTrivia(eventDeclaration.AccessorList);
+        private static bool AnalyzeLeading(SyntaxNodeAnalysisContext context)
+        {
+            return AnalyzeLeading(context, context.Node);
+        }
 
-            if (!trailingAnalysis.Span.IsEmpty)
-                ReportDiagnostic(context, trailingAnalysis.Span);
+        private static bool AnalyzeLeading(SyntaxNodeAnalysisContext context, SyntaxNode node)
+        {
+            LeadingAnalysis analysis = AnalyzeLeadingTrivia(node);
+
+            if (analysis.HasDocumentationComment)
+                return true;
+
+            if (analysis.ContainsTaskListItem)
+            {
+                if (analysis.ContainsNonTaskListItem)
+                    return true;
+            }
+            else if (!analysis.Span.IsEmpty)
+            {
+                ReportDiagnostic(context, analysis.Span);
+                return true;
+            }
+
+            return false;
+        }
+
+        private static TrailingAnalysis? AnalyzeTrailing(SyntaxNodeOrToken? nodeOrToken)
+        {
+            return (nodeOrToken != null) ? AnalyzeTrailing(nodeOrToken.Value) : default;
+        }
+
+        private static TrailingAnalysis? AnalyzeTrailing(SyntaxNodeOrToken nodeOrToken)
+        {
+            TrailingAnalysis analysis = AnalyzeTrailingTrivia(nodeOrToken);
+
+            if (analysis.ContainsEndOfLine)
+                return analysis;
+
+            if (!analysis.Span.IsEmpty)
+                return analysis;
+
+            return null;
+        }
+
+        private static TrailingAnalysis? AnalyzeTrailing<TNode>(SyntaxList<TNode> nodes) where TNode : SyntaxNode
+        {
+            foreach (TNode node in nodes)
+            {
+                TrailingAnalysis? analysis = AnalyzeTrailing(node);
+
+                if (analysis != null)
+                    return analysis;
+            }
+
+            return null;
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TrailingAnalysis? analysis)
+        {
+            if (analysis?.Span.IsEmpty == false)
+                ReportDiagnostic(context, analysis.Value.Span);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, TextSpan span)
