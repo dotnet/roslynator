@@ -46,6 +46,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1028", "Add new line after switch label.", !IsEnabled("RCS1028")));
             analyzers.Add(new BaseModel("RCS1029", "Format binary operator on next line.", !IsEnabled("RCS1029")));
             analyzers.Add(new BaseModel("RCS1030", "Add empty line after embedded statement.", !IsEnabled("RCS1030")));
+            analyzers.Add(new BaseModel("RCS1031", "Remove unnecessary braces.", !IsEnabled("RCS1031")));
             analyzers.Add(new BaseModel("RCS1032", "Remove redundant parentheses.", !IsEnabled("RCS1032")));
             analyzers.Add(new BaseModel("RCS1033", "Remove redundant boolean literal.", !IsEnabled("RCS1033")));
             analyzers.Add(new BaseModel("RCS1034", "Remove redundant 'sealed' modifier.", !IsEnabled("RCS1034")));

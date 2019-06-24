@@ -36,6 +36,7 @@ namespace Roslynator.CSharp
         public const string AddNewLineAfterSwitchLabel = "RCS1028";
         public const string FormatBinaryOperatorOnNextLine = "RCS1029";
         public const string AddEmptyLineAfterEmbeddedStatement = "RCS1030";
+        public const string RemoveUnnecessaryBraces = "RCS1031";
         public const string RemoveRedundantParentheses = "RCS1032";
         public const string RemoveRedundantBooleanLiteral = "RCS1033";
         public const string RemoveRedundantSealedModifier = "RCS1034";

@@ -2623,29 +2623,19 @@ namespace Roslynator.CSharp
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            SyntaxTriviaList leadingTrivia = node.GetLeadingTrivia();
+            SyntaxTriviaList trivia = node.GetLeadingTrivia();
 
-            int count = leadingTrivia.Count;
+            int count = trivia.Count;
 
-            if (count == 0)
-                return node;
-
-            for (int i = 0; i < count; i++)
+            if (count > 0)
             {
-                if (!leadingTrivia[i].IsWhitespaceOrEndOfLineTrivia())
-                {
-                    if (i == 0)
-                    {
-                        return node;
-                    }
-                    else
-                    {
-                        return node.WithLeadingTrivia(leadingTrivia.Skip(i));
-                    }
-                }
+                SyntaxTriviaList newTrivia = trivia.TrimStart();
+
+                if (trivia.Count != newTrivia.Count)
+                    return node.WithLeadingTrivia(newTrivia);
             }
 
-            return node.WithoutLeadingTrivia();
+            return node;
         }
 
         /// <summary>
@@ -2661,29 +2651,19 @@ namespace Roslynator.CSharp
             if (node == null)
                 throw new ArgumentNullException(nameof(node));
 
-            SyntaxTriviaList trailingTrivia = node.GetTrailingTrivia();
+            SyntaxTriviaList trivia = node.GetTrailingTrivia();
 
-            int count = trailingTrivia.Count;
+            int count = trivia.Count;
 
-            if (count == 0)
-                return node;
-
-            for (int i = count - 1; i >= 0; i--)
+            if (count > 0)
             {
-                if (!trailingTrivia[i].IsWhitespaceOrEndOfLineTrivia())
-                {
-                    if (i == count - 1)
-                    {
-                        return node;
-                    }
-                    else
-                    {
-                        return node.WithTrailingTrivia(trailingTrivia.Take(i + 1));
-                    }
-                }
+                SyntaxTriviaList newTrivia = trivia.TrimEnd();
+
+                if (trivia.Count != newTrivia.Count)
+                    return node.WithTrailingTrivia(newTrivia);
             }
 
-            return node.WithoutTrailingTrivia();
+            return node;
         }
 
         /// <summary>
@@ -3269,29 +3249,19 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxToken TrimLeadingTrivia(this SyntaxToken token)
         {
-            SyntaxTriviaList leadingTrivia = token.LeadingTrivia;
+            SyntaxTriviaList trivia = token.LeadingTrivia;
 
-            int count = leadingTrivia.Count;
+            int count = trivia.Count;
 
-            if (count == 0)
-                return token;
-
-            for (int i = 0; i < count; i++)
+            if (count > 0)
             {
-                if (!leadingTrivia[i].IsWhitespaceOrEndOfLineTrivia())
-                {
-                    if (i == 0)
-                    {
-                        return token;
-                    }
-                    else
-                    {
-                        return token.WithLeadingTrivia(leadingTrivia.Skip(i));
-                    }
-                }
+                SyntaxTriviaList newTrivia = trivia.TrimStart();
+
+                if (trivia.Count != newTrivia.Count)
+                    return token.WithLeadingTrivia(newTrivia);
             }
 
-            return token.WithoutLeadingTrivia();
+            return token;
         }
 
         /// <summary>
@@ -3303,29 +3273,19 @@ namespace Roslynator.CSharp
         /// <returns></returns>
         public static SyntaxToken TrimTrailingTrivia(this SyntaxToken token)
         {
-            SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
+            SyntaxTriviaList trivia = token.TrailingTrivia;
 
-            int count = trailingTrivia.Count;
+            int count = trivia.Count;
 
-            if (count == 0)
-                return token;
-
-            for (int i = count - 1; i >= 0; i--)
+            if (count > 0)
             {
-                if (!trailingTrivia[i].IsWhitespaceOrEndOfLineTrivia())
-                {
-                    if (i == count - 1)
-                    {
-                        return token;
-                    }
-                    else
-                    {
-                        return token.WithTrailingTrivia(trailingTrivia.Take(i + 1));
-                    }
-                }
+                SyntaxTriviaList newTrivia = trivia.TrimEnd();
+
+                if (trivia.Count != newTrivia.Count)
+                    return token.WithTrailingTrivia(newTrivia);
             }
 
-            return token.WithoutTrailingTrivia();
+            return token;
         }
 
         /// <summary>
@@ -3957,6 +3917,52 @@ namespace Roslynator.CSharp
                 while (en.MoveNext())
                     yield return en.Current;
             }
+        }
+
+        internal static SyntaxTriviaList TrimStart(this SyntaxTriviaList trivia)
+        {
+            SyntaxTriviaList.Enumerator en = trivia.GetEnumerator();
+
+            if (en.MoveNext())
+            {
+                if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                    return trivia;
+
+                int count = 1;
+
+                while (en.MoveNext())
+                {
+                    if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                        return trivia.RemoveRange(0, count);
+
+                    count++;
+                }
+            }
+
+            return SyntaxTriviaList.Empty;
+        }
+
+        internal static SyntaxTriviaList TrimEnd(this SyntaxTriviaList trivia)
+        {
+            SyntaxTriviaList.Reversed.Enumerator en = trivia.Reverse().GetEnumerator();
+
+            if (en.MoveNext())
+            {
+                if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                    return trivia;
+
+                int count = 1;
+
+                while (en.MoveNext())
+                {
+                    if (!en.Current.IsWhitespaceOrEndOfLineTrivia())
+                        return trivia.RemoveRange(trivia.Count - count, count);
+
+                    count++;
+                }
+            }
+
+            return SyntaxTriviaList.Empty;
         }
         #endregion SyntaxTriviaList
 

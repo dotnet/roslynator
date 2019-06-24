@@ -359,6 +359,20 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1031</summary>
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            title:              "Remove unnecessary braces.", 
+            messageFormat:      "Remove unnecessary braces.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveUnnecessaryBraces}", 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesFadeOut = RemoveUnnecessaryBraces.CreateFadeOut();
+
         /// <summary>RCS1032</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantParentheses = new DiagnosticDescriptor(
             id:                 DiagnosticIdentifiers.RemoveRedundantParentheses, 

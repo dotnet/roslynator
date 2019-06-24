@@ -628,15 +628,21 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBraces" IsObsolete="true">
+  <Analyzer Identifier="RemoveUnnecessaryBraces">
     <Id>RCS1031</Id>
-    <Title>Remove redundant braces.</Title>
-    <MessageFormat>Remove redundant braces.</MessageFormat>
+    <Title>Remove unnecessary braces.</Title>
+    <MessageFormat>Remove unnecessary braces.</MessageFormat>
     <Category>Redundancy</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[]]></Before>
+        <After><![CDATA[]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantParentheses">
     <Id>RCS1032</Id>

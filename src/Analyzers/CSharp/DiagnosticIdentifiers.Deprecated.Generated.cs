@@ -11,8 +11,6 @@ namespace Roslynator.CSharp
         [Obsolete("", error: true)]
         public const string SimplifyLambdaExpressionParameterList = "RCS1022";
         [Obsolete("", error: true)]
-        public const string RemoveRedundantBraces = "RCS1031";
-        [Obsolete("", error: true)]
         public const string ReplaceForEachWithFor = "RCS1053";
         [Obsolete("", error: true)]
         public const string MergeLocalDeclarationWithReturnStatement = "RCS1054";
