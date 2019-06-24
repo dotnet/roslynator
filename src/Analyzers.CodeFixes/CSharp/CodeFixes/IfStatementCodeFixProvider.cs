@@ -4,6 +4,7 @@ using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
@@ -12,8 +13,8 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Analysis.If;
+using Roslynator.CSharp.Refactorings;
 using Roslynator.CSharp.Refactorings.ReduceIfNesting;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -31,7 +32,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf,
                     DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement,
                     DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
-                    DiagnosticIdentifiers.ReduceIfNesting);
+                    DiagnosticIdentifiers.ReduceIfNesting,
+                    DiagnosticIdentifiers.UseExceptionFilter);
             }
         }
 
@@ -100,6 +102,81 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
+                    case DiagnosticIdentifiers.UseExceptionFilter:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use exception filter",
+                                cancellationToken =>
+                                {
+                                    return UseExceptionFilterAsync(
+                                        context.Document,
+                                        ifStatement,
+                                        cancellationToken: cancellationToken);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                }
+            }
+        }
+
+        private static async Task<Document> UseExceptionFilterAsync(
+            Document document,
+            IfStatementSyntax ifStatement,
+            CancellationToken cancellationToken)
+        {
+            ElseClauseSyntax elseClause = ifStatement.Else;
+
+            var catchClause = (CatchClauseSyntax)ifStatement.Parent.Parent;
+
+            SyntaxList<StatementSyntax> statements = catchClause.Block.Statements;
+
+            ExpressionSyntax filterExpression = ifStatement.Condition;
+
+            SyntaxList<StatementSyntax> newStatements = statements;
+
+            if (ifStatement.Statement.SingleNonBlockStatementOrDefault() is ThrowStatementSyntax throwStatement
+                && throwStatement.Expression == null)
+            {
+                if (elseClause != null)
+                {
+                    newStatements = ReplaceStatement(elseClause.Statement);
+                }
+                else
+                {
+                    newStatements = statements.RemoveAt(0);
+                }
+
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                filterExpression = SyntaxInverter.LogicallyInvert(filterExpression, semanticModel, cancellationToken);
+            }
+            else
+            {
+                newStatements = ReplaceStatement(ifStatement.Statement);
+            }
+
+            CatchClauseSyntax newCatchClause = catchClause.Update(
+                catchKeyword: catchClause.CatchKeyword,
+                declaration: catchClause.Declaration,
+                filter: SyntaxFactory.CatchFilterClause(filterExpression.WalkDownParentheses()),
+                block: catchClause.Block.WithStatements(newStatements));
+
+            newCatchClause = newCatchClause.WithFormatterAnnotation();
+
+            return await document.ReplaceNodeAsync(catchClause, newCatchClause, cancellationToken).ConfigureAwait(false);
+
+            SyntaxList<StatementSyntax> ReplaceStatement(StatementSyntax statement)
+            {
+                if (statement is BlockSyntax block)
+                {
+                    return statements.ReplaceRange(ifStatement, block.Statements);
+                }
+                else
+                {
+                    return statements.Replace(ifStatement, statement);
                 }
             }
         }

@@ -5297,4 +5297,43 @@ else
       </Sample>
     </Samples>
   </Analyzer>
-</Analyzers>
+  <Analyzer Identifier="UseExceptionFilter">
+    <Id>RCS1236</Id>
+    <Title>Use exception filter.</Title>
+    <MessageFormat>Use exception filter.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[try
+{
+}
+catch (Exception ex)
+{
+    if (!(ex is InvalidOperationException)) // [|Id|]
+    {
+        throw;
+    }
+
+    return;
+}]]></Before>
+        <After><![CDATA[try
+{
+}
+catch (Exception ex) when (ex is InvalidOperationException)
+{
+    return;
+}]]></After>
+      </Sample>
+    </Samples>
+    <Links>
+      <Link>
+        <Url>https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6#exception-filters</Url>
+        <Text>What's New in C# 6.0 - Exception Filters</Text>
+      </Link>
+    </Links>
+  </Analyzer></Analyzers>
