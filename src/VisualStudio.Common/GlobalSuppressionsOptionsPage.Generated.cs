@@ -14,7 +14,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = "RCS1236";
+        = "RCS1237";
         protected override void Fill(ICollection<BaseModel> analyzers)
         {
             analyzers.Clear();
@@ -228,6 +228,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1234", "Duplicate enum value.", !IsEnabled("RCS1234")));
             analyzers.Add(new BaseModel("RCS1235", "Optimize method call.", !IsEnabled("RCS1235")));
             analyzers.Add(new BaseModel("RCS1236", "Use exception filter.", !IsEnabled("RCS1236")));
+            analyzers.Add(new BaseModel("RCS1237", "Use bit shift operator.", !IsEnabled("RCS1237")));
         }
     }
 }

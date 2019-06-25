@@ -5336,4 +5336,35 @@ catch (Exception ex) when (ex is InvalidOperationException)
         <Text>What's New in C# 6.0 - Exception Filters</Text>
       </Link>
     </Links>
-  </Analyzer></Analyzers>
+  </Analyzer>
+  <Analyzer Identifier="UseBitShiftOperator">
+    <Id>RCS1237</Id>
+    <Title>Use bit shift operator.</Title>
+    <MessageFormat>Use bit shift operator.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[[Flags]
+enum Foo // [|Id|]
+{
+    None = 0,
+    Alpha = 1,
+    Beta = 2,
+    Gamma = 4,
+}]]></Before>
+        <After><![CDATA[[Flags]
+enum Foo
+{
+    None = 0,
+    Alpha = 1,
+    Beta = 1 << 1,
+    Gamma = 1 << 2,
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+</Analyzers>

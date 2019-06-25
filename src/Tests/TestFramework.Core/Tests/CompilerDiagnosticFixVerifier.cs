@@ -22,7 +22,20 @@ namespace Roslynator.Tests
     {
         public abstract string DiagnosticId { get; }
 
+        private ImmutableArray<string> _fixableDiagnosticIds;
+
         public abstract CodeFixProvider FixProvider { get; }
+
+        internal ImmutableArray<string> FixableDiagnosticIds
+        {
+            get
+            {
+                if (_fixableDiagnosticIds.IsDefault)
+                    ImmutableInterlocked.InterlockedInitialize(ref _fixableDiagnosticIds, FixProvider.FixableDiagnosticIds);
+
+                return _fixableDiagnosticIds;
+            }
+        }
 
         [DebuggerBrowsable(DebuggerBrowsableState.Never)]
         private string DebuggerDisplay
@@ -58,7 +71,7 @@ namespace Roslynator.Tests
         {
             cancellationToken.ThrowIfCancellationRequested();
 
-            if (!FixProvider.FixableDiagnosticIds.Contains(DiagnosticId))
+            if (!FixableDiagnosticIds.Contains(DiagnosticId))
                 Assert.True(false, $"Code fix provider '{FixProvider.GetType().Name}' cannot fix diagnostic '{DiagnosticId}'.");
 
             using (Workspace workspace = new AdhocWorkspace())
@@ -194,13 +207,11 @@ namespace Roslynator.Tests
 
                 Compilation compilation = await document.Project.GetCompilationAsync(cancellationToken).ConfigureAwait(false);
 
-                ImmutableArray<string> fixableDiagnosticIds = FixProvider.FixableDiagnosticIds;
-
                 foreach (Diagnostic diagnostic in compilation.GetDiagnostics(cancellationToken: cancellationToken))
                 {
                     cancellationToken.ThrowIfCancellationRequested();
 
-                    if (!fixableDiagnosticIds.Contains(diagnostic.Id))
+                    if (!FixableDiagnosticIds.Contains(diagnostic.Id))
                         continue;
 
                     var context = new CodeFixContext(

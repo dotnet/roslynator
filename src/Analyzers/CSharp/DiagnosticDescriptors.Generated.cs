@@ -2583,5 +2583,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseExceptionFilter}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1237</summary>
+        public static readonly DiagnosticDescriptor UseBitShiftOperator = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
+            title:              "Use bit shift operator.", 
+            messageFormat:      "Use bit shift operator.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseBitShiftOperator}", 
+            customTags:         Array.Empty<string>());
+
     }
 }
