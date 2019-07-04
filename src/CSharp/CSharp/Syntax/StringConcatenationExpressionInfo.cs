@@ -195,7 +195,7 @@ namespace Roslynator.CSharp.Syntax
                     {
                         sb.Remove(sb.Length - 1, 1);
 
-                        if (sb.Length - length > 1
+                        if (sb.Length > length
                             && sb[sb.Length - 1] == '\r')
                         {
                             sb.Remove(sb.Length - 1, 1);
