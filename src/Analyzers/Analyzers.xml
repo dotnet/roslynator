@@ -3619,6 +3619,7 @@ abstract class Foo : IFoo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[public object Foo { get; private set; } // [|Id|]]]></Before>

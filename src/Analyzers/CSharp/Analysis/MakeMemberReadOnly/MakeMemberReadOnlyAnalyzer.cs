@@ -44,7 +44,8 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
             bool skipField = context.IsAnalyzerSuppressed(DiagnosticDescriptors.MakeFieldReadOnly);
 
-            bool skipProperty = context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseReadOnlyAutoProperty);
+            bool skipProperty = context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseReadOnlyAutoProperty)
+                || ((CSharpCompilation)context.Compilation).LanguageVersion < LanguageVersion.CSharp6;
 
             MakeMemberReadOnlyWalker walker = MakeMemberReadOnlyWalker.GetInstance();
 
