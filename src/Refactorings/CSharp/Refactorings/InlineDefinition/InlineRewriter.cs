@@ -22,8 +22,11 @@ namespace Roslynator.CSharp.Refactorings.InlineDefinition
             {
                 var newNode = (ExpressionSyntax)newValue;
 
-                if (!newNode.IsKind(SyntaxKind.IdentifierName))
+                if (!newNode.IsKind(SyntaxKind.IdentifierName, SyntaxKind.PredefinedType)
+                    && !node.IsParentKind(SyntaxKind.TypeArgumentList))
+                {
                     newNode = newNode.Parenthesize();
+                }
 
                 return newNode;
             }
