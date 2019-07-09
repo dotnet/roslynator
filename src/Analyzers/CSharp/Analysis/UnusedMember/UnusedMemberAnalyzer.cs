@@ -1,6 +1,7 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics.CodeAnalysis;
@@ -16,6 +17,91 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
     public class UnusedMemberAnalyzer : BaseDiagnosticAnalyzer
     {
+        static readonly Dictionary<string, List<string>> _unityMethodsByClasses;
+
+        static readonly List<string> _unityLifecycleClasses;
+        static readonly List<string> _unityLifecycleMethods;
+
+        static UnusedMemberAnalyzer()
+        {
+
+            _unityMethodsByClasses = new Dictionary<string, List<string>>()
+            {
+                {
+                    "UnityEngine.MonoBehaviour",
+                    new List<string>(){
+                        "Awake",
+                        "FixedUpdate",
+                        "LateUpdate",
+                        "OnAnimatorIK",
+                        "OnAnimatorMove",
+                        "OnApplicationFocus",
+                        "OnApplicationPause",
+                        "OnApplicationQuit",
+                        "OnAudioFilterRead",
+                        "OnBecameInvisible",
+                        "OnBecameVisible",
+                        "OnCollisionEnter",
+                        "OnCollisionEnter2D",
+                        "OnCollisionExit",
+                        "OnCollisionExit2D",
+                        "OnCollisionStay",
+                        "OnCollisionStay2D",
+                        "OnConnectedToServer",
+                        "OnControllerColliderHit",
+                        "OnDestroy",
+                        "OnDisable",
+                        "OnDisconnectedFromServer",
+                        "OnDrawGizmos",
+                        "OnDrawGizmosSelected",
+                        "OnEnable",
+                        "OnFailedToConnect",
+                        "OnFailedToConnectToMasterServer",
+                        "OnGUI",
+                        "OnJointBreak",
+                        "OnJointBreak2D",
+                        "OnMasterServerEvent",
+                        "OnMouseDown",
+                        "OnMouseDrag",
+                        "OnMouseEnter",
+                        "OnMouseExit",
+                        "OnMouseOver",
+                        "OnMouseUp",
+                        "OnMouseUpAsButton",
+                        "OnNetworkInstantiate",
+                        "OnParticleCollision",
+                        "OnParticleSystemStopped",
+                        "OnParticleTrigger",
+                        "OnPlayerConnected",
+                        "OnPlayerDisconnected",
+                        "OnPostRender",
+                        "OnPreCull",
+                        "OnPreRender",
+                        "OnRenderImage",
+                        "OnRenderObject",
+                        "OnSerializeNetworkView",
+                        "OnServerInitialized",
+                        "OnTransformChildrenChanged",
+                        "OnTransformParentChanged",
+                        "OnTriggerEnter",
+                        "OnTriggerEnter2D",
+                        "OnTriggerExit",
+                        "OnTriggerExit2D",
+                        "OnTriggerStay",
+                        "OnTriggerStay2D",
+                        "OnValidate",
+                        "OnWillRenderObject",
+                        "Reset",
+                        "Start",
+                        "Update"
+                    }
+                }
+            };
+
+            _unityLifecycleClasses = _unityMethodsByClasses.Keys.ToList();
+            _unityLifecycleMethods = _unityMethodsByClasses.SelectMany(kvp => kvp.Value).ToList();
+        }
+        
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get { return ImmutableArray.Create(DiagnosticDescriptors.RemoveUnusedMemberDeclaration); }
@@ -140,7 +226,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                             {
                                 string methodName = declaration.Identifier.ValueText;
 
-                                if (!IsMainMethod(declaration, modifiers, methodName))
+                                if (!IsMainMethod(declaration, modifiers, methodName)
+                                    && !IsUnityLifeCycleMethod(typeDeclaration, semanticModel, methodName))
                                 {
                                     if (walker == null)
                                         walker = UnusedMemberWalkerCache.GetInstance();
@@ -240,6 +327,22 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                 return false;
             }
+        }
+
+        private static bool IsUnityLifeCycleMethod(TypeDeclarationSyntax typeDeclaration, SemanticModel semanticModel, string methodName)
+        {
+            if (!_unityLifecycleMethods.Contains(methodName)) return false;
+
+            var containerClassName = typeDeclaration.Identifier.ValueText;
+
+            foreach (var parentTypeSyntax in ((ClassDeclarationSyntax)typeDeclaration).BaseList.Types.Select(t => t.Type))
+            {
+                var typeFullName = semanticModel.GetSymbolInfo(parentTypeSyntax).Symbol.ToString();
+                if (_unityLifecycleClasses.Contains(typeFullName) && _unityMethodsByClasses[typeFullName].Contains(methodName))
+                    return true;
+            }
+
+            return false;
         }
 
         private static bool IsMainMethod(MethodDeclarationSyntax methodDeclaration, SyntaxTokenList modifiers, string methodName)
