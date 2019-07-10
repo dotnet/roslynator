@@ -24,6 +24,8 @@
    * **Roslynator.CSharp.Workspaces.dll** (required)
    * **Roslynator.CSharp.CodeFixes.dll** (contains code fixes for compiler diagnostics)
    * **Roslynator.CSharp.Refactorings.dll** (contains refactorings)
+   * **Roslynator.CSharp.Analyzers.dll** (contains analyzer)
+   * **Roslynator.CSharp.Analyzers.CodeFixes.dll** (contains code fixes of analyzer)
 
 5. It may be necessary to [unblock dll files](https://blogs.msdn.microsoft.com/delay/p/unblockingdownloadedfile/).
 
