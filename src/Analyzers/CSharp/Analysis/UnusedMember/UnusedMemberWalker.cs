@@ -124,7 +124,8 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
                     {
                         RemoveNodeAt(i);
                     }
-                    else if (symbolInfo.CandidateReason == CandidateReason.MemberGroup)
+                    else if (symbolInfo.CandidateReason == CandidateReason.MemberGroup
+                        || symbolInfo.CandidateReason == CandidateReason.OverloadResolutionFailure)
                     {
                         ImmutableArray<ISymbol> candidateSymbols = symbolInfo.CandidateSymbols;
 
