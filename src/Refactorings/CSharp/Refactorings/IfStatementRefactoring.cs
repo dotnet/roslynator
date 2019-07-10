@@ -102,7 +102,6 @@ namespace Roslynator.CSharp.Refactorings
                 }
 
                 if (context.IsAnyRefactoringEnabled(RefactoringIdentifiers.InvertIf, RefactoringIdentifiers.InvertIfElse)
-                    && isTopmostIf
                     && context.Span.IsEmptyAndContainedInSpan(ifKeyword))
                 {
                     InvertIfRefactoring.ComputeRefactoring(context, ifStatement);
