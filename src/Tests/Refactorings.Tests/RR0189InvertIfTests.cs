@@ -442,5 +442,30 @@ class C
 }
 ", equivalenceKey: RefactoringId);
         }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InvertIf)]
+        public async Task TestNoRefactoring_NotTopmostIf()
+        {
+            await VerifyNoRefactoringAsync(@"
+class C
+{
+    void M()
+    {
+        bool f = false, f2 = false;
+
+        if (f)
+        {
+            return;
+        }
+        else [||]if (f2)
+        {
+            return;
+        }
+
+        M();
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
     }
 }

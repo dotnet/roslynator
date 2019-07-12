@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Composition;
@@ -30,7 +31,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AddNewLineBeforeEnumMember,
                     DiagnosticIdentifiers.SortEnumMembers,
-                    DiagnosticIdentifiers.EnumShouldDeclareExplicitValues);
+                    DiagnosticIdentifiers.EnumShouldDeclareExplicitValues,
+                    DiagnosticIdentifiers.UseBitShiftOperator);
             }
         }
 
@@ -41,6 +43,8 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out EnumDeclarationSyntax enumDeclaration))
                 return;
 
+            Document document = context.Document;
+
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
                 switch (diagnostic.Id)
@@ -49,7 +53,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Add newline",
-                                cancellationToken => AddNewLineBeforeEnumMemberRefactoring.RefactorAsync(context.Document, enumDeclaration, cancellationToken),
+                                cancellationToken => AddNewLineBeforeEnumMemberRefactoring.RefactorAsync(document, enumDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -59,7 +63,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 $"Sort '{enumDeclaration.Identifier}' members",
-                                cancellationToken => SortEnumMembersAsync(context.Document, enumDeclaration, cancellationToken),
+                                cancellationToken => SortEnumMembersAsync(document, enumDeclaration, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -89,7 +93,17 @@ namespace Roslynator.CSharp.CodeFixes
 
                             CodeAction codeAction = CodeAction.Create(
                                 "Declare explicit values",
-                                ct => DeclareExplicitValueAsync(context.Document, enumDeclaration, enumSymbol, values, semanticModel, ct),
+                                ct => DeclareExplicitValueAsync(document, enumDeclaration, enumSymbol, values, semanticModel, ct),
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UseBitShiftOperator:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use << operator",
+                                ct => UseBitShiftOperatorAsync(document, enumDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -232,6 +246,48 @@ namespace Roslynator.CSharp.CodeFixes
             EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.WithMembers(newMembers);
 
             return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
+        }
+
+        private static async Task<Document> UseBitShiftOperatorAsync(
+            Document document,
+            EnumDeclarationSyntax enumDeclaration,
+            CancellationToken cancellationToken)
+        {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+            EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.ReplaceNodes(GetExpressionsToRewrite(), (expression, _) =>
+            {
+                Optional<object> constantValue = semanticModel.GetConstantValue(expression, cancellationToken);
+
+                var power = (int)Math.Log(Convert.ToDouble(constantValue.Value), 2);
+
+                BinaryExpressionSyntax leftShift = LeftShiftExpression(NumericLiteralExpression(1), NumericLiteralExpression(power));
+
+                return leftShift.WithTriviaFrom(expression);
+            });
+
+            return await document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken).ConfigureAwait(false);
+
+            IEnumerable<ExpressionSyntax> GetExpressionsToRewrite()
+            {
+                foreach (EnumMemberDeclarationSyntax member in enumDeclaration.Members)
+                {
+                    ExpressionSyntax expression = member.EqualsValue?.Value.WalkDownParentheses();
+
+                    if (expression != null
+                        && semanticModel.GetDeclaredSymbol(member, cancellationToken) is IFieldSymbol fieldSymbol
+                        && fieldSymbol.HasConstantValue)
+                    {
+                        EnumFieldSymbolInfo fieldInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
+
+                        if (fieldInfo.Value > 1
+                            && !fieldInfo.HasCompositeValue())
+                        {
+                            yield return expression;
+                        }
+                    }
+                }
+            }
         }
     }
 }

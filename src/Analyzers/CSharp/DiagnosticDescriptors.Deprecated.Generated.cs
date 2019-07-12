@@ -25,21 +25,6 @@ namespace Roslynator.CSharp
         public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterListFadeOut = SimplifyLambdaExpressionParameterList.CreateFadeOut();
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor RemoveRedundantBraces = Create(
-            id:                 DiagnosticIdentifiers.RemoveRedundantBraces, 
-            title:              "Remove redundant braces.", 
-            messageFormat:      "Remove redundant braces.", 
-            category:           DiagnosticCategories.Redundancy, 
-            defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
-            description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.RemoveRedundantBraces, 
-            customTags:         Array.Empty<string>());
-
-        [Obsolete("", error: true)]
-        public static readonly DiagnosticDescriptor RemoveRedundantBracesFadeOut = RemoveRedundantBraces.CreateFadeOut();
-
-        [Obsolete("", error: true)]
         internal static readonly DiagnosticDescriptor ReplaceForEachWithFor = Create(
             id:                 DiagnosticIdentifiers.ReplaceForEachWithFor, 
             title:              "Replace foreach statement with for statement.", 

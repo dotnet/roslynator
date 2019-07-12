@@ -12,36 +12,23 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class CallConfigureAwaitRefactoring
     {
-        public static bool CanRefactor(
-            AwaitExpressionSyntax awaitExpression,
-            SemanticModel semanticModel,
-            CancellationToken cancellationToken = default(CancellationToken))
-        {
-            ExpressionSyntax expression = awaitExpression.Expression;
-
-            if (expression?.Kind() != SyntaxKind.InvocationExpression)
-                return false;
-
-            if (!(semanticModel.GetSymbol(expression, cancellationToken) is IMethodSymbol methodSymbol))
-                return false;
-
-            return methodSymbol.ReturnType.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task);
-        }
-
         public static Task<Document> RefactorAsync(
             Document document,
             AwaitExpressionSyntax awaitExpression,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
-            var invocation = (InvocationExpressionSyntax)awaitExpression.Expression;
+            ExpressionSyntax expression = awaitExpression.Expression;
 
-            InvocationExpressionSyntax newInvocation = InvocationExpression(
-                SimpleMemberAccessExpression(invocation.WithoutTrailingTrivia(), IdentifierName("ConfigureAwait")),
-                ArgumentList(Argument(FalseLiteralExpression())));
+            InvocationExpressionSyntax invocationExpression = InvocationExpression(
+                SimpleMemberAccessExpression(
+                    expression.WithoutTrailingTrivia().Parenthesize(),
+                    IdentifierName("ConfigureAwait")),
+                ArgumentList(
+                    Token(SyntaxKind.OpenParenToken),
+                    SingletonSeparatedList(Argument(FalseLiteralExpression())),
+                    Token(default, SyntaxKind.CloseParenToken, expression.GetTrailingTrivia())));
 
-            newInvocation = newInvocation.WithTrailingTrivia(invocation.GetTrailingTrivia());
-
-            return document.ReplaceNodeAsync(invocation, newInvocation, cancellationToken);
+            return document.ReplaceNodeAsync(expression, invocationExpression, cancellationToken);
         }
     }
 }

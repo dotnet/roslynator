@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>2.1.1.0</Version>
+    <Version>2.1.2.0</Version>
     <AssemblyName>Roslynator.CSharp.Analyzers.CodeFixes</AssemblyName>
     <RootNamespace>Roslynator.CSharp</RootNamespace>
     <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
@@ -14,7 +14,7 @@
     <LangVersion>7.2</LangVersion>
     <NuspecFile>Roslynator.Analyzers.nuspec</NuspecFile> 
     <NuspecProperties>configuration=$(Configuration)</NuspecProperties>
-    <Copyright>Copyright (c) 2017-2018 Josef Pihrt</Copyright>
+    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
   </PropertyGroup>
 
   <ItemGroup>

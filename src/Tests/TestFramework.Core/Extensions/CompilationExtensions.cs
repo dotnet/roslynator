@@ -43,6 +43,22 @@ namespace Roslynator
             return compilation;
         }
 
+        public static Compilation EnsureEnabled(this Compilation compilation, DiagnosticDescriptor descriptor)
+        {
+            if (descriptor.IsEnabledByDefault)
+                return compilation;
+
+            CompilationOptions compilationOptions = compilation.Options;
+
+            ImmutableDictionary<string, ReportDiagnostic> specificDiagnosticOptions = compilationOptions.SpecificDiagnosticOptions;
+
+            specificDiagnosticOptions = specificDiagnosticOptions.SetItem(
+                descriptor.Id,
+                descriptor.DefaultSeverity.ToReportDiagnostic());
+
+            return compilation.WithOptions(compilationOptions.WithSpecificDiagnosticOptions(specificDiagnosticOptions));
+        }
+
         public static async Task<ImmutableArray<Diagnostic>> GetAnalyzerDiagnosticsAsync(
             this Compilation compilation,
             DiagnosticAnalyzer analyzer,

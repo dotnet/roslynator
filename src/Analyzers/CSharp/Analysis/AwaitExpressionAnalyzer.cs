@@ -26,41 +26,20 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                INamedTypeSymbol taskSymbol = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.Task");
-
-                if (taskSymbol == null)
-                    return;
-
-                INamedTypeSymbol valueTaskOfTSymbol = startContext.Compilation.GetTypeByMetadataName("System.Threading.Tasks.ValueTask`1");
-
                 if (startContext.Compilation.GetTypeByMetadataName("System.Runtime.CompilerServices.ConfiguredTaskAwaitable`1") == null)
                     return;
 
-                startContext.RegisterSyntaxNodeAction(nodeContext => AnalyzeAwaitExpression(nodeContext, taskSymbol, valueTaskOfTSymbol), SyntaxKind.AwaitExpression);
+                startContext.RegisterSyntaxNodeAction(AnalyzeAwaitExpression, SyntaxKind.AwaitExpression);
             });
         }
 
-        private static void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context, INamedTypeSymbol taskSymbol, INamedTypeSymbol valueTaskOfTSymbol)
+        private static void AnalyzeAwaitExpression(SyntaxNodeAnalysisContext context)
         {
             var awaitExpression = (AwaitExpressionSyntax)context.Node;
 
-            ExpressionSyntax expression = awaitExpression.Expression;
-
-            if (expression?.IsKind(SyntaxKind.InvocationExpression) != true)
-                return;
-
-            if (!(context.SemanticModel.GetSymbol(expression, context.CancellationToken) is IMethodSymbol methodSymbol))
-                return;
-
-            if (!(methodSymbol.ReturnType is INamedTypeSymbol returnType))
-                return;
-
-            INamedTypeSymbol constructedFrom = returnType.ConstructedFrom;
-
-            if (constructedFrom.Equals(valueTaskOfTSymbol)
-                || constructedFrom.EqualsOrInheritsFrom(taskSymbol))
+            if (CallConfigureAwaitAnalysis.IsFixable(awaitExpression, context.SemanticModel, context.CancellationToken))
             {
-                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallConfigureAwait, expression);
+                DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.CallConfigureAwait, awaitExpression.Expression);
             }
         }
     }

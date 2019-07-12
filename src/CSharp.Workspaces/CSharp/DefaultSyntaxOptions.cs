@@ -19,8 +19,8 @@ namespace Roslynator.CSharp
         UseDefault = 1,
 
         /// <summary>
-        /// Prefer <see cref="SyntaxKind.DefaultLiteralExpression"/> to <see cref="SyntaxKind.DefaultExpression"/>.
+        /// Allow <see cref="SyntaxKind.DefaultLiteralExpression"/> instead of <see cref="SyntaxKind.DefaultExpression"/>.
         /// </summary>
-        PreferDefaultLiteral = 2,
+        AllowDefaultLiteral = 2,
     }
 }

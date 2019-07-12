@@ -36,6 +36,7 @@ namespace Roslynator.CSharp
         public const string AddNewLineAfterSwitchLabel = "RCS1028";
         public const string FormatBinaryOperatorOnNextLine = "RCS1029";
         public const string AddEmptyLineAfterEmbeddedStatement = "RCS1030";
+        public const string RemoveUnnecessaryBraces = "RCS1031";
         public const string RemoveRedundantParentheses = "RCS1032";
         public const string RemoveRedundantBooleanLiteral = "RCS1033";
         public const string RemoveRedundantSealedModifier = "RCS1034";
@@ -216,5 +217,7 @@ namespace Roslynator.CSharp
         public const string UseShortCircuitingOperator = "RCS1233";
         public const string DuplicateEnumValue = "RCS1234";
         public const string OptimizeMethodCall = "RCS1235";
+        public const string UseExceptionFilter = "RCS1236";
+        public const string UseBitShiftOperator = "RCS1237";
     }
 }

@@ -1,95 +1,79 @@
-# Roslynator\.CSharp API
+# Roslynator\.CSharp
 
-## Namespace Roslynator
+[Namespaces](#namespaces) &#x2022; [Class Hierarchy](#class-hierarchy)
 
-### Static Classes
+## Namespaces
 
-* DiagnosticsExtensions
-* EnumExtensions
-* FileLinePositionSpanExtensions
-* SemanticModelExtensions
-* SymbolExtensions
-* SyntaxExtensions
-* SyntaxTreeExtensions
+* [Roslynator.CSharp](../../docs/api/Roslynator/CSharp/README.md)
+* [Roslynator.CSharp.Syntax](../../docs/api/Roslynator/CSharp/Syntax/README.md)
 
-### Classes
+## Class Hierarchy
 
-* NameGenerator
-* SeparatedSyntaxListSelection\`1
-* SyntaxListSelection\`1
+* &ensp; \([Object](https://docs.microsoft.com/en-us/dotnet/api/system.object)\)<a id="class-hierarchy-System_Object"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [ModifierList\<TNode>](../../docs/api/Roslynator/CSharp/ModifierList-1/README.md)<a id="class-hierarchy-Roslynator_CSharp_ModifierList_1"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; \(Roslynator\.SyntaxListSelection\<TNode>\)<a id="class-hierarchy-Roslynator_SyntaxListSelection_1"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [&bull;](#class-hierarchy-Roslynator_SyntaxListSelection_1 "SyntaxListSelection<TNode>") &ensp; [MemberDeclarationListSelection](../../docs/api/Roslynator/CSharp/MemberDeclarationListSelection/README.md)<a id="class-hierarchy-Roslynator_CSharp_MemberDeclarationListSelection"></a>
+* &ensp; [&bull;](#class-hierarchy-System_Object "Object") &ensp; [&bull;](#class-hierarchy-Roslynator_SyntaxListSelection_1 "SyntaxListSelection<TNode>") &ensp; [StatementListSelection](../../docs/api/Roslynator/CSharp/StatementListSelection/README.md)<a id="class-hierarchy-Roslynator_CSharp_StatementListSelection"></a>
 
-### Structs
-
-* ExtensionMethodSymbolInfo
-
-### Interfaces
-
-* ISelection\`1
-
-## Namespace Roslynator\.CSharp
-
-### Static Classes
-
-* CSharpExtensions
-* CSharpFactory
-* CSharpFacts
-* EnumExtensions
-* ModifierList
-* Modifiers
-* SymbolExtensions
-* SyntaxAccessibility
-* SyntaxExtensions
-* SyntaxInfo
+## [Roslynator.CSharp](../../docs/api/Roslynator/CSharp/README.md) Namespace
 
 ### Classes
 
-* MemberDeclarationListSelection
-* ModifierList\`1
-* StatementListSelection
+* [CSharpExtensions](../../docs/api/Roslynator/CSharp/CSharpExtensions/README.md)
+* [CSharpFactory](../../docs/api/Roslynator/CSharp/CSharpFactory/README.md)
+* [CSharpFacts](../../docs/api/Roslynator/CSharp/CSharpFacts/README.md)
+* [MemberDeclarationListSelection](../../docs/api/Roslynator/CSharp/MemberDeclarationListSelection/README.md)
+* [ModifierList](../../docs/api/Roslynator/CSharp/ModifierList/README.md)
+* [ModifierList\<TNode>](../../docs/api/Roslynator/CSharp/ModifierList-1/README.md)
+* [Modifiers](../../docs/api/Roslynator/CSharp/Modifiers/README.md)
+* [StatementListSelection](../../docs/api/Roslynator/CSharp/StatementListSelection/README.md)
+* [SymbolExtensions](../../docs/api/Roslynator/CSharp/SymbolExtensions/README.md)
+* [SyntaxAccessibility](../../docs/api/Roslynator/CSharp/SyntaxAccessibility/README.md)
+* [SyntaxExtensions](../../docs/api/Roslynator/CSharp/SyntaxExtensions/README.md)
+* [SyntaxInfo](../../docs/api/Roslynator/CSharp/SyntaxInfo/README.md)
 
 ### Structs
 
-* CommentKinds
-* ExpressionChain
-* IfStatementCascade
-* IfStatementOrElseClause
-* ModifierKinds
-* NullCheckStyles
-* PreprocessorDirectiveKinds
+* [ExpressionChain](../../docs/api/Roslynator/CSharp/ExpressionChain/README.md)
+* [ExpressionChain.Enumerator](../../docs/api/Roslynator/CSharp/ExpressionChain/Enumerator/README.md)
+* [ExpressionChain.Reversed](../../docs/api/Roslynator/CSharp/ExpressionChain/Reversed/README.md)
+* [ExpressionChain.Reversed.Enumerator](../../docs/api/Roslynator/CSharp/ExpressionChain/Reversed/Enumerator/README.md)
+* [IfStatementCascade](../../docs/api/Roslynator/CSharp/IfStatementCascade/README.md)
+* [IfStatementCascade.Enumerator](../../docs/api/Roslynator/CSharp/IfStatementCascade/Enumerator/README.md)
+* [IfStatementCascadeInfo](../../docs/api/Roslynator/CSharp/IfStatementCascadeInfo/README.md)
+* [IfStatementOrElseClause](../../docs/api/Roslynator/CSharp/IfStatementOrElseClause/README.md)
 
-## Namespace Roslynator\.CSharp\.Syntax
+### Enums
+
+* [CommentFilter](../../docs/api/Roslynator/CSharp/CommentFilter/README.md)
+* [ModifierFilter](../../docs/api/Roslynator/CSharp/ModifierFilter/README.md)
+* [NullCheckStyles](../../docs/api/Roslynator/CSharp/NullCheckStyles/README.md)
+* [PreprocessorDirectiveFilter](../../docs/api/Roslynator/CSharp/PreprocessorDirectiveFilter/README.md)
+
+## [Roslynator.CSharp.Syntax](../../docs/api/Roslynator/CSharp/Syntax/README.md) Namespace
 
 ### Structs
 
-* AsExpressionInfo
-* AssignmentExpressionInfo
-* BinaryExpressionInfo
-* ConditionalExpressionInfo
-* GenericInfo
-* IsExpressionInfo
-* LocalDeclarationStatementInfo
-* MemberDeclarationListInfo
-* ModifierListInfo
-* NullCheckExpressionInfo
-* RegionInfo
-* SimpleAssignmentExpressionInfo
-* SimpleAssignmentStatementInfo
-* SimpleIfElseInfo
-* SimpleIfStatementInfo
-* SimpleMemberInvocationExpressionInfo
-* SimpleMemberInvocationStatementInfo
-* SingleLocalDeclarationStatementInfo
-* SingleParameterLambdaExpressionInfo
-* StatementListInfo
-* StringConcatenationExpressionInfo
-* StringLiteralExpressionInfo
-* UsingDirectiveListInfo
-* XmlElementInfo
-
-## Namespace Roslynator\.Text
-
-### Classes
-
-* TextLineCollectionSelection
-
-*\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*
+* [AsExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/AsExpressionInfo/README.md)
+* [AssignmentExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/AssignmentExpressionInfo/README.md)
+* [BinaryExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/BinaryExpressionInfo/README.md)
+* [ConditionalExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/ConditionalExpressionInfo/README.md)
+* [GenericInfo](../../docs/api/Roslynator/CSharp/Syntax/GenericInfo/README.md)
+* [IsExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/IsExpressionInfo/README.md)
+* [LocalDeclarationStatementInfo](../../docs/api/Roslynator/CSharp/Syntax/LocalDeclarationStatementInfo/README.md)
+* [MemberDeclarationListInfo](../../docs/api/Roslynator/CSharp/Syntax/MemberDeclarationListInfo/README.md)
+* [ModifierListInfo](../../docs/api/Roslynator/CSharp/Syntax/ModifierListInfo/README.md)
+* [NullCheckExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/NullCheckExpressionInfo/README.md)
+* [RegionInfo](../../docs/api/Roslynator/CSharp/Syntax/RegionInfo/README.md)
+* [SimpleAssignmentExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/SimpleAssignmentExpressionInfo/README.md)
+* [SimpleAssignmentStatementInfo](../../docs/api/Roslynator/CSharp/Syntax/SimpleAssignmentStatementInfo/README.md)
+* [SimpleIfStatementInfo](../../docs/api/Roslynator/CSharp/Syntax/SimpleIfStatementInfo/README.md)
+* [SimpleMemberInvocationExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/SimpleMemberInvocationExpressionInfo/README.md)
+* [SimpleMemberInvocationStatementInfo](../../docs/api/Roslynator/CSharp/Syntax/SimpleMemberInvocationStatementInfo/README.md)
+* [SingleLocalDeclarationStatementInfo](../../docs/api/Roslynator/CSharp/Syntax/SingleLocalDeclarationStatementInfo/README.md)
+* [SingleParameterLambdaExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/SingleParameterLambdaExpressionInfo/README.md)
+* [StatementListInfo](../../docs/api/Roslynator/CSharp/Syntax/StatementListInfo/README.md)
+* [StringConcatenationExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/StringConcatenationExpressionInfo/README.md)
+* [StringLiteralExpressionInfo](../../docs/api/Roslynator/CSharp/Syntax/StringLiteralExpressionInfo/README.md)
+* [UsingDirectiveListInfo](../../docs/api/Roslynator/CSharp/Syntax/UsingDirectiveListInfo/README.md)
+* [XmlElementInfo](../../docs/api/Roslynator/CSharp/Syntax/XmlElementInfo/README.md)

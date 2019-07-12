@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.Analysis.MakeMemberReadOnly;
 using Roslynator.CSharp.CodeFixes;
+using Roslynator.CSharp.Tests;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
@@ -14,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.UseReadOnlyAutoProperty;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new UseReadOnlyAutoPropertyAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new MakeMemberReadOnlyAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new MemberDeclarationCodeFixProvider();
 
@@ -411,6 +412,17 @@ class C2
     public string P2 { get; }
 }
 ", options: Options.AddAllowedCompilerDiagnosticId("CS1061"));
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseExpressionBodiedMember)]
+        public async Task TestNoDiagnostic_ReadOnlyAutoPropertyNotAvailableInCSharp5()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    public string P { get; private set; }
+}
+", options: CSharpCodeVerificationOptions.DefaultWithCSharp5);
         }
     }
 }

@@ -359,6 +359,20 @@ namespace Roslynator.CSharp
             helpLinkUri:        DiagnosticIdentifiers.AddEmptyLineAfterEmbeddedStatement, 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1031</summary>
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBraces = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.RemoveUnnecessaryBraces, 
+            title:              "Remove unnecessary braces.", 
+            messageFormat:      "Remove unnecessary braces.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.RemoveUnnecessaryBraces}", 
+            customTags:         WellKnownDiagnosticTags.Unnecessary);
+
+        public static readonly DiagnosticDescriptor RemoveUnnecessaryBracesFadeOut = RemoveUnnecessaryBraces.CreateFadeOut();
+
         /// <summary>RCS1032</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantParentheses = Create(
             id:                 DiagnosticIdentifiers.RemoveRedundantParentheses, 
@@ -2555,6 +2569,30 @@ namespace Roslynator.CSharp
             isEnabledByDefault: true, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.OptimizeMethodCall, 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1236</summary>
+        public static readonly DiagnosticDescriptor UseExceptionFilter = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseExceptionFilter, 
+            title:              "Use exception filter.", 
+            messageFormat:      "Use exception filter.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseExceptionFilter}", 
+            customTags:         Array.Empty<string>());
+
+        /// <summary>RCS1237</summary>
+        public static readonly DiagnosticDescriptor UseBitShiftOperator = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UseBitShiftOperator, 
+            title:              "Use bit shift operator.", 
+            messageFormat:      "Use bit shift operator.", 
+            category:           DiagnosticCategories.Usage, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseBitShiftOperator}", 
             customTags:         Array.Empty<string>());
 
     }

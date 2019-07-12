@@ -628,15 +628,21 @@ Bar();]]></After>
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="RemoveRedundantBraces" IsObsolete="true">
+  <Analyzer Identifier="RemoveUnnecessaryBraces">
     <Id>RCS1031</Id>
-    <Title>Remove redundant braces.</Title>
-    <MessageFormat>Remove redundant braces.</MessageFormat>
+    <Title>Remove unnecessary braces.</Title>
+    <MessageFormat>Remove unnecessary braces.</MessageFormat>
     <Category>Redundancy</Category>
-    <DefaultSeverity>Info</DefaultSeverity>
+    <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
-    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>true</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[]]></Before>
+        <After><![CDATA[]]></After>
+      </Sample>
+    </Samples>
   </Analyzer>
   <Analyzer Identifier="RemoveRedundantParentheses">
     <Id>RCS1032</Id>
@@ -3613,6 +3619,7 @@ abstract class Foo : IFoo
     <IsEnabledByDefault>true</IsEnabledByDefault>
     <SupportsFadeOut>true</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
     <Samples>
       <Sample>
         <Before><![CDATA[public object Foo { get; private set; } // [|Id|]]]></Before>
@@ -5288,6 +5295,76 @@ else
   dic.Add(key, value);
 }]]></Before>
         <After><![CDATA[dic[key] = value;]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UseExceptionFilter">
+    <Id>RCS1236</Id>
+    <Title>Use exception filter.</Title>
+    <MessageFormat>Use exception filter.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion>6.0</MinLanguageVersion>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[try
+{
+}
+catch (Exception ex)
+{
+    if (!(ex is InvalidOperationException)) // [|Id|]
+    {
+        throw;
+    }
+
+    return;
+}]]></Before>
+        <After><![CDATA[try
+{
+}
+catch (Exception ex) when (ex is InvalidOperationException)
+{
+    return;
+}]]></After>
+      </Sample>
+    </Samples>
+    <Links>
+      <Link>
+        <Url>https://docs.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-6#exception-filters</Url>
+        <Text>What's New in C# 6.0 - Exception Filters</Text>
+      </Link>
+    </Links>
+  </Analyzer>
+  <Analyzer Identifier="UseBitShiftOperator">
+    <Id>RCS1237</Id>
+    <Title>Use bit shift operator.</Title>
+    <MessageFormat>Use bit shift operator.</MessageFormat>
+    <Category>Usage</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[[Flags]
+enum Foo // [|Id|]
+{
+    None = 0,
+    Alpha = 1,
+    Beta = 2,
+    Gamma = 4,
+}]]></Before>
+        <After><![CDATA[[Flags]
+enum Foo
+{
+    None = 0,
+    Alpha = 1,
+    Beta = 1 << 1,
+    Gamma = 1 << 2,
+}]]></After>
       </Sample>
     </Samples>
   </Analyzer>

@@ -48,7 +48,8 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
             }
-            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertIf))
+            else if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertIf)
+                && ifStatement.IsTopmostIf())
             {
                 InvertIfAnalysis analysis = InvertIfAnalysis.Create(ifStatement, statement);
 

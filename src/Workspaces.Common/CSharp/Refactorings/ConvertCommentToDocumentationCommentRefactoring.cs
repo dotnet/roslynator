@@ -26,6 +26,12 @@ namespace Roslynator.CSharp.Refactorings
             TextSpan span,
             CancellationToken cancellationToken)
         {
+            if (declaration is EnumDeclarationSyntax enumDeclaration
+                && span.Start > enumDeclaration.Members.FirstOrDefault()?.SpanStart)
+            {
+                return RefactorAsync(document, enumDeclaration, span, cancellationToken);
+            }
+
             MemberDeclarationSyntax newDeclaration = declaration;
 
             ImmutableArray<string> comments;
@@ -55,18 +61,11 @@ namespace Roslynator.CSharp.Refactorings
 
                 Debug.Assert(trailingTrivia.Contains(trivia));
 
-                for (int i = 0; i < trailingTrivia.Count; i++)
-                {
-                    if (trailingTrivia[i].Span == span)
-                    {
-                        comments = ImmutableArray.Create(_leadingSlashesRegex.Replace(trailingTrivia[i].ToString(), ""));
+                comments = ImmutableArray.Create(_leadingSlashesRegex.Replace(trivia.ToString(), ""));
 
-                        SyntaxToken newToken = token.WithTrailingTrivia(trailingTrivia.Skip(i + 1));
+                SyntaxToken newToken = token.WithTrailingTrivia(trailingTrivia.Skip(trailingTrivia.IndexOf(trivia) + 1));
 
-                        newDeclaration = newDeclaration.ReplaceToken(token, newToken);
-                        break;
-                    }
-                }
+                newDeclaration = newDeclaration.ReplaceToken(token, newToken);
             }
 
             var settings = new DocumentationCommentGeneratorSettings(comments);
@@ -74,6 +73,38 @@ namespace Roslynator.CSharp.Refactorings
             newDeclaration = newDeclaration.WithNewSingleLineDocumentationComment(settings);
 
             return document.ReplaceNodeAsync(declaration, newDeclaration, cancellationToken);
+        }
+
+        private static Task<Document> RefactorAsync(
+            Document document,
+            EnumDeclarationSyntax enumDeclaration,
+            TextSpan span,
+            CancellationToken cancellationToken)
+        {
+            SyntaxTrivia trivia = enumDeclaration.FindTrivia(span.Start);
+
+            SyntaxToken token = trivia.Token;
+
+            EnumMemberDeclarationSyntax enumMemberDeclaration = token
+                .GetPreviousToken()
+                .Parent
+                .FirstAncestor<EnumMemberDeclarationSyntax>();
+
+            int enumMemberIndex = enumDeclaration.Members.IndexOf(enumMemberDeclaration);
+
+            SyntaxTriviaList trailingTrivia = token.TrailingTrivia;
+
+            SyntaxToken newToken = token.WithTrailingTrivia(trailingTrivia.Skip(trailingTrivia.IndexOf(trivia) + 1));
+
+            EnumDeclarationSyntax newEnumDeclaration = enumDeclaration.ReplaceToken(token, newToken);
+
+            var settings = new DocumentationCommentGeneratorSettings(ImmutableArray.Create(_leadingSlashesRegex.Replace(trivia.ToString(), "")));
+
+            EnumMemberDeclarationSyntax newEnumMemberDeclaration = newEnumDeclaration.Members[enumMemberIndex].WithNewSingleLineDocumentationComment(settings);
+
+            newEnumDeclaration = newEnumDeclaration.WithMembers(newEnumDeclaration.Members.ReplaceAt(enumMemberIndex, newEnumMemberDeclaration));
+
+            return document.ReplaceNodeAsync(enumDeclaration, newEnumDeclaration, cancellationToken);
         }
     }
 }

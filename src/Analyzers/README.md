@@ -146,7 +146,7 @@
 | RCS1165 | [Unconstrained type parameter checked for null](../../docs/analyzers/RCS1165.md) | Usage | Hidden |
 | RCS1166 | [Value type object is never equal to null](../../docs/analyzers/RCS1166.md) | Usage | Info |
 | RCS1168 | [Parameter name differs from base name](../../docs/analyzers/RCS1168.md) | Maintainability | Hidden |
-| RCS1169 | [Mark field as read-only](../../docs/analyzers/RCS1169.md) | Design | Info |
+| RCS1169 | [Make field read-only](../../docs/analyzers/RCS1169.md) | Design | Info |
 | RCS1170 | [Use read-only auto-implemented property](../../docs/analyzers/RCS1170.md) | Design | Info |
 | RCS1171 | [Simplify lazy initialization](../../docs/analyzers/RCS1171.md) | Simplification | Info |
 | RCS1172 | [Use 'is' operator instead of 'as' operator](../../docs/analyzers/RCS1172.md) | Simplification | Warning |

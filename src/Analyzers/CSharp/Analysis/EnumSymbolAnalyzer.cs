@@ -22,7 +22,8 @@ namespace Roslynator.CSharp.Analysis
                     DiagnosticDescriptors.DeclareEnumMemberWithZeroValue,
                     DiagnosticDescriptors.CompositeEnumValueContainsUndefinedFlag,
                     DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames,
-                    DiagnosticDescriptors.DuplicateEnumValue);
+                    DiagnosticDescriptors.DuplicateEnumValue,
+                    DiagnosticDescriptors.UseBitShiftOperator);
             }
         }
 
@@ -127,6 +128,42 @@ namespace Roslynator.CSharp.Analysis
 
                         if (values?.Count > 1)
                             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DeclareEnumValueAsCombinationOfNames, expression);
+                    }
+                }
+            }
+
+            if (hasFlagsAttribute
+                && !context.IsAnalyzerSuppressed(DiagnosticDescriptors.UseBitShiftOperator))
+            {
+                if (members.IsDefault)
+                    members = typeSymbol.GetMembers();
+
+                foreach (ISymbol member in members)
+                {
+                    if (!(member is IFieldSymbol fieldSymbol))
+                        continue;
+
+                    if (!fieldSymbol.HasConstantValue)
+                        continue;
+
+                    EnumFieldSymbolInfo fieldInfo = EnumFieldSymbolInfo.Create(fieldSymbol);
+
+                    if (fieldInfo.Value <= 1)
+                        continue;
+
+                    if (fieldInfo.HasCompositeValue())
+                        continue;
+
+                    var declaration = (EnumMemberDeclarationSyntax)fieldInfo.Symbol.GetSyntax(context.CancellationToken);
+
+                    ExpressionSyntax expression = declaration.EqualsValue?.Value.WalkDownParentheses();
+
+                    if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
+                    {
+                        var enumDeclaration = (EnumDeclarationSyntax)typeSymbol.GetSyntax(context.CancellationToken);
+
+                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.UseBitShiftOperator, enumDeclaration.Identifier);
+                        break;
                     }
                 }
             }

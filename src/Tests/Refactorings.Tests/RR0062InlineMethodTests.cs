@@ -58,6 +58,118 @@ namespace N
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
+        public async Task Test_ReplaceTypeArgumentWithPredefinedType()
+        {
+            await VerifyRefactoringAsync(@"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            new object().[||]EM();
+        }
+    }
+
+    class C<T>
+    {
+    }
+
+    static class E
+    {
+        public static C<T> EM<T>(this T _) => new C<T>();
+    }
+}
+", @"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            new C<object>();
+        }
+    }
+
+    class C<T>
+    {
+    }
+
+    static class E
+    {
+        public static C<T> EM<T>(this T _) => new C<T>();
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
+        public async Task Test_ReplaceTypeArgumentWithQualifiedName()
+        {
+            await VerifyRefactoringAsync(@"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            new N2.C().[||]EM();
+        }
+    }
+
+    class C<T>
+    {
+        public C(T parameter)
+        {
+        }
+    }
+
+    static class E
+    {
+        public static C<T> EM<T>(this T t) => new C<T>(t);
+    }
+}
+
+namespace N2
+{
+    class C
+    {
+    }
+}
+", @"
+namespace N
+{
+    class C
+    {
+        void M()
+        {
+            new C<N2.C>(new N2.C());
+        }
+    }
+
+    class C<T>
+    {
+        public C(T parameter)
+        {
+        }
+    }
+
+    static class E
+    {
+        public static C<T> EM<T>(this T t) => new C<T>(t);
+    }
+}
+
+namespace N2
+{
+    class C
+    {
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.InlineMethod)]
         public async Task TestNoRefactoring()
         {
             await VerifyNoRefactoringAsync(@"

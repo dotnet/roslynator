@@ -45,7 +45,7 @@ namespace Roslynator.CSharp
         internal static DefaultSyntaxOptions GetDefaultSyntaxOptions(this Document document, DefaultSyntaxOptions options = DefaultSyntaxOptions.None)
         {
             return (document.SupportsLanguageFeature(CSharpLanguageFeature.DefaultLiteral))
-                ? options | DefaultSyntaxOptions.PreferDefaultLiteral
+                ? options | DefaultSyntaxOptions.AllowDefaultLiteral
                 : options;
         }
 
