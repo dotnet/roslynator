@@ -36,7 +36,6 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.JoinStringExpressions,
                     DiagnosticIdentifiers.UseExclusiveOrOperator,
                     DiagnosticIdentifiers.SimplifyBooleanExpression,
-                    DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse,
                     DiagnosticIdentifiers.UseShortCircuitingOperator);
             }
         }
@@ -200,18 +199,6 @@ namespace Roslynator.CSharp.CodeFixes
                             CodeAction codeAction = CodeAction.Create(
                                 "Simplify boolean expression",
                                 cancellationToken => SimplifyBooleanExpressionRefactoring.RefactorAsync(document, binaryExpression, cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
-                    case DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse:
-                        {
-                            LiteralExpressionSyntax newNode = BooleanLiteralExpression(binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression));
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Replace expression with '{newNode}'",
-                                cancellationToken => document.ReplaceNodeAsync(binaryExpression, newNode.WithTriviaFrom(binaryExpression), cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

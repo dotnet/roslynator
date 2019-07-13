@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Analysis.Tests
 
         public override DiagnosticAnalyzer Analyzer { get; } = new ExpressionIsAlwaysEqualToTrueOrFalseAnalyzer();
 
-        public override CodeFixProvider FixProvider { get; } = new BinaryExpressionCodeFixProvider();
+        public override CodeFixProvider FixProvider { get; } = new ExpressionCodeFixProvider();
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
         public async Task Test_True()
@@ -168,6 +168,36 @@ class C
         if (false) { }
         if (false) { }
         if (false) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse)]
+        public async Task Test_NullCheck()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        if (s == null || [|s != null|] && s.Contains(""a""))
+        {
+        }
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+        string s = null;
+
+        if (s == null || s.Contains(""a""))
+        {
+        }
     }
 }
 ");

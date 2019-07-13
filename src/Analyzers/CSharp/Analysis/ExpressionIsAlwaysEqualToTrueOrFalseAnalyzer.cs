@@ -31,6 +31,7 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeLessThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression);
             context.RegisterSyntaxNodeAction(AnalyzeGreaterThanExpression, SyntaxKind.GreaterThanExpression);
             context.RegisterSyntaxNodeAction(AnalyzeGreaterThanOrEqualExpression, SyntaxKind.GreaterThanOrEqualExpression);
+            context.RegisterSyntaxNodeAction(AnalyzeBinaryExpression, SyntaxKind.LogicalOrExpression);
         }
 
         // x >= 0 (x >= 0) true
@@ -213,11 +214,50 @@ namespace Roslynator.CSharp.Analysis
             return false;
         }
 
+        private static void AnalyzeBinaryExpression(SyntaxNodeAnalysisContext context)
+        {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+            if (binaryExpression.ContainsDiagnostics)
+                return;
+
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression.Left, context.SemanticModel, allowedStyles: NullCheckStyles.CheckingNull);
+
+            ExpressionSyntax expression = nullCheck.Expression;
+
+            if (expression == null)
+                return;
+
+            ExpressionSyntax right = binaryExpression.Right.WalkDownParentheses();
+
+            if (!right.IsKind(SyntaxKind.LogicalAndExpression))
+                return;
+
+            var logicalAndExpression = (BinaryExpressionSyntax)right;
+
+            ExpressionChain.Enumerator en = logicalAndExpression.AsChain().GetEnumerator();
+
+            if (!en.MoveNext())
+                return;
+
+            NullCheckExpressionInfo nullCheck2 = SyntaxInfo.NullCheckExpressionInfo(en.Current, context.SemanticModel, allowedStyles: NullCheckStyles.CheckingNotNull);
+
+            if (!CSharpFactory.AreEquivalent(expression, nullCheck2.Expression))
+                return;
+
+            ReportDiagnostic(context, nullCheck2.NullCheckExpression, "true");
+        }
+
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, string booleanName)
+        {
+            ReportDiagnostic(context, context.Node, booleanName);
+        }
+
+        private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, SyntaxNode node, string booleanName)
         {
             DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.ExpressionIsAlwaysEqualToTrueOrFalse,
-                context.Node,
+                node,
                 booleanName);
         }
     }
