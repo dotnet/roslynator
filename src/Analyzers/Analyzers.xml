@@ -5396,4 +5396,28 @@ else
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="UseForStatementInsteadOfWhileStatement">
+    <Id>RCS1239</Id>
+    <Title>Use 'for' statement instead of 'while' statement.</Title>
+    <MessageFormat>Use 'for' statement instead of 'while' statement.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[int i = 0;
+while (x)
+{
+    M();
+    i++;
+}]]></Before>
+        <After><![CDATA[for (int i = 0; f; i++)
+{
+    M();
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

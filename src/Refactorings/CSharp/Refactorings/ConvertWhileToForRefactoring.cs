@@ -8,13 +8,15 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
+using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceWhileWithForRefactoring
+    internal static class ConvertWhileToForRefactoring
     {
-        public const string Title = "Replace while with for";
+        public const string Title = "Convert to 'for'";
 
         public static async Task ComputeRefactoringAsync(RefactoringContext context, StatementListSelection selectedStatements)
         {
@@ -26,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
                 context.RegisterRefactoring(
                     Title,
                     cancellationToken => RefactorAsync(context.Document, whileStatement, cancellationToken),
-                    RefactoringIdentifiers.ReplaceWhileWithFor);
+                    RefactoringIdentifiers.ConvertWhileToFor);
             }
             else
             {
@@ -36,7 +38,14 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                    if (VerifyLocalDeclarationStatements(selectedStatements, semanticModel, context.CancellationToken))
+                    if (FindLocalDeclarationStatementIndex(
+                        whileStatement,
+                        selectedStatements.UnderlyingList,
+                        selectedStatements.FirstIndex,
+                        selectedStatements.Count,
+                        mustBeReferencedInsideWhileStatement: false,
+                        semanticModel: semanticModel,
+                        cancellationToken: context.CancellationToken) == selectedStatements.FirstIndex)
                     {
                         List<LocalDeclarationStatementSyntax> localDeclarations = selectedStatements
                             .Take(selectedStatements.Count - 1)
@@ -46,7 +55,7 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             Title,
                             cancellationToken => RefactorAsync(context.Document, whileStatement, localDeclarations, cancellationToken),
-                            RefactoringIdentifiers.ReplaceWhileWithFor);
+                            RefactoringIdentifiers.ConvertWhileToFor);
                     }
                 }
                 else if (kind == SyntaxKind.ExpressionStatement)
@@ -61,25 +70,31 @@ namespace Roslynator.CSharp.Refactorings
                         context.RegisterRefactoring(
                             Title,
                             cancellationToken => RefactorAsync(context.Document, whileStatement, expressionStatements, cancellationToken),
-                            RefactoringIdentifiers.ReplaceWhileWithFor);
+                            RefactoringIdentifiers.ConvertWhileToFor);
                     }
                 }
             }
         }
 
-        private static bool VerifyLocalDeclarationStatements(
-            StatementListSelection selectedStatements,
+        private static int FindLocalDeclarationStatementIndex(
+            WhileStatementSyntax whileStatement,
+            SyntaxList<StatementSyntax> statements,
+            int startIndex,
+            int count,
+            bool mustBeReferencedInsideWhileStatement,
             SemanticModel semanticModel,
-            CancellationToken cancellationToken)
+            CancellationToken cancellationToken = default)
         {
+            int result = -1;
+            int whileStatementIndex = -1;
             ITypeSymbol typeSymbol = null;
 
-            for (int i = 0; i < selectedStatements.Count - 1; i++)
+            for (int i = count - 1; i >= startIndex; i--)
             {
-                StatementSyntax statement = selectedStatements[i];
+                StatementSyntax statement = statements[i];
 
                 if (!(statement is LocalDeclarationStatementSyntax localDeclaration))
-                    return false;
+                    return result;
 
                 VariableDeclarationSyntax declaration = localDeclaration.Declaration;
 
@@ -99,26 +114,37 @@ namespace Roslynator.CSharp.Refactorings
                     }
                     else if (!typeSymbol.Equals(symbol.Type))
                     {
-                        return false;
+                        return result;
                     }
 
-                    SyntaxList<StatementSyntax> statements = selectedStatements.UnderlyingList;
+                    ContainsLocalOrParameterReferenceWalker walker = ContainsLocalOrParameterReferenceWalker.GetInstance(symbol, semanticModel, cancellationToken);
 
-                    for (int j = selectedStatements.LastIndex + 1; j < statements.Count; j++)
+                    if (mustBeReferencedInsideWhileStatement)
                     {
-                        foreach (SyntaxNode node in statements[j].DescendantNodes())
+                        walker.VisitWhileStatement(whileStatement);
+
+                        if (!walker.Result)
                         {
-                            if (node.IsKind(SyntaxKind.IdentifierName)
-                                && symbol.Equals(semanticModel.GetSymbol(node, cancellationToken)))
-                            {
-                                return false;
-                            }
+                            ContainsLocalOrParameterReferenceWalker.Free(walker);
+                            return result;
                         }
                     }
+
+                    walker.Result = false;
+
+                    if (whileStatementIndex == -1)
+                        whileStatementIndex = statements.IndexOf(whileStatement);
+
+                    walker.VisitList(statements, whileStatementIndex + 1);
+
+                    if (ContainsLocalOrParameterReferenceWalker.GetResultAndFree(walker))
+                        return result;
+
+                    result = i;
                 }
             }
 
-            return true;
+            return result;
         }
 
         private static bool VerifyExpressionStatements(StatementListSelection selectedStatements)
@@ -137,15 +163,43 @@ namespace Roslynator.CSharp.Refactorings
             return true;
         }
 
-        public static Task<Document> RefactorAsync(
+        public static async Task<Document> RefactorAsync(
             Document document,
             WhileStatementSyntax whileStatement,
             CancellationToken cancellationToken)
         {
-            return document.ReplaceNodeAsync(
+            StatementListInfo statementsInfo = SyntaxInfo.StatementListInfo(whileStatement);
+
+            if (statementsInfo.Success)
+            {
+                SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
+                int index = FindLocalDeclarationStatementIndex(
+                    whileStatement,
+                    statementsInfo.Statements,
+                    startIndex: 0,
+                    count: statementsInfo.IndexOf(whileStatement),
+                    mustBeReferencedInsideWhileStatement: true,
+                    semanticModel: semanticModel,
+                    cancellationToken: cancellationToken);
+
+                if (index >= 0)
+                {
+                    List<LocalDeclarationStatementSyntax> localDeclarations = statementsInfo
+                        .Statements
+                        .Skip(index)
+                        .Take(statementsInfo.IndexOf(whileStatement) - 1)
+                        .Cast<LocalDeclarationStatementSyntax>()
+                        .ToList();
+
+                    return await RefactorAsync(document, whileStatement, localDeclarations, cancellationToken).ConfigureAwait(false);
+                }
+            }
+
+            return await document.ReplaceNodeAsync(
                 whileStatement,
-                ConvertWhileToFor(whileStatement),
-                cancellationToken);
+                SyntaxRefactorings.ConvertWhileStatementToForStatement(whileStatement),
+                cancellationToken).ConfigureAwait(false);
         }
 
         private static Task<Document> RefactorAsync(
@@ -158,7 +212,7 @@ namespace Roslynator.CSharp.Refactorings
                 .Select(f => f.Expression.TrimTrivia())
                 .ToSeparatedSyntaxList();
 
-            ForStatementSyntax forStatement = ConvertWhileToFor(whileStatement, initializers: initializers);
+            ForStatementSyntax forStatement = SyntaxRefactorings.ConvertWhileStatementToForStatement(whileStatement, initializers: initializers);
 
             return RefactorAsync(document, whileStatement, forStatement, expressionStatements, cancellationToken);
         }
@@ -181,7 +235,7 @@ namespace Roslynator.CSharp.Refactorings
 
             VariableDeclarationSyntax declaration = VariableDeclaration(type, variables);
 
-            ForStatementSyntax forStatement = ConvertWhileToFor(whileStatement, declaration);
+            ForStatementSyntax forStatement = SyntaxRefactorings.ConvertWhileStatementToForStatement(whileStatement, declaration);
 
             return RefactorAsync(document, whileStatement, forStatement, localDeclarations, cancellationToken);
         }
@@ -194,6 +248,7 @@ namespace Roslynator.CSharp.Refactorings
             CancellationToken cancellationToken) where TNode : StatementSyntax
         {
             forStatement = forStatement
+                .WithFormatterAnnotation()
                 .TrimLeadingTrivia()
                 .PrependToLeadingTrivia(list[0].GetLeadingTrivia());
 
@@ -208,62 +263,6 @@ namespace Roslynator.CSharp.Refactorings
                 .Concat(statements.Skip(index + list.Count + 1));
 
             return document.ReplaceStatementsAsync(statementsInfo, newStatements, cancellationToken);
-        }
-
-        private static ForStatementSyntax ConvertWhileToFor(
-            WhileStatementSyntax whileStatement,
-            VariableDeclarationSyntax declaration = default(VariableDeclarationSyntax),
-            SeparatedSyntaxList<ExpressionSyntax> initializers = default(SeparatedSyntaxList<ExpressionSyntax>))
-        {
-            var incrementors = default(SeparatedSyntaxList<ExpressionSyntax>);
-
-            StatementSyntax statement = whileStatement.Statement;
-
-            if (statement is BlockSyntax block)
-            {
-                incrementors = SeparatedList(GetIncrementors(block));
-
-                if (incrementors.Any())
-                {
-                    SyntaxList<StatementSyntax> statements = block.Statements;
-
-                    statement = block.WithStatements(List(statements.Take(statements.Count - incrementors.Count)));
-                }
-            }
-
-            return ForStatement(
-                declaration,
-                initializers,
-                whileStatement.Condition,
-                incrementors,
-                statement);
-        }
-
-        private static IEnumerable<ExpressionSyntax> GetIncrementors(BlockSyntax block)
-        {
-            SyntaxList<StatementSyntax> statements = block.Statements;
-
-            for (int i = statements.Count - 1; i >= 0; i--)
-            {
-                if (statements[i] is ExpressionStatementSyntax expressionStatement)
-                {
-                    ExpressionSyntax expression = expressionStatement.Expression;
-
-                    if (expression != null
-                        && CSharpFacts.IsIncrementOrDecrementExpression(expression.Kind()))
-                    {
-                        yield return expression;
-                    }
-                    else
-                    {
-                        yield break;
-                    }
-                }
-                else
-                {
-                    yield break;
-                }
-            }
         }
     }
 }

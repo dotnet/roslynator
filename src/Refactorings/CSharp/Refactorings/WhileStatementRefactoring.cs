@@ -17,13 +17,13 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ReplaceWhileWithDo);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertWhileToFor)
                 && (whileStatement.WhileKeyword.Span.Contains(context.Span)))
             {
                 context.RegisterRefactoring(
-                    ReplaceWhileWithForRefactoring.Title,
-                    cancellationToken => ReplaceWhileWithForRefactoring.RefactorAsync(context.Document, whileStatement, cancellationToken),
-                    RefactoringIdentifiers.ReplaceWhileWithFor);
+                    ConvertWhileToForRefactoring.Title,
+                    cancellationToken => ConvertWhileToForRefactoring.RefactorAsync(context.Document, whileStatement, cancellationToken),
+                    RefactoringIdentifiers.ConvertWhileToFor);
             }
         }
     }

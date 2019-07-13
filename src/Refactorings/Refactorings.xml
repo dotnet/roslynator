@@ -1214,7 +1214,7 @@ i--;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0151" Identifier="ReplaceWhileWithFor" Title="Replace while statement with for statement">
+  <Refactoring Id="RR0151" Identifier="ConvertWhileToFor" Title="Convert 'while' statement to 'for' statement">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>

@@ -43,6 +43,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string ConvertConditionalOperatorToIfElse = Prefix + "0120";
         public const string ConvertIfToConditionalOperator = Prefix + "0166";
         public const string ConvertStatementsToIfElse = Prefix + "0211";
+        public const string ConvertWhileToFor = Prefix + "0151";
         public const string CopyDocumentationCommentFromBaseMember = Prefix + "0029";
         public const string DuplicateArgument = Prefix + "0030";
         public const string DuplicateMember = Prefix + "0031";
@@ -177,7 +178,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiteral = Prefix + "0148";
         public const string ReplaceVerbatimStringLiteralWithRegularStringLiterals = Prefix + "0149";
         public const string ReplaceWhileWithDo = Prefix + "0150";
-        public const string ReplaceWhileWithFor = Prefix + "0151";
         public const string ReverseForLoop = Prefix + "0152";
         public const string SimplifyIf = Prefix + "0153";
         public const string SimplifyLambdaExpression = Prefix + "0154";
