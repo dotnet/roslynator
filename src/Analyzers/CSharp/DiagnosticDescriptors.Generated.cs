@@ -2595,5 +2595,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseBitShiftOperator}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1238</summary>
+        public static readonly DiagnosticDescriptor AvoidNestedConditionalOperators = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.AvoidNestedConditionalOperators, 
+            title:              "Avoid nested ?: operators.", 
+            messageFormat:      "Avoid nested ?: operators.", 
+            category:           DiagnosticCategories.Readability, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.AvoidNestedConditionalOperators}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

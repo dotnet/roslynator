@@ -40,6 +40,8 @@ namespace Roslynator.CSharp.Refactorings
         public const string CommentOutMember = Prefix + "0027";
         public const string CommentOutStatement = Prefix + "0028";
         public const string ConvertCommentToDocumentationComment = Prefix + "0192";
+        public const string ConvertConditionalOperatorToIfElse = Prefix + "0120";
+        public const string ConvertIfToConditionalOperator = Prefix + "0166";
         public const string ConvertStatementsToIfElse = Prefix + "0211";
         public const string CopyDocumentationCommentFromBaseMember = Prefix + "0029";
         public const string DuplicateArgument = Prefix + "0030";
@@ -146,7 +148,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceAsWithCast = Prefix + "0117";
         public const string ReplaceCastWithAs = Prefix + "0118";
         public const string ReplaceConditionalExpressionWithExpression = Prefix + "0119";
-        public const string ReplaceConditionalExpressionWithIfElse = Prefix + "0120";
         public const string ReplaceConstantWithField = Prefix + "0121";
         public const string ReplaceDoWithWhile = Prefix + "0123";
         public const string ReplaceEqualsExpressionWithStringEquals = Prefix + "0124";
@@ -194,7 +195,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string UncommentSingleLineComment = Prefix + "0163";
         public const string UseBitwiseOperationInsteadOfCallingHasFlag = Prefix + "0164";
         public const string UseCoalesceExpressionInsteadOfIf = Prefix + "0165";
-        public const string UseConditionalExpressionInsteadOfIf = Prefix + "0166";
         public const string UseConstantInsteadOfField = Prefix + "0128";
         public const string UseCSharp6DictionaryInitializer = Prefix + "0191";
         public const string UseElementAccessInsteadOfEnumerableMethod = Prefix + "0167";

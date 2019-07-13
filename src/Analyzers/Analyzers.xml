@@ -5368,4 +5368,32 @@ enum Foo
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="AvoidNestedConditionalOperators">
+    <Id>RCS1238</Id>
+    <Title>Avoid nested ?: operators.</Title>
+    <MessageFormat>Avoid nested ?: operators.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var x = (a) ? "a" : (b) ? "b" : "c";]]></Before>
+        <After><![CDATA[var x;
+if (a)
+{
+    x = "a";
+}
+else if (b)
+{
+    x = "b";
+}
+else
+{
+    x = "c";
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

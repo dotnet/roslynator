@@ -14,7 +14,7 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = "RCS1237";
+        = "RCS1238";
         protected override void Fill(ICollection<BaseModel> analyzers)
         {
             analyzers.Clear();
@@ -229,6 +229,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1235", "Optimize method call.", !IsEnabled("RCS1235")));
             analyzers.Add(new BaseModel("RCS1236", "Use exception filter.", !IsEnabled("RCS1236")));
             analyzers.Add(new BaseModel("RCS1237", "Use bit shift operator.", !IsEnabled("RCS1237")));
+            analyzers.Add(new BaseModel("RCS1238", "Avoid nested ?: operators.", !IsEnabled("RCS1238")));
         }
     }
 }

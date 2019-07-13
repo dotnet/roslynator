@@ -2,12 +2,17 @@
 
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CodeActions;
 
 namespace Roslynator.CSharp.Refactorings
 {
     internal static class ConditionalExpressionRefactoring
     {
+        internal static readonly string ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey = EquivalenceKey.Join(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse, "Recursive");
+
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, ConditionalExpressionSyntax conditionalExpression)
         {
             if (context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(conditionalExpression))
@@ -30,8 +35,24 @@ namespace Roslynator.CSharp.Refactorings
                     }
                 }
 
-                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceConditionalExpressionWithIfElse))
-                    await ReplaceConditionalExpressionWithIfElseRefactoring.ComputeRefactoringAsync(context, conditionalExpression).ConfigureAwait(false);
+                if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertConditionalOperatorToIfElse))
+                {
+                    SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                    (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalOperatorToIfElseRefactoring.ComputeRefactoring(
+                        context.Document,
+                        conditionalExpression,
+                        new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.Title, RefactoringIdentifiers.ConvertConditionalOperatorToIfElse),
+                        new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.RecursiveTitle, ConvertConditionalOperatorToIfElseRecursiveEquivalenceKey),
+                        semanticModel,
+                        context.CancellationToken);
+
+                    if (codeAction != null)
+                        context.RegisterRefactoring(codeAction);
+
+                    if (recursiveCodeAction != null)
+                        context.RegisterRefactoring(recursiveCodeAction);
+                }
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InvertConditionalExpression)

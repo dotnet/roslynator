@@ -19,7 +19,7 @@ namespace Roslynator.CSharp.Refactorings
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInCondition)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.WrapInTryCatch)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf)
-                || context.IsRefactoringEnabled(RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf)
+                || context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertIfToConditionalOperator)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.SimplifyIf)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.CheckExpressionForNull)
                 || context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceWhileWithFor);
@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsAnyRefactoringEnabled(
                 RefactoringIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                RefactoringIdentifiers.UseConditionalExpressionInsteadOfIf,
+                RefactoringIdentifiers.ConvertIfToConditionalOperator,
                 RefactoringIdentifiers.SimplifyIf))
             {
                 SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
