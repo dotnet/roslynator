@@ -13,7 +13,7 @@ namespace Roslynator.CSharp.Analysis.Tests
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ExpressionIsAlwaysEqualToTrueOrFalse;
 
-        public override DiagnosticAnalyzer Analyzer { get; } = new ExpressionIsAlwaysEqualToTrueOrFalseAnalyzer();
+        public override DiagnosticAnalyzer Analyzer { get; } = new RelationalOperatorAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new ExpressionCodeFixProvider();
 

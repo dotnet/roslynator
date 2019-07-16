@@ -2619,5 +2619,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UseForStatementInsteadOfWhileStatement}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1240</summary>
+        public static readonly DiagnosticDescriptor UnnecessaryOperator = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.UnnecessaryOperator, 
+            title:              "Operator is unnecessary.", 
+            messageFormat:      "The '{0}' operator is unnecessary.", 
+            category:           DiagnosticCategories.Redundancy, 
+            defaultSeverity:    DiagnosticSeverity.Info, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryOperator}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

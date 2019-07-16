@@ -5420,4 +5420,20 @@ while (x)
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="UnnecessaryOperator">
+    <Id>RCS1240</Id>
+    <Title>Operator is unnecessary.</Title>
+    <MessageFormat>The '{0}' operator is unnecessary.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[array.Length <= 0 [|Id|]]]></Before>
+        <After><![CDATA[array.Length == 0]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>
