@@ -174,7 +174,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceSwitchWithIf, "Replace switch with if", IsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, "Replace verbatim string literal with regular string literal", IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, "Replace verbatim string literal with regular string literals", IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceWhileWithDo, "Replace while statement with do statement", IsEnabled(RefactoringIdentifiers.ReplaceWhileWithDo)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToDo, "Convert 'while' statement to 'do' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToDo)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToFor, "Convert 'while' statement to 'for' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToFor)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReverseForLoop, "Reverse for loop", IsEnabled(RefactoringIdentifiers.ReverseForLoop)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.SimplifyIf, "Simplify if", IsEnabled(RefactoringIdentifiers.SimplifyIf)));

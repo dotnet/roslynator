@@ -1198,7 +1198,7 @@ i--;]]></After>
       <Syntax>multiline verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0150" Identifier="ReplaceWhileWithDo" Title="Replace while statement with do statement">
+  <Refactoring Id="RR0150" Identifier="ConvertWhileToDo" Title="Convert 'while' statement to 'do' statement">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
@@ -1208,9 +1208,12 @@ i--;]]></After>
         <Before><![CDATA[while (condition)
 {
 }]]></Before>
-        <After><![CDATA[do
+        <After><![CDATA[if (condition)
 {
-} while (condition);]]></After>
+  do
+  {
+  } while (condition);
+}]]></After>
       </Sample>
     </Samples>
   </Refactoring>
