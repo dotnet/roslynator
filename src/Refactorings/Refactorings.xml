@@ -918,12 +918,9 @@ return true;]]></After>
     </Syntaxes>
     <Span>selected true/false expression</Span>
   </Refactoring>
-  <Refactoring Id="RR0120" Identifier="ReplaceConditionalExpressionWithIfElse" Title="Replace ?: with if-else">
+  <Refactoring Id="RR0120" Identifier="ConvertConditionalOperatorToIfElse" Title="Convert ?: to if-else">
     <Syntaxes>
-      <Syntax>local declaration statement with conditional expression</Syntax>
-      <Syntax>assignment with conditional expression</Syntax>
-      <Syntax>return statement conditional expression</Syntax>
-      <Syntax>yield statement conditional expression</Syntax>
+      <Syntax>?: operator that is part of local declaration, assignment or (yield) return statement</Syntax>
     </Syntaxes>
     <Samples>
       <Sample>
@@ -1201,7 +1198,7 @@ i--;]]></After>
       <Syntax>multiline verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0150" Identifier="ReplaceWhileWithDo" Title="Replace while statement with do statement">
+  <Refactoring Id="RR0150" Identifier="ConvertWhileToDo" Title="Convert 'while' statement to 'do' statement">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
@@ -1211,13 +1208,16 @@ i--;]]></After>
         <Before><![CDATA[while (condition)
 {
 }]]></Before>
-        <After><![CDATA[do
+        <After><![CDATA[if (condition)
 {
-} while (condition);]]></After>
+  do
+  {
+  } while (condition);
+}]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0151" Identifier="ReplaceWhileWithFor" Title="Replace while statement with for statement">
+  <Refactoring Id="RR0151" Identifier="ConvertWhileToFor" Title="Convert 'while' statement to 'for' statement">
     <Syntaxes>
       <Syntax>while statement</Syntax>
     </Syntaxes>
@@ -1329,7 +1329,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>top if keyword or selected if statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0166" Identifier="UseConditionalExpressionInsteadOfIf" Title="Use conditional expression instead of if">
+  <Refactoring Id="RR0166" Identifier="ConvertIfToConditionalOperator" Title="Convert 'if' to ?:">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -2201,6 +2201,39 @@ else
         }
 }]]>
         </After>
+      </Sample>
+    </Samples>
+  </Refactoring>
+  <Refactoring Id="RR0213" Identifier="AddParameterToInterfaceMember" Title="Add parameter to interface member">
+    <Syntaxes>
+      <Syntax>method declaration</Syntax>
+      <Syntax>indexer declaration</Syntax>
+    </Syntaxes>
+    <Span>method name or 'this' keyword</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[interface IFoo
+{
+    void Bar(object p);
+}
+
+class Foo : IFoo
+{
+    public void Bar(object p, object p2)
+    {
+    }
+}]]></Before>
+        <After><![CDATA[interface IFoo
+{
+    void Bar(object p, object p2);
+}
+
+class Foo : IFoo
+{
+    public void Bar(object p, object p2)
+    {
+    }
+}]]></After>
       </Sample>
     </Samples>
   </Refactoring>

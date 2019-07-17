@@ -219,5 +219,9 @@ namespace Roslynator.CSharp
         public const string OptimizeMethodCall = "RCS1235";
         public const string UseExceptionFilter = "RCS1236";
         public const string UseBitShiftOperator = "RCS1237";
+        public const string AvoidNestedConditionalOperators = "RCS1238";
+        public const string UseForStatementInsteadOfWhileStatement = "RCS1239";
+        public const string UnnecessaryOperator = "RCS1240";
+        public const string ImplementNonGenericCounterpart = "RCS1241";
     }
 }

@@ -5368,4 +5368,247 @@ enum Foo
       </Sample>
     </Samples>
   </Analyzer>
+  <Analyzer Identifier="AvoidNestedConditionalOperators">
+    <Id>RCS1238</Id>
+    <Title>Avoid nested ?: operators.</Title>
+    <MessageFormat>Avoid nested ?: operators.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[var x = (a) ? "a" : (b) ? "b" : "c";]]></Before>
+        <After><![CDATA[var x;
+if (a)
+{
+    x = "a";
+}
+else if (b)
+{
+    x = "b";
+}
+else
+{
+    x = "c";
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UseForStatementInsteadOfWhileStatement">
+    <Id>RCS1239</Id>
+    <Title>Use 'for' statement instead of 'while' statement.</Title>
+    <MessageFormat>Use 'for' statement instead of 'while' statement.</MessageFormat>
+    <Category>Readability</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[int i = 0;
+while (x)
+{
+    M();
+    i++;
+}]]></Before>
+        <After><![CDATA[for (int i = 0; f; i++)
+{
+    M();
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="UnnecessaryOperator">
+    <Id>RCS1240</Id>
+    <Title>Operator is unnecessary.</Title>
+    <MessageFormat>The '{0}' operator is unnecessary.</MessageFormat>
+    <Category>Redundancy</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[array.Length <= 0 [|Id|]]]></Before>
+        <After><![CDATA[array.Length == 0]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
+  <Analyzer Identifier="ImplementNonGenericCounterpart">
+    <Id>RCS1241</Id>
+    <Title>Implement non-generic counterpart.</Title>
+    <MessageFormat>Implement {0} when implementing {0}&lt;T&gt;.</MessageFormat>
+    <Category>Design</Category>
+    <DefaultSeverity>Hidden</DefaultSeverity>
+    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <Summary>Publicly visible type that implements `IComparable&lt;T&gt;`, `IComparer&lt;T&gt;` or `IEqualityComparer&lt;T&gt;` should implement their non-generic counterpart.</Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[using System;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract class Comparable : IComparable<C> [|Id|]
+{
+    public abstract int CompareTo(C other);
+}]]></Before>
+        <After><![CDATA[using System;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract class Comparable : IComparable<C>, IComparable
+{
+    public abstract int CompareTo(C other);
+
+    public int CompareTo(object obj)
+    {
+        if (obj == null)
+        {
+            return 1;
+        }
+
+        if (obj is C x)
+        {
+            return CompareTo(x);
+        }
+
+        throw new ArgumentException("""", nameof(obj));
+    }
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract class Comparer : IComparer<C> [|Id|]
+{
+    public abstract int Compare(C x, C y);
+}]]></Before>
+        <After><![CDATA[using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract class Comparer : IComparer<C>, IComparer
+{
+    public abstract int Compare(C x, C y);
+
+    public int Compare(object x, object y)
+    {
+        if (x == y)
+        {
+            return 0;
+        }
+
+        if (x == null)
+        {
+            return -1;
+        }
+
+        if (y == null)
+        {
+            return 1;
+        }
+
+        if (x is global::C a
+            && y is global::C b)
+        {
+            return Compare(a, b);
+        }
+
+        if (x is IComparable ic)
+        {
+            return ic.CompareTo(y);
+        }
+
+        throw new ArgumentException("""", nameof(x));
+    }
+}]]></After>
+      </Sample>
+      <Sample>
+        <Before><![CDATA[using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract class EqualityComparer : IEqualityComparer<C> [|Id|]
+{
+    public abstract bool Equals(C x, C y);
+
+    public abstract int GetHashCode(C obj);
+}]]></Before>
+        <After><![CDATA[using System;
+using System.Collections;
+using System.Collections.Generic;
+
+public class C
+{
+}
+
+public abstract class EqualityComparer : IEqualityComparer<C>, IEqualityComparer
+{
+    public abstract bool Equals(C x, C y);
+
+    public abstract int GetHashCode(C obj);
+
+    new public bool Equals(object x, object y)
+    {
+        if (x == y)
+        {
+            return true;
+        }
+
+        if (x == null || y == null)
+        {
+            return false;
+        }
+
+        if (x is global::C a
+            && y is global::C b)
+        {
+            return Equals(a, b);
+        }
+
+        return x.Equals(y);
+    }
+
+    public int GetHashCode(object obj)
+    {
+        if (obj == null)
+        {
+            throw new ArgumentNullException(nameof(obj));
+        }
+
+        if (obj is C x)
+        {
+            return GetHashCode(x);
+        }
+
+        return obj.GetHashCode();
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Analyzer>
 </Analyzers>

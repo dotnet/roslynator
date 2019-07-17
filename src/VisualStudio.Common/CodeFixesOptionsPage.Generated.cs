@@ -19,6 +19,6 @@ namespace Roslynator.VisualStudio
             get;
         }
 
-        = CodeFixIdentifiers.ReplaceInvocationWithMemberAccessOrViceVersa;
+        = CodeFixIdentifiers.AddParameterToExplicitlyImplementedInterfaceMember;
     }
 }

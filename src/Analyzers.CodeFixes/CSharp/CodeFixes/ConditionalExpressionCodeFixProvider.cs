@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CodeActions;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
 
@@ -25,7 +26,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfConditionalExpression,
                     DiagnosticIdentifiers.SimplifyConditionalExpression,
                     DiagnosticIdentifiers.FormatConditionalExpression,
-                    DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression);
+                    DiagnosticIdentifiers.UseConditionalAccessInsteadOfConditionalExpression,
+                    DiagnosticIdentifiers.AvoidNestedConditionalOperators);
             }
         }
 
@@ -36,6 +38,8 @@ namespace Roslynator.CSharp.CodeFixes
             if (!TryFindFirstAncestorOrSelf(root, context.Span, out ConditionalExpressionSyntax conditionalExpression))
                 return;
 
+            Document document = context.Document;
+
             foreach (Diagnostic diagnostic in context.Diagnostics)
             {
                 switch (diagnostic.Id)
@@ -44,7 +48,7 @@ namespace Roslynator.CSharp.CodeFixes
                         {
                             CodeAction codeAction = CodeAction.Create(
                                 "Wrap condition in parentheses",
-                                cancellationToken => ParenthesizeConditionInConditionalExpressionRefactoring.RefactorAsync(context.Document, conditionalExpression, cancellationToken),
+                                cancellationToken => ParenthesizeConditionInConditionalExpressionRefactoring.RefactorAsync(document, conditionalExpression, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -57,7 +61,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 cancellationToken =>
                                 {
                                     return SimplifyNullCheckRefactoring.RefactorAsync(
-                                        context.Document,
+                                        document,
                                         conditionalExpression,
                                         cancellationToken);
                                 },
@@ -73,7 +77,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 cancellationToken =>
                                 {
                                     return SimplifyConditionalExpressionRefactoring.RefactorAsync(
-                                        context.Document,
+                                        document,
                                         conditionalExpression,
                                         cancellationToken);
                                 },
@@ -89,7 +93,7 @@ namespace Roslynator.CSharp.CodeFixes
                                 cancellationToken =>
                                 {
                                     return FormatConditionalExpressionRefactoring.RefactorAsync(
-                                        context.Document,
+                                        document,
                                         conditionalExpression,
                                         cancellationToken);
                                 },
@@ -105,13 +109,30 @@ namespace Roslynator.CSharp.CodeFixes
                                 cancellationToken =>
                                 {
                                     return SimplifyNullCheckRefactoring.RefactorAsync(
-                                        context.Document,
+                                        document,
                                         conditionalExpression,
                                         cancellationToken);
                                 },
                                 GetEquivalenceKey(diagnostic));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.AvoidNestedConditionalOperators:
+                        {
+                            SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                            (CodeAction codeAction, CodeAction recursiveCodeAction) = ConvertConditionalOperatorToIfElseRefactoring.ComputeRefactoring(
+                                document,
+                                conditionalExpression,
+                                data: default,
+                                recursiveData: new CodeActionData(ConvertConditionalOperatorToIfElseRefactoring.Title, GetEquivalenceKey(diagnostic)),
+                                semanticModel,
+                                context.CancellationToken);
+
+                            if (recursiveCodeAction != null)
+                                context.RegisterCodeFix(recursiveCodeAction, diagnostic);
+
                             break;
                         }
                 }

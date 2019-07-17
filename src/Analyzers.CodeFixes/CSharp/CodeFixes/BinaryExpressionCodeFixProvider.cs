@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System;
 using System.Collections.Immutable;
 using System.Composition;
 using System.Threading.Tasks;
@@ -11,6 +10,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
 using Roslynator.CSharp.Refactorings;
+using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.CodeFixes
@@ -36,8 +36,8 @@ namespace Roslynator.CSharp.CodeFixes
                     DiagnosticIdentifiers.JoinStringExpressions,
                     DiagnosticIdentifiers.UseExclusiveOrOperator,
                     DiagnosticIdentifiers.SimplifyBooleanExpression,
-                    DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse,
-                    DiagnosticIdentifiers.UseShortCircuitingOperator);
+                    DiagnosticIdentifiers.UseShortCircuitingOperator,
+                    DiagnosticIdentifiers.UnnecessaryOperator);
             }
         }
 
@@ -205,18 +205,6 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ExpressionIsAlwaysEqualToTrueOrFalse:
-                        {
-                            LiteralExpressionSyntax newNode = BooleanLiteralExpression(binaryExpression.IsKind(SyntaxKind.GreaterThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression));
-
-                            CodeAction codeAction = CodeAction.Create(
-                                $"Replace expression with '{newNode}'",
-                                cancellationToken => document.ReplaceNodeAsync(binaryExpression, newNode.WithTriviaFrom(binaryExpression), cancellationToken),
-                                GetEquivalenceKey(diagnostic));
-
-                            context.RegisterCodeFix(codeAction, diagnostic);
-                            break;
-                        }
                     case DiagnosticIdentifiers.UseShortCircuitingOperator:
                         {
                             SyntaxToken operatorToken = binaryExpression.OperatorToken;
@@ -227,15 +215,15 @@ namespace Roslynator.CSharp.CodeFixes
 
                             if (kind == SyntaxKind.BitwiseAndExpression)
                             {
-                                newToken = SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.AmpersandAmpersandToken, operatorToken.TrailingTrivia);
+                                newToken = Token(operatorToken.LeadingTrivia, SyntaxKind.AmpersandAmpersandToken, operatorToken.TrailingTrivia);
                             }
                             else if (kind == SyntaxKind.BitwiseOrExpression)
                             {
-                                newToken = SyntaxFactory.Token(operatorToken.LeadingTrivia, SyntaxKind.BarBarToken, operatorToken.TrailingTrivia);
+                                newToken = Token(operatorToken.LeadingTrivia, SyntaxKind.BarBarToken, operatorToken.TrailingTrivia);
                             }
 
                             CodeAction codeAction = CodeAction.Create(
-                                $"Use {newToken.ToString()} operator",
+                                $"Use '{newToken.ToString()}' operator",
                                 ct =>
                                 {
                                     BinaryExpressionSyntax newBinaryExpression = null;
@@ -248,6 +236,26 @@ namespace Roslynator.CSharp.CodeFixes
                                     {
                                         newBinaryExpression = LogicalOrExpression(binaryExpression.Left, newToken, binaryExpression.Right);
                                     }
+
+                                    return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
+                                },
+                                GetEquivalenceKey(diagnostic));
+
+                            context.RegisterCodeFix(codeAction, diagnostic);
+                            break;
+                        }
+                    case DiagnosticIdentifiers.UnnecessaryOperator:
+                        {
+                            CodeAction codeAction = CodeAction.Create(
+                                "Use '==' operator",
+                                ct =>
+                                {
+                                    SyntaxToken operatorToken = binaryExpression.OperatorToken;
+
+                                    BinaryExpressionSyntax newBinaryExpression = EqualsExpression(
+                                        binaryExpression.Left,
+                                        Token(operatorToken.LeadingTrivia, SyntaxKind.EqualsEqualsToken, operatorToken.TrailingTrivia),
+                                        binaryExpression.Right);
 
                                     return document.ReplaceNodeAsync(binaryExpression, newBinaryExpression, ct);
                                 },

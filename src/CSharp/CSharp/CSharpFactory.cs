@@ -1111,6 +1111,11 @@ namespace Roslynator.CSharp
                 SemicolonToken());
         }
 
+        internal static ThrowStatementSyntax ThrowNewStatement(TypeSyntax exceptionType)
+        {
+            return ThrowStatement(ObjectCreationExpression(exceptionType, ArgumentList()));
+        }
+
         public static ForStatementSyntax ForStatement(
             VariableDeclarationSyntax declaration,
             ExpressionSyntax condition,
@@ -1123,11 +1128,6 @@ namespace Roslynator.CSharp
                 condition: condition,
                 incrementors: SingletonSeparatedList(incrementor),
                 statement: statement);
-        }
-
-        internal static ThrowStatementSyntax ThrowNewStatement(TypeSyntax exceptionType)
-        {
-            return ThrowStatement(ObjectCreationExpression(exceptionType, ArgumentList()));
         }
         #endregion Statement
 
