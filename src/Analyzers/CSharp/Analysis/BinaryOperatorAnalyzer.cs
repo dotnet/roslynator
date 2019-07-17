@@ -13,7 +13,7 @@ using Roslynator.CSharp.Syntax;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class RelationalOperatorAnalyzer : BaseDiagnosticAnalyzer
+    public class BinaryOperatorAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
@@ -43,6 +43,7 @@ namespace Roslynator.CSharp.Analysis
 
                 startContext.RegisterSyntaxNodeAction(AnalyzeLessThanOrEqualExpression, SyntaxKind.LessThanOrEqualExpression);
                 startContext.RegisterSyntaxNodeAction(AnalyzeGreaterThanOrEqualExpression, SyntaxKind.GreaterThanOrEqualExpression);
+                startContext.RegisterSyntaxNodeAction(AnalyzeLogicalOrExpression, SyntaxKind.LogicalOrExpression);
             });
         }
 
@@ -261,12 +262,51 @@ namespace Roslynator.CSharp.Analysis
             return false;
         }
 
+        private static void AnalyzeLogicalOrExpression(SyntaxNodeAnalysisContext context)
+        {
+            var binaryExpression = (BinaryExpressionSyntax)context.Node;
+
+            if (binaryExpression.ContainsDiagnostics)
+                return;
+
+            NullCheckExpressionInfo nullCheck = SyntaxInfo.NullCheckExpressionInfo(binaryExpression.Left, context.SemanticModel, allowedStyles: NullCheckStyles.CheckingNull);
+
+            ExpressionSyntax expression = nullCheck.Expression;
+
+            if (expression == null)
+                return;
+
+            ExpressionSyntax right = binaryExpression.Right.WalkDownParentheses();
+
+            if (!right.IsKind(SyntaxKind.LogicalAndExpression))
+                return;
+
+            var logicalAndExpression = (BinaryExpressionSyntax)right;
+
+            ExpressionChain.Enumerator en = logicalAndExpression.AsChain().GetEnumerator();
+
+            if (!en.MoveNext())
+                return;
+
+            NullCheckExpressionInfo nullCheck2 = SyntaxInfo.NullCheckExpressionInfo(en.Current, context.SemanticModel, allowedStyles: NullCheckStyles.CheckingNotNull);
+
+            if (!CSharpFactory.AreEquivalent(expression, nullCheck2.Expression))
+                return;
+
+            ReportExpressionAlwaysEqualToTrueOrFalse(context, nullCheck2.NullCheckExpression, "true");
+        }
+
         private static void ReportExpressionAlwaysEqualToTrueOrFalse(SyntaxNodeAnalysisContext context, string booleanName)
+        {
+            ReportExpressionAlwaysEqualToTrueOrFalse(context, context.Node, booleanName);
+        }
+
+        private static void ReportExpressionAlwaysEqualToTrueOrFalse(SyntaxNodeAnalysisContext context, SyntaxNode node, string booleanName)
         {
             DiagnosticHelpers.ReportDiagnostic(
                 context,
                 DiagnosticDescriptors.ExpressionIsAlwaysEqualToTrueOrFalse,
-                context.Node,
+                node,
                 booleanName);
         }
 
