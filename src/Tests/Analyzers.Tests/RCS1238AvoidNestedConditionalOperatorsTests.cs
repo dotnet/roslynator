@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1235DevAvoidNestedConditionalOperatorsTests : AbstractCSharpFixVerifier
+    public class RCS1238AvoidNestedConditionalOperatorsTests : AbstractCSharpFixVerifier
     {
         public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.AvoidNestedConditionalOperators;
 
