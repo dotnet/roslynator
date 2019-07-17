@@ -2631,5 +2631,17 @@ namespace Roslynator.CSharp
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.UnnecessaryOperator}", 
             customTags:         Array.Empty<string>());
 
+        /// <summary>RCS1241</summary>
+        public static readonly DiagnosticDescriptor ImplementNonGenericCounterpart = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ImplementNonGenericCounterpart, 
+            title:              "Implement non-generic counterpart.", 
+            messageFormat:      "Implement {0} when implementing {0}<T>.", 
+            category:           DiagnosticCategories.Design, 
+            defaultSeverity:    DiagnosticSeverity.Hidden, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ImplementNonGenericCounterpart}", 
+            customTags:         Array.Empty<string>());
+
     }
 }

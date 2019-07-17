@@ -89,9 +89,7 @@ namespace Roslynator.CSharp.CodeFixes
                         BinaryExpressionSyntax coalesceExpression = CreateCoalesceExpression(
                             left.WithoutLeadingTrivia().WithTrailingTrivia(Space),
                             right.WithLeadingTrivia(Space),
-                            semanticModel.GetTypeSymbol(left, cancellationToken),
-                            ifStatement.SpanStart,
-                            semanticModel);
+                            semanticModel.GetTypeSymbol(left, cancellationToken));
 
                         AssignmentExpressionSyntax newAssignment = assignment.WithRight(coalesceExpression.WithTriviaFrom(right));
 
@@ -159,9 +157,7 @@ namespace Roslynator.CSharp.CodeFixes
             BinaryExpressionSyntax newNode = CreateCoalesceExpression(
                 expression.WithoutTrailingTrivia(),
                 assignment.Right.WithTrailingTrivia(expression.GetTrailingTrivia()),
-                semanticModel.GetTypeSymbol(assignment.Left, cancellationToken),
-                statement.SpanStart,
-                semanticModel);
+                semanticModel.GetTypeSymbol(assignment.Left, cancellationToken));
 
             StatementSyntax newStatement = statement.ReplaceNode(expression, newNode);
 
@@ -187,14 +183,12 @@ namespace Roslynator.CSharp.CodeFixes
         private static BinaryExpressionSyntax CreateCoalesceExpression(
             ExpressionSyntax left,
             ExpressionSyntax right,
-            ITypeSymbol targetType,
-            int position,
-            SemanticModel semanticModel)
+            ITypeSymbol targetType)
         {
             if (targetType?.SupportsExplicitDeclaration() == true)
             {
                 right = CastExpression(
-                    targetType.ToMinimalTypeSyntax(semanticModel, position),
+                    targetType.ToTypeSyntax().WithSimplifierAnnotation(),
                     right.Parenthesize()).WithSimplifierAnnotation();
             }
 

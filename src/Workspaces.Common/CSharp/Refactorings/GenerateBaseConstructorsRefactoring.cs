@@ -68,7 +68,7 @@ namespace Roslynator.CSharp.Refactorings
                 parameters.Add(Parameter(
                     default(SyntaxList<AttributeListSyntax>),
                     CreateModifiers(parameterSymbol),
-                    parameterSymbol.Type.ToMinimalTypeSyntax(semanticModel, position),
+                    parameterSymbol.Type.ToTypeSyntax().WithSimplifierAnnotation(),
                     Identifier(parameterSymbol.Name),
                     @default));
 

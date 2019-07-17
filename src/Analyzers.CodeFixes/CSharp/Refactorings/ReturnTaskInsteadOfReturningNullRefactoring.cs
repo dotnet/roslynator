@@ -158,7 +158,7 @@ namespace Roslynator.CSharp.Refactorings
 
             ITypeSymbol typeArgument = typeSymbol.TypeArguments[0];
 
-            TypeSyntax type = typeArgument.ToMinimalTypeSyntax(semanticModel, position);
+            TypeSyntax type = typeArgument.ToTypeSyntax().WithSimplifierAnnotation();
 
             ExpressionSyntax defaultValue = typeArgument.GetDefaultValueSyntax(document.GetDefaultSyntaxOptions(), type);
 

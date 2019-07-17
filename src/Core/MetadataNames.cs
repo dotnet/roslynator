@@ -9,6 +9,10 @@ namespace Roslynator
         public static readonly MetadataName System_Attribute = MetadataName.Parse("System.Attribute");
         public static readonly MetadataName System_AttributeUsageAttribute = MetadataName.Parse("System.AttributeUsageAttribute");
         public static readonly MetadataName System_Collections_Generic = MetadataName.Parse("System.Collections.Generic");
+        public static readonly MetadataName System_Collections_IComparer = MetadataName.Parse("System.Collections.IComparer");
+        public static readonly MetadataName System_Collections_IEqualityComparer = MetadataName.Parse("System.Collections.IEqualityComparer");
+        public static readonly MetadataName System_Collections_Generic_IComparer_T = MetadataName.Parse("System.Collections.Generic.IComparer`1");
+        public static readonly MetadataName System_Collections_Generic_IEqualityComparer_T = MetadataName.Parse("System.Collections.Generic.IEqualityComparer`1");
         public static readonly MetadataName System_Collections_Generic_IEnumerable_T = MetadataName.Parse("System.Collections.Generic.IEnumerable`1");
         public static readonly MetadataName System_Collections_Generic_List_T = MetadataName.Parse("System.Collections.Generic.List`1");
         public static readonly MetadataName System_Collections_Generic_Dictionary_T2 = MetadataName.Parse("System.Collections.Generic.Dictionary`2");
@@ -26,6 +30,8 @@ namespace Roslynator
         public static readonly MetadataName System_Func_T2 = MetadataName.Parse("System.Func`2");
         public static readonly MetadataName System_Func_T3 = MetadataName.Parse("System.Func`3");
         public static readonly MetadataName System_IEquatable_T = MetadataName.Parse("System.IEquatable`1");
+        public static readonly MetadataName System_IComparable = MetadataName.Parse("System.IComparable");
+        public static readonly MetadataName System_IComparable_T = MetadataName.Parse("System.IComparable`1");
         public static readonly MetadataName System_Linq_Enumerable = MetadataName.Parse("System.Linq.Enumerable");
         public static readonly MetadataName System_Linq_Expressions_Expression_T = MetadataName.Parse("System.Linq.Expressions.Expression`1");
         public static readonly MetadataName System_Linq_ImmutableArrayExtensions = MetadataName.Parse("System.Linq.ImmutableArrayExtensions");

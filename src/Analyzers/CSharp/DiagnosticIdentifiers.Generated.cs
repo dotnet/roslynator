@@ -222,5 +222,6 @@ namespace Roslynator.CSharp
         public const string AvoidNestedConditionalOperators = "RCS1238";
         public const string UseForStatementInsteadOfWhileStatement = "RCS1239";
         public const string UnnecessaryOperator = "RCS1240";
+        public const string ImplementNonGenericCounterpart = "RCS1241";
     }
 }
