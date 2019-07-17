@@ -540,6 +540,13 @@
     Message="'{0}': interface members cannot have a definition"
     HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0531" />
   <Diagnostic
+    Id="CS0539"
+    Identifier="ExplicitInterfaceDeclarationIsNotMemberOfInterface"
+    Severity="Error"
+    Title="'member' in explicit interface declaration is not a member of interface"
+    Message="'{0}' in explicit interface declaration is not a member of interface"
+    HelpUrl="http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0539" />
+  <Diagnostic
     Id="CS0541"
     Identifier="ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct"
     Severity="Error"

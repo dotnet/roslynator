@@ -2204,4 +2204,37 @@ else
       </Sample>
     </Samples>
   </Refactoring>
+  <Refactoring Id="RR0213" Identifier="AddParameterToInterfaceMember" Title="Add parameter to interface member">
+    <Syntaxes>
+      <Syntax>method declaration</Syntax>
+      <Syntax>indexer declaration</Syntax>
+    </Syntaxes>
+    <Span>method name or 'this' keyword</Span>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[interface IFoo
+{
+    void Bar(object p);
+}
+
+class Foo : IFoo
+{
+    public void Bar(object p, object p2)
+    {
+    }
+}]]></Before>
+        <After><![CDATA[interface IFoo
+{
+    void Bar(object p, object p2);
+}
+
+class Foo : IFoo
+{
+    public void Bar(object p, object p2)
+    {
+    }
+}]]></After>
+      </Sample>
+    </Samples>
+  </Refactoring>
 </Refactorings>

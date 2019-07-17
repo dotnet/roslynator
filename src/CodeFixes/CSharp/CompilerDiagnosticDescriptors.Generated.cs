@@ -932,6 +932,18 @@ namespace Roslynator.CSharp
             helpLinkUri:        "http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0531", 
             customTags:         WellKnownDiagnosticTags.Compiler);
 
+        /// <summary>CS0539</summary>
+        public static readonly DiagnosticDescriptor ExplicitInterfaceDeclarationIsNotMemberOfInterface = new DiagnosticDescriptor(
+            id:                 CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationIsNotMemberOfInterface, 
+            title:              "'member' in explicit interface declaration is not a member of interface", 
+            messageFormat:      "'{0}' in explicit interface declaration is not a member of interface", 
+            category:           "Compiler", 
+            defaultSeverity:    DiagnosticSeverity.Error, 
+            isEnabledByDefault: true, 
+            description:        null, 
+            helpLinkUri:        "http://docs.microsoft.com/en-us/dotnet/csharp/misc/cs0539", 
+            customTags:         WellKnownDiagnosticTags.Compiler);
+
         /// <summary>CS0541</summary>
         public static readonly DiagnosticDescriptor ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct = new DiagnosticDescriptor(
             id:                 CompilerDiagnosticIdentifiers.ExplicitInterfaceDeclarationCanOnlyBeDeclaredInClassOrStruct, 

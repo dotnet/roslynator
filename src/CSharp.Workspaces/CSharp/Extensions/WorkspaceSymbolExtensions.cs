@@ -82,5 +82,64 @@ namespace Roslynator.CSharp
                 return DefaultExpression(GetTypeSyntax());
             }
         }
+
+        internal static ExpressionSyntax GetDefaultValueSyntax(this IParameterSymbol parameterSymbol, SymbolDisplayFormat format = null)
+        {
+            if (parameterSymbol == null)
+                throw new ArgumentNullException(nameof(parameterSymbol));
+
+            if (!parameterSymbol.HasExplicitDefaultValue)
+                throw new ArgumentException("Parameter does not specify default value.", nameof(parameterSymbol));
+
+            object value = parameterSymbol.ExplicitDefaultValue;
+
+            ITypeSymbol typeSymbol = parameterSymbol.Type;
+
+            if (typeSymbol.TypeKind == TypeKind.Enum)
+            {
+                if (value == null)
+                    return NullLiteralExpression();
+
+                IFieldSymbol fieldSymbol = FindFieldWithConstantValue();
+
+                TypeSyntax type = typeSymbol.ToTypeSyntax(format);
+
+                if (fieldSymbol != null)
+                {
+                    return SimpleMemberAccessExpression(type, IdentifierName(fieldSymbol.Name));
+                }
+                else
+                {
+                    return CastExpression(type, LiteralExpression(value));
+                }
+            }
+
+            if (value == null
+                && !typeSymbol.IsReferenceTypeOrNullableType())
+            {
+                return DefaultExpression(typeSymbol.ToTypeSyntax(format));
+            }
+
+            return LiteralExpression(value);
+
+            IFieldSymbol FindFieldWithConstantValue()
+            {
+                foreach (ISymbol symbol in typeSymbol.GetMembers())
+                {
+                    if (symbol.Kind == SymbolKind.Field)
+                    {
+                        var fieldSymbol = (IFieldSymbol)symbol;
+
+                        if (fieldSymbol.HasConstantValue
+                            && object.Equals(fieldSymbol.ConstantValue, value))
+                        {
+                            return fieldSymbol;
+                        }
+                    }
+                }
+
+                return null;
+            }
+        }
     }
 }

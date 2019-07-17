@@ -11,6 +11,7 @@ using Microsoft.CodeAnalysis.Rename;
 using Roslynator.CSharp.Refactorings.MakeMemberAbstract;
 using Roslynator.CSharp.Refactorings.MakeMemberVirtual;
 using Roslynator.CSharp.Refactorings.ReplaceMethodWithProperty;
+using Microsoft.CodeAnalysis.CodeActions;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -69,6 +70,19 @@ namespace Roslynator.CSharp.Refactorings
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RenameMethodAccordingToTypeName))
                 await RenameMethodAccoringToTypeNameAsync(context, methodDeclaration).ConfigureAwait(false);
+
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddParameterToInterfaceMember)
+                && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(methodDeclaration.Identifier))
+            {
+                SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
+
+                foreach (CodeAction codeAction in AddParameterToInterfaceMemberRefactoring.ComputeRefactoringForImplicitImplementation(
+                    new CommonFixContext(context.Document, RefactoringIdentifiers.AddParameterToInterfaceMember, semanticModel, context.CancellationToken),
+                    methodDeclaration))
+                {
+                    context.RegisterRefactoring(codeAction);
+                }
+            }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.AddMemberToInterface)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(methodDeclaration.Identifier))

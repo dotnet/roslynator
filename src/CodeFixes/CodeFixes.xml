@@ -654,4 +654,9 @@
       <Id>CS1061</Id>
     </FixableDiagnosticIds>
   </CodeFix>
+  <CodeFix Id="RCF0116" Identifier="AddParameterToExplicitlyImplementedInterfaceMember" Title="Add parameter to explicitly implemented interface member">
+    <FixableDiagnosticIds>
+      <Id>CS0539</Id>
+    </FixableDiagnosticIds>
+  </CodeFix>
 </CodeFixes>

@@ -118,5 +118,6 @@ namespace Roslynator.CSharp
         public const string ReplaceCharacterLiteralWithStringLiteral = Prefix + "0113";
         public const string MakeFieldWritable = Prefix + "0114";
         public const string ReplaceInvocationWithMemberAccessOrViceVersa = Prefix + "0115";
+        public const string AddParameterToExplicitlyImplementedInterfaceMember = Prefix + "0116";
     }
 }
