@@ -4,9 +4,14 @@ namespace Roslynator.CSharp.Analysis
 {
     internal class AnalysisOptions
     {
-        public virtual bool CanContainDirectives
+        public AnalysisOptions(bool canContainDirectives = false, bool canContainComments = true)
         {
-            get { return false; }
+            CanContainDirectives = canContainDirectives;
+            CanContainComments = canContainComments;
         }
+
+        public bool CanContainDirectives { get; }
+
+        public bool CanContainComments { get; }
     }
 }

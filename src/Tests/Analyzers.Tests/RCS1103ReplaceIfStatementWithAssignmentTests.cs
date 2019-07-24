@@ -28,6 +28,7 @@ class C
         bool a = false;
         int x = 0;
 
+        //x
         [|if (x >= 1)
         {
             a = false;
@@ -46,7 +47,57 @@ class C
         bool a = false;
         int x = 0;
 
+        //x
         a = x < 1;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithAssignment)]
+        public async Task TestNoDiagnostic_ContainsComment()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool a = false, b = false;
+
+        if (a)
+        {
+            b = true;
+        }
+        else
+        {
+            //x
+            b = false;
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithAssignment)]
+        public async Task TestNoDiagnostic_ContainsDirective()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        bool a = false, b = false;
+
+        if (a)
+        {
+            b = true;
+        }
+        else
+        {
+#if DEBUG
+            b = false;
+#endif
+        }
     }
 }
 ");

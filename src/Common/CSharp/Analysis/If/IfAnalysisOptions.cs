@@ -14,6 +14,7 @@ namespace Roslynator.CSharp.Analysis.If
             bool useConditionalExpression,
             bool useBooleanExpression,
             bool useExpression)
+            : base(canContainComments: false)
         {
             UseCoalesceExpression = useCoalesceExpression;
             UseConditionalExpression = useConditionalExpression;
