@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 using static Roslynator.CSharp.CSharpFactory;
 using static Roslynator.CSharp.CSharpFacts;
 
@@ -55,7 +56,7 @@ namespace Roslynator.CSharp.Analysis.If
 
             if (elseClause != null)
             {
-                if (!options.CheckSpanDirectives(ifStatement))
+                if (!CheckDirectivesAndComments(ifStatement, options))
                     return Empty;
 
                 StatementSyntax statement1 = ifStatement.SingleNonBlockStatementOrDefault();
@@ -455,7 +456,7 @@ namespace Roslynator.CSharp.Analysis.If
             if (!string.Equals(identifier1, declarator.Identifier.ValueText, StringComparison.Ordinal))
                 return Empty;
 
-            if (!options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(localDeclarationStatement.SpanStart, ifStatement.Span.End)))
+            if (!CheckDirectivesAndComments(localDeclarationStatement, ifStatement, options))
                 return Empty;
 
             if (IsNullLiteralConvertedToNullableOfT(assignment1.Right, semanticModel, cancellationToken)
@@ -511,7 +512,7 @@ namespace Roslynator.CSharp.Analysis.If
                     return Empty;
             }
 
-            if (!options.CheckSpanDirectives(ifStatement.Parent, TextSpan.FromBounds(expressionStatement.SpanStart, ifStatement.Span.End)))
+            if (!CheckDirectivesAndComments(expressionStatement, ifStatement, options))
                 return Empty;
 
             ExpressionSyntax whenTrue = assignment1.Right;
@@ -548,7 +549,7 @@ namespace Roslynator.CSharp.Analysis.If
             if (statement?.IsKind(SyntaxKind.ReturnStatement) != true)
                 return Empty;
 
-            if (!options.CheckSpanDirectives(ifStatement, TextSpan.FromBounds(ifStatement.SpanStart, returnStatement.Span.End)))
+            if (!CheckDirectivesAndComments(ifStatement, returnStatement, options))
                 return Empty;
 
             return Analyze(
@@ -618,6 +619,77 @@ namespace Roslynator.CSharp.Analysis.If
                     .ConvertedType?
                     .OriginalDefinition
                     .SpecialType == SpecialType.System_Nullable_T;
+        }
+
+        public static bool CheckDirectivesAndComments(
+            SyntaxNode node1,
+            SyntaxNode node2,
+            AnalysisOptions options)
+        {
+            return CheckDirectivesAndComments(node1, options, includeTrailingTrivia: true)
+                && CheckDirectivesAndComments(node2, options, includeLeadingTrivia: true);
+        }
+
+        public static bool CheckDirectivesAndComments(
+            SyntaxNode node,
+            AnalysisOptions options,
+            bool includeLeadingTrivia = false,
+            bool includeTrailingTrivia = false)
+        {
+            if (!options.CanContainDirectives)
+            {
+                if (includeLeadingTrivia)
+                {
+                    if (includeTrailingTrivia)
+                    {
+                        if (node.ContainsDirectives)
+                            return false;
+                    }
+                    else if (node.SpanOrLeadingTriviaContainsDirectives())
+                    {
+                        return false;
+                    }
+                }
+                else if (includeTrailingTrivia)
+                {
+                    if (node.SpanOrTrailingTriviaContainsDirectives())
+                        return false;
+                }
+                else if (node.SpanContainsDirectives())
+                {
+                    return false;
+                }
+            }
+
+            if (!options.CanContainComments)
+            {
+                TextSpan span;
+
+                if (includeLeadingTrivia)
+                {
+                    if (includeTrailingTrivia)
+                    {
+                        span = node.FullSpan;
+                    }
+                    else
+                    {
+                        span = TextSpan.FromBounds(node.FullSpan.Start, node.Span.End);
+                    }
+                }
+                else if (includeTrailingTrivia)
+                {
+                    span = TextSpan.FromBounds(node.Span.Start, node.FullSpan.End);
+                }
+                else
+                {
+                    span = node.Span;
+                }
+
+                if (ContainsCommentWalker.ContainsComment(node, span))
+                    return false;
+            }
+
+            return true;
         }
     }
 }

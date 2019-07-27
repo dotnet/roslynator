@@ -57,19 +57,19 @@ namespace Roslynator.CSharp.Analysis
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
-            foreach (IfAnalysis refactoring in IfAnalysis.Analyze(ifStatement, AnalysisOptions, context.SemanticModel, context.CancellationToken))
+            foreach (IfAnalysis analysis in IfAnalysis.Analyze(ifStatement, AnalysisOptions, context.SemanticModel, context.CancellationToken))
             {
-                Debug.Assert(refactoring.Kind == IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToAssignmentWithExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToAssignmentWithCondition
-                    || refactoring.Kind == IfAnalysisKind.IfElseToReturnWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfReturnToReturnWithCoalesceExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToReturnWithExpression
-                    || refactoring.Kind == IfAnalysisKind.IfElseToYieldReturnWithExpression
-                    || refactoring.Kind == IfAnalysisKind.IfReturnToReturnWithExpression, refactoring.Kind.ToString());
+                Debug.Assert(analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression
+                    || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithExpression
+                    || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCondition
+                    || analysis.Kind == IfAnalysisKind.IfElseToReturnWithCoalesceExpression
+                    || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression
+                    || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithCoalesceExpression
+                    || analysis.Kind == IfAnalysisKind.IfElseToReturnWithExpression
+                    || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithExpression
+                    || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithExpression, analysis.Kind.ToString());
 
-                switch (refactoring.Kind)
+                switch (analysis.Kind)
                 {
                     case IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression:
                     case IfAnalysisKind.IfElseToReturnWithCoalesceExpression:
