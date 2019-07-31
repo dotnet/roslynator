@@ -192,12 +192,14 @@ namespace Roslynator.CSharp.Refactorings
 
             if (codeActions != null)
             {
-                return new OneOrMany<CodeAction>(codeActions.ToImmutableArray());
+                return OneOrMany.Create(codeActions.ToImmutableArray());
             }
-            else
+            else if (singleCodeAction != null)
             {
-                return new OneOrMany<CodeAction>(singleCodeAction);
+                return OneOrMany.Create(singleCodeAction);
             }
+
+            return default;
         }
 
         private static ISymbol FindInterfaceMember(
