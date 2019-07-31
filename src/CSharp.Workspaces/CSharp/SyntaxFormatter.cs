@@ -23,7 +23,11 @@ namespace Roslynator.CSharp
             TNode node,
             CancellationToken cancellationToken = default(CancellationToken)) where TNode : SyntaxNode
         {
-            TNode newNode = node.ReplaceWhitespace(ElasticSpace).WithFormatterAnnotation();
+            TextSpan span = (node.GetTrailingTrivia().IsEmptyOrWhitespace())
+                ? TextSpan.FromBounds(node.SpanStart, node.FullSpan.End)
+                : node.Span;
+
+            TNode newNode = node.ReplaceWhitespace(ElasticSpace, span).WithFormatterAnnotation();
 
             return document.ReplaceNodeAsync(node, newNode, cancellationToken);
         }
