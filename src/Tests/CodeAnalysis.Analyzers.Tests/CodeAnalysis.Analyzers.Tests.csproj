@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <AssemblyName>Roslynator.CodeAnalysis.Analyzers.Tests</AssemblyName>
+    <RootNamespace>Roslynator.CodeAnalysis.Analyzers.Tests</RootNamespace>
+    <CodeAnalysisRuleSet>..\tests.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\..\Roslynator.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>latest</LangVersion>
+    <IsPackable>false</IsPackable>
+    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.9.0" />
+    <PackageReference Include="xunit" Version="2.4.1" />
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+    </PackageReference>
+    <DotNetCliToolReference Include="dotnet-xunit" Version="2.3.1" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Workspaces" Version="2.8.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\CodeAnalysis.Analyzers\CodeAnalysis.Analyzers.csproj" />
+    <ProjectReference Include="..\..\CodeAnalysis.Analyzers.CodeFixes\CodeAnalysis.Analyzers.CodeFixes.csproj" />
+    <ProjectReference Include="..\TestFramework.CSharp\TestFramework.CSharp.csproj" />
+  </ItemGroup>
+
+</Project>

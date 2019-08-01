@@ -9,6 +9,8 @@ set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuil
  --analyzer-assemblies ^
   "..\src\CommandLine\bin\Debug\net472\Roslynator.CSharp.Analyzers.dll" ^
   "..\src\CommandLine\bin\Debug\net472\Roslynator.CSharp.Analyzers.CodeFixes.dll" ^
+  "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CodeAnalysis.Analyzers.dll" ^
+  "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CodeAnalysis.Analyzers.CodeFixes.dll" ^
  --format ^
  --verbosity d ^
  --file-log "roslynator.log" ^

@@ -47,8 +47,7 @@ namespace Roslynator.Metadata
                     element.Element("Summary")?.Value.NormalizeNewLine(),
                     element.Element("Remarks")?.Value.NormalizeNewLine(),
                     LoadSamples(element)?.Select(f => new SampleMetadata(f.Before.Replace("[|Id|]", id), f.After)),
-                    LoadLinks(element),
-                    element.AttributeValueAsBooleanOrDefault("IsDevelopment"));
+                    LoadLinks(element));
             }
         }
 
@@ -77,8 +76,7 @@ namespace Roslynator.Metadata
                         .Select(f => new SyntaxMetadata(f.Value)),
                     LoadImages(element),
                     LoadSamples(element),
-                    LoadLinks(element),
-                    element.AttributeValueAsBooleanOrDefault("IsDevelopment"));
+                    LoadLinks(element));
             }
         }
 

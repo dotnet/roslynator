@@ -52,6 +52,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "VisualBasic.Workspaces", "VisualBasic.Workspaces\VisualBasic.Workspaces.csproj", "{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers", "CodeAnalysis.Analyzers\CodeAnalysis.Analyzers.csproj", "{DD41BB93-B9AF-4DC9-ACBE-1431892F6F12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers.CodeFixes", "CodeAnalysis.Analyzers.CodeFixes\CodeAnalysis.Analyzers.CodeFixes.csproj", "{A379B425-6C22-46A8-A030-94027CA969B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -110,6 +114,14 @@ Global
 		{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF0AE2F5-2FCD-49AB-8B6E-CEA7A4F0AB3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD41BB93-B9AF-4DC9-ACBE-1431892F6F12}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD41BB93-B9AF-4DC9-ACBE-1431892F6F12}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD41BB93-B9AF-4DC9-ACBE-1431892F6F12}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD41BB93-B9AF-4DC9-ACBE-1431892F6F12}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A379B425-6C22-46A8-A030-94027CA969B7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A379B425-6C22-46A8-A030-94027CA969B7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A379B425-6C22-46A8-A030-94027CA969B7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A379B425-6C22-46A8-A030-94027CA969B7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
