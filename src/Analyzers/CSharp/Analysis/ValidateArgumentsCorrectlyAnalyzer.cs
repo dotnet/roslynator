@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Analysis
             if (parameterList == null)
                 return;
 
-            if (parameterList.Parameters.Count == 0)
+            if (!parameterList.Parameters.Any())
                 return;
 
             SyntaxList<StatementSyntax> statements = body.Statements;

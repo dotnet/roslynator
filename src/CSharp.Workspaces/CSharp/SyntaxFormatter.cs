@@ -50,7 +50,7 @@ namespace Roslynator.CSharp
             CancellationToken cancellationToken = default(CancellationToken))
         {
             InitializerExpressionSyntax newInitializer = initializer
-                .ReplaceWhitespace(ElasticSpace, TextSpan.FromBounds(initializer.Span.Start, initializer.Span.End))
+                .ReplaceWhitespace(ElasticSpace, TextSpan.FromBounds(initializer.SpanStart, initializer.Span.End))
                 .WithFormatterAnnotation();
 
             newInitializer = newInitializer.WithOpenBraceToken(newInitializer.OpenBraceToken.WithoutLeadingTrivia().WithTrailingTrivia(Space));
@@ -61,7 +61,7 @@ namespace Roslynator.CSharp
 
             if (expressions.Any())
             {
-                ExpressionSyntax firstExpression = expressions.First();
+                ExpressionSyntax firstExpression = expressions[0];
 
                 newInitializer = newInitializer.WithExpressions(expressions.Replace(firstExpression, firstExpression.WithoutLeadingTrivia()));
 

@@ -103,10 +103,8 @@ namespace Roslynator.CSharp.Refactorings
 
                     ExpressionSyntax left = assignment.Left;
 
-                    if (left.IsKind(SyntaxKind.ImplicitElementAccess))
+                    if (left is ImplicitElementAccessSyntax implicitElementAccess)
                     {
-                        var implicitElementAccess = (ImplicitElementAccessSyntax)left;
-
                         BracketedArgumentListSyntax argumentList = implicitElementAccess.ArgumentList;
 
                         if (argumentList?.Arguments.Any() == true)

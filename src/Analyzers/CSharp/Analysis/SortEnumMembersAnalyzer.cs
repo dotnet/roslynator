@@ -50,7 +50,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (count > 1)
             {
-                IFieldSymbol firstField = semanticModel.GetDeclaredSymbol(members.First(), cancellationToken);
+                IFieldSymbol firstField = semanticModel.GetDeclaredSymbol(members[0], cancellationToken);
 
                 if (firstField?.HasConstantValue == true)
                 {

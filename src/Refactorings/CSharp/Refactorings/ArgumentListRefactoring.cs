@@ -15,7 +15,7 @@ namespace Roslynator.CSharp.Refactorings
         {
             SeparatedSyntaxList<ArgumentSyntax> arguments = argumentList.Arguments;
 
-            if (arguments.Count == 0)
+            if (!arguments.Any())
                 return;
 
             await AddOrRemoveParameterNameRefactoring.ComputeRefactoringsAsync(context, argumentList).ConfigureAwait(false);

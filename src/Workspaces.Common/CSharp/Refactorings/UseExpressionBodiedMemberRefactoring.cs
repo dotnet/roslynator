@@ -114,8 +114,7 @@ namespace Roslynator.CSharp.Refactorings
             BlockSyntax body = accessorDeclaration.Body;
 
             return body != null
-                && (span == null
-                    || span.Value.IsEmptyAndContainedInSpanOrBetweenSpans(accessorDeclaration)
+                && (span?.IsEmptyAndContainedInSpanOrBetweenSpans(accessorDeclaration) != false
                     || span.Value.IsEmptyAndContainedInSpanOrBetweenSpans(body))
                 && !accessorDeclaration.AttributeLists.Any()
                 && ((accessorDeclaration.IsKind(SyntaxKind.GetAccessorDeclaration))

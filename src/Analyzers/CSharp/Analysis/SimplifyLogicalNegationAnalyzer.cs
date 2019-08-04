@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Analysis
             if (parent.Kind() != SyntaxKind.LogicalNotExpression)
                 return;
 
-            SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(invocationInfo.Arguments.First().Expression.WalkDownParentheses());
+            SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(invocationInfo.Arguments[0].Expression.WalkDownParentheses());
 
             if (!lambdaInfo.Success)
                 return;

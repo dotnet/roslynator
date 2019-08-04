@@ -348,7 +348,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public MemberDeclarationSyntax First()
         {
-            return Members.First();
+            return Members[0];
         }
 
         /// <summary>

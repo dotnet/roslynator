@@ -56,19 +56,12 @@ namespace Roslynator.CommandLine
                                 break;
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            if (ex is IOException
+                        catch (Exception ex) when (ex is IOException
                                 || ex is SecurityException
                                 || ex is UnauthorizedAccessException)
-                            {
-                                WriteLine(ex.Message, ConsoleColor.DarkGray, Verbosity.Diagnostic);
-                                continue;
-                            }
-                            else
-                            {
-                                throw;
-                            }
+                        {
+                            WriteLine(ex.Message, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                            continue;
                         }
 
                         if (analyzerAssembly?.IsEmpty == false)
@@ -87,20 +80,13 @@ namespace Roslynator.CommandLine
                 {
                     return LoadFile(filePath, loadAnalyzers, loadFixers, language);
                 }
-                catch (Exception ex)
-                {
-                    if (ex is FileLoadException
+                catch (Exception ex) when (ex is FileLoadException
                         || ex is BadImageFormatException
                         || ex is SecurityException)
-                    {
-                        WriteLine($"Cannot load assembly '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                {
+                    WriteLine($"Cannot load assembly '{filePath}'", ConsoleColor.DarkGray, Verbosity.Diagnostic);
 
-                        return null;
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    return null;
                 }
             }
         }

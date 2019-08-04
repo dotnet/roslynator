@@ -63,10 +63,8 @@ namespace Roslynator.CodeAnalysis.CSharp
 
                                     SimpleNameSyntax name2 = memberAccess2.Name;
 
-                                    if (!name2.IsKind(SyntaxKind.IdentifierName))
+                                    if (!(name2 is IdentifierNameSyntax identifierName2))
                                         break;
-
-                                    var identifierName2 = (IdentifierNameSyntax)name2;
 
                                     if (!string.Equals(identifierName2.Identifier.ValueText, "Span", StringComparison.Ordinal))
                                         break;

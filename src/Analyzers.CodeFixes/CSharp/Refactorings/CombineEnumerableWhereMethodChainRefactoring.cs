@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static ExpressionSyntax GetCondition(InvocationExpressionSyntax invocation)
         {
-            var lambda = (LambdaExpressionSyntax)invocation.ArgumentList.Arguments.First().Expression;
+            var lambda = (LambdaExpressionSyntax)invocation.ArgumentList.Arguments[0].Expression;
 
             return (ExpressionSyntax)lambda.Body;
         }

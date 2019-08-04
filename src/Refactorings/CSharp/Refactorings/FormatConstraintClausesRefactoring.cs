@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
             else if (constraintClause.DescendantTrivia(constraintClause.Span).All(f => f.IsWhitespaceOrEndOfLineTrivia())
-                && constraintClauses.First().GetFirstToken().GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
+                && constraintClauses[0].GetFirstToken().GetPreviousToken().TrailingTrivia.IsEmptyOrWhitespace())
             {
                 context.RegisterRefactoring(
                     "Format constraints on a single line",
@@ -57,7 +57,7 @@ namespace Roslynator.CSharp.Refactorings
 
             SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;
 
-            SyntaxToken previousToken = declaration.FindToken(constraintClauses.First().FullSpan.Start - 1);
+            SyntaxToken previousToken = declaration.FindToken(constraintClauses[0].FullSpan.Start - 1);
 
             declaration = declaration.ReplaceToken(previousToken, previousToken.WithTrailingTrivia(TriviaList(ElasticSpace)));
 
@@ -87,7 +87,7 @@ namespace Roslynator.CSharp.Refactorings
             SyntaxNode declaration = info.Node;
             SyntaxList<TypeParameterConstraintClauseSyntax> constraintClauses = info.ConstraintClauses;
 
-            TypeParameterConstraintClauseSyntax first = constraintClauses.First();
+            TypeParameterConstraintClauseSyntax first = constraintClauses[0];
 
             SyntaxToken previousToken = declaration.FindToken(first.FullSpan.Start - 1);
 

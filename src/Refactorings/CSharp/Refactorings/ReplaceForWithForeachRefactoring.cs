@@ -37,7 +37,7 @@ namespace Roslynator.CSharp.Refactorings
             var memberAccessExpression = (MemberAccessExpressionSyntax)condition.Right;
             ExpressionSyntax expression = memberAccessExpression.Expression;
 
-            ISymbol symbol = semanticModel.GetDeclaredSymbol(forStatement.Declaration.Variables.First(), cancellationToken);
+            ISymbol symbol = semanticModel.GetDeclaredSymbol(forStatement.Declaration.Variables[0], cancellationToken);
             ImmutableArray<SyntaxNode> nodes = await SyntaxFinder.FindReferencesAsync(symbol, document, cancellationToken: cancellationToken).ConfigureAwait(false);
 
             StatementSyntax newStatement = statement.ReplaceNodes(
@@ -157,10 +157,8 @@ namespace Roslynator.CSharp.Refactorings
 
             parent = parent.Parent;
 
-            if (parent?.IsKind(SyntaxKind.ElementAccessExpression) != true)
+            if (!(parent is ElementAccessExpressionSyntax elementAccess))
                 return false;
-
-            var elementAccess = (ElementAccessExpressionSyntax)parent;
 
             ExpressionSyntax expression = elementAccess.Expression;
 

@@ -133,7 +133,7 @@ namespace Roslynator.CSharp.Refactorings
             }
             else
             {
-                StatementSyntax first = statements.First();
+                StatementSyntax first = statements[0];
                 StatementSyntax last = statements.Last();
 
                 SyntaxTriviaList leadingTrivia = keyword.LeadingTrivia

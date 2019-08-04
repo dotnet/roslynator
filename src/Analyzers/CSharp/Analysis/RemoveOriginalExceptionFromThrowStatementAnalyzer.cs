@@ -48,10 +48,9 @@ namespace Roslynator.CSharp.Analysis
             //XPERF: SyntaxWalker
             foreach (SyntaxNode node in catchClause.Block.DescendantNodes(descendIntoChildren: f => f.Kind() != SyntaxKind.CatchClause))
             {
-                if (node.Kind() != SyntaxKind.ThrowStatement)
+                if (!(node is ThrowStatementSyntax throwStatement))
                     continue;
 
-                var throwStatement = (ThrowStatementSyntax)node;
                 ExpressionSyntax expression = throwStatement.Expression;
 
                 if (expression == null)

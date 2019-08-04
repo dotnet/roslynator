@@ -73,12 +73,10 @@ namespace Roslynator.CSharp.CodeFixes
 
             int index = statements.IndexOf(statement);
 
-            switch (statement.Kind())
+            switch (statement)
             {
-                case SyntaxKind.IfStatement:
+                case IfStatementSyntax ifStatement:
                     {
-                        var ifStatement = (IfStatementSyntax)statement;
-
                         var expressionStatement = (ExpressionStatementSyntax)ifStatement.SingleNonBlockStatementOrDefault();
 
                         var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
@@ -110,22 +108,17 @@ namespace Roslynator.CSharp.CodeFixes
 
                         return await document.ReplaceNodeAsync(ifStatement, newNode, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.ExpressionStatement:
+                case ExpressionStatementSyntax expressionStatement:
                     {
-                        var expressionStatement = (ExpressionStatementSyntax)statement;
-
                         var assignment = (AssignmentExpressionSyntax)expressionStatement.Expression;
 
                         return await RefactorAsync(document, expressionStatement, (IfStatementSyntax)statements[index + 1], index, statementsInfo, assignment.Right, semanticModel, cancellationToken).ConfigureAwait(false);
                     }
-                case SyntaxKind.LocalDeclarationStatement:
+                case LocalDeclarationStatementSyntax localDeclaration:
                     {
-                        var localDeclaration = (LocalDeclarationStatementSyntax)statement;
-
                         ExpressionSyntax value = localDeclaration
                             .Declaration
-                            .Variables
-                            .First()
+                            .Variables[0]
                             .Initializer
                             .Value;
 

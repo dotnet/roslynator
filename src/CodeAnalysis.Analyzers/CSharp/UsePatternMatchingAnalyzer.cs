@@ -229,10 +229,8 @@ namespace Roslynator.CodeAnalysis.CSharp
                 if (invocationInfo.NameText != "Kind")
                     return null;
 
-                if (!invocationInfo.Expression.IsKind(SyntaxKind.IdentifierName))
+                if (!(invocationInfo.Expression is IdentifierNameSyntax identifierName))
                     return null;
-
-                var identifierName = (IdentifierNameSyntax)invocationInfo.Expression;
 
                 return identifierName.Identifier.ValueText;
             }

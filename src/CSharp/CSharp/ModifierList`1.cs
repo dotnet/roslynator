@@ -343,7 +343,7 @@ namespace Roslynator.CSharp
             if (!modifiers.Any())
                 return node;
 
-            SyntaxToken firstModifier = modifiers.First();
+            SyntaxToken firstModifier = modifiers[0];
 
             if (modifiers.Count == 1)
                 return Remove(node, firstModifier);

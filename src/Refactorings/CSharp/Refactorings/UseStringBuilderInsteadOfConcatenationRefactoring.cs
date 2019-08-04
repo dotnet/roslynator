@@ -71,10 +71,8 @@ namespace Roslynator.CSharp.Refactorings
             ExpressionSyntax newInvocation = null;
             foreach (ExpressionSyntax expression in concatenationInfo.AsChain())
             {
-                if (expression.IsKind(SyntaxKind.InterpolatedStringExpression))
+                if (expression is InterpolatedStringExpressionSyntax interpolatedString)
                 {
-                    var interpolatedString = (InterpolatedStringExpressionSyntax)expression;
-
                     bool isVerbatim = interpolatedString.IsVerbatim();
 
                     SyntaxList<InterpolatedStringContentSyntax> contents = interpolatedString.Contents;

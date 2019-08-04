@@ -678,7 +678,7 @@ namespace Roslynator.CSharp.Analysis.If
                 }
                 else if (includeTrailingTrivia)
                 {
-                    span = TextSpan.FromBounds(node.Span.Start, node.FullSpan.End);
+                    span = TextSpan.FromBounds(node.SpanStart, node.FullSpan.End);
                 }
                 else
                 {

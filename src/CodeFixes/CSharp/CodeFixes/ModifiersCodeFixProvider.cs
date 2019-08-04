@@ -291,7 +291,7 @@ namespace Roslynator.CSharp.CodeFixes
                             {
                                 var methodDeclaration = (MethodDeclarationSyntax)node;
 
-                                ParameterSyntax parameter = methodDeclaration.ParameterList.Parameters.First();
+                                ParameterSyntax parameter = methodDeclaration.ParameterList.Parameters[0];
 
                                 SyntaxToken modifier = parameter.Modifiers.Find(SyntaxKind.ThisKeyword);
 
@@ -302,10 +302,8 @@ namespace Roslynator.CSharp.CodeFixes
                         }
                     case CompilerDiagnosticIdentifiers.ExtensionMethodMustBeDefinedInNonGenericStaticClass:
                         {
-                            if (!node.IsKind(SyntaxKind.ClassDeclaration))
+                            if (!(node is ClassDeclarationSyntax classDeclaration))
                                 return;
-
-                            var classDeclaration = (ClassDeclarationSyntax)node;
 
                             if (Settings.IsEnabled(diagnostic.Id, CodeFixIdentifiers.AddStaticModifier)
                                 && !classDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))

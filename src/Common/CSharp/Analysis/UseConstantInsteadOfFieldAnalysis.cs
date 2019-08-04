@@ -59,7 +59,7 @@ namespace Roslynator.CSharp.Analysis
 
             SeparatedSyntaxList<VariableDeclaratorSyntax> declarators = fieldDeclaration.Declaration.Variables;
 
-            VariableDeclaratorSyntax firstDeclarator = declarators.First();
+            VariableDeclaratorSyntax firstDeclarator = declarators[0];
 
             var fieldSymbol = (IFieldSymbol)semanticModel.GetDeclaredSymbol(firstDeclarator, cancellationToken);
 
@@ -139,20 +139,9 @@ namespace Roslynator.CSharp.Analysis
             {
                 CancellationToken.ThrowIfCancellationRequested();
 
-                expression = expression?.WalkDownParentheses();
-
-                if (expression.IsKind(SyntaxKind.IdentifierName))
-                {
-                    var identifierName = (IdentifierNameSyntax)expression;
-
-                    if (string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
-                        && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true)
-                    {
-                        return true;
-                    }
-                }
-
-                return false;
+                return expression?.WalkDownParentheses() is IdentifierNameSyntax identifierName
+                    && string.Equals(identifierName.Identifier.ValueText, FieldSymbol.Name, StringComparison.Ordinal)
+                    && SemanticModel.GetSymbol(identifierName, CancellationToken)?.Equals(FieldSymbol) == true;
             }
 
             public override void VisitArgument(ArgumentSyntax node)

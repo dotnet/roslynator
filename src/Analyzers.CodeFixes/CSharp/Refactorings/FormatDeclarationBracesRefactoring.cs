@@ -23,28 +23,22 @@ namespace Roslynator.CSharp.Refactorings
 
         private static MemberDeclarationSyntax GetNewDeclaration(MemberDeclarationSyntax declaration)
         {
-            switch (declaration.Kind())
+            switch (declaration)
             {
-                case SyntaxKind.ClassDeclaration:
+                case ClassDeclarationSyntax classDeclaration:
                     {
-                        var classDeclaration = (ClassDeclarationSyntax)declaration;
-
                         return classDeclaration
                             .WithOpenBraceToken(classDeclaration.OpenBraceToken.WithoutTrailingTrivia())
                             .WithCloseBraceToken(classDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));
                     }
-                case SyntaxKind.StructDeclaration:
+                case StructDeclarationSyntax structDeclaration:
                     {
-                        var structDeclaration = (StructDeclarationSyntax)declaration;
-
                         return structDeclaration
                             .WithOpenBraceToken(structDeclaration.OpenBraceToken.WithoutTrailingTrivia())
                             .WithCloseBraceToken(structDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));
                     }
-                case SyntaxKind.InterfaceDeclaration:
+                case InterfaceDeclarationSyntax interfaceDeclaration:
                     {
-                        var interfaceDeclaration = (InterfaceDeclarationSyntax)declaration;
-
                         return interfaceDeclaration
                             .WithOpenBraceToken(interfaceDeclaration.OpenBraceToken.WithoutTrailingTrivia())
                             .WithCloseBraceToken(interfaceDeclaration.CloseBraceToken.WithLeadingTrivia(CSharpFactory.NewLine()));

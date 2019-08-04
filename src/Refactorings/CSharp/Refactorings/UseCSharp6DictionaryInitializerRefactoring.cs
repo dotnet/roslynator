@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.Refactorings
             if (!(initializer.Parent is ObjectCreationExpressionSyntax objectCreationExpression))
                 return;
 
-            var complexElementInitializer = (InitializerExpressionSyntax)expressions.First();
+            var complexElementInitializer = (InitializerExpressionSyntax)expressions[0];
 
             SeparatedSyntaxList<ExpressionSyntax> expressions2 = complexElementInitializer.Expressions;
 

@@ -140,17 +140,10 @@ namespace Roslynator.VisualStudio
             {
                 settings.Save(dialog.FileName);
             }
-            catch (Exception ex)
-            {
-                if (ex is IOException
+            catch (Exception ex) when (ex is IOException
                     || ex is UnauthorizedAccessException)
-                {
-                    ShowErrorMessage(ex);
-                }
-                else
-                {
-                    throw;
-                }
+            {
+                ShowErrorMessage(ex);
             }
         }
 
@@ -172,19 +165,12 @@ namespace Roslynator.VisualStudio
             {
                 settings = Settings.Load(dialog.FileName);
             }
-            catch (Exception ex)
-            {
-                if (ex is IOException
+            catch (Exception ex) when (ex is IOException
                     || ex is UnauthorizedAccessException
                     || ex is XmlException)
-                {
-                    ShowErrorMessage(ex);
-                    return;
-                }
-                else
-                {
-                    throw;
-                }
+            {
+                ShowErrorMessage(ex);
+                return;
             }
 
             AbstractPackage package = AbstractPackage.Instance;

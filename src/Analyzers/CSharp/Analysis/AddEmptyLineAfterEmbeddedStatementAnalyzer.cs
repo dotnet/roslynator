@@ -121,10 +121,8 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxNode parent = containingStatement.Parent;
 
-            if (parent?.Kind() != SyntaxKind.Block)
+            if (!(parent is BlockSyntax block))
                 return;
-
-            var block = (BlockSyntax)parent;
 
             SyntaxList<StatementSyntax> statements = block.Statements;
 

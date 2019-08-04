@@ -196,7 +196,7 @@ namespace Roslynator.CSharp.CodeFixes
                     .WithTriviaFrom(property.ExpressionBody);
             }
 
-            if (accessorList.Accessors.All(f => f.AttributeLists.Count == 0)
+            if (accessorList.Accessors.All(f => !f.AttributeLists.Any())
                 && accessorList.DescendantTrivia().All(f => f.IsWhitespaceOrEndOfLineTrivia()))
             {
                 accessorList = accessorList.RemoveWhitespace();

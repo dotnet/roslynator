@@ -954,9 +954,7 @@ namespace Roslynator.Documentation
             int bracketsDepth = 0;
             int angleBracketsDepth = 0;
 
-            int i = 0;
-
-            while (i < parts.Count)
+            for (int i = 0; i < parts.Count; i++)
             {
                 SymbolDisplayPart part = parts[i];
 
@@ -1030,8 +1028,6 @@ namespace Roslynator.Documentation
                             }
                     }
                 }
-
-                i++;
             }
 
             return -1;

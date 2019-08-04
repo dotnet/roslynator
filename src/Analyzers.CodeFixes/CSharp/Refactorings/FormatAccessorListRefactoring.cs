@@ -23,12 +23,10 @@ namespace Roslynator.CSharp.Refactorings
             {
                 SyntaxNode parent = accessorList.Parent;
 
-                switch (parent.Kind())
+                switch (parent)
                 {
-                    case SyntaxKind.PropertyDeclaration:
+                    case PropertyDeclarationSyntax propertyDeclaration:
                         {
-                            var propertyDeclaration = (PropertyDeclarationSyntax)parent;
-
                             TextSpan span = TextSpan.FromBounds(
                                 propertyDeclaration.Identifier.Span.End,
                                 accessorList.CloseBraceToken.SpanStart);
@@ -39,10 +37,8 @@ namespace Roslynator.CSharp.Refactorings
 
                             return await document.ReplaceNodeAsync(propertyDeclaration, newNode, cancellationToken).ConfigureAwait(false);
                         }
-                    case SyntaxKind.IndexerDeclaration:
+                    case IndexerDeclarationSyntax indexerDeclaration:
                         {
-                            var indexerDeclaration = (IndexerDeclarationSyntax)parent;
-
                             TextSpan span = TextSpan.FromBounds(
                                 indexerDeclaration.ParameterList.CloseBracketToken.Span.End,
                                 accessorList.CloseBraceToken.SpanStart);
@@ -78,7 +74,7 @@ namespace Roslynator.CSharp.Refactorings
 
             if (accessors.Count > 1)
             {
-                AccessorDeclarationSyntax accessor = accessors.First();
+                AccessorDeclarationSyntax accessor = accessors[0];
 
                 SyntaxTriviaList trailingTrivia = accessor.GetTrailingTrivia();
 

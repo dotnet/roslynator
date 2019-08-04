@@ -47,7 +47,7 @@ namespace Roslynator.CSharp.Refactorings
 
             var builder = new SyntaxNodeTextBuilder(binaryExpression, StringBuilderCache.GetInstance(binaryExpression.FullSpan.Length));
 
-            builder.Append(TextSpan.FromBounds(binaryExpression.FullSpan.Start, left.Span.Start));
+            builder.Append(TextSpan.FromBounds(binaryExpression.FullSpan.Start, left.SpanStart));
 
             int parenDiff = GetParenTokenDiff();
 
@@ -106,7 +106,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 int count = 0;
 
-                foreach (SyntaxToken token in binaryExpression.DescendantTokens(TextSpan.FromBounds(left.Span.Start, expression2.Span.End)))
+                foreach (SyntaxToken token in binaryExpression.DescendantTokens(TextSpan.FromBounds(left.SpanStart, expression2.Span.End)))
                 {
                     SyntaxKind tokenKind = token.Kind();
 

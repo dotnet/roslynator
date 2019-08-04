@@ -161,18 +161,11 @@ namespace Roslynator.CommandLine
 
                 return projectOrSolution;
             }
-            catch (Exception ex)
-            {
-                if (ex is FileNotFoundException
+            catch (Exception ex) when (ex is FileNotFoundException
                     || ex is InvalidOperationException)
-                {
-                    WriteLine(ex.ToString(), Verbosity.Quiet);
-                    return default;
-                }
-                else
-                {
-                    throw;
-                }
+            {
+                WriteLine(ex.ToString(), Verbosity.Quiet);
+                return default;
             }
         }
 

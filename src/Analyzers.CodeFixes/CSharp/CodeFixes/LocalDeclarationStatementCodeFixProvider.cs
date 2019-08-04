@@ -98,8 +98,7 @@ namespace Roslynator.CSharp.CodeFixes
             VariableDeclarationSyntax variableDeclaration = localDeclaration.Declaration;
 
             ExpressionSyntax expression = variableDeclaration
-                .Variables
-                .First()
+                .Variables[0]
                 .Initializer
                 .Value;
 

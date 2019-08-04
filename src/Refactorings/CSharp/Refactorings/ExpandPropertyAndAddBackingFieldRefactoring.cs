@@ -117,7 +117,7 @@ namespace Roslynator.CSharp.Refactorings
                 propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
             }
 
-            if (newSetter?.Body.Statements.First().Kind() != SyntaxKind.IfStatement)
+            if (newSetter?.Body.Statements[0].Kind() != SyntaxKind.IfStatement)
             {
                 AccessorListSyntax newAccessorList = propertyDeclaration.AccessorList
                     .RemoveWhitespace()

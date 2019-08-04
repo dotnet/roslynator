@@ -178,10 +178,8 @@ namespace Roslynator.CSharp.Analysis
 
             protected override void VisitType(TypeSyntax node)
             {
-                if (node.IsKind(SyntaxKind.IdentifierName))
+                if (node is IdentifierNameSyntax identifierName)
                 {
-                    var identifierName = (IdentifierNameSyntax)node;
-
                     if (string.Equals(Symbol.Name, identifierName.Identifier.ValueText, StringComparison.Ordinal)
                         && SemanticModel
                             .GetSymbol(identifierName, CancellationToken)?

@@ -65,10 +65,8 @@ namespace Roslynator.CSharp.CodeFixes
 
         private static (bool containsReturnAwait, bool containsAwaitStatement) AnalyzeAwaitExpressions(SyntaxNode node)
         {
-            if (node.IsKind(SyntaxKind.MethodDeclaration))
+            if (node is MethodDeclarationSyntax methodDeclaration)
             {
-                var methodDeclaration = (MethodDeclarationSyntax)node;
-
                 ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
                 if (expressionBody != null)
@@ -96,21 +94,17 @@ namespace Roslynator.CSharp.CodeFixes
 
             foreach (SyntaxNode descendant in node.DescendantNodes(node.Span, f => !CSharpFacts.IsFunction(f.Kind())))
             {
-                switch (descendant.Kind())
+                switch (descendant)
                 {
-                    case SyntaxKind.ReturnStatement:
+                    case ReturnStatementSyntax returnStatement:
                         {
-                            var returnStatement = (ReturnStatementSyntax)descendant;
-
                             if (returnStatement.Expression?.WalkDownParentheses().Kind() == SyntaxKind.AwaitExpression)
                                 containsReturnAwait = true;
 
                             break;
                         }
-                    case SyntaxKind.ExpressionStatement:
+                    case ExpressionStatementSyntax expressionStatement:
                         {
-                            var expressionStatement = (ExpressionStatementSyntax)descendant;
-
                             if (expressionStatement.Expression?.Kind() == SyntaxKind.AwaitExpression)
                                 containsAwaitStatement = true;
 
