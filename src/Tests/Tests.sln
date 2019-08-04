@@ -51,7 +51,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestFramework.VisualBasic",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Core", "..\Workspaces.Core\Workspaces.Core.csproj", "{52DB5118-8DEE-4C82-96BB-23B01BD10CEC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Analyzers.CodeAnalysis.Tests", "Analyzers.CodeAnalysis.Tests\Analyzers.CodeAnalysis.Tests.csproj", "{FCCEC782-83A2-42E3-AAD1-34E71575D4A2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers.Tests", "CodeAnalysis.Analyzers.Tests\CodeAnalysis.Analyzers.Tests.csproj", "{FCCEC782-83A2-42E3-AAD1-34E71575D4A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
