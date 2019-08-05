@@ -1,4 +1,4 @@
-﻿# How to Enable Roslynator for Visual Studio Code
+﻿# How to: Enable Roslynator for Visual Studio Code
 
 ## Introduction
 

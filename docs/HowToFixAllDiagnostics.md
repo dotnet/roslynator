@@ -1,5 +1,5 @@
 
-# How to Fix All Diagnostics in a Solution
+# How to: Fix All Diagnostics in a Solution
 
 1) Download package [Roslynator.CommandLine](http://www.nuget.org/packages/Roslynator.CommandLine/)&ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://nuget.org/packages/Roslynator.CommandLine)
 
