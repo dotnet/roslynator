@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (externs.Any())
             {
-                AnalyzeStart(context, externs.First(), namespaceDeclaration.OpenBraceToken);
+                AnalyzeStart(context, externs[0], namespaceDeclaration.OpenBraceToken);
             }
             else
             {
@@ -103,11 +103,11 @@ namespace Roslynator.CSharp.Analysis
 
                 if (usings.Any())
                 {
-                    AnalyzeStart(context, usings.First(), namespaceDeclaration.OpenBraceToken);
+                    AnalyzeStart(context, usings[0], namespaceDeclaration.OpenBraceToken);
                 }
                 else if (members.Any())
                 {
-                    AnalyzeStart(context, members.First(), namespaceDeclaration.OpenBraceToken);
+                    AnalyzeStart(context, members[0], namespaceDeclaration.OpenBraceToken);
                 }
             }
 
@@ -123,7 +123,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (sections.Any())
             {
-                AnalyzeStart(context, sections.First(), switchStatement.OpenBraceToken);
+                AnalyzeStart(context, sections[0], switchStatement.OpenBraceToken);
                 AnalyzeEnd(context, sections.Last(), switchStatement.CloseBraceToken);
             }
         }
@@ -163,10 +163,8 @@ namespace Roslynator.CSharp.Analysis
 
             SyntaxNode parent = elseClause.Parent;
 
-            if (parent?.Kind() == SyntaxKind.IfStatement)
+            if (parent is IfStatementSyntax ifStatement)
             {
-                var ifStatement = (IfStatementSyntax)parent;
-
                 StatementSyntax statement = ifStatement.Statement;
 
                 if (statement != null)
@@ -337,7 +335,7 @@ namespace Roslynator.CSharp.Analysis
         {
             if (members.Any())
             {
-                AnalyzeStart(context, members.First(), openBrace);
+                AnalyzeStart(context, members[0], openBrace);
                 AnalyzeEnd(context, members.Last(), closeBrace);
             }
             else
@@ -354,7 +352,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (statements.Any())
             {
-                AnalyzeStart(context, statements.First(), block.OpenBraceToken);
+                AnalyzeStart(context, statements[0], block.OpenBraceToken);
                 AnalyzeEnd(context, statements.Last(), block.CloseBraceToken);
             }
             else
@@ -427,7 +425,7 @@ namespace Roslynator.CSharp.Analysis
 
             if (accessors.Any())
             {
-                AnalyzeStart(context, accessors.First(), accessorList.OpenBraceToken);
+                AnalyzeStart(context, accessors[0], accessorList.OpenBraceToken);
                 AnalyzeEnd(context, accessors.Last(), accessorList.CloseBraceToken);
             }
         }
@@ -517,10 +515,8 @@ namespace Roslynator.CSharp.Analysis
 
             parent = parent.Parent;
 
-            if (parent?.Kind() != SyntaxKind.DoStatement)
+            if (!(parent is DoStatementSyntax doStatement))
                 return false;
-
-            var doStatement = (DoStatementSyntax)parent;
 
             int emptyLine = doStatement.SyntaxTree.GetLineSpan(span).EndLine();
 

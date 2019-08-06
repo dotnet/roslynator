@@ -24,8 +24,7 @@ namespace Roslynator.Metadata
             string summary,
             string remarks,
             IEnumerable<SampleMetadata> samples,
-            IEnumerable<LinkMetadata> links,
-            bool isDevelopment = false)
+            IEnumerable<LinkMetadata> links)
         {
             Id = id;
             Identifier = identifier;
@@ -42,7 +41,6 @@ namespace Roslynator.Metadata
             Remarks = remarks;
             Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
             Links = new ReadOnlyCollection<LinkMetadata>(links?.ToArray() ?? Array.Empty<LinkMetadata>());
-            IsDevelopment = isDevelopment;
         }
 
         public string Id { get; }
@@ -74,7 +72,5 @@ namespace Roslynator.Metadata
         public IReadOnlyList<SampleMetadata> Samples { get; }
 
         public IReadOnlyList<LinkMetadata> Links { get; }
-
-        public bool IsDevelopment { get; }
     }
 }

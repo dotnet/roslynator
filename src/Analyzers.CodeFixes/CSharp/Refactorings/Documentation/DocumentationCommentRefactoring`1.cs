@@ -43,7 +43,7 @@ namespace Roslynator.CSharp.Refactorings.Documentation
 
             if (triviaList.Any())
             {
-                SyntaxTrivia firstTrivia = triviaList.First();
+                SyntaxTrivia firstTrivia = triviaList[0];
 
                 if (firstTrivia.HasStructure
                     && (firstTrivia.GetStructure() is DocumentationCommentTriviaSyntax newComment))
@@ -205,10 +205,8 @@ namespace Roslynator.CSharp.Refactorings.Documentation
 
             for (int i = content.Count - 1; i >= 0; i--)
             {
-                if (content[i].IsKind(SyntaxKind.XmlElement))
+                if (content[i] is XmlElementSyntax xmlElement)
                 {
-                    var xmlElement = (XmlElementSyntax)content[i];
-
                     XmlTag tag = xmlElement.GetTag();
 
                     if (tag == Tag

@@ -51,7 +51,7 @@ namespace Roslynator.CSharp.Analysis
 
             DiagnosticHelpers.ReportDiagnostic(context,
                 DiagnosticDescriptors.OrderTypeParameterConstraints,
-                genericInfo.ConstraintClauses.First());
+                genericInfo.ConstraintClauses[0]);
         }
 
         private static bool IsFixable(

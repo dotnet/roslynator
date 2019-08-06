@@ -161,7 +161,7 @@ namespace Roslynator.CSharp.CodeFixes
                                     }
                                 case SyntaxKind.EventFieldDeclaration:
                                     {
-                                        VariableDeclaratorSyntax declarator = ((EventFieldDeclarationSyntax)memberDeclaration).Declaration.Variables.First();
+                                        VariableDeclaratorSyntax declarator = ((EventFieldDeclarationSyntax)memberDeclaration).Declaration.Variables[0];
 
                                         var eventSymbol = (IEventSymbol)semanticModel.GetDeclaredSymbol(declarator, context.CancellationToken);
 

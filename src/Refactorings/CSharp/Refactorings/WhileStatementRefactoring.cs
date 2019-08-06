@@ -26,7 +26,7 @@ namespace Roslynator.CSharp.Refactorings
             {
                 context.RegisterRefactoring(
                     "Convert to 'do'",
-                    ct => ConvertWhileToDoAsync(document, whileStatement, omitIfStatement: false,  ct),
+                    ct => ConvertWhileToDoAsync(document, whileStatement, omitIfStatement: false, ct),
                     RefactoringIdentifiers.ConvertWhileToDo);
 
                 context.RegisterRefactoring(

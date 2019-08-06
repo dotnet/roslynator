@@ -1,6 +1,5 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 using Roslynator.CSharp.Analysis;
@@ -51,12 +50,10 @@ namespace Roslynator.CSharp.Refactorings
 
         private static string GetRefactoringId(MemberDeclarationSyntax memberDeclaration)
         {
-            switch (memberDeclaration.Kind())
+            switch (memberDeclaration)
             {
-                case SyntaxKind.MethodDeclaration:
+                case MethodDeclarationSyntax methodDeclaration:
                     {
-                        var methodDeclaration = (MethodDeclarationSyntax)memberDeclaration;
-
                         ArrowExpressionClauseSyntax expressionBody = methodDeclaration.ExpressionBody;
 
                         if (expressionBody != null)
@@ -71,10 +68,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return null;
                     }
-                case SyntaxKind.PropertyDeclaration:
+                case PropertyDeclarationSyntax propertyDeclaration:
                     {
-                        var propertyDeclaration = (PropertyDeclarationSyntax)memberDeclaration;
-
                         ArrowExpressionClauseSyntax expressionBody = propertyDeclaration.ExpressionBody;
 
                         if (expressionBody != null)
@@ -89,10 +84,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return null;
                     }
-                case SyntaxKind.IndexerDeclaration:
+                case IndexerDeclarationSyntax indexerDeclaration:
                     {
-                        var indexerDeclaration = (IndexerDeclarationSyntax)memberDeclaration;
-
                         ArrowExpressionClauseSyntax expressionBody = indexerDeclaration.ExpressionBody;
 
                         if (expressionBody != null)
@@ -107,10 +100,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return null;
                     }
-                case SyntaxKind.OperatorDeclaration:
+                case OperatorDeclarationSyntax operatorDeclaration:
                     {
-                        var operatorDeclaration = (OperatorDeclarationSyntax)memberDeclaration;
-
                         ArrowExpressionClauseSyntax expressionBody = operatorDeclaration.ExpressionBody;
 
                         if (expressionBody != null)
@@ -125,10 +116,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return null;
                     }
-                case SyntaxKind.ConversionOperatorDeclaration:
+                case ConversionOperatorDeclarationSyntax conversionOperatorDeclaration:
                     {
-                        var conversionOperatorDeclaration = (ConversionOperatorDeclarationSyntax)memberDeclaration;
-
                         ArrowExpressionClauseSyntax expressionBody = conversionOperatorDeclaration.ExpressionBody;
 
                         if (expressionBody != null)
@@ -143,10 +132,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return null;
                     }
-                case SyntaxKind.ConstructorDeclaration:
+                case ConstructorDeclarationSyntax constructorDeclaration:
                     {
-                        var constructorDeclaration = (ConstructorDeclarationSyntax)memberDeclaration;
-
                         ArrowExpressionClauseSyntax expressionBody = constructorDeclaration.ExpressionBody;
 
                         if (expressionBody != null)
@@ -161,10 +148,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return null;
                     }
-                case SyntaxKind.DestructorDeclaration:
+                case DestructorDeclarationSyntax destructorDeclaration:
                     {
-                        var destructorDeclaration = (DestructorDeclarationSyntax)memberDeclaration;
-
                         ArrowExpressionClauseSyntax expressionBody = destructorDeclaration.ExpressionBody;
 
                         if (expressionBody != null)

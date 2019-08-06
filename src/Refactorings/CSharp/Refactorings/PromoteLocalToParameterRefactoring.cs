@@ -131,9 +131,8 @@ namespace Roslynator.CSharp.Refactorings
 
             ParameterSyntax newParameter = Parameter(type, identifier).WithFormatterAnnotation();
 
-            if (newNode.IsKind(Microsoft.CodeAnalysis.CSharp.SyntaxKind.MethodDeclaration))
+            if (newNode is MethodDeclarationSyntax methodDeclaration)
             {
-                var methodDeclaration = (MethodDeclarationSyntax)newNode;
                 newNode = methodDeclaration.AddParameterListParameters(newParameter);
             }
             else

@@ -252,8 +252,8 @@ namespace Roslynator.CSharp.CodeFixes
         {
             SimpleMemberInvocationExpressionInfo invocationInfo2 = SimpleMemberInvocationExpressionInfo(invocationInfo.Expression);
 
-            SingleParameterLambdaExpressionInfo lambda = SingleParameterLambdaExpressionInfo((LambdaExpressionSyntax)invocationInfo.Arguments.First().Expression);
-            SingleParameterLambdaExpressionInfo lambda2 = SingleParameterLambdaExpressionInfo((LambdaExpressionSyntax)invocationInfo2.Arguments.First().Expression);
+            SingleParameterLambdaExpressionInfo lambda = SingleParameterLambdaExpressionInfo((LambdaExpressionSyntax)invocationInfo.Arguments[0].Expression);
+            SingleParameterLambdaExpressionInfo lambda2 = SingleParameterLambdaExpressionInfo((LambdaExpressionSyntax)invocationInfo2.Arguments[0].Expression);
 
             BinaryExpressionSyntax logicalAnd = LogicalAndExpression(
                 ((ExpressionSyntax)lambda2.Body).Parenthesize(),
@@ -383,7 +383,7 @@ namespace Roslynator.CSharp.CodeFixes
                     newMemberAccess,
                     ArgumentList(
                         Argument(invocationInfo.Expression.WithoutTrivia()),
-                        argumentList.Arguments.First()
+                        argumentList.Arguments[0]
                     ).WithTriviaFrom(argumentList));
 
                 return document.ReplaceNodeAsync(invocationInfo.InvocationExpression, newInvocation, cancellationToken);

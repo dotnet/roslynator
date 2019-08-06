@@ -135,17 +135,15 @@ namespace Roslynator.CSharp.Syntax
         {
             ThrowInvalidOperationIfNotInitialized();
 
-            switch (Parent.Kind())
+            switch (Parent)
             {
-                case SyntaxKind.CompilationUnit:
+                case CompilationUnitSyntax compilationUnit:
                     {
-                        var declaration = (CompilationUnitSyntax)Parent;
-                        declaration = declaration.WithUsings(usings);
-                        return new UsingDirectiveListInfo(declaration, declaration.Usings);
+                        compilationUnit = compilationUnit.WithUsings(usings);
+                        return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
                     }
-                case SyntaxKind.NamespaceDeclaration:
+                case NamespaceDeclarationSyntax declaration:
                     {
-                        var declaration = (NamespaceDeclarationSyntax)Parent;
                         declaration = declaration.WithUsings(usings);
                         return new UsingDirectiveListInfo(declaration, declaration.Usings);
                     }
@@ -163,17 +161,15 @@ namespace Roslynator.CSharp.Syntax
         {
             ThrowInvalidOperationIfNotInitialized();
 
-            switch (Parent.Kind())
+            switch (Parent)
             {
-                case SyntaxKind.CompilationUnit:
+                case CompilationUnitSyntax compilationUnit:
                     {
-                        var declaration = (CompilationUnitSyntax)Parent;
-                        declaration = declaration.RemoveNode(node, options);
-                        return new UsingDirectiveListInfo(declaration, declaration.Usings);
+                        compilationUnit = compilationUnit.RemoveNode(node, options);
+                        return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
                     }
-                case SyntaxKind.NamespaceDeclaration:
+                case NamespaceDeclarationSyntax declaration:
                     {
-                        var declaration = (NamespaceDeclarationSyntax)Parent;
                         declaration = declaration.RemoveNode(node, options);
                         return new UsingDirectiveListInfo(declaration, declaration.Usings);
                     }
@@ -191,17 +187,15 @@ namespace Roslynator.CSharp.Syntax
         {
             ThrowInvalidOperationIfNotInitialized();
 
-            switch (Parent.Kind())
+            switch (Parent)
             {
-                case SyntaxKind.CompilationUnit:
+                case CompilationUnitSyntax compilationUnit:
                     {
-                        var declaration = (CompilationUnitSyntax)Parent;
-                        declaration = declaration.ReplaceNode(oldNode, newNode);
-                        return new UsingDirectiveListInfo(declaration, declaration.Usings);
+                        compilationUnit = compilationUnit.ReplaceNode(oldNode, newNode);
+                        return new UsingDirectiveListInfo(compilationUnit, compilationUnit.Usings);
                     }
-                case SyntaxKind.NamespaceDeclaration:
+                case NamespaceDeclarationSyntax declaration:
                     {
-                        var declaration = (NamespaceDeclarationSyntax)Parent;
                         declaration = declaration.ReplaceNode(oldNode, newNode);
                         return new UsingDirectiveListInfo(declaration, declaration.Usings);
                     }
@@ -241,7 +235,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public UsingDirectiveSyntax First()
         {
-            return Usings.First();
+            return Usings[0];
         }
 
         /// <summary>

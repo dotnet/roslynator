@@ -159,7 +159,7 @@ namespace Roslynator.CSharp.Analysis
 
                 if (body != null)
                 {
-                    switch (body.Statements.First())
+                    switch (body.Statements[0])
                     {
                         case ReturnStatementSyntax returnStatement:
                             {
@@ -305,12 +305,8 @@ namespace Roslynator.CSharp.Analysis
 
                 if (body != null)
                 {
-                    StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
-
-                    if (statement.IsKind(SyntaxKind.ReturnStatement))
+                    if (body.Statements.SingleOrDefault(shouldThrow: false) is ReturnStatementSyntax returnStatement)
                     {
-                        var returnStatement = (ReturnStatementSyntax)statement;
-
                         return GetIdentifierNameFromExpression(returnStatement.Expression);
                     }
                 }
@@ -331,15 +327,9 @@ namespace Roslynator.CSharp.Analysis
 
                 if (body != null)
                 {
-                    StatementSyntax statement = body.Statements.SingleOrDefault(shouldThrow: false);
-
-                    if (statement.IsKind(SyntaxKind.ExpressionStatement))
+                    if (body.Statements.SingleOrDefault(shouldThrow: false) is ExpressionStatementSyntax expressionStatement)
                     {
-                        var expressionStatement = (ExpressionStatementSyntax)statement;
-
-                        ExpressionSyntax expression = expressionStatement.Expression;
-
-                        return GetIdentifierName(expression);
+                        return GetIdentifierName(expressionStatement.Expression);
                     }
                 }
                 else

@@ -29,24 +29,16 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
             {
                 SyntaxNode parent = statement.Parent;
 
-                if (parent.IsKind(SyntaxKind.Block))
+                if (parent.IsKind(SyntaxKind.Block)
+                    && parent.Parent is IfStatementSyntax ifStatement
+                    && ifStatement.IsSimpleIf())
                 {
-                    parent = parent.Parent;
+                    StatementSyntax nextStatement = ifStatement.NextStatement();
 
-                    if (parent.IsKind(SyntaxKind.IfStatement))
+                    if (nextStatement.IsKind(SyntaxKind.ReturnStatement)
+                        && ((ReturnStatementSyntax)nextStatement).Expression?.RawKind == expression.RawKind)
                     {
-                        var ifStatement = (IfStatementSyntax)parent;
-
-                        if (ifStatement.IsSimpleIf())
-                        {
-                            StatementSyntax nextStatement = ifStatement.NextStatement();
-
-                            if (nextStatement.IsKind(SyntaxKind.ReturnStatement)
-                                && ((ReturnStatementSyntax)nextStatement).Expression?.RawKind == expression.RawKind)
-                            {
-                                return true;
-                            }
-                        }
+                        return true;
                     }
                 }
             }

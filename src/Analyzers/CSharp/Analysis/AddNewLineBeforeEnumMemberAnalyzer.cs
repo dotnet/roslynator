@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Analysis
                 if (members[i].GetSpanStartLine() == previousIndex)
                 {
                     TextSpan span = TextSpan.FromBounds(
-                        members.First().SpanStart,
+                        members[0].SpanStart,
                         members.Last().Span.End);
 
                     DiagnosticHelpers.ReportDiagnostic(context,

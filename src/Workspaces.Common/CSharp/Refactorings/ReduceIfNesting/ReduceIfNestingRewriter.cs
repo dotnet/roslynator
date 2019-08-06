@@ -163,8 +163,7 @@ namespace Roslynator.CSharp.Refactorings.ReduceIfNesting
                 BlockSyntax newBlock = block.WithStatements(SingletonList(_jumpStatement));
 
                 if (!block
-                    .Statements
-                    .First()
+                    .Statements[0]
                     .GetLeadingTrivia()
                     .Any(f => f.IsEndOfLineTrivia()))
                 {

@@ -192,12 +192,14 @@ namespace Roslynator.CSharp.Refactorings
 
             if (codeActions != null)
             {
-                return new OneOrMany<CodeAction>(codeActions.ToImmutableArray());
+                return OneOrMany.Create(codeActions.ToImmutableArray());
             }
-            else
+            else if (singleCodeAction != null)
             {
-                return new OneOrMany<CodeAction>(singleCodeAction);
+                return OneOrMany.Create(singleCodeAction);
             }
+
+            return default;
         }
 
         private static ISymbol FindInterfaceMember(
@@ -231,7 +233,7 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<ISymbol> members = interfaceSymbol.GetMembers();
 
             for (int i = 0; i < members.Length; i++)
-                    {
+            {
                 ISymbol memberSymbol = members[i];
 
                 if (memberSymbol.Kind != SymbolKind.Method)
@@ -282,7 +284,7 @@ namespace Roslynator.CSharp.Refactorings
             ImmutableArray<ISymbol> members = interfaceSymbol.GetMembers();
 
             for (int i = 0; i < members.Length; i++)
-                    {
+            {
                 ISymbol memberSymbol = members[i];
 
                 if (memberSymbol.Kind != SymbolKind.Property)
@@ -369,22 +371,14 @@ namespace Roslynator.CSharp.Refactorings
         {
             ParameterSyntax parameter = CreateParameter(parameterSymbol);
 
-            switch (memberDeclaration.Kind())
+            switch (memberDeclaration)
             {
-                case SyntaxKind.MethodDeclaration:
-                    {
-                        var methodDeclaration = (MethodDeclarationSyntax)memberDeclaration;
-                        return methodDeclaration.AddParameterListParameters(parameter);
-                    }
-                case SyntaxKind.IndexerDeclaration:
-                    {
-                        var indexerDeclaration = (IndexerDeclarationSyntax)memberDeclaration;
-                        return indexerDeclaration.AddParameterListParameters(parameter);
-                    }
+                case MethodDeclarationSyntax methodDeclaration:
+                    return methodDeclaration.AddParameterListParameters(parameter);
+                case IndexerDeclarationSyntax indexerDeclaration:
+                    return indexerDeclaration.AddParameterListParameters(parameter);
                 default:
-                    {
-                        throw new InvalidOperationException();
-                    }
+                    throw new InvalidOperationException();
             }
         }
 

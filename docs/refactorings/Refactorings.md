@@ -169,6 +169,43 @@ switch (dayOfWeek)
 * **Syntax**: argument list
 ![Add parameter name to argument](../../images/refactorings/AddParameterNameToArgument.png)
 
+#### Add parameter to interface member \(RR0213\)
+
+* **Syntax**: method declaration, indexer declaration
+* **Span**: method name or 'this' keyword
+
+#### Before
+
+```csharp
+interface IFoo
+{
+    void Bar(object p);
+}
+
+class Foo : IFoo
+{
+    public void Bar(object p, object p2)
+    {
+    }
+}
+```
+
+#### After
+
+```csharp
+interface IFoo
+{
+    void Bar(object p, object p2);
+}
+
+class Foo : IFoo
+{
+    public void Bar(object p, object p2)
+    {
+    }
+}
+```
+
 #### Add tag to documentation comment \(RR0208\)
 
 * **Syntax**: selected word\(s\) in documentation comment
@@ -326,6 +363,56 @@ List<object> items = new List<object>();
 * **Span**: opening or closing brace
 ![Comment out statement](../../images/refactorings/CommentOutStatement.png)
 
+#### Convert ?: to if\-else \(RR0120\)
+
+* **Syntax**: ?: operator that is part of local declaration, assignment or \(yield\) return statement
+
+#### Before
+
+```csharp
+string s = (x) ? "a" : "b";
+```
+
+#### After
+
+```csharp
+string s;
+if (x)
+{
+    s = "a";
+}
+else
+{
+    s = "b";
+}
+```
+
+- - -
+
+#### Before
+
+```csharp
+string s = (x) ? "a" : (y) ? "b" : "c";
+```
+
+#### After
+
+```csharp
+string s;
+if (x)
+{
+    s = "a";
+}
+else if (y)
+{
+    s = "b";
+}
+else
+{
+    s = "c";
+}
+```
+
 #### Convert comment to documentation comment \(RR0192\)
 
 * **Syntax**: single\-line comment
@@ -349,6 +436,12 @@ public class Foo
 {
 }
 ```
+
+#### Convert 'if' to ?: \(RR0166\)
+
+* **Syntax**: if statement
+* **Span**: top if keyword or selected if statement
+![Convert 'if' to ?:](../../images/refactorings/ConvertIfToConditionalOperator.png)
 
 #### Convert statements to if\-else \(RR0211\)
 
@@ -392,6 +485,36 @@ else
     return 0;
 }
 ```
+
+#### Convert 'while' statement to 'do' statement \(RR0150\)
+
+* **Syntax**: while statement
+* **Span**: while keyword
+
+#### Before
+
+```csharp
+while (condition)
+{
+}
+```
+
+#### After
+
+```csharp
+if (condition)
+{
+  do
+  {
+  } while (condition);
+}
+```
+
+#### Convert 'while' statement to 'for' statement \(RR0151\)
+
+* **Syntax**: while statement
+* **Span**: while keyword or selected statement\(s\)
+![Convert 'while' statement to 'for' statement](../../images/refactorings/ConvertWhileToFor.png)
 
 #### Copy documentation comment from base member \(RR0029\)
 
@@ -1566,56 +1689,6 @@ public enum Foo
 * **Span**: selected statement, yield keyword or return keyword
 ![Replace (yield) return statement with if-else](../../images/refactorings/ReplaceReturnStatementWithIfElse.png)
 
-#### Replace ?: with if\-else \(RR0120\)
-
-* **Syntax**: local declaration statement with conditional expression, assignment with conditional expression, return statement conditional expression, yield statement conditional expression
-
-#### Before
-
-```csharp
-string s = (x) ? "a" : "b";
-```
-
-#### After
-
-```csharp
-string s;
-if (x)
-{
-    s = "a";
-}
-else
-{
-    s = "b";
-}
-```
-
-- - -
-
-#### Before
-
-```csharp
-string s = (x) ? "a" : (y) ? "b" : "c";
-```
-
-#### After
-
-```csharp
-string s;
-if (x)
-{
-    s = "a";
-}
-else if (y)
-{
-    s = "b";
-}
-else
-{
-    s = "c";
-}
-```
-
 #### Replace as expression with cast expression \(RR0117\)
 
 * **Syntax**: as expression
@@ -1923,33 +1996,6 @@ object[] arr = null;
 * **Syntax**: multiline verbatim string literal
 ![Replace verbatim string literal with regular string literals](../../images/refactorings/ReplaceVerbatimStringLiteralWithRegularStringLiterals.png)
 
-#### Replace while statement with do statement \(RR0150\)
-
-* **Syntax**: while statement
-* **Span**: while keyword
-
-#### Before
-
-```csharp
-while (condition)
-{
-}
-```
-
-#### After
-
-```csharp
-do
-{
-} while (condition);
-```
-
-#### Replace while statement with for statement \(RR0151\)
-
-* **Syntax**: while statement
-* **Span**: while keyword or selected statement\(s\)
-![Replace while statement with for statement](../../images/refactorings/ReplaceWhileWithFor.png)
-
 #### Reverse for loop \(RR0152\)
 
 * **Syntax**: for statement
@@ -2174,12 +2220,6 @@ var dic = new Dictionary<int, string>() { [0] = "0" };
 * **Syntax**: if statement
 * **Span**: top if keyword or selected if statement
 ![Use coalesce expression instead of if](../../images/refactorings/UseCoalesceExpressionInsteadOfIf.png)
-
-#### Use conditional expression instead of if \(RR0166\)
-
-* **Syntax**: if statement
-* **Span**: top if keyword or selected if statement
-![Use conditional expression instead of if](../../images/refactorings/UseConditionalExpressionInsteadOfIf.png)
 
 #### Use constant instead of field \(RR0128\)
 

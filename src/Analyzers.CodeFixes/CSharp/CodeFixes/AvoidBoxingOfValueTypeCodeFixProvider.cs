@@ -96,10 +96,8 @@ namespace Roslynator.CSharp.CodeFixes
                 if (!semanticModel.GetTypeSymbol(expression, cancellationToken).IsNullableType())
                     return false;
 
-                if (!expression.IsKind(SyntaxKind.ConditionalAccessExpression))
+                if (!(expression is ConditionalAccessExpressionSyntax conditionalAccess))
                     return true;
-
-                var conditionalAccess = (ConditionalAccessExpressionSyntax)expression;
 
                 return semanticModel
                     .GetTypeSymbol(conditionalAccess.WhenNotNull, cancellationToken)

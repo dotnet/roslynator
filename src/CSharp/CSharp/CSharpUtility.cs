@@ -42,12 +42,10 @@ namespace Roslynator.CSharp
 
             foreach (SyntaxNode ancestor in node.Ancestors())
             {
-                switch (ancestor.Kind())
+                switch (ancestor)
                 {
-                    case SyntaxKind.NamespaceDeclaration:
+                    case NamespaceDeclarationSyntax namespaceDeclaration:
                         {
-                            var namespaceDeclaration = (NamespaceDeclarationSyntax)ancestor;
-
                             if (IsNamespace(namespaceSymbol, namespaceDeclaration.Name, semanticModel, cancellationToken)
                                 || IsNamespace(namespaceSymbol, namespaceDeclaration.Usings, semanticModel, cancellationToken))
                             {
@@ -56,10 +54,8 @@ namespace Roslynator.CSharp
 
                             break;
                         }
-                    case SyntaxKind.CompilationUnit:
+                    case CompilationUnitSyntax compilationUnit:
                         {
-                            var compilationUnit = (CompilationUnitSyntax)ancestor;
-
                             if (IsNamespace(namespaceSymbol, compilationUnit.Usings, semanticModel, cancellationToken))
                                 return true;
 
@@ -637,19 +633,15 @@ namespace Roslynator.CSharp
         {
             foreach (SyntaxNode node in expression.DescendantNodes())
             {
-                if (node.Kind() == SyntaxKind.Argument)
+                if (node is ArgumentSyntax argument
+                    && argument.RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword)
                 {
-                    var argument = (ArgumentSyntax)node;
+                    ExpressionSyntax argumentExpression = argument.Expression;
 
-                    if (argument.RefOrOutKeyword.Kind() == SyntaxKind.OutKeyword)
+                    if (argumentExpression?.IsMissing == false
+                        && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.Kind == SymbolKind.Local)
                     {
-                        ExpressionSyntax argumentExpression = argument.Expression;
-
-                        if (argumentExpression?.IsMissing == false
-                            && semanticModel.GetSymbol(argumentExpression, cancellationToken)?.Kind == SymbolKind.Local)
-                        {
-                            return true;
-                        }
+                        return true;
                     }
                 }
             }

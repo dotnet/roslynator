@@ -246,7 +246,7 @@ namespace Roslynator.CSharp.Syntax
         /// </summary>
         public StatementSyntax First()
         {
-            return Statements.First();
+            return Statements[0];
         }
 
         /// <summary>

@@ -3,7 +3,6 @@
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
-using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis.RemoveAsyncAwait;
 
@@ -13,14 +12,10 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, SyntaxToken token)
         {
-            SyntaxNode parent = token.Parent;
-
-            switch (parent.Kind())
+            switch (token.Parent)
             {
-                case SyntaxKind.MethodDeclaration:
+                case MethodDeclarationSyntax methodDeclaration:
                     {
-                        var methodDeclaration = (MethodDeclarationSyntax)parent;
-
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, semanticModel, context.CancellationToken);
@@ -30,10 +25,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return;
                     }
-                case SyntaxKind.LocalFunctionStatement:
+                case LocalFunctionStatementSyntax localFunction:
                     {
-                        var localFunction = (LocalFunctionStatementSyntax)parent;
-
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, semanticModel, context.CancellationToken);
@@ -43,10 +36,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return;
                     }
-                case SyntaxKind.ParenthesizedLambdaExpression:
+                case ParenthesizedLambdaExpressionSyntax parenthesizedLambda:
                     {
-                        var parenthesizedLambda = (ParenthesizedLambdaExpressionSyntax)parent;
-
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(parenthesizedLambda, semanticModel, context.CancellationToken);
@@ -56,10 +47,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return;
                     }
-                case SyntaxKind.SimpleLambdaExpression:
+                case SimpleLambdaExpressionSyntax simpleLambda:
                     {
-                        var simpleLambda = (SimpleLambdaExpressionSyntax)parent;
-
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(simpleLambda, semanticModel, context.CancellationToken);
@@ -69,10 +58,8 @@ namespace Roslynator.CSharp.Refactorings
 
                         return;
                     }
-                case SyntaxKind.AnonymousMethodExpression:
+                case AnonymousMethodExpressionSyntax anonymousMethod:
                     {
-                        var anonymousMethod = (AnonymousMethodExpressionSyntax)parent;
-
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
                         RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, semanticModel, context.CancellationToken);

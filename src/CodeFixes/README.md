@@ -79,6 +79,7 @@
 | [CS0525](../../docs/cs/CS0525.md) | Interfaces cannot contain fields\. |
 | [CS0527](../../docs/cs/CS0527.md) | Type 'type' in interface list is not an interface\. |
 | [CS0531](../../docs/cs/CS0531.md) | 'member': interface members cannot have a definition\. |
+| [CS0539](../../docs/cs/CS0539.md) | 'member' in explicit interface declaration is not a member of interface |
 | [CS0541](../../docs/cs/CS0541.md) | 'declaration': explicit interface declaration can only be declared in a class or struct\. |
 | [CS0549](../../docs/cs/CS0549.md) | New virtual member in sealed class\. |
 | [CS0558](../../docs/cs/CS0558.md) | User\-defined operator 'operator' must be declared static and public\. |

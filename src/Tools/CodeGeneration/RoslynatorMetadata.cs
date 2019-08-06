@@ -18,6 +18,7 @@ namespace Roslynator.CodeGeneration
         public string RootDirectoryPath { get; }
 
         private ImmutableArray<AnalyzerMetadata> _analyzers;
+        private ImmutableArray<AnalyzerMetadata> _codeAnalysisAnalyzers;
         private ImmutableArray<RefactoringMetadata> _refactorings;
         private ImmutableArray<CodeFixMetadata> _codeFixes;
         private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
@@ -30,6 +31,17 @@ namespace Roslynator.CodeGeneration
                     _analyzers = LoadAnalyzers(GetPath("Analyzers"));
 
                 return _analyzers;
+            }
+        }
+
+        public ImmutableArray<AnalyzerMetadata> CodeAnalysisAnalyzers
+        {
+            get
+            {
+                if (_codeAnalysisAnalyzers.IsDefault)
+                    _codeAnalysisAnalyzers = LoadAnalyzers(GetPath("CodeAnalysis.Analyzers"));
+
+                return _codeAnalysisAnalyzers;
             }
         }
 
@@ -68,12 +80,11 @@ namespace Roslynator.CodeGeneration
 
         private static ImmutableArray<AnalyzerMetadata> LoadAnalyzers(string directoryPath)
         {
-            IEnumerable<AnalyzerMetadata> analyzers = Directory
-                .EnumerateFiles(directoryPath, "Analyzers.*.xml", SearchOption.TopDirectoryOnly)
-                .Where(filePath => Path.GetFileName(filePath) != "Analyzers.Template.xml")
-                .SelectMany(filePath => MetadataFile.ReadAllAnalyzers(filePath));
+            IEnumerable<string> analyzers = Directory.EnumerateFiles(directoryPath, "*Analyzers.xml", SearchOption.TopDirectoryOnly)
+                .Concat(Directory.EnumerateFiles(directoryPath, "Analyzers.*.xml", SearchOption.TopDirectoryOnly)
+                    .Where(filePath => !filePath.EndsWith("Analyzers.Template.xml")));
 
-            return MetadataFile.ReadAllAnalyzers(Path.Combine(directoryPath, "Analyzers.xml")).AddRange(analyzers);
+            return analyzers.SelectMany(MetadataFile.ReadAnalyzers).ToImmutableArray();
         }
 
         private static ImmutableArray<RefactoringMetadata> LoadRefactorings(string directoryPath)

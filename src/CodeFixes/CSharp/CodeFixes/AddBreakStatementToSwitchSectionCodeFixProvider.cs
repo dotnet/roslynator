@@ -58,9 +58,9 @@ namespace Roslynator.CSharp.CodeFixes
             SyntaxList<StatementSyntax> statements = switchSection.Statements;
 
             if (statements.Count == 1
-                && statements.First().IsKind(SyntaxKind.Block))
+                && statements[0].IsKind(SyntaxKind.Block))
             {
-                var block = (BlockSyntax)statements.First();
+                var block = (BlockSyntax)statements[0];
                 newNode = newNode.ReplaceNode(block, block.AddStatements(BreakStatement()));
             }
             else

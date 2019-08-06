@@ -292,10 +292,8 @@ namespace Roslynator.CSharp.Refactorings
 
         private static SyntaxList<StatementSyntax> AddBreakStatementIfNecessary(StatementSyntax statement)
         {
-            if (statement.IsKind(SyntaxKind.Block))
+            if (statement is BlockSyntax block)
             {
-                var block = (BlockSyntax)statement;
-
                 SyntaxList<StatementSyntax> statements = block.Statements;
 
                 if (statements.Any()

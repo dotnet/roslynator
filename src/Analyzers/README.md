@@ -32,6 +32,7 @@
 | RCS1028 | [Add new line after switch label](../../docs/analyzers/RCS1028.md) | Formatting | None |
 | RCS1029 | [Format binary operator on next line](../../docs/analyzers/RCS1029.md) | Formatting | Info |
 | RCS1030 | [Add empty line after embedded statement](../../docs/analyzers/RCS1030.md) | Formatting | None |
+| RCS1031 | [Remove unnecessary braces](../../docs/analyzers/RCS1031.md) | Redundancy | Hidden |
 | RCS1032 | [Remove redundant parentheses](../../docs/analyzers/RCS1032.md) | Redundancy | Info |
 | RCS1033 | [Remove redundant boolean literal](../../docs/analyzers/RCS1033.md) | Redundancy | Info |
 | RCS1034 | [Remove redundant 'sealed' modifier](../../docs/analyzers/RCS1034.md) | Redundancy | Hidden |
@@ -212,6 +213,12 @@
 | RCS1233 | [Use short-circuiting operator](../../docs/analyzers/RCS1233.md) | Usage | Info |
 | RCS1234 | [Duplicate enum value](../../docs/analyzers/RCS1234.md) | Readability | Info |
 | RCS1235 | [Optimize method call](../../docs/analyzers/RCS1235.md) | Performance | Info |
+| RCS1236 | [Use exception filter](../../docs/analyzers/RCS1236.md) | Usage | Info |
+| RCS1237 | [Use bit shift operator](../../docs/analyzers/RCS1237.md) | Usage | Hidden |
+| RCS1238 | [Avoid nested ?: operators](../../docs/analyzers/RCS1238.md) | Readability | Hidden |
+| RCS1239 | [Use 'for' statement instead of 'while' statement](../../docs/analyzers/RCS1239.md) | Readability | Info |
+| RCS1240 | [Operator is unnecessary](../../docs/analyzers/RCS1240.md) | Redundancy | Info |
+| RCS1241 | [Implement non-generic counterpart](../../docs/analyzers/RCS1241.md) | Design | Hidden |
 
 
 *\(Generated with [DotMarkdown](http://github.com/JosefPihrt/DotMarkdown)\)*

@@ -95,7 +95,7 @@ namespace Roslynator.CSharp.Refactorings
                     return;
             }
 
-            ITypeSymbol newTypeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables.First().Initializer.Value, context.CancellationToken);
+            ITypeSymbol newTypeSymbol = semanticModel.GetTypeSymbol(variableDeclaration.Variables[0].Initializer.Value, context.CancellationToken);
 
             if (newTypeSymbol == null)
                 return;

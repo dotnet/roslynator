@@ -10,7 +10,6 @@ using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CodeFixes;
-using Roslynator.CSharp.Refactorings;
 
 namespace Roslynator.CSharp.CodeFixes
 {
@@ -129,12 +128,10 @@ namespace Roslynator.CSharp.CodeFixes
         {
             foreach (SyntaxNode descendant in node.DescendantNodes())
             {
-                if (descendant.IsKind(SyntaxKind.VariableDeclarator))
+                if (descendant is VariableDeclaratorSyntax variableDeclarator
+                    && string.Equals(name, variableDeclarator.Identifier.ValueText, StringComparison.Ordinal))
                 {
-                    var variableDeclarator = (VariableDeclaratorSyntax)descendant;
-
-                    if (string.Equals(name, variableDeclarator.Identifier.ValueText, StringComparison.Ordinal))
-                        return variableDeclarator;
+                    return variableDeclarator;
                 }
             }
 

@@ -90,10 +90,8 @@ namespace Roslynator.CSharp.Refactorings
                         if (block.OpenBraceToken.Span.Contains(context.Span)
                             || block.CloseBraceToken.Span.Contains(context.Span))
                         {
-                            if (parent.IsKind(SyntaxKind.UsingStatement))
+                            if (parent is UsingStatementSyntax usingStatement)
                             {
-                                var usingStatement = (UsingStatementSyntax)parent;
-
                                 while (usingStatement.IsParentKind(SyntaxKind.UsingStatement))
                                     usingStatement = (UsingStatementSyntax)usingStatement.Parent;
 

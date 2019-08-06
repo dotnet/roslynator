@@ -17,6 +17,7 @@
 | RR0195 | [Add member to interface](../../docs/refactorings/RR0195.md) | &#x2713; |
 | RR0059 | [Add missing cases to switch statement](../../docs/refactorings/RR0059.md) | &#x2713; |
 | RR0011 | [Add parameter name to argument](../../docs/refactorings/RR0011.md) | &#x2713; |
+| RR0213 | [Add parameter to interface member](../../docs/refactorings/RR0213.md) | &#x2713; |
 | RR0208 | [Add tag to documentation comment](../../docs/refactorings/RR0208.md) | &#x2713; |
 | RR0178 | [Add type parameter](../../docs/refactorings/RR0178.md) | &#x2713; |
 | RR0013 | [Add using directive](../../docs/refactorings/RR0013.md) | &#x2713; |
@@ -35,8 +36,12 @@
 | RR0026 | [Collapse to initalizer](../../docs/refactorings/RR0026.md) | &#x2713; |
 | RR0027 | [Comment out member](../../docs/refactorings/RR0027.md) | &#x2713; |
 | RR0028 | [Comment out statement](../../docs/refactorings/RR0028.md) | &#x2713; |
+| RR0120 | [Convert ?: to if-else](../../docs/refactorings/RR0120.md) | &#x2713; |
 | RR0192 | [Convert comment to documentation comment](../../docs/refactorings/RR0192.md) | &#x2713; |
+| RR0166 | [Convert 'if' to ?:](../../docs/refactorings/RR0166.md) | &#x2713; |
 | RR0211 | [Convert statements to if-else](../../docs/refactorings/RR0211.md) | &#x2713; |
+| RR0150 | [Convert 'while' statement to 'do' statement](../../docs/refactorings/RR0150.md) | &#x2713; |
+| RR0151 | [Convert 'while' statement to 'for' statement](../../docs/refactorings/RR0151.md) | &#x2713; |
 | RR0029 | [Copy documentation comment from base member](../../docs/refactorings/RR0029.md) | &#x2713; |
 | RR0030 | [Duplicate argument](../../docs/refactorings/RR0030.md) | &#x2713; |
 | RR0031 | [Duplicate member](../../docs/refactorings/RR0031.md) | &#x2713; |
@@ -140,7 +145,6 @@
 | RR0114 | [Rename parameter according to its type name](../../docs/refactorings/RR0114.md) | &#x2713; |
 | RR0115 | [Rename property according to type name](../../docs/refactorings/RR0115.md) | &#x2713; |
 | RR0143 | [Replace (yield) return statement with if-else](../../docs/refactorings/RR0143.md) | &#x2713; |
-| RR0120 | [Replace ?: with if-else](../../docs/refactorings/RR0120.md) | &#x2713; |
 | RR0117 | [Replace as expression with cast expression](../../docs/refactorings/RR0117.md) | &#x2713; |
 | RR0118 | [Replace cast expression with as expression](../../docs/refactorings/RR0118.md) | &#x2713; |
 | RR0119 | [Replace conditional expression with expression](../../docs/refactorings/RR0119.md) | &#x2713; |
@@ -171,8 +175,6 @@
 | RR0147 | [Replace switch with if](../../docs/refactorings/RR0147.md) | &#x2713; |
 | RR0148 | [Replace verbatim string literal with regular string literal](../../docs/refactorings/RR0148.md) | &#x2713; |
 | RR0149 | [Replace verbatim string literal with regular string literals](../../docs/refactorings/RR0149.md) | &#x2713; |
-| RR0150 | [Replace while statement with do statement](../../docs/refactorings/RR0150.md) | &#x2713; |
-| RR0151 | [Replace while statement with for statement](../../docs/refactorings/RR0151.md) | &#x2713; |
 | RR0152 | [Reverse for loop](../../docs/refactorings/RR0152.md) | &#x2713; |
 | RR0153 | [Simplify if](../../docs/refactorings/RR0153.md) | &#x2713; |
 | RR0154 | [Simplify lambda expression](../../docs/refactorings/RR0154.md) | &#x2713; |
@@ -192,7 +194,6 @@
 | RR0164 | [Use bitwise operation instead of calling 'HasFlag'](../../docs/refactorings/RR0164.md) | &#x2713; |
 | RR0191 | [Use C# 6.0 dictionary initializer](../../docs/refactorings/RR0191.md) | &#x2713; |
 | RR0165 | [Use coalesce expression instead of if](../../docs/refactorings/RR0165.md) | &#x2713; |
-| RR0166 | [Use conditional expression instead of if](../../docs/refactorings/RR0166.md) | &#x2713; |
 | RR0128 | [Use constant instead of field](../../docs/refactorings/RR0128.md) | &#x2713; |
 | RR0167 | [Use element access instead of 'First/Last'ElementAt' method](../../docs/refactorings/RR0167.md) | &#x2713; |
 | RR0169 | [Use expression-bodied member](../../docs/refactorings/RR0169.md) | &#x2713; |

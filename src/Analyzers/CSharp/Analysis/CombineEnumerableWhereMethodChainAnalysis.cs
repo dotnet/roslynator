@@ -71,9 +71,9 @@ namespace Roslynator.CSharp.Analysis
             in SimpleMemberInvocationExpressionInfo invocationInfo,
             in SimpleMemberInvocationExpressionInfo invocationInfo2)
         {
-            ExpressionSyntax expression = invocationInfo.Arguments.First().Expression;
+            ExpressionSyntax expression = invocationInfo.Arguments[0].Expression;
 
-            if (!AreEquivalentLambdas(expression, invocationInfo2.Arguments.First().Expression))
+            if (!AreEquivalentLambdas(expression, invocationInfo2.Arguments[0].Expression))
                 return;
 
             InvocationExpressionSyntax invocation = invocationInfo.InvocationExpression;

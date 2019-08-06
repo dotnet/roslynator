@@ -1,5 +1,5 @@
 ﻿
-# How to Update Documentation
+# How to: Update Documentation
 
 Documentation for [analyzers](analyzers) and [refactorings](refactorings) cannot be edited directly.
 It is generated from following metadata files:

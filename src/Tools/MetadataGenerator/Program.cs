@@ -40,11 +40,14 @@ namespace Roslynator.CodeGeneration
             var metadata = new RoslynatorMetadata(rootPath);
 
             ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
+            ImmutableArray<AnalyzerMetadata> codeAnalysisAnalyzers = metadata.CodeAnalysisAnalyzers;
             ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
 
             WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers);
+
+            WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers);
 
             WriteAnalyzersByCategory(@"Analyzers\AnalyzersByCategory.md", analyzers);
 #if !DEBUG
@@ -75,11 +78,19 @@ namespace Roslynator.CodeGeneration
                 MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
             }
 #endif
+            foreach (AnalyzerMetadata analyzer in analyzers.Concat(codeAnalysisAnalyzers))
+            {
+                WriteAllText(
+                    $@"..\docs\analyzers\{analyzer.Id}.md",
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, new (string, string)[] { ("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers") }),
+                    fileMustExists: false);
+            }
+
             foreach (AnalyzerMetadata analyzer in analyzers)
             {
                 WriteAllText(
                     $@"..\docs\analyzers\{analyzer.Id}.md",
-                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, Array.Empty<string>()),
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer),
                     fileMustExists: false);
             }
 
@@ -87,7 +98,7 @@ namespace Roslynator.CodeGeneration
             {
                 WriteAllText(
                     $@"..\docs\refactorings\{refactoring.Id}.md",
-                    MarkdownGenerator.CreateRefactoringMarkdown(refactoring, Array.Empty<string>()),
+                    MarkdownGenerator.CreateRefactoringMarkdown(refactoring),
                     fileMustExists: false);
             }
 
@@ -95,7 +106,7 @@ namespace Roslynator.CodeGeneration
             {
                 WriteAllText(
                     $@"..\docs\cs\{diagnostic.Id}.md",
-                    MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, codeFixes, comparer, Array.Empty<string>()),
+                    MarkdownGenerator.CreateCompilerDiagnosticMarkdown(diagnostic, codeFixes, comparer),
                     fileMustExists: false);
             }
 

@@ -46,14 +46,10 @@ namespace Roslynator.CSharp.CodeFixes
             if (token.Kind() != SyntaxKind.IdentifierToken)
                 return;
 
-            SyntaxNode parent = token.Parent;
-
-            switch (parent.Kind())
+            switch (token.Parent)
             {
-                case SyntaxKind.PropertyDeclaration:
+                case PropertyDeclarationSyntax propertyDeclaration:
                     {
-                        var propertyDeclaration = (PropertyDeclarationSyntax)parent;
-
                         EqualsValueClauseSyntax initializer = propertyDeclaration.Initializer;
 
                         CodeAction codeAction = CodeAction.Create(
@@ -73,9 +69,8 @@ namespace Roslynator.CSharp.CodeFixes
                         context.RegisterCodeFix(codeAction, diagnostic);
                         break;
                     }
-                case SyntaxKind.VariableDeclarator:
+                case VariableDeclaratorSyntax variableDeclarator:
                     {
-                        var variableDeclarator = (VariableDeclaratorSyntax)parent;
                         EqualsValueClauseSyntax initializer = variableDeclarator.Initializer;
 
                         CodeAction codeAction = CodeAction.Create(

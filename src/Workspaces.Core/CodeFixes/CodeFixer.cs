@@ -208,9 +208,7 @@ namespace Roslynator.CodeFixes
 
             var fixKind = ProjectFixKind.Success;
 
-            int iterationCount = 1;
-
-            while (true)
+            for (int iterationCount = 1; ; iterationCount++)
             {
                 cancellationToken.ThrowIfCancellationRequested();
 
@@ -285,7 +283,6 @@ namespace Roslynator.CodeFixes
 
                 previousPreviousDiagnostics = previousDiagnostics;
                 previousDiagnostics = diagnostics;
-                iterationCount++;
             }
 
             return new ProjectFixResult(fixKind, fixedDiagnostics, analyzers: analyzers, fixers: fixers);

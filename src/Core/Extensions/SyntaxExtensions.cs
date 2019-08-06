@@ -38,7 +38,7 @@ namespace Roslynator
         public static bool IsFirst<TNode>(this SeparatedSyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
         {
             return list.Any()
-                && list.First() == node;
+                && list[0] == node;
         }
 
         /// <summary>
@@ -297,7 +297,7 @@ namespace Roslynator
         public static bool IsFirst<TNode>(this SyntaxList<TNode> list, TNode node) where TNode : SyntaxNode
         {
             return list.Any()
-                && list.First() == node;
+                && list[0] == node;
         }
 
         /// <summary>
@@ -406,7 +406,7 @@ namespace Roslynator
                 return false;
 
             if (count == 1)
-                return list.First().SpanContainsDirectives();
+                return list[0].SpanContainsDirectives();
 
             for (int i = 1; i < count - 1; i++)
             {
@@ -414,7 +414,7 @@ namespace Roslynator
                     return true;
             }
 
-            return list.First().SpanOrTrailingTriviaContainsDirectives()
+            return list[0].SpanOrTrailingTriviaContainsDirectives()
                 || list.Last().SpanOrLeadingTriviaContainsDirectives();
         }
 
@@ -1348,7 +1348,7 @@ namespace Roslynator
                     return true;
             }
 
-            return tokens.First().TrailingTrivia.Any(f => f.IsDirective)
+            return tokens[0].TrailingTrivia.Any(f => f.IsDirective)
                 || tokens.Last().LeadingTrivia.Any(f => f.IsDirective);
         }
         #endregion SyntaxTokenList

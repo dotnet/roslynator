@@ -44,10 +44,8 @@ namespace Roslynator.CSharp.Analysis
 
             StatementSyntax statement = whileStatement.Statement;
 
-            if (!statement.IsKind(SyntaxKind.Block))
+            if (!(statement is BlockSyntax block))
                 return;
-
-            var block = (BlockSyntax)statement;
 
             SyntaxList<StatementSyntax> innerStatements = block.Statements;
 
@@ -79,12 +77,10 @@ namespace Roslynator.CSharp.Analysis
                 {
                     ExpressionSyntax incrementedExpression2 = GetIncrementedExpression(innerStatements[innerStatements.Count - 2]);
 
-                    if (incrementedExpression2.IsKind(SyntaxKind.IdentifierName))
+                    if (incrementedExpression2 is IdentifierNameSyntax identifierName2
+                        && string.Equals(localInfo2.Identifier.ValueText, identifierName2.Identifier.ValueText, StringComparison.Ordinal))
                     {
-                        var identifierName2 = (IdentifierNameSyntax)incrementedExpression2;
-
-                        if (string.Equals(localInfo2.Identifier.ValueText, identifierName2.Identifier.ValueText, StringComparison.Ordinal))
-                            return;
+                        return;
                     }
                 }
             }
@@ -144,10 +140,8 @@ namespace Roslynator.CSharp.Analysis
 
         private static ExpressionSyntax GetIncrementedExpression(StatementSyntax statement)
         {
-            if (statement.IsKind(SyntaxKind.ExpressionStatement))
+            if (statement is ExpressionStatementSyntax expressionStatement)
             {
-                var expressionStatement = (ExpressionStatementSyntax)statement;
-
                 ExpressionSyntax expression = expressionStatement.Expression;
 
                 if (expression.IsKind(SyntaxKind.PostIncrementExpression))

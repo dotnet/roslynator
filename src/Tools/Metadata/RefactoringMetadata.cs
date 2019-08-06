@@ -22,8 +22,7 @@ namespace Roslynator.Metadata
             IEnumerable<SyntaxMetadata> syntaxes,
             IEnumerable<ImageMetadata> images,
             IEnumerable<SampleMetadata> samples,
-            IEnumerable<LinkMetadata> links,
-            bool isDevelopment = false)
+            IEnumerable<LinkMetadata> links)
         {
             Id = id;
             Identifier = identifier;
@@ -37,7 +36,6 @@ namespace Roslynator.Metadata
             Images = new ReadOnlyCollection<ImageMetadata>(images?.ToArray() ?? Array.Empty<ImageMetadata>());
             Samples = new ReadOnlyCollection<SampleMetadata>(samples?.ToArray() ?? Array.Empty<SampleMetadata>());
             Links = new ReadOnlyCollection<LinkMetadata>(links?.ToArray() ?? Array.Empty<LinkMetadata>());
-            IsDevelopment = isDevelopment;
         }
 
         public string Id { get; }
@@ -63,8 +61,6 @@ namespace Roslynator.Metadata
         public IReadOnlyList<SampleMetadata> Samples { get; }
 
         public IReadOnlyList<LinkMetadata> Links { get; }
-
-        public bool IsDevelopment { get; }
 
         public IEnumerable<ImageMetadata> ImagesOrDefaultImage()
         {

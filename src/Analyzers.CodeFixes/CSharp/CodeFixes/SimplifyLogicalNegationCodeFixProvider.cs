@@ -104,7 +104,7 @@ namespace Roslynator.CSharp.CodeFixes
 
                         var memberAccessExpression = (MemberAccessExpressionSyntax)invocationExpression.Expression;
 
-                        ExpressionSyntax lambdaExpression = invocationExpression.ArgumentList.Arguments.First().Expression.WalkDownParentheses();
+                        ExpressionSyntax lambdaExpression = invocationExpression.ArgumentList.Arguments[0].Expression.WalkDownParentheses();
 
                         SingleParameterLambdaExpressionInfo lambdaInfo = SyntaxInfo.SingleParameterLambdaExpressionInfo(lambdaExpression);
 

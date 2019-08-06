@@ -480,10 +480,8 @@ namespace Roslynator.CSharp.CodeFixes
 
                             node = node.Parent;
 
-                            if (!node.IsKind(SyntaxKind.LocalDeclarationStatement))
+                            if (!(node is LocalDeclarationStatementSyntax localDeclaration))
                                 return;
-
-                            var localDeclaration = (LocalDeclarationStatementSyntax)node;
 
                             SyntaxToken constModifier = localDeclaration.Modifiers.Find(SyntaxKind.ConstKeyword);
 
