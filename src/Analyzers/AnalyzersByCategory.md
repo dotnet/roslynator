@@ -10,6 +10,7 @@
 | Design | [Declare enum member with zero value (when enum has FlagsAttribute)](../../docs/analyzers/RCS1135.md) | RCS1135 | Info |
 | Design | [Declare type inside namespace](../../docs/analyzers/RCS1110.md) | RCS1110 | Info |
 | Design | [Implement exception constructors](../../docs/analyzers/RCS1194.md) | RCS1194 | Warning |
+| Design | [Implement non-generic counterpart](../../docs/analyzers/RCS1241.md) | RCS1241 | Hidden |
 | Design | [Make class sealed](../../docs/analyzers/RCS1225.md) | RCS1225 | Info |
 | Design | [Make class static](../../docs/analyzers/RCS1102.md) | RCS1102 | Warning |
 | Design | [Make field read-only](../../docs/analyzers/RCS1169.md) | RCS1169 | Info |
@@ -71,6 +72,7 @@
 | Readability | [Add 'static' modifier to all partial class declarations](../../docs/analyzers/RCS1108.md) | RCS1108 | Info |
 | Readability | [Avoid chain of assignments](../../docs/analyzers/RCS1162.md) | RCS1162 | None |
 | Readability | [Avoid implicitly-typed array](../../docs/analyzers/RCS1014.md) | RCS1014 | None |
+| Readability | [Avoid nested ?: operators](../../docs/analyzers/RCS1238.md) | RCS1238 | Hidden |
 | Readability | [Avoid 'null' on the left side of a binary expression](../../docs/analyzers/RCS1098.md) | RCS1098 | Info |
 | Readability | [Avoid usage of using alias directive](../../docs/analyzers/RCS1056.md) | RCS1056 | None |
 | Readability | [Declare each attribute separately](../../docs/analyzers/RCS1052.md) | RCS1052 | None |
@@ -93,10 +95,12 @@
 | Readability | [Use explicit type instead of 'var' (foreach variable)](../../docs/analyzers/RCS1009.md) | RCS1009 | None |
 | Readability | [Use explicit type instead of 'var' (when the type is not obvious)](../../docs/analyzers/RCS1008.md) | RCS1008 | None |
 | Readability | [Use explicit type instead of 'var' (when the type is obvious)](../../docs/analyzers/RCS1012.md) | RCS1012 | None |
+| Readability | [Use 'for' statement instead of 'while' statement](../../docs/analyzers/RCS1239.md) | RCS1239 | Info |
 | Readability | [Use regular string literal instead of verbatim string literal](../../docs/analyzers/RCS1192.md) | RCS1192 | Info |
 | Redundancy | [Avoid interpolated string with no interpolation](../../docs/analyzers/RCS1062.md) | RCS1062 | Hidden |
 | Redundancy | [Avoid semicolon at the end of declaration](../../docs/analyzers/RCS1055.md) | RCS1055 | Hidden |
 | Redundancy | [Expression is always equal to true/false](../../docs/analyzers/RCS1215.md) | RCS1215 | Warning |
+| Redundancy | [Operator is unnecessary](../../docs/analyzers/RCS1240.md) | RCS1240 | Info |
 | Redundancy | [Remove argument list from attribute](../../docs/analyzers/RCS1039.md) | RCS1039 | Hidden |
 | Redundancy | [Remove empty destructor](../../docs/analyzers/RCS1106.md) | RCS1106 | Info |
 | Redundancy | [Remove empty else clause](../../docs/analyzers/RCS1040.md) | RCS1040 | Hidden |
@@ -130,6 +134,7 @@
 | Redundancy | [Remove redundant 'ToCharArray' call](../../docs/analyzers/RCS1107.md) | RCS1107 | Info |
 | Redundancy | [Remove redundant 'ToString' call](../../docs/analyzers/RCS1097.md) | RCS1097 | Info |
 | Redundancy | [Remove trailing white-space](../../docs/analyzers/RCS1037.md) | RCS1037 | Info |
+| Redundancy | [Remove unnecessary braces](../../docs/analyzers/RCS1031.md) | RCS1031 | Hidden |
 | Redundancy | [Remove unnecessary case label](../../docs/analyzers/RCS1069.md) | RCS1069 | Hidden |
 | Redundancy | [Remove unnecessary else clause](../../docs/analyzers/RCS1211.md) | RCS1211 | Hidden |
 | Redundancy | [Remove unused member declaration](../../docs/analyzers/RCS1213.md) | RCS1213 | Info |
@@ -195,10 +200,12 @@
 | Usage | [Return Task.FromResult instead of returning null](../../docs/analyzers/RCS1210.md) | RCS1210 | Warning |
 | Usage | [Unconstrained type parameter checked for null](../../docs/analyzers/RCS1165.md) | RCS1165 | Hidden |
 | Usage | [Use async/await when necessary](../../docs/analyzers/RCS1229.md) | RCS1229 | Info |
+| Usage | [Use bit shift operator](../../docs/analyzers/RCS1237.md) | RCS1237 | Hidden |
 | Usage | [Use conditional access instead of conditional expression](../../docs/analyzers/RCS1206.md) | RCS1206 | Info |
 | Usage | [Use conditional access](../../docs/analyzers/RCS1146.md) | RCS1146 | Info |
 | Usage | [Use EventArgs.Empty](../../docs/analyzers/RCS1204.md) | RCS1204 | Info |
 | Usage | [Use EventHandler\<T>](../../docs/analyzers/RCS1159.md) | RCS1159 | Info |
+| Usage | [Use exception filter](../../docs/analyzers/RCS1236.md) | RCS1236 | Info |
 | Usage | [Use expression-bodied member](../../docs/analyzers/RCS1016.md) | RCS1016 | None |
 | Usage | [Use lambda expression instead of anonymous method](../../docs/analyzers/RCS1048.md) | RCS1048 | Info |
 | Usage | [Use pattern matching instead of combination of 'as' operator and null check](../../docs/analyzers/RCS1221.md) | RCS1221 | Info |

@@ -120,7 +120,7 @@
     <Refactoring Id="RR0117" IsEnabled="true" /> <!-- Replace as expression with cast expression -->
     <Refactoring Id="RR0118" IsEnabled="true" /> <!-- Replace cast expression with as expression -->
     <Refactoring Id="RR0119" IsEnabled="true" /> <!-- Replace conditional expression with expression -->
-    <Refactoring Id="RR0120" IsEnabled="true" /> <!-- Replace ?: with if-else -->
+    <Refactoring Id="RR0120" IsEnabled="true" /> <!-- Convert ?: to if-else -->
     <Refactoring Id="RR0121" IsEnabled="true" /> <!-- Replace constant with field -->
     <Refactoring Id="RR0123" IsEnabled="true" /> <!-- Replace do statement with while statement -->
     <Refactoring Id="RR0124" IsEnabled="true" /> <!-- Replace equals expression with string.Equals -->
@@ -148,8 +148,8 @@
     <Refactoring Id="RR0147" IsEnabled="true" /> <!-- Replace switch with if -->
     <Refactoring Id="RR0148" IsEnabled="true" /> <!-- Replace verbatim string literal with regular string literal -->
     <Refactoring Id="RR0149" IsEnabled="true" /> <!-- Replace verbatim string literal with regular string literals -->
-    <Refactoring Id="RR0150" IsEnabled="true" /> <!-- Replace while statement with do statement -->
-    <Refactoring Id="RR0151" IsEnabled="true" /> <!-- Replace while statement with for statement -->
+    <Refactoring Id="RR0150" IsEnabled="true" /> <!-- Convert 'while' statement to 'do' statement -->
+    <Refactoring Id="RR0151" IsEnabled="true" /> <!-- Convert 'while' statement to 'for' statement -->
     <Refactoring Id="RR0152" IsEnabled="true" /> <!-- Reverse for loop -->
     <Refactoring Id="RR0153" IsEnabled="true" /> <!-- Simplify if -->
     <Refactoring Id="RR0154" IsEnabled="true" /> <!-- Simplify lambda expression -->
@@ -164,7 +164,7 @@
     <Refactoring Id="RR0163" IsEnabled="true" /> <!-- Uncomment single-line comment -->
     <Refactoring Id="RR0164" IsEnabled="true" /> <!-- Use bitwise operation instead of calling 'HasFlag' -->
     <Refactoring Id="RR0165" IsEnabled="true" /> <!-- Use coalesce expression instead of if -->
-    <Refactoring Id="RR0166" IsEnabled="true" /> <!-- Use conditional expression instead of if -->
+    <Refactoring Id="RR0166" IsEnabled="true" /> <!-- Convert 'if' to ?: -->
     <Refactoring Id="RR0167" IsEnabled="true" /> <!-- Use element access instead of 'First/Last'ElementAt' method -->
     <Refactoring Id="RR0168" IsEnabled="true" /> <!-- Use "" instead of string.Empty -->
     <Refactoring Id="RR0169" IsEnabled="true" /> <!-- Use expression-bodied member -->
@@ -211,6 +211,7 @@
     <Refactoring Id="RR0210" IsEnabled="true" /> <!-- Implement custom enumerator -->
     <Refactoring Id="RR0211" IsEnabled="true" /> <!-- Convert statements to if-else -->
     <Refactoring Id="RR0212" IsEnabled="true" /> <!-- Duplicate switch section -->
+    <Refactoring Id="RR0213" IsEnabled="true" /> <!-- Add parameter to interface member -->
   </Refactorings>
     <CodeFixes>
     <CodeFix Id="RCF0001" IsEnabled="true" /> <!-- Remove unused variable (fixes CS0168, CS0219) -->
@@ -326,6 +327,7 @@
     <CodeFix Id="RCF0113" IsEnabled="true" /> <!-- Replace character literal with string literal (fixes CS1012) -->
     <CodeFix Id="RCF0114" IsEnabled="true" /> <!-- Make field writable (fixes CS0191, CS0192) -->
     <CodeFix Id="RCF0115" IsEnabled="true" /> <!-- Replace invocation with member access or vice versa (fixes CS1061) -->
+    <CodeFix Id="RCF0116" IsEnabled="true" /> <!-- Add parameter to explicitly implemented interface member (fixes CS0539) -->
   </CodeFixes>
   </Settings>
 </Roslynator>

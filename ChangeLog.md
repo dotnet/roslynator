@@ -1,3 +1,20 @@
+### 2.1.3 (2019-08-06)
+
+#### Analyzers
+
+* Publish package [Roslynator.CodeAnalysis.Analyzers 1.0.0-beta](https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers/1.0.0-beta)
+
+* Add analyzer [UseExceptionFilter](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1236.md) (RCS1236).
+* Add analyzer [UseBitShiftOperator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1237.md) (RCS1237).
+* Add analyzer [AvoidNestedConditionalOperators](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1238.md) (RCS1238).
+* Add analyzer [UseForStatementInsteadOfWhileStatement](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1239.md) (RCS1239).
+* Add analyzer [UnnecessaryOperator](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1240.md) (RCS1240).
+* Add analyzer [ImplementNonGenericCounterpart](http://github.com/JosefPihrt/Roslynator/blob/master/docs/analyzers/RCS1241.md) (RCS1241).
+
+#### Refactorings
+
+* Add refactoring [AddParameterToInterfaceMember](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0213.md)  (RR0213)
+
 ### 2.1.1 (2019-05-13)
 
 #### Analyzers
@@ -9,7 +26,7 @@
 
 #### Refactorings
 
-* Add refactoring [DuplicateSwitchSection](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0214.md)  (RR0214)
+* Add refactoring [DuplicateSwitchSection](http://github.com/JosefPihrt/Roslynator/blob/master/docs/refactorings/RR0212.md)  (RR0212)
 
 ### 2.1.0 (2019-03-25)
 
