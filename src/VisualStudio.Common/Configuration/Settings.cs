@@ -19,7 +19,7 @@ namespace Roslynator.Configuration
         public Settings(
             IEnumerable<KeyValuePair<string, bool>> refactorings = null,
             IEnumerable<KeyValuePair<string, bool>> codeFixes = null,
-            bool prefixFieldIdentifierWithUnderscore = true)
+            bool prefixFieldIdentifierWithUnderscore = false)
         {
             Initialize(Refactorings, refactorings);
             Initialize(CodeFixes, codeFixes);
