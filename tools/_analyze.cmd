@@ -1,6 +1,6 @@
 @echo off
 
-set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Bin"
+set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin"
 
 %_msbuildPath%\msbuild "..\src\CommandLine.sln" /t:Build /p:Configuration=Debug /v:m /m
 

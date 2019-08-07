@@ -4,7 +4,7 @@ dotnet restore --force "..\src\CommandLine.sln"
 
 rd /S /Q "..\src\CommandLine\bin\Release\publish"
 
-"C:\Program Files\Microsoft Visual Studio\2019\Preview\MSBuild\Current\Bin\MSBuild" "..\src\CommandLine.sln" ^
+"C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild" "..\src\CommandLine.sln" ^
  /t:Clean,Publish ^
  /p:Configuration=Release,RoslynatorCommandLine=true,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors="1591" ^
  /v:normal ^
