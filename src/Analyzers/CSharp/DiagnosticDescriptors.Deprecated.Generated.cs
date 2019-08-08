@@ -10,7 +10,7 @@ namespace Roslynator.CSharp
     public static partial class DiagnosticDescriptors
     {
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterList = Create(
+        internal static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterList = Factory.Create(
             id:                 DiagnosticIdentifiers.SimplifyLambdaExpressionParameterList, 
             title:              "Simplify lambda expression parameter list.", 
             messageFormat:      "Simplify lambda expression parameter list.", 
@@ -22,10 +22,10 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterListFadeOut = SimplifyLambdaExpressionParameterList.CreateFadeOut();
+        public static readonly DiagnosticDescriptor SimplifyLambdaExpressionParameterListFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(SimplifyLambdaExpressionParameterList);
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor ReplaceForEachWithFor = Create(
+        internal static readonly DiagnosticDescriptor ReplaceForEachWithFor = Factory.Create(
             id:                 DiagnosticIdentifiers.ReplaceForEachWithFor, 
             title:              "Replace foreach statement with for statement.", 
             messageFormat:      "Replace foreach statement with for statement.", 
@@ -37,10 +37,10 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        public static readonly DiagnosticDescriptor ReplaceForEachWithForFadeOut = ReplaceForEachWithFor.CreateFadeOut();
+        public static readonly DiagnosticDescriptor ReplaceForEachWithForFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ReplaceForEachWithFor);
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatement = Create(
+        internal static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatement = Factory.Create(
             id:                 DiagnosticIdentifiers.MergeLocalDeclarationWithReturnStatement, 
             title:              "Merge local declaration with return statement.", 
             messageFormat:      "Merge local declaration with return statement.", 
@@ -52,10 +52,10 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatementFadeOut = MergeLocalDeclarationWithReturnStatement.CreateFadeOut();
+        public static readonly DiagnosticDescriptor MergeLocalDeclarationWithReturnStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(MergeLocalDeclarationWithReturnStatement);
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfCountMethod = Create(
+        internal static readonly DiagnosticDescriptor UseCountOrLengthPropertyInsteadOfCountMethod = Factory.Create(
             id:                 DiagnosticIdentifiers.UseCountOrLengthPropertyInsteadOfCountMethod, 
             title:              "Use 'Count/Length' property instead of 'Count' method.", 
             messageFormat:      "Use '{0}' property instead of 'Count' method.", 
@@ -67,7 +67,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor CallAnyInsteadOfCount = Create(
+        internal static readonly DiagnosticDescriptor CallAnyInsteadOfCount = Factory.Create(
             id:                 DiagnosticIdentifiers.CallAnyInsteadOfCount, 
             title:              "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
             messageFormat:      "Call 'Enumerable.Any' instead of 'Enumerable.Count'.", 
@@ -79,7 +79,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor UseCSharp6DictionaryInitializer = Create(
+        internal static readonly DiagnosticDescriptor UseCSharp6DictionaryInitializer = Factory.Create(
             id:                 DiagnosticIdentifiers.UseCSharp6DictionaryInitializer, 
             title:              "Use C# 6.0 dictionary initializer.", 
             messageFormat:      "Use C# 6.0 dictionary initializer.", 
@@ -91,7 +91,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor CallCastInsteadOfSelect = Create(
+        internal static readonly DiagnosticDescriptor CallCastInsteadOfSelect = Factory.Create(
             id:                 DiagnosticIdentifiers.CallCastInsteadOfSelect, 
             title:              "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.", 
             messageFormat:      "Call 'Enumerable.Cast' instead of 'Enumerable.Select'.", 
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor ReplaceReturnStatementWithExpressionStatement = Create(
+        internal static readonly DiagnosticDescriptor ReplaceReturnStatementWithExpressionStatement = Factory.Create(
             id:                 DiagnosticIdentifiers.ReplaceReturnStatementWithExpressionStatement, 
             title:              "Replace yield/return statement with expression statement.", 
             messageFormat:      "Replace {0} statement with expression statement.", 
@@ -115,7 +115,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor AddBreakStatementToSwitchSection = Create(
+        internal static readonly DiagnosticDescriptor AddBreakStatementToSwitchSection = Factory.Create(
             id:                 DiagnosticIdentifiers.AddBreakStatementToSwitchSection, 
             title:              "Add break statement to switch section.", 
             messageFormat:      "Add break statement to switch section.", 
@@ -127,7 +127,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor AddReturnStatementThatReturnsDefaultValue = Create(
+        internal static readonly DiagnosticDescriptor AddReturnStatementThatReturnsDefaultValue = Factory.Create(
             id:                 DiagnosticIdentifiers.AddReturnStatementThatReturnsDefaultValue, 
             title:              "Add return statement that returns default value.", 
             messageFormat:      "Add return statement that returns default value.", 
@@ -139,7 +139,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor CallFindInsteadOfFirstOrDefault = Create(
+        internal static readonly DiagnosticDescriptor CallFindInsteadOfFirstOrDefault = Factory.Create(
             id:                 DiagnosticIdentifiers.CallFindInsteadOfFirstOrDefault, 
             title:              "Call 'Find' instead of 'FirstOrDefault'.", 
             messageFormat:      "Call 'Find' instead of 'FirstOrDefault'.", 
@@ -151,7 +151,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor UseElementAccessInsteadOfElementAt = Create(
+        internal static readonly DiagnosticDescriptor UseElementAccessInsteadOfElementAt = Factory.Create(
             id:                 DiagnosticIdentifiers.UseElementAccessInsteadOfElementAt, 
             title:              "Use [] instead of calling 'ElementAt'.", 
             messageFormat:      "Use [] instead of calling 'ElementAt'.", 
@@ -163,7 +163,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor UseElementAccessInsteadOfFirst = Create(
+        internal static readonly DiagnosticDescriptor UseElementAccessInsteadOfFirst = Factory.Create(
             id:                 DiagnosticIdentifiers.UseElementAccessInsteadOfFirst, 
             title:              "Use [] instead of calling 'First'.", 
             messageFormat:      "Use [] instead of calling 'First'.", 
@@ -175,7 +175,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor AddMissingSemicolon = Create(
+        internal static readonly DiagnosticDescriptor AddMissingSemicolon = Factory.Create(
             id:                 DiagnosticIdentifiers.AddMissingSemicolon, 
             title:              "Add missing semicolon.", 
             messageFormat:      "Add missing semicolon.", 
@@ -187,7 +187,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor MarkMemberAsStatic = Create(
+        internal static readonly DiagnosticDescriptor MarkMemberAsStatic = Factory.Create(
             id:                 DiagnosticIdentifiers.MarkMemberAsStatic, 
             title:              "Mark member as static.", 
             messageFormat:      "Mark member as static.", 
@@ -199,7 +199,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor ReplaceReturnWithYieldReturn = Create(
+        internal static readonly DiagnosticDescriptor ReplaceReturnWithYieldReturn = Factory.Create(
             id:                 DiagnosticIdentifiers.ReplaceReturnWithYieldReturn, 
             title:              "Replace return with yield return.", 
             messageFormat:      "Replace return with yield return.", 
@@ -211,7 +211,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor AddDocumentationComment = Create(
+        internal static readonly DiagnosticDescriptor AddDocumentationComment = Factory.Create(
             id:                 DiagnosticIdentifiers.AddDocumentationComment, 
             title:              "Add documentation comment to publicly visible type or member.", 
             messageFormat:      "Add documentation comment to publicly visible type or member.", 
@@ -223,7 +223,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor MarkContainingClassAsAbstract = Create(
+        internal static readonly DiagnosticDescriptor MarkContainingClassAsAbstract = Factory.Create(
             id:                 DiagnosticIdentifiers.MarkContainingClassAsAbstract, 
             title:              "Mark containing class as abstract.", 
             messageFormat:      "Mark containing class as abstract.", 
@@ -235,7 +235,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor RemoveInapplicableModifier = Create(
+        internal static readonly DiagnosticDescriptor RemoveInapplicableModifier = Factory.Create(
             id:                 DiagnosticIdentifiers.RemoveInapplicableModifier, 
             title:              "Remove inapplicable modifier.", 
             messageFormat:      "Remove inapplicable modifier.", 
@@ -247,7 +247,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor RemoveUnreachableCode = Create(
+        internal static readonly DiagnosticDescriptor RemoveUnreachableCode = Factory.Create(
             id:                 DiagnosticIdentifiers.RemoveUnreachableCode, 
             title:              "Remove unreachable code.", 
             messageFormat:      "Remove unreachable code.", 
@@ -259,7 +259,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor RemoveImplementationFromAbstractMember = Create(
+        internal static readonly DiagnosticDescriptor RemoveImplementationFromAbstractMember = Factory.Create(
             id:                 DiagnosticIdentifiers.RemoveImplementationFromAbstractMember, 
             title:              "Remove implementation from abstract member.", 
             messageFormat:      "Remove implementation from {0}.", 
@@ -271,7 +271,7 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor CallStringConcatInsteadOfStringJoin = Create(
+        internal static readonly DiagnosticDescriptor CallStringConcatInsteadOfStringJoin = Factory.Create(
             id:                 DiagnosticIdentifiers.CallStringConcatInsteadOfStringJoin, 
             title:              "Call string.Concat instead of string.Join.", 
             messageFormat:      "Call string.Concat instead of string.Join.", 
@@ -283,7 +283,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor MemberTypeMustMatchOverriddenMemberType = Create(
+        internal static readonly DiagnosticDescriptor MemberTypeMustMatchOverriddenMemberType = Factory.Create(
             id:                 DiagnosticIdentifiers.MemberTypeMustMatchOverriddenMemberType, 
             title:              "Member type must match overriden member type.", 
             messageFormat:      "Member type must match overriden member type.", 
@@ -295,7 +295,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor OverridingMemberCannotChangeAccessModifiers = Create(
+        internal static readonly DiagnosticDescriptor OverridingMemberCannotChangeAccessModifiers = Factory.Create(
             id:                 DiagnosticIdentifiers.OverridingMemberCannotChangeAccessModifiers, 
             title:              "Overriding member cannot change access modifiers.", 
             messageFormat:      "Overriding member cannot change access modifiers.", 
@@ -307,7 +307,7 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         [Obsolete("", error: true)]
-        internal static readonly DiagnosticDescriptor CallDebugFailInsteadOfDebugAssert = Create(
+        internal static readonly DiagnosticDescriptor CallDebugFailInsteadOfDebugAssert = Factory.Create(
             id:                 DiagnosticIdentifiers.CallDebugFailInsteadOfDebugAssert, 
             title:              "Call Debug.Fail instead of Debug.Assert.", 
             messageFormat:      "Call Debug.Fail instead of Debug.Assert.", 
