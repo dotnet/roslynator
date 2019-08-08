@@ -155,11 +155,11 @@ namespace Roslynator.CSharp.Refactorings
                         body = Block(
                             IfStatement(
                                 NotEqualsExpression(
-                                    IdentifierName(fieldName),
+                                    IdentifierName(fieldName).QualifyWithThis(),
                                     IdentifierName("value")),
                                 Block(
                                     SimpleAssignmentStatement(
-                                        IdentifierName(fieldName),
+                                        IdentifierName(fieldName).QualifyWithThis(),
                                         IdentifierName("value")),
                                     ExpressionStatement(
                                         InvocationExpression(
@@ -172,7 +172,7 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     body = Block(
                        SimpleAssignmentStatement(
-                           IdentifierName(fieldName),
+                           IdentifierName(fieldName).QualifyWithThis(),
                            IdentifierName("value")));
                 }
 
