@@ -46,7 +46,8 @@ namespace Roslynator.CodeGeneration.CSharp
                     (obsolete) ? Modifiers.Internal_Static_ReadOnly() : Modifiers.Public_Static_ReadOnly(),
                     IdentifierName("DiagnosticDescriptor"),
                     analyzer.Identifier,
-                    InvocationExpression(
+                    SimpleMemberInvocationExpression(
+                        IdentifierName("Factory"),
                         IdentifierName("Create"),
                         ArgumentList(
                             Argument(
@@ -99,8 +100,9 @@ namespace Roslynator.CodeGeneration.CSharp
                         IdentifierName("DiagnosticDescriptor"),
                         analyzer.Identifier + "FadeOut",
                         SimpleMemberInvocationExpression(
-                            IdentifierName(analyzer.Identifier),
-                            IdentifierName("CreateFadeOut"))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
+                            IdentifierName("DiagnosticDescriptorFactory"),
+                            IdentifierName("CreateFadeOut"),
+                            ArgumentList(Argument(IdentifierName(analyzer.Identifier))))).AddObsoleteAttributeIf(analyzer.IsObsolete, error: true);
                 }
             }
         }
@@ -118,9 +120,14 @@ namespace Roslynator.CodeGeneration.CSharp
 
             public override SyntaxNode VisitArgument(ArgumentSyntax node)
             {
-                return node
-                    .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
-                    .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
+                if (node.NameColon != null)
+                {
+                    return node
+                        .WithNameColon(node.NameColon.AppendToLeadingTrivia(TriviaList(NewLine(), Whitespace("            "))))
+                        .WithExpression(node.Expression.PrependToLeadingTrivia(Whitespace(new string(' ', 18 - node.NameColon.Name.Identifier.ValueText.Length))));
+                }
+
+                return node;
             }
 
             public override SyntaxNode VisitAttribute(AttributeSyntax node)

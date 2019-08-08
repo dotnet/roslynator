@@ -1,27 +1,28 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using Microsoft.CodeAnalysis;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Threading;
-using Microsoft.CodeAnalysis;
-using Roslynator.Configuration;
 
-namespace Roslynator.CSharp
+namespace Roslynator
 {
-    internal static class AnalyzersConfiguration
+    internal static class RuleSetUtility
     {
-        private static RuleSet _ruleSet;
+        private static RuleSet _emptyRuleSet;
 
-        private static RuleSet RuleSet
+        internal const string DefaultRuleSetName = "roslynator.ruleset";
+
+        public static RuleSet EmptyRuleSet
         {
             get
             {
-                if (_ruleSet == null)
-                    Interlocked.CompareExchange(ref _ruleSet, LoadRuleSet() ?? CreateEmptyRuleSet(), null);
+                if (_emptyRuleSet == null)
+                    Interlocked.CompareExchange(ref _emptyRuleSet, CreateEmptyRuleSet(), null);
 
-                return _ruleSet;
+                return _emptyRuleSet;
 
                 RuleSet CreateEmptyRuleSet()
                 {
@@ -34,22 +35,13 @@ namespace Roslynator.CSharp
             }
         }
 
-        private static RuleSet LoadRuleSet()
+        public static RuleSet Load(string path, ImmutableArray<string> additionalPaths)
         {
-            RuleSet ruleSet = null;
+            RuleSet ruleSet = Load(path);
 
-            string assemblyPath = typeof(AnalyzersConfiguration).Assembly.Location;
-
-            if (!string.IsNullOrEmpty(assemblyPath))
+            foreach (string ruleSetPath in additionalPaths)
             {
-                string ruleSetPath = Path.Combine(Path.GetDirectoryName(assemblyPath), "roslynator.ruleset");
-
-                ruleSet = LoadRuleSet(ruleSetPath);
-            }
-
-            foreach (string ruleSetPath in CodeAnalysisConfiguration.Current.RuleSets)
-            {
-                RuleSet ruleSet2 = LoadRuleSet(ruleSetPath);
+                RuleSet ruleSet2 = Load(ruleSetPath);
 
                 ruleSet = Combine(ruleSet, ruleSet2);
             }
@@ -57,7 +49,7 @@ namespace Roslynator.CSharp
             return ruleSet;
         }
 
-        private static RuleSet LoadRuleSet(string path)
+        private static RuleSet Load(string path)
         {
             if (!File.Exists(path))
                 return null;
@@ -115,7 +107,7 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        private static RuleSet Combine(RuleSet ruleSet, RuleSet parent)
+        public static RuleSet Combine(RuleSet ruleSet, RuleSet parent)
         {
             if (ruleSet == null)
                 return parent;
@@ -179,35 +171,6 @@ namespace Roslynator.CSharp
             }
 
             return false;
-        }
-
-        public static DiagnosticSeverity GetDiagnosticSeverityOrDefault(string id, DiagnosticSeverity defaultValue)
-        {
-            if (!RuleSet.SpecificDiagnosticOptions.TryGetValue(id, out ReportDiagnostic reportDiagnostic))
-                reportDiagnostic = RuleSet.GeneralDiagnosticOption;
-
-            if (reportDiagnostic != ReportDiagnostic.Default
-                && reportDiagnostic != ReportDiagnostic.Suppress)
-            {
-                return reportDiagnostic.ToDiagnosticSeverity();
-            }
-
-            return defaultValue;
-        }
-
-        public static bool IsDiagnosticEnabledOrDefault(string id, bool defaultValue)
-        {
-            if (RuleSet.SpecificDiagnosticOptions.TryGetValue(id, out ReportDiagnostic reportDiagnostic))
-            {
-                if (reportDiagnostic != ReportDiagnostic.Default)
-                    return reportDiagnostic != ReportDiagnostic.Suppress;
-            }
-            else if (RuleSet.GeneralDiagnosticOption == ReportDiagnostic.Suppress)
-            {
-                return false;
-            }
-
-            return defaultValue;
         }
     }
 }
