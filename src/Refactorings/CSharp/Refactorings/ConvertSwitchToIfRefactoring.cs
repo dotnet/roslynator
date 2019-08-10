@@ -13,7 +13,7 @@ using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceSwitchWithIfElseRefactoring
+    internal static class ConvertSwitchToIfRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, SwitchStatementSyntax switchStatement)
         {
@@ -67,15 +67,15 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                (sections.Count == 1) ? "Replace switch with if" : "Replace switch with if-else",
-                cancellationToken => RefactorAsync(context.Document, switchStatement, cancellationToken),
-                RefactoringIdentifiers.ReplaceSwitchWithIf);
+                "Convert to 'if'",
+                ct => ConvertSwitchToIfAsync(context.Document, switchStatement, ct),
+                RefactoringIdentifiers.ConvertSwitchToIf);
         }
 
-        public static async Task<Document> RefactorAsync(
+        private static async Task<Document> ConvertSwitchToIfAsync(
             Document document,
             SwitchStatementSyntax switchStatement,
-            CancellationToken cancellationToken = default(CancellationToken))
+            CancellationToken cancellationToken = default)
         {
             SyntaxList<SwitchSectionSyntax> sections = switchStatement.Sections;
             IfStatementSyntax ifStatement = null;
@@ -161,6 +161,14 @@ namespace Roslynator.CSharp.Refactorings
                     case CasePatternSwitchLabelSyntax patternLabel:
                         {
                             expression = IsPatternExpression(switchExpression.Parenthesize(), patternLabel.Pattern).Parenthesize();
+
+                            if (patternLabel.WhenClause != null)
+                            {
+                                expression = LogicalAndExpression(
+                                    expression,
+                                    patternLabel.WhenClause.Condition.Parenthesize()).Parenthesize();
+                            }
+
                             break;
                         }
                     default:

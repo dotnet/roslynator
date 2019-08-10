@@ -171,7 +171,7 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStatementWithIfElse, "Replace (yield) return statement with if-else", IsEnabled(RefactoringIdentifiers.ReplaceStatementWithIfElse)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.CallIndexOfInsteadOfContains, "Call string.IndexOf instead of string.Contains", IsEnabled(RefactoringIdentifiers.CallIndexOfInsteadOfContains)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString, "Replace string.Format with interpolated string", IsEnabled(RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceSwitchWithIf, "Replace switch with if", IsEnabled(RefactoringIdentifiers.ReplaceSwitchWithIf)));
+            refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertSwitchToIf, "Convert 'switch to 'if'", IsEnabled(RefactoringIdentifiers.ConvertSwitchToIf)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral, "Replace verbatim string literal with regular string literal", IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiteral)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals, "Replace verbatim string literal with regular string literals", IsEnabled(RefactoringIdentifiers.ReplaceVerbatimStringLiteralWithRegularStringLiterals)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ConvertWhileToDo, "Convert 'while' statement to 'do' statement", IsEnabled(RefactoringIdentifiers.ConvertWhileToDo)));
