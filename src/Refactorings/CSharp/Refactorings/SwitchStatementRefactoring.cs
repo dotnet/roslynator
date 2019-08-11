@@ -19,12 +19,12 @@ namespace Roslynator.CSharp.Refactorings
 
             SelectedSwitchSectionsRefactoring.ComputeRefactorings(context, switchStatement);
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceSwitchWithIf))
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertSwitchToIf))
             {
                 if (context.Span.IsEmptyAndContainedInSpan(switchStatement.SwitchKeyword)
                     || context.Span.IsBetweenSpans(switchStatement))
                 {
-                    ReplaceSwitchWithIfElseRefactoring.ComputeRefactoring(context, switchStatement);
+                    ConvertSwitchToIfRefactoring.ComputeRefactoring(context, switchStatement);
                 }
             }
 
