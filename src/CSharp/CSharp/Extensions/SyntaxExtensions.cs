@@ -1499,6 +1499,16 @@ namespace Roslynator.CSharp
 
             return propertyDeclaration.AccessorList?.Setter();
         }
+
+        internal static PropertyDeclarationSyntax ReplaceAccessor(
+            this PropertyDeclarationSyntax propertyDeclaration,
+            AccessorDeclarationSyntax accessor,
+            AccessorDeclarationSyntax newAccessor)
+        {
+            return propertyDeclaration.WithAccessorList(
+                propertyDeclaration.AccessorList.WithAccessors(
+                    propertyDeclaration.AccessorList.Accessors.Replace(accessor, newAccessor)));
+        }
         #endregion PropertyDeclarationSyntax
 
         #region RegionDirectiveTriviaSyntax

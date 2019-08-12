@@ -1,12 +1,12 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
-using System.Collections.Immutable;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxRewriters;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -20,11 +20,11 @@ namespace Roslynator.CSharp.Refactorings
             bool prefixIdentifierWithUnderscore = true,
             CancellationToken cancellationToken = default)
         {
+            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
+
             string fieldName = StringUtility.ToCamelCase(
                 propertyDeclaration.Identifier.ValueText,
                 prefixWithUnderscore: prefixIdentifierWithUnderscore);
-
-            SemanticModel semanticModel = await document.GetSemanticModelAsync(cancellationToken).ConfigureAwait(false);
 
             fieldName = NameGenerator.Default.EnsureUniqueName(
                 fieldName,
@@ -39,56 +39,8 @@ namespace Roslynator.CSharp.Refactorings
 
             IPropertySymbol propertySymbol = semanticModel.GetDeclaredSymbol(propertyDeclaration, cancellationToken);
 
-            PropertyDeclarationSyntax newPropertyDeclaration = ExpandAccessors(document, propertyDeclaration, propertySymbol, fieldName, semanticModel)
-                .WithModifiers(propertyDeclaration.Modifiers.Replace(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword))
-                .WithTriviaFrom(propertyDeclaration)
-                .WithFormatterAnnotation();
+            PropertyDeclarationSyntax newPropertyDeclaration = propertyDeclaration;
 
-            MemberDeclarationListInfo membersInfo = SyntaxInfo.MemberDeclarationListInfo(propertyDeclaration.Parent);
-
-            SyntaxList<MemberDeclarationSyntax> members = membersInfo.Members;
-
-            int propertyIndex = membersInfo.IndexOf(propertyDeclaration);
-
-            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
-
-            if (accessorList?.Getter()?.IsAutoImplemented() == true
-                && accessorList.Setter() == null)
-            {
-                ImmutableArray<SyntaxNode> nodes = await SyntaxFinder.FindReferencesAsync(propertySymbol, document, cancellationToken: cancellationToken).ConfigureAwait(false);
-
-                IdentifierNameSyntax newNode = IdentifierName(fieldName);
-
-                SyntaxNode newParent = membersInfo.Parent.ReplaceNodes(nodes, (node, _) =>
-                {
-                    if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
-                        && ((MemberAccessExpressionSyntax)node.Parent).Expression.IsKind(SyntaxKind.BaseExpression))
-                    {
-                        return node;
-                    }
-
-                    return newNode.WithTriviaFrom(node);
-                });
-
-                MemberDeclarationListInfo newMembersInfo = SyntaxInfo.MemberDeclarationListInfo(newParent);
-
-                members = newMembersInfo.Members;
-            }
-
-            SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(propertyIndex, newPropertyDeclaration);
-
-            newMembers = MemberDeclarationInserter.Default.Insert(newMembers, fieldDeclaration);
-
-            return await document.ReplaceMembersAsync(membersInfo, newMembers, cancellationToken).ConfigureAwait(false);
-        }
-
-        private static PropertyDeclarationSyntax ExpandAccessors(
-            Document document,
-            PropertyDeclarationSyntax propertyDeclaration,
-            IPropertySymbol propertySymbol,
-            string fieldName,
-            SemanticModel semanticModel)
-        {
             AccessorDeclarationSyntax getter = propertyDeclaration.Getter();
 
             if (getter != null)
@@ -100,13 +52,13 @@ namespace Roslynator.CSharp.Refactorings
                     Block(ReturnStatement(IdentifierName(fieldName))),
                     default(SyntaxToken));
 
-                propertyDeclaration = propertyDeclaration
-                    .ReplaceNode(getter, newGetter.RemoveWhitespace())
+                newPropertyDeclaration = newPropertyDeclaration
+                    .ReplaceAccessor(getter, newGetter.RemoveWhitespace())
                     .WithInitializer(null)
                     .WithSemicolonToken(default);
             }
 
-            AccessorDeclarationSyntax setter = propertyDeclaration.Setter();
+            AccessorDeclarationSyntax setter = newPropertyDeclaration.Setter();
 
             AccessorDeclarationSyntax newSetter = null;
 
@@ -114,25 +66,53 @@ namespace Roslynator.CSharp.Refactorings
             {
                 newSetter = ExpandSetter();
 
-                propertyDeclaration = propertyDeclaration.ReplaceNode(setter, newSetter);
+                newPropertyDeclaration = newPropertyDeclaration.ReplaceAccessor(setter, newSetter);
             }
 
             if (newSetter?.Body.Statements[0].Kind() != SyntaxKind.IfStatement)
             {
-                AccessorListSyntax newAccessorList = propertyDeclaration.AccessorList
+                AccessorListSyntax newAccessorList = newPropertyDeclaration.AccessorList
                     .RemoveWhitespace()
-                    .WithCloseBraceToken(propertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
+                    .WithCloseBraceToken(newPropertyDeclaration.AccessorList.CloseBraceToken.WithLeadingTrivia(NewLine()));
 
-                propertyDeclaration = propertyDeclaration.WithAccessorList(newAccessorList);
+                newPropertyDeclaration = newPropertyDeclaration.WithAccessorList(newAccessorList);
             }
 
-            return propertyDeclaration;
+            newPropertyDeclaration = newPropertyDeclaration
+                .WithModifiers(newPropertyDeclaration.Modifiers.Replace(SyntaxKind.AbstractKeyword, SyntaxKind.VirtualKeyword))
+                .WithTriviaFrom(propertyDeclaration)
+                .WithFormatterAnnotation();
+
+            MemberDeclarationListInfo membersInfo = SyntaxInfo.MemberDeclarationListInfo(propertyDeclaration.Parent);
+
+            SyntaxList<MemberDeclarationSyntax> members = membersInfo.Members;
+
+            int propertyIndex = membersInfo.IndexOf(propertyDeclaration);
+
+            if (propertyDeclaration.AccessorList?.Getter()?.IsAutoImplemented() == true
+                && propertyDeclaration.AccessorList.Setter() == null)
+            {
+                var rewriter = new Rewriter(propertySymbol, fieldName, semanticModel, cancellationToken);
+
+                SyntaxNode newParent = rewriter.Visit(membersInfo.Parent);
+
+                members = SyntaxInfo.MemberDeclarationListInfo(newParent).Members;
+            }
+
+            SyntaxList<MemberDeclarationSyntax> newMembers = members.ReplaceAt(propertyIndex, newPropertyDeclaration);
+
+            newMembers = MemberDeclarationInserter.Default.Insert(newMembers, fieldDeclaration);
+
+            return await document.ReplaceMembersAsync(membersInfo, newMembers, cancellationToken).ConfigureAwait(false);
 
             AccessorDeclarationSyntax ExpandSetter()
             {
                 BlockSyntax body = null;
 
                 INamedTypeSymbol containingType = propertySymbol.ContainingType;
+
+                MemberAccessExpressionSyntax fieldExpression = IdentifierName(fieldName).QualifyWithThis();
+                IdentifierNameSyntax valueName = IdentifierName("value");
 
                 if (containingType?.Implements(MetadataNames.System_ComponentModel_INotifyPropertyChanged, allInterfaces: true) == true)
                 {
@@ -154,13 +134,9 @@ namespace Roslynator.CSharp.Refactorings
 
                         body = Block(
                             IfStatement(
-                                NotEqualsExpression(
-                                    IdentifierName(fieldName).QualifyWithThis(),
-                                    IdentifierName("value")),
+                                NotEqualsExpression(fieldExpression, valueName),
                                 Block(
-                                    SimpleAssignmentStatement(
-                                        IdentifierName(fieldName).QualifyWithThis(),
-                                        IdentifierName("value")),
+                                    SimpleAssignmentStatement(fieldExpression, valueName),
                                     ExpressionStatement(
                                         InvocationExpression(
                                             IdentifierName(methodSymbol.Name),
@@ -170,10 +146,7 @@ namespace Roslynator.CSharp.Refactorings
 
                 if (body == null)
                 {
-                    body = Block(
-                       SimpleAssignmentStatement(
-                           IdentifierName(fieldName).QualifyWithThis(),
-                           IdentifierName("value")));
+                    body = Block(SimpleAssignmentStatement(fieldExpression, valueName));
                 }
 
                 return setter.Update(
@@ -182,6 +155,28 @@ namespace Roslynator.CSharp.Refactorings
                     setter.Keyword,
                     body,
                     default(SyntaxToken));
+            }
+        }
+
+        private class Rewriter : RenameRewriter
+        {
+            public Rewriter(
+                ISymbol symbol,
+                string newName,
+                SemanticModel semanticModel,
+                CancellationToken cancellationToken) : base(symbol, newName, semanticModel, cancellationToken)
+            {
+            }
+
+            protected override SyntaxNode Rename(IdentifierNameSyntax node)
+            {
+                if (node.IsParentKind(SyntaxKind.SimpleMemberAccessExpression)
+                    && ((MemberAccessExpressionSyntax)node.Parent).Expression.IsKind(SyntaxKind.BaseExpression))
+                {
+                    return node;
+                }
+
+                return base.Rename(node);
             }
         }
     }
