@@ -26,25 +26,32 @@ namespace VersionUpdater
             if (args == null)
                 return;
 
-            if (args.Length != 1)
-                return;
+            if (Version.TryParse(args.ElementAtOrDefault(1), out Version version))
+            {
+                UpdateVersionInCsProj(@"..\src\Core\Core.csproj", version);
+                UpdateVersionInCsProj(@"..\src\CSharp\CSharp.csproj", version);
+                UpdateVersionInCsProj(@"..\src\CSharp.Workspaces\CSharp.Workspaces.csproj", version);
+                UpdateVersionInCsProj(@"..\src\VisualBasic\VisualBasic.csproj", version);
+                UpdateVersionInCsProj(@"..\src\VisualBasic.Workspaces\VisualBasic.Workspaces.csproj", version);
+                UpdateVersionInCsProj(@"..\src\Workspaces.Core\Workspaces.Core.csproj", version);
+            }
 
-            if (!Version.TryParse(args[0], out Version version))
-                return;
+            if (Version.TryParse(args.FirstOrDefault(), out version))
+            {
+                UpdateVersionInCsProj(@"..\src\Analyzers\Analyzers.csproj", version);
+                UpdateVersionInCsProj(@"..\src\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj", version);
+                UpdateVersionInCsProj(@"..\src\CodeFixes\CodeFixes.csproj", version);
+                UpdateVersionInCsProj(@"..\src\Common\Common.csproj", version);
+                UpdateVersionInCsProj(@"..\src\Workspaces.Common\Workspaces.Common.csproj", version);
+                UpdateVersionInCsProj(@"..\src\Refactorings\Refactorings.csproj", version);
 
-            UpdateVersionInCsProj(@"..\src\Analyzers\Analyzers.csproj", version);
-            UpdateVersionInCsProj(@"..\src\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj", version);
-            UpdateVersionInCsProj(@"..\src\CodeFixes\CodeFixes.csproj", version);
-            UpdateVersionInCsProj(@"..\src\Common\Common.csproj", version);
-            UpdateVersionInCsProj(@"..\src\Workspaces.Common\Workspaces.Common.csproj", version);
-            UpdateVersionInCsProj(@"..\src\Refactorings\Refactorings.csproj", version);
+                UpdateVersionInAssemblyInfo(@"..\src\VisualStudio\Properties\AssemblyInfo.cs", version);
+                UpdateVersionInAssemblyInfo(@"..\src\VisualStudio.Common\Properties\AssemblyInfo.cs", version);
+                UpdateVersionInAssemblyInfo(@"..\src\VisualStudio.Refactorings\Properties\AssemblyInfo.cs", version);
 
-            UpdateVersionInAssemblyInfo(@"..\src\VisualStudio\Properties\AssemblyInfo.cs", version);
-            UpdateVersionInAssemblyInfo(@"..\src\VisualStudio.Common\Properties\AssemblyInfo.cs", version);
-            UpdateVersionInAssemblyInfo(@"..\src\VisualStudio.Refactorings\Properties\AssemblyInfo.cs", version);
-
-            UpdateVersionInVsixManifest(@"..\src\VisualStudio\source.extension.vsixmanifest", version);
-            UpdateVersionInVsixManifest(@"..\src\VisualStudio.Refactorings\source.extension.vsixmanifest", version);
+                UpdateVersionInVsixManifest(@"..\src\VisualStudio\source.extension.vsixmanifest", version);
+                UpdateVersionInVsixManifest(@"..\src\VisualStudio.Refactorings\source.extension.vsixmanifest", version);
+            }
         }
 
         private static void UpdateVersionInCsProj(string filePath, Version version)
@@ -67,9 +74,10 @@ namespace VersionUpdater
                 return;
             }
 
-            versionElement.Value = version.ToString();
+            if (!VerifyVersion(versionElement.Value, version, filePath))
+                return;
 
-            Console.WriteLine($"Updating version to \"{version}\" in \"{filePath}\"");
+            versionElement.Value = version.ToString();
 
             var xmlWriterSettings = new XmlWriterSettings()
             {
@@ -101,9 +109,12 @@ namespace VersionUpdater
                 return;
             }
 
-            versionAttribute.Value = version.ToString(3);
+            version = Version.Parse(version.ToString(3));
 
-            Console.WriteLine($"Updating version to \"{version}\" in \"{filePath}\"");
+            if (!VerifyVersion(versionAttribute.Value, version, filePath))
+                return;
+
+            versionAttribute.Value = version.ToString();
 
             doc.Save(filePath);
         }
@@ -112,17 +123,39 @@ namespace VersionUpdater
         {
             string s = File.ReadAllText(filePath, Encoding.UTF8);
 
-            if (!_assemblyVersionRegex.IsMatch(s))
+            Match match = _assemblyVersionRegex.Match(s);
+
+            if (!match.Success)
             {
                 Console.WriteLine($"Assembly version not found in \"{filePath}\"");
                 return;
             }
 
-            s = _assemblyVersionRegex.Replace(s, version.ToString(), 1);
+            if (!VerifyVersion(match.Value, version, filePath))
+                return;
 
-            Console.WriteLine($"Updating version to '{version}' in '{filePath}'");
+            s = s.Substring(0, match.Index) + version.ToString() + s.Substring(match.Index + match.Length);
 
             File.WriteAllText(filePath, s, Encoding.UTF8);
+        }
+
+        private static bool VerifyVersion(string text, Version version, string filePath)
+        {
+            if (!Version.TryParse(text, out Version oldVersion))
+            {
+                Console.WriteLine($"Cannot parse version '{text}'.");
+                return false;
+            }
+
+            if (version == oldVersion)
+                return false;
+
+            if (version < oldVersion)
+                throw new ArgumentException("New version is lower than old version.", nameof(oldVersion));
+
+            Console.WriteLine($"Updating version from {oldVersion} to {version} in \"{filePath}\"");
+
+            return true;
         }
     }
 }

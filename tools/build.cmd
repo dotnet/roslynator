@@ -3,6 +3,7 @@
 set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuild\15.0\Bin\msbuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591
 set _version=2.1.3.0
+set _apiVersion=1.0.0.15
 
 dotnet restore --force "..\src\Roslynator.sln"
 
@@ -19,7 +20,7 @@ if errorlevel 1 (
 
 "..\src\Tools\MetadataGenerator\bin\Release\net461\Roslynator.MetadataGenerator.exe" "..\src"
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
-dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "%_version%"
+dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "%_version%" "%_apiVersion%"
 
 %_msbuildPath% "..\src\Roslynator.sln" ^
  /t:Clean ^
