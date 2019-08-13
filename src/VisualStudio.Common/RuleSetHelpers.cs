@@ -64,17 +64,11 @@ Therefore, it may be neccessary to restart Visual Studio for changes to take eff
 
                     File.WriteAllText(ruleSetPath, RuleSetXml, Encoding.UTF8);
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is IOException
+                    || ex is UnauthorizedAccessException)
                 {
-                    if (ex is IOException || ex is UnauthorizedAccessException)
-                    {
-                        if (showErrorMessage)
-                            MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    if (showErrorMessage)
+                        MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }

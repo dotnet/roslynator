@@ -9,7 +9,7 @@ namespace Roslynator.VisualStudio
 {
     [ClassInterface(ClassInterfaceType.AutoDual)]
     [Guid("9851B486-A654-4F6A-B1BA-9E1071DCCA25")]
-    public partial class GlobalSuppressionsOptionsPage : UIElementDialogPage
+    public class GlobalSuppressionsOptionsPage : UIElementDialogPage
     {
         private readonly GlobalSuppressionsOptionsPageControl _control = new GlobalSuppressionsOptionsPageControl();
 

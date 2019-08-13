@@ -1,3 +1,5 @@
+// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
+
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -29,18 +31,11 @@ namespace Roslynator.VisualStudio
                 {
                     Process.Start("explorer.exe", $"/select, \"{ruleSetPath}\"");
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (ex is InvalidOperationException
+                    || ex is FileNotFoundException
+                    || ex is Win32Exception)
                 {
-                    if (ex is InvalidOperationException
-                        || ex is FileNotFoundException
-                        || ex is Win32Exception)
-                    {
-                        MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    MessageBox.Show(ex.Message, null, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
 
