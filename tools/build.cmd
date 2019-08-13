@@ -20,7 +20,7 @@ if errorlevel 1 (
 
 "..\src\Tools\MetadataGenerator\bin\Release\net472\Roslynator.MetadataGenerator.exe" "..\src"
 dotnet "..\src\Tools\CodeGenerator\bin\Release\netcoreapp2.0\CodeGenerator.dll" "..\src"
-dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "%_version%" "%_apiVersion%"
+dotnet "..\src\Tools\VersionUpdater\bin\Release\netcoreapp2.0\VersionUpdater.dll" "..\src" "%_version%" "%_apiVersion%"
 
 %_msbuildPath% "..\src\Roslynator.sln" ^
  /t:Clean ^

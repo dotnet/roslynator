@@ -21,36 +21,65 @@ namespace VersionUpdater
             + Assert("\")]")
         ).ToRegex();
 
+        private static readonly Regex _packageJsonVersionRegex = (
+            AssertBack("\"version\": \"")
+            + Digits() + "." + Digits() + "." + Digits()
+            + Assert("\"")
+        ).ToRegex();
+
+        private static readonly Regex _readmeVersionRegex = (
+            AssertBack("josefpihrt-vscode.roslynator-")
+            + Digits() + "." + Digits() + "." + Digits()
+            + Assert("/")
+        ).ToRegex();
+
         private static void Main(string[] args)
         {
+#if DEBUG
+            const string rootPath = @"..\..\..\..\..";
+
+            const string versionText = "1.0.0.0";
+            const string apiVersionText = "1.0.0.0";
+#else
             if (args == null)
                 return;
 
-            if (Version.TryParse(args.ElementAtOrDefault(1), out Version version))
+            string rootPath = args.First();
+            string versionText = args.ElementAtOrDefault(1);
+            string apiVersionText = args.ElementAtOrDefault(2);
+#endif
+            if (Version.TryParse(apiVersionText, out Version version))
             {
-                UpdateVersionInCsProj(@"..\src\Core\Core.csproj", version);
-                UpdateVersionInCsProj(@"..\src\CSharp\CSharp.csproj", version);
-                UpdateVersionInCsProj(@"..\src\CSharp.Workspaces\CSharp.Workspaces.csproj", version);
-                UpdateVersionInCsProj(@"..\src\VisualBasic\VisualBasic.csproj", version);
-                UpdateVersionInCsProj(@"..\src\VisualBasic.Workspaces\VisualBasic.Workspaces.csproj", version);
-                UpdateVersionInCsProj(@"..\src\Workspaces.Core\Workspaces.Core.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\Core\Core.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\CSharp\CSharp.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\CSharp.Workspaces\CSharp.Workspaces.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\VisualBasic\VisualBasic.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\VisualBasic.Workspaces\VisualBasic.Workspaces.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\Workspaces.Core\Workspaces.Core.csproj", version);
             }
 
-            if (Version.TryParse(args.FirstOrDefault(), out version))
+            if (Version.TryParse(versionText, out version))
             {
-                UpdateVersionInCsProj(@"..\src\Analyzers\Analyzers.csproj", version);
-                UpdateVersionInCsProj(@"..\src\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj", version);
-                UpdateVersionInCsProj(@"..\src\CodeFixes\CodeFixes.csproj", version);
-                UpdateVersionInCsProj(@"..\src\Common\Common.csproj", version);
-                UpdateVersionInCsProj(@"..\src\Workspaces.Common\Workspaces.Common.csproj", version);
-                UpdateVersionInCsProj(@"..\src\Refactorings\Refactorings.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\Analyzers\Analyzers.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\CodeFixes\CodeFixes.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\Common\Common.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\Workspaces.Common\Workspaces.Common.csproj", version);
+                UpdateVersionInCsProj(rootPath + @"\Refactorings\Refactorings.csproj", version);
 
-                UpdateVersionInAssemblyInfo(@"..\src\VisualStudio\Properties\AssemblyInfo.cs", version);
-                UpdateVersionInAssemblyInfo(@"..\src\VisualStudio.Common\Properties\AssemblyInfo.cs", version);
-                UpdateVersionInAssemblyInfo(@"..\src\VisualStudio.Refactorings\Properties\AssemblyInfo.cs", version);
+                UpdateVersionInFile(rootPath + @"\VisualStudio\Properties\AssemblyInfo.cs", version, _assemblyVersionRegex, Encoding.UTF8);
+                UpdateVersionInFile(rootPath + @"\VisualStudio.Common\Properties\AssemblyInfo.cs", version, _assemblyVersionRegex, Encoding.UTF8);
+                UpdateVersionInFile(rootPath + @"\VisualStudio.Refactorings\Properties\AssemblyInfo.cs", version, _assemblyVersionRegex, Encoding.UTF8);
 
-                UpdateVersionInVsixManifest(@"..\src\VisualStudio\source.extension.vsixmanifest", version);
-                UpdateVersionInVsixManifest(@"..\src\VisualStudio.Refactorings\source.extension.vsixmanifest", version);
+                UpdateVersionInVsixManifest(rootPath + @"\VisualStudio\source.extension.vsixmanifest", version);
+                UpdateVersionInVsixManifest(rootPath + @"\VisualStudio.Refactorings\source.extension.vsixmanifest", version);
+
+                version = Version.Parse(version.ToString(3));
+
+                var utf8NoBom = new UTF8Encoding(encoderShouldEmitUTF8Identifier: false);
+
+                UpdateVersionInFile(rootPath + @"\VisualStudioCode\package\README.md", version, _readmeVersionRegex, utf8NoBom);
+                UpdateVersionInFile(rootPath + @"\VisualStudioCode\package\package.json", version, _packageJsonVersionRegex, utf8NoBom);
             }
         }
 
@@ -98,6 +127,7 @@ namespace VersionUpdater
             XDocument doc = XDocument.Load(filePath, LoadOptions.PreserveWhitespace);
 
             XName name = (XNamespace)VsixXmlNamespace + "Metadata";
+
             XAttribute versionAttribute = doc.Root
                 .Elements(name).FirstOrDefault()?
                 .Elements((XNamespace)VsixXmlNamespace + "Identity").FirstOrDefault()?
@@ -119,24 +149,24 @@ namespace VersionUpdater
             doc.Save(filePath);
         }
 
-        private static void UpdateVersionInAssemblyInfo(string filePath, Version version)
+        private static void UpdateVersionInFile(string filePath, Version version, Regex regex, Encoding encoding)
         {
             string s = File.ReadAllText(filePath, Encoding.UTF8);
 
-            Match match = _assemblyVersionRegex.Match(s);
+            Match match = regex.Match(s);
 
             if (!match.Success)
             {
-                Console.WriteLine($"Assembly version not found in \"{filePath}\"");
+                Console.WriteLine($"Version not found in \"{filePath}\"");
                 return;
             }
 
             if (!VerifyVersion(match.Value, version, filePath))
                 return;
 
-            s = s.Substring(0, match.Index) + version.ToString() + s.Substring(match.Index + match.Length);
+            s = regex.Replace(s, version.ToString());
 
-            File.WriteAllText(filePath, s, Encoding.UTF8);
+            File.WriteAllText(filePath, s, encoding);
         }
 
         private static bool VerifyVersion(string text, Version version, string filePath)
