@@ -13,7 +13,6 @@
 * [Fix All Diagnostics in a Solution](HowToFixAllDiagnostics.md)
 * [Generate API Documentation](HowToGenerateDocumentation.md)
 * [Update Documentation](HowToUpdateDocumentation.md)
-* [Enable Roslynator for Visual Studio Code](RoslynatorForVisualStudioCode.md)
 * [Use Both Visual Studio Extension and NuGet](HowToUseBothVsixAndNuGet.md)
 
 ## Other 

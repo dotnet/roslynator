@@ -14,6 +14,7 @@ A collection of 500+ [analyzers](src/Analyzers/README.md), [refactorings](src/Re
 
 ### New Features
 
+* [Roslynator for Visual Studio Code](#extensions-for-visual-studio-code)
 * [Fix all diagnostics in a solution](docs/HowToFixAllDiagnostics.md)
 * [Generate API documentation](docs/HowToGenerateDocumentation.md)
 
@@ -29,6 +30,12 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 | --- | --- |
 | [Roslynator 2019](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2019) | contains analyzers, refactorings and fixes for CS diagnostics. |
 | [Roslynator 2017](https://marketplace.visualstudio.com/items?itemName=josefpihrt.Roslynator2017) | contains analyzers, refactorings and fixes for CS diagnostics. |
+
+## Extensions for Visual Studio Code
+
+| Extension | Comment |
+| --- | --- |
+| [Roslynator](https://marketplace.visualstudio.com/items?itemName=josefpihrt-vscode.roslynator) | contains analyzers, refactorings and fixes for CS diagnostics. |
 
 ## NuGet Analyzers
 
@@ -54,12 +61,6 @@ Although Roslynator products are free of charge, any [donation](https://www.payp
 
 * Roslynator CLI is distributed via NuGet package [Roslynator.CommandLine](https://www.nuget.org/packages/Roslynator.CommandLine). &ensp;[![NuGet](https://img.shields.io/nuget/v/Roslynator.CommandLine.svg)](https://www.nuget.org/packages/Roslynator.CommandLine)
 * See [documentation](docs/cli/README.md).
-
-## Roslynator for VS Code
-
-Currently VS Code does not support distribution of Roslyn-based tools in an extension.
-Also it does not support analyzers at all.
-Please read the [tutorial](docs/RoslynatorForVisualStudioCode.md) how to install refactorings and code fixes for CS diagnostics.
 
 ## Documentation
 
