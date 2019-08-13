@@ -1,0 +1,38 @@
+{
+  "name": "roslynator",
+  "publisher": "josefpihrt-vscode",
+  "displayName": "Roslynator",
+  "description": "A collection of 500+ analyzers, refactorings and fixes for C#, powered by Roslyn.",
+  "icon": "images/icon.png",
+  "version": "1.0.0",
+  "author": "Josef Pihrt",
+  "license": "SEE LICENSE IN LICENSE.TXT",
+  "homepage": "https://github.com/josefpihrt/roslynator",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/josefpihrt/roslynator.git"
+  },
+  "bugs": {
+    "url": "https://github.com/josefpihrt/roslynator/issues"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "Roslyn",
+    "Analyzer",
+    "Refactoring",
+    "C#",
+    "CSharp"
+  ],
+  "engines": {
+    "vscode": "^1.31.0"
+  },
+  "files": [
+    "roslyn/*"
+  ],
+  "extensionDependencies": [
+    "ms-vscode.csharp"
+  ],
+  "preview": true
+}

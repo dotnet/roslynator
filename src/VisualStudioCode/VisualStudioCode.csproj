@@ -1,0 +1,38 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>2.1.3.0</Version>
+    <AssemblyName>Roslynator.VisualStudioCode</AssemblyName>
+    <RootNamespace>Roslynator</RootNamespace>
+    <CodeAnalysisRuleSet>..\global.ruleset</CodeAnalysisRuleSet>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
+    <LangVersion>7.2</LangVersion>
+    <IsPackable>false</IsPackable>
+    <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Core.csproj" />
+    <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
+    <ProjectReference Include="..\Workspaces.Common\Workspaces.Common.csproj" />
+    <ProjectReference Include="..\CSharp\CSharp.csproj" />
+    <ProjectReference Include="..\CSharp.Workspaces\CSharp.Workspaces.csproj" />
+    <ProjectReference Include="..\Analyzers\Analyzers.csproj" />
+    <ProjectReference Include="..\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj" />
+    <ProjectReference Include="..\Refactorings\Refactorings.csproj" />
+    <ProjectReference Include="..\CodeFixes\CodeFixes.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="package\roslyn\**" />
+    <EmbeddedResource Remove="package\roslyn\**" />
+    <None Remove="package\roslyn\**" />
+  </ItemGroup>
+
+</Project>
