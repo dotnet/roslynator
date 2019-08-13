@@ -7,8 +7,6 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using Roslynator.CodeFixes;
-using Roslynator.Configuration;
-using Roslynator.CSharp;
 
 namespace Roslynator.VisualStudio
 {
@@ -37,7 +35,7 @@ namespace Roslynator.VisualStudio
                         {
                             DisabledItems.Add(id);
                         }
-                        else if (id.StartsWith(CodeFixIdentifiers.Prefix, StringComparison.Ordinal))
+                        else if (id.StartsWith(CodeFixIdentifier.CodeFixIdPrefix, StringComparison.Ordinal))
                         {
                             foreach (string compilerDiagnosticId in CodeFixMap.GetCompilerDiagnosticIds(id))
                                 DisabledItems.Add($"{compilerDiagnosticId}.{id}");
@@ -62,8 +60,8 @@ namespace Roslynator.VisualStudio
 
             if (e.ApplyBehavior == ApplyKind.Apply)
             {
-                SettingsManager.Instance.UpdateVisualStudioSettings(this);
-                SettingsManager.Instance.ApplyTo(CodeFixSettings.Current);
+                ApplyTo(Settings.Instance);
+                Settings.Instance.ApplyTo(CodeFixSettings.Current);
             }
         }
 
@@ -71,6 +69,14 @@ namespace Roslynator.VisualStudio
         {
             foreach (BaseModel model in Control.Items)
                 SetIsEnabled(model.Id, model.Enabled);
+        }
+
+        internal void ApplyTo(Settings settings)
+        {
+            IEnumerable<KeyValuePair<string, bool>> codeFixes = GetDisabledItems()
+                .Select(f => new KeyValuePair<string, bool>(f, false));
+
+            settings.VisualStudio = settings.VisualStudio.WithCodeFixes(codeFixes);
         }
 
         protected override void Fill(ICollection<BaseModel> items)

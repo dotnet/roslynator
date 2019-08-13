@@ -12,7 +12,7 @@ namespace Roslynator.CodeGeneration.CSharp
 {
     public static class CodeFixesOptionsPageGenerator
     {
-        public static CompilationUnitSyntax Generate(IEnumerable<CodeFixMetadata> codeFixes, IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics, IComparer<string> comparer)
+        public static CompilationUnitSyntax Generate(IEnumerable<CodeFixMetadata> codeFixes, IComparer<string> comparer)
         {
             return CompilationUnit(
                 UsingDirectives("Roslynator.CSharp"),
@@ -21,36 +21,17 @@ namespace Roslynator.CodeGeneration.CSharp
                     ClassDeclaration(
                         Modifiers.Public_Partial(),
                         "CodeFixesOptionsPage",
-                        CreateMembers(codeFixes.Where(f => !f.IsObsolete), compilerDiagnostics, comparer).ToSyntaxList())));
+                        CreateMembers(codeFixes.Where(f => !f.IsObsolete), comparer).ToSyntaxList())));
         }
 
-        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<CodeFixMetadata> codeFixes, IEnumerable<CompilerDiagnosticMetadata> compilerDiagnostics, IComparer<string> comparer)
+        private static IEnumerable<MemberDeclarationSyntax> CreateMembers(IEnumerable<CodeFixMetadata> codeFixes, IComparer<string> comparer)
         {
-            yield return PropertyDeclaration(
-                Modifiers.Protected_Override(),
-                PredefinedStringType(),
-                Identifier("DisabledByDefault"),
-                AccessorList(AutoGetAccessorDeclaration()),
-                ParseExpression(
-                    "$\"" +
-                    string.Join(",", codeFixes
-                        .Where(f => !f.IsEnabledByDefault)
-                        .OrderBy(f => f.Identifier, comparer)
-                        .Select(f => $"{{CodeFixIdentifiers.{f.Identifier}}}")) +
-                    "\""));
-
             yield return PropertyDeclaration(
                 Modifiers.Protected_Override(),
                 PredefinedStringType(),
                 Identifier("MaxId"),
                 AccessorList(AutoGetAccessorDeclaration()),
                 ParseExpression($"CodeFixIdentifiers.{codeFixes.OrderBy(f => f.Id, comparer).Last().Identifier}"));
-
-            IEnumerable<(CodeFixMetadata codeFix, CompilerDiagnosticMetadata compilerDiagnostic)> items = codeFixes
-                .SelectMany(codeFix => codeFix.FixableDiagnosticIds.Select(id => (codeFix, id)))
-                .Join(compilerDiagnostics, f => f.id, f => f.Id, (f, compilerDiagnostic) => (f.codeFix, compilerDiagnostic))
-                .OrderBy(f => f.compilerDiagnostic.Id)
-                .ThenBy(f => f.codeFix.Id);
         }
     }
 }

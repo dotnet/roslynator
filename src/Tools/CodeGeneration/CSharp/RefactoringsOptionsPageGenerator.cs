@@ -31,19 +31,6 @@ namespace Roslynator.CodeGeneration.CSharp
             yield return PropertyDeclaration(
                 Modifiers.Protected_Override(),
                 PredefinedStringType(),
-                Identifier("DisabledByDefault"),
-                AccessorList(AutoGetAccessorDeclaration()),
-                ParseExpression(
-                    "$\"" +
-                    string.Join(",", refactorings
-                        .Where(f => !f.IsEnabledByDefault)
-                        .OrderBy(f => f.Identifier, comparer)
-                        .Select(f => $"{{RefactoringIdentifiers.{f.Identifier}}}")) +
-                    "\""));
-
-            yield return PropertyDeclaration(
-                Modifiers.Protected_Override(),
-                PredefinedStringType(),
                 Identifier("MaxId"),
                 AccessorList(AutoGetAccessorDeclaration()),
                 ParseExpression($"RefactoringIdentifiers.{refactorings.OrderBy(f => f.Id, comparer).Last().Identifier}"));

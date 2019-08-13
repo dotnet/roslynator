@@ -26,7 +26,7 @@ namespace Roslynator
 
                 RuleSet LoadRuleSet()
                 {
-                    return RuleSetUtility.Load(_path, CodeAnalysisConfiguration.Current.RuleSets) ?? RuleSetUtility.EmptyRuleSet;
+                    return RuleSetUtility.Load(_path, CodeAnalysisConfiguration.Default.RuleSets) ?? RuleSetUtility.EmptyRuleSet;
                 }
             }
         }

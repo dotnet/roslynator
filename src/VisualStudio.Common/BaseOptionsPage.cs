@@ -3,7 +3,6 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Windows;
 using Microsoft.VisualStudio.Shell;
 
@@ -15,8 +14,6 @@ namespace Roslynator.VisualStudio
 
         [Browsable(false)]
         public string LastMaxId { get; set; }
-
-        protected abstract string DisabledByDefault { get; }
 
         protected abstract string MaxId { get; }
 
@@ -43,7 +40,7 @@ namespace Roslynator.VisualStudio
                 yield return id;
         }
 
-        public void CheckNewItemsDisabledByDefault()
+        public void CheckNewItemsDisabledByDefault(IEnumerable<string> itemsDisabledByDefault)
         {
             bool shouldSave = false;
 
@@ -51,7 +48,7 @@ namespace Roslynator.VisualStudio
             {
                 if (DisabledItems.Count == 0)
                 {
-                    foreach (string id in DisabledByDefault.Split(','))
+                    foreach (string id in itemsDisabledByDefault)
                         DisabledItems.Add(id);
                 }
 
@@ -59,11 +56,10 @@ namespace Roslynator.VisualStudio
             }
             else if (string.CompareOrdinal(LastMaxId, MaxId) < 0)
             {
-                foreach (string id in DisabledByDefault
-                    .Split(',')
-                    .Where(f => string.CompareOrdinal(LastMaxId, f) < 0))
+                foreach (string id in itemsDisabledByDefault)
                 {
-                    DisabledItems.Add(id);
+                    if (string.CompareOrdinal(LastMaxId, id) < 0)
+                        DisabledItems.Add(id);
                 }
 
                 shouldSave = true;

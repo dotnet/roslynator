@@ -1,20 +1,21 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System;
-using Roslynator.CSharp;
 
 #pragma warning disable CA1036
 
 namespace Roslynator.CodeFixes
 {
-    public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, IComparable<CodeFixIdentifier>
+    public readonly struct CodeFixIdentifier : IEquatable<CodeFixIdentifier>, IComparable<CodeFixIdentifier>, IComparable
     {
+        public const string CodeFixIdPrefix = "RCF";
+
         public CodeFixIdentifier(string compilerDiagnosticId, string codeFixId)
         {
             if (compilerDiagnosticId?.StartsWith("CS", StringComparison.Ordinal) == false)
                 throw new ArgumentException("", nameof(compilerDiagnosticId));
 
-            if (codeFixId?.StartsWith(CodeFixIdentifiers.Prefix, StringComparison.Ordinal) == false)
+            if (codeFixId?.StartsWith(CodeFixIdPrefix, StringComparison.Ordinal) == false)
                 throw new ArgumentException("", nameof(codeFixId));
 
             CompilerDiagnosticId = compilerDiagnosticId;
@@ -66,7 +67,7 @@ namespace Roslynator.CodeFixes
 
             if (index == -1)
             {
-                if (text.StartsWith(CodeFixIdentifiers.Prefix, StringComparison.Ordinal))
+                if (text.StartsWith(CodeFixIdPrefix, StringComparison.Ordinal))
                     return new CodeFixIdentifier(null, text);
 
                 if (text.StartsWith("CS", StringComparison.Ordinal))
@@ -127,6 +128,17 @@ namespace Roslynator.CodeFixes
                 return diff;
 
             return StringComparer.Ordinal.Compare(CodeFixId, other.CodeFixId);
+        }
+
+        public int CompareTo(object obj)
+        {
+            if (obj == null)
+                return 1;
+
+            if (obj is CodeFixIdentifier other)
+                return CompareTo(other);
+
+            throw new ArgumentException("", nameof(obj));
         }
 
         public static bool operator ==(CodeFixIdentifier left, CodeFixIdentifier right)

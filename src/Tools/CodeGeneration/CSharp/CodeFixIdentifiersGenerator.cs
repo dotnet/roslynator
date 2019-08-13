@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CodeFixes;
 using Roslynator.CSharp;
 using Roslynator.Metadata;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
@@ -15,7 +16,7 @@ namespace Roslynator.CodeGeneration.CSharp
         public static CompilationUnitSyntax Generate(IEnumerable<CodeFixMetadata> codeFixes, IComparer<string> comparer)
         {
             return CompilationUnit(
-                UsingDirectives(),
+                UsingDirectives("Roslynator.CodeFixes"),
                 NamespaceDeclaration(
                     "Roslynator.CSharp",
                     ClassDeclaration(
@@ -30,7 +31,7 @@ namespace Roslynator.CodeGeneration.CSharp
                                    Modifiers.Public_Const(),
                                    PredefinedStringType(),
                                    f.Identifier,
-                                   AddExpression(IdentifierName("Prefix"), StringLiteralExpression(f.Id.Substring(CodeFixIdentifiers.Prefix.Length))));
+                                   AddExpression(SimpleMemberAccessExpression(IdentifierName("CodeFixIdentifier"), IdentifierName("CodeFixIdPrefix")), StringLiteralExpression(f.Id.Substring(CodeFixIdentifier.CodeFixIdPrefix.Length))));
                             })
                             .ToSyntaxList<MemberDeclarationSyntax>())));
         }

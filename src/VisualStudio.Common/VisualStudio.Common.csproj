@@ -99,7 +99,6 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CodeFixModel.cs" />
-    <Compile Include="Configuration\Settings.cs" />
     <Compile Include="GlobalSuppressionsOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -109,7 +108,7 @@
     <Compile Include="GeneralOptionsPageControl.xaml.cs">
       <DependentUpon>GeneralOptionsPageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Configuration\SettingsManager.cs" />
+    <Compile Include="Settings.cs" />
     <Compile Include="CodeFixesOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>

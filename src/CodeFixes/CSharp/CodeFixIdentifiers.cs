@@ -4,6 +4,5 @@ namespace Roslynator.CSharp
 {
     public static partial class CodeFixIdentifiers
     {
-        public const string Prefix = "RCF";
     }
 }
