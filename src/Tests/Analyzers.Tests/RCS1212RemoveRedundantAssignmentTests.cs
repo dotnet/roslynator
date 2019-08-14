@@ -96,6 +96,31 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task Test_Local_ReferencedInRightSideOfAssignment()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    string M()
+    {
+        string s = """";
+        [|s = s + s|];
+        return s;
+    }
+}
+", @"
+class C
+{
+    string M()
+    {
+        string s = """";
+        return s + s;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
         public async Task TestNoDiagnostic_OutParameter()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -123,7 +148,41 @@ class C
         x = x * 2;
         return x;
     }
-}");
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantAssignment)]
+        public async Task TestNoDiagnostic_LocalReferencedInLambda()
+        {
+            await VerifyNoDiagnosticAsync(@"
+using System;
+
+class C
+{
+    C M()
+    {
+        C c = null;
+        c = new C(f =>
+        {
+            c.M(f);
+        });
+
+        return c;
+    }
+
+    public C(Action<int> action)
+    {
+        _a = action;
+    }
+
+    void M(int p)
+    {
+    }
+
+    Action<int> _a;
+}
+");
         }
     }
 }
