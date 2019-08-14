@@ -11,6 +11,8 @@ namespace Roslynator.CommandLine
 {
     internal static class AnalyzerAssemblyLoader
     {
+        public const string DefaultSearchPattern = "*.dll";
+
         public static AnalyzerAssembly LoadFile(
             string filePath,
             bool loadAnalyzers = true,
@@ -24,6 +26,7 @@ namespace Roslynator.CommandLine
 
         public static IEnumerable<AnalyzerAssemblyInfo> LoadFrom(
             string path,
+            string searchPattern = DefaultSearchPattern,
             bool loadAnalyzers = true,
             bool loadFixers = true,
             string language = null)
@@ -37,7 +40,7 @@ namespace Roslynator.CommandLine
             }
             else if (Directory.Exists(path))
             {
-                using (IEnumerator<string> en = Directory.EnumerateFiles(path, "*.dll", SearchOption.AllDirectories).GetEnumerator())
+                using (IEnumerator<string> en = Directory.EnumerateFiles(path, searchPattern, SearchOption.AllDirectories).GetEnumerator())
                 {
                     while (true)
                     {

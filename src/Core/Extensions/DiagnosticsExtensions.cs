@@ -508,10 +508,15 @@ namespace Roslynator
 
         internal static bool IsAnalyzerExceptionDiagnostic(this Diagnostic diagnostic)
         {
-            if (diagnostic.Id == "AD0001"
-                || diagnostic.Id == "AD0002")
+            return IsAnalyzerExceptionDescriptor(diagnostic.Descriptor);
+        }
+
+        internal static bool IsAnalyzerExceptionDescriptor(this DiagnosticDescriptor descriptor)
+        {
+            if (descriptor.Id == "AD0001"
+                || descriptor.Id == "AD0002")
             {
-                foreach (string tag in diagnostic.Descriptor.CustomTags)
+                foreach (string tag in descriptor.CustomTags)
                 {
                     if (tag == WellKnownDiagnosticTags.AnalyzerException)
                         return true;
