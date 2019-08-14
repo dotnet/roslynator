@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Microsoft.CodeAnalysis.Text;
 using Roslynator.CodeFixes;
 using static Roslynator.Logger;
 
@@ -149,7 +150,12 @@ namespace Roslynator
             }
         }
 
-        public static void WriteUsedAnalyzers(ImmutableArray<DiagnosticAnalyzer> analyzers, ConsoleColor color, Verbosity verbosity)
+        public static void WriteUsedAnalyzers(
+            ImmutableArray<DiagnosticAnalyzer> analyzers,
+            Project project,
+            CodeAnalysisOptions options,
+            ConsoleColor color,
+            Verbosity verbosity)
         {
             if (!analyzers.Any())
                 return;
@@ -157,11 +163,47 @@ namespace Roslynator
             if (!ShouldWrite(verbosity))
                 return;
 
-            WriteLine($"  Use {analyzers.Length} {((analyzers.Length == 1) ? "analyzer" : "analyzers")}", color, verbosity);
-
-            foreach ((string prefix, int count) in DiagnosticIdPrefix.CountPrefixes(analyzers.SelectMany(f => f.SupportedDiagnostics).Select(f => f.Id)))
+            foreach (IGrouping<DiagnosticDescriptor, (DiagnosticDescriptor descriptor, string severity)> grouping in analyzers
+                .SelectMany(f => f.SupportedDiagnostics)
+                .Distinct(DiagnosticDescriptorComparer.Id)
+                .Select(f => (descriptor: f, reportDiagnostic: options.GetEffectiveSeverity(f, project.CompilationOptions)))
+                .Where(f => f.reportDiagnostic != ReportDiagnostic.Suppress)
+                .Select(f => (f.descriptor, severity: f.reportDiagnostic.ToDiagnosticSeverity().ToString()))
+                .OrderBy(f => f.descriptor.Id)
+                .GroupBy(f => f.descriptor, DiagnosticDescriptorComparer.IdPrefix))
             {
-                WriteLine($"    {count} supported {((count == 1) ? "diagnostic" : "diagnostics")} with prefix '{prefix}'", color, verbosity);
+                int count = grouping.Count();
+                string prefix = DiagnosticIdPrefix.GetPrefix(grouping.Key.Id);
+
+                Write($"  {count} supported {((count == 1) ? "diagnostic" : "diagnostics")} with prefix '{prefix}'", color, verbosity);
+
+                using (IEnumerator<(DiagnosticDescriptor descriptor, string severity)> en = grouping.GetEnumerator())
+                {
+                    if (en.MoveNext())
+                    {
+                        Write(" (", color, verbosity);
+
+                        while (true)
+                        {
+                            Write(en.Current.descriptor.Id, color, verbosity);
+                            Write(" ", color, verbosity);
+                            Write(en.Current.severity, color, verbosity);
+
+                            if (en.MoveNext())
+                            {
+                                Write(", ", color, verbosity);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        Write(")", color, verbosity);
+                    }
+                }
+
+                WriteLine("", color, verbosity);
             }
         }
 
@@ -170,11 +212,42 @@ namespace Roslynator
             if (!ShouldWrite(verbosity))
                 return;
 
-            WriteLine($"  Use {fixers.Length} {((fixers.Length == 1) ? "fixer" : "fixers")}", color, verbosity);
-
-            foreach ((string prefix, int count) in DiagnosticIdPrefix.CountPrefixes(fixers.SelectMany(f => f.FixableDiagnosticIds)))
+            foreach (IGrouping<string, string> grouping in fixers
+                .SelectMany(f => f.FixableDiagnosticIds)
+                .Distinct()
+                .OrderBy(f => f)
+                .GroupBy(f => f, DiagnosticIdComparer.Prefix))
             {
-                WriteLine($"    {count} fixable {((count == 1) ? "diagnostic" : "diagnostics")} with prefix '{prefix}'", color, verbosity);
+                int count = grouping.Count();
+                string prefix = DiagnosticIdPrefix.GetPrefix(grouping.Key);
+
+                Write($"  {count} fixable {((count == 1) ? "diagnostic" : "diagnostics")} with prefix '{prefix}'", color, verbosity);
+
+                using (IEnumerator<string> en = grouping.GetEnumerator())
+                {
+                    if (en.MoveNext())
+                    {
+                        Write(" (", color, verbosity);
+
+                        while (true)
+                        {
+                            Write(en.Current, color, verbosity);
+
+                            if (en.MoveNext())
+                            {
+                                Write(", ", color, verbosity);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        Write(")", color, verbosity);
+                    }
+                }
+
+                WriteLine("", color, verbosity);
             }
         }
 

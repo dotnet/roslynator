@@ -51,5 +51,18 @@ namespace Roslynator
 
             return false;
         }
+
+        internal ReportDiagnostic GetEffectiveSeverity(DiagnosticDescriptor descriptor, CompilationOptions compilationOptions)
+        {
+            ReportDiagnostic reportDiagnostic = descriptor.GetEffectiveSeverity(compilationOptions);
+
+            if (reportDiagnostic == ReportDiagnostic.Suppress)
+                return reportDiagnostic;
+
+            if (reportDiagnostic.ToDiagnosticSeverity() < SeverityLevel)
+                return ReportDiagnostic.Suppress;
+
+            return reportDiagnostic;
+        }
     }
 }
