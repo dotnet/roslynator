@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp;
-using Roslynator.CSharp.Analysis.RemoveAsyncAwait;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -139,7 +139,7 @@ namespace Roslynator.CSharp.Analysis
                 foreach (AwaitExpressionSyntax awaitExpression in analysis.Walker.AwaitExpressions)
                     ReportAwaitAndConfigureAwait(awaitExpression);
 
-                RemoveAsyncAwaitWalker.Free(analysis.Walker);
+                AwaitExpressionWalker.Free(analysis.Walker);
             }
 
             void ReportAwaitAndConfigureAwait(AwaitExpressionSyntax awaitExpression)

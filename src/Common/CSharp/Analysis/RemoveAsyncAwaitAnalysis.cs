@@ -7,14 +7,16 @@ using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator;
 using Roslynator.CSharp;
 using Roslynator.CSharp.Syntax;
+using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
+namespace Roslynator.CSharp.Analysis
 {
     internal readonly struct RemoveAsyncAwaitAnalysis
     {
-        private RemoveAsyncAwaitAnalysis(RemoveAsyncAwaitWalker walker)
+        private RemoveAsyncAwaitAnalysis(AwaitExpressionWalker walker)
         {
             Walker = walker;
             AwaitExpression = null;
@@ -30,7 +32,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
 
         public AwaitExpressionSyntax AwaitExpression { get; }
 
-        public RemoveAsyncAwaitWalker Walker { get; }
+        public AwaitExpressionWalker Walker { get; }
 
         public static RemoveAsyncAwaitAnalysis Create(
             MethodDeclarationSyntax methodDeclaration,
@@ -105,7 +107,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             if (!VerifyTypes(node, awaitExpression, semanticModel, cancellationToken))
                 return default;
 
-            if (ContainsAwaitExpression(awaitExpression.Expression))
+            if (AwaitExpressionWalker.ContainsAwaitExpression(awaitExpression.Expression))
                 return default;
 
             return new RemoveAsyncAwaitAnalysis(awaitExpression);
@@ -131,7 +133,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                     {
                         var awaitExpression = (AwaitExpressionSyntax)body;
 
-                        if (!ContainsAwaitExpression(awaitExpression.Expression)
+                        if (!AwaitExpressionWalker.ContainsAwaitExpression(awaitExpression.Expression)
                             && VerifyTypes(lambda, awaitExpression, semanticModel, cancellationToken))
                         {
                             return new RemoveAsyncAwaitAnalysis(awaitExpression);
@@ -142,20 +144,6 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             }
 
             return default;
-        }
-
-        private static bool ContainsAwaitExpression(SyntaxNode node)
-        {
-            RemoveAsyncAwaitWalker walker = RemoveAsyncAwaitWalker.GetInstance();
-
-            walker.StopOnFirstAwaitExpression = true;
-            walker.Visit(node);
-
-            bool result = walker.AwaitExpressions.Count == 1;
-
-            RemoveAsyncAwaitWalker.Free(walker);
-
-            return result;
         }
 
         private static RemoveAsyncAwaitAnalysis AnalyzeMethodBody(
@@ -182,7 +170,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                         if (awaitExpression == null)
                             return default;
 
-                        RemoveAsyncAwaitWalker walker = VisitStatements();
+                        AwaitExpressionWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
@@ -220,13 +208,13 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                             }
                         }
 
-                        RemoveAsyncAwaitWalker.Free(walker);
+                        AwaitExpressionWalker.Free(walker);
 
                         return default;
                     }
                 case SyntaxKind.IfStatement:
                     {
-                        RemoveAsyncAwaitWalker walker = VisitStatements();
+                        AwaitExpressionWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
@@ -237,14 +225,14 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                             return new RemoveAsyncAwaitAnalysis(walker);
                         }
 
-                        RemoveAsyncAwaitWalker.Free(walker);
+                        AwaitExpressionWalker.Free(walker);
 
                         return default;
                     }
 
                 case SyntaxKind.SwitchStatement:
                     {
-                        RemoveAsyncAwaitWalker walker = VisitStatements();
+                        AwaitExpressionWalker walker = VisitStatements();
 
                         HashSet<AwaitExpressionSyntax> awaitExpressions = walker.AwaitExpressions;
 
@@ -255,7 +243,7 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
                             return new RemoveAsyncAwaitAnalysis(walker);
                         }
 
-                        RemoveAsyncAwaitWalker.Free(walker);
+                        AwaitExpressionWalker.Free(walker);
 
                         return default;
                     }
@@ -263,20 +251,11 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
 
             return default;
 
-            RemoveAsyncAwaitWalker VisitStatements()
+            AwaitExpressionWalker VisitStatements()
             {
-                RemoveAsyncAwaitWalker walker = RemoveAsyncAwaitWalker.GetInstance();
+                AwaitExpressionWalker walker = AwaitExpressionWalker.GetInstance();
 
-                foreach (StatementSyntax s in statements)
-                {
-                    walker.Visit(s);
-
-                    if (walker.ShouldStop)
-                        return walker;
-
-                    if (s == statement)
-                        return walker;
-                }
+                walker.VisitStatements(statements, statement);
 
                 return walker;
             }

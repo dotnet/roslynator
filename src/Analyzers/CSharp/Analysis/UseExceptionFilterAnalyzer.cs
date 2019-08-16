@@ -6,6 +6,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -43,18 +44,12 @@ namespace Roslynator.CSharp.Analysis
             if (!(catchClause.Block.Statements.FirstOrDefault() is IfStatementSyntax ifStatement))
                 return;
 
-            StatementSyntax statement = ifStatement.Statement.SingleNonBlockStatementOrDefault();
-
-            if (IsThrowStatementWithoutExpression(statement))
-                ReportDiagnostic();
-
-            statement = ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault();
-
-            if (IsThrowStatementWithoutExpression(statement))
-                ReportDiagnostic();
-
-            void ReportDiagnostic()
+            if (IsThrowStatementWithoutExpression(ifStatement.Statement.SingleNonBlockStatementOrDefault())
+                ^ IsThrowStatementWithoutExpression(ifStatement.Else?.Statement.SingleNonBlockStatementOrDefault()))
             {
+                if (AwaitExpressionWalker.ContainsAwaitExpression(ifStatement.Condition))
+                    return;
+
                 if (ifStatement.ContainsUnbalancedIfElseDirectives())
                     return;
 
@@ -64,8 +59,8 @@ namespace Roslynator.CSharp.Analysis
 
         private static bool IsThrowStatementWithoutExpression(StatementSyntax statement)
         {
-            return statement.IsKind(SyntaxKind.ThrowStatement)
-                && ((ThrowStatementSyntax)statement).Expression == null;
+            return (statement is ThrowStatementSyntax throwStatement)
+                && throwStatement.Expression == null;
         }
     }
 }

@@ -5,7 +5,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeFixes;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Roslynator.CSharp.CodeFixes;
-using Roslynator.CSharp.Analysis.RemoveAsyncAwait;
+using Roslynator.CSharp.Analysis;
 using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
