@@ -36,28 +36,20 @@ namespace Roslynator.CSharp.Analysis
 
             EqualsValueClauseSyntax initializer = propertyDeclaration.Initializer;
 
-            if (initializer == null)
+            ExpressionSyntax value = initializer?.Value?.WalkDownParentheses();
+
+            if (value == null)
                 return;
 
             if (initializer.SpanOrLeadingTriviaContainsDirectives())
                 return;
 
-            ExpressionSyntax value = initializer.Value;
-
-            if (value == null)
-                return;
-
-            AccessorListSyntax accessorList = propertyDeclaration.AccessorList;
-
-            if (accessorList == null)
-                return;
-
-            if (accessorList.Accessors.Any(f => !f.IsAutoImplemented()))
+            if (propertyDeclaration.AccessorList?.Accessors.Any(f => !f.IsAutoImplemented()) != false)
                 return;
 
             ITypeSymbol typeSymbol = context.SemanticModel.GetTypeSymbol(propertyDeclaration.Type, context.CancellationToken);
 
-            if (typeSymbol?.IsErrorType() != false)
+            if (typeSymbol == null)
                 return;
 
             if (!context.SemanticModel.IsDefaultValue(typeSymbol, value, context.CancellationToken))
