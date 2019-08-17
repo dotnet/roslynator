@@ -48,6 +48,48 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
+        public async Task Test2()
+        {
+            await VerifyRefactoringAsync(@"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        string s1 = null;
+        string s2 = null;
+        var items = new List<string>();
+
+        int i = 0;
+        [||]while (i < items.Count)
+        {
+            items[i] = null;
+            i++;
+        }
+    }
+}
+", @"
+using System.Collections.Generic;
+
+class C
+{
+    void M()
+    {
+        string s1 = null;
+        string s2 = null;
+        var items = new List<string>();
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            items[i] = null;
+        }
+    }
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertWhileToFor)]
         public async Task Test_WithContinue()
         {
             await VerifyRefactoringAsync(@"

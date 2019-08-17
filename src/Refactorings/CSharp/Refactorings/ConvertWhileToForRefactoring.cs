@@ -188,7 +188,7 @@ namespace Roslynator.CSharp.Refactorings
                     List<LocalDeclarationStatementSyntax> localDeclarations = statementsInfo
                         .Statements
                         .Skip(index)
-                        .Take(statementsInfo.IndexOf(whileStatement) - 1)
+                        .Take(statementsInfo.IndexOf(whileStatement) - index)
                         .Cast<LocalDeclarationStatementSyntax>()
                         .ToList();
 
