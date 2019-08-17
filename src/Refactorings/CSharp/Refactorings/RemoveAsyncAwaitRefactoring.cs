@@ -4,7 +4,8 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Analysis.RemoveAsyncAwait;
+using Roslynator.CSharp.Analysis;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -79,7 +80,7 @@ namespace Roslynator.CSharp.Refactorings
             context.RegisterRefactoring(codeAction);
 
             if (analysis.Walker != null)
-                RemoveAsyncAwaitWalker.Free(analysis.Walker);
+                AwaitExpressionWalker.Free(analysis.Walker);
         }
     }
 }

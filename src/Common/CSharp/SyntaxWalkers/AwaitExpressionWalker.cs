@@ -3,27 +3,54 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.SyntaxWalkers;
 
-namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
+namespace Roslynator.CSharp.SyntaxWalkers
 {
-    internal class RemoveAsyncAwaitWalker : CSharpSyntaxNodeWalker
+    internal class AwaitExpressionWalker : CSharpSyntaxNodeWalker
     {
+        private bool _shouldVisit = true;
+
         public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = new HashSet<AwaitExpressionSyntax>();
 
-        public bool StopOnFirstAwaitExpression { get; set; }
+        private bool StopOnFirstAwaitExpression { get; set; }
 
-        public bool ShouldStop { get; private set; }
+        protected override bool ShouldVisit => _shouldVisit;
 
-        protected override bool ShouldVisit
+        public static bool ContainsAwaitExpression(ExpressionSyntax expression)
         {
-            get { return !ShouldStop; }
+            AwaitExpressionWalker walker = GetInstance();
+
+            walker.StopOnFirstAwaitExpression = true;
+            walker.Visit(expression);
+
+            Debug.Assert(walker.AwaitExpressions.Count <= 1);
+
+            bool result = walker.AwaitExpressions.Count == 1;
+
+            Free(walker);
+
+            return result;
+        }
+
+        public void VisitStatements(SyntaxList<StatementSyntax> statements, StatementSyntax lastStatement)
+        {
+            foreach (StatementSyntax statement in statements)
+            {
+                Visit(statement);
+
+                if (!_shouldVisit)
+                    return;
+
+                if (statement == lastStatement)
+                    return;
+            }
         }
 
         public override void VisitAwaitExpression(AwaitExpressionSyntax node)
         {
-            ShouldStop = true;
+            _shouldVisit = false;
 
             if (StopOnFirstAwaitExpression)
             {
@@ -45,12 +72,12 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             {
                 Visit(awaitExpression.Expression);
 
-                if (!ShouldStop)
+                if (_shouldVisit)
                     AwaitExpressions.Add(awaitExpression);
             }
             else
             {
-                ShouldStop = true;
+                _shouldVisit = false;
                 AwaitExpressions.Clear();
             }
         }
@@ -72,11 +99,11 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
         }
 
         [ThreadStatic]
-        private static RemoveAsyncAwaitWalker _cachedInstance;
+        private static AwaitExpressionWalker _cachedInstance;
 
-        public static RemoveAsyncAwaitWalker GetInstance()
+        public static AwaitExpressionWalker GetInstance()
         {
-            RemoveAsyncAwaitWalker walker = _cachedInstance;
+            AwaitExpressionWalker walker = _cachedInstance;
 
             if (walker != null)
             {
@@ -85,13 +112,13 @@ namespace Roslynator.CSharp.Analysis.RemoveAsyncAwait
             }
             else
             {
-                return new RemoveAsyncAwaitWalker();
+                return new AwaitExpressionWalker();
             }
         }
 
-        public static void Free(RemoveAsyncAwaitWalker walker)
+        public static void Free(AwaitExpressionWalker walker)
         {
-            walker.ShouldStop = false;
+            walker._shouldVisit = true;
             walker.StopOnFirstAwaitExpression = false;
             walker.AwaitExpressions.Clear();
 

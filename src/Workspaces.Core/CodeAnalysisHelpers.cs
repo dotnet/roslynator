@@ -104,10 +104,7 @@ namespace Roslynator
 
                     foreach (DiagnosticDescriptor supportedDiagnostic in supportedDiagnostics)
                     {
-                        ReportDiagnostic reportDiagnostic = supportedDiagnostic.GetEffectiveSeverity(project.CompilationOptions);
-
-                        if (reportDiagnostic != ReportDiagnostic.Suppress
-                            && reportDiagnostic.ToDiagnosticSeverity() >= options.SeverityLevel)
+                        if (options.GetEffectiveSeverity(supportedDiagnostic, project.CompilationOptions) != ReportDiagnostic.Suppress)
                         {
                             return true;
                         }

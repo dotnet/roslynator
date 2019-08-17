@@ -18,24 +18,26 @@ namespace Roslynator.CommandLine.Xml
     internal static class AnalyzerAssemblyXmlSerializer
     {
         public static void Serialize(
+            string filePath,
             IList<AnalyzerAssemblyInfo> analyzerAssemblies,
-            string filePath)
+            IFormatProvider formatProvider = null)
         {
-            var analyzerAssemblyElements = new XElement("AnalyzerAssemblies", analyzerAssemblies.Select(f => SerializeAnalyzerAssembly(f)));
+            var analyzerAssemblyElements = new XElement("AnalyzerAssemblies", analyzerAssemblies.Select(f => SerializeAnalyzerAssembly(f, formatProvider)));
 
             DiagnosticMap map = DiagnosticMap.Create(analyzerAssemblies.Select(f => f.AnalyzerAssembly));
 
             XElement diagnosticsElement = SerializeDiagnostics(
                 map,
                 allProperties: true,
-                useAssemblyQualifiedName: true);
+                useAssemblyQualifiedName: true,
+                formatProvider: formatProvider);
 
             XElement fixAllProvidersElement = SerializeFixAllProviders(map.FixAllProviders);
 
             SerializeDocument(filePath, analyzerAssemblyElements, diagnosticsElement, fixAllProvidersElement);
         }
 
-        private static XElement SerializeAnalyzerAssembly(AnalyzerAssemblyInfo analyzerAssemblyInfo)
+        private static XElement SerializeAnalyzerAssembly(AnalyzerAssemblyInfo analyzerAssemblyInfo, IFormatProvider formatProvider)
         {
             AnalyzerAssembly analyzerAssembly = analyzerAssemblyInfo.AnalyzerAssembly;
 
@@ -48,7 +50,7 @@ namespace Roslynator.CommandLine.Xml
                 new XElement("Summary", SerializeSummary()),
                 new XElement("Analyzers", SerializeDiagnosticAnalyzers()),
                 new XElement("Fixers", SerializeCodeFixProviders()),
-                SerializeDiagnostics(map, allProperties: false, useAssemblyQualifiedName: false));
+                SerializeDiagnostics(map, allProperties: false, useAssemblyQualifiedName: false, formatProvider: formatProvider));
 
             IEnumerable<XElement> SerializeSummary()
             {
@@ -140,12 +142,13 @@ namespace Roslynator.CommandLine.Xml
         private static XElement SerializeDiagnostics(
             DiagnosticMap map,
             bool allProperties = true,
-            bool useAssemblyQualifiedName = false)
+            bool useAssemblyQualifiedName = false,
+            IFormatProvider formatProvider = null)
         {
             return new XElement("Diagnostics",
                 map.DiagnosticsById
                     .OrderBy(f => f.Key)
-                    .Select(f => SerializeDiagnostic(f.Key, f.Value, map, allProperties: allProperties, useAssemblyQualifiedName: useAssemblyQualifiedName)));
+                    .Select(f => SerializeDiagnostic(f.Key, f.Value, map, allProperties: allProperties, useAssemblyQualifiedName: useAssemblyQualifiedName, formatProvider)));
         }
 
         private static XElement SerializeDiagnostic(
@@ -153,19 +156,20 @@ namespace Roslynator.CommandLine.Xml
             DiagnosticDescriptor descriptor,
             DiagnosticMap map,
             bool allProperties = true,
-            bool useAssemblyQualifiedName = false)
+            bool useAssemblyQualifiedName = false,
+            IFormatProvider formatProvider = null)
         {
             var element = new XElement("Diagnostic", new XAttribute("Id", diagnosticId));
 
             if (descriptor != null)
             {
-                string title = descriptor.Title?.ToString();
-                string messageFormat = descriptor.MessageFormat?.ToString();
+                string title = descriptor.Title?.ToString(formatProvider);
+                string messageFormat = descriptor.MessageFormat?.ToString(formatProvider);
 
                 if (string.IsNullOrEmpty(title))
                     title = messageFormat;
 
-                string description = descriptor.Description?.ToString();
+                string description = descriptor.Description?.ToString(formatProvider);
 
                 element.Add(new XAttribute("Title", title));
 
