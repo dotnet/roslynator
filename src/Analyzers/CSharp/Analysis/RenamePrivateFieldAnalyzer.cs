@@ -33,12 +33,39 @@ namespace Roslynator.CSharp.Analysis
                 && !fieldSymbol.IsImplicitlyDeclared
                 && fieldSymbol.DeclaredAccessibility == Accessibility.Private
                 && !string.IsNullOrEmpty(fieldSymbol.Name)
-                && !StringUtility.IsCamelCasePrefixedWithUnderscore(fieldSymbol.Name))
+                && !IsValidIdentifier(fieldSymbol.Name))
             {
                 DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.RenamePrivateFieldAccordingToCamelCaseWithUnderscore,
                     fieldSymbol.Locations[0]);
             }
+        }
+
+        public static bool IsValidIdentifier(string value)
+        {
+            int i = 0;
+
+            if (value[i] == 's'
+                || value[i] == 't')
+            {
+                i++;
+            }
+
+            if (i < value.Length
+                && value[i] == '_')
+            {
+                i++;
+
+                if (i < value.Length)
+                {
+                    return value[i] != '_'
+                        && !char.IsUpper(value[i]);
+                }
+
+                return true;
+            }
+
+            return false;
         }
     }
 }
