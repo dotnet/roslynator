@@ -113,7 +113,7 @@ namespace Roslynator.CSharp.Refactorings
                 if (trivia.IsEndOfLineTrivia())
                 {
                     member = member.PrependToLeadingTrivia(trivia);
-                    nextMember = nextMember.WithLeadingTrivia(leading.Remove(trivia));
+                    nextMember = nextMember.WithLeadingTrivia(leading.Remove(trivia)).WithNavigationAnnotation();
                 }
             }
 
