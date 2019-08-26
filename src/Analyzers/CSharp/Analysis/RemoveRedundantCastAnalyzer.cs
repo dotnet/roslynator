@@ -87,8 +87,11 @@ namespace Roslynator.CSharp.Analysis
 
             if (typeSymbol.TypeKind == TypeKind.Interface)
             {
-                if (!CheckExplicitImplementation(expressionTypeSymbol, accessedSymbol))
+                if (accessedSymbol.IsAbstract
+                    && !CheckExplicitImplementation(expressionTypeSymbol, accessedSymbol))
+                {
                     return;
+                }
             }
             else
             {

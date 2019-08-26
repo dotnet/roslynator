@@ -108,6 +108,62 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        public async Task Test_IfStatement_Throw()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    int M()
+    {
+        bool f = false;
+
+        int x = 1;
+        [|if (f)
+        {
+            x = 2;
+        }
+        else if (f)
+        {
+            x = 3;
+        }
+        else
+        {
+            throw new Exception();
+        }|]
+
+        return x;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    int M()
+    {
+        bool f = false;
+
+        int x = 1;
+        if (f)
+        {
+            return 2;
+        }
+        else if (f)
+        {
+            return 3;
+        }
+        else
+        {
+            throw new Exception();
+        }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
         public async Task Test_SwitchStatement()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -200,6 +256,62 @@ class C
         }
 
         return 1; // 1
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseReturnInsteadOfAssignment)]
+        public async Task Test_SwitchStatement_Throw()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    int M()
+    {
+        string s = null;
+
+        int x = 1;
+        [|switch (s)
+        {
+            case ""a"":
+                {
+                    x = 2;
+                    break;
+                }
+            case ""b"":
+                x = 3;
+                break;
+            default:
+                throw new Exception();
+        }|]
+
+        return x;
+    }
+}
+", @"
+using System;
+
+class C
+{
+    int M()
+    {
+        string s = null;
+
+        int x = 1;
+        switch (s)
+        {
+            case ""a"":
+                {
+                    return 2;
+                }
+            case ""b"":
+                return 3;
+            default:
+                throw new Exception();
+        }
     }
 }
 ");
