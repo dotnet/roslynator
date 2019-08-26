@@ -26,6 +26,17 @@ Replace **%USERPROFILE%** with an actual path (such as **C:/Users/User**).
 
 After each update of the extension it is necessary to update paths to libraries (i.e. replace version in the path with a new version).
 
+## Location of Configuration Files
+
+Configuration files are located at `%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudioCode`.
+Location of `%LOCALAPPDATA%` depends on the operating system:
+
+| OS | Path |
+| -------- | ------- |
+| Windows | `C:\Users\JohnDoe\AppData\Local` |
+| Linux | `/home/JohnDoe/.local/share` |
+| OSX | `/Users/JohnDoe/.local/share` |
+
 ## Configuration of Analyzers
 
 Standard rule sets are used to configure analyzers on a project-wide basis.

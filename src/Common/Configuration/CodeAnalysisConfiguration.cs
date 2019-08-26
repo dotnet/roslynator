@@ -366,18 +366,9 @@ namespace Roslynator.Configuration
         {
             string path = attribute.Value.Trim();
 
-            path = Environment.ExpandEnvironmentVariables(path);
+            string localAppDataPath = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
 
-            try
-            {
-                return Path.GetFullPath(path);
-            }
-            catch (ArgumentException ex)
-            {
-                Debug.Fail(ex.ToString());
-
-                return null;
-            }
+            return path.Replace("%LOCALAPPDATA%", localAppDataPath);
         }
 
         public CodeAnalysisConfiguration WithPrefixFieldIdentifierWithUnderscore(bool prefixFieldIdentifierWithUnderscore)
