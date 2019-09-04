@@ -63,7 +63,7 @@ namespace Roslynator.CommandLine
                                 || ex is SecurityException
                                 || ex is UnauthorizedAccessException)
                         {
-                            WriteLine(ex.Message, ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                            WriteError(ex, ConsoleColor.DarkGray, Verbosity.Diagnostic);
                             continue;
                         }
 

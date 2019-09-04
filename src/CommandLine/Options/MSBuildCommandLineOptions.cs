@@ -10,7 +10,6 @@ namespace Roslynator.CommandLine
     public abstract class MSBuildCommandLineOptions : AbstractCommandLineOptions
     {
         [Value(index: 0,
-            Required = true,
             HelpText = "The project or solution file.",
             MetaValue = "<PROJECT|SOLUTION>")]
         public string Path { get; set; }
