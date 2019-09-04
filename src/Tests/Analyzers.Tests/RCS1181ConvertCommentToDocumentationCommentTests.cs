@@ -136,12 +136,13 @@ enum E
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
-        public async Task Test_TrailingComment_EnumMemberComma()
+        public async Task Test_TrailingComment_EnumMemberWithValueAndWithComma()
         {
             await VerifyDiagnosticAndFixAsync(@"
 enum E
 {
     A = 0, [|//x|]
+    B = 1
 }
 ", @"
 enum E
@@ -150,6 +151,28 @@ enum E
     /// x
     /// </summary>
     A = 0,
+    B = 1
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertCommentToDocumentationComment)]
+        public async Task Test_TrailingComment_EnumMemberWithoutValueAndWithComma()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+enum E
+{
+    A, [|//x|]
+    B
+}
+", @"
+enum E
+{
+    /// <summary>
+    /// x
+    /// </summary>
+    A,
+    B
 }
 ");
         }
