@@ -71,7 +71,7 @@ namespace Roslynator.Diagnostics
                 {
                     WriteLine($"Analyze '{project.Name}' {$"{i + 1}/{projectIds.Length}"}", Verbosity.Minimal);
 
-                    ProjectAnalysisResult result = await AnalyzeProjectAsync(project, cancellationToken).ConfigureAwait(false);
+                    ProjectAnalysisResult result = await AnalyzeProjectCoreAsync(project, cancellationToken).ConfigureAwait(false);
 
                     if (result != null)
                         results.Add(result);
@@ -95,6 +95,15 @@ namespace Roslynator.Diagnostics
         }
 
         public async Task<ProjectAnalysisResult> AnalyzeProjectAsync(Project project, CancellationToken cancellationToken = default)
+        {
+            ProjectAnalysisResult result = await AnalyzeProjectCoreAsync(project, cancellationToken).ConfigureAwait(false);
+
+            WriteProjectAnalysisResults(new ProjectAnalysisResult[] { result }, cancellationToken);
+
+            return result;
+        }
+
+        private async Task<ProjectAnalysisResult> AnalyzeProjectCoreAsync(Project project, CancellationToken cancellationToken = default)
         {
             ImmutableArray<DiagnosticAnalyzer> analyzers = CodeAnalysisHelpers.GetAnalyzers(
                 project: project,
@@ -191,7 +200,7 @@ namespace Roslynator.Diagnostics
         }
 
         private void WriteProjectAnalysisResults(
-            List<ProjectAnalysisResult> results,
+            IList<ProjectAnalysisResult> results,
             CancellationToken cancellationToken)
         {
             if (Options.LogAnalyzerExecutionTime)
