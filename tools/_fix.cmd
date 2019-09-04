@@ -7,8 +7,8 @@ set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuil
 "..\src\CommandLine\bin\Debug\net472\roslynator" fix "..\src\Roslynator.sln" ^
  --msbuild-path %_msbuildPath% ^
  --analyzer-assemblies ^
-  "..\src\CommandLine\bin\Debug\net472\Roslynator.CSharp.Analyzers.dll" ^
-  "..\src\CommandLine\bin\Debug\net472\Roslynator.CSharp.Analyzers.CodeFixes.dll" ^
+  "..\src\Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CSharp.Analyzers.dll" ^
+  "..\src\Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CSharp.Analyzers.CodeFixes.dll" ^
   "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CodeAnalysis.Analyzers.dll" ^
   "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CodeAnalysis.Analyzers.CodeFixes.dll" ^
  --format ^

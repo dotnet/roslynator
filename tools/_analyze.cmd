@@ -6,7 +6,7 @@ set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuil
 
 "..\src\CommandLine\bin\Debug\net472\roslynator" analyze "..\src\Roslynator.sln" ^
  --msbuild-path %_msbuildPath% ^
- --analyzer-assemblies "..\src\CommandLine\bin\Debug\net472\Roslynator.CSharp.Analyzers.dll" ^
+ --analyzer-assemblies "..\src\Analyzers\bin\Debug\netstandard1.3\Roslynator.CSharp.Analyzers.dll" ^
  --ignore-analyzer-references ^
  --ignored-diagnostics CS1591 ^
  --severity-level info ^

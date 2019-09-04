@@ -315,13 +315,6 @@ namespace Roslynator.CommandLine
 
             IEnumerable<string> properties = options.Properties;
 
-            if (options.GetSupportedDiagnostics().Any())
-            {
-                string ruleSetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "format.ruleset");
-
-                properties = properties.Concat(new string[] { $"CodeAnalysisRuleSet={ruleSetPath}" });
-            }
-
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, properties);
 
             return (result.Kind == CommandResultKind.Success) ? 0 : 1;

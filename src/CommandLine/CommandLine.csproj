@@ -62,16 +62,11 @@
     <ProjectReference Include="..\VisualBasic.Workspaces\VisualBasic.Workspaces.csproj" />
     <ProjectReference Include="..\VisualBasic\VisualBasic.csproj" />
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
-    <ProjectReference Include="..\Analyzers.CodeFixes\Analyzers.CodeFixes.csproj" />
-    <ProjectReference Include="..\CodeFixes\CodeFixes.csproj" />
     <ProjectReference Include="..\Documentation\Documentation.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="_._" />
-    <None Update="format.ruleset">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
   </ItemGroup>
 
 </Project>
