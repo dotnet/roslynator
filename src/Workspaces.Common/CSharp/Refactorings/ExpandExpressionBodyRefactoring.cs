@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Roslynator.CSharp.Analysis;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
@@ -28,7 +29,19 @@ namespace Roslynator.CSharp.Refactorings
                 .ModifyRange(
                     selectedMembers.FirstIndex,
                     selectedMembers.Count,
-                    f => (MemberDeclarationSyntax)Refactor(CSharpUtility.GetExpressionBody(f), semanticModel, cancellationToken).WithFormatterAnnotation());
+                    member =>
+                    {
+                        ArrowExpressionClauseSyntax expressionBody = CSharpUtility.GetExpressionBody(member);
+
+                        if (expressionBody != null
+                            && ExpandExpressionBodyAnalysis.IsFixable(expressionBody))
+                        {
+                            return (MemberDeclarationSyntax)Refactor(expressionBody, semanticModel, cancellationToken)
+                                .WithFormatterAnnotation();
+                        }
+
+                        return member;
+                    });
 
             return await document.ReplaceMembersAsync(SyntaxInfo.MemberDeclarationListInfo(selectedMembers.Parent), newMembers, cancellationToken).ConfigureAwait(false);
         }

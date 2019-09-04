@@ -718,6 +718,36 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseExpressionBodiedMember)]
+        public async Task Test_MultipleMembers_FirstAndLast()
+        {
+            await VerifyRefactoringAsync(@"
+class C
+{
+[|    public C()
+    {
+        M();
+    }
+
+    string M() => default;
+
+    public string P
+    {
+        get { return default; }
+    }|]
+}
+", @"
+class C
+{
+    public C() => M();
+
+    string M() => default;
+
+    public string P => default;
+}
+", equivalenceKey: RefactoringId);
+        }
+
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseExpressionBodiedMember)]
         public async Task TestNoRefactoring_MultipleMembers()
         {
             await VerifyNoRefactoringAsync(@"

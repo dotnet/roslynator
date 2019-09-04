@@ -44,7 +44,7 @@ namespace Roslynator.CSharp.Refactorings
                 RefactoringIdentifiers.UseExpressionBodiedMember,
                 RefactoringIdentifiers.ExpandExpressionBody))
             {
-                InvertBodyAndExpressionBodyRefactoring.ComputeRefactoring(context, selectedMembers);
+                ConvertBodyAndExpressionBodyRefactoring.ComputeRefactoring(context, selectedMembers);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.InitializeFieldFromConstructor)
