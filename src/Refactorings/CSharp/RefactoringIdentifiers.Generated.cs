@@ -66,7 +66,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ExtractGenericType = Prefix + "0044";
         public const string ExtractStatement = Prefix + "0045";
         public const string ExtractTypeDeclarationToNewFile = Prefix + "0046";
-        public const string FormatAccessorBraces = Prefix + "0047";
         public const string FormatArgumentList = Prefix + "0048";
         public const string FormatBinaryExpression = Prefix + "0049";
         public const string FormatConditionalExpression = Prefix + "0050";

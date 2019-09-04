@@ -364,7 +364,7 @@ if (y)
     </Syntaxes>
     <Span>identifier</Span>
   </Refactoring>
-  <Refactoring Id="RR0047" Identifier="FormatAccessorBraces" Title="Format accessor braces">
+  <Refactoring Id="RR0047" Identifier="FormatAccessorBraces" Title="Format accessor braces" IsObsolete="true">
     <Syntaxes>
       <Syntax>get accessor</Syntax>
       <Syntax>set accessor</Syntax>

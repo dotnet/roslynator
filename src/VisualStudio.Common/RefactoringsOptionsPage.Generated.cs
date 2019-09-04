@@ -76,7 +76,6 @@ namespace Roslynator.VisualStudio
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractGenericType, "Extract generic type", IsEnabled(RefactoringIdentifiers.ExtractGenericType)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractStatement, "Extract statement(s)", IsEnabled(RefactoringIdentifiers.ExtractStatement)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile, "Extract type declaration to a new file", IsEnabled(RefactoringIdentifiers.ExtractTypeDeclarationToNewFile)));
-            refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatAccessorBraces, "Format accessor braces", IsEnabled(RefactoringIdentifiers.FormatAccessorBraces)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatArgumentList, "Format argument list", IsEnabled(RefactoringIdentifiers.FormatArgumentList)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatBinaryExpression, "Format binary expression", IsEnabled(RefactoringIdentifiers.FormatBinaryExpression)));
             refactorings.Add(new BaseModel(RefactoringIdentifiers.FormatConditionalExpression, "Format conditional expression", IsEnabled(RefactoringIdentifiers.FormatConditionalExpression)));
