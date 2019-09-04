@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
@@ -167,15 +168,30 @@ namespace Roslynator.CSharp.Refactorings.IntroduceAndInitialize
             if (parameter.Identifier.IsMissing)
                 return false;
 
-            SyntaxNode parent = parameter.Parent;
-
-            if (parent?.Kind() != SyntaxKind.ParameterList)
+            if (!parameter.IsParentKind(SyntaxKind.ParameterList))
                 return false;
 
-            parent = parent.Parent;
+            if (!(parameter.Parent.Parent is ConstructorDeclarationSyntax constructorDeclaration))
+                return false;
 
-            return parent?.Kind() == SyntaxKind.ConstructorDeclaration
-                && !((ConstructorDeclarationSyntax)parent).Modifiers.Contains(SyntaxKind.StaticKeyword);
+            if (constructorDeclaration.Modifiers.Contains(SyntaxKind.StaticKeyword))
+                return false;
+
+            ArgumentListSyntax argumentList = constructorDeclaration.Initializer?.ArgumentList;
+
+            if (argumentList != null)
+            {
+                foreach (ArgumentSyntax argument in argumentList.Arguments)
+                {
+                    if (argument.Expression is IdentifierNameSyntax identifierName
+                        && string.Equals(parameter.Identifier.ValueText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
         }
     }
 }
