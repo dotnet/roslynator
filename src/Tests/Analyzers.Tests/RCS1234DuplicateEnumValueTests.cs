@@ -118,5 +118,16 @@ enum E
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.DuplicateEnumValue)]
+        public async Task TestNoDiagnostic()
+        {
+            await VerifyNoDiagnosticAsync(@"
+enum E
+{
+    A,
+    B = A
+}");
+        }
     }
 }

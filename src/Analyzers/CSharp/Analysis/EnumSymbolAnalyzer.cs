@@ -208,12 +208,12 @@ namespace Roslynator.CSharp.Analysis
                         {
                             if (value2 != null)
                             {
-                                ReportDuplicateValue(context, enumMember1);
+                                ReportDuplicateValue(context, enumMember1, value2);
                             }
                         }
                         else if (value2 == null)
                         {
-                            ReportDuplicateValue(context, enumMember2);
+                            ReportDuplicateValue(context, enumMember2, value1);
                         }
                         else
                         {
@@ -316,7 +316,23 @@ namespace Roslynator.CSharp.Analysis
                 value);
         }
 
-        private static void ReportDuplicateValue(SymbolAnalysisContext context, SyntaxNode node)
+        private static void ReportDuplicateValue(
+            SymbolAnalysisContext context,
+            EnumMemberDeclarationSyntax enumMember,
+            ExpressionSyntax value)
+        {
+            if (value is IdentifierNameSyntax identifierName
+                && string.Equals(enumMember.Identifier.ValueText, identifierName.Identifier.ValueText, StringComparison.Ordinal))
+            {
+                return;
+            }
+
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DuplicateEnumValue, enumMember);
+        }
+
+        private static void ReportDuplicateValue(
+            SymbolAnalysisContext context,
+            SyntaxNode node)
         {
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.DuplicateEnumValue, node);
         }
