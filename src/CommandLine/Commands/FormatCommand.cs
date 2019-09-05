@@ -4,14 +4,12 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
-using Roslynator.CodeFixes;
 using Roslynator.Formatting;
 using Roslynator.Host.Mef;
 using static Roslynator.Logger;
@@ -29,34 +27,7 @@ namespace Roslynator.CommandLine
 
         public override async Task<CommandResult> ExecuteAsync(ProjectOrSolution projectOrSolution, CancellationToken cancellationToken = default)
         {
-            ImmutableArray<string> supportedDiagnosticIds = Options
-                .GetSupportedDiagnostics()
-                .Select(f => f.Id)
-                .ToImmutableArray();
-
-            if (supportedDiagnosticIds.Any())
-            {
-                var codeFixerOptions = new CodeFixerOptions(
-                    severityLevel: DiagnosticSeverity.Hidden,
-                    ignoreCompilerErrors: true,
-                    ignoreAnalyzerReferences: true,
-                    supportedDiagnosticIds: supportedDiagnosticIds,
-                    batchSize: 1000,
-                    format: true);
-
-                CultureInfo culture = (Options.Culture != null) ? CultureInfo.GetCultureInfo(Options.Culture) : null;
-
-                var projectFilter = new ProjectFilter(Options.Projects, Options.IgnoredProjects, Language);
-
-                return await FixCommand.FixAsync(
-                    projectOrSolution,
-                    RoslynatorAnalyzerAssemblies.AnalyzersAndCodeFixes,
-                    codeFixerOptions,
-                    projectFilter,
-                    culture,
-                    cancellationToken);
-            }
-            else if (projectOrSolution.IsProject)
+            if (projectOrSolution.IsProject)
             {
                 Project project = projectOrSolution.AsProject();
 

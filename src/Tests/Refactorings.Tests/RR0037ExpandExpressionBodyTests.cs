@@ -9,7 +9,7 @@ namespace Roslynator.CSharp.Refactorings.Tests
     {
         public override string RefactoringId { get; } = RefactoringIdentifiers.ExpandExpressionBody;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseExpressionBodiedMember)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandExpressionBody)]
         public async Task Test_MultipleMembers()
         {
             await VerifyRefactoringAsync(@"
@@ -76,19 +76,37 @@ class C
         }
 
         [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ExpandExpressionBody)]
-        public async Task TestNoRefactoring_MultipleMembers()
+        public async Task Test_MultipleMembers_FirstAndLast()
         {
-            await VerifyNoRefactoringAsync(@"
+            await VerifyRefactoringAsync(@"
 class C
 {
-[|    string M()
+[|    public C() => M();
+
+    string M()
     {
         return default;
     }
 
-    string M2() => default;|]
-}
-", equivalenceKey: RefactoringId);
+    public string P => default;|]
+}", @"
+class C
+{
+    public C()
+    {
+        M();
+    }
+
+    string M()
+    {
+        return default;
+    }
+
+    public string P
+    {
+        get { return default; }
+    }
+}", equivalenceKey: RefactoringId);
         }
     }
 }

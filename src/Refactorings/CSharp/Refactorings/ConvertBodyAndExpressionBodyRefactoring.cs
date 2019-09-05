@@ -6,30 +6,22 @@ using Roslynator.CSharp.Analysis;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class InvertBodyAndExpressionBodyRefactoring
+    internal static class ConvertBodyAndExpressionBodyRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, MemberDeclarationListSelection selectedMembers)
         {
             if (selectedMembers.Count <= 1)
                 return;
 
-            SyntaxListSelection<MemberDeclarationSyntax>.Enumerator en = selectedMembers.GetEnumerator();
-
-            if (!en.MoveNext())
-                return;
-
             TextSpan span = context.Span;
 
-            string refactoringId = GetRefactoringId(en.Current);
+            string refactoringId = GetRefactoringId(selectedMembers.First());
 
             if (refactoringId == null)
                 return;
 
-            while (en.MoveNext())
-            {
-                if (refactoringId != GetRefactoringId(en.Current))
-                    return;
-            }
+            if (refactoringId != GetRefactoringId(selectedMembers.Last()))
+                return;
 
             if (refactoringId == RefactoringIdentifiers.UseExpressionBodiedMember
                 && context.IsRefactoringEnabled(RefactoringIdentifiers.UseExpressionBodiedMember))

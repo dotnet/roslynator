@@ -6,7 +6,6 @@ using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
-using Roslynator.FindSymbols;
 using Roslynator.Host.Mef;
 
 namespace Roslynator.FindSymbols
@@ -66,7 +65,8 @@ namespace Roslynator.FindSymbols
                                         continue;
                                     }
 
-                                    if (options.UnusedOnly)
+                                    if (options.UnusedOnly
+                                        && !symbol.IsImplicitlyDeclared)
                                     {
                                         isUnused = await UnusedSymbolUtility.IsUnusedSymbolAsync(symbol, project.Solution, cancellationToken).ConfigureAwait(false);
                                     }

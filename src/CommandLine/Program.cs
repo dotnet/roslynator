@@ -101,7 +101,22 @@ namespace Roslynator.CommandLine
             }
             catch (Exception ex)
             {
-                WriteLine(ex.ToString());
+                if (ex is AggregateException aggregateException)
+                {
+                    foreach (Exception innerException in aggregateException.InnerExceptions)
+                    {
+                        WriteError(innerException);
+                    }
+                }
+                else if (ex is FileNotFoundException
+                    || ex is InvalidOperationException)
+                {
+                    WriteError(ex);
+                }
+                else
+                {
+                    throw;
+                }
             }
             finally
             {
@@ -314,13 +329,6 @@ namespace Roslynator.CommandLine
             var command = new FormatCommand(options, projectFilter);
 
             IEnumerable<string> properties = options.Properties;
-
-            if (options.GetSupportedDiagnostics().Any())
-            {
-                string ruleSetPath = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "format.ruleset");
-
-                properties = properties.Concat(new string[] { $"CodeAnalysisRuleSet={ruleSetPath}" });
-            }
 
             CommandResult result = await command.ExecuteAsync(options.Path, options.MSBuildPath, properties);
 

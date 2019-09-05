@@ -108,7 +108,7 @@ namespace Roslynator.CommandLine
                 }
                 catch (IOException ex)
                 {
-                    WriteLine(ex.ToString(), Verbosity.Quiet);
+                    WriteError(ex);
                     return CommandResult.Fail;
                 }
             }
