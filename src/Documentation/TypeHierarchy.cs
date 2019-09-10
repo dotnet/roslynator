@@ -138,7 +138,7 @@ namespace Roslynator.Documentation
                 item = new TypeHierarchyItem(symbol) { Parent = parent };
 
                 TypeHierarchyItem[] derivedInterfaces = Interfaces
-                    .Where(f => f.Symbol.Interfaces.Any(i => i.OriginalDefinition == symbol.OriginalDefinition))
+                    .Where(f => f.Symbol.Interfaces.Any(i => MetadataNameEqualityComparer<INamedTypeSymbol>.Instance.Equals(i.OriginalDefinition, symbol.OriginalDefinition)))
                     .ToArray();
 
                 if (derivedInterfaces.Length > 0)
@@ -177,7 +177,7 @@ namespace Roslynator.Documentation
                 throw new InvalidOperationException("Object type not found.");
 
             Dictionary<INamedTypeSymbol, TypeHierarchyItem> allItems = types
-                .ToDictionary(f => f, f => new TypeHierarchyItem(f));
+                .ToDictionary(f => f, f => new TypeHierarchyItem(f), MetadataNameEqualityComparer<INamedTypeSymbol>.Instance);
 
             allItems[objectType] = new TypeHierarchyItem(objectType, isExternal: true);
 
@@ -213,7 +213,7 @@ namespace Roslynator.Documentation
 
                 TypeHierarchyItem[] derivedTypes = allItems
                     .Select(f => f.Value)
-                    .Where(f => f.Symbol.BaseType?.OriginalDefinition == symbol.OriginalDefinition)
+                    .Where(f => MetadataNameEqualityComparer<INamedTypeSymbol>.Instance.Equals(f.Symbol.BaseType?.OriginalDefinition, symbol.OriginalDefinition))
                     .ToArray();
 
                 if (derivedTypes.Length > 0)
