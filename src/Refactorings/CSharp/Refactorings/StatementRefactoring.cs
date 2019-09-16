@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Refactorings
 
         private static void RegisterRefactoring(RefactoringContext context, StatementSyntax statement)
         {
-            bool isEmbedded = statement.IsEmbedded(canBeIfInsideElse: false);
+            bool isEmbedded = statement.IsEmbedded();
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.RemoveStatement)
                 && !isEmbedded)
@@ -125,7 +125,7 @@ namespace Roslynator.CSharp.Refactorings
                         if (ifStatement.Else == null
                             && block.CloseBraceToken.Span.Contains(context.Span))
                         {
-                            return ifStatement;
+                            return ifStatement.GetTopmostIf();
                         }
 
                         break;

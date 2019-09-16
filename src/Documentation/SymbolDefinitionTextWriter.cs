@@ -23,6 +23,8 @@ namespace Roslynator.Documentation
 
         public override bool SupportsDocumentationComments => true;
 
+        public override bool SupportsMultilineDefinitions => true;
+
         public override void WriteStartNamespaces()
         {
             WriteLine();

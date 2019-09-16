@@ -97,6 +97,27 @@ class B<T>
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
+        public async Task TestNoDiagnostic_ExtensionMethod()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+        object x = null;
+
+        (x as C).EM();
+    }
+}
+
+static class E
+{
+    public static C EM(this C c) => c;
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.AvoidNullReferenceException)]
         public async Task TestNoFix_AwaitExpression()
         {
             await VerifyNoFixAsync(@"

@@ -109,7 +109,7 @@ namespace Roslynator.CommandLine
                         WriteSymbol(symbol, Verbosity.Normal, indentation: "    ", addCommentId: true, padding: maxKindLength);
                     }
 
-                        (symbols ?? (symbols = ImmutableArray.CreateBuilder<ISymbol>())).AddRange(projectSymbols);
+                    (symbols ?? (symbols = ImmutableArray.CreateBuilder<ISymbol>())).AddRange(projectSymbols);
                 }
 
                 stopwatch.Stop();
@@ -225,16 +225,14 @@ namespace Roslynator.CommandLine
             if (addCommentId
                 && ShouldWrite(Verbosity.Diagnostic))
             {
-                WriteLine(verbosity);
-                Write(indentation);
+                WriteLine(Verbosity.Diagnostic);
+                Write(indentation, Verbosity.Diagnostic);
                 Write("ID:", ConsoleColor.DarkGray, Verbosity.Diagnostic);
                 Write(' ', padding - 2, Verbosity.Diagnostic);
-                WriteLine(symbol.GetDocumentationCommentId(), ConsoleColor.DarkGray, Verbosity.Diagnostic);
+                Write(symbol.GetDocumentationCommentId(), ConsoleColor.DarkGray, Verbosity.Diagnostic);
             }
-            else
-            {
-                WriteLine(verbosity);
-            }
+
+            WriteLine(verbosity);
         }
 
         private class FindSymbolsProgress : IFindSymbolsProgress

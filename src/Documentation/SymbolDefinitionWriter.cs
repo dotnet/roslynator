@@ -58,7 +58,7 @@ namespace Roslynator.Documentation
 
         public abstract bool SupportsDocumentationComments { get; }
 
-        public virtual bool SupportsMultilineDefinitions => Layout != SymbolDefinitionListLayout.TypeHierarchy;
+        public abstract bool SupportsMultilineDefinitions { get; }
 
         protected int Depth { get; private set; }
 

@@ -96,6 +96,12 @@ namespace Roslynator.CSharp.Analysis
             if (!typeSymbol.IsReferenceType && !typeSymbol.IsValueType)
                 return;
 
+            if (context.SemanticModel.GetSymbol(topExpression, context.CancellationToken) is IMethodSymbol methodSymbol
+                && methodSymbol.IsExtensionMethod)
+            {
+                return;
+            }
+
             ReportDiagnostic(context, expression);
         }
 
