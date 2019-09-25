@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0143ReplaceStatementWithIfElseTests : AbstractCSharpRefactoringVerifier
+    public class RR0143ConvertReturnToIfTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceStatementWithIfElse;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertReturnToIf;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertReturnToIf)]
         public async Task Test_ReturnStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -38,7 +38,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertReturnToIf)]
         public async Task Test_ReturnStatement_SelectEntireStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -67,7 +67,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertReturnToIf)]
         public async Task Test_YieldReturnStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -100,7 +100,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertReturnToIf)]
         public async Task Test_YieldReturnStatement_SelectEntireStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -133,7 +133,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertReturnToIf)]
         public async Task TestNoRefactoring_NotBooleanExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -147,7 +147,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertReturnToIf)]
         public async Task TestNoRefactoring_TrueLiteralExpression()
         {
             await VerifyNoRefactoringAsync(@"
@@ -161,7 +161,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceStatementWithIfElse)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertReturnToIf)]
         public async Task TestNoRefactoring_FalseLiteralExpression()
         {
             await VerifyNoRefactoringAsync(@"

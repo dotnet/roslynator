@@ -1,17 +1,15 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
 using System.Threading.Tasks;
-using Microsoft.CodeAnalysis.CodeRefactorings;
-using Roslynator.Tests;
 using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0130ReplaceForWithForEachTests : AbstractCSharpRefactoringVerifier
+    public class RR0130ConvertForToForEachTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceForWithForEach;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertForToForEach;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithForEach)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToForEach)]
         public async Task Test_UseExplicitType()
         {
             await VerifyRefactoringAsync(@"

@@ -10,7 +10,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceInterpolatedStringWithConcatenationRefactoring
+    internal static class ConvertInterpolatedStringToConcatenationRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, InterpolatedStringExpressionSyntax interpolatedString)
         {
@@ -34,9 +34,9 @@ namespace Roslynator.CSharp.Refactorings
             }
 
             context.RegisterRefactoring(
-                "Replace interpolated string with concatenation",
+                "Conver to concatenation",
                 cancellationToken => RefactorAsync(context.Document, interpolatedString, cancellationToken),
-                RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation);
+                RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation);
         }
 
         private static async Task<Document> RefactorAsync(

@@ -16,7 +16,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceStringFormatWithInterpolatedStringRefactoring
+    internal static class ConvertStringFormatToInterpolatedStringRefactoring
     {
         public static async Task ComputeRefactoringsAsync(RefactoringContext context, InvocationExpressionSyntax invocation)
         {
@@ -60,9 +60,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                $"Replace {invocation.Expression} with interpolated string",
+                "Convert to interpolated string",
                 cancellationToken => RefactorAsync(context.Document, invocation, semanticModel, cancellationToken),
-                RefactoringIdentifiers.ReplaceStringFormatWithInterpolatedString);
+                RefactoringIdentifiers.ConvertStringFormatToInterpolatedString);
         }
 
         private static ImmutableArray<ISymbol> GetFormatMethods(SemanticModel semanticModel)

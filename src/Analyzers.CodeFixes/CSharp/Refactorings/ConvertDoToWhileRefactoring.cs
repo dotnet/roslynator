@@ -8,7 +8,7 @@ using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceDoWithWhileRefactoring
+    internal static class ConvertDoToWhileRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

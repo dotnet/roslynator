@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0131ReplaceForWithWhileTests : AbstractCSharpRefactoringVerifier
+    public class RR0131ConvertForToWhileTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceForWithWhile;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertForToWhile;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
         public async Task Test_CommonFor()
         {
             await VerifyRefactoringAsync(@"
@@ -47,7 +47,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
         public async Task Test_ForWithEmbeddedStatement()
         {
             await VerifyRefactoringAsync(@"
@@ -83,7 +83,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
         public async Task Test_ForWithContinue()
         {
             await VerifyRefactoringAsync(@"
@@ -155,7 +155,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
         public async Task Test_ForWithMultipleDeclarationsAndIncrementors()
         {
             await VerifyRefactoringAsync(@"
@@ -193,7 +193,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
         public async Task Test_EmptyFor()
         {
             await VerifyRefactoringAsync(@"
@@ -219,7 +219,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForWithWhile)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertForToWhile)]
         public async Task Test_EmbeddedFor()
         {
             await VerifyRefactoringAsync(@"

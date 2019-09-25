@@ -8,13 +8,13 @@ namespace Roslynator.CSharp.Refactorings
     {
         public static void ComputeRefactorings(RefactoringContext context, DoStatementSyntax doStatement)
         {
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceDoWithWhile)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertDoToWhile)
                 && (doStatement.DoKeyword.Span.Contains(context.Span)))
             {
                 context.RegisterRefactoring(
-                    "Replace do with while",
-                    ct => ReplaceDoWithWhileRefactoring.RefactorAsync(context.Document, doStatement, ct),
-                    RefactoringIdentifiers.ReplaceDoWithWhile);
+                    "Convert to 'while'",
+                    ct => ConvertDoToWhileRefactoring.RefactorAsync(context.Document, doStatement, ct),
+                    RefactoringIdentifiers.ConvertDoToWhile);
             }
         }
     }

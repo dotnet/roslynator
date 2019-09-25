@@ -16,7 +16,7 @@ using static Roslynator.CSharp.CSharpFacts;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceIfWithSwitchRefactoring
+    internal static class ConvertIfToSwitchRefactoring
     {
         public static void ComputeRefactoring(
             RefactoringContext context,
@@ -53,9 +53,9 @@ namespace Roslynator.CSharp.Refactorings
             Document document = context.Document;
 
             context.RegisterRefactoring(
-                "Replace if with switch",
+                "Convert to 'switch'",
                 ct => RefactorAsync(document, ifStatement, ct),
-                RefactoringIdentifiers.ReplaceIfWithSwitch);
+                RefactoringIdentifiers.ConvertIfToSwitch);
         }
 
         private static (bool success, ExpressionSyntax switchExpression) Analyze(

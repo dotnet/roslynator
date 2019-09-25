@@ -8,7 +8,7 @@ using Roslynator.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceHexadecimalLiteralWithDecimalLiteralRefactoring
+    internal static class ConvertHexadecimalLiteralToDecimalLiteralRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, LiteralExpressionSyntax literalExpression)
         {
@@ -20,9 +20,9 @@ namespace Roslynator.CSharp.Refactorings
             LiteralExpressionSyntax newLiteralExpression = CSharpFactory.LiteralExpression(info.Value);
 
             context.RegisterRefactoring(
-                $"Replace '{info.Text}' with '{newLiteralExpression}'",
+                $"Convert to '{newLiteralExpression}'",
                 cancellationToken => RefactorAsync(context.Document, literalExpression, newLiteralExpression, cancellationToken),
-                RefactoringIdentifiers.ReplaceHexadecimalLiteralWithDecimalLiteral);
+                RefactoringIdentifiers.ConvertHexadecimalLiteralToDecimalLiteral);
         }
 
         private static Task<Document> RefactorAsync(

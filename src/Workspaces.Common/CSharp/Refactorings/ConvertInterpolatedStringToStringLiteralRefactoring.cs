@@ -8,7 +8,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceInterpolatedStringWithStringLiteralRefactoring
+    internal static class ConvertInterpolatedStringToStringLiteralRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

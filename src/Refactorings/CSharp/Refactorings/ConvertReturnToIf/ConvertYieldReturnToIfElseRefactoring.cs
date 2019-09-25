@@ -2,9 +2,9 @@
 
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
+namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf
 {
-    internal class ReplaceYieldStatementWithIfStatementRefactoring : ReplaceStatementWithIfStatementRefactoring<YieldStatementSyntax>
+    internal class ConvertYieldReturnToIfElseRefactoring : ConvertReturnToIfRefactoring<YieldStatementSyntax>
     {
         protected override ExpressionSyntax GetExpression(YieldStatementSyntax statement)
         {
@@ -18,7 +18,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
 
         protected override string GetTitle(YieldStatementSyntax statement)
         {
-            return "Replace yield return with if-else";
+            return "Convert to 'if'";
         }
     }
 }

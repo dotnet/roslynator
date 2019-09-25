@@ -41,8 +41,8 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove $",
-                                cancellationToken => ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
+                                "Remove '$'",
+                                cancellationToken => ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
                                 GetEquivalenceKey(diagnostic.Id));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
