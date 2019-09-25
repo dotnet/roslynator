@@ -34,14 +34,14 @@ namespace Roslynator.CSharp.Refactorings
                 if (ReverseForLoopRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
-                        "Reverse for loop",
+                        "Reverse 'for' loop",
                         cancellationToken => ReverseForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
                         RefactoringIdentifiers.ReverseForLoop);
                 }
                 else if (ReverseReversedForLoopRefactoring.CanRefactor(forStatement))
                 {
                     context.RegisterRefactoring(
-                        "Reverse for loop",
+                        "Reverse 'for' loop",
                         cancellationToken => ReverseReversedForLoopRefactoring.RefactorAsync(context.Document, forStatement, cancellationToken),
                         RefactoringIdentifiers.ReverseForLoop);
                 }
