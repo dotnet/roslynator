@@ -258,7 +258,7 @@ namespace Roslynator.CSharp.Syntax
         }
 
         /// <summary>
-        /// Searches for a statement that matches the predicate and returns returns zero-based index of the first occurrence in the list.
+        /// Searches for a statement that matches the predicate and returns zero-based index of the first occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
         public int IndexOf(Func<StatementSyntax, bool> predicate)
@@ -312,7 +312,7 @@ namespace Roslynator.CSharp.Syntax
         }
 
         /// <summary>
-        /// Searches for a statement that matches the predicate and returns returns zero-based index of the last occurrence in the list.
+        /// Searches for a statement that matches the predicate and returns zero-based index of the last occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
         public int LastIndexOf(Func<StatementSyntax, bool> predicate)

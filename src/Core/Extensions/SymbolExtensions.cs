@@ -96,7 +96,7 @@ namespace Roslynator
         }
 
         /// <summary>
-        /// Returns true if the the symbol implements any interface member.
+        /// Returns true if the symbol implements any interface member.
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
