@@ -11,7 +11,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceForEachWithEnumeratorRefactoring
+    internal static class UseEnumeratorExplicitlyRefactoring
     {
         public static void ComputeRefactoring(RefactoringContext context, ForEachStatementSyntax forEachStatement)
         {
@@ -22,9 +22,9 @@ namespace Roslynator.CSharp.Refactorings
                 return;
 
             context.RegisterRefactoring(
-                "Replace foreach with enumerator",
+                "Use enumerator explicitly",
                 ct => RefactorAsync(context.Document, forEachStatement, ct),
-                RefactoringIdentifiers.ReplaceForEachWithEnumerator);
+                RefactoringIdentifiers.UseEnumeratorExplicitly);
         }
 
         private static async Task<Document> RefactorAsync(

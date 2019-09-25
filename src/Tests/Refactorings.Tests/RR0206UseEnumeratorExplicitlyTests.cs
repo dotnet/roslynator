@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0206ReplaceForEachWithEnumeratorTests : AbstractCSharpRefactoringVerifier
+    public class RR0206UseEnumeratorExplicitlyTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceForEachWithEnumerator;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.UseEnumeratorExplicitly;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
         public async Task TestCodeRefactoring_WithUsing()
         {
             await VerifyRefactoringAsync(
@@ -56,7 +56,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
         public async Task TestCodeRefactoring_WithUsing_EmbeddedStatement()
         {
             await VerifyRefactoringAsync(
@@ -99,7 +99,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
         public async Task TestCodeRefactoring_WithoutUsing()
         {
             await VerifyRefactoringAsync(
@@ -138,7 +138,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
         public async Task TestCodeRefactoring_WithoutUsing_EmbeddedStatement()
         {
             await VerifyRefactoringAsync(
@@ -185,7 +185,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceForEachWithEnumerator)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.UseEnumeratorExplicitly)]
         public async Task TestNoCodeRefactoring_InvalidSpan()
         {
             await VerifyNoRefactoringAsync(

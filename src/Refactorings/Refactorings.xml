@@ -1881,7 +1881,7 @@ private object z;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0206" Identifier="ReplaceForEachWithEnumerator" Title="Replace foreach with enumerator">
+  <Refactoring Id="RR0206" Identifier="UseEnumeratorExplicitly" Title="Use enumerator explicitly">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>

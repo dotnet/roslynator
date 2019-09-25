@@ -51,10 +51,10 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceForEachWithEnumerator)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseEnumeratorExplicitly)
                 && context.Span.IsEmptyAndContainedInSpan(forEachStatement.ForEachKeyword))
             {
-                ReplaceForEachWithEnumeratorRefactoring.ComputeRefactoring(context, forEachStatement);
+                UseEnumeratorExplicitlyRefactoring.ComputeRefactoring(context, forEachStatement);
             }
         }
 

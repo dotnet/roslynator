@@ -171,7 +171,6 @@ namespace Roslynator.CSharp.Refactorings
         public const string ReplaceEqualsExpressionWithStringEquals = Prefix + "0124";
         public const string ReplaceEqualsExpressionWithStringIsNullOrEmpty = Prefix + "0125";
         public const string ReplaceEqualsExpressionWithStringIsNullOrWhiteSpace = Prefix + "0126";
-        public const string ReplaceForEachWithEnumerator = Prefix + "0206";
         public const string ReplaceInterpolatedStringWithInterpolationExpression = Prefix + "0135";
         public const string ReplaceMethodGroupWithLambda = Prefix + "0137";
         public const string ReplaceMethodWithProperty = Prefix + "0138";
@@ -200,6 +199,7 @@ namespace Roslynator.CSharp.Refactorings
         public const string UseCSharp6DictionaryInitializer = Prefix + "0191";
         public const string UseElementAccessInsteadOfEnumerableMethod = Prefix + "0167";
         public const string UseEmptyStringLiteralInsteadOfStringEmpty = Prefix + "0168";
+        public const string UseEnumeratorExplicitly = Prefix + "0206";
         public const string UseExpressionBodiedMember = Prefix + "0169";
         public const string UseLambdaExpressionInsteadOfAnonymousMethod = Prefix + "0170";
         public const string UseListInsteadOfYield = Prefix + "0183";
