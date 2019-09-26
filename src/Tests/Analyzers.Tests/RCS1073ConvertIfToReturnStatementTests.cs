@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1073ReplaceIfStatementWithReturnStatementTests : AbstractCSharpFixVerifier
+    public class RCS1073ConvertIfToReturnStatementTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ReplaceIfStatementWithReturnStatement;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertIfToReturnStatement;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new IfStatementAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new IfStatementCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
         public async Task Test_IfElse()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -50,7 +50,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
         public async Task Test_IfReturn()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -81,7 +81,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
         public async Task TestNoDiagnostic_IfElseContainsComment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -104,7 +104,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
         public async Task TestNoDiagnostic_IfElseContainsDirective()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -128,7 +128,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
         public async Task TestNoDiagnostic_IfReturnContainsComment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -149,7 +149,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToReturnStatement)]
         public async Task TestNoDiagnostic_IfReturnContainsDirective()
         {
             await VerifyNoDiagnosticAsync(@"

@@ -589,7 +589,7 @@ Bar();]]></After>
     <MessageFormat>Format binary operator on next line.</MessageFormat>
     <Category>Formatting</Category>
     <DefaultSeverity>Info</DefaultSeverity>
-    <IsEnabledByDefault>true</IsEnabledByDefault>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
     <SupportsFadeOut>false</SupportsFadeOut>
     <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
     <Samples>
@@ -1601,10 +1601,10 @@ catch (Exception ex)
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReplaceIfStatementWithReturnStatement">
+  <Analyzer Identifier="ConvertIfToReturnStatement">
     <Id>RCS1073</Id>
-    <Title>Replace if statement with return statement.</Title>
-    <MessageFormat>Replace if statement with return statement.</MessageFormat>
+    <Title>Convert 'if' to 'return' statement.</Title>
+    <MessageFormat>Convert 'if' to 'return' statement.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -2250,10 +2250,10 @@ public void Foo()
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReplaceIfStatementWithAssignment">
+  <Analyzer Identifier="ConvertIfToAssignment">
     <Id>RCS1103</Id>
-    <Title>Replace if statement with assignment.</Title>
-    <MessageFormat>Replace if statement with assignment.</MessageFormat>
+    <Title>Convert 'if' to assignment.</Title>
+    <MessageFormat>Convert 'if' to assignment.</MessageFormat>
     <Category>Simplification</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>
@@ -4703,10 +4703,10 @@ if (items.Count < 0) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="ReplaceInterpolatedStringWithConcatenation">
+  <Analyzer Identifier="ConvertInterpolatedStringToConcatenation">
     <Id>RCS1217</Id>
-    <Title>Replace interpolated string with concatenation.</Title>
-    <MessageFormat>Replace interpolated string with concatenation.</MessageFormat>
+    <Title>Convert interpolated string to concatenation.</Title>
+    <MessageFormat>Convert interpolated string to concatenation.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Hidden</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

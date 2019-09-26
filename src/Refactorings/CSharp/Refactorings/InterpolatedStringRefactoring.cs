@@ -26,18 +26,18 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.InsertStringInterpolation);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral)
                 && ReplaceInterpolatedStringWithStringLiteralAnalysis.IsFixable(interpolatedString))
             {
-                context.RegisterRefactoring("Remove $",
+                context.RegisterRefactoring("Remove '$'",
                     cancellationToken =>
                     {
-                        return ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(
+                        return ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(
                             context.Document,
                             interpolatedString,
                             cancellationToken);
                     },
-                    RefactoringIdentifiers.ReplaceInterpolatedStringWithStringLiteral);
+                    RefactoringIdentifiers.ConvertInterpolatedStringToStringLiteral);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression)
@@ -58,16 +58,16 @@ namespace Roslynator.CSharp.Refactorings
                     RefactoringIdentifiers.ReplaceInterpolatedStringWithInterpolationExpression);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithConcatenation)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToConcatenation)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(interpolatedString))
             {
-                ReplaceInterpolatedStringWithConcatenationRefactoring.ComputeRefactoring(context, interpolatedString);
+                ConvertInterpolatedStringToConcatenationRefactoring.ComputeRefactoring(context, interpolatedString);
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceInterpolatedStringWithStringFormat)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertInterpolatedStringToStringFormat)
                 && context.Span.IsEmptyAndContainedInSpanOrBetweenSpans(interpolatedString))
             {
-                ReplaceInterpolatedStringWithStringFormatRefactoring.ComputeRefactoring(context, interpolatedString);
+                ConvertInterpolatedStringToStringFormatRefactoring.ComputeRefactoring(context, interpolatedString);
             }
         }
     }

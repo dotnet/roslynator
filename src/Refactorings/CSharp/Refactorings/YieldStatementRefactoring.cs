@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Roslynator.CSharp.Refactorings.ReplaceStatementWithIf;
+using Roslynator.CSharp.Refactorings.ConvertReturnToIf;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -47,12 +47,12 @@ namespace Roslynator.CSharp.Refactorings
                 }
             }
 
-            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ReplaceStatementWithIfElse)
+            if (context.IsRefactoringEnabled(RefactoringIdentifiers.ConvertReturnToIf)
                 && (context.Span.IsEmptyAndContainedInSpan(yieldStatement.YieldKeyword)
                     || context.Span.IsEmptyAndContainedInSpan(yieldStatement.ReturnOrBreakKeyword)
                     || context.Span.IsBetweenSpans(yieldStatement)))
             {
-                await ReplaceStatementWithIfStatementRefactoring.ReplaceYieldReturnWithIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
+                await ConvertReturnToIfRefactoring.ConvertYieldReturnToIfElse.ComputeRefactoringAsync(context, yieldStatement).ConfigureAwait(false);
             }
 
             if (context.IsRefactoringEnabled(RefactoringIdentifiers.UseListInsteadOfYield)

@@ -12,7 +12,7 @@ using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceForEachWithForRefactoring
+    internal static class ConvertForEachToForRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

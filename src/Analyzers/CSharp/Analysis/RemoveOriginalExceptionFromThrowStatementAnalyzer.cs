@@ -7,6 +7,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Diagnostics;
+using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
@@ -45,25 +46,79 @@ namespace Roslynator.CSharp.Analysis
             if (symbol?.IsErrorType() != false)
                 return;
 
-            //XPERF: SyntaxWalker
-            foreach (SyntaxNode node in catchClause.Block.DescendantNodes(descendIntoChildren: f => f.Kind() != SyntaxKind.CatchClause))
+            Walker walker = Walker.GetInstance();
+
+            walker.Symbol = symbol;
+            walker.SemanticModel = semanticModel;
+            walker.CancellationToken = cancellationToken;
+
+            walker.VisitBlock(catchClause.Block);
+
+            ExpressionSyntax expression = walker.ThrowStatement?.Expression;
+
+            walker.Symbol = null;
+            walker.SemanticModel = null;
+            walker.CancellationToken = default;
+            walker.ThrowStatement = null;
+
+            Walker.Free(walker);
+
+            if (expression != null)
             {
-                if (!(node is ThrowStatementSyntax throwStatement))
-                    continue;
-
-                ExpressionSyntax expression = throwStatement.Expression;
-
-                if (expression == null)
-                    continue;
-
-                ISymbol expressionSymbol = semanticModel.GetSymbol(expression, cancellationToken);
-
-                if (!symbol.Equals(expressionSymbol))
-                    continue;
-
                 DiagnosticHelpers.ReportDiagnostic(context,
                     DiagnosticDescriptors.RemoveOriginalExceptionFromThrowStatement,
                     expression);
+            }
+        }
+
+        private class Walker : CSharpSyntaxNodeWalker
+        {
+            [ThreadStatic]
+            private static Walker _cachedInstance;
+
+            public ThrowStatementSyntax ThrowStatement { get; set; }
+
+            public ISymbol Symbol { get; set; }
+
+            public SemanticModel SemanticModel { get; set; }
+
+            public CancellationToken CancellationToken { get; set; }
+
+            public override void VisitCatchClause(CatchClauseSyntax node)
+            {
+            }
+
+            public override void VisitThrowStatement(ThrowStatementSyntax node)
+            {
+                ExpressionSyntax expression = node.Expression;
+
+                if (expression != null)
+                {
+                    ISymbol symbol = SemanticModel.GetSymbol(expression, CancellationToken);
+
+                    if (Symbol.Equals(symbol))
+                        ThrowStatement = node;
+                }
+
+                base.VisitThrowStatement(node);
+            }
+
+            public static Walker GetInstance()
+            {
+                Walker walker = _cachedInstance;
+
+                if (walker != null)
+                {
+                    _cachedInstance = null;
+                    return walker;
+                }
+
+                return new Walker();
+            }
+
+            public static void Free(Walker walker)
+            {
+                _cachedInstance = walker;
             }
         }
     }

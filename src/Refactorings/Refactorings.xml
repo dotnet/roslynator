@@ -958,7 +958,7 @@ else
       <Syntax>constant declaration</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0123" Identifier="ReplaceDoWithWhile" Title="Replace do statement with while statement">
+  <Refactoring Id="RR0123" Identifier="ConvertDoToWhile" Title="Convert 'do' to 'while'">
     <Syntaxes>
       <Syntax>do statement</Syntax>
     </Syntaxes>
@@ -1021,28 +1021,28 @@ void Foo()
       <Syntax>read-only field</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0129" Identifier="ReplaceForEachWithFor" Title="Replace foreach statement with for statement">
+  <Refactoring Id="RR0129" Identifier="ConvertForEachToFor" Title="Convert 'foreach' to 'for'">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0130" Identifier="ReplaceForWithForEach" Title="Replace for statement with foreach statement">
+  <Refactoring Id="RR0130" Identifier="ConvertForToForEach" Title="Convert 'for' to 'foreach'">
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0131" Identifier="ReplaceForWithWhile" Title="Replace for statement with while statement">
+  <Refactoring Id="RR0131" Identifier="ConvertForToWhile" Title="Convert 'for' to 'while'">
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
     <Span>for keyword or selected for statement</Span>
   </Refactoring>
-  <Refactoring Id="RR0132" Identifier="ReplaceHexadecimalLiteralWithDecimalLiteral" Title="Replace hexadecimal literal with decimal literal">
+  <Refactoring Id="RR0132" Identifier="ConvertHexadecimalLiteralToDecimalLiteral" Title="Convert hexadecimal literal to decimal literal">
     <Syntaxes>
       <Syntax>hexadecimal literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0133" Identifier="ReplaceIfWithSwitch" Title="Replace if with switch">
+  <Refactoring Id="RR0133" Identifier="ConvertIfToSwitch" Title="Convert 'if' to 'switch'">
     <Syntaxes>
       <Syntax>if statement</Syntax>
     </Syntaxes>
@@ -1108,7 +1108,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>interpolation</Span>
   </Refactoring>
-  <Refactoring Id="RR0136" Identifier="ReplaceInterpolatedStringWithStringLiteral" Title="Replace interpolated string with string literal">
+  <Refactoring Id="RR0136" Identifier="ConvertInterpolatedStringToStringLiteral" Title="Convert interpolated string to string literal">
     <Syntaxes>
       <Syntax>Interpolated string without any interpolation</Syntax>
     </Syntaxes>
@@ -1146,12 +1146,12 @@ i--;]]></After>
     </Syntaxes>
     <Span>property header</Span>
   </Refactoring>
-  <Refactoring Id="RR0142" Identifier="ReplaceRegularStringLiteralWithVerbatimStringLiteral" Title="Replace regular string literal with verbatim string literal">
+  <Refactoring Id="RR0142" Identifier="ConvertRegularStringLiteralToVerbatimStringLiteral" Title="Convert regular string literal to verbatim string literal">
     <Syntaxes>
       <Syntax>regular string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0143" Identifier="ReplaceStatementWithIfElse" Title="Replace (yield) return statement with if-else">
+  <Refactoring Id="RR0143" Identifier="ConvertReturnToIf" Title="Convert '(yield) return' to 'if'">
     <Syntaxes>
       <Syntax>return statement</Syntax>
       <Syntax>yield return statement</Syntax>
@@ -1177,7 +1177,7 @@ i--;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0145" Identifier="ReplaceStringFormatWithInterpolatedString" Title="Replace string.Format with interpolated string">
+  <Refactoring Id="RR0145" Identifier="ConvertStringFormatToInterpolatedString" Title="Convert 'string.Format' to interpolated string">
     <Syntaxes>
       <Syntax>string.Format method</Syntax>
     </Syntaxes>
@@ -1188,12 +1188,12 @@ i--;]]></After>
     </Syntaxes>
     <Span>switch keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0148" Identifier="ReplaceVerbatimStringLiteralWithRegularStringLiteral" Title="Replace verbatim string literal with regular string literal">
+  <Refactoring Id="RR0148" Identifier="ConvertVerbatimStringLiteralToRegularStringLiteral" Title="Convert verbatim string literal to regular string literal">
     <Syntaxes>
       <Syntax>verbatim string literal</Syntax>
     </Syntaxes>
   </Refactoring>
-  <Refactoring Id="RR0149" Identifier="ReplaceVerbatimStringLiteralWithRegularStringLiterals" Title="Replace verbatim string literal with regular string literals">
+  <Refactoring Id="RR0149" Identifier="ConvertVerbatimStringLiteralToRegularStringLiterals" Title="Convert verbatim string literal to regular string literals">
     <Syntaxes>
       <Syntax>multiline verbatim string literal</Syntax>
     </Syntaxes>
@@ -1223,7 +1223,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>while keyword or selected statement(s)</Span>
   </Refactoring>
-  <Refactoring Id="RR0152" Identifier="ReverseForLoop" Title="Reverse for loop">
+  <Refactoring Id="RR0152" Identifier="ReverseForLoop" Title="Reverse 'for' loop">
     <Syntaxes>
       <Syntax>for statement</Syntax>
     </Syntaxes>
@@ -1361,7 +1361,7 @@ i--;]]></After>
     </Syntaxes>
     <Span>delegate keyword</Span>
   </Refactoring>
-  <Refactoring Id="RR0171" Identifier="UseStringEmptyInsteadOfEmptyStringLiteral" Title="Use string.Empty instead of &quot;&quot;" IsEnabledByDefault="false">
+  <Refactoring Id="RR0171" Identifier="ConvertEmptyStringToStringEmpty" Title="Convert &quot;&quot; to string.Empty" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>empty string literal</Syntax>
     </Syntaxes>
@@ -1479,7 +1479,7 @@ i--;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0188" Identifier="ReplaceForEachWithForAndReverseLoop" Title="Replace foreach with for and reverse loop" IsEnabledByDefault="false">
+  <Refactoring Id="RR0188" Identifier="ConvertForEachToForAndReverseLoop" Title="Convert 'foreach' to 'for' and reverse loop" IsEnabledByDefault="false">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>
@@ -1605,7 +1605,7 @@ public class Foo
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0193" Identifier="ReplaceInterpolatedStringWithConcatenation" Title="Replace interpolated string with concatenation">
+  <Refactoring Id="RR0193" Identifier="ConvertInterpolatedStringToConcatenation" Title="Convert interpolated string to concatenation">
     <Syntaxes>
       <Syntax>interpolated string</Syntax>
     </Syntaxes>
@@ -1772,7 +1772,7 @@ else
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0201" Identifier="ReplaceInterpolatedStringWithStringFormat" Title="Replace interpolated string with string.Format">
+  <Refactoring Id="RR0201" Identifier="ConvertInterpolatedStringToStringFormat" Title="Convert interpolated string to 'string.Format'">
     <Syntaxes>
       <Syntax>interpolated string</Syntax>
     </Syntaxes>
@@ -1881,7 +1881,7 @@ private object z;]]></After>
       </Sample>
     </Samples>
   </Refactoring>
-  <Refactoring Id="RR0206" Identifier="ReplaceForEachWithEnumerator" Title="Replace foreach with enumerator">
+  <Refactoring Id="RR0206" Identifier="UseEnumeratorExplicitly" Title="Use enumerator explicitly">
     <Syntaxes>
       <Syntax>foreach statement</Syntax>
     </Syntaxes>

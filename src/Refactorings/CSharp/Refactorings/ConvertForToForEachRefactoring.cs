@@ -14,7 +14,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceForWithForEachRefactoring
+    internal static class ConvertForToForEachRefactoring
     {
         public static async Task<Document> RefactorAsync(
             Document document,

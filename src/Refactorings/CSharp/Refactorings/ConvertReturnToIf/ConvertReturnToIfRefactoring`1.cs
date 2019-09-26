@@ -8,9 +8,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 using static Microsoft.CodeAnalysis.CSharp.SyntaxFactory;
 using static Roslynator.CSharp.CSharpFactory;
 
-namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
+namespace Roslynator.CSharp.Refactorings.ConvertReturnToIf
 {
-    internal abstract class ReplaceStatementWithIfStatementRefactoring<TStatement> where TStatement : StatementSyntax
+    internal abstract class ConvertReturnToIfRefactoring<TStatement> where TStatement : StatementSyntax
     {
         protected abstract ExpressionSyntax GetExpression(TStatement statement);
 
@@ -40,7 +40,7 @@ namespace Roslynator.CSharp.Refactorings.ReplaceStatementWithIf
                 context.RegisterRefactoring(
                     GetTitle(statement),
                     cancellationToken => RefactorAsync(context.Document, statement, expression, cancellationToken),
-                    RefactoringIdentifiers.ReplaceStatementWithIfElse);
+                    RefactoringIdentifiers.ConvertReturnToIf);
             }
         }
 

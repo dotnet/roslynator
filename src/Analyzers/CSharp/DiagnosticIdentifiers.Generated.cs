@@ -76,7 +76,7 @@ namespace Roslynator.CSharp
         public const string RemoveRedundantDefaultSwitchSection = "RCS1070";
         public const string RemoveRedundantBaseConstructorCall = "RCS1071";
         public const string RemoveEmptyNamespaceDeclaration = "RCS1072";
-        public const string ReplaceIfStatementWithReturnStatement = "RCS1073";
+        public const string ConvertIfToReturnStatement = "RCS1073";
         public const string RemoveRedundantConstructor = "RCS1074";
         public const string AvoidEmptyCatchClauseThatCatchesSystemException = "RCS1075";
         public const string FormatDeclarationBraces = "RCS1076";
@@ -103,7 +103,7 @@ namespace Roslynator.CSharp
         public const string FormatDocumentationSummaryOnSingleLine = "RCS1100";
         public const string FormatDocumentationSummaryOnMultipleLines = "RCS1101";
         public const string MakeClassStatic = "RCS1102";
-        public const string ReplaceIfStatementWithAssignment = "RCS1103";
+        public const string ConvertIfToAssignment = "RCS1103";
         public const string SimplifyConditionalExpression = "RCS1104";
         public const string UnnecessaryInterpolation = "RCS1105";
         public const string RemoveEmptyDestructor = "RCS1106";
@@ -198,7 +198,7 @@ namespace Roslynator.CSharp
         public const string UnnecessaryInterpolatedString = "RCS1214";
         public const string ExpressionIsAlwaysEqualToTrueOrFalse = "RCS1215";
         public const string UnnecessaryUnsafeContext = "RCS1216";
-        public const string ReplaceInterpolatedStringWithConcatenation = "RCS1217";
+        public const string ConvertInterpolatedStringToConcatenation = "RCS1217";
         public const string SimplifyCodeBranching = "RCS1218";
         public const string CallSkipAndAnyInsteadOfCount = "RCS1219";
         public const string UsePatternMatchingInsteadOfIsAndCast = "RCS1220";

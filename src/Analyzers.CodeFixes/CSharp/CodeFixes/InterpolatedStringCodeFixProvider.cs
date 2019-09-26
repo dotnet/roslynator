@@ -23,7 +23,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation,
                     DiagnosticIdentifiers.UnnecessaryInterpolatedString,
-                    DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation);
+                    DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation);
             }
         }
 
@@ -41,8 +41,8 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.AvoidInterpolatedStringWithNoInterpolation:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Remove $",
-                                cancellationToken => ReplaceInterpolatedStringWithStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
+                                "Remove '$'",
+                                cancellationToken => ConvertInterpolatedStringToStringLiteralRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
                                 GetEquivalenceKey(diagnostic.Id));
 
                             context.RegisterCodeFix(codeAction, diagnostic);
@@ -60,11 +60,11 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation:
+                    case DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Replace interpolated string with concatenation",
-                                cancellationToken => ReplaceInterpolatedStringWithConcatenationRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
+                                "Convert to concatenation",
+                                cancellationToken => ConvertInterpolatedStringToConcatenationRefactoring.RefactorAsync(context.Document, interpolatedString, cancellationToken),
                                 GetEquivalenceKey(diagnostic.Id));
 
                             context.RegisterCodeFix(codeAction, diagnostic);

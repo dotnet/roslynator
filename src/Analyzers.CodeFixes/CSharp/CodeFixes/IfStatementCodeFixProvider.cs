@@ -30,8 +30,8 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.MergeIfStatementWithNestedIfStatement,
                     DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf,
-                    DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement,
-                    DiagnosticIdentifiers.ReplaceIfStatementWithAssignment,
+                    DiagnosticIdentifiers.ConvertIfToReturnStatement,
+                    DiagnosticIdentifiers.ConvertIfToAssignment,
                     DiagnosticIdentifiers.ReduceIfNesting,
                     DiagnosticIdentifiers.UseExceptionFilter);
             }
@@ -65,8 +65,8 @@ namespace Roslynator.CSharp.CodeFixes
                             break;
                         }
                     case DiagnosticIdentifiers.UseCoalesceExpressionInsteadOfIf:
-                    case DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement:
-                    case DiagnosticIdentifiers.ReplaceIfStatementWithAssignment:
+                    case DiagnosticIdentifiers.ConvertIfToReturnStatement:
+                    case DiagnosticIdentifiers.ConvertIfToAssignment:
                         {
                             SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 

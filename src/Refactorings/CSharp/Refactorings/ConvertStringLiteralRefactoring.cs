@@ -14,13 +14,13 @@ using static Roslynator.CSharp.CSharpTypeFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceStringLiteralRefactoring
+    internal static class ConvertStringLiteralRefactoring
     {
         private const string Quote = "\"";
         private const string AmpersandQuote = "@" + Quote;
         private const string Backslash = @"\";
 
-        public static Task<Document> ReplaceWithInterpolatedStringAsync(
+        public static Task<Document> ConvertToInterpolatedStringAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             int interpolationStartIndex = -1,
@@ -76,14 +76,14 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
-        public static bool CanReplaceWithStringEmpty(LiteralExpressionSyntax literalExpression)
+        public static bool CanConvertToStringEmpty(LiteralExpressionSyntax literalExpression)
         {
             return literalExpression.IsKind(SyntaxKind.StringLiteralExpression)
                 && literalExpression.Token.ValueText.Length == 0
                 && !CSharpUtility.IsPartOfExpressionThatMustBeConstant(literalExpression);
         }
 
-        public static Task<Document> ReplaceWithStringEmptyAsync(
+        public static Task<Document> ConvertToStringEmptyAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -110,7 +110,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
-        public static Task<Document> ReplaceWithRegularStringLiteralsAsync(
+        public static Task<Document> ConvertToRegularStringLiteralsAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))
@@ -122,7 +122,7 @@ namespace Roslynator.CSharp.Refactorings
             return document.ReplaceNodeAsync(literalExpression, newNode, cancellationToken);
         }
 
-        public static Task<Document> ReplaceWithVerbatimStringLiteralAsync(
+        public static Task<Document> ConvertToVerbatimStringLiteralAsync(
             Document document,
             LiteralExpressionSyntax literalExpression,
             CancellationToken cancellationToken = default(CancellationToken))

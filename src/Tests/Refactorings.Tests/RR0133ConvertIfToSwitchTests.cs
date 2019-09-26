@@ -5,11 +5,11 @@ using Xunit;
 
 namespace Roslynator.CSharp.Refactorings.Tests
 {
-    public class RR0133ReplaceIfWithSwitchTests : AbstractCSharpRefactoringVerifier
+    public class RR0133ConvertIfToSwitchTests : AbstractCSharpRefactoringVerifier
     {
-        public override string RefactoringId { get; } = RefactoringIdentifiers.ReplaceIfWithSwitch;
+        public override string RefactoringId { get; } = RefactoringIdentifiers.ConvertIfToSwitch;
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceIfWithSwitch)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
         public async Task Test_Constant()
         {
             await VerifyRefactoringAsync(@"
@@ -69,7 +69,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceIfWithSwitch)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
         public async Task Test_Pattern()
         {
             await VerifyRefactoringAsync(@"
@@ -125,7 +125,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceIfWithSwitch)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
         public async Task Test_ConstantAndPattern()
         {
             await VerifyRefactoringAsync(@"
@@ -193,7 +193,7 @@ class C
 ", equivalenceKey: RefactoringId);
         }
 
-        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ReplaceIfWithSwitch)]
+        [Fact, Trait(Traits.Refactoring, RefactoringIdentifiers.ConvertIfToSwitch)]
         public async Task TestNoRefactoring_ExpressionsAreNotEqual()
         {
             await VerifyNoRefactoringAsync(@"

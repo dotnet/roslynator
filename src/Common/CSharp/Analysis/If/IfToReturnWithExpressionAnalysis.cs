@@ -44,12 +44,12 @@ namespace Roslynator.CSharp.Analysis.If
             get
             {
                 if (IsYield)
-                    return "Replace if-else with yield return";
+                    return "Convert 'if' to 'yield return'";
 
                 if (IfStatement.IsSimpleIf())
-                    return "Replace if-return with return";
+                    return "Convert 'if-return' to 'return'";
 
-                return "Replace if-else with return";
+                return "Convert 'if' to 'return'";
             }
         }
     }

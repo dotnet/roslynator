@@ -342,7 +342,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Format binary operator on next line.", 
             category:           DiagnosticCategories.Formatting, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine, 
             customTags:         Array.Empty<string>());
@@ -854,18 +854,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1073</summary>
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithReturnStatement = Factory.Create(
-            id:                 DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement, 
-            title:              "Replace if statement with return statement.", 
-            messageFormat:      "Replace if statement with return statement.", 
+        public static readonly DiagnosticDescriptor ConvertIfToReturnStatement = Factory.Create(
+            id:                 DiagnosticIdentifiers.ConvertIfToReturnStatement, 
+            title:              "Convert 'if' to 'return' statement.", 
+            messageFormat:      "Convert 'if' to 'return' statement.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertIfToReturnStatement, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithReturnStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ReplaceIfStatementWithReturnStatement);
+        public static readonly DiagnosticDescriptor ConvertIfToReturnStatementFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertIfToReturnStatement);
 
         /// <summary>RCS1074</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantConstructor = Factory.Create(
@@ -1186,15 +1186,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1103</summary>
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithAssignment = Factory.Create(
-            id:                 DiagnosticIdentifiers.ReplaceIfStatementWithAssignment, 
-            title:              "Replace if statement with assignment.", 
-            messageFormat:      "Replace if statement with assignment.", 
+        public static readonly DiagnosticDescriptor ConvertIfToAssignment = Factory.Create(
+            id:                 DiagnosticIdentifiers.ConvertIfToAssignment, 
+            title:              "Convert 'if' to assignment.", 
+            messageFormat:      "Convert 'if' to assignment.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ReplaceIfStatementWithAssignment, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertIfToAssignment, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1104</summary>
@@ -2340,18 +2340,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1217</summary>
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenation = Factory.Create(
-            id:                 DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation, 
-            title:              "Replace interpolated string with concatenation.", 
-            messageFormat:      "Replace interpolated string with concatenation.", 
+        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenation = Factory.Create(
+            id:                 DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation, 
+            title:              "Convert interpolated string to concatenation.", 
+            messageFormat:      "Convert interpolated string to concatenation.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation, 
+            helpLinkUri:        DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation, 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenationFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ReplaceInterpolatedStringWithConcatenation);
+        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenationFadeOut = DiagnosticDescriptorFactory.CreateFadeOut(ConvertInterpolatedStringToConcatenation);
 
         /// <summary>RCS1218</summary>
         public static readonly DiagnosticDescriptor SimplifyCodeBranching = Factory.Create(

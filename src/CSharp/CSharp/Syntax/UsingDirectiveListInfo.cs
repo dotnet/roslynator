@@ -247,7 +247,7 @@ namespace Roslynator.CSharp.Syntax
         }
 
         /// <summary>
-        /// Searches for an using directive that matches the predicate and returns returns zero-based index of the first occurrence in the list.
+        /// Searches for an using directive that matches the predicate and returns zero-based index of the first occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
         public int IndexOf(Func<UsingDirectiveSyntax, bool> predicate)
@@ -301,7 +301,7 @@ namespace Roslynator.CSharp.Syntax
         }
 
         /// <summary>
-        /// Searches for an using directive that matches the predicate and returns returns zero-based index of the last occurrence in the list.
+        /// Searches for an using directive that matches the predicate and returns zero-based index of the last occurrence in the list.
         /// </summary>
         /// <param name="predicate"></param>
         public int LastIndexOf(Func<UsingDirectiveSyntax, bool> predicate)
