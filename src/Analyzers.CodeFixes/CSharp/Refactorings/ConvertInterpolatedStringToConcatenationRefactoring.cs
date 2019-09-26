@@ -8,7 +8,7 @@ using static Roslynator.CSharp.CSharpFactory;
 
 namespace Roslynator.CSharp.Refactorings
 {
-    internal static class ReplaceInterpolatedStringWithConcatenationRefactoring
+    internal static class ConvertInterpolatedStringToConcatenationRefactoring
     {
         public static Task<Document> RefactorAsync(
             Document document,

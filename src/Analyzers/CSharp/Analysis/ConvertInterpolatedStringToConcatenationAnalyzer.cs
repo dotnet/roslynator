@@ -10,15 +10,15 @@ using Microsoft.CodeAnalysis.Diagnostics;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class ReplaceInterpolatedStringWithConcatenationAnalyzer : BaseDiagnosticAnalyzer
+    public class ConvertInterpolatedStringToConcatenationAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
             get
             {
                 return ImmutableArray.Create(
-                    DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenation,
-                    DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut);
+                    DiagnosticDescriptors.ConvertInterpolatedStringToConcatenation,
+                    DiagnosticDescriptors.ConvertInterpolatedStringToConcatenationFadeOut);
             }
         }
 
@@ -31,7 +31,7 @@ namespace Roslynator.CSharp.Analysis
 
             context.RegisterCompilationStartAction(startContext =>
             {
-                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenation))
+                if (startContext.IsAnalyzerSuppressed(DiagnosticDescriptors.ConvertInterpolatedStringToConcatenation))
                     return;
 
                 startContext.RegisterSyntaxNodeAction(AnalyzeInterpolatedStringExpression, SyntaxKind.InterpolatedStringExpression);
@@ -77,19 +77,19 @@ namespace Roslynator.CSharp.Analysis
                     return;
             }
 
-            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenation, interpolatedString);
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.ConvertInterpolatedStringToConcatenation, interpolatedString);
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringStartToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ConvertInterpolatedStringToConcatenationFadeOut, interpolatedString.StringStartToken);
 
             foreach (InterpolatedStringContentSyntax content in contents)
             {
                 var interpolation = (InterpolationSyntax)content;
 
-                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.OpenBraceToken);
-                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolation.CloseBraceToken);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ConvertInterpolatedStringToConcatenationFadeOut, interpolation.OpenBraceToken);
+                DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ConvertInterpolatedStringToConcatenationFadeOut, interpolation.CloseBraceToken);
             }
 
-            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ReplaceInterpolatedStringWithConcatenationFadeOut, interpolatedString.StringEndToken);
+            DiagnosticHelpers.ReportToken(context, DiagnosticDescriptors.ConvertInterpolatedStringToConcatenationFadeOut, interpolatedString.StringEndToken);
         }
     }
 }
