@@ -342,7 +342,7 @@ namespace Roslynator.CSharp
             messageFormat:      "Format binary operator on next line.", 
             category:           DiagnosticCategories.Formatting, 
             defaultSeverity:    DiagnosticSeverity.Info, 
-            isEnabledByDefault: true, 
+            isEnabledByDefault: false, 
             description:        null, 
             helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.FormatBinaryOperatorOnNextLine}", 
             customTags:         Array.Empty<string>());
