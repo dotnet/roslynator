@@ -2340,18 +2340,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1217</summary>
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenation = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation, 
-            title:              "Replace interpolated string with concatenation.", 
-            messageFormat:      "Replace interpolated string with concatenation.", 
+        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenation = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation, 
+            title:              "Convert interpolated string to concatenation.", 
+            messageFormat:      "Convert interpolated string to concatenation.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Hidden, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceInterpolatedStringWithConcatenation}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ConvertInterpolatedStringToConcatenation}", 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ReplaceInterpolatedStringWithConcatenationFadeOut = ReplaceInterpolatedStringWithConcatenation.CreateFadeOut();
+        public static readonly DiagnosticDescriptor ConvertInterpolatedStringToConcatenationFadeOut = ConvertInterpolatedStringToConcatenation.CreateFadeOut();
 
         /// <summary>RCS1218</summary>
         public static readonly DiagnosticDescriptor SimplifyCodeBranching = new DiagnosticDescriptor(

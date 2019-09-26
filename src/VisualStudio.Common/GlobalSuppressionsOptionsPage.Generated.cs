@@ -208,7 +208,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1214", "Unnecessary interpolated string.", !IsEnabled("RCS1214")));
             analyzers.Add(new BaseModel("RCS1215", "Expression is always equal to true/false.", !IsEnabled("RCS1215")));
             analyzers.Add(new BaseModel("RCS1216", "Unnecessary unsafe context.", !IsEnabled("RCS1216")));
-            analyzers.Add(new BaseModel("RCS1217", "Replace interpolated string with concatenation.", !IsEnabled("RCS1217")));
+            analyzers.Add(new BaseModel("RCS1217", "Convert interpolated string to concatenation.", !IsEnabled("RCS1217")));
             analyzers.Add(new BaseModel("RCS1218", "Simplify code branching.", !IsEnabled("RCS1218")));
             analyzers.Add(new BaseModel("RCS1219", "Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'.", !IsEnabled("RCS1219")));
             analyzers.Add(new BaseModel("RCS1220", "Use pattern matching instead of combination of 'is' operator and cast operator.", !IsEnabled("RCS1220")));
