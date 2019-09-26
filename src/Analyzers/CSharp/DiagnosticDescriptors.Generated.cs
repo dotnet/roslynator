@@ -854,18 +854,18 @@ namespace Roslynator.CSharp
             customTags:         WellKnownDiagnosticTags.Unnecessary);
 
         /// <summary>RCS1073</summary>
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithReturnStatement = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement, 
-            title:              "Replace if statement with return statement.", 
-            messageFormat:      "Replace if statement with return statement.", 
+        public static readonly DiagnosticDescriptor ConvertIfToReturnStatement = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ConvertIfToReturnStatement, 
+            title:              "Convert 'if' to 'return' statement.", 
+            messageFormat:      "Convert 'if' to 'return' statement.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceIfStatementWithReturnStatement}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ConvertIfToReturnStatement}", 
             customTags:         Array.Empty<string>());
 
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithReturnStatementFadeOut = ReplaceIfStatementWithReturnStatement.CreateFadeOut();
+        public static readonly DiagnosticDescriptor ConvertIfToReturnStatementFadeOut = ConvertIfToReturnStatement.CreateFadeOut();
 
         /// <summary>RCS1074</summary>
         public static readonly DiagnosticDescriptor RemoveRedundantConstructor = new DiagnosticDescriptor(
@@ -1186,15 +1186,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1103</summary>
-        public static readonly DiagnosticDescriptor ReplaceIfStatementWithAssignment = new DiagnosticDescriptor(
-            id:                 DiagnosticIdentifiers.ReplaceIfStatementWithAssignment, 
-            title:              "Replace if statement with assignment.", 
-            messageFormat:      "Replace if statement with assignment.", 
+        public static readonly DiagnosticDescriptor ConvertIfToAssignment = new DiagnosticDescriptor(
+            id:                 DiagnosticIdentifiers.ConvertIfToAssignment, 
+            title:              "Convert 'if' to assignment.", 
+            messageFormat:      "Convert 'if' to assignment.", 
             category:           DiagnosticCategories.Simplification, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ReplaceIfStatementWithAssignment}", 
+            helpLinkUri:        $"{HelpLinkUriRoot}{DiagnosticIdentifiers.ConvertIfToAssignment}", 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1104</summary>

@@ -9,15 +9,15 @@ using Xunit;
 
 namespace Roslynator.CSharp.Analysis.Tests
 {
-    public class RCS1103ReplaceIfStatementWithAssignmentTests : AbstractCSharpFixVerifier
+    public class RCS1103ConvertIfToAssignmentTests : AbstractCSharpFixVerifier
     {
-        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ReplaceIfStatementWithAssignment;
+        public override DiagnosticDescriptor Descriptor { get; } = DiagnosticDescriptors.ConvertIfToAssignment;
 
         public override DiagnosticAnalyzer Analyzer { get; } = new IfStatementAnalyzer();
 
         public override CodeFixProvider FixProvider { get; } = new IfStatementCodeFixProvider();
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
         public async Task Test_InvertCondition()
         {
             await VerifyDiagnosticAndFixAsync(@"
@@ -54,7 +54,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
         public async Task TestNoDiagnostic_ContainsComment()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -78,7 +78,7 @@ class C
 ");
         }
 
-        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ReplaceIfStatementWithAssignment)]
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.ConvertIfToAssignment)]
         public async Task TestNoDiagnostic_ContainsDirective()
         {
             await VerifyNoDiagnosticAsync(@"

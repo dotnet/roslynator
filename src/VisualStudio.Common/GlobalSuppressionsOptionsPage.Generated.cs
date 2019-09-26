@@ -86,7 +86,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1070", "Remove redundant default switch section.", !IsEnabled("RCS1070")));
             analyzers.Add(new BaseModel("RCS1071", "Remove redundant base constructor call.", !IsEnabled("RCS1071")));
             analyzers.Add(new BaseModel("RCS1072", "Remove empty namespace declaration.", !IsEnabled("RCS1072")));
-            analyzers.Add(new BaseModel("RCS1073", "Replace if statement with return statement.", !IsEnabled("RCS1073")));
+            analyzers.Add(new BaseModel("RCS1073", "Convert 'if' to 'return' statement.", !IsEnabled("RCS1073")));
             analyzers.Add(new BaseModel("RCS1074", "Remove redundant constructor.", !IsEnabled("RCS1074")));
             analyzers.Add(new BaseModel("RCS1075", "Avoid empty catch clause that catches System.Exception.", !IsEnabled("RCS1075")));
             analyzers.Add(new BaseModel("RCS1076", "Format declaration braces.", !IsEnabled("RCS1076")));
@@ -113,7 +113,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1100", "Format documentation summary on a single line.", !IsEnabled("RCS1100")));
             analyzers.Add(new BaseModel("RCS1101", "Format documentation summary on multiple lines.", !IsEnabled("RCS1101")));
             analyzers.Add(new BaseModel("RCS1102", "Make class static.", !IsEnabled("RCS1102")));
-            analyzers.Add(new BaseModel("RCS1103", "Replace if statement with assignment.", !IsEnabled("RCS1103")));
+            analyzers.Add(new BaseModel("RCS1103", "Convert 'if' to assignment.", !IsEnabled("RCS1103")));
             analyzers.Add(new BaseModel("RCS1104", "Simplify conditional expression.", !IsEnabled("RCS1104")));
             analyzers.Add(new BaseModel("RCS1105", "Unncessary interpolation.", !IsEnabled("RCS1105")));
             analyzers.Add(new BaseModel("RCS1106", "Remove empty destructor.", !IsEnabled("RCS1106")));
