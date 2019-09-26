@@ -12,10 +12,6 @@ namespace Roslynator.CSharp.Analyzers.Tests
     {
         private static class Yes
         {
-            private class Foo1<T> : List<T>, IEnumerable<T> where T : class
-            {
-            }
-
             private class Foo2 : ICollection<string>, IEnumerable<string>
             {
                 public int Count => throw new NotImplementedException();
