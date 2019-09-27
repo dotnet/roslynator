@@ -34,7 +34,7 @@ namespace Roslynator.VisualStudio
             analyzers.Add(new BaseModel("RCS1015", "Use nameof operator.", !IsEnabled("RCS1015")));
             analyzers.Add(new BaseModel("RCS1016", "Use expression-bodied member.", !IsEnabled("RCS1016")));
             analyzers.Add(new BaseModel("RCS1017", "Avoid multiline expression body.", !IsEnabled("RCS1017")));
-            analyzers.Add(new BaseModel("RCS1018", "Add default access modifier.", !IsEnabled("RCS1018")));
+            analyzers.Add(new BaseModel("RCS1018", "Add accessibility modifiers.", !IsEnabled("RCS1018")));
             analyzers.Add(new BaseModel("RCS1019", "Order modifiers.", !IsEnabled("RCS1019")));
             analyzers.Add(new BaseModel("RCS1020", "Simplify Nullable<T> to T?.", !IsEnabled("RCS1020")));
             analyzers.Add(new BaseModel("RCS1021", "Simplify lambda expression.", !IsEnabled("RCS1021")));

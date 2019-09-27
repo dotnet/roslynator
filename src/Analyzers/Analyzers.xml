@@ -365,10 +365,10 @@ foreach (var item in items) // [|Id|]
       </Sample>
     </Samples>
   </Analyzer>
-  <Analyzer Identifier="AddDefaultAccessModifier">
+  <Analyzer Identifier="AddAccessibilityModifiers">
     <Id>RCS1018</Id>
-    <Title>Add default access modifier.</Title>
-    <MessageFormat>Add default access modifier.</MessageFormat>
+    <Title>Add accessibility modifiers.</Title>
+    <MessageFormat>Add accessibility modifiers.</MessageFormat>
     <Category>Readability</Category>
     <DefaultSeverity>Info</DefaultSeverity>
     <IsEnabledByDefault>true</IsEnabledByDefault>

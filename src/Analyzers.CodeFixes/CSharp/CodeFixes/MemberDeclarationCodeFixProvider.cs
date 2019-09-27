@@ -28,7 +28,7 @@ namespace Roslynator.CSharp.CodeFixes
                 return ImmutableArray.Create(
                     DiagnosticIdentifiers.FormatDeclarationBraces,
                     DiagnosticIdentifiers.RemoveRedundantOverridingMember,
-                    DiagnosticIdentifiers.AddDefaultAccessModifier,
+                    DiagnosticIdentifiers.AddAccessibilityModifiers,
                     DiagnosticIdentifiers.RemoveRedundantSealedModifier,
                     DiagnosticIdentifiers.AvoidSemicolonAtEndOfDeclaration,
                     DiagnosticIdentifiers.OrderModifiers,
@@ -68,14 +68,14 @@ namespace Roslynator.CSharp.CodeFixes
                             context.RegisterCodeFix(codeAction, diagnostic);
                             break;
                         }
-                    case DiagnosticIdentifiers.AddDefaultAccessModifier:
+                    case DiagnosticIdentifiers.AddAccessibilityModifiers:
                         {
                             var accessibility = (Accessibility)Enum.Parse(
                                 typeof(Accessibility),
                                 diagnostic.Properties[nameof(Accessibility)]);
 
                             CodeAction codeAction = CodeAction.Create(
-                                "Add default access modifier",
+                                "Add accessibility modifiers",
                                 cancellationToken => AddDefaultAccessModifierRefactoring.RefactorAsync(context.Document, memberDeclaration, accessibility, cancellationToken),
                                 GetEquivalenceKey(diagnostic));
 

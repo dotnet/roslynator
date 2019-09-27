@@ -13,11 +13,11 @@ using Roslynator.CSharp;
 namespace Roslynator.CSharp.Analysis
 {
     [DiagnosticAnalyzer(LanguageNames.CSharp)]
-    public class AddDefaultAccessModifierAnalyzer : BaseDiagnosticAnalyzer
+    public class AddAccessibilityModifiersAnalyzer : BaseDiagnosticAnalyzer
     {
         public override ImmutableArray<DiagnosticDescriptor> SupportedDiagnostics
         {
-            get { return ImmutableArray.Create(DiagnosticDescriptors.AddDefaultAccessModifier); }
+            get { return ImmutableArray.Create(DiagnosticDescriptors.AddAccessibilityModifiers); }
         }
 
         public override void Initialize(AnalysisContext context)
@@ -155,7 +155,7 @@ namespace Roslynator.CSharp.Analysis
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context,
-                DiagnosticDescriptors.AddDefaultAccessModifier,
+                DiagnosticDescriptors.AddAccessibilityModifiers,
                 location,
                 ImmutableDictionary.CreateRange(new KeyValuePair<string, string>[] { new KeyValuePair<string, string>(nameof(Accessibility), accessibility.ToString()) }));
         }
