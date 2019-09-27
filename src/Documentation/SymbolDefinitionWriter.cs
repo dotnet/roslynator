@@ -31,7 +31,9 @@ namespace Roslynator.Documentation
             DocumentationProvider = documentationProvider;
 
             _typeDefinitionNameFormat = new SymbolDisplayFormat(
-                typeQualificationStyle: (Layout == SymbolDefinitionListLayout.TypeHierarchy) ? SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces : SymbolDisplayTypeQualificationStyle.NameOnly,
+                typeQualificationStyle: (Layout == SymbolDefinitionListLayout.TypeHierarchy && Format.Includes(SymbolDefinitionPartFilter.ContainingNamespaceInTypeHierarchy))
+                    ? SymbolDisplayTypeQualificationStyle.NameAndContainingTypesAndNamespaces
+                    : SymbolDisplayTypeQualificationStyle.NameOnly,
                 genericsOptions: SymbolDisplayGenericsOptions.IncludeTypeParameters);
 
             _memberDefinitionNameFormat = new SymbolDisplayFormat(

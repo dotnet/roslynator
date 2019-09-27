@@ -64,7 +64,7 @@ Defines a list of attributes that should be ignored.
 
 **`--ignored-parts`** <PROJECT_NAME>
 
-Defines parts of a symbol definition that should be excluded. Allowed values are containing-namespace, attributes, assembly-attributes, attribute-arguments, accessibility, modifiers, parameter-name, parameter-default-value, base-type, base-interfaces, constraints, trailing-semicolon, trailing-comma.
+Defines parts of a symbol definition that should be excluded. Allowed values are containing-namespace, containing-namespace-in-type-hierarchy, attributes, assembly-attributes, attribute-arguments, accessibility, modifiers, parameter-name, parameter-default-value, base-type, base-interfaces, constraints, trailing-semicolon, trailing-comma.
 
 **`--ignored-projects`** <PROJECT_NAME>
 
