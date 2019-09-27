@@ -12,7 +12,6 @@ roslynator list-symbols <PROJECT|SOLUTION>
 [--external-assemblies]
 [--file-log]
 [--file-log-verbosity]
-[--format]
 [--group-by-assembly]
 [--ignored-attributes]
 [--ignored-parts]
@@ -28,6 +27,7 @@ roslynator list-symbols <PROJECT|SOLUTION>
 [-p|--properties]
 [-v|--verbosity]
 [--visibility]
+[--wrap-list]
 ```
 
 ## Arguments
@@ -49,10 +49,6 @@ Indicates whether an empty line should be added between two member definitions.
 **`--external-assemblies`** <ASSEMBLY_FILE>
 
 Defines file name/path to external assemblies that should be included.
-
-**`[--format]`**
-
-Specifies parts of a symbol definition that should be formatted. Allowed values are attributes, parameters, base-list and constraints.
 
 **`[--group-by-assembly]`**
 
@@ -113,6 +109,10 @@ Defines the amount of information to display in the log.
 **`[--visibility]`** `{public|internal|private}`
 
 Defines a visibility of a type or a member. Default value is `public`.
+
+**`[--wrap-list]`**
+
+Specifies syntax lists that should be wrapped. Allowed values are attributes, parameters, base-types and constraints.
 
 ## See Also
 

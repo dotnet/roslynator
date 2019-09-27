@@ -9,7 +9,7 @@ namespace Roslynator.Documentation
         public DefinitionListFormat(
             SymbolDefinitionListLayout layout = DefaultValues.Layout,
             SymbolDefinitionPartFilter parts = DefaultValues.Parts,
-            SymbolDefinitionFormatOptions formatOptions = DefaultValues.FormatOptions,
+            WrapListOptions wrapListOptions = DefaultValues.WrapListOptions,
             bool groupByAssembly = false,
             bool emptyLineBetweenMembers = DefaultValues.EmptyLineBetweenMembers,
             bool emptyLineBetweenMemberGroups = DefaultValues.EmptyLineBetweenMemberGroups,
@@ -19,7 +19,7 @@ namespace Roslynator.Documentation
         {
             Layout = layout;
             Parts = parts;
-            FormatOptions = formatOptions;
+            WrapListOptions = wrapListOptions;
             GroupByAssembly = groupByAssembly;
             EmptyLineBetweenMembers = emptyLineBetweenMembers;
             EmptyLineBetweenMemberGroups = emptyLineBetweenMemberGroups;
@@ -34,7 +34,7 @@ namespace Roslynator.Documentation
 
         public SymbolDefinitionPartFilter Parts { get; }
 
-        public SymbolDefinitionFormatOptions FormatOptions { get; }
+        public WrapListOptions WrapListOptions { get; }
 
         public bool GroupByAssembly { get; }
 
@@ -53,9 +53,9 @@ namespace Roslynator.Documentation
             return (Parts & parts) == parts;
         }
 
-        public bool Includes(SymbolDefinitionFormatOptions formatOptions)
+        public bool Includes(WrapListOptions wrapListOptions)
         {
-            return (FormatOptions & formatOptions) == formatOptions;
+            return (WrapListOptions & wrapListOptions) == wrapListOptions;
         }
 
         internal SymbolDisplayFormat Update(SymbolDisplayFormat format)
@@ -108,7 +108,7 @@ namespace Roslynator.Documentation
         {
             public const SymbolDefinitionListLayout Layout = SymbolDefinitionListLayout.NamespaceList;
             public const SymbolDefinitionPartFilter Parts = SymbolDefinitionPartFilter.All;
-            public const SymbolDefinitionFormatOptions FormatOptions = SymbolDefinitionFormatOptions.None;
+            public const WrapListOptions WrapListOptions = Documentation.WrapListOptions.None;
             public const Visibility Visibility = Roslynator.Visibility.Private;
             public const SymbolGroupFilter SymbolGroupFilter = Roslynator.SymbolGroupFilter.TypeOrMember;
             public const string IndentChars = "  ";

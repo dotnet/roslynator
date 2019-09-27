@@ -226,16 +226,16 @@ namespace Roslynator.Documentation
 
             if (SupportsMultilineDefinitions)
             {
-                if (Format.Includes(SymbolDefinitionFormatOptions.BaseList))
+                if (Format.Includes(WrapListOptions.BaseTypes))
                     options |= SymbolDisplayAdditionalOptions.FormatBaseList;
 
-                if (Format.Includes(SymbolDefinitionFormatOptions.Constraints))
+                if (Format.Includes(WrapListOptions.Constraints))
                     options |= SymbolDisplayAdditionalOptions.FormatConstraints;
 
-                if (Format.Includes(SymbolDefinitionFormatOptions.Parameters))
+                if (Format.Includes(WrapListOptions.Parameters))
                     options |= SymbolDisplayAdditionalOptions.FormatParameters;
 
-                if (Format.Includes(SymbolDefinitionFormatOptions.Attributes))
+                if (Format.Includes(WrapListOptions.Attributes))
                     options |= SymbolDisplayAdditionalOptions.FormatAttributes;
             }
 

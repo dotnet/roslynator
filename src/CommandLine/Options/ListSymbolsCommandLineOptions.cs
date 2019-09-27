@@ -19,9 +19,9 @@ namespace Roslynator.CommandLine
             HelpText = "Indicates whether an empty line should be added between two member definitions.")]
         public bool EmptyLineBetweenMembers { get; set; }
 
-        [Option(longName: ParameterNames.Format,
-            HelpText = "Specifies parts of a symbol definition that should be formatted. Allowed values are attributes, parameters, base-list and constraints.")]
-        public IEnumerable<string> Format { get; set; }
+        [Option(longName: ParameterNames.WrapList,
+            HelpText = "Specifies syntax lists that should be wrapped. Allowed values are attributes, parameters, base-types and constraints.")]
+        public IEnumerable<string> WrapList { get; set; }
 
         [Option(longName: "group-by-assembly",
             HelpText = "Indicates whether symbols should be grouped by assembly.")]

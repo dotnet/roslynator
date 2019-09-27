@@ -5,7 +5,7 @@ namespace Roslynator.CommandLine
     internal static class ParameterNames
     {
         public const string Depth = "depth";
-        public const string Format = "format";
+        public const string WrapList = "wrap-list";
         public const string IgnoredMemberParts = "ignored-member-parts";
         public const string IgnoredNamespaceParts = "ignored-namespace-parts";
         public const string IgnoredParts = "ignored-parts";

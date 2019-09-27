@@ -251,7 +251,7 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnum(options.Depth, ParameterNames.Depth, out DocumentationDepth depth, DocumentationDepth.Member))
                 return 1;
 
-            if (!TryParseOptionValueAsEnumFlags(options.Format, ParameterNames.Format, out SymbolDefinitionFormatOptions formatOptions))
+            if (!TryParseOptionValueAsEnumFlags(options.WrapList, ParameterNames.WrapList, out WrapListOptions wrapListOptions))
                 return 1;
 
             if (!TryParseMetadataNames(options.IgnoredAttributes, out ImmutableArray<MetadataName> ignoredAttributes))
@@ -286,7 +286,7 @@ namespace Roslynator.CommandLine
             var command = new ListSymbolsCommand(
                 options: options,
                 symbolFilterOptions: symbolFilterOptions,
-                formatOptions: formatOptions,
+                wrapListOptions: wrapListOptions,
                 layout: layout,
                 ignoredParts: ignoredParts,
                 projectFilter: projectFilter);

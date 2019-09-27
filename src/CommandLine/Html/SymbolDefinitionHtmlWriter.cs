@@ -359,7 +359,7 @@ namespace Roslynator.Documentation.Html
         public override void WriteAttributeSeparator(ISymbol symbol)
         {
             if (symbol.Kind == SymbolKind.Assembly
-                || (Format.Includes(SymbolDefinitionFormatOptions.Attributes) && SupportsMultilineDefinitions))
+                || (Format.Includes(WrapListOptions.Attributes) && SupportsMultilineDefinitions))
             {
                 Write("]");
                 WriteLine();

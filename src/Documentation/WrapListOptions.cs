@@ -5,12 +5,12 @@ using System;
 namespace Roslynator.Documentation
 {
     [Flags]
-    internal enum SymbolDefinitionFormatOptions
+    internal enum WrapListOptions
     {
         None = 0,
         Attributes = 1,
         Parameters = 2,
-        BaseList = 4,
+        BaseTypes = 4,
         Constraints = 8,
     }
 }
