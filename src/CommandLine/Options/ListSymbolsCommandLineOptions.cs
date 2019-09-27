@@ -61,10 +61,10 @@ namespace Roslynator.CommandLine
             MetaValue = "<OUTPUT_FILE>")]
         public IEnumerable<string> Output { get; set; }
 
-        [Option(longName: "references",
-            HelpText = "Defines file name/path to assemblies that should be included.",
+        [Option(longName: "external-assemblies",
+            HelpText = "Defines file name/path to external assemblies that should be included.",
                 MetaValue = "<ASSEMBLY_FILE>")]
-        public IEnumerable<string> References { get; set; }
+        public IEnumerable<string> ExternalAssemblies { get; set; }
 
 #if DEBUG
         [Option(longName: "source-references")]

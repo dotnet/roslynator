@@ -9,6 +9,7 @@ List symbols from the specified project or solution.
 roslynator list-symbols <PROJECT|SOLUTION>
 [--depth]
 [--empty-line-between-members]
+[--external-assemblies]
 [--file-log]
 [--file-log-verbosity]
 [--format]
@@ -25,7 +26,6 @@ roslynator list-symbols <PROJECT|SOLUTION>
 [-o|--output]
 [--projects]
 [-p|--properties]
-[--references]
 [-v|--verbosity]
 [--visibility]
 ```
@@ -45,6 +45,10 @@ Defines a depth of a list of symbols. Allowed values are member, type or namespa
 **`[--empty-line-between-members]`**
 
 Indicates whether an empty line should be added between two member definitions.
+
+**`--external-assemblies`** <ASSEMBLY_FILE>
+
+Defines file name/path to external assemblies that should be included.
 
 **`[--format]`**
 
@@ -101,10 +105,6 @@ Defines projects that should be analyzed.
 **`-p|--properties`** `<NAME=VALUE>`
 
 Defines one or more MSBuild properties.
-
-**`--references`** <ASSEMBLY_FILE>
-
-Defines file name/path to assemblies that should be included.
 
 **`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
 

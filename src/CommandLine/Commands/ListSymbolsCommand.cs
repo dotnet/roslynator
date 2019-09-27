@@ -71,7 +71,7 @@ namespace Roslynator.CommandLine
 
             HashSet<IAssemblySymbol> externalAssemblies = null;
 
-            foreach (string reference in Options.References)
+            foreach (string reference in Options.ExternalAssemblies)
             {
                 IAssemblySymbol externalAssembly = FindExternalAssembly(compilations, reference);
 
