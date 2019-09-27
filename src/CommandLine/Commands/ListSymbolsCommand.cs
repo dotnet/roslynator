@@ -28,14 +28,14 @@ namespace Roslynator.CommandLine
         public ListSymbolsCommand(
             ListSymbolsCommandLineOptions options,
             SymbolFilterOptions symbolFilterOptions,
-            SymbolDefinitionFormatOptions formatOptions,
+            WrapListOptions wrapListOptions,
             SymbolDefinitionListLayout layout,
             SymbolDefinitionPartFilter ignoredParts,
             in ProjectFilter projectFilter) : base(projectFilter)
         {
             Options = options;
             SymbolFilterOptions = symbolFilterOptions;
-            FormatOptions = formatOptions;
+            WrapListOptions = wrapListOptions;
             Layout = layout;
             IgnoredParts = ignoredParts;
         }
@@ -44,7 +44,7 @@ namespace Roslynator.CommandLine
 
         public SymbolFilterOptions SymbolFilterOptions { get; }
 
-        public SymbolDefinitionFormatOptions FormatOptions { get; }
+        public WrapListOptions WrapListOptions { get; }
 
         public SymbolDefinitionListLayout Layout { get; }
 
@@ -57,7 +57,7 @@ namespace Roslynator.CommandLine
             var format = new DefinitionListFormat(
                 layout: Layout,
                 parts: SymbolDefinitionPartFilter.All & ~IgnoredParts,
-                formatOptions: FormatOptions,
+                wrapListOptions: WrapListOptions,
                 groupByAssembly: Options.GroupByAssembly,
                 emptyLineBetweenMembers: Options.EmptyLineBetweenMembers,
                 emptyLineBetweenMemberGroups: true,
@@ -71,7 +71,7 @@ namespace Roslynator.CommandLine
 
             HashSet<IAssemblySymbol> externalAssemblies = null;
 
-            foreach (string reference in Options.References)
+            foreach (string reference in Options.ExternalAssemblies)
             {
                 IAssemblySymbol externalAssembly = FindExternalAssembly(compilations, reference);
 

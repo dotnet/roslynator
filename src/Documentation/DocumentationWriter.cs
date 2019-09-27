@@ -442,11 +442,11 @@ namespace Roslynator.Documentation
             if (Options.IncludeAttributeArguments)
                 additionalOptions |= SymbolDisplayAdditionalOptions.IncludeAttributeArguments;
 
-            if (Options.FormatDeclarationBaseList)
-                additionalOptions |= SymbolDisplayAdditionalOptions.FormatBaseList;
+            if (Options.WrapDeclarationBaseTypes)
+                additionalOptions |= SymbolDisplayAdditionalOptions.WrapBaseTypes;
 
-            if (Options.FormatDeclarationConstraints)
-                additionalOptions |= SymbolDisplayAdditionalOptions.FormatConstraints;
+            if (Options.WrapDeclarationConstraints)
+                additionalOptions |= SymbolDisplayAdditionalOptions.WrapConstraints;
 
             if (Options.OmitIEnumerable)
                 additionalOptions |= SymbolDisplayAdditionalOptions.OmitIEnumerable;

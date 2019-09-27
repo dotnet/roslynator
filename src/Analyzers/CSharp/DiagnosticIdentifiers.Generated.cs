@@ -24,7 +24,7 @@ namespace Roslynator.CSharp
         public const string UseNameOfOperator = "RCS1015";
         public const string UseExpressionBodiedMember = "RCS1016";
         public const string AvoidMultilineExpressionBody = "RCS1017";
-        public const string AddDefaultAccessModifier = "RCS1018";
+        public const string AddAccessibilityModifiers = "RCS1018";
         public const string OrderModifiers = "RCS1019";
         public const string SimplifyNullableOfT = "RCS1020";
         public const string SimplifyLambdaExpression = "RCS1021";

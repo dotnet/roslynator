@@ -29,16 +29,13 @@ roslynator generate-doc <PROJECT|SOLUTION>
 [--max-derived-types]
 [--msbuild-path]
 [--no-delete]
-[--no-format-base-list]
-[--no-format-constraints]
 [--no-mark-obsolete]
 [--no-precedence-for-system]
+[--no-wrap-base-types]
+[--no-wrap-constraints]
 [--omit-attribute-arguments]
 [--omit-inherited-attributes]
-[--omit-member-constant-value]
-[--omit-member-implements]
-[--omit-member-inherited-from]
-[--omit-member-overrides]
+[--omit-member-parts]
 [--preferred-culture]
 [--projects]
 [-p|--properties]
@@ -139,14 +136,6 @@ Defines a path to MSBuild. This option must be specified if there are multiple l
 
 Indicates whether output directory should not be deleted at the beginning of the process.
 
-**`[--no-format-base-list]`**
-
-Indicates whether a base list should not be formatted on a multiple lines.
-
-**`[--no-format-constraints]`**
-
-Indicates whether constraints should not be formatted on a multiple lines.
-
 **`[--no-mark-obsolete]`**
 
 Indicates whether obsolete types and members should not be marked as `[deprecated]`.
@@ -154,6 +143,14 @@ Indicates whether obsolete types and members should not be marked as `[deprecate
 **`[--no-precedence-for-system]`**
 
 Indicates whether symbols contained in `System` namespace should be ordered as any other symbols and not before other symbols.
+
+**`[--no-wrap-base-list]`**
+
+Indicates whether base types should not be wrapped.
+
+**`[--no-wrap-constraints]`**
+
+Indicates whether constraints should not be wrapped.
 
 **`[--omit-attribute-arguments]`**
 
@@ -163,21 +160,9 @@ Indicates whether attribute arguments should be omitted when displaying an attri
 
 Indicates whether inherited attributes should be omitted.
 
-**`[--omit-member-constant-value]`**
+**`[--omit-member-parts]`**
 
-Indicates whether a constant value of a member should be omitted.
-
-**`[--omit-member-implements]`**
-
-Indicates whether an interface member that is being implemented should be omitted.
-
-**`[--omit-member-inherited-from]`**
-
-Indicates whether a containing member of an inherited member should be omitted.
-
-**`[--omit-member-overrides]`**
-
-Indicates whether an overridden member should be omitted.
+Defines parts of member definition that should be omitted. Allowed values are constant-value, implements, inherited-from and overrides.
 
 **`[--preferred-culture]`** <CULTURE_ID>
 

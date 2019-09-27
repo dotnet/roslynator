@@ -2,15 +2,15 @@
 
 using System;
 
-namespace Roslynator.Documentation
+namespace Roslynator.CommandLine
 {
     [Flags]
-    internal enum SymbolDefinitionFormatOptions
+    internal enum OmitMemberParts
     {
         None = 0,
-        Attributes = 1,
-        Parameters = 2,
-        BaseList = 4,
-        Constraints = 8,
+        ConstantValue = 1,
+        Implements = 2,
+        InheritedFrom = 4,
+        Overrides = 8
     }
 }

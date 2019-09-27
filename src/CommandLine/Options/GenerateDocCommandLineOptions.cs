@@ -72,13 +72,13 @@ namespace Roslynator.CommandLine
             HelpText = "Indicates whether output directory should not be deleted at the beginning of the process.")]
         public bool NoDelete { get; set; }
 
-        [Option(longName: "no-format-base-list",
-            HelpText = "Indicates whether a base list should not be formatted on a multiple lines.")]
-        public bool NoFormatBaseList { get; set; }
+        [Option(longName: "no-wrap-base-types",
+            HelpText = "Indicates whether base types should not be wrapped.")]
+        public bool NoWrapBaseTypes { get; set; }
 
-        [Option(longName: "no-format-constraints",
-            HelpText = "Indicates whether constraints should not be formatted on a multiple lines.")]
-        public bool NoFormatConstraints { get; set; }
+        [Option(longName: "no-wrap-constraints",
+            HelpText = "Indicates whether constraints should not be wrapped.")]
+        public bool NoWrapConstraints { get; set; }
 
         [Option(longName: "omit-attribute-arguments",
             HelpText = "Indicates whether attribute arguments should be omitted when displaying an attribute.")]
@@ -88,21 +88,9 @@ namespace Roslynator.CommandLine
             HelpText = "Indicates whether inherited attributes should be omitted.")]
         public bool OmitInheritedAttributes { get; set; }
 
-        [Option(longName: "omit-member-constant-value",
-            HelpText = "Indicates whether a constant value of a member should be omitted.")]
-        public bool OmitMemberConstantValue { get; set; }
-
-        [Option(longName: "omit-member-implements",
-            HelpText = "Indicates whether an interface member that is being implemented should be omitted.")]
-        public bool OmitMemberImplements { get; set; }
-
-        [Option(longName: "omit-member-inherited-from",
-            HelpText = "Indicates whether a containing member of an inherited member should be omitted.")]
-        public bool OmitMemberInheritedFrom { get; set; }
-
-        [Option(longName: "omit-member-overrides",
-            HelpText = "Indicates whether an overridden member should be omitted.")]
-        public bool OmitMemberOverrides { get; set; }
+        [Option(longName: ParameterNames.OmitMemberParts,
+            HelpText = "Defines parts of member definition that should be omitted. Allowed values are constant-value, implements, inherited-from and overrides.")]
+        public IEnumerable<string> OmitMemberParts { get; set; }
 
         [Option(longName: "preferred-culture",
             HelpText = "Defines culture that should be used when searching for xml documentation files.",

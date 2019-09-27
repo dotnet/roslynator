@@ -214,15 +214,15 @@ namespace Roslynator.CSharp
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1018</summary>
-        public static readonly DiagnosticDescriptor AddDefaultAccessModifier = Factory.Create(
-            id:                 DiagnosticIdentifiers.AddDefaultAccessModifier, 
-            title:              "Add default access modifier.", 
-            messageFormat:      "Add default access modifier.", 
+        public static readonly DiagnosticDescriptor AddAccessibilityModifiers = Factory.Create(
+            id:                 DiagnosticIdentifiers.AddAccessibilityModifiers, 
+            title:              "Add accessibility modifiers.", 
+            messageFormat:      "Add accessibility modifiers.", 
             category:           DiagnosticCategories.Readability, 
             defaultSeverity:    DiagnosticSeverity.Info, 
             isEnabledByDefault: true, 
             description:        null, 
-            helpLinkUri:        DiagnosticIdentifiers.AddDefaultAccessModifier, 
+            helpLinkUri:        DiagnosticIdentifiers.AddAccessibilityModifiers, 
             customTags:         Array.Empty<string>());
 
         /// <summary>RCS1019</summary>

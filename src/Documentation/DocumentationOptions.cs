@@ -19,8 +19,8 @@ namespace Roslynator.Documentation
             int maxDerivedTypes = DefaultValues.MaxDerivedTypes,
             bool includeSystemNamespace = DefaultValues.IncludeSystemNamespace,
             bool placeSystemNamespaceFirst = DefaultValues.PlaceSystemNamespaceFirst,
-            bool formatDeclarationBaseList = DefaultValues.FormatDeclarationBaseList,
-            bool formatDeclarationConstraints = DefaultValues.FormatDeclarationConstraints,
+            bool wrapDeclarationBaseTypes = DefaultValues.FormatDeclarationBaseList,
+            bool wrapDeclarationConstraints = DefaultValues.FormatDeclarationConstraints,
             bool markObsolete = DefaultValues.MarkObsolete,
             bool includeMemberInheritedFrom = DefaultValues.IncludeMemberInheritedFrom,
             bool includeMemberOverrides = DefaultValues.IncludeMemberOverrides,
@@ -51,8 +51,8 @@ namespace Roslynator.Documentation
             MaxDerivedTypes = maxDerivedTypes;
             IncludeSystemNamespace = includeSystemNamespace;
             PlaceSystemNamespaceFirst = placeSystemNamespaceFirst;
-            FormatDeclarationBaseList = formatDeclarationBaseList;
-            FormatDeclarationConstraints = formatDeclarationConstraints;
+            WrapDeclarationBaseTypes = wrapDeclarationBaseTypes;
+            WrapDeclarationConstraints = wrapDeclarationConstraints;
             MarkObsolete = markObsolete;
             IncludeMemberInheritedFrom = includeMemberInheritedFrom;
             IncludeMemberOverrides = includeMemberOverrides;
@@ -89,9 +89,9 @@ namespace Roslynator.Documentation
 
         public bool PlaceSystemNamespaceFirst { get; }
 
-        public bool FormatDeclarationBaseList { get; }
+        public bool WrapDeclarationBaseTypes { get; }
 
-        public bool FormatDeclarationConstraints { get; }
+        public bool WrapDeclarationConstraints { get; }
 
         public bool MarkObsolete { get; }
 

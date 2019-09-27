@@ -9,9 +9,9 @@ List symbols from the specified project or solution.
 roslynator list-symbols <PROJECT|SOLUTION>
 [--depth]
 [--empty-line-between-members]
+[--external-assemblies]
 [--file-log]
 [--file-log-verbosity]
-[--format]
 [--group-by-assembly]
 [--ignored-attributes]
 [--ignored-parts]
@@ -25,9 +25,9 @@ roslynator list-symbols <PROJECT|SOLUTION>
 [-o|--output]
 [--projects]
 [-p|--properties]
-[--references]
 [-v|--verbosity]
 [--visibility]
+[--wrap-list]
 ```
 
 ## Arguments
@@ -46,9 +46,9 @@ Defines a depth of a list of symbols. Allowed values are member, type or namespa
 
 Indicates whether an empty line should be added between two member definitions.
 
-**`[--format]`**
+**`--external-assemblies`** <ASSEMBLY_FILE>
 
-Specifies parts of a symbol definition that should be formatted. Allowed values are attributes, parameters, base-list and constraints.
+Defines file name/path to external assemblies that should be included.
 
 **`[--group-by-assembly]`**
 
@@ -60,7 +60,7 @@ Defines a list of attributes that should be ignored.
 
 **`--ignored-parts`** <PROJECT_NAME>
 
-Defines parts of a symbol definition that should be excluded. Allowed values are containing-namespace, attributes, assembly-attributes, attribute-arguments, accessibility, modifiers, parameter-name, parameter-default-value, base-type, base-interfaces, constraints, trailing-semicolon, trailing-comma.
+Defines parts of a symbol definition that should be excluded. Allowed values are containing-namespace, containing-namespace-in-type-hierarchy, attributes, assembly-attributes, attribute-arguments, accessibility, modifiers, parameter-name, parameter-default-value, base-type, base-interfaces, constraints, trailing-semicolon, trailing-comma.
 
 **`--ignored-projects`** <PROJECT_NAME>
 
@@ -102,10 +102,6 @@ Defines projects that should be analyzed.
 
 Defines one or more MSBuild properties.
 
-**`--references`** <ASSEMBLY_FILE>
-
-Defines file name/path to assemblies that should be included.
-
 **`-v|--verbosity`** `{q[uiet]|m[inimal]|n[ormal]|d[etailed]|diag[nostic]}`
 
 Defines the amount of information to display in the log.
@@ -113,6 +109,10 @@ Defines the amount of information to display in the log.
 **`[--visibility]`** `{public|internal|private}`
 
 Defines a visibility of a type or a member. Default value is `public`.
+
+**`[--wrap-list]`**
+
+Specifies syntax lists that should be wrapped. Allowed values are attributes, parameters, base-types and constraints.
 
 ## See Also
 
