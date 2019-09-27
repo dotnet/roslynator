@@ -72,13 +72,13 @@ namespace Roslynator.CommandLine
             HelpText = "Indicates whether output directory should not be deleted at the beginning of the process.")]
         public bool NoDelete { get; set; }
 
-        [Option(longName: "no-format-base-list",
-            HelpText = "Indicates whether a base list should not be formatted on a multiple lines.")]
-        public bool NoFormatBaseList { get; set; }
+        [Option(longName: "no-wrap-base-types",
+            HelpText = "Indicates whether base types should not be wrapped.")]
+        public bool NoWrapBaseTypes { get; set; }
 
-        [Option(longName: "no-format-constraints",
-            HelpText = "Indicates whether constraints should not be formatted on a multiple lines.")]
-        public bool NoFormatConstraints { get; set; }
+        [Option(longName: "no-wrap-constraints",
+            HelpText = "Indicates whether constraints should not be wrapped.")]
+        public bool NoWrapConstraints { get; set; }
 
         [Option(longName: "omit-attribute-arguments",
             HelpText = "Indicates whether attribute arguments should be omitted when displaying an attribute.")]

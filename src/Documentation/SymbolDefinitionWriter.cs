@@ -227,10 +227,10 @@ namespace Roslynator.Documentation
             if (SupportsMultilineDefinitions)
             {
                 if (Format.Includes(WrapListOptions.BaseTypes))
-                    options |= SymbolDisplayAdditionalOptions.FormatBaseList;
+                    options |= SymbolDisplayAdditionalOptions.WrapBaseTypes;
 
                 if (Format.Includes(WrapListOptions.Constraints))
-                    options |= SymbolDisplayAdditionalOptions.FormatConstraints;
+                    options |= SymbolDisplayAdditionalOptions.WrapConstraints;
 
                 if (Format.Includes(WrapListOptions.Parameters))
                     options |= SymbolDisplayAdditionalOptions.FormatParameters;
