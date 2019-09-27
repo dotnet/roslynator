@@ -361,7 +361,11 @@ namespace Roslynator.Documentation
 
         private void WriteTypeHierarchy(IEnumerable<INamedTypeSymbol> types, CancellationToken cancellationToken = default)
         {
-            TypeHierarchy hierarchy = TypeHierarchy.Create(types, SymbolDefinitionComparer.SystemFirst.TypeComparer);
+            IComparer<INamedTypeSymbol> comparer = (Format.Includes(SymbolDefinitionPartFilter.ContainingNamespaceInTypeHierarchy))
+                ? SymbolDefinitionComparer.SystemFirst.TypeComparer
+                : SymbolDefinitionComparer.OmitContainingNamespace.TypeComparer;
+
+            TypeHierarchy hierarchy = TypeHierarchy.Create(types, comparer);
 
             WriteTypeHierarchy(hierarchy, cancellationToken);
         }
