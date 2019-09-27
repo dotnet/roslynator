@@ -406,6 +406,9 @@ namespace Roslynator.CommandLine
             if (!TryParseOptionValueAsEnumFlags(options.IncludeContainingNamespace, ParameterNames.IncludeContainingNamespace, out IncludeContainingNamespaceFilter includeContainingNamespaceFilter, DocumentationOptions.Default.IncludeContainingNamespaceFilter))
                 return 1;
 
+            if (!TryParseOptionValueAsEnumFlags(options.OmitMemberParts, ParameterNames.OmitMemberParts, out OmitMemberParts omitMemberParts, OmitMemberParts.None))
+                return 1;
+
             if (!TryParseOptionValueAsEnum(options.Visibility, ParameterNames.Visibility, out Visibility visibility))
                 return 1;
 
@@ -419,6 +422,7 @@ namespace Roslynator.CommandLine
                 ignoredNamespaceParts,
                 ignoredTypeParts,
                 ignoredMemberParts,
+                omitMemberParts,
                 includeContainingNamespaceFilter,
                 visibility,
                 projectFilter);

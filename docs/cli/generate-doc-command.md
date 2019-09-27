@@ -35,10 +35,7 @@ roslynator generate-doc <PROJECT|SOLUTION>
 [--no-precedence-for-system]
 [--omit-attribute-arguments]
 [--omit-inherited-attributes]
-[--omit-member-constant-value]
-[--omit-member-implements]
-[--omit-member-inherited-from]
-[--omit-member-overrides]
+[--omit-member-parts]
 [--preferred-culture]
 [--projects]
 [-p|--properties]
@@ -163,21 +160,9 @@ Indicates whether attribute arguments should be omitted when displaying an attri
 
 Indicates whether inherited attributes should be omitted.
 
-**`[--omit-member-constant-value]`**
+**`[--omit-member-parts]`**
 
-Indicates whether a constant value of a member should be omitted.
-
-**`[--omit-member-implements]`**
-
-Indicates whether an interface member that is being implemented should be omitted.
-
-**`[--omit-member-inherited-from]`**
-
-Indicates whether a containing member of an inherited member should be omitted.
-
-**`[--omit-member-overrides]`**
-
-Indicates whether an overridden member should be omitted.
+Defines parts of member definition that should be omitted. Allowed values are constant-value, implements, inherited-from and overrides.
 
 **`[--preferred-culture]`** <CULTURE_ID>
 

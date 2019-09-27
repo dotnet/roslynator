@@ -25,6 +25,7 @@ namespace Roslynator.CommandLine
             NamespaceDocumentationParts ignoredNamespaceParts,
             TypeDocumentationParts ignoredTypeParts,
             MemberDocumentationParts ignoredMemberParts,
+            OmitMemberParts omitMemberParts,
             IncludeContainingNamespaceFilter includeContainingNamespaceFilter,
             Visibility visibility,
             in ProjectFilter projectFilter) : base(projectFilter)
@@ -35,6 +36,7 @@ namespace Roslynator.CommandLine
             IgnoredNamespaceParts = ignoredNamespaceParts;
             IgnoredTypeParts = ignoredTypeParts;
             IgnoredMemberParts = ignoredMemberParts;
+            OmitMemberParts = omitMemberParts;
             IncludeContainingNamespaceFilter = includeContainingNamespaceFilter;
             Visibility = visibility;
         }
@@ -50,6 +52,8 @@ namespace Roslynator.CommandLine
         public TypeDocumentationParts IgnoredTypeParts { get; }
 
         public MemberDocumentationParts IgnoredMemberParts { get; }
+
+        public OmitMemberParts OmitMemberParts { get; }
 
         public IncludeContainingNamespaceFilter IncludeContainingNamespaceFilter { get; }
 
@@ -67,10 +71,10 @@ namespace Roslynator.CommandLine
                 formatDeclarationBaseList: !Options.NoFormatBaseList,
                 formatDeclarationConstraints: !Options.NoFormatConstraints,
                 markObsolete: !Options.NoMarkObsolete,
-                includeMemberInheritedFrom: !Options.OmitMemberInheritedFrom,
-                includeMemberOverrides: !Options.OmitMemberOverrides,
-                includeMemberImplements: !Options.OmitMemberImplements,
-                includeMemberConstantValue: !Options.OmitMemberConstantValue,
+                includeMemberInheritedFrom: (OmitMemberParts & OmitMemberParts.InheritedFrom) == 0,
+                includeMemberOverrides: (OmitMemberParts & OmitMemberParts.Overrides) == 0,
+                includeMemberImplements: (OmitMemberParts & OmitMemberParts.Implements) == 0,
+                includeMemberConstantValue: (OmitMemberParts & OmitMemberParts.ConstantValue) == 0,
                 includeInheritedInterfaceMembers: Options.IncludeInheritedInterfaceMembers,
                 includeAllDerivedTypes: Options.IncludeAllDerivedTypes,
                 includeAttributeArguments: !Options.OmitAttributeArguments,

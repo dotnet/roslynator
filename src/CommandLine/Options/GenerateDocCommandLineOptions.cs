@@ -88,21 +88,9 @@ namespace Roslynator.CommandLine
             HelpText = "Indicates whether inherited attributes should be omitted.")]
         public bool OmitInheritedAttributes { get; set; }
 
-        [Option(longName: "omit-member-constant-value",
-            HelpText = "Indicates whether a constant value of a member should be omitted.")]
-        public bool OmitMemberConstantValue { get; set; }
-
-        [Option(longName: "omit-member-implements",
-            HelpText = "Indicates whether an interface member that is being implemented should be omitted.")]
-        public bool OmitMemberImplements { get; set; }
-
-        [Option(longName: "omit-member-inherited-from",
-            HelpText = "Indicates whether a containing member of an inherited member should be omitted.")]
-        public bool OmitMemberInheritedFrom { get; set; }
-
-        [Option(longName: "omit-member-overrides",
-            HelpText = "Indicates whether an overridden member should be omitted.")]
-        public bool OmitMemberOverrides { get; set; }
+        [Option(longName: ParameterNames.OmitMemberParts,
+            HelpText = "Defines parts of member definition that should be omitted. Allowed values are constant-value, implements, inherited-from and overrides.")]
+        public IEnumerable<string> OmitMemberParts { get; set; }
 
         [Option(longName: "preferred-culture",
             HelpText = "Defines culture that should be used when searching for xml documentation files.",

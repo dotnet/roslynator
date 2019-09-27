@@ -16,6 +16,7 @@ namespace Roslynator.CommandLine
         public const string IncludeSystemNamespace = "include-system-namespace";
         public const string Layout = "layout";
         public const string MSBuildPath = "msbuild-path";
+        public const string OmitMemberParts = "omit-member-parts";
         public const string Projects = "projects";
         public const string RootDirectoryUrl = "root-directory-url";
         public const string SeverityLevel = "severity-level";
