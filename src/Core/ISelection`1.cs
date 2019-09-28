@@ -23,13 +23,11 @@ namespace Roslynator
         /// <summary>
         /// Gets the first selected item.
         /// </summary>
-        /// <returns></returns>
         T First();
 
         /// <summary>
         /// Gets the last selected item.
         /// </summary>
-        /// <returns></returns>
         T Last();
     }
 }

@@ -75,7 +75,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns a chain which contains all expressions of <see cref="ExpressionChain"/> in reversed order.
         /// </summary>
-        /// <returns></returns>
         public Reversed Reverse()
         {
             return new Reversed(this);
@@ -91,7 +90,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Gets the enumerator for the expressions.
         /// </summary>
-        /// <returns></returns>
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this);
@@ -116,7 +114,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns the string representation of the expressions, not including its leading and trailing trivia.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return BinaryExpression?.ToString(ExpressionsSpan) ?? "";

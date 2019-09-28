@@ -100,7 +100,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool ImplementsInterfaceMember(this ISymbol symbol, bool allInterfaces = false)
         {
             return FindFirstImplementedInterfaceMember(symbol, allInterfaces) != null;
@@ -112,7 +111,6 @@ namespace Roslynator
         /// <param name="symbol"></param>
         /// <param name="interfaceSymbol"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool ImplementsInterfaceMember(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false)
         {
             return FindImplementedInterfaceMember(symbol, interfaceSymbol, allInterfaces) != null;
@@ -173,7 +171,6 @@ namespace Roslynator
         /// <typeparam name="TSymbol"></typeparam>
         /// <param name="symbol"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol, bool allInterfaces = false) where TSymbol : ISymbol
         {
             return !EqualityComparer<TSymbol>.Default.Equals(
@@ -188,7 +185,6 @@ namespace Roslynator
         /// <param name="symbol"></param>
         /// <param name="interfaceSymbol"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool ImplementsInterfaceMember<TSymbol>(this ISymbol symbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false) where TSymbol : ISymbol
         {
             return !EqualityComparer<TSymbol>.Default.Equals(
@@ -201,7 +197,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsKind(this ISymbol symbol, SymbolKind kind)
         {
             return symbol?.Kind == kind;
@@ -213,7 +208,6 @@ namespace Roslynator
         /// <param name="symbol"></param>
         /// <param name="kind1"></param>
         /// <param name="kind2"></param>
-        /// <returns></returns>
         public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2)
         {
             if (symbol == null)
@@ -232,7 +226,6 @@ namespace Roslynator
         /// <param name="kind1"></param>
         /// <param name="kind2"></param>
         /// <param name="kind3"></param>
-        /// <returns></returns>
         public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3)
         {
             if (symbol == null)
@@ -253,7 +246,6 @@ namespace Roslynator
         /// <param name="kind2"></param>
         /// <param name="kind3"></param>
         /// <param name="kind4"></param>
-        /// <returns></returns>
         public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4)
         {
             if (symbol == null)
@@ -276,7 +268,6 @@ namespace Roslynator
         /// <param name="kind3"></param>
         /// <param name="kind4"></param>
         /// <param name="kind5"></param>
-        /// <returns></returns>
         public static bool IsKind(this ISymbol symbol, SymbolKind kind1, SymbolKind kind2, SymbolKind kind3, SymbolKind kind4, SymbolKind kind5)
         {
             if (symbol == null)
@@ -295,7 +286,6 @@ namespace Roslynator
         /// Returns true if the symbol represents an error.
         /// </summary>
         /// <param name="symbol"></param>
-        /// <returns></returns>
         public static bool IsErrorType(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.ErrorType;
@@ -305,7 +295,6 @@ namespace Roslynator
         /// Returns true if the symbol is an async method.
         /// </summary>
         /// <param name="symbol"></param>
-        /// <returns></returns>
         public static bool IsAsyncMethod(this ISymbol symbol)
         {
             return symbol?.Kind == SymbolKind.Method
@@ -345,7 +334,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="attributeClass"></param>
-        /// <returns></returns>
         public static AttributeData GetAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
         {
             if (symbol == null)
@@ -370,7 +358,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="attributeName"></param>
-        /// <returns></returns>
         public static AttributeData GetAttribute(this ISymbol symbol, in MetadataName attributeName)
         {
             if (symbol == null)
@@ -390,7 +377,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="attributeClass"></param>
-        /// <returns></returns>
         public static bool HasAttribute(this ISymbol symbol, INamedTypeSymbol attributeClass)
         {
             return GetAttribute(symbol, attributeClass) != null;
@@ -402,7 +388,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="attributeClass"></param>
         /// <param name="includeBaseTypes"></param>
-        /// <returns></returns>
         public static bool HasAttribute(this ITypeSymbol typeSymbol, INamedTypeSymbol attributeClass, bool includeBaseTypes)
         {
             if (!includeBaseTypes)
@@ -428,7 +413,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="attributeName"></param>
-        /// <returns></returns>
         public static bool HasAttribute(this ISymbol symbol, in MetadataName attributeName)
         {
             return GetAttribute(symbol, attributeName) != null;
@@ -440,7 +424,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="attributeName"></param>
         /// <param name="includeBaseTypes"></param>
-        /// <returns></returns>
         public static bool HasAttribute(this ITypeSymbol typeSymbol, in MetadataName attributeName, bool includeBaseTypes)
         {
             if (!includeBaseTypes)
@@ -514,7 +497,6 @@ namespace Roslynator
         /// Return true if the specified symbol is publicly visible.
         /// </summary>
         /// <param name="symbol"></param>
-        /// <returns></returns>
         public static bool IsPubliclyVisible(this ISymbol symbol)
         {
             if (symbol == null)
@@ -638,7 +620,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="symbol"></param>
         /// <param name="metadataName"></param>
-        /// <returns></returns>
         public static bool HasMetadataName(this ISymbol symbol, in MetadataName metadataName)
         {
             return metadataName.Equals(symbol);
@@ -755,7 +736,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, bool value)
         {
             if (fieldSymbol == null)
@@ -777,7 +757,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, char value)
         {
             if (fieldSymbol == null)
@@ -799,7 +778,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, sbyte value)
         {
             if (fieldSymbol == null)
@@ -821,7 +799,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, byte value)
         {
             if (fieldSymbol == null)
@@ -843,7 +820,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, short value)
         {
             if (fieldSymbol == null)
@@ -865,7 +841,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, ushort value)
         {
             if (fieldSymbol == null)
@@ -887,7 +862,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, int value)
         {
             if (fieldSymbol == null)
@@ -909,7 +883,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, uint value)
         {
             if (fieldSymbol == null)
@@ -931,7 +904,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, long value)
         {
             if (fieldSymbol == null)
@@ -953,7 +925,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, ulong value)
         {
             if (fieldSymbol == null)
@@ -975,7 +946,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, decimal value)
         {
             if (fieldSymbol == null)
@@ -997,7 +967,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, float value)
         {
             if (fieldSymbol == null)
@@ -1019,7 +988,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, double value)
         {
             if (fieldSymbol == null)
@@ -1041,7 +1009,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="fieldSymbol"></param>
         /// <param name="value"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(this IFieldSymbol fieldSymbol, string value)
         {
             if (fieldSymbol == null)
@@ -1085,7 +1052,6 @@ namespace Roslynator
         /// If this method is a reduced extension method, returns the definition of extension method from which this was reduced. Otherwise, returns this symbol.
         /// </summary>
         /// <param name="methodSymbol"></param>
-        /// <returns></returns>
         public static IMethodSymbol ReducedFromOrSelf(this IMethodSymbol methodSymbol)
         {
             return methodSymbol?.ReducedFrom ?? methodSymbol;
@@ -1095,7 +1061,6 @@ namespace Roslynator
         /// Returns true if this method is a reduced extension method.
         /// </summary>
         /// <param name="methodSymbol"></param>
-        /// <returns></returns>
         public static bool IsReducedExtensionMethod(this IMethodSymbol methodSymbol)
         {
             return methodSymbol?.MethodKind == MethodKind.ReducedExtension;
@@ -1105,7 +1070,6 @@ namespace Roslynator
         /// Returns true if this method is an ordinary extension method (i.e. "this" parameter has not been removed).
         /// </summary>
         /// <param name="methodSymbol"></param>
-        /// <returns></returns>
         public static bool IsOrdinaryExtensionMethod(this IMethodSymbol methodSymbol)
         {
             return methodSymbol?.IsExtensionMethod == true
@@ -1146,7 +1110,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="parameterSymbol"></param>
         /// <param name="elementType"></param>
-        /// <returns></returns>
         public static bool IsParameterArrayOf(this IParameterSymbol parameterSymbol, SpecialType elementType)
         {
             return parameterSymbol?.IsParams == true
@@ -1159,7 +1122,6 @@ namespace Roslynator
         /// <param name="parameterSymbol"></param>
         /// <param name="elementType1"></param>
         /// <param name="elementType2"></param>
-        /// <returns></returns>
         public static bool IsParameterArrayOf(
             this IParameterSymbol parameterSymbol,
             SpecialType elementType1,
@@ -1179,7 +1141,6 @@ namespace Roslynator
         /// <param name="elementType1"></param>
         /// <param name="elementType2"></param>
         /// <param name="elementType3"></param>
-        /// <returns></returns>
         public static bool IsParameterArrayOf(
             this IParameterSymbol parameterSymbol,
             SpecialType elementType1,
@@ -1197,7 +1158,6 @@ namespace Roslynator
         /// Returns true if the parameter was declared as "ref" or "out" parameter.
         /// </summary>
         /// <param name="parameterSymbol"></param>
-        /// <returns></returns>
         public static bool IsRefOrOut(this IParameterSymbol parameterSymbol)
         {
             if (parameterSymbol == null)
@@ -1239,7 +1199,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="namedTypeSymbol"></param>
         /// <param name="specialType"></param>
-        /// <returns></returns>
         public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, SpecialType specialType)
         {
             return namedTypeSymbol.IsNullableType()
@@ -1251,7 +1210,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="namedTypeSymbol"></param>
         /// <param name="typeArgument"></param>
-        /// <returns></returns>
         public static bool IsNullableOf(this INamedTypeSymbol namedTypeSymbol, ITypeSymbol typeArgument)
         {
             return namedTypeSymbol.IsNullableType()
@@ -1265,7 +1223,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="predicate"></param>
         /// <param name="includeBaseTypes"></param>
-        /// <returns></returns>
         public static TSymbol FindMember<TSymbol>(
             this INamedTypeSymbol typeSymbol,
             Func<TSymbol, bool> predicate,
@@ -1288,7 +1245,6 @@ namespace Roslynator
         /// <param name="name"></param>
         /// <param name="predicate"></param>
         /// <param name="includeBaseTypes"></param>
-        /// <returns></returns>
         public static TSymbol FindMember<TSymbol>(
             this INamedTypeSymbol typeSymbol,
             string name,
@@ -1336,7 +1292,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="predicate"></param>
         /// <param name="includeBaseTypes"></param>
-        /// <returns></returns>
         public static INamedTypeSymbol FindTypeMember(
             this INamedTypeSymbol typeSymbol,
             Func<INamedTypeSymbol, bool> predicate,
@@ -1358,7 +1313,6 @@ namespace Roslynator
         /// <param name="name"></param>
         /// <param name="predicate"></param>
         /// <param name="includeBaseTypes"></param>
-        /// <returns></returns>
         public static INamedTypeSymbol FindTypeMember(
             this INamedTypeSymbol typeSymbol,
             string name,
@@ -1382,7 +1336,6 @@ namespace Roslynator
         /// <param name="arity"></param>
         /// <param name="predicate"></param>
         /// <param name="includeBaseTypes"></param>
-        /// <returns></returns>
         public static INamedTypeSymbol FindTypeMember(
             this INamedTypeSymbol typeSymbol,
             string name,
@@ -1448,7 +1401,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="typeSymbol"></param>
         /// <param name="specialType"></param>
-        /// <returns></returns>
         public static bool IsNullableOf(this ITypeSymbol typeSymbol, SpecialType specialType)
         {
             return (typeSymbol as INamedTypeSymbol)?.IsNullableOf(specialType) == true;
@@ -1459,7 +1411,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="typeSymbol"></param>
         /// <param name="typeArgument"></param>
-        /// <returns></returns>
         public static bool IsNullableOf(this ITypeSymbol typeSymbol, ITypeSymbol typeArgument)
         {
             return (typeSymbol as INamedTypeSymbol)?.IsNullableOf(typeArgument) == true;
@@ -1469,7 +1420,6 @@ namespace Roslynator
         /// Returns true if the type is <see cref="Void"/>.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool IsVoid(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Void;
@@ -1479,7 +1429,6 @@ namespace Roslynator
         /// Returns true if the type is <see cref="string"/>.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool IsString(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_String;
@@ -1489,7 +1438,6 @@ namespace Roslynator
         /// Returns true if the type is <see cref="object"/>.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool IsObject(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Object;
@@ -1499,7 +1447,6 @@ namespace Roslynator
         /// Gets a list of base types of this type.
         /// </summary>
         /// <param name="type"></param>
-        /// <returns></returns>
         public static IEnumerable<INamedTypeSymbol> BaseTypes(this ITypeSymbol type)
         {
             if (type == null)
@@ -1523,7 +1470,6 @@ namespace Roslynator
         /// Gets a list of base types of this type (including this type).
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static IEnumerable<ITypeSymbol> BaseTypesAndSelf(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
@@ -1549,7 +1495,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="interfaceType"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool Implements(this ITypeSymbol typeSymbol, SpecialType interfaceType, bool allInterfaces = false)
         {
             if (typeSymbol == null)
@@ -1582,7 +1527,6 @@ namespace Roslynator
         /// <param name="interfaceType1"></param>
         /// <param name="interfaceType2"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType interfaceType1, SpecialType interfaceType2, bool allInterfaces = false)
         {
             if (typeSymbol == null)
@@ -1607,7 +1551,6 @@ namespace Roslynator
         /// <param name="interfaceType2"></param>
         /// <param name="interfaceType3"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool ImplementsAny(this ITypeSymbol typeSymbol, SpecialType interfaceType1, SpecialType interfaceType2, SpecialType interfaceType3, bool allInterfaces = false)
         {
             if (typeSymbol == null)
@@ -1630,7 +1573,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="interfaceSymbol"></param>
         /// <param name="allInterfaces">If true, use <see cref="ITypeSymbol.AllInterfaces"/>, otherwise use <see cref="ITypeSymbol.Interfaces"/>.</param>
-        /// <returns></returns>
         public static bool Implements(this ITypeSymbol typeSymbol, INamedTypeSymbol interfaceSymbol, bool allInterfaces = false)
         {
             if (typeSymbol == null)
@@ -1656,7 +1598,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="interfaceName"></param>
         /// <param name="allInterfaces"></param>
-        /// <returns></returns>
         public static bool Implements(this ITypeSymbol typeSymbol, in MetadataName interfaceName, bool allInterfaces = false)
         {
             if (typeSymbol == null)
@@ -1675,7 +1616,6 @@ namespace Roslynator
         /// Returns true if the type can be declared explicitly in a source code.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool SupportsExplicitDeclaration(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)
@@ -1751,7 +1691,6 @@ namespace Roslynator
         /// <param name="type"></param>
         /// <param name="baseType"></param>
         /// <param name="includeInterfaces"></param>
-        /// <returns></returns>
         public static bool InheritsFrom(this ITypeSymbol type, ITypeSymbol baseType, bool includeInterfaces = false)
         {
             if (type == null)
@@ -1791,7 +1730,6 @@ namespace Roslynator
         /// <param name="type"></param>
         /// <param name="baseTypeName"></param>
         /// <param name="includeInterfaces"></param>
-        /// <returns></returns>
         public static bool InheritsFrom(this ITypeSymbol type, in MetadataName baseTypeName, bool includeInterfaces = false)
         {
             if (type == null)
@@ -1825,7 +1763,6 @@ namespace Roslynator
         /// <param name="type"></param>
         /// <param name="baseType"></param>
         /// <param name="includeInterfaces"></param>
-        /// <returns></returns>
         public static bool EqualsOrInheritsFrom(this ITypeSymbol type, ITypeSymbol baseType, bool includeInterfaces = false)
         {
             if (type == null)
@@ -1841,7 +1778,6 @@ namespace Roslynator
         /// <param name="type"></param>
         /// <param name="baseTypeName"></param>
         /// <param name="includeInterfaces"></param>
-        /// <returns></returns>
         public static bool EqualsOrInheritsFrom(this ITypeSymbol type, in MetadataName baseTypeName, bool includeInterfaces = false)
         {
             if (type == null)
@@ -1857,7 +1793,6 @@ namespace Roslynator
         /// <typeparam name="TSymbol"></typeparam>
         /// <param name="typeSymbol"></param>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public static TSymbol FindMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
         {
             if (typeSymbol == null)
@@ -1873,7 +1808,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="name"></param>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public static TSymbol FindMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
         {
             if (typeSymbol == null)
@@ -1915,7 +1849,6 @@ namespace Roslynator
         /// <typeparam name="TSymbol"></typeparam>
         /// <param name="typeSymbol"></param>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
         {
             if (typeSymbol == null)
@@ -1931,7 +1864,6 @@ namespace Roslynator
         /// <param name="typeSymbol"></param>
         /// <param name="name"></param>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         internal static bool ContainsMember<TSymbol>(this ITypeSymbol typeSymbol, string name, Func<TSymbol, bool> predicate = null) where TSymbol : ISymbol
         {
             if (typeSymbol == null)
@@ -1949,7 +1881,6 @@ namespace Roslynator
         /// Returns true if the type is <see cref="IEnumerable{T}"/>.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool IsIEnumerableOfT(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.SpecialType == SpecialType.System_Collections_Generic_IEnumerable_T;
@@ -1959,7 +1890,6 @@ namespace Roslynator
         /// Returns true if the type is <see cref="IEnumerable"/> or <see cref="IEnumerable{T}"/>.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool IsIEnumerableOrIEnumerableOfT(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?
@@ -1971,7 +1901,6 @@ namespace Roslynator
         /// Returns true if the type is a reference type or a nullable type.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool IsReferenceTypeOrNullableType(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.IsReferenceType == true
@@ -1982,7 +1911,6 @@ namespace Roslynator
         /// Returns true if the type is a nullable type.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool IsNullableType(this ITypeSymbol typeSymbol)
         {
             return typeSymbol?.OriginalDefinition.SpecialType == SpecialType.System_Nullable_T;

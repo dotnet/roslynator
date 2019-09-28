@@ -14,7 +14,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public()
         {
             return TokenList(SyntaxKind.PublicKeyword);
@@ -23,7 +22,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal()
         {
             return TokenList(SyntaxKind.InternalKeyword);
@@ -32,7 +30,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected()
         {
             return TokenList(SyntaxKind.ProtectedKeyword);
@@ -41,7 +38,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Return modifier list that contains "protected internal" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_Internal()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.InternalKeyword);
@@ -50,7 +46,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private()
         {
             return TokenList(SyntaxKind.PrivateKeyword);
@@ -59,7 +54,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private protected" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private_Protected()
         {
             return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.ProtectedKeyword);
@@ -68,7 +62,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "virtual" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Virtual()
         {
             return TokenList(SyntaxKind.VirtualKeyword);
@@ -77,7 +70,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public virtual" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Virtual()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.VirtualKeyword);
@@ -86,7 +78,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal virtual" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Virtual()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.VirtualKeyword);
@@ -95,7 +86,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected virtual" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_Virtual()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.VirtualKeyword);
@@ -104,7 +94,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public abstract" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Abstract()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.AbstractKeyword);
@@ -113,7 +102,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal abstract" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Abstract()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.AbstractKeyword);
@@ -122,7 +110,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected abstract" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_Abstract()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.AbstractKeyword);
@@ -131,7 +118,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public override" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Override()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.OverrideKeyword);
@@ -140,7 +126,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal override" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Override()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.OverrideKeyword);
@@ -149,7 +134,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected override" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_Override()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.OverrideKeyword);
@@ -158,7 +142,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "const" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Const()
         {
             return TokenList(SyntaxKind.ConstKeyword);
@@ -167,7 +150,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public const" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Const()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.ConstKeyword);
@@ -176,7 +158,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal const" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Const()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.ConstKeyword);
@@ -185,7 +166,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected const" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_Const()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.ConstKeyword);
@@ -194,7 +174,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private const" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private_Const()
         {
             return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.ConstKeyword);
@@ -203,7 +182,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "static" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Static()
         {
             return TokenList(SyntaxKind.StaticKeyword);
@@ -212,7 +190,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public static" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Static()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.StaticKeyword);
@@ -221,7 +198,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal static" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Static()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword);
@@ -230,7 +206,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected static" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_Static()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.StaticKeyword);
@@ -239,7 +214,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private static" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private_Static()
         {
             return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword);
@@ -248,7 +222,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "static readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Static_ReadOnly()
         {
             return TokenList(SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -257,7 +230,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public static readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Static_ReadOnly()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -266,7 +238,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal static readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Static_ReadOnly()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -275,7 +246,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected static readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_Static_ReadOnly()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -284,7 +254,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private static readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private_Static_ReadOnly()
         {
             return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -293,7 +262,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "readonly" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList ReadOnly()
         {
             return TokenList(SyntaxKind.ReadOnlyKeyword);
@@ -302,7 +270,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_ReadOnly()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -311,7 +278,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_ReadOnly()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -320,7 +286,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "protected readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Protected_ReadOnly()
         {
             return TokenList(SyntaxKind.ProtectedKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -329,7 +294,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private_ReadOnly()
         {
             return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.ReadOnlyKeyword);
@@ -338,7 +302,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "partial" modifier.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Partial()
         {
             return TokenList(SyntaxKind.PartialKeyword);
@@ -347,7 +310,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public partial" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Partial()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.PartialKeyword);
@@ -356,7 +318,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal partial" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Partial()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.PartialKeyword);
@@ -365,7 +326,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private partial" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private_Partial()
         {
             return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.PartialKeyword);
@@ -374,7 +334,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "public static partial" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Public_Static_Partial()
         {
             return TokenList(SyntaxKind.PublicKeyword, SyntaxKind.StaticKeyword, SyntaxKind.PartialKeyword);
@@ -383,7 +342,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "internal static partial" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Internal_Static_Partial()
         {
             return TokenList(SyntaxKind.InternalKeyword, SyntaxKind.StaticKeyword, SyntaxKind.PartialKeyword);
@@ -392,7 +350,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "private static partial" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Private_Static_Partial()
         {
             return TokenList(SyntaxKind.PrivateKeyword, SyntaxKind.StaticKeyword, SyntaxKind.PartialKeyword);
@@ -401,7 +358,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Creates a list of modifiers that contains "ref readonly" modifiers.
         /// </summary>
-        /// <returns></returns>
         public static SyntaxTokenList Ref_ReadOnly()
         {
             return TokenList(SyntaxKind.RefKeyword, SyntaxKind.ReadOnlyKeyword);

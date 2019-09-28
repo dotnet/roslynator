@@ -34,7 +34,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Gets the enumerator for the if-else cascade.
         /// </summary>
-        /// <returns></returns>
         public Enumerator GetEnumerator()
         {
             return new Enumerator(IfStatement);
@@ -59,7 +58,6 @@ namespace Roslynator.CSharp
         /// <summary>
         /// Returns the string representation of the underlying syntax, not including its leading and trailing trivia.
         /// </summary>
-        /// <returns></returns>
         public override string ToString()
         {
             return IfStatement?.ToString() ?? "";

@@ -125,7 +125,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is comment trivia.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsCommentTrivia(SyntaxKind kind)
         {
             return kind.Is(
@@ -139,7 +138,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind can have statements. It can be either <see cref="BlockSyntax"/> or <see cref="SwitchSectionSyntax"/>.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool CanHaveStatements(SyntaxKind kind)
         {
             return kind.Is(SyntaxKind.Block, SyntaxKind.SwitchSection);
@@ -149,7 +147,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind can have members.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool CanHaveMembers(SyntaxKind kind)
         {
             return kind.Is(
@@ -164,7 +161,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind if local function or anonymous function.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsFunction(SyntaxKind kind)
         {
             return kind.Is(
@@ -178,7 +174,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a for, foreach, while or do statement.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsIterationStatement(SyntaxKind kind)
         {
             return kind.Is(
@@ -193,7 +188,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is true or false literal expression.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsBooleanLiteralExpression(SyntaxKind kind)
         {
             return kind.Is(
@@ -205,7 +199,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a lambda expression.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsLambdaExpression(SyntaxKind kind)
         {
             return kind.Is(
@@ -217,7 +210,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is an anonymous method or lambda expression.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsAnonymousFunctionExpression(SyntaxKind kind)
         {
             return kind.Is(
@@ -230,7 +222,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a jump statement.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsJumpStatement(SyntaxKind kind)
         {
             switch (kind)
@@ -258,7 +249,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is pre/post increment/decrement expression.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsIncrementOrDecrementExpression(SyntaxKind kind)
         {
             return kind.Is(
@@ -272,7 +262,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a compound assignment expression.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsCompoundAssignmentExpression(SyntaxKind kind)
         {
             switch (kind)
@@ -297,7 +286,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind can have modifiers.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool CanHaveModifiers(SyntaxKind kind)
         {
             switch (kind)
@@ -349,7 +337,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind can have expression body.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool CanHaveExpressionBody(SyntaxKind kind)
         {
             switch (kind)
@@ -376,7 +363,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind can have an embedded statement.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool CanHaveEmbeddedStatement(SyntaxKind kind)
         {
             switch (kind)
@@ -401,7 +387,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind can be an embedded statement.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool CanBeEmbeddedStatement(SyntaxKind kind)
         {
             switch (kind)
@@ -471,7 +456,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a predefined type.
         /// </summary>
         /// <param name="specialType"></param>
-        /// <returns></returns>
         public static bool IsPredefinedType(SpecialType specialType)
         {
             switch (specialType)
@@ -503,7 +487,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a simple type.
         /// </summary>
         /// <param name="specialType"></param>
-        /// <returns></returns>
         public static bool IsSimpleType(SpecialType specialType)
         {
             switch (specialType)
@@ -531,7 +514,6 @@ namespace Roslynator.CSharp
         /// Returns true if an expression of the specified type can be used in a prefix or postfix unary operator.
         /// </summary>
         /// <param name="specialType"></param>
-        /// <returns></returns>
         public static bool SupportsPrefixOrPostfixUnaryOperator(SpecialType specialType)
         {
             switch (specialType)
@@ -706,7 +688,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a switch label.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsSwitchLabel(SyntaxKind kind)
         {
             return kind.Is(
@@ -719,7 +700,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a boolean expression.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsBooleanExpression(SyntaxKind kind)
         {
             switch (kind)
@@ -746,7 +726,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a constraint.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsConstraint(SyntaxKind kind)
         {
             return kind.Is(
@@ -760,7 +739,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a literal expression.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsLiteralExpression(SyntaxKind kind)
         {
             switch (kind)
@@ -783,7 +761,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is #if, #else, #elif or #endif directive.
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static bool IsIfElseDirective(SyntaxKind kind)
         {
             switch (kind)
@@ -802,7 +779,6 @@ namespace Roslynator.CSharp
         /// Returns true if a syntax of the specified kind is a statement (which includes <see cref="SyntaxKind.Block"/>).
         /// </summary>
         /// <param name="kind"></param>
-        /// <returns></returns>
         internal static bool IsStatement(SyntaxKind kind)
         {
             switch (kind)

@@ -103,7 +103,6 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         /// <param name="kind"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public TNode Insert(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
         {
             if (node == null)
@@ -122,7 +121,6 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         /// <param name="modifier"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public TNode Insert(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
         {
             if (node == null)
@@ -205,7 +203,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="node"></param>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public TNode Remove(TNode node, SyntaxKind kind)
         {
             if (node == null)
@@ -230,7 +227,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="node"></param>
         /// <param name="modifier"></param>
-        /// <returns></returns>
         public TNode Remove(TNode node, SyntaxToken modifier)
         {
             if (node == null)
@@ -255,7 +251,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="node"></param>
         /// <param name="index"></param>
-        /// <returns></returns>
         public TNode RemoveAt(TNode node, int index)
         {
             if (node == null)
@@ -335,7 +330,6 @@ namespace Roslynator.CSharp
         /// Creates a new node with all modifiers removed.
         /// </summary>
         /// <param name="node"></param>
-        /// <returns></returns>
         public TNode RemoveAll(TNode node)
         {
             SyntaxTokenList modifiers = GetModifiers(node);
@@ -386,7 +380,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="node"></param>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public TNode RemoveAll(TNode node, Func<SyntaxToken, bool> predicate)
         {
             SyntaxTokenList modifiers = GetModifiers(node);

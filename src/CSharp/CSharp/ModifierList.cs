@@ -20,7 +20,6 @@ namespace Roslynator.CSharp
         /// <param name="tokens"></param>
         /// <param name="token"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxToken token, IComparer<SyntaxToken> comparer = null)
         {
             if (comparer == null)
@@ -55,7 +54,6 @@ namespace Roslynator.CSharp
         /// <param name="tokens"></param>
         /// <param name="kind"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public static int GetInsertIndex(SyntaxTokenList tokens, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
         {
             if (comparer == null)
@@ -128,7 +126,6 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         /// <param name="kind"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public static TNode Insert<TNode>(TNode node, SyntaxKind kind, IComparer<SyntaxKind> comparer = null) where TNode : SyntaxNode
         {
             switch (node.Kind())
@@ -189,7 +186,6 @@ namespace Roslynator.CSharp
         /// <param name="node"></param>
         /// <param name="modifier"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public static TNode Insert<TNode>(TNode node, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null) where TNode : SyntaxNode
         {
             switch (node.Kind())
@@ -249,7 +245,6 @@ namespace Roslynator.CSharp
         /// <typeparam name="TNode"></typeparam>
         /// <param name="node"></param>
         /// <param name="kind"></param>
-        /// <returns></returns>
         public static TNode Remove<TNode>(TNode node, SyntaxKind kind) where TNode : SyntaxNode
         {
             switch (node.Kind())
@@ -309,7 +304,6 @@ namespace Roslynator.CSharp
         /// <typeparam name="TNode"></typeparam>
         /// <param name="node"></param>
         /// <param name="modifier"></param>
-        /// <returns></returns>
         public static TNode Remove<TNode>(TNode node, SyntaxToken modifier) where TNode : SyntaxNode
         {
             switch (node.Kind())
@@ -369,7 +363,6 @@ namespace Roslynator.CSharp
         /// <typeparam name="TNode"></typeparam>
         /// <param name="node"></param>
         /// <param name="index"></param>
-        /// <returns></returns>
         public static TNode RemoveAt<TNode>(TNode node, int index) where TNode : SyntaxNode
         {
             switch (node.Kind())
@@ -429,7 +422,6 @@ namespace Roslynator.CSharp
         /// <typeparam name="TNode"></typeparam>
         /// <param name="node"></param>
         /// <param name="predicate"></param>
-        /// <returns></returns>
         public static TNode RemoveAll<TNode>(TNode node, Func<SyntaxToken, bool> predicate) where TNode : SyntaxNode
         {
             switch (node.Kind())
@@ -488,7 +480,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <typeparam name="TNode"></typeparam>
         /// <param name="node"></param>
-        /// <returns></returns>
         public static TNode RemoveAll<TNode>(TNode node) where TNode : SyntaxNode
         {
             switch (node.Kind())
@@ -548,7 +539,6 @@ namespace Roslynator.CSharp
         /// <param name="modifiers"></param>
         /// <param name="kind"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public static SyntaxTokenList Insert(SyntaxTokenList modifiers, SyntaxKind kind, IComparer<SyntaxKind> comparer = null)
         {
             if (!modifiers.Any())
@@ -563,7 +553,6 @@ namespace Roslynator.CSharp
         /// <param name="modifiers"></param>
         /// <param name="modifier"></param>
         /// <param name="comparer"></param>
-        /// <returns></returns>
         public static SyntaxTokenList Insert(SyntaxTokenList modifiers, SyntaxToken modifier, IComparer<SyntaxToken> comparer = null)
         {
             if (!modifiers.Any())
