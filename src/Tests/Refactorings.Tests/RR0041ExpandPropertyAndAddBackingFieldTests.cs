@@ -69,7 +69,7 @@ class C : B
     void M()
     {
         var x = base.Value;
-        var y = _value2;
+        var y = value2;
     }
 }
 

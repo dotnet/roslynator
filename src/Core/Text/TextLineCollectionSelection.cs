@@ -96,7 +96,6 @@ namespace Roslynator.Text
         /// <summary>
         /// Gets the first selected line.
         /// </summary>
-        /// <returns></returns>
         public TextLine First()
         {
             return UnderlyingLines[FirstIndex];
@@ -105,7 +104,6 @@ namespace Roslynator.Text
         /// <summary>
         /// Gets the last selected line.
         /// </summary>
-        /// <returns></returns>
         public TextLine Last()
         {
             return UnderlyingLines[LastIndex];
@@ -116,7 +114,6 @@ namespace Roslynator.Text
         /// </summary>
         /// <param name="lines"></param>
         /// <param name="span"></param>
-        /// <returns></returns>
         public static TextLineCollectionSelection Create(TextLineCollection lines, TextSpan span)
         {
             if (lines == null)
@@ -168,7 +165,6 @@ namespace Roslynator.Text
         /// <summary>
         /// Returns an enumerator that iterates through selected lines.
         /// </summary>
-        /// <returns></returns>
         public Enumerator GetEnumerator()
         {
             return new Enumerator(this);

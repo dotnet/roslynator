@@ -20,7 +20,7 @@
 | RCS1015 | [Use nameof operator](../../docs/analyzers/RCS1015.md) | Maintainability | Info |
 | RCS1016 | [Use expression-bodied member](../../docs/analyzers/RCS1016.md) | Usage | None |
 | RCS1017 | [Avoid multiline expression body](../../docs/analyzers/RCS1017.md) | Style | None |
-| RCS1018 | [Add default access modifier](../../docs/analyzers/RCS1018.md) | Readability | Info |
+| RCS1018 | [Add accessibility modifiers](../../docs/analyzers/RCS1018.md) | Readability | Info |
 | RCS1019 | [Order modifiers](../../docs/analyzers/RCS1019.md) | Readability | None |
 | RCS1020 | [Simplify Nullable\<T> to T?](../../docs/analyzers/RCS1020.md) | Simplification | Info |
 | RCS1021 | [Simplify lambda expression](../../docs/analyzers/RCS1021.md) | Simplification | Info |
@@ -30,7 +30,7 @@
 | RCS1026 | [Add new line before statement](../../docs/analyzers/RCS1026.md) | Formatting | None |
 | RCS1027 | [Add new line before embedded statement](../../docs/analyzers/RCS1027.md) | Formatting | None |
 | RCS1028 | [Add new line after switch label](../../docs/analyzers/RCS1028.md) | Formatting | None |
-| RCS1029 | [Format binary operator on next line](../../docs/analyzers/RCS1029.md) | Formatting | Info |
+| RCS1029 | [Format binary operator on next line](../../docs/analyzers/RCS1029.md) | Formatting | None |
 | RCS1030 | [Add empty line after embedded statement](../../docs/analyzers/RCS1030.md) | Formatting | None |
 | RCS1031 | [Remove unnecessary braces](../../docs/analyzers/RCS1031.md) | Redundancy | Hidden |
 | RCS1032 | [Remove redundant parentheses](../../docs/analyzers/RCS1032.md) | Redundancy | Info |
@@ -72,7 +72,7 @@
 | RCS1070 | [Remove redundant default switch section](../../docs/analyzers/RCS1070.md) | Redundancy | Hidden |
 | RCS1071 | [Remove redundant base constructor call](../../docs/analyzers/RCS1071.md) | Redundancy | Hidden |
 | RCS1072 | [Remove empty namespace declaration](../../docs/analyzers/RCS1072.md) | Redundancy | Info |
-| RCS1073 | [Replace if statement with return statement](../../docs/analyzers/RCS1073.md) | Simplification | Info |
+| RCS1073 | [Convert 'if' to 'return' statement](../../docs/analyzers/RCS1073.md) | Simplification | Info |
 | RCS1074 | [Remove redundant constructor](../../docs/analyzers/RCS1074.md) | Redundancy | Hidden |
 | RCS1075 | [Avoid empty catch clause that catches System.Exception](../../docs/analyzers/RCS1075.md) | Design | Warning |
 | RCS1076 | [Format declaration braces](../../docs/analyzers/RCS1076.md) | Formatting | Hidden |
@@ -99,7 +99,7 @@
 | RCS1100 | [Format documentation summary on a single line](../../docs/analyzers/RCS1100.md) | Formatting | None |
 | RCS1101 | [Format documentation summary on multiple lines](../../docs/analyzers/RCS1101.md) | Formatting | None |
 | RCS1102 | [Make class static](../../docs/analyzers/RCS1102.md) | Design | Warning |
-| RCS1103 | [Replace if statement with assignment](../../docs/analyzers/RCS1103.md) | Simplification | Info |
+| RCS1103 | [Convert 'if' to assignment](../../docs/analyzers/RCS1103.md) | Simplification | Info |
 | RCS1104 | [Simplify conditional expression](../../docs/analyzers/RCS1104.md) | Simplification | Info |
 | RCS1105 | [Unncessary interpolation](../../docs/analyzers/RCS1105.md) | Simplification | Info |
 | RCS1106 | [Remove empty destructor](../../docs/analyzers/RCS1106.md) | Redundancy | Info |
@@ -194,7 +194,7 @@
 | RCS1214 | [Unnecessary interpolated string](../../docs/analyzers/RCS1214.md) | Simplification | Info |
 | RCS1215 | [Expression is always equal to true/false](../../docs/analyzers/RCS1215.md) | Redundancy | Warning |
 | RCS1216 | [Unnecessary unsafe context](../../docs/analyzers/RCS1216.md) | Redundancy | Info |
-| RCS1217 | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | Readability | Hidden |
+| RCS1217 | [Convert interpolated string to concatenation](../../docs/analyzers/RCS1217.md) | Readability | Hidden |
 | RCS1218 | [Simplify code branching](../../docs/analyzers/RCS1218.md) | Readability | Info |
 | RCS1219 | [Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'](../../docs/analyzers/RCS1219.md) | Performance | None |
 | RCS1220 | [Use pattern matching instead of combination of 'is' operator and cast operator](../../docs/analyzers/RCS1220.md) | Usage | Info |

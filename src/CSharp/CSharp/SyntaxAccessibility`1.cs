@@ -78,28 +78,24 @@ namespace Roslynator.CSharp
         /// Returns an accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public abstract Accessibility GetAccessibility(TNode declaration);
 
         /// <summary>
         /// Returns a default accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public abstract Accessibility GetDefaultAccessibility(TNode declaration);
 
         /// <summary>
         /// Returns an explicit accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public abstract Accessibility GetExplicitAccessibility(TNode declaration);
 
         /// <summary>
         /// Returns a default explicit accessibility of the specified declaration.
         /// </summary>
         /// <param name="declaration"></param>
-        /// <returns></returns>
         public abstract Accessibility GetDefaultExplicitAccessibility(TNode declaration);
 
         private class AccessorAccessibility : SyntaxAccessibility<AccessorDeclarationSyntax>

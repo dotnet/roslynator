@@ -21,7 +21,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="localFunction"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         internal static IMethodSymbol GetDeclaredSymbol(
             this SemanticModel semanticModel,
             LocalFunctionStatementSyntax localFunction,
@@ -36,7 +35,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="attribute"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             AttributeSyntax attribute,
@@ -53,7 +51,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="constructorInitializer"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             ConstructorInitializerSyntax constructorInitializer,
@@ -70,7 +67,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="cref"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             CrefSyntax cref,
@@ -87,7 +83,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
@@ -104,7 +99,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="ordering"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             OrderingSyntax ordering,
@@ -121,7 +115,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="selectOrGroupClause"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             SelectOrGroupClauseSyntax selectOrGroupClause,
@@ -138,7 +131,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="attribute"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             AttributeSyntax attribute,
@@ -155,7 +147,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="constructorInitializer"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             ConstructorInitializerSyntax constructorInitializer,
@@ -172,7 +163,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
@@ -189,7 +179,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="selectOrGroupClause"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             SelectOrGroupClauseSyntax selectOrGroupClause,
@@ -267,7 +256,6 @@ namespace Roslynator.CSharp
         /// <param name="allowParams"></param>
         /// <param name="allowCandidate"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static IParameterSymbol DetermineParameter(
             this SemanticModel semanticModel,
             ArgumentSyntax argument,
@@ -293,7 +281,6 @@ namespace Roslynator.CSharp
         /// <param name="allowParams"></param>
         /// <param name="allowCandidate"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static IParameterSymbol DetermineParameter(
             this SemanticModel semanticModel,
             AttributeArgumentSyntax attributeArgument,
@@ -317,7 +304,6 @@ namespace Roslynator.CSharp
         /// <param name="typeSymbol"></param>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static bool IsDefaultValue(
             this SemanticModel semanticModel,
             ITypeSymbol typeSymbol,
@@ -563,7 +549,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ExtensionMethodSymbolInfo GetExtensionMethodInfo(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
@@ -589,7 +574,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ExtensionMethodSymbolInfo GetReducedExtensionMethodInfo(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
@@ -613,7 +597,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static IMethodSymbol GetMethodSymbol(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,
@@ -643,7 +626,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="expression"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static bool HasConstantValue(
             this SemanticModel semanticModel,
             ExpressionSyntax expression,

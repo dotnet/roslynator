@@ -30,7 +30,7 @@
 | Formatting | [Add new line before enum member](../../docs/analyzers/RCS1025.md) | RCS1025 | None |
 | Formatting | [Add new line before statement](../../docs/analyzers/RCS1026.md) | RCS1026 | None |
 | Formatting | [Format accessor list](../../docs/analyzers/RCS1024.md) | RCS1024 | None |
-| Formatting | [Format binary operator on next line](../../docs/analyzers/RCS1029.md) | RCS1029 | Info |
+| Formatting | [Format binary operator on next line](../../docs/analyzers/RCS1029.md) | RCS1029 | None |
 | Formatting | [Format conditional expression (format ? and : on next line)](../../docs/analyzers/RCS1184.md) | RCS1184 | None |
 | Formatting | [Format declaration braces](../../docs/analyzers/RCS1076.md) | RCS1076 | Hidden |
 | Formatting | [Format documentation summary on a single line](../../docs/analyzers/RCS1100.md) | RCS1100 | None |
@@ -66,7 +66,7 @@
 | Performance | [Optimize StringBuilder.Append/AppendLine call](../../docs/analyzers/RCS1197.md) | RCS1197 | Info |
 | Performance | [Use bitwise operation instead of calling 'HasFlag'](../../docs/analyzers/RCS1096.md) | RCS1096 | Info |
 | Performance | [Use 'Count/Length' property instead of 'Any' method](../../docs/analyzers/RCS1080.md) | RCS1080 | Info |
-| Readability | [Add default access modifier](../../docs/analyzers/RCS1018.md) | RCS1018 | Info |
+| Readability | [Add accessibility modifiers](../../docs/analyzers/RCS1018.md) | RCS1018 | Info |
 | Readability | [Add or remove region name](../../docs/analyzers/RCS1189.md) | RCS1189 | Hidden |
 | Readability | [Add parentheses according to operator precedence](../../docs/analyzers/RCS1123.md) | RCS1123 | Info |
 | Readability | [Add 'static' modifier to all partial class declarations](../../docs/analyzers/RCS1108.md) | RCS1108 | Info |
@@ -75,6 +75,7 @@
 | Readability | [Avoid nested ?: operators](../../docs/analyzers/RCS1238.md) | RCS1238 | Hidden |
 | Readability | [Avoid 'null' on the left side of a binary expression](../../docs/analyzers/RCS1098.md) | RCS1098 | Info |
 | Readability | [Avoid usage of using alias directive](../../docs/analyzers/RCS1056.md) | RCS1056 | None |
+| Readability | [Convert interpolated string to concatenation](../../docs/analyzers/RCS1217.md) | RCS1217 | Hidden |
 | Readability | [Declare each attribute separately](../../docs/analyzers/RCS1052.md) | RCS1052 | None |
 | Readability | [Declare enum value as combination of names](../../docs/analyzers/RCS1191.md) | RCS1191 | Info |
 | Readability | [Declare using directive on top level](../../docs/analyzers/RCS1094.md) | RCS1094 | None |
@@ -86,7 +87,6 @@
 | Readability | [Order modifiers](../../docs/analyzers/RCS1019.md) | RCS1019 | None |
 | Readability | [Order named arguments according to the order of parameters](../../docs/analyzers/RCS1205.md) | RCS1205 | Info |
 | Readability | [Order type parameter constraints](../../docs/analyzers/RCS1209.md) | RCS1209 | Info |
-| Readability | [Replace interpolated string with concatenation](../../docs/analyzers/RCS1217.md) | RCS1217 | Hidden |
 | Readability | [Simplify code branching](../../docs/analyzers/RCS1218.md) | RCS1218 | Info |
 | Readability | [Sort enum members](../../docs/analyzers/RCS1154.md) | RCS1154 | Info |
 | Readability | [Split variable declaration](../../docs/analyzers/RCS1081.md) | RCS1081 | None |
@@ -143,6 +143,8 @@
 | Redundancy | [Unused this parameter](../../docs/analyzers/RCS1175.md) | RCS1175 | Info |
 | Redundancy | [Unused type parameter](../../docs/analyzers/RCS1164.md) | RCS1164 | Info |
 | Simplification | [Combine 'Enumerable.Where' method chain](../../docs/analyzers/RCS1112.md) | RCS1112 | Info |
+| Simplification | [Convert 'if' to assignment](../../docs/analyzers/RCS1103.md) | RCS1103 | Info |
+| Simplification | [Convert 'if' to 'return' statement](../../docs/analyzers/RCS1073.md) | RCS1073 | Info |
 | Simplification | [Inline lazy initialization](../../docs/analyzers/RCS1180.md) | RCS1180 | Info |
 | Simplification | [Inline local variable](../../docs/analyzers/RCS1124.md) | RCS1124 | Hidden |
 | Simplification | [Join string expressions](../../docs/analyzers/RCS1190.md) | RCS1190 | Info |
@@ -150,8 +152,6 @@
 | Simplification | [Merge if statement with nested if statement](../../docs/analyzers/RCS1061.md) | RCS1061 | Hidden |
 | Simplification | [Merge local declaration with assignment](../../docs/analyzers/RCS1127.md) | RCS1127 | Info |
 | Simplification | [Merge switch sections with equivalent content](../../docs/analyzers/RCS1136.md) | RCS1136 | Hidden |
-| Simplification | [Replace if statement with assignment](../../docs/analyzers/RCS1103.md) | RCS1103 | Info |
-| Simplification | [Replace if statement with return statement](../../docs/analyzers/RCS1073.md) | RCS1073 | Info |
 | Simplification | [Simplify boolean comparison](../../docs/analyzers/RCS1049.md) | RCS1049 | Info |
 | Simplification | [Simplify boolean expression](../../docs/analyzers/RCS1199.md) | RCS1199 | Info |
 | Simplification | [Simplify coalesce expression](../../docs/analyzers/RCS1143.md) | RCS1143 | Hidden |

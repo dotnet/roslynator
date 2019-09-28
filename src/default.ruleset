@@ -17,7 +17,7 @@
     <Rule Id="RCS1015" Action="Info" /> <!-- Use nameof operator. -->
     <Rule Id="RCS1016" Action="None" /> <!-- Use expression-bodied member. -->
     <Rule Id="RCS1017" Action="None" /> <!-- Avoid multiline expression body. -->
-    <Rule Id="RCS1018" Action="Info" /> <!-- Add default access modifier. -->
+    <Rule Id="RCS1018" Action="Info" /> <!-- Add accessibility modifiers. -->
     <Rule Id="RCS1019" Action="None" /> <!-- Order modifiers. -->
     <Rule Id="RCS1020" Action="Info" /> <!-- Simplify Nullable<T> to T?. -->
     <Rule Id="RCS1021" Action="Info" /> <!-- Simplify lambda expression. -->
@@ -28,7 +28,7 @@
     <Rule Id="RCS1026" Action="None" /> <!-- Add new line before statement. -->
     <Rule Id="RCS1027" Action="None" /> <!-- Add new line before embedded statement. -->
     <Rule Id="RCS1028" Action="None" /> <!-- Add new line after switch label. -->
-    <Rule Id="RCS1029" Action="Info" /> <!-- Format binary operator on next line. -->
+    <Rule Id="RCS1029" Action="None" /> <!-- Format binary operator on next line. -->
     <Rule Id="RCS1030" Action="None" /> <!-- Add empty line after embedded statement. -->
     <Rule Id="RCS1031" Action="Hidden" /> <!-- Remove unnecessary braces. -->
     <Rule Id="RCS1032" Action="Info" /> <!-- Remove redundant parentheses. -->
@@ -72,7 +72,7 @@
     <Rule Id="RCS1070" Action="Hidden" /> <!-- Remove redundant default switch section. -->
     <Rule Id="RCS1071" Action="Hidden" /> <!-- Remove redundant base constructor call. -->
     <Rule Id="RCS1072" Action="Info" /> <!-- Remove empty namespace declaration. -->
-    <Rule Id="RCS1073" Action="Info" /> <!-- Replace if statement with return statement. -->
+    <Rule Id="RCS1073" Action="Info" /> <!-- Convert 'if' to 'return' statement. -->
     <Rule Id="RCS1074" Action="Hidden" /> <!-- Remove redundant constructor. -->
     <Rule Id="RCS1075" Action="Warning" /> <!-- Avoid empty catch clause that catches System.Exception. -->
     <Rule Id="RCS1076" Action="Hidden" /> <!-- Format declaration braces. -->
@@ -102,7 +102,7 @@
     <Rule Id="RCS1100" Action="None" /> <!-- Format documentation summary on a single line. -->
     <Rule Id="RCS1101" Action="None" /> <!-- Format documentation summary on multiple lines. -->
     <Rule Id="RCS1102" Action="Warning" /> <!-- Make class static. -->
-    <Rule Id="RCS1103" Action="Info" /> <!-- Replace if statement with assignment. -->
+    <Rule Id="RCS1103" Action="Info" /> <!-- Convert 'if' to assignment. -->
     <Rule Id="RCS1104" Action="Info" /> <!-- Simplify conditional expression. -->
     <Rule Id="RCS1105" Action="Info" /> <!-- Unncessary interpolation. -->
     <Rule Id="RCS1106" Action="Info" /> <!-- Remove empty destructor. -->
@@ -216,7 +216,7 @@
     <Rule Id="RCS1214" Action="Info" /> <!-- Unnecessary interpolated string. -->
     <Rule Id="RCS1215" Action="Warning" /> <!-- Expression is always equal to true/false. -->
     <Rule Id="RCS1216" Action="Info" /> <!-- Unnecessary unsafe context. -->
-    <Rule Id="RCS1217" Action="Hidden" /> <!-- Replace interpolated string with concatenation. -->
+    <Rule Id="RCS1217" Action="Hidden" /> <!-- Convert interpolated string to concatenation. -->
     <Rule Id="RCS1218" Action="Info" /> <!-- Simplify code branching. -->
     <Rule Id="RCS1219" Action="None" /> <!-- Call 'Enumerable.Skip' and 'Enumerable.Any' instead of 'Enumerable.Count'. -->
     <Rule Id="RCS1220" Action="Info" /> <!-- Use pattern matching instead of combination of 'is' operator and cast operator. -->

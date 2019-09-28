@@ -28,7 +28,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="block"></param>
         /// <param name="span"></param>
-        /// <returns></returns>
         public static StatementListSelection Create(BlockSyntax block, TextSpan span)
         {
             if (block == null)
@@ -42,7 +41,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="switchSection"></param>
         /// <param name="span"></param>
-        /// <returns></returns>
         public static StatementListSelection Create(SwitchSectionSyntax switchSection, TextSpan span)
         {
             if (switchSection == null)
@@ -56,7 +54,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="statementsInfo"></param>
         /// <param name="span"></param>
-        /// <returns></returns>
         public static StatementListSelection Create(in StatementListInfo statementsInfo, TextSpan span)
         {
             return CreateImpl(statementsInfo.Statements, span);

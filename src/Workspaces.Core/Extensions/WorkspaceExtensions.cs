@@ -22,7 +22,6 @@ namespace Roslynator
         /// <param name="document"></param>
         /// <param name="textChange"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> WithTextChangeAsync(
             this Document document,
             TextChange textChange,
@@ -44,7 +43,6 @@ namespace Roslynator
         /// <param name="document"></param>
         /// <param name="textChanges"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> WithTextChangesAsync(
             this Document document,
             TextChange[] textChanges,
@@ -69,7 +67,6 @@ namespace Roslynator
         /// <param name="document"></param>
         /// <param name="textChanges"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> WithTextChangesAsync(
             this Document document,
             IEnumerable<TextChange> textChanges,
@@ -95,7 +92,6 @@ namespace Roslynator
         /// <param name="oldNode"></param>
         /// <param name="newNode"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> ReplaceNodeAsync(
             this Document document,
             SyntaxNode oldNode,
@@ -125,7 +121,6 @@ namespace Roslynator
         /// <param name="oldNode"></param>
         /// <param name="newNodes"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> ReplaceNodeAsync(
             this Document document,
             SyntaxNode oldNode,
@@ -156,7 +151,6 @@ namespace Roslynator
         /// <param name="nodes"></param>
         /// <param name="computeReplacementNode"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> ReplaceNodesAsync<TNode>(
             this Document document,
             IEnumerable<TNode> nodes,
@@ -186,7 +180,6 @@ namespace Roslynator
         /// <param name="oldToken"></param>
         /// <param name="newToken"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> ReplaceTokenAsync(
             this Document document,
             SyntaxToken oldToken,
@@ -210,7 +203,6 @@ namespace Roslynator
         /// <param name="oldToken"></param>
         /// <param name="newTokens"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> ReplaceTokenAsync(
             this Document document,
             SyntaxToken oldToken,
@@ -237,7 +229,6 @@ namespace Roslynator
         /// <param name="oldTrivia"></param>
         /// <param name="newTrivia"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> ReplaceTriviaAsync(
             this Document document,
             SyntaxTrivia oldTrivia,
@@ -261,7 +252,6 @@ namespace Roslynator
         /// <param name="oldTrivia"></param>
         /// <param name="newTrivia"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> ReplaceTriviaAsync(
             this Document document,
             SyntaxTrivia oldTrivia,
@@ -288,7 +278,6 @@ namespace Roslynator
         /// <param name="nodeInList"></param>
         /// <param name="newNode"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static Task<Document> InsertNodeBeforeAsync(
             this Document document,
             SyntaxNode nodeInList,
@@ -308,7 +297,6 @@ namespace Roslynator
         /// <param name="nodeInList"></param>
         /// <param name="newNodes"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> InsertNodesBeforeAsync(
             this Document document,
             SyntaxNode nodeInList,
@@ -338,7 +326,6 @@ namespace Roslynator
         /// <param name="nodeInList"></param>
         /// <param name="newNode"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static Task<Document> InsertNodeAfterAsync(
             this Document document,
             SyntaxNode nodeInList,
@@ -358,7 +345,6 @@ namespace Roslynator
         /// <param name="nodeInList"></param>
         /// <param name="newNodes"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> InsertNodesAfterAsync(
             this Document document,
             SyntaxNode nodeInList,
@@ -388,7 +374,6 @@ namespace Roslynator
         /// <param name="node"></param>
         /// <param name="options"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemoveNodeAsync(
             this Document document,
             SyntaxNode node,
@@ -415,7 +400,6 @@ namespace Roslynator
         /// <param name="nodes"></param>
         /// <param name="options"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Document> RemoveNodesAsync(
             this Document document,
             IEnumerable<SyntaxNode> nodes,
@@ -450,7 +434,6 @@ namespace Roslynator
         /// <param name="oldNode"></param>
         /// <param name="newNode"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Solution> ReplaceNodeAsync<TNode>(
             this Solution solution,
             TNode oldNode,
@@ -483,7 +466,6 @@ namespace Roslynator
         /// <param name="nodes"></param>
         /// <param name="computeReplacementNodes"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static async Task<Solution> ReplaceNodesAsync<TNode>(
             this Solution solution,
             IEnumerable<TNode> nodes,

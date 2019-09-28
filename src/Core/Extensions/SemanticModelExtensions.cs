@@ -40,7 +40,6 @@ namespace Roslynator
         /// <param name="semanticModel"></param>
         /// <param name="position"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static INamedTypeSymbol GetEnclosingNamedType(
             this SemanticModel semanticModel,
             int position,
@@ -56,7 +55,6 @@ namespace Roslynator
         /// <param name="semanticModel"></param>
         /// <param name="position"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static TSymbol GetEnclosingSymbol<TSymbol>(
             this SemanticModel semanticModel,
             int position,
@@ -84,7 +82,6 @@ namespace Roslynator
         /// <param name="semanticModel"></param>
         /// <param name="node"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ISymbol GetSymbol(
             this SemanticModel semanticModel,
             SyntaxNode node,
@@ -99,7 +96,6 @@ namespace Roslynator
         /// <param name="semanticModel"></param>
         /// <param name="node"></param>
         /// <param name="cancellationToken"></param>
-        /// <returns></returns>
         public static ITypeSymbol GetTypeSymbol(
             this SemanticModel semanticModel,
             SyntaxNode node,
@@ -113,7 +109,6 @@ namespace Roslynator
         /// </summary>
         /// <param name="semanticModel"></param>
         /// <param name="fullyQualifiedMetadataName"></param>
-        /// <returns></returns>
         public static INamedTypeSymbol GetTypeByMetadataName(this SemanticModel semanticModel, string fullyQualifiedMetadataName)
         {
             if (semanticModel == null)

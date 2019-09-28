@@ -124,7 +124,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="namespaceOrTypeSymbol"></param>
         /// <param name="format"></param>
-        /// <returns></returns>
         public static TypeSyntax ToTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SymbolDisplayFormat format = null)
         {
             if (namespaceOrTypeSymbol == null)
@@ -147,7 +146,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="position"></param>
         /// <param name="format"></param>
-        /// <returns></returns>
         public static TypeSyntax ToMinimalTypeSyntax(this INamespaceOrTypeSymbol namespaceOrTypeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
             if (namespaceOrTypeSymbol == null)
@@ -173,7 +171,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="namespaceSymbol"></param>
         /// <param name="format"></param>
-        /// <returns></returns>
         public static TypeSyntax ToTypeSyntax(this INamespaceSymbol namespaceSymbol, SymbolDisplayFormat format = null)
         {
             if (namespaceSymbol == null)
@@ -191,7 +188,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="position"></param>
         /// <param name="format"></param>
-        /// <returns></returns>
         public static TypeSyntax ToMinimalTypeSyntax(this INamespaceSymbol namespaceSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
             if (namespaceSymbol == null)
@@ -279,7 +275,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="typeSymbol"></param>
         /// <param name="format"></param>
-        /// <returns></returns>
         public static TypeSyntax ToTypeSyntax(this ITypeSymbol typeSymbol, SymbolDisplayFormat format = null)
         {
             if (typeSymbol == null)
@@ -297,7 +292,6 @@ namespace Roslynator.CSharp
         /// <param name="semanticModel"></param>
         /// <param name="position"></param>
         /// <param name="format"></param>
-        /// <returns></returns>
         public static TypeSyntax ToMinimalTypeSyntax(this ITypeSymbol typeSymbol, SemanticModel semanticModel, int position, SymbolDisplayFormat format = null)
         {
             if (typeSymbol == null)
@@ -321,7 +315,6 @@ namespace Roslynator.CSharp
         /// Returns true if the specified type can be used to declare constant value.
         /// </summary>
         /// <param name="typeSymbol"></param>
-        /// <returns></returns>
         public static bool SupportsConstantValue(this ITypeSymbol typeSymbol)
         {
             if (typeSymbol == null)

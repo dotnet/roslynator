@@ -122,35 +122,35 @@
     <Refactoring Id="RR0119" IsEnabled="true" /> <!-- Replace conditional expression with expression -->
     <Refactoring Id="RR0120" IsEnabled="true" /> <!-- Convert ?: to if-else -->
     <Refactoring Id="RR0121" IsEnabled="true" /> <!-- Replace constant with field -->
-    <Refactoring Id="RR0123" IsEnabled="true" /> <!-- Replace do statement with while statement -->
+    <Refactoring Id="RR0123" IsEnabled="true" /> <!-- Convert 'do' to 'while' -->
     <Refactoring Id="RR0124" IsEnabled="true" /> <!-- Replace equals expression with string.Equals -->
     <Refactoring Id="RR0125" IsEnabled="true" /> <!-- Replace equals expression with string.IsNullOrEmpty -->
     <Refactoring Id="RR0126" IsEnabled="true" /> <!-- Replace equals expression with string.IsNullOrWhiteSpace -->
     <Refactoring Id="RR0127" IsEnabled="true" /> <!-- Inline constant value -->
     <Refactoring Id="RR0128" IsEnabled="true" /> <!-- Use constant instead of field -->
-    <Refactoring Id="RR0129" IsEnabled="true" /> <!-- Replace foreach statement with for statement -->
-    <Refactoring Id="RR0130" IsEnabled="true" /> <!-- Replace for statement with foreach statement -->
-    <Refactoring Id="RR0131" IsEnabled="true" /> <!-- Replace for statement with while statement -->
-    <Refactoring Id="RR0132" IsEnabled="true" /> <!-- Replace hexadecimal literal with decimal literal -->
-    <Refactoring Id="RR0133" IsEnabled="true" /> <!-- Replace if with switch -->
+    <Refactoring Id="RR0129" IsEnabled="true" /> <!-- Convert 'foreach' to 'for' -->
+    <Refactoring Id="RR0130" IsEnabled="true" /> <!-- Convert 'for' to 'foreach' -->
+    <Refactoring Id="RR0131" IsEnabled="true" /> <!-- Convert 'for' to 'while' -->
+    <Refactoring Id="RR0132" IsEnabled="true" /> <!-- Convert hexadecimal literal to decimal literal -->
+    <Refactoring Id="RR0133" IsEnabled="true" /> <!-- Convert 'if' to 'switch' -->
     <Refactoring Id="RR0134" IsEnabled="true" /> <!-- Invert prefix/postfix unary operator -->
     <Refactoring Id="RR0135" IsEnabled="true" /> <!-- Replace interpolated string with interpolation expression -->
-    <Refactoring Id="RR0136" IsEnabled="true" /> <!-- Replace interpolated string with string literal -->
+    <Refactoring Id="RR0136" IsEnabled="true" /> <!-- Convert interpolated string to string literal -->
     <Refactoring Id="RR0137" IsEnabled="true" /> <!-- Replace method group with lambda -->
     <Refactoring Id="RR0138" IsEnabled="false" /> <!-- Replace method with property -->
     <Refactoring Id="RR0139" IsEnabled="true" /> <!-- Replace null literal expression with default expression -->
     <Refactoring Id="RR0140" IsEnabled="true" /> <!-- Replace prefix operator to postfix operator -->
     <Refactoring Id="RR0141" IsEnabled="true" /> <!-- Replace property with method -->
-    <Refactoring Id="RR0142" IsEnabled="true" /> <!-- Replace regular string literal with verbatim string literal -->
-    <Refactoring Id="RR0143" IsEnabled="true" /> <!-- Replace (yield) return statement with if-else -->
+    <Refactoring Id="RR0142" IsEnabled="true" /> <!-- Convert regular string literal to verbatim string literal -->
+    <Refactoring Id="RR0143" IsEnabled="true" /> <!-- Convert '(yield) return' to 'if' -->
     <Refactoring Id="RR0144" IsEnabled="true" /> <!-- Call string.IndexOf instead of string.Contains -->
-    <Refactoring Id="RR0145" IsEnabled="true" /> <!-- Replace string.Format with interpolated string -->
-    <Refactoring Id="RR0147" IsEnabled="true" /> <!-- Replace switch with if -->
-    <Refactoring Id="RR0148" IsEnabled="true" /> <!-- Replace verbatim string literal with regular string literal -->
-    <Refactoring Id="RR0149" IsEnabled="true" /> <!-- Replace verbatim string literal with regular string literals -->
+    <Refactoring Id="RR0145" IsEnabled="true" /> <!-- Convert 'string.Format' to interpolated string -->
+    <Refactoring Id="RR0147" IsEnabled="true" /> <!-- Convert 'switch to 'if' -->
+    <Refactoring Id="RR0148" IsEnabled="true" /> <!-- Convert verbatim string literal to regular string literal -->
+    <Refactoring Id="RR0149" IsEnabled="true" /> <!-- Convert verbatim string literal to regular string literals -->
     <Refactoring Id="RR0150" IsEnabled="true" /> <!-- Convert 'while' statement to 'do' statement -->
     <Refactoring Id="RR0151" IsEnabled="true" /> <!-- Convert 'while' statement to 'for' statement -->
-    <Refactoring Id="RR0152" IsEnabled="true" /> <!-- Reverse for loop -->
+    <Refactoring Id="RR0152" IsEnabled="true" /> <!-- Reverse 'for' loop -->
     <Refactoring Id="RR0153" IsEnabled="true" /> <!-- Simplify if -->
     <Refactoring Id="RR0154" IsEnabled="true" /> <!-- Simplify lambda expression -->
     <Refactoring Id="RR0155" IsEnabled="true" /> <!-- Sort member declarations -->
@@ -169,7 +169,7 @@
     <Refactoring Id="RR0168" IsEnabled="true" /> <!-- Use "" instead of string.Empty -->
     <Refactoring Id="RR0169" IsEnabled="true" /> <!-- Use expression-bodied member -->
     <Refactoring Id="RR0170" IsEnabled="true" /> <!-- Use lambda expression instead of anonymous method -->
-    <Refactoring Id="RR0171" IsEnabled="false" /> <!-- Use string.Empty instead of "" -->
+    <Refactoring Id="RR0171" IsEnabled="false" /> <!-- Convert "" to string.Empty -->
     <Refactoring Id="RR0172" IsEnabled="true" /> <!-- Wrap in condition -->
     <Refactoring Id="RR0173" IsEnabled="true" /> <!-- Wrap in else clause -->
     <Refactoring Id="RR0174" IsEnabled="true" /> <!-- Wrap in #if directive -->
@@ -186,12 +186,12 @@
     <Refactoring Id="RR0185" IsEnabled="true" /> <!-- Replace object creation with default value -->
     <Refactoring Id="RR0186" IsEnabled="true" /> <!-- Change accessibility -->
     <Refactoring Id="RR0187" IsEnabled="true" /> <!-- Format constraint clauses -->
-    <Refactoring Id="RR0188" IsEnabled="false" /> <!-- Replace foreach with for and reverse loop -->
+    <Refactoring Id="RR0188" IsEnabled="false" /> <!-- Convert 'foreach' to 'for' and reverse loop -->
     <Refactoring Id="RR0189" IsEnabled="true" /> <!-- Invert if -->
     <Refactoring Id="RR0190" IsEnabled="true" /> <!-- Split if-else -->
     <Refactoring Id="RR0191" IsEnabled="true" /> <!-- Use C# 6.0 dictionary initializer -->
     <Refactoring Id="RR0192" IsEnabled="true" /> <!-- Convert comment to documentation comment -->
-    <Refactoring Id="RR0193" IsEnabled="true" /> <!-- Replace interpolated string with concatenation -->
+    <Refactoring Id="RR0193" IsEnabled="true" /> <!-- Convert interpolated string to concatenation -->
     <Refactoring Id="RR0194" IsEnabled="true" /> <!-- Split declaration and initialization -->
     <Refactoring Id="RR0195" IsEnabled="true" /> <!-- Add member to interface -->
     <Refactoring Id="RR0196" IsEnabled="true" /> <!-- Merge if with parent if -->
@@ -199,12 +199,12 @@
     <Refactoring Id="RR0198" IsEnabled="true" /> <!-- Inline property -->
     <Refactoring Id="RR0199" IsEnabled="true" /> <!-- Remove enum member value(s) -->
     <Refactoring Id="RR0200" IsEnabled="true" /> <!-- Uncomment multi-line comment -->
-    <Refactoring Id="RR0201" IsEnabled="true" /> <!-- Replace interpolated string with string.Format -->
+    <Refactoring Id="RR0201" IsEnabled="true" /> <!-- Convert interpolated string to 'string.Format' -->
     <Refactoring Id="RR0202" IsEnabled="true" /> <!-- Move unsafe context to containing declaration -->
     <Refactoring Id="RR0203" IsEnabled="true" /> <!-- Extract event handler method -->
     <Refactoring Id="RR0204" IsEnabled="true" /> <!-- Generate property for DebuggerDisplay attribute -->
     <Refactoring Id="RR0205" IsEnabled="true" /> <!-- Add empty line between declarations -->
-    <Refactoring Id="RR0206" IsEnabled="true" /> <!-- Replace foreach with enumerator -->
+    <Refactoring Id="RR0206" IsEnabled="true" /> <!-- Use enumerator explicitly -->
     <Refactoring Id="RR0207" IsEnabled="true" /> <!-- Sort case labels -->
     <Refactoring Id="RR0208" IsEnabled="true" /> <!-- Add tag to documentation comment -->
     <Refactoring Id="RR0209" IsEnabled="true" /> <!-- Remove async/await -->

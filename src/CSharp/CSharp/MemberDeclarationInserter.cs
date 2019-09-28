@@ -20,7 +20,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="classDeclaration"></param>
         /// <param name="member"></param>
-        /// <returns></returns>
         public ClassDeclarationSyntax Insert(ClassDeclarationSyntax classDeclaration, MemberDeclarationSyntax member)
         {
             if (classDeclaration == null)
@@ -37,7 +36,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="compilationUnit"></param>
         /// <param name="member"></param>
-        /// <returns></returns>
         public CompilationUnitSyntax Insert(CompilationUnitSyntax compilationUnit, MemberDeclarationSyntax member)
         {
             if (compilationUnit == null)
@@ -54,7 +52,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="interfaceDeclaration"></param>
         /// <param name="member"></param>
-        /// <returns></returns>
         public InterfaceDeclarationSyntax Insert(InterfaceDeclarationSyntax interfaceDeclaration, MemberDeclarationSyntax member)
         {
             if (interfaceDeclaration == null)
@@ -71,7 +68,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="namespaceDeclaration"></param>
         /// <param name="member"></param>
-        /// <returns></returns>
         public NamespaceDeclarationSyntax Insert(NamespaceDeclarationSyntax namespaceDeclaration, MemberDeclarationSyntax member)
         {
             if (namespaceDeclaration == null)
@@ -88,7 +84,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="structDeclaration"></param>
         /// <param name="member"></param>
-        /// <returns></returns>
         public StructDeclarationSyntax Insert(StructDeclarationSyntax structDeclaration, MemberDeclarationSyntax member)
         {
             if (structDeclaration == null)
@@ -105,7 +100,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="typeDeclaration"></param>
         /// <param name="member"></param>
-        /// <returns></returns>
         public TypeDeclarationSyntax Insert(TypeDeclarationSyntax typeDeclaration, MemberDeclarationSyntax member)
         {
             if (typeDeclaration == null)
@@ -122,7 +116,6 @@ namespace Roslynator.CSharp
         /// </summary>
         /// <param name="members"></param>
         /// <param name="member"></param>
-        /// <returns></returns>
         internal SyntaxList<MemberDeclarationSyntax> Insert(SyntaxList<MemberDeclarationSyntax> members, MemberDeclarationSyntax member)
         {
             int index = GetInsertIndex(members, member);
