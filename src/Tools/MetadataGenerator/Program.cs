@@ -78,7 +78,7 @@ namespace Roslynator.CodeGeneration
                 MetadataFile.SaveSourceFiles(sourceFiles, @"..\SourceFiles.xml");
             }
 #endif
-            foreach (AnalyzerMetadata analyzer in analyzers.Concat(codeAnalysisAnalyzers))
+            foreach (AnalyzerMetadata analyzer in codeAnalysisAnalyzers)
             {
                 WriteAllText(
                     $@"..\docs\analyzers\{analyzer.Id}.md",

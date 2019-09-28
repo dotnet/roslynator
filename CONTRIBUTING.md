@@ -12,6 +12,7 @@ Guidelines for contributing to the Roslynator repo.
 
 ## Creating Issues
 
+* **DO** create a new issue rather than commenting a closed issue.
 * **DO** include analyzer/refactoring/error ID in a title (i.e. RCSxxxx, RRxxxx or CSxxxx).
 * **DO** use a descriptive title that identifies the issue or requested feature.
 * **DO** specify a detailed description of the issue or requested feature.
