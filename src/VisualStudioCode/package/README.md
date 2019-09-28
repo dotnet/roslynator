@@ -13,10 +13,10 @@ To make this extension working it is necessary to add following configuration to
   "RoslynExtensionsOptions": {
     "EnableAnalyzersSupport": true,
     "LocationPaths": [
-      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.1.4/roslyn/common",
-      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.1.4/roslyn/analyzers",
-      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.1.4/roslyn/refactorings",
-      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.1.4/roslyn/fixes"
+      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.2.0/roslyn/common",
+      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.2.0/roslyn/analyzers",
+      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.2.0/roslyn/refactorings",
+      "%USERPROFILE%/.vscode/extensions/josefpihrt-vscode.roslynator-2.2.0/roslyn/fixes"
     ]
   }
 }

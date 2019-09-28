@@ -2,7 +2,7 @@
 
 set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2019\Community\MSBuild\Current\Bin\MSBuild"
 set _properties=Configuration=Release,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors=1591,DefineConstants=VSCODE
-set _version=2.1.4.0
+set _version=2.2.0.0
 set _apiVersion=1.0.0.16
 
 dotnet restore --force "..\src\VisualStudioCode.sln"
