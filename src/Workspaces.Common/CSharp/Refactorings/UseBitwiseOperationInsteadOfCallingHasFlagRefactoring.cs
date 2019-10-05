@@ -12,7 +12,7 @@ namespace Roslynator.CSharp.Refactorings
 {
     internal static class UseBitwiseOperationInsteadOfCallingHasFlagRefactoring
     {
-        public const string Title = "Use bitwise operation instead of calling 'HasFlag'";
+        public const string Title = "Use '&' operator";
 
         public static Task<Document> RefactorAsync(
             Document document,
@@ -22,7 +22,7 @@ namespace Roslynator.CSharp.Refactorings
             ParenthesizedExpressionSyntax parenthesizedExpression = ParenthesizedExpression(
                 BitwiseAndExpression(
                     ((MemberAccessExpressionSyntax)invocation.Expression).Expression.Parenthesize(),
-                    invocation.ArgumentList.Arguments[0].Expression).Parenthesize());
+                    invocation.ArgumentList.Arguments[0].Expression.Parenthesize()).Parenthesize());
 
             var binaryExpressionKind = SyntaxKind.NotEqualsExpression;
             SyntaxNode nodeToReplace = invocation;

@@ -48,6 +48,36 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
+        public async Task Test_HasFlag_Parentheses()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ([|options.HasFlag(StringSplitOptions.None | StringSplitOptions.RemoveEmptyEntries)|]) { }
+    }
+}
+", @"
+using System;
+
+class C
+{
+    void M()
+    {
+        var options = StringSplitOptions.None;
+
+        if ((options & (StringSplitOptions.None | StringSplitOptions.RemoveEmptyEntries)) != 0) { }
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseBitwiseOperationInsteadOfCallingHasFlag)]
         public async Task Test_NotHasFlag()
         {
             await VerifyDiagnosticAndFixAsync(@"
