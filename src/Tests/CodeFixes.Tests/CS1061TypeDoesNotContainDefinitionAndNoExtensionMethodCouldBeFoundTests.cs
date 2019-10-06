@@ -197,5 +197,33 @@ class C
 }
 ", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
         }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        public async Task TestNoFix_ConditionalAccess()
+        {
+            await VerifyNoFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    object M() => new List<string>()?.OrderBy(e => e).Value
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
+
+        [Fact, Trait(Traits.CodeFix, CompilerDiagnosticIdentifiers.TypeDoesNotContainDefinitionAndNoExtensionMethodCouldBeFound)]
+        public async Task TestNoFix_ConditionalAccess2()
+        {
+            await VerifyNoFixAsync(@"
+using System.Collections.Generic;
+using System.Linq;
+
+class C
+{
+    object M() => new List<string>()?.OrderBy(e => e).GetValue()
+}
+", equivalenceKey: EquivalenceKey.Create(DiagnosticId));
+        }
     }
 }
