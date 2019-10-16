@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Linq;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -168,7 +169,8 @@ namespace Roslynator.CSharp.Analysis
                     }
                 case SyntaxKind.Interpolation:
                     {
-                        if (expression.Kind() != SyntaxKind.ConditionalExpression
+                        if (!expression.IsKind(SyntaxKind.ConditionalExpression)
+                            && !expression.DescendantNodes().Any(f => f.IsKind(SyntaxKind.AliasQualifiedName))
                             && ((InterpolationSyntax)parent).Expression == parenthesizedExpression)
                         {
                             ReportDiagnostic();

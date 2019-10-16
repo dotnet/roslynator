@@ -513,5 +513,37 @@ class C
 }
 ");
         }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.RemoveRedundantParentheses)]
+        public async Task TestNoDiagnostic_AliasQualifiedNameInInterpolatedString()
+        {
+            await VerifyNoDiagnosticAsync(@"
+namespace N
+{
+    class C
+    {
+        static string M1() => $""{(global::N.C.M1())}"";
+        static string M2() => $""{(global::N.C.P)}"";
+        static string M3() => $""{(global::N.C.I.IM())}"";
+        static string M4() => $""{(global::N.C.I.IP)}"";
+        static string M5() => $""{(global::N.C.I[0])}"";
+        static string M6() => $""{(global::N.C.I?.IM())}"";
+        static string M7() => $""{(global::N.C.I?.IP)}"";
+        static string M8() => $""{(global::N.C.I?[0])}"";
+
+        public static C I { get; } = new C();
+
+        string IM() => null;
+
+        public static string P { get; }
+
+        public string IP { get; }
+
+        public string this[int index] => null;
+    }
+}
+");
+        }
+
     }
 }
