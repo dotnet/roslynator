@@ -66,6 +66,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
                 _cachedInstance = null;
                 walker.Result = false;
                 walker.Span = span;
+
                 return walker;
             }
 

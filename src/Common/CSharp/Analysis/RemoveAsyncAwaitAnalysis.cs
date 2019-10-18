@@ -14,7 +14,7 @@ using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Analysis
 {
-    internal readonly struct RemoveAsyncAwaitAnalysis
+    internal struct RemoveAsyncAwaitAnalysis : IDisposable
     {
         private RemoveAsyncAwaitAnalysis(AwaitExpressionWalker walker)
         {
@@ -208,8 +208,6 @@ namespace Roslynator.CSharp.Analysis
                             }
                         }
 
-                        AwaitExpressionWalker.Free(walker);
-
                         return default;
                     }
                 case SyntaxKind.IfStatement:
@@ -224,8 +222,6 @@ namespace Roslynator.CSharp.Analysis
                         {
                             return new RemoveAsyncAwaitAnalysis(walker);
                         }
-
-                        AwaitExpressionWalker.Free(walker);
 
                         return default;
                     }
@@ -242,8 +238,6 @@ namespace Roslynator.CSharp.Analysis
                         {
                             return new RemoveAsyncAwaitAnalysis(walker);
                         }
-
-                        AwaitExpressionWalker.Free(walker);
 
                         return default;
                     }
@@ -439,6 +433,14 @@ namespace Roslynator.CSharp.Analysis
             }
 
             throw new InvalidOperationException();
+        }
+
+        public void Dispose()
+        {
+            if (Walker != null)
+            {
+                AwaitExpressionWalker.Free(Walker);
+            }
         }
     }
 }

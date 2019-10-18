@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -194,27 +195,27 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             }
         }
 
-        public static UnusedParameterWalker GetInstance(SemanticModel semanticModel, CancellationToken cancellationToken, bool isIndexer = false)
+        public static UnusedParameterWalker GetInstance()
         {
             UnusedParameterWalker walker = _cachedInstance;
 
             if (walker != null)
             {
+                Debug.Assert(walker.Nodes.Count == 0);
+                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.CancellationToken == default);
+
                 _cachedInstance = null;
-            }
-            else
-            {
-                walker = new UnusedParameterWalker();
+                return walker;
             }
 
-            walker.SetValues(semanticModel, cancellationToken, isIndexer);
-
-            return walker;
+            return new UnusedParameterWalker();
         }
 
         public static void Free(UnusedParameterWalker walker)
         {
             walker.SetValues(default(SemanticModel), default(CancellationToken));
+
             _cachedInstance = walker;
         }
     }

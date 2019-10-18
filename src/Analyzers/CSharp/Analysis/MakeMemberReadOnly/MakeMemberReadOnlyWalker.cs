@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -33,6 +34,10 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
             if (walker != null)
             {
+                Debug.Assert(walker.Symbols.Count == 0);
+                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.CancellationToken == default);
+
                 _cachedInstance = null;
                 return walker;
             }
@@ -42,11 +47,11 @@ namespace Roslynator.CSharp.Analysis.MakeMemberReadOnly
 
         public static void Free(MakeMemberReadOnlyWalker walker)
         {
-            walker.Clear();
+            walker.Reset();
             _cachedInstance = walker;
         }
 
-        private void Clear()
+        private void Reset()
         {
             Symbols.Clear();
             SemanticModel = null;

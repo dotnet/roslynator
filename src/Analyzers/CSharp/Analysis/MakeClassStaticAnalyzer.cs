@@ -74,10 +74,6 @@ namespace Roslynator.CSharp.Analysis
 
             bool canBeMadeStatic = walker.CanBeMadeStatic;
 
-            walker.Symbol = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-
             MakeClassStaticWalker.Free(walker);
 
             if (canBeMadeStatic)
@@ -201,6 +197,10 @@ namespace Roslynator.CSharp.Analysis
 
                 if (walker != null)
                 {
+                    Debug.Assert(walker.Symbol == null);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+
                     _cachedInstance = null;
                     return walker;
                 }
@@ -210,6 +210,10 @@ namespace Roslynator.CSharp.Analysis
 
             public static void Free(MakeClassStaticWalker walker)
             {
+                walker.Symbol = null;
+                walker.SemanticModel = null;
+                walker.CancellationToken = default;
+
                 _cachedInstance = walker;
             }
         }

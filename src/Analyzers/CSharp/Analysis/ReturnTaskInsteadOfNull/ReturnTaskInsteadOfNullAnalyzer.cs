@@ -343,7 +343,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
             if (body == null)
                 return;
 
-            ReturnTaskInsteadOfNullWalker walker = ReturnTaskInsteadOfNullWalkerCache.GetInstance();
+            ReturnTaskInsteadOfNullWalker walker = ReturnTaskInsteadOfNullWalker.GetInstance();
 
             walker.VisitBlock(body);
 
@@ -353,7 +353,7 @@ namespace Roslynator.CSharp.Analysis.ReturnTaskInsteadOfNull
                     ReportDiagnostic(context, expression);
             }
 
-            ReturnTaskInsteadOfNullWalkerCache.Free(walker);
+            ReturnTaskInsteadOfNullWalker.Free(walker);
         }
 
         private static void ReportDiagnostic(SyntaxNodeAnalysisContext context, ExpressionSyntax expression)

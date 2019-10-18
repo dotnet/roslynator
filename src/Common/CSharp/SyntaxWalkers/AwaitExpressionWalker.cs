@@ -10,6 +10,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
 {
     internal class AwaitExpressionWalker : CSharpSyntaxNodeWalker
     {
+        [ThreadStatic]
+        private static AwaitExpressionWalker _cachedInstance;
+
         private bool _shouldVisit = true;
 
         public HashSet<AwaitExpressionSyntax> AwaitExpressions { get; } = new HashSet<AwaitExpressionSyntax>();
@@ -17,6 +20,13 @@ namespace Roslynator.CSharp.SyntaxWalkers
         private bool StopOnFirstAwaitExpression { get; set; }
 
         protected override bool ShouldVisit => _shouldVisit;
+
+        public void Reset()
+        {
+            _shouldVisit = true;
+            StopOnFirstAwaitExpression = false;
+            AwaitExpressions.Clear();
+        }
 
         public static bool ContainsAwaitExpression(ExpressionSyntax expression)
         {
@@ -98,29 +108,24 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
         }
 
-        [ThreadStatic]
-        private static AwaitExpressionWalker _cachedInstance;
-
         public static AwaitExpressionWalker GetInstance()
         {
             AwaitExpressionWalker walker = _cachedInstance;
 
             if (walker != null)
             {
+                Debug.Assert(walker.AwaitExpressions.Count == 0);
+
                 _cachedInstance = null;
                 return walker;
             }
-            else
-            {
-                return new AwaitExpressionWalker();
-            }
+
+            return new AwaitExpressionWalker();
         }
 
         public static void Free(AwaitExpressionWalker walker)
         {
-            walker._shouldVisit = true;
-            walker.StopOnFirstAwaitExpression = false;
-            walker.AwaitExpressions.Clear();
+            walker.Reset();
 
             _cachedInstance = walker;
         }

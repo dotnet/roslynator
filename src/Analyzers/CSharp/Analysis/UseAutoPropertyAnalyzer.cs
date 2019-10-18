@@ -641,14 +641,15 @@ namespace Roslynator.CSharp.Analysis
 
                 if (walker != null)
                 {
+                    Debug.Assert(walker.FieldSymbol == null);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+
                     _cachedInstance = null;
-                }
-                else
-                {
-                    walker = new UseAutoPropertyWalker();
+                    return walker;
                 }
 
-                return walker;
+                return new UseAutoPropertyWalker();
             }
 
             public static void Free(UseAutoPropertyWalker walker)
