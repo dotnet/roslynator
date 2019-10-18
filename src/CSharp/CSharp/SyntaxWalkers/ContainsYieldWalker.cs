@@ -9,6 +9,9 @@ namespace Roslynator.CSharp.SyntaxWalkers
 {
     internal sealed class ContainsYieldWalker : StatementWalker
     {
+        [ThreadStatic]
+        private static ContainsYieldWalker _cachedInstance;
+
         public ContainsYieldWalker(
             bool searchForYieldBreak = true,
             bool searchForYieldReturn = true)
@@ -33,7 +36,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
             if (statement == null)
                 throw new ArgumentNullException(nameof(statement));
 
-            ContainsYieldWalker walker = Cache.GetInstance();
+            ContainsYieldWalker walker = GetInstance();
             walker.SearchForYieldBreak = searchForYieldBreak;
             walker.SearchForYieldReturn = searchForYieldReturn;
 
@@ -41,7 +44,7 @@ namespace Roslynator.CSharp.SyntaxWalkers
 
             bool success = walker.YieldStatement != null;
 
-            Cache.Free(walker);
+            Free(walker);
 
             return success;
         }
@@ -68,39 +71,28 @@ namespace Roslynator.CSharp.SyntaxWalkers
         {
         }
 
-        private void Reset()
+        public static ContainsYieldWalker GetInstance()
         {
-            SearchForYieldBreak = true;
-            SearchForYieldReturn = true;
-            YieldStatement = null;
-        }
+            ContainsYieldWalker walker = _cachedInstance;
 
-        internal static class Cache
-        {
-            [ThreadStatic]
-            private static ContainsYieldWalker _cachedInstance;
-
-            public static ContainsYieldWalker GetInstance()
+            if (walker != null)
             {
-                ContainsYieldWalker walker = _cachedInstance;
+                Debug.Assert(walker.YieldStatement == null);
 
-                if (walker != null)
-                {
-                    _cachedInstance = null;
-                }
-                else
-                {
-                    walker = new ContainsYieldWalker();
-                }
-
+                _cachedInstance = null;
                 return walker;
             }
 
-            public static void Free(ContainsYieldWalker walker)
-            {
-                walker.Reset();
-                _cachedInstance = walker;
-            }
+            return new ContainsYieldWalker();
+        }
+
+        public static void Free(ContainsYieldWalker walker)
+        {
+            walker.SearchForYieldBreak = true;
+            walker.SearchForYieldReturn = true;
+            walker.YieldStatement = null;
+
+            _cachedInstance = walker;
         }
     }
 }

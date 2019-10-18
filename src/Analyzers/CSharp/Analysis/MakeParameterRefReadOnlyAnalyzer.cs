@@ -167,11 +167,6 @@ namespace Roslynator.CSharp.Analysis
                             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.MakeParameterRefReadOnly, parameter.Identifier);
                     }
                 }
-
-                walker.SemanticModel = null;
-                walker.CancellationToken = default;
-                walker.Parameters.Clear();
-                walker.Reset();
             }
 
             SyntaxWalker.Free(walker);
@@ -207,6 +202,9 @@ namespace Roslynator.CSharp.Analysis
 
             public void Reset()
             {
+                Parameters.Clear();
+                SemanticModel = null;
+                CancellationToken = default;
                 _isInAssignedExpression = false;
                 _localFunctionDepth = 0;
                 _anonymousFunctionDepth = 0;
@@ -292,20 +290,20 @@ namespace Roslynator.CSharp.Analysis
 
                 if (walker != null)
                 {
+                    Debug.Assert(walker.Parameters.Count == 0);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+
                     _cachedInstance = null;
                     return walker;
                 }
-                else
-                {
-                    return new SyntaxWalker();
-                }
+
+                return new SyntaxWalker();
             }
 
             public static void Free(SyntaxWalker walker)
             {
-                Debug.Assert(walker.SemanticModel == null);
-                Debug.Assert(walker.CancellationToken == default);
-                Debug.Assert(walker.Parameters.Count == 0);
+                walker.Reset();
 
                 _cachedInstance = walker;
             }

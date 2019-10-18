@@ -123,7 +123,8 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
             if (methodSymbol.ImplementsInterfaceMember(allInterfaces: true))
                 return;
 
-            UnusedParameterWalker walker = UnusedParameterWalker.GetInstance(context.SemanticModel, context.CancellationToken);
+            UnusedParameterWalker walker = UnusedParameterWalker.GetInstance();
+            walker.SetValues(context.SemanticModel, context.CancellationToken);
 
             FindUnusedNodes(parameterInfo, walker);
 
@@ -299,7 +300,8 @@ namespace Roslynator.CSharp.Analysis.UnusedParameter
 
         private static void Analyze(SyntaxNodeAnalysisContext context, in ParameterInfo parameterInfo, bool isIndexer = false)
         {
-            UnusedParameterWalker walker = UnusedParameterWalker.GetInstance(context.SemanticModel, context.CancellationToken, isIndexer);
+            UnusedParameterWalker walker = UnusedParameterWalker.GetInstance();
+            walker.SetValues(context.SemanticModel, context.CancellationToken, isIndexer);
 
             FindUnusedNodes(parameterInfo, walker);
 

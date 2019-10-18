@@ -109,6 +109,7 @@ namespace Roslynator.CSharp.Analysis
             bool ContainsContinueStatement()
             {
                 ContainsContinueStatementWalker walker = ContainsContinueStatementWalker.GetInstance();
+                walker.ContainsContinueStatement = false;
 
                 bool containsContinueStatement = false;
 
@@ -203,7 +204,6 @@ namespace Roslynator.CSharp.Analysis
                 if (walker != null)
                 {
                     _cachedInstance = null;
-                    walker.ContainsContinueStatement = false;
                     return walker;
                 }
 

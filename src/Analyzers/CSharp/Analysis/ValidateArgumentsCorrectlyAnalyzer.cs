@@ -76,13 +76,13 @@ namespace Roslynator.CSharp.Analysis
 
             context.CancellationToken.ThrowIfCancellationRequested();
 
-            ContainsYieldWalker walker = ContainsYieldWalker.Cache.GetInstance();
+            ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
 
             walker.VisitBlock(body);
 
             YieldStatementSyntax yieldStatement = walker.YieldStatement;
 
-            ContainsYieldWalker.Cache.Free(walker);
+            ContainsYieldWalker.Free(walker);
 
             if (yieldStatement == null)
                 return;

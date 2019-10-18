@@ -1,5 +1,6 @@
 ﻿// Copyright (c) Josef Pihrt. All rights reserved. Licensed under the Apache License, Version 2.0. See License.txt in the project root for license information.
 
+using System;
 using System.Collections.Immutable;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -13,6 +14,9 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 {
     internal class UnusedMemberWalker : CSharpSyntaxNodeWalker
     {
+        [ThreadStatic]
+        private static UnusedMemberWalker _cachedInstance;
+
         private bool _isEmpty;
 
         private IMethodSymbol _containingMethodSymbol;
@@ -450,6 +454,31 @@ namespace Roslynator.CSharp.Analysis.UnusedMember
 
                 VisitAttributeList(attributeList);
             }
+        }
+
+        public static UnusedMemberWalker GetInstance()
+        {
+            UnusedMemberWalker walker = _cachedInstance;
+
+            if (walker != null)
+            {
+                Debug.Assert(walker._containingMethodSymbol == null);
+                Debug.Assert(walker.Nodes.Count == 0);
+                Debug.Assert(walker.SemanticModel == null);
+                Debug.Assert(walker.CancellationToken == default);
+
+                _cachedInstance = null;
+                return walker;
+            }
+
+            return new UnusedMemberWalker();
+        }
+
+        public static void Free(UnusedMemberWalker walker)
+        {
+            walker.Reset();
+
+            _cachedInstance = walker;
         }
     }
 }

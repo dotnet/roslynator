@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -56,11 +57,6 @@ namespace Roslynator.CSharp.Analysis
 
             ExpressionSyntax expression = walker.ThrowStatement?.Expression;
 
-            walker.Symbol = null;
-            walker.SemanticModel = null;
-            walker.CancellationToken = default;
-            walker.ThrowStatement = null;
-
             Walker.Free(walker);
 
             if (expression != null)
@@ -109,6 +105,11 @@ namespace Roslynator.CSharp.Analysis
 
                 if (walker != null)
                 {
+                    Debug.Assert(walker.Symbol == null);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+                    Debug.Assert(walker.ThrowStatement == null);
+
                     _cachedInstance = null;
                     return walker;
                 }
@@ -118,6 +119,11 @@ namespace Roslynator.CSharp.Analysis
 
             public static void Free(Walker walker)
             {
+                walker.Symbol = null;
+                walker.SemanticModel = null;
+                walker.CancellationToken = default;
+                walker.ThrowStatement = null;
+
                 _cachedInstance = walker;
             }
         }

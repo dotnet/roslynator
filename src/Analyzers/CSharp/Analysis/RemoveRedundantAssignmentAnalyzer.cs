@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Diagnostics;
 using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -112,10 +113,15 @@ namespace Roslynator.CSharp.Analysis
             walker.Symbol = symbol;
             walker.SemanticModel = context.SemanticModel;
             walker.CancellationToken = context.CancellationToken;
+            walker.Result = false;
 
             walker.Visit(assignmentInfo.Right);
 
-            if (RemoveRedundantAssignmentWalker.GetResultAndFree(walker))
+            bool result = walker.Result;
+
+            RemoveRedundantAssignmentWalker.Free(walker);
+
+            if (result)
                 return;
 
             DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.RemoveRedundantAssignment, assignment);
@@ -179,27 +185,24 @@ namespace Roslynator.CSharp.Analysis
 
                 if (walker != null)
                 {
+                    Debug.Assert(walker.Symbol == null);
+                    Debug.Assert(walker.SemanticModel == null);
+                    Debug.Assert(walker.CancellationToken == default);
+
                     _cachedInstance = null;
-                }
-                else
-                {
-                    walker = new RemoveRedundantAssignmentWalker();
+                    return walker;
                 }
 
-                return walker;
+                return new RemoveRedundantAssignmentWalker();
             }
 
-            public static bool GetResultAndFree(RemoveRedundantAssignmentWalker walker)
+            public static void Free(RemoveRedundantAssignmentWalker walker)
             {
-                bool result = walker.Result;
-
-                walker.Result = false;
-                walker.Symbol = default;
-                walker.SemanticModel = default;
+                walker.Symbol = null;
+                walker.SemanticModel = null;
                 walker.CancellationToken = default;
-                _cachedInstance = walker;
 
-                return result;
+                _cachedInstance = walker;
             }
         }
     }

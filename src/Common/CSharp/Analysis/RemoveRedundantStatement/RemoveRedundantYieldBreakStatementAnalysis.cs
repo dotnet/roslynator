@@ -29,7 +29,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
             if (object.ReferenceEquals(statements.SingleOrDefault(ignoreLocalFunctions: true, shouldThrow: false), statement))
                 return false;
 
-            ContainsYieldWalker walker = ContainsYieldWalker.Cache.GetInstance();
+            ContainsYieldWalker walker = ContainsYieldWalker.GetInstance();
 
             bool success = false;
 
@@ -45,7 +45,7 @@ namespace Roslynator.CSharp.Analysis.RemoveRedundantStatement
                     break;
             }
 
-            ContainsYieldWalker.Cache.Free(walker);
+            ContainsYieldWalker.Free(walker);
 
             return success;
         }

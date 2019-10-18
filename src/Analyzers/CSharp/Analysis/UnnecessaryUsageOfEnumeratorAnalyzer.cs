@@ -74,8 +74,6 @@ namespace Roslynator.CSharp.Analysis
 
             bool? isFixable = walker.IsFixable;
 
-            walker.SetValues(default(VariableDeclaratorSyntax), default(SemanticModel), default(CancellationToken));
-
             UnnecessaryUsageOfEnumeratorWalker.Free(walker);
 
             if (isFixable == true)

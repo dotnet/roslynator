@@ -5,7 +5,6 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CodeActions;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Roslynator.CSharp.Analysis;
-using Roslynator.CSharp.SyntaxWalkers;
 
 namespace Roslynator.CSharp.Refactorings
 {
@@ -19,10 +18,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, semanticModel, context.CancellationToken);
-
-                        if (analysis.Success)
-                            RegisterRefactoring(context, token, analysis);
+                        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(methodDeclaration, semanticModel, context.CancellationToken))
+                        {
+                            if (analysis.Success)
+                                RegisterRefactoring();
+                        }
 
                         return;
                     }
@@ -30,10 +30,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, semanticModel, context.CancellationToken);
-
-                        if (analysis.Success)
-                            RegisterRefactoring(context, token, analysis);
+                        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(localFunction, semanticModel, context.CancellationToken))
+                        {
+                            if (analysis.Success)
+                                RegisterRefactoring();
+                        }
 
                         return;
                     }
@@ -41,10 +42,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(parenthesizedLambda, semanticModel, context.CancellationToken);
-
-                        if (analysis.Success)
-                            RegisterRefactoring(context, token, analysis);
+                        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(parenthesizedLambda, semanticModel, context.CancellationToken))
+                        {
+                            if (analysis.Success)
+                                RegisterRefactoring();
+                        }
 
                         return;
                     }
@@ -52,10 +54,11 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(simpleLambda, semanticModel, context.CancellationToken);
-
-                        if (analysis.Success)
-                            RegisterRefactoring(context, token, analysis);
+                        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(simpleLambda, semanticModel, context.CancellationToken))
+                        {
+                            if (analysis.Success)
+                                RegisterRefactoring();
+                        }
 
                         return;
                     }
@@ -63,24 +66,22 @@ namespace Roslynator.CSharp.Refactorings
                     {
                         SemanticModel semanticModel = await context.GetSemanticModelAsync().ConfigureAwait(false);
 
-                        RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, semanticModel, context.CancellationToken);
-
-                        if (analysis.Success)
-                            RegisterRefactoring(context, token, analysis);
+                        using (RemoveAsyncAwaitAnalysis analysis = RemoveAsyncAwaitAnalysis.Create(anonymousMethod, semanticModel, context.CancellationToken))
+                        {
+                            if (analysis.Success)
+                                RegisterRefactoring();
+                        }
 
                         return;
                     }
             }
-        }
 
-        private static void RegisterRefactoring(RefactoringContext context, SyntaxToken token, in RemoveAsyncAwaitAnalysis analysis)
-        {
-            CodeAction codeAction = CodeActionFactory.RemoveAsyncAwait(context.Document, token, equivalenceKey: RefactoringIdentifiers.RemoveAsyncAwait);
+            void RegisterRefactoring()
+            {
+                CodeAction codeAction = CodeActionFactory.RemoveAsyncAwait(context.Document, token, equivalenceKey: RefactoringIdentifiers.RemoveAsyncAwait);
 
-            context.RegisterRefactoring(codeAction);
-
-            if (analysis.Walker != null)
-                AwaitExpressionWalker.Free(analysis.Walker);
+                context.RegisterRefactoring(codeAction);
+            }
         }
     }
 }
