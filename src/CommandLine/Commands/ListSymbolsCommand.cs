@@ -198,8 +198,6 @@ namespace Roslynator.CommandLine
 #if DEBUG
         private static void WriteSummary(IEnumerable<IAssemblySymbol> assemblies, SymbolFilterOptions filter, Verbosity verbosity)
         {
-            WriteLine(verbosity);
-
             WriteLine($"{assemblies.Count()} assemblies", verbosity);
 
             INamedTypeSymbol[] types = assemblies
@@ -237,8 +235,6 @@ namespace Roslynator.CommandLine
                         WriteLine($"        {grouping.Count(f => f.IsStatic)} static {group.GetPluralText()}", verbosity);
                 }
 
-                WriteLine(verbosity);
-
                 ISymbol[] members = types
                     .Where(f => f.TypeKind.Is(TypeKind.Class, TypeKind.Struct, TypeKind.Interface))
                     .SelectMany(t => t.GetMembers().Where(m => !m.IsKind(SymbolKind.NamedType) && filter.IsMatch(m)))
@@ -256,8 +252,6 @@ namespace Roslynator.CommandLine
                         if (group == SymbolGroup.Method)
                             WriteLine($"        {grouping.Count(f => f.IsKind(SymbolKind.Method) && ((IMethodSymbol)f).IsExtensionMethod)} extension {group.GetPluralText()}", verbosity);
                     }
-
-                    WriteLine(verbosity);
                 }
             }
         }

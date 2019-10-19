@@ -96,10 +96,10 @@ namespace Roslynator.CommandLine
                 }
             }
 
-            WriteLine();
-            WriteLine($"{changedDocuments.Count} {((changedDocuments.Count == 1) ? "document" : "documents")} formatted", ConsoleColor.Green, Verbosity.Normal);
-            WriteLine();
+            WriteLine(Verbosity.Minimal);
+            WriteLine($"{changedDocuments.Count} {((changedDocuments.Count == 1) ? "document" : "documents")} formatted", ConsoleColor.Green, Verbosity.Minimal);
 
+            WriteLine(Verbosity.Minimal);
             WriteLine($"Done formatting solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
         }
 
@@ -132,9 +132,8 @@ namespace Roslynator.CommandLine
                 }
             }
 
-            WriteLine();
-            WriteLine($"{formattedDocuments.Length} {((formattedDocuments.Length == 1) ? "document" : "documents")} formatted", ConsoleColor.Green, Verbosity.Normal);
-            WriteLine();
+            WriteLine(Verbosity.Minimal);
+            WriteLine($"{formattedDocuments.Length} {((formattedDocuments.Length == 1) ? "document" : "documents")} formatted", ConsoleColor.Green, Verbosity.Minimal);
         }
 
         protected override void OperationCanceled(OperationCanceledException ex)

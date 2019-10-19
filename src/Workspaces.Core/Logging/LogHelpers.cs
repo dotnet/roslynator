@@ -266,21 +266,21 @@ namespace Roslynator
         }
 
         public static void WriteProjectFixResults(
-            List<ProjectFixResult> results,
+            IList<ProjectFixResult> results,
             CodeFixerOptions options,
             IFormatProvider formatProvider = null)
         {
             if (options.FileBannerLines.Any())
             {
                 int count = results.Sum(f => f.NumberOfAddedFileBanners);
-                WriteLine();
+                WriteLine(Verbosity.Normal);
                 WriteLine($"{count} file {((count == 1) ? "banner" : "banners")} added", Verbosity.Normal);
             }
 
             if (options.Format)
             {
                 int count = results.Sum(f => f.NumberOfFormattedDocuments);
-                WriteLine();
+                WriteLine(Verbosity.Normal);
                 WriteLine($"{count} {((count == 1) ? "document" : "documents")} formatted", Verbosity.Normal);
             }
 
@@ -292,12 +292,10 @@ namespace Roslynator
                 formatProvider: formatProvider,
                 verbosity: Verbosity.Normal);
 
-            WriteLine(Verbosity.Minimal);
-
             int fixedCount = results.Sum(f => f.FixedDiagnostics.Length);
 
-            WriteLine($"{fixedCount} {((fixedCount == 1) ? "diagnostic" : "diagnostics")} fixed", ConsoleColor.Green, Verbosity.Minimal);
             WriteLine(Verbosity.Minimal);
+            WriteLine($"{fixedCount} {((fixedCount == 1) ? "diagnostic" : "diagnostics")} fixed", ConsoleColor.Green, Verbosity.Minimal);
         }
     }
 }

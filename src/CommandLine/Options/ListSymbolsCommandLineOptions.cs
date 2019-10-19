@@ -72,7 +72,7 @@ namespace Roslynator.CommandLine
 #endif
 
         [Option(longName: ParameterNames.Visibility,
-            Default = nameof(Roslynator.Visibility.Private),
+            Default = new string[] { nameof(Roslynator.Visibility.Public) },
             HelpText = "Defines one or more visibility of a type or a member. Allowed values are public, internal or private.",
             MetaValue = "<VISIBILITY>")]
         public IEnumerable<string> Visibility { get; set; }

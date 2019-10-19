@@ -85,11 +85,13 @@ namespace Roslynator.CommandLine
 
                 Stopwatch stopwatch = Stopwatch.StartNew();
 
-                await codeFixer.FixProjectAsync(project, cancellationToken);
+                ProjectFixResult result = await codeFixer.FixProjectAsync(project, cancellationToken);
 
                 stopwatch.Stop();
 
                 WriteLine($"Done fixing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+
+                LogHelpers.WriteProjectFixResults(new ProjectFixResult[] { result }, codeFixerOptions, formatProvider);
             }
             else
             {
