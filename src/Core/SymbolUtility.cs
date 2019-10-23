@@ -627,6 +627,9 @@ namespace Roslynator
 
             INamedTypeSymbol originalDefinition = namedTypeSymbol.OriginalDefinition;
 
+            if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask))
+                return true;
+
             if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T))
                 return true;
 
