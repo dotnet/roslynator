@@ -56,7 +56,7 @@ namespace Roslynator.CodeGeneration
                 return _formattingAnalyzers;
             }
         }
-        
+
         public ImmutableArray<RefactoringMetadata> Refactorings
         {
             get

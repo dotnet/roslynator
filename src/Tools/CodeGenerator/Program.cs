@@ -56,11 +56,13 @@ namespace Roslynator.CodeGeneration
 
             WriteCompilationUnit(
                 @"CodeFixes\CSharp\CompilerDiagnosticDescriptors.Generated.cs",
-                CompilerDiagnosticDescriptorsGenerator.Generate(compilerDiagnostics, comparer: comparer, @namespace: "Roslynator.CSharp"), normalizeWhitespace: false);
+                CompilerDiagnosticDescriptorsGenerator.Generate(compilerDiagnostics, comparer: comparer, @namespace: "Roslynator.CSharp"),
+                normalizeWhitespace: false);
 
             WriteCompilationUnit(
                 @"CodeFixes\CSharp\CodeFixDescriptors.Generated.cs",
-                CodeFixDescriptorsGenerator.Generate(codeFixes.Where(f => !f.IsObsolete), comparer: comparer, @namespace: "Roslynator.CSharp"), normalizeWhitespace: false);
+                CodeFixDescriptorsGenerator.Generate(codeFixes.Where(f => !f.IsObsolete), comparer: comparer, @namespace: "Roslynator.CSharp"),
+                normalizeWhitespace: false);
 
             WriteCompilationUnit(
                 @"CodeFixes\CSharp\CodeFixIdentifiers.Generated.cs",
@@ -97,11 +99,13 @@ namespace Roslynator.CodeGeneration
             {
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "DiagnosticDescriptors.Generated.cs"),
-                    DiagnosticDescriptorsGenerator.Generate(analyzers2, obsolete: false, comparer: comparer, @namespace: @namespace), normalizeWhitespace: false);
+                    DiagnosticDescriptorsGenerator.Generate(analyzers2, obsolete: false, comparer: comparer, @namespace: @namespace),
+                    normalizeWhitespace: false);
 
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "DiagnosticDescriptors.Deprecated.Generated.cs"),
-                    DiagnosticDescriptorsGenerator.Generate(analyzers2, obsolete: true, comparer: comparer, @namespace: @namespace), normalizeWhitespace: false);
+                    DiagnosticDescriptorsGenerator.Generate(analyzers2, obsolete: true, comparer: comparer, @namespace: @namespace),
+                    normalizeWhitespace: false);
 
                 WriteCompilationUnit(
                     Path.Combine(dirPath, "DiagnosticIdentifiers.Generated.cs"),

@@ -30,7 +30,8 @@ namespace Roslynator.CSharp.Refactorings
                 [\s-[\r\n]]*
             )?
             $
-            ", RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
+            ",
+            RegexOptions.IgnorePatternWhitespace | RegexOptions.ExplicitCapture);
 
         public static async Task<Document> RefactorAsync(
             Document document,

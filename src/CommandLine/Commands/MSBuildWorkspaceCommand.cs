@@ -227,8 +227,8 @@ namespace Roslynator.CommandLine
                     do
                     {
                         WriteLine($"  {en.Current.MSBuildPath}", Verbosity.Quiet);
-                    }
-                    while (en.MoveNext());
+
+                    } while (en.MoveNext());
 
                     WriteLine($"Use option '--{ParameterNames.MSBuildPath}' to specify MSBuild location", Verbosity.Quiet);
                     instance = null;

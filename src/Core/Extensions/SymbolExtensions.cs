@@ -1280,8 +1280,8 @@ namespace Roslynator
                     break;
 
                 typeSymbol = typeSymbol.BaseType;
-            }
-            while (typeSymbol != null);
+
+            } while (typeSymbol != null);
 
             return default;
         }
@@ -1388,8 +1388,8 @@ namespace Roslynator
                     break;
 
                 typeSymbol = typeSymbol.BaseType;
-            }
-            while (typeSymbol != null);
+
+            } while (typeSymbol != null);
 
             return null;
         }

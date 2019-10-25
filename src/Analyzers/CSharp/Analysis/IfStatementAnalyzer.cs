@@ -59,15 +59,17 @@ namespace Roslynator.CSharp.Analysis
 
             foreach (IfAnalysis analysis in IfAnalysis.Analyze(ifStatement, AnalysisOptions, context.SemanticModel, context.CancellationToken))
             {
-                Debug.Assert(analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression
-                    || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithExpression
-                    || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCondition
-                    || analysis.Kind == IfAnalysisKind.IfElseToReturnWithCoalesceExpression
-                    || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression
-                    || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithCoalesceExpression
-                    || analysis.Kind == IfAnalysisKind.IfElseToReturnWithExpression
-                    || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithExpression
-                    || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithExpression, analysis.Kind.ToString());
+                Debug.Assert(
+                    analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToAssignmentWithCondition
+                        || analysis.Kind == IfAnalysisKind.IfElseToReturnWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithCoalesceExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToReturnWithExpression
+                        || analysis.Kind == IfAnalysisKind.IfElseToYieldReturnWithExpression
+                        || analysis.Kind == IfAnalysisKind.IfReturnToReturnWithExpression,
+                    analysis.Kind.ToString());
 
                 switch (analysis.Kind)
                 {

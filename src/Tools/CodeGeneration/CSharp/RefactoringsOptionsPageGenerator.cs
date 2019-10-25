@@ -35,10 +35,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 AccessorList(AutoGetAccessorDeclaration()),
                 ParseExpression(
                     "$\"" +
-                    string.Join(",", refactorings
-                        .Where(f => !f.IsEnabledByDefault)
-                        .OrderBy(f => f.Identifier, comparer)
-                        .Select(f => $"{{RefactoringIdentifiers.{f.Identifier}}}")) +
+                    string.Join(
+                        ",",
+                        refactorings
+                            .Where(f => !f.IsEnabledByDefault)
+                            .OrderBy(f => f.Identifier, comparer)
+                            .Select(f => $"{{RefactoringIdentifiers.{f.Identifier}}}")) +
                     "\""));
 
             yield return PropertyDeclaration(

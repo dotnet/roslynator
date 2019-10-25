@@ -33,10 +33,12 @@ namespace Roslynator.CodeGeneration.CSharp
                 AccessorList(AutoGetAccessorDeclaration()),
                 ParseExpression(
                     "$\"" +
-                    string.Join(",", codeFixes
-                        .Where(f => !f.IsEnabledByDefault)
-                        .OrderBy(f => f.Identifier, comparer)
-                        .Select(f => $"{{CodeFixIdentifiers.{f.Identifier}}}")) +
+                    string.Join(
+                        ",",
+                        codeFixes
+                            .Where(f => !f.IsEnabledByDefault)
+                            .OrderBy(f => f.Identifier, comparer)
+                            .Select(f => $"{{CodeFixIdentifiers.{f.Identifier}}}")) +
                     "\""));
 
             yield return PropertyDeclaration(

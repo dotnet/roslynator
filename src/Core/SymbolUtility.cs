@@ -575,8 +575,8 @@ namespace Roslynator
                     return methodSymbol;
 
                 typeSymbol = typeSymbol.BaseType;
-            }
-            while (typeSymbol != null
+
+            } while (typeSymbol != null
                 && typeSymbol.SpecialType != SpecialType.System_Object);
 
             return null;

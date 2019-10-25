@@ -388,8 +388,8 @@ namespace Roslynator.Documentation
                 do
                 {
                     WriteTypeHierarchyItem(en.Current, cancellationToken);
-                }
-                while (en.MoveNext());
+
+                } while (en.MoveNext());
 
                 WriteEndHierarchyTypes();
                 WriteEndType(symbol);

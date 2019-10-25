@@ -123,13 +123,15 @@ namespace Roslynator.Documentation
                                             ISymbol symbol = writer.DocumentationModel.GetFirstSymbolForDeclarationId(commentId);
 
                                             //XTODO: repair roslyn documentation
-                                            Debug.Assert(symbol != null
-                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
-                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"
-                                                || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxTrivia"
-                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxNode"
-                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxToken"
-                                                || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxTrivia", commentId);
+                                            Debug.Assert(
+                                                symbol != null
+                                                    || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxNode"
+                                                    || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxToken"
+                                                    || commentId == "T:Microsoft.CodeAnalysis.CSharp.SyntaxTrivia"
+                                                    || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxNode"
+                                                    || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxToken"
+                                                    || commentId == "T:Microsoft.CodeAnalysis.VisualBasic.SyntaxTrivia",
+                                                commentId);
 
                                             if (symbol != null)
                                             {
@@ -181,8 +183,8 @@ namespace Roslynator.Documentation
                         }
 
                         isFirst = false;
-                    }
-                    while (!isLast);
+
+                    } while (!isLast);
                 }
             }
         }
@@ -209,8 +211,8 @@ namespace Roslynator.Documentation
                         WriteStartItem();
                         WriteContentTo(en.Current, writer, inlineOnly: true);
                         WriteEndItem();
-                    }
-                    while (en.MoveNext());
+
+                    } while (en.MoveNext());
 
                     if (isOrdered)
                     {
@@ -328,8 +330,8 @@ namespace Roslynator.Documentation
                             }
 
                             writer.WriteEndTableRow();
-                        }
-                        while (en.MoveNext());
+
+                        } while (en.MoveNext());
 
                         writer.WriteEndTable();
                     }

@@ -494,8 +494,8 @@ namespace Roslynator.CodeFixes
                         {
                             break;
                         }
-                    }
-                    while (en.MoveNext());
+
+                    } while (en.MoveNext());
 
                     count = 0;
 

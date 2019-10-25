@@ -98,9 +98,11 @@ namespace Roslynator.FindSymbols
                         return false;
                 }
 #if DEBUG
-                Debug.Assert(attributeClass.MetadataName == "FooAttribute"
-                    || attributeClass.MetadataName == "BarAttribute"
-                    || _knownVisibleAttributes.Contains(attributeClass), attributeClass.ToDisplayString());
+                Debug.Assert(
+                    attributeClass.MetadataName == "FooAttribute"
+                        || attributeClass.MetadataName == "BarAttribute"
+                        || _knownVisibleAttributes.Contains(attributeClass),
+                    attributeClass.ToDisplayString());
 #endif
                 return true;
             }

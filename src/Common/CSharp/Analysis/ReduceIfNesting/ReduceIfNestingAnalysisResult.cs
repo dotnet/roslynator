@@ -10,16 +10,18 @@ namespace Roslynator.CSharp.Analysis.ReduceIfNesting
     {
         public ReduceIfNestingAnalysisResult(SyntaxKind jumpKind, SyntaxNode topNode)
         {
-            Debug.Assert(jumpKind == SyntaxKind.None
-                || jumpKind == SyntaxKind.ReturnStatement
-                || jumpKind == SyntaxKind.NullLiteralExpression
-                || jumpKind == SyntaxKind.DefaultLiteralExpression
-                || jumpKind == SyntaxKind.FalseLiteralExpression
-                || jumpKind == SyntaxKind.TrueLiteralExpression
-                || jumpKind == SyntaxKind.BreakStatement
-                || jumpKind == SyntaxKind.ContinueStatement
-                || jumpKind == SyntaxKind.ThrowStatement
-                || jumpKind == SyntaxKind.YieldBreakStatement, jumpKind.ToString());
+            Debug.Assert(
+                jumpKind == SyntaxKind.None
+                    || jumpKind == SyntaxKind.ReturnStatement
+                    || jumpKind == SyntaxKind.NullLiteralExpression
+                    || jumpKind == SyntaxKind.DefaultLiteralExpression
+                    || jumpKind == SyntaxKind.FalseLiteralExpression
+                    || jumpKind == SyntaxKind.TrueLiteralExpression
+                    || jumpKind == SyntaxKind.BreakStatement
+                    || jumpKind == SyntaxKind.ContinueStatement
+                    || jumpKind == SyntaxKind.ThrowStatement
+                    || jumpKind == SyntaxKind.YieldBreakStatement,
+                jumpKind.ToString());
 
             JumpKind = jumpKind;
             TopNode = topNode;

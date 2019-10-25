@@ -242,7 +242,6 @@ namespace Roslynator.Tests
                 if (expectedDocuments.Any())
                     await VerifyAdditionalDocumentsAsync(document.Project, expectedDocuments, cancellationToken).ConfigureAwait(false);
             }
-
         }
 
         public async Task VerifyNoFixAsync(
