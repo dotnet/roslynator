@@ -19,15 +19,5 @@ del /Q "..\src\CommandLine\bin\Release\Roslynator.CommandLine.*.nupkg"
 
 dotnet pack -c Release --no-build -v normal /p:RoslynatorCommandLine=true "..\src\CommandLine\CommandLine.csproj"
 
-if errorlevel 1 (
- pause
- exit
-)
-
-del /Q "..\src\CommandLine\bin\Release\Roslynator.DotNet.Cli.*.nupkg"
-
-dotnet pack "..\src\CommandLine\CommandLine.csproj" -c Release -v normal ^
- /p:RoslynatorDotNetCli=true,Deterministic=true,TreatWarningsAsErrors=true,WarningsNotAsErrors="1591"
-
 echo OK
 pause

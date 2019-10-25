@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.1.0.3</Version>
+    <Version>0.1.0.4</Version>
     <OutputType>Exe</OutputType>
     <AssemblyName>Roslynator</AssemblyName>
     <RootNamespace>Roslynator.CommandLine</RootNamespace>
@@ -14,22 +14,6 @@
     <SignAssembly>true</SignAssembly>
     <AssemblyOriginatorKeyFile>..\Roslynator.snk</AssemblyOriginatorKeyFile>
     <Copyright>Copyright (c) 2017-2019 Josef Pihrt</Copyright>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(RoslynatorDotNetCli)' == true">
-    <PackAsTool>true</PackAsTool>
-    <ToolCommandName>roslynator</ToolCommandName>
-    <PackageId>Roslynator.DotNet.Cli</PackageId>
-    <PackageVersion>0.1.0-rc</PackageVersion>
-    <Authors>Josef Pihrt</Authors>
-    <Description>.NET Core Global Tool for Roslynator</Description>
-    <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
-    <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageIcon>icon.png</PackageIcon>
-    <PackageTags>CLI;Roslyn;C#;CSharp</PackageTags>
-    <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
-    <RepositoryType>git</RepositoryType>
-    <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(RoslynatorCommandLine)' == true">
