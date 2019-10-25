@@ -34,7 +34,7 @@ Roslynator.NameGenerator</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
-    <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;Analyzer;Refactoring;Productivity;CodeAnalysis;C#;CSharp</PackageTags>
     <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
@@ -48,6 +48,10 @@ Roslynator.NameGenerator</Description>
 
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
 
 </Project>

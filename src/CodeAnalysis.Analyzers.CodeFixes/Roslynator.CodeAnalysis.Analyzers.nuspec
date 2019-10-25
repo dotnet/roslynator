@@ -7,7 +7,7 @@
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
-    <iconUrl>http://pihrt.net/images/Roslynator.ico</iconUrl>
+    <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of analyzers for Roslyn API.</description>
     <summary>A collection of analyzers for Roslyn API.</summary>
@@ -19,5 +19,6 @@
   <files>
     <file src="bin\$Configuration$\netstandard1.3\Roslynator*.dll" target="analyzers\dotnet\cs" />
     <file src="tools\*.ps1" target="tools\" />
+    <file src="..\..\images\icon.png" target="" />
   </files>
 </package>

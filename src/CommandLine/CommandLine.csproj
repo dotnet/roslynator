@@ -25,7 +25,7 @@
     <Description>.NET Core Global Tool for Roslynator</Description>
     <PackageProjectUrl>https://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
-    <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageTags>CLI;Roslyn;C#;CSharp</PackageTags>
     <RepositoryUrl>https://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
@@ -58,6 +58,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
     <None Remove="_._" />
   </ItemGroup>
 

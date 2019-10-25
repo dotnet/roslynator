@@ -36,7 +36,7 @@ Roslynator.Documentation.DocumentationGenerator</Description>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
     <PackageLicenseExpression>Apache-2.0</PackageLicenseExpression>
     <PackageProjectUrl>http://github.com/JosefPihrt/Roslynator</PackageProjectUrl>
-    <PackageIconUrl>http://pihrt.net/images/Roslynator.ico</PackageIconUrl>
+    <PackageIcon>icon.png</PackageIcon>
     <PackageReleaseNotes></PackageReleaseNotes>
     <PackageTags>Roslyn;Documentation;GitHub;C#;CSharp</PackageTags>
     <RepositoryUrl>http://github.com/JosefPihrt/Roslynator.git</RepositoryUrl>
@@ -51,6 +51,10 @@ Roslynator.Documentation.DocumentationGenerator</Description>
   <ItemGroup>
     <ProjectReference Include="..\CSharp\CSharp.csproj" />
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\..\images\icon.png" Pack="true" PackagePath="\" Visible="false" />
   </ItemGroup>
 
 </Project>
