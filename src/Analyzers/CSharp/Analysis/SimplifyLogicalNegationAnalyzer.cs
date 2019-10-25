@@ -2,6 +2,7 @@
 
 using System;
 using System.Collections.Immutable;
+using System.Threading;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -72,12 +73,48 @@ namespace Roslynator.CSharp.Analysis
                         ReportDiagnostic();
                         break;
                     }
+                case SyntaxKind.LessThanExpression:
+                case SyntaxKind.LessThanOrEqualExpression:
+                case SyntaxKind.GreaterThanExpression:
+                case SyntaxKind.GreaterThanOrEqualExpression:
+                    {
+                        var binaryExpression = (BinaryExpressionSyntax)expression;
+
+                        if (IsNumericType(binaryExpression.Left, context.SemanticModel, context.CancellationToken)
+                            && IsNumericType(binaryExpression.Right, context.SemanticModel, context.CancellationToken))
+                        {
+                            ReportDiagnostic();
+                        }
+
+                        break;
+                    }
             }
 
             void ReportDiagnostic()
             {
                 DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyLogicalNegation, logicalNot);
             }
+        }
+
+        public static bool IsNumericType(ExpressionSyntax expression, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
+            if (expression?.IsMissing == false)
+            {
+                if (expression.IsKind(SyntaxKind.NumericLiteralExpression))
+                    return true;
+
+                ITypeSymbol typeSymbol = semanticModel
+                    .GetTypeInfo(expression, cancellationToken)
+                    .ConvertedType;
+
+                if (typeSymbol != null
+                    && CSharpFacts.IsNumericType(typeSymbol.SpecialType))
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
 
         public static void Analyze(SyntaxNodeAnalysisContext context, in SimpleMemberInvocationExpressionInfo invocationInfo)

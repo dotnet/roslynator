@@ -196,6 +196,118 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+        public async Task Test_LessThanExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = [|!(i1 < i2)|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = i1 >= i2;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+        public async Task Test_LessThanOrEqualsExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = [|!(i1 <= i2)|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = i1 > i2;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+        public async Task Test_GreaterThanExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = [|!(i1 > i2)|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = i1 <= i2;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+        public async Task Test_GreaterThanOrEqualsExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = [|!(i1 >= i2)|];
+    }
+}
+", @"
+class C
+{
+    void M()
+    {
+            int i1 = 1;
+            int i2 = 2;
+
+            bool x = i1 < i2;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
         public async Task TestNoDiagnostic_NotEqualsOperator()
         {
             await VerifyNoDiagnosticAsync(@"
@@ -228,6 +340,39 @@ class C
     public static bool operator !=(C left, C right)
     {
         return false;
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.SimplifyLogicalNegation)]
+        public async Task TestNoDiagnostic_NullableOfT()
+        {
+            await VerifyNoDiagnosticAsync(@"
+class C
+{
+    void M()
+    {
+            bool x = false;
+            int? i1 = 1;
+            int i2 = 2;
+
+            x = !(i1 < i2);
+            x = !(i1 <= i2);
+            x = !(i1 > i2);
+            x = !(i1 >= i2);
+    }
+
+    void M2()
+    {
+            bool x = false;
+            int i1 = 1;
+            int? i2 = 2;
+
+            x = !(i1 < i2);
+            x = !(i1 <= i2);
+            x = !(i1 > i2);
+            x = !(i1 >= i2);
     }
 }
 ");
