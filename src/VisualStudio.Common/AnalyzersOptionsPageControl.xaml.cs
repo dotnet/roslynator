@@ -10,11 +10,11 @@ using System.Windows.Controls;
 namespace Roslynator.VisualStudio
 {
     /// <summary>
-    /// Interaction logic for GlobalSuppressionsOptionsPageControl.xaml
+    /// Interaction logic for AnalyzersOptionsPageControl.xaml
     /// </summary>
-    public partial class GlobalSuppressionsOptionsPageControl : UserControl
+    public partial class AnalyzersOptionsPageControl : UserControl
     {
-        public GlobalSuppressionsOptionsPageControl()
+        public AnalyzersOptionsPageControl()
         {
             InitializeComponent();
         }

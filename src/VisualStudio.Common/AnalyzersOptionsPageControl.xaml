@@ -1,4 +1,4 @@
-﻿<UserControl x:Class="Roslynator.VisualStudio.GlobalSuppressionsOptionsPageControl"
+﻿<UserControl x:Class="Roslynator.VisualStudio.AnalyzersOptionsPageControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -16,9 +16,6 @@
   </UserControl.Resources>
   <DockPanel Focusable="false" Margin="0,10,0,0">
     <WrapPanel DockPanel.Dock="Left">
-      <TextBlock TextWrapping="WrapWithOverflow" Margin="0,10,0,10">
-      "Global Suppressions" feature has been deprecated in Roslynator 2019.
-      </TextBlock>
       <TextBlock TextWrapping="WrapWithOverflow" Margin="0,0,0,10">
       Default configuration of analyzers can be changed by using ruleset file at the following location: "%LOCALAPPDATA%\JosefPihrt\Roslynator\VisualStudio\2019\roslynator.ruleset"
       </TextBlock>

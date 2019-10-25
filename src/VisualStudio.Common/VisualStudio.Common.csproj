@@ -99,7 +99,7 @@
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="CodeFixModel.cs" />
-    <Compile Include="GlobalSuppressionsOptionsPage.cs">
+    <Compile Include="AnalyzersOptionsPage.cs">
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="GeneralOptionsPage.cs">
@@ -118,8 +118,8 @@
     <Compile Include="BaseOptionsPageControl.xaml.cs">
       <DependentUpon>BaseOptionsPageControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="GlobalSuppressionsOptionsPageControl.xaml.cs">
-      <DependentUpon>GlobalSuppressionsOptionsPageControl.xaml</DependentUpon>
+    <Compile Include="AnalyzersOptionsPageControl.xaml.cs">
+      <DependentUpon>AnalyzersOptionsPageControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="RuleSetHelpers.cs" />
     <Compile Include="XElementExtensions.cs" />
@@ -164,7 +164,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="GlobalSuppressionsOptionsPageControl.xaml">
+    <Page Include="AnalyzersOptionsPageControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

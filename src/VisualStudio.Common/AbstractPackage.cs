@@ -44,9 +44,9 @@ namespace Roslynator.VisualStudio
             get { return (CodeFixesOptionsPage)GetDialogPage(typeof(CodeFixesOptionsPage)); }
         }
 
-        public GlobalSuppressionsOptionsPage GlobalSuppressionsOptionsPage
+        public AnalyzersOptionsPage AnalyzersOptionsPage
         {
-            get { return (GlobalSuppressionsOptionsPage)GetDialogPage(typeof(GlobalSuppressionsOptionsPage)); }
+            get { return (AnalyzersOptionsPage)GetDialogPage(typeof(AnalyzersOptionsPage)); }
         }
 
         protected override async System.Threading.Tasks.Task InitializeAsync(CancellationToken cancellationToken, IProgress<ServiceProgressData> progress)
