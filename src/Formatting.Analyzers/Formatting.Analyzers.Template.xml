@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Analyzers>
+  <Analyzer Identifier="">
+    <Id>RCS</Id>
+    <Title></Title>
+    <MessageFormat></MessageFormat>
+    <Category>Formatting</Category>
+    <DefaultSeverity>Info</DefaultSeverity>
+    <IsEnabledByDefault>false</IsEnabledByDefault>
+    <SupportsFadeOut>false</SupportsFadeOut>
+    <SupportsFadeOutAnalyzer>false</SupportsFadeOutAnalyzer>
+    <MinLanguageVersion></MinLanguageVersion>
+    <Summary></Summary>
+    <Samples>
+      <Sample>
+        <Before><![CDATA[]]></Before>
+        <After><![CDATA[]]></After>
+      </Sample>
+    </Samples>
+    <Remarks></Remarks>
+    <Links>
+      <Link>
+        <Url></Url>
+        <Text></Text>
+      </Link>
+    </Links>
+  </Analyzer>
+</Analyzers>

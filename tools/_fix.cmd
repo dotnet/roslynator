@@ -11,6 +11,8 @@ set _msbuildPath="C:\Program Files\Microsoft Visual Studio\2017\Community\MSBuil
   "..\src\Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CSharp.Analyzers.CodeFixes.dll" ^
   "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CodeAnalysis.Analyzers.dll" ^
   "..\src\CodeAnalysis.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.CodeAnalysis.Analyzers.CodeFixes.dll" ^
+  "..\src\Formatting.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.Formatting.Analyzers.dll" ^
+  "..\src\Formatting.Analyzers.CodeFixes\bin\Debug\netstandard1.3\Roslynator.Formatting.Analyzers.CodeFixes.dll" ^
  --format ^
  --verbosity d ^
  --file-log "roslynator.log" ^

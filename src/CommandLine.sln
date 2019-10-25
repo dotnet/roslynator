@@ -56,6 +56,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers", "C
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers.CodeFixes", "CodeAnalysis.Analyzers.CodeFixes\CodeAnalysis.Analyzers.CodeFixes.csproj", "{A379B425-6C22-46A8-A030-94027CA969B7}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers", "Formatting.Analyzers\Formatting.Analyzers.csproj", "{DD41BB93-B9AF-4DC9-ACBE-1431892F6F12}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers.CodeFixes", "Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj", "{A379B425-6C22-46A8-A030-94027CA969B7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

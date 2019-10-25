@@ -31,6 +31,7 @@ namespace Roslynator.CodeGeneration
 
             ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
             ImmutableArray<AnalyzerMetadata> codeAnalysisAnalyzers = metadata.CodeAnalysisAnalyzers;
+            ImmutableArray<AnalyzerMetadata> formattingAnalyzers = metadata.FormattingAnalyzers;
             ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
@@ -50,6 +51,8 @@ namespace Roslynator.CodeGeneration
             WriteDiagnostics(@"Analyzers\CSharp", analyzers, @namespace: "Roslynator.CSharp");
 
             WriteDiagnostics(@"CodeAnalysis.Analyzers\CSharp", codeAnalysisAnalyzers, @namespace: "Roslynator.CodeAnalysis.CSharp");
+
+            WriteDiagnostics(@"Formatting.Analyzers\CSharp", formattingAnalyzers, @namespace: "Roslynator.Formatting.CSharp");
 
             WriteCompilationUnit(
                 @"CodeFixes\CSharp\CompilerDiagnosticDescriptors.Generated.cs",
@@ -85,6 +88,7 @@ namespace Roslynator.CodeGeneration
 
             Console.WriteLine($"number of analyzers: {analyzers.Count(f => !f.IsObsolete)}");
             Console.WriteLine($"number of code analysis analyzers: {codeAnalysisAnalyzers.Count(f => !f.IsObsolete)}");
+            Console.WriteLine($"number of formatting analyzers: {formattingAnalyzers.Count(f => !f.IsObsolete)}");
             Console.WriteLine($"number of refactorings: {refactorings.Length}");
             Console.WriteLine($"number of code fixes: {codeFixes.Length}");
             Console.WriteLine($"number of fixable compiler diagnostics: {codeFixes.SelectMany(f => f.FixableDiagnosticIds).Distinct().Count()}");

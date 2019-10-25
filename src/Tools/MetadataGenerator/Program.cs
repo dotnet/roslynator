@@ -41,6 +41,7 @@ namespace Roslynator.CodeGeneration
 
             ImmutableArray<AnalyzerMetadata> analyzers = metadata.Analyzers;
             ImmutableArray<AnalyzerMetadata> codeAnalysisAnalyzers = metadata.CodeAnalysisAnalyzers;
+            ImmutableArray<AnalyzerMetadata> formattingAnalyzers = metadata.FormattingAnalyzers;
             ImmutableArray<RefactoringMetadata> refactorings = metadata.Refactorings;
             ImmutableArray<CodeFixMetadata> codeFixes = metadata.CodeFixes;
             ImmutableArray<CompilerDiagnosticMetadata> compilerDiagnostics = metadata.CompilerDiagnostics;
@@ -48,6 +49,8 @@ namespace Roslynator.CodeGeneration
             WriteAnalyzersReadMe(@"Analyzers\README.md", analyzers);
 
             WriteAnalyzersReadMe(@"CodeAnalysis.Analyzers\README.md", codeAnalysisAnalyzers);
+
+            WriteAnalyzersReadMe(@"Formatting.Analyzers\README.md", formattingAnalyzers);
 
             WriteAnalyzersByCategory(@"Analyzers\AnalyzersByCategory.md", analyzers);
 #if !DEBUG
@@ -83,6 +86,14 @@ namespace Roslynator.CodeGeneration
                 WriteAllText(
                     $@"..\docs\analyzers\{analyzer.Id}.md",
                     MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, new (string, string)[] { ("Roslynator.CodeAnalysis.Analyzers", "https://www.nuget.org/packages/Roslynator.CodeAnalysis.Analyzers") }),
+                    fileMustExists: false);
+            }
+
+            foreach (AnalyzerMetadata analyzer in analyzers.Concat(formattingAnalyzers))
+            {
+                WriteAllText(
+                    $@"..\docs\analyzers\{analyzer.Id}.md",
+                    MarkdownGenerator.CreateAnalyzerMarkdown(analyzer, new (string, string)[] { ("Roslynator.Formatting.Analyzers", "https://www.nuget.org/packages/Roslynator.Formatting.Analyzers") }),
                     fileMustExists: false);
             }
 

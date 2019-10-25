@@ -13,12 +13,16 @@ namespace Roslynator
 {
     internal static class DocumentExtensions
     {
-        public static async Task<string> ToFullStringAsync(this Document document, bool simplify = false, bool format = false)
+        public static async Task<string> ToFullStringAsync(
+            this Document document,
+            bool simplify = false,
+            bool format = false,
+            CancellationToken cancellationToken = default)
         {
             if (simplify)
-                document = await Simplifier.ReduceAsync(document, Simplifier.Annotation).ConfigureAwait(false);
+                document = await Simplifier.ReduceAsync(document, Simplifier.Annotation, cancellationToken: cancellationToken).ConfigureAwait(false);
 
-            SyntaxNode root = await document.GetSyntaxRootAsync().ConfigureAwait(false);
+            SyntaxNode root = await document.GetSyntaxRootAsync(cancellationToken).ConfigureAwait(false);
 
             if (format)
                 root = Formatter.Format(root, Formatter.Annotation, document.Project.Solution.Workspace);

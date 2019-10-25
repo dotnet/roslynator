@@ -3848,6 +3848,38 @@ namespace Roslynator.CSharp
         }
         #endregion TypeSyntax
 
+        #region UsingDirectiveSyntax
+        internal static IdentifierNameSyntax GetRootNamespace(this UsingDirectiveSyntax usingDirective)
+        {
+            if (usingDirective.Name is IdentifierNameSyntax identifierName)
+                return identifierName;
+
+            if (usingDirective.Name is QualifiedNameSyntax qualifiedName)
+            {
+                NameSyntax left;
+
+                do
+                {
+                    left = qualifiedName.Left;
+
+                    if (left is IdentifierNameSyntax identifierName2)
+                        return identifierName2;
+
+                    qualifiedName = left as QualifiedNameSyntax;
+
+                } while (qualifiedName != null);
+
+                Debug.Fail(left.Kind().ToString());
+            }
+            else
+            {
+                Debug.Fail(usingDirective.Name.Kind().ToString());
+            }
+
+            return null;
+        }
+        #endregion UsingDirectiveSyntax
+
         #region UsingStatementSyntax
         /// <summary>
         /// Returns using statement's declaration or an expression if the declaration is null.

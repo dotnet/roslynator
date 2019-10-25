@@ -46,6 +46,13 @@ if errorlevel 1 (
  exit
 )
 
+dotnet test -c Debug --no-build "..\src\Tests\Formatting.Analyzers.Tests\Formatting.Analyzers.Tests.csproj"
+
+if errorlevel 1 (
+ pause
+ exit
+)
+
 dotnet test -c Debug --no-build "..\src\Tests\CodeFixes.Tests\CodeFixes.Tests.csproj"
 
 if errorlevel 1 (
