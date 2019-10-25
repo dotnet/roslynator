@@ -12,12 +12,14 @@ namespace Roslynator.Documentation
     [DebuggerDisplay("{DebuggerDisplay,nq}")]
     public class SymbolXmlDocumentation
     {
-        private static readonly Regex _simpleElementRegex = new Regex(@"
-(?<=^\<(?<name>\w+)\>)
-\r?\n
-([^\r\n]+)
-\r?\n
-(?=\</\k<name>\>)", RegexOptions.IgnorePatternWhitespace);
+        private static readonly Regex _simpleElementRegex = new Regex(
+            @"
+            (?<=^\<(?<name>\w+)\>)
+            \r?\n
+            ([^\r\n]+)
+            \r?\n
+            (?=\</\k<name>\>)",
+            RegexOptions.IgnorePatternWhitespace);
 
         private readonly XElement _element;
 

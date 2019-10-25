@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata>
     <id>Roslynator.CommandLine</id>
-    <version>0.1.0-rc2</version>
+    <version>0.1.0-rc3</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>https://github.com/JosefPihrt/Roslynator</projectUrl>
-    <iconUrl>http://pihrt.net/images/Roslynator.ico</iconUrl>
+    <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Command line tool for Roslynator</description>
     <summary>Command line tool for Roslynator</summary>
@@ -22,7 +22,7 @@
     <file src="CommandLine.targets" target="build/net45/Roslynator.CommandLine.targets" />
     <file src="CommandLine.targets" target="build/netstandard1.0/Roslynator.CommandLine.targets" />
     <file src="Roslynator.targets" target="tools/" />
-    <file src="$publishDir$net472\format.ruleset" target="tools/net472/" />
     <file src="$publishDir$net472\**\*" target="tools/net472/" exclude="**\*.pdb;**\*.xml" />
+    <file src="..\..\images\icon.png" target="" />
   </files>
 </package>

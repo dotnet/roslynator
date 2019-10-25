@@ -109,9 +109,9 @@ namespace Roslynator.CodeFixes
 
             stopwatch.Stop();
 
-            LogHelpers.WriteProjectFixResults(results, Options, FormatProvider);
-
             WriteLine($"Done fixing solution '{CurrentSolution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+
+            LogHelpers.WriteProjectFixResults(results, Options, FormatProvider);
         }
 
         public async Task<ProjectFixResult> FixProjectAsync(Project project, CancellationToken cancellationToken = default)
@@ -494,8 +494,8 @@ namespace Roslynator.CodeFixes
                         {
                             break;
                         }
-                    }
-                    while (en.MoveNext());
+
+                    } while (en.MoveNext());
 
                     count = 0;
 

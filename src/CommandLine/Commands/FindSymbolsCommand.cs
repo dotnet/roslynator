@@ -148,7 +148,6 @@ namespace Roslynator.CommandLine
 
             WriteLine(Verbosity.Minimal);
             WriteLine($"{allSymbols.Length} {((allSymbols.Length == 1) ? "symbol" : "symbols")} found", ConsoleColor.Green, Verbosity.Minimal);
-            WriteLine(Verbosity.Minimal);
 
             return CommandResult.Success;
         }

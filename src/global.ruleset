@@ -297,14 +297,7 @@
     <Rule Id="RCS1017" Action="Info" />
     <Rule Id="RCS1018" Action="Warning" />
     <Rule Id="RCS1019" Action="Info" />
-    <Rule Id="RCS1023" Action="Info" />
-    <Rule Id="RCS1024" Action="Info" />
-    <Rule Id="RCS1025" Action="Info" />
-    <Rule Id="RCS1026" Action="Info" />
-    <Rule Id="RCS1027" Action="Info" />
-    <Rule Id="RCS1028" Action="Info" />
-    <Rule Id="RCS1029" Action="Info" />
-    <Rule Id="RCS1030" Action="Info" />
+    <Rule Id="RCS1029" Action="None" />
     <Rule Id="RCS1034" Action="Info" />
     <Rule Id="RCS1037" Action="Warning" />
     <Rule Id="RCS1039" Action="Info" />
@@ -315,6 +308,7 @@
     <Rule Id="RCS1050" Action="Info" />
     <Rule Id="RCS1051" Action="Info" />
     <Rule Id="RCS1056" Action="Info" />
+    <Rule Id="RCS1057" Action="None" />
     <Rule Id="RCS1060" Action="Info" />
     <Rule Id="RCS1061" Action="Info" />
     <Rule Id="RCS1062" Action="Info" />
@@ -324,14 +318,12 @@
     <Rule Id="RCS1070" Action="Info" />
     <Rule Id="RCS1071" Action="Info" />
     <Rule Id="RCS1074" Action="Info" />
+    <Rule Id="RCS1076" Action="None" />
     <Rule Id="RCS1078" Action="Info" />
     <Rule Id="RCS1081" Action="Info" />
     <Rule Id="RCS1082" Action="Info" />
     <Rule Id="RCS1083" Action="Info" />
-    <Rule Id="RCS1087" Action="Info" />
-    <Rule Id="RCS1088" Action="Info" />
     <Rule Id="RCS1091" Action="Info" />
-    <Rule Id="RCS1092" Action="Info" />
     <Rule Id="RCS1096" Action="Warning" />
     <Rule Id="RCS1101" Action="Info" />
     <Rule Id="RCS1111" Action="Info" />
@@ -346,12 +338,42 @@
     <Rule Id="RCS1143" Action="Info" />
     <Rule Id="RCS1145" Action="Info" />
     <Rule Id="RCS1151" Action="Info" />
-    <Rule Id="RCS1153" Action="Info" />
     <Rule Id="RCS1162" Action="Info" />
-    <Rule Id="RCS1184" Action="Info" />
-    <Rule Id="RCS1185" Action="Info" />
     <Rule Id="RCS1188" Action="Info" />
     <Rule Id="RCS1189" Action="Info" />
+  </Rules>
+  <Rules AnalyzerId="Roslynator.Formatting.Analyzers" RuleNamespace="Roslynator.Formatting.Analyzers">
+    <Rule Id="RCS0001" Action="Info" />
+    <Rule Id="RCS0003" Action="Info" />
+    <Rule Id="RCS0004" Action="Info" />
+    <Rule Id="RCS0006" Action="Info" />
+    <Rule Id="RCS0008" Action="Info" />
+    <Rule Id="RCS0009" Action="Info" />
+    <Rule Id="RCS0010" Action="Info" />
+    <Rule Id="RCS0013" Action="Info" />
+    <Rule Id="RCS0016" Action="Info" />
+    <Rule Id="RCS0021" Action="Info" />
+    <Rule Id="RCS0022" Action="Info" />
+    <Rule Id="RCS0023" Action="Info" />
+    <Rule Id="RCS0024" Action="Info" />
+    <Rule Id="RCS0025" Action="Info" />
+    <Rule Id="RCS0027" Action="Info" />
+    <Rule Id="RCS0028" Action="Info" />
+    <Rule Id="RCS0030" Action="Info" />
+    <Rule Id="RCS0031" Action="Info" />
+    <Rule Id="RCS0032" Action="Info" />
+    <Rule Id="RCS0033" Action="Info" />
+    <Rule Id="RCS0035" Action="Info" />
+    <Rule Id="RCS0037" Action="Info" />
+    <Rule Id="RCS0038" Action="Info" />
+    <Rule Id="RCS0039" Action="Info" />
+    <Rule Id="RCS0040" Action="Info" />
+    <Rule Id="RCS0041" Action="Info" />
+    <Rule Id="RCS0042" Action="Info" />
+    <Rule Id="RCS0043" Action="Info" />
+    <Rule Id="RCS0044" Action="Info" />
+    <Rule Id="RCS0046" Action="Info" />
+    <Rule Id="RCS0047" Action="Info" />
   </Rules>
   <Rules AnalyzerId="SonarAnalyzer.CSharp" RuleNamespace="SonarAnalyzer.CSharp">
     <Rule Id="S101" Action="None" />

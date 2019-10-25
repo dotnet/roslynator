@@ -86,17 +86,25 @@ namespace Roslynator.Diagnostics
 
             stopwatch.Stop();
 
+            WriteLine($"Done analyzing solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
+
             if (results.Count > 0)
                 WriteProjectAnalysisResults(results, cancellationToken);
-
-            WriteLine($"Done analyzing solution '{solution.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
 
             return results.ToImmutableArray();
         }
 
         public async Task<ProjectAnalysisResult> AnalyzeProjectAsync(Project project, CancellationToken cancellationToken = default)
         {
+            WriteLine($"Analyze '{project.Name}'", ConsoleColor.Cyan, Verbosity.Minimal);
+
+            Stopwatch stopwatch = Stopwatch.StartNew();
+
             ProjectAnalysisResult result = await AnalyzeProjectCoreAsync(project, cancellationToken).ConfigureAwait(false);
+
+            stopwatch.Stop();
+
+            WriteLine($"Done analyzing project '{project.FilePath}' in {stopwatch.Elapsed:mm\\:ss\\.ff}", Verbosity.Minimal);
 
             WriteProjectAnalysisResults(new ProjectAnalysisResult[] { result }, cancellationToken);
 
@@ -219,7 +227,7 @@ namespace Roslynator.Diagnostics
 
             if (totalCount > 0)
             {
-                WriteLine(Verbosity.Minimal);
+                WriteLine(Verbosity.Normal);
 
                 Dictionary<DiagnosticDescriptor, int> diagnosticsByDescriptor = results
                     .SelectMany(f => FilterDiagnostics(f.Diagnostics.Concat(f.CompilerDiagnostics), cancellationToken))
@@ -233,11 +241,10 @@ namespace Roslynator.Diagnostics
                 {
                     WriteLine($"{kvp.Value.ToString().PadLeft(maxCountLength)} {kvp.Key.Id.PadRight(maxIdLength)} {kvp.Key.Title}", Verbosity.Normal);
                 }
-
-                WriteLine(Verbosity.Minimal);
-                WriteLine($"{totalCount} {((totalCount == 1) ? "diagnostic" : "diagnostics")} found", ConsoleColor.Green, Verbosity.Minimal);
-                WriteLine(Verbosity.Minimal);
             }
+
+            WriteLine(Verbosity.Minimal);
+            WriteLine($"{totalCount} {((totalCount == 1) ? "diagnostic" : "diagnostics")} found", ConsoleColor.Green, Verbosity.Minimal);
 
             void WriteExecutionTime()
             {
@@ -258,13 +265,20 @@ namespace Roslynator.Diagnostics
                     }
                 }
 
-                WriteLine(Verbosity.Minimal);
-
-                foreach (KeyValuePair<DiagnosticAnalyzer, AnalyzerTelemetryInfo> kvp in telemetryInfos
+                using (IEnumerator<KeyValuePair<DiagnosticAnalyzer, AnalyzerTelemetryInfo>> en = telemetryInfos
                     .Where(f => f.Value.ExecutionTime >= MinimalExecutionTime)
-                    .OrderByDescending(f => f.Value.ExecutionTime))
+                    .OrderByDescending(f => f.Value.ExecutionTime).GetEnumerator())
                 {
-                    WriteLine($"{kvp.Value.ExecutionTime:mm\\:ss\\.fff} '{kvp.Key.GetType().FullName}'", Verbosity.Minimal);
+                    if (en.MoveNext())
+                    {
+                        WriteLine(Verbosity.Minimal);
+
+                        do
+                        {
+                            WriteLine($"{en.Current.Value.ExecutionTime:mm\\:ss\\.fff} '{en.Current.Key.GetType().FullName}'", Verbosity.Minimal);
+
+                        } while (en.MoveNext());
+                    }
                 }
             }
         }

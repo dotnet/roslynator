@@ -394,8 +394,8 @@ namespace Roslynator.Documentation.Xml
                     do
                     {
                         WriteDocumentation(en.Current);
-                    }
-                    while (en.MoveNext());
+
+                    } while (en.MoveNext());
 
                     _writer.WriteWhitespace(_writer.Settings.NewLineChars);
 

@@ -53,6 +53,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Workspaces.Core", "..\Works
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CodeAnalysis.Analyzers.Tests", "CodeAnalysis.Analyzers.Tests\CodeAnalysis.Analyzers.Tests.csproj", "{FCCEC782-83A2-42E3-AAD1-34E71575D4A2}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Formatting.Analyzers.Tests", "Formatting.Analyzers.Tests\Formatting.Analyzers.Tests.csproj", "{FCCEC782-83A2-42E3-AAD1-34E71575D4A2}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU

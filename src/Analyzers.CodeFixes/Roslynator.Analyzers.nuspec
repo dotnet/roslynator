@@ -2,12 +2,12 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
   <metadata minClientVersion="2.8">
     <id>Roslynator.Analyzers</id>
-    <version>2.2.0-rc</version>
+    <version>2.2.0</version>
     <authors>Josef Pihrt</authors>
     <owners>Josef Pihrt</owners>
     <license type="expression">Apache-2.0</license>
     <projectUrl>http://github.com/JosefPihrt/Roslynator</projectUrl>
-    <iconUrl>http://pihrt.net/images/Roslynator.ico</iconUrl>
+    <icon>icon.png</icon>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A collection of 200+ analyzers for C#, powered by Roslyn.
 
@@ -22,5 +22,6 @@
   <files>
     <file src="bin\$Configuration$\netstandard1.3\Roslynator*.dll" target="analyzers\dotnet\cs" />
     <file src="tools\*.ps1" target="tools\" />
+    <file src="..\..\images\icon.png" target="" />
   </files>
 </package>

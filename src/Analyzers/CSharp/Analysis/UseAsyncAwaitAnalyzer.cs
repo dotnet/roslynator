@@ -186,8 +186,8 @@ namespace Roslynator.CSharp.Analysis
                     }
 
                     t = t.BaseType;
-                }
-                while (t?.SpecialType == SpecialType.None);
+
+                } while (t?.SpecialType == SpecialType.None);
             }
 
             return false;

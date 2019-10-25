@@ -102,7 +102,7 @@ namespace Roslynator.CSharp.CodeFixes
                     case DiagnosticIdentifiers.UseBitShiftOperator:
                         {
                             CodeAction codeAction = CodeAction.Create(
-                                "Use << operator",
+                                "Use '<<' operator",
                                 ct => UseBitShiftOperatorAsync(document, enumDeclaration, ct),
                                 GetEquivalenceKey(diagnostic));
 

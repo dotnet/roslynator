@@ -19,6 +19,7 @@ namespace Roslynator.CodeGeneration
 
         private ImmutableArray<AnalyzerMetadata> _analyzers;
         private ImmutableArray<AnalyzerMetadata> _codeAnalysisAnalyzers;
+        private ImmutableArray<AnalyzerMetadata> _formattingAnalyzers;
         private ImmutableArray<RefactoringMetadata> _refactorings;
         private ImmutableArray<CodeFixMetadata> _codeFixes;
         private ImmutableArray<CompilerDiagnosticMetadata> _compilerDiagnostics;
@@ -42,6 +43,17 @@ namespace Roslynator.CodeGeneration
                     _codeAnalysisAnalyzers = LoadAnalyzers(GetPath("CodeAnalysis.Analyzers"));
 
                 return _codeAnalysisAnalyzers;
+            }
+        }
+
+        public ImmutableArray<AnalyzerMetadata> FormattingAnalyzers
+        {
+            get
+            {
+                if (_formattingAnalyzers.IsDefault)
+                    _formattingAnalyzers = LoadAnalyzers(GetPath("Formatting.Analyzers"));
+
+                return _formattingAnalyzers;
             }
         }
 

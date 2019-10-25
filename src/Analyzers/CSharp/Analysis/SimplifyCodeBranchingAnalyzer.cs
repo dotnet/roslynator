@@ -29,66 +29,65 @@ namespace Roslynator.CSharp.Analysis
             context.RegisterSyntaxNodeAction(AnalyzeIfStatement, SyntaxKind.IfStatement);
         }
 
-        internal static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
+        private static void AnalyzeIfStatement(SyntaxNodeAnalysisContext context)
         {
             var ifStatement = (IfStatementSyntax)context.Node;
 
+            SimplifyCodeBranchingKind? kind = GetKind(ifStatement, context.SemanticModel, context.CancellationToken);
+
+            if (kind == null)
+                return;
+
+            DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement.IfKeyword);
+        }
+
+        internal static SimplifyCodeBranchingKind? GetKind(IfStatementSyntax ifStatement, SemanticModel semanticModel, CancellationToken cancellationToken)
+        {
             ExpressionSyntax condition = ifStatement.Condition?.WalkDownParentheses();
 
             if (condition?.IsMissing != false)
-                return;
+                return null;
 
             StatementSyntax statement = ifStatement.Statement;
 
             if (statement == null)
-                return;
+                return null;
 
             var block = statement as BlockSyntax;
 
-            if (block?.Statements.Any() == false
-                && block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
-                && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace())
-            {
-                if (IsFixableIfElse(ifStatement))
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
-            }
-            else
-            {
-                ElseClauseSyntax elseClause = ifStatement.Else;
-
-                if (elseClause != null)
-                {
-                    if (IsFixableIfElseInsideWhile(ifStatement, elseClause))
-                        DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
-                }
-                else if (IsFixableSimpleIfInsideWhileOrDo(ifStatement, context.SemanticModel, context.CancellationToken))
-                {
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
-                }
-                else
-                {
-                    if (ifStatement.IsParentKind(SyntaxKind.ElseClause))
-                        return;
-
-                    if (!(ifStatement.SingleNonBlockStatementOrDefault() is DoStatementSyntax doStatement))
-                        return;
-
-                    if (!CSharpFactory.AreEquivalent(condition, doStatement.Condition?.WalkDownParentheses()))
-                        return;
-
-                    DiagnosticHelpers.ReportDiagnostic(context, DiagnosticDescriptors.SimplifyCodeBranching, ifStatement);
-                }
-            }
-        }
-
-        private static bool IsFixableIfElse(IfStatementSyntax ifStatement)
-        {
-            if (ifStatement.SpanContainsDirectives())
-                return false;
-
             ElseClauseSyntax elseClause = ifStatement.Else;
 
-            if (elseClause == null)
+            if (elseClause != null)
+            {
+                if (IsFixableIfElseInsideWhile(ifStatement, elseClause))
+                {
+                    return SimplifyCodeBranchingKind.IfElseInsideWhile;
+                }
+                else if (block?.Statements.Any() == false
+                    && block.OpenBraceToken.TrailingTrivia.IsEmptyOrWhitespace()
+                    && block.CloseBraceToken.LeadingTrivia.IsEmptyOrWhitespace()
+                    && IsFixableIfElseWithEmptyIf(ifStatement, elseClause))
+                {
+                    return SimplifyCodeBranchingKind.IfElseWithEmptyIf;
+                }
+            }
+            else if (IsFixableSimpleIfInsideWhileOrDo(ifStatement, semanticModel, cancellationToken))
+            {
+                return SimplifyCodeBranchingKind.SimplifIfInsideWhileOrDo;
+            }
+            else if (!ifStatement.IsParentKind(SyntaxKind.ElseClause)
+                && (ifStatement.SingleNonBlockStatementOrDefault() is DoStatementSyntax doStatement)
+                && CSharpFactory.AreEquivalent(condition, doStatement.Condition?.WalkDownParentheses()))
+            {
+                return SimplifyCodeBranchingKind.SimpleIfContainingOnlyDo;
+            }
+
+            return null;
+        }
+
+        private static bool IsFixableIfElseWithEmptyIf(IfStatementSyntax ifStatement, ElseClauseSyntax elseClause)
+        {
+            if (ifStatement.SpanContainsDirectives())
                 return false;
 
             StatementSyntax whenFalse = elseClause.Statement;
@@ -129,14 +128,27 @@ namespace Roslynator.CSharp.Analysis
             IfStatementSyntax ifStatement,
             ElseClauseSyntax elseClause)
         {
-            if (elseClause.SingleNonBlockStatementOrDefault()?.Kind() != SyntaxKind.BreakStatement)
+            StatementSyntax ifStatementStatement = ifStatement.Statement;
+
+            if (ifStatementStatement == null)
                 return false;
+
+            StatementSyntax elseClauseStatement = elseClause.Statement;
+
+            if (elseClauseStatement == null)
+                return false;
+
+            if (elseClauseStatement.SingleNonBlockStatementOrDefault()?.Kind() != SyntaxKind.BreakStatement
+                && ifStatementStatement.SingleNonBlockStatementOrDefault()?.Kind() != SyntaxKind.BreakStatement)
+            {
+                return false;
+            }
 
             SyntaxNode parent = ifStatement.Parent;
 
             if (parent is BlockSyntax block)
             {
-                if (block.Statements.Count != 1)
+                if (!object.ReferenceEquals(ifStatement, block.Statements[0]))
                     return false;
 
                 parent = block.Parent;

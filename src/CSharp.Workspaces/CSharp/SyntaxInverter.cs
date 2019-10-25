@@ -279,7 +279,7 @@ namespace Roslynator.CSharp
             return null;
         }
 
-        private static BinaryExpressionSyntax InvertBinaryExpression(BinaryExpressionSyntax binaryExpression)
+        internal static BinaryExpressionSyntax InvertBinaryExpression(BinaryExpressionSyntax binaryExpression)
         {
             SyntaxToken operatorToken = InvertBinaryOperatorToken(binaryExpression.OperatorToken);
 

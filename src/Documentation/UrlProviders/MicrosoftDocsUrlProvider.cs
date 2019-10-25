@@ -97,8 +97,8 @@ namespace Roslynator.Documentation
                         builder.Add(containingNamespace.Name);
 
                         containingNamespace = containingNamespace.ContainingNamespace;
-                    }
-                    while (containingNamespace?.IsGlobalNamespace == false);
+
+                    } while (containingNamespace?.IsGlobalNamespace == false);
                 }
             }
 

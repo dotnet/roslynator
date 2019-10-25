@@ -41,7 +41,8 @@ namespace Roslynator.CodeGeneration.CSharp
                         SimpleMemberAccessExpression(
                             SimpleMemberAccessExpression(
                                 IdentifierName("x"),
-                                IdentifierName("ContainingType")), IdentifierName("Name")),
+                                IdentifierName("ContainingType")),
+                            IdentifierName("Name")),
                         GenerateSections().ToSyntaxList().Add(DefaultSwitchSection(Block(ThrowNewInvalidOperationException()))))));
 
             IEnumerable<SwitchSectionSyntax> GenerateSections()
