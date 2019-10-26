@@ -19,6 +19,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Core\Core.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
+    <ProjectReference Include="..\Formatting.Analyzers.CodeFixes\Formatting.Analyzers.CodeFixes.csproj" />
+    <ProjectReference Include="..\Formatting.Analyzers\Formatting.Analyzers.csproj" />
     <ProjectReference Include="..\Workspaces.Core\Workspaces.Core.csproj" />
     <ProjectReference Include="..\Workspaces.Common\Workspaces.Common.csproj" />
     <ProjectReference Include="..\CSharp\CSharp.csproj" />

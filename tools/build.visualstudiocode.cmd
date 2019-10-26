@@ -45,6 +45,8 @@ copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.Workspaces.Common.dll common
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.Workspaces.dll common
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.Analyzers.dll analyzers
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.Analyzers.CodeFixes.dll analyzers
+copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.Formatting.Analyzers.dll analyzers
+copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.Formatting.Analyzers.CodeFixes.dll analyzers
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.Refactorings.dll refactorings
 copy /Y ..\..\bin\Release\netstandard2.0\Roslynator.CSharp.CodeFixes.dll fixes
 
