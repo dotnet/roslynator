@@ -154,7 +154,8 @@ namespace Roslynator.CodeGeneration
             // find missing samples
             foreach (RefactoringMetadata refactoring in refactorings)
             {
-                if (refactoring.Samples.Count == 0)
+                if (!refactoring.IsObsolete
+                    && refactoring.Samples.Count == 0)
                 {
                     foreach (ImageMetadata image in refactoring.ImagesOrDefaultImage())
                     {

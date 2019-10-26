@@ -1,3 +1,7 @@
+### 2.2.1 (2019-10-26)
+
+* Add set of formatting analyzers (RCS0...).
+
 ### 2.2.0 (2019-09-28)
 
 #### Analyzers
