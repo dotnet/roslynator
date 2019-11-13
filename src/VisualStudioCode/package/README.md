@@ -22,7 +22,7 @@ To make this extension working it is necessary to add following configuration to
 }
 ```
 
-Replace **%USERPROFILE%** with an actual path (such as **C:/Users/User**).
+Replace **%USERPROFILE%** with an actual full path (such as **C:/Users/User**).
 
 After each update of the extension it is necessary to update paths to libraries (i.e. replace version in the path with a new version).
 
