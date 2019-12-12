@@ -32,6 +32,9 @@ namespace Roslynator.CSharp.Refactorings
                 {
                     case SyntaxKind.LogicalAndExpression:
                     case SyntaxKind.LogicalOrExpression:
+                    case SyntaxKind.BitwiseAndExpression:
+                    case SyntaxKind.BitwiseOrExpression:
+                    case SyntaxKind.ExclusiveOrExpression:
                     case SyntaxKind.AddExpression:
                     case SyntaxKind.MultiplyExpression:
                         {
