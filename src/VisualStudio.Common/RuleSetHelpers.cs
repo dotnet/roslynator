@@ -20,6 +20,9 @@ This rule set can be used to:
 Default configuration is applied once when analyzers are loaded.
 Therefore, it may be neccessary to restart Visual Studio for changes to take effect.
 
+Although it is possible to edit ruleset manually, Visual Studio has built-in support for editing ruleset.
+Just add ruleset file to a solution and open it.
+
 -->
 <RuleSet Name=""roslynator.ruleset"" ToolsVersion=""16.0"">
   

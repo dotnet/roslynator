@@ -59,6 +59,9 @@ This rule set can be used to:
 
 1. Enable/disable analyzer(s) by DEFAULT.
 2. Change DEFAULT severity (action) of the analyzer(s).
+
+Although it is possible to edit ruleset manually, Visual Studio has built-in support for editing ruleset.
+Just add ruleset file to a solution and open it.
  
 ## Configuration of Refactorings and Fixes
 
