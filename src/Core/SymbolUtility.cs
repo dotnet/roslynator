@@ -633,6 +633,9 @@ namespace Roslynator
             if (originalDefinition.HasMetadataName(MetadataNames.System_Threading_Tasks_ValueTask_T))
                 return true;
 
+            if (originalDefinition.HasMetadataName(MetadataNames.System_Collections_Generic_IAsyncEnumerable_T))
+                return true;
+
             if (namedTypeSymbol.EqualsOrInheritsFrom(MetadataNames.System_Threading_Tasks_Task))
                 return true;
 
