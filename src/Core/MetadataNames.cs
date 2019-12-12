@@ -13,6 +13,7 @@ namespace Roslynator
         public static readonly MetadataName System_Collections_Generic = MetadataName.Parse("System.Collections.Generic");
         public static readonly MetadataName System_Collections_IComparer = MetadataName.Parse("System.Collections.IComparer");
         public static readonly MetadataName System_Collections_IEqualityComparer = MetadataName.Parse("System.Collections.IEqualityComparer");
+        public static readonly MetadataName System_Collections_Generic_IAsyncEnumerable_T = MetadataName.Parse("System.Collections.Generic.IAsyncEnumerable`1");
         public static readonly MetadataName System_Collections_Generic_IComparer_T = MetadataName.Parse("System.Collections.Generic.IComparer`1");
         public static readonly MetadataName System_Collections_Generic_IEqualityComparer_T = MetadataName.Parse("System.Collections.Generic.IEqualityComparer`1");
         public static readonly MetadataName System_Collections_Generic_IEnumerable_T = MetadataName.Parse("System.Collections.Generic.IEnumerable`1");
