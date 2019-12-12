@@ -33,6 +33,5 @@
   ],
   "extensionDependencies": [
     "ms-vscode.csharp"
-  ],
-  "preview": true
+  ]
 }
