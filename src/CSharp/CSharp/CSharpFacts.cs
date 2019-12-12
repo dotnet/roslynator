@@ -866,6 +866,8 @@ namespace Roslynator.CSharp
                     return SyntaxKind.AndAssignmentExpression;
                 case SyntaxKind.ExclusiveOrExpression:
                     return SyntaxKind.ExclusiveOrAssignmentExpression;
+                case SyntaxKind.CoalesceExpression:
+                    return SyntaxKind.CoalesceAssignmentExpression;
                 default:
                     return SyntaxKind.None;
             }
@@ -895,6 +897,8 @@ namespace Roslynator.CSharp
                     return SyntaxKind.AmpersandEqualsToken;
                 case SyntaxKind.ExclusiveOrAssignmentExpression:
                     return SyntaxKind.CaretEqualsToken;
+                case SyntaxKind.CoalesceAssignmentExpression:
+                    return SyntaxKind.QuestionQuestionEqualsToken;
                 default:
                     return SyntaxKind.None;
             }

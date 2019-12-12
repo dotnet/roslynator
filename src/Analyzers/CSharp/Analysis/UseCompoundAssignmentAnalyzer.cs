@@ -84,6 +84,7 @@ namespace Roslynator.CSharp.Analysis
                 case SyntaxKind.BitwiseOrExpression:
                 case SyntaxKind.LeftShiftExpression:
                 case SyntaxKind.RightShiftExpression:
+                case SyntaxKind.CoalesceExpression:
                     return true;
                 default:
                     return false;

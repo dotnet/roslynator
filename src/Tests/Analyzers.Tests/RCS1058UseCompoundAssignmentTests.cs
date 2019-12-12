@@ -69,6 +69,28 @@ class C
         }
 
         [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
+        public async Task Test_CoalesceExpression()
+        {
+            await VerifyDiagnosticAndFixAsync(@"
+class C
+{
+    void M(string s)
+    {
+        [|s = s ?? """"|];
+    }
+}
+", @"
+class C
+{
+    void M(string s)
+    {
+        s ??= """";
+    }
+}
+");
+        }
+
+        [Fact, Trait(Traits.Analyzer, DiagnosticIdentifiers.UseCompoundAssignment)]
         public async Task TestNoDiagnostic_ObjectInitializer()
         {
             await VerifyNoDiagnosticAsync(@"
