@@ -73,6 +73,17 @@ namespace Roslynator.CSharp.Analysis
             if (!interpolatedString.IsVerbatim())
                 return;
 
+            foreach (InterpolatedStringContentSyntax content in interpolatedString.Contents)
+            {
+                if (content is InterpolationSyntax interpolation)
+                {
+                    string text = interpolation.FormatClause?.FormatStringToken.Text;
+
+                    if (text?.Contains("\\") == true)
+                        return;
+                }
+            }
+
             if (interpolatedString.SyntaxTree.IsMultiLineSpan(interpolatedString.Span, context.CancellationToken))
                 return;
 
