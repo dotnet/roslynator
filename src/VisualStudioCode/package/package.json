@@ -33,5 +33,45 @@
   ],
   "extensionDependencies": [
     "ms-vscode.csharp"
-  ]
+  ],
+  "activationEvents": [
+    "*"
+  ],
+  "contributes": {
+    "configuration": {
+      "title": "Roslynator",
+      "properties": {
+        "roslynator.autoUpdateOmnisharpJson": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically update omnisharp.json file."
+        }
+      }
+    }
+  },
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^8.0.1",
+    "@types/glob": "^7.1.1",
+    "@types/json5": "0.0.30",
+    "@types/mocha": "^5.2.7",
+    "@types/node": "^12.11.7",
+    "@types/vscode": "^1.31.0",
+    "fs-extra": "^8.1.0",
+    "glob": "^7.1.5",
+    "mocha": "^6.2.2",
+    "tslint": "^5.20.0",
+    "typescript": "^3.6.4",
+    "vscode-test": "^1.2.2"
+  },
+  "dependencies": {
+    "json5": "^2.1.1"
+  }
 }
