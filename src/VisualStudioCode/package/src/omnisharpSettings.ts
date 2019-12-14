@@ -1,6 +1,6 @@
 export interface OmnisharpSettings {
-    RoslynExtensionsOptions?: {
-        EnableAnalyzersSupport?: boolean;
-        LocationPaths?: string[];
-    };
+	RoslynExtensionsOptions?: {
+		EnableAnalyzersSupport?: boolean;
+		LocationPaths?: string[];
+	};
 }
