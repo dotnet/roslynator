@@ -37,7 +37,6 @@ export function ensureConfigurationUpdated(context: Context) {
 		omnisharpSettings = json5.parse(omnisharpJson);
 	} else {
 		omnisharpSettings = {};
-		settingsUpdated = true;
 	}
 
 	if (!omnisharpSettings.RoslynExtensionsOptions || typeof omnisharpSettings.RoslynExtensionsOptions !== 'object') {
