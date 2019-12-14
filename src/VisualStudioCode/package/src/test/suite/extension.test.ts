@@ -30,6 +30,8 @@ suite('Auto update omnisharp.json', () => {
 			homeDirectoryPath: homePath
 		});
 
+		assert.ok(fs.existsSync(omnisharpJsonPath));
+
 		const omnisharpSettings = fs.readJSONSync(omnisharpJsonPath) as OmnisharpSettings;
 
 		assert.ok(omnisharpSettings.RoslynExtensionsOptions?.EnableAnalyzersSupport);

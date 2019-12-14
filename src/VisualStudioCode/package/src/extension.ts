@@ -10,14 +10,12 @@ export function activate(context: vscode.ExtensionContext) {
 	const shouldAutoUpdate = vscode.workspace.getConfiguration()
 		.get('roslynator.autoUpdateOmnisharpJson');
 
-	if (!shouldAutoUpdate) {
-		return;
+	if (shouldAutoUpdate) {
+		ensureConfigurationUpdated({
+			homeDirectoryPath: os.homedir(),
+			extensionDirectoryPath: context.asAbsolutePath('.')
+		});
 	}
-
-	ensureConfigurationUpdated({
-		homeDirectoryPath: os.homedir(),
-		extensionDirectoryPath: context.asAbsolutePath('.')
-	});
 }
 
 export function deactivate() { }
@@ -31,31 +29,28 @@ export function ensureConfigurationUpdated(context: Context) {
 
 	const omnisharpJsonPath = path.join(omnisharpDirectoryPath, 'omnisharp.json');
 
-	if (!fs.existsSync(omnisharpJsonPath)) {
-		fs.writeFileSync(omnisharpJsonPath, '{}');
-	}
-
-	const omnisharpJson = fs.readFileSync(omnisharpJsonPath, { encoding: 'utf8' });
-	const omnisharpSettings = json5.parse(omnisharpJson) as OmnisharpSettings;
-
+	let omnisharpSettings: OmnisharpSettings;
 	let settingsUpdated = false;
+
+	if (fs.existsSync(omnisharpJsonPath)) {
+		const omnisharpJson = fs.readFileSync(omnisharpJsonPath, { encoding: 'utf8' });
+		omnisharpSettings = json5.parse(omnisharpJson);
+	} else {
+		omnisharpSettings = {};
+		settingsUpdated = true;
+	}
 
 	if (!omnisharpSettings.RoslynExtensionsOptions || typeof omnisharpSettings.RoslynExtensionsOptions !== 'object') {
 		omnisharpSettings.RoslynExtensionsOptions = {};
-
-		settingsUpdated = true;
 	}
 
 	if (omnisharpSettings.RoslynExtensionsOptions.EnableAnalyzersSupport !== true) {
 		omnisharpSettings.RoslynExtensionsOptions.EnableAnalyzersSupport = true;
-
 		settingsUpdated = true;
 	}
 
 	if (!Array.isArray(omnisharpSettings.RoslynExtensionsOptions.LocationPaths)) {
 		omnisharpSettings.RoslynExtensionsOptions.LocationPaths = [];
-
-		settingsUpdated = true;
 	}
 
 	const roslynPath = path.join(context.extensionDirectoryPath, 'roslyn');
@@ -77,7 +72,6 @@ export function ensureConfigurationUpdated(context: Context) {
 			...unrelatedPaths,
 			...locationPaths
 		];
-
 		settingsUpdated = true;
 	}
 
