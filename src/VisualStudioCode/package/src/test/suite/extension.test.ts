@@ -17,7 +17,6 @@ suite('Auto update omnisharp.json', () => {
 
 	setup(() => {
 		fs.mkdirSync(homePath, { recursive: true });
-		fs.mkdirSync(extensionsPath, { recursive: true });
 	});
 
 	teardown(() => {
