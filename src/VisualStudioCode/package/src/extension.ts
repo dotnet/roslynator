@@ -13,7 +13,7 @@ export function activate(context: vscode.ExtensionContext) {
 	if (shouldAutoUpdate) {
 		ensureConfigurationUpdated({
 			homeDirectoryPath: os.homedir(),
-			extensionDirectoryPath: context.asAbsolutePath('.')
+			extensionDirectoryPath: context.extensionPath
 		});
 	}
 }
